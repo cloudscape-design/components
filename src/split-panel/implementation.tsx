@@ -3,7 +3,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
@@ -33,6 +33,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     __internalRootRef
   ) => {
     const isRefresh = useVisualRefresh();
+    const isToolbar = useAppLayoutToolbarEnabled();
 
     const {
       position,
@@ -79,10 +80,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const panelHeaderId = useUniqueId('split-panel-header');
 
     const wrappedHeader = (
-      <div
-        className={clsx(styles.header, isAppLayoutToolbarEnabled() && styles['with-toolbar'])}
-        style={appLayoutMaxWidth}
-      >
+      <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
         <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>

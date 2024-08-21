@@ -4,6 +4,7 @@ import React from 'react';
 
 import PropertyFilter from '~components/property-filter';
 import { PropertyFilterProps } from '~components/property-filter/interfaces';
+import PropertyFilterInternal from '~components/property-filter/internal';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import { columnDefinitions, filteringProperties as commonFilteringProperties, i18nStrings } from './common-props';
@@ -14,6 +15,16 @@ const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = co
   propertyLabel: def.propertyLabel,
   groupValuesLabel: `${def.propertyLabel} values`,
 }));
+
+const commonProps = {
+  onChange: () => {},
+  filteringProperties,
+  filteringOptions: [],
+  i18nStrings,
+  countText: '5 matches',
+  disableFreeTextFiltering: false,
+  virtualScroll: true,
+} as const;
 
 export default function () {
   return (
@@ -31,11 +42,7 @@ export default function () {
             ],
             operation: 'and',
           }}
-          onChange={() => {}}
-          filteringProperties={filteringProperties}
-          filteringOptions={[]}
-          virtualScroll={true}
-          countText="5 matches"
+          {...commonProps}
           i18nStrings={{
             ...i18nStrings,
             editTokenHeader: 'Edit filter editTokenHeadereditTokenHeadereditTokenHeadereditTokenHeader',
@@ -55,12 +62,7 @@ export default function () {
             ],
             operation: 'and',
           }}
-          onChange={() => {}}
-          filteringProperties={filteringProperties}
-          filteringOptions={[]}
-          virtualScroll={true}
-          countText="5 matches"
-          i18nStrings={i18nStrings}
+          {...commonProps}
         />
         <PropertyFilter
           className="property-filter-custom-prop-boolean"
@@ -68,25 +70,17 @@ export default function () {
             tokens: [{ propertyKey: 'stopped', operator: '=', value: 'true' }],
             operation: 'and',
           }}
-          onChange={() => {}}
+          {...commonProps}
           filteringProperties={commonFilteringProperties}
-          filteringOptions={[]}
-          virtualScroll={true}
-          countText="5 matches"
-          i18nStrings={i18nStrings}
         />
         <PropertyFilter
           className="property-filter-custom-prop-datetime"
           query={{
-            tokens: [{ propertyKey: 'lasteventat', operator: '>', value: '2022-01-01T00:00:00' }],
+            tokens: [{ propertyKey: 'lasteventat-legacy', operator: '>', value: '2022-01-01T00:00:00' }],
             operation: 'and',
           }}
-          onChange={() => {}}
+          {...commonProps}
           filteringProperties={commonFilteringProperties}
-          filteringOptions={[]}
-          virtualScroll={true}
-          countText="5 matches"
-          i18nStrings={i18nStrings}
         />
         <PropertyFilter
           className="property-filter-free-text-operators"
@@ -97,13 +91,22 @@ export default function () {
             ],
             operation: 'and',
           }}
-          onChange={() => {}}
-          filteringProperties={filteringProperties}
-          filteringOptions={[]}
+          {...commonProps}
           freeTextFiltering={{ operators: [':', '!:', '=', '!=', '^', '!^'] }}
-          virtualScroll={true}
-          countText="5 matches"
-          i18nStrings={i18nStrings}
+        />
+        <PropertyFilterInternal
+          className="property-filter-group-editor"
+          query={{
+            tokens: [
+              { propertyKey: 'instanceid', operator: '=', value: 'i123' },
+              { propertyKey: 'lasteventat', operator: '>', value: '2022-01-01T00:00:00' },
+            ],
+            operation: 'and',
+          }}
+          {...commonProps}
+          filteringProperties={commonFilteringProperties}
+          customGroupsText={[]}
+          enableTokenGroups={true}
         />
       </ScreenshotArea>
     </>

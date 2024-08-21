@@ -23,9 +23,10 @@ import { PopoverProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType'>, InternalBaseComponentProps {
+export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' | 'size'>, InternalBaseComponentProps {
   __onOpen?: NonCancelableEventHandler<null>;
   triggerType?: PopoverProps.TriggerType | 'filtering-token';
+  size: PopoverProps.Size | 'content';
 }
 
 export interface InternalPopoverRef {

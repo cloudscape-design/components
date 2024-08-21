@@ -1,10 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
+import { I18nStringsExt } from '~components/property-filter/internal';
 
 import {
   DateForm,
   DateTimeForm,
+  DateTimeFormLegacy,
   formatDateTime,
   formatOwners,
   OwnerMultiSelectForm,
@@ -129,9 +131,17 @@ export const columnDefinitions = [
     propertyLabel: 'Last event occurrence',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
+  {
+    id: 'lasteventat-legacy',
+    sortingField: 'lasteventat',
+    header: 'Last event occurrence (legacy)',
+    type: 'datetime-legacy',
+    propertyLabel: 'Last event occurrence (legacy)',
+    cell: (item: TableItem) => item.lasteventat?.toISOString(),
+  },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
-export const i18nStrings: PropertyFilterProps.I18nStrings = {
+export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
   filteringAriaLabel: 'your choice',
   dismissAriaLabel: 'Dismiss',
 
@@ -167,6 +177,15 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   tokenOperatorAriaLabel: 'Boolean Operator',
   removeTokenButtonAriaLabel: () => 'Remove token',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
+
+  tokenEditorTokenActionsLabel: token =>
+    `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
+  tokenEditorTokenRemoveLabel: () => 'Remove filter',
+  tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
+  tokenEditorAddNewTokenLabel: 'Add new filter',
+  tokenEditorAddTokenActionsLabel: 'Add filter actions',
+  tokenEditorAddExistingTokenLabel: token =>
+    `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
 };
 
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
@@ -195,12 +214,12 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     }));
   }
 
-  if (def.type === 'datetime') {
+  if (def.type === 'datetime' || def.type === 'datetime-legacy') {
     groupValuesLabel = `${def.propertyLabel} value`;
     defaultOperator = '>';
     operators = ['<', '<=', '>', '>='].map(operator => ({
       operator,
-      form: DateTimeForm,
+      form: def.type === 'datetime' ? DateTimeForm : DateTimeFormLegacy,
       format: formatDateTime,
       match: 'datetime',
     }));
