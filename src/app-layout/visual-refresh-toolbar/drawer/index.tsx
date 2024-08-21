@@ -7,6 +7,7 @@ import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
@@ -64,6 +65,7 @@ export function AppLayoutDrawerImplementation({
     handleRef: refs?.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
+  const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
 
   return (
     <aside
@@ -87,7 +89,7 @@ export function AppLayoutDrawerImplementation({
       style={{
         blockSize: show ? `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)` : 0,
         insetBlockStart: placement.insetBlockStart,
-        ...(!isMobile && isGlobal && { [customCssProps.drawerSize]: `${activeDrawerSize}px` }),
+        ...(!isMobile && isGlobal && { [customCssProps.drawerSize]: `${show ? size : 0}px` }),
       }}
     >
       {!isMobile && activeDrawer?.resizable && (
