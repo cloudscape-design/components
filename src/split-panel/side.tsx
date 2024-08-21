@@ -53,7 +53,7 @@ export function SplitPanelContentSide({
         }
       )}
       style={{
-        width: isOpen ? cappedSize : '0px',
+        width: isOpen ? cappedSize : isRefresh ? '0px' : undefined,
         maxWidth: isRefresh ? '100%' : undefined,
         ...style,
       }}
