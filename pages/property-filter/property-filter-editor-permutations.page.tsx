@@ -88,17 +88,7 @@ const defaultProps: TokenEditorProps = {
   },
   filteringProperties: [nameProperty, dateProperty],
   filteringOptions: [],
-  i18nStrings: {
-    ...i18nStrings,
-    tokenEditorTokenActionsLabel: token =>
-      `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
-    tokenEditorTokenRemoveLabel: () => 'Remove filter',
-    tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
-    tokenEditorAddNewTokenLabel: 'Add new filter',
-    tokenEditorAddTokenActionsLabel: 'Add filter actions',
-    tokenEditorAddExistingTokenLabel: token =>
-      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
-  },
+  i18nStrings,
   onSubmit: () => {},
   onDismiss: () => {},
   standaloneTokens: [],

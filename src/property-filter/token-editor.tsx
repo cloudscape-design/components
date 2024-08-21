@@ -11,7 +11,7 @@ import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getAllowedOperators } from './controller.js';
 import { getFormattedToken } from './i18n-utils.js';
@@ -26,19 +26,11 @@ import {
   InternalToken,
   LoadItemsDetail,
 } from './interfaces.js';
+import { I18nStringsExt } from './internal.js';
 import { OperatorInput, PropertyInput, ValueInput } from './token-editor-inputs.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
-
-interface I18nStringsExt {
-  tokenEditorTokenActionsLabel: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveFromGroupLabel: (token: FormattedToken) => string;
-  tokenEditorAddNewTokenLabel: string;
-  tokenEditorAddTokenActionsLabel: string;
-  tokenEditorAddExistingTokenLabel: (token: FormattedToken) => string;
-}
 
 export interface TokenEditorProps {
   supportsGroups: boolean;
@@ -168,7 +160,7 @@ export function TokenEditor({
             ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
             items={standaloneTokens.map((token, index) => ({
               id: index.toString(),
-              text: i18nStrings.tokenEditorAddExistingTokenLabel(getFormattedToken(token, i18nStrings)),
+              text: i18nStrings.tokenEditorAddExistingTokenLabel?.(getFormattedToken(token, i18nStrings)) ?? '',
             }))}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
@@ -181,7 +173,7 @@ export function TokenEditor({
             }}
             disabled={standaloneTokens.length === 0}
             mainAction={{
-              text: i18nStrings.tokenEditorAddNewTokenLabel,
+              text: i18nStrings?.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
             }}
           />
@@ -232,8 +224,8 @@ function TokenEditorFields({
   renderValue,
   i18nStrings,
 }: TokenEditorLayout) {
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const isNarrow = breakpoint === 'default' || !supportsGroups;
+  const isMobile = useMobile();
+  const isNarrow = isMobile || !supportsGroups;
 
   const propertyLabelId = useUniqueId();
   const operatorLabelId = useUniqueId();
@@ -260,7 +252,6 @@ function TokenEditorFields({
         isNarrow && styles['token-editor-narrow'],
         styles['token-editor-form']
       )}
-      ref={breakpointRef}
       onSubmit={event => {
         event.preventDefault();
         onSubmit();
@@ -316,11 +307,11 @@ function TokenEditorFields({
               <div className={styles['token-editor-remove-token']}>
                 <TokenEditorRemoveActions
                   isNarrow={isNarrow}
-                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
+                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel?.(token) ?? ''}
                   disabled={tokens.length === 1}
                   items={[
-                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel(token) },
-                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) },
+                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel?.(token) ?? '' },
+                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel?.(token) ?? '' },
                   ]}
                   onItemClick={itemId => {
                     switch (itemId) {
