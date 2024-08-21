@@ -212,24 +212,6 @@ const ClassicAppLayout = React.forwardRef(
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
 
-    const getEffectiveToolsWidth = () => {
-      if (activeDrawerSize) {
-        return activeDrawerSize;
-      }
-
-      if (toolsHide || drawers) {
-        return 0;
-      }
-
-      if (toolsOpen) {
-        return toolsWidth;
-      }
-
-      return closedDrawerWidth;
-    };
-
-    const effectiveToolsWidth = getEffectiveToolsWidth();
-
     const defaultSplitPanelSize = getSplitPanelDefaultSize(splitPanelPosition);
     const [splitPanelSize = defaultSplitPanelSize, setSplitPanelSize] = useControllable(
       controlledSplitPanelSize,
@@ -295,6 +277,24 @@ const ClassicAppLayout = React.forwardRef(
       placement.inlineSize - effectiveNavigationWidth - minContentWidth - contentPadding - rightDrawerBarWidth
     );
 
+    const getEffectiveToolsWidth = () => {
+      if (activeDrawerSize) {
+        return Math.min(resizableSpaceAvailable, activeDrawerSize);
+      }
+
+      if (toolsHide || drawers) {
+        return 0;
+      }
+
+      if (toolsOpen) {
+        return toolsWidth;
+      }
+
+      return closedDrawerWidth;
+    };
+
+    const effectiveToolsWidth = getEffectiveToolsWidth();
+
     // if there is no space to display split panel in the side, force to bottom
     const isSplitPanelForcedPosition =
       isMobile || resizableSpaceAvailable - effectiveToolsWidth < SPLIT_PANEL_MIN_WIDTH;
@@ -303,7 +303,7 @@ const ClassicAppLayout = React.forwardRef(
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
 
     const sideSplitPanelSize = splitPaneAvailableOnTheSide ? (splitPanelOpen ? splitPanelSize : closedDrawerWidth) : 0;
-    const splitPanelMaxWidth = Math.max(0, resizableSpaceAvailable - effectiveToolsWidth);
+    const sideSplitPanelMaxWidth = Math.max(0, resizableSpaceAvailable - effectiveToolsWidth);
     const drawerMaxSize = Math.max(0, resizableSpaceAvailable - sideSplitPanelSize);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
@@ -322,7 +322,7 @@ const ClassicAppLayout = React.forwardRef(
       rightOffset: isMobile ? 0 : placement.insetInlineEnd + effectiveToolsWidth + rightDrawerBarWidth,
       position: finalSplitPanePosition,
       size: splitPanelSize,
-      maxWidth: splitPanelMaxWidth,
+      maxWidth: sideSplitPanelMaxWidth,
       getMaxHeight: getSplitPanelMaxHeight,
       disableContentPaddings,
       contentWidthStyles: contentMaxWidthStyle,
