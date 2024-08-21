@@ -169,7 +169,9 @@ export function AppLayoutToolbarImplementation({
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             {breadcrumbs}
-            {discoveredBreadcrumbs && <InternalBreadcrumbGroup {...discoveredBreadcrumbs} />}
+            {discoveredBreadcrumbs && (
+              <InternalBreadcrumbGroup {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
+            )}
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
