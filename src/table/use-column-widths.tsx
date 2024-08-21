@@ -152,7 +152,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
   // The widths of the dynamically added columns (after the first render) if not set explicitly
   // will default to the DEFAULT_COLUMN_WIDTH.
   useEffect(() => {
-    updateColumnWidths();
+    requestAnimationFrame(() => updateColumnWidths());
 
     if (!resizableColumns) {
       return;
