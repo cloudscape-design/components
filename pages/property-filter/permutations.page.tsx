@@ -10,7 +10,7 @@ import Select from '~components/select';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnDefinitions, filteringProperties, i18nStrings } from './common-props';
+import { columnDefinitions, filteringProperties, i18nStrings, labels } from './common-props';
 import { allItems, TableItem } from './table.data';
 
 const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = columnDefinitions.reduce<
@@ -141,6 +141,7 @@ export default function () {
           permutations={permutations}
           render={permutation => (
             <PropertyFilter
+              {...labels}
               countText={`5 matches`}
               i18nStrings={i18nStrings}
               query={{ tokens: [], operation: 'and' }}
