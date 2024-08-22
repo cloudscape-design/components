@@ -256,6 +256,11 @@ export interface I18nFormatArgTypes {
     "i18nStrings.tokenLimitShowFewer": never;
     "i18nStrings.tokenLimitShowMore": never;
     "i18nStrings.valueText": never;
+    "i18nStrings.formatToken": {
+      "token__operator": string;
+      "token__propertyLabel": string | number;
+      "token__value": string | number;
+    },
     "i18nStrings.removeTokenButtonAriaLabel": {
       "token__operator": string;
       "token__propertyLabel": string | number;
