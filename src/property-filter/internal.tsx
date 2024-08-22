@@ -201,6 +201,10 @@ const PropertyFilterInternal = React.forwardRef(
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
 
+    i18nStrings.formatToken =
+      i18n('i18nStrings.formatToken', rest.i18nStrings?.formatToken, format => token => format(getI18nToken(token))) ??
+      (token => `${token.propertyLabel} ${token.operator} ${token.value}`);
+
     i18nStrings.removeTokenButtonAriaLabel = i18n(
       'i18nStrings.removeTokenButtonAriaLabel',
       rest.i18nStrings?.removeTokenButtonAriaLabel,

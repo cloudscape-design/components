@@ -80,7 +80,7 @@ export const TokenButton = ({
               <TokenTrigger token={formattedToken} allProperties={token.property === null} />
             </span>
           ),
-          ariaLabel: `${formattedToken.propertyLabel} ${formattedToken.operator} ${formattedToken.value}`,
+          ariaLabel: formattedToken.formattedTokenText,
           dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(formattedToken) ?? '',
         },
       ]}
