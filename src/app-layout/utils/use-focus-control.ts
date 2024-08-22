@@ -71,7 +71,7 @@ export function useMultipleFocusControl(
   const setFocus = (params?: { force?: boolean; drawerId?: string }) => {
     const { force = false, drawerId = null } = params || {};
     shouldFocus.current = true;
-    if (force && isOpen) {
+    if (force && isOpen && (!drawerId || activeDrawersIds.includes(drawerId))) {
       doFocus(drawerId);
     }
   };
