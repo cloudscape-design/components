@@ -118,10 +118,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
         const localDrawer = drawers?.find(drawer => drawer.id === drawerId);
         const globalDrawer = globalDrawers?.find(drawer => drawer.id === drawerId);
-        if (localDrawer) {
+        if (localDrawer && activeDrawer?.id !== drawerId) {
           onActiveDrawerChange(drawerId);
         }
-        if (globalDrawer) {
+        if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
           onActiveGlobalDrawersChange(drawerId);
         }
       });
@@ -129,7 +129,14 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       return () => {
         unsubscribe();
       };
-    }, [drawers, globalDrawers, onActiveDrawerChange, onActiveGlobalDrawersChange]);
+    }, [
+      activeDrawer?.id,
+      activeGlobalDrawersIds,
+      drawers,
+      globalDrawers,
+      onActiveDrawerChange,
+      onActiveGlobalDrawersChange,
+    ]);
 
     const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
       controlledSplitPanelOpen,
