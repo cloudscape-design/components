@@ -315,7 +315,28 @@ const permutations = createPermutations<TableProps>([
     variant: [undefined, 'full-page'],
   },
   {
-    columnDefinitions: [PROPERTY_COLUMNS],
+    columnDefinitions: [
+      [
+        {
+          id: 'variable',
+          header: 'Property',
+          cell: item => <Link href="#">{item.name}</Link>,
+          isRowHeader: true,
+          width: 150,
+        },
+        {
+          id: 'type',
+          header: 'Type',
+          cell: item => item.type,
+          width: 150,
+        },
+        {
+          id: 'value',
+          header: 'Value',
+          cell: item => item.value,
+        },
+      ],
+    ],
     items: [
       [
         {
