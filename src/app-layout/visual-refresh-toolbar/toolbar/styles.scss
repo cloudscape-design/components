@@ -93,3 +93,9 @@
     align-items: center;
   }
 }
+
+.separator {
+  block-size: awsui.$line-height-heading-l;
+  inline-size: awsui.$border-divider-section-width;
+  background-color: awsui.$color-border-divider-default;
+}

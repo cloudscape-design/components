@@ -140,25 +140,7 @@ export function DrawerTriggers({
             />
           );
         })}
-        {overflowItems.length > 0 && (
-          <OverflowMenu
-            items={overflowItems}
-            ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
-              <TriggerButton
-                ref={triggerRef}
-                ariaLabel={ariaLabel}
-                ariaExpanded={ariaExpanded}
-                badge={overflowMenuHasBadge}
-                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
-                iconName="ellipsis"
-                onClick={onClick}
-              />
-            )}
-            onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
-          />
-        )}
-        {/* handle overflow later on when requirements are ready */}
+        {!!visibleItems.length && !!globalDrawers.length && <div className={styles.separator} />}
         {globalDrawers.map(item => {
           return (
             <TriggerButton
@@ -179,6 +161,24 @@ export function DrawerTriggers({
             />
           );
         })}
+        {overflowItems.length > 0 && (
+          <OverflowMenu
+            items={overflowItems}
+            ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
+              <TriggerButton
+                ref={triggerRef}
+                ariaLabel={ariaLabel}
+                ariaExpanded={ariaExpanded}
+                badge={overflowMenuHasBadge}
+                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
+                iconName="ellipsis"
+                onClick={onClick}
+              />
+            )}
+            onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
+          />
+        )}
       </div>
     </aside>
   );
