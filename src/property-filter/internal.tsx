@@ -43,10 +43,12 @@ import styles from './styles.css.js';
 
 export interface I18nStringsExt {
   tokenEditorTokenActionsLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveFromGroupLabel?: (token: FormattedToken) => string;
+  tokenEditorTokenRemoveAriaLabel?: (token: FormattedToken) => string;
+  tokenEditorTokenRemoveLabel?: string;
+  tokenEditorTokenRemoveFromGroupLabel?: string;
   tokenEditorAddNewTokenLabel?: string;
   tokenEditorAddTokenActionsLabel?: string;
+  tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
   tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
 }
 

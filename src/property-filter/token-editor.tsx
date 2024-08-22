@@ -158,10 +158,14 @@ export function TokenEditor({
           <InternalButtonDropdown
             variant="normal"
             ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
-            items={standaloneTokens.map((token, index) => ({
-              id: index.toString(),
-              text: i18nStrings.tokenEditorAddExistingTokenLabel?.(getFormattedToken(token, i18nStrings)) ?? '',
-            }))}
+            items={standaloneTokens.map((token, index) => {
+              const formattedToken = getFormattedToken(token, i18nStrings);
+              return {
+                id: index.toString(),
+                text: i18nStrings.tokenEditorAddExistingTokenLabel?.(formattedToken) ?? '',
+                ariaLabel: i18nStrings.tokenEditorAddExistingTokenAriaLabel?.(formattedToken) ?? '',
+              };
+            })}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
               if (!isNaN(index) && standaloneTokens[index]) {
@@ -308,10 +312,11 @@ function TokenEditorFields({
                 <TokenEditorRemoveActions
                   isNarrow={isNarrow}
                   ariaLabel={i18nStrings.tokenEditorTokenActionsLabel?.(token) ?? ''}
+                  mainActionAriaLabel={i18nStrings.tokenEditorTokenRemoveAriaLabel?.(token) ?? ''}
                   disabled={tokens.length === 1}
                   items={[
-                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel?.(token) ?? '' },
-                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel?.(token) ?? '' },
+                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel ?? '' },
+                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
                   ]}
                   onItemClick={itemId => {
                     switch (itemId) {
@@ -363,6 +368,7 @@ function TokenEditorField({
 function TokenEditorRemoveActions({
   isNarrow,
   ariaLabel,
+  mainActionAriaLabel,
   disabled,
   items,
   onItemClick,
@@ -370,6 +376,7 @@ function TokenEditorRemoveActions({
 }: {
   isNarrow: boolean;
   ariaLabel: string;
+  mainActionAriaLabel: string;
   disabled: boolean;
   items: ButtonDropdownProps.Item[];
   onItemClick: (itemId: string) => void;
@@ -382,7 +389,12 @@ function TokenEditorRemoveActions({
       items={items.slice(1)}
       onItemClick={({ detail }) => onItemClick(detail.id)}
       disabled={disabled}
-      mainAction={{ text: items[0].text, onClick: () => onItemClick(items[0].id), disabled }}
+      mainAction={{
+        text: items[0].text,
+        onClick: () => onItemClick(items[0].id),
+        disabled,
+        ariaLabel: mainActionAriaLabel,
+      }}
       className={testUtilStyles['token-editor-token-remove-actions']}
       data-testindex={index}
     />

@@ -15,8 +15,6 @@ import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common-props';
 
-import styles from './token-editor.scss';
-
 const externalProperty = {
   key: '',
   operators: [],
@@ -160,12 +158,10 @@ export default function () {
       <I18nProvider messages={[messages]} locale="en">
         <h1>Property filter editor permutations</h1>
         <ScreenshotArea disableAnimations={true}>
-          <div className={styles['token-editor-container']}>
-            <PermutationsView
-              permutations={tokenPermutations}
-              render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
-            />
-          </div>
+          <PermutationsView
+            permutations={tokenPermutations}
+            render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
+          />
         </ScreenshotArea>
       </I18nProvider>
     </>
