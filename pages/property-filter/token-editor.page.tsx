@@ -7,7 +7,12 @@ import { PropertyFilterProps } from '~components/property-filter/interfaces';
 import PropertyFilterInternal from '~components/property-filter/internal';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnDefinitions, filteringProperties as commonFilteringProperties, i18nStrings } from './common-props';
+import {
+  columnDefinitions,
+  filteringProperties as commonFilteringProperties,
+  i18nStrings,
+  labels,
+} from './common-props';
 
 const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => ({
   key: def.id,
@@ -17,6 +22,7 @@ const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = co
 }));
 
 const commonProps = {
+  ...labels,
   onChange: () => {},
   filteringProperties,
   filteringOptions: [],

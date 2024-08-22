@@ -141,11 +141,14 @@ export const columnDefinitions = [
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
-export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
+export const labels = {
   filteringAriaLabel: 'your choice',
+  filteringPlaceholder: 'Search',
+};
+
+export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
   dismissAriaLabel: 'Dismiss',
 
-  filteringPlaceholder: 'Search',
   groupValuesText: 'Values',
   groupPropertiesText: 'Properties',
   operatorsText: 'Operators',
