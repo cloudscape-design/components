@@ -209,7 +209,7 @@ const InternalButtonDropdown = React.forwardRef(
         : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
       const mainActionAriaLabel = externalIconAriaLabel
         ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
-        : undefined;
+        : mainAction.ariaLabel;
 
       trigger = (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
