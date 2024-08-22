@@ -36,6 +36,7 @@ const Table = React.forwardRef(
         variant,
         wrapLines: props.wrapLines,
         enableKeyboardNavigation: props.enableKeyboardNavigation,
+        totalItemsCount: props.totalItemsCount,
       },
       metadata: {
         expandableRows: !!props.expandableRows,
@@ -47,7 +48,7 @@ const Table = React.forwardRef(
         hasStickyColumns,
         hasFilterSlot: !!props.filter,
         hasPaginationSlot: !!props.pagination,
-        itemCount: props.totalItemsCount ?? items.length,
+        itemsCount: items.length,
       },
     });
 
