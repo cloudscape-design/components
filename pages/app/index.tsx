@@ -5,6 +5,8 @@ import { render } from 'react-dom';
 import { HashRouter, Redirect } from 'react-router-dom';
 import { createHashHistory } from 'history';
 
+import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
 
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
@@ -13,6 +15,7 @@ import IndexPage from './components/index-page';
 import PageView from './components/page-view';
 import StrictModeWrapper from './components/strict-mode-wrapper';
 
+activateAnalyticsMetadata(true);
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
@@ -42,6 +45,10 @@ function isAppLayoutPage(pageId?: string) {
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }
+
+document.addEventListener('mousedown', ({ target }) => {
+  console.log(getGeneratedAnalyticsMetadata(target as HTMLElement));
+});
 
 function App() {
   const {
