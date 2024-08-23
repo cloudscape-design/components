@@ -87,9 +87,16 @@ export function DrawerTriggers({
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId ?? null);
+  const indexOfOverflowItem = getIndexOfOverflowItem();
+
+  const { visibleItems, overflowItems } = splitItems(
+    [...drawers, ...globalDrawers],
+    indexOfOverflowItem,
+    activeDrawerId ?? null
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
+  const globalDrawersStartIndex = drawers.length;
 
   return (
     <aside
@@ -118,7 +125,7 @@ export function DrawerTriggers({
             ref={splitPanelFocusRef}
           />
         )}
-        {visibleItems.map(item => {
+        {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -140,20 +147,21 @@ export function DrawerTriggers({
             />
           );
         })}
-        {!!visibleItems.length && !!globalDrawers.length && <div className={styles.separator} />}
-        {globalDrawers.map(item => {
+        {visibleItems.length > globalDrawersStartIndex && <div className={styles.separator} />}
+        {visibleItems.slice(globalDrawersStartIndex).map(item => {
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
               ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
-              className={clsx(styles['drawers-trigger'], !toolsOnlyMode && testutilStyles['drawers-trigger'])}
+              className={styles['drawers-trigger']}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
               onClick={() => {
                 onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);
               }}
+              // TODO: Implement focus management for multiple drawers
               ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
               selected={activeGlobalDrawersIds.includes(item.id)}
               badge={item.badge}
@@ -165,18 +173,28 @@ export function DrawerTriggers({
           <OverflowMenu
             items={overflowItems}
             ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
-              <TriggerButton
-                ref={triggerRef}
-                ariaLabel={ariaLabel}
-                ariaExpanded={ariaExpanded}
-                badge={overflowMenuHasBadge}
-                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
-                iconName="ellipsis"
-                onClick={onClick}
-              />
-            )}
-            onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
+              return (
+                <TriggerButton
+                  ref={triggerRef}
+                  ariaLabel={ariaLabel}
+                  ariaExpanded={ariaExpanded}
+                  badge={overflowMenuHasBadge}
+                  className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
+                  iconName="ellipsis"
+                  onClick={onClick}
+                />
+              );
+            }}
+            onItemClick={event => {
+              const id = event.detail.id;
+              if (globalDrawers.find(drawer => drawer.id === id)) {
+                onActiveGlobalDrawersChange?.(id);
+              } else {
+                onActiveDrawerChange?.(event.detail.id);
+              }
+            }}
+            globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}
           />
         )}
       </div>
