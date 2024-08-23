@@ -11,7 +11,7 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorBlue300: '#b8e7ff',
   colorBlue400: '#75cfff',
   colorBlue500: '#42b4ff',
-  colorBlue600: '#006ee3',
+  colorBlue600: '#006ce0',
   colorBlue700: '#004a9e',
   colorBlue800: '#002b66',
   colorBlue900: '#001129',
