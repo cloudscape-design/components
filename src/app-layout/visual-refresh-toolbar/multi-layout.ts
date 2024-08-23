@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
-import { Focusable } from '../utils/use-focus-control';
+import { Focusable, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
 interface SharedProps {
@@ -20,8 +20,8 @@ interface SharedProps {
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  drawersFocusControl: FocusControlState;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
-  drawersFocusRef: React.Ref<Focusable> | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
@@ -46,7 +46,7 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
     if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
-      toolbar.drawersFocusRef = props.drawersFocusRef;
+      toolbar.drawersFocusControl = props.drawersFocusControl;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {

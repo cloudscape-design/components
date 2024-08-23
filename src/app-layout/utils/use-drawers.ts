@@ -118,6 +118,7 @@ export function useDrawers(
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {
+    console.log('onActiveDrawerChange useDrawers Fired');
     setActiveDrawerId(newDrawerId);
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });

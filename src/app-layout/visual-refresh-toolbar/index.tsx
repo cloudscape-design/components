@@ -156,17 +156,32 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       displayed: false,
     });
 
-    const drawersFocusControl = useFocusControl(!!activeDrawer?.id);
+    const drawersFocusControl = useFocusControl(!!activeDrawer, true, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
-    useImperativeHandle(forwardRef, () => ({
-      closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
-      openTools: () => onToolsToggle(true),
-      focusToolsClose: () => drawersFocusControl.setFocus(true),
-      focusActiveDrawer: () => drawersFocusControl.setFocus(true),
-      focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
-    }));
+    const useImperativeHandleDependencies = [
+      isMobile,
+      onNavigationToggle,
+      onToolsToggle,
+      drawersFocusControl.refs.close,
+      drawersFocusControl.refs.slider,
+      splitPanelFocusControl.refs.slider,
+    ];
+
+    useImperativeHandle(
+      forwardRef,
+      () => ({
+        closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
+        openTools: () => onToolsToggle(true),
+        focusToolsClose: () => drawersFocusControl.setFocus(true),
+        focusActiveDrawer: () => drawersFocusControl.setFocus(true),
+        focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+        focusSplitPanelClose: () => splitPanelFocusControl.refs.toggle.current?.focus(),
+      }),
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      useImperativeHandleDependencies
+    );
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
@@ -191,8 +206,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerId: activeDrawer?.id ?? null,
       // only pass it down if there are non-empty drawers or tools
       drawers: drawers?.length || !toolsHide ? drawers : undefined,
+      drawersFocusControl,
       onActiveDrawerChange,
-      drawersFocusRef: drawersFocusControl.refs.toggle,
       splitPanel,
       splitPanelToggleProps: {
         ...splitPanelToggleConfig,

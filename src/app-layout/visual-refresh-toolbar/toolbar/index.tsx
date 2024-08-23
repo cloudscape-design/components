@@ -8,7 +8,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
-import { Focusable } from '../../utils/use-focus-control';
+import { Focusable, FocusControlState } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
@@ -39,6 +39,7 @@ export interface ToolbarProps {
   // drawers
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
+  drawersFocusControl?: FocusControlState;
   drawersFocusRef?: React.Ref<Focusable>;
   onActiveDrawerChange?: (drawerId: string | null) => void;
 }
@@ -54,7 +55,7 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     ariaLabels: toolbarProps.ariaLabels ?? legacyProps.ariaLabels,
     activeDrawerId: toolbarProps.activeDrawerId ?? legacyProps.activeDrawer?.id,
     drawers: toolbarProps.drawers ?? legacyProps.drawers,
-    drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
+    drawersFocusControl: toolbarProps.drawersFocusControl ?? legacyProps.drawersFocusControl,
     onActiveDrawerChange: toolbarProps.onActiveDrawerChange ?? legacyProps.onActiveDrawerChange,
     hasNavigation: toolbarProps.hasNavigation ?? !!legacyProps.navigation,
     navigationOpen: toolbarProps.navigationOpen ?? legacyProps.navigationOpen,
@@ -91,7 +92,7 @@ export function AppLayoutToolbarImplementation({
     ariaLabels,
     activeDrawerId,
     drawers,
-    drawersFocusRef,
+    drawersFocusControl,
     onActiveDrawerChange,
     hasNavigation,
     navigationOpen,
@@ -140,7 +141,7 @@ export function AppLayoutToolbarImplementation({
   }, [pinnedToolbar, setToolbarState, toolbarState]);
 
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
-
+  console.log(drawersFocusControl);
   return (
     <ToolbarSlot
       ref={ref}
@@ -179,8 +180,10 @@ export function AppLayoutToolbarImplementation({
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
+              activeDrawerCloseRef={drawersFocusControl?.refs?.close}
+              activeDrawerSliderRef={drawersFocusControl?.refs?.slider}
               drawers={drawers ?? []}
-              drawersFocusRef={drawersFocusRef}
+              drawerToggleRef={drawersFocusControl?.refs?.toggle}
               onActiveDrawerChange={onActiveDrawerChange}
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
