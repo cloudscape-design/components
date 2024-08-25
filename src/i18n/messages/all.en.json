@@ -207,7 +207,7 @@
     "i18nStrings.operatorsText": "Operators",
     "i18nStrings.propertyText": "Property",
     "i18nStrings.removeTokenButtonAriaLabel": "Remove filter, {token__formattedText}",
-    "i18nStrings.tokenEditorTokenActionsAriaLabel": "Filter {token__group__formattedTokens0__formattedText} actions",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "Filter actions, {token__formattedText}",
     "i18nStrings.tokenEditorTokenRemoveAriaLabel": "Remove filter, {token__formattedText}",
     "i18nStrings.tokenEditorTokenRemoveLabel": "Remove filter",
     "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "Remove filter from group",

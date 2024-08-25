@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
-import { I18nStringsExt } from '~components/property-filter/internal';
+import { I18nStringsExt } from '~components/property-filter/i18n-utils';
 
 import {
   DateForm,
@@ -180,16 +180,19 @@ export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
-  removeTokenButtonAriaLabel: token => `Remove token, ${getTokenAriaLabel(token)}`,
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 
-  tokenEditorTokenActionsLabel: token => `Filter remove actions for ${getTokenAriaLabel(token)}`,
-  tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${getTokenAriaLabel(token)}`,
+  formatToken,
+  removeTokenButtonAriaLabel: token => `Remove token, ${formatToken(token)}`,
+
+  groupEditAriaLabel: group => `Edit group with ${group.tokens.length} tokens`,
+  tokenEditorTokenActionsAriaLabel: token => `Filter remove actions for ${formatToken(token)}`,
+  tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${formatToken(token)}`,
   tokenEditorTokenRemoveLabel: 'Remove filter',
   tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
   tokenEditorAddNewTokenLabel: 'Add new filter',
-  tokenEditorAddTokenActionsLabel: 'Add filter actions',
-  tokenEditorAddExistingTokenAriaLabel: token => `Add filter ${getTokenAriaLabel(token)} to group`,
+  tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
+  tokenEditorAddExistingTokenAriaLabel: token => `Add filter ${formatToken(token)} to group`,
   tokenEditorAddExistingTokenLabel: token => `Add filter ${getTokenLabel(token)} to group`,
 };
 
@@ -197,7 +200,7 @@ function getTokenLabel(token: PropertyFilterProps.FormattedToken) {
   return `${token.propertyLabel} ${token.operator} ${token.value}`;
 }
 
-function getTokenAriaLabel(token: PropertyFilterProps.FormattedToken) {
+function formatToken(token: PropertyFilterProps.FormattedToken) {
   return `${token.propertyLabel} ${operatorToLabel(token.operator)} ${token.value}`;
 }
 

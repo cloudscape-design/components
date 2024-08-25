@@ -257,7 +257,7 @@ export interface I18nFormatArgTypes {
       "token__formattedText": string | number;
     }
     "i18nStrings.tokenEditorTokenActionsAriaLabel": {
-      "token__group__formattedTokens0__formattedText": string | number;
+      "token__formattedText": string | number;
     }
     "i18nStrings.tokenEditorTokenRemoveAriaLabel": {
       "token__formattedText": string | number;

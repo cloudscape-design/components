@@ -4,10 +4,10 @@
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { I18nStringsInternal, operatorToDescription } from './i18n-utils';
 import {
   ComparisonOperator,
   GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -133,7 +133,7 @@ interface OptionGroup<T> {
 export const getAllValueSuggestions = (
   filteringOptions: readonly InternalFilteringOption[],
   operator: ComparisonOperator | undefined = '=',
-  i18nStrings: I18nStrings,
+  i18nStrings: I18nStringsInternal,
   customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<AutosuggestProps.Option> = {
@@ -180,7 +180,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteri
 export function getPropertySuggestions<T>(
   filteringProperties: readonly InternalFilteringProperty[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStrings,
+  i18nStrings: I18nStringsInternal,
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
@@ -214,7 +214,7 @@ export const getAutosuggestOptions = (
   filteringProperties: readonly InternalFilteringProperty[],
   filteringOptions: readonly InternalFilteringOption[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStrings
+  i18nStrings: I18nStringsInternal
 ) => {
   switch (parsedText.step) {
     case 'property': {
@@ -276,35 +276,5 @@ export const getAutosuggestOptions = (
         ],
       };
     }
-  }
-};
-
-export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
-  switch (operator) {
-    case '<':
-      return i18nStrings.operatorLessText;
-    case '<=':
-      return i18nStrings.operatorLessOrEqualText;
-    case '>':
-      return i18nStrings.operatorGreaterText;
-    case '>=':
-      return i18nStrings.operatorGreaterOrEqualText;
-    case ':':
-      return i18nStrings.operatorContainsText;
-    case '!:':
-      return i18nStrings.operatorDoesNotContainText;
-    case '=':
-      return i18nStrings.operatorEqualsText;
-    case '!=':
-      return i18nStrings.operatorDoesNotEqualText;
-    case '^':
-      return i18nStrings.operatorStartsWithText;
-    case '!^':
-      return i18nStrings.operatorDoesNotStartWithText;
-    // The line is ignored from coverage because it is not reachable.
-    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
-    /* istanbul ignore next */
-    default:
-      return '';
   }
 };

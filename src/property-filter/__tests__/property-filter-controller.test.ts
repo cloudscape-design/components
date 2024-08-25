@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { getAllowedOperators, getAutosuggestOptions, parseText } from '../controller';
+import { I18nStringsInternal } from '../i18n-utils';
 import {
   ComparisonOperator,
   FilteringProperty,
@@ -11,6 +12,8 @@ import {
   ParsedText,
 } from '../interfaces';
 import { i18nStrings, toInternalProperties } from './common';
+
+const i18nStringsInternal: I18nStringsInternal = i18nStrings as any as I18nStringsInternal;
 
 const filteringProperties = toInternalProperties([
   {
@@ -307,7 +310,7 @@ describe('getAutosuggestOptions', () => {
       filteringProperties,
       filteringOptions,
       customGroupText,
-      i18nStrings
+      i18nStringsInternal
     );
     // Every property suggestion has `keepOpenOnSelect` set on it
     // Default group and custom groups are labeled with corresponding labels
@@ -328,7 +331,7 @@ describe('getAutosuggestOptions', () => {
       filteringProperties,
       filteringOptions,
       customGroupText,
-      i18nStrings
+      i18nStringsInternal
     );
     // Every value suggestion has a `__labelPrefix` of the format `${propertyLabel} =`
     // Default values group and custom values groups are labeled with corresponding labels
@@ -353,7 +356,7 @@ describe('getAutosuggestOptions', () => {
       filteringProperties,
       filteringOptions,
       customGroupText,
-      i18nStrings
+      i18nStringsInternal
     );
     // Operator suggestions go after the property suggestions
     // Every operator suggestion has `keepOpenOnSelect` set on it
@@ -385,7 +388,7 @@ describe('getAutosuggestOptions', () => {
       filteringProperties,
       filteringOptions,
       customGroupText,
-      i18nStrings
+      i18nStringsInternal
     );
     // `filterText` should match `label` property of value suggestions for autosuggest filtering to work
     expect(actual).toEqual(expected);
@@ -415,7 +418,7 @@ describe('getAutosuggestOptions', () => {
       filteringProperties,
       filteringOptions,
       customGroupText,
-      i18nStrings
+      i18nStringsInternal
     );
     expect(actual).toEqual(expected);
   });

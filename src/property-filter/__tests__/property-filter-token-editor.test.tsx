@@ -9,6 +9,7 @@ import DatePicker from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import PropertyFilter from '../../../lib/components/property-filter';
+import { usePropertyFilterI18n } from '../../../lib/components/property-filter/i18n-utils';
 import {
   FilteringOption,
   FilteringProperty,
@@ -331,7 +332,7 @@ const dateProperty: InternalFilteringProperty = {
   externalProperty,
 };
 
-const defaultEditorProps: TokenEditorProps = {
+const defaultEditorProps: Omit<TokenEditorProps, 'i18nStrings'> = {
   supportsGroups: true,
   asyncProps: {},
   customGroupsText: [],
@@ -342,21 +343,6 @@ const defaultEditorProps: TokenEditorProps = {
   },
   filteringProperties: [nameProperty, dateProperty],
   filteringOptions: [],
-  i18nStrings: {
-    editTokenHeader: 'Edit token',
-    propertyText: 'Property',
-    operatorText: 'Operator',
-    valueText: 'Value',
-    cancelActionText: 'Cancel',
-    applyActionText: 'Apply',
-    tokenEditorTokenActionsLabel: token => `Remove actions ${token.propertyLabel} ${token.operator} ${token.value}`,
-    tokenEditorTokenRemoveLabel: () => 'Remove filter',
-    tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
-    tokenEditorAddNewTokenLabel: 'Add new filter',
-    tokenEditorAddTokenActionsLabel: 'Add filter actions',
-    tokenEditorAddExistingTokenLabel: token =>
-      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
-  },
   onSubmit: () => {},
   onDismiss: () => {},
   standaloneTokens: [],
@@ -365,8 +351,30 @@ const defaultEditorProps: TokenEditorProps = {
   onChangeTempGroup: () => {},
 };
 
+function TokenEditorWithI18n(props: Omit<TokenEditorProps, 'i18nStrings'>) {
+  const i18nStringsInternal = usePropertyFilterI18n({
+    editTokenHeader: 'Edit token',
+    propertyText: 'Property',
+    operatorText: 'Operator',
+    valueText: 'Value',
+    cancelActionText: 'Cancel',
+    applyActionText: 'Apply',
+    tokenEditorTokenActionsAriaLabel: token => `Remove actions ${token.propertyLabel} ${token.operator} ${token.value}`,
+    tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${token.propertyLabel} ${token.operator} ${token.value}`,
+    tokenEditorTokenRemoveLabel: 'Remove filter',
+    tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
+    tokenEditorAddNewTokenLabel: 'Add new filter',
+    tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
+    tokenEditorAddExistingTokenAriaLabel: token =>
+      `Add filter ${token.propertyLabel} ${token.operator}(label) ${token.value} to group`,
+    tokenEditorAddExistingTokenLabel: token =>
+      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
+  });
+  return <TokenEditor {...props} i18nStrings={i18nStringsInternal} />;
+}
+
 function renderTokenEditor(props?: Partial<TokenEditorProps>) {
-  const { container } = render(<TokenEditor {...defaultEditorProps} {...props} />);
+  const { container } = render(<TokenEditorWithI18n {...defaultEditorProps} {...props} />);
   return new InternalPropertyFilterEditorDropdownWrapper(container);
 }
 
