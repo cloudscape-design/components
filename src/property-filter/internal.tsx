@@ -24,6 +24,7 @@ import {
   ExtendedOperator,
   FilteringProperty,
   FormattedToken,
+  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -105,7 +106,7 @@ const PropertyFilterInternal = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const i18n = useInternalI18n('property-filter');
-    const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
+    const i18nStrings: I18nStrings & I18nStringsExt = {
       ...rest.i18nStrings,
       allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings?.allPropertiesLabel),
       applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings?.applyActionText),
