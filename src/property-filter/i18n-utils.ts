@@ -17,6 +17,20 @@ export interface FormattedTokenGroup {
   operationLabel: string;
 }
 
+export type I18nStringsOperators = Pick<
+  I18nStrings,
+  | 'operatorLessText'
+  | 'operatorLessOrEqualText'
+  | 'operatorGreaterText'
+  | 'operatorGreaterOrEqualText'
+  | 'operatorContainsText'
+  | 'operatorDoesNotContainText'
+  | 'operatorEqualsText'
+  | 'operatorDoesNotEqualText'
+  | 'operatorStartsWithText'
+  | 'operatorDoesNotStartWithText'
+>;
+
 // Unreleased i18n properties
 export interface I18nStringsExt {
   groupEditAriaLabel?: (group: FormattedTokenGroup) => string;
@@ -202,7 +216,7 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
   };
 }
 
-export function operatorToDescription(operator: ComparisonOperator, i18nStrings: I18nStringsInternal) {
+export function operatorToDescription(operator: ComparisonOperator, i18nStrings: I18nStringsOperators) {
   switch (operator) {
     case '<':
       return i18nStrings.operatorLessText;

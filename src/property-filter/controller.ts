@@ -4,10 +4,11 @@
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { I18nStringsInternal, operatorToDescription } from './i18n-utils';
+import { I18nStringsOperators, operatorToDescription } from './i18n-utils';
 import {
   ComparisonOperator,
   GroupText,
+  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -17,6 +18,9 @@ import {
   Token,
 } from './interfaces';
 import { matchFilteringProperty, matchOperator, matchOperatorPrefix, removeOperator, trimStart } from './utils';
+
+type I18nStringsController = I18nStringsOperators &
+  Pick<I18nStrings, 'operatorsText' | 'groupPropertiesText' | 'groupValuesText'>;
 
 export const getQueryActions = (
   query: Query,
@@ -133,7 +137,7 @@ interface OptionGroup<T> {
 export const getAllValueSuggestions = (
   filteringOptions: readonly InternalFilteringOption[],
   operator: ComparisonOperator | undefined = '=',
-  i18nStrings: I18nStringsInternal,
+  i18nStrings: I18nStringsController,
   customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<AutosuggestProps.Option> = {
@@ -180,7 +184,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteri
 export function getPropertySuggestions<T>(
   filteringProperties: readonly InternalFilteringProperty[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStringsInternal,
+  i18nStrings: I18nStringsController,
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
@@ -214,7 +218,7 @@ export const getAutosuggestOptions = (
   filteringProperties: readonly InternalFilteringProperty[],
   filteringOptions: readonly InternalFilteringOption[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStringsInternal
+  i18nStrings: I18nStringsController
 ) => {
   switch (parsedText.step) {
     case 'property': {
