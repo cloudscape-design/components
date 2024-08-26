@@ -172,9 +172,9 @@ export function useDrawers(
       onGlobalDrawerFocus && onGlobalDrawerFocus();
       setDrawersOpenQueue(oldQueue => oldQueue.filter(id => id !== drawerId));
     } else {
+      onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId);
-      onAddNewActiveDrawer?.(drawerId);
       setDrawersOpenQueue(oldQueue => [drawerId, ...oldQueue]);
     }
   }

@@ -21,7 +21,7 @@ export function computeHorizontalLayout({
   navigationWidth,
   placement,
   minContentWidth,
-  activeDrawerSize,
+  activeDrawerSize: activeLocalDrawerSize,
   splitPanelOpen,
   splitPanelPosition,
   splitPanelSize,
@@ -34,25 +34,29 @@ export function computeHorizontalLayout({
     0,
     placement.inlineSize - minContentWidth - contentPadding - activeNavigationWidth
   );
-  const totalActiveDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
+  const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
-  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH;
+  const splitPanelForcedPosition = resizableSpaceAvailable - activeLocalDrawerSize < SPLIT_PANEL_MIN_WIDTH;
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
-  const maxSplitPanelSize = resizableSpaceAvailable - activeDrawerSize;
+  const maxSplitPanelSize = resizableSpaceAvailable - activeLocalDrawerSize;
   resizableSpaceAvailable -= sideSplitPanelSize;
-  const maxDrawerSize = resizableSpaceAvailable - totalActiveDrawersSize;
+  const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
   const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
     (acc, drawerId) => {
       return {
         ...acc,
         [drawerId]:
-          resizableSpaceAvailable - activeDrawerSize - totalActiveDrawersSize + activeGlobalDrawersSizes[drawerId],
+          resizableSpaceAvailable -
+          activeLocalDrawerSize -
+          totalActiveGlobalDrawersSize +
+          activeGlobalDrawersSizes[drawerId],
       };
     },
     {}
   );
-  const remainingSpaceForDrawers = resizableSpaceAvailable - totalActiveDrawersSize - activeDrawerSize;
+
+  const totalActiveDrawersSize = totalActiveGlobalDrawersSize + activeLocalDrawerSize;
 
   return {
     splitPanelPosition: resolvedSplitPanelPosition,
@@ -61,7 +65,7 @@ export function computeHorizontalLayout({
     maxSplitPanelSize,
     maxDrawerSize,
     maxGlobalDrawersSizes,
-    remainingSpaceForDrawers,
+    totalActiveDrawersSize,
     resizableSpaceAvailable,
   };
 }
