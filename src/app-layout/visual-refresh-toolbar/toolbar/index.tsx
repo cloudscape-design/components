@@ -144,7 +144,7 @@ export function AppLayoutToolbarImplementation({
   return (
     <ToolbarSlot
       ref={ref}
-      className={clsx(styles['universal-toolbar'], {
+      className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
         [testutilStyles['mobile-bar']]: isMobile,
         [styles['toolbar-hidden']]: toolbarHidden,
       })}

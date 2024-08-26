@@ -13,14 +13,14 @@ import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/a
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
-import appLayoutToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
+import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
 function findToolbar(wrapper: AppLayoutWrapper) {
-  return wrapper.findByClassName(appLayoutToolbarStyles['universal-toolbar']);
+  return wrapper.findByClassName(testUtilStyles.toolbar);
 }
 
 function findAllToolbars() {
-  return createWrapper().findAllByClassName(appLayoutToolbarStyles['universal-toolbar']);
+  return createWrapper().findAllByClassName(testUtilStyles.toolbar);
 }
 
 function delay() {
