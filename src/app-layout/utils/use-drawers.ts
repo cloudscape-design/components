@@ -115,9 +115,12 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
   return drawers;
 }
 
+export const MIN_DRAWER_SIZE = 290;
+
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
   onGlobalDrawerFocus?: (drawerId?: string) => void;
+  onAddNewActiveDrawer?: (drawerId: string) => void;
 };
 
 export function useDrawers(
@@ -126,6 +129,7 @@ export function useDrawers(
     activeDrawerId: controlledActiveDrawerId,
     onDrawerChange,
     onGlobalDrawerFocus,
+    onAddNewActiveDrawer,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
@@ -138,6 +142,8 @@ export function useDrawers(
   });
   const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
+  // first in last out
+  const [drawersOpenQueue, setDrawersOpenQueue] = useState<Array<string>>([]);
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
@@ -146,10 +152,17 @@ export function useDrawers(
 
   function onActiveDrawerChange(newDrawerId: string | null) {
     setActiveDrawerId(newDrawerId);
+    newDrawerId && onAddNewActiveDrawer?.(newDrawerId);
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
     } else if (!toolsProps.toolsHide) {
       toolsProps.onToolsToggle(newDrawerId === TOOLS_DRAWER_ID);
+    }
+
+    if (newDrawerId) {
+      setDrawersOpenQueue(oldQueue => [newDrawerId, ...oldQueue]);
+    } else if (activeDrawerId) {
+      setDrawersOpenQueue(oldQueue => oldQueue.filter(id => id !== activeDrawerId));
     }
   }
 
@@ -157,9 +170,12 @@ export function useDrawers(
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus && onGlobalDrawerFocus();
+      setDrawersOpenQueue(oldQueue => oldQueue.filter(id => id !== drawerId));
     } else {
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId);
+      onAddNewActiveDrawer?.(drawerId);
+      setDrawersOpenQueue(oldQueue => [drawerId, ...oldQueue]);
     }
   }
 
@@ -190,12 +206,13 @@ export function useDrawers(
       const currentGlobalDrawer = combinedGlobalDrawers.find(drawer => drawer.id === currentGlobalDrawerId);
       return {
         ...acc,
-        [currentGlobalDrawerId]: drawerSizes[currentGlobalDrawerId] ?? currentGlobalDrawer?.defaultSize ?? 290,
+        [currentGlobalDrawerId]:
+          drawerSizes[currentGlobalDrawerId] ?? currentGlobalDrawer?.defaultSize ?? MIN_DRAWER_SIZE,
       };
     },
     {}
   );
-  const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? 290, 290);
+  const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
@@ -208,6 +225,8 @@ export function useDrawers(
     activeGlobalDrawersSizes,
     activeDrawerSize,
     minDrawerSize,
+    drawerSizes,
+    drawersOpenQueue,
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,

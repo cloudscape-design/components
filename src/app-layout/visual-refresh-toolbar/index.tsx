@@ -14,7 +14,7 @@ import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
-import { useDrawers } from '../utils/use-drawers';
+import { MIN_DRAWER_SIZE, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
@@ -92,6 +92,52 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       globalDrawersFocusControl.setFocus({ force: true, drawerId });
     };
 
+    const onAddNewActiveDrawer = (drawerId: string) => {
+      if (activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) {
+        return;
+      }
+
+      // get the size of drawerId. it could be either local or global drawer
+      const combinedDrawers = [...(drawers || []), ...globalDrawers];
+      const newDrawer = combinedDrawers.find(drawer => drawer.id === drawerId);
+      if (!newDrawer) {
+        return;
+      }
+      // const newDrawerSize = drawerSizes[drawerId] ?? newDrawer.defaultSize ?? MIN_DRAWER_SIZE;
+      const newDrawerSize = drawerSizes[drawerId] ?? newDrawer.defaultSize ?? MIN_DRAWER_SIZE;
+      // check if we have enough space for this drawer (remainingSpaceForDrawers). if yes, do nothing
+      if (remainingSpaceForDrawers >= newDrawerSize) {
+        return;
+      }
+      //   check if the active drawers could be resized to fit the new drawers
+      //   to do this, we need to take all active drawers, sum up their min sizes, truncate it from remainingSpaceForDrawers
+      //   and compare a given number with the new drawer id min size
+
+      // the total size of all global drawers resized to their min size
+      let drawersTotalMinSize = 0;
+      drawersTotalMinSize += activeGlobalDrawersIds
+        .map(
+          activeDrawerId => combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE
+        )
+        .reduce((acc, curr) => acc + curr, 0);
+      if (activeDrawer) {
+        drawersTotalMinSize += activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE;
+      }
+
+      const availableSpaceForNewDrawer = resizableSpaceAvailable - drawersTotalMinSize;
+      if (availableSpaceForNewDrawer >= newDrawerSize) {
+        return;
+      }
+
+      // now we made sure we cannot accommodate the new drawer with existing ones
+      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      if (drawers?.find(drawer => drawer.id === drawerToClose)) {
+        onActiveDrawerChange(null);
+      } else {
+        onActiveGlobalDrawersChange(drawerToClose);
+      }
+    };
+
     const {
       drawers,
       activeDrawer,
@@ -102,10 +148,12 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawers,
       activeGlobalDrawersIds,
       activeGlobalDrawersSizes,
+      drawerSizes,
+      drawersOpenQueue,
       onActiveDrawerChange,
       onActiveDrawerResize,
       onActiveGlobalDrawersChange,
-    } = useDrawers({ ...rest, onGlobalDrawerFocus }, ariaLabels, {
+    } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
       ariaLabels,
       toolsHide,
       toolsOpen,
@@ -204,18 +252,25 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }));
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
-    const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition, maxGlobalDrawersSizes } =
-      computeHorizontalLayout({
-        activeDrawerSize,
-        splitPanelSize,
-        minContentWidth,
-        navigationOpen: !!resolvedNavigation && navigationOpen,
-        navigationWidth,
-        placement,
-        splitPanelOpen,
-        splitPanelPosition: splitPanelPreferences?.position,
-        activeGlobalDrawersSizes,
-      });
+    const {
+      maxDrawerSize,
+      maxSplitPanelSize,
+      splitPanelForcedPosition,
+      splitPanelPosition,
+      maxGlobalDrawersSizes,
+      remainingSpaceForDrawers,
+      resizableSpaceAvailable,
+    } = computeHorizontalLayout({
+      activeDrawerSize,
+      splitPanelSize,
+      minContentWidth,
+      navigationOpen: !!resolvedNavigation && navigationOpen,
+      navigationWidth,
+      placement,
+      splitPanelOpen,
+      splitPanelPosition: splitPanelPreferences?.position,
+      activeGlobalDrawersSizes,
+    });
 
     const { registered, toolbarProps } = useMultiAppLayout({
       forceDeduplicationType,

@@ -52,6 +52,7 @@ export function computeHorizontalLayout({
     },
     {}
   );
+  const remainingSpaceForDrawers = resizableSpaceAvailable - totalActiveDrawersSize - activeDrawerSize;
 
   return {
     splitPanelPosition: resolvedSplitPanelPosition,
@@ -60,6 +61,8 @@ export function computeHorizontalLayout({
     maxSplitPanelSize,
     maxDrawerSize,
     maxGlobalDrawersSizes,
+    remainingSpaceForDrawers,
+    resizableSpaceAvailable,
   };
 }
 
