@@ -151,6 +151,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneTextActive: { light: '{colorGrey600}', dark: '{colorGrey900}' },
   colorDropzoneTextHover: { light: '{colorBlue900}', dark: '{colorWhite}' },
   colorBackgroundDropdownItemHover: { light: '{colorGrey150}', dark: '{colorGrey650}' },
+  colorTextSeverityMedium: { light: '{colorBlack}', dark: '{colorGrey900}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
