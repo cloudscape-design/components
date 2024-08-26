@@ -26,16 +26,15 @@ import {
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalQuery,
+  InternalToken,
   ParsedText,
   PropertyFilterProps,
   Ref,
-  Token,
 } from './interfaces';
 import { PropertyEditor } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
-import { matchTokenValue } from './utils';
 
 import styles from './styles.css.js';
 
@@ -95,11 +94,6 @@ const PropertyFilterInternal = React.forwardRef(
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const showResults = !!query.tokens?.length && !disabled && !!countText;
-    const { addToken, removeToken, setToken, setOperation, removeAllTokens } = getQueryActions(
-      query,
-      onChange,
-      inputRef
-    );
     const [filteringText, setFilteringText] = useState<string>('');
 
     const { internalProperties, internalOptions, internalQuery, internalFreeText } = (() => {
@@ -149,6 +143,12 @@ const PropertyFilterInternal = React.forwardRef(
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
 
+    const { addToken, updateToken, updateOperation, removeToken, removeAllTokens } = getQueryActions({
+      query: internalQuery,
+      filteringOptions: internalOptions,
+      onChange,
+    });
+
     const parsedText = parseText(filteringText, internalProperties, internalFreeText);
     const autosuggestOptions = getAutosuggestOptions(
       parsedText,
@@ -160,21 +160,19 @@ const PropertyFilterInternal = React.forwardRef(
 
     const createToken = (currentText: string) => {
       const parsedText = parseText(currentText, internalProperties, internalFreeText);
-      let newToken: Token;
+      let newToken: InternalToken;
       switch (parsedText.step) {
         case 'property': {
-          newToken = matchTokenValue(
-            {
-              property: parsedText.property,
-              operator: parsedText.operator,
-              value: parsedText.value,
-            },
-            internalOptions
-          );
+          newToken = {
+            property: parsedText.property,
+            operator: parsedText.operator,
+            value: parsedText.value,
+          };
           break;
         }
         case 'free-text': {
           newToken = {
+            property: null,
             operator: parsedText.operator || internalFreeText.defaultOperator,
             value: parsedText.value,
           };
@@ -182,6 +180,7 @@ const PropertyFilterInternal = React.forwardRef(
         }
         case 'operator': {
           newToken = {
+            property: null,
             operator: internalFreeText.defaultOperator,
             value: currentText,
           };
@@ -342,17 +341,21 @@ const PropertyFilterInternal = React.forwardRef(
                 items={internalQuery.tokens}
                 limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
                 limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
-                renderItem={(token, tokenIndex) => (
+                renderItem={(_, tokenIndex) => (
                   <TokenButton
-                    token={token}
-                    first={tokenIndex === 0}
-                    operation={internalQuery.operation}
-                    removeToken={() => {
+                    query={internalQuery}
+                    tokenIndex={tokenIndex}
+                    onUpdateToken={token => {
+                      updateToken(tokenIndex, token);
+                    }}
+                    onUpdateOperation={operation => {
+                      updateOperation(operation);
+                    }}
+                    onRemoveToken={() => {
                       removeToken(tokenIndex);
+                      inputRef.current?.focus({ preventDropdown: true });
                       setRemovedTokenIndex(tokenIndex);
                     }}
-                    setToken={(newToken: Token) => setToken(tokenIndex, newToken)}
-                    setOperation={setOperation}
                     filteringProperties={internalProperties}
                     filteringOptions={internalOptions}
                     asyncProps={asyncProps}
@@ -377,7 +380,10 @@ const PropertyFilterInternal = React.forwardRef(
                   ) : (
                     <InternalButton
                       formAction="none"
-                      onClick={removeAllTokens}
+                      onClick={() => {
+                        removeAllTokens();
+                        inputRef.current?.focus({ preventDropdown: true });
+                      }}
                       className={styles['remove-all']}
                       disabled={disabled}
                     >

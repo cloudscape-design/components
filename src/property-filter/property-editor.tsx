@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
 import { I18nStringsInternal } from './i18n-utils';
-import { ComparisonOperator, ExtendedOperatorForm, InternalFilteringProperty, Token } from './interfaces';
+import { ComparisonOperator, ExtendedOperatorForm, InternalFilteringProperty, InternalToken } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -16,7 +16,7 @@ interface PropertyEditorProps<TokenValue> {
   filter: string;
   operatorForm: ExtendedOperatorForm<TokenValue>;
   onCancel: () => void;
-  onSubmit: (value: Token) => void;
+  onSubmit: (value: InternalToken) => void;
   i18nStrings: I18nStringsInternal;
 }
 
@@ -30,7 +30,7 @@ export function PropertyEditor<TokenValue = any>({
   i18nStrings,
 }: PropertyEditorProps<TokenValue>) {
   const [value, onChange] = useState<null | TokenValue>(null);
-  const submitToken = () => onSubmit({ propertyKey: property.propertyKey, operator, value });
+  const submitToken = () => onSubmit({ property, operator, value });
   return (
     <div className={styles['property-editor']}>
       <div className={styles['property-editor-form']}>
