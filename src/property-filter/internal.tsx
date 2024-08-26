@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
 
 import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
@@ -18,12 +17,11 @@ import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
-import { getI18nToken } from './i18n-utils';
+import { I18nStringsExt, usePropertyFilterI18n } from './i18n-utils';
 import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
-  FormattedToken,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -40,15 +38,6 @@ import { useLoadItems } from './use-load-items';
 import { matchTokenValue } from './utils';
 
 import styles from './styles.css.js';
-
-export interface I18nStringsExt {
-  tokenEditorTokenActionsLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveFromGroupLabel?: (token: FormattedToken) => string;
-  tokenEditorAddNewTokenLabel?: string;
-  tokenEditorAddTokenActionsLabel?: string;
-  tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
-}
 
 export type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
@@ -102,48 +91,7 @@ const PropertyFilterInternal = React.forwardRef(
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
-    const i18n = useInternalI18n('property-filter');
-    const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
-      ...rest.i18nStrings,
-      allPropertiesLabel: i18n('i18nStrings.allPropertiesLabel', rest.i18nStrings?.allPropertiesLabel),
-      applyActionText: i18n('i18nStrings.applyActionText', rest.i18nStrings?.applyActionText),
-      cancelActionText: i18n('i18nStrings.cancelActionText', rest.i18nStrings?.cancelActionText),
-      clearFiltersText: i18n('i18nStrings.clearFiltersText', rest.i18nStrings?.clearFiltersText),
-      editTokenHeader: i18n('i18nStrings.editTokenHeader', rest.i18nStrings?.editTokenHeader),
-      groupPropertiesText: i18n('i18nStrings.groupPropertiesText', rest.i18nStrings?.groupPropertiesText),
-      groupValuesText: i18n('i18nStrings.groupValuesText', rest.i18nStrings?.groupValuesText),
-      operationAndText: i18n('i18nStrings.operationAndText', rest.i18nStrings?.operationAndText),
-      operationOrText: i18n('i18nStrings.operationOrText', rest.i18nStrings?.operationOrText),
-      operatorContainsText: i18n('i18nStrings.operatorContainsText', rest.i18nStrings?.operatorContainsText),
-      operatorDoesNotContainText: i18n(
-        'i18nStrings.operatorDoesNotContainText',
-        rest.i18nStrings?.operatorDoesNotContainText
-      ),
-      operatorDoesNotEqualText: i18n(
-        'i18nStrings.operatorDoesNotEqualText',
-        rest.i18nStrings?.operatorDoesNotEqualText
-      ),
-      operatorEqualsText: i18n('i18nStrings.operatorEqualsText', rest.i18nStrings?.operatorEqualsText),
-      operatorGreaterOrEqualText: i18n(
-        'i18nStrings.operatorGreaterOrEqualText',
-        rest.i18nStrings?.operatorGreaterOrEqualText
-      ),
-      operatorGreaterText: i18n('i18nStrings.operatorGreaterText', rest.i18nStrings?.operatorGreaterText),
-      operatorLessOrEqualText: i18n('i18nStrings.operatorLessOrEqualText', rest.i18nStrings?.operatorLessOrEqualText),
-      operatorLessText: i18n('i18nStrings.operatorLessText', rest.i18nStrings?.operatorLessText),
-      operatorStartsWithText: i18n('i18nStrings.operatorStartsWithText', rest.i18nStrings?.operatorStartsWithText),
-      operatorDoesNotStartWithText: i18n(
-        'i18nStrings.operatorDoesNotStartWithText',
-        rest.i18nStrings?.operatorDoesNotStartWithText
-      ),
-      operatorText: i18n('i18nStrings.operatorText', rest.i18nStrings?.operatorText),
-      operatorsText: i18n('i18nStrings.operatorsText', rest.i18nStrings?.operatorsText),
-      propertyText: i18n('i18nStrings.propertyText', rest.i18nStrings?.propertyText),
-      tokenLimitShowFewer: i18n('i18nStrings.tokenLimitShowFewer', rest.i18nStrings?.tokenLimitShowFewer),
-      tokenLimitShowMore: i18n('i18nStrings.tokenLimitShowMore', rest.i18nStrings?.tokenLimitShowMore),
-      valueText: i18n('i18nStrings.valueText', rest.i18nStrings?.valueText),
-      ...i18nStringsExt,
-    };
+    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsExt });
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const showResults = !!query.tokens?.length && !disabled && !!countText;
@@ -200,16 +148,6 @@ const PropertyFilterInternal = React.forwardRef(
 
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
-
-    i18nStrings.formatToken =
-      i18n('i18nStrings.formatToken', rest.i18nStrings?.formatToken, format => token => format(getI18nToken(token))) ??
-      (token => `${token.propertyLabel} ${token.operator} ${token.value}`);
-
-    i18nStrings.removeTokenButtonAriaLabel = i18n(
-      'i18nStrings.removeTokenButtonAriaLabel',
-      rest.i18nStrings?.removeTokenButtonAriaLabel,
-      format => token => format(getI18nToken(token))
-    );
 
     const parsedText = parseText(filteringText, internalProperties, internalFreeText);
     const autosuggestOptions = getAutosuggestOptions(

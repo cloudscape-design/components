@@ -8,11 +8,11 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';
-import { getAllowedOperators, getPropertySuggestions, operatorToDescription } from './controller.js';
+import { getAllowedOperators, getPropertySuggestions } from './controller.js';
+import { I18nStringsInternal, operatorToDescription } from './i18n-utils.js';
 import {
   ComparisonOperator,
   GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -25,7 +25,7 @@ interface PropertyInputProps {
   customGroupsText: readonly GroupText[];
   freeTextFiltering: InternalFreeTextFiltering;
   filteringProperties: readonly InternalFilteringProperty[];
-  i18nStrings: I18nStrings;
+  i18nStrings: I18nStringsInternal;
   onChangePropertyKey: (propertyKey: undefined | string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   property: null | InternalFilteringProperty;
@@ -79,7 +79,7 @@ export function PropertyInput({
 }
 
 interface OperatorInputProps {
-  i18nStrings: I18nStrings;
+  i18nStrings: I18nStringsInternal;
   onChangeOperator: (operator: ComparisonOperator) => void;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
@@ -121,7 +121,7 @@ export function OperatorInput({
 interface ValueInputProps {
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
-  i18nStrings: I18nStrings;
+  i18nStrings: I18nStringsInternal;
   onChangeValue: (value: string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operator: undefined | ComparisonOperator;
