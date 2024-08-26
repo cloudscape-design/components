@@ -46,6 +46,7 @@ interface AnalyticsFunnelProps {
   funnelIdentifier?: AnalyticsMetadata['instanceIdentifier'];
   funnelFlowType?: AnalyticsMetadata['flowType'];
   funnelErrorContext?: AnalyticsMetadata['errorContext'];
+  funnelResourceType?: AnalyticsMetadata['resourceType'];
 }
 
 export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {

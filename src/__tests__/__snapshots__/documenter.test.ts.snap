@@ -550,6 +550,32 @@ to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`
       "type": "null | string",
     },
     Object {
+      "analyticsTag": "",
+      "description": "Specifies additional analytics-related metadata.
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`flowType\` -  Identifies the type of flow represented by the component.
+**Note:** This API is currently experimental.",
+      "inlineType": Object {
+        "name": "AppLayoutProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AppLayoutProps.AnalyticsMetadata",
+    },
+    Object {
       "description": "Aria labels for the drawer operating buttons. Use this property to ensure accessibility.
 * \`navigation\` (string) - Label for the landmark that wraps the navigation drawer.
 * \`navigationClose\` (string) - Label for the button that closes the navigation drawer.
@@ -7668,7 +7694,8 @@ Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
-* \`flowType\` - Identifies the type of flow represented by the component.",
+* \`flowType\` - Identifies the type of flow represented by the component.
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
       "inlineType": Object {
         "name": "FormProps.AnalyticsMetadata",
         "properties": Array [
@@ -7679,6 +7706,11 @@ Object {
           },
           Object {
             "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "resourceType",
             "optional": true,
             "type": "string",
           },
@@ -17883,7 +17915,8 @@ Defaults to \`false\`.
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
-* \`flowType\` - Identifies the type of flow represented by the component.",
+* \`flowType\` - Identifies the type of flow represented by the component.
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
       "inlineType": Object {
         "name": "WizardProps.AnalyticsMetadata",
         "properties": Array [
@@ -17894,6 +17927,11 @@ Defaults to \`false\`.
           },
           Object {
             "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "resourceType",
             "optional": true,
             "type": "string",
           },
