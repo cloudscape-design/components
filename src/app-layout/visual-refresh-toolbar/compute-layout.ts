@@ -21,7 +21,7 @@ export function computeHorizontalLayout({
   navigationWidth,
   placement,
   minContentWidth,
-  activeDrawerSize: activeLocalDrawerSize,
+  activeDrawerSize,
   splitPanelOpen,
   splitPanelPosition,
   splitPanelSize,
@@ -36,10 +36,10 @@ export function computeHorizontalLayout({
   );
   const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
-  const splitPanelForcedPosition = resizableSpaceAvailable - activeLocalDrawerSize < SPLIT_PANEL_MIN_WIDTH;
+  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH;
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
-  const maxSplitPanelSize = resizableSpaceAvailable - activeLocalDrawerSize;
+  const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
   resizableSpaceAvailable -= sideSplitPanelSize;
   const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
   const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
@@ -48,15 +48,13 @@ export function computeHorizontalLayout({
         ...acc,
         [drawerId]:
           resizableSpaceAvailable -
-          activeLocalDrawerSize -
+          activeDrawerSize -
           totalActiveGlobalDrawersSize +
           activeGlobalDrawersSizes[drawerId],
       };
     },
     {}
   );
-
-  const totalActiveDrawersSize = totalActiveGlobalDrawersSize + activeLocalDrawerSize;
 
   return {
     splitPanelPosition: resolvedSplitPanelPosition,
@@ -65,7 +63,7 @@ export function computeHorizontalLayout({
     maxSplitPanelSize,
     maxDrawerSize,
     maxGlobalDrawersSizes,
-    totalActiveDrawersSize,
+    totalActiveGlobalDrawersSize,
     resizableSpaceAvailable,
   };
 }

@@ -93,19 +93,24 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     };
 
     const onAddNewActiveDrawer = (drawerId: string) => {
+      // If a local drawer is already open, and we attempt to open a new one,
+      // it will replace the existing one instead of opening an additional drawer,
+      // since only one local drawer is supported. Therefore, layout calculations are not necessary.
       if (activeDrawer && drawers?.find(drawer => drawer.id === drawerId)) {
         return;
       }
-
       // get the size of drawerId. it could be either local or global drawer
       const combinedDrawers = [...(drawers || []), ...globalDrawers];
       const newDrawer = combinedDrawers.find(drawer => drawer.id === drawerId);
       if (!newDrawer) {
         return;
       }
-      const newDrawerSize = newDrawer.defaultSize ?? drawerSizes[drawerId] ?? MIN_DRAWER_SIZE;
+      const newDrawerSize = Math.min(
+        newDrawer.defaultSize ?? drawerSizes[drawerId] ?? MIN_DRAWER_SIZE,
+        MIN_DRAWER_SIZE
+      );
       // check if we have enough space for this drawer. if yes, do nothing
-      if (resizableSpaceAvailable - totalActiveDrawersSize >= newDrawerSize) {
+      if (resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize >= newDrawerSize) {
         return;
       }
       //   check if the active drawers could be resized to fit the new drawers
@@ -119,7 +124,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         )
         .reduce((acc, curr) => acc + curr, 0);
       if (activeDrawer) {
-        totalActiveDrawersMinSize += activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE;
+        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
       }
 
       const availableSpaceForNewDrawer = resizableSpaceAvailable - totalActiveDrawersMinSize;
@@ -256,7 +261,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelForcedPosition,
       splitPanelPosition,
       maxGlobalDrawersSizes,
-      totalActiveDrawersSize,
+      totalActiveGlobalDrawersSize,
       resizableSpaceAvailable,
     } = computeHorizontalLayout({
       activeDrawerSize,
