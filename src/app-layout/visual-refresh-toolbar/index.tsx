@@ -170,7 +170,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
-      activeDrawerSize,
+      activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
       minContentWidth,
       navigationOpen: !!resolvedNavigation && navigationOpen,
