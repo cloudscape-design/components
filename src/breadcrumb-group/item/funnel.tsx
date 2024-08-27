@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
 
+import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface FunnelBreadcrumbItemProps {
@@ -21,7 +22,11 @@ export const FunnelBreadcrumbItem = React.forwardRef<HTMLSpanElement, FunnelBrea
     }
 
     return (
-      <span {...funnelAttributes} className={clsx(styles.text, hidden && styles['text-hidden'])} ref={ref}>
+      <span
+        {...funnelAttributes}
+        className={clsx(styles.text, hidden && styles['text-hidden'], analyticsSelectors['breadcrumb-item'])}
+        ref={ref}
+      >
         {text}
       </span>
     );

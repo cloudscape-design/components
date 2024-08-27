@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { ButtonProps } from '../button/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -22,6 +24,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute.
+   * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
    *
    * ### action
    *
@@ -142,6 +145,7 @@ export namespace ButtonDropdownProps {
     itemType?: ItemType;
     id: string;
     text: string;
+    ariaLabel?: string;
     lang?: string;
     disabled?: boolean;
     disabledReason?: string;
@@ -229,6 +233,7 @@ export interface ItemListProps extends HighlightProps {
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
   position?: string;
+  analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -246,6 +251,7 @@ export interface ItemProps {
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];
   position?: string;
+  analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {
@@ -282,6 +288,7 @@ export interface InternalButtonDropdownProps
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+  analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
 }
 
 export interface CustomTriggerProps {

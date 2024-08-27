@@ -153,7 +153,7 @@ export function AppLayoutToolbarImplementation({
   return (
     <ToolbarSlot
       ref={ref}
-      className={clsx(styles['universal-toolbar'], {
+      className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
         [testutilStyles['mobile-bar']]: isMobile,
         [styles['toolbar-hidden']]: toolbarHidden,
       })}
@@ -178,7 +178,9 @@ export function AppLayoutToolbarImplementation({
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             {breadcrumbs}
-            {discoveredBreadcrumbs && <InternalBreadcrumbGroup {...discoveredBreadcrumbs} />}
+            {discoveredBreadcrumbs && (
+              <InternalBreadcrumbGroup {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
+            )}
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (

@@ -276,6 +276,8 @@ export namespace PropertyFilterProps {
     applyActionText?: string;
     allPropertiesLabel?: string;
 
+    formatToken?: (token: FormattedToken) => string;
+
     tokenLimitShowMore?: string;
     tokenLimitShowFewer?: string;
     clearFiltersText?: string;

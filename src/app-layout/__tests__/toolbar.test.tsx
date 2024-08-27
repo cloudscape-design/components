@@ -9,10 +9,10 @@ import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
-import appLayoutToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
+import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
 function findToolbar(wrapper: AppLayoutWrapper) {
-  return wrapper.findByClassName(appLayoutToolbarStyles['universal-toolbar'])?.getElement();
+  return wrapper.findByClassName(testUtilStyles.toolbar)?.getElement();
 }
 
 // no-op function to suppress controllability warnings

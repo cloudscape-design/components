@@ -5,7 +5,8 @@ import React, { useState } from 'react';
 
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
-import { ComparisonOperator, ExtendedOperatorForm, I18nStrings, InternalFilteringProperty, Token } from './interfaces';
+import { I18nStringsInternal } from './i18n-utils';
+import { ComparisonOperator, ExtendedOperatorForm, InternalFilteringProperty, Token } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -16,7 +17,7 @@ interface PropertyEditorProps<TokenValue> {
   operatorForm: ExtendedOperatorForm<TokenValue>;
   onCancel: () => void;
   onSubmit: (value: Token) => void;
-  i18nStrings: I18nStrings;
+  i18nStrings: I18nStringsInternal;
 }
 
 export function PropertyEditor<TokenValue = any>({

@@ -49,6 +49,7 @@ const InternalButtonDropdown = React.forwardRef(
       preferCenter,
       mainAction,
       __internalRootRef,
+      analyticsMetadataTransformer,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -187,7 +188,7 @@ const InternalButtonDropdown = React.forwardRef(
 
     if (customTriggerBuilder) {
       trigger = (
-        <div className={styles['dropdown-trigger']}>
+        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
             ariaExpanded: canBeOpened && isOpen,
@@ -208,7 +209,7 @@ const InternalButtonDropdown = React.forwardRef(
         : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
       const mainActionAriaLabel = externalIconAriaLabel
         ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
-        : undefined;
+        : mainAction.ariaLabel;
 
       trigger = (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
@@ -350,6 +351,7 @@ const InternalButtonDropdown = React.forwardRef(
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
               variant={variant}
+              analyticsMetadataTransformer={analyticsMetadataTransformer}
             />
           </OptionsList>
         </Dropdown>

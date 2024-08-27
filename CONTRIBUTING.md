@@ -162,6 +162,12 @@ npx jest -c jest.motion.config.js src/flashbar
 npx jest -c jest.build-tools.config.js build-tools/stylelint
 ```
 
+Note: when running jest directly you may see errors about `--experimental-vm-modules`, to fix this you can set this NodeJS flag as follows:
+
+```
+export NODE_OPTIONS="$NODE_OPTIONS --experimental-vm-modules"
+```
+
 ### Run visual regression tests
 
 Visual regression tests for the permutation pages are automatically run when opening a pull request in GitHub.

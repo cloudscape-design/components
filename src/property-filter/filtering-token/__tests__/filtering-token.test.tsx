@@ -43,6 +43,7 @@ const defaultProps: FilteringTokenProps = {
   editorDismissAriaLabel: 'dismiss editor',
   editorExpandToViewport: false,
   hasGroups: false,
+  popoverSize: 'content',
 };
 
 function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper {

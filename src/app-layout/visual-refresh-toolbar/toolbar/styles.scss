@@ -13,6 +13,8 @@
   box-sizing: border-box;
   padding-block: 0;
   padding-inline: awsui.$space-m;
+  //right padding set in child trigger-container below for focus indicator to show correctly
+  padding-inline-end: 0;
   position: sticky;
   z-index: 840;
   @include styles.with-motion {
@@ -53,13 +55,18 @@
       column-gap: awsui.$space-static-xs;
       display: flex;
       justify-content: flex-end;
+      block-size: 100%;
     }
   }
 }
 
-.drawers-desktop-triggers-container {
+.drawers-desktop-triggers-container,
+.drawers-mobile-triggers-container {
   @include styles.styles-reset;
   background-color: transparent;
+  padding-inline: 0;
+  //matches the left padding of .universal-toolbar but allows for focus indicator to show correctly
+  padding-inline-end: awsui.$space-m;
   box-sizing: border-box;
   overflow-y: hidden;
   overflow-x: hidden;
@@ -71,6 +78,7 @@
 }
 
 .drawers-trigger-content {
+  block-size: 100%;
   align-items: center;
   display: flex;
   flex-direction: row;

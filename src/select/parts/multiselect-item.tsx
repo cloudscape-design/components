@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
-import clsx from 'clsx';
 
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
@@ -49,9 +48,7 @@ const MultiSelectItem = (
       : '';
   const isDisabledWithReason = !!disabledReason;
   const internalRef = useRef<HTMLDivElement>(null);
-  const className = clsx(styles.item, {
-    [styles.disabled]: disabled,
-  });
+  const className = styles.item;
 
   const { descriptionId, descriptionEl } = useHiddenDescription(disabledReason);
 

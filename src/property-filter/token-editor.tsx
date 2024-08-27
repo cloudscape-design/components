@@ -11,15 +11,13 @@ import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getAllowedOperators } from './controller.js';
-import { getFormattedToken } from './i18n-utils.js';
+import { I18nStringsInternal } from './i18n-utils.js';
 import {
   ComparisonOperator,
-  FormattedToken,
   GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -31,15 +29,6 @@ import { OperatorInput, PropertyInput, ValueInput } from './token-editor-inputs.
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-interface I18nStringsExt {
-  tokenEditorTokenActionsLabel: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveFromGroupLabel: (token: FormattedToken) => string;
-  tokenEditorAddNewTokenLabel: string;
-  tokenEditorAddTokenActionsLabel: string;
-  tokenEditorAddExistingTokenLabel: (token: FormattedToken) => string;
-}
-
 export interface TokenEditorProps {
   supportsGroups: boolean;
   asyncProperties?: boolean;
@@ -48,7 +37,7 @@ export interface TokenEditorProps {
   freeTextFiltering: InternalFreeTextFiltering;
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
-  i18nStrings: I18nStrings & I18nStringsExt;
+  i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   onSubmit: () => void;
   onDismiss: () => void;
@@ -112,7 +101,7 @@ export function TokenEditor({
     <div className={styles['token-editor']}>
       <TokenEditorFields
         supportsGroups={supportsGroups}
-        tokens={groups.map(group => getFormattedToken(group.token, i18nStrings))}
+        tokens={groups.map(group => group.token)}
         onRemove={index => {
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
@@ -165,11 +154,14 @@ export function TokenEditor({
         <div className={clsx(styles['token-editor-add-token'], testUtilStyles['token-editor-token-add-actions'])}>
           <InternalButtonDropdown
             variant="normal"
-            ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
-            items={standaloneTokens.map((token, index) => ({
-              id: index.toString(),
-              text: i18nStrings.tokenEditorAddExistingTokenLabel(getFormattedToken(token, i18nStrings)),
-            }))}
+            ariaLabel={i18nStrings.tokenEditorAddTokenActionsAriaLabel}
+            items={standaloneTokens.map((token, index) => {
+              return {
+                id: index.toString(),
+                text: i18nStrings.tokenEditorAddExistingTokenLabel?.(token) ?? '',
+                ariaLabel: i18nStrings.tokenEditorAddExistingTokenAriaLabel?.(token) ?? '',
+              };
+            })}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
               if (!isNaN(index) && standaloneTokens[index]) {
@@ -181,7 +173,7 @@ export function TokenEditor({
             }}
             disabled={standaloneTokens.length === 0}
             mainAction={{
-              text: i18nStrings.tokenEditorAddNewTokenLabel,
+              text: i18nStrings?.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
             }}
           />
@@ -210,7 +202,7 @@ export function TokenEditor({
 }
 
 interface TokenEditorLayout {
-  tokens: FormattedToken[];
+  tokens: InternalToken[];
   supportsGroups: boolean;
   onRemove: (index: number) => void;
   onRemoveFromGroup: (index: number) => void;
@@ -218,7 +210,7 @@ interface TokenEditorLayout {
   renderProperty: (index: number) => React.ReactNode;
   renderOperator: (index: number) => React.ReactNode;
   renderValue: (index: number) => React.ReactNode;
-  i18nStrings: I18nStrings & I18nStringsExt;
+  i18nStrings: I18nStringsInternal;
 }
 
 function TokenEditorFields({
@@ -232,8 +224,8 @@ function TokenEditorFields({
   renderValue,
   i18nStrings,
 }: TokenEditorLayout) {
-  const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-  const isNarrow = breakpoint === 'default' || !supportsGroups;
+  const isMobile = useMobile();
+  const isNarrow = isMobile || !supportsGroups;
 
   const propertyLabelId = useUniqueId();
   const operatorLabelId = useUniqueId();
@@ -260,7 +252,6 @@ function TokenEditorFields({
         isNarrow && styles['token-editor-narrow'],
         styles['token-editor-form']
       )}
-      ref={breakpointRef}
       onSubmit={event => {
         event.preventDefault();
         onSubmit();
@@ -272,7 +263,7 @@ function TokenEditorFields({
         <div
           key={index}
           role="group"
-          aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
+          aria-label={i18nStrings.formatToken(token).formattedText}
           className={styles['token-editor-grid-group']}
         >
           <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
@@ -316,11 +307,12 @@ function TokenEditorFields({
               <div className={styles['token-editor-remove-token']}>
                 <TokenEditorRemoveActions
                   isNarrow={isNarrow}
-                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel(token)}
+                  ariaLabel={i18nStrings.tokenEditorTokenActionsAriaLabel?.(token) ?? ''}
+                  mainActionAriaLabel={i18nStrings.tokenEditorTokenRemoveAriaLabel?.(token) ?? ''}
                   disabled={tokens.length === 1}
                   items={[
-                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel(token) },
-                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel(token) },
+                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel ?? '' },
+                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
                   ]}
                   onItemClick={itemId => {
                     switch (itemId) {
@@ -372,6 +364,7 @@ function TokenEditorField({
 function TokenEditorRemoveActions({
   isNarrow,
   ariaLabel,
+  mainActionAriaLabel,
   disabled,
   items,
   onItemClick,
@@ -379,6 +372,7 @@ function TokenEditorRemoveActions({
 }: {
   isNarrow: boolean;
   ariaLabel: string;
+  mainActionAriaLabel: string;
   disabled: boolean;
   items: ButtonDropdownProps.Item[];
   onItemClick: (itemId: string) => void;
@@ -391,7 +385,12 @@ function TokenEditorRemoveActions({
       items={items.slice(1)}
       onItemClick={({ detail }) => onItemClick(detail.id)}
       disabled={disabled}
-      mainAction={{ text: items[0].text, onClick: () => onItemClick(items[0].id), disabled }}
+      mainAction={{
+        text: items[0].text,
+        onClick: () => onItemClick(items[0].id),
+        disabled,
+        ariaLabel: mainActionAriaLabel,
+      }}
       className={testUtilStyles['token-editor-token-remove-actions']}
       data-testindex={index}
     />

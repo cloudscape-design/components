@@ -7,8 +7,10 @@ import { format } from 'date-fns';
 
 import DatePicker from '../../../lib/components/date-picker';
 import FormField from '../../../lib/components/form-field';
-import { useContainerBreakpoints } from '../../../lib/components/internal/hooks/container-queries';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import PropertyFilter from '../../../lib/components/property-filter';
+import { usePropertyFilterI18n } from '../../../lib/components/property-filter/i18n-utils';
 import {
   FilteringOption,
   FilteringProperty,
@@ -21,9 +23,9 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { InternalPropertyFilterEditorDropdownWrapper } from '../../../lib/components/test-utils/dom/property-filter';
 import { createDefaultProps, i18nStrings } from './common';
 
-jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
-  ...jest.requireActual('../../../lib/components/internal/hooks/container-queries'),
-  useContainerBreakpoints: jest.fn().mockReturnValue(['xs', () => {}]),
+jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
+  ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),
+  useMobile: jest.fn().mockReturnValue(true),
 }));
 
 const filteringProperties: readonly FilteringProperty[] = [
@@ -331,7 +333,7 @@ const dateProperty: InternalFilteringProperty = {
   externalProperty,
 };
 
-const defaultEditorProps: TokenEditorProps = {
+const defaultEditorProps: Omit<TokenEditorProps, 'i18nStrings'> = {
   supportsGroups: true,
   asyncProps: {},
   customGroupsText: [],
@@ -342,21 +344,6 @@ const defaultEditorProps: TokenEditorProps = {
   },
   filteringProperties: [nameProperty, dateProperty],
   filteringOptions: [],
-  i18nStrings: {
-    editTokenHeader: 'Edit token',
-    propertyText: 'Property',
-    operatorText: 'Operator',
-    valueText: 'Value',
-    cancelActionText: 'Cancel',
-    applyActionText: 'Apply',
-    tokenEditorTokenActionsLabel: token => `Remove actions ${token.propertyLabel} ${token.operator} ${token.value}`,
-    tokenEditorTokenRemoveLabel: () => 'Remove filter',
-    tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
-    tokenEditorAddNewTokenLabel: 'Add new filter',
-    tokenEditorAddTokenActionsLabel: 'Add filter actions',
-    tokenEditorAddExistingTokenLabel: token =>
-      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
-  },
   onSubmit: () => {},
   onDismiss: () => {},
   standaloneTokens: [],
@@ -365,235 +352,330 @@ const defaultEditorProps: TokenEditorProps = {
   onChangeTempGroup: () => {},
 };
 
-function renderTokenEditor(props?: Partial<TokenEditorProps>) {
-  const { container } = render(<TokenEditor {...defaultEditorProps} {...props} />);
+function TokenEditorWithI18n(props: Omit<TokenEditorProps, 'i18nStrings'>) {
+  const formatOperator = (operator: string) => {
+    switch (operator) {
+      case '=':
+        return 'equals';
+      case '!=':
+        return 'does_not_equal';
+        return operator;
+    }
+  };
+  const i18nStringsInternal = usePropertyFilterI18n({
+    editTokenHeader: 'Edit token',
+    propertyText: 'Property',
+    operatorText: 'Operator',
+    valueText: 'Value',
+    cancelActionText: 'Cancel',
+    applyActionText: 'Apply',
+    formatToken: token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
+    tokenEditorTokenActionsAriaLabel: token =>
+      `Remove actions, ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
+    tokenEditorTokenRemoveAriaLabel: token =>
+      `Remove filter, ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
+    tokenEditorTokenRemoveLabel: 'Remove filter',
+    tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
+    tokenEditorAddNewTokenLabel: 'Add new filter',
+    tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
+    tokenEditorAddExistingTokenAriaLabel: token =>
+      `Add filter ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value} to group`,
+    tokenEditorAddExistingTokenLabel: token =>
+      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
+  });
+  return <TokenEditor {...props} i18nStrings={i18nStringsInternal} />;
+}
+
+function TokenEditorWithEmptyI18n(props: Omit<TokenEditorProps, 'i18nStrings'>) {
+  const i18nStringsInternal = usePropertyFilterI18n({});
+  return <TokenEditor {...props} i18nStrings={i18nStringsInternal} />;
+}
+
+function TokenEditorWithProvider(props: Omit<TokenEditorProps, 'i18nStrings'>) {
+  return (
+    <TestI18nProvider
+      messages={{
+        'property-filter': {
+          'i18nStrings.editTokenHeader': 'Edit token',
+          'i18nStrings.propertyText': 'Property',
+          'i18nStrings.operatorText': 'Operator',
+          'i18nStrings.valueText': 'Value',
+          'i18nStrings.cancelActionText': 'Cancel',
+          'i18nStrings.applyActionText': 'Apply',
+          'i18nStrings.formatToken': '{token__propertyLabel} {token__operator} {token__value}',
+          'i18nStrings.tokenEditorTokenActionsAriaLabel': 'Remove actions, {token__formattedText}',
+          'i18nStrings.tokenEditorTokenRemoveAriaLabel': 'Remove filter, {token__formattedText}',
+          'i18nStrings.tokenEditorTokenRemoveLabel': 'Remove filter',
+          'i18nStrings.tokenEditorTokenRemoveFromGroupLabel': 'Remove filter from group',
+          'i18nStrings.tokenEditorAddNewTokenLabel': 'Add new filter',
+          'i18nStrings.tokenEditorAddTokenActionsAriaLabel': 'Add filter actions',
+          'i18nStrings.tokenEditorAddExistingTokenAriaLabel': 'Add filter {token__formattedText} to group',
+          'i18nStrings.tokenEditorAddExistingTokenLabel':
+            'Add filter {token__propertyLabel} {token__operator} {token__value} to group',
+        },
+      }}
+    >
+      <TokenEditorWithEmptyI18n {...props} />
+    </TestI18nProvider>
+  );
+}
+
+function renderTokenEditor(props?: Partial<TokenEditorProps>, withProvider = false) {
+  const Component = withProvider ? TokenEditorWithProvider : TokenEditorWithI18n;
+  const { container } = render(<Component {...defaultEditorProps} {...props} />);
   return new InternalPropertyFilterEditorDropdownWrapper(container);
 }
 
-describe.each(['xs', 'default'] as const)('breakpoints = %s', breakpoint => {
-  const isNarrow = breakpoint === 'default';
-
-  function findRemoveAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
-    wrapper.findTokenRemoveActions(index)!.openDropdown();
-    return isNarrow
-      ? wrapper.findTokenRemoveActions(index)!.findMainAction()!
-      : wrapper.findTokenRemoveActions(index)!.findItems()[0];
-  }
-  function findRemoveFromGroupAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
-    wrapper.findTokenRemoveActions(index)!.openDropdown();
-    return wrapper.findTokenRemoveActions(index)!.findItems()[isNarrow ? 0 : 1];
-  }
-
-  beforeEach(() => {
-    jest.mocked(useContainerBreakpoints).mockReturnValue([breakpoint, () => {}]);
-  });
-
-  test.each([false, true])('renders token editor with a single property, supportsGroups=%s', supportsGroups => {
-    const wrapper = renderTokenEditor({ supportsGroups });
-    const propertyField = wrapper.findPropertyField();
-    const operatorField = wrapper.findOperatorField();
-    const valueField = wrapper.findValueField();
-    const removeActions = wrapper.findTokenRemoveActions();
-    const addActions = wrapper.findTokenAddActions();
-
-    // Not supported yet because the standalone editor does not include the popover
-    // This can be uncommented when defining the test against the property filter
-    // which is not possible for the internal-only token-editor-grouped yet.
-    // expect(wrapper.findHeader().getElement()).toHaveTextContent('Edit token');
-    // expect(wrapper.findDismissButton().getElement()).toHaveAccessibleName('Close token editor');
-
-    // Token inputs
-    expect(propertyField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Property Name');
-    expect(operatorField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
-    expect(valueField.findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
-    expect(valueField.findControl()!.find('input')!.getElement()).toHaveValue('John');
-
-    if (supportsGroups) {
-      expect(removeActions!.findNativeButton().getElement()).toHaveAccessibleName('Remove actions Name = John');
-      expect(removeActions!.findNativeButton().getElement()).toBeDisabled();
-
-      expect(addActions!.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
-      expect(addActions!.findNativeButton().getElement()).toBeDisabled();
-      expect(addActions!.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
-    } else {
-      expect(removeActions).toBe(null);
-      expect(addActions).toBe(null);
+describe.each([false, true])('with i18n-provider %s', withProvider => {
+  describe.each([false, true] as const)('isMobile = %s', isMobile => {
+    function findRemoveAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
+      wrapper.findTokenRemoveActions(index)!.openDropdown();
+      return isMobile
+        ? wrapper.findTokenRemoveActions(index)!.findMainAction()!
+        : wrapper.findTokenRemoveActions(index)!.findItems()[0];
+    }
+    function findRemoveFromGroupAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
+      wrapper.findTokenRemoveActions(index)!.openDropdown();
+      return wrapper.findTokenRemoveActions(index)!.findItems()[isMobile ? 0 : 1];
     }
 
-    // Form actions
-    expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Cancel');
-    expect(wrapper.findSubmitButton().getElement()).toHaveTextContent('Apply');
-  });
-
-  test('changes property name', () => {
-    const onChangeTempGroup = jest.fn();
-    const wrapper = renderTokenEditor({ onChangeTempGroup });
-    const propertySelect = createWrapper(wrapper.findPropertyField().getElement()).findSelect()!;
-
-    propertySelect.openDropdown();
-    propertySelect.selectOptionByValue('date');
-    wrapper.findSubmitButton().click();
-
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: dateProperty, operator: '=', value: null }),
-    ]);
-  });
-
-  test('changes property operator', () => {
-    const onChangeTempGroup = jest.fn();
-    const wrapper = renderTokenEditor({ onChangeTempGroup });
-    const operatorSelect = createWrapper(wrapper.findOperatorField().getElement()).findSelect()!;
-
-    operatorSelect.openDropdown();
-    operatorSelect.selectOptionByValue('!=');
-    wrapper.findSubmitButton().click();
-
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '!=', value: 'John' }),
-    ]);
-  });
-
-  test('changes property value', () => {
-    const onChangeTempGroup = jest.fn();
-    const wrapper = renderTokenEditor({ onChangeTempGroup });
-    const valueAutosuggest = createWrapper(wrapper.findValueField().getElement()).findAutosuggest()!;
-
-    valueAutosuggest.setInputValue('Jane');
-    wrapper.findSubmitButton().click();
-
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-    ]);
-  });
-
-  test('removes first property', () => {
-    const onChangeTempGroup = jest.fn();
-    const wrapper = renderTokenEditor({
-      tempGroup: [
-        { property: nameProperty, operator: '=', value: 'John' },
-        { property: nameProperty, operator: '=', value: 'Jane' },
-      ],
-      onChangeTempGroup,
+    beforeEach(() => {
+      jest.mocked(useMobile).mockReturnValue(isMobile);
     });
 
-    findRemoveAction(wrapper, 1).click();
-    wrapper.findSubmitButton().click();
+    test.each([false, true])('renders token editor with a single property, supportsGroups=%s', supportsGroups => {
+      const wrapper = renderTokenEditor({ supportsGroups }, withProvider);
+      const propertyField = wrapper.findPropertyField();
+      const operatorField = wrapper.findOperatorField();
+      const valueField = wrapper.findValueField();
+      const removeActions = wrapper.findTokenRemoveActions();
+      const addActions = wrapper.findTokenAddActions();
 
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-    ]);
-  });
+      // Not supported yet because the standalone editor does not include the popover
+      // This can be uncommented when defining the test against the property filter
+      // which is not possible for the internal-only token-editor-grouped yet.
+      // expect(wrapper.findHeader().getElement()).toHaveTextContent('Edit token');
+      // expect(wrapper.findDismissButton().getElement()).toHaveAccessibleName('Close token editor');
 
-  test('removes second property', () => {
-    const onChangeTempGroup = jest.fn();
-    const wrapper = renderTokenEditor({
-      tempGroup: [
-        { property: nameProperty, operator: '=', value: 'John' },
-        { property: nameProperty, operator: '=', value: 'Jane' },
-      ],
-      onChangeTempGroup,
+      // Token inputs
+      expect(propertyField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Property Name');
+      expect(operatorField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
+      expect(valueField.findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
+      expect(valueField.findControl()!.find('input')!.getElement()).toHaveValue('John');
+
+      if (supportsGroups) {
+        expect(removeActions!.findNativeButton().getElement()).toHaveAccessibleName('Remove actions, Name equals John');
+        expect(removeActions!.findNativeButton().getElement()).toBeDisabled();
+
+        expect(addActions!.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
+        expect(addActions!.findNativeButton().getElement()).toBeDisabled();
+        expect(addActions!.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
+      } else {
+        expect(removeActions).toBe(null);
+        expect(addActions).toBe(null);
+      }
+
+      // Form actions
+      expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Cancel');
+      expect(wrapper.findSubmitButton().getElement()).toHaveTextContent('Apply');
     });
 
-    findRemoveAction(wrapper, 2).click();
-    wrapper.findSubmitButton().click();
+    test('changes property name', () => {
+      const onChangeTempGroup = jest.fn();
+      const wrapper = renderTokenEditor({ onChangeTempGroup }, withProvider);
+      const propertySelect = createWrapper(wrapper.findPropertyField().getElement()).findSelect()!;
 
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-    ]);
-  });
+      propertySelect.openDropdown();
+      propertySelect.selectOptionByValue('date');
+      wrapper.findSubmitButton().click();
 
-  test('removes first property from group', () => {
-    const onChangeTempGroup = jest.fn();
-    const onChangeStandalone = jest.fn();
-    const wrapper = renderTokenEditor({
-      tempGroup: [
-        { property: nameProperty, operator: '=', value: 'John' },
-        { property: nameProperty, operator: '=', value: 'Jane' },
-      ],
-      onChangeTempGroup,
-      onChangeStandalone,
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: dateProperty, operator: '=', value: null }),
+      ]);
     });
 
-    findRemoveFromGroupAction(wrapper, 1).click();
-    wrapper.findSubmitButton().click();
+    test('changes property operator', () => {
+      const onChangeTempGroup = jest.fn();
+      const wrapper = renderTokenEditor({ onChangeTempGroup }, withProvider);
+      const operatorSelect = createWrapper(wrapper.findOperatorField().getElement()).findSelect()!;
 
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-    ]);
+      operatorSelect.openDropdown();
+      operatorSelect.selectOptionByValue('!=');
+      wrapper.findSubmitButton().click();
 
-    expect(onChangeStandalone).toHaveBeenCalledTimes(1);
-    expect(onChangeStandalone).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-    ]);
-  });
-
-  test('adds new property', () => {
-    const onChangeTempGroup = jest.fn();
-    const wrapper = renderTokenEditor({
-      tempGroup: [
-        { property: nameProperty, operator: '=', value: 'John' },
-        { property: nameProperty, operator: '=', value: 'Jane' },
-      ],
-      onChangeTempGroup,
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '!=', value: 'John' }),
+      ]);
     });
 
-    wrapper.findTokenAddActions()!.findMainAction()!.click();
-    wrapper.findSubmitButton().click();
+    test('changes property value', () => {
+      const onChangeTempGroup = jest.fn();
+      const wrapper = renderTokenEditor({ onChangeTempGroup }, withProvider);
+      const valueAutosuggest = createWrapper(wrapper.findValueField().getElement()).findAutosuggest()!;
 
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-      expect.objectContaining({ property: null, operator: ':', value: null }),
-    ]);
-  });
+      valueAutosuggest.setInputValue('Jane');
+      wrapper.findSubmitButton().click();
 
-  test('adds new property from standalone', () => {
-    const onChangeTempGroup = jest.fn();
-    const onChangeStandalone = jest.fn();
-    const wrapper = renderTokenEditor({
-      tempGroup: [
-        { property: nameProperty, operator: '=', value: 'John' },
-        { property: nameProperty, operator: '=', value: 'Jane' },
-      ],
-      standaloneTokens: [{ property: dateProperty, operator: '=', value: null }],
-      onChangeTempGroup,
-      onChangeStandalone,
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
+      ]);
     });
 
-    wrapper.findTokenAddActions()!.openDropdown();
-    wrapper.findTokenAddActions()!.findItems()[0].click();
-    wrapper.findSubmitButton().click();
+    test('removes first property', () => {
+      const onChangeTempGroup = jest.fn();
+      const wrapper = renderTokenEditor(
+        {
+          tempGroup: [
+            { property: nameProperty, operator: '=', value: 'John' },
+            { property: nameProperty, operator: '=', value: 'Jane' },
+          ],
+          onChangeTempGroup,
+        },
+        withProvider
+      );
 
-    expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-    expect(onChangeTempGroup).toHaveBeenCalledWith([
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-      expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-      expect.objectContaining({ property: dateProperty, operator: '=', value: null }),
-    ]);
+      findRemoveAction(wrapper, 1).click();
+      wrapper.findSubmitButton().click();
 
-    expect(onChangeStandalone).toHaveBeenCalledTimes(1);
-    expect(onChangeStandalone).toHaveBeenCalledWith([]);
-  });
-
-  test('add standalone property menu items have indices as IDs', () => {
-    const wrapper = renderTokenEditor({
-      tempGroup: [],
-      standaloneTokens: [
-        { property: nameProperty, operator: '=', value: '1' },
-        { property: nameProperty, operator: '=', value: '2' },
-      ],
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
+      ]);
     });
-    const tokenActions = wrapper.findTokenAddActions()!;
 
-    tokenActions.openDropdown();
-    expect(tokenActions.findItemById('0')!.getElement().textContent).toBe('Add filter Name = 1 to group');
-    expect(tokenActions.findItemById('1')!.getElement().textContent).toBe('Add filter Name = 2 to group');
+    test('removes second property', () => {
+      const onChangeTempGroup = jest.fn();
+      const wrapper = renderTokenEditor(
+        {
+          tempGroup: [
+            { property: nameProperty, operator: '=', value: 'John' },
+            { property: nameProperty, operator: '=', value: 'Jane' },
+          ],
+          onChangeTempGroup,
+        },
+        withProvider
+      );
+
+      findRemoveAction(wrapper, 2).click();
+      wrapper.findSubmitButton().click();
+
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
+      ]);
+    });
+
+    test('removes first property from group', () => {
+      const onChangeTempGroup = jest.fn();
+      const onChangeStandalone = jest.fn();
+      const wrapper = renderTokenEditor(
+        {
+          tempGroup: [
+            { property: nameProperty, operator: '=', value: 'John' },
+            { property: nameProperty, operator: '=', value: 'Jane' },
+          ],
+          onChangeTempGroup,
+          onChangeStandalone,
+        },
+        withProvider
+      );
+
+      findRemoveFromGroupAction(wrapper, 1).click();
+      wrapper.findSubmitButton().click();
+
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
+      ]);
+
+      expect(onChangeStandalone).toHaveBeenCalledTimes(1);
+      expect(onChangeStandalone).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
+      ]);
+    });
+
+    test('adds new property', () => {
+      const onChangeTempGroup = jest.fn();
+      const wrapper = renderTokenEditor(
+        {
+          tempGroup: [
+            { property: nameProperty, operator: '=', value: 'John' },
+            { property: nameProperty, operator: '=', value: 'Jane' },
+          ],
+          onChangeTempGroup,
+        },
+        withProvider
+      );
+
+      wrapper.findTokenAddActions()!.findMainAction()!.click();
+      wrapper.findSubmitButton().click();
+
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
+        expect.objectContaining({ property: null, operator: ':', value: null }),
+      ]);
+    });
+
+    test('adds new property from standalone', () => {
+      const onChangeTempGroup = jest.fn();
+      const onChangeStandalone = jest.fn();
+      const wrapper = renderTokenEditor(
+        {
+          tempGroup: [
+            { property: nameProperty, operator: '=', value: 'John' },
+            { property: nameProperty, operator: '=', value: 'Jane' },
+          ],
+          standaloneTokens: [{ property: dateProperty, operator: '=', value: null }],
+          onChangeTempGroup,
+          onChangeStandalone,
+        },
+        withProvider
+      );
+
+      wrapper.findTokenAddActions()!.openDropdown();
+      wrapper.findTokenAddActions()!.findItems()[0].click();
+      wrapper.findSubmitButton().click();
+
+      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
+      expect(onChangeTempGroup).toHaveBeenCalledWith([
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
+        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
+        expect.objectContaining({ property: dateProperty, operator: '=', value: null }),
+      ]);
+
+      expect(onChangeStandalone).toHaveBeenCalledTimes(1);
+      expect(onChangeStandalone).toHaveBeenCalledWith([]);
+    });
+
+    test('add standalone property menu items have indices as IDs', () => {
+      const wrapper = renderTokenEditor(
+        {
+          tempGroup: [],
+          standaloneTokens: [
+            { property: nameProperty, operator: '=', value: '1' },
+            { property: nameProperty, operator: '=', value: '2' },
+          ],
+        },
+        withProvider
+      );
+      const tokenActions = wrapper.findTokenAddActions()!;
+
+      tokenActions.openDropdown();
+      expect(tokenActions.findItemById('0')!.getElement().textContent).toBe('Add filter Name = 1 to group');
+      expect(tokenActions.findItemById('0')!.find('[role="menuitem"]')!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Add filter Name equals 1 to group'
+      );
+      expect(tokenActions.findItemById('1')!.getElement().textContent).toBe('Add filter Name = 2 to group');
+      expect(tokenActions.findItemById('1')!.find('[role="menuitem"]')!.getElement()).toHaveAttribute(
+        'aria-label',
+        'Add filter Name equals 2 to group'
+      );
+    });
   });
 });

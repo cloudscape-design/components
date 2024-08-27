@@ -6,11 +6,10 @@ import React, { useRef, useState } from 'react';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
 import FilteringToken, { FilteringTokenRef } from './filtering-token';
-import { getFormattedToken } from './i18n-utils';
+import { I18nStringsInternal } from './i18n-utils';
 import {
   FormattedToken,
   GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -35,17 +34,17 @@ interface TokenProps {
   filteringOptions: readonly InternalFilteringOption[];
   first?: boolean;
   hideOperations?: boolean;
-  i18nStrings: I18nStrings;
+  i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operation: JoinOperation;
   removeToken: () => void;
   setOperation: (newOperation: JoinOperation) => void;
   setToken: (newToken: Token) => void;
   token: InternalToken;
+  enableTokenGroups: boolean;
 }
 
 const emptyHandler = () => {};
-const emptyLabel = () => '';
 
 export const TokenButton = ({
   token,
@@ -65,9 +64,10 @@ export const TokenButton = ({
   disabled,
   freeTextFiltering,
   expandToViewport,
+  enableTokenGroups,
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
-  const formattedToken = getFormattedToken(token, i18nStrings);
+  const formattedToken = i18nStrings.formatToken(token);
   const [temporaryToken, setTemporaryToken] = useState<InternalToken>(token);
   return (
     <FilteringToken
@@ -79,8 +79,8 @@ export const TokenButton = ({
               <TokenTrigger token={formattedToken} allProperties={token.property === null} />
             </span>
           ),
-          ariaLabel: `${formattedToken.propertyLabel} ${formattedToken.operator} ${formattedToken.value}`,
-          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(formattedToken) ?? '',
+          ariaLabel: formattedToken.formattedText,
+          dismissAriaLabel: i18nStrings?.removeTokenButtonAriaLabel?.(token) ?? '',
         },
       ]}
       showOperation={!first && !hideOperations}
@@ -93,7 +93,7 @@ export const TokenButton = ({
       disabled={disabled}
       editorContent={
         <TokenEditor
-          supportsGroups={false}
+          supportsGroups={enableTokenGroups}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
           tempGroup={[temporaryToken]}
@@ -104,16 +104,7 @@ export const TokenButton = ({
           onChangeStandalone={emptyHandler}
           asyncProps={asyncProps}
           onLoadItems={onLoadItems}
-          i18nStrings={{
-            ...i18nStrings,
-            // These properties will be needed when supportsGroups={true}
-            tokenEditorTokenActionsLabel: emptyLabel,
-            tokenEditorTokenRemoveLabel: emptyLabel,
-            tokenEditorTokenRemoveFromGroupLabel: emptyLabel,
-            tokenEditorAddNewTokenLabel: '',
-            tokenEditorAddTokenActionsLabel: '',
-            tokenEditorAddExistingTokenLabel: emptyLabel,
-          }}
+          i18nStrings={i18nStrings}
           asyncProperties={asyncProperties}
           customGroupsText={customGroupsText}
           freeTextFiltering={freeTextFiltering}
@@ -131,10 +122,11 @@ export const TokenButton = ({
       // The properties below are only relevant for grouped tokens that are not supported
       // by the property filter component yet.
       groupOperation={operation}
-      groupAriaLabel={''}
-      groupEditAriaLabel={''}
+      groupAriaLabel={i18nStrings.formatToken(token).formattedText}
+      groupEditAriaLabel={i18nStrings.groupEditAriaLabel({ operation, tokens: [token] })}
       onChangeGroupOperation={() => {}}
       hasGroups={false}
+      popoverSize={enableTokenGroups ? 'content' : 'large'}
     />
   );
 };

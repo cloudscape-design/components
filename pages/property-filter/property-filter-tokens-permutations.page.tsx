@@ -47,6 +47,7 @@ const tokenProps: FilteringTokenProps = {
   editorDismissAriaLabel: 'dismiss token editor',
   editorExpandToViewport: false,
   hasGroups: false,
+  popoverSize: 'content',
 };
 
 const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([
