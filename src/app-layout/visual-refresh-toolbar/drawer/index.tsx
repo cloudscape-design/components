@@ -42,6 +42,7 @@ export function AppLayoutDrawerImplementation({
     onActiveDrawerResize,
     maxGlobalDrawersSizes,
     activeGlobalDrawersSizes,
+    drawersOpenQueue,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id ?? '';
@@ -66,6 +67,7 @@ export function AppLayoutDrawerImplementation({
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
+  const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
 
   return (
     <aside
@@ -73,6 +75,7 @@ export function AppLayoutDrawerImplementation({
       aria-hidden={!show}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
+        [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
         [testutilStyles['active-drawer']]: !toolsOnlyMode && show,
         [testutilStyles.tools]: isToolsDrawer,
       })}

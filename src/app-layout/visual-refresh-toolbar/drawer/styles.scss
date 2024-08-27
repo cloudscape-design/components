@@ -29,6 +29,10 @@
     inline-size: 100%;
   }
 
+  &.last-opened {
+    z-index: 851;
+  }
+
   > .drawer-content-container {
     grid-column: 1 / span 2;
     grid-row: 1;

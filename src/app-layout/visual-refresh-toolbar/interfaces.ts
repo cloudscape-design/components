@@ -43,6 +43,7 @@ export interface AppLayoutInternals {
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;
   verticalOffsets: VerticalLayoutOutput;
+  drawersOpenQueue: ReadonlyArray<string>;
   setNotificationsHeight: (height: number) => void;
   setToolbarHeight: (height: number) => void;
   onSplitPanelToggle: () => void;
