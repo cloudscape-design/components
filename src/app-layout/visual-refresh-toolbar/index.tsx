@@ -104,6 +104,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToolsToggle,
     });
 
+    const onActiveDrawerChangeHandler = (drawerId: string | null) => {
+      onActiveDrawerChange(drawerId);
+      drawersFocusControl.setFocus();
+    };
+
     const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
       controlledSplitPanelOpen,
       onSplitPanelToggle,
@@ -156,7 +161,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       displayed: false,
     });
 
-    const drawersFocusControl = useFocusControl(!!activeDrawer?.id);
+    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, !isMobile, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -192,7 +197,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerId: activeDrawer?.id ?? null,
       // only pass it down if there are non-empty drawers or tools
       drawers: drawers?.length || !toolsHide ? drawers : undefined,
-      onActiveDrawerChange,
+      onActiveDrawerChange: onActiveDrawerChangeHandler,
       drawersFocusRef: drawersFocusControl.refs.toggle,
       splitPanel,
       splitPanelToggleProps: {
@@ -245,7 +250,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       setNotificationsHeight,
       onSplitPanelToggle: onSplitPanelToggleHandler,
       onNavigationToggle,
-      onActiveDrawerChange,
+      onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
     };
 
