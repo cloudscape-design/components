@@ -14,7 +14,19 @@ import InternalWizard from './internal';
 
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent('Wizard', { props: { allowSkipTo } }, analyticsMetadata);
+  const baseComponentProps = useBaseComponent(
+    'Wizard',
+    {
+      props: {
+        allowSkipTo,
+        flowType: analyticsMetadata.flowType,
+      },
+      metadata: {
+        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+      },
+    },
+    analyticsMetadata
+  );
   const { wizardCount } = useFunnel();
   const externalProps = getExternalProps(props);
 
