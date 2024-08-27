@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { I18nStringsOperators, operatorToDescription } from './i18n-utils';
 import {
@@ -12,55 +11,63 @@ import {
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
+  InternalQuery,
+  InternalToken,
   JoinOperation,
   ParsedText,
   Query,
   Token,
 } from './interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix, removeOperator, trimStart } from './utils';
+import {
+  matchFilteringProperty,
+  matchOperator,
+  matchOperatorPrefix,
+  matchTokenValue,
+  removeOperator,
+  trimStart,
+} from './utils';
 
 type I18nStringsController = I18nStringsOperators &
   Pick<I18nStrings, 'operatorsText' | 'groupPropertiesText' | 'groupValuesText'>;
 
-export const getQueryActions = (
-  query: Query,
-  onChange: NonCancelableEventHandler<Query>,
-  inputRef: React.RefObject<AutosuggestInputRef>
-) => {
-  const { tokens, operation } = query;
+export const getQueryActions = ({
+  query,
+  onChange,
+  filteringOptions,
+}: {
+  query: InternalQuery;
+  onChange: NonCancelableEventHandler<Query>;
+  filteringOptions: readonly InternalFilteringOption[];
+}) => {
   const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
     fireNonCancelableEvent(onChange, { tokens, operation });
-  const setToken = (index: number, newToken: Token) => {
-    const newTokens = [...tokens];
-    if (newTokens && index < newTokens.length) {
-      newTokens[index] = newToken;
-    }
-    fireOnChange(newTokens, operation);
+
+  const setQuery = ({ operation, tokens }: InternalQuery) => {
+    const matchedTokens = tokens.map(token => matchTokenValue(token, filteringOptions));
+    fireOnChange(matchedTokens, operation);
   };
-  const removeToken = (index: number) => {
-    const newTokens = tokens.filter((_, i) => i !== index);
-    fireOnChange(newTokens, operation);
-    inputRef.current?.focus({ preventDropdown: true });
+
+  const addToken = (token: InternalToken) => {
+    setQuery({ ...query, tokens: [...query.tokens, token] });
   };
+
+  const updateToken = (updateIndex: number, newToken: InternalToken) => {
+    setQuery({ ...query, tokens: query.tokens.map((token, index) => (index === updateIndex ? newToken : token)) });
+  };
+
+  const updateOperation = (operation: JoinOperation) => {
+    setQuery({ ...query, operation });
+  };
+
+  const removeToken = (removeIndex: number) => {
+    setQuery({ ...query, tokens: query.tokens.filter((_, index) => index !== removeIndex) });
+  };
+
   const removeAllTokens = () => {
-    fireOnChange([], operation);
-    inputRef.current?.focus({ preventDropdown: true });
+    setQuery({ ...query, tokens: [] });
   };
-  const addToken = (newToken: Token) => {
-    const newTokens = [...tokens];
-    newTokens.push(newToken);
-    fireOnChange(newTokens, operation);
-  };
-  const setOperation = (newOperation: JoinOperation) => {
-    fireOnChange(tokens, newOperation);
-  };
-  return {
-    setToken,
-    removeToken,
-    removeAllTokens,
-    addToken,
-    setOperation,
-  };
+
+  return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };
 };
 
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
