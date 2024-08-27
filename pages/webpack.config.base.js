@@ -126,6 +126,7 @@ module.exports = ({
       }),
       new HtmlWebpackPlugin({
         template: path.join(__dirname, './app/index.html'),
+        favicon: path.join(__dirname, './app/favicon.ico'),
       }),
       replaceModule(/~components/, componentsPath),
       replaceModule(/~design-tokens/, designTokensPath),
