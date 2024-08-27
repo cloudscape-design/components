@@ -9,7 +9,7 @@
 
 .drawer {
   position: sticky;
-  z-index: 830;
+  z-index: 850;
   background-color: awsui.$color-background-container-content;
   display: grid;
   grid-template-columns: awsui.$space-m 1fr;
@@ -21,6 +21,13 @@
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
+
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    inline-size: 100%;
+  }
 
   > .drawer-content-container {
     grid-column: 1 / span 2;

@@ -171,7 +171,7 @@ export function useDrawers(
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus && onGlobalDrawerFocus();
       setDrawersOpenQueue(oldQueue => oldQueue.filter(id => id !== drawerId));
-    } else {
+    } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId);
