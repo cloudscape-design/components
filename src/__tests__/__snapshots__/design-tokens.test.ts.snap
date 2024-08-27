@@ -381,7 +381,7 @@ Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -2788,7 +2788,7 @@ Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -5195,7 +5195,7 @@ Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -7602,7 +7602,7 @@ Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -12416,7 +12416,7 @@ Object {
       "$description": "The background color of an item in warning state. For example: warning alerts.",
       "$value": Object {
         "dark": "#291b00",
-        "light": "#fffee5",
+        "light": "#fffef0",
       },
     },
     "color-background-toggle-button-normal-pressed": Object {
@@ -14583,7 +14583,7 @@ Object {
           "$description": "The background color of primary buttons in hover state.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-background-cell-shaded": Object {
@@ -14645,15 +14645,15 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#11161e",
             "light": "#f3f3f7",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
@@ -14821,14 +14821,14 @@ Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
             "dark": "#001401",
-            "light": "#fefff1",
+            "light": "#effff1",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -14863,7 +14863,7 @@ Object {
           "$description": "The border color of normal buttons in active state.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-border-button-normal-default": Object {
@@ -14884,7 +14884,7 @@ Object {
           "$description": "The border color of normal buttons in hover state.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -15017,7 +15017,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -16122,7 +16122,7 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -16158,7 +16158,7 @@ Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
             "dark": "#ccccd1",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-body-secondary": Object {
@@ -16186,7 +16186,7 @@ Object {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-button-normal-default": Object {
@@ -16207,20 +16207,20 @@ Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
             "dark": "#ffffff",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -16234,7 +16234,7 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -16249,7 +16249,7 @@ Object {
           "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-dropdown-item-disabled": Object {
@@ -16270,7 +16270,7 @@ Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#ebebf0",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-empty": Object {
@@ -16284,7 +16284,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-form-secondary": Object {
@@ -16305,7 +16305,7 @@ Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-heading-secondary": Object {
@@ -16347,7 +16347,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-default": Object {
@@ -16368,7 +16368,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -16389,7 +16389,7 @@ Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-label-gen-ai": Object {
@@ -16423,7 +16423,7 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -16451,7 +16451,7 @@ Object {
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -16501,14 +16501,14 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
           "$description": "The pressed text color of icon toggle buttons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-toggle-button-normal-pressed": Object {
@@ -16522,7 +16522,7 @@ Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "font-family-base": Object {
@@ -17052,15 +17052,15 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
-            "light": "#081120",
+            "dark": "#11161e",
+            "light": "#11161e",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
@@ -18529,8 +18529,8 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-foreground-control-disabled": Object {
@@ -18620,15 +18620,15 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-disabled": Object {
@@ -18641,8 +18641,8 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": Object {
@@ -18830,8 +18830,8 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-link-default": Object {
@@ -18858,8 +18858,8 @@ Object {
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-default": Object {
@@ -19459,15 +19459,15 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#11161e",
             "light": "#f3f3f7",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
@@ -19635,14 +19635,14 @@ Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
             "dark": "#001401",
-            "light": "#fefff1",
+            "light": "#effff1",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -19831,7 +19831,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -20936,7 +20936,7 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -20972,7 +20972,7 @@ Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
             "dark": "#ccccd1",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-body-secondary": Object {
@@ -21027,14 +21027,14 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -21048,7 +21048,7 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -21063,7 +21063,7 @@ Object {
           "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-dropdown-item-disabled": Object {
@@ -21084,7 +21084,7 @@ Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#ebebf0",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-empty": Object {
@@ -21098,7 +21098,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-form-secondary": Object {
@@ -21119,7 +21119,7 @@ Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-heading-secondary": Object {
@@ -21161,7 +21161,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-default": Object {
@@ -21182,7 +21182,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -21203,7 +21203,7 @@ Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-label-gen-ai": Object {
@@ -21237,7 +21237,7 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -21265,7 +21265,7 @@ Object {
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -21315,14 +21315,14 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
           "$description": "The pressed text color of icon toggle buttons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-toggle-button-normal-pressed": Object {
@@ -21336,7 +21336,7 @@ Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "font-family-base": Object {
@@ -21866,15 +21866,15 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#11161e",
             "light": "#f3f3f7",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
@@ -22042,14 +22042,14 @@ Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
             "dark": "#001401",
-            "light": "#fefff1",
+            "light": "#effff1",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -22238,7 +22238,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -23343,7 +23343,7 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -23434,14 +23434,14 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -23455,7 +23455,7 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -23470,7 +23470,7 @@ Object {
           "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-dropdown-item-disabled": Object {
@@ -23491,7 +23491,7 @@ Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#ebebf0",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-empty": Object {
@@ -23505,7 +23505,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-form-secondary": Object {
@@ -23526,7 +23526,7 @@ Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-heading-secondary": Object {
@@ -23568,7 +23568,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-default": Object {
@@ -23589,7 +23589,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -23610,7 +23610,7 @@ Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-label-gen-ai": Object {
@@ -23644,7 +23644,7 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -23672,7 +23672,7 @@ Object {
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -23722,14 +23722,14 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
           "$description": "The pressed text color of icon toggle buttons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-toggle-button-normal-pressed": Object {
@@ -23743,7 +23743,7 @@ Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "font-family-base": Object {
@@ -24210,8 +24210,8 @@ Object {
         "color-background-button-primary-hover": Object {
           "$description": "The background color of primary buttons in hover state.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-cell-shaded": Object {
@@ -24273,15 +24273,15 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
+            "dark": "#11161e",
             "light": "#f3f3f7",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
@@ -24449,14 +24449,14 @@ Object {
           "$description": "The background color of an item in success state. For example: success alerts.",
           "$value": Object {
             "dark": "#001401",
-            "light": "#fefff1",
+            "light": "#effff1",
           },
         },
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#291b00",
-            "light": "#fffee5",
+            "light": "#fffef0",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -24490,8 +24490,8 @@ Object {
         "color-border-button-normal-active": Object {
           "$description": "The border color of normal buttons in active state.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-button-normal-default": Object {
@@ -24511,8 +24511,8 @@ Object {
         "color-border-button-normal-hover": Object {
           "$description": "The border color of normal buttons in hover state.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-button-primary-disabled": Object {
@@ -24539,8 +24539,8 @@ Object {
         "color-border-divider-default": Object {
           "$description": "The default color for dividers. For example: dividers in column layout, expanding sections, side nav, help panel, between table rows and dropdown items, and inside containers.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-divider-secondary": Object {
@@ -24581,8 +24581,8 @@ Object {
         "color-border-item-focused": Object {
           "$description": "The color of focus states. For example: the focus ring around interactive elements.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-border-item-selected": Object {
@@ -24645,7 +24645,7 @@ Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -25750,7 +25750,7 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -25785,8 +25785,8 @@ Object {
         "color-text-body-default": Object {
           "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-body-secondary": Object {
@@ -25813,8 +25813,8 @@ Object {
         "color-text-button-normal-active": Object {
           "$description": "The active text color of normal buttons. For example: Active text color in normal and link buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-normal-default": Object {
@@ -25834,21 +25834,21 @@ Object {
         "color-text-button-normal-hover": Object {
           "$description": "The hover text color of normal buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -25862,7 +25862,7 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -25877,7 +25877,7 @@ Object {
           "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-dropdown-item-disabled": Object {
@@ -25898,7 +25898,7 @@ Object {
           "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
           "$value": Object {
             "dark": "#ebebf0",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-empty": Object {
@@ -25912,7 +25912,7 @@ Object {
           "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-form-secondary": Object {
@@ -25933,14 +25933,14 @@ Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-heading-secondary": Object {
           "$description": "The default color for secondary heading text such as page and container descriptions. For example: descriptions in containers such as form sections, tables, and card collections, as well as form page descriptions.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-home-header-default": Object {
@@ -25975,7 +25975,7 @@ Object {
           "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-default": Object {
@@ -25996,7 +25996,7 @@ Object {
           "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-interactive-inverted-default": Object {
@@ -26009,15 +26009,15 @@ Object {
         "color-text-interactive-inverted-hover": Object {
           "$description": "The hover color of clickable elements in the flashbar. For example: The dismiss icon button in a flashbar.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-label": Object {
           "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
           "$value": Object {
             "dark": "#dedee3",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-label-gen-ai": Object {
@@ -26051,7 +26051,7 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -26072,14 +26072,14 @@ Object {
         "color-text-notification-default": Object {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
+            "dark": "#0f141a",
             "light": "#ffffff",
           },
         },
@@ -26129,14 +26129,14 @@ Object {
           "$description": "The color of warning icons.",
           "$value": Object {
             "dark": "#e9cc25",
-            "light": "#855d00",
+            "light": "#855900",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
           "$description": "The pressed text color of icon toggle buttons.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "color-text-toggle-button-normal-pressed": Object {
@@ -26150,7 +26150,7 @@ Object {
           "$description": "The color of the title in the top navigation.",
           "$value": Object {
             "dark": "#f9f9fa",
-            "light": "#0c1015",
+            "light": "#0f141a",
           },
         },
         "font-family-base": Object {
@@ -26575,15 +26575,15 @@ Object {
         "color-background-button-normal-default": Object {
           "$description": "The default background color of normal buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-button-normal-disabled": Object {
           "$description": "The background color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-button-normal-hover": Object {
@@ -26652,8 +26652,8 @@ Object {
         "color-background-control-default": Object {
           "$description": "The default background color of form controls. For example: radio buttons and checkboxes default background fill color.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-control-disabled": Object {
@@ -26680,22 +26680,22 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
-            "light": "#081120",
+            "dark": "#11161e",
+            "light": "#11161e",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
           "$description": "The default background color of form inputs. For example: background fill of an input, textarea, autosuggest, and trigger of a select and multiselect.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-disabled": Object {
@@ -26715,8 +26715,8 @@ Object {
         "color-background-layout-main": Object {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-layout-toggle-active": Object {
@@ -26820,22 +26820,22 @@ Object {
         "color-background-segment-default": Object {
           "$description": "The background color of inactive segments in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-segment-disabled": Object {
           "$description": "The background color of disabled segments in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-segment-hover": Object {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-status-error": Object {
@@ -28157,8 +28157,8 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-foreground-control-disabled": Object {
@@ -28248,15 +28248,15 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-disabled": Object {
@@ -28269,8 +28269,8 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": Object {
@@ -28458,8 +28458,8 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-link-default": Object {
@@ -28486,8 +28486,8 @@ Object {
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-default": Object {
@@ -29087,15 +29087,15 @@ Object {
         "color-background-dropdown-item-hover": Object {
           "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
           "$value": Object {
-            "dark": "#081120",
-            "light": "#081120",
+            "dark": "#11161e",
+            "light": "#11161e",
           },
         },
         "color-background-home-header": Object {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-background-input-default": Object {
@@ -30564,8 +30564,8 @@ Object {
         "color-foreground-control-default": Object {
           "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-foreground-control-disabled": Object {
@@ -30655,15 +30655,15 @@ Object {
         "color-text-button-primary-active": Object {
           "$description": "The active text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-default": Object {
           "$description": "The default text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-button-primary-disabled": Object {
@@ -30676,8 +30676,8 @@ Object {
         "color-text-button-primary-hover": Object {
           "$description": "The hover text color of primary buttons.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": Object {
@@ -30865,8 +30865,8 @@ Object {
         "color-text-layout-toggle-selected": Object {
           "$description": "The color of the app layout toggle button when it's selected.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-link-default": Object {
@@ -30893,8 +30893,8 @@ Object {
         "color-text-segment-active": Object {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": Object {
-            "dark": "#0c1015",
-            "light": "#0c1015",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-segment-default": Object {
@@ -31494,15 +31494,15 @@ Object {
     "color-background-dropdown-item-hover": Object {
       "$description": "The background color of dropdown items on hover. For example: background of hovered items in select, multiselect, autosuggest, and datepicker dropdowns.",
       "$value": Object {
-        "dark": "#081120",
+        "dark": "#11161e",
         "light": "#f3f3f7",
       },
     },
     "color-background-home-header": Object {
       "$description": "The background color of the home header, displayed on the Service's home page.",
       "$value": Object {
-        "dark": "#0c1015",
-        "light": "#0c1015",
+        "dark": "#0f141a",
+        "light": "#0f141a",
       },
     },
     "color-background-input-default": Object {
@@ -31670,14 +31670,14 @@ Object {
       "$description": "The background color of an item in success state. For example: success alerts.",
       "$value": Object {
         "dark": "#001401",
-        "light": "#fefff1",
+        "light": "#effff1",
       },
     },
     "color-background-status-warning": Object {
       "$description": "The background color of an item in warning state. For example: warning alerts.",
       "$value": Object {
         "dark": "#291b00",
-        "light": "#fffee5",
+        "light": "#fffef0",
       },
     },
     "color-background-toggle-button-normal-pressed": Object {
@@ -31866,7 +31866,7 @@ Object {
       "$description": "The border color of an item in warning state. For example: warning alerts.",
       "$value": Object {
         "dark": "#e9cc25",
-        "light": "#855d00",
+        "light": "#855900",
       },
     },
     "color-border-toggle-button-normal-pressed": Object {
@@ -32971,7 +32971,7 @@ Object {
     "color-foreground-control-default": Object {
       "$description": "The color used to mark enabled form controls. For example: the checkmark on checkboxes, inner circle on radio buttons, and handle on toggles.",
       "$value": Object {
-        "dark": "#0c1015",
+        "dark": "#0f141a",
         "light": "#ffffff",
       },
     },
@@ -33007,7 +33007,7 @@ Object {
       "$description": "The default color of non-heading text and body content. For example: text in a paragraph tag, table cell data, form field labels and values.",
       "$value": Object {
         "dark": "#ccccd1",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-body-secondary": Object {
@@ -33062,14 +33062,14 @@ Object {
     "color-text-button-primary-active": Object {
       "$description": "The active text color of primary buttons.",
       "$value": Object {
-        "dark": "#0c1015",
+        "dark": "#0f141a",
         "light": "#ffffff",
       },
     },
     "color-text-button-primary-default": Object {
       "$description": "The default text color of primary buttons.",
       "$value": Object {
-        "dark": "#0c1015",
+        "dark": "#0f141a",
         "light": "#ffffff",
       },
     },
@@ -33083,7 +33083,7 @@ Object {
     "color-text-button-primary-hover": Object {
       "$description": "The hover text color of primary buttons.",
       "$value": Object {
-        "dark": "#0c1015",
+        "dark": "#0f141a",
         "light": "#ffffff",
       },
     },
@@ -33098,7 +33098,7 @@ Object {
       "$description": "The default text color of dropdown items. For example: label and label tag text color for autosuggest, select, and multiselect.",
       "$value": Object {
         "dark": "#dedee3",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-dropdown-item-disabled": Object {
@@ -33119,7 +33119,7 @@ Object {
       "$description": "The text color of hovered or selected dropdown items. *For example: selected day text color in date picker, label text color of the item on hover in a select, multiselect, and autosuggest.*",
       "$value": Object {
         "dark": "#ebebf0",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-empty": Object {
@@ -33133,7 +33133,7 @@ Object {
       "$description": "The default color of form field labels and values. For example: the label in form fields, checkboxes, radio buttons, toggles, and the value in inputs and text areas.",
       "$value": Object {
         "dark": "#dedee3",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-form-secondary": Object {
@@ -33154,7 +33154,7 @@ Object {
       "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
         "dark": "#dedee3",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-heading-secondary": Object {
@@ -33196,7 +33196,7 @@ Object {
       "$description": "The color of clickable elements in their active state. For example: tabs and icons.",
       "$value": Object {
         "dark": "#f9f9fa",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-interactive-default": Object {
@@ -33217,7 +33217,7 @@ Object {
       "$description": "The color of clickable elements on hover. *For example: expandable sections, and icons on hover.*",
       "$value": Object {
         "dark": "#f9f9fa",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-interactive-inverted-default": Object {
@@ -33238,7 +33238,7 @@ Object {
       "$description": "The default color for non-form labels. For example: the key in key/value pairs and card's sections labels.",
       "$value": Object {
         "dark": "#dedee3",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-label-gen-ai": Object {
@@ -33272,7 +33272,7 @@ Object {
     "color-text-layout-toggle-selected": Object {
       "$description": "The color of the app layout toggle button when it's selected.",
       "$value": Object {
-        "dark": "#0c1015",
+        "dark": "#0f141a",
         "light": "#ffffff",
       },
     },
@@ -33300,7 +33300,7 @@ Object {
     "color-text-segment-active": Object {
       "$description": "The text color of the active segment in a segmented control.",
       "$value": Object {
-        "dark": "#0c1015",
+        "dark": "#0f141a",
         "light": "#ffffff",
       },
     },
@@ -33350,14 +33350,14 @@ Object {
       "$description": "The color of warning icons.",
       "$value": Object {
         "dark": "#e9cc25",
-        "light": "#855d00",
+        "light": "#855900",
       },
     },
     "color-text-toggle-button-icon-pressed": Object {
       "$description": "The pressed text color of icon toggle buttons.",
       "$value": Object {
         "dark": "#f9f9fa",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "color-text-toggle-button-normal-pressed": Object {
@@ -33371,7 +33371,7 @@ Object {
       "$description": "The color of the title in the top navigation.",
       "$value": Object {
         "dark": "#f9f9fa",
-        "light": "#0c1015",
+        "light": "#0f141a",
       },
     },
     "font-family-base": Object {
