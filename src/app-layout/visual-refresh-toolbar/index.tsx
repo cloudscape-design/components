@@ -21,6 +21,7 @@ import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
+  AppLayoutGlobalDrawer,
   AppLayoutNavigation,
   AppLayoutNotifications,
   AppLayoutSplitPanelBottom,
@@ -145,6 +146,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       drawers,
       activeDrawer,
       minDrawerSize,
+      minGlobalDrawersSizes,
       activeDrawerSize,
       ariaLabelsWithDrawers,
       globalDrawers,
@@ -328,6 +330,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerSize,
       minDrawerSize,
       maxDrawerSize,
+      minGlobalDrawersSizes,
       maxGlobalDrawersSizes,
       drawers: drawers!,
       globalDrawers,
@@ -406,22 +409,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={navigationOpen}
           navigationWidth={navigationWidth}
-          tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} show={true} />}
+          tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             !!globalDrawers.length &&
             globalDrawers.map(drawer => (
-              <AppLayoutDrawer
+              <AppLayoutGlobalDrawer
                 key={drawer.id}
-                isGlobal={true}
                 show={activeGlobalDrawersIds.includes(drawer.id)}
-                appLayoutInternals={{
-                  ...appLayoutInternals,
-                  activeDrawer: drawer,
-                  drawers: globalDrawers,
-                  onActiveDrawerChange: () => {
-                    onActiveGlobalDrawersChange(drawer.id);
-                  },
-                }}
+                activeGlobalDrawer={drawer}
+                appLayoutInternals={appLayoutInternals}
               />
             ))
           }

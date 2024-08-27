@@ -7,6 +7,18 @@
 @use '../../constants.scss' as constants;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 
+@mixin desktop-only {
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
+@mixin mobile-only {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
 .drawer {
   position: sticky;
   z-index: 850;
@@ -22,7 +34,7 @@
   pointer-events: auto;
   word-wrap: break-word;
 
-  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+  @include mobile-only {
     position: absolute;
     inset-block-start: 0;
     inset-inline-start: 0;
@@ -31,6 +43,19 @@
 
   &.last-opened {
     z-index: 851;
+  }
+
+  &.drawer-global {
+    @include desktop-only {
+      background: transparent;
+
+      > .drawer-content-container {
+        border-start-start-radius: 8px;
+        border-start-end-radius: 8px;
+        margin-inline-start: awsui.$space-s;
+        background-color: awsui.$color-background-container-content;
+      }
+    }
   }
 
   > .drawer-content-container {

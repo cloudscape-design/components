@@ -26,6 +26,12 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(0px);
   }
+
+  &.compact {
+    margin-inline-start: 0;
+    margin-block-start: 0;
+    block-size: 12px;
+  }
 }
 
 .slider-side {
@@ -37,8 +43,10 @@
 
 .slider-icon {
   stroke: awsui.$color-text-interactive-default;
+  fill: awsui.$color-text-interactive-default;
   &:hover {
     stroke: awsui.$color-text-interactive-hover;
+    fill: awsui.$color-text-interactive-hover;
   }
   &-bottom {
     margin-block: auto;

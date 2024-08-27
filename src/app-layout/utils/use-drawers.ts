@@ -212,6 +212,12 @@ export function useDrawers(
     },
     {}
   );
+  const minGlobalDrawersSizes: Record<string, number> = combinedGlobalDrawers.reduce((acc, globalDrawer) => {
+    return {
+      ...acc,
+      [globalDrawer.id]: Math.min(globalDrawer.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE),
+    };
+  }, {});
   const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
 
   return {
@@ -225,6 +231,7 @@ export function useDrawers(
     activeGlobalDrawersSizes,
     activeDrawerSize,
     minDrawerSize,
+    minGlobalDrawersSizes,
     drawerSizes,
     drawersOpenQueue,
     onActiveDrawerChange,
