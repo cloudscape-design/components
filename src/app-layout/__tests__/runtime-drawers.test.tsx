@@ -18,9 +18,6 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -637,26 +634,8 @@ describeEachAppLayout(({ theme, size }) => {
   });
 });
 
-describe('VR toolbar only', () => {
-  beforeEach(() => {
-    (useMobile as jest.Mock).mockReturnValue(false);
-    (useVisualRefresh as jest.Mock).mockReturnValue(true);
-    setGlobalFlag('appLayoutWidget', true);
-  });
-  afterEach(() => {
-    (useMobile as jest.Mock).mockReset();
-    (useVisualRefresh as jest.Mock).mockReset();
-    setGlobalFlag('appLayoutWidget', undefined);
-  });
-
-  describe('desktop', () => {
-    beforeEach(() => {
-      (useMobile as jest.Mock).mockReturnValue(false);
-    });
-    afterEach(() => {
-      (useMobile as jest.Mock).mockReset();
-    });
-
+describe('toolbar mode only features', () => {
+  describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
     test('should register global runtime drawers and their trigger buttons', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
