@@ -722,5 +722,28 @@ describe('VR toolbar only', () => {
       expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 2');
       expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 3');
     });
+
+    test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+    });
   });
 });
