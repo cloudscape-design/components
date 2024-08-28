@@ -478,7 +478,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             isMobile && handleNavigationClick(false);
           },
           openTools: function () {
-            handleToolsClick(true);
+            handleToolsClick(true, hasDrawers);
+            if (hasDrawers) {
+              focusDrawersButtons(true);
+            }
           },
           focusToolsClose: () => {
             if (hasDrawers) {

@@ -91,7 +91,11 @@ const ClassicAppLayout = React.forwardRef(
     });
     const onToolsToggle = (open: boolean) => {
       setToolsOpen(open);
-      focusToolsButtons();
+      if (hasDrawers) {
+        focusDrawersButtons();
+      } else {
+        focusToolsButtons();
+      }
       fireNonCancelableEvent(onToolsChange, { open });
     };
 
