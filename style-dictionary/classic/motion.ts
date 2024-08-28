@@ -7,6 +7,11 @@ import { mode, tokens as visualRefreshTokens } from '../visual-refresh/motion';
 export const tokens: StyleDictionary.MotionDictionary = {
   ...visualRefreshTokens,
 
+  motionDurationRefreshOnlyAmbient: '0ms',
+  motionDurationRefreshOnlyFast: '0ms',
+  motionDurationRefreshOnlyMedium: '0ms',
+  motionDurationRefreshOnlySlow: '0ms',
+
   motionEasingResponsive: 'ease-out',
   motionEasingSticky: 'ease-out',
   motionEasingExpressive: 'ease-out',

@@ -266,7 +266,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       totalActiveGlobalDrawersSize,
       resizableSpaceAvailable,
     } = computeHorizontalLayout({
-      activeDrawerSize,
+      activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
       minContentWidth,
       navigationOpen: !!resolvedNavigation && navigationOpen,
@@ -274,6 +274,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement,
       splitPanelOpen,
       splitPanelPosition: splitPanelPreferences?.position,
+      isMobile,
       activeGlobalDrawersSizes,
     });
 
@@ -425,8 +426,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={
-            splitPanelPosition === 'side' &&
-            splitPanel && (
+            splitPanelPosition === 'side' && (
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}

@@ -200,7 +200,7 @@ export function useDrawers(
 
   const activeDrawerSize = activeDrawerIdResolved
     ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
-    : 0;
+    : toolsProps.toolsWidth;
   const activeGlobalDrawersSizes: Record<string, number> = activeGlobalDrawersIds.reduce(
     (acc, currentGlobalDrawerId) => {
       const currentGlobalDrawer = combinedGlobalDrawers.find(drawer => drawer.id === currentGlobalDrawerId);
