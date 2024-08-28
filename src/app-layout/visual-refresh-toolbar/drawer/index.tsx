@@ -77,6 +77,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
         blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
         insetBlockStart: placement.insetBlockStart,
       }}
+      data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
     >
       {!isMobile && activeDrawer?.resizable && (
         <div className={styles['drawer-slider']}>
@@ -189,6 +190,7 @@ export function AppLayoutGlobalDrawerImplementation({
         insetBlockStart: placement.insetBlockStart,
         ...(!isMobile && { [customCssProps.drawerSize]: `${show ? size : 0}px` }),
       }}
+      data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
     >
       {!isMobile && activeGlobalDrawer?.resizable && (
         <div className={styles['drawer-slider']}>

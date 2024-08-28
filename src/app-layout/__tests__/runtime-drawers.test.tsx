@@ -18,6 +18,9 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -631,5 +634,57 @@ describeEachAppLayout(({ theme, size }) => {
     onToolsChange.mockClear();
     wrapper.findToolsClose().click();
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+});
+
+describe('VR toolbar only', () => {
+  beforeEach(() => {
+    (useMobile as jest.Mock).mockReturnValue(false);
+    (useVisualRefresh as jest.Mock).mockReturnValue(true);
+    setGlobalFlag('appLayoutWidget', true);
+  });
+  afterEach(() => {
+    (useMobile as jest.Mock).mockReset();
+    (useVisualRefresh as jest.Mock).mockReset();
+    setGlobalFlag('appLayoutWidget', undefined);
+  });
+
+  describe('desktop', () => {
+    beforeEach(() => {
+      (useMobile as jest.Mock).mockReturnValue(false);
+    });
+    afterEach(() => {
+      (useMobile as jest.Mock).mockReset();
+    });
+
+    test('should register global runtime drawers and their trigger buttons', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'local drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findDrawersTriggers()!.length).toBe(4);
+      expect(wrapper.findActiveDrawers()!.length).toBe(3);
+      expect(wrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent('local drawer content');
+      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toHaveTextContent('global drawer content 1');
+      expect(wrapper.findDrawerById('global-drawer-2')!.getElement()).toHaveTextContent('global drawer content 2');
+    });
   });
 });

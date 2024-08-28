@@ -59,6 +59,14 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles['active-drawer']);
   }
 
+  findActiveDrawers(): Array<ElementWrapper> {
+    return this.findAllByClassName(testutilStyles['active-drawer']);
+  }
+
+  findDrawerById(id: string): ElementWrapper | null {
+    return this.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
+  }
+
   findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
   }
