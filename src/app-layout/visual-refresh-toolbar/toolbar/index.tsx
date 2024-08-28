@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
+import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { Focusable } from '../../utils/use-focus-control';
@@ -170,7 +170,7 @@ export function AppLayoutToolbarImplementation({
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             {breadcrumbs}
             {discoveredBreadcrumbs && (
-              <InternalBreadcrumbGroup {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
+              <BreadcrumbGroupImplementation {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
             )}
           </div>
         )}
