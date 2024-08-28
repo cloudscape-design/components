@@ -741,5 +741,65 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
       expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
+
+    test('opens a drawer when openDrawer is called', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        mountContent: container => (container.textContent = 'local-drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findActiveDrawers()).toHaveLength(0);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawers()).toHaveLength(1);
+
+      awsuiPlugins.appLayout.openDrawer('global-drawer-1');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawers()).toHaveLength(2);
+    });
+
+    test('does not do anything when openDrawer is called with active drawer id', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        mountContent: container => (container.textContent = 'local-drawer content'),
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findActiveDrawers()).toHaveLength(0);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawers()).toHaveLength(1);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawers()).toHaveLength(1);
+    });
   });
 });
