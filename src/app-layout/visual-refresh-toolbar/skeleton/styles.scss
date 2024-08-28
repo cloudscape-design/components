@@ -134,7 +134,8 @@
   opacity: 0;
   z-index: 0;
   &.navigation,
-  &.tools {
+  &.tools,
+  &.global-tools {
     inline-size: 0px;
   }
 }

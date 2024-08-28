@@ -413,14 +413,16 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             !!globalDrawers.length &&
-            globalDrawers.map(drawer => (
-              <AppLayoutGlobalDrawer
-                key={drawer.id}
-                show={activeGlobalDrawersIds.includes(drawer.id)}
-                activeGlobalDrawer={drawer}
-                appLayoutInternals={appLayoutInternals}
-              />
-            ))
+            globalDrawers
+              .filter(drawer => activeGlobalDrawersIds.includes(drawer.id))
+              .map(drawer => (
+                <AppLayoutGlobalDrawer
+                  key={drawer.id}
+                  show={true}
+                  activeGlobalDrawer={drawer}
+                  appLayoutInternals={appLayoutInternals}
+                />
+              ))
           }
           globalToolsOpen={!!activeGlobalDrawersIds.length}
           toolsOpen={!!activeDrawer}

@@ -207,7 +207,7 @@ export function AppLayoutGlobalDrawerImplementation({
           />
         </div>
       )}
-      <div className={styles['drawer-content-container']}>
+      <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
         <div className={clsx(styles['drawer-close-button'])}>
           <InternalButton
             ariaLabel={computedAriaLabels.closeButton}
