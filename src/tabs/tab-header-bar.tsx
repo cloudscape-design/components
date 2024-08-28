@@ -487,7 +487,7 @@ const TabTrigger = forwardRef(
     const children = (
       <>
         <span className={styles['tabs-tab-label']} ref={tabLabelRefObject}>
-          {tab.label}
+          <span>{tab.label}</span>
         </span>
         {isDisabledWithReason && (
           <>

@@ -52,6 +52,32 @@ const permutations = createPermutations<TabsProps>([
     ],
     disableContentPaddings: [false, true],
   },
+  {
+    variant: ['default'],
+    tabs: [
+      [
+        {
+          label: (
+            <>
+              First tab <i>new</i>
+            </>
+          ),
+          id: 'first',
+          content: 'First content',
+          href: '#first',
+        },
+        {
+          label: (
+            <>
+              Second tab <i>new</i>
+            </>
+          ),
+          id: 'second',
+          href: '#second',
+        },
+      ],
+    ],
+  },
 ]);
 
 const fitHeightPermutations = createPermutations<TabsProps>([
