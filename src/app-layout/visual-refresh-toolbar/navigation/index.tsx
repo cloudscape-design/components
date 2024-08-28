@@ -28,6 +28,8 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
+  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
+
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
     const hasLink = findUpUntil(
@@ -54,8 +56,8 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       aria-hidden={!navigationOpen}
       onClick={onNavigationClick}
       style={{
-        blockSize: `calc(100vh - ${verticalOffsets.drawers}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: verticalOffsets.drawers,
+        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: drawersTopOffset,
       }}
     >
       <div className={clsx(styles['animated-content'])}>

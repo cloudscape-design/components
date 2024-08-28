@@ -41,6 +41,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
+  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID;
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
@@ -69,8 +70,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
         }
       }}
       style={{
-        blockSize: `calc(100vh - ${verticalOffsets.drawers}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: verticalOffsets.drawers,
+        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: drawersTopOffset,
       }}
     >
       {!isMobile && activeDrawer?.resizable && (
