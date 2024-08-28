@@ -20,6 +20,7 @@ import styles from './styles.css.js';
 export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
   InternalBaseComponentProps & {
     variant?: InternalVariant;
+    __injectAnalyticsComponentMetadata?: boolean;
   };
 
 export default function InternalExpandableSection({
@@ -38,6 +39,7 @@ export default function InternalExpandableSection({
   disableContentPaddings,
   headerAriaLabel,
   __internalRootRef,
+  __injectAnalyticsComponentMetadata,
   ...props
 }: InternalExpandableSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -101,6 +103,7 @@ export default function InternalExpandableSection({
       className={clsx(baseProps.className, styles.root)}
       variant={variant}
       disableContentPaddings={disableContentPaddings}
+      __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}
       header={
         <ExpandableSectionHeader
           id={triggerControlId}
