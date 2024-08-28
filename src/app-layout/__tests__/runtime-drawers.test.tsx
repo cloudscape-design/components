@@ -17,6 +17,7 @@ import { DrawerConfig } from '../../../lib/components/internal/plugins/controlle
 import createWrapper from '../../../lib/components/test-utils/dom';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
 
 beforeEach(() => {
@@ -662,6 +663,7 @@ describe('toolbar mode only features', () => {
       await delay();
 
       expect(wrapper.findDrawersTriggers()!.length).toBe(4);
+      expect(wrapper.find(`.${toolbarStyles.separator}`)!.getElement()).toBeInTheDocument();
       expect(wrapper.findActiveDrawers()!.length).toBe(3);
       expect(wrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent('local drawer content');
       expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toHaveTextContent('global drawer content 1');
