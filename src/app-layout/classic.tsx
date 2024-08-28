@@ -282,7 +282,7 @@ const ClassicAppLayout = React.forwardRef(
     );
 
     const getEffectiveToolsWidth = () => {
-      if (activeDrawerSize) {
+      if (activeDrawerSize && activeDrawer) {
         return Math.min(resizableSpaceAvailable, activeDrawerSize);
       }
 

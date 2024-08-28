@@ -10,7 +10,7 @@ import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
 
-import sharedStyles from '../../styles.css.js';
+import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
@@ -57,7 +57,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       id={activeDrawerId}
       aria-hidden={!activeDrawer}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, sharedStyles['with-motion'], {
+      className={clsx(styles.drawer, {
         [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
       })}
@@ -85,7 +85,10 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           />
         </div>
       )}
-      <div className={styles['drawer-content-container']}>
+      <div
+        className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}
+        style={{ width: isMobile ? '100%' : `${activeDrawerSize}px` }}
+      >
         <div className={clsx(styles['drawer-close-button'])}>
           <InternalButton
             ariaLabel={computedAriaLabels.closeButton}
@@ -100,16 +103,14 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             variant="icon"
           />
         </div>
-        {toolsContent && (
-          <div
-            className={clsx(
-              styles['drawer-content'],
-              activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
-            )}
-          >
-            {toolsContent}
-          </div>
-        )}
+        <div
+          className={clsx(
+            styles['drawer-content'],
+            activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
+          )}
+        >
+          {toolsContent}
+        </div>
         {activeDrawerId !== TOOLS_DRAWER_ID && <div className={styles['drawer-content']}>{activeDrawer?.content}</div>}
       </div>
     </aside>
