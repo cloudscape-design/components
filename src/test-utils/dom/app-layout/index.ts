@@ -75,6 +75,10 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
 
+  findGlobalDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
+    return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger-global']);
+  }
+
   findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
     return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
   }

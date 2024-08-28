@@ -180,7 +180,12 @@ export function DrawerTriggers({
                   ariaLabel={ariaLabel}
                   ariaExpanded={ariaExpanded}
                   badge={overflowMenuHasBadge}
-                  className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
+                  className={clsx(
+                    styles['drawers-trigger'],
+                    testutilStyles['drawers-trigger'],
+                    testutilStyles['drawers-trigger-global'],
+                    testUtilsClass
+                  )}
                   iconName="ellipsis"
                   onClick={onClick}
                 />

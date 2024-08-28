@@ -637,6 +637,21 @@ describeEachAppLayout(({ theme, size }) => {
 
 describe('toolbar mode only features', () => {
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+    test('registerDrawer registers local drawers if type is not specified', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'local drawer content'),
+      });
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+      expect(wrapper.findGlobalDrawersTriggers()).toHaveLength(0);
+    });
+
     test('should register global runtime drawers and their trigger buttons', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
