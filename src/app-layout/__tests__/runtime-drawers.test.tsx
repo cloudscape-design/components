@@ -680,11 +680,47 @@ describe('VR toolbar only', () => {
       });
       const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
+      await delay();
+
       expect(wrapper.findDrawersTriggers()!.length).toBe(4);
       expect(wrapper.findActiveDrawers()!.length).toBe(3);
       expect(wrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent('local drawer content');
       expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toHaveTextContent('global drawer content 1');
       expect(wrapper.findDrawerById('global-drawer-2')!.getElement()).toHaveTextContent('global drawer content 2');
+    });
+
+    test('if 2 global drawers are already open, and third drawers has opened, it should replace the first opened drawer', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-3',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 3'),
+      });
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findActiveDrawers()!.length).toBe(2);
+      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+
+      wrapper.findDrawerTriggerById('global-drawer-3')!.click();
+
+      expect(wrapper.findActiveDrawers()!.length).toBe(2);
+      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 2');
+      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 3');
     });
   });
 });
