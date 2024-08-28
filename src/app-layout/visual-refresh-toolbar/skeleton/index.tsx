@@ -71,6 +71,7 @@ export function SkeletonLayout({
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
       }}
     >
+      {toolbar}
       {navigation && (
         <div
           className={clsx(
@@ -83,7 +84,6 @@ export function SkeletonLayout({
           {navigation}
         </div>
       )}
-      {toolbar}
       <main className={clsx(styles['main-landmark'], anyPanelOpen && styles['unfocusable-mobile'])}>
         {notifications}
         <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })} style={style}>

@@ -83,14 +83,11 @@
   flex-direction: row;
   gap: awsui.$space-xs;
   justify-content: flex-end;
+}
 
-  &:not(.has-multiple-triggers).has-open-drawer {
-    opacity: 0;
-  }
-
-  &:not(.has-multiple-triggers):not(.has-open-drawer) {
-    opacity: 1;
-  }
+.group-divider {
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  block-size: 60%;
 }
 
 .drawers-trigger {
