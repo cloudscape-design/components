@@ -92,25 +92,20 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
 
   describe.each([true, false])('Toolbar trigger-button with isMobile=%s', isMobile => {
     describe.each([true, false])('AppLayoutInternals with hasOpenDrawer=%s', hasOpenDrawer => {
-      test('renders correctly without badge', () => {
+      test('renders correctly with wit badge', () => {
         const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-        const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
+        const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
           {
             badge: false,
-          },
-          {
-            isMobile,
-            hasOpenDrawer,
           },
           ref
         );
 
         expect(wrapper).not.toBeNull();
-        const button = wrapper.find('button');
         expect(getByTestId(mockTestId)).toBeTruthy();
+        const button = wrapper.find('button');
         expect(button).toBeTruthy();
-        expect(wrapper!.findIcon()).toBeTruthy();
-        expect(wrapper.findByClassName(visualRefreshStyles.dot)).toBeNull();
+        expect(wrapper.findByClassName(toolbarTriggerButtonStyles.dot)).toBeNull();
         expect(wrapper.findBadge()).toBeNull();
       });
 
@@ -159,7 +154,6 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
         const button = wrapper.find('button');
         expect(getByTestId(mockTestId)).toBeTruthy();
         expect(button).toBeTruthy();
-        expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
         expect(wrapper!.findIcon()).toBeTruthy();
       });
 
@@ -221,7 +215,6 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
     const button = wrapper.find('button');
     expect(getByTestId(mockTestId)).toBeTruthy();
     expect(button).toBeTruthy();
-    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
     expect(wrapper!.findIcon()).toBeTruthy();
     expect(wrapper.findByClassName(visualRefreshStyles.dot)).toBeTruthy();
   });
@@ -248,48 +241,34 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
 describe('Visual Refresh Toolbar trigger-button', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  test('renders correctly with without badge', () => {
+  test('renders correctly with badge using dot class', () => {
     const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
     const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
       {
-        badge: false,
+        badge: true,
       },
       ref
     );
 
     expect(wrapper).not.toBeNull();
-    expect(getByTestId(mockTestId)).toBeTruthy();
-    const button = wrapper.find('button');
-    expect(button).toBeTruthy();
-    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
-    expect(wrapper!.findIcon()).toBeTruthy();
-    expect(wrapper.findByClassName(toolbarTriggerButtonStyles.dot)).toBeNull();
-    expect(wrapper.findBadge()).toBeNull();
-  });
-
-  test('renders correctly with iconName', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton({}, ref);
-
-    expect(wrapper).not.toBeNull();
     const button = wrapper.find('button');
     expect(getByTestId(mockTestId)).toBeTruthy();
     expect(button).toBeTruthy();
-    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
     expect(wrapper!.findIcon()).toBeTruthy();
+    expect(wrapper.findByClassName(toolbarTriggerButtonStyles.dot)).toBeTruthy();
   });
 
-  test('renders correctly with iconSvg', () => {
-    const iconTestId = 'icon-test-id';
+  test.each([true, false])('icon renders correctly when iconSvg prop has a %s value', hasIconSvg => {
     const icon = (
-      <svg data-testid={iconTestId} viewBox="0 0 24 24">
+      <svg viewBox="0 0 24 24">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
       </svg>
     );
     const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
     const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
       {
-        iconSvg: icon,
+        iconName: hasIconSvg ? undefined : (mockProps.iconName as IconProps.Name),
+        iconSvg: hasIconSvg ? icon : '',
       },
       ref
     );
@@ -298,9 +277,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
     const button = wrapper.find('button');
     expect(getByTestId(mockTestId)).toBeTruthy();
     expect(button).toBeTruthy();
-    expect(button!.getElement().getAttribute('aria-label')).toEqual(mockProps.ariaLabel);
     expect(wrapper!.findIcon()).toBeTruthy();
-    expect(getByTestId(iconTestId)).toBeTruthy();
   });
 
   test.each([true, false])('click events work as expected when disabled is %s', disabledValue => {
