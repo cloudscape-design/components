@@ -24,6 +24,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute.
+   * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
    *
    * ### action
    *
@@ -144,6 +145,7 @@ export namespace ButtonDropdownProps {
     itemType?: ItemType;
     id: string;
     text: string;
+    ariaLabel?: string;
     lang?: string;
     disabled?: boolean;
     disabledReason?: string;

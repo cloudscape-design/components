@@ -368,51 +368,57 @@ describe('property filter parts', () => {
       ).toEqual(['state = Stopped']);
     });
 
-    test('query is created with actual value when clicking on option', () => {
-      const onChange = jest.fn();
-      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+    test.each([false, true])(
+      'query is created with actual value when clicking on option, disableFreeTextFiltering=%s',
+      disableFreeTextFiltering => {
+        const onChange = jest.fn();
+        const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering, onChange });
 
-      // Selecting matched option from the list
-      act(() => wrapper.setInputValue('state=Stopp'));
-      act(() => wrapper.selectSuggestion(1));
-      expect(onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            tokens: [{ propertyKey: 'state', value: '0', operator: '=' }],
-            operation: 'and',
-          },
-        })
-      );
-    });
+        // Selecting matched option from the list
+        act(() => wrapper.setInputValue('state=Stopp'));
+        act(() => wrapper.selectSuggestion(1));
+        expect(onChange).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: {
+              tokens: [{ propertyKey: 'state', value: '0', operator: '=' }],
+              operation: 'and',
+            },
+          })
+        );
+      }
+    );
 
-    test('query is created with actual value when pressing enter', () => {
-      const onChange = jest.fn();
-      const { propertyFilterWrapper: wrapper } = renderComponent({ onChange });
+    test.each([false, true])(
+      'query is created with actual value when pressing enter, disableFreeTextFiltering=%s',
+      disableFreeTextFiltering => {
+        const onChange = jest.fn();
+        const { propertyFilterWrapper: wrapper } = renderComponent({ disableFreeTextFiltering, onChange });
 
-      // Entering full label
-      act(() => wrapper.setInputValue('state=Stopping'));
-      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
-      expect(onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            tokens: [{ propertyKey: 'state', value: '1', operator: '=' }],
-            operation: 'and',
-          },
-        })
-      );
+        // Entering full label
+        act(() => wrapper.setInputValue('state=Stopping'));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+        expect(onChange).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: {
+              tokens: [{ propertyKey: 'state', value: '1', operator: '=' }],
+              operation: 'and',
+            },
+          })
+        );
 
-      // Entering full value
-      act(() => wrapper.setInputValue('state=2'));
-      act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
-      expect(onChange).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            tokens: [{ propertyKey: 'state', value: '2', operator: '=' }],
-            operation: 'and',
-          },
-        })
-      );
-    });
+        // Entering full value
+        act(() => wrapper.setInputValue('state=2'));
+        act(() => wrapper.findNativeInput().keydown(KeyCode.enter));
+        expect(onChange).toHaveBeenCalledWith(
+          expect.objectContaining({
+            detail: {
+              tokens: [{ propertyKey: 'state', value: '2', operator: '=' }],
+              operation: 'and',
+            },
+          })
+        );
+      }
+    );
   });
 
   describe('custom element slots', () => {

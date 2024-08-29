@@ -4,6 +4,7 @@ import React, { forwardRef, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
@@ -22,6 +23,11 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
+import {
+  GeneratedAnalyticsMetadataTabsComponent,
+  GeneratedAnalyticsMetadataTabsDismiss,
+  GeneratedAnalyticsMetadataTabsSelect,
+} from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
 import {
   hasHorizontalOverflow,
@@ -31,6 +37,7 @@ import {
   scrollIntoView,
 } from './scroll-utils';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
@@ -57,7 +64,7 @@ function dismissButton({
       formAction="none"
       ariaLabel={dismissLabel}
       disabled={dismissDisabled}
-      className={testUtilStyles['tab-dismiss-button']}
+      className={clsx(testUtilStyles['tab-dismiss-button'], analyticsSelectors['tab-dismiss-button'])}
       data-testid={`awsui-tab-dismiss-button-${tabId}`}
     />
   );
@@ -305,7 +312,7 @@ export function TabHeaderBar({
       >
         <TabList
           {...tabActionAttributes}
-          className={styles['tabs-header-list']}
+          className={clsx(styles['tabs-header-list'], analyticsSelectors['tabs-header-list'])}
           aria-label={ariaLabel}
           aria-labelledby={ariaLabelledby}
           ref={headerBarRef as never}
@@ -333,7 +340,7 @@ export function TabHeaderBar({
     </div>
   );
 
-  function renderTabHeader(tab: TabsProps.Tab) {
+  function renderTabHeader(tab: TabsProps.Tab, index: number) {
     const { dismissible, dismissLabel, dismissDisabled, action, onDismiss } = tab;
     const isActive = activeTabId === tab.id && !tab.disabled;
 
@@ -375,6 +382,7 @@ export function TabHeaderBar({
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
       [styles['tabs-tab-focused']]: focusedTabId === tab.id,
       [styles['tabs-tab-active']]: isActive,
+      [analyticsSelectors['active-tab-header']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
       [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),
     });
@@ -448,6 +456,24 @@ export function TabHeaderBar({
     };
 
     const TabItem = hasActionOrDismissible ? 'div' : 'li';
+
+    const analyticsDismissMetadata: GeneratedAnalyticsMetadataTabsDismiss = {
+      action: 'dismiss',
+      detail: {
+        id: tab.id,
+        label: `.${analyticsSelectors['tab-dismiss-button']}`,
+        position: `${index + 1}`,
+      },
+    };
+
+    const analyticsComponentMetadataInnerContext: Partial<GeneratedAnalyticsMetadataTabsComponent> = {
+      innerContext: {
+        tabId: tab.id,
+        tabLabel: `.${analyticsSelectors['tab-label']}`,
+        tabPosition: `${index + 1}`,
+      },
+    };
+
     return (
       <TabItem
         ref={(element: any) => tabRefs.current.set(tab.id, element as HTMLElement)}
@@ -455,11 +481,15 @@ export function TabHeaderBar({
         role="presentation"
         key={tab.id}
       >
-        <div className={tabHeaderContainerClasses} {...tabHeaderContainerAriaProps}>
-          <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} />
+        <div
+          className={tabHeaderContainerClasses}
+          {...tabHeaderContainerAriaProps}
+          {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadataInnerContext })}
+        >
+          <TabTrigger ref={setElement} tab={tab} elementProps={commonProps} activeTabId={activeTabId} index={index} />
           {action && <span className={tabActionClasses}>{action}</span>}
           {dismissible && (
-            <span className={styles['tabs-tab-dismiss']}>
+            <span className={styles['tabs-tab-dismiss']} {...getAnalyticsMetadataAttribute(analyticsDismissMetadata)}>
               {dismissButton({ dismissLabel, dismissDisabled, onDismiss: handleDismiss, tabId: tab.id })}
             </span>
           )}
@@ -469,14 +499,14 @@ export function TabHeaderBar({
   }
 }
 
+interface TabTriggerProps {
+  tab: TabsProps.Tab;
+  elementProps: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement>;
+  activeTabId?: string;
+  index: number;
+}
 const TabTrigger = forwardRef(
-  (
-    {
-      tab,
-      elementProps,
-    }: { tab: TabsProps.Tab; elementProps: React.HTMLAttributes<HTMLAnchorElement | HTMLButtonElement> },
-    ref: React.Ref<HTMLElement>
-  ) => {
+  ({ tab, elementProps, activeTabId, index }: TabTriggerProps, ref: React.Ref<HTMLElement>) => {
     const refObject = useRef<HTMLElement>(null);
     const tabLabelRefObject = useRef<HTMLElement>(null);
     const mergedRef = useMergeRefs(refObject, ref);
@@ -486,7 +516,7 @@ const TabTrigger = forwardRef(
     const { targetProps, descriptionEl } = useHiddenDescription(tab.disabledReason);
     const children = (
       <>
-        <span className={styles['tabs-tab-label']} ref={tabLabelRefObject}>
+        <span className={clsx(styles['tabs-tab-label'], analyticsSelectors['tab-label'])} ref={tabLabelRefObject}>
           {tab.label}
         </span>
         {isDisabledWithReason && (
@@ -511,12 +541,23 @@ const TabTrigger = forwardRef(
       onMouseLeave: () => setShowTooltip(false),
     };
 
+    const analyticsSelectMetadata: GeneratedAnalyticsMetadataTabsSelect = {
+      action: 'select',
+      detail: {
+        id: tab.id,
+        label: `.${analyticsSelectors['tab-label']}`,
+        position: `${index + 1}`,
+        originTabId: activeTabId || '',
+      },
+    };
+
     const commonProps = {
       ...elementProps,
       ...(isDisabledWithReason ? targetProps : {}),
       ...(isDisabledWithReason ? handlers : {}),
       ref: mergedRef,
       tabIndex: tabIndex,
+      ...(tab.disabled || tab.id === activeTabId ? {} : getAnalyticsMetadataAttribute(analyticsSelectMetadata)),
     };
 
     return tab.href ? (

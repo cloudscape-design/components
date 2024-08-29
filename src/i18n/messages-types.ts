@@ -253,13 +253,42 @@ export interface I18nFormatArgTypes {
     "i18nStrings.operatorText": never;
     "i18nStrings.operatorsText": never;
     "i18nStrings.propertyText": never;
+    "i18nStrings.removeTokenButtonAriaLabel": {
+      "token__formattedText": string | number;
+    }
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": {
+      "token__formattedText": string | number;
+    }
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": {
+      "token__formattedText": string | number;
+    }
+    "i18nStrings.tokenEditorTokenRemoveLabel": never;
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": never;
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": never;
+    "i18nStrings.tokenEditorAddNewTokenLabel": never;
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": {
+      "token__formattedText": string | number;
+    }
+    "i18nStrings.tokenEditorAddExistingTokenLabel": {
+      "token__propertyLabel": string | number;
+      "token__operator": string | number;
+      "token__value": string | number;
+    }
     "i18nStrings.tokenLimitShowFewer": never;
     "i18nStrings.tokenLimitShowMore": never;
     "i18nStrings.valueText": never;
-    "i18nStrings.removeTokenButtonAriaLabel": {
+    "i18nStrings.formatToken": {
       "token__operator": string;
       "token__propertyLabel": string | number;
       "token__value": string | number;
+    }
+    "i18nStrings.groupEditAriaLabel": {
+      "group__formattedTokens__length": string;
+      "group__formattedTokens0__formattedText": string | number;
+      "group__operationLabel": string | number;
+      "group__formattedTokens1__formattedText": string | number;
+      "group__formattedTokens2__formattedText": string | number;
+      "group__formattedTokens3__formattedText": string | number;
     }
   }
   "s3-resource-selector": {

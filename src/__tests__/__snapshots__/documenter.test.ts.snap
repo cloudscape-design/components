@@ -3564,6 +3564,7 @@ The following properties are supported across all types:
 - \`disabled\` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
 - \`disabledReason\` (string) - (Optional) Displays text near the \`text\` property when item is disabled. Use to provide additional context.
 - \`description\` (string) - additional data that will be passed to a \`data-description\` attribute.
+- \`ariaLabel\` (string) - (Optional) - ARIA label of the item element.
 
 ### action
 
@@ -12380,6 +12381,11 @@ operations are communicated to the user in another way.",
             "name": "filteringPlaceholder",
             "optional": true,
             "type": "string",
+          },
+          Object {
+            "name": "formatToken",
+            "optional": true,
+            "type": "(token: PropertyFilterProps.FormattedToken) => string",
           },
           Object {
             "name": "groupPropertiesText",

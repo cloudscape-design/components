@@ -10,7 +10,10 @@ import Link from '~components/link';
 import PropertyFilter from '~components/property-filter';
 import Table, { TableProps } from '~components/table';
 
-import { i18nStrings } from '../property-filter/common-props';
+import {
+  i18nStrings as propertyFilterI18nStrings,
+  labels as propertyFilterLabels,
+} from '../property-filter/common-props';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -267,7 +270,8 @@ const permutations = createPermutations<TableProps>([
             groupValuesLabel: 'Number values',
           },
         ]}
-        i18nStrings={i18nStrings}
+        {...propertyFilterLabels}
+        i18nStrings={propertyFilterI18nStrings}
         query={{
           operation: 'or',
           tokens: [
@@ -315,7 +319,28 @@ const permutations = createPermutations<TableProps>([
     variant: [undefined, 'full-page'],
   },
   {
-    columnDefinitions: [PROPERTY_COLUMNS],
+    columnDefinitions: [
+      [
+        {
+          id: 'variable',
+          header: 'Property',
+          cell: item => <Link href="#">{item.name}</Link>,
+          isRowHeader: true,
+          width: 150,
+        },
+        {
+          id: 'type',
+          header: 'Type',
+          cell: item => item.type,
+          width: 150,
+        },
+        {
+          id: 'value',
+          header: 'Value',
+          cell: item => item.value,
+        },
+      ],
+    ],
     items: [
       [
         {

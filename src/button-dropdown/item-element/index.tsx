@@ -115,6 +115,7 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
+    'aria-label': item.ariaLabel,
     className: clsx(styles['menu-item'], analyticsLabels['menu-item']),
     lang: item.lang,
     ref: menuItemRef,

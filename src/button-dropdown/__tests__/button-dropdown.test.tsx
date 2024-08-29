@@ -256,20 +256,34 @@ describe('with main action', () => {
     expect(onFollow).toHaveBeenCalledTimes(1);
   });
 
-  test('main action with external link has an icon and dedicated ARIA label', () => {
+  test('main action assigns ARIA label', () => {
     const wrapper = renderSplitButtonDropdown({
       mainAction: {
         text: 'Main',
-        href: 'https://external.com',
-        external: true,
-        externalIconAriaLabel: '(opens in a new tab)',
+        ariaLabel: 'Main #1',
       },
     });
 
-    expect(wrapper.findMainAction()?.findByClassName(iconStyles.icon)).not.toBe(null);
     expect(wrapper.findMainAction()!.getElement()).toHaveTextContent('Main');
-    expect(wrapper.findMainAction()!.getElement()).toHaveAccessibleName('Main (opens in a new tab)');
+    expect(wrapper.findMainAction()!.getElement()).toHaveAccessibleName('Main #1');
   });
+
+  test.each([undefined, 'Main #1'])(
+    'main action with external link has an icon and dedicated ARIA label, ariaLabel=%s',
+    ariaLabel => {
+      const text = 'Main';
+      const externalIconAriaLabel = '(opens in a new tab)';
+      const wrapper = renderSplitButtonDropdown({
+        mainAction: { text, ariaLabel, href: 'https://external.com', external: true, externalIconAriaLabel },
+      });
+
+      expect(wrapper.findMainAction()?.findByClassName(iconStyles.icon)).not.toBe(null);
+      expect(wrapper.findMainAction()!.getElement()).toHaveTextContent('Main');
+      expect(wrapper.findMainAction()!.getElement()).toHaveAccessibleName(
+        `${ariaLabel ?? text} ${externalIconAriaLabel}`
+      );
+    }
+  );
 
   test('main action can be set as disabled', () => {
     const wrapper = renderSplitButtonDropdown({

@@ -12,7 +12,7 @@ import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import { i18nStrings as propertyFilterI18n } from '../property-filter/common-props';
+import { i18nStrings as propertyFilterI18n, labels as propertyFilterLabels } from '../property-filter/common-props';
 import ScreenshotArea from '../utils/screenshot-area';
 import { SampleDropdown, SampleModal } from './common';
 
@@ -175,6 +175,7 @@ const components = {
         filteringErrorText={'error text'}
         filteringRecoveryText={'recovery text'}
         filteringFinishedText={'finished text'}
+        {...propertyFilterLabels}
         i18nStrings={propertyFilterI18n}
         expandToViewport={expandToViewport}
       />

@@ -206,10 +206,11 @@
     "i18nStrings.operatorText": "Operatör",
     "i18nStrings.operatorsText": "Operatörler",
     "i18nStrings.propertyText": "Özellik",
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__formattedText} filtresini kaldır",
     "i18nStrings.tokenLimitShowFewer": "Daha az göster",
     "i18nStrings.tokenLimitShowMore": "Daha fazla göster",
     "i18nStrings.valueText": "Değer",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {{token__propertyLabel}, {token__value} değerine eşittir filtresini kaldır} not_equals {{token__propertyLabel}, {token__value} değerine eşit değildir filtresini kaldır} greater_than {{token__propertyLabel}, {token__value} değerinden büyüktür filtresini kaldır} greater_than_equal {{token__propertyLabel}, {token__value} değerinden büyük veya buna eşittir filtresini kaldır} less_than {{token__propertyLabel}, {token__value} değerinden küçüktür filtresini kaldır} less_than_equal {{token__propertyLabel}, {token__value} değerinden küçük veya buna eşittir filtresini kaldır} contains {{token__propertyLabel}, {token__value} değerini içerir filtresini kaldır} not_contains {{token__propertyLabel}, {token__value} değerini içermez filtresini kaldır} starts_with {{token__propertyLabel}, {token__value} değerinden şunla başlar filtresini kaldır} not_starts_with {{token__propertyLabel}, {token__value} değeri ile başlamaz filtresini kaldır} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} eşittir {token__value}} not_equals {{token__propertyLabel} eşit değildir {token__value}} greater_than {{token__propertyLabel} büyüktür {token__value}} greater_than_equal {{token__propertyLabel} büyük veya eşittir {token__value}} less_than {{token__propertyLabel} küçüktür {token__value}} less_than_equal {{token__propertyLabel} küçük veya eşittir {token__value}} contains {{token__propertyLabel}, {token__value} içerir} not_contains {{token__propertyLabel}, {token__value} içermez} starts_with {{token__propertyLabel}, {token__value} ile başlar} not_starts_with {{token__propertyLabel}, {token__value} ile başlamaz} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Bir sürüm seçin",
