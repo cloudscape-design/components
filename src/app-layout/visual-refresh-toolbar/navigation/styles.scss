@@ -10,6 +10,7 @@
 
 .navigation {
   position: sticky;
+  z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   inset-block-end: 0;
   block-size: 100%;
@@ -19,7 +20,6 @@
   overscroll-behavior-y: contain;
   word-wrap: break-word;
   pointer-events: auto;
-  z-index: 1001;
 
   // All content is hidden by the overflow-x property
   &:not(.is-navigation-open) {
@@ -40,6 +40,7 @@
   // The Navigation drawer will take up the entire viewport on mobile
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$navigationWidth}: 100vw;
+    z-index: constants.$drawer-z-index-mobile;
   }
 }
 

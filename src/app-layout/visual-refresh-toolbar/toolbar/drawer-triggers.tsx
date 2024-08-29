@@ -114,16 +114,19 @@ export function DrawerTriggers({
         aria-orientation="horizontal"
       >
         {splitPanelToggleProps && (
-          <TriggerButton
-            ariaLabel={splitPanelToggleProps.ariaLabel}
-            ariaControls={splitPanelToggleProps.controlId}
-            ariaExpanded={splitPanelToggleProps.active}
-            className={clsx(styles['drawers-trigger'], splitPanelTestUtilStyles['open-button'])}
-            iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
-            onClick={() => onSplitPanelToggle?.()}
-            selected={splitPanelToggleProps.active}
-            ref={splitPanelFocusRef}
-          />
+          <>
+            <TriggerButton
+              ariaLabel={splitPanelToggleProps.ariaLabel}
+              ariaControls={splitPanelToggleProps.controlId}
+              ariaExpanded={splitPanelToggleProps.active}
+              className={clsx(styles['drawers-trigger'], splitPanelTestUtilStyles['open-button'])}
+              iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
+              onClick={() => onSplitPanelToggle?.()}
+              selected={splitPanelToggleProps.active}
+              ref={splitPanelFocusRef}
+            />
+            {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
+          </>
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           return (

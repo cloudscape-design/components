@@ -206,10 +206,11 @@
     "i18nStrings.operatorText": "عامل التصفية",
     "i18nStrings.operatorsText": "عوامل التصفية",
     "i18nStrings.propertyText": "الخاصية",
+    "i18nStrings.removeTokenButtonAriaLabel": "إزالة عامل التصفية، {token__formattedText}",
     "i18nStrings.tokenLimitShowFewer": "إظهار عدد أقل من عوامل التصفية",
     "i18nStrings.tokenLimitShowMore": "عرض المزيد من عوامل التصفية",
     "i18nStrings.valueText": "عمود القيمة",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {إزالة عامل التصفية، {token__propertyLabel} تساوي {token__value}} not_equals {إزالة عامل التصفية، {token__propertyLabel} لا تساوي {token__value}} greater_than {إزالة عامل التصفية، {token__propertyLabel} أكبر من {token__value}} greater_than_equal {إزالة عامل التصفية، {token__propertyLabel} أكبر من أو تساوي {token__value}} less_than {إزالة عامل التصفية، {token__propertyLabel} أقل من {token__value}} less_than_equal {إزالة عامل التصفية، {token__propertyLabel} أقل من أو تساوي {token__value}} contains {إزالة عامل التصفية، {token__propertyLabel} تحتوي على {token__value}} not_contains {إزالة عامل التصفية، {token__propertyLabel} لا تحتوي على {token__value}} starts_with {إزالة عامل التصفية، {token__propertyLabel} تبدأ بـ {token__value}} not_starts_with {إزالة عامل التصفية، {token__propertyLabel} لا تبدأ بـ {token__value}} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} تساوي {token__value}} not_equals {{token__propertyLabel} لا تساوي {token__value}} greater_than {{token__propertyLabel} أكبر من {token__value}} greater_than_equal {{token__propertyLabel} أكبر من أو تساوي {token__value}} less_than {{token__propertyLabel} أقل من {token__value}} less_than_equal {{token__propertyLabel} أقل من أو تساوي {token__value}} contains {{token__propertyLabel} تحتوي على {token__value}} not_contains {{token__propertyLabel} لا تحتوي على {token__value}} starts_with {{token__propertyLabel} تبدأ بـ {token__value}} not_starts_with {{token__propertyLabel} لا تبدأ بـ {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "اختر إصدارًا",

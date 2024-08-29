@@ -34,10 +34,10 @@ describe('toolbar mode only features', () => {
       expect(findToolbar(wrapper)).toContainElement(wrapper.findToolsToggle().getElement());
     });
 
-    test('does not render navigation toggle button for open state', () => {
+    test('renders navigation toggle button for open state', () => {
       const { wrapper } = renderComponent(<AppLayout navigationOpen={true} onNavigationChange={noop} />);
       expect(findToolbar(wrapper)).toBeTruthy();
-      expect(wrapper.findNavigationToggle()).toBeFalsy();
+      expect(wrapper.findNavigationToggle()).toBeTruthy();
     });
 
     test('renders toolbar with split panel trigger', () => {

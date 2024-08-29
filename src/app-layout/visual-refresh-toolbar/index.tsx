@@ -167,6 +167,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToolsToggle,
     });
 
+    const onActiveDrawerChangeHandler = (drawerId: string | null) => {
+      onActiveDrawerChange(drawerId);
+      drawersFocusControl.setFocus();
+    };
+
     useEffect(() => {
       const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
         const localDrawer = drawers?.find(drawer => drawer.id === drawerId);
@@ -244,7 +249,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     });
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
-    const drawersFocusControl = useFocusControl(!!activeDrawer?.id);
+    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, !isMobile, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -290,7 +295,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerId: activeDrawer?.id ?? null,
       // only pass it down if there are non-empty drawers or tools
       drawers: drawers?.length || !toolsHide ? drawers : undefined,
-      onActiveDrawerChange,
+      onActiveDrawerChange: onActiveDrawerChangeHandler,
       globalDrawers,
       activeGlobalDrawersIds,
       onActiveGlobalDrawersChange,
@@ -311,7 +316,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
-      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
+      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide' && !isMobile,
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: !!stickyNotifications,
@@ -355,7 +360,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       setNotificationsHeight,
       onSplitPanelToggle: onSplitPanelToggleHandler,
       onNavigationToggle,
-      onActiveDrawerChange,
+      onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
     };
 
