@@ -742,6 +742,25 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
+    test('should close opened global drawer by clicking on its trigger button', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(wrapper.findDrawerById('global-drawer-1')).toBeNull();
+    });
+
     test('opens a drawer when openDrawer is called', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
