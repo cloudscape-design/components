@@ -93,6 +93,26 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
     return { propertyKey: token.property?.propertyKey, propertyLabel, operator: token.operator, value: tokenValue };
   }
 
+  function toI18n(
+    token: InternalToken,
+    { ariaLabel }: { ariaLabel: boolean }
+  ): {
+    token__propertyKey: string;
+    token__propertyLabel: string;
+    token__operator: string;
+    token__value: string;
+    token__formattedText: string;
+  } {
+    const formatted = toFormatted(token);
+    return {
+      token__propertyKey: formatted.propertyKey ?? '',
+      token__propertyLabel: formatted.propertyLabel,
+      token__operator: ariaLabel ? getOperatorI18nString(formatted.operator) : formatted.operator,
+      token__value: formatted.value,
+      token__formattedText: formatToken(formatted),
+    };
+  }
+
   return {
     ...def,
     allPropertiesLabel,
@@ -157,7 +177,7 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
       const formatter = i18n(
         'i18nStrings.removeTokenButtonAriaLabel',
         def.removeTokenButtonAriaLabel,
-        format => () => format({ token__formattedText: formatToken(toFormatted(token)) })
+        format => () => format(toI18n(token, { ariaLabel: true }))
       );
       return formatter?.(toFormatted(token)) ?? '';
     },
@@ -165,7 +185,7 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
       const formatter = i18n(
         'i18nStrings.tokenEditorTokenActionsAriaLabel',
         def.tokenEditorTokenActionsAriaLabel,
-        format => () => format({ token__formattedText: formatToken(toFormatted(token)) })
+        format => () => format(toI18n(token, { ariaLabel: true }))
       );
       return formatter?.(toFormatted(token)) ?? '';
     },
@@ -173,7 +193,7 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
       const formatter = i18n(
         'i18nStrings.tokenEditorTokenRemoveAriaLabel',
         def.tokenEditorTokenRemoveAriaLabel,
-        format => () => format({ token__formattedText: formatToken(toFormatted(token)) })
+        format => () => format(toI18n(token, { ariaLabel: true }))
       );
       return formatter?.(toFormatted(token)) ?? '';
     },
@@ -181,21 +201,15 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
       const formatter = i18n(
         'i18nStrings.tokenEditorAddExistingTokenAriaLabel',
         def.tokenEditorAddExistingTokenAriaLabel,
-        format => () => format({ token__formattedText: formatToken(toFormatted(token)) })
+        format => () => format(toI18n(token, { ariaLabel: true }))
       );
       return formatter?.(toFormatted(token)) ?? '';
     },
     tokenEditorAddExistingTokenLabel: token => {
-      const formattedToken = toFormatted(token);
       const formatter = i18n(
         'i18nStrings.tokenEditorAddExistingTokenLabel',
         def.tokenEditorAddExistingTokenLabel,
-        format => () =>
-          format({
-            token__propertyLabel: formattedToken.propertyLabel,
-            token__operator: formattedToken.operator,
-            token__value: formattedToken.value,
-          })
+        format => () => format(toI18n(token, { ariaLabel: false }))
       );
       return formatter?.(toFormatted(token)) ?? '';
     },

@@ -206,11 +206,10 @@
     "i18nStrings.operatorText": "Operatore",
     "i18nStrings.operatorsText": "Operatori",
     "i18nStrings.propertyText": "Proprietà",
-    "i18nStrings.removeTokenButtonAriaLabel": "Rimuovi filtro, {token__formattedText}",
     "i18nStrings.tokenLimitShowFewer": "Mostra meno",
     "i18nStrings.tokenLimitShowMore": "Mostra altro",
     "i18nStrings.valueText": "Valore",
-    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} è uguale a {token__value}} not_equals {{token__propertyLabel} non è uguale a {token__value}} greater_than {{token__propertyLabel} è maggiore di {token__value}} greater_than_equal {{token__propertyLabel} è maggiore o uguale a {token__value}} less_than {{token__propertyLabel} è minore di {token__value}} less_than_equal {{token__propertyLabel} è minore o uguale a {token__value}} contains {{token__propertyLabel} contiene {token__value}} not_contains {{token__propertyLabel} non contiene {token__value}} starts_with {{token__propertyLabel} inizia con {token__value}} not_starts_with {{token__propertyLabel} non inizia con {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Rimuovi filtro, {token__propertyLabel} uguale a {token__value}} not_equals {Rimuovi filtro, {token__propertyLabel} non è uguale a {token__value}} greater_than {Rimuovi filtro, {token__propertyLabel} è maggiore di {token__value}} greater_than_equal {Rimuovi filtro, {token__propertyLabel} è maggiore o uguale a {token__value}} less_than {Rimuovi filtro, {token__propertyLabel} è inferiore a {token__value}} less_than_equal {Rimuovi filtro, {token__propertyLabel} è minore o uguale a {token__value}} contains {Rimuovi filtro, {token__propertyLabel} contiene {token__value}} not_contains {Rimuovi filtro, {token__propertyLabel} non contiene {token__value}} starts_with {Rimuovi filtro, {token__propertyLabel} inizia con {token__value}} not_starts_with {Rimuovi filtro, {token__propertyLabel} non inizia con {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Scegli una versione",

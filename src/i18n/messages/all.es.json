@@ -158,7 +158,7 @@
     "loadingText": "Cargando contenido"
   },
   "input": {
-    "clearAriaLabel": "Despejar"
+    "clearAriaLabel": "Borrar"
   },
   "link": {
     "externalIconAriaLabel": "Se abre en una pestaña nueva."
@@ -206,11 +206,10 @@
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propiedad",
-    "i18nStrings.removeTokenButtonAriaLabel": "Quitar el filtro {token__formattedText}",
     "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
     "i18nStrings.tokenLimitShowMore": "Mostrar más",
     "i18nStrings.valueText": "Valor",
-    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} es igual a {token__value}} not_equals {{token__propertyLabel} no es igual a {token__value}} greater_than {{token__propertyLabel} es mayor que {token__value}} greater_than_equal {{token__propertyLabel} es mayor que {token__value} o igual} less_than {{token__propertyLabel} es menor que {token__value}} less_than_equal {{token__propertyLabel} es menor que {token__value} o igual} contains {{token__propertyLabel} contiene {token__value}} not_contains {{token__propertyLabel} no contiene {token__value}} starts_with {{token__propertyLabel} empieza con {token__value}} not_starts_with {{token__propertyLabel} no empieza con {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Eliminar filtro, {token__propertyLabel} igual a {token__value}} not_equals {Eliminar filtro, {token__propertyLabel} no es igual a {token__value}} greater_than {Eliminar filtro, {token__propertyLabel} es mayor que {token__value}} greater_than_equal {Eliminar filtro, {token__propertyLabel} es mayor o igual que {token__value}} less_than {Eliminar filtro, {token__propertyLabel} es menor que {token__value}} less_than_equal {Eliminar filtro, {token__propertyLabel} es menor o igual que {token__value}} contains {Eliminar filtro, {token__propertyLabel} contiene {token__value}} not_contains {Eliminar filtro, {token__propertyLabel} no contiene {token__value}} starts_with {Eliminar filtro, {token__propertyLabel} comienza con {token__value}} not_starts_with {Eliminar filtro, {token__propertyLabel} no comienza con {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Elija una versión",
