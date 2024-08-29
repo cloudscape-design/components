@@ -187,7 +187,7 @@ const PropertyFilterInternal = React.forwardRef(
           break;
         }
       }
-      if (internalFreeText.disabled && !('propertyKey' in newToken)) {
+      if (internalFreeText.disabled && !newToken.property) {
         return;
       }
       addToken(newToken);
