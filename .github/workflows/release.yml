@@ -60,7 +60,3 @@ jobs:
     secrets: inherit
     with:
       skip-test: true
-    needs:
-      - unitTest
-      - integTest
-      - a11yTest
