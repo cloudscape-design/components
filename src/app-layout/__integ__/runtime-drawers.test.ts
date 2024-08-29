@@ -68,3 +68,49 @@ for (const visualRefresh of [true, false]) {
     );
   });
 }
+
+describe('Visual refresh toolbar only', () => {
+  function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new BasePageObject(browser);
+
+      await browser.url(
+        `#/light/app-layout/runtime-drawers?${new URLSearchParams({
+          hasDrawers: 'false',
+          hasTools: 'true',
+          splitPanelPosition: 'side',
+          visualRefresh: 'true',
+          appLayoutToolbar: 'true',
+        }).toString()}`
+      );
+      await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
+      await testFn(page);
+    });
+  }
+
+  test(
+    'displays only the most recently opened drawer in a full-width popup on mobile view (global drawer on top of the local one)',
+    setupTest(async page => {
+      await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+
+      await page.setWindowSize(viewports.mobile);
+      // technically, both drawers are present in the DOM tree, but only one is visible.
+      // the isClickable check ensures that the drawer is actually visible
+      await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'displays only the most recently opened drawer in a full-width popup on mobile view (local drawer on top of the global one)',
+    setupTest(async page => {
+      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+
+      await page.setWindowSize(viewports.mobile);
+      // technically, both drawers are present in the DOM tree, but only one is visible.
+      // the isClickable check ensures that the drawer is actually visible
+      await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
+    })
+  );
+});

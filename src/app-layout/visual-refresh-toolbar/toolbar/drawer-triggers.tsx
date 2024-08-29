@@ -154,7 +154,11 @@ export function DrawerTriggers({
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
               ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
-              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'])}
+              className={clsx(
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                testutilStyles['drawers-trigger-global']
+              )}
               iconName={item.trigger.iconName}
               iconSvg={item.trigger.iconSvg}
               key={item.id}
