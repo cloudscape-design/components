@@ -113,4 +113,41 @@ describe('Visual refresh toolbar only', () => {
       await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
     })
   );
+
+  test('should open 3 drawers (1 local and 2 global) if the screen size permits', () => {
+    setupTest(async page => {
+      await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+      await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
+
+      await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('circle2-global').toSelector())).resolves.toBe(true);
+    });
+  });
+
+  describe('active drawers take up all available space on the page and a third drawer is opened', () => {
+    test('active drawers can be shrunk to accommodate a third drawer', () => {
+      setupTest(async page => {
+        await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+        await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+        await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
+
+        // resize an active drawer to take up all available space
+        await page.dragAndDrop(wrapper.findActiveDrawerResizeHandle().toSelector(), -600);
+
+        await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+
+        await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('circle2-global').toSelector())).resolves.toBe(true);
+      });
+    });
+
+    test.todo(
+      'the drawer that was opened first should be closed when active drawers can not be shrunk to accommodate a third drawer',
+      () => {}
+    );
+  });
 });
