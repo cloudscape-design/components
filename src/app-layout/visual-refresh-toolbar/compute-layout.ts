@@ -62,6 +62,7 @@ export interface VerticalLayoutOutput {
   toolbar: number;
   notifications: number;
   header: number;
+  drawers: number;
 }
 
 export function computeVerticalLayout({
@@ -73,13 +74,16 @@ export function computeVerticalLayout({
 }: VerticalLayoutInput): VerticalLayoutOutput {
   const toolbar = topOffset;
   let notifications = topOffset;
+  let drawers = topOffset;
+
   if (hasVisibleToolbar) {
     notifications += toolbarHeight;
+    drawers += toolbarHeight;
   }
   let header = notifications;
   if (stickyNotifications) {
     header += notificationsHeight;
   }
 
-  return { toolbar, notifications, header };
+  return { toolbar, notifications, header, drawers };
 }
