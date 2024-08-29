@@ -29,6 +29,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     drawersFocusControl,
     isMobile,
     placement,
+    verticalOffsets,
     onActiveDrawerChange,
     onActiveDrawerResize,
   } = appLayoutInternals;
@@ -40,6 +41,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
+  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID;
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
@@ -57,7 +59,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       id={activeDrawerId}
       aria-hidden={!activeDrawer}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, {
+      className={clsx(styles.drawer, sharedStyles['with-motion'], {
         [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
         [testutilStyles.tools]: isToolsDrawer,
       })}
@@ -68,8 +70,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
         }
       }}
       style={{
-        blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: placement.insetBlockStart,
+        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: drawersTopOffset,
       }}
     >
       {!isMobile && activeDrawer?.resizable && (

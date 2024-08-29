@@ -18,7 +18,14 @@ export default function ExpandableSection({ variant = 'default', ...props }: Exp
     },
   });
 
-  return <InternalExpandableSection variant={variant} {...props} {...baseComponentProps} />;
+  return (
+    <InternalExpandableSection
+      variant={variant}
+      {...props}
+      {...baseComponentProps}
+      __injectAnalyticsComponentMetadata={true}
+    />
+  );
 }
 
 applyDisplayName(ExpandableSection, 'ExpandableSection');

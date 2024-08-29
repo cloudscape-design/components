@@ -215,7 +215,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
-      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
+      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide' && !isMobile,
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: !!stickyNotifications,

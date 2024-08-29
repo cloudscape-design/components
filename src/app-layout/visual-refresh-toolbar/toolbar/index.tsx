@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { InternalBreadcrumbGroup } from '../../../breadcrumb-group/internal';
+import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { Focusable } from '../../utils/use-focus-control';
@@ -153,14 +153,14 @@ export function AppLayoutToolbarImplementation({
       }}
     >
       <div className={styles['toolbar-container']}>
-        {hasNavigation && !navigationOpen && (
+        {hasNavigation && (
           <nav className={clsx(styles['universal-toolbar-nav'], testutilStyles['drawer-closed'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={false}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
-              onClick={() => onNavigationToggle?.(true)}
+              onClick={() => onNavigationToggle?.(!navigationOpen)}
               ref={navigationFocusRef}
               selected={navigationOpen}
             />
@@ -170,7 +170,7 @@ export function AppLayoutToolbarImplementation({
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             {breadcrumbs}
             {discoveredBreadcrumbs && (
-              <InternalBreadcrumbGroup {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
+              <BreadcrumbGroupImplementation {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
             )}
           </div>
         )}
