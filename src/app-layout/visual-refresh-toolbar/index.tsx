@@ -110,12 +110,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         newDrawer.defaultSize ?? drawerSizes[drawerId] ?? MIN_DRAWER_SIZE,
         MIN_DRAWER_SIZE
       );
-      // check if we have enough space for this drawer. if yes, do nothing
-      if (resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize >= newDrawerSize) {
-        return;
-      }
       //   check if the active drawers could be resized to fit the new drawers
-      //   to do this, we need to take all active drawers, sum up their min sizes, truncate it from remainingSpaceForDrawers
+      //   to do this, we need to take all active drawers, sum up their min sizes, truncate it from resizableSpaceAvailable
       //   and compare a given number with the new drawer id min size
 
       // the total size of all global drawers resized to their min size
@@ -268,7 +264,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelForcedPosition,
       splitPanelPosition,
       maxGlobalDrawersSizes,
-      totalActiveGlobalDrawersSize,
       resizableSpaceAvailable,
     } = computeHorizontalLayout({
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,

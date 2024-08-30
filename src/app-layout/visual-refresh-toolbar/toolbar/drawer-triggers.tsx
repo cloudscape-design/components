@@ -150,7 +150,7 @@ export function DrawerTriggers({
             />
           );
         })}
-        {visibleItems.length > globalDrawersStartIndex && <div className={styles.separator} />}
+        {visibleItems.length > globalDrawersStartIndex && <div className={styles['group-divider']}></div>}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
           return (
             <TriggerButton
