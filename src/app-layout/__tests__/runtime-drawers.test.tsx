@@ -830,6 +830,28 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
+    test('renders resize handle for a global drawer when config is enabled', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'test-resizable',
+        resizable: true,
+        defaultActive: true,
+        type: 'global',
+        ariaLabels: {
+          triggerButton: 'drawer trigger',
+          content: 'drawer content',
+          resizeHandle: 'drawer resize',
+          closeButton: 'drawer close',
+        },
+      });
+      const { wrapper } = await renderComponent(<AppLayout />);
+
+      expect(wrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
+        'aria-label',
+        'drawer resize'
+      );
+    });
+
     test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,

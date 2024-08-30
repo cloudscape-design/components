@@ -90,4 +90,10 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findActiveDrawerResizeHandle(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['drawers-slider']);
   }
+
+  findResizeHandleByActiveDrawerId(id: string): ElementWrapper | null {
+    return this.find(
+      `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['drawers-slider']}`
+    );
+  }
 }
