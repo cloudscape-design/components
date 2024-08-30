@@ -96,4 +96,10 @@ export default class AppLayoutWrapper extends ComponentWrapper {
       `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['drawers-slider']}`
     );
   }
+
+  findCloseButtonByActiveDrawerId(id: string): ElementWrapper | null {
+    return this.find(
+      `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-close-button']}`
+    );
+  }
 }

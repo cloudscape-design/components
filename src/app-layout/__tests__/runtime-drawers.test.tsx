@@ -852,6 +852,26 @@ describe('toolbar mode only features', () => {
       );
     });
 
+    test('close active global drawer by clicking on close button', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        defaultActive: true,
+        type: 'global',
+        ariaLabels: {
+          triggerButton: 'drawer trigger',
+          content: 'drawer content',
+          resizeHandle: 'drawer resize',
+          closeButton: 'drawer close',
+        },
+      });
+      const { wrapper } = await renderComponent(<AppLayout />);
+
+      expect(wrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
+      wrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
+      expect(wrapper.findDrawerById('global-drawer')).toBeNull();
+    });
+
     test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,

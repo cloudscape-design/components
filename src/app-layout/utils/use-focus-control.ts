@@ -25,7 +25,7 @@ export interface FocusControlMultipleStates {
 }
 
 export function useMultipleFocusControl(
-  restoreFocus = false,
+  restoreFocus: boolean,
   activeDrawersIds: Array<string>
 ): FocusControlMultipleStates {
   const isOpen = activeDrawersIds.length > 0;
