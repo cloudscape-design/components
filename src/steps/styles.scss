@@ -1,0 +1,60 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.steps-list {
+  list-style: none;
+
+  > .step-container {
+    display: grid;
+    grid-template-columns: awsui.$space-static-l 1fr;
+    grid-template-rows: minmax(awsui.$space-static-l, auto);
+    row-gap: awsui.$space-static-xxxs;
+    margin-block-end: awsui.$space-static-xxxs;
+
+    > .step-status {
+      grid-row: 1;
+      grid-column: 1;
+      text-align: center;
+    }
+
+    > .step-header {
+      grid-row: 1;
+      grid-column: 2;
+    }
+
+    > .step-details {
+      align-items: center;
+      font-size: awsui.$font-size-body-s;
+      color: awsui.$color-text-status-inactive;
+      grid-row: 2;
+      grid-column: 2;
+    }
+
+    > .step-connector {
+      grid-row: 2;
+      grid-column: 1;
+      background-color: awsui.$color-border-divider-default;
+      margin-block: 0;
+      border-block: 0;
+      border-inline: 0;
+      inline-size: awsui.$space-static-xxxs;
+      block-size: auto;
+      min-block-size: awsui.$space-static-xs;
+      position: relative;
+      inset-inline-end: awsui.$space-static-xxxs;
+    }
+  }
+
+  > :last-of-type > .step-connector {
+    display: none;
+  }
+}
