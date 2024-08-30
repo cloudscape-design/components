@@ -11,6 +11,8 @@ import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
@@ -36,6 +38,7 @@ import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './pro
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
 
+import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
@@ -85,8 +88,17 @@ const PropertyFilterInternal = React.forwardRef(
     }: PropertyFilterInternalProps,
     ref: React.Ref<Ref>
   ) => {
-    const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
+    const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+    const onFocusMoved = () => setNextFocusIndex(null);
+    const tokenListRef = useListFocusController({
+      nextFocusIndex,
+      onFocusMoved,
+      listItemSelector: `.${tokenListStyles['list-item']}`,
+      showMoreSelector: `.${tokenListStyles.toggle}`,
+      outsideSelector: `.${styles.input}`,
+    });
 
+    const mergedRef = useMergeRefs(tokenListRef, __internalRootRef);
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
@@ -275,7 +287,7 @@ const PropertyFilterInternal = React.forwardRef(
       : rest.ariaDescribedby;
 
     return (
-      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
         <div className={styles['search-field']}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
@@ -353,8 +365,7 @@ const PropertyFilterInternal = React.forwardRef(
                     }}
                     onRemoveToken={() => {
                       removeToken(tokenIndex);
-                      inputRef.current?.focus({ preventDropdown: true });
-                      setRemovedTokenIndex(tokenIndex);
+                      setNextFocusIndex(tokenIndex);
                     }}
                     filteringProperties={internalProperties}
                     filteringOptions={internalOptions}
@@ -391,7 +402,6 @@ const PropertyFilterInternal = React.forwardRef(
                     </InternalButton>
                   )
                 }
-                moveFocusNextToIndex={removedTokenIndex}
               />
             </InternalSpaceBetween>
           </div>

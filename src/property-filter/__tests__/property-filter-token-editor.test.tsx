@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useState } from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 import { format } from 'date-fns';
 
@@ -359,6 +359,7 @@ function TokenEditorWithI18n(props: Omit<TokenEditorProps, 'i18nStrings'>) {
         return 'equals';
       case '!=':
         return 'does_not_equal';
+      default:
         return operator;
     }
   };
@@ -423,6 +424,19 @@ function TokenEditorWithProvider(props: Omit<TokenEditorProps, 'i18nStrings'>) {
 function renderTokenEditor(props?: Partial<TokenEditorProps>, withProvider = false) {
   const Component = withProvider ? TokenEditorWithProvider : TokenEditorWithI18n;
   const { container } = render(<Component {...defaultEditorProps} {...props} />);
+  return new InternalPropertyFilterEditorDropdownWrapper(container);
+}
+
+function TokenEditorStateful(props: Omit<TokenEditorProps, 'i18nStrings'>) {
+  const i18nStringsInternal = usePropertyFilterI18n({});
+  const [tempGroup, setTempGroup] = useState(props.tempGroup);
+  return (
+    <TokenEditor {...props} tempGroup={tempGroup} onChangeTempGroup={setTempGroup} i18nStrings={i18nStringsInternal} />
+  );
+}
+
+function renderTokenEditorStateful(props?: Partial<TokenEditorProps>) {
+  const { container } = render(<TokenEditorStateful {...defaultEditorProps} {...props} />);
   return new InternalPropertyFilterEditorDropdownWrapper(container);
 }
 
@@ -676,6 +690,38 @@ describe.each([false, true])('with i18n-provider %s', withProvider => {
         'aria-label',
         'Add filter Name equals 2 to group'
       );
+    });
+
+    test('moves focus to adjacent property when a filter is removed', () => {
+      const wrapper = renderTokenEditorStateful({
+        tempGroup: [
+          { property: nameProperty, operator: '=', value: 'John' },
+          { property: nameProperty, operator: '=', value: 'Jane' },
+          { property: nameProperty, operator: '=', value: 'Jack' },
+        ],
+        standaloneTokens: [],
+      });
+
+      // Removing 2nd filter (Jane) and next 2nd filter (Jack)
+      findRemoveAction(wrapper, 2).click();
+      findRemoveAction(wrapper, 2).click();
+
+      // Focus is on new first filter (John)
+      expect(wrapper.findPropertyField().find('button')!.getElement()).toHaveFocus();
+    });
+
+    test('moves focus to the new filter when it is added', () => {
+      const wrapper = renderTokenEditorStateful({
+        tempGroup: [],
+        standaloneTokens: [{ property: nameProperty, operator: '=', value: 'Jane' }],
+      });
+
+      // Adding new filter
+      wrapper.findTokenAddActions()!.openDropdown();
+      wrapper.findTokenAddActions()!.findItems()[0].click();
+
+      // Focus in on new filter property select
+      expect(wrapper.findPropertyField().find('button')!.getElement()).toHaveFocus();
     });
   });
 });
