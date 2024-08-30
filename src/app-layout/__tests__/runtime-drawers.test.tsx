@@ -973,5 +973,24 @@ describe('toolbar mode only features', () => {
 
       expect(wrapper.findActiveDrawers()).toHaveLength(1);
     });
+
+    test('should restore focus when a global drawer is closed', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} ref={ref} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.focus();
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      wrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+      expect(wrapper.findDrawerById('global-drawer-1')).toBeNull();
+      expect(wrapper.findDrawerTriggerById('global-drawer-1')!.getElement()).toHaveFocus();
+    });
   });
 });
