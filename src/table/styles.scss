@@ -22,14 +22,14 @@
   padding-inline: 0;
 
   &-filtering {
+    max-inline-size: 100%;
+    margin-inline-end: awsui.$space-l;
     @supports (flex-basis: fit-content) {
       flex: 1 1 fit-content;
     }
     @supports not (flex-basis: fit-content) {
       flex: 1 1 auto;
     }
-    max-inline-size: 100%;
-    margin-inline-end: awsui.$space-l;
   }
 
   &-align-right {
@@ -97,7 +97,7 @@
   padding-inline: 0;
   &.has-footer {
     /*
-    Add a bottom border to the body cell of an empty table as a separator between the 
+    Add a bottom border to the body cell of an empty table as a separator between the
     table and the footer
     */
     border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
@@ -127,7 +127,7 @@
 }
 
 /*
-The min/max/width token values in Visual Refresh should align 
+The min/max/width token values in Visual Refresh should align
 the table header and body cells selection control with the table
 filter search icon.
 */
