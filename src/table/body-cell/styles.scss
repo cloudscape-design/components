@@ -152,7 +152,7 @@ $cell-negative-space-vertical: 2px;
       }
     }
 
-    &.sticky-cell-pad-inline-start {
+    &.sticky-cell-pad-inline-start:not(.has-selection) {
       @include cell-padding-inline-start($cell-horizontal-padding);
     }
 
