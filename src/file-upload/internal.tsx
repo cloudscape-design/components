@@ -113,98 +113,97 @@ function InternalFileUpload(
   const invalid = restProps.invalid || formFieldContext.invalid || hasError;
 
   return (
-    <div style={{ display: 'contents' }} ref={tokenListRef}>
-      <InternalSpaceBetween
-        {...baseProps}
-        size="xs"
-        className={clsx(baseProps.className, styles.root)}
-        __internalRootRef={__internalRootRef}
-      >
+    <InternalSpaceBetween
+      {...baseProps}
+      size="xs"
+      className={clsx(baseProps.className, styles.root)}
+      __internalRootRef={__internalRootRef}
+      ref={tokenListRef}
+    >
+      <InternalBox>
+        {isDropzoneVisible ? (
+          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+        ) : (
+          <FileInput
+            ref={ref}
+            accept={accept}
+            ariaRequired={ariaRequired}
+            multiple={multiple}
+            onChange={handleFilesChange}
+            value={value}
+            {...restProps}
+            ariaDescribedby={ariaDescribedBy}
+            invalid={invalid}
+          >
+            {i18nStrings.uploadButtonText(multiple)}
+          </FileInput>
+        )}
+
+        {(constraintText || errorText || warningText) && (
+          <div className={styles.hints}>
+            {errorText && (
+              <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+                {errorText}
+              </FormFieldError>
+            )}
+            {showWarning && (
+              <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
+                {warningText}
+              </FormFieldWarning>
+            )}
+            {constraintText && (
+              <ConstraintText id={constraintTextId} hasValidationText={!!errorText || !!warningText}>
+                {constraintText}
+              </ConstraintText>
+            )}
+          </div>
+        )}
+      </InternalBox>
+
+      {!multiple && value.length > 0 ? (
         <InternalBox>
-          {isDropzoneVisible ? (
-            <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
-          ) : (
-            <FileInput
-              ref={ref}
-              accept={accept}
-              ariaRequired={ariaRequired}
-              multiple={multiple}
-              onChange={handleFilesChange}
-              value={value}
-              {...restProps}
-              ariaDescribedby={ariaDescribedBy}
-              invalid={invalid}
-            >
-              {i18nStrings.uploadButtonText(multiple)}
-            </FileInput>
-          )}
-
-          {(constraintText || errorText || warningText) && (
-            <div className={styles.hints}>
-              {errorText && (
-                <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
-                  {errorText}
-                </FormFieldError>
-              )}
-              {showWarning && (
-                <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
-                  {warningText}
-                </FormFieldWarning>
-              )}
-              {constraintText && (
-                <ConstraintText id={constraintTextId} hasValidationText={!!errorText || !!warningText}>
-                  {constraintText}
-                </ConstraintText>
-              )}
-            </div>
-          )}
+          <Token
+            ariaLabel={value[0].name}
+            dismissLabel={i18nStrings.removeFileAriaLabel(0)}
+            onDismiss={() => onFileRemove(0)}
+            errorText={fileErrors?.[0]}
+            warningText={fileWarnings?.[0]}
+            errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+            warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
+            data-index={0}
+          >
+            <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
+          </Token>
         </InternalBox>
+      ) : null}
 
-        {!multiple && value.length > 0 ? (
-          <InternalBox>
-            <Token
-              ariaLabel={value[0].name}
-              dismissLabel={i18nStrings.removeFileAriaLabel(0)}
-              onDismiss={() => onFileRemove(0)}
-              errorText={fileErrors?.[0]}
-              warningText={fileWarnings?.[0]}
-              errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-              warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-              data-index={0}
-            >
-              <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
-            </Token>
-          </InternalBox>
-        ) : null}
-
-        {multiple && value.length > 0 ? (
-          <InternalBox>
-            <TokenList
-              alignment="vertical"
-              items={value}
-              renderItem={(file, fileIndex) => (
-                <Token
-                  ariaLabel={file.name}
-                  dismissLabel={i18nStrings.removeFileAriaLabel(fileIndex)}
-                  onDismiss={() => onFileRemove(fileIndex)}
-                  errorText={fileErrors?.[fileIndex]}
-                  warningText={fileWarnings?.[fileIndex]}
-                  errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-                  warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-                  data-index={fileIndex}
-                >
-                  <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
-                </Token>
-              )}
-              limit={tokenLimit}
-              i18nStrings={{
-                limitShowFewer: i18nStrings.limitShowFewer,
-                limitShowMore: i18nStrings.limitShowMore,
-              }}
-            />
-          </InternalBox>
-        ) : null}
-      </InternalSpaceBetween>
-    </div>
+      {multiple && value.length > 0 ? (
+        <InternalBox>
+          <TokenList
+            alignment="vertical"
+            items={value}
+            renderItem={(file, fileIndex) => (
+              <Token
+                ariaLabel={file.name}
+                dismissLabel={i18nStrings.removeFileAriaLabel(fileIndex)}
+                onDismiss={() => onFileRemove(fileIndex)}
+                errorText={fileErrors?.[fileIndex]}
+                warningText={fileWarnings?.[fileIndex]}
+                errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
+                warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
+                data-index={fileIndex}
+              >
+                <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
+              </Token>
+            )}
+            limit={tokenLimit}
+            i18nStrings={{
+              limitShowFewer: i18nStrings.limitShowFewer,
+              limitShowMore: i18nStrings.limitShowMore,
+            }}
+          />
+        </InternalBox>
+      ) : null}
+    </InternalSpaceBetween>
   );
 }
