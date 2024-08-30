@@ -2,6 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
+import { act, render, waitFor, fireEvent } from '@testing-library/react';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
+import createWrapper from '../../../lib/components/test-utils/dom';
+
 import {
   describeEachAppLayout,
   renderComponent,
@@ -11,9 +15,9 @@ import {
   findActiveDrawerLandmark,
 } from './utils';
 
-import { act } from '@testing-library/react';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
@@ -21,6 +25,12 @@ jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
 }));
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
+
+const mockEventBubble = {
+  bubbles: true,
+  isTrusted: true,
+  relatedTarget: null,
+};
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -33,6 +43,7 @@ describeEachAppLayout(({ size, theme }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
+    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
   });
 
   test('should not apply drawers treatment to the tools if the drawers array is empty', () => {
@@ -183,5 +194,121 @@ describeEachAppLayout(({ size, theme }) => {
 
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).not.toHaveClass(selectedClass);
+  });
+
+  testIf(theme === 'refresh')('tooltip renders correctly on focus, blur, and escape key press events', async () => {
+    const mockDrawers = [testDrawer];
+    const result = render(<AppLayout drawers={mockDrawers} />);
+    const wrapper = createWrapper(result.container);
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+
+    const triggerButtonContainer = wrapper.findByClassName(
+      visualRefreshStyles[`drawers-${size === 'mobile' ? 'mobile' : 'desktop'}-triggers-container`]
+    );
+    expect(triggerButtonContainer).not.toBeNull();
+    const items = triggerButtonContainer?.findAllByClassName(visualRefreshStyles['trigger-wrapper']);
+    expect(items?.length).toEqual(mockDrawers.length);
+
+    fireEvent.focus(items![0].getElement());
+
+    await waitFor(() => {
+      const tooltipWrapper = result.getByTestId(testDrawer.ariaLabels.drawerName);
+      expect(tooltipWrapper.classList.contains(tooltipStyles.root)).toBeTruthy();
+      expect(tooltipWrapper.classList.contains(visualRefreshStyles['trigger-tooltip'])).toBeTruthy();
+      expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+    });
+
+    fireEvent.blur(items![0].getElement());
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+
+    fireEvent.focus(items![0].getElement());
+
+    await waitFor(() => {
+      const tooltipWrapper = result.getByTestId(testDrawer.ariaLabels.drawerName);
+      expect(tooltipWrapper.classList.contains(tooltipStyles.root)).toBeTruthy();
+      expect(tooltipWrapper.classList.contains(visualRefreshStyles['trigger-tooltip'])).toBeTruthy();
+      expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+    });
+
+    fireEvent.keyDown(items![0].getElement(), {
+      ...mockEventBubble,
+      key: 'Escape',
+      code: KeyCode.escape,
+    });
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+  });
+
+  testIf(theme === 'refresh')(
+    'tooltip renders correctly on pointer events and is removed on escape key press',
+    async () => {
+      const mockDrawers = [testDrawer];
+      const result = render(<AppLayout drawers={mockDrawers} />);
+      const wrapper = createWrapper(result.container);
+      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+
+      const triggerButtonContainer = wrapper.findByClassName(
+        visualRefreshStyles[`drawers-${size === 'mobile' ? 'mobile' : 'desktop'}-triggers-container`]
+      );
+      expect(triggerButtonContainer).not.toBeNull();
+      const items = triggerButtonContainer?.findAllByClassName(visualRefreshStyles['trigger-wrapper']);
+      expect(items?.length).toEqual(mockDrawers.length);
+
+      fireEvent.pointerEnter(items![0].getElement());
+
+      await waitFor(() => {
+        const tooltipWrapper = result.getByTestId(testDrawer.ariaLabels.drawerName);
+        expect(tooltipWrapper.classList.contains(tooltipStyles.root)).toBeTruthy();
+        expect(tooltipWrapper.classList.contains(visualRefreshStyles['trigger-tooltip'])).toBeTruthy();
+        expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+      });
+
+      fireEvent.pointerLeave(items![0].getElement());
+      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+
+      fireEvent.pointerEnter(items![0].getElement());
+
+      await waitFor(() => {
+        const tooltipWrapper = result.getByTestId(testDrawer.ariaLabels.drawerName);
+        expect(tooltipWrapper.classList.contains(tooltipStyles.root)).toBeTruthy();
+        expect(tooltipWrapper.classList.contains(visualRefreshStyles['trigger-tooltip'])).toBeTruthy();
+        expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+      });
+
+      fireEvent.keyDown(items![0].getElement(), {
+        ...mockEventBubble,
+        key: 'Escape',
+        code: KeyCode.escape,
+      });
+      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+    }
+  );
+
+  testIf(theme === 'refresh')('tooltip does not render on trigger focus via close button', async () => {
+    const mockDrawers = [testDrawer];
+    const result = render(<AppLayout drawers={mockDrawers} />);
+    const wrapper = createWrapper(result.container);
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+
+    const triggerButtonContainer = wrapper.findByClassName(
+      visualRefreshStyles[`drawers-${size === 'mobile' ? 'mobile' : 'desktop'}-triggers-container`]
+    );
+    expect(triggerButtonContainer).not.toBeNull();
+    const drawerTrigger = triggerButtonContainer!.find(
+      `button[data-testid="awsui-app-layout-trigger-${testDrawer.id}"]`
+    );
+    drawerTrigger?.click();
+
+    await waitFor(() => {
+      expect(result.getByText('Security')).toBeTruthy();
+      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+    });
+
+    const closeButton = wrapper.findDrawer()?.find(`button[title="${testDrawer.ariaLabels.drawerName}-close-button"]`);
+    expect(closeButton).not.toBeNull();
+    closeButton?.click();
+
+    await waitFor(() => {
+      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+    });
   });
 });

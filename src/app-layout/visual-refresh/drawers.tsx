@@ -139,6 +139,7 @@ function ActiveDrawer() {
             }}
             ref={drawersRefs.close}
             variant="icon"
+            data-shift-focus="last-opened-toolbar-trigger-button"
           />
         </div>
         {toolsContent && (
@@ -244,6 +245,7 @@ function DesktopTriggers() {
         aria-orientation="vertical"
       >
         {visibleItems.map(item => {
+          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -258,11 +260,14 @@ function DesktopTriggers() {
               iconSvg={item.trigger.iconSvg}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
-              ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
+              ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
               selected={item.id === activeDrawerId}
+              hasTooltip={true}
+              tooltipText={item.ariaLabels?.drawerName}
+              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
             />
           );
         })}
@@ -348,29 +353,35 @@ export function MobileTriggers() {
       role="region"
     >
       <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
-        {visibleItems.map(item => (
-          <TriggerButton
-            ariaExpanded={item.id === activeDrawerId}
-            ariaLabel={item.ariaLabels?.triggerButton}
-            ariaControls={activeDrawerId === item.id ? item.id : undefined}
-            className={clsx(
-              `awsui-app-layout-trigger-${item.id}`,
-              styles['drawers-trigger'],
-              testutilStyles['drawers-trigger'],
-              item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-            )}
-            disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            iconName={item.trigger.iconName}
-            iconSvg={item.trigger.iconSvg}
-            badge={item.badge}
-            key={item.id}
-            onClick={() => handleDrawersClick(item.id)}
-            testId={`awsui-app-layout-trigger-${item.id}`}
-            highContrastHeader={headerVariant === 'high-contrast'}
-            selected={item.id === activeDrawerId}
-          />
-        ))}
+        {visibleItems.map(item => {
+          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
+          return (
+            <TriggerButton
+              ariaExpanded={item.id === activeDrawerId}
+              ariaLabel={item.ariaLabels?.triggerButton}
+              ariaControls={activeDrawerId === item.id ? item.id : undefined}
+              className={clsx(
+                `awsui-app-layout-trigger-${item.id}`,
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+              )}
+              disabled={hasDrawerViewportOverlay}
+              ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
+              iconName={item.trigger.iconName}
+              iconSvg={item.trigger.iconSvg}
+              badge={item.badge}
+              key={item.id}
+              onClick={() => handleDrawersClick(item.id)}
+              testId={`awsui-app-layout-trigger-${item.id}`}
+              highContrastHeader={headerVariant === 'high-contrast'}
+              selected={item.id === activeDrawerId}
+              hasTooltip={true}
+              tooltipText={item.ariaLabels?.drawerName}
+              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+            />
+          );
+        })}
         {overflowItems.length > 0 && (
           <OverflowMenu
             items={overflowItems}

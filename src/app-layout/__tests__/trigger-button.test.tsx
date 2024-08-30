@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
 
 import * as AllContext from '../../../lib/components/app-layout/visual-refresh/context.js';
 import VisualRefreshTriggerButton, {
@@ -21,12 +23,16 @@ const MockUseAppLayoutInternals = jest.spyOn(AllContext, 'useAppLayoutInternals'
 
 const mockDrawerId = 'mock-drawer-id';
 const mockTestId = `awsui-app-layout-trigger-${mockDrawerId}`;
+const mockTooltipText = 'Mock Tooltip';
 
 const mockProps = {
   ariaLabel: 'Aria label',
   className: 'class-from-props',
   iconName: 'bug',
   testId: mockTestId,
+  tooltipText: mockTooltipText,
+  hasTooltip: false,
+  isForPreviousActiveDrawer: false,
 };
 const mockOtherEl = {
   class: 'other-el-class',
@@ -57,7 +63,7 @@ const testIf = (condition: boolean) => (condition ? test : test.skip);
 const renderVisualRefreshTriggerButton = (
   props: Partial<VisualRefreshTriggerButtonProps> = {},
   useAppLayoutInternalsValues: Partial<AllContext.AppLayoutInternals> = {},
-  ref: React.Ref<ButtonProps.Ref>
+  ref: React.Ref<ButtonProps.Ref> = null
 ) => {
   MockUseAppLayoutInternals.mockReturnValue({
     ...mockUseLayoutInternalValues,
@@ -76,7 +82,7 @@ const renderVisualRefreshTriggerButton = (
 
 const renderVisualRefreshToolbarTriggerButton = (
   props: Partial<VisualRefreshToolbarTriggerButtonProps> = {},
-  ref: React.Ref<ButtonProps.Ref>
+  ref: React.Ref<ButtonProps.Ref> = null
 ) => {
   const renderProps = { ...mockProps, ...props };
   const { container, rerender, getByTestId, getByText } = render(
@@ -95,7 +101,6 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
   describe.each([true, false])('Toolbar trigger-button with isMobile=%s', isMobile => {
     describe.each([true, false])('AppLayoutInternals with hasOpenDrawer=%s', hasOpenDrawer => {
       testIf(!isMobile)('applies the correct class when selected', () => {
-        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper } = renderVisualRefreshTriggerButton(
           {
             selected: true,
@@ -103,8 +108,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          },
-          ref
+          }
         );
         expect(wrapper).not.toBeNull();
         const seletedButton = wrapper.findByClassName(visualRefreshStyles.selected);
@@ -112,7 +116,6 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
       });
 
       test('renders correctly with wit badge', () => {
-        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
             badge: false,
@@ -120,8 +123,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          },
-          ref
+          }
         );
 
         expect(wrapper).not.toBeNull();
@@ -132,8 +134,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
         expect(wrapper.findBadge()).toBeNull();
       });
 
-      test('renders correctly with aria controls adn aria label', () => {
-        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
+      test('renders correctly with aria controls and aria label', () => {
         const mockAriaControls = 'mock-aria-control';
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
@@ -142,8 +143,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          },
-          ref
+          }
         );
 
         expect(wrapper).not.toBeNull();
@@ -181,7 +181,6 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
       });
 
       test.each([true, false])('Disables click events when disabled prop is %s', disabledValue => {
-        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const mockClickSpy = jest.fn();
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
@@ -191,8 +190,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          },
-          ref
+          }
         );
         expect(wrapper).not.toBeNull();
         const button = wrapper.find('button')!;
@@ -202,7 +200,6 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
       });
 
       test('renders an empty button when no iconName and iconSVG prop', () => {
-        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper } = renderVisualRefreshTriggerButton(
           {
             iconName: '' as IconProps.Name,
@@ -211,8 +208,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          },
-          ref
+          }
         );
         expect(wrapper).not.toBeNull();
         const button = wrapper.find('button');
@@ -223,15 +219,13 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
   });
 
   test('renders correctly with badge using dot class on desktop', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
     const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
       {
         badge: true,
       },
       {
         isMobile: false,
-      },
-      ref
+      }
     );
 
     expect(wrapper).not.toBeNull();
@@ -242,22 +236,163 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
     expect(wrapper.findByClassName(visualRefreshStyles.dot)).toBeTruthy();
   });
 
-  test.each([true, false] as const)('Is focusable using the forwarded ref with mobile is %s', isMobile => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
-      {},
-      {
-        isMobile,
-      },
-      ref
+  describe('Shared trigger wrapper events', () => {
+    test.each([true, false] as const)(
+      'Is focusable using the forwarded ref with no tooltip with mobile is %s',
+      isMobile => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
+        const { wrapper, getByTestId, getByText } = renderVisualRefreshTriggerButton(
+          {
+            hasTooltip: true,
+            tooltipText: mockTooltipText,
+          },
+          {
+            isMobile,
+          },
+          ref
+        );
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        const button = wrapper!.find('button');
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+          false
+        );
+        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+        expect(() => getByText(mockTooltipText)).toThrow();
+        expect(button).toBeTruthy();
+        expect(document.activeElement).not.toBe(button!.getElement());
+        (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
+        expect(document.activeElement).toBe(button!.getElement());
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      }
     );
-    expect(getByTestId(mockTestId)).toBeTruthy();
-    const button = wrapper!.find('button');
-    expect(getByTestId(mockTestId)).toBeTruthy();
-    expect(button).toBeTruthy();
-    expect(document.activeElement).not.toBe(button!.getElement());
-    (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
-    expect(document.activeElement).toBe(button!.getElement());
+
+    test.each([true, false] as const)(
+      'Does not show tooltip on pointerEnter when hasTooltip is %s',
+      async hasTooltip => {
+        const { wrapper, getByText, getByTestId } = await renderVisualRefreshTriggerButton({
+          hasTooltip,
+          tooltipText: mockTooltipText,
+        });
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+          false
+        );
+        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+        expect(() => getByText(mockTooltipText)).toThrow();
+        fireEvent.pointerEnter(wrapper!.getElement());
+        if (hasTooltip) {
+          expect(getByText(mockTooltipText)).toBeTruthy();
+          expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+            true
+          );
+          //trigger event again to assert the tooltip remains
+          fireEvent.pointerDown(wrapper!.getElement());
+          expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+            true
+          );
+        } else {
+          expect(() => getByText(mockTooltipText)).toThrow();
+          expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+            false
+          );
+        }
+        fireEvent.pointerLeave(wrapper!.getElement(), mockEventBubble);
+        expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+          false
+        );
+        expect(() => getByText(mockTooltipText)).toThrow();
+      }
+    );
+
+    test('Shows tooltip on focus and removes on key escape when drawer is open on mobile', async () => {
+      const { wrapper, getByText, getByTestId } = await renderVisualRefreshTriggerButton({
+        hasTooltip: true,
+        tooltipText: mockTooltipText,
+      });
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(() => getByText(mockTooltipText)).toThrow();
+      fireEvent.focus(wrapper!.getElement());
+      expect(getByText(mockTooltipText)).toBeTruthy();
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        true
+      );
+
+      fireEvent.keyDown(wrapper!.getElement(), {
+        ...mockEventBubble,
+        key: 'Escape',
+        code: KeyCode.escape,
+      });
+
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(() => getByText(mockTooltipText)).toThrow();
+    });
+
+    test('Does not show tooltip on pointerEnter when there is no arialLabel nor tooltipText', async () => {
+      const { wrapper, getByTestId } = await renderVisualRefreshTriggerButton({
+        ariaLabel: '',
+        tooltipText: '',
+      });
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+
+      fireEvent.pointerEnter(wrapper!.getElement());
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    });
+
+    test('Does not show tooltip on focus when no ariaLabel nor tooltipText', async () => {
+      const { wrapper, getByTestId } = await renderVisualRefreshTriggerButton({
+        ariaLabel: '',
+        tooltipText: '',
+      });
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      fireEvent.focus(wrapper!.getElement());
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    });
+
+    test('Does not show tooltip if mobile and hasOpenDrawer', async () => {
+      const { wrapper, getByTestId } = await renderVisualRefreshTriggerButton(
+        {
+          hasTooltip: true,
+          tooltipText: mockTooltipText,
+        },
+        {
+          isMobile: true,
+          hasOpenDrawer: true,
+        }
+      );
+      expect(getByTestId(mockTestId)).toBeTruthy();
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+      fireEvent.focus(wrapper!.getElement());
+      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
+        false
+      );
+      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
+    });
   });
 });
 
@@ -265,13 +400,9 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   beforeEach(() => jest.clearAllMocks());
 
   test('renders correctly with badge using dot class', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
-      {
-        badge: true,
-      },
-      ref
-    );
+    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+      badge: true,
+    });
 
     expect(wrapper).not.toBeNull();
     const button = wrapper.find('button');
@@ -282,13 +413,9 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   });
 
   test('applies the correct class when selected', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper } = renderVisualRefreshToolbarTriggerButton(
-      {
-        selected: true,
-      },
-      ref
-    );
+    const { wrapper } = renderVisualRefreshToolbarTriggerButton({
+      selected: true,
+    });
     expect(wrapper).not.toBeNull();
     const seletedButton = wrapper.findByClassName(toolbarTriggerButtonStyles.selected);
     expect(seletedButton).toBeTruthy();
@@ -317,15 +444,11 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   });
 
   test.each([true, false])('click events work as expected when disabled is %s', disabledValue => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
     const mockClickSpy = jest.fn();
-    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
-      {
-        disabled: disabledValue,
-        onClick: mockClickSpy,
-      },
-      ref
-    );
+    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+      disabled: disabledValue,
+      onClick: mockClickSpy,
+    });
     expect(wrapper).not.toBeNull();
     const button = wrapper.find('button')!;
     expect(getByTestId(mockTestId)).toBeTruthy();
@@ -334,13 +457,9 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   });
 
   test('renders an empty button when no iconName and iconSVG prop', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper } = renderVisualRefreshToolbarTriggerButton(
-      {
-        iconName: '' as IconProps.Name,
-      },
-      ref
-    );
+    const { wrapper } = renderVisualRefreshToolbarTriggerButton({
+      iconName: '' as IconProps.Name,
+    });
     expect(wrapper).not.toBeNull();
     const button = wrapper.find('button');
     expect(button).toBeTruthy();
