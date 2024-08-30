@@ -115,6 +115,11 @@ awsuiPlugins.appLayout.registerDrawer({
     </svg>`,
   },
 
+  onResize: event => {
+    setSizeRef.current?.(true);
+    console.log('resize', event.detail);
+  },
+
   mountContent: container => {
     ReactDOM.render(<Counter>global widget content circle 1</Counter>, container);
   },

@@ -148,6 +148,8 @@ export function useDrawers(
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
     fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
+    const activeGlobalDrawer = combinedGlobalDrawers.find(drawer => drawer.id === id);
+    fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {

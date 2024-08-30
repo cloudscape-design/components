@@ -20,6 +20,7 @@ import triggerStyles from '../../../lib/components/app-layout/visual-refresh/sty
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
+import { KeyCode } from '../../internal/keycode';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -991,6 +992,24 @@ describe('toolbar mode only features', () => {
       wrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
       expect(wrapper.findDrawerById('global-drawer-1')).toBeNull();
       expect(wrapper.findDrawerTriggerById('global-drawer-1')!.getElement()).toHaveFocus();
+    });
+
+    test('should change global drawer size via keyboard events on slider handle', async () => {
+      const onDrawerItemResize = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        resizable: true,
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+        onResize: event => onDrawerItemResize(event.detail),
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      wrapper.findResizeHandleByActiveDrawerId('global-drawer-1')!.keydown(KeyCode.left);
+
+      expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
     });
   });
 });
