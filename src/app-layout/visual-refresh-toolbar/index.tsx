@@ -278,7 +278,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
     });
 
-    // TODO: make sure to pass multiple drawers props here as well
     const { registered, toolbarProps } = useMultiAppLayout({
       forceDeduplicationType,
       ariaLabels: ariaLabelsWithDrawers,
@@ -295,6 +294,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersIds,
       onActiveGlobalDrawersChange,
       drawersFocusRef: drawersFocusControl.refs.toggle,
+      globalDrawersFocusControl,
       splitPanel,
       splitPanelToggleProps: {
         ...splitPanelToggleConfig,

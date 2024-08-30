@@ -10,7 +10,7 @@ import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
-import { Focusable } from '../../utils/use-focus-control';
+import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import TriggerButton from './trigger-button';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
@@ -34,6 +34,7 @@ interface DrawerTriggersProps {
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
   activeGlobalDrawersIds: ReadonlyArray<string>;
+  globalDrawersFocusControl: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
 
@@ -53,6 +54,7 @@ export function DrawerTriggers({
   onSplitPanelToggle,
   activeGlobalDrawersIds,
   globalDrawers,
+  globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
@@ -168,8 +170,7 @@ export function DrawerTriggers({
               onClick={() => {
                 onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);
               }}
-              // TODO: Implement focus management for multiple drawers
-              ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
+              ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
               selected={activeGlobalDrawersIds.includes(item.id)}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}

@@ -8,7 +8,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
-import { Focusable } from '../../utils/use-focus-control';
+import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
@@ -40,6 +40,7 @@ export interface ToolbarProps {
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
+  globalDrawersFocusControl?: FocusControlMultipleStates;
   onActiveDrawerChange?: (drawerId: string | null) => void;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
@@ -58,6 +59,7 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     activeDrawerId: toolbarProps.activeDrawerId ?? legacyProps.activeDrawer?.id,
     drawers: toolbarProps.drawers ?? legacyProps.drawers,
     drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
+    globalDrawersFocusControl: toolbarProps.globalDrawersFocusControl,
     onActiveDrawerChange: toolbarProps.onActiveDrawerChange ?? legacyProps.onActiveDrawerChange,
     globalDrawers: toolbarProps.globalDrawers ?? legacyProps.globalDrawers,
     activeGlobalDrawersIds: toolbarProps.activeGlobalDrawersIds ?? legacyProps.activeGlobalDrawersIds,
@@ -98,6 +100,7 @@ export function AppLayoutToolbarImplementation({
     activeDrawerId,
     drawers,
     drawersFocusRef,
+    globalDrawersFocusControl,
     onActiveDrawerChange,
     globalDrawers,
     activeGlobalDrawersIds,
@@ -194,6 +197,7 @@ export function AppLayoutToolbarImplementation({
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
+              globalDrawersFocusControl={globalDrawersFocusControl!}
               globalDrawers={globalDrawers ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
