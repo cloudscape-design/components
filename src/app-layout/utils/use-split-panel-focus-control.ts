@@ -23,8 +23,9 @@ export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPa
     preferences: useRef<Focusable>(null),
   };
   const lastInteraction = useRef<SplitPanelLastInteraction | null>(null);
-
+  console.log('useSplitPanelFocusControl hook rendering', { refs, lastInteraction });
   useEffect(() => {
+    console.log('useEffect in SplitPanelFocusControl triggered', { refs, lastInteraction });
     switch (lastInteraction.current?.type) {
       case 'open':
         refs.slider.current?.focus();

@@ -15,6 +15,7 @@ import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { useDrawers } from '../utils/use-drawers';
 import { useFocusControl } from '../utils/use-focus-control';
+// import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
 import { AppLayoutInternals } from './interfaces';
@@ -71,6 +72,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const shouldFocusOnSplitPanelToggleForBottom = React.useRef(false);
 
     const onNavigationToggle = (open: boolean) => {
       fireNonCancelableEvent(onNavigationChange, { open });
@@ -120,11 +122,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
     );
 
-    const onSplitPanelToggleHandler = () => {
-      setSplitPanelOpen(!splitPanelOpen);
-      fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
-    };
-
     const [splitPanelPreferences, setSplitPanelPreferences] = useControllable(
       controlledSplitPanelPreferences,
       onSplitPanelPreferencesChange,
@@ -165,13 +162,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
-    useImperativeHandle(forwardRef, () => ({
-      closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
-      openTools: () => onToolsToggle(true),
-      focusToolsClose: () => drawersFocusControl.setFocus(true),
-      focusActiveDrawer: () => drawersFocusControl.setFocus(true),
-      focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
-    }));
+    const onSplitPanelToggleHandler = React.useCallback(() => {
+      setSplitPanelOpen(!splitPanelOpen);
+      splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
+      fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
+    }, [setSplitPanelOpen, splitPanelOpen, onSplitPanelToggle, splitPanelFocusControl]);
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
@@ -210,6 +205,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onSplitPanelToggle: onSplitPanelToggleHandler,
     });
 
+    console.log('VRT rendering', splitPanelFocusControl.refs.toggle);
     const hasToolbar = !embeddedViewMode && !!toolbarProps;
     const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar);
 
@@ -280,6 +276,27 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       setSplitPanelToggle: setSplitPanelToggleConfig,
       refs: splitPanelFocusControl.refs,
     };
+
+    React.useEffect(() => {
+      function focusOnSplitPanelToggle() {
+        if (!splitPanelOpen) {
+          if (splitPanelPosition === 'side') {
+            splitPanelFocusControl?.refs?.toggle?.current?.focus();
+          } else {
+            shouldFocusOnSplitPanelToggleForBottom.current = true;
+          }
+        }
+      }
+      focusOnSplitPanelToggle();
+    }, [splitPanelOpen, splitPanelPosition, splitPanelFocusControl?.refs?.toggle]);
+
+    useImperativeHandle(forwardRef, () => ({
+      closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
+      openTools: () => onToolsToggle(true),
+      focusToolsClose: () => drawersFocusControl.setFocus(true),
+      focusActiveDrawer: () => drawersFocusControl.setFocus(true),
+      focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+    }));
 
     return (
       <>
