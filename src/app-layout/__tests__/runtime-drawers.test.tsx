@@ -856,7 +856,6 @@ describe('toolbar mode only features', () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'global-drawer',
-        defaultActive: true,
         type: 'global',
         ariaLabels: {
           triggerButton: 'drawer trigger',
@@ -867,6 +866,7 @@ describe('toolbar mode only features', () => {
       });
       const { wrapper } = await renderComponent(<AppLayout />);
 
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
       expect(wrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
       wrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
       expect(wrapper.findDrawerById('global-drawer')).toBeNull();
