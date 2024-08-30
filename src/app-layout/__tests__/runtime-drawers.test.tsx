@@ -3,6 +3,7 @@
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -27,6 +28,18 @@ beforeEach(() => {
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [1300, () => {}],
+}));
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  getLogicalBoundingClientRect: jest.fn().mockReturnValue({
+    blockSize: 0,
+    inlineSize: 0,
+    insetBlockStart: 0,
+    insetBlockEnd: 0,
+    insetInlineStart: 0,
+    insetInlineEnd: 0,
+  }),
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
@@ -717,6 +730,54 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawers()!.length).toBe(2);
       expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 2');
       expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 3');
+    });
+
+    test('first opened drawer should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
+      jest.mocked(getLogicalBoundingClientRect).mockReturnValue({
+        blockSize: 1291,
+        inlineSize: 1400,
+        insetBlockStart: 45,
+        insetBlockEnd: 1336,
+        insetInlineStart: 0,
+        insetInlineEnd: 1400,
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        mountContent: container => (container.textContent = 'local-drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-3',
+        mountContent: container => (container.textContent = 'global drawer content 3'),
+      });
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findActiveDrawers()!.length).toBe(2);
+      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+
+      wrapper.findDrawerTriggerById('local-drawer')!.click();
+
+      await delay();
+
+      expect(wrapper.findActiveDrawers()!.length).toBe(2);
+      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('local-drawer');
+      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
     test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
