@@ -100,6 +100,9 @@ awsuiPlugins.appLayout.registerDrawer({
   defaultActive: false,
   resizable: true,
   defaultSize: 350,
+  keepContentMounted: true,
+  onShow: () => console.log('onShow'),
+  onHide: () => console.log('onHide'),
 
   ariaLabels: {
     closeButton: 'Close button',

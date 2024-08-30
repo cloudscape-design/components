@@ -1,12 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonDropdownWrapper from '../button-dropdown';
 import SplitPanelWrapper from '../split-panel';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
+
+class AppLayoutDrawerWrapper extends ComponentWrapper {
+  @usesDom
+  isActive(): boolean {
+    return this.element.classList.contains(testutilStyles['active-drawer']);
+  }
+}
 
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
@@ -63,8 +70,9 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findAllByClassName(testutilStyles['active-drawer']);
   }
 
-  findDrawerById(id: string): ElementWrapper | null {
-    return this.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
+  findDrawerById(id: string): AppLayoutDrawerWrapper | null {
+    const element = this.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
+    return element ? new AppLayoutDrawerWrapper(element.getElement()) : null;
   }
 
   findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> | null {

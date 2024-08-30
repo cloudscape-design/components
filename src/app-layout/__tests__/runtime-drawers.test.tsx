@@ -772,6 +772,8 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
       expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
 
+      await delay();
+
       wrapper.findDrawerTriggerById('local-drawer')!.click();
 
       await delay();
@@ -1010,6 +1012,54 @@ describe('toolbar mode only features', () => {
       wrapper.findResizeHandleByActiveDrawerId('global-drawer-1')!.keydown(KeyCode.left);
 
       expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
+    });
+
+    test('should keep global drawer in DOM tree if keepContentMounted is set to true', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+        keepContentMounted: true,
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+    });
+
+    test('should call onShow and onHide when global drawer with keepContentMounted is opened and closed', async () => {
+      const onShow = jest.fn();
+      const onHide = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+        keepContentMounted: true,
+        onShow,
+        onHide,
+      });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      expect(onShow).toHaveBeenCalledTimes(1);
+      expect(onHide).toHaveBeenCalledTimes(0);
+
+      wrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+      expect(onShow).toHaveBeenCalledTimes(1);
+      expect(onHide).toHaveBeenCalledTimes(1);
     });
   });
 });

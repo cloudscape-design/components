@@ -292,6 +292,9 @@ export namespace AppLayoutProps {
     resizable?: boolean;
     defaultSize?: number;
     onResize?: NonCancelableEventHandler<{ size: number }>;
+    keepContentMounted?: boolean;
+    onShow?: NonCancelableEventHandler;
+    onHide?: NonCancelableEventHandler;
   }
 
   export interface DrawerAriaLabels {

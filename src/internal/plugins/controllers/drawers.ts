@@ -23,6 +23,9 @@ export interface DrawerConfig {
   };
   mountContent: (container: HTMLElement) => void;
   unmountContent: (container: HTMLElement) => void;
+  keepContentMounted?: boolean;
+  onShow?: NonCancelableEventHandler;
+  onHide?: NonCancelableEventHandler;
 }
 
 export type UpdateDrawerConfig = Pick<DrawerConfig, 'id' | 'badge' | 'resizable' | 'defaultSize'>;

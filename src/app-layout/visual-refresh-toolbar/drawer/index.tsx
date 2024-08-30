@@ -1,11 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
+import { fireNonCancelableEvent } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { usePrevious } from '../../../internal/hooks/use-previous';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
@@ -151,6 +153,17 @@ export function AppLayoutGlobalDrawerImplementation({
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
+  const prevShow = usePrevious(show);
+
+  useEffect(() => {
+    if (activeGlobalDrawer && activeGlobalDrawer.keepContentMounted && !!prevShow !== show) {
+      if (show) {
+        fireNonCancelableEvent(activeGlobalDrawer?.onShow);
+      } else {
+        fireNonCancelableEvent(activeGlobalDrawer?.onHide);
+      }
+    }
+  }, [activeGlobalDrawer, prevShow, show]);
 
   const computedAriaLabels = {
     closeButton: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.closeButton : ariaLabels?.toolsClose,
