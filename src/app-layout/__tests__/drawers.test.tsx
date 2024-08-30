@@ -13,6 +13,8 @@ import {
 
 import { act } from '@testing-library/react';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
@@ -25,7 +27,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout(({ size }) => {
+describeEachAppLayout(({ size, theme }) => {
   test(`should not render drawer when it is not defined`, () => {
     const { wrapper, rerender } = renderComponent(<AppLayout toolsHide={true} drawers={[testDrawer]} />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
@@ -168,5 +170,18 @@ describeEachAppLayout(({ size }) => {
     drawerTrigger.click();
     expect(drawerTrigger!.getElement()).toHaveAttribute('aria-controls', 'security');
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveAttribute('id', 'security');
+  });
+
+  testIf(size !== 'mobile' && theme !== 'classic')('shows trigger button as selected when drawer opened', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} />);
+    const drawerTrigger = wrapper.findDrawerTriggerById('security')!;
+    const selectedClass = theme === 'refresh' ? visualRefreshStyles.selected : toolbarTriggerButtonStyles.selected;
+    expect(drawerTrigger!.getElement()).not.toHaveClass(selectedClass);
+
+    drawerTrigger.click();
+    expect(drawerTrigger!.getElement()).toHaveClass(selectedClass);
+
+    drawerTrigger.click();
+    expect(drawerTrigger!.getElement()).not.toHaveClass(selectedClass);
   });
 });
