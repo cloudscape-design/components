@@ -5200,6 +5200,31 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "type": "string",
           },
           Object {
+            "name": "filteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "filteringClearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "filteringCountText",
+            "optional": true,
+            "type": "(count: number) => string",
+          },
+          Object {
+            "name": "filteringEmptyText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "filteringPlaceholderText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "liveAnnouncementDndDiscarded",
             "optional": true,
             "type": "string",
@@ -5223,6 +5248,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "options",
             "optional": false,
             "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
+          },
+          Object {
+            "name": "searchableColumnns",
+            "optional": true,
+            "type": "false | true",
           },
           Object {
             "name": "title",

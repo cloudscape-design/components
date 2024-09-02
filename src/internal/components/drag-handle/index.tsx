@@ -14,12 +14,13 @@ export interface DragHandleProps {
   attributes: ButtonHTMLAttributes<HTMLDivElement>;
   hideFocus?: boolean;
   listeners?: SyntheticListenerMap;
+  disabled?: boolean;
 }
 
-export default function DragHandle({ attributes, hideFocus, listeners }: DragHandleProps) {
+export default function DragHandle({ attributes, hideFocus, listeners, disabled }: DragHandleProps) {
   return (
     <Handle className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'])} {...attributes} {...listeners}>
-      <InternalIcon name="drag-indicator" />
+      <InternalIcon variant={disabled ? 'disabled' : undefined} name="drag-indicator" />
     </Handle>
   );
 }

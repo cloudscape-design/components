@@ -101,4 +101,10 @@ export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplay
     initialPosition === finalPosition
       ? `Item moved back to its original position ${initialPosition} of ${total}`
       : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
+  searchableColumnns: true,
+  filteringPlaceholderText: 'Filter items',
+  filteringAriaLabel: 'Filter items',
+  filteringClearAriaLabel: 'Clear filter',
+  filteringEmptyText: 'No matches found',
+  filteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
 };

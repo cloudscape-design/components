@@ -16,4 +16,9 @@ export const contentDisplayPreferenceI18nStrings: Partial<CollectionPreferencesP
   dragHandleAriaDescription:
     "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
   dragHandleAriaLabel: 'Drag handle',
+  filteringPlaceholderText: 'Filter items',
+  filteringAriaLabel: 'Filter items',
+  filteringEmptyText: 'No matches',
+  filteringCountText: count => `${count} matches`,
+  filteringClearAriaLabel: 'Clear filter',
 };
