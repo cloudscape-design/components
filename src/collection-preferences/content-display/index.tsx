@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
+import InternalBox from '../../box/internal';
 import { useInternalI18n } from '../../i18n/context';
 import Portal from '../../internal/components/portal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import InternalTextFilter from '../../text-filter/internal';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
@@ -40,9 +42,16 @@ export default function ContentDisplayPreference({
   liveAnnouncementDndDiscarded,
   dragHandleAriaDescription,
   dragHandleAriaLabel,
+  searchableColumnns = false,
+  filteringPlaceholderText,
+  filteringAriaLabel,
+  filteringCountText,
+  filteringEmptyText,
+  filteringClearAriaLabel,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
   const i18n = useInternalI18n('collection-preferences');
+  const [columnFilteringText, setColumnFilteringText] = useState('');
 
   const onToggle = (option: OptionWithVisibility) => {
     onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
@@ -51,7 +60,13 @@ export default function ContentDisplayPreference({
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const sortedOptions = getSortedOptions({ options, contentDisplay: value });
+  const sortedOptions = useMemo(
+    () =>
+      getSortedOptions({ options, contentDisplay: value }).filter(option =>
+        option.label.toLowerCase().includes(columnFilteringText.toLowerCase())
+      ) ?? [],
+    [columnFilteringText, options, value]
+  );
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions,
@@ -98,6 +113,33 @@ export default function ContentDisplayPreference({
       <p className={getClassName('description')} id={descriptionId}>
         {i18n('contentDisplayPreference.description', description)}
       </p>
+
+      {/* Filter input */}
+      {searchableColumnns && (
+        <div className={getClassName('text-filter')}>
+          <InternalTextFilter
+            filteringText={columnFilteringText}
+            filteringPlaceholder={filteringPlaceholderText}
+            filteringAriaLabel={filteringAriaLabel}
+            filteringClearAriaLabel={filteringClearAriaLabel}
+            onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
+            countText={
+              columnFilteringText.length > 0 && filteringCountText ? filteringCountText(sortedOptions?.length) : ''
+            }
+          />
+        </div>
+      )}
+
+      {/* Empty state */}
+      {sortedOptions.length === 0 && (
+        <div className={getClassName('empty-state')}>
+          <InternalBox margin={'m'} textAlign="center">
+            {filteringEmptyText}
+          </InternalBox>
+        </div>
+      )}
+
+      {/* Drag and drop */}
       <DndContext
         sensors={sensors}
         collisionDetection={collisionDetection}
@@ -129,7 +171,11 @@ export default function ContentDisplayPreference({
           aria-labelledby={titleId}
           role="list"
         >
-          <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
+          <SortableContext
+            disabled={columnFilteringText.length > 0}
+            items={sortedOptions.map(({ id }) => id)}
+            strategy={verticalListSortingStrategy}
+          >
             {sortedOptions.map(option => {
               return (
                 <DraggableOption
@@ -138,6 +184,7 @@ export default function ContentDisplayPreference({
                   onKeyDown={handleKeyDown}
                   onToggle={onToggle}
                   option={option}
+                  disabled={columnFilteringText.length > 0}
                 />
               );
             })}

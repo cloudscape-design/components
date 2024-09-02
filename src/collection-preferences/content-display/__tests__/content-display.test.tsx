@@ -174,6 +174,50 @@ describe('Content Display preference', () => {
     });
   });
 
+  describe('Filtering', () => {
+    it('filters options', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 1');
+      expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('1 match');
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(1);
+      expect(options[0].findLabel().getElement()).toHaveTextContent('Item 1');
+    });
+
+    it('clears filter and shows all options', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 1');
+      filterInput!.findInput().findClearButton()?.click();
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(4);
+    });
+
+    it('shows empty state when no options match', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 100');
+      expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('0 matches');
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(0);
+
+      const emptyState = wrapper.findEmptyState();
+      console.log(emptyState);
+      expect(emptyState).not.toBeNull();
+      expect(emptyState!.getElement()).toHaveTextContent('No matches found');
+    });
+  });
+
   describe('State management', () => {
     const initialStateWithCustomVisibility = [
       {

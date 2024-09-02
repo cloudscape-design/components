@@ -218,6 +218,12 @@ export namespace CollectionPreferencesProps {
     liveAnnouncementDndDiscarded?: string;
     dragHandleAriaLabel?: string;
     dragHandleAriaDescription?: string;
+    searchableColumnns?: boolean;
+    filteringPlaceholderText?: string;
+    filteringAriaLabel?: string;
+    filteringCountText?: (count: number) => string;
+    filteringEmptyText?: string;
+    filteringClearAriaLabel?: string;
   }
 
   export interface ContentDisplayOption {

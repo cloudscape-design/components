@@ -15,11 +15,13 @@ export default function DraggableOption({
   onKeyDown,
   onToggle,
   option,
+  disabled = false,
 }: {
   dragHandleAriaLabel?: string;
   onKeyDown?: (event: React.KeyboardEvent) => void;
   onToggle: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
+  disabled?: boolean;
 }) {
   const { isDragging, isSorting, listeners, setNodeRef, transform } = useSortable({
     id: option.id,
@@ -48,6 +50,7 @@ export default function DraggableOption({
         dragHandleAriaLabel={dragHandleAriaLabel}
         onToggle={onToggle}
         option={option}
+        disabled={disabled}
       />
     </li>
   );

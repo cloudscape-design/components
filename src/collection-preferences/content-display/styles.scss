@@ -8,7 +8,9 @@
 
 @import 'content-display-option';
 
-.content-display {
+.content-display,
+.content-display-text-filter,
+.content-display-empty-state {
   /* used in test-utils */
 }
 
