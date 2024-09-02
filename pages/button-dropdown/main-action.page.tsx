@@ -4,17 +4,10 @@ import * as React from 'react';
 
 import ButtonDropdown from '~components/button-dropdown';
 
-import ScreenshotArea from '../utils/screenshot-area';
-
 export default function ButtonDropdownPage() {
   return (
-    <ScreenshotArea
-      disableAnimations={true}
-      style={{
-        // extra space to include dropdown in the screenshot area
-        paddingBlockEnd: 100,
-      }}
-    >
+    <>
+      <h1>Button dropdown with main action</h1>
       <ButtonDropdown
         items={[
           {
@@ -23,8 +16,9 @@ export default function ButtonDropdownPage() {
           },
         ]}
         mainAction={{ text: 'Launch instance' }}
+        ariaLabel="More launch options"
         variant="primary"
       />
-    </ScreenshotArea>
+    </>
   );
 }
