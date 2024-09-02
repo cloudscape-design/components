@@ -14,7 +14,6 @@ permissions:
 
 jobs:
   deploy:
-    needs: build
     uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
