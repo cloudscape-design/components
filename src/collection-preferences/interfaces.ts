@@ -218,7 +218,7 @@ export namespace CollectionPreferencesProps {
     liveAnnouncementDndDiscarded?: string;
     dragHandleAriaLabel?: string;
     dragHandleAriaDescription?: string;
-    searchableColumnns?: boolean;
+    searchableColumns?: boolean;
     filteringPlaceholderText?: string;
     filteringAriaLabel?: string;
     filteringCountText?: (count: number) => string;

@@ -42,7 +42,7 @@ export default function ContentDisplayPreference({
   liveAnnouncementDndDiscarded,
   dragHandleAriaDescription,
   dragHandleAriaLabel,
-  searchableColumnns = false,
+  searchableColumns = false,
   filteringPlaceholderText,
   filteringAriaLabel,
   filteringCountText,
@@ -115,7 +115,7 @@ export default function ContentDisplayPreference({
       </p>
 
       {/* Filter input */}
-      {searchableColumnns && (
+      {searchableColumns && (
         <div className={getClassName('text-filter')}>
           <InternalTextFilter
             filteringText={columnFilteringText}

@@ -5255,7 +5255,7 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
           },
           Object {
-            "name": "searchableColumnns",
+            "name": "searchableColumns",
             "optional": true,
             "type": "false | true",
           },
