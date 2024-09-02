@@ -1,4 +1,4 @@
-name: Build, lint and test
+name: Deploy preview
 
 on:
   pull_request:
