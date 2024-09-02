@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal.js';
@@ -11,6 +11,7 @@ import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getAllowedOperators } from './controller.js';
@@ -64,6 +65,15 @@ export function TokenEditor({
   tempGroup,
   onChangeTempGroup,
 }: TokenEditorProps) {
+  const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+  const onFocusMoved = () => setNextFocusIndex(null);
+  const tokenListRef = useListFocusController({
+    nextFocusIndex,
+    onFocusMoved,
+    listItemSelector: `.${styles['token-editor-field-property']}`,
+    outsideSelector: `.${styles['token-editor-add-token']}`,
+  });
+
   const groups = tempGroup.map((temporaryToken, index) => {
     const setTemporaryToken = (newToken: InternalToken) => {
       const copy = [...tempGroup];
@@ -98,19 +108,21 @@ export function TokenEditor({
     return { token: temporaryToken, property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
   });
   return (
-    <div className={styles['token-editor']}>
+    <div className={styles['token-editor']} ref={tokenListRef}>
       <TokenEditorFields
         supportsGroups={supportsGroups}
         tokens={groups.map(group => group.token)}
         onRemove={index => {
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
+          setNextFocusIndex(index);
         }}
         onRemoveFromGroup={index => {
           const removedToken = tempGroup[index];
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
           onChangeStandalone([...standaloneTokens, removedToken]);
+          setNextFocusIndex(index);
         }}
         onSubmit={onSubmit}
         renderProperty={index => (
@@ -169,12 +181,16 @@ export function TokenEditor({
                 const updated = standaloneTokens.filter((_, existingIndex) => existingIndex !== index);
                 onChangeStandalone(updated);
                 onChangeTempGroup([...tempGroup, addedToken]);
+                setNextFocusIndex(groups.length);
               }
             }}
             disabled={standaloneTokens.length === 0}
             mainAction={{
               text: i18nStrings?.tokenEditorAddNewTokenLabel ?? '',
-              onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
+              onClick: () => {
+                onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]);
+                setNextFocusIndex(groups.length);
+              },
             }}
           />
         </div>

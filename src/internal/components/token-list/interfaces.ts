@@ -10,7 +10,6 @@ export interface TokenListProps<Item> {
   after?: React.ReactNode;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
   i18nStrings?: I18nStrings;
-  moveFocusNextToIndex?: null | number;
   onExpandedClick?: (isExpanded: boolean) => void;
   limitShowFewerAriaLabel?: string;
   limitShowMoreAriaLabel?: string;

@@ -25,6 +25,10 @@ const tabbables = [
   '[autofocus]',
 ].join(',');
 
+export function isFocusable(element: HTMLElement): boolean {
+  return element.matches(tabbables);
+}
+
 export function getAllFocusables(container: HTMLElement): HTMLElement[] {
   return Array.prototype.slice.call(container.querySelectorAll(tabbables));
 }

@@ -1,12 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalIcon from '../../icon/internal';
+import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
 
@@ -76,6 +78,15 @@ const FilteringToken = forwardRef(
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
+    const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+    const onFocusMoved = () => setNextFocusIndex(null);
+    const tokenListRef = useListFocusController({
+      nextFocusIndex,
+      onFocusMoved,
+      listItemSelector: `.${styles['inner-root']}`,
+      outsideSelector: `.${styles.root}`,
+    });
+
     const popoverRef = useRef<InternalPopoverRef>(null);
     const popoverProps: InternalPopoverProps = {
       content: editorContent,
@@ -91,6 +102,7 @@ const FilteringToken = forwardRef(
 
     return (
       <TokenGroup
+        ref={tokenListRef}
         ariaLabel={tokens.length === 1 ? tokens[0].ariaLabel : groupAriaLabel}
         operation={
           showOperation && (
@@ -150,7 +162,10 @@ const FilteringToken = forwardRef(
                   tokenAction={
                     <TokenDismissButton
                       ariaLabel={token.dismissAriaLabel}
-                      onClick={() => onDismissToken(index)}
+                      onClick={() => {
+                        onDismissToken(index);
+                        setNextFocusIndex(index);
+                      }}
                       parent={false}
                       disabled={disabled}
                     />
@@ -173,67 +188,73 @@ const FilteringToken = forwardRef(
 
 export default FilteringToken;
 
-function TokenGroup({
-  ariaLabel,
-  children,
-  operation,
-  tokenAction,
-  parent,
-  grouped,
-  disabled,
-  hasGroups,
-}: {
-  ariaLabel?: string;
-  children: React.ReactNode;
-  operation: React.ReactNode;
-  tokenAction: React.ReactNode;
-  parent: boolean;
-  grouped: boolean;
-  disabled: boolean;
-  hasGroups: boolean;
-}) {
-  const groupRef = useRef<HTMLDivElement>(null);
-  const isCompactMode = useDensityMode(groupRef) === 'compact';
-  return (
-    <div
-      ref={groupRef}
-      className={clsx(
-        parent
-          ? clsx(styles.root, testUtilStyles['filtering-token'])
-          : clsx(styles['inner-root'], testUtilStyles['filtering-token-inner']),
-        hasGroups && styles['has-groups'],
-        isCompactMode && styles['compact-mode']
-      )}
-      role="group"
-      aria-label={ariaLabel}
-    >
-      {operation}
-
+const TokenGroup = forwardRef(
+  (
+    {
+      ariaLabel,
+      children,
+      operation,
+      tokenAction,
+      parent,
+      grouped,
+      disabled,
+      hasGroups,
+    }: {
+      ariaLabel?: string;
+      children: React.ReactNode;
+      operation: React.ReactNode;
+      tokenAction: React.ReactNode;
+      parent: boolean;
+      grouped: boolean;
+      disabled: boolean;
+      hasGroups: boolean;
+    },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const groupRef = useRef<HTMLDivElement>(null);
+    const mergedRef = useMergeRefs(ref, groupRef);
+    const isCompactMode = useDensityMode(groupRef) === 'compact';
+    return (
       <div
+        ref={mergedRef}
         className={clsx(
-          styles.token,
-          !!operation && styles['show-operation'],
-          grouped && styles.grouped,
-          disabled && styles['token-disabled']
+          parent
+            ? clsx(styles.root, testUtilStyles['filtering-token'])
+            : clsx(styles['inner-root'], testUtilStyles['filtering-token-inner']),
+          hasGroups && styles['has-groups'],
+          isCompactMode && styles['compact-mode']
         )}
-        aria-disabled={disabled}
+        role="group"
+        aria-label={ariaLabel}
       >
+        {operation}
+
         <div
           className={clsx(
-            parent
-              ? clsx(styles['token-content'], testUtilStyles['filtering-token-content'])
-              : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content']),
-            grouped && styles['token-content-grouped']
+            styles.token,
+            !!operation && styles['show-operation'],
+            grouped && styles.grouped,
+            disabled && styles['token-disabled']
           )}
+          aria-disabled={disabled}
         >
-          {children}
-        </div>
+          <div
+            className={clsx(
+              parent
+                ? clsx(styles['token-content'], testUtilStyles['filtering-token-content'])
+                : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content']),
+              grouped && styles['token-content-grouped']
+            )}
+          >
+            {children}
+          </div>
 
-        {tokenAction}
+          {tokenAction}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 function OperationSelector({
   operation,
