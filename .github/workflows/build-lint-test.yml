@@ -43,10 +43,3 @@ jobs:
     with:
       artifact-path: lib/static-default
       artifact-name: dev-pages
-  deploy:
-    needs: build
-    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
-    secrets: inherit
-    with:
-      artifact-name: dev-pages
-      deployment-path: lib/static-default
