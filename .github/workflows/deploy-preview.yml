@@ -1,0 +1,22 @@
+name: Build, lint and test
+
+on:
+  workflow_run: ["Build, lint and test"]
+  types:
+    - completed
+
+permissions:
+  id-token: write
+  actions: read
+  contents: read
+  security-events: write
+  deployments: write
+
+jobs:
+  deploy:
+    needs: build
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      artifact-name: dev-pages
+      deployment-path: lib/static-default
