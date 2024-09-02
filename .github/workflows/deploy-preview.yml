@@ -1,9 +1,9 @@
 name: Deploy preview
 
 on:
-  workflow_run: ["Build, lint and test"]
-  types:
-    - completed
+  workflow_run:
+    workflows: ["Build, lint and test"]
+    types: [completed]
 
 permissions:
   id-token: write
