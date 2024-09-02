@@ -138,10 +138,15 @@ $operator-field-width: 120px;
       grid-template-columns: minmax(100px, 1fr);
       gap: awsui.$space-m;
 
-      > .token-editor-group {
+      > .token-editor-grid-group {
         display: flex;
         flex-direction: column;
         gap: awsui.$space-s;
+
+        &.token-editor-supports-groups {
+          padding-block-end: awsui.$space-m;
+          border-block-end: 1px solid awsui.$color-border-divider-default;
+        }
       }
     }
 
@@ -156,6 +161,10 @@ $operator-field-width: 120px;
       &:not(.token-editor-narrow) {
         display: flex;
         align-items: flex-end;
+        justify-content: flex-end;
+      }
+      &.token-editor-narrow:nth-child(4) {
+        display: flex;
         justify-content: flex-end;
       }
     }

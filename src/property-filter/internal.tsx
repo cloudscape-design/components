@@ -19,19 +19,23 @@ import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
-import { I18nStringsExt, usePropertyFilterI18n } from './i18n-utils';
+import { usePropertyFilterI18n } from './i18n-utils';
 import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
+  I18nStringsTokenGroups,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalQuery,
   InternalToken,
+  InternalTokenGroup,
   ParsedText,
   PropertyFilterProps,
   Ref,
+  Token,
+  TokenGroup,
 } from './interfaces';
 import { PropertyEditor } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
@@ -47,7 +51,7 @@ export type PropertyFilterInternalProps = SomeRequired<
 > &
   InternalBaseComponentProps & {
     enableTokenGroups?: boolean;
-    i18nStringsExt?: I18nStringsExt;
+    i18nStringsTokenGroups?: I18nStringsTokenGroups;
   };
 
 const PropertyFilterInternal = React.forwardRef(
@@ -82,7 +86,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups = false,
-      i18nStringsExt = {},
+      i18nStringsTokenGroups,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -102,7 +106,7 @@ const PropertyFilterInternal = React.forwardRef(
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
-    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsExt });
+    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsTokenGroups });
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const showResults = !!query.tokens?.length && !disabled && !!countText;
@@ -136,14 +140,26 @@ const PropertyFilterInternal = React.forwardRef(
         label: option.label ?? option.value ?? '',
       }));
 
+      function transformToken(
+        tokenOrGroup: Token | TokenGroup,
+        standaloneIndex?: number
+      ): InternalToken | InternalTokenGroup {
+        return 'operation' in tokenOrGroup
+          ? {
+              operation: tokenOrGroup.operation,
+              tokens: tokenOrGroup.tokens.map(token => transformToken(token)),
+            }
+          : {
+              standaloneIndex,
+              property: tokenOrGroup.propertyKey ? getProperty(tokenOrGroup.propertyKey) : null,
+              operator: tokenOrGroup.operator,
+              value: tokenOrGroup.value,
+            };
+      }
+
       const internalQuery: InternalQuery = {
         operation: query.operation,
-        tokens: query.tokens.map(token => ({
-          property: token.propertyKey ? getProperty(token.propertyKey) : null,
-          operator: token.operator,
-          value: token.value,
-          __source: token,
-        })),
+        tokens: (enableTokenGroups && query.tokenGroups ? query.tokenGroups : query.tokens).map(transformToken),
       };
 
       const internalFreeText: InternalFreeTextFiltering = {
@@ -159,6 +175,7 @@ const PropertyFilterInternal = React.forwardRef(
       query: internalQuery,
       filteringOptions: internalOptions,
       onChange,
+      enableTokenGroups,
     });
 
     const parsedText = parseText(filteringText, internalProperties, internalFreeText);
@@ -357,12 +374,10 @@ const PropertyFilterInternal = React.forwardRef(
                   <TokenButton
                     query={internalQuery}
                     tokenIndex={tokenIndex}
-                    onUpdateToken={token => {
-                      updateToken(tokenIndex, token);
+                    onUpdateToken={(token, releasedTokens) => {
+                      updateToken(tokenIndex, token, releasedTokens);
                     }}
-                    onUpdateOperation={operation => {
-                      updateOperation(operation);
-                    }}
+                    onUpdateOperation={updateOperation}
                     onRemoveToken={() => {
                       removeToken(tokenIndex);
                       setNextFocusIndex(tokenIndex);

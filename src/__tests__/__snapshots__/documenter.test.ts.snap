@@ -12063,18 +12063,7 @@ Object {
       "description": "Fired when the \`query\` gets changed. Filter the dataset in response to this event using the values in the \`detail\` object.",
       "detailInlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "ReadonlyArray<PropertyFilterProps.Token>",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "detailType": "PropertyFilterProps.Query",
@@ -12160,7 +12149,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronousely. This would cause extra \`onLoadMore\`
+      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronously. This would cause extra \`onLoadMore\`
 events to fire calling for more properties.",
       "name": "asyncProperties",
       "optional": true,
@@ -12552,18 +12541,7 @@ Each token has the following properties:
 ",
       "inlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "ReadonlyArray<PropertyFilterProps.Token>",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "name": "query",

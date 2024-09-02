@@ -5,7 +5,7 @@ import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
 import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';
-import { InternalFilteringTokenWrapper as FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
+import { FilteringTokenWrapperInternal } from '../../../../lib/components/test-utils/dom/property-filter';
 
 const token1 = {
   content: 'property1 = value',
@@ -52,9 +52,11 @@ const defaultProps: FilteringTokenProps = {
   popoverSize: 'content',
 };
 
-function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper {
+function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapperInternal {
   const { container } = render(<FilteringToken {...defaultProps} {...props} />);
-  return new FilteringTokenWrapper(container.querySelector<HTMLElement>(`.${FilteringTokenWrapper.rootSelector}`)!);
+  return new FilteringTokenWrapperInternal(
+    container.querySelector<HTMLElement>(`.${FilteringTokenWrapperInternal.rootSelector}`)!
+  );
 }
 
 function StatefulToken(props: FilteringTokenProps) {
@@ -69,9 +71,11 @@ function StatefulToken(props: FilteringTokenProps) {
   );
 }
 
-function renderStatefulToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper {
+function renderStatefulToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapperInternal {
   const { container } = render(<StatefulToken {...defaultProps} {...props} />);
-  return new FilteringTokenWrapper(container.querySelector<HTMLElement>(`.${FilteringTokenWrapper.rootSelector}`)!);
+  return new FilteringTokenWrapperInternal(
+    container.querySelector<HTMLElement>(`.${FilteringTokenWrapperInternal.rootSelector}`)!
+  );
 }
 
 test('renders a single token as role="group" with token ARIA label and dismiss button', () => {

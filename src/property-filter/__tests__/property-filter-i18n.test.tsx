@@ -6,7 +6,9 @@ import { act, render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import PropertyFilter from '../../../lib/components/property-filter';
+import InternalPropertyFilter from '../../../lib/components/property-filter/internal';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
+import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter/index.js';
 import { createDefaultProps } from './common';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
@@ -249,6 +251,76 @@ describe('i18n', () => {
     expect(findValueField(popoverContent).findLabel()!.getElement()).toHaveTextContent('Custom Value');
     expect(findCancelButton(popoverContent).getElement()).toHaveTextContent('Custom Cancel');
     expect(findSubmitButton(popoverContent).getElement()).toHaveTextContent('Custom Apply');
+  });
+
+  it('uses token group edit label from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'property-filter': {
+            'i18nStrings.operationAndText': '&',
+            'i18nStrings.operationOrText': '|',
+            'i18nStrings.formatToken': `{token__operator, select, 
+              equals {{token__propertyLabel} eq {token__value}}
+              not_equals {{token__propertyLabel} neq {token__value}}
+              other {}}`,
+            'i18nStrings.groupEditAriaLabel': `{group__formattedTokens__length, select,
+              2 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText}}
+              3 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText}}
+              4 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText}}
+              5 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} 1 more}
+              other {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} more}}`,
+            'i18nStrings.removeTokenButtonAriaLabel': `Remove filter, {token__formattedText}`,
+          },
+        }}
+      >
+        <InternalPropertyFilter
+          {...defaultProps}
+          i18nStrings={{}}
+          query={{
+            operation: 'and',
+            tokenGroups: [
+              {
+                operation: 'or',
+                tokens: [
+                  { propertyKey: 'string', operator: '=', value: 'value1' },
+                  { propertyKey: 'string', operator: '=', value: 'value2' },
+                  { propertyKey: 'string', operator: '=', value: 'value3' },
+                  { propertyKey: 'string', operator: '=', value: 'value4' },
+                  { propertyKey: 'string', operator: '=', value: 'value5' },
+                ],
+              },
+            ],
+            tokens: [],
+          }}
+          enableTokenGroups={true}
+          filteringOptions={[]}
+          customGroupsText={[]}
+          disableFreeTextFiltering={false}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = new PropertyFilterWrapperInternal(createWrapper(container).findPropertyFilter()!.getElement());
+    const token = (index: number) => wrapper.findTokens()[index];
+    const groupToken = (index: number, inGroupIndex: number) => token(index).findGroupTokens()[inGroupIndex];
+
+    // 1st nested token
+    expect(groupToken(0, 0).getElement()).toHaveAccessibleName('String eq value1');
+    expect(groupToken(0, 0).findTokenOperation()).toBe(null);
+    expect(groupToken(0, 0).findRemoveButton().getElement()).toHaveAccessibleName('Remove filter, String eq value1');
+
+    // 1nd nested token
+    expect(groupToken(0, 1).getElement()).toHaveAccessibleName('String eq value2');
+    expect(groupToken(0, 1).findTokenOperation()!.getElement()).toHaveTextContent('|');
+    expect(groupToken(0, 1).findRemoveButton().getElement()).toHaveAccessibleName('Remove filter, String eq value2');
+
+    // Token group
+    expect(token(0).getElement()).toHaveAccessibleName(
+      'String eq value1 | String eq value2 | String eq value3 | String eq value4 | String eq value5'
+    );
+    expect(token(0).findEditButton()!.getElement()).toHaveAccessibleName(
+      'Edit filter group String eq value1 | String eq value2 | String eq value3 | String eq value4 | 1 more'
+    );
   });
 
   it('uses formatted token for removeTokenButtonAriaLabel', () => {
