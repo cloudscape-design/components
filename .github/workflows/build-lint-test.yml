@@ -38,14 +38,14 @@ jobs:
           git rev-parse HEAD
           git secrets --scan-history
   build:
-    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
+    uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@gasda/artifacts-v4
     secrets: inherit
     with:
       artifact-path: lib/static-default
       artifact-name: dev-pages
   deploy:
     needs: build
-    uses: cloudscape-design/actions/.github/workflows/deploy.yml@main
+    uses: cloudscape-design/actions/.github/workflows/deploy.yml@gasda/artifacts-v4
     secrets: inherit
     with:
       artifact-name: dev-pages
