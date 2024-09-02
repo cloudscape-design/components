@@ -8,8 +8,6 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../app-layout/constants' as constants;
 
-@import './motion';
-
 $slider-width: 16px;
 
 // Values taken from app layout
@@ -23,7 +21,7 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
   z-index: 840;
-  &-closed {
+  &-closed:not(.refresh) {
     cursor: pointer;
     min-inline-size: constants.$sidebar-size-closed;
   }
@@ -34,15 +32,15 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   align-items: center;
   block-size: 100%;
   overflow: auto;
-  .drawer-closed > & {
+  & > [aria-hidden='true'],
+  .drawer-closed.refresh > & {
+    display: none;
+  }
+  .drawer-closed:not(.refresh) > & {
     inline-size: constants.$sidebar-size-closed;
     &:hover {
       background: awsui.$color-background-layout-panel-hover;
     }
-  }
-
-  & > [aria-hidden='true'] {
-    display: none;
   }
 }
 
@@ -70,7 +68,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   &.drawer-closed {
     overflow: hidden;
     &.with-toolbar {
-      display: none;
+      block-size: 0px;
+      border-block: none;
+      border-inline: none;
     }
   }
   &.drawer-closed:hover {
@@ -198,10 +198,12 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   align-self: flex-start;
   box-sizing: border-box;
   overflow-y: auto;
-  position: absolute;
   inset-block-start: 0;
   inset-inline: 0;
   block-size: 100%;
+  &.with-toolbar {
+    position: absolute;
+  }
   > .pane-header-wrapper-side {
     padding-block: 0;
     padding-inline-end: awsui.$space-m;

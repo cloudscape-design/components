@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
-import { I18nStringsExt } from '~components/property-filter/internal';
+import { I18nStringsExt } from '~components/property-filter/i18n-utils';
 
 import {
   DateForm,
@@ -164,6 +164,8 @@ export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
   operatorDoesNotContainText: 'Does not contain',
   operatorEqualsText: 'Equal',
   operatorDoesNotEqualText: 'Does not equal',
+  operatorStartsWithText: 'Starts with',
+  operatorDoesNotStartWithText: 'Does not starts with',
 
   editTokenHeader: 'Edit filter',
   propertyText: 'Property',
@@ -178,18 +180,56 @@ export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
-  removeTokenButtonAriaLabel: () => 'Remove token',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 
-  tokenEditorTokenActionsLabel: token =>
-    `Filter remove actions for ${token.propertyLabel} ${token.operator} ${token.value}`,
-  tokenEditorTokenRemoveLabel: () => 'Remove filter',
-  tokenEditorTokenRemoveFromGroupLabel: () => 'Remove filter from group',
+  formatToken,
+  removeTokenButtonAriaLabel: token => `Remove token, ${formatToken(token)}`,
+
+  groupEditAriaLabel: group => `Edit group with ${group.tokens.length} tokens`,
+  tokenEditorTokenActionsAriaLabel: token => `Filter remove actions for ${formatToken(token)}`,
+  tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${formatToken(token)}`,
+  tokenEditorTokenRemoveLabel: 'Remove filter',
+  tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
   tokenEditorAddNewTokenLabel: 'Add new filter',
-  tokenEditorAddTokenActionsLabel: 'Add filter actions',
-  tokenEditorAddExistingTokenLabel: token =>
-    `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
+  tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
+  tokenEditorAddExistingTokenAriaLabel: token => `Add filter ${formatToken(token)} to group`,
+  tokenEditorAddExistingTokenLabel: token => `Add filter ${getTokenLabel(token)} to group`,
 };
+
+function getTokenLabel(token: PropertyFilterProps.FormattedToken) {
+  return `${token.propertyLabel} ${token.operator} ${token.value}`;
+}
+
+function formatToken(token: PropertyFilterProps.FormattedToken) {
+  return `${token.propertyLabel} ${operatorToLabel(token.operator)} ${token.value}`;
+}
+
+function operatorToLabel(operator: string) {
+  switch (operator) {
+    case '=':
+      return i18nStrings.operatorEqualsText;
+    case '!=':
+      return i18nStrings.operatorDoesNotEqualText;
+    case '>':
+      return i18nStrings.operatorGreaterText;
+    case '>=':
+      return i18nStrings.operatorGreaterOrEqualText;
+    case '<':
+      return i18nStrings.operatorLessText;
+    case '<=':
+      return i18nStrings.operatorLessOrEqualText;
+    case ':':
+      return i18nStrings.operatorContainsText;
+    case '!:':
+      return i18nStrings.operatorDoesNotContainText;
+    case '^':
+      return i18nStrings.operatorStartsWithText;
+    case '!^':
+      return i18nStrings.operatorDoesNotStartWithText;
+    default:
+      return operator;
+  }
+}
 
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: any[] = [];

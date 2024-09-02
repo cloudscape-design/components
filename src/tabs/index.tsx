@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -11,9 +13,11 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { GeneratedAnalyticsMetadataTabsComponent } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
 import { getTabElementId, TabHeaderBar } from './tab-header-bar';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export { TabsProps };
@@ -53,6 +57,20 @@ export default function Tabs({
   });
 
   const baseProps = getBaseProps(rest);
+
+  const analyticsComponentMetadata: GeneratedAnalyticsMetadataTabsComponent = {
+    name: 'awsui.Tabs',
+    label: `.${analyticsSelectors['tabs-header-list']}`,
+  };
+
+  if (activeTabId) {
+    analyticsComponentMetadata.properties = {
+      activeTabId,
+      activeTabLabel: `.${analyticsSelectors['active-tab-header']} .${analyticsSelectors['tab-label']}`,
+      activeTabPosition: `${tabs.findIndex(tab => tab.id === activeTabId) + 1}`,
+      tabsCount: `${tabs.length}`,
+    };
+  }
 
   const content = () => {
     const selectedTab = tabs.filter(tab => tab.id === activeTabId)[0];
@@ -120,6 +138,7 @@ export default function Tabs({
         disableContentPaddings={true}
         variant={variant === 'stacked' ? 'stacked' : 'default'}
         fitHeight={fitHeight}
+        {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
       >
         {content()}
       </InternalContainer>
@@ -131,6 +150,7 @@ export default function Tabs({
       {...baseProps}
       className={clsx(baseProps.className, styles.root, styles.tabs, { [styles['fit-height']]: fitHeight })}
       ref={__internalRootRef}
+      {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
     >
       {header}
       {content()}

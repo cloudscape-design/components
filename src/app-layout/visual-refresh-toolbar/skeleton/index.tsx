@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { AppLayoutPropsWithDefaults } from '../../interfaces';
 
+import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
@@ -70,18 +71,19 @@ export function SkeletonLayout({
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
       }}
     >
+      {toolbar}
       {navigation && (
         <div
           className={clsx(
             styles.navigation,
             !navigationOpen && styles['panel-hidden'],
-            toolsOpen && styles['unfocusable-mobile']
+            toolsOpen && styles['unfocusable-mobile'],
+            sharedStyles['with-motion']
           )}
         >
           {navigation}
         </div>
       )}
-      {toolbar}
       <main className={clsx(styles['main-landmark'], anyPanelOpen && styles['unfocusable-mobile'])}>
         {notifications}
         <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })} style={style}>
@@ -89,10 +91,7 @@ export function SkeletonLayout({
           <div className={clsx(styles.content, testutilStyles.content)}>{content}</div>
         </div>
         {bottomSplitPanel && (
-          <div
-            className={clsx(styles['split-panel-bottom'], !splitPanelOpen && styles['split-panel-hidden'])}
-            style={{ insetBlockEnd: placement.insetBlockEnd }}
-          >
+          <div className={clsx(styles['split-panel-bottom'])} style={{ insetBlockEnd: placement.insetBlockEnd }}>
             {bottomSplitPanel}
           </div>
         )}
@@ -102,7 +101,9 @@ export function SkeletonLayout({
           {sideSplitPanel}
         </div>
       )}
-      {tools && <div className={clsx(styles.tools, !toolsOpen && styles['panel-hidden'])}>{tools}</div>}
+      <div className={clsx(styles.tools, !toolsOpen && styles['panel-hidden'], sharedStyles['with-motion'])}>
+        {tools}
+      </div>
     </div>
   );
 }
