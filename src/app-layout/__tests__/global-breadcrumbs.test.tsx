@@ -135,30 +135,31 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findRootBreadcrumb().getElement()).toHaveTextContent('Second');
   });
 
-  test('when multiple app layouts rendered, only the last instance receives breadcrumbs', async () => {
+  test('when multiple app layouts rendered, only the first instance receives breadcrumbs', async () => {
     await renderAsync(
       <>
         <AppLayout {...defaultAppLayoutProps} data-testid="first" />
         <AppLayout
           {...defaultAppLayoutProps}
           data-testid="second"
+          navigationHide={true}
           content={<BreadcrumbGroup items={defaultBreadcrumbs} />}
         />
       </>
     );
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
-    expect(wrapper.find('[data-testid="first"]')!.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
     expect(
       wrapper
-        .find('[data-testid="second"]')!
+        .find('[data-testid="first"]')!
         .findAppLayout()!
         .findBreadcrumbs()!
         .findBreadcrumbGroup()!
         .findBreadcrumbLinks()
     ).toHaveLength(2);
+    expect(wrapper.find('[data-testid="second"]')!.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
   });
 
-  test('when multiple nested app layouts rendered, the inner instance receives breadcrumbs', async () => {
+  test('when multiple nested app layouts rendered, the outer instance receives breadcrumbs', async () => {
     await renderAsync(
       <>
         <AppLayout
@@ -168,6 +169,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
             <AppLayout
               {...defaultAppLayoutProps}
               data-testid="second"
+              navigationHide={true}
               breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />}
             />
           }
@@ -177,12 +179,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
     expect(
       wrapper
-        .find('[data-testid="second"]')!
+        .find('[data-testid="first"]')!
         .findAppLayout()!
         .findBreadcrumbs()!
         .findBreadcrumbGroup()!
         .findBreadcrumbLinks()
     ).toHaveLength(2);
+    expect(wrapper.find('[data-testid="second"]')!.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
   });
 
   test('updates when a single breadcrumbs instance changes', async () => {
