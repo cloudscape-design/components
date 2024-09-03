@@ -3,6 +3,8 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
@@ -188,7 +190,10 @@ function InternalInput(
       )}
       <input ref={mergedRef} {...attributes} />
       {__rightIcon && (
-        <span className={styles['input-icon-right']}>
+        <span
+          className={styles['input-icon-right']}
+          {...(__rightIcon === 'close' ? getAnalyticsMetadataAttribute({ action: 'clearInput' }) : {})}
+        >
           <InternalButton
             // Used for test utils
             // eslint-disable-next-line react/forbid-component-props
