@@ -3732,7 +3732,7 @@ The main action also supports the following properties of the [button](/componen
           },
           Object {
             "name": "text",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
