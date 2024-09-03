@@ -48,7 +48,7 @@ const successfullSteps: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: 'Analyzing security rules',
-    status: 'success',
+    status: 'loading',
   },
 ];
 
@@ -58,9 +58,61 @@ const renderSteps = (props: Partial<StepsProps>) => {
 };
 
 describe('Steps', () => {
-  test('renders all steps', () => {
+  test('renders no steps when none are provided', () => {
+    const wrapper = renderSteps({ steps: [] });
+
+    expect(wrapper.findItems()).toHaveLength(0);
+  });
+
+  test('renders correct count of steps', () => {
     const wrapper = renderSteps({ steps: successfullSteps });
 
     expect(wrapper.findItems()).toHaveLength(4);
   });
+
+  test('renders correct steps headers', () => {
+    const wrapper = renderSteps({ steps: successfullSteps });
+
+    expect(wrapper.findItems()[0]!.findHeader()!.getElement()).toHaveTextContent('Listed EC2 instances');
+    expect(wrapper.findItems()[1]!.findHeader()!.getElement()).toHaveTextContent('Gathered Security Group IDs');
+    expect(wrapper.findItems()[2]!.findHeader()!.getElement()).toHaveTextContent('Checked Cross Region Consent');
+    expect(wrapper.findItems()[3]!.findHeader()!.getElement()).toHaveTextContent('Analyzing security rules');
+  });
+
+  test('renders correct steps details', () => {
+    const wrapper = renderSteps({ steps: successfullSteps });
+
+    expect(wrapper.findItems()[0]!.findDetails()!.getElement()).toHaveTextContent('EC2 Instances IDs:');
+    expect(wrapper.findItems()[1]!.findDetails()!.getElement()).toHaveTextContent('Security Groups IDs:');
+    expect(wrapper.findItems()[2]!.findDetails()).toBeNull();
+    expect(wrapper.findItems()[3]!.findDetails()).toBeNull();
+  });
+
+  test('renders correct status icons', () => {
+    const testStatus: StepsProps.Status[] = [
+      'error',
+      'warning',
+      'success',
+      'info',
+      'stopped',
+      'pending',
+      'in-progress',
+      'loading',
+    ];
+    const wrapper = renderSteps({
+      steps: testStatus.map(status => ({
+        header: 'test step header',
+        status,
+      })),
+    });
+
+    testStatus.forEach((_, index) => {
+      expect(wrapper.findItems()[index]!.findStatusIndicator()).not.toBeNull();
+      expect(wrapper.findItems()[index]!.findStatusIndicator()?.getElement()).toHaveTextContent('');
+    });
+  });
+
+  // describe('Accessibility', () => {
+
+  // })
 });

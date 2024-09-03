@@ -16,12 +16,12 @@ type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseCompon
 const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsProps.Step) => {
   return (
     <li className={clsx(styles['step-container'], testUtilStyles['step-container'])}>
-      <div className={styles['step-status']}>
+      <div className={clsx(styles['step-status'], testUtilStyles['step-status'])}>
         <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel} />
       </div>
-      <div className={styles['step-header']}>{header}</div>
+      <div className={clsx(styles['step-header'], testUtilStyles['step-header'])}>{header}</div>
       <hr className={styles['step-connector']} />
-      {details && <div className={styles['step-details']}>{details}</div>}
+      {details && <div className={clsx(styles['step-details'], testUtilStyles['step-details'])}>{details}</div>}
     </li>
   );
 };
