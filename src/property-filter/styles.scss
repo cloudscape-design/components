@@ -145,7 +145,7 @@ $operator-field-width: 120px;
 
         &.token-editor-supports-groups {
           padding-block-end: awsui.$space-m;
-          border-block-end: 1px solid awsui.$color-border-divider-default;
+          border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
         }
       }
     }
