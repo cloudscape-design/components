@@ -70,13 +70,13 @@ $dropdown-trigger-icon-offset: 2px;
       border-end-end-radius: 0;
       padding-inline-end: awsui.$space-m;
       margin-inline-end: awsui.$space-xxxs;
-    }
 
-    &.has-no-text {
-      padding-inline: awsui.$space-button-icon-only-horizontal;
+      &.has-no-text {
+        padding-inline: awsui.$space-button-icon-only-horizontal;
 
-      &.visual-refresh {
-        padding-inline-start: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+        &.visual-refresh {
+          padding-inline-start: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+        }
       }
     }
   }
