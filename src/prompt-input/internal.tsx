@@ -47,6 +47,8 @@ const InternalPromptInput = React.forwardRef(
       placeholder,
       readOnly,
       spellcheck,
+      secondaryActions,
+      secondaryContent,
       __internalRootRef = null,
       ...rest
     }: InternalPromptInputProps,
@@ -131,10 +133,7 @@ const InternalPromptInput = React.forwardRef(
       placeholder,
       autoFocus,
       className: clsx(styles.textarea, testutilStyles.textarea, {
-        [styles['textarea-readonly']]: readOnly,
-        [styles['textarea-invalid']]: invalid,
-        [styles['textarea-warning']]: warning && !invalid,
-        [styles['textarea-with-button']]: actionButtonIconName,
+        [styles['textarea-with-button']]: actionButtonIconName && !secondaryActions,
       }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
@@ -160,10 +159,17 @@ const InternalPromptInput = React.forwardRef(
     return (
       <div
         {...baseProps}
-        className={clsx(styles.root, testutilStyles.root, baseProps.className)}
+        className={clsx(styles.root, testutilStyles.root, baseProps.className, {
+          [styles['textarea-readonly']]: readOnly,
+          [styles['textarea-invalid']]: invalid,
+          [styles['textarea-warning']]: warning && !invalid,
+          [styles.disabled]: disabled,
+        })}
         ref={__internalRootRef}
       >
+        {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
         <textarea ref={textareaRef} id={controlId} {...attributes} />
+        {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
         {hasActionButton && (
           <div className={styles.button}>
             <InternalButton

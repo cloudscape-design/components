@@ -83,6 +83,16 @@ export interface PromptInputProps
    * Specifies the maximum number of lines of text the textarea will expand to.
    */
   maxRows?: number;
+
+  /**
+   * Use this slot if you want to add secondary actions to the prompt input.
+   */
+  secondaryActions?: React.ReactNode;
+
+  /**
+   * Use this slot if you want to add secondary content, such as file attachments, to the prompt input.
+   */
+  secondaryContent?: React.ReactNode;
 }
 
 export namespace PromptInputProps {
