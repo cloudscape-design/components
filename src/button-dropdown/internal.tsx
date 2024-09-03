@@ -218,8 +218,6 @@ const InternalButtonDropdown = React.forwardRef(
               styles['trigger-item'],
               styles['split-trigger'],
               styles[`variant-${variant}`],
-              hasNoText && styles['has-no-text'],
-              isVisualRefresh && styles['visual-refresh'],
               mainActionProps.disabled && styles.disabled,
               mainActionProps.loading && styles.loading
             )}
@@ -239,7 +237,11 @@ const InternalButtonDropdown = React.forwardRef(
               ref={mainActionRef}
               {...mainActionProps}
               {...mainActionIconProps}
-              className={clsx(styles['trigger-button'])}
+              className={clsx(
+                styles['trigger-button'],
+                hasNoText && styles['has-no-text'],
+                isVisualRefresh && styles['visual-refresh']
+              )}
               variant={variant}
               ariaLabel={mainActionAriaLabel}
               formAction="none"
