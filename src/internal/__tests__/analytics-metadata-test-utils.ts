@@ -25,7 +25,8 @@ const validateLabels = (labelSelectors: Array<string>, labelsClassNames: Record<
     const parts = current
       .split(/\s+/)
       .filter(part => part.startsWith('.'))
-      .map(part => part.replace('.', ''));
+      .map(part => part.replace('.', ''))
+      .map(part => part.replace(/\[.*\]/, ''));
     acc = [...acc, ...parts];
     return acc;
   }, []);

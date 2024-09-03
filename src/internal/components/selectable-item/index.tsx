@@ -3,10 +3,62 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { HighlightType } from '../options-list/utils/use-highlight-option.js';
+import { GeneratedAnalyticsMetadataSelectableItemSelect } from './analytics-metadata/interfaces';
 
+import optionAnalyticsSelectors from './../option/analytics-metadata/styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+
+export interface ItemDataAttributes {
+  'data-group-index'?: string;
+  'data-child-index'?: string;
+  'data-in-group-index'?: string;
+  'data-test-index'?: string;
+}
+
+const getAnayticsMetadata = ({
+  isChild,
+  value,
+  ...restProps
+}: Partial<SelectableItemProps>): GeneratedAnalyticsMetadataSelectableItemSelect => {
+  const dataAttributes = restProps as ItemDataAttributes;
+
+  const analyticsMetadata: GeneratedAnalyticsMetadataSelectableItemSelect = {
+    action: 'select',
+    detail: {
+      label: {
+        selector: [`.${optionAnalyticsSelectors.label}`, `.${analyticsSelectors['option-content']}`],
+      },
+    },
+  };
+
+  let position = undefined;
+  if (
+    (isChild && dataAttributes['data-group-index'] && dataAttributes['data-in-group-index']) ||
+    dataAttributes['data-child-index']
+  ) {
+    position = `${dataAttributes['data-group-index']},${dataAttributes['data-in-group-index'] || dataAttributes['data-child-index']}`;
+  } else if (dataAttributes['data-test-index']) {
+    position = `${dataAttributes['data-test-index']}`;
+  }
+  if (position) {
+    analyticsMetadata.detail.position = position;
+  }
+  if (value) {
+    analyticsMetadata.detail.value = value;
+  }
+  if (isChild) {
+    analyticsMetadata.detail.groupLabel = {
+      root: 'body',
+      selector: `.${analyticsSelectors.parent}[data-group-index="${dataAttributes['data-group-index']}"] .${analyticsSelectors['option-content']}`,
+    };
+  }
+  return analyticsMetadata;
+};
 
 export type SelectableItemProps = BaseComponentProps & {
   children: React.ReactNode;
@@ -25,6 +77,7 @@ export type SelectableItemProps = BaseComponentProps & {
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
   ariaDescribedby?: string;
+  value?: string;
 } & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
 
 const SelectableItem = (
@@ -46,6 +99,7 @@ const SelectableItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
+    value,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -56,6 +110,7 @@ const SelectableItem = (
     [styles.highlighted]: highlighted,
     [styles['has-background']]: hasBackground,
     [styles.parent]: isParent,
+    [analyticsSelectors.parent]: isParent,
     [styles.child]: isChild,
     [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
@@ -118,8 +173,17 @@ const SelectableItem = (
   }
 
   return (
-    <li role="option" className={classNames} style={style} {...a11yProperties} {...rest}>
-      <div className={styles['option-content']} ref={contentRef}>
+    <li
+      role="option"
+      className={classNames}
+      style={style}
+      {...a11yProperties}
+      {...rest}
+      {...(isParent || disabled
+        ? {}
+        : getAnalyticsMetadataAttribute(getAnayticsMetadata({ isChild, value, ...restProps })))}
+    >
+      <div className={clsx(styles['option-content'], analyticsSelectors['option-content'])} ref={contentRef}>
         {content}
       </div>
       <div className={styles['measure-strut']} ref={ref} />
