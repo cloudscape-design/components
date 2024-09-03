@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
+import { TokenGroup } from '~components';
+import ButtonGroup from '~components/button-group';
 import Checkbox from '~components/checkbox';
 import ColumnLayout from '~components/column-layout';
 import FormField from '~components/form-field';
@@ -10,7 +12,7 @@ import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 
-const MAX_CHARS = 200;
+const MAX_CHARS = 2000;
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -27,6 +29,11 @@ const placeholderText =
 
 export default function PromptInputPage() {
   const [textareaValue, setTextareaValue] = useState('');
+  const [items, setItems] = React.useState([
+    { label: 'Item 1', dismissLabel: 'Remove item 1' },
+    { label: 'Item 2', dismissLabel: 'Remove item 2' },
+    { label: 'Item 3', dismissLabel: 'Remove item 3' },
+  ]);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText } = urlParams;
@@ -88,6 +95,183 @@ export default function PromptInputPage() {
               value={textareaValue}
               onChange={(event: any) => setTextareaValue(event.detail.value)}
               onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+              placeholder="Ask a question"
+              maxRows={4}
+              disabled={isDisabled}
+              readOnly={isReadOnly}
+              invalid={isInvalid || textareaValue.length > MAX_CHARS}
+              warning={hasWarning}
+              ref={ref}
+              secondaryActions={
+                <ButtonGroup
+                  ariaLabel="Chat actions"
+                  items={[
+                    {
+                      type: 'icon-button',
+                      id: 'copy',
+                      iconName: 'upload',
+                      text: 'Upload files',
+                    },
+                    {
+                      type: 'icon-button',
+                      id: 'add',
+                      iconName: 'add-plus',
+                      text: 'Add',
+                    },
+                    {
+                      type: 'icon-button',
+                      id: 'remove',
+                      iconName: 'remove',
+                      text: 'Remove',
+                    },
+                  ]}
+                  variant="icon"
+                />
+              }
+              secondaryContent={
+                <TokenGroup
+                  onDismiss={({ detail: { itemIndex } }) => {
+                    setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
+                  }}
+                  items={items}
+                />
+              }
+            />
+          </FormField>
+          <div />
+        </ColumnLayout>
+        <ColumnLayout columns={2}>
+          <FormField
+            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
+            constraintText={
+              <>
+                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+              </>
+            }
+            label={<span>User prompt</span>}
+            i18nStrings={{ errorIconAriaLabel: 'Error' }}
+          >
+            <PromptInput
+              actionButtonIconName="send"
+              actionButtonAriaLabel="Submit prompt"
+              value={textareaValue}
+              onChange={(event: any) => setTextareaValue(event.detail.value)}
+              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+              placeholder="Ask a question"
+              maxRows={4}
+              disabled={isDisabled}
+              readOnly={isReadOnly}
+              invalid={isInvalid || textareaValue.length > MAX_CHARS}
+              warning={hasWarning}
+              ref={ref}
+              secondaryContent={
+                <TokenGroup
+                  onDismiss={({ detail: { itemIndex } }) => {
+                    setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
+                  }}
+                  items={items}
+                />
+              }
+            />
+          </FormField>
+          <div />
+        </ColumnLayout>
+        <ColumnLayout columns={2}>
+          <FormField
+            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
+            constraintText={
+              <>
+                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+              </>
+            }
+            label={<span>User prompt</span>}
+            i18nStrings={{ errorIconAriaLabel: 'Error' }}
+          >
+            <PromptInput
+              actionButtonIconName="send"
+              actionButtonAriaLabel="Submit prompt"
+              value={textareaValue}
+              onChange={(event: any) => setTextareaValue(event.detail.value)}
+              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+              placeholder="Ask a question"
+              maxRows={4}
+              disabled={isDisabled}
+              readOnly={isReadOnly}
+              invalid={isInvalid || textareaValue.length > MAX_CHARS}
+              warning={hasWarning}
+              ref={ref}
+              secondaryActions={
+                <ButtonGroup
+                  ariaLabel="Chat actions"
+                  items={[
+                    {
+                      type: 'icon-button',
+                      id: 'copy',
+                      iconName: 'upload',
+                      text: 'Upload files',
+                    },
+                    {
+                      type: 'icon-button',
+                      id: 'add',
+                      iconName: 'add-plus',
+                      text: 'Add',
+                    },
+                    {
+                      type: 'icon-button',
+                      id: 'remove',
+                      iconName: 'remove',
+                      text: 'Remove',
+                    },
+                  ]}
+                  variant="icon"
+                />
+              }
+            />
+          </FormField>
+          <div />
+        </ColumnLayout>
+        <ColumnLayout columns={2}>
+          <FormField
+            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
+            constraintText={
+              <>
+                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+              </>
+            }
+            label={<span>User prompt</span>}
+            i18nStrings={{ errorIconAriaLabel: 'Error' }}
+          >
+            <PromptInput
+              actionButtonIconName="send"
+              actionButtonAriaLabel="Submit prompt"
+              value={textareaValue}
+              onChange={(event: any) => setTextareaValue(event.detail.value)}
+              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+              placeholder="Ask a question"
+              maxRows={4}
+              disabled={isDisabled}
+              readOnly={isReadOnly}
+              invalid={isInvalid || textareaValue.length > MAX_CHARS}
+              warning={hasWarning}
+              ref={ref}
+            />
+          </FormField>
+          <div />
+        </ColumnLayout>
+        <ColumnLayout columns={2}>
+          <FormField
+            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
+            constraintText={
+              <>
+                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+              </>
+            }
+            label={<span>User prompt</span>}
+            i18nStrings={{ errorIconAriaLabel: 'Error' }}
+          >
+            <PromptInput
+              value={textareaValue}
+              onChange={(event: any) => setTextareaValue(event.detail.value)}
               placeholder="Ask a question"
               maxRows={4}
               disabled={isDisabled}
