@@ -71,6 +71,18 @@ $dropdown-trigger-icon-offset: 2px;
       padding-inline-end: awsui.$space-m;
       margin-inline-end: awsui.$space-xxxs;
     }
+
+    // &.has-no-text {
+    //   > .trigger-button {
+    //     padding-inline: awsui.$space-button-icon-only-horizontal;
+    //   }
+    // }
+
+    // &.visual-refresh {
+    //   & > .trigger-button {
+    //     padding-inline-start: calc(#{awsui.$space-s} - #{$dropdown-trigger-icon-offset});
+    //   }
+    // }
   }
 
   & > .trigger-item:not(:first-child) {

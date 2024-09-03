@@ -121,7 +121,7 @@ export namespace ButtonDropdownProps {
   export type ItemType = 'action' | 'group';
 
   export interface MainAction {
-    text: string;
+    text?: string;
     ariaLabel?: string;
     onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
