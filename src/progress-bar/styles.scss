@@ -107,8 +107,7 @@ $bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
     background-color: $background-color;
   }
 
-  &::-webkit-progress-value,
-  &::-moz-progress-bar {
+  &::-webkit-progress-value {
     @include general-progress-bar-style;
     background-color: $bar-color;
   }
@@ -118,6 +117,11 @@ $bar-color-in-flash: awsui.$color-background-progress-bar-content-in-flash;
     border-start-end-radius: 10px;
     border-end-start-radius: 10px;
     border-end-end-radius: 10px;
+  }
+
+  &::-moz-progress-bar {
+    @include general-progress-bar-style;
+    background-color: $bar-color;
   }
 
   &.progress-in-flash {
