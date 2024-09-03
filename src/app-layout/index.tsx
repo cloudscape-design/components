@@ -33,6 +33,7 @@ const AppLayout = React.forwardRef(
       minContentWidth,
       navigationOpen: controlledNavigationOpen,
       onNavigationChange: controlledOnNavigationChange,
+      analyticsMetadata,
       ...rest
     }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
@@ -45,25 +46,29 @@ const AppLayout = React.forwardRef(
         );
       }
     }
-    const { __internalRootRef } = useBaseComponent<HTMLDivElement>('AppLayout', {
-      props: {
-        contentType,
-        disableContentPaddings: rest.disableContentPaddings,
-        disableBodyScroll: rest.disableBodyScroll,
-        navigationWidth,
-        navigationHide: rest.navigationHide,
-        toolsHide: rest.toolsHide,
-        toolsWidth,
-        maxContentWidth,
-        minContentWidth,
-        stickyNotifications: rest.stickyNotifications,
-        disableContentHeaderOverlap: rest.disableContentHeaderOverlap,
+    const { __internalRootRef } = useBaseComponent<HTMLDivElement>(
+      'AppLayout',
+      {
+        props: {
+          contentType,
+          disableContentPaddings: rest.disableContentPaddings,
+          disableBodyScroll: rest.disableBodyScroll,
+          navigationWidth,
+          navigationHide: rest.navigationHide,
+          toolsHide: rest.toolsHide,
+          toolsWidth,
+          maxContentWidth,
+          minContentWidth,
+          stickyNotifications: rest.stickyNotifications,
+          disableContentHeaderOverlap: rest.disableContentHeaderOverlap,
+        },
+        metadata: {
+          drawersCount: rest.drawers?.length ?? null,
+          hasContentHeader: !!rest.contentHeader,
+        },
       },
-      metadata: {
-        drawersCount: rest.drawers?.length ?? null,
-        hasContentHeader: !!rest.contentHeader,
-      },
-    });
+      analyticsMetadata
+    );
     const isRefresh = useVisualRefresh();
     const isMobile = useMobile();
 

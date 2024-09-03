@@ -91,7 +91,11 @@ const ClassicAppLayout = React.forwardRef(
     });
     const onToolsToggle = (open: boolean) => {
       setToolsOpen(open);
-      focusToolsButtons();
+      if (hasDrawers) {
+        focusDrawersButtons();
+      } else {
+        focusToolsButtons();
+      }
       fireNonCancelableEvent(onToolsChange, { open });
     };
 
@@ -278,7 +282,7 @@ const ClassicAppLayout = React.forwardRef(
     );
 
     const getEffectiveToolsWidth = () => {
-      if (activeDrawerSize) {
+      if (activeDrawerSize && activeDrawer) {
         return Math.min(resizableSpaceAvailable, activeDrawerSize);
       }
 

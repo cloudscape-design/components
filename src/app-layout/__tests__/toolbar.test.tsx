@@ -9,10 +9,10 @@ import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
-import appLayoutToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
+import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
 function findToolbar(wrapper: AppLayoutWrapper) {
-  return wrapper.findByClassName(appLayoutToolbarStyles['universal-toolbar'])?.getElement();
+  return wrapper.findByClassName(testUtilStyles.toolbar)?.getElement();
 }
 
 // no-op function to suppress controllability warnings
@@ -34,10 +34,10 @@ describe('toolbar mode only features', () => {
       expect(findToolbar(wrapper)).toContainElement(wrapper.findToolsToggle().getElement());
     });
 
-    test('does not render navigation toggle button for open state', () => {
+    test('renders navigation toggle button for open state', () => {
       const { wrapper } = renderComponent(<AppLayout navigationOpen={true} onNavigationChange={noop} />);
       expect(findToolbar(wrapper)).toBeTruthy();
-      expect(wrapper.findNavigationToggle()).toBeFalsy();
+      expect(wrapper.findNavigationToggle()).toBeTruthy();
     });
 
     test('renders toolbar with split panel trigger', () => {

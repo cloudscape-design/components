@@ -13,6 +13,7 @@ interface HorizontalLayoutInput {
   splitPanelOpen: boolean;
   splitPanelPosition: 'side' | 'bottom' | undefined;
   splitPanelSize: number;
+  isMobile: boolean;
 }
 
 export function computeHorizontalLayout({
@@ -24,6 +25,7 @@ export function computeHorizontalLayout({
   splitPanelOpen,
   splitPanelPosition,
   splitPanelSize,
+  isMobile,
 }: HorizontalLayoutInput) {
   const contentPadding = 2 * 24; // space-xl
   const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
@@ -33,7 +35,7 @@ export function computeHorizontalLayout({
     placement.inlineSize - minContentWidth - contentPadding - activeNavigationWidth
   );
 
-  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH;
+  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH || isMobile;
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
   const maxSplitPanelSize = resizableSpaceAvailable - activeDrawerSize;
@@ -60,6 +62,7 @@ export interface VerticalLayoutOutput {
   toolbar: number;
   notifications: number;
   header: number;
+  drawers: number;
 }
 
 export function computeVerticalLayout({
@@ -71,13 +74,16 @@ export function computeVerticalLayout({
 }: VerticalLayoutInput): VerticalLayoutOutput {
   const toolbar = topOffset;
   let notifications = topOffset;
+  let drawers = topOffset;
+
   if (hasVisibleToolbar) {
     notifications += toolbarHeight;
+    drawers += toolbarHeight;
   }
   let header = notifications;
   if (stickyNotifications) {
     header += notificationsHeight;
   }
 
-  return { toolbar, notifications, header };
+  return { toolbar, notifications, header, drawers };
 }

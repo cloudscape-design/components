@@ -3,11 +3,21 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
+import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { SomeRequired } from '../internal/types';
 
 export interface AppLayoutProps extends BaseComponentProps {
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` -  Identifies the type of flow represented by the component.
+   * **Note:** This API is currently experimental.
+   * @analytics
+   */
+  analyticsMetadata?: AppLayoutProps.AnalyticsMetadata;
+
   /**
    * Determines the default behavior of the component based on some predefined page layouts.
    * Individual properties will always take precedence over the default coming from the content type.
@@ -247,6 +257,11 @@ export interface AppLayoutProps extends BaseComponentProps {
 }
 
 export namespace AppLayoutProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+  }
+
   export type ContentType = 'default' | 'form' | 'table' | 'cards' | 'wizard' | 'dashboard';
 
   export interface Ref {

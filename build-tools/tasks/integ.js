@@ -14,7 +14,10 @@ module.exports = task('test:integ', async () => {
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__integ__/**/*.test.ts');
-  await execa('jest', ['-c', 'jest.integ.config.js', ...files], { stdio: 'inherit' });
+  await execa('jest', ['-c', 'jest.integ.config.js', ...files], {
+    stdio: 'inherit',
+    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
+  });
 
   devServer.cancel();
 });

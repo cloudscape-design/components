@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal.js';
@@ -11,22 +11,20 @@ import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getAllowedOperators } from './controller.js';
-import { getFormattedToken } from './i18n-utils.js';
+import { I18nStringsInternal } from './i18n-utils.js';
 import {
   ComparisonOperator,
-  FormattedToken,
   GroupText,
-  I18nStrings,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalToken,
   LoadItemsDetail,
 } from './interfaces.js';
-import { I18nStringsExt } from './internal.js';
 import { OperatorInput, PropertyInput, ValueInput } from './token-editor-inputs.js';
 
 import styles from './styles.css.js';
@@ -40,7 +38,7 @@ export interface TokenEditorProps {
   freeTextFiltering: InternalFreeTextFiltering;
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
-  i18nStrings: I18nStrings & I18nStringsExt;
+  i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   onSubmit: () => void;
   onDismiss: () => void;
@@ -67,6 +65,15 @@ export function TokenEditor({
   tempGroup,
   onChangeTempGroup,
 }: TokenEditorProps) {
+  const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+  const onFocusMoved = () => setNextFocusIndex(null);
+  const tokenListRef = useListFocusController({
+    nextFocusIndex,
+    onFocusMoved,
+    listItemSelector: `.${styles['token-editor-field-property']}`,
+    outsideSelector: `.${styles['token-editor-add-token']}`,
+  });
+
   const groups = tempGroup.map((temporaryToken, index) => {
     const setTemporaryToken = (newToken: InternalToken) => {
       const copy = [...tempGroup];
@@ -101,19 +108,21 @@ export function TokenEditor({
     return { token: temporaryToken, property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
   });
   return (
-    <div className={styles['token-editor']}>
+    <div className={styles['token-editor']} ref={tokenListRef}>
       <TokenEditorFields
         supportsGroups={supportsGroups}
-        tokens={groups.map(group => getFormattedToken(group.token, i18nStrings))}
+        tokens={groups.map(group => group.token)}
         onRemove={index => {
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
+          setNextFocusIndex(index);
         }}
         onRemoveFromGroup={index => {
           const removedToken = tempGroup[index];
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
           onChangeStandalone([...standaloneTokens, removedToken]);
+          setNextFocusIndex(index);
         }}
         onSubmit={onSubmit}
         renderProperty={index => (
@@ -157,11 +166,14 @@ export function TokenEditor({
         <div className={clsx(styles['token-editor-add-token'], testUtilStyles['token-editor-token-add-actions'])}>
           <InternalButtonDropdown
             variant="normal"
-            ariaLabel={i18nStrings.tokenEditorAddTokenActionsLabel}
-            items={standaloneTokens.map((token, index) => ({
-              id: index.toString(),
-              text: i18nStrings.tokenEditorAddExistingTokenLabel?.(getFormattedToken(token, i18nStrings)) ?? '',
-            }))}
+            ariaLabel={i18nStrings.tokenEditorAddTokenActionsAriaLabel}
+            items={standaloneTokens.map((token, index) => {
+              return {
+                id: index.toString(),
+                text: i18nStrings.tokenEditorAddExistingTokenLabel?.(token) ?? '',
+                ariaLabel: i18nStrings.tokenEditorAddExistingTokenAriaLabel?.(token) ?? '',
+              };
+            })}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
               if (!isNaN(index) && standaloneTokens[index]) {
@@ -169,12 +181,16 @@ export function TokenEditor({
                 const updated = standaloneTokens.filter((_, existingIndex) => existingIndex !== index);
                 onChangeStandalone(updated);
                 onChangeTempGroup([...tempGroup, addedToken]);
+                setNextFocusIndex(groups.length);
               }
             }}
             disabled={standaloneTokens.length === 0}
             mainAction={{
               text: i18nStrings?.tokenEditorAddNewTokenLabel ?? '',
-              onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
+              onClick: () => {
+                onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]);
+                setNextFocusIndex(groups.length);
+              },
             }}
           />
         </div>
@@ -202,7 +218,7 @@ export function TokenEditor({
 }
 
 interface TokenEditorLayout {
-  tokens: FormattedToken[];
+  tokens: InternalToken[];
   supportsGroups: boolean;
   onRemove: (index: number) => void;
   onRemoveFromGroup: (index: number) => void;
@@ -210,7 +226,7 @@ interface TokenEditorLayout {
   renderProperty: (index: number) => React.ReactNode;
   renderOperator: (index: number) => React.ReactNode;
   renderValue: (index: number) => React.ReactNode;
-  i18nStrings: I18nStrings & I18nStringsExt;
+  i18nStrings: I18nStringsInternal;
 }
 
 function TokenEditorFields({
@@ -263,7 +279,7 @@ function TokenEditorFields({
         <div
           key={index}
           role="group"
-          aria-label={`${token.propertyLabel} ${token.operator} ${token.value}`}
+          aria-label={i18nStrings.formatToken(token).formattedText}
           className={styles['token-editor-grid-group']}
         >
           <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
@@ -307,11 +323,12 @@ function TokenEditorFields({
               <div className={styles['token-editor-remove-token']}>
                 <TokenEditorRemoveActions
                   isNarrow={isNarrow}
-                  ariaLabel={i18nStrings.tokenEditorTokenActionsLabel?.(token) ?? ''}
+                  ariaLabel={i18nStrings.tokenEditorTokenActionsAriaLabel?.(token) ?? ''}
+                  mainActionAriaLabel={i18nStrings.tokenEditorTokenRemoveAriaLabel?.(token) ?? ''}
                   disabled={tokens.length === 1}
                   items={[
-                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel?.(token) ?? '' },
-                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel?.(token) ?? '' },
+                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel ?? '' },
+                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
                   ]}
                   onItemClick={itemId => {
                     switch (itemId) {
@@ -363,6 +380,7 @@ function TokenEditorField({
 function TokenEditorRemoveActions({
   isNarrow,
   ariaLabel,
+  mainActionAriaLabel,
   disabled,
   items,
   onItemClick,
@@ -370,6 +388,7 @@ function TokenEditorRemoveActions({
 }: {
   isNarrow: boolean;
   ariaLabel: string;
+  mainActionAriaLabel: string;
   disabled: boolean;
   items: ButtonDropdownProps.Item[];
   onItemClick: (itemId: string) => void;
@@ -382,7 +401,12 @@ function TokenEditorRemoveActions({
       items={items.slice(1)}
       onItemClick={({ detail }) => onItemClick(detail.id)}
       disabled={disabled}
-      mainAction={{ text: items[0].text, onClick: () => onItemClick(items[0].id), disabled }}
+      mainAction={{
+        text: items[0].text,
+        onClick: () => onItemClick(items[0].id),
+        disabled,
+        ariaLabel: mainActionAriaLabel,
+      }}
       className={testUtilStyles['token-editor-token-remove-actions']}
       data-testindex={index}
     />

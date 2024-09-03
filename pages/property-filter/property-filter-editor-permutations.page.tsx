@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import { DatePicker, FormField, TimeInput } from '~components';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
+import { usePropertyFilterI18n } from '~components/property-filter/i18n-utils';
 import { InternalFilteringProperty } from '~components/property-filter/interfaces';
 import { TokenEditor, TokenEditorProps } from '~components/property-filter/token-editor';
 
@@ -14,8 +15,6 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common-props';
-
-import styles from './token-editor.scss';
 
 const externalProperty = {
   key: '',
@@ -77,7 +76,7 @@ const dateTimeProperty: InternalFilteringProperty = {
   externalProperty,
 };
 
-const defaultProps: TokenEditorProps = {
+const defaultProps: Omit<TokenEditorProps, 'i18nStrings'> = {
   supportsGroups: true,
   asyncProps: {},
   customGroupsText: [],
@@ -88,7 +87,6 @@ const defaultProps: TokenEditorProps = {
   },
   filteringProperties: [nameProperty, dateProperty],
   filteringOptions: [],
-  i18nStrings,
   onSubmit: () => {},
   onDismiss: () => {},
   standaloneTokens: [],
@@ -132,12 +130,14 @@ const tokenPermutations = createPermutations<Partial<TokenEditorProps>>([
   },
 ]);
 
-function TokenEditorStateful(props: TokenEditorProps) {
+function TokenEditorStateful(props: Omit<TokenEditorProps, 'i18nStrings'>) {
   const [tempGroup, setTempGroup] = useState(props.tempGroup);
   const [standaloneTokens, setStandaloneTokens] = useState(props.standaloneTokens);
+  const i18nStringsInternal = usePropertyFilterI18n(i18nStrings);
   return (
     <TokenEditor
       {...props}
+      i18nStrings={i18nStringsInternal}
       standaloneTokens={standaloneTokens}
       onChangeStandalone={setStandaloneTokens}
       tempGroup={tempGroup}
@@ -160,12 +160,10 @@ export default function () {
       <I18nProvider messages={[messages]} locale="en">
         <h1>Property filter editor permutations</h1>
         <ScreenshotArea disableAnimations={true}>
-          <div className={styles['token-editor-container']}>
-            <PermutationsView
-              permutations={tokenPermutations}
-              render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
-            />
-          </div>
+          <PermutationsView
+            permutations={tokenPermutations}
+            render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
+          />
         </ScreenshotArea>
       </I18nProvider>
     </>

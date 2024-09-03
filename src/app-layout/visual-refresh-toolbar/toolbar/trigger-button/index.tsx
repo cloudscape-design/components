@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { Ref } from 'react';
 import clsx from 'clsx';
 
 import { ButtonProps } from '../../../../button/interfaces';
@@ -16,11 +16,17 @@ export interface TriggerButtonProps {
   iconSvg?: React.ReactNode;
   ariaExpanded: boolean | undefined;
   ariaControls?: string;
-  testId?: string;
-  onClick: React.MouseEventHandler<HTMLButtonElement>;
-  selected?: boolean;
-  badge?: boolean;
   disabled?: boolean;
+  /**
+   * Ovewrwrites any internal testIds when provided
+   */
+  testId?: string;
+  /**
+   * If button is selected. Used only for desktop and applies a selected class
+   */
+  selected?: boolean;
+  onClick: React.MouseEventHandler<HTMLButtonElement>;
+  badge?: boolean;
   highContrastHeader?: boolean;
 }
 
@@ -34,14 +40,15 @@ function TriggerButton(
     ariaControls,
     onClick,
     testId,
+    disabled = false,
     badge,
-    selected,
-    disabled,
+    selected = false,
+    highContrastHeader,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
   return (
-    <div className={styles['trigger-wrapper']}>
+    <div className={clsx(styles['trigger-wrapper'], !highContrastHeader && styles['remove-high-contrast-header'])}>
       <button
         aria-expanded={ariaExpanded}
         aria-controls={ariaControls}
@@ -58,12 +65,12 @@ function TriggerButton(
           className
         )}
         onClick={onClick}
-        ref={ref as React.Ref<HTMLButtonElement>}
+        ref={ref as Ref<HTMLButtonElement>}
         type="button"
         data-testid={testId}
       >
         <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
-          <Icon name={iconName} svg={iconSvg} />
+          {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
         </span>
       </button>
       {badge && <div className={styles.dot} />}

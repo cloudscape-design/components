@@ -9,10 +9,13 @@ import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { SomeRequired } from '../internal/types';
 import { TokenGroupProps } from './interfaces';
 import { Token } from './token';
 
+import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalTokenGroupProps = SomeRequired<TokenGroupProps, 'items' | 'alignment'> & InternalBaseComponentProps;
@@ -32,10 +35,18 @@ export default function InternalTokenGroup({
 }: InternalTokenGroupProps) {
   checkControlled('TokenGroup', 'items', items, 'onDismiss', onDismiss);
 
-  const [removedItemIndex, setRemovedItemIndex] = useState<null | number>(null);
+  const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+  const onFocusMoved = () => setNextFocusIndex(null);
+  const tokenListRef = useListFocusController({
+    nextFocusIndex,
+    onFocusMoved,
+    listItemSelector: `.${tokenListStyles['list-item']}`,
+    showMoreSelector: `.${tokenListStyles.toggle}`,
+  });
 
   const baseProps = getBaseProps(props);
   const hasItems = items.length > 0;
+  const mergedRef = useMergeRefs(__internalRootRef, tokenListRef);
   return (
     <div
       {...baseProps}
@@ -45,7 +56,7 @@ export default function InternalTokenGroup({
         hasItems && styles['has-items'],
         disableOuterPadding && styles['no-padding']
       )}
-      ref={__internalRootRef}
+      ref={mergedRef}
     >
       <TokenList
         alignment={alignment}
@@ -57,7 +68,7 @@ export default function InternalTokenGroup({
             dismissLabel={item.dismissLabel}
             onDismiss={() => {
               fireNonCancelableEvent(onDismiss, { itemIndex });
-              setRemovedItemIndex(itemIndex);
+              setNextFocusIndex(itemIndex);
             }}
             disabled={item.disabled}
             readOnly={readOnly}
@@ -68,12 +79,11 @@ export default function InternalTokenGroup({
         i18nStrings={i18nStrings}
         limitShowFewerAriaLabel={limitShowFewerAriaLabel}
         limitShowMoreAriaLabel={limitShowMoreAriaLabel}
-        moveFocusNextToIndex={removedItemIndex}
         onExpandedClick={isExpanded => {
           if (isExpanded && limit) {
-            setRemovedItemIndex(limit);
+            setNextFocusIndex(limit);
           } else {
-            setRemovedItemIndex(null);
+            setNextFocusIndex(null);
           }
         }}
       />
