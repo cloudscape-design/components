@@ -11,6 +11,7 @@ import {
   columnDefinitions,
   filteringProperties as commonFilteringProperties,
   i18nStrings,
+  i18nStringsTokenGroups,
   labels,
 } from './common-props';
 
@@ -27,6 +28,7 @@ const commonProps = {
   filteringProperties,
   filteringOptions: [],
   i18nStrings,
+  i18nStringsTokenGroups,
   countText: '5 matches',
   disableFreeTextFiltering: false,
   virtualScroll: true,

@@ -1,27 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useState } from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
-import { format } from 'date-fns';
+import React from 'react';
+import { act, fireEvent, render as reactRender } from '@testing-library/react';
 
-import DatePicker from '../../../lib/components/date-picker';
-import FormField from '../../../lib/components/form-field';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import PropertyFilter from '../../../lib/components/property-filter';
-import { usePropertyFilterI18n } from '../../../lib/components/property-filter/i18n-utils';
-import {
-  FilteringOption,
-  FilteringProperty,
-  PropertyFilterProps,
-  Ref,
-} from '../../../lib/components/property-filter/interfaces';
-import { InternalFilteringProperty } from '../../../lib/components/property-filter/interfaces';
-import { TokenEditor, TokenEditorProps } from '../../../lib/components/property-filter/token-editor';
+import { FilteringOption, FilteringProperty } from '../../../lib/components/property-filter/interfaces';
+import PropertyFilterInternal, { PropertyFilterInternalProps } from '../../../lib/components/property-filter/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { InternalPropertyFilterEditorDropdownWrapper } from '../../../lib/components/test-utils/dom/property-filter';
-import { createDefaultProps, i18nStrings } from './common';
+import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter';
+import {
+  createDefaultProps,
+  i18nStrings,
+  i18nStringsTokenGroups,
+  providedI18nStrings,
+  StatefulInternalPropertyFilter,
+} from './common';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),
@@ -76,32 +71,61 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'default-operator', value: 'value' },
 ];
 
-const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
+const defaultProps: PropertyFilterInternalProps = {
+  filteringOptions: [],
+  customGroupsText: [],
+  disableFreeTextFiltering: false,
+  i18nStringsTokenGroups,
+  ...createDefaultProps(filteringProperties, filteringOptions),
+};
 
-function renderComponent(props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) {
-  render(<PropertyFilter {...defaultProps} {...props} />);
+function renderComponent(props?: Partial<PropertyFilterInternalProps>, withI18nProvider = false) {
+  return withI18nProvider
+    ? reactRender(
+        <TestI18nProvider messages={providedI18nStrings}>
+          <PropertyFilterInternal {...defaultProps} {...props} />
+        </TestI18nProvider>
+      )
+    : reactRender(<PropertyFilterInternal {...defaultProps} {...props} />);
 }
 
-function openEditor(tokenIndex: number, { expandToViewport }: { expandToViewport: boolean }) {
-  const propertyFilter = createWrapper().findPropertyFilter()!;
-  propertyFilter.findTokens()[tokenIndex].findLabel()!.click();
-  return findEditor(tokenIndex, { expandToViewport })!;
+function openEditor(tokenIndex: number, options: { expandToViewport?: boolean; isMobile?: boolean }) {
+  const propertyFilter = new PropertyFilterWrapperInternal(createWrapper().findPropertyFilter()!.getElement());
+  const token = propertyFilter.findTokens()[tokenIndex];
+  if (token.findEditButton()) {
+    token.findEditButton()!.click();
+  } else {
+    token.findLabel()!.click();
+  }
+  return findEditor(tokenIndex, options)!;
 }
 
-function findEditor(tokenIndex: number, { expandToViewport }: { expandToViewport: boolean }) {
-  const propertyFilter = createWrapper().findPropertyFilter()!;
+function findEditor(
+  tokenIndex: number,
+  { expandToViewport = false, isMobile = false }: { expandToViewport?: boolean; isMobile?: boolean }
+) {
+  const propertyFilter = new PropertyFilterWrapperInternal(createWrapper().findPropertyFilter()!.getElement());
   const editor = propertyFilter.findTokens()[tokenIndex].findEditorDropdown({ expandToViewport })!;
   return editor
     ? {
         textContent: editor.getElement().textContent,
         header: editor.findHeader(),
         dismissButton: editor.findDismissButton(),
-        propertyField: editor.findPropertyField(),
-        propertySelect: editor.findPropertyField().findControl()!.findSelect()!,
-        operatorField: editor.findOperatorField(),
-        operatorSelect: editor.findOperatorField().findControl()!.findSelect()!,
-        valueField: editor.findValueField(),
-        valueAutosuggest: editor.findValueField().findControl()!.findAutosuggest()!,
+        propertyField: (index?: number) => editor.findPropertyField(index),
+        propertySelect: (index?: number) => editor.findPropertyField(index).findControl()!.findSelect()!,
+        operatorField: (index?: number) => editor.findOperatorField(index),
+        operatorSelect: (index?: number) => editor.findOperatorField(index).findControl()!.findSelect()!,
+        valueField: (index?: number) => editor.findValueField(index),
+        valueAutosuggest: (index?: number) => editor.findValueField(index).findControl()!.findAutosuggest()!,
+        removeActions: (index?: number) => {
+          const actionsMenu = editor.findTokenRemoveActions(index)!;
+          return {
+            actionsMenu,
+            removeAction: () => (isMobile ? actionsMenu.findMainAction()! : actionsMenu!.findItems()[0])!,
+            removeFromGroupAction: () => actionsMenu.findItems()[isMobile ? 0 : 1]!,
+          };
+        },
+        addActions: editor.findTokenAddActions()!,
         cancelButton: editor.findCancelButton(),
         submitButton: editor.findSubmitButton(),
         form: editor.findForm(),
@@ -115,7 +139,7 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       query: { tokens: [{ value: 'first', operator: '!:' }], operation: 'or' },
     });
     const editor = openEditor(0, { expandToViewport });
-    expect(editor.header.getElement()).toHaveTextContent(i18nStrings.editTokenHeader);
+    expect(editor.header.getElement()).toHaveTextContent(i18nStrings.editTokenHeader!);
   });
 
   describe('form controls content', () => {
@@ -125,25 +149,28 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
       expect(editor.textContent).toBe('Edit filterPropertystringOperator!:Does not containValueCancelApply');
-      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect().openDropdown());
       expect(
-        editor.propertySelect
+        editor
+          .propertySelect()
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['All properties', 'string', 'string-other', 'default', 'string!=', 'range']);
 
-      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect().openDropdown());
       expect(
-        editor.operatorSelect
+        editor
+          .operatorSelect()
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['=Equals', '!=Does not equal', ':Contains', '!:Does not contain']);
 
-      act(() => editor.valueAutosuggest.focus());
+      act(() => editor.valueAutosuggest().focus());
       expect(
-        editor.valueAutosuggest
+        editor
+          .valueAutosuggest()
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
@@ -157,9 +184,10 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
       expect(editor.textContent).toBe('Edit filterPropertystringOperator!:Does not containValueCancelApply');
-      act(() => editor.propertySelect.openDropdown());
+      act(() => editor.propertySelect().openDropdown());
       expect(
-        editor.propertySelect
+        editor
+          .propertySelect()
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
@@ -173,9 +201,10 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
       expect(editor.textContent).toBe('Edit filterPropertyAll propertiesOperator!=Does not equalValueCancelApply');
-      act(() => editor.operatorSelect.openDropdown());
+      act(() => editor.operatorSelect().openDropdown());
       expect(
-        editor.operatorSelect
+        editor
+          .operatorSelect()
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
@@ -190,25 +219,25 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       const editor = openEditor(0, { expandToViewport });
 
       // Change operator
-      act(() => editor.operatorSelect.openDropdown());
-      act(() => editor.operatorSelect.selectOption(1));
-      expect(editor.propertySelect.findTrigger().getElement()).toHaveTextContent('string');
-      expect(editor.operatorSelect.findTrigger().getElement()).toHaveTextContent('=Equals');
-      expect(editor.valueAutosuggest.findNativeInput().getElement()).toHaveAttribute('value', 'first');
+      act(() => editor.operatorSelect().openDropdown());
+      act(() => editor.operatorSelect().selectOption(1));
+      expect(editor.propertySelect().findTrigger().getElement()).toHaveTextContent('string');
+      expect(editor.operatorSelect().findTrigger().getElement()).toHaveTextContent('=Equals');
+      expect(editor.valueAutosuggest().findNativeInput().getElement()).toHaveAttribute('value', 'first');
 
       // Change value
-      act(() => editor.valueAutosuggest.setInputValue('123'));
-      expect(editor.propertySelect.findTrigger().getElement()).toHaveTextContent('string');
-      expect(editor.operatorSelect.findTrigger().getElement()).toHaveTextContent('=Equals');
-      expect(editor.valueAutosuggest.findNativeInput().getElement()).toHaveAttribute('value', '123');
+      act(() => editor.valueAutosuggest().setInputValue('123'));
+      expect(editor.propertySelect().findTrigger().getElement()).toHaveTextContent('string');
+      expect(editor.operatorSelect().findTrigger().getElement()).toHaveTextContent('=Equals');
+      expect(editor.valueAutosuggest().findNativeInput().getElement()).toHaveAttribute('value', '123');
 
       // Change property
       // This preserves operator but not value because the value type between properties can be different.
-      act(() => editor.propertySelect.openDropdown());
-      act(() => editor.propertySelect.selectOption(2));
-      expect(editor.propertySelect.findTrigger().getElement()).toHaveTextContent('string-other');
-      expect(editor.operatorSelect.findTrigger().getElement()).toHaveTextContent('=Equals');
-      expect(editor.valueAutosuggest.findNativeInput().getElement()).toHaveAttribute('value', '');
+      act(() => editor.propertySelect().openDropdown());
+      act(() => editor.propertySelect().selectOption(2));
+      expect(editor.propertySelect().findTrigger().getElement()).toHaveTextContent('string-other');
+      expect(editor.operatorSelect().findTrigger().getElement()).toHaveTextContent('=Equals');
+      expect(editor.valueAutosuggest().findNativeInput().getElement()).toHaveAttribute('value', '');
     });
   });
 
@@ -221,11 +250,11 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
 
-      act(() => editor.valueAutosuggest.setInputValue('123'));
-      act(() => editor.operatorSelect.openDropdown());
-      act(() => editor.operatorSelect.selectOption(1));
-      act(() => editor.propertySelect.openDropdown());
-      act(() => editor.propertySelect.selectOption(1));
+      act(() => editor.valueAutosuggest().setInputValue('123'));
+      act(() => editor.operatorSelect().openDropdown());
+      act(() => editor.operatorSelect().selectOption(1));
+      act(() => editor.propertySelect().openDropdown());
+      act(() => editor.propertySelect().selectOption(1));
       act(() => editor.dismissButton.click());
       expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).not.toHaveBeenCalled();
@@ -239,11 +268,11 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
 
-      act(() => editor.valueAutosuggest.setInputValue('123'));
-      act(() => editor.operatorSelect.openDropdown());
-      act(() => editor.operatorSelect.selectOption(1));
-      act(() => editor.propertySelect.openDropdown());
-      act(() => editor.propertySelect.selectOption(1));
+      act(() => editor.valueAutosuggest().setInputValue('123'));
+      act(() => editor.operatorSelect().openDropdown());
+      act(() => editor.operatorSelect().selectOption(1));
+      act(() => editor.propertySelect().openDropdown());
+      act(() => editor.propertySelect().selectOption(1));
       act(() => editor.cancelButton.click());
       expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).not.toHaveBeenCalled();
@@ -257,11 +286,11 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
 
-      act(() => editor.operatorSelect.openDropdown());
-      act(() => editor.operatorSelect.selectOption(1));
-      act(() => editor.propertySelect.openDropdown());
-      act(() => editor.propertySelect.selectOption(1));
-      act(() => editor.valueAutosuggest.setInputValue('123'));
+      act(() => editor.operatorSelect().openDropdown());
+      act(() => editor.operatorSelect().selectOption(1));
+      act(() => editor.propertySelect().openDropdown());
+      act(() => editor.propertySelect().selectOption(1));
+      act(() => editor.valueAutosuggest().setInputValue('123'));
       act(() => editor.submitButton.click());
       expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).toHaveBeenCalledWith(
@@ -279,11 +308,11 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
       });
       const editor = openEditor(0, { expandToViewport });
 
-      act(() => editor.operatorSelect.openDropdown());
-      act(() => editor.operatorSelect.selectOption(1));
-      act(() => editor.propertySelect.openDropdown());
-      act(() => editor.propertySelect.selectOption(1));
-      act(() => editor.valueAutosuggest.setInputValue('123'));
+      act(() => editor.operatorSelect().openDropdown());
+      act(() => editor.operatorSelect().selectOption(1));
+      act(() => editor.propertySelect().openDropdown());
+      act(() => editor.propertySelect().selectOption(1));
+      act(() => editor.valueAutosuggest().setInputValue('123'));
       fireEvent.submit(editor.form!.getElement());
       expect(findEditor(0, { expandToViewport })).toBeNull();
       expect(handleChange).toHaveBeenCalledWith(
@@ -295,433 +324,527 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
   });
 });
 
-const externalProperty = {
-  key: '',
-  operators: [],
-  propertyLabel: '',
-  groupValuesLabel: '',
-} as const;
+const tokenJohn = { propertyKey: 'string', operator: '=', value: 'John' };
+const tokenJane = { propertyKey: 'string', operator: '=', value: 'Jane' };
+const tokenJack = { propertyKey: 'string', operator: '=', value: 'Jack' };
 
-const openCalendarAriaLabel = (selectedDate: string | null) =>
-  'Choose Date' + (selectedDate ? `, selected date is ${selectedDate}` : '');
-
-const nameProperty: InternalFilteringProperty = {
-  propertyKey: 'name',
-  propertyLabel: 'Name',
-  groupValuesLabel: 'Name values',
-  operators: ['=', '!='],
-  defaultOperator: '=',
-  getValueFormatter: () => null,
-  getValueFormRenderer: () => null,
-  externalProperty,
-};
-
-const dateProperty: InternalFilteringProperty = {
-  propertyKey: 'date',
-  propertyLabel: 'Date',
-  groupValuesLabel: 'Date values',
-  operators: ['=', '!='],
-  defaultOperator: '=',
-  getValueFormatter: () => (value: null | Date) => (value ? format(value, 'yyyy-MM-dd') : ''),
-  getValueFormRenderer:
-    () =>
-    ({ value }) => (
-      <FormField>
-        <DatePicker value={value ? format(value, 'yyyy-MM-dd') : ''} openCalendarAriaLabel={openCalendarAriaLabel} />
-      </FormField>
-    ),
-  externalProperty,
-};
-
-const defaultEditorProps: Omit<TokenEditorProps, 'i18nStrings'> = {
-  supportsGroups: true,
-  asyncProps: {},
-  customGroupsText: [],
-  freeTextFiltering: {
-    disabled: false,
-    operators: [':', '!:'],
-    defaultOperator: ':',
-  },
-  filteringProperties: [nameProperty, dateProperty],
-  filteringOptions: [],
-  onSubmit: () => {},
-  onDismiss: () => {},
-  standaloneTokens: [],
-  onChangeStandalone: () => {},
-  tempGroup: [{ property: nameProperty, operator: '=', value: 'John' }],
-  onChangeTempGroup: () => {},
-};
-
-function TokenEditorWithI18n(props: Omit<TokenEditorProps, 'i18nStrings'>) {
-  const formatOperator = (operator: string) => {
-    switch (operator) {
-      case '=':
-        return 'equals';
-      case '!=':
-        return 'does_not_equal';
-      default:
-        return operator;
-    }
-  };
-  const i18nStringsInternal = usePropertyFilterI18n({
-    editTokenHeader: 'Edit token',
-    propertyText: 'Property',
-    operatorText: 'Operator',
-    valueText: 'Value',
-    cancelActionText: 'Cancel',
-    applyActionText: 'Apply',
-    formatToken: token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
-    tokenEditorTokenActionsAriaLabel: token =>
-      `Remove actions, ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
-    tokenEditorTokenRemoveAriaLabel: token =>
-      `Remove filter, ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
-    tokenEditorTokenRemoveLabel: 'Remove filter',
-    tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
-    tokenEditorAddNewTokenLabel: 'Add new filter',
-    tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
-    tokenEditorAddExistingTokenAriaLabel: token =>
-      `Add filter ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value} to group`,
-    tokenEditorAddExistingTokenLabel: token =>
-      `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
+describe.each([false, true] as const)('token editor labels, isMobile = %s', isMobile => {
+  beforeEach(() => {
+    jest.mocked(useMobile).mockReturnValue(isMobile);
   });
-  return <TokenEditor {...props} i18nStrings={i18nStringsInternal} />;
-}
 
-function TokenEditorWithEmptyI18n(props: Omit<TokenEditorProps, 'i18nStrings'>) {
-  const i18nStringsInternal = usePropertyFilterI18n({});
-  return <TokenEditor {...props} i18nStrings={i18nStringsInternal} />;
-}
-
-function TokenEditorWithProvider(props: Omit<TokenEditorProps, 'i18nStrings'>) {
-  return (
-    <TestI18nProvider
-      messages={{
-        'property-filter': {
-          'i18nStrings.editTokenHeader': 'Edit token',
-          'i18nStrings.propertyText': 'Property',
-          'i18nStrings.operatorText': 'Operator',
-          'i18nStrings.valueText': 'Value',
-          'i18nStrings.cancelActionText': 'Cancel',
-          'i18nStrings.applyActionText': 'Apply',
-          'i18nStrings.formatToken': '{token__propertyLabel} {token__operator} {token__value}',
-          'i18nStrings.tokenEditorTokenActionsAriaLabel': 'Remove actions, {token__formattedText}',
-          'i18nStrings.tokenEditorTokenRemoveAriaLabel': 'Remove filter, {token__formattedText}',
-          'i18nStrings.tokenEditorTokenRemoveLabel': 'Remove filter',
-          'i18nStrings.tokenEditorTokenRemoveFromGroupLabel': 'Remove filter from group',
-          'i18nStrings.tokenEditorAddNewTokenLabel': 'Add new filter',
-          'i18nStrings.tokenEditorAddTokenActionsAriaLabel': 'Add filter actions',
-          'i18nStrings.tokenEditorAddExistingTokenAriaLabel': 'Add filter {token__formattedText} to group',
-          'i18nStrings.tokenEditorAddExistingTokenLabel':
-            'Add filter {token__propertyLabel} {token__operator} {token__value} to group',
+  describe.each([false, true])('with i18n-provider %s', withI18nProvider => {
+    test.each([false, true])('token editor with a single filter, enableTokenGroups=%s', enableTokenGroups => {
+      renderComponent(
+        {
+          enableTokenGroups,
+          query: { operation: 'and', tokens: [tokenJohn] },
         },
-      }}
-    >
-      <TokenEditorWithEmptyI18n {...props} />
-    </TestI18nProvider>
-  );
-}
+        withI18nProvider
+      );
+      const editor = openEditor(0, { expandToViewport: false, isMobile });
 
-function renderTokenEditor(props?: Partial<TokenEditorProps>, withProvider = false) {
-  const Component = withProvider ? TokenEditorWithProvider : TokenEditorWithI18n;
-  const { container } = render(<Component {...defaultEditorProps} {...props} />);
-  return new InternalPropertyFilterEditorDropdownWrapper(container);
-}
+      expect(editor.header.getElement()).toHaveTextContent('Edit filter');
+      expect(editor.dismissButton.getElement()).toHaveAccessibleName('Dismiss');
 
-function TokenEditorStateful(props: Omit<TokenEditorProps, 'i18nStrings'>) {
-  const i18nStringsInternal = usePropertyFilterI18n({});
-  const [tempGroup, setTempGroup] = useState(props.tempGroup);
-  return (
-    <TokenEditor {...props} tempGroup={tempGroup} onChangeTempGroup={setTempGroup} i18nStrings={i18nStringsInternal} />
-  );
-}
+      expect(editor.propertyField().findControl()!.find('button')!.getElement()).toHaveAccessibleName(
+        'Property string'
+      );
+      expect(editor.operatorField().findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
+      expect(editor.valueField().findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
+      expect(editor.valueField().findControl()!.find('input')!.getElement()).toHaveValue('John');
 
-function renderTokenEditorStateful(props?: Partial<TokenEditorProps>) {
-  const { container } = render(<TokenEditorStateful {...defaultEditorProps} {...props} />);
-  return new InternalPropertyFilterEditorDropdownWrapper(container);
-}
+      if (enableTokenGroups) {
+        const removeActions = editor.removeActions();
+        expect(removeActions.actionsMenu.findNativeButton().getElement()).toHaveAccessibleName(
+          'Remove actions, string equals John'
+        );
+        expect(removeActions.actionsMenu.findNativeButton().getElement()).toBeDisabled();
 
-describe.each([false, true])('with i18n-provider %s', withProvider => {
-  describe.each([false, true] as const)('isMobile = %s', isMobile => {
-    function findRemoveAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
-      wrapper.findTokenRemoveActions(index)!.openDropdown();
-      return isMobile
-        ? wrapper.findTokenRemoveActions(index)!.findMainAction()!
-        : wrapper.findTokenRemoveActions(index)!.findItems()[0];
-    }
-    function findRemoveFromGroupAction(wrapper: InternalPropertyFilterEditorDropdownWrapper, index: number) {
-      wrapper.findTokenRemoveActions(index)!.openDropdown();
-      return wrapper.findTokenRemoveActions(index)!.findItems()[isMobile ? 0 : 1];
-    }
-
-    beforeEach(() => {
-      jest.mocked(useMobile).mockReturnValue(isMobile);
-    });
-
-    test.each([false, true])('renders token editor with a single property, supportsGroups=%s', supportsGroups => {
-      const wrapper = renderTokenEditor({ supportsGroups }, withProvider);
-      const propertyField = wrapper.findPropertyField();
-      const operatorField = wrapper.findOperatorField();
-      const valueField = wrapper.findValueField();
-      const removeActions = wrapper.findTokenRemoveActions();
-      const addActions = wrapper.findTokenAddActions();
-
-      // Not supported yet because the standalone editor does not include the popover
-      // This can be uncommented when defining the test against the property filter
-      // which is not possible for the internal-only token-editor-grouped yet.
-      // expect(wrapper.findHeader().getElement()).toHaveTextContent('Edit token');
-      // expect(wrapper.findDismissButton().getElement()).toHaveAccessibleName('Close token editor');
-
-      // Token inputs
-      expect(propertyField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Property Name');
-      expect(operatorField.findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
-      expect(valueField.findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
-      expect(valueField.findControl()!.find('input')!.getElement()).toHaveValue('John');
-
-      if (supportsGroups) {
-        expect(removeActions!.findNativeButton().getElement()).toHaveAccessibleName('Remove actions, Name equals John');
-        expect(removeActions!.findNativeButton().getElement()).toBeDisabled();
-
-        expect(addActions!.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
-        expect(addActions!.findNativeButton().getElement()).toBeDisabled();
-        expect(addActions!.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
+        expect(editor.addActions.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
+        expect(editor.addActions.findNativeButton().getElement()).toBeDisabled();
+        expect(editor.addActions.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
       } else {
-        expect(removeActions).toBe(null);
-        expect(addActions).toBe(null);
+        expect(editor.removeActions().actionsMenu).toBe(null);
+        expect(editor.addActions).toBe(null);
       }
 
-      // Form actions
-      expect(wrapper.findCancelButton().getElement()).toHaveTextContent('Cancel');
-      expect(wrapper.findSubmitButton().getElement()).toHaveTextContent('Apply');
+      expect(editor.cancelButton.getElement()).toHaveTextContent('Cancel');
+      expect(editor.submitButton.getElement()).toHaveTextContent('Apply');
     });
 
-    test('changes property name', () => {
-      const onChangeTempGroup = jest.fn();
-      const wrapper = renderTokenEditor({ onChangeTempGroup }, withProvider);
-      const propertySelect = createWrapper(wrapper.findPropertyField().getElement()).findSelect()!;
-
-      propertySelect.openDropdown();
-      propertySelect.selectOptionByValue('date');
-      wrapper.findSubmitButton().click();
-
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: dateProperty, operator: '=', value: null }),
-      ]);
-    });
-
-    test('changes property operator', () => {
-      const onChangeTempGroup = jest.fn();
-      const wrapper = renderTokenEditor({ onChangeTempGroup }, withProvider);
-      const operatorSelect = createWrapper(wrapper.findOperatorField().getElement()).findSelect()!;
-
-      operatorSelect.openDropdown();
-      operatorSelect.selectOptionByValue('!=');
-      wrapper.findSubmitButton().click();
-
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '!=', value: 'John' }),
-      ]);
-    });
-
-    test('changes property value', () => {
-      const onChangeTempGroup = jest.fn();
-      const wrapper = renderTokenEditor({ onChangeTempGroup }, withProvider);
-      const valueAutosuggest = createWrapper(wrapper.findValueField().getElement()).findAutosuggest()!;
-
-      valueAutosuggest.setInputValue('Jane');
-      wrapper.findSubmitButton().click();
-
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-      ]);
-    });
-
-    test('removes first property', () => {
-      const onChangeTempGroup = jest.fn();
-      const wrapper = renderTokenEditor(
+    test('token editor with two filters', () => {
+      renderComponent(
         {
-          tempGroup: [
-            { property: nameProperty, operator: '=', value: 'John' },
-            { property: nameProperty, operator: '=', value: 'Jane' },
-          ],
-          onChangeTempGroup,
+          enableTokenGroups: true,
+          query: {
+            operation: 'and',
+            tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }, tokenJack],
+            tokens: [],
+          },
         },
-        withProvider
+        withI18nProvider
       );
+      const editor = openEditor(0, { expandToViewport: false, isMobile });
 
-      findRemoveAction(wrapper, 1).click();
-      wrapper.findSubmitButton().click();
+      expect(editor.propertyField().findControl()!.find('button')!.getElement()).toHaveAccessibleName(
+        'Property string'
+      );
+      expect(editor.operatorField().findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
+      expect(editor.valueField().findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
+      expect(editor.valueField().findControl()!.find('input')!.getElement()).toHaveValue('John');
 
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-      ]);
+      expect(editor.propertyField(2).findControl()!.find('button')!.getElement()).toHaveAccessibleName(
+        'Property string'
+      );
+      expect(editor.operatorField(2).findControl()!.find('button')!.getElement()).toHaveAccessibleName('Operator =');
+      expect(editor.valueField(2).findControl()!.find('input')!.getElement()).toHaveAccessibleName('Value');
+      expect(editor.valueField(2).findControl()!.find('input')!.getElement()).toHaveValue('Jane');
+
+      const removeActions1 = editor.removeActions(1);
+      removeActions1.actionsMenu.openDropdown();
+      const actionsMenu1 = removeActions1.actionsMenu;
+      const removeAction1 = removeActions1.removeAction();
+      const removeFromGroupAction1 = removeActions1.removeFromGroupAction();
+      expect(actionsMenu1.findNativeButton().getElement()).toHaveAccessibleName('Remove actions, string equals John');
+      expect(removeAction1.getElement()).toHaveTextContent('Remove filter');
+      expect(removeFromGroupAction1.getElement()).toHaveTextContent('Remove filter from group');
+      expect(removeActions1.actionsMenu!.findNativeButton().getElement()).not.toBeDisabled();
+      expect(removeAction1.find('[aria-disabled="true"]')).toBe(null);
+      expect(removeFromGroupAction1.find('[aria-disabled="true"]')).toBe(null);
+
+      const removeActions2 = editor.removeActions(2);
+      removeActions2.actionsMenu.openDropdown();
+      const actionsMenu2 = removeActions2.actionsMenu;
+      const removeAction2 = removeActions2.removeAction();
+      const removeFromGroupAction2 = removeActions1.removeFromGroupAction();
+      expect(actionsMenu2.findNativeButton().getElement()).toHaveAccessibleName('Remove actions, string equals Jane');
+      expect(removeAction2.getElement()).toHaveTextContent('Remove filter');
+      expect(removeFromGroupAction2.getElement()).toHaveTextContent('Remove filter from group');
+      expect(removeAction2.find('[aria-disabled="true"]')).toBe(null);
+      expect(removeFromGroupAction2.find('[aria-disabled="true"]')).toBe(null);
+
+      expect(editor.addActions.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
+      expect(editor.addActions.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
+      editor.addActions.openDropdown();
+      expect(editor.addActions.findItems()[0].getElement()).toHaveTextContent('Add filter string = Jack to group');
+    });
+  });
+});
+
+describe('token editor with groups', () => {
+  beforeEach(() => {
+    jest.mocked(useMobile).mockReturnValue(false);
+  });
+
+  function render(props: Partial<PropertyFilterInternalProps>) {
+    return renderComponent({ enableTokenGroups: true, ...props });
+  }
+
+  function renderStateful(props?: Partial<PropertyFilterInternalProps>) {
+    return reactRender(<StatefulInternalPropertyFilter {...defaultProps} {...props} enableTokenGroups={true} />);
+  }
+
+  test('changes filter property', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokens: [tokenJohn] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.propertySelect().openDropdown();
+    editor.propertySelect().selectOptionByValue('other-string');
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: null }],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('changes filter operator', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokens: [tokenJohn] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.operatorSelect().openDropdown();
+    editor.operatorSelect().selectOptionByValue('!=');
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ propertyKey: 'string', operator: '!=', value: 'John' }],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('changes filter value', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokens: [tokenJohn] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.valueAutosuggest().setInputValue('Jane');
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokenGroups: [tokenJane], tokens: [] },
+      })
+    );
+  });
+
+  test('removes first filter', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    const removeActions = editor.removeActions(1);
+    removeActions.actionsMenu.openDropdown();
+    removeActions.removeAction().click();
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokenGroups: [tokenJane], tokens: [] },
+      })
+    );
+  });
+
+  test('removes second filter', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    const removeActions = editor.removeActions(2);
+    removeActions.actionsMenu.openDropdown();
+    removeActions.removeAction().click();
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokenGroups: [tokenJohn], tokens: [] },
+      })
+    );
+  });
+
+  test('removes first filter from group', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    const removeActions = editor.removeActions(1);
+    removeActions.actionsMenu.openDropdown();
+    removeActions.removeFromGroupAction().click();
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokenGroups: [tokenJane, tokenJohn], tokens: [] },
+      })
+    );
+  });
+
+  test('adds new filter', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.findMainAction()!.click();
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane, { operator: ':', value: null }] }],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('adds new filter from standalone', () => {
+    const onChange = jest.fn();
+    render({
+      query: {
+        operation: 'and',
+        tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }, tokenJack, tokenJohn],
+        tokens: [],
+      },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.openDropdown();
+    editor.addActions.findItems()[0].click();
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane, tokenJack] }, tokenJohn],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('standalone token is unmodified when it is removed from group', () => {
+    const onChange = jest.fn();
+    render({
+      query: {
+        operation: 'or',
+        tokenGroups: [tokenJohn, tokenJane, tokenJack],
+        tokens: [],
+      },
+      onChange,
     });
 
-    test('removes second property', () => {
-      const onChangeTempGroup = jest.fn();
-      const wrapper = renderTokenEditor(
-        {
-          tempGroup: [
-            { property: nameProperty, operator: '=', value: 'John' },
-            { property: nameProperty, operator: '=', value: 'Jane' },
-          ],
-          onChangeTempGroup,
+    // Open token Jane
+    const editor = openEditor(1, { expandToViewport: false });
+
+    // Add token John to the group and clear its value
+    editor.addActions.openDropdown();
+    editor.addActions.findItems()[0].click();
+    editor.valueAutosuggest(2)!.findClearButton()!.click();
+
+    // 1st token remove actions are enabled
+    const removeActions1 = editor.removeActions(1);
+    removeActions1.actionsMenu.openDropdown();
+    expect(removeActions1.removeAction().find('[aria-disabled="true"]')).toBe(null);
+    expect(removeActions1.removeFromGroupAction().find('[aria-disabled="true"]')).toBe(null);
+
+    // Cannot remove captured token but can remove from group
+    const removeActions2 = editor.removeActions(2);
+    removeActions2.actionsMenu.openDropdown();
+    expect(removeActions2.removeAction().find('[aria-disabled="true"]')).not.toBe(null);
+    removeActions2.removeFromGroupAction().click();
+
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'or',
+          tokenGroups: [tokenJohn, tokenJane, tokenJack],
+          tokens: [],
         },
-        withProvider
-      );
+      })
+    );
+  });
 
-      findRemoveAction(wrapper, 2).click();
-      wrapper.findSubmitButton().click();
-
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-      ]);
+  test('standalone token can be removed from group and added back', () => {
+    const onChange = jest.fn();
+    render({
+      query: {
+        operation: 'or',
+        tokenGroups: [tokenJohn, tokenJane, tokenJack],
+        tokens: [],
+      },
+      onChange,
     });
 
-    test('removes first property from group', () => {
-      const onChangeTempGroup = jest.fn();
-      const onChangeStandalone = jest.fn();
-      const wrapper = renderTokenEditor(
-        {
-          tempGroup: [
-            { property: nameProperty, operator: '=', value: 'John' },
-            { property: nameProperty, operator: '=', value: 'Jane' },
-          ],
-          onChangeTempGroup,
-          onChangeStandalone,
+    // Open token Jane
+    const editor = openEditor(1, { expandToViewport: false });
+
+    // Add token John to the group and clear its value
+    editor.addActions.openDropdown();
+    editor.addActions.findItems()[0].click();
+    editor.valueAutosuggest(2)!.findClearButton()!.click();
+
+    // Cannot remove captured token but can remove from group
+    const removeActions = editor.removeActions(2);
+    removeActions.actionsMenu.openDropdown();
+    expect(removeActions.removeAction().find('[aria-disabled="true"]')).not.toBe(null);
+    removeActions.removeFromGroupAction().click();
+
+    // Add token John to the group again
+    editor.addActions.openDropdown();
+    editor.addActions.findItems()[0].click();
+
+    editor.submitButton.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'or',
+          tokenGroups: [{ operation: 'and', tokens: [tokenJane, tokenJohn] }, tokenJack],
+          tokens: [],
         },
-        withProvider
-      );
+      })
+    );
+  });
 
-      findRemoveFromGroupAction(wrapper, 1).click();
-      wrapper.findSubmitButton().click();
-
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-      ]);
-
-      expect(onChangeStandalone).toHaveBeenCalledTimes(1);
-      expect(onChangeStandalone).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-      ]);
+  test('can remove nested filter from group, add it back, and remove completely', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+      onChange,
     });
 
-    test('adds new property', () => {
-      const onChangeTempGroup = jest.fn();
-      const wrapper = renderTokenEditor(
-        {
-          tempGroup: [
-            { property: nameProperty, operator: '=', value: 'John' },
-            { property: nameProperty, operator: '=', value: 'Jane' },
-          ],
-          onChangeTempGroup,
-        },
-        withProvider
-      );
+    // Open token John+Jane
+    const editor = openEditor(0, { expandToViewport: false });
 
-      wrapper.findTokenAddActions()!.findMainAction()!.click();
-      wrapper.findSubmitButton().click();
+    // Remove token Jane from group
+    editor.removeActions(2).actionsMenu.openDropdown();
+    editor.removeActions(2).removeFromGroupAction().click();
 
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-        expect.objectContaining({ property: null, operator: ':', value: null }),
-      ]);
-    });
+    // Add token Jane back to group
+    editor.addActions.openDropdown();
+    editor.addActions.findItems()[0].click();
 
-    test('adds new property from standalone', () => {
-      const onChangeTempGroup = jest.fn();
-      const onChangeStandalone = jest.fn();
-      const wrapper = renderTokenEditor(
-        {
-          tempGroup: [
-            { property: nameProperty, operator: '=', value: 'John' },
-            { property: nameProperty, operator: '=', value: 'Jane' },
-          ],
-          standaloneTokens: [{ property: dateProperty, operator: '=', value: null }],
-          onChangeTempGroup,
-          onChangeStandalone,
-        },
-        withProvider
-      );
+    // Remove token Jane completely
+    editor.removeActions(2).actionsMenu.openDropdown();
+    editor.removeActions(2).removeAction().click();
 
-      wrapper.findTokenAddActions()!.openDropdown();
-      wrapper.findTokenAddActions()!.findItems()[0].click();
-      wrapper.findSubmitButton().click();
+    editor.submitButton.click();
 
-      expect(onChangeTempGroup).toHaveBeenCalledTimes(1);
-      expect(onChangeTempGroup).toHaveBeenCalledWith([
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'John' }),
-        expect.objectContaining({ property: nameProperty, operator: '=', value: 'Jane' }),
-        expect.objectContaining({ property: dateProperty, operator: '=', value: null }),
-      ]);
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: { operation: 'and', tokenGroups: [tokenJohn], tokens: [] },
+      })
+    );
+  });
 
-      expect(onChangeStandalone).toHaveBeenCalledTimes(1);
-      expect(onChangeStandalone).toHaveBeenCalledWith([]);
-    });
+  test.each(['and', 'or'] as const)(
+    'defines group operation as the opposite of query operation when a group is created, query operation=%s',
+    operation => {
+      const expectedGroupOperation = operation === 'and' ? 'or' : 'and';
 
-    test('add standalone property menu items have indices as IDs', () => {
-      const wrapper = renderTokenEditor(
-        {
-          tempGroup: [],
-          standaloneTokens: [
-            { property: nameProperty, operator: '=', value: '1' },
-            { property: nameProperty, operator: '=', value: '2' },
-          ],
-        },
-        withProvider
-      );
-      const tokenActions = wrapper.findTokenAddActions()!;
-
-      tokenActions.openDropdown();
-      expect(tokenActions.findItemById('0')!.getElement().textContent).toBe('Add filter Name = 1 to group');
-      expect(tokenActions.findItemById('0')!.find('[role="menuitem"]')!.getElement()).toHaveAttribute(
-        'aria-label',
-        'Add filter Name equals 1 to group'
-      );
-      expect(tokenActions.findItemById('1')!.getElement().textContent).toBe('Add filter Name = 2 to group');
-      expect(tokenActions.findItemById('1')!.find('[role="menuitem"]')!.getElement()).toHaveAttribute(
-        'aria-label',
-        'Add filter Name equals 2 to group'
-      );
-    });
-
-    test('moves focus to adjacent property when a filter is removed', () => {
-      const wrapper = renderTokenEditorStateful({
-        tempGroup: [
-          { property: nameProperty, operator: '=', value: 'John' },
-          { property: nameProperty, operator: '=', value: 'Jane' },
-          { property: nameProperty, operator: '=', value: 'Jack' },
-        ],
-        standaloneTokens: [],
+      const onChange = jest.fn();
+      render({
+        query: { operation, tokenGroups: [tokenJohn], tokens: [] },
+        onChange,
       });
+      const editor = openEditor(0, { expandToViewport: false });
 
-      // Removing 2nd filter (Jane) and next 2nd filter (Jack)
-      findRemoveAction(wrapper, 2).click();
-      findRemoveAction(wrapper, 2).click();
+      editor.addActions.findMainAction()!.click();
+      editor.submitButton.click();
 
-      // Focus is on new first filter (John)
-      expect(wrapper.findPropertyField().find('button')!.getElement()).toHaveFocus();
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            operation,
+            tokenGroups: [{ operation: expectedGroupOperation, tokens: [tokenJohn, { operator: ':', value: null }] }],
+            tokens: [],
+          },
+        })
+      );
+    }
+  );
+
+  test('moves focus to adjacent property when a filter is removed', () => {
+    renderStateful({
+      query: {
+        operation: 'and',
+        tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane, tokenJack] }],
+        tokens: [],
+      },
     });
+    const editor = openEditor(0, { expandToViewport: false });
 
-    test('moves focus to the new filter when it is added', () => {
-      const wrapper = renderTokenEditorStateful({
-        tempGroup: [],
-        standaloneTokens: [{ property: nameProperty, operator: '=', value: 'Jane' }],
-      });
+    // Removing 2nd filter (Jane)
+    editor.removeActions(2).actionsMenu.openDropdown();
+    editor.removeActions(2).removeAction().click();
 
-      // Adding new filter
-      wrapper.findTokenAddActions()!.openDropdown();
-      wrapper.findTokenAddActions()!.findItems()[0].click();
+    // Focus is on new second filter (Jack)
+    expect(editor.propertySelect(2).find('button')!.getElement()).toHaveFocus();
 
-      // Focus in on new filter property select
-      expect(wrapper.findPropertyField().find('button')!.getElement()).toHaveFocus();
+    // Removing 2nd filter (Jack)
+    editor.removeActions(2).actionsMenu.openDropdown();
+    editor.removeActions(2).removeFromGroupAction().click();
+
+    // Focus is on new first filter (John)
+    expect(editor.propertySelect(1).find('button')!.getElement()).toHaveFocus();
+  });
+
+  test('moves focus to the new filter when it is added', () => {
+    renderStateful({
+      query: {
+        operation: 'and',
+        tokenGroups: [{ operation: 'or', tokens: [tokenJohn] }, tokenJane],
+        tokens: [],
+      },
     });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    // Adding new filter
+    editor.addActions.findMainAction()!.click();
+
+    // Focus is on newly added 2nd filter
+    expect(editor.propertySelect(2).find('button')!.getElement()).toHaveFocus();
+
+    // Adding standalone token (Jane)
+    editor.addActions.openDropdown();
+    editor.addActions.findItems()[0].click();
+
+    // Focus is on newly added 3rd filter
+    expect(editor.propertySelect(3).find('button')!.getElement()).toHaveFocus();
+  });
+
+  test('standalone property menu items have indices as IDs', () => {
+    const onChange = jest.fn();
+    render({
+      query: {
+        operation: 'and',
+        tokenGroups: [tokenJohn, tokenJane, tokenJack],
+        tokens: [],
+      },
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.openDropdown();
+    expect(editor.addActions.findItemById('0')!.getElement().textContent).toBe('Add filter string = Jane to group');
+    expect(editor.addActions.findItemById('0')!.find('[role="menuitem"]')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Add filter string equals Jane to group'
+    );
+    expect(editor.addActions.findItemById('1')!.getElement().textContent).toBe('Add filter string = Jack to group');
+    expect(editor.addActions.findItemById('1')!.find('[role="menuitem"]')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Add filter string equals Jack to group'
+    );
   });
 });

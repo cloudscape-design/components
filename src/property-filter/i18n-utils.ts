@@ -1,21 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { PropertyFilterOperation } from '@cloudscape-design/collection-hooks';
-
 import { useInternalI18n } from '../i18n/context';
-import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken } from './interfaces';
-
-export interface InternalTokenGroup {
-  operation: PropertyFilterOperation;
-  tokens: readonly InternalToken[];
-}
-
-export interface FormattedTokenGroup {
-  tokens: FormattedToken[];
-  operation: string;
-  operationLabel: string;
-}
+import {
+  ComparisonOperator,
+  FormattedToken,
+  I18nStrings,
+  I18nStringsTokenGroups,
+  InternalToken,
+  InternalTokenGroup,
+} from './interfaces';
+import { tokenGroupToTokens } from './utils';
 
 export type I18nStringsOperators = Pick<
   I18nStrings,
@@ -31,23 +26,10 @@ export type I18nStringsOperators = Pick<
   | 'operatorDoesNotStartWithText'
 >;
 
-// Unreleased i18n properties
-export interface I18nStringsExt {
-  groupEditAriaLabel?: (group: FormattedTokenGroup) => string;
-  tokenEditorTokenActionsAriaLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveAriaLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel?: string;
-  tokenEditorTokenRemoveFromGroupLabel?: string;
-  tokenEditorAddNewTokenLabel?: string;
-  tokenEditorAddTokenActionsAriaLabel?: string;
-  tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
-  tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
-}
-
 // Replacing i18n function with ones taking internal tokens as argument.
 export type I18nStringsInternal = Omit<I18nStrings, 'formatToken' | 'removeTokenButtonAriaLabel'> &
   Omit<
-    I18nStringsExt,
+    I18nStringsTokenGroups,
     | 'groupEditAriaLabel'
     | 'tokenEditorTokenActionsAriaLabel'
     | 'tokenEditorTokenRemoveAriaLabel'
@@ -60,6 +42,7 @@ export type I18nStringsInternal = Omit<I18nStrings, 'formatToken' | 'removeToken
       value: string;
       formattedText: string;
     };
+    groupAriaLabel: (group: InternalTokenGroup) => string;
     groupEditAriaLabel: (group: InternalTokenGroup) => string;
     removeTokenButtonAriaLabel: (token: InternalToken) => string;
     tokenEditorTokenActionsAriaLabel: (token: InternalToken) => string;
@@ -68,7 +51,7 @@ export type I18nStringsInternal = Omit<I18nStrings, 'formatToken' | 'removeToken
     tokenEditorAddExistingTokenLabel: (token: InternalToken) => string;
   };
 
-export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nStringsInternal {
+export function usePropertyFilterI18n(def: I18nStrings & I18nStringsTokenGroups = {}): I18nStringsInternal {
   const i18n = useInternalI18n('property-filter');
 
   const allPropertiesLabel = i18n('i18nStrings.allPropertiesLabel', def?.allPropertiesLabel);
@@ -134,8 +117,13 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
       const formattedToken = toFormatted(token);
       return { ...formattedToken, formattedText: formatToken(toFormatted(token)) };
     },
+    groupAriaLabel: group => {
+      const tokens = tokenGroupToTokens<InternalToken>(group.tokens).map(toFormatted);
+      const groupOperationLabel = (group.operation === 'and' ? operationAndText : operationOrText) ?? '';
+      return tokens.map(token => formatToken(token)).join(` ${groupOperationLabel} `);
+    },
     groupEditAriaLabel: group => {
-      const tokens = group.tokens.map(token => toFormatted(token));
+      const tokens = tokenGroupToTokens<InternalToken>(group.tokens).map(token => toFormatted(token));
       const operation = group.operation;
       const operationLabel = (operation === 'and' ? operationAndText : operationOrText) ?? '';
       const formatter = i18n(
@@ -146,9 +134,9 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
             group__operationLabel: operationLabel,
             group__formattedTokens__length: tokens.length.toString(),
             group__formattedTokens0__formattedText: tokens[0] ? formatToken(tokens[0]) : '',
-            group__formattedTokens1__formattedText: tokens[1] ? formatToken(tokens[0]) : '',
-            group__formattedTokens2__formattedText: tokens[2] ? formatToken(tokens[0]) : '',
-            group__formattedTokens3__formattedText: tokens[3] ? formatToken(tokens[0]) : '',
+            group__formattedTokens1__formattedText: tokens[1] ? formatToken(tokens[1]) : '',
+            group__formattedTokens2__formattedText: tokens[2] ? formatToken(tokens[2]) : '',
+            group__formattedTokens3__formattedText: tokens[3] ? formatToken(tokens[3]) : '',
           })
       );
       return formatter?.({ operation, operationLabel, tokens }) ?? '';
@@ -161,7 +149,7 @@ export function usePropertyFilterI18n(def: I18nStrings & I18nStringsExt): I18nSt
       );
       return formatter?.(toFormatted(token)) ?? '';
     },
-    tokenEditorTokenActionsAriaLabel: token => {
+    tokenEditorTokenActionsAriaLabel: (token: InternalToken) => {
       const formatter = i18n(
         'i18nStrings.tokenEditorTokenActionsAriaLabel',
         def.tokenEditorTokenActionsAriaLabel,

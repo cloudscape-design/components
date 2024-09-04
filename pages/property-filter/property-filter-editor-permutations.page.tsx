@@ -89,8 +89,9 @@ const defaultProps: Omit<TokenEditorProps, 'i18nStrings'> = {
   filteringOptions: [],
   onSubmit: () => {},
   onDismiss: () => {},
-  standaloneTokens: [],
-  onChangeStandalone: () => {},
+  tokensToCapture: [],
+  onTokenCapture: () => {},
+  onTokenRelease: () => {},
   tempGroup: [{ property: null, operator: ':', value: 'search text' }],
   onChangeTempGroup: () => {},
 };
@@ -118,13 +119,13 @@ const tokenPermutations = createPermutations<Partial<TokenEditorProps>>([
         { property: nameProperty, operator: '=', value: 'Jack' },
       ],
     ],
-    standaloneTokens: [
+    tokensToCapture: [
       [
-        { property: dateProperty, operator: '=', value: new Date('2020-01-01') },
-        { property: dateProperty, operator: '=', value: new Date('2020-01-02') },
-        { property: dateProperty, operator: '=', value: new Date('2020-01-03') },
-        { property: dateProperty, operator: '=', value: new Date('2020-01-04') },
-        { property: dateProperty, operator: '=', value: new Date('2020-01-05') },
+        { standaloneIndex: 0, property: dateProperty, operator: '=', value: new Date('2020-01-01') },
+        { standaloneIndex: 1, property: dateProperty, operator: '=', value: new Date('2020-01-02') },
+        { standaloneIndex: 2, property: dateProperty, operator: '=', value: new Date('2020-01-03') },
+        { standaloneIndex: 3, property: dateProperty, operator: '=', value: new Date('2020-01-04') },
+        { standaloneIndex: 4, property: dateProperty, operator: '=', value: new Date('2020-01-05') },
       ],
     ],
   },
@@ -132,23 +133,21 @@ const tokenPermutations = createPermutations<Partial<TokenEditorProps>>([
 
 function TokenEditorStateful(props: Omit<TokenEditorProps, 'i18nStrings'>) {
   const [tempGroup, setTempGroup] = useState(props.tempGroup);
-  const [standaloneTokens, setStandaloneTokens] = useState(props.standaloneTokens);
+  const capturedTokenIndices = tempGroup.map(token => token.standaloneIndex).filter(Boolean);
+  const tokensToCapture = props.tokensToCapture.filter((_, index) => !capturedTokenIndices.includes(index));
   const i18nStringsInternal = usePropertyFilterI18n(i18nStrings);
   return (
     <TokenEditor
       {...props}
       i18nStrings={i18nStringsInternal}
-      standaloneTokens={standaloneTokens}
-      onChangeStandalone={setStandaloneTokens}
+      tokensToCapture={tokensToCapture}
       tempGroup={tempGroup}
       onChangeTempGroup={setTempGroup}
       onDismiss={() => {
         setTempGroup(props.tempGroup);
-        setStandaloneTokens(props.standaloneTokens);
       }}
       onSubmit={() => {
         setTempGroup(props.tempGroup);
-        setStandaloneTokens(props.standaloneTokens);
       }}
     />
   );
