@@ -21,6 +21,8 @@ type DemoContext = React.Context<
     isInvalid: boolean;
     hasWarning: boolean;
     hasText: boolean;
+    hasSecondaryContent: boolean;
+    hasSecondaryActions: boolean;
   }>
 >;
 
@@ -36,7 +38,8 @@ export default function PromptInputPage() {
   ]);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
-  const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText } = urlParams;
+  const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText, hasSecondaryActions, hasSecondaryContent } =
+    urlParams;
 
   useEffect(() => {
     if (hasText) {
@@ -69,6 +72,18 @@ export default function PromptInputPage() {
           </Checkbox>
           <Checkbox checked={hasWarning} onChange={() => setUrlParams({ hasWarning: !hasWarning })}>
             Warning
+          </Checkbox>
+          <Checkbox
+            checked={hasSecondaryContent}
+            onChange={() => setUrlParams({ hasSecondaryContent: !hasSecondaryContent })}
+          >
+            Secondary content
+          </Checkbox>
+          <Checkbox
+            checked={hasSecondaryActions}
+            onChange={() => setUrlParams({ hasSecondaryActions: !hasSecondaryActions })}
+          >
+            Secondary actions
           </Checkbox>
         </FormField>
         <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
@@ -103,182 +118,43 @@ export default function PromptInputPage() {
               warning={hasWarning}
               ref={ref}
               secondaryActions={
-                <ButtonGroup
-                  ariaLabel="Chat actions"
-                  items={[
-                    {
-                      type: 'icon-button',
-                      id: 'copy',
-                      iconName: 'upload',
-                      text: 'Upload files',
-                    },
-                    {
-                      type: 'icon-button',
-                      id: 'add',
-                      iconName: 'add-plus',
-                      text: 'Add',
-                    },
-                    {
-                      type: 'icon-button',
-                      id: 'remove',
-                      iconName: 'remove',
-                      text: 'Remove',
-                    },
-                  ]}
-                  variant="icon"
-                />
+                hasSecondaryActions ? (
+                  <ButtonGroup
+                    ariaLabel="Chat actions"
+                    items={[
+                      {
+                        type: 'icon-button',
+                        id: 'copy',
+                        iconName: 'upload',
+                        text: 'Upload files',
+                      },
+                      {
+                        type: 'icon-button',
+                        id: 'add',
+                        iconName: 'add-plus',
+                        text: 'Add',
+                      },
+                      {
+                        type: 'icon-button',
+                        id: 'remove',
+                        iconName: 'remove',
+                        text: 'Remove',
+                      },
+                    ]}
+                    variant="icon"
+                  />
+                ) : undefined
               }
               secondaryContent={
-                <TokenGroup
-                  onDismiss={({ detail: { itemIndex } }) => {
-                    setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
-                  }}
-                  items={items}
-                />
+                hasSecondaryContent ? (
+                  <TokenGroup
+                    onDismiss={({ detail: { itemIndex } }) => {
+                      setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
+                    }}
+                    items={items}
+                  />
+                ) : undefined
               }
-            />
-          </FormField>
-          <div />
-        </ColumnLayout>
-        <ColumnLayout columns={2}>
-          <FormField
-            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
-            constraintText={
-              <>
-                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
-              </>
-            }
-            label={<span>User prompt</span>}
-            i18nStrings={{ errorIconAriaLabel: 'Error' }}
-          >
-            <PromptInput
-              actionButtonIconName="send"
-              actionButtonAriaLabel="Submit prompt"
-              value={textareaValue}
-              onChange={(event: any) => setTextareaValue(event.detail.value)}
-              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-              placeholder="Ask a question"
-              maxRows={4}
-              disabled={isDisabled}
-              readOnly={isReadOnly}
-              invalid={isInvalid || textareaValue.length > MAX_CHARS}
-              warning={hasWarning}
-              ref={ref}
-              secondaryContent={
-                <TokenGroup
-                  onDismiss={({ detail: { itemIndex } }) => {
-                    setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
-                  }}
-                  items={items}
-                />
-              }
-            />
-          </FormField>
-          <div />
-        </ColumnLayout>
-        <ColumnLayout columns={2}>
-          <FormField
-            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
-            constraintText={
-              <>
-                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
-              </>
-            }
-            label={<span>User prompt</span>}
-            i18nStrings={{ errorIconAriaLabel: 'Error' }}
-          >
-            <PromptInput
-              actionButtonIconName="send"
-              actionButtonAriaLabel="Submit prompt"
-              value={textareaValue}
-              onChange={(event: any) => setTextareaValue(event.detail.value)}
-              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-              placeholder="Ask a question"
-              maxRows={4}
-              disabled={isDisabled}
-              readOnly={isReadOnly}
-              invalid={isInvalid || textareaValue.length > MAX_CHARS}
-              warning={hasWarning}
-              ref={ref}
-              secondaryActions={
-                <ButtonGroup
-                  ariaLabel="Chat actions"
-                  items={[
-                    {
-                      type: 'icon-button',
-                      id: 'copy',
-                      iconName: 'upload',
-                      text: 'Upload files',
-                    },
-                    {
-                      type: 'icon-button',
-                      id: 'add',
-                      iconName: 'add-plus',
-                      text: 'Add',
-                    },
-                    {
-                      type: 'icon-button',
-                      id: 'remove',
-                      iconName: 'remove',
-                      text: 'Remove',
-                    },
-                  ]}
-                  variant="icon"
-                />
-              }
-            />
-          </FormField>
-          <div />
-        </ColumnLayout>
-        <ColumnLayout columns={2}>
-          <FormField
-            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
-            constraintText={
-              <>
-                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
-              </>
-            }
-            label={<span>User prompt</span>}
-            i18nStrings={{ errorIconAriaLabel: 'Error' }}
-          >
-            <PromptInput
-              actionButtonIconName="send"
-              actionButtonAriaLabel="Submit prompt"
-              value={textareaValue}
-              onChange={(event: any) => setTextareaValue(event.detail.value)}
-              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-              placeholder="Ask a question"
-              maxRows={4}
-              disabled={isDisabled}
-              readOnly={isReadOnly}
-              invalid={isInvalid || textareaValue.length > MAX_CHARS}
-              warning={hasWarning}
-              ref={ref}
-            />
-          </FormField>
-          <div />
-        </ColumnLayout>
-        <ColumnLayout columns={2}>
-          <FormField
-            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
-            constraintText={
-              <>
-                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
-              </>
-            }
-            label={<span>User prompt</span>}
-            i18nStrings={{ errorIconAriaLabel: 'Error' }}
-          >
-            <PromptInput
-              value={textareaValue}
-              onChange={(event: any) => setTextareaValue(event.detail.value)}
-              placeholder="Ask a question"
-              maxRows={4}
-              disabled={isDisabled}
-              readOnly={isReadOnly}
-              invalid={isInvalid || textareaValue.length > MAX_CHARS}
-              warning={hasWarning}
-              ref={ref}
             />
           </FormField>
           <div />
