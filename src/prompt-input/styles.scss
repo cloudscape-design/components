@@ -12,7 +12,7 @@
 $send-icon-right-spacing: awsui.$space-static-xxs;
 
 .root {
-  position: relative;
+  @include styles.styles-reset;
   padding-inline-start: styles.$control-padding-horizontal;
 
   border-start-start-radius: styles.$control-border-radius;
@@ -51,22 +51,6 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   &.disabled {
     @include styles.form-disabled-element;
     cursor: default;
-  }
-
-  >.button {
-    position: absolute;
-    inset-inline-end: $send-icon-right-spacing;
-    inset-block-end: 0;
-
-    >.action-button {
-
-      // offset the focus ring by 1px per side so it doesn't blend into the textarea border
-      @include focus-visible.when-visible {
-        @include styles.focus-highlight(('vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
-            'horizontal': calc((#{awsui.$space-xxxs}) - 1px),
-          ));
-      }
-    }
   }
 }
 
@@ -131,8 +115,26 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
     }
   }
 
-  &.textarea-with-button {
-    padding-inline-end: calc(styles.$control-padding-horizontal + $send-icon-right-spacing + awsui.$size-icon-normal);
+  &-wrapper {
+    display: flex;
+
+  }
+}
+
+.button {
+  align-self: end;
+  padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+  padding-block-end: awsui.$space-scaled-xxxs;
+
+  >.action-button {
+    padding: 0;
+
+    // offset the focus ring by 1px per side so it doesn't blend into the textarea border
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(('vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
+          'horizontal': calc((#{awsui.$space-xxxs}) - 1px),
+        ));
+    }
   }
 }
 
@@ -146,6 +148,8 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
 }
 
 .secondary-actions {
+  display: flex;
+  justify-content: space-between;
   padding-block-start: awsui.$space-scaled-xs;
 
   border-start-start-radius: styles.$control-border-radius;

@@ -99,11 +99,13 @@ const InternalPromptInput = React.forwardRef(
       adjustTextareaHeight();
     };
 
+    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
+
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
         const maxRowsHeight = `calc(${maxRows <= 0 ? 3 : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-        const scrollHeight = `calc(${textareaRef.current.scrollHeight}px + ${PADDING})`;
+        const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
         textareaRef.current.style.height = `min(${scrollHeight}, ${maxRowsHeight})`;
       }
     }, [maxRows, LINE_HEIGHT, PADDING]);
@@ -132,9 +134,7 @@ const InternalPromptInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, testutilStyles.textarea, {
-        [styles['textarea-with-button']]: actionButtonIconName && !secondaryActions,
-      }),
+      className: clsx(styles.textarea, testutilStyles.textarea),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
       disabled,
@@ -149,12 +149,26 @@ const InternalPromptInput = React.forwardRef(
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
 
-    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
-
     if (disableBrowserAutocorrect) {
       attributes.autoCorrect = 'off';
       attributes.autoCapitalize = 'off';
     }
+
+    const action = (
+      <div className={styles.button}>
+        <InternalButton
+          className={clsx(styles['action-button'], testutilStyles['action-button'])}
+          ariaLabel={actionButtonAriaLabel}
+          disabled={disabled || readOnly || disableActionButton}
+          iconName={actionButtonIconName}
+          iconUrl={actionButtonIconUrl}
+          iconSvg={actionButtonIconSvg}
+          iconAlt={actionButtonIconAlt}
+          onClick={() => fireNonCancelableEvent(onAction, { value })}
+          variant="icon"
+        />
+      </div>
+    );
 
     return (
       <div
@@ -168,21 +182,14 @@ const InternalPromptInput = React.forwardRef(
         ref={__internalRootRef}
       >
         {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
-        <textarea ref={textareaRef} id={controlId} {...attributes} />
-        {secondaryActions && <div className={styles['secondary-actions']}>{secondaryActions}</div>}
-        {hasActionButton && (
-          <div className={styles.button}>
-            <InternalButton
-              className={clsx(styles['action-button'], testutilStyles['action-button'])}
-              ariaLabel={actionButtonAriaLabel}
-              disabled={disabled || readOnly || disableActionButton}
-              iconName={actionButtonIconName}
-              iconUrl={actionButtonIconUrl}
-              iconSvg={actionButtonIconSvg}
-              iconAlt={actionButtonIconAlt}
-              onClick={() => fireNonCancelableEvent(onAction, { value })}
-              variant="icon"
-            />
+        <div className={styles['textarea-wrapper']}>
+          <textarea ref={textareaRef} id={controlId} {...attributes} />
+          {hasActionButton && !secondaryActions && action}
+        </div>
+        {secondaryActions && (
+          <div className={styles['secondary-actions']}>
+            {secondaryActions}
+            {hasActionButton && action}
           </div>
         )}
       </div>
