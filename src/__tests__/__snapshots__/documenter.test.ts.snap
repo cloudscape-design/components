@@ -1911,6 +1911,13 @@ Note: Manual filtering doesn't disable match highlighting.
       "type": "string",
     },
     Object {
+      "defaultValue": "false",
+      "description": "Hides the custom value indicator controlled with the \`enteredTextLabel\` property.",
+      "name": "hideEnteredTextLabel",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
