@@ -4,6 +4,7 @@ import React from 'react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '~components/button-dropdown';
 
+import { PageLayoutProps } from '../app/components/page-layout';
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -37,3 +38,9 @@ export default function () {
     </>
   );
 }
+
+export const perms: PageLayoutProps<ButtonDropdownProps> = {
+  title: 'ButtonDropdown permutations',
+  permutations,
+  render: props => <ButtonDropdown {...props}>Button Dropdown</ButtonDropdown>,
+};

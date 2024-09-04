@@ -1,26 +1,48 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { lazy, Suspense } from 'react';
+import React, { ComponentType, ReactElement, useEffect, useState } from 'react';
 
 import pagesContext from '../pages-context';
 import ErrorBoundary from './error-boundary';
+import PageLayout, { PageLayoutProps } from './page-layout';
 
-import styles from './page-view.scss';
+interface PageLoadResult {
+  default: ComponentType;
+  perms?: PageLayoutProps<unknown>;
+}
 
-const pagesComponents: Record<string, ReturnType<typeof lazy>> = {};
+interface PageLoaderProps {
+  path: string;
+  fallback: ReactElement;
+}
+
+function PageLoader({ path, fallback }: PageLoaderProps) {
+  const [element, setElement] = useState<ReactElement | null>(null);
+  const [isLoading, setIsLoader] = useState(true);
+
+  useEffect(() => {
+    pagesContext(path).then(({ default: Component, perms }: PageLoadResult) => {
+      if (perms) {
+        setElement(<PageLayout {...perms} />);
+      } else {
+        setElement(<Component />);
+      }
+
+      setIsLoader(false);
+    });
+  }, [path]);
+
+  if (isLoading) {
+    return fallback;
+  }
+
+  return element;
+}
 
 export default function PageView({ pageId }: { pageId: string }) {
-  if (!pagesComponents[pageId]) {
-    pagesComponents[pageId] = lazy(() => pagesContext(`./${pageId}.page.tsx`));
-  }
-  const Page = pagesComponents[pageId];
   return (
     <ErrorBoundary key={pageId}>
-      <Suspense fallback={<span>Loading...</span>}>
-        <div className={styles['page-container']}>
-          <Page />
-        </div>
-      </Suspense>
+      <PageLoader fallback={<span>Loading...</span>} path={`./${pageId}.page.tsx`} />
     </ErrorBoundary>
   );
 }
