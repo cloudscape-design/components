@@ -16,3 +16,7 @@
 .handle:active {
   cursor: grabbing;
 }
+
+.handle-disabled {
+  cursor: default !important;
+}

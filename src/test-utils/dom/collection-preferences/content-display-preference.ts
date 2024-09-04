@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import BoxWrapper from '../box';
 import TextFilterWrapper from '../text-filter';
 import ToggleWrapper from '../toggle';
 
@@ -79,7 +78,7 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   /**
    * Returns the Box with the empty state.
    */
-  findEmptyState(): BoxWrapper | null {
-    return this.findComponent(`.${styles['content-display-empty-state']}`, BoxWrapper);
+  findEmptyState(): ElementWrapper | null {
+    return this.findByClassName(styles['content-display-empty-state']);
   }
 }

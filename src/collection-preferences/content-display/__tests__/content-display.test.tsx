@@ -212,9 +212,22 @@ describe('Content Display preference', () => {
       expect(options).toHaveLength(0);
 
       const emptyState = wrapper.findEmptyState();
-      console.log(emptyState);
       expect(emptyState).not.toBeNull();
       expect(emptyState!.getElement()).toHaveTextContent('No matches found');
+    });
+
+    it('sets the drag-handle to a disabled state when filtering', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      const dragHandleBefore = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      expect(dragHandleBefore.getAttribute('aria-disabled')).toBe('false');
+
+      filterInput!.findInput().setInputValue('Item 1');
+
+      const dragHandleAfter = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      expect(dragHandleAfter.getAttribute('aria-disabled')).toBe('true');
     });
   });
 

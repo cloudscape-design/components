@@ -19,7 +19,12 @@ export interface DragHandleProps {
 
 export default function DragHandle({ attributes, hideFocus, listeners, disabled }: DragHandleProps) {
   return (
-    <Handle className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'])} {...attributes} {...listeners}>
+    <Handle
+      aria-disabled={disabled}
+      className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'], disabled && styles['handle-disabled'])}
+      {...attributes}
+      {...listeners}
+    >
       <InternalIcon variant={disabled ? 'disabled' : undefined} name="drag-indicator" />
     </Handle>
   );
