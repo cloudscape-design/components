@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as tokens;
+
+/*
+ This sets a background color to the page content container
+ to reveal the effects of negative z-index.
+*/
+.page-container {
+  background-color: tokens.$color-background-container-content;
+}

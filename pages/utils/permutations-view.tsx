@@ -4,6 +4,8 @@ import React from 'react';
 
 import SpaceBetween from '~components/space-between';
 
+import styles from './permutations-view.scss';
+
 interface PermutationsViewProps<T> {
   permutations: ReadonlyArray<T>;
   render: (props: T) => React.ReactElement;
@@ -27,7 +29,7 @@ export default function PermutationsView<T>({ permutations, render }: Permutatio
       {permutations.map(permutation => {
         const id = JSON.stringify(permutation, formatValue);
         return (
-          <div key={id} data-permutation={id}>
+          <div className={styles['permutation-container']} key={id} data-permutation={id}>
             {render(permutation)}
           </div>
         );

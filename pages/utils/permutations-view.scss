@@ -1,0 +1,13 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as tokens;
+
+/*
+ This sets a background color to the permutation container
+ to reveal the effects of negative z-index.
+*/
+.permutation-container {
+  background-color: tokens.$color-background-container-content;
+}
