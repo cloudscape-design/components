@@ -64,7 +64,7 @@ export default function ContentDisplayPreference({
     () =>
       getSortedOptions({ options, contentDisplay: value }).filter(option =>
         option.label.toLowerCase().includes(columnFilteringText.toLowerCase())
-      ) ?? [],
+      ),
     [columnFilteringText, options, value]
   );
 
@@ -184,7 +184,6 @@ export default function ContentDisplayPreference({
                   onKeyDown={handleKeyDown}
                   onToggle={onToggle}
                   option={option}
-                  disabled={columnFilteringText.length > 0}
                 />
               );
             })}

@@ -30,7 +30,7 @@ export default class ContentDisplayPageObject extends collectionPreferencesPageM
   }
 
   focusDragHandle(index = 0) {
-    return this.keys(new Array(5 + index * 2).fill('Tab'));
+    return this.keys(new Array(6 + index * 2).fill('Tab'));
   }
 
   async openCollectionPreferencesModal(wrapper: CollectionPreferencesWrapper) {
