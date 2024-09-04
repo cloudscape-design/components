@@ -210,7 +210,7 @@ const InternalButtonDropdown = React.forwardRef(
       const mainActionAriaLabel = externalIconAriaLabel
         ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
         : mainAction.ariaLabel;
-
+      const hasNoText = !text;
       trigger = (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div
@@ -237,7 +237,11 @@ const InternalButtonDropdown = React.forwardRef(
               ref={mainActionRef}
               {...mainActionProps}
               {...mainActionIconProps}
-              className={clsx(styles['trigger-button'])}
+              className={clsx(
+                styles['trigger-button'],
+                hasNoText && styles['has-no-text'],
+                isVisualRefresh && styles['visual-refresh']
+              )}
               variant={variant}
               ariaLabel={mainActionAriaLabel}
               formAction="none"
