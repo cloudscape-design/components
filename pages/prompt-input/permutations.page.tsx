@@ -58,6 +58,13 @@ const permutations = createPermutations<PromptInputProps>([
     actionButtonIconUrl: [img],
     actionButtonIconAlt: ['Letter A'],
   },
+  {
+    value: ['Short value'],
+    actionButtonIconName: [undefined, 'send'],
+    secondaryActions: [undefined, 'secondary actions'],
+    secondaryContent: [undefined, 'secondary content'],
+    invalid: [false, true],
+  },
 ]);
 
 export default function PromptInputPermutations() {
