@@ -85,7 +85,7 @@ const InternalAlert = React.forwardRef(
     const isRefresh = useVisualRefresh();
     const size = isRefresh
       ? 'normal'
-      : (hasReplacementHeader ?? header) && (hasReplacementContent ?? children)
+      : hasReplacementHeader !== 'remove' && header && hasReplacementContent !== 'remove' && children
         ? 'big'
         : 'normal';
 

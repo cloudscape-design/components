@@ -168,9 +168,27 @@ describe('Alert Component', () => {
     });
   });
 
-  test('visual refresh rendering for coverage', () => {
-    useVisualRefresh = true;
-    const { wrapper } = renderAlert({ header: 'Hello' });
-    expect(wrapper.findHeader()!.getElement()).toHaveTextContent('Hello');
+  describe('icon size', () => {
+    test('classic - big if has header and content', () => {
+      const { wrapper } = renderAlert({ header: 'Header', children: ['Content'] });
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-normal'])).toBeFalsy();
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-big'])).toBeTruthy();
+    });
+    test('classic - normal if only header', () => {
+      const { wrapper } = renderAlert({ header: 'Header' });
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-big'])).toBeFalsy();
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-normal'])).toBeTruthy();
+    });
+    test('classic - normal if only content', () => {
+      const { wrapper } = renderAlert({ children: ['Content'] });
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-big'])).toBeFalsy();
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-normal'])).toBeTruthy();
+    });
+    test('visual refresh - always normal', () => {
+      useVisualRefresh = true;
+      const { wrapper } = renderAlert({ header: 'Header', children: ['Content'] });
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-big'])).toBeFalsy();
+      expect(wrapper.getElement().querySelector('.' + styles['icon-size-normal'])).toBeTruthy();
+    });
   });
 });
