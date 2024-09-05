@@ -5,6 +5,10 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import {
+  copyAnalyticsMetadataAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
 import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
@@ -75,6 +79,7 @@ const FilteringToken = forwardRef(
       onEditorOpen,
       hasGroups,
       popoverSize,
+      ...rest
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
@@ -97,6 +102,7 @@ const FilteringToken = forwardRef(
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
+      __closeAnalyticsAction: 'editClose',
     };
     useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.dismissPopover() }));
 
@@ -135,6 +141,7 @@ const FilteringToken = forwardRef(
         grouped={tokens.length > 1}
         disabled={disabled}
         hasGroups={hasGroups}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {tokens.length === 1 ? (
           <InternalPopover ref={popoverRef} {...popoverProps}>
@@ -199,6 +206,7 @@ const TokenGroup = forwardRef(
       grouped,
       disabled,
       hasGroups,
+      ...rest
     }: {
       ariaLabel?: string;
       children: React.ReactNode;
@@ -226,6 +234,7 @@ const TokenGroup = forwardRef(
         )}
         role="group"
         aria-label={ariaLabel}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {operation}
 
@@ -315,6 +324,7 @@ function TokenDismissButton({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      {...getAnalyticsMetadataAttribute({ action: 'dismiss' })}
     >
       <InternalIcon name="close" />
     </button>
