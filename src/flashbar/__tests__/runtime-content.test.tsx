@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 
 import Button from '../../../lib/components/button';
 import Flashbar from '../../../lib/components/flashbar';
@@ -9,51 +9,11 @@ import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
 import FlashbarWrapper from '../../../lib/components/test-utils/dom/flashbar';
-import FlashWrapper from '../../../lib/components/test-utils/dom/flashbar/flash';
+import { expectContent } from '../../alert/__tests__/runtime-content-utils';
 
 import stylesCss from '../../../lib/components/flashbar/styles.css.js';
 
 const pause = (timeout: number) => new Promise(resolve => setTimeout(resolve, timeout));
-
-const expectFlashContent = (
-  wrapper: FlashWrapper,
-  {
-    header,
-    headerReplaced,
-    content,
-    contentReplaced,
-  }: {
-    header?: string | false;
-    headerReplaced?: boolean;
-    content?: string | false;
-    contentReplaced?: boolean;
-  }
-) => {
-  if (header) {
-    if (headerReplaced) {
-      expect(wrapper.findHeader()?.getElement()).toHaveClass(stylesCss.hidden);
-      expect(wrapper.findReplacementHeader()?.getElement().textContent).toBe(header);
-    } else {
-      expect(wrapper.findReplacementHeader()?.getElement()).toHaveClass(stylesCss.hidden);
-      expect(wrapper.findHeader()?.getElement().textContent).toBe(header);
-    }
-  } else if (header === false) {
-    expect(wrapper.findHeader()?.getElement()).toHaveClass(stylesCss.hidden);
-    expect(wrapper.findReplacementHeader()?.getElement()).toHaveClass(stylesCss.hidden);
-  }
-  if (content) {
-    if (contentReplaced) {
-      expect(wrapper.findContent()?.getElement()).toHaveClass(stylesCss.hidden);
-      expect(wrapper.findReplacementContent()?.getElement().textContent).toBe(content);
-    } else {
-      expect(wrapper.findReplacementContent()?.getElement()).toHaveClass(stylesCss.hidden);
-      expect(wrapper.findContent()?.getElement().textContent).toBe(content);
-    }
-  } else if (content === false) {
-    expect(wrapper.findContent()?.getElement()).toHaveClass(stylesCss.hidden);
-    expect(wrapper.findReplacementContent()?.getElement()).toHaveClass(stylesCss.hidden);
-  }
-};
 
 const defaultContent: AlertFlashContentConfig = {
   id: 'test-content',
@@ -71,18 +31,8 @@ const defaultContent: AlertFlashContentConfig = {
   },
 };
 
-function delay(advanceBy = 1) {
-  const promise = act(() => new Promise(resolve => setTimeout(resolve)));
-  jest.advanceTimersByTime(advanceBy);
-  return promise;
-}
-
-beforeEach(() => {
-  jest.useFakeTimers();
-});
 afterEach(() => {
   awsuiPluginsInternal.flashContent.clearRegisteredReplacer();
-  jest.useRealTimers();
   jest.resetAllMocks();
   jest.restoreAllMocks();
 });
@@ -91,26 +41,29 @@ test('renders runtime content initially', async () => {
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
   const { container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
   const flashbarWrapper = new FlashbarWrapper(container);
-  await delay();
-  expectFlashContent(flashbarWrapper.findItems()[0], {
-    content: 'New content',
-    contentReplaced: true,
+  await waitFor(() => {
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      content: 'New content',
+      contentReplaced: true,
+    });
   });
 });
 
 test('renders runtime content when asynchronously registered', async () => {
   const { container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
   const flashbarWrapper = new FlashbarWrapper(container);
-  await delay();
-  expectFlashContent(flashbarWrapper.findItems()[0], {
-    content: 'Flash content',
-    contentReplaced: false,
+  await waitFor(() => {
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      content: 'Flash content',
+      contentReplaced: false,
+    });
   });
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-  await delay();
-  expectFlashContent(flashbarWrapper.findItems()[0], {
-    content: 'New content',
-    contentReplaced: true,
+  await waitFor(() => {
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      content: 'New content',
+      contentReplaced: true,
+    });
   });
 });
 
@@ -128,10 +81,11 @@ describe.each([true, false])('existing header:%p', existingHeader => {
       />
     );
     const flashbarWrapper = new FlashbarWrapper(container);
-    await delay();
-    expectFlashContent(flashbarWrapper.findItems()[0], {
-      header: 'New header',
-      headerReplaced: true,
+    await waitFor(() => {
+      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+        header: 'New header',
+        headerReplaced: true,
+      });
     });
   });
 
@@ -147,16 +101,18 @@ describe.each([true, false])('existing header:%p', existingHeader => {
       />
     );
     const flashbarWrapper = new FlashbarWrapper(container);
-    await delay();
-    expectFlashContent(flashbarWrapper.findItems()[0], {
-      header: existingHeader ? 'Flash header' : undefined,
-      headerReplaced: false,
+    await waitFor(() => {
+      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+        header: existingHeader ? 'Flash header' : undefined,
+        headerReplaced: false,
+      });
     });
     awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-    await delay();
-    expectFlashContent(flashbarWrapper.findItems()[0], {
-      header: 'New header',
-      headerReplaced: true,
+    await waitFor(() => {
+      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+        header: 'New header',
+        headerReplaced: true,
+      });
     });
   });
 });
@@ -182,20 +138,23 @@ describe('runReplacer arguments', () => {
         ]}
       />
     );
-    await delay();
-    expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Flash header');
-    expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Flash content');
-    expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
+    await waitFor(() => {
+      expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Flash header');
+      expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Flash content');
+      expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
+    });
   });
   test('type - default', async () => {
     render(<Flashbar items={[{}]} />);
-    await delay();
-    expect(runReplacer.mock.lastCall[0].type).toBe('info');
+    await waitFor(() => {
+      expect(runReplacer.mock.lastCall[0].type).toBe('info');
+    });
   });
   test('type - custom', async () => {
     render(<Flashbar items={[{ type: 'error' }]} />);
-    await delay();
-    expect(runReplacer.mock.lastCall[0].type).toBe('error');
+    await waitFor(() => {
+      expect(runReplacer.mock.lastCall[0].type).toBe('error');
+    });
   });
 });
 
@@ -212,8 +171,9 @@ test('calls unmount callback', async () => {
   };
   awsuiPlugins.flashContent.registerContentReplacer(plugin);
   const { unmount } = render(<Flashbar items={[{}]} />);
-  await delay();
-  expect(unmountCallback).not.toBeCalled();
+  await waitFor(() => {
+    expect(unmountCallback).not.toBeCalled();
+  });
   unmount();
   expect(unmountCallback).toBeCalled();
 });
@@ -231,9 +191,10 @@ test('calls update callback', async () => {
   };
   awsuiPlugins.flashContent.registerContentReplacer(plugin);
   const { rerender } = render(<Flashbar items={[{}]} />);
-  await delay();
-  expect(callback).toBeCalledTimes(0);
-  expect(plugin.runReplacer).toBeCalledTimes(1);
+  await waitFor(() => {
+    expect(callback).toBeCalledTimes(0);
+    expect(plugin.runReplacer).toBeCalledTimes(1);
+  });
   rerender(<Flashbar items={[{ content: 'New content' }]} />);
   expect(callback).toBeCalledTimes(1);
   expect(plugin.runReplacer).toBeCalledTimes(1);
@@ -262,27 +223,31 @@ describe('asynchronous rendering', () => {
     awsuiPlugins.flashContent.registerContentReplacer(asyncContent);
     const { container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
     const flashWrapper = new FlashbarWrapper(container).findItems()[0];
-    await delay();
-    expectFlashContent(flashWrapper, {
-      content: 'Flash content',
-      contentReplaced: false,
+    await waitFor(() => {
+      expectContent(flashWrapper, stylesCss, {
+        content: 'Flash content',
+        contentReplaced: false,
+      });
     });
-    await delay(1000);
-    expectFlashContent(flashWrapper, {
-      content: 'New content',
-      contentReplaced: true,
+    await waitFor(() => {
+      expectContent(flashWrapper, stylesCss, {
+        content: 'New content',
+        contentReplaced: true,
+      });
     });
   });
 
   test('warns if registerReplacement called after unmounting', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const headerFn = jest.fn();
+    const contentFn = jest.fn();
     const asyncContent: AlertFlashContentConfig = {
       id: 'test-content-async',
       runReplacer(context, registerReplacement) {
         (async () => {
-          await pause(1000);
-          registerReplacement('header', () => {});
-          registerReplacement('content', () => {});
+          await pause(500);
+          registerReplacement('header', headerFn);
+          registerReplacement('content', contentFn);
         })();
         return {
           update: () => {},
@@ -291,15 +256,24 @@ describe('asynchronous rendering', () => {
       },
     };
     awsuiPlugins.flashContent.registerContentReplacer(asyncContent);
-    const { unmount } = render(<Flashbar items={[{}]} />);
-    await delay(500);
+    const { unmount, container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
+    const flashWrapper = new FlashbarWrapper(container).findItems()[0];
+    await waitFor(() => {
+      expectContent(flashWrapper, stylesCss, {
+        content: 'Flash content',
+        contentReplaced: false,
+      });
+    });
     unmount();
-    await delay(1000);
-    expect(consoleWarnSpy).toBeCalledWith(
-      '[AwsUi] [Runtime alert/flash content] `registerReplacement` (header) called after component unmounted'
-    );
-    expect(consoleWarnSpy).toBeCalledWith(
-      '[AwsUi] [Runtime alert/flash content] `registerReplacement` (content) called after component unmounted'
-    );
+    await waitFor(() => {
+      expect(consoleWarnSpy).toBeCalledWith(
+        '[AwsUi] [Runtime alert/flash content] `registerReplacement` (header) called after component unmounted'
+      );
+      expect(consoleWarnSpy).toBeCalledWith(
+        '[AwsUi] [Runtime alert/flash content] `registerReplacement` (content) called after component unmounted'
+      );
+      expect(headerFn).not.toBeCalled();
+      expect(contentFn).not.toBeCalled();
+    });
   });
 });
