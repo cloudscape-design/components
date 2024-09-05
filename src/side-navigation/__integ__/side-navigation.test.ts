@@ -39,4 +39,16 @@ describe('SideNavigation', () => {
       })
     );
   });
+
+  describe('Items Header', () => {
+    it(
+      'should be visible when items header is provided',
+      useBrowser(async browser => {
+        await browser.url('#/light/side-navigation/integration');
+        const page = new BasePageObject(browser);
+
+        expect(page.isExisting(wrapper.findItemsHeader().toSelector())).toBeTruthy();
+      })
+    );
+  });
 });

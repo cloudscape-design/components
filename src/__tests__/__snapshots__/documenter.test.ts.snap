@@ -14070,7 +14070,14 @@ Object that represents an expandable group of links.
       "type": "ReadonlyArray<SideNavigationProps.Item>",
     },
   ],
-  "regions": Array [],
+  "regions": Array [
+    Object {
+      "description": "Slot to insert a component below the header and above the items.
+Using existing Cloudscape component is recommended.",
+      "isDefault": false,
+      "name": "itemsHeader",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;

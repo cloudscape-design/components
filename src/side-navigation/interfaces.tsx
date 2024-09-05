@@ -17,6 +17,12 @@ export interface SideNavigationProps extends BaseComponentProps {
   header?: SideNavigationProps.Header;
 
   /**
+   * Slot to insert a component below the header and above the items.
+   * Using existing Cloudscape component is recommended.
+   **/
+  itemsHeader?: React.ReactNode;
+
+  /**
    * Specifies the `href` of the currently active link.
    * All items within the navigation with a matching `href` are highlighted.
    *

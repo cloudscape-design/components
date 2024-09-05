@@ -52,6 +52,10 @@
   }
 }
 
+.items-header {
+  margin-block-start: awsui.$space-panel-content-top;
+}
+
 .list-container {
   margin-block-start: awsui.$space-panel-content-top;
   .with-toolbar > & {

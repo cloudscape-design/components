@@ -174,6 +174,8 @@ it('Side navigation with all possible items', async () => {
       },
     ],
   });
+  // expect(wrapper.findItemsHeader()!.getElement()).toBeInTheDocument();
+  // expect(wrapper.findItemsHeader()!.findMultiselect()?.getElement()).toBeInTheDocument();
 
   expect(wrapper.findItemByIndex(1)!.findLink()!.getElement()).toHaveTextContent('Page 1');
 
