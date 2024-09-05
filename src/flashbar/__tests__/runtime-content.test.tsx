@@ -209,7 +209,6 @@ describe('asynchronous rendering', () => {
           await pause(1000);
           const content = document.createElement('div');
           content.append('New content');
-          content.dataset.testid = 'test-content-async';
           registerReplacement('content', container => {
             container.appendChild(content);
           });
