@@ -7,12 +7,7 @@ import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../../lib/components/internal/analytics/selectors';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
-
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(true),
-}));
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const { container } = render(<BreadcrumbGroup {...props} />);
@@ -134,18 +129,6 @@ describe('BreadcrumbGroup Item', () => {
       const expectedFunnelName = items[items.length - 1].text;
       const element = wrapper.find(`[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_FUNNEL_NAME}"]`)!.getElement();
       expect(element.innerHTML).toBe(expectedFunnelName);
-    });
-  });
-
-  describe('compressed item', () => {
-    beforeEach(() => {
-      (useMobile as jest.Mock).mockReturnValue(true);
-    });
-
-    test('renders item content', () => {
-      const wrapper = renderBreadcrumbGroup({ items });
-
-      expect(wrapper.findBreadcrumbLinks()[0].getElement()).toHaveTextContent(items[0].text);
     });
   });
 });
