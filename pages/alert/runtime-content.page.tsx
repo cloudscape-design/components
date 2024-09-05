@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
-import { Checkbox, Input, Spinner } from '~components';
+import { Checkbox, FormField, Input } from '~components';
 import Alert, { AlertProps } from '~components/alert';
 import Button from '~components/button';
 import awsuiPlugins from '~components/internal/plugins';
@@ -15,27 +15,17 @@ import ScreenshotArea from '../utils/screenshot-area';
 awsuiPlugins.alertContent.registerContentReplacer({
   id: 'awsui/alert-test-action',
   runReplacer(context, registerReplacement) {
-    const appendedContent = document.createElement('div');
+    console.log('mount');
 
     const doReplace = () => {
       registerReplacement('header', 'original');
       registerReplacement('content', 'original');
       if (context.type === 'error' && context.contentRef.current?.textContent?.match('Access denied')) {
-        render(<Spinner />, appendedContent);
-        context.contentRef.current.appendChild(appendedContent);
-        setTimeout(() => {
-          unmountComponentAtNode(appendedContent);
-          appendedContent.parentNode?.removeChild(appendedContent);
-
-          registerReplacement('header', 'remove');
-          registerReplacement('content', container => {
-            render(<div>Access denied message!</div>, container);
-
-            return () => {
-              unmountComponentAtNode(container);
-            };
-          });
-        }, 2000);
+        registerReplacement('header', 'remove');
+        registerReplacement('content', container => {
+          console.log('render replacement content');
+          render(<div>---REPLACEMENT--- Access denied message! ---REPLACEMENT---</div>, container);
+        });
       }
     };
 
@@ -60,7 +50,6 @@ const permutations = createPermutations<AlertProps>([
     header: [null, 'Alert'],
     children: ['Content', 'There was an error: Access denied because of XYZ'],
     type: ['success', 'error'],
-    action: [null, <Button>Action</Button>],
   },
 ]);
 /* eslint-enable react/jsx-key */
@@ -73,12 +62,14 @@ export default function () {
     <>
       <h1>Alert runtime actions</h1>
       <Checkbox onChange={e => setLoading(e.detail.checked)} checked={loading}>
-        Loading
+        Alert content loading
       </Checkbox>
       <Checkbox onChange={e => setHidden(e.detail.checked)} checked={hidden}>
-        Hide
+        Unmount all alerts
       </Checkbox>
-      <Input value={anotherState} onChange={e => setAnotherState(e.detail.value)} ariaLabel="Another state" />
+      <FormField label="Input for unrelated state updated">
+        <Input value={anotherState} onChange={e => setAnotherState(e.detail.value)} />
+      </FormField>
       <ScreenshotArea>
         {hidden ? null : (
           <PermutationsView
@@ -97,7 +88,7 @@ export default function () {
                   {...permutation}
                   header={<Button>Action</Button>}
                 >
-                  {loading ? 'Loading' : permutation.children}
+                  {loading ? 'Loading...' : permutation.children}
                 </Alert>
               </>
             )}
