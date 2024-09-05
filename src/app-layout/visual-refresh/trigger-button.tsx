@@ -155,7 +155,7 @@ function TriggerButton(
 
       window.addEventListener('pointerdown', handlePointerDownEvent);
       window.addEventListener('keydown', handleKeyDownEvent);
-      // console.log('listeners added', {hasTooltip, tooltipVisible})
+
       return () => {
         window.removeEventListener('pointerdown', handlePointerDownEvent);
         window.removeEventListener('keydown', handleKeyDownEvent);
