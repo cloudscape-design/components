@@ -207,10 +207,19 @@
     "i18nStrings.operatorsText": "Operatörler",
     "i18nStrings.propertyText": "Özellik",
     "i18nStrings.removeTokenButtonAriaLabel": "{token__formattedText} filtresini kaldır",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "Filtre eylemleri, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "Filtreyi kaldır, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveLabel": "Filtreyi kaldır",
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "Filtreyi gruptan kaldır",
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "Filtre ekleme eylemleri",
+    "i18nStrings.tokenEditorAddNewTokenLabel": "Yeni filtre ekle",
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": "{token__formattedText} filtresini gruba ekle",
+    "i18nStrings.tokenEditorAddExistingTokenLabel": "{token__propertyLabel} {token__operator} {token__value} filtresini gruba ekle",
     "i18nStrings.tokenLimitShowFewer": "Daha az göster",
     "i18nStrings.tokenLimitShowMore": "Daha fazla göster",
     "i18nStrings.valueText": "Değer",
-    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} eşittir {token__value}} not_equals {{token__propertyLabel} eşit değildir {token__value}} greater_than {{token__propertyLabel} büyüktür {token__value}} greater_than_equal {{token__propertyLabel} büyük veya eşittir {token__value}} less_than {{token__propertyLabel} küçüktür {token__value}} less_than_equal {{token__propertyLabel} küçük veya eşittir {token__value}} contains {{token__propertyLabel}, {token__value} içerir} not_contains {{token__propertyLabel}, {token__value} içermez} starts_with {{token__propertyLabel}, {token__value} ile başlar} not_starts_with {{token__propertyLabel}, {token__value} ile başlamaz} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} eşittir {token__value}} not_equals {{token__propertyLabel} eşit değildir {token__value}} greater_than {{token__propertyLabel} büyüktür {token__value}} greater_than_equal {{token__propertyLabel} büyük veya eşittir {token__value}} less_than {{token__propertyLabel} küçüktür {token__value}} less_than_equal {{token__propertyLabel} küçük veya eşittir {token__value}} contains {{token__propertyLabel}, {token__value} içerir} not_contains {{token__propertyLabel}, {token__value} içermez} starts_with {{token__propertyLabel}, {token__value} ile başlar} not_starts_with {{token__propertyLabel}, {token__value} ile başlamaz} other {}}",
+    "i18nStrings.groupEditAriaLabel": "{group__formattedTokens__length, select, 2 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} filtre grubunu düzenle} 3 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} filtre grubunu düzenle} 4 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} filtre grubunu düzenle} 5 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} 1 tane daha filtre grubunu düzenle} other {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} tane daha filtre grubunu düzenle}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Bir sürüm seçin",
