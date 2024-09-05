@@ -186,6 +186,7 @@ export function TokenEditor({
               }
             }}
             disabled={tokensToCapture.length === 0}
+            showMainActionOnly={tokensToCapture.length === 0}
             mainAction={{
               text: i18nStrings.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => {
