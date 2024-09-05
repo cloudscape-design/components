@@ -27,18 +27,12 @@ const items: Item[] = [
 ];
 
 function renderTable(tableProps: Partial<TableProps>) {
-  const props: TableProps = {
-    items: items,
-    columnDefinitions: columnDefinitions,
-    ...tableProps,
-  };
-  const { container, rerender, getByTestId, queryByTestId } = render(<Table {...props} />);
+  const props: TableProps = { items, columnDefinitions, ...tableProps };
+  const { container, rerender } = render(<Table {...props} />);
   const wrapper = createWrapper(container).findTable()!;
   return {
     wrapper,
     rerender: (extraProps: Partial<TableProps>) => rerender(<Table {...props} {...extraProps} />),
-    getByTestId,
-    queryByTestId,
   };
 }
 
@@ -60,7 +54,7 @@ test('does not render selection controls when selectionType is not set', () => {
   expect(wrapper.findRowSelectionArea(1)).toBeFalsy();
 });
 
-test.each<TableProps['selectionType']>(['single', 'multi', undefined])(
+test.each<TableProps['selectionType']>(['single', 'multi', 'group', undefined])(
   'Table headers with selectionType=%s are marked as columns for a11y',
   (selectionType: TableProps['selectionType']) => {
     const { wrapper: tableWrapper } = renderTable({ selectionType });
@@ -81,13 +75,16 @@ describe('Selection controls` labelling', () => {
       `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
   };
 
-  test('puts selectionGroupLabel and allItemsSelectionLabel on selectAll checkbox', () => {
-    tableWrapper = renderTable({ selectionType: 'multi', selectedItems: [items[0]], ariaLabels }).wrapper;
-    expect(tableWrapper.findSelectAllTrigger()?.getElement()).toHaveAttribute(
-      'aria-label',
-      'group label 1 item selected'
-    );
-  });
+  test.each(['multi', 'group'] as const)(
+    'puts selectionGroupLabel and allItemsSelectionLabel on selectAll checkbox, selectionType=%s',
+    selectionType => {
+      tableWrapper = renderTable({ selectionType, selectedItems: [items[0]], ariaLabels }).wrapper;
+      expect(tableWrapper.findSelectAllTrigger()?.getElement()).toHaveAttribute(
+        'aria-label',
+        'group label 1 item selected'
+      );
+    }
+  );
 
   test('puts selectionGroupLabel on single selection column header', () => {
     tableWrapper = renderTable({ selectionType: 'single', ariaLabels }).wrapper;
@@ -96,30 +93,33 @@ describe('Selection controls` labelling', () => {
     );
   });
 
-  describe.each<TableProps['selectionType']>(['single', 'multi'])('', (selectionType: TableProps['selectionType']) => {
-    test('leaves the controls without labels, when ariaLabels is omitted', () => {
-      tableWrapper = renderTable({ selectionType }).wrapper;
-      for (let i = 1; i <= items.length; i++) {
-        expect(tableWrapper.findRowSelectionArea(i)?.getElement()).not.toHaveAttribute('aria-label');
-      }
-    });
+  describe.each<TableProps['selectionType']>(['single', 'multi', 'group'])(
+    'selectionType=%s',
+    (selectionType: TableProps['selectionType']) => {
+      test('leaves the controls without labels, when ariaLabels is omitted', () => {
+        tableWrapper = renderTable({ selectionType }).wrapper;
+        for (let i = 1; i <= items.length; i++) {
+          expect(tableWrapper.findRowSelectionArea(i)?.getElement()).not.toHaveAttribute('aria-label');
+        }
+      });
 
-    test('puts selectionGroupLabel and itemSelectionLabel on row selection control', () => {
-      tableWrapper = renderTable({ selectionType, ariaLabels, selectedItems: [items[1]] }).wrapper;
-      expect(tableWrapper.findRowSelectionArea(1)?.getElement()).toHaveAttribute(
-        'aria-label',
-        'group label Apples is not selected'
-      );
-      expect(tableWrapper.findRowSelectionArea(2)?.getElement()).toHaveAttribute(
-        'aria-label',
-        'group label Oranges is selected'
-      );
-      expect(tableWrapper.findRowSelectionArea(3)?.getElement()).toHaveAttribute(
-        'aria-label',
-        'group label Bananas is not selected'
-      );
-    });
-  });
+      test('puts selectionGroupLabel and itemSelectionLabel on row selection control', () => {
+        tableWrapper = renderTable({ selectionType, ariaLabels, selectedItems: [items[1]] }).wrapper;
+        expect(tableWrapper.findRowSelectionArea(1)?.getElement()).toHaveAttribute(
+          'aria-label',
+          'group label Apples is not selected'
+        );
+        expect(tableWrapper.findRowSelectionArea(2)?.getElement()).toHaveAttribute(
+          'aria-label',
+          'group label Oranges is selected'
+        );
+        expect(tableWrapper.findRowSelectionArea(3)?.getElement()).toHaveAttribute(
+          'aria-label',
+          'group label Bananas is not selected'
+        );
+      });
+    }
+  );
 });
 describe('Select all checkbox', () => {
   let tableWrapper: TableWrapper;
@@ -181,7 +181,7 @@ describe('Select all checkbox', () => {
 });
 
 // Some other components may need this click, for example, popover (AWSUI-7864)
-test.each<TableProps['selectionType']>(['single', 'multi'])(
+test.each<TableProps['selectionType']>(['single', 'multi', 'group'])(
   'Should propagate click event with selectionType=%s',
   (selectionType: TableProps['selectionType']) => {
     const { wrapper: tableWrapper } = renderTable({ selectionType });
@@ -342,13 +342,13 @@ describe('Row click event', () => {
   });
 });
 
-describe('selection component with trackBy', function () {
+describe.each(['multi', 'group'] as const)('selection component with trackBy, selectionType=%s', selectionType => {
   let tableWrapper: TableWrapper;
   let rerender: (props: Partial<TableProps>) => void;
   beforeEach(() => {
     const result = renderTable({
       selectedItems: [{ name: items[0].name, id: items[1].id }],
-      selectionType: 'multi',
+      selectionType,
       isItemDisabled: item => item === items[1],
       trackBy: 'name',
     });

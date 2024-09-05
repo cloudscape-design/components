@@ -273,7 +273,12 @@ export default () => {
               renderLoaderLoading={({ item }) => `loading items for ${item?.name ?? 'root'}`}
               renderLoaderError={({ item }) => `error for ${item?.name ?? 'root'}`}
               submitEdit={permutation.editableCells ? () => {} : undefined}
-              ariaLabels={{ ...ariaLabels, tableLabel: permutation.title }}
+              ariaLabels={{
+                ...ariaLabels,
+                tableLabel: permutation.title,
+                expandButtonLabel: () => 'Expand',
+                collapseButtonLabel: () => 'Collapse',
+              }}
             />
           )}
         />
