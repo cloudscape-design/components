@@ -2133,6 +2133,11 @@ Object {
           "grey",
           "green",
           "red",
+          "severity-critical",
+          "severity-high",
+          "severity-medium",
+          "severity-low",
+          "severity-neutral",
         ],
       },
       "name": "color",
@@ -3732,7 +3737,7 @@ The main action also supports the following properties of the [button](/componen
           },
           Object {
             "name": "text",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -7293,7 +7298,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
  * \`container\` - Use this variant in a detail page alongside other containers.
  * \`navigation\` - Use this variant in the navigation panel with anchors and custom styled content.
    It doesn't have any default styles.
-* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+* \`inline\` - Use this variant in any context where you need reduced padding around the header.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.Variant",
         "type": "union",
@@ -7303,6 +7309,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "container",
           "navigation",
           "stacked",
+          "inline",
         ],
       },
       "name": "variant",
@@ -12093,18 +12100,7 @@ Object {
       "description": "Fired when the \`query\` gets changed. Filter the dataset in response to this event using the values in the \`detail\` object.",
       "detailInlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "ReadonlyArray<PropertyFilterProps.Token>",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "detailType": "PropertyFilterProps.Query",
@@ -12190,7 +12186,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronousely. This would cause extra \`onLoadMore\`
+      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronously. This would cause extra \`onLoadMore\`
 events to fire calling for more properties.",
       "name": "asyncProperties",
       "optional": true,
@@ -12582,18 +12578,7 @@ Each token has the following properties:
 ",
       "inlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "ReadonlyArray<PropertyFilterProps.Token>",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "name": "query",

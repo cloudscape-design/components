@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { PropertyFilterProps } from '~components/property-filter';
-import { I18nStringsExt } from '~components/property-filter/i18n-utils';
+import { I18nStringsTokenGroups } from '~components/property-filter/interfaces';
 
 import {
   DateForm,
@@ -146,7 +146,7 @@ export const labels = {
   filteringPlaceholder: 'Search',
 };
 
-export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
+export const i18nStrings: PropertyFilterProps.I18nStrings = {
   dismissAriaLabel: 'Dismiss',
 
   groupValuesText: 'Values',
@@ -184,7 +184,9 @@ export const i18nStrings: PropertyFilterProps.I18nStrings & I18nStringsExt = {
 
   formatToken,
   removeTokenButtonAriaLabel: token => `Remove token, ${formatToken(token)}`,
+};
 
+export const i18nStringsTokenGroups: I18nStringsTokenGroups = {
   groupEditAriaLabel: group => `Edit group with ${group.tokens.length} tokens`,
   tokenEditorTokenActionsAriaLabel: token => `Filter remove actions for ${formatToken(token)}`,
   tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${formatToken(token)}`,

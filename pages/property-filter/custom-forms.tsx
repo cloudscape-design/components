@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { DatePicker, FormField, RadioGroup, TimeInput, TimeInputProps } from '~components';
 import Calendar, { CalendarProps } from '~components/calendar';
 import DateInput from '~components/date-input';
-import Multiselect from '~components/multiselect';
+import InternalMultiselect from '~components/multiselect/internal';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 
 import { allItems } from './table.data';
@@ -224,7 +224,7 @@ export function OwnerMultiSelectForm({ value, onChange }: ExtendedOperatorFormPr
   value = value && Array.isArray(value) ? value : [];
   return (
     <FormField stretch={true}>
-      <Multiselect
+      <InternalMultiselect
         options={allOwners.map(owner => ({ value: owner, label: owner }))}
         selectedOptions={value.map(owner => ({ value: owner, label: owner })) ?? []}
         onChange={event =>
@@ -235,6 +235,7 @@ export function OwnerMultiSelectForm({ value, onChange }: ExtendedOperatorFormPr
           )
         }
         expandToViewport={true}
+        inlineTokens={true}
       />
     </FormField>
   );

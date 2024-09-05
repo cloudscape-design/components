@@ -46,6 +46,7 @@ export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   __focusable?: boolean;
   __injectAnalyticsComponentMetadata?: boolean;
   __title?: string;
+  __emitPerformanceMarks?: boolean;
 } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
@@ -82,6 +83,7 @@ export const InternalButton = React.forwardRef(
       __focusable = false,
       __injectAnalyticsComponentMetadata = false,
       __title,
+      __emitPerformanceMarks = true,
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -108,7 +110,7 @@ export const InternalButton = React.forwardRef(
 
     const performanceMarkAttributes = usePerformanceMarks(
       'primaryButton',
-      variant === 'primary',
+      variant === 'primary' && __emitPerformanceMarks,
       buttonRef,
       () => ({
         loading,

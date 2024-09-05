@@ -13,10 +13,12 @@ import {
   InternalFreeTextFiltering,
   InternalQuery,
   InternalToken,
+  InternalTokenGroup,
   JoinOperation,
   ParsedText,
   Query,
   Token,
+  TokenGroup,
 } from './interfaces';
 import {
   matchFilteringProperty,
@@ -24,6 +26,7 @@ import {
   matchOperatorPrefix,
   matchTokenValue,
   removeOperator,
+  tokenGroupToTokens,
   trimStart,
 } from './utils';
 
@@ -34,29 +37,45 @@ export const getQueryActions = ({
   query,
   onChange,
   filteringOptions,
+  enableTokenGroups,
 }: {
   query: InternalQuery;
   onChange: NonCancelableEventHandler<Query>;
   filteringOptions: readonly InternalFilteringOption[];
+  enableTokenGroups: boolean;
 }) => {
-  const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
-    fireNonCancelableEvent(onChange, { tokens, operation });
+  const setQuery = (query: InternalQuery) => {
+    function transformToken(token: InternalToken | InternalTokenGroup): Token | TokenGroup {
+      if ('operator' in token) {
+        return matchTokenValue(token, filteringOptions);
+      }
+      return { ...token, tokens: token.tokens.map(transformToken) };
+    }
+    const tokens = query.tokens.map(transformToken);
 
-  const setQuery = ({ operation, tokens }: InternalQuery) => {
-    const matchedTokens = tokens.map(token => matchTokenValue(token, filteringOptions));
-    fireOnChange(matchedTokens, operation);
+    if (enableTokenGroups) {
+      fireNonCancelableEvent(onChange, { tokens: [], operation: query.operation, tokenGroups: tokens });
+    } else {
+      fireNonCancelableEvent(onChange, { tokens: tokenGroupToTokens<Token>(tokens), operation: query.operation });
+    }
   };
 
   const addToken = (token: InternalToken) => {
     setQuery({ ...query, tokens: [...query.tokens, token] });
   };
 
-  const updateToken = (updateIndex: number, newToken: InternalToken) => {
-    setQuery({ ...query, tokens: query.tokens.map((token, index) => (index === updateIndex ? newToken : token)) });
-  };
-
-  const updateOperation = (operation: JoinOperation) => {
-    setQuery({ ...query, operation });
+  const updateToken = (
+    updateIndex: number,
+    updatedToken: InternalToken | InternalTokenGroup,
+    releasedTokens: InternalToken[]
+  ) => {
+    const nestedTokens = tokenGroupToTokens<InternalToken>([updatedToken]);
+    const capturedTokenIndices = nestedTokens.map(token => token.standaloneIndex).filter(index => index !== undefined);
+    const tokens = query.tokens
+      .map((token, index) => (index === updateIndex ? updatedToken : token))
+      .filter((_, index) => index === updateIndex || !capturedTokenIndices.includes(index));
+    tokens.push(...releasedTokens);
+    setQuery({ ...query, tokens });
   };
 
   const removeToken = (removeIndex: number) => {
@@ -65,6 +84,10 @@ export const getQueryActions = ({
 
   const removeAllTokens = () => {
     setQuery({ ...query, tokens: [] });
+  };
+
+  const updateOperation = (operation: JoinOperation) => {
+    setQuery({ ...query, operation });
   };
 
   return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };

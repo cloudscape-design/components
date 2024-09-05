@@ -27,12 +27,17 @@ function renderExpandableSection(props: ExpandableSectionProps = {}): Expandable
 }
 
 const containerizedVariants: ExpandableSectionProps.Variant[] = ['container', 'stacked'];
-const variantsWithActions: ExpandableSectionProps.Variant[] = ['container', 'stacked', 'default'];
+const variantsWithActions: ExpandableSectionProps.Variant[] = ['container', 'stacked', 'default', 'inline'];
 
 describe('Expandable Section', () => {
-  const variantsWithDescription: ExpandableSectionProps.Variant[] = [...containerizedVariants, 'default', 'footer'];
+  const variantsWithDescription: ExpandableSectionProps.Variant[] = [
+    ...containerizedVariants,
+    'default',
+    'footer',
+    'inline',
+  ];
   const variantsWithoutDescription: ExpandableSectionProps.Variant[] = ['navigation'];
-  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation'];
+  const nonContainerVariants: ExpandableSectionProps.Variant[] = ['default', 'footer', 'navigation', 'inline'];
 
   describe('variant property', () => {
     test('has one trigger button and no div=[role=button] for variant navigation', () => {
@@ -109,7 +114,7 @@ describe('Expandable Section', () => {
         });
       }
     });
-    test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation', 'stacked'])(
+    test.each<ExpandableSectionProps.Variant>(['default', 'footer', 'container', 'navigation', 'stacked', 'inline'])(
       'populates content slot correctly for "%s" variant',
       variant => {
         const wrapper = renderExpandableSection({
@@ -178,6 +183,18 @@ describe('Expandable Section', () => {
           }
         });
       }
+    });
+    test('header in inline variant', () => {
+      const wrapper = renderExpandableSection({
+        variant: 'inline',
+        header: 'Test header',
+      });
+      const header = wrapper.findHeader().getElement();
+      expect(header).not.toHaveTextContent('Test header');
+      expect(warnOnce).toHaveBeenCalledWith(
+        'ExpandableSection',
+        'Only `headerText` instead of `header` is supported for `inline` variant.'
+      );
     });
   });
 
@@ -307,7 +324,7 @@ describe('Expandable Section', () => {
             test('headerInfo', () => {
               testWarnings({ variant, headerInfo: <Link>Info</Link> });
             });
-            if (variant !== 'default') {
+            if (!variantsWithActions.includes(variant)) {
               test('headerActions', () => {
                 testWarnings({ variant, headerActions: <Button>Action</Button> });
               });
