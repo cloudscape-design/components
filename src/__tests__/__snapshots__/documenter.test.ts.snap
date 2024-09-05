@@ -7268,7 +7268,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
  * \`container\` - Use this variant in a detail page alongside other containers.
  * \`navigation\` - Use this variant in the navigation panel with anchors and custom styled content.
    It doesn't have any default styles.
-* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+* \`inline\` - Use this variant in any context where you need reduced padding around the header.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.Variant",
         "type": "union",
@@ -7278,6 +7279,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "container",
           "navigation",
           "stacked",
+          "inline",
         ],
       },
       "name": "variant",

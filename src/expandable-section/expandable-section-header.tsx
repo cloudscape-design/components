@@ -11,7 +11,12 @@ import InternalIcon from '../icon/internal';
 import { isDevelopment } from '../internal/is-development';
 import { GeneratedAnalyticsMetadataExpandableSectionExpand } from './analytics-metadata/interfaces';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
-import { variantSupportsActions, variantSupportsDescription, variantSupportsInfoLink } from './utils';
+import {
+  variantRequiresActionsDivider,
+  variantSupportsActions,
+  variantSupportsDescription,
+  variantSupportsInfoLink,
+} from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -255,7 +260,7 @@ export const ExpandableSectionHeader = ({
   onKeyDown,
   onClick,
 }: ExpandableSectionHeaderProps) => {
-  const alwaysShowDivider = variant === 'default' && headerActions;
+  const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
     <InternalIcon
       size={variant === 'container' ? 'medium' : 'normal'}
@@ -305,7 +310,10 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (headerText) {
+  if (headerText || variant === 'inline') {
+    if (!headerText && header && variant === 'inline') {
+      warnOnce(componentName, 'Only `headerText` instead of `header` is supported for `inline` variant.');
+    }
     return (
       <ExpandableHeaderTextWrapper
         className={clsx(className, wrapperClassName, expanded && styles.expanded)}
