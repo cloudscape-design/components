@@ -33,8 +33,11 @@ interface DrawerTriggersProps {
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
+  splitPanelOpen?: boolean;
+  splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
+  // splitPanelResizeRef: RefObject<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
 }
 
@@ -44,7 +47,10 @@ export function DrawerTriggers({
   drawers,
   drawersFocusRef,
   onActiveDrawerChange,
+  splitPanelOpen,
+  splitPanelPosition = 'bottom',
   splitPanelFocusRef,
+  // splitPanelResizeRef,
   splitPanelToggleProps,
   onSplitPanelToggle,
 }: DrawerTriggersProps) {
@@ -83,10 +89,12 @@ export function DrawerTriggers({
   const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId ?? null);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
+  const hasOpenDrawer =
+    (!!activeDrawerId && activeDrawerId !== null) || (splitPanelPosition === 'side' && splitPanelOpen);
 
   return (
     <aside
-      className={styles['drawers-desktop-triggers-container']}
+      className={styles[`drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`]}
       aria-label={ariaLabels?.drawers}
       ref={triggersContainerRef}
       role="region"
@@ -110,11 +118,16 @@ export function DrawerTriggers({
               onClick={() => onSplitPanelToggle?.()}
               selected={splitPanelToggleProps.active}
               ref={splitPanelFocusRef}
+              hasTooltip={true}
+              testId={`awsui-app-layout-trigger-slide-panel`}
+              hasOpenDrawer={splitPanelPosition === 'bottom' && splitPanelOpen}
+              isMobile={isMobile}
             />
             {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
           </>
         )}
         {visibleItems.map(item => {
+          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -133,6 +146,14 @@ export function DrawerTriggers({
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
+              hideTooltipOnFocus={
+                activeDrawerId === null && previousActiveDrawerId && item.id === previousActiveDrawerId.current
+              }
+              hasTooltip={true}
+              hasOpenDrawer={hasOpenDrawer}
+              tooltipText={item.ariaLabels?.drawerName}
+              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+              isMobile={isMobile}
             />
           );
         })}

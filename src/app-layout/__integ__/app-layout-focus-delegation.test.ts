@@ -138,7 +138,10 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         'focuses split panel preferences button when its position changes from side to bottom',
         setupTest(
           async page => {
+            await page.isExisting(wrapper.findSplitPanel().findOpenButton().toSelector());
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+            await expect(page.isExisting(wrapper.findSplitPanel().toSelector())).resolves.toBeTruthy();
+            await page.keys('Escape'); //escape tooltip from still hovering over open trigger button
             await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
             await page.keys(['Tab', 'Left', 'Tab', 'Tab', 'Enter']);
             await expect(page.isFocused(wrapper.findSplitPanel().findPreferencesButton().toSelector())).resolves.toBe(
