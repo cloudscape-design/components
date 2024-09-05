@@ -66,8 +66,8 @@ export function createUseDiscoveredContent(onContentRegistered: AlertFlashConten
 
         return () => {
           mountedProvider.current?.unmount({
-            replacementContentRef,
-            replacementHeaderRef,
+            replacementHeaderContainer: replacementHeaderRef.current!,
+            replacementContentContainer: replacementContentRef.current!,
           });
           mounted = false;
         };

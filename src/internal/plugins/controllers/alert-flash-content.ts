@@ -21,7 +21,7 @@ type RegisterReplacement = (type: 'header' | 'content', doReplacement: Replaceme
 
 export interface AlertFlashContentResult {
   update: () => void;
-  unmount: (refs: { replacementHeaderRef: RefShim<HTMLElement>; replacementContentRef: RefShim<HTMLElement> }) => void;
+  unmount: (containers: { replacementHeaderContainer: HTMLElement; replacementContentContainer: HTMLElement }) => void;
 }
 
 export interface AlertFlashContentConfig {

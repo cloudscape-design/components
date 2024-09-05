@@ -46,9 +46,9 @@ awsuiPlugins.alertContent.registerContentReplacer({
         console.log('update');
         doReplace();
       },
-      unmount() {
+      unmount({ replacementContentContainer }) {
         console.log('unmount');
-        unmountComponentAtNode(appendedContent);
+        unmountComponentAtNode(replacementContentContainer);
       },
     };
   },
