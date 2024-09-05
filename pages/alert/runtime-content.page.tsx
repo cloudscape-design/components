@@ -67,7 +67,7 @@ const permutations = createPermutations<AlertProps>([
 
 export default function () {
   const [loading, setLoading] = useState(true);
-  const [hid, setHid] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [anotherState, setAnotherState] = useState('');
   return (
     <>
@@ -75,12 +75,12 @@ export default function () {
       <Checkbox onChange={e => setLoading(e.detail.checked)} checked={loading}>
         Loading
       </Checkbox>
-      <Checkbox onChange={e => setHid(e.detail.checked)} checked={hid}>
+      <Checkbox onChange={e => setHidden(e.detail.checked)} checked={hidden}>
         Hide
       </Checkbox>
-      <Input value={anotherState} onChange={e => setAnotherState(e.detail.value)} />
+      <Input value={anotherState} onChange={e => setAnotherState(e.detail.value)} ariaLabel="Another state" />
       <ScreenshotArea>
-        {hid ? null : (
+        {hidden ? null : (
           <PermutationsView
             permutations={permutations}
             render={permutation => (
