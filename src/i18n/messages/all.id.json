@@ -207,10 +207,19 @@
     "i18nStrings.operatorsText": "Operator",
     "i18nStrings.propertyText": "Properti",
     "i18nStrings.removeTokenButtonAriaLabel": "Hapus filter, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "Filter tindakan, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "Hapus filter, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveLabel": "Hapus filter",
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "Hapus filter dari grup",
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "Tambahkan tindakan filter",
+    "i18nStrings.tokenEditorAddNewTokenLabel": "Tambahkan filter baru",
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": "Tambahkan {token__formattedText} filter ke grup",
+    "i18nStrings.tokenEditorAddExistingTokenLabel": "Tambahkan {token__propertyLabel} {token__operator} {token__value} filter ke grup",
     "i18nStrings.tokenLimitShowFewer": "Tampilkan lebih sedikit",
     "i18nStrings.tokenLimitShowMore": "Tampilkan selengkapnya",
     "i18nStrings.valueText": "Nilai",
-    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} sama dengan {token__value}} not_equals {{token__propertyLabel} tidak sama dengan {token__value}} greater_than {{token__propertyLabel} lebih besar dari {token__value}} greater_than_equal {{token__propertyLabel} lebih besar dari atau sama dengan {token__value}} less_than {{token__propertyLabel} kurang dari {token__value}} less_than_equal {{token__propertyLabel} kurang dari atau sama dengan {token__value}} contains {{token__propertyLabel} berisi {token__value}} not_contains {{token__propertyLabel} tidak berisi {token__value}} starts_with {{token__propertyLabel} dimulai dengan {token__value}} not_starts_with {{token__propertyLabel} tidak dimulai dengan {token__value}} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} sama dengan {token__value}} not_equals {{token__propertyLabel} tidak sama dengan {token__value}} greater_than {{token__propertyLabel} lebih besar dari {token__value}} greater_than_equal {{token__propertyLabel} lebih besar dari atau sama dengan {token__value}} less_than {{token__propertyLabel} kurang dari {token__value}} less_than_equal {{token__propertyLabel} kurang dari atau sama dengan {token__value}} contains {{token__propertyLabel} berisi {token__value}} not_contains {{token__propertyLabel} tidak berisi {token__value}} starts_with {{token__propertyLabel} dimulai dengan {token__value}} not_starts_with {{token__propertyLabel} tidak dimulai dengan {token__value}} other {}}",
+    "i18nStrings.groupEditAriaLabel": "{group__formattedTokens__length, select, 2 {Edit grup filter {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText}} 3 {Edit grup filter {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText}} 4 {Edit grup filter {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText}} 5 {Edit grup filter {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} 1 lagi} other {Edit grup filter {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} lagi}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Pilih versi",

@@ -207,10 +207,19 @@
     "i18nStrings.operatorsText": "Operatoren",
     "i18nStrings.propertyText": "Eigenschaft",
     "i18nStrings.removeTokenButtonAriaLabel": "Filter entfernen, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "Filteraktionen, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "Filter entfernen, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveLabel": "Filter entfernen",
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "Filter aus Gruppe entfernen",
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "Filteraktionen hinzufügen",
+    "i18nStrings.tokenEditorAddNewTokenLabel": "Neuen Filter hinzufügen",
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": "Filter {token__formattedText} zur Gruppe hinzufügen",
+    "i18nStrings.tokenEditorAddExistingTokenLabel": "Filter {token__propertyLabel} {token__operator} {token__value} zur Gruppe hinzufügen",
     "i18nStrings.tokenLimitShowFewer": "Weniger anzeigen",
     "i18nStrings.tokenLimitShowMore": "Mehr anzeigen",
     "i18nStrings.valueText": "Wert",
-    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} ist gleich {token__value}} not_equals {{token__propertyLabel} ist nicht gleich {token__value}} greater_than {{token__propertyLabel} ist größer als {token__value}} greater_than_equal {{token__propertyLabel} ist größer als oder gleich {token__value}} less_than {{token__propertyLabel} ist kleiner als {token__value}} less_than_equal {{token__propertyLabel} ist kleiner als oder gleich {token__value}} contains {{token__propertyLabel} enthält {token__value}} not_contains {{token__propertyLabel} enthält nicht {token__value}} starts_with {{token__propertyLabel} startet mit {token__value}} not_starts_with {{token__propertyLabel} startet nicht mit {token__value}} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} ist gleich {token__value}} not_equals {{token__propertyLabel} ist nicht gleich {token__value}} greater_than {{token__propertyLabel} ist größer als {token__value}} greater_than_equal {{token__propertyLabel} ist größer als oder gleich {token__value}} less_than {{token__propertyLabel} ist kleiner als {token__value}} less_than_equal {{token__propertyLabel} ist kleiner als oder gleich {token__value}} contains {{token__propertyLabel} enthält {token__value}} not_contains {{token__propertyLabel} enthält nicht {token__value}} starts_with {{token__propertyLabel} startet mit {token__value}} not_starts_with {{token__propertyLabel} startet nicht mit {token__value}} other {}}",
+    "i18nStrings.groupEditAriaLabel": "{group__formattedTokens__length, select, 2 {Filtergruppe {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} bearbeiten} 3 {Filtergruppe {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} bearbeiten} 4 {Filtergruppe {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} bearbeiten} 5 {Filtergruppe {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} bearbeiten 1 mehr} other {Filtergruppe {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} bearbeiten mehr}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Version auswählen",
