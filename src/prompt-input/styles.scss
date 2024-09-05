@@ -13,6 +13,7 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
 
 .root {
   @include styles.styles-reset;
+  cursor: text;
   padding-inline-start: styles.$control-padding-horizontal;
 
   border-start-start-radius: styles.$control-border-radius;
@@ -29,7 +30,8 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   &.textarea-invalid {
     @include styles.form-invalid-control();
 
-    &:focus-within {
+    &:focus-within,
+    &:focus {
       @include styles.form-invalid-control();
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
@@ -38,13 +40,15 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   &.textarea-warning {
     @include styles.form-warning-control();
 
-    &:focus-within {
+    &:focus-within,
+    &:focus {
       @include styles.form-warning-control();
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }
 
-  &:focus-within {
+  &:focus-within,
+  &:focus {
     @include styles.form-focus-element;
   }
 
@@ -139,6 +143,8 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
 
 .secondary-content {
   padding-block-end: awsui.$space-scaled-xs;
+  padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+  width: fit-content;
 
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;

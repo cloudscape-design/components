@@ -180,6 +180,8 @@ const InternalPromptInput = React.forwardRef(
           [styles.disabled]: disabled,
         })}
         ref={__internalRootRef}
+        tabIndex={0}
+        onFocus={() => textareaRef.current?.focus()}
       >
         {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
         <div className={styles['textarea-wrapper']}>
