@@ -143,7 +143,7 @@ const FilteringToken = forwardRef(
         ) : (
           <ul className={styles.list}>
             {tokens.map((token, index) => (
-              <li key={index}>
+              <li key={index} className={styles['list-item']}>
                 <TokenGroup
                   ariaLabel={token.ariaLabel}
                   operation={
@@ -231,7 +231,7 @@ const TokenGroup = forwardRef(
 
         <div
           className={clsx(
-            styles.token,
+            parent ? styles.token : styles['inner-token'],
             !!operation && styles['show-operation'],
             grouped && styles.grouped,
             disabled && styles['token-disabled']

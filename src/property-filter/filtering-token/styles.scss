@@ -50,6 +50,9 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
     justify-content: space-between;
   }
 }
+.inner-token {
+  flex-grow: 1;
+}
 
 .list {
   list-style: none;
@@ -60,6 +63,9 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
   display: flex;
   flex-wrap: wrap;
   gap: awsui.$space-xs;
+}
+.list-item {
+  flex-grow: 1;
 }
 
 .show-operation {
@@ -87,6 +93,7 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
 }
 
 .inner-token-content {
+  flex-grow: 1;
   padding-block: $inner-token-padding-block;
   padding-inline: $inner-token-padding-inline;
 }
@@ -95,6 +102,7 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
 .dismiss-button,
 .inner-dismiss-button {
   inline-size: 30px;
+  min-inline-size: 30px;
   margin-block: 0;
   margin-inline: 0;
   border-block: none;
