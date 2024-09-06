@@ -7,19 +7,15 @@ import '../../__a11y__/to-validate-a11y';
 import Alert, { AlertProps } from '../../../lib/components/alert';
 import Button from '../../../lib/components/button';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/alert/styles.css.js';
 
-let useVisualRefresh = false;
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
-  const originalVisualModeModule = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
-  return {
-    __esModule: true,
-    ...originalVisualModeModule,
-    useVisualRefresh: (...args: any) => useVisualRefresh || originalVisualModeModule.useVisualRefresh(...args),
-  };
-});
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
+  ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),
+  useVisualRefresh: jest.fn().mockReturnValue(false),
+}));
 
 function renderAlert(props: AlertProps = {}) {
   const { container } = render(<Alert {...props} />);
@@ -27,7 +23,7 @@ function renderAlert(props: AlertProps = {}) {
 }
 
 beforeEach(() => {
-  useVisualRefresh = false;
+  jest.mocked(useVisualRefresh).mockReset();
 });
 
 describe('Alert Component', () => {
@@ -185,7 +181,7 @@ describe('Alert Component', () => {
       expect(wrapper.getElement().querySelector('.' + styles['icon-size-normal'])).toBeTruthy();
     });
     test('visual refresh - always normal', () => {
-      useVisualRefresh = true;
+      jest.mocked(useVisualRefresh).mockReturnValue(true);
       const { wrapper } = renderAlert({ header: 'Header', children: ['Content'] });
       expect(wrapper.getElement().querySelector('.' + styles['icon-size-big'])).toBeFalsy();
       expect(wrapper.getElement().querySelector('.' + styles['icon-size-normal'])).toBeTruthy();
