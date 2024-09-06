@@ -224,11 +224,13 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       // Simulating 200% zoom on medium screens (1366x768 / 2 ~= 680x360 ).
       await page.setWindowSize({ width: 680, height: 360 });
       await page.openPanel();
-      const { height } = await page.getViewportSize();
-      await page.dragResizerTo({ x: 0, y: height });
+      const { height: screenHeight } = await page.getViewportSize();
+      const headerRect = await page.getBoundingBox('#h');
+      await page.dragResizerTo({ x: 0, y: screenHeight });
       expect((await page.getSplitPanelSize()).height).toEqual(160);
       await page.dragResizerTo({ x: 0, y: 0 });
-      expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(277);
+      const splitPanelMaxSize = screenHeight - 40 - headerRect.height;
+      expect(Math.round((await page.getSplitPanelSize()).height)).toEqual(splitPanelMaxSize);
     })
   );
 
