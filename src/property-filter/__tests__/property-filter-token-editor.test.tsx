@@ -361,8 +361,7 @@ describe.each([false, true] as const)('token editor labels, isMobile = %s', isMo
         );
         expect(removeActions.actionsMenu.findNativeButton().getElement()).toBeDisabled();
 
-        expect(editor.addActions.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
-        expect(editor.addActions.findNativeButton().getElement()).toBeDisabled();
+        expect(editor.addActions.findTriggerButton()).toBe(null);
         expect(editor.addActions.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
       } else {
         expect(editor.removeActions().actionsMenu).toBe(null);
