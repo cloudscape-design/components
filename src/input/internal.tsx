@@ -15,6 +15,7 @@ import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { GeneratedAnalyticsMetadataInputClearInput } from './analytics-metadata/interfaces';
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
 import { convertAutoComplete, useSearchProps } from './utils';
 
@@ -192,7 +193,11 @@ function InternalInput(
       {__rightIcon && (
         <span
           className={styles['input-icon-right']}
-          {...(__rightIcon === 'close' ? getAnalyticsMetadataAttribute({ action: 'clearInput' }) : {})}
+          {...(__rightIcon === 'close'
+            ? getAnalyticsMetadataAttribute({
+                action: 'clearInput',
+              } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
+            : {})}
         >
           <InternalButton
             // Used for test utils
