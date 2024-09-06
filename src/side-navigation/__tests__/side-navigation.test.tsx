@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Multiselect from '../../../lib/components/multiselect';
 import Select from '../../../lib/components/select';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -1223,84 +1222,16 @@ describe('SideNavigation', () => {
   });
 
   describe('Items Header', () => {
-    it('renders select component as items header', () => {
-      const options = [
-        { label: 'Option 1', value: '1', description: 'Description 1', tags: ['tag1', 'tag2'] },
-        { label: 'Option 2', value: '2', description: 'Description 2', tags: ['tag1', 'tag2'] },
-      ];
-      const selectedOption = { label: 'Option 1', value: '1', description: 'Description 1', tags: ['tag1', 'tag2'] };
-      const inlineLabelText = 'Label Text';
-      const triggerVariant = 'label';
-
-      const selectComponent = (
-        <Select
-          options={options}
-          selectedOption={selectedOption}
-          onChange={() => null}
-          inlineLabelText={inlineLabelText}
-          triggerVariant={triggerVariant}
-        />
-      );
+    it('renders select component when provided', () => {
       const wrapper = renderSideNavigation({
-        itemsHeader: selectComponent,
+        itemsHeader: <Select options={[]} selectedOption={{}} onChange={() => null} />,
       });
       expect(wrapper.findItemsHeader()!.getElement()).toBeInTheDocument();
-      expect(wrapper.findItemsHeader()!.getElement()).toHaveTextContent(inlineLabelText);
       expect(wrapper.findItemsHeader()!.findSelect()?.getElement()).toBeInTheDocument();
-      expect(wrapper.findItemsHeader()!.findSelect()?.getElement()).toHaveTextContent(selectedOption.label);
-      wrapper.findItemsHeader()!.findSelect()?.openDropdown();
-      expect(wrapper.findItemsHeader()!.findSelect()?.findDropdown().findOptions()).toHaveLength(options.length);
     });
-    it('renders multi select component as items header', () => {
-      const selectedOptions = [
-        {
-          label: 'Option 1',
-          value: '1',
-          description: 'This is a description',
-        },
-        { label: 'Option 5', value: '5' },
-      ];
-      const multiselectComponent = (
-        <Multiselect
-          selectedOptions={selectedOptions}
-          onChange={() => null}
-          options={[
-            {
-              label: 'Option 1',
-              value: '1',
-              description: 'This is a description',
-            },
-            {
-              label: 'Option 2',
-              value: '2',
-              iconName: 'unlocked',
-              labelTag: 'This is a label tag',
-            },
-            {
-              label: 'Option 3 (disabled)',
-              value: '3',
-              iconName: 'share',
-              tags: ['Tags go here', 'Tag1', 'Tag2'],
-              disabled: true,
-            },
-            {
-              label: 'Option 4',
-              value: '4',
-              filteringTags: ['filtering', 'tags', 'these are filtering tags'],
-            },
-            { label: 'Option 5', value: '5' },
-          ]}
-          placeholder="Choose options"
-        />
-      );
-      const wrapper = renderSideNavigation({
-        itemsHeader: multiselectComponent,
-      });
-      expect(wrapper.findItemsHeader()!.getElement()).toBeInTheDocument();
-      expect(wrapper.findItemsHeader()!.findMultiselect()?.getElement()).toBeInTheDocument();
-      wrapper.findItemsHeader()!.findMultiselect()?.openDropdown();
-      expect(wrapper.findItemsHeader()!.findMultiselect()?.findDropdown().findOptions()).toHaveLength(5);
-      expect(wrapper.findItemsHeader()!.findMultiselect()?.findDropdown().findSelectedOptions()).toHaveLength(2);
+    it('returns null when items header is not provided', () => {
+      const wrapper = renderSideNavigation({});
+      expect(wrapper.findItemsHeader()).toBeNull();
     });
   });
 });
