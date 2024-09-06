@@ -13,14 +13,18 @@ import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './contr
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
+export { DrawersApiPublic, ActionsApiPublic, AlertFlashContentApiPublic };
+
+export interface AwsuiPlugins {
+  appLayout: DrawersApiPublic;
+  alert: ActionsApiPublic;
+  alertContent: AlertFlashContentApiPublic;
+  flashbar: ActionsApiPublic;
+  flashContent: AlertFlashContentApiPublic;
+}
+
 interface AwsuiApi {
-  awsuiPlugins: {
-    appLayout: DrawersApiPublic;
-    alert: ActionsApiPublic;
-    alertContent: AlertFlashContentApiPublic;
-    flashbar: ActionsApiPublic;
-    flashContent: AlertFlashContentApiPublic;
-  };
+  awsuiPlugins: AwsuiPlugins;
   awsuiPluginsInternal: {
     appLayout: DrawersApiInternal;
     appLayoutWidget: AppLayoutWidgetApiInternal;
