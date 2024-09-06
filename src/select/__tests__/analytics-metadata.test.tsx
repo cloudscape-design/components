@@ -116,6 +116,12 @@ describe('Select renders correct analytics metadata', () => {
       ...getMetadataContexts(undefined, true),
     });
   });
+  test('when readonly', () => {
+    const wrapper = renderSelect({ readOnly: true });
+    expect(getGeneratedAnalyticsMetadata(wrapper.findTrigger()!.getElement())).toEqual({
+      ...getMetadataContexts(),
+    });
+  });
 
   test('with simple items', () => {
     const wrapper = renderSelect({});

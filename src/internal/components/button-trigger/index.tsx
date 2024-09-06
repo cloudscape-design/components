@@ -117,7 +117,11 @@ const ButtonTrigger = (
   };
 
   return (
-    <button ref={ref} {...attributes} {...(disabled ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}>
+    <button
+      ref={ref}
+      {...attributes}
+      {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
+    >
       {children}
       {!hideCaret && (
         <span className={styles.arrow}>
