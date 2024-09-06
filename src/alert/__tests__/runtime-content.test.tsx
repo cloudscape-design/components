@@ -8,7 +8,7 @@ import Button from '../../../lib/components/button';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
-import { AlertWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { expectContent } from './runtime-content-utils';
 
 import stylesCss from '../../../lib/components/alert/styles.css.js';
@@ -39,8 +39,8 @@ afterEach(() => {
 
 test('renders replacement content initially', async () => {
   awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
-  const { container } = render(<Alert>Alert content</Alert>);
-  const alertWrapper = new AlertWrapper(container);
+  render(<Alert>Alert content</Alert>);
+  const alertWrapper = createWrapper().findAlert()!;
   await waitFor(() => {
     expectContent(alertWrapper, stylesCss, {
       content: 'New content',
@@ -50,8 +50,8 @@ test('renders replacement content initially', async () => {
 });
 
 test('renders replacement content when asynchronously registered', async () => {
-  const { container } = render(<Alert>Alert content</Alert>);
-  const alertWrapper = new AlertWrapper(container);
+  render(<Alert>Alert content</Alert>);
+  const alertWrapper = createWrapper().findAlert()!;
   await waitFor(() => {
     expectContent(alertWrapper, stylesCss, {
       content: 'Alert content',
@@ -70,8 +70,8 @@ test('renders replacement content when asynchronously registered', async () => {
 describe.each([true, false])('existing header:%p', existingHeader => {
   test('renders replacement header initially', async () => {
     awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
-    const { container } = render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
-    const alertWrapper = new AlertWrapper(container);
+    render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
+    const alertWrapper = createWrapper().findAlert()!;
     await waitFor(() => {
       expectContent(alertWrapper, stylesCss, {
         header: 'New header',
@@ -81,8 +81,8 @@ describe.each([true, false])('existing header:%p', existingHeader => {
   });
 
   test('renders replacement header when asynchronously registered', async () => {
-    const { container } = render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
-    const alertWrapper = new AlertWrapper(container);
+    render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
+    const alertWrapper = createWrapper().findAlert()!;
     await waitFor(() => {
       expectContent(alertWrapper, stylesCss, {
         header: existingHeader ? 'Header content' : undefined,
@@ -111,8 +111,8 @@ test('removes header styling if replacement header is explicitly empty', async (
     },
   };
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
-  const { container } = render(<Alert header="Initial header content" />);
-  const alertWrapper = new AlertWrapper(container);
+  render(<Alert header="Initial header content" />);
+  const alertWrapper = createWrapper().findAlert()!;
   await waitFor(() => {
     expectContent(alertWrapper, stylesCss, {
       header: false,
@@ -218,8 +218,8 @@ describe('asynchronous rendering', () => {
       },
     };
     awsuiPlugins.alertContent.registerContentReplacer(asyncContent);
-    const { container } = render(<Alert>Alert content</Alert>);
-    const alertWrapper = new AlertWrapper(container);
+    render(<Alert>Alert content</Alert>);
+    const alertWrapper = createWrapper().findAlert()!;
     await waitFor(() => {
       expectContent(alertWrapper, stylesCss, {
         content: 'Alert content',
@@ -253,8 +253,8 @@ describe('asynchronous rendering', () => {
       },
     };
     awsuiPlugins.alertContent.registerContentReplacer(asyncContent);
-    const { unmount, container } = render(<Alert>Alert content</Alert>);
-    const alertWrapper = new AlertWrapper(container);
+    const { unmount } = render(<Alert>Alert content</Alert>);
+    const alertWrapper = createWrapper().findAlert()!;
     await waitFor(() => {
       expectContent(alertWrapper, stylesCss, {
         content: 'Alert content',

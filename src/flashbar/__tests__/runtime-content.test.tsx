@@ -8,6 +8,7 @@ import Flashbar from '../../../lib/components/flashbar';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import FlashbarWrapper from '../../../lib/components/test-utils/dom/flashbar';
 import { expectContent } from '../../alert/__tests__/runtime-content-utils';
 
@@ -39,8 +40,8 @@ afterEach(() => {
 
 test('renders runtime content initially', async () => {
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-  const { container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
-  const flashbarWrapper = new FlashbarWrapper(container);
+  render(<Flashbar items={[{ content: 'Flash content' }]} />);
+  const flashbarWrapper = createWrapper().findFlashbar()!;
   await waitFor(() => {
     expectContent(flashbarWrapper.findItems()[0], stylesCss, {
       content: 'New content',
@@ -50,8 +51,8 @@ test('renders runtime content initially', async () => {
 });
 
 test('renders runtime content when asynchronously registered', async () => {
-  const { container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
-  const flashbarWrapper = new FlashbarWrapper(container);
+  render(<Flashbar items={[{ content: 'Flash content' }]} />);
+  const flashbarWrapper = createWrapper().findFlashbar()!;
   await waitFor(() => {
     expectContent(flashbarWrapper.findItems()[0], stylesCss, {
       content: 'Flash content',
@@ -90,7 +91,7 @@ describe.each([true, false])('existing header:%p', existingHeader => {
   });
 
   test('renders runtime header when asynchronously registered', async () => {
-    const { container } = render(
+    render(
       <Flashbar
         items={[
           {
@@ -100,7 +101,7 @@ describe.each([true, false])('existing header:%p', existingHeader => {
         ]}
       />
     );
-    const flashbarWrapper = new FlashbarWrapper(container);
+    const flashbarWrapper = createWrapper().findFlashbar()!;
     await waitFor(() => {
       expectContent(flashbarWrapper.findItems()[0], stylesCss, {
         header: existingHeader ? 'Flash header' : undefined,
