@@ -26,7 +26,7 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorGrey150: '#f3f3f7',
   colorGrey200: '#ebebf0',
   colorGrey300: '#dedee3',
-  colorGrey350: '#c3c3cb',
+  colorGrey350: '#c6c6cd',
   colorGrey400: '#b4b4bb',
   colorGrey450: '#a4a4ad',
   colorGrey500: '#8d8d95',
@@ -56,5 +56,5 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorYellow600: '#ffe347',
   colorYellow700: '#fbd332',
   colorYellow800: '#855900',
-  colorYellow900: '#291b00',
+  colorYellow900: '#1a1100',
 };
