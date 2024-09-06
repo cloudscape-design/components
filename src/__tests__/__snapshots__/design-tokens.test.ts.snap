@@ -380,7 +380,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -2787,7 +2787,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -5194,7 +5194,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -7601,7 +7601,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -10008,8 +10008,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
-            "light": "#1a1100",
+            "dark": "#191100",
+            "light": "#191100",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -12415,7 +12415,7 @@ Object {
     "color-background-status-warning": Object {
       "$description": "The background color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#1a1100",
+        "dark": "#191100",
         "light": "#fffef0",
       },
     },
@@ -14827,7 +14827,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -17234,8 +17234,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
-            "light": "#1a1100",
+            "dark": "#191100",
+            "light": "#191100",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -19641,7 +19641,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -22048,7 +22048,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -24455,7 +24455,7 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
+            "dark": "#191100",
             "light": "#fffef0",
           },
         },
@@ -26862,8 +26862,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
-            "light": "#1a1100",
+            "dark": "#191100",
+            "light": "#191100",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -29269,8 +29269,8 @@ Object {
         "color-background-status-warning": Object {
           "$description": "The background color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#1a1100",
-            "light": "#1a1100",
+            "dark": "#191100",
+            "light": "#191100",
           },
         },
         "color-background-toggle-button-normal-pressed": Object {
@@ -31676,7 +31676,7 @@ Object {
     "color-background-status-warning": Object {
       "$description": "The background color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#1a1100",
+        "dark": "#191100",
         "light": "#fffef0",
       },
     },
