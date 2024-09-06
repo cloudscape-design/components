@@ -42,9 +42,9 @@ function delay() {
   return act(() => new Promise(resolve => setTimeout(resolve, 10)));
 }
 
-function renderAsync(jsx: React.ReactElement) {
+async function renderAsync(jsx: React.ReactElement) {
   render(jsx);
-  return delay();
+  await waitFor(() => expect(wrapper.findAppLayout()!.find('[data-awsui-discovered-breadcrumbs="true"]')).toBeTruthy());
 }
 
 afterEach(() => {
@@ -60,7 +60,8 @@ afterEach(() => {
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   test('renders normal breadcrumbs when no app layout is present', async () => {
-    await renderAsync(<BreadcrumbGroup items={defaultBreadcrumbs} />);
+    render(<BreadcrumbGroup items={defaultBreadcrumbs} />);
+    await delay();
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
     expect(wrapper.findBreadcrumbGroup()!.findBreadcrumbLinks()).toHaveLength(2);
   });
@@ -257,7 +258,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
 describe('without feature flag', () => {
   test('breadcrumbs are not globalized', async () => {
-    await renderAsync(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    render(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
     expect(wrapper.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
     expect(wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()).toBeTruthy();
@@ -266,7 +268,8 @@ describe('without feature flag', () => {
 
 test('renders analytics metadata information', async () => {
   activateAnalyticsMetadata(true);
-  await renderAsync(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+  render(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+  await delay();
   const breadcrumbsWrapper = wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()!;
   const firstBreadcrumb = breadcrumbsWrapper.findBreadcrumbLink(1)!.getElement();
   expect(getGeneratedAnalyticsMetadata(firstBreadcrumb)).toEqual({
