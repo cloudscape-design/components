@@ -38,15 +38,7 @@ export default class FlashWrapper extends ComponentWrapper {
     return this.findByClassName(styles['flash-header']);
   }
 
-  findReplacementHeader(): ElementWrapper | null {
-    return this.findByClassName(styles['flash-header-replacement']);
-  }
-
   findContent(): ElementWrapper | null {
     return this.findByClassName(styles['flash-content']);
-  }
-
-  findReplacementContent(): ElementWrapper | null {
-    return this.findByClassName(styles['flash-content-replacement']);
   }
 }

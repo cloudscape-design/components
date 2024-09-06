@@ -200,7 +200,7 @@ export const Flash = React.forwardRef(
               </div>
               <div
                 className={clsx(
-                  styles['flash-header-replacement'],
+                  styles['header-replacement'],
                   hasReplacementHeader !== true ? styles.hidden : analyticsSelectors['flash-header']
                 )}
                 ref={replacementHeaderRef}
@@ -212,7 +212,7 @@ export const Flash = React.forwardRef(
                 {content}
               </div>
               <div
-                className={clsx(styles['flash-content-replacement'], hasReplacementContent !== true && styles.hidden)}
+                className={clsx(styles['content-replacement'], hasReplacementContent !== true && styles.hidden)}
                 ref={replacementContentRef}
               ></div>
             </div>
