@@ -15,8 +15,8 @@ import {
   PropertyFilterProperty,
   PropertyFilterQuery,
   PropertyFilterToken,
+  PropertyFilterTokenGroup,
 } from '@cloudscape-design/collection-hooks';
-import { PropertyFilterTokenGroup } from '@cloudscape-design/collection-hooks/cjs/interfaces';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
