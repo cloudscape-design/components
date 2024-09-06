@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -120,6 +120,8 @@ export const Flash = React.forwardRef(
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
     const mergedRef = useMergeRefs(ref, elementRef);
 
+    const headerRefObject = useRef<HTMLDivElement>(null);
+    const contentRefObject = useRef<HTMLDivElement>(null);
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
       hasReplacementHeader,
@@ -131,8 +133,8 @@ export const Flash = React.forwardRef(
       actionsRef,
     } = useDiscoveredContent({ type, header, children: content });
 
-    const headerRef = useMergeRefs(headerRefAction, headerRefContent);
-    const contentRef = useMergeRefs(contentRefAction, contentRefContent);
+    const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
+    const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
 
     const iconType = ICON_TYPES[type];
 
@@ -229,7 +231,7 @@ export const Flash = React.forwardRef(
           />
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        {ariaRole === 'status' && <LiveRegion source={[statusIconAriaLabel, headerRefAction, contentRefAction]} />}
+        {ariaRole === 'status' && <LiveRegion source={[statusIconAriaLabel, headerRefObject, contentRefObject]} />}
       </div>
     );
   }

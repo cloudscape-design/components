@@ -81,11 +81,11 @@ export function createUseDiscoveredContent(onContentRegistered: AlertFlashConten
     return {
       hasReplacementHeader: foundHeaderReplacement,
       hasReplacementContent: foundContentReplacement,
-      headerRef,
-      replacementHeaderRef,
-      contentRef,
-      replacementContentRef,
-      actionsRef,
+      headerRef: headerRef as React.Ref<HTMLDivElement>,
+      replacementHeaderRef: replacementHeaderRef as React.Ref<HTMLDivElement>,
+      contentRef: contentRef as React.Ref<HTMLDivElement>,
+      replacementContentRef: replacementContentRef as React.Ref<HTMLDivElement>,
+      actionsRef: actionsRef as React.Ref<HTMLDivElement>,
     };
   };
 }
