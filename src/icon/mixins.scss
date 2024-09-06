@@ -116,6 +116,9 @@ $_icon-sizes: (
       .filled {
         fill: currentColor;
       }
+      .no-stroke {
+        stroke: none;
+      }
     }
   }
   /* stylelint-enable selector-max-type, selector-max-universal */

@@ -1,8 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <polyline points="9 2 14 2 14 7"/>
-  <polyline points="7 2 2 2 2 7"/>
-  <polyline points="7 14 2 14 2 9"/>
-  <polyline points="9 14 14 14 14 9"/>
-  <line x1="2" y1="2" x2="14" y2="14"/>
-  <line x1="14" y1="2" x2="2" y2="14"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M2 7V2H7" class="stroke-linejoin-round"/>
+<path d="M9 2H14V7" class="stroke-linejoin-round"/>
+<path d="M14 9V14H9" class="stroke-linejoin-round"/>
+<path d="M7 14H2V9" class="stroke-linejoin-round"/>
+<path d="M14 2L2 14" class="stroke-linejoin-round"/>
+<path d="M14 14L2.03003 2.02002" class="stroke-linejoin-round"/>
 </svg>
