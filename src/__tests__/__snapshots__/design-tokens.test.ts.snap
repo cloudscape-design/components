@@ -569,7 +569,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -2053,7 +2053,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -2976,7 +2976,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -4460,7 +4460,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -5383,7 +5383,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -6867,7 +6867,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -7790,7 +7790,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -9274,7 +9274,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#906806",
           },
         },
@@ -10197,8 +10197,8 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -11681,8 +11681,8 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
@@ -12604,7 +12604,7 @@ Object {
     "color-border-status-warning": Object {
       "$description": "The border color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#e9cc25",
+        "dark": "#fbd332",
         "light": "#906806",
       },
     },
@@ -14088,7 +14088,7 @@ Object {
     "color-text-status-warning": Object {
       "$description": "The color of warning icons.",
       "$value": Object {
-        "dark": "#e9cc25",
+        "dark": "#fbd332",
         "light": "#906806",
       },
     },
@@ -15016,7 +15016,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -16500,7 +16500,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -17423,8 +17423,8 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -18907,8 +18907,8 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
@@ -19830,7 +19830,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -21314,7 +21314,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -22237,7 +22237,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -23721,7 +23721,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -24644,7 +24644,7 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -26128,7 +26128,7 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
+            "dark": "#fbd332",
             "light": "#855900",
           },
         },
@@ -27051,8 +27051,8 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -28535,8 +28535,8 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
@@ -29458,8 +29458,8 @@ Object {
         "color-border-status-warning": Object {
           "$description": "The border color of an item in warning state. For example: warning alerts.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-border-toggle-button-normal-pressed": Object {
@@ -30942,8 +30942,8 @@ Object {
         "color-text-status-warning": Object {
           "$description": "The color of warning icons.",
           "$value": Object {
-            "dark": "#e9cc25",
-            "light": "#e9cc25",
+            "dark": "#fbd332",
+            "light": "#fbd332",
           },
         },
         "color-text-toggle-button-icon-pressed": Object {
@@ -31865,7 +31865,7 @@ Object {
     "color-border-status-warning": Object {
       "$description": "The border color of an item in warning state. For example: warning alerts.",
       "$value": Object {
-        "dark": "#e9cc25",
+        "dark": "#fbd332",
         "light": "#855900",
       },
     },
@@ -33349,7 +33349,7 @@ Object {
     "color-text-status-warning": Object {
       "$description": "The color of warning icons.",
       "$value": Object {
-        "dark": "#e9cc25",
+        "dark": "#fbd332",
         "light": "#855900",
       },
     },
