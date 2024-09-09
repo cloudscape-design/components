@@ -45,11 +45,13 @@ export interface AlertFlashContentApiInternal {
 
 export class AlertFlashContentController {
   #listeners: Array<AlertFlashContentRegistrationListener> = [];
+  #cleanups = new Map<AlertFlashContentRegistrationListener, null | (() => void)>();
   #provider?: AlertFlashContentConfig;
 
   #scheduleUpdate = debounce(() => {
     this.#listeners.forEach(listener => {
-      listener.cleanup = listener(this.#provider);
+      const cleanup = listener(this.#provider) ?? null;
+      this.#cleanups.set(listener, cleanup);
     });
   }, 0);
 
@@ -72,8 +74,9 @@ export class AlertFlashContentController {
     this.#listeners.push(listener);
     this.#scheduleUpdate();
     return () => {
-      listener.cleanup?.();
+      this.#cleanups.get(listener)?.();
       this.#listeners = this.#listeners.filter(item => item !== listener);
+      this.#cleanups.delete(listener);
     };
   };
 
