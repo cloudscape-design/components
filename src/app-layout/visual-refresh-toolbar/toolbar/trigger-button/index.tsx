@@ -110,12 +110,13 @@ function TriggerButton(
   };
 
   const onShowTooltipHard = (show: boolean) => {
-    if (!setShowTooltipOverride) {
+    if (!showTooltipOverride) {
       setShowTooltip(show);
     }
   };
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log('handle on click');
     setShowTooltipOverride(false);
     onShowTooltipHard(false);
     onClick(event);
@@ -133,6 +134,7 @@ function TriggerButton(
   }, [hideTooltipOnFocus, isForPreviousActiveDrawer]);
 
   const tooltipVisible = useMemo(() => {
+    // console.log({hasTooltip, showTooltip, containerRef, tooltipValue, isMobile, hasOpenDrawer, final: hasTooltip && showTooltip && !!containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer)})
     return hasTooltip && showTooltip && !!containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer);
   }, [hasTooltip, showTooltip, containerRef, tooltipValue, isMobile, hasOpenDrawer]);
 
