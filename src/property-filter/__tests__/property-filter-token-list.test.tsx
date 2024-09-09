@@ -6,8 +6,16 @@ import { act, render } from '@testing-library/react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
 import { PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
+import PropertyFilterInternal, { PropertyFilterInternalProps } from '../../../lib/components/property-filter/internal';
 import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { createDefaultProps, i18nStrings, StatefulPropertyFilter } from './common';
+import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter';
+import {
+  createDefaultProps,
+  i18nStrings,
+  i18nStringsTokenGroups,
+  StatefulInternalPropertyFilter,
+  StatefulPropertyFilter,
+} from './common';
 
 const defaultProps = createDefaultProps(
   [
@@ -41,6 +49,36 @@ const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<
 const renderStatefulComponent = (props?: Partial<PropertyFilterProps>) => {
   const { container } = render(<StatefulPropertyFilter {...defaultProps} {...props} />);
   return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
+};
+
+function renderInternalComponent(props: Partial<PropertyFilterInternalProps>) {
+  const { container } = render(
+    <PropertyFilterInternal
+      {...defaultProps}
+      enableTokenGroups={true}
+      i18nStringsTokenGroups={i18nStringsTokenGroups}
+      filteringOptions={[]}
+      customGroupsText={[]}
+      disableFreeTextFiltering={false}
+      {...props}
+    />
+  );
+  return new PropertyFilterWrapperInternal(container);
+}
+
+const renderStatefulInternalComponent = (props?: Partial<PropertyFilterInternalProps>) => {
+  const { container } = render(
+    <StatefulInternalPropertyFilter
+      {...defaultProps}
+      enableTokenGroups={true}
+      i18nStringsTokenGroups={i18nStringsTokenGroups}
+      filteringOptions={[]}
+      customGroupsText={[]}
+      disableFreeTextFiltering={false}
+      {...props}
+    />
+  );
+  return new PropertyFilterWrapperInternal(container);
 };
 
 describe('filtering tokens', () => {
@@ -173,6 +211,38 @@ describe('filtering tokens', () => {
       act(() => wrapper.findTokens()![0].findRemoveButton()!.click());
       expect(handleChange).not.toHaveBeenCalled();
     });
+
+    test('moves focus to the adjacent grouped token and to the single remaining token', () => {
+      const wrapper = renderStatefulInternalComponent({
+        query: {
+          operation: 'and',
+          tokenGroups: [
+            {
+              operation: 'or',
+              tokens: [
+                { propertyKey: 'string', operator: '=', value: 'A' },
+                { propertyKey: 'string', operator: '=', value: 'B' },
+                { propertyKey: 'string', operator: '=', value: 'C' },
+                { propertyKey: 'string', operator: '=', value: 'D' },
+              ],
+            },
+          ],
+          tokens: [],
+        },
+      });
+
+      wrapper.findTokens()[0].findGroupTokens()[3].findRemoveButton()!.click();
+      expect(wrapper.findTokens()[0].findGroupTokens()).toHaveLength(3);
+      expect(wrapper.findTokens()[0].findGroupTokens()[2]!.find('button')!.getElement()).toHaveFocus();
+
+      wrapper.findTokens()[0].findGroupTokens()[0].findRemoveButton()!.click();
+      expect(wrapper.findTokens()[0].findGroupTokens()).toHaveLength(2);
+      expect(wrapper.findTokens()[0].findGroupTokens()[0]!.find('button')!.getElement()).toHaveFocus();
+
+      wrapper.findTokens()[0].findGroupTokens()[1].findRemoveButton()!.click();
+      expect(wrapper.findTokens()[0].findGroupTokens()).toHaveLength(0);
+      expect(wrapper.findTokens()[0].findLabel().getElement()).toHaveFocus();
+    });
   });
 });
 
@@ -241,16 +311,16 @@ describe('tokens show-more toggle', () => {
         operation: 'or',
       },
     });
-    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore);
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore!);
     expect(wrapper.findTokens()!).toHaveLength(1);
     expect(wrapper.findTokens()![0].findLabel().getElement()).toHaveTextContent('string : first');
     // show more
     act(() => wrapper.findTokenToggle()!.click());
-    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowFewer);
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowFewer!);
     expect(wrapper.findTokens()!).toHaveLength(2);
     // show fewer
     act(() => wrapper.findTokenToggle()!.click());
-    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore);
+    expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent(i18nStrings.tokenLimitShowMore!);
     expect(wrapper.findTokens()!).toHaveLength(1);
   });
 });
@@ -265,7 +335,7 @@ describe('tokens remove all button', () => {
     const { propertyFilterWrapper: wrapper } = renderComponent({
       query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
     });
-    expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent(i18nStrings.clearFiltersText);
+    expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent(i18nStrings.clearFiltersText!);
   });
 
   test('causes onChange to fire, removing all tokens', () => {
@@ -293,5 +363,95 @@ describe('tokens remove all button', () => {
       query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
     });
     expect(wrapper.findRemoveAllButton()!.getElement()).toBeDisabled();
+  });
+});
+
+describe('grouped token', () => {
+  const tokenJohn = { propertyKey: 'string', operator: '=', value: 'John' };
+  const tokenJane = { propertyKey: 'string', operator: '=', value: 'Jane' };
+  const tokenJack = { propertyKey: 'string', operator: '=', value: 'Jack' };
+
+  test('token group has correct ARIA label and edit button ARIA label', () => {
+    const wrapper = renderInternalComponent({
+      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+    });
+
+    expect(wrapper.findTokens()[0].getElement()).toHaveAccessibleName('string equals John or string equals Jane');
+    expect(wrapper.findTokens()[0].findEditButton()!.getElement()).toHaveAccessibleName(
+      'Edit filter, string equals John or string equals Jane'
+    );
+  });
+
+  test('changes group operation', () => {
+    const onChange = jest.fn();
+    const wrapper = renderInternalComponent({
+      query: { operation: 'and', tokenGroups: [{ operation: 'and', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+      onChange,
+    });
+
+    wrapper.findTokens()[0].findGroupTokens()[1].findTokenOperation()!.openDropdown();
+    wrapper.findTokens()[0].findGroupTokens()[1].findTokenOperation()!.selectOption(2);
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toBeCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('removes token from group', () => {
+    const onChange = jest.fn();
+    const wrapper = renderInternalComponent({
+      query: {
+        operation: 'and',
+        tokenGroups: [{ operation: 'and', tokens: [tokenJohn, tokenJane, tokenJack] }],
+        tokens: [],
+      },
+      onChange,
+    });
+
+    wrapper.findTokens()[0].findGroupTokens()[0].findRemoveButton()!.click();
+
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toBeCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ operation: 'and', tokens: [tokenJane, tokenJack] }],
+          tokens: [],
+        },
+      })
+    );
+
+    wrapper.findTokens()[0].findGroupTokens()[1].findRemoveButton()!.click();
+
+    expect(onChange).toHaveBeenCalledTimes(2);
+    expect(onChange).toBeCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ operation: 'and', tokens: [tokenJohn, tokenJack] }],
+          tokens: [],
+        },
+      })
+    );
+
+    wrapper.findTokens()[0].findGroupTokens()[2].findRemoveButton()!.click();
+
+    expect(onChange).toHaveBeenCalledTimes(3);
+    expect(onChange).toBeCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ operation: 'and', tokens: [tokenJohn, tokenJane] }],
+          tokens: [],
+        },
+      })
+    );
   });
 });

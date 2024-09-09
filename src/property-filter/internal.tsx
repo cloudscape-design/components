@@ -11,31 +11,38 @@ import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
-import { I18nStringsExt, usePropertyFilterI18n } from './i18n-utils';
+import { usePropertyFilterI18n } from './i18n-utils';
 import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
+  I18nStringsTokenGroups,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
   InternalQuery,
   InternalToken,
+  InternalTokenGroup,
   ParsedText,
   PropertyFilterProps,
   Ref,
+  Token,
+  TokenGroup,
 } from './interfaces';
 import { PropertyEditor } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
 
+import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
@@ -44,7 +51,7 @@ export type PropertyFilterInternalProps = SomeRequired<
 > &
   InternalBaseComponentProps & {
     enableTokenGroups?: boolean;
-    i18nStringsExt?: I18nStringsExt;
+    i18nStringsTokenGroups?: I18nStringsTokenGroups;
   };
 
 const PropertyFilterInternal = React.forwardRef(
@@ -79,18 +86,27 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups = false,
-      i18nStringsExt = {},
+      i18nStringsTokenGroups,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
     ref: React.Ref<Ref>
   ) => {
-    const [removedTokenIndex, setRemovedTokenIndex] = useState<null | number>(null);
+    const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+    const onFocusMoved = () => setNextFocusIndex(null);
+    const tokenListRef = useListFocusController({
+      nextFocusIndex,
+      onFocusMoved,
+      listItemSelector: `.${tokenListStyles['list-item']}`,
+      showMoreSelector: `.${tokenListStyles.toggle}`,
+      outsideSelector: `.${styles.input}`,
+    });
 
+    const mergedRef = useMergeRefs(tokenListRef, __internalRootRef);
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
-    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsExt });
+    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsTokenGroups });
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const showResults = !!query.tokens?.length && !disabled && !!countText;
@@ -124,14 +140,26 @@ const PropertyFilterInternal = React.forwardRef(
         label: option.label ?? option.value ?? '',
       }));
 
+      function transformToken(
+        tokenOrGroup: Token | TokenGroup,
+        standaloneIndex?: number
+      ): InternalToken | InternalTokenGroup {
+        return 'operation' in tokenOrGroup
+          ? {
+              operation: tokenOrGroup.operation,
+              tokens: tokenOrGroup.tokens.map(token => transformToken(token)),
+            }
+          : {
+              standaloneIndex,
+              property: tokenOrGroup.propertyKey ? getProperty(tokenOrGroup.propertyKey) : null,
+              operator: tokenOrGroup.operator,
+              value: tokenOrGroup.value,
+            };
+      }
+
       const internalQuery: InternalQuery = {
         operation: query.operation,
-        tokens: query.tokens.map(token => ({
-          property: token.propertyKey ? getProperty(token.propertyKey) : null,
-          operator: token.operator,
-          value: token.value,
-          __source: token,
-        })),
+        tokens: (enableTokenGroups && query.tokenGroups ? query.tokenGroups : query.tokens).map(transformToken),
       };
 
       const internalFreeText: InternalFreeTextFiltering = {
@@ -147,6 +175,7 @@ const PropertyFilterInternal = React.forwardRef(
       query: internalQuery,
       filteringOptions: internalOptions,
       onChange,
+      enableTokenGroups,
     });
 
     const parsedText = parseText(filteringText, internalProperties, internalFreeText);
@@ -275,7 +304,7 @@ const PropertyFilterInternal = React.forwardRef(
       : rest.ariaDescribedby;
 
     return (
-      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
         <div className={styles['search-field']}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
@@ -345,16 +374,13 @@ const PropertyFilterInternal = React.forwardRef(
                   <TokenButton
                     query={internalQuery}
                     tokenIndex={tokenIndex}
-                    onUpdateToken={token => {
-                      updateToken(tokenIndex, token);
+                    onUpdateToken={(token, releasedTokens) => {
+                      updateToken(tokenIndex, token, releasedTokens);
                     }}
-                    onUpdateOperation={operation => {
-                      updateOperation(operation);
-                    }}
+                    onUpdateOperation={updateOperation}
                     onRemoveToken={() => {
                       removeToken(tokenIndex);
-                      inputRef.current?.focus({ preventDropdown: true });
-                      setRemovedTokenIndex(tokenIndex);
+                      setNextFocusIndex(tokenIndex);
                     }}
                     filteringProperties={internalProperties}
                     filteringOptions={internalOptions}
@@ -391,7 +417,6 @@ const PropertyFilterInternal = React.forwardRef(
                     </InternalButton>
                   )
                 }
-                moveFocusNextToIndex={removedTokenIndex}
               />
             </InternalSpaceBetween>
           </div>

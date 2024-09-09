@@ -52,6 +52,8 @@ const mockEventBubbleWithShiftFocus = {
   },
 };
 
+const testIf = (condition: boolean) => (condition ? test : test.skip);
+
 const renderVisualRefreshTriggerButton = (
   props: Partial<VisualRefreshTriggerButtonProps> = {},
   useAppLayoutInternalsValues: Partial<AllContext.AppLayoutInternals> = {},
@@ -92,11 +94,32 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
 
   describe.each([true, false])('Toolbar trigger-button with isMobile=%s', isMobile => {
     describe.each([true, false])('AppLayoutInternals with hasOpenDrawer=%s', hasOpenDrawer => {
+      testIf(!isMobile)('applies the correct class when selected', () => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
+        const { wrapper } = renderVisualRefreshTriggerButton(
+          {
+            selected: true,
+          },
+          {
+            isMobile,
+            hasOpenDrawer,
+          },
+          ref
+        );
+        expect(wrapper).not.toBeNull();
+        const seletedButton = wrapper.findByClassName(visualRefreshStyles.selected);
+        expect(seletedButton).toBeTruthy();
+      });
+
       test('renders correctly with wit badge', () => {
         const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-        const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
+        const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
             badge: false,
+          },
+          {
+            isMobile,
+            hasOpenDrawer,
           },
           ref
         );
@@ -256,6 +279,19 @@ describe('Visual Refresh Toolbar trigger-button', () => {
     expect(button).toBeTruthy();
     expect(wrapper!.findIcon()).toBeTruthy();
     expect(wrapper.findByClassName(toolbarTriggerButtonStyles.dot)).toBeTruthy();
+  });
+
+  test('applies the correct class when selected', () => {
+    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
+    const { wrapper } = renderVisualRefreshToolbarTriggerButton(
+      {
+        selected: true,
+      },
+      ref
+    );
+    expect(wrapper).not.toBeNull();
+    const seletedButton = wrapper.findByClassName(toolbarTriggerButtonStyles.selected);
+    expect(seletedButton).toBeTruthy();
   });
 
   test.each([true, false])('icon renders correctly when iconSvg prop has a %s value', hasIconSvg => {

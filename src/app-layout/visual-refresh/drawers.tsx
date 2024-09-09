@@ -262,6 +262,7 @@ function DesktopTriggers() {
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
+              selected={item.id === activeDrawerId}
             />
           );
         })}
@@ -367,6 +368,7 @@ export function MobileTriggers() {
             onClick={() => handleDrawersClick(item.id)}
             testId={`awsui-app-layout-trigger-${item.id}`}
             highContrastHeader={headerVariant === 'high-contrast'}
+            selected={item.id === activeDrawerId}
           />
         ))}
         {overflowItems.length > 0 && (

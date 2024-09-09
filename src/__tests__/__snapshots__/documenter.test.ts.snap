@@ -550,6 +550,32 @@ to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`
       "type": "null | string",
     },
     Object {
+      "analyticsTag": "",
+      "description": "Specifies additional analytics-related metadata.
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`flowType\` -  Identifies the type of flow represented by the component.
+**Note:** This API is currently experimental.",
+      "inlineType": Object {
+        "name": "AppLayoutProps.AnalyticsMetadata",
+        "properties": Array [
+          Object {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          Object {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "AppLayoutProps.AnalyticsMetadata",
+    },
+    Object {
       "description": "Aria labels for the drawer operating buttons. Use this property to ensure accessibility.
 * \`navigation\` (string) - Label for the landmark that wraps the navigation drawer.
 * \`navigationClose\` (string) - Label for the button that closes the navigation drawer.
@@ -2107,6 +2133,11 @@ Object {
           "grey",
           "green",
           "red",
+          "severity-critical",
+          "severity-high",
+          "severity-medium",
+          "severity-low",
+          "severity-neutral",
         ],
       },
       "name": "color",
@@ -3706,7 +3737,7 @@ The main action also supports the following properties of the [button](/componen
           },
           Object {
             "name": "text",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
         ],
@@ -7237,7 +7268,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
  * \`container\` - Use this variant in a detail page alongside other containers.
  * \`navigation\` - Use this variant in the navigation panel with anchors and custom styled content.
    It doesn't have any default styles.
-* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).",
+* \`stacked\` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+* \`inline\` - Use this variant in any context where you need reduced padding around the header.",
       "inlineType": Object {
         "name": "ExpandableSectionProps.Variant",
         "type": "union",
@@ -7247,6 +7279,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
           "container",
           "navigation",
           "stacked",
+          "inline",
         ],
       },
       "name": "variant",
@@ -7668,7 +7701,8 @@ Object {
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
-* \`flowType\` - Identifies the type of flow represented by the component.",
+* \`flowType\` - Identifies the type of flow represented by the component.
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
       "inlineType": Object {
         "name": "FormProps.AnalyticsMetadata",
         "properties": Array [
@@ -7679,6 +7713,11 @@ Object {
           },
           Object {
             "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "resourceType",
             "optional": true,
             "type": "string",
           },
@@ -12031,18 +12070,7 @@ Object {
       "description": "Fired when the \`query\` gets changed. Filter the dataset in response to this event using the values in the \`detail\` object.",
       "detailInlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "ReadonlyArray<PropertyFilterProps.Token>",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "detailType": "PropertyFilterProps.Query",
@@ -12128,7 +12156,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "string",
     },
     Object {
-      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronousely. This would cause extra \`onLoadMore\`
+      "description": "Set \`asyncProperties\` if you need to load \`filteringProperties\` asynchronously. This would cause extra \`onLoadMore\`
 events to fire calling for more properties.",
       "name": "asyncProperties",
       "optional": true,
@@ -12520,18 +12548,7 @@ Each token has the following properties:
 ",
       "inlineType": Object {
         "name": "PropertyFilterProps.Query",
-        "properties": Array [
-          Object {
-            "name": "operation",
-            "optional": false,
-            "type": "PropertyFilterProps.JoinOperation",
-          },
-          Object {
-            "name": "tokens",
-            "optional": false,
-            "type": "ReadonlyArray<PropertyFilterProps.Token>",
-          },
-        ],
+        "properties": Array [],
         "type": "object",
       },
       "name": "query",
@@ -17883,7 +17900,8 @@ Defaults to \`false\`.
       "analyticsTag": "",
       "description": "Specifies additional analytics-related metadata.
 * \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
-* \`flowType\` - Identifies the type of flow represented by the component.",
+* \`flowType\` - Identifies the type of flow represented by the component.
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
       "inlineType": Object {
         "name": "WizardProps.AnalyticsMetadata",
         "properties": Array [
@@ -17894,6 +17912,11 @@ Defaults to \`false\`.
           },
           Object {
             "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "resourceType",
             "optional": true,
             "type": "string",
           },

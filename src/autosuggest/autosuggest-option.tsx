@@ -89,6 +89,7 @@ const AutosuggestOption = (
       ariaSetsize={ariaSetsize}
       ariaPosinset={ariaPosinset}
       highlightType={highlightType.type}
+      value={option.value}
     >
       {optionContent}
     </SelectableItem>

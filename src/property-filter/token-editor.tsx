@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 
 import InternalButton from '../button/internal.js';
@@ -11,6 +11,7 @@ import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 import { getAllowedOperators } from './controller.js';
@@ -41,8 +42,9 @@ export interface TokenEditorProps {
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   onSubmit: () => void;
   onDismiss: () => void;
-  standaloneTokens: InternalToken[];
-  onChangeStandalone: (newStandalone: InternalToken[]) => void;
+  tokensToCapture: InternalToken[];
+  onTokenCapture: (token: InternalToken) => void;
+  onTokenRelease: (token: InternalToken) => void;
   tempGroup: InternalToken[];
   onChangeTempGroup: (token: InternalToken[]) => void;
 }
@@ -59,11 +61,21 @@ export function TokenEditor({
   onLoadItems,
   onSubmit,
   onDismiss,
-  standaloneTokens,
-  onChangeStandalone,
+  tokensToCapture,
+  onTokenCapture,
+  onTokenRelease,
   tempGroup,
   onChangeTempGroup,
 }: TokenEditorProps) {
+  const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+  const onFocusMoved = () => setNextFocusIndex(null);
+  const tokenListRef = useListFocusController({
+    nextFocusIndex,
+    onFocusMoved,
+    listItemSelector: `.${styles['token-editor-field-property']}`,
+    outsideSelector: `.${styles['token-editor-add-token']}`,
+  });
+
   const groups = tempGroup.map((temporaryToken, index) => {
     const setTemporaryToken = (newToken: InternalToken) => {
       const copy = [...tempGroup];
@@ -97,20 +109,23 @@ export function TokenEditor({
 
     return { token: temporaryToken, property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
   });
+
   return (
-    <div className={styles['token-editor']}>
+    <div className={styles['token-editor']} ref={tokenListRef}>
       <TokenEditorFields
         supportsGroups={supportsGroups}
         tokens={groups.map(group => group.token)}
         onRemove={index => {
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
+          setNextFocusIndex(index);
         }}
         onRemoveFromGroup={index => {
-          const removedToken = tempGroup[index];
+          const releasedToken = tempGroup[index];
           const updated = tempGroup.filter((_, existingIndex) => existingIndex !== index);
           onChangeTempGroup(updated);
-          onChangeStandalone([...standaloneTokens, removedToken]);
+          onTokenRelease(releasedToken);
+          setNextFocusIndex(index);
         }}
         onSubmit={onSubmit}
         renderProperty={index => (
@@ -155,7 +170,7 @@ export function TokenEditor({
           <InternalButtonDropdown
             variant="normal"
             ariaLabel={i18nStrings.tokenEditorAddTokenActionsAriaLabel}
-            items={standaloneTokens.map((token, index) => {
+            items={tokensToCapture.map((token, index) => {
               return {
                 id: index.toString(),
                 text: i18nStrings.tokenEditorAddExistingTokenLabel?.(token) ?? '',
@@ -164,17 +179,20 @@ export function TokenEditor({
             })}
             onItemClick={({ detail }) => {
               const index = parseInt(detail.id);
-              if (!isNaN(index) && standaloneTokens[index]) {
-                const addedToken = standaloneTokens[index];
-                const updated = standaloneTokens.filter((_, existingIndex) => existingIndex !== index);
-                onChangeStandalone(updated);
-                onChangeTempGroup([...tempGroup, addedToken]);
+              if (!isNaN(index) && tokensToCapture[index]) {
+                onChangeTempGroup([...tempGroup, { ...tokensToCapture[index] }]);
+                setNextFocusIndex(groups.length);
+                onTokenCapture(tokensToCapture[index]);
               }
             }}
-            disabled={standaloneTokens.length === 0}
+            disabled={tokensToCapture.length === 0}
+            showMainActionOnly={tokensToCapture.length === 0}
             mainAction={{
-              text: i18nStrings?.tokenEditorAddNewTokenLabel ?? '',
-              onClick: () => onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]),
+              text: i18nStrings.tokenEditorAddNewTokenLabel ?? '',
+              onClick: () => {
+                onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]);
+                setNextFocusIndex(groups.length);
+              },
             }}
           />
         </div>
@@ -264,7 +282,7 @@ function TokenEditorFields({
           key={index}
           role="group"
           aria-label={i18nStrings.formatToken(token).formattedText}
-          className={styles['token-editor-grid-group']}
+          className={clsx(styles['token-editor-grid-group'], supportsGroups && styles['token-editor-supports-groups'])}
         >
           <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
             <TokenEditorField
@@ -311,7 +329,11 @@ function TokenEditorFields({
                   mainActionAriaLabel={i18nStrings.tokenEditorTokenRemoveAriaLabel?.(token) ?? ''}
                   disabled={tokens.length === 1}
                   items={[
-                    { id: 'remove', text: i18nStrings.tokenEditorTokenRemoveLabel ?? '' },
+                    {
+                      id: 'remove',
+                      text: i18nStrings.tokenEditorTokenRemoveLabel ?? '',
+                      disabled: token.standaloneIndex !== undefined,
+                    },
                     { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
                   ]}
                   onItemClick={itemId => {

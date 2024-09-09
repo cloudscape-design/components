@@ -5,6 +5,7 @@ import React from 'react';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -26,35 +27,41 @@ const Table = React.forwardRef(
     }: TableProps<T>,
     ref: React.Ref<TableProps.Ref>
   ) => {
+    const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const hasHiddenColumns =
       (props.visibleColumns && props.visibleColumns.length < props.columnDefinitions.length) ||
       props.columnDisplay?.some(col => !col.visible);
     const hasStickyColumns = !!props.stickyColumns?.first || !!props.stickyColumns?.last;
-    const baseComponentProps = useBaseComponent('Table', {
-      props: {
-        contentDensity,
-        resizableColumns: props.resizableColumns,
-        selectionType: props.selectionType,
-        stickyHeader: props.stickyHeader,
-        stripedRows: props.stripedRows,
-        variant,
-        wrapLines: props.wrapLines,
-        enableKeyboardNavigation: props.enableKeyboardNavigation,
-        totalItemsCount: props.totalItemsCount,
+    const baseComponentProps = useBaseComponent(
+      'Table',
+      {
+        props: {
+          contentDensity,
+          resizableColumns: props.resizableColumns,
+          selectionType: props.selectionType,
+          stickyHeader: props.stickyHeader,
+          stripedRows: props.stripedRows,
+          variant,
+          wrapLines: props.wrapLines,
+          enableKeyboardNavigation: props.enableKeyboardNavigation,
+          totalItemsCount: props.totalItemsCount,
+        },
+        metadata: {
+          expandableRows: !!props.expandableRows,
+          progressiveLoading: !!props.getLoadingStatus,
+          inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
+          disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
+          hasSortableColumns: props.columnDefinitions.some(def => def.sortingField || def.sortingComparator),
+          hasHiddenColumns,
+          hasStickyColumns,
+          hasFilterSlot: !!props.filter,
+          hasPaginationSlot: !!props.pagination,
+          itemsCount: items.length,
+          hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+        },
       },
-      metadata: {
-        expandableRows: !!props.expandableRows,
-        progressiveLoading: !!props.getLoadingStatus,
-        inlineEdit: props.columnDefinitions.some(def => !!def.editConfig),
-        disabledInlineEdit: props.columnDefinitions.some(def => !!def.editConfig?.disabledReason),
-        hasSortableColumns: props.columnDefinitions.some(def => def.sortingField || def.sortingComparator),
-        hasHiddenColumns,
-        hasStickyColumns,
-        hasFilterSlot: !!props.filter,
-        hasPaginationSlot: !!props.pagination,
-        itemsCount: items.length,
-      },
-    });
+      analyticsMetadata
+    );
 
     const analyticsComponentMetadata: GeneratedAnalyticsMetadataTableComponent = {
       name: 'awsui.Table',

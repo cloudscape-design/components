@@ -64,6 +64,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   text-align: start;
 
   &-default,
+  &-inline,
   &-footer {
     border-block: awsui.$border-divider-section-width solid transparent;
     border-inline: awsui.$border-divider-section-width solid transparent;
@@ -80,6 +81,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-default,
+  &-inline,
   &-navigation,
   &-footer,
   &-compact {
@@ -88,6 +90,7 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
   }
 
   &-default,
+  &-inline,
   &-navigation,
   &-footer {
     font-size: awsui.$font-expandable-heading-size;
@@ -100,8 +103,15 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
     &.header-deprecated {
       padding-inline-start: awsui.$space-xxs;
     }
+  }
+  &-default,
+  &-inline {
     &:not(.header-deprecated) {
       padding-inline-start: $icon-total-space-normal;
+    }
+    &.wrapper-expanded {
+      padding-block-end: awsui.$space-scaled-xxs;
+      border-block-end-color: awsui.$color-border-divider-default;
     }
   }
 
@@ -140,10 +150,6 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
       padding-block: calc(#{awsui.$space-scaled-s} - #{awsui.$border-divider-section-width});
       padding-inline: calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
     }
-  }
-
-  &-default.wrapper-expanded {
-    border-block-end-color: awsui.$color-border-divider-default;
   }
 }
 
@@ -237,7 +243,8 @@ $icon-total-space-medium: calc(#{$icon-width-medium} + #{$icon-margin-left} + #{
 .content {
   display: none;
 
-  &-default {
+  &-default,
+  &-inline {
     padding-block: awsui.$space-scaled-xs;
     padding-inline: 0;
   }

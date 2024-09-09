@@ -9,6 +9,7 @@ export namespace FormProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
     flowType?: FlowType;
+    resourceType?: string;
   }
 }
 
@@ -56,6 +57,7 @@ export interface FormProps extends BaseComponentProps {
    * Specifies additional analytics-related metadata.
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
    * * `flowType` - Identifies the type of flow represented by the component.
+   * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
    * @analytics
    */
   analyticsMetadata?: FormProps.AnalyticsMetadata;

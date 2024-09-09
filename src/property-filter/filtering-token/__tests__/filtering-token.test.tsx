@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
 import FilteringToken, { FilteringTokenProps } from '../../../../lib/components/property-filter/filtering-token';
-import { InternalFilteringTokenWrapper as FilteringTokenWrapper } from '../../../../lib/components/test-utils/dom/property-filter';
+import { FilteringTokenWrapperInternal } from '../../../../lib/components/test-utils/dom/property-filter';
 
 const token1 = {
   content: 'property1 = value',
@@ -23,6 +23,12 @@ const token3 = {
   content: 'property3 = value',
   ariaLabel: 'filter property3 = value',
   dismissAriaLabel: 'remove filter property3 = value',
+} as const;
+
+const token4 = {
+  content: 'property4 = value',
+  ariaLabel: 'filter property4 = value',
+  dismissAriaLabel: 'remove filter property4 = value',
 } as const;
 
 const defaultProps: FilteringTokenProps = {
@@ -46,9 +52,30 @@ const defaultProps: FilteringTokenProps = {
   popoverSize: 'content',
 };
 
-function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapper {
+function renderToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapperInternal {
   const { container } = render(<FilteringToken {...defaultProps} {...props} />);
-  return new FilteringTokenWrapper(container.querySelector<HTMLElement>(`.${FilteringTokenWrapper.rootSelector}`)!);
+  return new FilteringTokenWrapperInternal(
+    container.querySelector<HTMLElement>(`.${FilteringTokenWrapperInternal.rootSelector}`)!
+  );
+}
+
+function StatefulToken(props: FilteringTokenProps) {
+  const [tokens, setTokens] = useState(props.tokens);
+  return (
+    <FilteringToken
+      {...defaultProps}
+      {...props}
+      tokens={tokens}
+      onDismissToken={removeIndex => setTokens(prev => prev.filter((_, index) => index !== removeIndex))}
+    />
+  );
+}
+
+function renderStatefulToken(props: Partial<FilteringTokenProps>): FilteringTokenWrapperInternal {
+  const { container } = render(<StatefulToken {...defaultProps} {...props} />);
+  return new FilteringTokenWrapperInternal(
+    container.querySelector<HTMLElement>(`.${FilteringTokenWrapperInternal.rootSelector}`)!
+  );
 }
 
 test('renders a single token as role="group" with token ARIA label and dismiss button', () => {
@@ -175,3 +202,19 @@ test.each([false, true])(
     expect(editor.findDismissButton().getElement()).toHaveAccessibleName('dismiss editor');
   }
 );
+
+test('moved focus to adjacent element when inner token is removed', () => {
+  const token = renderStatefulToken({ tokens: [token1, token2, token3, token4] });
+
+  // Removing token3 and expecting focus to move to token4
+  token.findGroupTokens()[2].findRemoveButton()!.click();
+  expect(token.findGroupTokens()[2].find('button')!.getElement()).toHaveFocus();
+
+  // Removing token4 and expecting focus to move to token2
+  token.findGroupTokens()[2].findRemoveButton()!.click();
+  expect(token.findGroupTokens()[1].find('button')!.getElement()).toHaveFocus();
+
+  // Removing token1 and expecting focus to move to token2 (standalone)
+  token.findGroupTokens()[0].findRemoveButton()!.click();
+  expect(token.find('button')!.getElement()).toHaveFocus();
+});
