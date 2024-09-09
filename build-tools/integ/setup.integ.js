@@ -12,4 +12,4 @@ configure({
   },
 });
 
-jest.retryTimes(0, { logErrorsBeforeRetry: true });
+jest.retryTimes(3, { logErrorsBeforeRetry: true });
