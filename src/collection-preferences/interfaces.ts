@@ -219,11 +219,11 @@ export namespace CollectionPreferencesProps {
     dragHandleAriaLabel?: string;
     dragHandleAriaDescription?: string;
     searchableColumns?: boolean;
-    filteringPlaceholderText?: string;
-    filteringAriaLabel?: string;
-    filteringCountText?: (count: number) => string;
-    filteringEmptyText?: string;
-    filteringClearAriaLabel?: string;
+    columnFilteringPlaceholderText?: string;
+    columnFilteringAriaLabel?: string;
+    columnFilteringCountText?: (count: number) => string;
+    columnFilteringEmptyText?: string;
+    columnFilteringClearAriaLabel?: string;
   }
 
   export interface ContentDisplayOption {

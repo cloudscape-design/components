@@ -142,6 +142,10 @@ export interface I18nFormatArgTypes {
       "total": string | number;
       "finalPosition": string | number;
     }
+    "contentDisplayPreference.columnFilteringPlaceholderText": never;
+    "contentDisplayPreference.columnFilteringAriaLabel": never;
+    "contentDisplayPreference.columnFilteringEmptyText": never;
+    "contentDisplayPreference.columnFilteringClearAriaLabel": never;
   }
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": never;
