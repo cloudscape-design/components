@@ -26,7 +26,6 @@ import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
-  I18nStringsTokenGroups,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -50,12 +49,9 @@ import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
-  'filteringOptions' | 'customGroupsText' | 'disableFreeTextFiltering'
+  'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering'
 > &
-  InternalBaseComponentProps & {
-    enableTokenGroups?: boolean;
-    i18nStringsTokenGroups?: I18nStringsTokenGroups;
-  };
+  InternalBaseComponentProps;
 
 const PropertyFilterInternal = React.forwardRef(
   (
@@ -88,8 +84,7 @@ const PropertyFilterInternal = React.forwardRef(
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
-      enableTokenGroups = false,
-      i18nStringsTokenGroups,
+      enableTokenGroups,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -109,7 +104,7 @@ const PropertyFilterInternal = React.forwardRef(
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
-    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsTokenGroups });
+    const i18nStrings = usePropertyFilterI18n(rest.i18nStrings);
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const showResults = !!query.tokens?.length && !disabled && !!countText;

@@ -64,6 +64,11 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * operations are communicated to the user in another way.
    */
   hideOperations?: boolean;
+  /*
+   * Activates token grouping mechanism to support tokens nesting (up to one level).
+   * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.
+   */
+  enableTokenGroups?: boolean;
   /**
    * Fired when the `query` gets changed. Filter the dataset in response to this event using the values in the `detail` object.
    */
@@ -216,6 +221,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
 
 export namespace PropertyFilterProps {
   export type Token = PropertyFilterToken;
+  export type TokenGroup = PropertyFilterTokenGroup;
   export type JoinOperation = PropertyFilterOperation;
   export type ComparisonOperator = PropertyFilterOperator;
   export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
@@ -282,6 +288,16 @@ export namespace PropertyFilterProps {
     tokenOperatorAriaLabel?: string;
     removeTokenButtonAriaLabel?: (token: FormattedToken) => string;
     enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
+
+    groupEditAriaLabel?: (group: FormattedTokenGroup) => string;
+    tokenEditorTokenActionsAriaLabel?: (token: FormattedToken) => string;
+    tokenEditorTokenRemoveAriaLabel?: (token: FormattedToken) => string;
+    tokenEditorTokenRemoveLabel?: string;
+    tokenEditorTokenRemoveFromGroupLabel?: string;
+    tokenEditorAddNewTokenLabel?: string;
+    tokenEditorAddTokenActionsAriaLabel?: string;
+    tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
+    tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
   }
 
   export interface FormattedToken {
@@ -289,6 +305,12 @@ export namespace PropertyFilterProps {
     propertyLabel: string;
     operator: ComparisonOperator;
     value: string;
+  }
+
+  export interface FormattedTokenGroup {
+    tokens: FormattedToken[];
+    operation: string;
+    operationLabel: string;
   }
 
   export interface GroupText {
@@ -312,27 +334,8 @@ export namespace PropertyFilterProps {
 
 // Re-exported namespace interfaces to use module-style imports internally
 
-export type TokenGroup = PropertyFilterTokenGroup;
-
-export interface FormattedTokenGroup {
-  tokens: FormattedToken[];
-  operation: string;
-  operationLabel: string;
-}
-
-export interface I18nStringsTokenGroups {
-  groupEditAriaLabel?: (group: FormattedTokenGroup) => string;
-  tokenEditorTokenActionsAriaLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveAriaLabel?: (token: FormattedToken) => string;
-  tokenEditorTokenRemoveLabel?: string;
-  tokenEditorTokenRemoveFromGroupLabel?: string;
-  tokenEditorAddNewTokenLabel?: string;
-  tokenEditorAddTokenActionsAriaLabel?: string;
-  tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
-  tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
-}
-
 export type Token = PropertyFilterProps.Token;
+export type TokenGroup = PropertyFilterProps.TokenGroup;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
 export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
@@ -347,6 +350,7 @@ export type I18nStrings = PropertyFilterProps.I18nStrings;
 export type GroupText = PropertyFilterProps.GroupText;
 export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
 export type FormattedToken = PropertyFilterProps.FormattedToken;
+export type FormattedTokenGroup = PropertyFilterProps.FormattedTokenGroup;
 export type Ref = PropertyFilterProps.Ref;
 
 // Utility types

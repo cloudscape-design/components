@@ -19,6 +19,7 @@ const PropertyFilter = React.forwardRef(
     {
       filteringOptions = [],
       customGroupsText = [],
+      enableTokenGroups = false,
       disableFreeTextFiltering = false,
       asyncProperties,
       expandToViewport,
@@ -48,6 +49,7 @@ const PropertyFilter = React.forwardRef(
         {...baseComponentProps}
         filteringOptions={filteringOptions}
         customGroupsText={customGroupsText}
+        enableTokenGroups={enableTokenGroups}
         disableFreeTextFiltering={disableFreeTextFiltering}
         asyncProperties={asyncProperties}
         expandToViewport={expandToViewport}
