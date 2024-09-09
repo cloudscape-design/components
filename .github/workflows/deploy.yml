@@ -1,0 +1,54 @@
+name: Deploy preview
+
+on:
+  workflow_run:
+    workflows: ["Build, lint and test"]
+    types: [completed]
+
+permissions:
+  id-token: write
+  actions: read
+  contents: read
+  security-events: write
+  deployments: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - id: org-membership
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "membership-check=$(gh api -i /orgs/aws/members/${{ github.triggering_actor }} | head -n 1)" >> "$GITHUB_OUTPUT"
+      - run: echo "$membership-check"
+        env:
+          membership-check: ${{ steps.org-membership.outputs.membership-check }}
+      - name: Fail if actor is not in AWS
+        if: ${{ !contains(steps.org-membership.outputs.membership-check, 'HTTP/2.0 204 No Content') }}
+        run: exit 1
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: check
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: dev-pages
+          path: build
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      - name: Unpack
+        run: |
+          cd build
+          tar -xf *.tar.gz
+        shell: bash
+      - name: Deploy dev-pages
+        id: deploy
+        uses: timogasda/actions/.github/actions/deploy-static@main
+        with:
+          role-to-assume: ${{ secrets.AWS_PREVIEW_ROLE_ARN }}
+          deployment-bucket: ${{ secrets.AWS_PREVIEW_BUCKET_NAME }}
+          commit-sha: ${{ github.event.workflow_run.head_sha }}
+          source-path: build/lib/static-default
+          target-path: dev-pages
