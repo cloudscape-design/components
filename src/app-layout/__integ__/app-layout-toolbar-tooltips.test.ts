@@ -9,39 +9,11 @@ import { viewports } from './constants';
 
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
-import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
+
 class AppLayoutDrawersPage extends BasePageObject {
-  async openFirstDrawer() {
-    await this.click(wrapper.findDrawersTriggers().get(1).toSelector());
-  }
-
-  async confirmOneTooltipShowing(tooltipWrapperStyles: { [key: string]: string }): Promise<boolean> {
-    const triggerWrapperClassAppliedCount = await this.getElementsCount(
-      `.${tooltipWrapperStyles['trigger-wrapper-tooltip-visible']}`
-    );
-    const triggerTooltipClassAppliedCount = await this.getElementsCount(`.${tooltipWrapperStyles['trigger-tooltip']}`);
-    const triggerTooltipRootClassAppliedCount = await this.getElementsCount(`.${tooltipStyles.root}`);
-
-    return (
-      triggerWrapperClassAppliedCount === 1 &&
-      triggerTooltipClassAppliedCount === 1 &&
-      triggerTooltipRootClassAppliedCount === 1
-    );
-  }
-
-  async confirmNoTooltipShowing(tooltipWrapperStyles: { [key: string]: string }): Promise<boolean> {
-    const triggerWrapperClassApplied = await this.isExisting(
-      `.${tooltipWrapperStyles['trigger-wrapper-tooltip-visible']}`
-    );
-    const triggerTooltipClassApplied = await this.isExisting(`.${tooltipWrapperStyles['trigger-tooltip']}`);
-    const triggerTooltipRootClassApplied = await this.isExisting(`.${tooltipStyles.root}`);
-
-    return !triggerWrapperClassApplied && !triggerTooltipClassApplied && !triggerTooltipRootClassApplied;
-  }
-
   async getElementCenter(selector: string) {
     const targetRect = await this.getBoundingBox(selector);
     const x = Math.round(targetRect.left + targetRect.width / 2);
@@ -49,32 +21,22 @@ class AppLayoutDrawersPage extends BasePageObject {
     return { x, y };
   }
 
-  async pointerDown(selector: string) {
+  /**
+   * This holds the pointer down for an longer than the buttonDownOnElement
+   * @param selector
+   */
+  async pointerDown(selector: string, customDuration = 150) {
     const center = await this.getElementCenter(selector);
     await (await this.browser.$(selector)).moveTo();
     await this.browser.performActions([
       {
         type: 'pointer',
         id: 'event',
-        parameters: { pointerType: 'mouse' },
+        parameters: { pointerType: 'touch' },
         actions: [
           { type: 'pointerMove', duration: 0, origin: 'pointer', ...center },
-          { type: 'pointerDown', button: 0 },
-          { type: 'pause', duration: 100 },
-        ],
-      },
-    ]);
-  }
-
-  async pointerUp() {
-    await this.browser.performActions([
-      {
-        type: 'pointer',
-        id: 'event',
-        parameters: { pointerType: 'mouse' },
-        actions: [
-          { type: 'pointerUp', button: 0 },
-          { type: 'pause', duration: 100 },
+          { type: 'pointerDown', button: 0, duration: customDuration },
+          { type: 'pause', duration: 50 },
         ],
       },
     ]);
@@ -99,22 +61,15 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
   );
 
   const appliedThemeStyles = theme === 'visual-refresh' ? visualRefreshStyles : toolbarStyles;
-  const appliedTriggerStyles = theme === 'visual-refresh' ? visualRefreshStyles : toolbarTriggerButtonStyles;
+
   const setupTest = (
-    {
-      splitPanelPosition = 'bottom',
-      size = 'desktop',
-      disableContentPaddings = 'false',
-      theme = 'visual-refresh',
-    }: SetupTestOptions,
+    { size = 'desktop', theme = 'visual-refresh' }: SetupTestOptions,
     testFn: (page: AppLayoutDrawersPage) => Promise<void>
   ) =>
     useBrowser(size === 'desktop' ? viewports.desktop : viewports.mobile, async browser => {
       const page = new AppLayoutDrawersPage(browser);
       const params = new URLSearchParams({
         visualRefresh: 'true',
-        splitPanelPosition,
-        disableContentPaddings,
         appLayoutWidget: theme === 'visual-refresh' ? 'false' : 'true',
       }).toString();
       await browser.url(`#/light/app-layout/with-drawers?${params}`);
@@ -127,117 +82,58 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
 
     test(
       'Shows tooltip correctly for mouse interactions',
-      setupTest({ disableContentPaddings: 'true', theme, size }, async page => {
-        await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
+      setupTest({ theme, size }, async page => {
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(
           page.isExisting(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`)
         ).resolves.toBeTruthy();
-        await expect(page.isExisting(`.${appliedThemeStyles['drawers-trigger-overflow']}`)).resolves.toBeFalsy();
-
-        for (const drawerId of drawerIdsToTest) {
-          async () => {
-            //hover
-            await page.hoverElement(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //confirm close on escape
-            await page.keys('Escape');
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //hover elsewhere
-            await page.hoverElement(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`);
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //hover again
-            await page.hoverElement(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //hover elsewhere
-            await page.hoverElement(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`);
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //open drawer
-            await page.click(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-            //hover elsewhere
-            await page.hoverElement(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`);
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-
-            for (const nestedDrawerId of drawerIdsToTest) {
-              async () => {
-                //hover while drawer open
-                await page.hoverElement(wrapper.findDrawerTriggerById(nestedDrawerId).toSelector());
-                await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-                //hover elsewhere
-                await page.hoverElement(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`);
-                await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-              };
-            }
-
-            await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-            await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-          };
-        }
+        const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIds[0]}"]`;
+        await page.hoverElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.keys(['Escape']);
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        await page.hoverElement(`body`);
+        await page.hoverElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.hoverElement(`body`);
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
 
     test(
       'Shows tooltip correctly for pointer interactions',
-      setupTest({ disableContentPaddings: 'true', theme, size }, async page => {
-        await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
+      setupTest({ theme, size }, async page => {
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(
           page.isExisting(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`)
         ).resolves.toBeTruthy();
-        await expect(page.isExisting(`.${appliedThemeStyles['drawers-trigger-overflow']}`)).resolves.toBeFalsy();
+        const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIds[0]}"]`;
+        await page.buttonDownOnElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
 
-        for (const drawerId of drawerIdsToTest) {
-          async () => {
-            //pointer down
-            await page.pointerDown(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //confirm close on escape
-            await page.keys('Escape');
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //pointer up
-            await page.pointerUp();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //pointer down again
-            await page.pointerDown(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //pointer up
-            await page.pointerUp();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            //open drawer
-            await page.click(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-
-            for (const nestedDrawerId of drawerIdsToTest) {
-              async () => {
-                //pointer down while drawer open
-                await page.pointerDown(wrapper.findDrawerTriggerById(nestedDrawerId).toSelector());
-                await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-                //pointer up
-                await page.pointerUp();
-                await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-              };
-            }
-
-            await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-            await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-          };
-        }
+        //confirm close on escape
+        await page.keys('Escape');
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        //pointer up
+        await page.buttonUp();
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        //pointer down again
+        await page.buttonDownOnElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        //pointer up
+        await page.buttonUp();
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
 
     test(
       'Shows tooltip correctly for keyboard (tab) interactions on desktop',
-      setupTest({ disableContentPaddings: 'true', theme, size }, async page => {
-        await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
+      setupTest({ theme, size }, async page => {
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(
           page.isExisting(`.${appliedThemeStyles[`drawers-desktop-triggers-container`]}`)
         ).resolves.toBeTruthy();
+        const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
         if (theme === 'visual-refresh-toolbar') {
           //open and close navigation toggle to start focus at a known location
           await expect(page.isExisting(wrapper.findNavigationToggle().toSelector())).resolves.toBeTruthy();
@@ -255,63 +151,17 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
           ).resolves.toBeTruthy();
           //move focus away
           await page.keys(['Shift', 'Tab', 'Null']);
-          await page.pause(50);
-          await expect(
-            page.isFocused(wrapper.findDrawerTriggerById(drawerIdsToTest[0]).toSelector())
-          ).resolves.toBeFalsy();
-          await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
         }
-
-        for (const drawerId of drawerIdsToTest) {
-          async () => {
-            await page.keys('Tab');
-            await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.keys('Escape');
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.keys('Space');
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-
-            const hasResizeToggle = await page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector());
-            if (hasResizeToggle) {
-              await page.keys('Tab'); //navigate from resize to close
-            }
-            await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBeTruthy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-
-            //jump back to toolbar and navigate down the triggers
-            for (const nestedDrawerId of drawerIdsToTest) {
-              async () => {
-                await page.keys('Tab'); //navigate to next button
-                await expect(
-                  page.isFocused(wrapper.findDrawerTriggerById(nestedDrawerId).toSelector())
-                ).resolves.toBeTruthy();
-                await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-              };
-            }
-
-            //now navigate back up
-            for (const reverseNestedDrawerId of [...drawerIdsToTest.reverse().slice(1)]) {
-              async () => {
-                await page.keys(['Shift', 'Tab', 'Null']); //navigate to last button
-                await expect(
-                  page.isFocused(wrapper.findDrawerTriggerById(reverseNestedDrawerId).toSelector())
-                ).resolves.toBeTruthy();
-                await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-              };
-            }
-
-            await page.keys(['Shift', 'Tab', 'Null']);
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBeTruthy();
-            await page.keys('Space'); //close drawer
-
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-            await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-          };
-        }
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        await page.keys('Tab');
+        await expect(page.isFocused(firstDrawerTriggerSelector)).resolves.toBeTruthy();
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.keys('Escape');
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        await page.keys('Tab');
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.keys('Space');
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
   });
@@ -321,86 +171,73 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
 
     test(
       'Shows tooltip correctly for mouse interactions',
-      setupTest({ disableContentPaddings: 'true', theme, size }, async page => {
-        await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
+      setupTest({ theme, size }, async page => {
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
         await expect(
           page.isExisting(`.${appliedThemeStyles[`drawers-mobile-triggers-container`]}`)
         ).resolves.toBeTruthy();
-
-        for (const drawerId of mobileDrawerTriggerIds) {
-          async () => {
-            await expect(page.isExisting(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await page.hoverElement(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.hoverElement(wrapper.toSelector());
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`);
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-            await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-          };
-        }
+        const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${mobileDrawerTriggerIds[0]}"]`;
+        await page.hoverElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.hoverElement('body');
+        await page.hoverElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.hoverElement('body');
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        await page.hoverElement(firstDrawerTriggerSelector);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.click(firstDrawerTriggerSelector);
+        await page.pause(50);
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
 
     test(
-      'Shows tooltip correctly for pointer interactions',
-      setupTest({ disableContentPaddings: 'true', theme, size }, async page => {
-        await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
+      'Shows tooltip correctly for pointer down and up interactions',
+      setupTest({ theme, size }, async page => {
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
         await expect(
           page.isExisting(`.${appliedThemeStyles[`drawers-mobile-triggers-container`]}`)
         ).resolves.toBeTruthy();
-
-        for (const drawerId of mobileDrawerTriggerIds) {
-          async () => {
-            await expect(page.isExisting(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await page.pointerDown(wrapper.findDrawerTriggerById(drawerId).toSelector());
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.pointerUp();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.click(`button[data-testid='awsui-app-layout-trigger-${drawerId}']`);
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-            await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-          };
-        }
+        await page.pointerDown(`button[data-testid="awsui-app-layout-trigger-${mobileDrawerTriggerIds[1]}"]`);
+        await page.pause(50);
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.buttonUp();
+        await page.pause(50);
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
 
     test(
       'Shows tooltip correctly for key interactions on mobile',
-      setupTest({ disableContentPaddings: 'true', theme, size }, async page => {
-        //open via hamburger menu o set focus in the toolbar
-        await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
+      setupTest({ theme, size }, async page => {
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
         await expect(
           page.isExisting(`.${appliedThemeStyles[`drawers-mobile-triggers-container`]}`)
         ).resolves.toBeTruthy();
-        await page.click(`button[aria-label="Open navigation"]`); //opens navigation drawer
-        await page.click(wrapper.findNavigationClose().toSelector());
-        await expect(page.isFocused(`button[aria-label="Open navigation"]`)).resolves.toBe(theme === 'visual-refresh'); //todo fix navigation focus here
-        await page.keys([
-          'Tab', //icon within nav button
-          'Tab', //home breadcrumb
-        ]);
-        for (const drawerId of mobileDrawerTriggerIds) {
-          async () => {
-            await page.keys('Tab');
-            await expect(page.isFocused(wrapper.findDrawerTriggerById(drawerId).toSelector())).resolves.toBeTruthy();
-            await expect(page.confirmOneTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.keys('Escape');
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await page.keys('Enter');
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeTruthy();
-            await page.keys('Enter');
-            await expect(page.isExisting(wrapper.findActiveDrawer().toSelector())).resolves.toBeFalsy();
-            await expect(page.confirmNoTooltipShowing(appliedTriggerStyles)).resolves.toBeTruthy();
-          };
+        const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${mobileDrawerTriggerIds[0]}"]`;
+        const secondDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${mobileDrawerTriggerIds[1]}"]`;
+        //set tab focus
+        await page.click(firstDrawerTriggerSelector); //open element
+        if (theme === 'visual-refresh') {
+          //first trigger is a drawer
+          await page.keys('Enter'); //close drawer
+        } else {
+          await page.click(firstDrawerTriggerSelector); //close split panel
         }
+        await expect(page.isFocused(firstDrawerTriggerSelector)).resolves.toBeTruthy();
+        await page.keys(['Shift', 'Tab', 'Null']);
+        await expect(page.isFocused(firstDrawerTriggerSelector)).resolves.toBeFalsy();
+        await page.keys('Tab');
+        await expect(page.isFocused(firstDrawerTriggerSelector)).resolves.toBeTruthy();
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.keys('Escape');
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
+        await page.keys('Tab');
+        await expect(page.isFocused(secondDrawerTriggerSelector)).resolves.toBeTruthy();
+        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
+        await page.keys('Enter');
+        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
   });

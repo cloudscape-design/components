@@ -37,7 +37,6 @@ interface DrawerTriggersProps {
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
-  // splitPanelResizeRef: RefObject<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
 }
 
@@ -50,7 +49,6 @@ export function DrawerTriggers({
   splitPanelOpen,
   splitPanelPosition = 'bottom',
   splitPanelFocusRef,
-  // splitPanelResizeRef,
   splitPanelToggleProps,
   onSplitPanelToggle,
 }: DrawerTriggersProps) {
@@ -120,8 +118,10 @@ export function DrawerTriggers({
               ref={splitPanelFocusRef}
               hasTooltip={true}
               testId={`awsui-app-layout-trigger-slide-panel`}
-              hasOpenDrawer={splitPanelPosition === 'bottom' && splitPanelOpen}
+              isForPreviousActiveDrawer={isMobile}
+              hasOpenDrawer={splitPanelToggleProps.active}
               isMobile={isMobile}
+              hideTooltipOnFocus={splitPanelToggleProps.active}
             />
             {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
           </>
