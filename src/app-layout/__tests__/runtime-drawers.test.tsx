@@ -3,7 +3,6 @@
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
-import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -14,6 +13,7 @@ import {
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { computeHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
@@ -31,17 +31,21 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [1300, () => {}],
 }));
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  getLogicalBoundingClientRect: jest.fn().mockReturnValue({
-    blockSize: 0,
-    inlineSize: 0,
-    insetBlockStart: 0,
-    insetBlockEnd: 0,
-    insetInlineStart: 0,
-    insetInlineEnd: 0,
-  }),
-}));
+jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout', () => {
+  return {
+    ...jest.requireActual('../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout'),
+    computeHorizontalLayout: jest.fn().mockReturnValue({
+      splitPanelPosition: 'bottom',
+      splitPanelForcedPosition: false,
+      sideSplitPanelSize: 0,
+      maxSplitPanelSize: 1500,
+      maxDrawerSize: 1500,
+      maxGlobalDrawersSizes: {},
+      totalActiveGlobalDrawersSize: 0,
+      resizableSpaceAvailable: 1500,
+    }),
+  };
+});
 
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -734,13 +738,15 @@ describe('toolbar mode only features', () => {
     });
 
     test('first opened drawer (global drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
-      jest.mocked(getLogicalBoundingClientRect).mockReturnValue({
-        blockSize: 1291,
-        inlineSize: 1400,
-        insetBlockStart: 45,
-        insetBlockEnd: 1336,
-        insetInlineStart: 0,
-        insetInlineEnd: 1400,
+      jest.mocked(computeHorizontalLayout).mockReturnValue({
+        splitPanelPosition: 'bottom',
+        splitPanelForcedPosition: false,
+        sideSplitPanelSize: 0,
+        maxSplitPanelSize: 792,
+        maxDrawerSize: 792,
+        maxGlobalDrawersSizes: {},
+        totalActiveGlobalDrawersSize: 0,
+        resizableSpaceAvailable: 792,
       });
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -784,13 +790,15 @@ describe('toolbar mode only features', () => {
     });
 
     test('first opened drawer (local drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
-      jest.mocked(getLogicalBoundingClientRect).mockReturnValue({
-        blockSize: 1291,
-        inlineSize: 1400,
-        insetBlockStart: 45,
-        insetBlockEnd: 1336,
-        insetInlineStart: 0,
-        insetInlineEnd: 1400,
+      jest.mocked(computeHorizontalLayout).mockReturnValue({
+        splitPanelPosition: 'bottom',
+        splitPanelForcedPosition: false,
+        sideSplitPanelSize: 0,
+        maxSplitPanelSize: 792,
+        maxDrawerSize: 792,
+        maxGlobalDrawersSizes: {},
+        totalActiveGlobalDrawersSize: 0,
+        resizableSpaceAvailable: 792,
       });
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -997,6 +1005,18 @@ describe('toolbar mode only features', () => {
     });
 
     test('should change global drawer size via keyboard events on slider handle', async () => {
+      jest.mocked(computeHorizontalLayout).mockReturnValue({
+        splitPanelPosition: 'bottom',
+        splitPanelForcedPosition: false,
+        sideSplitPanelSize: 0,
+        maxSplitPanelSize: 792,
+        maxDrawerSize: 792,
+        maxGlobalDrawersSizes: {
+          'global-drawer-1': 500,
+        },
+        totalActiveGlobalDrawersSize: 0,
+        resizableSpaceAvailable: 792,
+      });
       const onDrawerItemResize = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
