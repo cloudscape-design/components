@@ -148,7 +148,7 @@ export const TokenButton = ({
         />
       }
       editorHeader={i18nStrings.editTokenHeader ?? ''}
-      editorDismissAriaLabel={i18nStrings.dismissAriaLabel ?? ''}
+      editorDismissAriaLabel={i18nStrings.dismissAriaLabel}
       editorExpandToViewport={!!expandToViewport}
       onEditorOpen={() => {
         setTempTokens(tokens);

@@ -73,8 +73,14 @@ export const i18nStringsTokenGroups: I18nStringsTokenGroups = {
 };
 
 export const providedI18nStrings = {
+  autosuggest: {
+    enteredTextLabel: 'Use: "{value}"',
+  },
+  popover: {
+    dismissAriaLabel: 'Dismiss',
+  },
   'property-filter': {
-    'i18nStrings.editTokenHeader': 'Edit token',
+    'i18nStrings.editTokenHeader': 'Edit filter',
     'i18nStrings.propertyText': 'Property',
     'i18nStrings.operatorText': 'Operator',
     'i18nStrings.valueText': 'Value',

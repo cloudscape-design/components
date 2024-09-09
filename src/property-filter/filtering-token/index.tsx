@@ -35,7 +35,7 @@ export interface FilteringTokenProps {
   onDismissToken: (tokenIndex: number) => void;
   editorContent: React.ReactNode;
   editorHeader: string;
-  editorDismissAriaLabel: string;
+  editorDismissAriaLabel?: string;
   editorExpandToViewport: boolean;
   onEditorOpen?: () => void;
   hasGroups: boolean;
