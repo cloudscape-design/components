@@ -5,12 +5,12 @@ import React, { useContext, useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 import {
-  Alert,
-  AlertProps,
   Box,
   Button,
   Checkbox,
   ExpandableSection,
+  Flashbar,
+  FlashbarProps,
   FormField,
   Select,
   SpaceBetween,
@@ -20,10 +20,12 @@ import awsuiPlugins from '~components/internal/plugins';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 
-type PageContext = React.Context<AppContextType<{ loading: boolean; hidden: boolean; type: AlertProps.Type }>>;
+type PageContext = React.Context<
+  AppContextType<{ loading: boolean; hidden: boolean; stackItems: boolean; type: FlashbarProps.Type }>
+>;
 
-awsuiPlugins.alertContent.registerContentReplacer({
-  id: 'awsui/alert-test-action',
+awsuiPlugins.flashContent.registerContentReplacer({
+  id: 'awsui/flashbar-test-action',
   runReplacer(context, registerReplacement) {
     console.log('mount');
 
@@ -62,18 +64,18 @@ awsuiPlugins.alertContent.registerContentReplacer({
   },
 });
 
-const alertTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
+const messageTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
 
 export default function () {
   const {
-    urlParams: { loading = false, hidden = false, type = 'error' },
+    urlParams: { loading = false, hidden = false, stackItems = false, type = 'error' },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [unrelatedState, setUnrelatedState] = useState(false);
 
   return (
     <Box margin="m">
-      <h1>Alert runtime actions</h1>
+      <h1>Flashbar runtime actions</h1>
       <SpaceBetween size="m">
         <SpaceBetween size="s">
           <Checkbox onChange={e => setUrlParams({ loading: e.detail.checked })} checked={loading}>
@@ -82,14 +84,17 @@ export default function () {
           <Checkbox onChange={e => setUrlParams({ hidden: e.detail.checked })} checked={hidden}>
             Unmount all
           </Checkbox>
+          <Checkbox onChange={e => setUrlParams({ stackItems: e.detail.checked })} checked={stackItems}>
+            Stack items
+          </Checkbox>
           <Checkbox onChange={e => setUnrelatedState(e.detail.checked)} checked={unrelatedState}>
             Unrelated state
           </Checkbox>
-          <FormField label="Alert type">
+          <FormField label="Message type">
             <Select
-              options={alertTypeOptions}
-              selectedOption={alertTypeOptions.find(option => option.value === type) ?? alertTypeOptions[0]}
-              onChange={e => setUrlParams({ type: e.detail.selectedOption.value as AlertProps.Type })}
+              options={messageTypeOptions}
+              selectedOption={messageTypeOptions.find(option => option.value === type) ?? messageTypeOptions[0]}
+              onChange={e => setUrlParams({ type: e.detail.selectedOption.value as FlashbarProps.Type })}
             />
           </FormField>
         </SpaceBetween>
@@ -98,27 +103,25 @@ export default function () {
 
         <ScreenshotArea gutters={false}>
           {hidden ? null : (
-            <SpaceBetween size="m">
-              <Alert
-                type={type}
-                statusIconAriaLabel={type}
-                dismissAriaLabel="Dismiss"
-                header="Header"
-                action={<Button>Action</Button>}
-              >
-                {loading ? 'Loading...' : 'Content'}
-              </Alert>
-
-              <Alert
-                type={type}
-                statusIconAriaLabel={type}
-                dismissAriaLabel="Dismiss"
-                header="Header"
-                action={<Button>Action</Button>}
-              >
-                {loading ? 'Loading...' : 'There was an error: Access denied because of XYZ'}
-              </Alert>
-            </SpaceBetween>
+            <Flashbar
+              stackItems={stackItems}
+              items={[
+                {
+                  type,
+                  statusIconAriaLabel: type,
+                  header: 'Header',
+                  content: loading ? 'Loading...' : 'Content',
+                  action: <Button>Action</Button>,
+                },
+                {
+                  type,
+                  statusIconAriaLabel: type,
+                  header: 'Header',
+                  content: loading ? 'Loading...' : 'There was an error: Access denied because of XYZ',
+                  action: <Button>Action</Button>,
+                },
+              ]}
+            />
           )}
         </ScreenshotArea>
       </SpaceBetween>
