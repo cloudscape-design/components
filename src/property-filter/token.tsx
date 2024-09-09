@@ -8,7 +8,6 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
-import { GeneratedAnalyticsMetadataPropertyEditStart } from './analytics-metadata/interfaces';
 import FilteringToken, { FilteringTokenRef } from './filtering-token';
 import { I18nStringsInternal } from './i18n-utils';
 import {
@@ -97,12 +96,7 @@ export const TokenButton = ({
         const formattedToken = i18nStrings.formatToken(token);
         return {
           content: (
-            <span
-              className={clsx(styles['token-trigger'], analyticsSelectors['token-trigger'])}
-              {...getAnalyticsMetadataAttribute({
-                action: 'editStart',
-              } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
-            >
+            <span className={clsx(styles['token-trigger'], analyticsSelectors['token-trigger'])}>
               <TokenTrigger token={formattedToken} allProperties={token.property === null} />
             </span>
           ),

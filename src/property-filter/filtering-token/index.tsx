@@ -15,6 +15,7 @@ import { useListFocusController } from '../../internal/hooks/use-list-focus-cont
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
+import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -145,7 +146,13 @@ const FilteringToken = forwardRef(
       >
         {tokens.length === 1 ? (
           <InternalPopover ref={popoverRef} {...popoverProps}>
-            {tokens[0].content}
+            <span
+              {...getAnalyticsMetadataAttribute({
+                action: 'editStart',
+              } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
+            >
+              {tokens[0].content}
+            </span>
           </InternalPopover>
         ) : (
           <ul className={styles.list}>
