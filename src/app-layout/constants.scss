@@ -26,7 +26,8 @@ $dashboard-content-widths: (
 );
 
 // should be above sticky notifications
-$drawer-z-index: 830;
+$drawer-z-index: 850;
+$drawer-z-index-last-opened: 851;
 // should be above mobile toolbar
 $drawer-z-index-mobile: 1001;
 

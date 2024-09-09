@@ -80,12 +80,11 @@
   opacity: 1;
   @include mobile-only {
     inline-size: 100%;
-    z-index: constants.$drawer-z-index-mobile;
   }
 }
 
 .navigation {
-  z-index: 850;
+  z-index: constants.$drawer-z-index;
 
   @include desktop-only {
     grid-area: navigation;
