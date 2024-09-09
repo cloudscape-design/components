@@ -31,6 +31,10 @@ const defaultContent: AlertFlashContentConfig = {
   },
 };
 
+beforeEach(() => {
+  jest.spyOn(console, 'warn').mockImplementation();
+});
+
 afterEach(() => {
   awsuiPluginsInternal.alertContent.clearRegisteredReplacer();
   jest.resetAllMocks();
@@ -277,6 +281,41 @@ describe('asynchronous rendering', () => {
       );
       expect(headerFn).not.toBeCalled();
       expect(contentFn).not.toBeCalled();
+    });
+  });
+});
+
+test('can only register a single provider', async () => {
+  const plugin1: AlertFlashContentConfig = {
+    id: 'plugin-1',
+    runReplacer: (context, registerReplacement) => {
+      registerReplacement('content', container => container.append('Replacement 1'));
+      return { update: () => {}, unmount: () => {} };
+    },
+  };
+  const plugin2: AlertFlashContentConfig = {
+    id: 'plugin-2',
+    runReplacer: (context, registerReplacement) => {
+      registerReplacement('content', container => container.append('Replacement 2'));
+      return { update: () => {}, unmount: () => {} };
+    },
+  };
+
+  awsuiPlugins.alertContent.registerContentReplacer(plugin1);
+  awsuiPlugins.alertContent.registerContentReplacer(plugin2);
+
+  expect(console.warn).toHaveBeenCalledWith(
+    expect.stringContaining(
+      'Cannot call `registerContentReplacer` with new provider: provider with id "plugin-1" already registered.'
+    )
+  );
+
+  render(<Alert>Alert content</Alert>);
+  const alertWrapper = createWrapper().findAlert()!;
+  await waitFor(() => {
+    expectContent(alertWrapper, stylesCss, {
+      content: 'Replacement 1',
+      contentReplaced: true,
     });
   });
 });

@@ -56,8 +56,9 @@ export class AlertFlashContentController {
   registerContentReplacer = (content: AlertFlashContentConfig) => {
     if (this.#provider) {
       console.warn(
-        `Cannot call \`registerContentReplacer\` with new provider: provider with id \`${this.#provider.id}\` already registered.`
+        `Cannot call \`registerContentReplacer\` with new provider: provider with id "${this.#provider.id}" already registered.`
       );
+      return;
     }
     this.#provider = content;
     this.#scheduleUpdate();
