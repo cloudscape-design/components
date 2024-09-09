@@ -266,7 +266,9 @@ const InternalButtonDropdown = React.forwardRef(
             )}
             {...getAnalyticsMetadataAttribute(analyticsMetadata)}
           >
-            <InternalButton ref={triggerRef} {...baseTriggerProps} __emitPerformanceMarks={false} />
+            <InternalButton ref={triggerRef} {...baseTriggerProps} __emitPerformanceMarks={false}>
+              {children}
+            </InternalButton>
           </div>
         </div>
       );
