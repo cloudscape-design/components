@@ -78,14 +78,6 @@ function TriggerButton(
   const tooltipVisible =
     containerRef && containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer) && showTooltip;
 
-  const onShowTooltipSoft = (show: boolean) => {
-    setShowTooltip(show);
-  };
-
-  const onShowTooltipHard = (show: boolean) => {
-    setShowTooltip(show);
-  };
-
   /**
    * Takes the drawer being closed and the data-shift-focus value from a close button on that drawer that persists
    * on the event relatedTarget to determine not to show the tooltip
@@ -93,31 +85,28 @@ function TriggerButton(
    */
   const handleFocus = useCallback(
     (event: KeyboardEvent | PointerEvent) => {
-      // Create a more descriptive variable name for the event object
       const eventWithRelatedTarget = event as any;
 
-      // Extract the condition for showing the tooltip hard into a separate function
-      const shouldShowTooltipHard = () => {
+      // condition for showing the tooltip hard into a separate function
+      const shouldShowTooltip = () => {
         return eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button';
       };
 
-      // Extract the condition for mobile devices and open drawers into a separate function
+      // condition for mobile devices and open drawers into a separate function
       const isMobileWithOpenDrawerCondition = () => {
         return isMobile && (!hasOpenDrawer || isForPreviousActiveDrawer);
       };
-      // Handle the logic based on the extracted conditions
+
       if (isMobileWithOpenDrawerCondition()) {
-        if (shouldShowTooltipHard()) {
-          onShowTooltipHard(true);
+        if (shouldShowTooltip()) {
+          setShowTooltip(true);
         } else {
-          // This removes any tooltip that is already showing
-          onShowTooltipHard(false);
+          setShowTooltip(false);
         }
-      } else if (shouldShowTooltipHard()) {
-        onShowTooltipHard(true);
+      } else if (shouldShowTooltip()) {
+        setShowTooltip(true);
       } else {
-        // This removes any tooltip that is already showing
-        onShowTooltipHard(false);
+        setShowTooltip(false);
       }
     },
     [
@@ -167,10 +156,10 @@ function TriggerButton(
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => onShowTooltipSoft(true),
-        onPointerLeave: () => onShowTooltipSoft(false),
+        onPointerEnter: () => setShowTooltip(true),
+        onPointerLeave: () => setShowTooltip(false),
         onFocus: e => handleFocus(e as any),
-        onBlur: () => onShowTooltipHard(false),
+        onBlur: () => setShowTooltip(false),
       })}
       className={clsx(styles['trigger-wrapper'], {
         [styles['remove-high-contrast-header']]: !highContrastHeader,

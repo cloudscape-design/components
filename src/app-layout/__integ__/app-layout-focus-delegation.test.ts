@@ -138,7 +138,6 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         'focuses split panel preferences button when its position changes from side to bottom',
         setupTest(
           async page => {
-            await page.isExisting(wrapper.findSplitPanel().findOpenButton().toSelector());
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
             await expect(page.isExisting(wrapper.findSplitPanel().toSelector())).resolves.toBeTruthy();
             await page.keys('Escape'); //escape tooltip from still hovering over open trigger button
@@ -314,7 +313,6 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
               await page.click(wrapper.findContentRegion().findContainer().toSelector());
               await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
               await expect(page.isFocused(infoLink)).resolves.toBe(false);
-
               await expect(page.isFocused(wrapper.findDrawerTriggerById('pro-help').toSelector())).resolves.toBe(true);
             },
             { pageName: 'with-drawers', theme, mobile }
