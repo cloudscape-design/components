@@ -97,10 +97,11 @@ describe.each([true, false])('existing header:%p', existingHeader => {
   });
 });
 
-test('removes header styling if replacement header is explicitly empty', async () => {
+test('removes styling if replacement is explicitly empty', async () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
     runReplacer(context, registerReplacement) {
+      registerReplacement('content', 'remove');
       registerReplacement('header', 'remove');
       return {
         update: () => {},
@@ -109,12 +110,14 @@ test('removes header styling if replacement header is explicitly empty', async (
     },
   };
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
-  render(<Alert header="Initial header content" />);
+  render(<Alert header="Initial header">Initial content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
   await waitFor(() => {
     expectContent(alertWrapper, stylesCss, {
       header: false,
       headerReplaced: true,
+      content: false,
+      contentReplaced: true,
     });
   });
 });
