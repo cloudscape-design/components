@@ -43,11 +43,11 @@ export default function ContentDisplayPreference({
   dragHandleAriaDescription,
   dragHandleAriaLabel,
   searchableColumns = false,
-  filteringPlaceholderText,
-  filteringAriaLabel,
-  filteringCountText,
-  filteringEmptyText,
-  filteringClearAriaLabel,
+  columnFilteringPlaceholderText,
+  columnFilteringAriaLabel,
+  columnFilteringCountText,
+  columnFilteringEmptyText,
+  columnFilteringClearAriaLabel,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
   const i18n = useInternalI18n('collection-preferences');
@@ -119,12 +119,20 @@ export default function ContentDisplayPreference({
         <div className={getClassName('text-filter')}>
           <InternalTextFilter
             filteringText={columnFilteringText}
-            filteringPlaceholder={filteringPlaceholderText}
-            filteringAriaLabel={filteringAriaLabel}
-            filteringClearAriaLabel={filteringClearAriaLabel}
+            filteringPlaceholder={i18n(
+              'contentDisplayPreference.columnFilteringPlaceholderText',
+              columnFilteringPlaceholderText
+            )}
+            filteringAriaLabel={i18n('contentDisplayPreference.columnFilteringAriaLabel', columnFilteringAriaLabel)}
+            filteringClearAriaLabel={i18n(
+              'contentDisplayPreference.columnFilteringClearAriaLabel',
+              columnFilteringClearAriaLabel
+            )}
             onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
             countText={
-              columnFilteringText.length > 0 && filteringCountText ? filteringCountText(sortedOptions?.length) : ''
+              columnFilteringText.length > 0 && columnFilteringCountText
+                ? columnFilteringCountText(sortedOptions?.length)
+                : ''
             }
           />
         </div>
@@ -134,7 +142,7 @@ export default function ContentDisplayPreference({
       {sortedOptions.length === 0 && (
         <div className={getClassName('empty-state')}>
           <InternalBox margin={'m'} textAlign="center">
-            {filteringEmptyText}
+            {i18n('contentDisplayPreference.columnFilteringEmptyText', columnFilteringEmptyText)}
           </InternalBox>
         </div>
       )}
