@@ -145,7 +145,7 @@ export interface I18nFormatArgTypes {
     "contentDisplayPreference.columnFilteringPlaceholderText": never;
     "contentDisplayPreference.columnFilteringAriaLabel": never;
     "contentDisplayPreference.columnFilteringEmptyText": never;
-    "contentDisplayPreference.columnFilteringClearAriaLabel": never;
+    "contentDisplayPreference.columnFilteringClearFilterText": never;
   }
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": never;

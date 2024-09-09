@@ -200,7 +200,7 @@ describe('Content Display preference', () => {
       expect(options).toHaveLength(4);
     });
 
-    it('shows empty state when no options match', () => {
+    it('shows empty state when no options match and clears filter', () => {
       const wrapper = renderContentDisplay();
       const filterInput = wrapper.findTextFilter();
       expect(filterInput).not.toBeNull();
@@ -214,6 +214,14 @@ describe('Content Display preference', () => {
       const emptyState = wrapper.findEmptyState();
       expect(emptyState).not.toBeNull();
       expect(emptyState!.getElement()).toHaveTextContent('No matches found');
+
+      const emptyStateButton = emptyState?.findButton();
+      expect(emptyStateButton).not.toBeNull();
+      expect(emptyStateButton!.getElement()).toHaveTextContent('Clear filter');
+      emptyStateButton?.click();
+
+      expect(filterInput!.findInput().getInputValue()).toBe('');
+      expect(filterInput!.findResultsCount()).toBeNull();
     });
 
     it('sets the drag-handle to a disabled state when filtering', () => {

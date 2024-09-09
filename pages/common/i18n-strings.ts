@@ -20,5 +20,5 @@ export const contentDisplayPreferenceI18nStrings: Partial<CollectionPreferencesP
   columnFilteringAriaLabel: 'Filter columns',
   columnFilteringEmptyText: 'No matches',
   columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
-  columnFilteringClearAriaLabel: 'Clear filter',
+  columnFilteringClearFilterText: 'Clear filter',
 };

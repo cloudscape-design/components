@@ -5190,6 +5190,31 @@ You must provide an ordered list of the items to display in the \`preferences.co
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
         "properties": Array [
           Object {
+            "name": "columnFilteringAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "columnFilteringClearFilterText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "columnFilteringCountText",
+            "optional": true,
+            "type": "(count: number) => string",
+          },
+          Object {
+            "name": "columnFilteringEmptyText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
+            "name": "columnFilteringPlaceholderText",
+            "optional": true,
+            "type": "string",
+          },
+          Object {
             "name": "description",
             "optional": true,
             "type": "string",
@@ -5201,31 +5226,6 @@ You must provide an ordered list of the items to display in the \`preferences.co
           },
           Object {
             "name": "dragHandleAriaLabel",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "filteringAriaLabel",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "filteringClearAriaLabel",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "filteringCountText",
-            "optional": true,
-            "type": "(count: number) => string",
-          },
-          Object {
-            "name": "filteringEmptyText",
-            "optional": true,
-            "type": "string",
-          },
-          Object {
-            "name": "filteringPlaceholderText",
             "optional": true,
             "type": "string",
           },
