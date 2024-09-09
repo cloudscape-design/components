@@ -1,20 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonDropdownWrapper from '../button-dropdown';
 import SplitPanelWrapper from '../split-panel';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
-
-class AppLayoutDrawerWrapper extends ComponentWrapper {
-  @usesDom
-  isActive(): boolean {
-    return this.element.classList.contains(testutilStyles['active-drawer']);
-  }
-}
-
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
 
@@ -65,16 +57,6 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findActiveDrawer(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['active-drawer']);
   }
-
-  findActiveDrawers(): Array<ElementWrapper> {
-    return this.findAllByClassName(testutilStyles['active-drawer']);
-  }
-
-  findDrawerById(id: string): AppLayoutDrawerWrapper | null {
-    const element = this.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
-    return element ? new AppLayoutDrawerWrapper(element.getElement()) : null;
-  }
-
   findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
   }
@@ -82,11 +64,6 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
-
-  findGlobalDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
-    return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger-global']);
-  }
-
   findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
     return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
   }
@@ -97,17 +74,5 @@ export default class AppLayoutWrapper extends ComponentWrapper {
 
   findActiveDrawerResizeHandle(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['drawers-slider']);
-  }
-
-  findResizeHandleByActiveDrawerId(id: string): ElementWrapper | null {
-    return this.find(
-      `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['drawers-slider']}`
-    );
-  }
-
-  findCloseButtonByActiveDrawerId(id: string): ElementWrapper | null {
-    return this.find(
-      `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-close-button']}`
-    );
   }
 }

@@ -7,6 +7,7 @@ import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
+  getGlobalDrawersTestUtils,
   isDrawerTriggerWithBadge,
   testDrawer,
 } from './utils';
@@ -50,8 +51,13 @@ jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/compute-lay
 async function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
+  const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
   await delay();
-  return { wrapper, rerender };
+  return {
+    wrapper,
+    globalDrawersWrapper,
+    rerender,
+  };
 }
 
 function delay() {
@@ -662,12 +668,12 @@ describe('toolbar mode only features', () => {
         defaultActive: true,
         mountContent: container => (container.textContent = 'local drawer content'),
       });
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       await delay();
 
       expect(wrapper.findDrawersTriggers()).toHaveLength(2);
-      expect(wrapper.findGlobalDrawersTriggers()).toHaveLength(0);
+      expect(globalDrawersWrapper.findGlobalDrawersTriggers()).toHaveLength(0);
     });
 
     test('should register global runtime drawers and their trigger buttons', async () => {
@@ -691,16 +697,22 @@ describe('toolbar mode only features', () => {
         defaultActive: true,
         mountContent: container => (container.textContent = 'global drawer content 2'),
       });
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       await delay();
 
       expect(wrapper.findDrawersTriggers()!.length).toBe(4);
       expect(wrapper.find(`.${toolbarStyles['group-divider']}`)!.getElement()).toBeInTheDocument();
-      expect(wrapper.findActiveDrawers()!.length).toBe(3);
-      expect(wrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent('local drawer content');
-      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toHaveTextContent('global drawer content 1');
-      expect(wrapper.findDrawerById('global-drawer-2')!.getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(3);
+      expect(globalDrawersWrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent(
+        'local drawer content'
+      );
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toHaveTextContent(
+        'global drawer content 1'
+      );
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.getElement()).toHaveTextContent(
+        'global drawer content 2'
+      );
     });
 
     test('if 2 global drawers are already open, and third drawers has opened, it should replace the first opened drawer', async () => {
@@ -724,17 +736,17 @@ describe('toolbar mode only features', () => {
         type: 'global',
         mountContent: container => (container.textContent = 'global drawer content 3'),
       });
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findActiveDrawers()!.length).toBe(2);
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
 
       wrapper.findDrawerTriggerById('global-drawer-3')!.click();
 
-      expect(wrapper.findActiveDrawers()!.length).toBe(2);
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 2');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 3');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 3');
     });
 
     test('first opened drawer (global drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
@@ -772,11 +784,11 @@ describe('toolbar mode only features', () => {
         id: 'global-drawer-3',
         mountContent: container => (container.textContent = 'global drawer content 3'),
       });
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findActiveDrawers()!.length).toBe(2);
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
 
       await delay();
 
@@ -784,9 +796,9 @@ describe('toolbar mode only features', () => {
 
       await delay();
 
-      expect(wrapper.findActiveDrawers()!.length).toBe(2);
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('local-drawer');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('local-drawer');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
     test('first opened drawer (local drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
@@ -824,21 +836,21 @@ describe('toolbar mode only features', () => {
         id: 'global-drawer-3',
         mountContent: container => (container.textContent = 'global drawer content 3'),
       });
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       await delay();
 
-      expect(wrapper.findActiveDrawers()!.length).toBe(2);
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('local-drawer content');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('local-drawer content');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 1');
 
       wrapper.findDrawerTriggerById('global-drawer-2')!.click();
 
       await delay();
 
-      expect(wrapper.findActiveDrawers()!.length).toBe(2);
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
     test('renders resize handle for a global drawer when config is enabled', async () => {
@@ -855,9 +867,9 @@ describe('toolbar mode only features', () => {
           closeButton: 'drawer close',
         },
       });
-      const { wrapper } = await renderComponent(<AppLayout />);
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
-      expect(wrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
+      expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
         'aria-label',
         'drawer resize'
       );
@@ -875,12 +887,12 @@ describe('toolbar mode only features', () => {
           closeButton: 'drawer close',
         },
       });
-      const { wrapper } = await renderComponent(<AppLayout />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
 
       wrapper.findDrawerTriggerById('global-drawer')!.click();
-      expect(wrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
-      wrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
-      expect(wrapper.findDrawerById('global-drawer')).toBeNull();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer')).toBeNull();
     });
 
     test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
@@ -897,13 +909,13 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'global drawer content 2'),
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       wrapper.findDrawerTriggerById('global-drawer-2')!.click();
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
-      expect(wrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
-      expect(wrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
 
     test('should close opened global drawer by clicking on its trigger button', async () => {
@@ -914,15 +926,15 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'global drawer content 1'),
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
-      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
-      expect(wrapper.findDrawerById('global-drawer-1')).toBeNull();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
     });
 
     test('opens a drawer when openDrawer is called', async () => {
@@ -944,21 +956,21 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'global drawer content 2'),
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findActiveDrawers()).toHaveLength(0);
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
 
       awsuiPlugins.appLayout.openDrawer('local-drawer');
 
       await delay();
 
-      expect(wrapper.findActiveDrawers()).toHaveLength(1);
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
 
       awsuiPlugins.appLayout.openDrawer('global-drawer-1');
 
       await delay();
 
-      expect(wrapper.findActiveDrawers()).toHaveLength(2);
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(2);
     });
 
     test('does not do anything when openDrawer is called with active drawer id', async () => {
@@ -968,21 +980,21 @@ describe('toolbar mode only features', () => {
         mountContent: container => (container.textContent = 'local-drawer content'),
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findActiveDrawers()).toHaveLength(0);
-
-      awsuiPlugins.appLayout.openDrawer('local-drawer');
-
-      await delay();
-
-      expect(wrapper.findActiveDrawers()).toHaveLength(1);
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
 
       awsuiPlugins.appLayout.openDrawer('local-drawer');
 
       await delay();
 
-      expect(wrapper.findActiveDrawers()).toHaveLength(1);
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
     });
 
     test('should restore focus when a global drawer is closed', async () => {
@@ -994,13 +1006,13 @@ describe('toolbar mode only features', () => {
       });
       const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} ref={ref} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} ref={ref} />);
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.focus();
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
-      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-      wrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
-      expect(wrapper.findDrawerById('global-drawer-1')).toBeNull();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
       expect(wrapper.findDrawerTriggerById('global-drawer-1')!.getElement()).toHaveFocus();
     });
 
@@ -1028,8 +1040,8 @@ describe('toolbar mode only features', () => {
         onResize: event => onDrawerItemResize(event.detail),
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-      wrapper.findResizeHandleByActiveDrawerId('global-drawer-1')!.keydown(KeyCode.left);
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      globalDrawersWrapper.findResizeHandleByActiveDrawerId('global-drawer-1')!.keydown(KeyCode.left);
 
       expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
     });
@@ -1043,14 +1055,14 @@ describe('toolbar mode only features', () => {
         preserveInactiveContent: true,
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
-      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
     });
 
     test('should call onShow and onHide when global drawer with preserveInactiveContent is opened and closed', async () => {
@@ -1066,18 +1078,18 @@ describe('toolbar mode only features', () => {
         onHide,
       });
 
-      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
-      expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
       expect(onShow).toHaveBeenCalledTimes(1);
       expect(onHide).toHaveBeenCalledTimes(0);
 
-      wrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
       expect(onShow).toHaveBeenCalledTimes(1);
       expect(onHide).toHaveBeenCalledTimes(1);
     });
