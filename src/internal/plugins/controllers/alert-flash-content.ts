@@ -44,35 +44,35 @@ export interface AlertFlashContentApiInternal {
 }
 
 export class AlertFlashContentController {
-  private listeners: Array<AlertFlashContentRegistrationListener> = [];
-  private provider?: AlertFlashContentConfig;
+  #listeners: Array<AlertFlashContentRegistrationListener> = [];
+  #provider?: AlertFlashContentConfig;
 
-  private scheduleUpdate = debounce(() => {
-    this.listeners.forEach(listener => {
-      listener.cleanup = listener(this.provider);
+  #scheduleUpdate = debounce(() => {
+    this.#listeners.forEach(listener => {
+      listener.cleanup = listener(this.#provider);
     });
   }, 0);
 
   registerContentReplacer = (content: AlertFlashContentConfig) => {
-    if (this.provider) {
+    if (this.#provider) {
       console.warn(
-        `Cannot call \`registerContentReplacer\` with new provider: provider with id \`${this.provider.id}\` already registered.`
+        `Cannot call \`registerContentReplacer\` with new provider: provider with id \`${this.#provider.id}\` already registered.`
       );
     }
-    this.provider = content;
-    this.scheduleUpdate();
+    this.#provider = content;
+    this.#scheduleUpdate();
   };
 
   clearRegisteredReplacer = () => {
-    this.provider = undefined;
+    this.#provider = undefined;
   };
 
   onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
-    this.listeners.push(listener);
-    this.scheduleUpdate();
+    this.#listeners.push(listener);
+    this.#scheduleUpdate();
     return () => {
       listener.cleanup?.();
-      this.listeners = this.listeners.filter(item => item !== listener);
+      this.#listeners = this.#listeners.filter(item => item !== listener);
     };
   };
 
