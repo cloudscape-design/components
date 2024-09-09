@@ -18,11 +18,17 @@ const pause = (timeout: number) => new Promise(resolve => setTimeout(resolve, ti
 const defaultContent: AlertFlashContentConfig = {
   id: 'test-content',
   runReplacer(context, registerReplacement) {
-    registerReplacement('header', container => {
-      container.append('New header');
+    registerReplacement('header', {
+      type: 'replace',
+      onReplace: container => {
+        container.append('New header');
+      },
     });
-    registerReplacement('content', container => {
-      container.append('New content');
+    registerReplacement('content', {
+      type: 'replace',
+      onReplace: container => {
+        container.append('New content');
+      },
     });
     return {
       update: () => {},
@@ -97,8 +103,8 @@ test('removes styling if replacement is explicitly empty', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
     runReplacer(context, registerReplacement) {
-      registerReplacement('content', 'remove');
-      registerReplacement('header', 'remove');
+      registerReplacement('content', { type: 'remove' });
+      registerReplacement('header', { type: 'remove' });
       return {
         update: () => {},
         unmount: () => {},
@@ -150,7 +156,7 @@ test('calls unmount callback', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
     runReplacer(context, registerReplacement) {
-      registerReplacement('content', container => container.append('New content'));
+      registerReplacement('content', { type: 'replace', onReplace: container => container.append('New content') });
       return {
         update: () => {},
         unmount: unmountCallback,
@@ -192,8 +198,11 @@ describe('asynchronous rendering', () => {
           await pause(500);
           const content = document.createElement('div');
           content.append('New content');
-          registerReplacement('content', container => {
-            container.appendChild(content);
+          registerReplacement('content', {
+            type: 'replace',
+            onReplace: container => {
+              container.appendChild(content);
+            },
           });
         })();
         return {
@@ -227,8 +236,8 @@ describe('asynchronous rendering', () => {
       runReplacer(context, registerReplacement) {
         (async () => {
           await pause(500);
-          registerReplacement('header', headerFn);
-          registerReplacement('content', contentFn);
+          registerReplacement('header', { type: 'replace', onReplace: headerFn });
+          registerReplacement('content', { type: 'replace', onReplace: contentFn });
         })();
         return {
           update: () => {},
@@ -264,9 +273,15 @@ test('calls replacer when alert type changes', () => {
     id: 'plugin',
     runReplacer: (context, registerReplacement) => {
       if (context.type === 'error') {
-        registerReplacement('content', container => (container.textContent = 'New error'));
+        registerReplacement('content', {
+          type: 'replace',
+          onReplace: container => (container.textContent = 'New error'),
+        });
       } else if (context.type === 'warning') {
-        registerReplacement('content', container => (container.textContent = 'New warning'));
+        registerReplacement('content', {
+          type: 'replace',
+          onReplace: container => (container.textContent = 'New warning'),
+        });
       }
       return { update: () => {}, unmount: () => {} };
     },
@@ -285,14 +300,14 @@ test('can only register a single provider', () => {
   const plugin1: AlertFlashContentConfig = {
     id: 'plugin-1',
     runReplacer: (context, registerReplacement) => {
-      registerReplacement('content', container => container.append('Replacement 1'));
+      registerReplacement('content', { type: 'replace', onReplace: container => container.append('Replacement 1') });
       return { update: () => {}, unmount: () => {} };
     },
   };
   const plugin2: AlertFlashContentConfig = {
     id: 'plugin-2',
     runReplacer: (context, registerReplacement) => {
-      registerReplacement('content', container => container.append('Replacement 2'));
+      registerReplacement('content', { type: 'replace', onReplace: container => container.append('Replacement 2') });
       return { update: () => {}, unmount: () => {} };
     },
   };

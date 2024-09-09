@@ -13,7 +13,10 @@ export interface AlertFlashContentContext {
   actionsRef: RefShim<HTMLElement>;
 }
 
-export type ReplacementType = 'original' | 'remove' | ((container: HTMLElement) => void);
+export type ReplacementType =
+  | { type: 'original' }
+  | { type: 'remove' }
+  | { type: 'replace'; onReplace: (container: HTMLElement) => void };
 export type ReplacementTypeSafe = 'original' | 'remove' | true;
 
 type RegisterReplacement = (type: 'header' | 'content', doReplacement: ReplacementType) => void;

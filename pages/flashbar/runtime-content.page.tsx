@@ -30,21 +30,24 @@ awsuiPlugins.flashContent.registerContentReplacer({
     console.log('mount');
 
     const doReplace = () => {
-      registerReplacement('header', 'original');
-      registerReplacement('content', 'original');
+      registerReplacement('header', { type: 'original' });
+      registerReplacement('content', { type: 'original' });
       if (context.type === 'error' && context.contentRef.current?.textContent?.match('Access denied')) {
-        registerReplacement('header', 'remove');
-        registerReplacement('content', container => {
-          console.log('render replacement content');
-          render(
-            <SpaceBetween size="s">
-              <Box>---REPLACEMENT--- Access denied message! ---REPLACEMENT---</Box>
-              <ExpandableSection headerText="Original message">
-                {context.contentRef.current?.textContent}
-              </ExpandableSection>
-            </SpaceBetween>,
-            container
-          );
+        registerReplacement('header', { type: 'remove' });
+        registerReplacement('content', {
+          type: 'replace',
+          onReplace: container => {
+            console.log('render replacement content');
+            render(
+              <SpaceBetween size="s">
+                <Box>---REPLACEMENT--- Access denied message! ---REPLACEMENT---</Box>
+                <ExpandableSection headerText="Original message">
+                  {context.contentRef.current?.textContent}
+                </ExpandableSection>
+              </SpaceBetween>,
+              container
+            );
+          },
         });
       }
     };

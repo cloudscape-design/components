@@ -50,19 +50,19 @@ export function createUseDiscoveredContent(
           }
           switch (type) {
             case 'header':
-              if (typeof replacement === 'function') {
-                replacement(replacementHeaderRef.current!);
+              if (replacement.type === 'replace') {
+                replacement.onReplace(replacementHeaderRef.current!);
                 setFoundHeaderReplacement(true);
               } else {
-                setFoundHeaderReplacement(replacement);
+                setFoundHeaderReplacement(replacement.type);
               }
               break;
             case 'content':
-              if (typeof replacement === 'function') {
-                replacement(replacementContentRef.current!);
+              if (replacement.type === 'replace') {
+                replacement.onReplace(replacementContentRef.current!);
                 setFoundContentReplacement(true);
               } else {
-                setFoundContentReplacement(replacement);
+                setFoundContentReplacement(replacement.type);
               }
           }
         });

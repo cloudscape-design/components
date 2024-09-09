@@ -19,11 +19,17 @@ const pause = (timeout: number) => new Promise(resolve => setTimeout(resolve, ti
 const defaultContent: AlertFlashContentConfig = {
   id: 'test-content',
   runReplacer(context, registerReplacement) {
-    registerReplacement('header', container => {
-      container.append('New header');
+    registerReplacement('header', {
+      type: 'replace',
+      onReplace: container => {
+        container.append('New header');
+      },
     });
-    registerReplacement('content', container => {
-      container.append('New content');
+    registerReplacement('content', {
+      type: 'replace',
+      onReplace: container => {
+        container.append('New content');
+      },
     });
     return {
       update: () => {},
@@ -148,7 +154,7 @@ test('calls unmount callback', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
     runReplacer(context, registerReplacement) {
-      registerReplacement('content', container => container.append('New content'));
+      registerReplacement('content', { type: 'replace', onReplace: container => container.append('New content') });
       return {
         update: () => {},
         unmount: unmountCallback,
@@ -190,8 +196,11 @@ describe('asynchronous rendering', () => {
           await pause(500);
           const content = document.createElement('div');
           content.append('New content');
-          registerReplacement('content', container => {
-            container.appendChild(content);
+          registerReplacement('content', {
+            type: 'replace',
+            onReplace: container => {
+              container.appendChild(content);
+            },
           });
         })();
         return {
@@ -225,8 +234,8 @@ describe('asynchronous rendering', () => {
       runReplacer(context, registerReplacement) {
         (async () => {
           await pause(500);
-          registerReplacement('header', headerFn);
-          registerReplacement('content', contentFn);
+          registerReplacement('header', { type: 'replace', onReplace: headerFn });
+          registerReplacement('content', { type: 'replace', onReplace: contentFn });
         })();
         return {
           update: () => {},
