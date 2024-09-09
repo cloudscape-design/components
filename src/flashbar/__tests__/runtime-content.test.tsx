@@ -209,7 +209,7 @@ describe('asynchronous rendering', () => {
       id: 'test-content-async',
       runReplacer(context, registerReplacement) {
         (async () => {
-          await pause(1000);
+          await pause(500);
           const content = document.createElement('div');
           content.append('New content');
           registerReplacement('content', container => {
@@ -225,12 +225,11 @@ describe('asynchronous rendering', () => {
     awsuiPlugins.flashContent.registerContentReplacer(asyncContent);
     const { container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
     const flashWrapper = new FlashbarWrapper(container).findItems()[0];
-    await waitFor(() => {
-      expectContent(flashWrapper, stylesCss, {
-        content: 'Flash content',
-        contentReplaced: false,
-      });
+    expectContent(flashWrapper, stylesCss, {
+      content: 'Flash content',
+      contentReplaced: false,
     });
+
     await waitFor(() => {
       expectContent(flashWrapper, stylesCss, {
         content: 'New content',
@@ -260,13 +259,15 @@ describe('asynchronous rendering', () => {
     awsuiPlugins.flashContent.registerContentReplacer(asyncContent);
     const { unmount, container } = render(<Flashbar items={[{ content: 'Flash content' }]} />);
     const flashWrapper = new FlashbarWrapper(container).findItems()[0];
-    await waitFor(() => {
-      expectContent(flashWrapper, stylesCss, {
-        content: 'Flash content',
-        contentReplaced: false,
-      });
+    expectContent(flashWrapper, stylesCss, {
+      content: 'Flash content',
+      contentReplaced: false,
     });
+
+    // Lets runReplacer fire but unmounts before replacement header/content are registered.
+    await pause(0);
     unmount();
+
     await waitFor(() => {
       expect(consoleWarnSpy).toBeCalledWith(
         '[AwsUi] [Runtime alert/flash content] `registerReplacement` (header) called after component unmounted'
