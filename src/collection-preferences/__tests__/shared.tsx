@@ -102,9 +102,9 @@ export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplay
       ? `Item moved back to its original position ${initialPosition} of ${total}`
       : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
   searchableColumns: true,
-  filteringPlaceholderText: 'Filter columns',
-  filteringAriaLabel: 'Filter columns',
-  filteringClearAriaLabel: 'Clear filter',
-  filteringEmptyText: 'No matches found',
-  filteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+  columnFilteringPlaceholderText: 'Filter columns',
+  columnFilteringAriaLabel: 'Filter columns',
+  columnFilteringClearFilterText: 'Clear filter',
+  columnFilteringEmptyText: 'No matches found',
+  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
 };

@@ -223,7 +223,7 @@ export namespace CollectionPreferencesProps {
     columnFilteringAriaLabel?: string;
     columnFilteringCountText?: (count: number) => string;
     columnFilteringEmptyText?: string;
-    columnFilteringClearAriaLabel?: string;
+    columnFilteringClearFilterText?: string;
   }
 
   export interface ContentDisplayOption {

@@ -5,9 +5,11 @@ import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
 import InternalBox from '../../box/internal';
+import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
 import Portal from '../../internal/components/portal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
@@ -47,7 +49,7 @@ export default function ContentDisplayPreference({
   columnFilteringAriaLabel,
   columnFilteringCountText,
   columnFilteringEmptyText,
-  columnFilteringClearAriaLabel,
+  columnFilteringClearFilterText,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
   const i18n = useInternalI18n('collection-preferences');
@@ -125,8 +127,8 @@ export default function ContentDisplayPreference({
             )}
             filteringAriaLabel={i18n('contentDisplayPreference.columnFilteringAriaLabel', columnFilteringAriaLabel)}
             filteringClearAriaLabel={i18n(
-              'contentDisplayPreference.columnFilteringClearAriaLabel',
-              columnFilteringClearAriaLabel
+              'contentDisplayPreference.columnFilteringClearFilterText',
+              columnFilteringClearFilterText
             )}
             onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
             countText={
@@ -141,9 +143,14 @@ export default function ContentDisplayPreference({
       {/* Empty state */}
       {sortedOptions.length === 0 && (
         <div className={getClassName('empty-state')}>
-          <InternalBox margin={'m'} textAlign="center">
-            {i18n('contentDisplayPreference.columnFilteringEmptyText', columnFilteringEmptyText)}
-          </InternalBox>
+          <InternalSpaceBetween size="s" alignItems="center">
+            <InternalBox margin={{ top: 'm' }}>
+              {i18n('contentDisplayPreference.columnFilteringEmptyText', columnFilteringEmptyText)}
+            </InternalBox>
+            <InternalButton onClick={() => setColumnFilteringText('')}>
+              {i18n('contentDisplayPreference.columnFilteringClearFilterText', columnFilteringClearFilterText)}
+            </InternalButton>
+          </InternalSpaceBetween>
         </div>
       )}
 

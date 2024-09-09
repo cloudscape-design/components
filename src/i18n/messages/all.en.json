@@ -111,7 +111,7 @@
     "contentDisplayPreference.columnFilteringPlaceholderText": "Filter columns",
     "contentDisplayPreference.columnFilteringAriaLabel": "Filter columns",
     "contentDisplayPreference.columnFilteringEmptyText": "No matches",
-    "contentDisplayPreference.columnFilteringClearAriaLabel": "Clear filter"
+    "contentDisplayPreference.columnFilteringClearFilterText": "Clear filter"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copy"
