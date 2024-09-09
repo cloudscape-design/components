@@ -97,7 +97,7 @@ describe('Visual refresh toolbar only', () => {
       await page.setWindowSize(viewports.mobile);
       // technically, both drawers are present in the DOM tree, but only one is visible.
       // the isClickable check ensures that the drawer is actually visible
-      await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('circle-global')!.toSelector())).resolves.toBe(true);
     })
   );
 
@@ -110,7 +110,7 @@ describe('Visual refresh toolbar only', () => {
       await page.setWindowSize(viewports.mobile);
       // technically, both drawers are present in the DOM tree, but only one is visible.
       // the isClickable check ensures that the drawer is actually visible
-      await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('security')!.toSelector())).resolves.toBe(true);
     })
   );
 
@@ -122,9 +122,9 @@ describe('Visual refresh toolbar only', () => {
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
 
-      await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
-      await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(true);
-      await expect(page.isClickable(wrapper.findDrawerById('circle2-global').toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('security')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('circle-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(wrapper.findDrawerById('circle2-global')!.toSelector())).resolves.toBe(true);
     })
   );
 
@@ -141,9 +141,9 @@ describe('Visual refresh toolbar only', () => {
 
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
 
-        await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
-        await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(true);
-        await expect(page.isClickable(wrapper.findDrawerById('circle2-global').toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('security')!.toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('circle-global')!.toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('circle2-global')!.toSelector())).resolves.toBe(true);
       })
     );
 
@@ -154,9 +154,9 @@ describe('Visual refresh toolbar only', () => {
         await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
 
-        await expect(page.isClickable(wrapper.findDrawerById('circle-global').toSelector())).resolves.toBe(false);
-        await expect(page.isClickable(wrapper.findDrawerById('security').toSelector())).resolves.toBe(true);
-        await expect(page.isClickable(wrapper.findDrawerById('circle2-global').toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('circle-global')!.toSelector())).resolves.toBe(false);
+        await expect(page.isClickable(wrapper.findDrawerById('security')!.toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(wrapper.findDrawerById('circle2-global')!.toSelector())).resolves.toBe(true);
       });
     });
   });
