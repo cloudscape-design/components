@@ -42,7 +42,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    * - `iconSvg` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
    *
    * #### DrawerAriaLabels
-   * - `drawerName` (string) - Label for the drawer itself.
+   * - `drawerName` (string) - Label for the drawer itself. Also used as the text in the tooltip for the trigger button
    * - `closeButton` (string) - (Optional) Label for the close button.
    * - `triggerButton` (string) - (Optional) Label for the trigger button.
    * - `resizeHandle` (string) - (Optional) Label for the resize handle.
