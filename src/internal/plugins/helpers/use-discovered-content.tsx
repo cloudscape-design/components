@@ -8,7 +8,10 @@ import {
   ReplacementTypeSafe,
 } from '../controllers/alert-flash-content';
 
-export function createUseDiscoveredContent(onContentRegistered: AlertFlashContentController['onContentRegistered']) {
+export function createUseDiscoveredContent(
+  componentName: string,
+  onContentRegistered: AlertFlashContentController['onContentRegistered']
+) {
   return function useDiscoveredContent({
     type,
     header,
@@ -41,7 +44,7 @@ export function createUseDiscoveredContent(onContentRegistered: AlertFlashConten
         mountedProvider.current = provider?.runReplacer(context, (type, replacement) => {
           if (!mounted) {
             console.warn(
-              `[AwsUi] [Runtime alert/flash content] \`registerReplacement\` (${type}) called after component unmounted`
+              `[AwsUi] [Runtime ${componentName} content] \`registerReplacement\` (${type}) called after component unmounted`
             );
             return;
           }

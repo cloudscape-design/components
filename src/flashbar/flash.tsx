@@ -38,7 +38,7 @@ const ICON_TYPES = {
 } as const;
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.flashbar.onActionRegistered);
-const useDiscoveredContent = createUseDiscoveredContent(awsuiPluginsInternal.flashContent.onContentRegistered);
+const useDiscoveredContent = createUseDiscoveredContent('flash', awsuiPluginsInternal.flashContent.onContentRegistered);
 
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],

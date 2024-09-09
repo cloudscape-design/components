@@ -248,10 +248,10 @@ describe('asynchronous rendering', () => {
 
     await waitFor(() => {
       expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime alert/flash content] `registerReplacement` (header) called after component unmounted'
+        '[AwsUi] [Runtime alert content] `registerReplacement` (header) called after component unmounted'
       );
       expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime alert/flash content] `registerReplacement` (content) called after component unmounted'
+        '[AwsUi] [Runtime alert content] `registerReplacement` (content) called after component unmounted'
       );
       expect(headerFn).not.toBeCalled();
       expect(contentFn).not.toBeCalled();
