@@ -71,8 +71,9 @@ export class AlertFlashContentController {
   };
 
   onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
+    const cleanup = listener(this.#provider);
     this.#listeners.push(listener);
-    this.#cleanups.set(listener, listener(this.#provider) ?? null);
+    this.#cleanups.set(listener, cleanup ?? null);
 
     return () => {
       this.#cleanups.get(listener)?.();
