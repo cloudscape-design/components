@@ -3,6 +3,8 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
@@ -24,6 +26,8 @@ export interface PopoverBodyProps {
 
   className?: string;
   ariaLabelledby?: string;
+
+  closeAnalyticsAction?: string;
 }
 
 export default function PopoverBody({
@@ -36,6 +40,7 @@ export default function PopoverBody({
   overflowVisible,
   className,
   ariaLabelledby,
+  closeAnalyticsAction,
 }: PopoverBodyProps) {
   const i18n = useInternalI18n('popover');
   const labelledById = useUniqueId('awsui-popover-');
@@ -63,7 +68,10 @@ export default function PopoverBody({
   }, [showDismissButton]);
 
   const dismissButton = (showDismissButton ?? null) && (
-    <div className={styles.dismiss}>
+    <div
+      className={styles.dismiss}
+      {...(closeAnalyticsAction ? getAnalyticsMetadataAttribute({ action: closeAnalyticsAction }) : {})}
+    >
       <InternalButton
         variant="icon"
         formAction="none"

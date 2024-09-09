@@ -4,6 +4,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalButton from '../button/internal.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../button-dropdown/internal.js';
@@ -14,6 +16,10 @@ import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import {
+  GeneratedAnalyticsMetadataPropertyEditCancel,
+  GeneratedAnalyticsMetadataPropertyEditConfirm,
+} from './analytics-metadata/interfaces';
 import { getAllowedOperators } from './controller.js';
 import { I18nStringsInternal } from './i18n-utils.js';
 import {
@@ -199,21 +205,33 @@ export function TokenEditor({
       )}
 
       <div className={styles['token-editor-actions']}>
-        <InternalButton
-          formAction="none"
-          variant="link"
-          className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
-          onClick={onDismiss}
+        <span
+          {...getAnalyticsMetadataAttribute({
+            action: 'editCancel',
+          } as Partial<GeneratedAnalyticsMetadataPropertyEditCancel>)}
         >
-          {i18nStrings.cancelActionText}
-        </InternalButton>
-        <InternalButton
-          className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
-          formAction="none"
-          onClick={onSubmit}
+          <InternalButton
+            formAction="none"
+            variant="link"
+            className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
+            onClick={onDismiss}
+          >
+            {i18nStrings.cancelActionText}
+          </InternalButton>
+        </span>
+        <span
+          {...getAnalyticsMetadataAttribute({
+            action: 'editConfirm',
+          } as Partial<GeneratedAnalyticsMetadataPropertyEditConfirm>)}
         >
-          {i18nStrings.applyActionText}
-        </InternalButton>
+          <InternalButton
+            className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
+            formAction="none"
+            onClick={onSubmit}
+          >
+            {i18nStrings.applyActionText}
+          </InternalButton>
+        </span>
       </div>
     </div>
   );

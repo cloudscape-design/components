@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useRef, useState } from 'react';
+import clsx from 'clsx';
+
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -22,6 +25,7 @@ import {
 import { TokenEditor } from './token-editor';
 import { tokenGroupToTokens } from './utils';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface TokenProps {
@@ -92,7 +96,7 @@ export const TokenButton = ({
         const formattedToken = i18nStrings.formatToken(token);
         return {
           content: (
-            <span className={styles['token-trigger']}>
+            <span className={clsx(styles['token-trigger'], analyticsSelectors['token-trigger'])}>
               <TokenTrigger token={formattedToken} allProperties={token.property === null} />
             </span>
           ),
@@ -160,6 +164,12 @@ export const TokenButton = ({
       groupEditAriaLabel={i18nStrings.groupEditAriaLabel({ operation: groupOperation, tokens })}
       hasGroups={hasGroups}
       popoverSize={enableTokenGroups ? 'content' : 'large'}
+      {...getAnalyticsMetadataAttribute({
+        detail: {
+          tokenPosition: `${tokenIndex + 1}`,
+          tokenLabel: `.${analyticsSelectors['token-trigger']}`,
+        },
+      })}
     />
   );
 };

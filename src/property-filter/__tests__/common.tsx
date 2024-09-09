@@ -45,6 +45,7 @@ export const i18nStrings: I18nStrings = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
+  clearAriaLabel: 'clear',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 
   formatToken: token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
