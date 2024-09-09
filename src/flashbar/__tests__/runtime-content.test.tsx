@@ -38,19 +38,17 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('renders runtime content initially', async () => {
+test('renders runtime content initially', () => {
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
   render(<Flashbar items={[{ content: 'Flash content' }]} />);
   const flashbarWrapper = createWrapper().findFlashbar()!;
-  await waitFor(() => {
-    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-      content: 'New content',
-      contentReplaced: true,
-    });
+  expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+    content: 'New content',
+    contentReplaced: true,
   });
 });
 
-test('renders runtime content when asynchronously registered', async () => {
+test('renders runtime content when asynchronously registered', () => {
   render(<Flashbar items={[{ content: 'Flash content' }]} />);
   const flashbarWrapper = createWrapper().findFlashbar()!;
   expectContent(flashbarWrapper.findItems()[0], stylesCss, {
@@ -59,16 +57,14 @@ test('renders runtime content when asynchronously registered', async () => {
   });
 
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-  await waitFor(() => {
-    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-      content: 'New content',
-      contentReplaced: true,
-    });
+  expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+    content: 'New content',
+    contentReplaced: true,
   });
 });
 
 describe.each([true, false])('existing header:%p', existingHeader => {
-  test('renders runtime header initially', async () => {
+  test('renders runtime header initially', () => {
     awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
     const { container } = render(
       <Flashbar
@@ -81,15 +77,13 @@ describe.each([true, false])('existing header:%p', existingHeader => {
       />
     );
     const flashbarWrapper = new FlashbarWrapper(container);
-    await waitFor(() => {
-      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-        header: 'New header',
-        headerReplaced: true,
-      });
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      header: 'New header',
+      headerReplaced: true,
     });
   });
 
-  test('renders runtime header when asynchronously registered', async () => {
+  test('renders runtime header when asynchronously registered', () => {
     render(
       <Flashbar
         items={[
@@ -107,11 +101,9 @@ describe.each([true, false])('existing header:%p', existingHeader => {
     });
 
     awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-    await waitFor(() => {
-      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-        header: 'New header',
-        headerReplaced: true,
-      });
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      header: 'New header',
+      headerReplaced: true,
     });
   });
 });
@@ -125,7 +117,7 @@ describe('runReplacer arguments', () => {
     };
     awsuiPlugins.flashContent.registerContentReplacer(plugin);
   });
-  test('refs', async () => {
+  test('refs', () => {
     render(
       <Flashbar
         items={[
@@ -137,27 +129,21 @@ describe('runReplacer arguments', () => {
         ]}
       />
     );
-    await waitFor(() => {
-      expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Flash header');
-      expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Flash content');
-      expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
-    });
+    expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Flash header');
+    expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Flash content');
+    expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
   });
-  test('type - default', async () => {
+  test('type - default', () => {
     render(<Flashbar items={[{}]} />);
-    await waitFor(() => {
-      expect(runReplacer.mock.lastCall[0].type).toBe('info');
-    });
+    expect(runReplacer.mock.lastCall[0].type).toBe('info');
   });
-  test('type - custom', async () => {
+  test('type - custom', () => {
     render(<Flashbar items={[{ type: 'error' }]} />);
-    await waitFor(() => {
-      expect(runReplacer.mock.lastCall[0].type).toBe('error');
-    });
+    expect(runReplacer.mock.lastCall[0].type).toBe('error');
   });
 });
 
-test('calls unmount callback', async () => {
+test('calls unmount callback', () => {
   const unmountCallback = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
@@ -172,34 +158,26 @@ test('calls unmount callback', async () => {
   awsuiPlugins.flashContent.registerContentReplacer(plugin);
   const { unmount } = render(<Flashbar items={[{}]} />);
   const flashbarWrapper = createWrapper().findFlashbar()!;
-  await waitFor(() => {
-    expectContent(flashbarWrapper.findItems()[0], stylesCss, { content: 'New content', contentReplaced: true });
-    expect(unmountCallback).not.toBeCalled();
-  });
+  expectContent(flashbarWrapper.findItems()[0], stylesCss, { content: 'New content', contentReplaced: true });
+  expect(unmountCallback).not.toBeCalled();
 
   unmount();
   expect(unmountCallback).toBeCalled();
 });
 
-test('calls update callback', async () => {
-  const callback = jest.fn();
+test('calls update callback', () => {
+  const update = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer: jest.fn(() => {
-      return {
-        update: callback,
-        unmount: () => {},
-      };
-    }),
+    runReplacer: jest.fn(() => ({ update, unmount: () => {} })),
   };
   awsuiPlugins.flashContent.registerContentReplacer(plugin);
   const { rerender } = render(<Flashbar items={[{}]} />);
-  await waitFor(() => {
-    expect(callback).toBeCalledTimes(0);
-    expect(plugin.runReplacer).toBeCalledTimes(1);
-  });
+  expect(update).toBeCalledTimes(1);
+  expect(plugin.runReplacer).toBeCalledTimes(1);
+
   rerender(<Flashbar items={[{ content: 'New content' }]} />);
-  expect(callback).toBeCalledTimes(1);
+  expect(update).toBeCalledTimes(2);
   expect(plugin.runReplacer).toBeCalledTimes(1);
 });
 
@@ -264,8 +242,6 @@ describe('asynchronous rendering', () => {
       contentReplaced: false,
     });
 
-    // Lets runReplacer fire but unmounts before replacement header/content are registered.
-    await pause(0);
     unmount();
 
     await waitFor(() => {

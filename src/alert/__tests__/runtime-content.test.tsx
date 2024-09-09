@@ -41,19 +41,17 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-test('renders replacement content initially', async () => {
+test('renders replacement content initially', () => {
   awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
   render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
-  await waitFor(() => {
-    expectContent(alertWrapper, stylesCss, {
-      content: 'New content',
-      contentReplaced: true,
-    });
+  expectContent(alertWrapper, stylesCss, {
+    content: 'New content',
+    contentReplaced: true,
   });
 });
 
-test('renders replacement content when asynchronously registered', async () => {
+test('renders replacement content when asynchronously registered', () => {
   render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
   expectContent(alertWrapper, stylesCss, {
@@ -62,28 +60,24 @@ test('renders replacement content when asynchronously registered', async () => {
   });
 
   awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
-  await waitFor(() => {
-    expectContent(alertWrapper, stylesCss, {
-      content: 'New content',
-      contentReplaced: true,
-    });
+  expectContent(alertWrapper, stylesCss, {
+    content: 'New content',
+    contentReplaced: true,
   });
 });
 
 describe.each([true, false])('existing header:%p', existingHeader => {
-  test('renders replacement header initially', async () => {
+  test('renders replacement header initially', () => {
     awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
     render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
     const alertWrapper = createWrapper().findAlert()!;
-    await waitFor(() => {
-      expectContent(alertWrapper, stylesCss, {
-        header: 'New header',
-        headerReplaced: true,
-      });
+    expectContent(alertWrapper, stylesCss, {
+      header: 'New header',
+      headerReplaced: true,
     });
   });
 
-  test('renders replacement header when asynchronously registered', async () => {
+  test('renders replacement header when asynchronously registered', () => {
     render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
     const alertWrapper = createWrapper().findAlert()!;
     expectContent(alertWrapper, stylesCss, {
@@ -92,16 +86,14 @@ describe.each([true, false])('existing header:%p', existingHeader => {
     });
 
     awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
-    await waitFor(() => {
-      expectContent(alertWrapper, stylesCss, {
-        header: 'New header',
-        headerReplaced: true,
-      });
+    expectContent(alertWrapper, stylesCss, {
+      header: 'New header',
+      headerReplaced: true,
     });
   });
 });
 
-test('removes styling if replacement is explicitly empty', async () => {
+test('removes styling if replacement is explicitly empty', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
     runReplacer(context, registerReplacement) {
@@ -116,13 +108,11 @@ test('removes styling if replacement is explicitly empty', async () => {
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
   render(<Alert header="Initial header">Initial content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
-  await waitFor(() => {
-    expectContent(alertWrapper, stylesCss, {
-      header: false,
-      headerReplaced: true,
-      content: false,
-      contentReplaced: true,
-    });
+  expectContent(alertWrapper, stylesCss, {
+    header: false,
+    headerReplaced: true,
+    content: false,
+    contentReplaced: true,
   });
 });
 
@@ -135,33 +125,27 @@ describe('runReplacer arguments', () => {
     };
     awsuiPlugins.alertContent.registerContentReplacer(plugin);
   });
-  test('refs', async () => {
+  test('refs', () => {
     render(
       <Alert header="Alert header" action={<Button>Action button</Button>}>
         Alert content
       </Alert>
     );
-    await waitFor(() => {
-      expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Alert header');
-      expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Alert content');
-      expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
-    });
+    expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Alert header');
+    expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Alert content');
+    expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
   });
-  test('type - default', async () => {
+  test('type - default', () => {
     render(<Alert />);
-    await waitFor(() => {
-      expect(runReplacer.mock.lastCall[0].type).toBe('info');
-    });
+    expect(runReplacer.mock.lastCall[0].type).toBe('info');
   });
-  test('type - custom', async () => {
+  test('type - custom', () => {
     render(<Alert type="error" />);
-    await waitFor(() => {
-      expect(runReplacer.mock.lastCall[0].type).toBe('error');
-    });
+    expect(runReplacer.mock.lastCall[0].type).toBe('error');
   });
 });
 
-test('calls unmount callback', async () => {
+test('calls unmount callback', () => {
   const unmountCallback = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
@@ -176,34 +160,26 @@ test('calls unmount callback', async () => {
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
   const { unmount } = render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
-  await waitFor(() => {
-    expectContent(alertWrapper, stylesCss, { content: 'New content', contentReplaced: true });
-    expect(unmountCallback).not.toBeCalled();
-  });
+  expectContent(alertWrapper, stylesCss, { content: 'New content', contentReplaced: true });
+  expect(unmountCallback).not.toBeCalled();
 
   unmount();
   expect(unmountCallback).toBeCalled();
 });
 
-test('calls update callback', async () => {
-  const callback = jest.fn();
+test('calls update callback', () => {
+  const update = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer: jest.fn(() => {
-      return {
-        update: callback,
-        unmount: () => {},
-      };
-    }),
+    runReplacer: jest.fn(() => ({ update, unmount: () => {} })),
   };
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
   const { rerender } = render(<Alert>Alert content</Alert>);
-  await waitFor(() => {
-    expect(callback).toBeCalledTimes(0);
-    expect(plugin.runReplacer).toBeCalledTimes(1);
-  });
+  expect(update).toBeCalledTimes(1);
+  expect(plugin.runReplacer).toBeCalledTimes(1);
+
   rerender(<Alert>Alert new content</Alert>);
-  expect(callback).toBeCalledTimes(1);
+  expect(update).toBeCalledTimes(2);
   expect(plugin.runReplacer).toBeCalledTimes(1);
 });
 
@@ -268,8 +244,6 @@ describe('asynchronous rendering', () => {
       contentReplaced: false,
     });
 
-    // Lets runReplacer fire but unmounts before replacement header/content are registered.
-    await pause(0);
     unmount();
 
     await waitFor(() => {
@@ -285,7 +259,7 @@ describe('asynchronous rendering', () => {
   });
 });
 
-test('can only register a single provider', async () => {
+test('can only register a single provider', () => {
   const plugin1: AlertFlashContentConfig = {
     id: 'plugin-1',
     runReplacer: (context, registerReplacement) => {
@@ -312,10 +286,8 @@ test('can only register a single provider', async () => {
 
   render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
-  await waitFor(() => {
-    expectContent(alertWrapper, stylesCss, {
-      content: 'Replacement 1',
-      contentReplaced: true,
-    });
+  expectContent(alertWrapper, stylesCss, {
+    content: 'Replacement 1',
+    contentReplaced: true,
   });
 });

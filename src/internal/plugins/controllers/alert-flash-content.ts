@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import debounce from '../../debounce';
 
 // this code should not depend on React typings, because it is portable between major versions
 interface RefShim<T> {
@@ -48,13 +47,6 @@ export class AlertFlashContentController {
   #cleanups = new Map<AlertFlashContentRegistrationListener, null | (() => void)>();
   #provider?: AlertFlashContentConfig;
 
-  #scheduleUpdate = debounce(() => {
-    this.#listeners.forEach(listener => {
-      const cleanup = listener(this.#provider) ?? null;
-      this.#cleanups.set(listener, cleanup);
-    });
-  }, 0);
-
   registerContentReplacer = (content: AlertFlashContentConfig) => {
     if (this.#provider) {
       console.warn(
@@ -63,7 +55,12 @@ export class AlertFlashContentController {
       return;
     }
     this.#provider = content;
-    this.#scheduleUpdate();
+
+    // Notify existing components if registration happens after the components are rendered.
+    this.#listeners.forEach(listener => {
+      const cleanup = listener(this.#provider) ?? null;
+      this.#cleanups.set(listener, cleanup);
+    });
   };
 
   clearRegisteredReplacer = () => {
@@ -72,7 +69,8 @@ export class AlertFlashContentController {
 
   onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
     this.#listeners.push(listener);
-    this.#scheduleUpdate();
+    this.#cleanups.set(listener, listener(this.#provider) ?? null);
+
     return () => {
       this.#cleanups.get(listener)?.();
       this.#listeners = this.#listeners.filter(item => item !== listener);
