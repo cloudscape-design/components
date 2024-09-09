@@ -52,12 +52,11 @@ test('renders replacement content initially', async () => {
 test('renders replacement content when asynchronously registered', async () => {
   render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
-  await waitFor(() => {
-    expectContent(alertWrapper, stylesCss, {
-      content: 'Alert content',
-      contentReplaced: false,
-    });
+  expectContent(alertWrapper, stylesCss, {
+    content: 'Alert content',
+    contentReplaced: false,
   });
+
   awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
   await waitFor(() => {
     expectContent(alertWrapper, stylesCss, {
@@ -83,12 +82,11 @@ describe.each([true, false])('existing header:%p', existingHeader => {
   test('renders replacement header when asynchronously registered', async () => {
     render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
     const alertWrapper = createWrapper().findAlert()!;
-    await waitFor(() => {
-      expectContent(alertWrapper, stylesCss, {
-        header: existingHeader ? 'Header content' : undefined,
-        headerReplaced: false,
-      });
+    expectContent(alertWrapper, stylesCss, {
+      header: existingHeader ? 'Header content' : undefined,
+      headerReplaced: false,
     });
+
     awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
     await waitFor(() => {
       expectContent(alertWrapper, stylesCss, {
@@ -160,7 +158,8 @@ test('calls unmount callback', async () => {
   const unmountCallback = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer() {
+    runReplacer(context, registerReplacement) {
+      registerReplacement('content', container => container.append('New content'));
       return {
         update: () => {},
         unmount: unmountCallback,
@@ -169,9 +168,12 @@ test('calls unmount callback', async () => {
   };
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
   const { unmount } = render(<Alert>Alert content</Alert>);
+  const alertWrapper = createWrapper().findAlert()!;
   await waitFor(() => {
+    expectContent(alertWrapper, stylesCss, { content: 'New content', contentReplaced: true });
     expect(unmountCallback).not.toBeCalled();
   });
+
   unmount();
   expect(unmountCallback).toBeCalled();
 });

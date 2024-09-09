@@ -53,12 +53,11 @@ test('renders runtime content initially', async () => {
 test('renders runtime content when asynchronously registered', async () => {
   render(<Flashbar items={[{ content: 'Flash content' }]} />);
   const flashbarWrapper = createWrapper().findFlashbar()!;
-  await waitFor(() => {
-    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-      content: 'Flash content',
-      contentReplaced: false,
-    });
+  expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+    content: 'Flash content',
+    contentReplaced: false,
   });
+
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
   await waitFor(() => {
     expectContent(flashbarWrapper.findItems()[0], stylesCss, {
@@ -102,12 +101,11 @@ describe.each([true, false])('existing header:%p', existingHeader => {
       />
     );
     const flashbarWrapper = createWrapper().findFlashbar()!;
-    await waitFor(() => {
-      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-        header: existingHeader ? 'Flash header' : undefined,
-        headerReplaced: false,
-      });
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      header: existingHeader ? 'Flash header' : undefined,
+      headerReplaced: false,
     });
+
     awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
     await waitFor(() => {
       expectContent(flashbarWrapper.findItems()[0], stylesCss, {
@@ -163,7 +161,8 @@ test('calls unmount callback', async () => {
   const unmountCallback = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer() {
+    runReplacer(context, registerReplacement) {
+      registerReplacement('content', container => container.append('New content'));
       return {
         update: () => {},
         unmount: unmountCallback,
@@ -172,9 +171,12 @@ test('calls unmount callback', async () => {
   };
   awsuiPlugins.flashContent.registerContentReplacer(plugin);
   const { unmount } = render(<Flashbar items={[{}]} />);
+  const flashbarWrapper = createWrapper().findFlashbar()!;
   await waitFor(() => {
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, { content: 'New content', contentReplaced: true });
     expect(unmountCallback).not.toBeCalled();
   });
+
   unmount();
   expect(unmountCallback).toBeCalled();
 });
