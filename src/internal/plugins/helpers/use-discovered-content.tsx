@@ -27,14 +27,14 @@ export function createUseDiscoveredContent(onContentRegistered: AlertFlashConten
     const [foundContentReplacement, setFoundContentReplacement] = useState<ReplacementTypeSafe>('original');
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
 
-    const context = {
-      type,
-      headerRef,
-      contentRef,
-      actionsRef,
-    };
-
     useEffect(() => {
+      const context = {
+        type,
+        headerRef,
+        contentRef,
+        actionsRef,
+      };
+
       return onContentRegistered(provider => {
         let mounted = true;
 
@@ -72,8 +72,8 @@ export function createUseDiscoveredContent(onContentRegistered: AlertFlashConten
           mounted = false;
         };
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [type]);
+
     useEffect(() => {
       mountedProvider.current?.update();
     }, [type, header, children]);

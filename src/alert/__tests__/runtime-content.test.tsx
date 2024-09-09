@@ -259,6 +259,28 @@ describe('asynchronous rendering', () => {
   });
 });
 
+test('calls replacer when alert type changes', () => {
+  const plugin: AlertFlashContentConfig = {
+    id: 'plugin',
+    runReplacer: (context, registerReplacement) => {
+      if (context.type === 'error') {
+        registerReplacement('content', container => (container.textContent = 'New error'));
+      } else if (context.type === 'warning') {
+        registerReplacement('content', container => (container.textContent = 'New warning'));
+      }
+      return { update: () => {}, unmount: () => {} };
+    },
+  };
+  awsuiPlugins.alertContent.registerContentReplacer(plugin);
+
+  const { rerender } = render(<Alert type="error">Alert content</Alert>);
+  const alertWrapper = createWrapper().findAlert()!;
+  expectContent(alertWrapper, stylesCss, { content: 'New error', contentReplaced: true });
+
+  rerender(<Alert type="warning">Alert content</Alert>);
+  expectContent(alertWrapper, stylesCss, { content: 'New warning', contentReplaced: true });
+});
+
 test('can only register a single provider', () => {
   const plugin1: AlertFlashContentConfig = {
     id: 'plugin-1',
