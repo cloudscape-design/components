@@ -156,7 +156,7 @@ export function AppLayoutGlobalDrawerImplementation({
   const prevShow = usePrevious(show);
 
   useEffect(() => {
-    if (activeGlobalDrawer && activeGlobalDrawer.keepContentMounted && !!prevShow !== show) {
+    if (activeGlobalDrawer && activeGlobalDrawer.preserveInactiveContent && !!prevShow !== show) {
       if (show) {
         fireNonCancelableEvent(activeGlobalDrawer?.onShow);
       } else {

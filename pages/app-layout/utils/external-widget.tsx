@@ -94,15 +94,77 @@ const Counter: React.FC = ({ children }) => {
   );
 };
 
+class CounterStateManager {
+  private isPaused = false;
+  private pauseCallback: ((isPaused: boolean) => void) | null = null;
+
+  private onPauseStateChange() {
+    if (this.pauseCallback) {
+      this.pauseCallback(this.isPaused);
+    }
+  }
+
+  registerPauseCallback(callback: (isPaused: boolean) => void) {
+    this.pauseCallback = callback;
+  }
+
+  unregisterPauseCallback() {
+    this.pauseCallback = null;
+  }
+
+  pause() {
+    this.isPaused = true;
+    this.onPauseStateChange();
+  }
+
+  resume() {
+    this.isPaused = false;
+    this.onPauseStateChange();
+  }
+}
+
+const autoIncrementState = new CounterStateManager();
+
+const AutoIncrementCounter: React.FC = ({ children }) => {
+  const [count, setCount] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        setCount(prevCount => prevCount + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  useEffect(() => {
+    autoIncrementState.registerPauseCallback(isPaused => {
+      setIsPaused(isPaused);
+    });
+
+    return () => autoIncrementState.unregisterPauseCallback();
+  }, []);
+
+  return (
+    <div>
+      <h3>Auto Increment Counter</h3>
+      <div>Count: {count}</div>
+      {children}
+    </div>
+  );
+};
+
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle-global',
   type: 'global',
   defaultActive: false,
   resizable: true,
   defaultSize: 350,
-  keepContentMounted: true,
-  onShow: () => console.log('onShow'),
-  onHide: () => console.log('onHide'),
+  preserveInactiveContent: true,
+  onShow: () => autoIncrementState.resume(),
+  onHide: () => autoIncrementState.pause(),
 
   ariaLabels: {
     closeButton: 'Close button',
@@ -119,12 +181,11 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   onResize: event => {
-    setSizeRef.current?.(true);
     console.log('resize', event.detail);
   },
 
   mountContent: container => {
-    ReactDOM.render(<Counter>global widget content circle 1</Counter>, container);
+    ReactDOM.render(<AutoIncrementCounter>global widget content circle 1</AutoIncrementCounter>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

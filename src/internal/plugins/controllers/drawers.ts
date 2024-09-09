@@ -23,7 +23,7 @@ export interface DrawerConfig {
   };
   mountContent: (container: HTMLElement) => void;
   unmountContent: (container: HTMLElement) => void;
-  keepContentMounted?: boolean;
+  preserveInactiveContent?: boolean;
   onShow?: NonCancelableEventHandler;
   onHide?: NonCancelableEventHandler;
 }

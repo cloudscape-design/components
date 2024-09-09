@@ -307,7 +307,7 @@ export namespace AppLayoutProps {
     resizable?: boolean;
     defaultSize?: number;
     onResize?: NonCancelableEventHandler<{ size: number }>;
-    keepContentMounted?: boolean;
+    preserveInactiveContent?: boolean;
     onShow?: NonCancelableEventHandler;
     onHide?: NonCancelableEventHandler;
   }

@@ -1014,13 +1014,13 @@ describe('toolbar mode only features', () => {
       expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
     });
 
-    test('should keep global drawer in DOM tree if keepContentMounted is set to true', async () => {
+    test('should keep global drawer in DOM tree if preserveInactiveContent is set to true', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'global-drawer-1',
         type: 'global',
         mountContent: container => (container.textContent = 'global drawer content 1'),
-        keepContentMounted: true,
+        preserveInactiveContent: true,
       });
 
       const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
@@ -1033,7 +1033,7 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
     });
 
-    test('should call onShow and onHide when global drawer with keepContentMounted is opened and closed', async () => {
+    test('should call onShow and onHide when global drawer with preserveInactiveContent is opened and closed', async () => {
       const onShow = jest.fn();
       const onHide = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
@@ -1041,7 +1041,7 @@ describe('toolbar mode only features', () => {
         id: 'global-drawer-1',
         type: 'global',
         mountContent: container => (container.textContent = 'global drawer content 1'),
-        keepContentMounted: true,
+        preserveInactiveContent: true,
         onShow,
         onHide,
       });
