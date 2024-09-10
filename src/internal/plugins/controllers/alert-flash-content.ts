@@ -10,7 +10,6 @@ export interface AlertFlashContentContext {
   type: string;
   headerRef: RefShim<HTMLElement>;
   contentRef: RefShim<HTMLElement>;
-  actionsRef: RefShim<HTMLElement>;
 }
 
 export type ReplacementType =

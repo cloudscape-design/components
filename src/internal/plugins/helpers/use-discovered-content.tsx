@@ -25,18 +25,12 @@ export function createUseDiscoveredContent(
     const contentRef = useRef<HTMLDivElement>(null);
     const replacementHeaderRef = useRef<HTMLDivElement>(null);
     const replacementContentRef = useRef<HTMLDivElement>(null);
-    const actionsRef = useRef<HTMLDivElement>(null);
     const [foundHeaderReplacement, setFoundHeaderReplacement] = useState<ReplacementTypeSafe>('original');
     const [foundContentReplacement, setFoundContentReplacement] = useState<ReplacementTypeSafe>('original');
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
 
     useEffect(() => {
-      const context = {
-        type,
-        headerRef,
-        contentRef,
-        actionsRef,
-      };
+      const context = { type, headerRef, contentRef };
 
       return onContentRegistered(provider => {
         let mounted = true;
@@ -88,7 +82,6 @@ export function createUseDiscoveredContent(
       replacementHeaderRef: replacementHeaderRef as React.Ref<HTMLDivElement>,
       contentRef: contentRef as React.Ref<HTMLDivElement>,
       replacementContentRef: replacementContentRef as React.Ref<HTMLDivElement>,
-      actionsRef: actionsRef as React.Ref<HTMLDivElement>,
     };
   };
 }

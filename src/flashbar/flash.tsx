@@ -130,7 +130,6 @@ export const Flash = React.forwardRef(
       contentRef: contentRefContent,
       replacementHeaderRef,
       replacementContentRef,
-      actionsRef,
     } = useDiscoveredContent({ type, header, children: content });
 
     const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
@@ -218,7 +217,6 @@ export const Flash = React.forwardRef(
             </div>
           </div>
           <ActionsWrapper
-            ref={actionsRef}
             className={styles['action-button-wrapper']}
             testUtilClasses={{
               actionSlot: styles['action-slot'],

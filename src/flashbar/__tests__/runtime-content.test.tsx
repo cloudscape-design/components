@@ -137,7 +137,6 @@ describe('runReplacer arguments', () => {
     );
     expect(runReplacer.mock.lastCall[0].headerRef.current).toHaveTextContent('Flash header');
     expect(runReplacer.mock.lastCall[0].contentRef.current).toHaveTextContent('Flash content');
-    expect(runReplacer.mock.lastCall[0].actionsRef.current).toHaveTextContent('Action button');
   });
   test('type - default', () => {
     render(<Flashbar items={[{}]} />);
