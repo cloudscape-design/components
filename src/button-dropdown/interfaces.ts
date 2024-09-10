@@ -121,7 +121,7 @@ export namespace ButtonDropdownProps {
   export type ItemType = 'action' | 'group';
 
   export interface MainAction {
-    text: string;
+    text?: string;
     ariaLabel?: string;
     onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
@@ -282,6 +282,12 @@ export interface InternalButtonDropdownProps
    * Optional text that is displayed underneath the title at the top of the dropdown.
    */
   description?: string;
+
+  /**
+   * Only show main action button as a regular, non-split button.
+   * That is needed so that button dropdown test utils wrapper can still be used.
+   */
+  showMainActionOnly?: boolean;
 
   /**
    * Determines that the dropdown should preferably be aligned to the center of the trigger

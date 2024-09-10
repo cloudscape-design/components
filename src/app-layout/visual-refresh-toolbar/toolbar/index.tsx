@@ -170,7 +170,11 @@ export function AppLayoutToolbarImplementation({
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             {breadcrumbs}
             {discoveredBreadcrumbs && (
-              <BreadcrumbGroupImplementation {...discoveredBreadcrumbs} __injectAnalyticsComponentMetadata={true} />
+              <BreadcrumbGroupImplementation
+                {...discoveredBreadcrumbs}
+                data-awsui-discovered-breadcrumbs={true}
+                __injectAnalyticsComponentMetadata={true}
+              />
             )}
           </div>
         )}
