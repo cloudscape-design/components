@@ -882,9 +882,8 @@ describe('toolbar mode only features', () => {
         type: 'global',
         mountContent: container => (container.textContent = 'global drawer content 1'),
       });
-      const ref: React.MutableRefObject<AppLayoutProps.Ref | null> = React.createRef();
 
-      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} ref={ref} />);
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.focus();
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
