@@ -64,7 +64,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * operations are communicated to the user in another way.
    */
   hideOperations?: boolean;
-  /*
+  /**
    * Activates token grouping mechanism to support tokens nesting (up to one level).
    * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.
    */
