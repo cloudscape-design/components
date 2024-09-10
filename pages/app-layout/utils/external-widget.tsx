@@ -94,40 +94,11 @@ const Counter: React.FC = ({ children }) => {
   );
 };
 
-class CounterStateManager {
-  private isPaused = false;
-  private pauseCallback: ((isPaused: boolean) => void) | null = null;
-
-  private onPauseStateChange() {
-    if (this.pauseCallback) {
-      this.pauseCallback(this.isPaused);
-    }
-  }
-
-  registerPauseCallback(callback: (isPaused: boolean) => void) {
-    this.pauseCallback = callback;
-  }
-
-  unregisterPauseCallback() {
-    this.pauseCallback = null;
-  }
-
-  pause() {
-    this.isPaused = true;
-    this.onPauseStateChange();
-  }
-
-  resume() {
-    this.isPaused = false;
-    this.onPauseStateChange();
-  }
-}
-
-const autoIncrementState = new CounterStateManager();
-
-const AutoIncrementCounter: React.FC = ({ children }) => {
+const AutoIncrementCounter: React.FC<{
+  onVisibilityChange?: (callback: (isVisible: boolean) => void) => () => void;
+}> = ({ children, onVisibilityChange }) => {
   const [count, setCount] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isPaused, setIsPaused] = useState(true);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -140,12 +111,16 @@ const AutoIncrementCounter: React.FC = ({ children }) => {
   }, [isPaused]);
 
   useEffect(() => {
-    autoIncrementState.registerPauseCallback(isPaused => {
-      setIsPaused(isPaused);
-    });
+    if (onVisibilityChange) {
+      const unsubscribe = onVisibilityChange((isVisible: boolean) => {
+        setIsPaused(!isVisible);
+      });
 
-    return () => autoIncrementState.unregisterPauseCallback();
-  }, []);
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [onVisibilityChange]);
 
   return (
     <div>
@@ -163,8 +138,6 @@ awsuiPlugins.appLayout.registerDrawer({
   resizable: true,
   defaultSize: 350,
   preserveInactiveContent: true,
-  onShow: () => autoIncrementState.resume(),
-  onHide: () => autoIncrementState.pause(),
 
   ariaLabels: {
     closeButton: 'Close button',
@@ -184,8 +157,16 @@ awsuiPlugins.appLayout.registerDrawer({
     console.log('resize', event.detail);
   },
 
-  mountContent: container => {
-    ReactDOM.render(<AutoIncrementCounter>global widget content circle 1</AutoIncrementCounter>, container);
+  mountContent: (
+    container: HTMLElement,
+    onVisibilityChange?: (callback: (isVisible: boolean) => void) => () => void
+  ) => {
+    ReactDOM.render(
+      <AutoIncrementCounter onVisibilityChange={onVisibilityChange}>
+        global widget content circle 1
+      </AutoIncrementCounter>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

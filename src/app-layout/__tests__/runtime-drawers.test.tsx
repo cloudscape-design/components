@@ -1065,17 +1065,26 @@ describe('toolbar mode only features', () => {
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
     });
 
-    test('should call onShow and onHide when global drawer with preserveInactiveContent is opened and closed', async () => {
+    test('should call visibilityChange callback when global drawer with preserveInactiveContent is opened and closed', async () => {
       const onShow = jest.fn();
       const onHide = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'global-drawer-1',
         type: 'global',
-        mountContent: container => (container.textContent = 'global drawer content 1'),
+        mountContent: (container, onVisibilityChange) => {
+          if (onVisibilityChange) {
+            onVisibilityChange((isVisible: boolean) => {
+              if (isVisible) {
+                onShow();
+              } else {
+                onHide();
+              }
+            });
+          }
+          container.textContent = 'global drawer content 1';
+        },
         preserveInactiveContent: true,
-        onShow,
-        onHide,
       });
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);

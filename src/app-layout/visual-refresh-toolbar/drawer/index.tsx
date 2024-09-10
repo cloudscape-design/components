@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
-import { fireNonCancelableEvent } from '../../../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { usePrevious } from '../../../internal/hooks/use-previous';
 import { createWidgetizedComponent } from '../../../internal/widgets';
@@ -131,7 +131,9 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
 interface AppLayoutGlobalDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   show: boolean;
-  activeGlobalDrawer: AppLayoutProps.Drawer | undefined;
+  activeGlobalDrawer:
+    | (AppLayoutProps.Drawer & { onShow?: NonCancelableEventHandler; onHide?: NonCancelableEventHandler })
+    | undefined;
 }
 
 export function AppLayoutGlobalDrawerImplementation({

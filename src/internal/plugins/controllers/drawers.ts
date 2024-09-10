@@ -21,11 +21,12 @@ export interface DrawerConfig {
   trigger: {
     iconSvg: string;
   };
-  mountContent: (container: HTMLElement) => void;
+  mountContent: (
+    container: HTMLElement,
+    onVisibilityChange?: (callback: (isVisible: boolean) => void) => () => void
+  ) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
-  onShow?: NonCancelableEventHandler;
-  onHide?: NonCancelableEventHandler;
 }
 
 export type UpdateDrawerConfig = Pick<DrawerConfig, 'id' | 'badge' | 'resizable' | 'defaultSize'>;
