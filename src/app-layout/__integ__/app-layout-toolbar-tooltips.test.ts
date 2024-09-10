@@ -13,36 +13,6 @@ import tooltipStyles from '../../../lib/components/internal/components/tooltip/s
 
 const wrapper = createWrapper().findAppLayout();
 
-class AppLayoutDrawersPage extends BasePageObject {
-  async getElementCenter(selector: string) {
-    const targetRect = await this.getBoundingBox(selector);
-    const x = Math.round(targetRect.left + targetRect.width / 2);
-    const y = Math.round(targetRect.top + targetRect.height / 2);
-    return { x, y };
-  }
-
-  /**
-   * This holds the pointer down for an longer than the buttonDownOnElement
-   * @param selector
-   */
-  async pointerDown(selector: string, customDuration = 150) {
-    const center = await this.getElementCenter(selector);
-    await (await this.browser.$(selector)).moveTo();
-    await this.browser.performActions([
-      {
-        type: 'pointer',
-        id: 'event',
-        parameters: { pointerType: 'touch' },
-        actions: [
-          { type: 'pointerMove', duration: 0, origin: 'pointer', ...center },
-          { type: 'pointerDown', button: 0, duration: customDuration },
-          { type: 'pause', duration: 50 },
-        ],
-      },
-    ]);
-  }
-}
-
 interface SetupTestOptions {
   splitPanelPosition?: string;
   size?: 'desktop' | 'mobile';
@@ -55,10 +25,10 @@ const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT = 2; //must match the number in  '..
 
 const setupTest = (
   { size = 'desktop', theme = 'visual-refresh' }: SetupTestOptions,
-  testFn: (page: AppLayoutDrawersPage) => Promise<void>
+  testFn: (page: BasePageObject) => Promise<void>
 ) =>
   useBrowser(size === 'desktop' ? viewports.desktop : viewports.mobile, async browser => {
-    const page = new AppLayoutDrawersPage(browser);
+    const page = new BasePageObject(browser);
     const params = new URLSearchParams({
       visualRefresh: theme === 'classic' ? 'false' : 'true',
       appLayoutWidget: theme === 'visual-refresh' ? 'false' : 'true',
