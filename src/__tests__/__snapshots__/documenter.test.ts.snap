@@ -729,7 +729,7 @@ Each Drawer is an item in the drawers wrapper with the following properties:
 - \`iconSvg\` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
 
 #### DrawerAriaLabels
-- \`drawerName\` (string) - Label for the drawer itself.
+- \`drawerName\` (string) - Label for the drawer itself and the text in the tooltip for the drawer trigger button
 - \`closeButton\` (string) - (Optional) Label for the close button.
 - \`triggerButton\` (string) - (Optional) Label for the trigger button.
 - \`resizeHandle\` (string) - (Optional) Label for the resize handle.
