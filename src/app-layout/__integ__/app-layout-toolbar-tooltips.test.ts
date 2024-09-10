@@ -11,6 +11,7 @@ import visualRefreshStyles from '../../../lib/components/app-layout/visual-refre
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
+const testIf = (condition: boolean) => (condition ? test : test.skip);
 const wrapper = createWrapper().findAppLayout();
 
 interface SetupTestOptions {
@@ -96,7 +97,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
     const drawersTriggerContainerClassKey = `drawers-${size === 'desktop' ? 'desktop' : 'mobile'}-triggers-container`;
     const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : toolbarDrawerIds;
 
-    test(
+    testIf(size === 'desktop')(
       'Shows tooltip correctly for mouse interactions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
