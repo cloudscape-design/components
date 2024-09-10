@@ -240,7 +240,7 @@ export const stepsPermutations = createPermutations<StepsProps>([
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
-    header: <div style={{ margin: '0', color: 'rgb(95, 107, 122)' }}>Listing EC2 instances</div>,
+    header: <div style={{ margin: '0' }}>Listing EC2 instances</div>,
     details: <div className={styles.details}>Using the ec2_DescribeInstances</div>,
   },
 ];
@@ -249,7 +249,7 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'success',
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -271,7 +271,7 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     ),
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(95, 107, 122)' }}>Gathering Security Group IDs</div>,
+    header: <div style={{ margin: '0' }}>Gathering Security Group IDs</div>,
     details: (
       <div className={styles.details}>
         Using the ec2_DescribeSecurityGroupsTool::
@@ -289,7 +289,7 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -313,7 +313,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
@@ -335,7 +335,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(95, 107, 122)' }}>Checking Cross Region Consent</div>,
+    header: <div style={{ margin: '0' }}>Checking Cross Region Consent</div>,
     status: 'loading',
   },
 ];
@@ -343,7 +343,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
 export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -367,7 +367,7 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
@@ -389,11 +389,11 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>Checked Cross Region Consent</div>,
+    header: <div style={{ margin: '0' }}>Checked Cross Region Consent</div>,
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(95, 107, 122)' }}>Analyzing security rules</div>,
+    header: <div style={{ margin: '0' }}>Analyzing security rules</div>,
     status: 'loading',
   },
 ];
@@ -401,7 +401,7 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
 export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -425,7 +425,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
@@ -447,11 +447,11 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>Checked Cross Region Consent</div>,
+    header: <div style={{ margin: '0' }}>Checked Cross Region Consent</div>,
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>Analyzing security rules</div>,
+    header: <div style={{ margin: '0' }}>Analyzing security rules</div>,
     status: 'success',
   },
 ];
@@ -459,7 +459,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -483,7 +483,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
@@ -505,7 +505,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(141, 102, 5)' }}>Need Cross Region Consent</div>,
+    header: <div style={{ margin: '0' }}>Need Cross Region Consent</div>,
     details: (
       <div className={styles.details}>
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
@@ -519,7 +519,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -542,7 +542,7 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(217, 21, 21)' }}>Could not fetch security groups</div>,
+    header: <div style={{ margin: '0' }}>Could not fetch security groups</div>,
     status: 'error',
   },
 ];
@@ -550,7 +550,7 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -573,7 +573,7 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(217, 21, 21)' }}>Could not fetch security groups</div>,
+    header: <div style={{ margin: '0' }}>Could not fetch security groups</div>,
     details: (
       <div style={{ margin: '0' }}>
         The request expired due to a server issue. <Link href="#">Retry</Link>
@@ -586,7 +586,7 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
 export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <div style={{ margin: '0', color: 'rgb(3, 127, 12)' }}>
+      <div style={{ margin: '0' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -609,7 +609,7 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
     status: 'success',
   },
   {
-    header: <div style={{ margin: '0', color: 'rgb(217, 21, 21)' }}>Could not fetch security groups</div>,
+    header: <div style={{ margin: '0' }}>Could not fetch security groups</div>,
     details: (
       <>
         <div style={{ margin: '0' }}>The request expired due to a server issue.</div>

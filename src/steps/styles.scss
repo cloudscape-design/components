@@ -10,49 +10,51 @@
   @include styles.styles-reset;
 }
 
-.steps-list {
-  list-style: none;
+.steps {
+  > .list {
+    list-style: none;
 
-  > .step-container {
-    display: grid;
-    grid-template-columns: awsui.$space-static-l 1fr;
-    grid-template-rows: minmax(awsui.$space-static-l, auto);
-    row-gap: awsui.$space-static-xxxs;
-    margin-block-end: awsui.$space-static-xxxs;
+    > .container {
+      display: grid;
+      grid-template-columns: awsui.$space-static-l 1fr;
+      grid-template-rows: minmax(awsui.$space-static-l, auto);
+      row-gap: awsui.$space-static-xxxs;
+      margin-block-end: awsui.$space-static-xxxs;
 
-    > .step-status {
-      grid-row: 1;
-      grid-column: 1;
-      text-align: center;
+      > .status {
+        grid-row: 1;
+        grid-column: 1;
+        text-align: center;
+      }
+
+      > .header {
+        grid-row: 1;
+        grid-column: 2;
+      }
+
+      > .details {
+        align-items: center;
+        grid-row: 2;
+        grid-column: 2;
+      }
+
+      > .connector {
+        grid-row: 2;
+        grid-column: 1;
+        background-color: awsui.$color-border-divider-default;
+        margin-block: 0;
+        border-block: 0;
+        border-inline: 0;
+        inline-size: awsui.$space-static-xxxs;
+        block-size: auto;
+        min-block-size: awsui.$space-static-xs;
+        position: relative;
+        inset-inline-end: awsui.$space-static-xxxs;
+      }
     }
 
-    > .step-header {
-      grid-row: 1;
-      grid-column: 2;
+    > :last-of-type > .connector {
+      display: none;
     }
-
-    > .step-details {
-      align-items: center;
-      grid-row: 2;
-      grid-column: 2;
-    }
-
-    > .step-connector {
-      grid-row: 2;
-      grid-column: 1;
-      background-color: awsui.$color-border-divider-default;
-      margin-block: 0;
-      border-block: 0;
-      border-inline: 0;
-      inline-size: awsui.$space-static-xxxs;
-      block-size: auto;
-      min-block-size: awsui.$space-static-xs;
-      position: relative;
-      inset-inline-end: awsui.$space-static-xxxs;
-    }
-  }
-
-  > :last-of-type > .step-connector {
-    display: none;
   }
 }

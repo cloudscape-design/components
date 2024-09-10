@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { SomeRequired } from '../internal/types';
@@ -13,13 +14,13 @@ type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseCompon
 
 const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsProps.Step) => {
   return (
-    <li className={styles['step-container']}>
-      <div className={styles['step-status']}>
+    <li className={styles.container}>
+      <div className={styles.status}>
         <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel} />
       </div>
-      <div className={styles['step-header']}>{header}</div>
-      <hr className={styles['step-connector']} />
-      {details && <div className={styles['step-details']}>{details}</div>}
+      <div className={styles.header}>{header}</div>
+      <hr className={styles.connector} />
+      {details && <div className={styles.details}>{details}</div>}
     </li>
   );
 };
@@ -27,12 +28,14 @@ const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsPro
 export const InternalSteps = ({ steps, ...props }: InternalStepsProps) => {
   return (
     <div
-      className={styles.root}
+      {...props}
+      className={clsx(styles.root, styles.steps, props.className)}
       aria-label={props.ariaLabel}
       aria-labelledby={props.ariaLabelledby}
       aria-describedby={props.ariaDescribedby}
+      ref={props.__internalRootRef}
     >
-      <ol className={styles['steps-list']}>
+      <ol className={styles.list}>
         {steps.map((step, index) => (
           <InternalStep
             key={index}

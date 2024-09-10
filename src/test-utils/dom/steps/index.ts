@@ -17,14 +17,14 @@ export class StepWrapper extends ComponentWrapper {
    * Finds the header of a step
    */
   findHeader(): ElementWrapper | null {
-    return this.findByClassName(styles['step-header']);
+    return this.findByClassName(styles.header);
   }
 
   /**
    * Finds the details of a step
    */
   findDetails(): ElementWrapper | null {
-    return this.findByClassName(styles['step-details']);
+    return this.findByClassName(styles.details);
   }
 }
 export default class StepsWrapper extends ComponentWrapper {
@@ -34,6 +34,6 @@ export default class StepsWrapper extends ComponentWrapper {
    * Finds all step items
    */
   findItems(): Array<StepWrapper> {
-    return this.findAllByClassName(styles['step-container']).map(item => new StepWrapper(item.getElement()));
+    return this.findAllByClassName(styles.container).map(item => new StepWrapper(item.getElement()));
   }
 }
