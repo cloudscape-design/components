@@ -56,7 +56,7 @@ function useRuntimeDrawers(
   drawers: AppLayoutProps.Drawer[]
 ) {
   const [runtimeLocalDrawers, setRuntimeLocalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
-  const [runtimeGlobalDrawers, setRuntimeGlobalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
+  const [runtimeGlobalDrawers, setRuntimeGlobalDrawers] = useState<Array<AppLayoutProps.Drawer>>([]);
   const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
   const onGlobalDrawersChangeStable = useStableCallback(setActiveGlobalDrawersIds);
 
@@ -73,7 +73,7 @@ function useRuntimeDrawers(
       const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
       const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
       setRuntimeLocalDrawers(convertRuntimeDrawers(localDrawers));
-      setRuntimeGlobalDrawers(convertRuntimeDrawers(globalDrawers));
+      setRuntimeGlobalDrawers(convertRuntimeDrawers(globalDrawers).after);
       if (!localDrawerWasOpenRef.current) {
         const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
         if (defaultActiveLocalDrawer) {
@@ -102,9 +102,7 @@ function useRuntimeDrawers(
       const localDrawer = [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]?.find(
         drawer => drawer.id === drawerId
       );
-      const globalDrawer = [...runtimeGlobalDrawers.before, ...runtimeGlobalDrawers.after]?.find(
-        drawer => drawer.id === drawerId
-      );
+      const globalDrawer = runtimeGlobalDrawers?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId !== drawerId) {
         onActiveDrawerChange(drawerId);
       }
@@ -121,8 +119,7 @@ function useRuntimeDrawers(
     activeGlobalDrawersIds,
     drawers,
     onActiveDrawerChange,
-    runtimeGlobalDrawers.after,
-    runtimeGlobalDrawers.before,
+    runtimeGlobalDrawers,
     runtimeLocalDrawers.after,
     runtimeLocalDrawers.before,
     setActiveGlobalDrawersIds,
@@ -180,7 +177,7 @@ export function useDrawers(
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
     fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
-    const activeGlobalDrawer = combinedGlobalDrawers.find(drawer => drawer.id === id);
+    const activeGlobalDrawer = runtimeGlobalDrawers.find(drawer => drawer.id === id);
     fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
   }
 
@@ -225,20 +222,19 @@ export function useDrawers(
   const combinedLocalDrawers = drawers
     ? [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]
     : applyToolsDrawer(toolsProps, runtimeLocalDrawers);
-  const combinedGlobalDrawers = [...runtimeGlobalDrawers.before, ...runtimeGlobalDrawers.after];
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedLocalDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
-  const activeGlobalDrawers = combinedGlobalDrawers.filter(drawer => activeGlobalDrawersIds.includes(drawer.id));
+  const activeGlobalDrawers = runtimeGlobalDrawers.filter(drawer => activeGlobalDrawersIds.includes(drawer.id));
 
   const activeDrawerSize = activeDrawerIdResolved
     ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
     : toolsProps.toolsWidth;
   const activeGlobalDrawersSizes: Record<string, number> = activeGlobalDrawersIds.reduce(
     (acc, currentGlobalDrawerId) => {
-      const currentGlobalDrawer = combinedGlobalDrawers.find(drawer => drawer.id === currentGlobalDrawerId);
+      const currentGlobalDrawer = runtimeGlobalDrawers.find(drawer => drawer.id === currentGlobalDrawerId);
       return {
         ...acc,
         [currentGlobalDrawerId]:
@@ -247,7 +243,7 @@ export function useDrawers(
     },
     {}
   );
-  const minGlobalDrawersSizes: Record<string, number> = combinedGlobalDrawers.reduce((acc, globalDrawer) => {
+  const minGlobalDrawersSizes: Record<string, number> = runtimeGlobalDrawers.reduce((acc, globalDrawer) => {
     return {
       ...acc,
       [globalDrawer.id]: Math.min(globalDrawer.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE),
@@ -260,7 +256,7 @@ export function useDrawers(
     drawers: combinedLocalDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
-    globalDrawers: combinedGlobalDrawers,
+    globalDrawers: runtimeGlobalDrawers,
     activeGlobalDrawers: activeGlobalDrawers,
     activeGlobalDrawersIds,
     activeGlobalDrawersSizes,
