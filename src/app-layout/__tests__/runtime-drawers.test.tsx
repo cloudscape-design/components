@@ -639,6 +639,20 @@ describeEachAppLayout(({ theme, size }) => {
     wrapper.findToolsClose().click();
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
   });
+
+  test('opens a drawer when openDrawer is called', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+
+    awsuiPlugins.appLayout.openDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+  });
 });
 
 describe('toolbar mode only features', () => {

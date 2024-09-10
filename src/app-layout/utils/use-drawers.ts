@@ -52,7 +52,8 @@ function useRuntimeDrawers(
   activeDrawerId: string | null,
   onActiveDrawerChange: (newDrawerId: string | null) => void,
   activeGlobalDrawersIds: Array<string>,
-  setActiveGlobalDrawersIds: (newDrawerId: string) => void
+  setActiveGlobalDrawersIds: (newDrawerId: string) => void,
+  drawers: AppLayoutProps.Drawer[]
 ) {
   const [runtimeLocalDrawers, setRuntimeLocalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
   const [runtimeGlobalDrawers, setRuntimeGlobalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
@@ -95,6 +96,37 @@ function useRuntimeDrawers(
       setRuntimeLocalDrawers({ before: [], after: [] });
     };
   }, [activeGlobalDrawersIds, disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
+
+  useEffect(() => {
+    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
+      const localDrawer = [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]?.find(
+        drawer => drawer.id === drawerId
+      );
+      const globalDrawer = [...runtimeGlobalDrawers.before, ...runtimeGlobalDrawers.after]?.find(
+        drawer => drawer.id === drawerId
+      );
+      if (localDrawer && activeDrawerId !== drawerId) {
+        onActiveDrawerChange(drawerId);
+      }
+      if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
+        setActiveGlobalDrawersIds(drawerId);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [
+    activeDrawerId,
+    activeGlobalDrawersIds,
+    drawers,
+    onActiveDrawerChange,
+    runtimeGlobalDrawers.after,
+    runtimeGlobalDrawers.before,
+    runtimeLocalDrawers.after,
+    runtimeLocalDrawers.before,
+    setActiveGlobalDrawersIds,
+  ]);
 
   return {
     local: runtimeLocalDrawers,
@@ -187,7 +219,8 @@ export function useDrawers(
     activeDrawerId,
     onActiveDrawerChange,
     activeGlobalDrawersIds,
-    onActiveGlobalDrawersChange
+    onActiveGlobalDrawersChange,
+    drawers ?? []
   );
   const combinedLocalDrawers = drawers
     ? [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]
