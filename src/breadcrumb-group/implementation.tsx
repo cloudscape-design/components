@@ -105,6 +105,13 @@ interface ItemsWidthsType {
   real: Array<number>;
 }
 
+const areArrayEqual = (first: Array<number>, second: Array<number>) => {
+  if (first.length !== second.length) {
+    return false;
+  }
+  return first.every((item, index) => item === second[index]);
+};
+
 export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
   ariaLabel,
@@ -136,15 +143,18 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   useEffect(() => {
     if (itemsRefs.current) {
       const newItemsWidths: ItemsWidthsType = { ghost: [], real: [] };
-      for (const node of Object.entries(itemsRefs.current.ghost)) {
-        const width = getLogicalBoundingClientRect(node[1]).inlineSize;
+      for (const node of Object.values(itemsRefs.current.ghost)) {
+        const width = getLogicalBoundingClientRect(node).inlineSize;
         newItemsWidths.ghost.push(width);
       }
-      for (const node of Object.entries(itemsRefs.current.real)) {
-        const width = getLogicalBoundingClientRect(node[1]).inlineSize;
+      for (const node of Object.values(itemsRefs.current.real)) {
+        const width = getLogicalBoundingClientRect(node).inlineSize;
         newItemsWidths.real.push(width);
       }
-      if (JSON.stringify(newItemsWidths) !== JSON.stringify(itemsWidths)) {
+      if (
+        !areArrayEqual(newItemsWidths.ghost, itemsWidths.ghost) ||
+        !areArrayEqual(newItemsWidths.real, itemsWidths.real)
+      ) {
         setItemsWidths(newItemsWidths);
       }
     }

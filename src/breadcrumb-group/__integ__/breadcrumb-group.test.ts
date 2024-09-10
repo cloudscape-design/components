@@ -33,16 +33,16 @@ class BreadcrumbGroupPage extends BasePageObject {
   clickItem(index: number) {
     return this.click(dropdownWrapper.findItems().get(index).toSelector());
   }
-  getActiveElemenId() {
+  getActiveElementId() {
     return this.browser.execute(function () {
-      return document.activeElement!.id;
+      return document.activeElement?.id;
     });
   }
   isEllipsisVisible() {
     return this.isExisting(`.${breadcrumbGroupStyles.ellipsis}.${breadcrumbGroupStyles.visible}`);
   }
   isTooltipDisplayed() {
-    return this.isExisting(createWrapper().find(`.${tooltipStyles.root}`).toSelector());
+    return this.isExisting(`.${tooltipStyles.root}`);
   }
 }
 const setupTest = (
@@ -224,7 +224,7 @@ describe('BreadcrumbGroup', () => {
         await page.keys('Tab');
         await page.keys('Tab');
         await page.keys('Tab');
-        await expect(page.getActiveElemenId()).resolves.toBe('focus-target-short-text');
+        await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
       },
       { width: 1200, height: 800 }
     )
@@ -241,7 +241,7 @@ describe('BreadcrumbGroup', () => {
       await expect(page.isTooltipDisplayed()).resolves.toBe(true);
       await page.keys('Tab');
       await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-      await expect(page.getActiveElemenId()).resolves.toBe('focus-target-short-text');
+      await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
     })
   );
 });
