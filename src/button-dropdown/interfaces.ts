@@ -284,6 +284,12 @@ export interface InternalButtonDropdownProps
   description?: string;
 
   /**
+   * Only show main action button as a regular, non-split button.
+   * That is needed so that button dropdown test utils wrapper can still be used.
+   */
+  showMainActionOnly?: boolean;
+
+  /**
    * Determines that the dropdown should preferably be aligned to the center of the trigger
    * instead of dropping left or right.
    */

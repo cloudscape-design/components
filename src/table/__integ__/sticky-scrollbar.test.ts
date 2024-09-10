@@ -71,12 +71,13 @@ describe('Sticky scrollbar', () => {
   test(
     `scrollbar position updates when window resizes`,
     setupTest(async page => {
-      await page.setWindowSize({ width: 600, height: 400 });
+      await page.setWindowSize({ width: 600, height: 600 });
       const { bottom: bottom1 } = await page.getBoundingBox(page.findVisibleScrollbar());
-      expect(bottom1).toEqual(400);
-      await page.setWindowSize({ width: 600, height: 200 });
+      expect(bottom1).toEqual((await page.getViewportSize()).height);
+
+      await page.setWindowSize({ width: 600, height: 400 });
       const { bottom: bottom2 } = await page.getBoundingBox(page.findVisibleScrollbar());
-      expect(bottom2).toEqual(200);
+      expect(bottom1 - bottom2).toBe(200);
     })
   );
 });

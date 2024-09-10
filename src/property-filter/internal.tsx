@@ -4,6 +4,7 @@ import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -18,6 +19,7 @@ import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
+import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
 import { usePropertyFilterI18n } from './i18n-utils';
 import {
@@ -43,6 +45,7 @@ import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
@@ -305,7 +308,7 @@ const PropertyFilterInternal = React.forwardRef(
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
-        <div className={styles['search-field']}>
+        <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
             ref={inputRef}
@@ -404,17 +407,23 @@ const PropertyFilterInternal = React.forwardRef(
                   customFilterActions ? (
                     <div className={styles['custom-filter-actions']}>{customFilterActions}</div>
                   ) : (
-                    <InternalButton
-                      formAction="none"
-                      onClick={() => {
-                        removeAllTokens();
-                        inputRef.current?.focus({ preventDropdown: true });
-                      }}
-                      className={styles['remove-all']}
-                      disabled={disabled}
+                    <span
+                      {...getAnalyticsMetadataAttribute({
+                        action: 'clearFilters',
+                      } as Partial<GeneratedAnalyticsMetadataPropertyFilterClearFilters>)}
                     >
-                      {i18nStrings.clearFiltersText}
-                    </InternalButton>
+                      <InternalButton
+                        formAction="none"
+                        onClick={() => {
+                          removeAllTokens();
+                          inputRef.current?.focus({ preventDropdown: true });
+                        }}
+                        className={styles['remove-all']}
+                        disabled={disabled}
+                      >
+                        {i18nStrings.clearFiltersText}
+                      </InternalButton>
+                    </span>
                   )
                 }
               />

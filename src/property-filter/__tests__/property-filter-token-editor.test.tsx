@@ -83,7 +83,7 @@ function renderComponent(props?: Partial<PropertyFilterInternalProps>, withI18nP
   return withI18nProvider
     ? reactRender(
         <TestI18nProvider messages={providedI18nStrings}>
-          <PropertyFilterInternal {...defaultProps} {...props} />
+          <PropertyFilterInternal {...defaultProps} {...props} i18nStrings={{}} i18nStringsTokenGroups={{}} />
         </TestI18nProvider>
       )
     : reactRender(<PropertyFilterInternal {...defaultProps} {...props} />);
@@ -324,6 +324,20 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
   });
 });
 
+describe.each([false, true])('with i18n-provider %s', withI18nProvider => {
+  test('uses entered text label for token value autosuggest', () => {
+    renderComponent(
+      { query: { operation: 'and', tokens: [{ propertyKey: 'string', operator: '=', value: 'John' }] } },
+      withI18nProvider
+    );
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.valueAutosuggest().focus();
+    editor.valueAutosuggest().setInputValue('123');
+    expect(editor.valueAutosuggest().findEnteredTextOption()!.getElement()).toHaveTextContent('Use: "123"');
+  });
+});
+
 const tokenJohn = { propertyKey: 'string', operator: '=', value: 'John' };
 const tokenJane = { propertyKey: 'string', operator: '=', value: 'Jane' };
 const tokenJack = { propertyKey: 'string', operator: '=', value: 'Jack' };
@@ -361,8 +375,7 @@ describe.each([false, true] as const)('token editor labels, isMobile = %s', isMo
         );
         expect(removeActions.actionsMenu.findNativeButton().getElement()).toBeDisabled();
 
-        expect(editor.addActions.findNativeButton().getElement()).toHaveAccessibleName('Add filter actions');
-        expect(editor.addActions.findNativeButton().getElement()).toBeDisabled();
+        expect(editor.addActions.findTriggerButton()).toBe(null);
         expect(editor.addActions.findMainAction()!.getElement()).toHaveTextContent('Add new filter');
       } else {
         expect(editor.removeActions().actionsMenu).toBe(null);
