@@ -103,7 +103,7 @@ const items: SideNavigationProps.Item[] = [
   { type: 'link', text: 'Documentation', href: '#', external: true, externalIconAriaLabel: 'Opens in a new tab' },
 ];
 
-const itemsHeader = (
+const itemsControl = (
   <Select
     options={[
       { value: 'option1', label: 'Option 1' },
@@ -137,7 +137,7 @@ export default function SideNavigationPage() {
             },
           }}
           items={items}
-          itemsHeader={itemsHeader}
+          itemsControl={itemsControl}
         />
       }
       content={
