@@ -9,7 +9,7 @@ import { PropertyFilterProps } from '~components/property-filter/interfaces';
 import AppContext, { AppContextType } from '../app/app-context';
 import { useOptionsLoader } from '../common/options-loader';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings } from './common-props';
+import { i18nStrings, labels } from './common-props';
 
 type PropertyFilterDemoContext = React.Context<
   AppContextType<{
@@ -81,6 +81,7 @@ export default function () {
       <h1>Integration tests fixture for async loading suggestions</h1>
       <ScreenshotArea disableAnimations={true}>
         <PropertyFilter
+          {...labels}
           i18nStrings={i18nStrings}
           query={query}
           onChange={e => setQuery(e.detail)}

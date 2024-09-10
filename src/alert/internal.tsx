@@ -3,6 +3,8 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
@@ -21,8 +23,10 @@ import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
 import { ActionsWrapper } from './actions-wrapper';
+import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
@@ -101,7 +105,7 @@ const InternalAlert = React.forwardRef(
                 </div>
                 <div className={clsx(styles.message, styles.text)}>
                   {header && (
-                    <div className={styles.header} ref={headerRef}>
+                    <div className={clsx(styles.header, analyticsSelectors.header)} ref={headerRef}>
                       {header}
                     </div>
                   )}
@@ -122,7 +126,12 @@ const InternalAlert = React.forwardRef(
                 onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
               />
               {dismissible && (
-                <div className={styles.dismiss}>
+                <div
+                  className={styles.dismiss}
+                  {...getAnalyticsMetadataAttribute({
+                    action: 'dismiss',
+                  } as Partial<GeneratedAnalyticsMetadataAlertDismiss>)}
+                >
                   <InternalButton
                     className={styles['dismiss-button']}
                     variant="icon"

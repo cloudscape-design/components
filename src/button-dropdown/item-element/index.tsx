@@ -3,13 +3,16 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { ItemProps } from '../interfaces';
+import { ItemProps, LinkItem } from '../interfaces';
 import { ButtonDropdownProps } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
@@ -29,6 +32,7 @@ const ItemElement = ({
   showDivider,
   hasCategoryHeader,
   isKeyboardHighlighted = false,
+  analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
 }: ItemProps) => {
   const isLink = isLinkItem(item);
@@ -68,14 +72,15 @@ const ItemElement = ({
       {...getAnalyticsMetadataAttribute(
         disabled
           ? {}
-          : ({
+          : (analyticsMetadataTransformer!({
               action: 'click',
               detail: {
                 position,
                 id: item.id,
                 label: `.${analyticsLabels['menu-item']}`,
+                href: (item as LinkItem).href || '',
               },
-            } as GeneratedAnalyticsMetadataButtonDropdownClick)
+            }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
       <MenuItem item={item} disabled={disabled} highlighted={highlighted} />
@@ -110,6 +115,7 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
+    'aria-label': item.ariaLabel,
     className: clsx(styles['menu-item'], analyticsLabels['menu-item']),
     lang: item.lang,
     ref: menuItemRef,

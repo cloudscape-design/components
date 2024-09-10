@@ -119,3 +119,33 @@ export function removeOperator(source: string, operator: string) {
 function startsWith(source: string, target: string): boolean {
   return source.indexOf(target) === 0;
 }
+
+interface AbstractToken {
+  operator: any;
+}
+
+interface AbstractTokenGroup<T extends AbstractToken> {
+  operation: any;
+  tokens: readonly (T | AbstractTokenGroup<T>)[];
+}
+
+/**
+ * Transforms query token groups to tokens (only taking 1 level of nesting).
+ */
+export function tokenGroupToTokens<T extends AbstractToken>(tokenGroups: readonly (T | AbstractTokenGroup<T>)[]): T[] {
+  const tokens: T[] = [];
+  for (const tokenOrGroup of tokenGroups) {
+    if ('operator' in tokenOrGroup) {
+      tokens.push(tokenOrGroup);
+    } else {
+      for (const nestedTokenOrGroup of tokenOrGroup.tokens) {
+        if ('operator' in nestedTokenOrGroup) {
+          tokens.push(nestedTokenOrGroup);
+        } else {
+          // Ignore deeply nested tokens
+        }
+      }
+    }
+  }
+  return tokens;
+}

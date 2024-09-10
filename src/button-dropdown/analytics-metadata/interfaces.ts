@@ -9,6 +9,7 @@ export interface GeneratedAnalyticsMetadataButtonDropdownClick {
     label: string;
     position?: string;
     id?: string;
+    href?: string;
   };
 }
 

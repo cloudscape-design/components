@@ -104,6 +104,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToolsToggle,
     });
 
+    const onActiveDrawerChangeHandler = (drawerId: string | null) => {
+      onActiveDrawerChange(drawerId);
+      drawersFocusControl.setFocus();
+    };
+
     const [splitPanelOpen = false, setSplitPanelOpen] = useControllable(
       controlledSplitPanelOpen,
       onSplitPanelToggle,
@@ -156,7 +161,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       displayed: false,
     });
 
-    const drawersFocusControl = useFocusControl(!!activeDrawer?.id);
+    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, !isMobile, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -170,7 +175,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
-      activeDrawerSize,
+      activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
       minContentWidth,
       navigationOpen: !!resolvedNavigation && navigationOpen,
@@ -178,6 +183,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement,
       splitPanelOpen,
       splitPanelPosition: splitPanelPreferences?.position,
+      isMobile,
     });
 
     const { registered, toolbarProps } = useMultiAppLayout({
@@ -191,7 +197,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerId: activeDrawer?.id ?? null,
       // only pass it down if there are non-empty drawers or tools
       drawers: drawers?.length || !toolsHide ? drawers : undefined,
-      onActiveDrawerChange,
+      onActiveDrawerChange: onActiveDrawerChangeHandler,
       drawersFocusRef: drawersFocusControl.refs.toggle,
       splitPanel,
       splitPanelToggleProps: {
@@ -209,7 +215,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
-      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
+      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide' && !isMobile,
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
       stickyNotifications: !!stickyNotifications,
@@ -244,7 +250,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       setNotificationsHeight,
       onSplitPanelToggle: onSplitPanelToggleHandler,
       onNavigationToggle,
-      onActiveDrawerChange,
+      onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
     };
 
@@ -283,7 +289,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
-            paddingBlockEnd: splitPanelOpen ? splitPanelReportedSize : '',
+            paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
           }}
           toolbar={
             hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals} toolbarProps={toolbarProps} />
@@ -303,8 +309,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={
-            splitPanelPosition === 'side' &&
-            splitPanel && (
+            splitPanelPosition === 'side' && (
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}

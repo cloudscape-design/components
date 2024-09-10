@@ -3,7 +3,7 @@
 import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
-import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -27,6 +27,7 @@ export function SideNavigationImplementation({
   ...props
 }: SideNavigationInternalProps) {
   const baseProps = getBaseProps(props);
+  const isToolbar = useAppLayoutToolbarEnabled();
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
 
   if (isDevelopment) {
@@ -61,7 +62,7 @@ export function SideNavigationImplementation({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.root, baseProps.className, isAppLayoutToolbarEnabled() && styles['with-toolbar'])}
+      className={clsx(styles.root, baseProps.className, isToolbar && styles['with-toolbar'])}
       ref={__internalRootRef}
     >
       {header && (

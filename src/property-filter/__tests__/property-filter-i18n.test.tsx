@@ -6,7 +6,9 @@ import { act, render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import PropertyFilter from '../../../lib/components/property-filter';
+import InternalPropertyFilter from '../../../lib/components/property-filter/internal';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
+import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter/index.js';
 import { createDefaultProps } from './common';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
@@ -68,6 +70,9 @@ function openTokenEditor(wrapper: PropertyFilterWrapper, index = 0) {
 
 describe('i18n', () => {
   const providerMessages = {
+    input: {
+      clearAriaLabel: 'Custom input clear',
+    },
     'property-filter': {
       'i18nStrings.allPropertiesLabel': 'Custom All properties',
       'i18nStrings.groupPropertiesText': 'Custom Properties',
@@ -123,6 +128,9 @@ describe('i18n', () => {
       'Custom Starts with',
       'Custom Does not start with',
     ]);
+
+    wrapper.setInputValue('123');
+    expect(wrapper.findClearButton()!.getElement()).toHaveAccessibleName('Custom input clear');
   });
 
   it('uses dropdown labels from i18n provider for a numeric property', () => {
@@ -174,18 +182,19 @@ describe('i18n', () => {
             'i18nStrings.tokenLimitShowFewer': 'Custom Show fewer',
             'i18nStrings.tokenLimitShowMore': 'Custom Show more',
             'i18nStrings.valueText': 'Custom Value',
-            'i18nStrings.removeTokenButtonAriaLabel': `{token__operator, select, 
-              equals {Remove filter, {token__propertyLabel} Custom equals {token__value}}
-              not_equals {Remove filter, {token__propertyLabel} Custom does not equal {token__value}}
-              greater_than {Remove filter, {token__propertyLabel} Custom greater than {token__value}}
-              greater_than_equal {Remove filter, {token__propertyLabel} Custom greater than or equals {token__value}}
-              less_than {Remove filter, {token__propertyLabel} Custom less than {token__value}}
-              less_than_equal {Remove filter, {token__propertyLabel} Custom less than or equals {token__value}}
-              contains {Remove filter, {token__propertyLabel} Custom contains {token__value}}
-              not_contains {Remove filter, {token__propertyLabel} Custom does not contain {token__value}}
-              starts_with {Remove filter, {token__propertyLabel} Custom starts with {token__value}}
-              not_starts_with {Remove filter, {token__propertyLabel} Custom does not start with {token__value}}
+            'i18nStrings.formatToken': `{token__operator, select, 
+              equals {{token__propertyLabel} Custom equals {token__value}}
+              not_equals {{token__propertyLabel} Custom does not equal {token__value}}
+              greater_than {{token__propertyLabel} Custom greater than {token__value}}
+              greater_than_equal {{token__propertyLabel} Custom greater than or equals {token__value}}
+              less_than {{token__propertyLabel} Custom less than {token__value}}
+              less_than_equal {{token__propertyLabel} Custom less than or equals {token__value}}
+              contains {{token__propertyLabel} Custom contains {token__value}}
+              not_contains {{token__propertyLabel} Custom does not contain {token__value}}
+              starts_with {{token__propertyLabel} Custom starts with {token__value}}
+              not_starts_with {{token__propertyLabel} Custom does not start with {token__value}}
               other {}}`,
+            'i18nStrings.removeTokenButtonAriaLabel': `Remove filter, {token__formattedText}`,
           },
         }}
       >
@@ -214,24 +223,27 @@ describe('i18n', () => {
       </TestI18nProvider>
     );
     const wrapper = createWrapper(container).findPropertyFilter()!;
+    const token = (index: number) => wrapper.findTokens()[index];
+
     expect(wrapper.findRemoveAllButton()!.getElement()).toHaveTextContent('Custom Clear filters');
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show more');
     wrapper.findTokenToggle()!.click();
     expect(wrapper.findTokenToggle()!.getElement()).toHaveTextContent('Custom Show fewer');
 
-    const getRemoveButton = (index: number) => wrapper.findTokens()[index].findRemoveButton().getElement();
-    expect(getRemoveButton(0)).toHaveAccessibleName('Remove filter, String Custom equals value1');
-    expect(getRemoveButton(1)).toHaveAccessibleName('Remove filter, String Custom does not equal value2');
-    expect(getRemoveButton(2)).toHaveAccessibleName('Remove filter, String Custom contains value3');
-    expect(getRemoveButton(3)).toHaveAccessibleName('Remove filter, String Custom does not contain value4');
-    expect(getRemoveButton(4)).toHaveAccessibleName('Remove filter, String Custom starts with value5');
-    expect(getRemoveButton(5)).toHaveAccessibleName('Remove filter, String Custom does not start with value6');
-    expect(getRemoveButton(6)).toHaveAccessibleName('Remove filter, Range Custom greater than 1');
-    expect(getRemoveButton(7)).toHaveAccessibleName('Remove filter, Range Custom less than 2');
-    expect(getRemoveButton(8)).toHaveAccessibleName('Remove filter, Range Custom greater than or equals 3');
-    expect(getRemoveButton(9)).toHaveAccessibleName('Remove filter, Range Custom less than or equals 4');
-    expect(getRemoveButton(10)).toHaveAccessibleName('Remove filter, Custom Custom equals empty');
-    expect(getRemoveButton(11)).toHaveAccessibleName('Remove filter, Custom All properties Custom contains all');
+    expect(token(0).getElement().textContent).toBe('String = value1');
+    expect(token(0).getElement()).toHaveAccessibleName('String Custom equals value1');
+    expect(token(1).getElement()).toHaveAccessibleName('String Custom does not equal value2');
+    expect(token(2).getElement()).toHaveAccessibleName('String Custom contains value3');
+    expect(token(3).getElement()).toHaveAccessibleName('String Custom does not contain value4');
+    expect(token(4).getElement()).toHaveAccessibleName('String Custom starts with value5');
+    expect(token(5).getElement()).toHaveAccessibleName('String Custom does not start with value6');
+    expect(token(6).getElement()).toHaveAccessibleName('Range Custom greater than 1');
+    expect(token(7).getElement()).toHaveAccessibleName('Range Custom less than 2');
+    expect(token(8).getElement()).toHaveAccessibleName('Range Custom greater than or equals 3');
+    expect(token(9).getElement()).toHaveAccessibleName('Range Custom less than or equals 4');
+    expect(token(10).getElement()).toHaveAccessibleName('Custom Custom equals empty');
+    expect(token(11).getElement()).toHaveAccessibleName('Custom All properties Custom contains all');
+    expect(token(0).findRemoveButton().getElement()).toHaveAccessibleName('Remove filter, String Custom equals value1');
 
     const tokenOperation = wrapper.findTokens()[1].findTokenOperation()!;
     tokenOperation.openDropdown();
@@ -245,6 +257,76 @@ describe('i18n', () => {
     expect(findValueField(popoverContent).findLabel()!.getElement()).toHaveTextContent('Custom Value');
     expect(findCancelButton(popoverContent).getElement()).toHaveTextContent('Custom Cancel');
     expect(findSubmitButton(popoverContent).getElement()).toHaveTextContent('Custom Apply');
+  });
+
+  it('uses token group edit label from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{
+          'property-filter': {
+            'i18nStrings.operationAndText': '&',
+            'i18nStrings.operationOrText': '|',
+            'i18nStrings.formatToken': `{token__operator, select, 
+              equals {{token__propertyLabel} eq {token__value}}
+              not_equals {{token__propertyLabel} neq {token__value}}
+              other {}}`,
+            'i18nStrings.groupEditAriaLabel': `{group__formattedTokens__length, select,
+              2 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText}}
+              3 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText}}
+              4 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText}}
+              5 {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} 1 more}
+              other {Edit filter group {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} more}}`,
+            'i18nStrings.removeTokenButtonAriaLabel': `Remove filter, {token__formattedText}`,
+          },
+        }}
+      >
+        <InternalPropertyFilter
+          {...defaultProps}
+          i18nStrings={{}}
+          query={{
+            operation: 'and',
+            tokenGroups: [
+              {
+                operation: 'or',
+                tokens: [
+                  { propertyKey: 'string', operator: '=', value: 'value1' },
+                  { propertyKey: 'string', operator: '=', value: 'value2' },
+                  { propertyKey: 'string', operator: '=', value: 'value3' },
+                  { propertyKey: 'string', operator: '=', value: 'value4' },
+                  { propertyKey: 'string', operator: '=', value: 'value5' },
+                ],
+              },
+            ],
+            tokens: [],
+          }}
+          enableTokenGroups={true}
+          filteringOptions={[]}
+          customGroupsText={[]}
+          disableFreeTextFiltering={false}
+        />
+      </TestI18nProvider>
+    );
+    const wrapper = new PropertyFilterWrapperInternal(createWrapper(container).findPropertyFilter()!.getElement());
+    const token = (index: number) => wrapper.findTokens()[index];
+    const groupToken = (index: number, inGroupIndex: number) => token(index).findGroupTokens()[inGroupIndex];
+
+    // 1st nested token
+    expect(groupToken(0, 0).getElement()).toHaveAccessibleName('String eq value1');
+    expect(groupToken(0, 0).findTokenOperation()).toBe(null);
+    expect(groupToken(0, 0).findRemoveButton().getElement()).toHaveAccessibleName('Remove filter, String eq value1');
+
+    // 1nd nested token
+    expect(groupToken(0, 1).getElement()).toHaveAccessibleName('String eq value2');
+    expect(groupToken(0, 1).findTokenOperation()!.getElement()).toHaveTextContent('|');
+    expect(groupToken(0, 1).findRemoveButton().getElement()).toHaveAccessibleName('Remove filter, String eq value2');
+
+    // Token group
+    expect(token(0).getElement()).toHaveAccessibleName(
+      'String eq value1 | String eq value2 | String eq value3 | String eq value4 | String eq value5'
+    );
+    expect(token(0).findEditButton()!.getElement()).toHaveAccessibleName(
+      'Edit filter group String eq value1 | String eq value2 | String eq value3 | String eq value4 | 1 more'
+    );
   });
 
   it('uses formatted token for removeTokenButtonAriaLabel', () => {

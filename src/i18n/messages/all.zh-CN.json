@@ -206,10 +206,20 @@
     "i18nStrings.operatorText": "运算符",
     "i18nStrings.operatorsText": "运算符",
     "i18nStrings.propertyText": "属性",
+    "i18nStrings.removeTokenButtonAriaLabel": "移除筛选条件，{token__formattedText}",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "筛选条件操作，{token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "移除筛选条件，{token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveLabel": "移除筛选条件",
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "从组中移除筛选条件",
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "添加筛选条件操作",
+    "i18nStrings.tokenEditorAddNewTokenLabel": "添加新筛选条件",
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": "向组添加筛选条件 {token__formattedText}",
+    "i18nStrings.tokenEditorAddExistingTokenLabel": "向组添加筛选条件 {token__propertyLabel} {token__operator} {token__value}",
     "i18nStrings.tokenLimitShowFewer": "显示更少",
     "i18nStrings.tokenLimitShowMore": "显示更多",
     "i18nStrings.valueText": "值",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {删除筛选条件，{token__propertyLabel} 等于 {token__value}} not_equals {删除筛选条件，{token__propertyLabel} 不等于 {token__value}} greater_than {删除筛选条件，{token__propertyLabel} 大于 {token__value}} greater_than_equal {删除筛选条件，{token__propertyLabel} 大于或等于 {token__value}} less_than {删除筛选条件，{token__propertyLabel} 小于 {token__value}} less_than_equal {删除筛选条件，{token__propertyLabel} 小于或等于 {token__value}} contains {删除筛选条件，{token__propertyLabel} 包含 {token__value}} not_contains {删除筛选条件，{token__propertyLabel} 不包含 {token__value}} starts_with {删除筛选条件，{token__propertyLabel} 开头为 {token__value}} not_starts_with {删除筛选条件，{token__propertyLabel} 不是以 {token__value} 开头} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} 等于 {token__value}} not_equals {{token__propertyLabel} 不等于 {token__value}} greater_than {{token__propertyLabel} 大于 {token__value}} greater_than_equal {{token__propertyLabel} 大于或等于 {token__value}} less_than {{token__propertyLabel} 小于 {token__value}} less_than_equal {{token__propertyLabel} 小于或等于 {token__value}} contains {{token__propertyLabel} 包含 {token__value}} not_contains {{token__propertyLabel} 不包含 {token__value}} starts_with {{token__propertyLabel} 开头为 {token__value}} not_starts_with {{token__propertyLabel} 开头不为 {token__value}} other {}}",
+    "i18nStrings.groupEditAriaLabel": "{group__formattedTokens__length, select, 2 {编辑筛选条件组 {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText}} 3 {编辑筛选条件组 {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText}} 4 {编辑筛选条件组 {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText}} 5 {再一次编辑筛选条件组 {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel}} other {再多次编辑筛选条件组 {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel}}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "选择版本",

@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { isAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
@@ -27,10 +27,11 @@ export function HelpPanelImplementation({
   ...restProps
 }: HelpPanelInternalProps) {
   const baseProps = getBaseProps(restProps);
+  const isToolbar = useAppLayoutToolbarEnabled();
   const i18n = useInternalI18n('help-panel');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles['help-panel'], isAppLayoutToolbarEnabled() && styles['with-toolbar']),
+    className: clsx(baseProps.className, styles['help-panel'], isToolbar && styles['with-toolbar']),
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>

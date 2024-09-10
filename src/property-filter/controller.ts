@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
-import { AutosuggestInputRef } from '../internal/components/autosuggest-input';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { I18nStringsOperators, operatorToDescription } from './i18n-utils';
 import {
   ComparisonOperator,
   GroupText,
@@ -11,52 +11,86 @@ import {
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
+  InternalQuery,
+  InternalToken,
+  InternalTokenGroup,
   JoinOperation,
   ParsedText,
   Query,
   Token,
+  TokenGroup,
 } from './interfaces';
-import { matchFilteringProperty, matchOperator, matchOperatorPrefix, removeOperator, trimStart } from './utils';
+import {
+  matchFilteringProperty,
+  matchOperator,
+  matchOperatorPrefix,
+  matchTokenValue,
+  removeOperator,
+  tokenGroupToTokens,
+  trimStart,
+} from './utils';
 
-export const getQueryActions = (
-  query: Query,
-  onChange: NonCancelableEventHandler<Query>,
-  inputRef: React.RefObject<AutosuggestInputRef>
-) => {
-  const { tokens, operation } = query;
-  const fireOnChange = (tokens: readonly Token[], operation: JoinOperation) =>
-    fireNonCancelableEvent(onChange, { tokens, operation });
-  const setToken = (index: number, newToken: Token) => {
-    const newTokens = [...tokens];
-    if (newTokens && index < newTokens.length) {
-      newTokens[index] = newToken;
+type I18nStringsController = I18nStringsOperators &
+  Pick<I18nStrings, 'operatorsText' | 'groupPropertiesText' | 'groupValuesText'>;
+
+export const getQueryActions = ({
+  query,
+  onChange,
+  filteringOptions,
+  enableTokenGroups,
+}: {
+  query: InternalQuery;
+  onChange: NonCancelableEventHandler<Query>;
+  filteringOptions: readonly InternalFilteringOption[];
+  enableTokenGroups: boolean;
+}) => {
+  const setQuery = (query: InternalQuery) => {
+    function transformToken(token: InternalToken | InternalTokenGroup): Token | TokenGroup {
+      if ('operator' in token) {
+        return matchTokenValue(token, filteringOptions);
+      }
+      return { ...token, tokens: token.tokens.map(transformToken) };
     }
-    fireOnChange(newTokens, operation);
+    const tokens = query.tokens.map(transformToken);
+
+    if (enableTokenGroups) {
+      fireNonCancelableEvent(onChange, { tokens: [], operation: query.operation, tokenGroups: tokens });
+    } else {
+      fireNonCancelableEvent(onChange, { tokens: tokenGroupToTokens<Token>(tokens), operation: query.operation });
+    }
   };
-  const removeToken = (index: number) => {
-    const newTokens = tokens.filter((_, i) => i !== index);
-    fireOnChange(newTokens, operation);
-    inputRef.current?.focus({ preventDropdown: true });
+
+  const addToken = (token: InternalToken) => {
+    setQuery({ ...query, tokens: [...query.tokens, token] });
   };
+
+  const updateToken = (
+    updateIndex: number,
+    updatedToken: InternalToken | InternalTokenGroup,
+    releasedTokens: InternalToken[]
+  ) => {
+    const nestedTokens = tokenGroupToTokens<InternalToken>([updatedToken]);
+    const capturedTokenIndices = nestedTokens.map(token => token.standaloneIndex).filter(index => index !== undefined);
+    const tokens = query.tokens
+      .map((token, index) => (index === updateIndex ? updatedToken : token))
+      .filter((_, index) => index === updateIndex || !capturedTokenIndices.includes(index));
+    tokens.push(...releasedTokens);
+    setQuery({ ...query, tokens });
+  };
+
+  const removeToken = (removeIndex: number) => {
+    setQuery({ ...query, tokens: query.tokens.filter((_, index) => index !== removeIndex) });
+  };
+
   const removeAllTokens = () => {
-    fireOnChange([], operation);
-    inputRef.current?.focus({ preventDropdown: true });
+    setQuery({ ...query, tokens: [] });
   };
-  const addToken = (newToken: Token) => {
-    const newTokens = [...tokens];
-    newTokens.push(newToken);
-    fireOnChange(newTokens, operation);
+
+  const updateOperation = (operation: JoinOperation) => {
+    setQuery({ ...query, operation });
   };
-  const setOperation = (newOperation: JoinOperation) => {
-    fireOnChange(tokens, newOperation);
-  };
-  return {
-    setToken,
-    removeToken,
-    removeAllTokens,
-    addToken,
-    setOperation,
-  };
+
+  return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };
 };
 
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {
@@ -133,7 +167,7 @@ interface OptionGroup<T> {
 export const getAllValueSuggestions = (
   filteringOptions: readonly InternalFilteringOption[],
   operator: ComparisonOperator | undefined = '=',
-  i18nStrings: I18nStrings,
+  i18nStrings: I18nStringsController,
   customGroupsText: readonly GroupText[]
 ) => {
   const defaultGroup: OptionGroup<AutosuggestProps.Option> = {
@@ -180,7 +214,7 @@ const filteringPropertyToAutosuggestOption = (filteringProperty: InternalFilteri
 export function getPropertySuggestions<T>(
   filteringProperties: readonly InternalFilteringProperty[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStrings,
+  i18nStrings: I18nStringsController,
   filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
 ) {
   const defaultGroup: OptionGroup<T> = {
@@ -214,7 +248,7 @@ export const getAutosuggestOptions = (
   filteringProperties: readonly InternalFilteringProperty[],
   filteringOptions: readonly InternalFilteringOption[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStrings
+  i18nStrings: I18nStringsController
 ) => {
   switch (parsedText.step) {
     case 'property': {
@@ -276,35 +310,5 @@ export const getAutosuggestOptions = (
         ],
       };
     }
-  }
-};
-
-export const operatorToDescription = (operator: ComparisonOperator, i18nStrings: I18nStrings) => {
-  switch (operator) {
-    case '<':
-      return i18nStrings.operatorLessText;
-    case '<=':
-      return i18nStrings.operatorLessOrEqualText;
-    case '>':
-      return i18nStrings.operatorGreaterText;
-    case '>=':
-      return i18nStrings.operatorGreaterOrEqualText;
-    case ':':
-      return i18nStrings.operatorContainsText;
-    case '!:':
-      return i18nStrings.operatorDoesNotContainText;
-    case '=':
-      return i18nStrings.operatorEqualsText;
-    case '!=':
-      return i18nStrings.operatorDoesNotEqualText;
-    case '^':
-      return i18nStrings.operatorStartsWithText;
-    case '!^':
-      return i18nStrings.operatorDoesNotStartWithText;
-    // The line is ignored from coverage because it is not reachable.
-    // The purpose of it is to prevent TS errors if ComparisonOperator type gets extended.
-    /* istanbul ignore next */
-    default:
-      return '';
   }
 };

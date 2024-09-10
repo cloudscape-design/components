@@ -206,10 +206,20 @@
     "i18nStrings.operatorText": "Operador",
     "i18nStrings.operatorsText": "Operadores",
     "i18nStrings.propertyText": "Propriedade",
+    "i18nStrings.removeTokenButtonAriaLabel": "Remover filtro, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "Ações de filtro, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "Remover filtro, {token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveLabel": "Remover filtro",
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "Remover filtro do grupo",
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "Adicionar ações de filtro",
+    "i18nStrings.tokenEditorAddNewTokenLabel": "Adicionar novo filtro",
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": "Adicionar filtro {token__formattedText} ao grupo",
+    "i18nStrings.tokenEditorAddExistingTokenLabel": "Adicionar filtro {token__propertyLabel} {token__operator} {token__value} ao grupo",
     "i18nStrings.tokenLimitShowFewer": "Mostrar menos",
     "i18nStrings.tokenLimitShowMore": "Mostrar mais",
     "i18nStrings.valueText": "Valor",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {Remover filtro, {token__propertyLabel} é igual a {token__value}} not_equals {Remover filtro, {token__propertyLabel} diferente de {token__value}} greater_than {Remover filtro, {token__propertyLabel} é maior que {token__value}} greater_than_equal {Remover filtro, {token__propertyLabel} é maior que ou igual a {token__value}} less_than {Remover filtro, {token__propertyLabel} é menor que {token__value}} less_than_equal {Remover filtro, {token__propertyLabel} é menor que ou igual a {token__value}} contains {Remove filtro, {token__propertyLabel} contém {token__value}} not_contains {Remover filtro, {token__propertyLabel} não contém {token__value}} starts_with {Remover filtro, {token__propertyLabel} começa com {token__value}} not_starts_with {Remova o filtro, {token__propertyLabel} não começa com {token__value}} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} é igual a {token__value}} not_equals {{token__propertyLabel} é diferente de {token__value}} greater_than {{token__propertyLabel} é maior que {token__value}} greater_than_equal {{token__propertyLabel} é maior que ou igual a {token__value}} less_than {{token__propertyLabel} é menor que {token__value}} less_than_equal {{token__propertyLabel} é menor que ou igual a {token__value}} contains {{token__propertyLabel} contém {token__value}} not_contains {{token__propertyLabel} não contém {token__value}} starts_with {{token__propertyLabel} começa com {token__value}} not_starts_with {{token__propertyLabel} não começa com {token__value}} other {}}",
+    "i18nStrings.groupEditAriaLabel": "{group__formattedTokens__length, select, 2 {Editar grupo de filtros {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText}} 3 {Editar grupo de filtros {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText}} 4 {Editar grupo de filtros {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText}} 5 {Editar grupo de filtros {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} mais 1} other {Editar grupo de filtros {group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} mais}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "Escolher uma versão",

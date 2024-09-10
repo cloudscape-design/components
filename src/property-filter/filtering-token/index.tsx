@@ -1,14 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import {
+  copyAnalyticsMetadataAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
+import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
+import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -33,10 +40,11 @@ export interface FilteringTokenProps {
   onDismissToken: (tokenIndex: number) => void;
   editorContent: React.ReactNode;
   editorHeader: string;
-  editorDismissAriaLabel: string;
+  editorDismissAriaLabel?: string;
   editorExpandToViewport: boolean;
   onEditorOpen?: () => void;
   hasGroups: boolean;
+  popoverSize: InternalPopoverProps['size'];
 }
 
 export interface FilteringTokenRef {
@@ -71,24 +79,37 @@ const FilteringToken = forwardRef(
       editorExpandToViewport,
       onEditorOpen,
       hasGroups,
+      popoverSize,
+      ...rest
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
+    const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
+    const onFocusMoved = () => setNextFocusIndex(null);
+    const tokenListRef = useListFocusController({
+      nextFocusIndex,
+      onFocusMoved,
+      listItemSelector: `.${styles['inner-root']}`,
+      outsideSelector: `.${styles.root}`,
+    });
+
     const popoverRef = useRef<InternalPopoverRef>(null);
     const popoverProps: InternalPopoverProps = {
       content: editorContent,
       triggerType: 'text',
       header: editorHeader,
-      size: 'large',
+      size: popoverSize,
       position: 'right',
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
+      __closeAnalyticsAction: 'editClose',
     };
     useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.dismissPopover() }));
 
     return (
       <TokenGroup
+        ref={tokenListRef}
         ariaLabel={tokens.length === 1 ? tokens[0].ariaLabel : groupAriaLabel}
         operation={
           showOperation && (
@@ -121,10 +142,17 @@ const FilteringToken = forwardRef(
         grouped={tokens.length > 1}
         disabled={disabled}
         hasGroups={hasGroups}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {tokens.length === 1 ? (
           <InternalPopover ref={popoverRef} {...popoverProps}>
-            {tokens[0].content}
+            <span
+              {...getAnalyticsMetadataAttribute({
+                action: 'editStart',
+              } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
+            >
+              {tokens[0].content}
+            </span>
           </InternalPopover>
         ) : (
           <ul className={styles.list}>
@@ -148,7 +176,10 @@ const FilteringToken = forwardRef(
                   tokenAction={
                     <TokenDismissButton
                       ariaLabel={token.dismissAriaLabel}
-                      onClick={() => onDismissToken(index)}
+                      onClick={() => {
+                        onDismissToken(index);
+                        setNextFocusIndex(index);
+                      }}
                       parent={false}
                       disabled={disabled}
                     />
@@ -171,67 +202,75 @@ const FilteringToken = forwardRef(
 
 export default FilteringToken;
 
-function TokenGroup({
-  ariaLabel,
-  children,
-  operation,
-  tokenAction,
-  parent,
-  grouped,
-  disabled,
-  hasGroups,
-}: {
-  ariaLabel?: string;
-  children: React.ReactNode;
-  operation: React.ReactNode;
-  tokenAction: React.ReactNode;
-  parent: boolean;
-  grouped: boolean;
-  disabled: boolean;
-  hasGroups: boolean;
-}) {
-  const groupRef = useRef<HTMLDivElement>(null);
-  const isCompactMode = useDensityMode(groupRef) === 'compact';
-  return (
-    <div
-      ref={groupRef}
-      className={clsx(
-        parent
-          ? clsx(styles.root, testUtilStyles['filtering-token'])
-          : clsx(styles['inner-root'], testUtilStyles['filtering-token-inner']),
-        hasGroups && styles['has-groups'],
-        isCompactMode && styles['compact-mode']
-      )}
-      role="group"
-      aria-label={ariaLabel}
-    >
-      {operation}
-
+const TokenGroup = forwardRef(
+  (
+    {
+      ariaLabel,
+      children,
+      operation,
+      tokenAction,
+      parent,
+      grouped,
+      disabled,
+      hasGroups,
+      ...rest
+    }: {
+      ariaLabel?: string;
+      children: React.ReactNode;
+      operation: React.ReactNode;
+      tokenAction: React.ReactNode;
+      parent: boolean;
+      grouped: boolean;
+      disabled: boolean;
+      hasGroups: boolean;
+    },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const groupRef = useRef<HTMLDivElement>(null);
+    const mergedRef = useMergeRefs(ref, groupRef);
+    const isCompactMode = useDensityMode(groupRef) === 'compact';
+    return (
       <div
+        ref={mergedRef}
         className={clsx(
-          styles.token,
-          !!operation && styles['show-operation'],
-          grouped && styles.grouped,
-          disabled && styles['token-disabled']
+          parent
+            ? clsx(styles.root, testUtilStyles['filtering-token'])
+            : clsx(styles['inner-root'], testUtilStyles['filtering-token-inner']),
+          hasGroups && styles['has-groups'],
+          isCompactMode && styles['compact-mode']
         )}
-        aria-disabled={disabled}
+        role="group"
+        aria-label={ariaLabel}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
+        {operation}
+
         <div
           className={clsx(
-            parent
-              ? clsx(styles['token-content'], testUtilStyles['filtering-token-content'])
-              : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content']),
-            grouped && styles['token-content-grouped']
+            styles.token,
+            !!operation && styles['show-operation'],
+            grouped && styles.grouped,
+            disabled && styles['token-disabled']
           )}
+          aria-disabled={disabled}
         >
-          {children}
-        </div>
+          <div
+            className={clsx(
+              parent
+                ? clsx(styles['token-content'], testUtilStyles['filtering-token-content'])
+                : clsx(styles['inner-token-content'], testUtilStyles['filtering-token-inner-content']),
+              grouped && styles['token-content-grouped']
+            )}
+          >
+            {children}
+          </div>
 
-        {tokenAction}
+          {tokenAction}
+        </div>
       </div>
-    </div>
-  );
-}
+    );
+  }
+);
 
 function OperationSelector({
   operation,
@@ -292,6 +331,7 @@ function TokenDismissButton({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      {...getAnalyticsMetadataAttribute({ action: 'dismiss' })}
     >
       <InternalIcon name="close" />
     </button>

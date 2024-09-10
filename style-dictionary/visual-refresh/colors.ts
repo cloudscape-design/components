@@ -134,7 +134,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDropdownItemFocused: { light: '{colorGrey600}', dark: '{colorGrey300}' },
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
   colorBorderItemSelected: { light: '{colorBlue600}', dark: '{colorBlue500}' },
-  colorBorderLayout: { light: '{colorGrey300}', dark: '{colorGrey650}' },
+  colorBorderLayout: '{colorBorderDividerDefault}',
   colorBorderNotificationStackBar: '{colorGrey700}',
   colorBorderPanelHeader: '{colorBorderDividerDefault}',
   colorBorderPopover: { light: '{colorGrey400}', dark: '{colorGrey550}' },
@@ -261,6 +261,16 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneBackgroundHover: { light: '{colorBlue200}', dark: '{colorBlue600}' },
   colorDropzoneTextActive: { light: '{colorGrey550}', dark: '{colorGrey800}' },
   colorDropzoneTextHover: { light: '{colorBlue800}', dark: '{colorWhite}' },
+  colorBackgroundSeverityCritical: '{colorChartsStatusCritical}',
+  colorTextSeverityCritical: { light: '{colorGrey100}', dark: '{colorBlack}' },
+  colorBackgroundSeverityHigh: '{colorChartsStatusHigh}',
+  colorTextSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey900}' },
+  colorBackgroundSeverityMedium: '{colorChartsStatusMedium}',
+  colorTextSeverityMedium: '{colorGrey900}',
+  colorBackgroundSeverityLow: '{colorChartsStatusLow}',
+  colorTextSeverityLow: '{colorGrey900}',
+  colorBackgroundSeverityNeutral: { light: '{colorGrey600}', dark: '{colorGrey550}' },
+  colorTextSeverityNeutral: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

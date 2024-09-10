@@ -48,7 +48,9 @@ const InternalButtonDropdown = React.forwardRef(
       description,
       preferCenter,
       mainAction,
+      showMainActionOnly,
       __internalRootRef,
+      analyticsMetadataTransformer,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -187,7 +189,7 @@ const InternalButtonDropdown = React.forwardRef(
 
     if (customTriggerBuilder) {
       trigger = (
-        <div className={styles['dropdown-trigger']}>
+        <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
           {customTriggerBuilder({
             testUtilsClass: styles['test-utils-button-trigger'],
             ariaExpanded: canBeOpened && isOpen,
@@ -208,9 +210,28 @@ const InternalButtonDropdown = React.forwardRef(
         : ({ iconName, iconAlt, iconSvg, iconUrl } as const);
       const mainActionAriaLabel = externalIconAriaLabel
         ? `${mainAction.ariaLabel ?? mainAction.text} ${mainAction.externalIconAriaLabel}`
-        : undefined;
-
-      trigger = (
+        : mainAction.ariaLabel;
+      const hasNoText = !text;
+      const mainActionButton = (
+        <InternalButton
+          ref={mainActionRef}
+          {...mainActionProps}
+          {...mainActionIconProps}
+          className={clsx(
+            styles['trigger-button'],
+            hasNoText && styles['has-no-text'],
+            isVisualRefresh && styles['visual-refresh']
+          )}
+          variant={variant}
+          ariaLabel={mainActionAriaLabel}
+          formAction="none"
+        >
+          {text}
+        </InternalButton>
+      );
+      trigger = showMainActionOnly ? (
+        <div className={styles['split-trigger']}>{mainActionButton}</div>
+      ) : (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div
             className={clsx(
@@ -232,17 +253,7 @@ const InternalButtonDropdown = React.forwardRef(
               },
             })}
           >
-            <InternalButton
-              ref={mainActionRef}
-              {...mainActionProps}
-              {...mainActionIconProps}
-              className={clsx(styles['trigger-button'])}
-              variant={variant}
-              ariaLabel={mainActionAriaLabel}
-              formAction="none"
-            >
-              {text}
-            </InternalButton>
+            {mainActionButton}
           </div>
           <div
             className={clsx(
@@ -255,7 +266,9 @@ const InternalButtonDropdown = React.forwardRef(
             )}
             {...getAnalyticsMetadataAttribute(analyticsMetadata)}
           >
-            <InternalButton ref={triggerRef} {...baseTriggerProps} />
+            <InternalButton ref={triggerRef} {...baseTriggerProps} __emitPerformanceMarks={false}>
+              {children}
+            </InternalButton>
           </div>
         </div>
       );
@@ -350,6 +363,7 @@ const InternalButtonDropdown = React.forwardRef(
               highlightItem={highlightItem}
               expandToViewport={expandToViewport}
               variant={variant}
+              analyticsMetadataTransformer={analyticsMetadataTransformer}
             />
           </OptionsList>
         </Dropdown>

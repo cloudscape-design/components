@@ -24,10 +24,16 @@ class StickyHeaderPage extends BasePageObject {
       const elements = Array.prototype.slice.apply(document.querySelectorAll(selector));
       return elements
         .map(element => element.getBoundingClientRect())
-        .map(rect => ({
-          width: Math.round(rect.offsetWidth),
-        }));
+        .map(rect => ({ width: rect.width, height: rect.height }));
     }, selector);
+  }
+
+  getClosest(parentSelector: string, selector: string) {
+    return this.browser.execute(
+      (parentSelector: string, selector: string) => document.querySelector(selector)?.closest(parentSelector),
+      parentSelector,
+      selector
+    );
   }
 
   findTable() {
@@ -51,13 +57,27 @@ const setupTest = (testFn: (page: StickyHeaderPage) => Promise<void>) => {
   });
 };
 
+const originalHeadersSelector = originalTableHeader.findAll('tr > *').toSelector();
+const stickyHeadersSelector = tableWrapper.findColumnHeaders().toSelector();
+
 describe('Sticky header', () => {
+  test(
+    `ensure original and sticky header selectors have different parent tables`,
+    setupTest(async page => {
+      const originalTable = await page.getClosest('table', originalHeadersSelector);
+      const stickyTable = await page.getClosest('table', stickyHeadersSelector);
+      expect(originalTable).not.toBe(null);
+      expect(stickyTable).not.toBe(null);
+      expect(originalTable).not.toBe(stickyTable);
+    })
+  );
+
   test(
     `syncs column sizes from the hidden column headers`,
     setupTest(async page => {
-      const originalWidths = await page.getElementSizes(originalTableHeader.findAll('tr > *').toSelector());
-      const copyWidths = await page.getElementSizes(tableWrapper.findColumnHeaders().toSelector());
-      expect(copyWidths).toEqual(originalWidths);
+      const originalSizes = await page.getElementSizes(originalHeadersSelector);
+      const copySizes = await page.getElementSizes(stickyHeadersSelector);
+      expect(copySizes).toEqual(originalSizes);
     })
   );
 
@@ -67,9 +87,9 @@ describe('Sticky header', () => {
       const page = new StickyHeaderPage(browser);
       await browser.url('#/light/table/hooks');
       await page.click(tableWrapper.findPagination().findPageNumberByIndex(2).toSelector());
-      const originalWidths = await page.getElementSizes(originalTableHeader.findAll('tr > *').toSelector());
-      const copyWidths = await page.getElementSizes(tableWrapper.findColumnHeaders().toSelector());
-      expect(copyWidths).toEqual(originalWidths);
+      const originalSizes = await page.getElementSizes(originalHeadersSelector);
+      const copySizes = await page.getElementSizes(stickyHeadersSelector);
+      expect(copySizes).toEqual(originalSizes);
     })
   );
 

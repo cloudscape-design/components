@@ -10,7 +10,7 @@ export namespace ExpandableSectionProps {
     instanceIdentifier?: string;
   }
 
-  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked';
+  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked' | 'inline';
   export interface ChangeDetail {
     expanded: boolean;
   }
@@ -47,6 +47,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    *  * `navigation` - Use this variant in the navigation panel with anchors and custom styled content.
    *    It doesn't have any default styles.
    * * `stacked` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+   * * `inline` - Use this variant in any context where you need reduced padding around the header.
    * @visualrefresh `stacked` variant
    * */
   variant?: ExpandableSectionProps.Variant;

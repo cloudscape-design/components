@@ -225,7 +225,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   const { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, dismissPopover } = usePopover();
 
   // Allows to add a delay between popover is dismissed and handlers are enabled to prevent immediate popover reopening.
-  const [isHandlersDisabled, setHandlersDisabled] = useState(!isPopoverPinned);
+  const [isHandlersDisabled, setHandlersDisabled] = useState(false);
   useEffect(() => {
     if (isPopoverPinned) {
       setHandlersDisabled(true);

@@ -206,10 +206,20 @@
     "i18nStrings.operatorText": "演算子",
     "i18nStrings.operatorsText": "演算子",
     "i18nStrings.propertyText": "プロパティ",
+    "i18nStrings.removeTokenButtonAriaLabel": "フィルターを取り外し、{token__formattedText}",
+    "i18nStrings.tokenEditorTokenActionsAriaLabel": "アクションをフィルタリングし、{token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveAriaLabel": "フィルターを取り外し、{token__formattedText}",
+    "i18nStrings.tokenEditorTokenRemoveLabel": "フィルターを取り外す",
+    "i18nStrings.tokenEditorTokenRemoveFromGroupLabel": "グループからフィルターを取り外す",
+    "i18nStrings.tokenEditorAddTokenActionsAriaLabel": "フィルターアクションを追加",
+    "i18nStrings.tokenEditorAddNewTokenLabel": "新しいフィルターを追加",
+    "i18nStrings.tokenEditorAddExistingTokenAriaLabel": "グループに {token__formattedText} フィルターを追加",
+    "i18nStrings.tokenEditorAddExistingTokenLabel": "グループに {token__propertyLabel}{token__operator}{token__value} フィルターを追加",
     "i18nStrings.tokenLimitShowFewer": "少なく表示",
     "i18nStrings.tokenLimitShowMore": "さらに表示",
     "i18nStrings.valueText": "値",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {フィルターを削除、{token__propertyLabel} は {token__value} と等しい} not_equals {フィルターを削除、{token__propertyLabel} は {token__value} と等しくない} greater_than {フィルターを削除、{token__propertyLabel} は {token__value} より大きい} greater_than_equal {フィルターを削除、{token__propertyLabel} は {token__value} 以上} less_than {フィルターを削除、{token__propertyLabel} は {token__value} 未満} less_than_equal {フィルターを削除、{token__propertyLabel} は {token__value} 以下} contains {フィルターを削除、{token__propertyLabel} は {token__value} を含む} not_contains {フィルターを削除、{token__propertyLabel} は {token__value} を含まない} starts_with {フィルターを削除、{token__propertyLabel} は {token__value} で始まる} not_starts_with {フィルターを削除、{token__propertyLabel} は {token__value} で始まらない} other {}}"
+    "i18nStrings.formatToken": "{token__operator, select, equals {{token__propertyLabel} は {token__value} と等しい} not_equals {{token__propertyLabel} は {token__value} と等しくない} greater_than {{token__propertyLabel} は {token__value} より大きい} greater_than_equal {{token__propertyLabel} は {token__value} 以上} less_than {{token__propertyLabel} は {token__value} 未満} less_than_equal {{token__propertyLabel} は {token__value} 以下} contains {{token__propertyLabel} は {token__value} を含む} not_contains {{token__propertyLabel} は {token__value} を含まない} starts_with {{token__propertyLabel} は {token__value} で始まる} not_starts_with {{token__propertyLabel} は {token__value} で始まらない} other {}}",
+    "i18nStrings.groupEditAriaLabel": "{group__formattedTokens__length, select, 2 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} のフィルターグループを編集} 3 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} のフィルターグループを編集} 4 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} のフィルターグループを編集} 5 {{group__formattedTokens0__formattedText} {group__operationLabel} {group__formattedTokens1__formattedText} {group__operationLabel} {group__formattedTokens2__formattedText} {group__operationLabel} {group__formattedTokens3__formattedText} {group__operationLabel} ともう 1 つのフィルターグループを編集} other {{group__formattedTokens0__formattedText}{group__operationLabel}{group__formattedTokens1__formattedText}{group__operationLabel}{group__formattedTokens2__formattedText}{group__operationLabel}{group__formattedTokens3__formattedText}{group__operationLabel} を超えるフィルターグループを編集}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "バージョンを選択してください",

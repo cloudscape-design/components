@@ -10,7 +10,7 @@ import {
 
 import { SizeControlProps } from './interfaces';
 
-import styles from '../styles.css.js';
+import styles from '../resize/styles.css.js';
 
 export const usePointerEvents = ({
   position,

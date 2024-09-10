@@ -13,14 +13,14 @@ import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/a
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
-import appLayoutToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
+import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
 function findToolbar(wrapper: AppLayoutWrapper) {
-  return wrapper.findByClassName(appLayoutToolbarStyles['universal-toolbar']);
+  return wrapper.findByClassName(testUtilStyles.toolbar);
 }
 
 function findAllToolbars() {
-  return createWrapper().findAllByClassName(appLayoutToolbarStyles['universal-toolbar']);
+  return createWrapper().findAllByClassName(testUtilStyles.toolbar);
 }
 
 function delay() {
@@ -41,7 +41,8 @@ async function renderAsync(jsx: React.ReactElement) {
   const firstLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
   const secondLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
   expect(findAllToolbars()).toHaveLength(1);
-  expect(findToolbar(secondLayout)).toBeTruthy();
+  expect(findToolbar(firstLayout)).toBeTruthy();
+  expect(findToolbar(secondLayout)).toBeFalsy();
   return { firstLayout, secondLayout };
 }
 
@@ -70,7 +71,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(true);
     expect(secondLayout.findNavigation()).toBeFalsy();
 
-    secondLayout.findNavigationToggle().click();
+    firstLayout.findNavigationToggle().click();
     expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(false);
   });
 
@@ -86,7 +87,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(firstLayout.findTools()).toBeFalsy();
     expect(secondLayout.findTools()).toBeFalsy();
 
-    secondLayout.findToolsToggle().click();
+    firstLayout.findToolsToggle().click();
     expect(secondLayout.findTools()).toBeTruthy();
   });
 
@@ -102,10 +103,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     );
     expect(firstLayout.findSplitPanel()).toBeTruthy();
     expect(secondLayout.findSplitPanel()).toBeFalsy();
-    expect(secondLayout.findSplitPanelOpenButton()).toBeTruthy();
+    expect(firstLayout.findSplitPanelOpenButton()).toBeTruthy();
+    expect(secondLayout.findSplitPanelOpenButton()).toBeFalsy();
     expect(firstLayout.findSplitPanel()!.findOpenPanelBottom()).toBeFalsy();
 
-    secondLayout.findSplitPanelOpenButton()!.click();
+    firstLayout.findSplitPanelOpenButton()!.click();
     expect(firstLayout.findSplitPanel()!.findOpenPanelBottom()).toBeTruthy();
   });
 
@@ -117,8 +119,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
     const firstLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
     const secondLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
-    expect(firstLayout.findNavigationToggle()).toBeFalsy();
-    expect(secondLayout.findNavigationToggle()).toBeTruthy();
+    expect(firstLayout.findNavigationToggle()).toBeTruthy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
   });
 
   test('merges props from multiple instances', async () => {
@@ -149,12 +151,13 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     );
     await delay();
 
+    const firstLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
     const thirdLayout = createWrapper().find('[data-testid="third"]')!.findAppLayout()!;
-    expect(findToolbar(thirdLayout)).toBeTruthy();
+    expect(findToolbar(thirdLayout)).toBeFalsy();
     expect(findAllToolbars()).toHaveLength(1);
-    expect(thirdLayout.findNavigationToggle()).toBeTruthy();
-    expect(thirdLayout.findToolsToggle()).toBeTruthy();
-    expect(thirdLayout.findSplitPanelOpenButton()).toBeTruthy();
+    expect(firstLayout.findNavigationToggle()).toBeTruthy();
+    expect(firstLayout.findToolsToggle()).toBeTruthy();
+    expect(firstLayout.findSplitPanelOpenButton()).toBeTruthy();
   });
 
   test('allows manual deduplication control', async () => {
@@ -196,7 +199,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     });
 
     test('ignores duplicate properties and prints a warning', async () => {
-      const { secondLayout } = await renderAsync(
+      const { firstLayout, secondLayout } = await renderAsync(
         <AppLayout
           {...defaultAppLayoutProps}
           data-testid="first"
@@ -208,27 +211,30 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining('Another app layout instance on this page already defines navigation property')
       );
-      secondLayout.findNavigationToggle().click();
-      expect(isDrawerClosed(secondLayout.findNavigation())).toEqual(false);
+      expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(true);
+      expect(isDrawerClosed(secondLayout.findNavigation())).toEqual(true);
+      firstLayout.findNavigationToggle().click();
+      expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(false);
+      expect(isDrawerClosed(secondLayout.findNavigation())).toEqual(true);
     });
 
     test('deduplicates tools and drawers in a single entity', async () => {
-      const { secondLayout } = await renderAsync(
+      const { firstLayout } = await renderAsync(
         <AppLayout
           {...defaultAppLayoutProps}
           data-testid="first"
-          drawers={[testDrawer]}
-          content={<AppLayout {...defaultAppLayoutProps} data-testid="second" tools="second tools" />}
+          tools="second tools"
+          content={<AppLayout {...defaultAppLayoutProps} data-testid="second" drawers={[testDrawer]} />}
         />
       );
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining('Another app layout instance on this page already defines tools or drawers property')
       );
-      expect(secondLayout.findDrawersTriggers()).toHaveLength(0);
-      expect(secondLayout.findTools()).toBeFalsy();
+      expect(firstLayout.findDrawersTriggers()).toHaveLength(0);
+      expect(firstLayout.findTools()).toBeFalsy();
 
-      secondLayout.findToolsToggle().click();
-      expect(secondLayout.findTools()).toBeTruthy();
+      firstLayout.findToolsToggle().click();
+      expect(firstLayout.findTools()).toBeTruthy();
     });
   });
 });
