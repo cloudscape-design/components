@@ -70,6 +70,10 @@ export default function () {
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [unrelatedState, setUnrelatedState] = useState(false);
+  const [contentSwapped, setContentSwapped] = useState(false);
+
+  const content1 = loading ? 'Loading...' : 'Content';
+  const content2 = loading ? 'Loading...' : 'There was an error: Access denied because of XYZ';
 
   return (
     <Box margin="m">
@@ -84,6 +88,9 @@ export default function () {
           </Checkbox>
           <Checkbox onChange={e => setUnrelatedState(e.detail.checked)} checked={unrelatedState}>
             Unrelated state
+          </Checkbox>
+          <Checkbox onChange={e => setContentSwapped(e.detail.checked)} checked={contentSwapped}>
+            Swap content
           </Checkbox>
           <FormField label="Alert type">
             <Select
@@ -106,7 +113,7 @@ export default function () {
                 header="Header"
                 action={<Button>Action</Button>}
               >
-                {loading ? 'Loading...' : 'Content'}
+                {!contentSwapped ? content1 : content2}
               </Alert>
 
               <Alert
@@ -116,7 +123,7 @@ export default function () {
                 header="Header"
                 action={<Button>Action</Button>}
               >
-                {loading ? 'Loading...' : 'There was an error: Access denied because of XYZ'}
+                {!contentSwapped ? content2 : content1}
               </Alert>
             </SpaceBetween>
           )}
