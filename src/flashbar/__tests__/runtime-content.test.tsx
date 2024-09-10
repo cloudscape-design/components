@@ -44,7 +44,7 @@ test('renders runtime content initially', () => {
   });
 });
 
-test('renders runtime content when asynchronously registered', () => {
+test('renders runtime content when asynchronously registered', async () => {
   render(<Flashbar items={[{ content: 'Flash content' }]} />);
   const flashbarWrapper = createWrapper().findFlashbar()!;
   expectContent(flashbarWrapper.findItems()[0], stylesCss, {
@@ -53,9 +53,11 @@ test('renders runtime content when asynchronously registered', () => {
   });
 
   awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-  expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-    content: 'New content',
-    contentReplaced: true,
+  await waitFor(() => {
+    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+      content: 'New content',
+      contentReplaced: true,
+    });
   });
 });
 
@@ -79,7 +81,7 @@ describe.each([true, false])('existing header:%p', existingHeader => {
     });
   });
 
-  test('renders runtime header when asynchronously registered', () => {
+  test('renders runtime header when asynchronously registered', async () => {
     render(
       <Flashbar
         items={[
@@ -97,9 +99,11 @@ describe.each([true, false])('existing header:%p', existingHeader => {
     });
 
     awsuiPlugins.flashContent.registerContentReplacer(defaultContent);
-    expectContent(flashbarWrapper.findItems()[0], stylesCss, {
-      header: 'New header',
-      headerReplaced: true,
+    await waitFor(() => {
+      expectContent(flashbarWrapper.findItems()[0], stylesCss, {
+        header: 'New header',
+        headerReplaced: true,
+      });
     });
   });
 });

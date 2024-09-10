@@ -47,7 +47,7 @@ test('renders replacement content initially', () => {
   });
 });
 
-test('renders replacement content when asynchronously registered', () => {
+test('renders replacement content when asynchronously registered', async () => {
   render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
   expectContent(alertWrapper, stylesCss, {
@@ -56,9 +56,11 @@ test('renders replacement content when asynchronously registered', () => {
   });
 
   awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
-  expectContent(alertWrapper, stylesCss, {
-    content: 'New content',
-    contentReplaced: true,
+  await waitFor(() => {
+    expectContent(alertWrapper, stylesCss, {
+      content: 'New content',
+      contentReplaced: true,
+    });
   });
 });
 
@@ -73,7 +75,7 @@ describe.each([true, false])('existing header:%p', existingHeader => {
     });
   });
 
-  test('renders replacement header when asynchronously registered', () => {
+  test('renders replacement header when asynchronously registered', async () => {
     render(<Alert header={existingHeader ? 'Header content' : undefined}>Alert content</Alert>);
     const alertWrapper = createWrapper().findAlert()!;
     expectContent(alertWrapper, stylesCss, {
@@ -82,9 +84,11 @@ describe.each([true, false])('existing header:%p', existingHeader => {
     });
 
     awsuiPlugins.alertContent.registerContentReplacer(defaultContent);
-    expectContent(alertWrapper, stylesCss, {
-      header: 'New header',
-      headerReplaced: true,
+    await waitFor(() => {
+      expectContent(alertWrapper, stylesCss, {
+        header: 'New header',
+        headerReplaced: true,
+      });
     });
   });
 });
