@@ -5,12 +5,17 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import {
+  copyAnalyticsMetadataAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
 import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
+import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -35,7 +40,7 @@ export interface FilteringTokenProps {
   onDismissToken: (tokenIndex: number) => void;
   editorContent: React.ReactNode;
   editorHeader: string;
-  editorDismissAriaLabel: string;
+  editorDismissAriaLabel?: string;
   editorExpandToViewport: boolean;
   onEditorOpen?: () => void;
   hasGroups: boolean;
@@ -75,6 +80,7 @@ const FilteringToken = forwardRef(
       onEditorOpen,
       hasGroups,
       popoverSize,
+      ...rest
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
@@ -97,6 +103,7 @@ const FilteringToken = forwardRef(
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
+      __closeAnalyticsAction: 'editClose',
     };
     useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.dismissPopover() }));
 
@@ -135,10 +142,17 @@ const FilteringToken = forwardRef(
         grouped={tokens.length > 1}
         disabled={disabled}
         hasGroups={hasGroups}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {tokens.length === 1 ? (
           <InternalPopover ref={popoverRef} {...popoverProps}>
-            {tokens[0].content}
+            <span
+              {...getAnalyticsMetadataAttribute({
+                action: 'editStart',
+              } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
+            >
+              {tokens[0].content}
+            </span>
           </InternalPopover>
         ) : (
           <ul className={styles.list}>
@@ -199,6 +213,7 @@ const TokenGroup = forwardRef(
       grouped,
       disabled,
       hasGroups,
+      ...rest
     }: {
       ariaLabel?: string;
       children: React.ReactNode;
@@ -226,6 +241,7 @@ const TokenGroup = forwardRef(
         )}
         role="group"
         aria-label={ariaLabel}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {operation}
 
@@ -315,6 +331,7 @@ function TokenDismissButton({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      {...getAnalyticsMetadataAttribute({ action: 'dismiss' })}
     >
       <InternalIcon name="close" />
     </button>

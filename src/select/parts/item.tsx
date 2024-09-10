@@ -78,6 +78,7 @@ const Item = (
       ariaSetsize={ariaSetsize}
       highlightType={highlightType}
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
+      value={option.option.value}
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>

@@ -10,7 +10,7 @@ import Button from '~components/button';
 import Header from '~components/header';
 import I18nProvider from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
-import PropertyFilter from '~components/property-filter';
+import PropertyFilter from '~components/property-filter/internal';
 import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
 
@@ -97,8 +97,11 @@ export default function () {
                   filteringOptions={filteringOptions}
                   virtualScroll={true}
                   countText={`${items.length} matches`}
+                  enableTokenGroups={true}
                   expandToViewport={true}
                   filteringEmpty="No properties"
+                  customGroupsText={[]}
+                  disableFreeTextFiltering={false}
                 />
               }
               columnDefinitions={columnDefinitions.slice(0, 2)}

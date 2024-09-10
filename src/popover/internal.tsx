@@ -27,6 +27,7 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   __onOpen?: NonCancelableEventHandler<null>;
   triggerType?: PopoverProps.TriggerType | 'filtering-token';
   size: PopoverProps.Size | 'content';
+  __closeAnalyticsAction?: string;
 }
 
 export interface InternalPopoverRef {
@@ -54,6 +55,7 @@ function InternalPopover(
 
     __onOpen,
     __internalRootRef = null,
+    __closeAnalyticsAction,
     ...restProps
   }: InternalPopoverProps,
   ref: React.Ref<InternalPopoverRef>
@@ -166,6 +168,7 @@ function InternalPopover(
               header={header}
               onDismiss={onDismiss}
               overflowVisible="both"
+              closeAnalyticsAction={__closeAnalyticsAction}
             >
               {content}
             </PopoverBody>
