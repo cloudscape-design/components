@@ -70,6 +70,9 @@ function openTokenEditor(wrapper: PropertyFilterWrapper, index = 0) {
 
 describe('i18n', () => {
   const providerMessages = {
+    input: {
+      clearAriaLabel: 'Custom input clear',
+    },
     'property-filter': {
       'i18nStrings.allPropertiesLabel': 'Custom All properties',
       'i18nStrings.groupPropertiesText': 'Custom Properties',
@@ -125,6 +128,9 @@ describe('i18n', () => {
       'Custom Starts with',
       'Custom Does not start with',
     ]);
+
+    wrapper.setInputValue('123');
+    expect(wrapper.findClearButton()!.getElement()).toHaveAccessibleName('Custom input clear');
   });
 
   it('uses dropdown labels from i18n provider for a numeric property', () => {
