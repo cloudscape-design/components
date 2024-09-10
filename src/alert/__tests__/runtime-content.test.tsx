@@ -224,7 +224,11 @@ describe('asynchronous rendering', () => {
       runReplacer(context, replacer) {
         (async () => {
           await pause(500);
+          replacer.hideHeader();
+          replacer.restoreHeader();
           replacer.replaceHeader(headerFn);
+          replacer.hideContent();
+          replacer.restoreContent();
           replacer.replaceContent(contentFn);
         })();
         return {
@@ -244,12 +248,14 @@ describe('asynchronous rendering', () => {
     unmount();
 
     await waitFor(() => {
-      expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime alert content] `replaceHeader` called after component unmounted'
-      );
-      expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime alert content] `replaceContent` called after component unmounted'
-      );
+      const message = (method: string) =>
+        `[AwsUi] [Runtime alert content] \`${method}\` called after component unmounted`;
+      expect(consoleWarnSpy).toBeCalledWith(message('hideHeader'));
+      expect(consoleWarnSpy).toBeCalledWith(message('restoreHeader'));
+      expect(consoleWarnSpy).toBeCalledWith(message('replaceHeader'));
+      expect(consoleWarnSpy).toBeCalledWith(message('hideContent'));
+      expect(consoleWarnSpy).toBeCalledWith(message('restoreContent'));
+      expect(consoleWarnSpy).toBeCalledWith(message('replaceContent'));
       expect(headerFn).not.toBeCalled();
       expect(contentFn).not.toBeCalled();
     });
