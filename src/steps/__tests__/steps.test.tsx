@@ -52,6 +52,19 @@ const successfullSteps: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
+const stepsWithIconAriaLabel: ReadonlyArray<StepsProps.Step> = [
+  {
+    header: 'Checked Cross Region Consent',
+    status: 'success',
+    statusIconAriaLabel: 'test icon aria label 1',
+  },
+  {
+    header: 'Analyzing security rules',
+    status: 'loading',
+    statusIconAriaLabel: 'test icon aria label 2',
+  },
+];
+
 const renderSteps = (props: Partial<StepsProps>) => {
   const renderResult = render(<Steps {...defaultProps} {...props} />);
   return createWrapper(renderResult.container).findSteps()!;
@@ -112,7 +125,39 @@ describe('Steps', () => {
     });
   });
 
-  // describe('Accessibility', () => {
+  describe('Accessibility', () => {
+    test('applies ARIA label to steps', () => {
+      const testAriaLabel = 'Test aria label';
+      const wrapper = renderSteps({ steps: successfullSteps, ariaLabel: testAriaLabel });
 
-  // })
+      const stepsComponent = wrapper.getElement();
+      expect(stepsComponent).toHaveAccessibleName(testAriaLabel);
+    });
+
+    test('applies ARIA labelledby to steps', () => {
+      const testAriaLabelledBy = 'test-id';
+      const wrapper = renderSteps({ steps: successfullSteps, ariaLabelledby: testAriaLabelledBy });
+
+      const stepsComponent = wrapper.getElement();
+      expect(stepsComponent).toHaveAttribute('aria-labelledby', testAriaLabelledBy);
+    });
+
+    test('applies ARIA describedby to steps', () => {
+      const testAriaDescribedBy = 'test-id';
+      const wrapper = renderSteps({ steps: successfullSteps, ariaDescribedby: testAriaDescribedBy });
+
+      const stepsComponent = wrapper.getElement();
+      expect(stepsComponent).toHaveAttribute('aria-describedby', testAriaDescribedBy);
+    });
+
+    test('applies ARIA label to steps status indicators', () => {
+      const wrapper = renderSteps({ steps: stepsWithIconAriaLabel });
+
+      stepsWithIconAriaLabel.forEach((step, index) => {
+        expect(wrapper.findItems()[index]!.findStatusIndicator()?.getElement()).toHaveAccessibleName(
+          step.statusIconAriaLabel
+        );
+      });
+    });
+  });
 });

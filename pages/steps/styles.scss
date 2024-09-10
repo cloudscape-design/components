@@ -4,7 +4,8 @@
 */
 
 /* stylelint-disable-next-line selector-max-type */
-.markdown > :where(p) {
+.details {
   margin-block: 0;
-  white-space: pre-wrap;
+  font-size: 12px;
+  color: grey;
 }

@@ -9,7 +9,7 @@ export interface StepsProps extends BaseComponentProps {
    *
    * Each step definition has the following properties:
    *  * `status` (string) - Status of the step corresponding to a status indicator.
-   *  * `statusIconAriaLabel` (string) - (Optional) Text alternative for the status icon.
+   *  * `statusIconAriaLabel` - (string) - (Optional) Text alternative for the status icon.
    *  * `header` (react.ReactNode) - Area next to the status indicator of the step.
    *  * `details` (react.ReactNode) - (Optional) The corresponding details of the step.
    */

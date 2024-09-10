@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import ReactMarkdown from 'react-markdown';
 
 import Button from '~components/button';
 import Link from '~components/link';
@@ -16,7 +15,7 @@ const initialSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
     header: 'Listing EC2 instances',
-    details: <ReactMarkdown className={styles.markdown}>Using the ec2_DescribeInstances</ReactMarkdown>,
+    details: <div className={styles.details}>Using the ec2_DescribeInstances</div>,
   },
 ];
 
@@ -25,17 +24,28 @@ const loadingSteps: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
     header: <div style={{ margin: '0' }}>Listed EC2 instances</div>,
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'EC2 Instances IDs:\n * ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        EC2 Instances IDs:
+        <ul>
+          <li>ec2InstanceID1</li>
+          <li>ec2InstanceID2</li>
+          <li>ec2InstanceID3</li>
+          <li>ec2InstanceID4</li>
+        </ul>
+      </div>
     ),
   },
   {
     header: 'Gathering Security Group IDs',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'Using the ec2_DescribeSecurityGroupsTool:\n* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        Using the ec2_DescribeSecurityGroupsTool::
+        <ul>
+          <li>securityGroupID1</li>
+          <li>securityGroupID2</li>
+          <li>securityGroupID3</li>
+        </ul>
+      </div>
     ),
     status: 'loading',
   },
@@ -45,18 +55,29 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'EC2 Instances IDs:\n * ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        EC2 Instances IDs:
+        <ul>
+          <li>ec2InstanceID1</li>
+          <li>ec2InstanceID2</li>
+          <li>ec2InstanceID3</li>
+          <li>ec2InstanceID4</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'Security Groups IDs:\n* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        Security Groups ID
+        <ul>
+          <li>securityGroupID1</li>
+          <li>securityGroupID2</li>
+          <li>securityGroupID3</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
@@ -70,18 +91,29 @@ export const loadingSteps3: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'EC2 Instances IDs:\n * ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        EC2 Instances IDs:
+        <ul>
+          <li>ec2InstanceID1</li>
+          <li>ec2InstanceID2</li>
+          <li>ec2InstanceID3</li>
+          <li>ec2InstanceID4</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'Security Groups IDs:\n* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        Security Groups ID
+        <ul>
+          <li>securityGroupID1</li>
+          <li>securityGroupID2</li>
+          <li>securityGroupID3</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
@@ -99,18 +131,29 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'EC2 Instances IDs:\n * ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        EC2 Instances IDs:
+        <ul>
+          <li>ec2InstanceID1</li>
+          <li>ec2InstanceID2</li>
+          <li>ec2InstanceID3</li>
+          <li>ec2InstanceID4</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'Security Groups IDs:\n* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        Security Groups ID
+        <ul>
+          <li>securityGroupID1</li>
+          <li>securityGroupID2</li>
+          <li>securityGroupID3</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
@@ -128,28 +171,39 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'EC2 Instances IDs:\n * ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        EC2 Instances IDs:
+        <ul>
+          <li>ec2InstanceID1</li>
+          <li>ec2InstanceID2</li>
+          <li>ec2InstanceID3</li>
+          <li>ec2InstanceID4</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'Security Groups IDs:\n* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        Security Groups ID
+        <ul>
+          <li>securityGroupID1</li>
+          <li>securityGroupID2</li>
+          <li>securityGroupID3</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
   {
     header: 'Need Cross Region Consent',
     details: (
-      <ReactMarkdown className={styles.markdown}>
+      <div className={styles.details}>
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
         account.
-      </ReactMarkdown>
+      </div>
     ),
     status: 'warning',
   },
@@ -159,9 +213,15 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'EC2 Instances IDs:\n * ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        EC2 Instances IDs:
+        <ul>
+          <li>ec2InstanceID1</li>
+          <li>ec2InstanceID2</li>
+          <li>ec2InstanceID3</li>
+          <li>ec2InstanceID4</li>
+        </ul>
+      </div>
     ),
     status: 'success',
   },
@@ -181,7 +241,7 @@ export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
     header: <div style={{ margin: '0', color: 'rgb(95, 107, 122)' }}>Listing EC2 instances</div>,
-    details: <ReactMarkdown className={styles.markdown}>Using the ec2_DescribeInstances</ReactMarkdown>,
+    details: <div className={styles.details}>Using the ec2_DescribeInstances</div>,
   },
 ];
 
@@ -194,9 +254,14 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -208,9 +273,14 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: <div style={{ margin: '0', color: 'rgb(95, 107, 122)' }}>Gathering Security Group IDs</div>,
     details: (
-      <ReactMarkdown className={styles.markdown}>
-        {'Using the ec2_DescribeSecurityGroupsTool:\n* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-      </ReactMarkdown>
+      <div className={styles.details}>
+        Using the ec2_DescribeSecurityGroupsTool::
+        <ul>
+          <li>securityGroupID1</li>
+          <li>securityGroupID2</li>
+          <li>securityGroupID3</li>
+        </ul>
+      </div>
     ),
     status: 'loading',
   },
@@ -224,9 +294,14 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -243,9 +318,13 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>securityGroupID1</li>
+                <li>securityGroupID2</li>
+                <li>securityGroupID3</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -269,9 +348,14 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -288,9 +372,13 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>securityGroupID1</li>
+                <li>securityGroupID2</li>
+                <li>securityGroupID3</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -318,9 +406,14 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -337,9 +430,13 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>securityGroupID1</li>
+                <li>securityGroupID2</li>
+                <li>securityGroupID3</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -367,9 +464,14 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -386,9 +488,13 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* securityGroupID1\n * securityGroupID2\n * securityGroupID3\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>securityGroupID1</li>
+                <li>securityGroupID2</li>
+                <li>securityGroupID3</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -401,10 +507,10 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: <div style={{ margin: '0', color: 'rgb(141, 102, 5)' }}>Need Cross Region Consent</div>,
     details: (
-      <ReactMarkdown className={styles.markdown}>
+      <div className={styles.details}>
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
         account.
-      </ReactMarkdown>
+      </div>
     ),
     status: 'warning',
   },
@@ -418,9 +524,14 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -444,9 +555,14 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >
@@ -475,9 +591,14 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <ReactMarkdown className={styles.markdown}>
-              {'* ec2InstanceID1\n * ec2InstanceID2\n * ec2InstanceID3\n * ec2InstanceID4\n'}
-            </ReactMarkdown>
+            <div className={styles.details}>
+              <ul>
+                <li>ec2InstanceID1</li>
+                <li>ec2InstanceID2</li>
+                <li>ec2InstanceID3</li>
+                <li>ec2InstanceID4</li>
+              </ul>
+            </div>
           }
           position={'bottom'}
         >

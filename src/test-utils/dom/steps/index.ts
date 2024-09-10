@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import statusIconStyles from '../../../status-indicator/styles.selectors.js';
-import testUtilStyles from '../../../steps/test-classes/styles.selectors.js';
+import styles from '../../../steps/styles.selectors.js';
 
 export class StepWrapper extends ComponentWrapper {
   /**
@@ -17,23 +17,23 @@ export class StepWrapper extends ComponentWrapper {
    * Finds the header of a step
    */
   findHeader(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles['step-header']);
+    return this.findByClassName(styles['step-header']);
   }
 
   /**
    * Finds the details of a step
    */
   findDetails(): ElementWrapper | null {
-    return this.findByClassName(testUtilStyles['step-details']);
+    return this.findByClassName(styles['step-details']);
   }
 }
 export default class StepsWrapper extends ComponentWrapper {
-  static rootSelector: string = testUtilStyles.steps;
+  static rootSelector: string = styles.root;
 
   /**
    * Finds all step items
    */
   findItems(): Array<StepWrapper> {
-    return this.findAllByClassName(testUtilStyles['step-container']).map(item => new StepWrapper(item.getElement()));
+    return this.findAllByClassName(styles['step-container']).map(item => new StepWrapper(item.getElement()));
   }
 }
