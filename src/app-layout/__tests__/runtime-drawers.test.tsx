@@ -697,7 +697,7 @@ describe('toolbar mode only features', () => {
 
       await delay();
 
-      expect(wrapper.findDrawersTriggers()!.length).toBe(4);
+      expect(wrapper.findDrawersTriggers().length).toBe(4);
       expect(wrapper.find(`.${toolbarStyles['group-divider']}`)!.getElement()).toBeInTheDocument();
       expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(3);
       expect(globalDrawersWrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent(

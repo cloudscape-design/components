@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
@@ -107,9 +107,9 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('local-drawer')!.click();
 
-      await delay();
-
-      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      await waitFor(() => {
+        expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      });
       expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('local-drawer');
       expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
     });
