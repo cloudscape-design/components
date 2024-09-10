@@ -183,7 +183,9 @@ export function useDrawers(
 
   function onActiveDrawerChange(newDrawerId: string | null) {
     setActiveDrawerId(newDrawerId);
-    newDrawerId && onAddNewActiveDrawer?.(newDrawerId);
+    if (newDrawerId) {
+      onAddNewActiveDrawer?.(newDrawerId);
+    }
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
     } else if (!toolsProps.toolsHide) {
