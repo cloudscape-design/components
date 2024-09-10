@@ -35,30 +35,49 @@ export function createUseDiscoveredContent(
       return onContentRegistered(provider => {
         let mounted = true;
 
-        mountedProvider.current = provider?.runReplacer(context, (type, replacement) => {
+        function checkMounted(methodName: string) {
           if (!mounted) {
             console.warn(
-              `[AwsUi] [Runtime ${componentName} content] \`registerReplacement\` (${type}) called after component unmounted`
+              `[AwsUi] [Runtime ${componentName} content] \`${methodName}\` called after component unmounted`
             );
-            return;
+            return false;
           }
-          switch (type) {
-            case 'header':
-              if (replacement.type === 'replace') {
-                replacement.onReplace(replacementHeaderRef.current!);
-                setFoundHeaderReplacement(true);
-              } else {
-                setFoundHeaderReplacement(replacement.type);
-              }
-              break;
-            case 'content':
-              if (replacement.type === 'replace') {
-                replacement.onReplace(replacementContentRef.current!);
-                setFoundContentReplacement(true);
-              } else {
-                setFoundContentReplacement(replacement.type);
-              }
-          }
+          return true;
+        }
+
+        mountedProvider.current = provider?.runReplacer(context, {
+          hideHeader() {
+            if (checkMounted('hideHeader')) {
+              setFoundHeaderReplacement('remove');
+            }
+          },
+          restoreHeader() {
+            if (checkMounted('restoreHeader')) {
+              setFoundHeaderReplacement('original');
+            }
+          },
+          replaceHeader(replacer: (container: HTMLElement) => void) {
+            if (checkMounted('replaceHeader')) {
+              replacer(replacementHeaderRef.current!);
+              setFoundHeaderReplacement(true);
+            }
+          },
+          hideContent() {
+            if (checkMounted('hideContent')) {
+              setFoundContentReplacement('remove');
+            }
+          },
+          restoreContent() {
+            if (checkMounted('restoreContent')) {
+              setFoundContentReplacement('original');
+            }
+          },
+          replaceContent(replacer: (container: HTMLElement) => void) {
+            if (checkMounted('replaceContent')) {
+              replacer(replacementContentRef.current!);
+              setFoundContentReplacement(true);
+            }
+          },
         });
 
         return () => {

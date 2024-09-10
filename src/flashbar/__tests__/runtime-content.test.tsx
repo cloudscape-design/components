@@ -18,19 +18,9 @@ const pause = (timeout: number) => new Promise(resolve => setTimeout(resolve, ti
 
 const defaultContent: AlertFlashContentConfig = {
   id: 'test-content',
-  runReplacer(context, registerReplacement) {
-    registerReplacement('header', {
-      type: 'replace',
-      onReplace: container => {
-        container.append('New header');
-      },
-    });
-    registerReplacement('content', {
-      type: 'replace',
-      onReplace: container => {
-        container.append('New content');
-      },
-    });
+  runReplacer(context, replacer) {
+    replacer.replaceHeader(container => container.append('New header'));
+    replacer.replaceContent(container => container.append('New content'));
     return {
       update: () => {},
       unmount: () => {},
@@ -152,8 +142,8 @@ test('calls unmount callback', () => {
   const unmountCallback = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer(context, registerReplacement) {
-      registerReplacement('content', { type: 'replace', onReplace: container => container.append('New content') });
+    runReplacer(context, replacer) {
+      replacer.replaceContent(container => container.append('New content'));
       return {
         update: () => {},
         unmount: unmountCallback,
@@ -190,17 +180,12 @@ describe('asynchronous rendering', () => {
   test('allows asynchronous rendering of content', async () => {
     const asyncContent: AlertFlashContentConfig = {
       id: 'test-content-async',
-      runReplacer(context, registerReplacement) {
+      runReplacer(context, replacer) {
         (async () => {
           await pause(500);
           const content = document.createElement('div');
           content.append('New content');
-          registerReplacement('content', {
-            type: 'replace',
-            onReplace: container => {
-              container.appendChild(content);
-            },
-          });
+          replacer.replaceContent(container => container.appendChild(content));
         })();
         return {
           update: () => {},
@@ -230,11 +215,11 @@ describe('asynchronous rendering', () => {
     const contentFn = jest.fn();
     const asyncContent: AlertFlashContentConfig = {
       id: 'test-content-async',
-      runReplacer(context, registerReplacement) {
+      runReplacer(context, replacer) {
         (async () => {
           await pause(500);
-          registerReplacement('header', { type: 'replace', onReplace: headerFn });
-          registerReplacement('content', { type: 'replace', onReplace: contentFn });
+          replacer.replaceHeader(headerFn);
+          replacer.replaceContent(contentFn);
         })();
         return {
           update: () => {},
@@ -254,10 +239,10 @@ describe('asynchronous rendering', () => {
 
     await waitFor(() => {
       expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime flash content] `registerReplacement` (header) called after component unmounted'
+        '[AwsUi] [Runtime flash content] `replaceHeader` called after component unmounted'
       );
       expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime flash content] `registerReplacement` (content) called after component unmounted'
+        '[AwsUi] [Runtime flash content] `replaceContent` called after component unmounted'
       );
       expect(headerFn).not.toBeCalled();
       expect(contentFn).not.toBeCalled();

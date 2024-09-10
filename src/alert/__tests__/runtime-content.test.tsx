@@ -17,19 +17,9 @@ const pause = (timeout: number) => new Promise(resolve => setTimeout(resolve, ti
 
 const defaultContent: AlertFlashContentConfig = {
   id: 'test-content',
-  runReplacer(context, registerReplacement) {
-    registerReplacement('header', {
-      type: 'replace',
-      onReplace: container => {
-        container.append('New header');
-      },
-    });
-    registerReplacement('content', {
-      type: 'replace',
-      onReplace: container => {
-        container.append('New content');
-      },
-    });
+  runReplacer(context, replacer) {
+    replacer.replaceHeader(container => container.append('New header'));
+    replacer.replaceContent(container => container.append('New content'));
     return {
       update: () => {},
       unmount: () => {},
@@ -102,9 +92,9 @@ describe.each([true, false])('existing header:%p', existingHeader => {
 test('removes styling if replacement is explicitly empty', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer(context, registerReplacement) {
-      registerReplacement('content', { type: 'remove' });
-      registerReplacement('header', { type: 'remove' });
+    runReplacer(context, replacer) {
+      replacer.hideHeader();
+      replacer.hideContent();
       return {
         update: () => {},
         unmount: () => {},
@@ -154,8 +144,8 @@ test('calls unmount callback', () => {
   const unmountCallback = jest.fn();
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
-    runReplacer(context, registerReplacement) {
-      registerReplacement('content', { type: 'replace', onReplace: container => container.append('New content') });
+    runReplacer(context, replacer) {
+      replacer.replaceContent(container => container.append('New content'));
       return {
         update: () => {},
         unmount: unmountCallback,
@@ -192,17 +182,12 @@ describe('asynchronous rendering', () => {
   test('allows asynchronous rendering of content', async () => {
     const asyncContent: AlertFlashContentConfig = {
       id: 'test-content-async',
-      runReplacer(context, registerReplacement) {
+      runReplacer(context, replacer) {
         (async () => {
           await pause(500);
           const content = document.createElement('div');
           content.append('New content');
-          registerReplacement('content', {
-            type: 'replace',
-            onReplace: container => {
-              container.appendChild(content);
-            },
-          });
+          replacer.replaceContent(container => container.appendChild(content));
         })();
         return {
           update: () => {},
@@ -232,11 +217,11 @@ describe('asynchronous rendering', () => {
     const contentFn = jest.fn();
     const asyncContent: AlertFlashContentConfig = {
       id: 'test-content-async',
-      runReplacer(context, registerReplacement) {
+      runReplacer(context, replacer) {
         (async () => {
           await pause(500);
-          registerReplacement('header', { type: 'replace', onReplace: headerFn });
-          registerReplacement('content', { type: 'replace', onReplace: contentFn });
+          replacer.replaceHeader(headerFn);
+          replacer.replaceContent(contentFn);
         })();
         return {
           update: () => {},
@@ -256,10 +241,10 @@ describe('asynchronous rendering', () => {
 
     await waitFor(() => {
       expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime alert content] `registerReplacement` (header) called after component unmounted'
+        '[AwsUi] [Runtime alert content] `replaceHeader` called after component unmounted'
       );
       expect(consoleWarnSpy).toBeCalledWith(
-        '[AwsUi] [Runtime alert content] `registerReplacement` (content) called after component unmounted'
+        '[AwsUi] [Runtime alert content] `replaceContent` called after component unmounted'
       );
       expect(headerFn).not.toBeCalled();
       expect(contentFn).not.toBeCalled();
@@ -270,17 +255,11 @@ describe('asynchronous rendering', () => {
 test('calls replacer when alert type changes', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'plugin',
-    runReplacer: (context, registerReplacement) => {
+    runReplacer: (context, replacer) => {
       if (context.type === 'error') {
-        registerReplacement('content', {
-          type: 'replace',
-          onReplace: container => (container.textContent = 'New error'),
-        });
+        replacer.replaceContent(container => (container.textContent = 'New error'));
       } else if (context.type === 'warning') {
-        registerReplacement('content', {
-          type: 'replace',
-          onReplace: container => (container.textContent = 'New warning'),
-        });
+        replacer.replaceContent(container => (container.textContent = 'New warning'));
       }
       return { update: () => {}, unmount: () => {} };
     },
@@ -298,15 +277,15 @@ test('calls replacer when alert type changes', () => {
 test('can only register a single provider', () => {
   const plugin1: AlertFlashContentConfig = {
     id: 'plugin-1',
-    runReplacer: (context, registerReplacement) => {
-      registerReplacement('content', { type: 'replace', onReplace: container => container.append('Replacement 1') });
+    runReplacer: (context, replacer) => {
+      replacer.replaceContent(container => container.append('Replacement 1'));
       return { update: () => {}, unmount: () => {} };
     },
   };
   const plugin2: AlertFlashContentConfig = {
     id: 'plugin-2',
-    runReplacer: (context, registerReplacement) => {
-      registerReplacement('content', { type: 'replace', onReplace: container => container.append('Replacement 2') });
+    runReplacer: (context, replacer) => {
+      replacer.replaceContent(container => container.append('Replacement 2'));
       return { update: () => {}, unmount: () => {} };
     },
   };

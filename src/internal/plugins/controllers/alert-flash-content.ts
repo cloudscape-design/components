@@ -12,13 +12,16 @@ export interface AlertFlashContentContext {
   contentRef: RefShim<HTMLElement>;
 }
 
-export type ReplacementType =
-  | { type: 'original' }
-  | { type: 'remove' }
-  | { type: 'replace'; onReplace: (container: HTMLElement) => void };
 export type ReplacementTypeSafe = 'original' | 'remove' | true;
 
-type RegisterReplacement = (type: 'header' | 'content', doReplacement: ReplacementType) => void;
+export interface ReplacementApi {
+  hideHeader(): void;
+  restoreHeader(): void;
+  replaceHeader(replacer: (container: HTMLElement) => void): void;
+  hideContent(): void;
+  restoreContent(): void;
+  replaceContent(replacer: (container: HTMLElement) => void): void;
+}
 
 export interface AlertFlashContentResult {
   update: () => void;
@@ -27,7 +30,7 @@ export interface AlertFlashContentResult {
 
 export interface AlertFlashContentConfig {
   id: string;
-  runReplacer: (context: AlertFlashContentContext, registerReplacement: RegisterReplacement) => AlertFlashContentResult;
+  runReplacer: (context: AlertFlashContentContext, replacementApi: ReplacementApi) => AlertFlashContentResult;
 }
 
 export interface AlertFlashContentRegistrationListener {
