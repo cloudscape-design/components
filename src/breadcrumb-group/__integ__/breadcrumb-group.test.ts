@@ -44,6 +44,14 @@ class BreadcrumbGroupPage extends BasePageObject {
   isTooltipDisplayed() {
     return this.isExisting(`.${tooltipStyles.root}`);
   }
+  countTooltips() {
+    return this.browser.execute(function (selector) {
+      return Array.from(document.querySelectorAll(selector)).length;
+    }, `.${tooltipStyles.root}`);
+  }
+  getTooltipText() {
+    return this.getText(`.${tooltipStyles.root}`);
+  }
 }
 const setupTest = (
   testFn: (page: BreadcrumbGroupPage, browser: WebdriverIO.Browser) => Promise<void>,
@@ -242,6 +250,37 @@ describe('BreadcrumbGroup', () => {
       await page.keys('Tab');
       await expect(page.isTooltipDisplayed()).resolves.toBe(false);
       await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
+    })
+  );
+
+  test(
+    'Displays only one tooltip at the time',
+    setupTest(async page => {
+      await page.setMobileViewport();
+      await page.click('#focus-target-long-text');
+      await page.keys('Tab');
+      await expect(page.countTooltips()).resolves.toBe(1);
+      await expect(page.getTooltipText()).resolves.toBe(
+        'First that is very very very very very very long long long text'
+      );
+      await page.hoverElement(breadcrumbGroupWrapper.findBreadcrumbLink(6).toSelector());
+      await expect(page.countTooltips()).resolves.toBe(1);
+      await expect(page.getTooltipText()).resolves.toBe(
+        'Sixth that is very very very very very very long long long text'
+      );
+
+      await page.click('#focus-target-long-text');
+      await expect(page.countTooltips()).resolves.toBe(0);
+      await page.hoverElement(breadcrumbGroupWrapper.findBreadcrumbLink(6).toSelector());
+      await expect(page.countTooltips()).resolves.toBe(1);
+      await expect(page.getTooltipText()).resolves.toBe(
+        'Sixth that is very very very very very very long long long text'
+      );
+      await page.keys('Tab');
+      await expect(page.countTooltips()).resolves.toBe(1);
+      await expect(page.getTooltipText()).resolves.toBe(
+        'First that is very very very very very very long long long text'
+      );
     })
   );
 });

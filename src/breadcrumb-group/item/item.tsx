@@ -9,6 +9,7 @@ import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import { getEventDetail } from '../utils';
 import { FunnelBreadcrumbItem } from './funnel';
+import { registerTooltip } from './tooltips-registry';
 
 import styles from './styles.css.js';
 
@@ -28,17 +29,11 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   const popoverContent = <Tooltip trackRef={textRef} value={item.text} />;
 
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setShowPopover(false);
-      }
-    };
     if (showPopover) {
-      document.addEventListener('keydown', onKeyDown);
+      return registerTooltip(() => {
+        setShowPopover(false);
+      });
     }
-    return () => {
-      document.removeEventListener('keydown', onKeyDown);
-    };
   }, [showPopover]);
 
   return (
