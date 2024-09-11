@@ -16,7 +16,7 @@ import { ItemProps, LinkItem } from '../interfaces';
 import { ButtonDropdownProps } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
-import { isCheckboxItem, isLinkItem } from '../utils/utils';
+import { isCheckboxItem, isItemGroup, isLinkItem } from '../utils/utils';
 import { getItemTarget } from '../utils/utils';
 
 import analyticsLabels from '../analytics-metadata/styles.css.js';
@@ -162,7 +162,6 @@ const MenuItemContent = ({
   disabled: boolean;
 }) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
-  const hasExternal = isLinkItem(item) && item.external;
   const isCheckbox = isCheckboxItem(item);
   return (
     <>
@@ -177,7 +176,9 @@ const MenuItemContent = ({
         />
       )}
       {item.text}
-      {hasExternal && <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />}
+      {!isItemGroup(item) && !isCheckboxItem(item) && item.external && (
+        <ExternalIcon disabled={disabled} ariaLabel={item.externalIconAriaLabel} />
+      )}
     </>
   );
 };
