@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
-import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
+import { Focusable } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
 interface SharedProps {
@@ -17,14 +17,10 @@ interface SharedProps {
   navigationOpen: boolean;
   onNavigationToggle: (open: boolean) => void;
   navigationFocusRef: React.Ref<Focusable> | undefined;
-  globalDrawersFocusControl: FocusControlMultipleStates;
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
-  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
-  activeGlobalDrawersIds: ReadonlyArray<string>;
-  onActiveGlobalDrawersChange: ((drawerId: string) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
@@ -50,11 +46,7 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
     if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
-      toolbar.globalDrawers = props.globalDrawers;
-      toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds ?? [];
-      toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
       toolbar.drawersFocusRef = props.drawersFocusRef;
-      toolbar.globalDrawersFocusControl = props.globalDrawersFocusControl;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
