@@ -222,7 +222,11 @@ function DesktopTriggers() {
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(
+    drawers?.filter(item => !!item.trigger) ?? undefined,
+    getIndexOfOverflowItem(),
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -254,8 +258,8 @@ function DesktopTriggers() {
                 testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
               ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
@@ -335,7 +339,11 @@ export function MobileTriggers() {
     previousActiveDrawerId.current = activeDrawerId;
   }
 
-  const { visibleItems, overflowItems } = splitItems(drawers, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT, activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(
+    drawers.filter(item => !!item.trigger),
+    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT,
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -361,8 +369,8 @@ export function MobileTriggers() {
             )}
             disabled={hasDrawerViewportOverlay}
             ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            iconName={item.trigger.iconName}
-            iconSvg={item.trigger.iconSvg}
+            iconName={item.trigger!.iconName}
+            iconSvg={item.trigger!.iconSvg}
             badge={item.badge}
             key={item.id}
             onClick={() => handleDrawersClick(item.id)}

@@ -93,7 +93,11 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const { overflowItems, visibleItems } = splitItems(drawers, 2, activeDrawerId);
+  const { overflowItems, visibleItems } = splitItems(
+    drawers?.filter(item => !!item.trigger),
+    2,
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -139,8 +143,8 @@ export function MobileToolbar({
                     testutilStyles['drawers-trigger'],
                     item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
                   )}
-                  iconName={item.trigger.iconName}
-                  iconSvg={item.trigger.iconSvg}
+                  iconName={item.trigger!.iconName}
+                  iconSvg={item.trigger!.iconSvg}
                   badge={item.badge}
                   ariaLabel={item.ariaLabels?.triggerButton}
                   ariaExpanded={activeDrawerId === item.id}

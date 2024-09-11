@@ -92,7 +92,7 @@ export function DrawerTriggers({
   const indexOfOverflowItem = getIndexOfOverflowItem();
 
   const { visibleItems, overflowItems } = splitItems(
-    [...drawers, ...globalDrawers],
+    [...drawers, ...globalDrawers].filter(item => !!item.trigger),
     indexOfOverflowItem,
     activeDrawerId ?? null
   );
@@ -141,8 +141,8 @@ export function DrawerTriggers({
                 !toolsOnlyMode && testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
               ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
@@ -164,8 +164,8 @@ export function DrawerTriggers({
                 testutilStyles['drawers-trigger'],
                 testutilStyles['drawers-trigger-global']
               )}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
                 onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);

@@ -24,8 +24,8 @@ interface OverflowMenuProps {
 const mapDrawerToItem = (drawer: AppLayoutProps.Drawer) => ({
   id: drawer.id,
   text: drawer.ariaLabels.drawerName,
-  iconName: drawer.trigger.iconName,
-  iconSvg: drawer.trigger.iconSvg,
+  iconName: drawer.trigger!.iconName,
+  iconSvg: drawer.trigger!.iconSvg,
   badge: drawer.badge,
 });
 

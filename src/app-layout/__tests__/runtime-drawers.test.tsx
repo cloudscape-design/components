@@ -671,6 +671,20 @@ describeEachAppLayout(({ theme, size }) => {
 
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
+
+  test('should not render a trigger button if registered drawer does not have a trigger prop', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, trigger: undefined });
+
+    const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+    expect(wrapper.findDrawerTriggerById('test')).toBeFalsy();
+
+    awsuiPlugins.appLayout.openDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+  });
 });
 
 describe('toolbar mode only features', () => {

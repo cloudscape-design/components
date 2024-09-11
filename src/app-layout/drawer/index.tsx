@@ -169,8 +169,8 @@ const DrawerTrigger = React.forwardRef(
       <ToggleButton
         ref={ref}
         className={testUtilsClassName}
-        iconName={trigger.iconName}
-        iconSvg={trigger.iconSvg}
+        iconName={trigger!.iconName}
+        iconSvg={trigger!.iconSvg}
         ariaLabel={ariaLabel}
         ariaExpanded={ariaExpanded}
         ariaControls={ariaControls}
@@ -212,7 +212,11 @@ export const DrawerTriggersBar = ({
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(
+    drawers?.filter(item => !!item.trigger),
+    getIndexOfOverflowItem(),
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (

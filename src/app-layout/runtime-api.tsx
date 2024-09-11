@@ -39,12 +39,14 @@ export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): Draw
       return {
         ...runtimeDrawer,
         ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
-        trigger: {
-          iconSvg: (
-            // eslint-disable-next-line react/no-danger
-            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-          ),
-        },
+        trigger: trigger
+          ? {
+              iconSvg: (
+                // eslint-disable-next-line react/no-danger
+                <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+              ),
+            }
+          : undefined,
         content: (
           <RuntimeContentWrapper
             key={runtimeDrawer.id}

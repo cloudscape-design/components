@@ -298,7 +298,7 @@ export namespace AppLayoutProps {
   export interface Drawer {
     id: string;
     content: React.ReactNode;
-    trigger: {
+    trigger?: {
       iconName?: IconProps.Name;
       iconSvg?: React.ReactNode;
     };

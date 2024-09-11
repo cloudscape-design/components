@@ -18,7 +18,7 @@ export interface DrawerConfig {
   onResize?: NonCancelableEventHandler<{ size: number; id: string }>;
   orderPriority?: number;
   defaultActive?: boolean;
-  trigger: {
+  trigger?: {
     iconSvg: string;
   };
   mountContent: (

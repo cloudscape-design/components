@@ -224,3 +224,23 @@ awsuiPlugins.appLayout.registerDrawer({
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle4-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<div>global widget content circle 3 (without trigger button)</div>, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
