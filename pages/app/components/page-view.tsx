@@ -5,8 +5,6 @@ import React, { lazy, Suspense } from 'react';
 import pagesContext from '../pages-context';
 import ErrorBoundary from './error-boundary';
 
-import styles from './page-view.scss';
-
 const pagesComponents: Record<string, ReturnType<typeof lazy>> = {};
 
 export default function PageView({ pageId }: { pageId: string }) {
@@ -17,9 +15,7 @@ export default function PageView({ pageId }: { pageId: string }) {
   return (
     <ErrorBoundary key={pageId}>
       <Suspense fallback={<span>Loading...</span>}>
-        <div className={styles['page-container']}>
-          <Page />
-        </div>
+        <Page />
       </Suspense>
     </ErrorBoundary>
   );
