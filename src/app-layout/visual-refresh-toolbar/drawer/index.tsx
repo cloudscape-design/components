@@ -42,8 +42,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   };
 
   const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
-  const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID;
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
+  const isToolsDrawer = activeDrawerId === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
@@ -60,8 +60,9 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       aria-hidden={!activeDrawer}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
-        [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
-        [testutilStyles.tools]: isToolsDrawer,
+        [testutilStyles['active-drawer']]: activeDrawerId,
+        [testutilStyles.tools]: isToolsDrawer || toolsOnlyMode,
+        [testutilStyles['drawer-closed']]: !activeDrawer,
       })}
       ref={drawerRef}
       onBlur={e => {
@@ -96,7 +97,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             ariaLabel={computedAriaLabels.closeButton}
             className={clsx({
               [testutilStyles['active-drawer-close-button']]: !isToolsDrawer && activeDrawerId,
-              [testutilStyles['tools-close']]: isToolsDrawer,
+              [testutilStyles['tools-close']]: isToolsDrawer || toolsOnlyMode,
             })}
             formAction="none"
             iconName={isMobile ? 'close' : 'angle-right'}
@@ -105,15 +106,10 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             variant="icon"
           />
         </div>
-        <div
-          className={clsx(
-            styles['drawer-content'],
-            activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
-          )}
-        >
+        <div className={clsx(styles['drawer-content'], !isToolsDrawer && styles['drawer-content-hidden'])}>
           {toolsContent}
         </div>
-        {activeDrawerId !== TOOLS_DRAWER_ID && <div className={styles['drawer-content']}>{activeDrawer?.content}</div>}
+        {!isToolsDrawer && <div className={styles['drawer-content']}>{activeDrawer?.content}</div>}
       </div>
     </aside>
   );

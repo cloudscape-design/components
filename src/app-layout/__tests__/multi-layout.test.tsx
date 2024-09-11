@@ -84,10 +84,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         content={<AppLayout data-testid="second" navigationHide={true} tools="testing tools" />}
       />
     );
-    expect(firstLayout.findTools()).toBeFalsy();
-    expect(secondLayout.findTools()).toBeFalsy();
+    expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
+    expect(isDrawerClosed(secondLayout.findTools())).toEqual(true);
 
     firstLayout.findToolsToggle().click();
+    expect(isDrawerClosed(secondLayout.findTools())).toEqual(false);
     expect(secondLayout.findTools()).toBeTruthy();
   });
 
@@ -219,7 +220,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     });
 
     test('deduplicates tools and drawers in a single entity', async () => {
-      const { firstLayout } = await renderAsync(
+      const { firstLayout, secondLayout } = await renderAsync(
         <AppLayout
           {...defaultAppLayoutProps}
           data-testid="first"
@@ -231,10 +232,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         expect.stringContaining('Another app layout instance on this page already defines tools or drawers property')
       );
       expect(firstLayout.findDrawersTriggers()).toHaveLength(0);
-      expect(firstLayout.findTools()).toBeFalsy();
+      expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
+      expect(secondLayout.findTools()).toBeFalsy();
 
       firstLayout.findToolsToggle().click();
-      expect(firstLayout.findTools()).toBeTruthy();
+      expect(isDrawerClosed(firstLayout.findTools())).toEqual(false);
     });
   });
 });
