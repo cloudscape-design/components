@@ -3,7 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalButton, { InternalButtonProps } from '../../button/internal';
+import { GeneratedAnalyticsMetadataAlertButtonClick } from '../analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
 
@@ -15,9 +18,15 @@ function createActionButton(
 ) {
   if (!action && buttonText) {
     action = (
-      <InternalButton className={testUtilClasses.actionButton} onClick={onButtonClick} formAction="none">
-        {buttonText}
-      </InternalButton>
+      <span
+        {...getAnalyticsMetadataAttribute({
+          action: 'buttonClick',
+        } as Partial<GeneratedAnalyticsMetadataAlertButtonClick>)}
+      >
+        <InternalButton className={testUtilClasses.actionButton} onClick={onButtonClick} formAction="none">
+          {buttonText}
+        </InternalButton>
+      </span>
     );
   }
   return action ? <div className={testUtilClasses.actionSlot}>{action}</div> : null;
