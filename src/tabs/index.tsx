@@ -47,6 +47,9 @@ export default function Tabs({
   }
   const { __internalRootRef } = useBaseComponent('Tabs', {
     props: { disableContentPaddings, variant },
+    metadata: {
+      hasActions: tabs.some(tab => !!tab.action),
+    },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
 
