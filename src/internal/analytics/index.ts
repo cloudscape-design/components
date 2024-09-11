@@ -2,13 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 /* istanbul ignore file */
 
-import { IFunnelMetrics, IPerformanceMetrics } from './interfaces';
+import { IComponentMetrics, IFunnelMetrics, IPerformanceMetrics } from './interfaces';
 
 export function setFunnelMetrics(funnelMetrics: IFunnelMetrics) {
   FunnelMetrics = funnelMetrics;
 }
 export function setPerformanceMetrics(performanceMetrics: IPerformanceMetrics) {
   PerformanceMetrics = performanceMetrics;
+}
+export function setComponentMetrics(componentMetrics: IComponentMetrics) {
+  ComponentMetrics = componentMetrics;
 }
 
 /**
@@ -43,4 +46,10 @@ export let FunnelMetrics: IFunnelMetrics = {
  */
 export let PerformanceMetrics: IPerformanceMetrics = {
   tableInteraction(): void {},
+};
+
+export let ComponentMetrics: IComponentMetrics = {
+  componentMounted(): string {
+    return '';
+  },
 };
