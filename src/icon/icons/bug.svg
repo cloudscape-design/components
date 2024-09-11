@@ -1,10 +1,10 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 5.70996C12 3.50082 10.2091 1.70996 8 1.70996C5.79086 1.70996 4 3.50082 4 5.70996V9.70996C4 11.9191 5.79086 13.71 8 13.71C10.2091 13.71 12 11.9191 12 9.70996V5.70996Z" class="stroke-linejoin-round"/>
-<path d="M15 8.70996H12" class="stroke-linejoin-round"/>
-<path d="M4 8.70996H1" class="stroke-linejoin-round"/>
-<path d="M11 5.70996H5" class="stroke-linejoin-round"/>
-<path d="M15 3.63L12 5.71" class="stroke-linejoin-round"/>
-<path d="M15 13.78L12 11.71" class="stroke-linejoin-round"/>
-<path d="M1 3.63L4 5.71" class="stroke-linejoin-round"/>
-<path d="M1 13.78L4 11.71" class="stroke-linejoin-round"/>
+<path d="M12 5.70996C12 3.50082 10.2091 1.70996 8 1.70996C5.79086 1.70996 4 3.50082 4 5.70996V9.70996C4 11.9191 5.79086 13.71 8 13.71C10.2091 13.71 12 11.9191 12 9.70996V5.70996Z" />
+<path d="M15 8.70996H12" />
+<path d="M4 8.70996H1" />
+<path d="M12 6L4 6" />
+<path d="M15 3.63L12 5.71" />
+<path d="M15 13.78L12 11.71" />
+<path d="M1 3.63L4 5.71" />
+<path d="M1 13.78L4 11.71" />
 </svg>
