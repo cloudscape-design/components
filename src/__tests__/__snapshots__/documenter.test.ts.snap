@@ -14072,10 +14072,10 @@ Object that represents an expandable group of links.
   ],
   "regions": Array [
     Object {
-      "description": "Slot to insert a component below the header and above the items.
-Using existing Cloudscape component is recommended.",
+      "description": "The region below the header and above the items to control filtering of menu items
+Use existing Cloudscape components such as Select or MultiSelect.",
       "isDefault": false,
-      "name": "itemsHeader",
+      "name": "itemsControl",
     },
   ],
   "releaseStatus": "stable",

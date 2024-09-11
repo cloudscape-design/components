@@ -17,8 +17,8 @@ export default class SideNavigationWrapper extends ComponentWrapper {
     return this.findByClassName(styles['header-link']);
   }
 
-  findItemsHeader(): ElementWrapper | null {
-    return this.findByClassName(styles['items-header']);
+  findItemsControl(): ElementWrapper | null {
+    return this.findByClassName(styles['items-control']);
   }
 
   findLinkByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {

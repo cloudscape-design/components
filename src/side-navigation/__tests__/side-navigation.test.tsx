@@ -1221,17 +1221,17 @@ describe('SideNavigation', () => {
     });
   });
 
-  describe('Items Header', () => {
-    it('renders select component when provided', () => {
+  describe('Items Control', () => {
+    it('renders Select component when provided', () => {
       const wrapper = renderSideNavigation({
-        itemsHeader: <Select options={[]} selectedOption={{}} onChange={() => null} />,
+        itemsControl: <Select options={[]} selectedOption={{}} onChange={() => null} />,
       });
-      expect(wrapper.findItemsHeader()!.getElement()).toBeInTheDocument();
-      expect(wrapper.findItemsHeader()!.findSelect()?.getElement()).toBeInTheDocument();
+      expect(wrapper.findItemsControl()!.getElement()).toBeInTheDocument();
+      expect(wrapper.findItemsControl()!.findSelect()?.getElement()).toBeInTheDocument();
     });
-    it('returns null when items header is not provided', () => {
+    it('returns null when items control is not provided', () => {
       const wrapper = renderSideNavigation({});
-      expect(wrapper.findItemsHeader()).toBeNull();
+      expect(wrapper.findItemsControl()).toBeNull();
     });
   });
 });
