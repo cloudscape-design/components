@@ -269,6 +269,7 @@ describe('BreadcrumbGroup', () => {
         'Sixth that is very very very very very very long long long text'
       );
 
+      await page.hoverElement('#focus-target-long-text');
       await page.click('#focus-target-long-text');
       await expect(page.countTooltips()).resolves.toBe(0);
       await page.hoverElement(breadcrumbGroupWrapper.findBreadcrumbLink(6).toSelector());
