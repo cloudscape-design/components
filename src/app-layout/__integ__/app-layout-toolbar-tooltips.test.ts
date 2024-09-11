@@ -11,7 +11,6 @@ import visualRefreshStyles from '../../../lib/components/app-layout/visual-refre
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
-const testIf = (condition: boolean) => (condition ? test : test.skip);
 const wrapper = createWrapper().findAppLayout();
 
 interface SetupTestOptions {
@@ -97,7 +96,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
     const drawersTriggerContainerClassKey = `drawers-${size === 'desktop' ? 'desktop' : 'mobile'}-triggers-container`;
     const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : toolbarDrawerIds;
 
-    testIf(size === 'desktop')(
+    test(
       'Shows tooltip correctly for mouse interactions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -105,7 +104,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
         const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
         await page.hoverElement(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
-        await page.hoverElement(`body`);
+        await page.hoverElement(wrapper.findNavigationToggle().toSelector());
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
