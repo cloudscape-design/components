@@ -125,6 +125,34 @@ function useRuntimeDrawers(
     setActiveGlobalDrawersIds,
   ]);
 
+  useEffect(() => {
+    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerClosed(drawerId => {
+      const localDrawer = [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]?.find(
+        drawer => drawer.id === drawerId
+      );
+      const globalDrawer = runtimeGlobalDrawers?.find(drawer => drawer.id === drawerId);
+      if (localDrawer && activeDrawerId === drawerId) {
+        onActiveDrawerChange(null);
+      }
+      if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
+        setActiveGlobalDrawersIds(drawerId);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [
+    activeDrawerId,
+    activeGlobalDrawersIds,
+    drawers,
+    onActiveDrawerChange,
+    runtimeGlobalDrawers,
+    runtimeLocalDrawers.after,
+    runtimeLocalDrawers.before,
+    setActiveGlobalDrawersIds,
+  ]);
+
   return {
     local: runtimeLocalDrawers,
     global: runtimeGlobalDrawers,

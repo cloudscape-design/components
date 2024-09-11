@@ -33,24 +33,27 @@ export type UpdateDrawerConfig = Pick<DrawerConfig, 'id' | 'badge' | 'resizable'
 
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
-export type DrawersOpenedListener = (drawerId: string) => void;
+export type DrawersToggledListener = (drawerId: string) => void;
 
 export interface DrawersApiPublic {
   registerDrawer(config: DrawerConfig): void;
   updateDrawer(config: UpdateDrawerConfig): void;
   openDrawer(drawerId: string): void;
+  closeDrawer(drawerId: string): void;
 }
 
 export interface DrawersApiInternal {
   clearRegisteredDrawers(): void;
   onDrawersRegistered(listener: DrawersRegistrationListener): () => void;
-  onDrawerOpened(listener: DrawersOpenedListener): () => void;
+  onDrawerOpened(listener: DrawersToggledListener): () => void;
+  onDrawerClosed(listener: DrawersToggledListener): () => void;
 }
 
 export class DrawersController {
   private drawers: Array<DrawerConfig> = [];
   private drawersRegistrationListener: DrawersRegistrationListener | null = null;
-  private drawerOpenedListener: DrawersOpenedListener | null = null;
+  private drawerOpenedListener: DrawersToggledListener | null = null;
+  private drawerClosedListener: DrawersToggledListener | null = null;
 
   scheduleUpdate = debounce(() => {
     this.drawersRegistrationListener?.(this.drawers);
@@ -101,7 +104,7 @@ export class DrawersController {
     this.drawers = [];
   };
 
-  onDrawerOpened = (listener: DrawersOpenedListener) => {
+  onDrawerOpened = (listener: DrawersToggledListener) => {
     if (this.drawerOpenedListener !== null) {
       console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
     }
@@ -113,14 +116,31 @@ export class DrawersController {
     };
   };
 
+  onDrawerClosed = (listener: DrawersToggledListener) => {
+    if (this.drawerClosedListener !== null) {
+      console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
+    }
+
+    this.drawerClosedListener = listener;
+
+    return () => {
+      this.drawerClosedListener = null;
+    };
+  };
+
   openDrawer = (drawerId: string) => {
     this.drawerOpenedListener?.(drawerId);
+  };
+
+  closeDrawer = (drawerId: string) => {
+    this.drawerClosedListener?.(drawerId);
   };
 
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
     api.registerDrawer ??= this.registerDrawer;
     api.updateDrawer ??= this.updateDrawer;
     api.openDrawer ??= this.openDrawer;
+    api.closeDrawer ??= this.closeDrawer;
     return api as DrawersApiPublic;
   }
 
@@ -128,6 +148,7 @@ export class DrawersController {
     internalApi.clearRegisteredDrawers ??= this.clearRegisteredDrawers;
     internalApi.onDrawersRegistered ??= this.onDrawersRegistered;
     internalApi.onDrawerOpened ??= this.onDrawerOpened;
+    internalApi.onDrawerClosed ??= this.onDrawerClosed;
     return internalApi as DrawersApiInternal;
   }
 }
