@@ -26,7 +26,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const [showPopover, setShowPopover] = useState(false);
   const textRef = useRef<HTMLElement>(null);
-  const popoverContent = <Tooltip trackRef={textRef} value={item.text} />;
+  const popoverContent = <Tooltip trackRef={textRef} value={item.text} size="medium" />;
 
   useEffect(() => {
     if (showPopover) {
