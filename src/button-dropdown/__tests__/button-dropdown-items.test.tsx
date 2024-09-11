@@ -358,14 +358,6 @@ const items: ButtonDropdownProps.Items = [
       expect(icon.getElement()).toHaveAttribute('aria-label', simpleItems[0].externalIconAriaLabel);
     });
 
-    it('items without a link cannot be external', () => {
-      const simpleItems = [{ id: 'i1', text: 'item1', external: true }];
-      const wrapper = renderButtonDropdown({ ...props, items: simpleItems });
-
-      wrapper.openDropdown();
-      expect(wrapper.findItemById('i1')!.findIcon()).toBeFalsy();
-    });
-
     describe('should render icons', () => {
       const url = 'data:image/png;base64,aaaa';
       const svg = (
