@@ -262,7 +262,7 @@ describe('without feature flag', () => {
 
 test('renders analytics metadata information', async () => {
   activateAnalyticsMetadata(true);
-  render(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+  render(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} ariaLabel="global breadcrumbs" />} />);
   await delay();
   const breadcrumbsWrapper = wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()!;
   const firstBreadcrumb = breadcrumbsWrapper.findBreadcrumbLink(1)!.getElement();
@@ -278,7 +278,7 @@ test('renders analytics metadata information', async () => {
         type: 'component',
         detail: {
           name: 'awsui.BreadcrumbGroup',
-          label: 'Home...Page',
+          label: 'global breadcrumbs',
         },
       },
     ],
