@@ -41,14 +41,6 @@ export interface TriggerButtonProps {
    * When falsy, the tooltip will parse the tooltip form the aria-lable
    */
   tooltipText?: string;
-  /**
-   * If the AppLayout has a drawer that is open
-   * Used to hide tooltips in certian conditions
-   */
-  /**
-   * set to true if the trigger button was used to open the last active drawer
-   */
-  isForPreviousActiveDrawer?: boolean;
   hasOpenDrawer?: boolean;
   /**
    * If the AppLayout is in mobile mode
@@ -73,6 +65,11 @@ export interface TriggerButtonProps {
    * be displayed on both user-initiated focus and programmatic focus events.
    */
   hideTooltipOnFocus?: boolean;
+  /**
+   * set to true if the trigger button was used to open the last active drawer
+   */
+  isForPreviousActiveDrawer?: boolean;
+  tabIndex?: number | undefined;
 }
 
 function TriggerButton(
@@ -90,22 +87,41 @@ function TriggerButton(
     selected = false,
     highContrastHeader,
     hasTooltip = false,
-    // hideTooltipOnFocus = false,
+    hideTooltipOnFocus = false,
     tooltipText,
-    // isForPreviousActiveDrawer = false,
     hasOpenDrawer = false,
     isMobile = false,
+    isForPreviousActiveDrawer = false,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
-  const containerRef = useRef(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const [suppressTooltip, setSupressTooltip] = useState<boolean>(false);
 
-  const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+  const handleWrapperClick = useCallback(() => {
     setShowTooltip(false);
-    onClick(event);
-  };
+    if (!selected) {
+      setSupressTooltip(true);
+    }
+  }, [selected]);
+
+  const handleBlur = useCallback(
+    (event: FocusEvent) => {
+      const eventWithRelatedTarget = event;
+      console.log({
+        event: { ...eventWithRelatedTarget },
+        tooltipValue,
+        isForPreviousActiveDrawer,
+        hideTooltipOnFocus,
+        selected,
+      });
+      setSupressTooltip(false);
+      setShowTooltip(false);
+    },
+    [selected, tooltipValue, isForPreviousActiveDrawer, hideTooltipOnFocus]
+  );
 
   const handleOnFocus = useCallback(
     (event: KeyboardEvent | PointerEvent) => {
@@ -113,17 +129,18 @@ function TriggerButton(
 
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
-        return eventWithRelatedTarget?.relatedTarget !== null;
+        return (
+          (!suppressTooltip && !isForPreviousActiveDrawer) ||
+          (isForPreviousActiveDrawer && !hideTooltipOnFocus) ||
+          eventWithRelatedTarget?.relatedTarget !== null
+        );
       };
 
       if (shouldShowTooltip()) {
         setShowTooltip(true);
       }
     },
-    [
-      // hideTooltipOnFocus,
-      // isForPreviousActiveDrawer
-    ]
+    [hideTooltipOnFocus, isForPreviousActiveDrawer, suppressTooltip]
   );
 
   const tooltipVisible = useMemo(() => {
@@ -134,6 +151,7 @@ function TriggerButton(
     if (hasTooltip && tooltipValue) {
       const close = () => {
         setShowTooltip(false);
+        setSupressTooltip(false);
       };
 
       const shouldCloseTooltip = (event: PointerEvent) => {
@@ -155,13 +173,16 @@ function TriggerButton(
         }
       };
 
-      window.addEventListener('pointerdown', handlePointerDownEvent);
-      window.addEventListener('keydown', handleKeyDownEvent);
+      const wrapperDiv = containerRef.current;
+      if (wrapperDiv) {
+        wrapperDiv.addEventListener('pointerdown', handlePointerDownEvent);
+        wrapperDiv.addEventListener('keydown', handleKeyDownEvent);
 
-      return () => {
-        window.removeEventListener('pointerdown', handlePointerDownEvent);
-        window.removeEventListener('keydown', handleKeyDownEvent);
-      };
+        return () => {
+          wrapperDiv.removeEventListener('pointerdown', handlePointerDownEvent);
+          wrapperDiv.removeEventListener('keydown', handleKeyDownEvent);
+        };
+      }
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
@@ -170,9 +191,11 @@ function TriggerButton(
       ref={containerRef}
       {...(hasTooltip && {
         onPointerEnter: () => setShowTooltip(true),
-        onPointerLeave: () => setShowTooltip(false),
+        onPointerLeave: e => handleBlur(e as any),
+        onMouseLeave: e => handleBlur(e as any),
         onFocus: e => handleOnFocus(e as any),
-        onBlur: () => setShowTooltip(false),
+        onBlur: e => handleBlur(e as any),
+        onClick: () => handleWrapperClick(),
       })}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
         [styles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
@@ -193,7 +216,7 @@ function TriggerButton(
           },
           className
         )}
-        onClick={handleOnClick}
+        onClick={onClick}
         ref={ref as Ref<HTMLButtonElement>}
         type="button"
         data-testid={testId}

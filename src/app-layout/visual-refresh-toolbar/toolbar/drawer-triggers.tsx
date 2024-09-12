@@ -118,10 +118,8 @@ export function DrawerTriggers({
               ref={splitPanelFocusRef}
               hasTooltip={true}
               testId={`awsui-app-layout-trigger-slide-panel`}
-              isForPreviousActiveDrawer={isMobile}
-              hasOpenDrawer={splitPanelToggleProps.active}
               isMobile={isMobile}
-              hideTooltipOnFocus={splitPanelToggleProps.active}
+              isForPreviousActiveDrawer={splitPanelToggleProps.active}
             />
             {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
           </>
@@ -146,7 +144,7 @@ export function DrawerTriggers({
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
-              hideTooltipOnFocus={activeDrawerId === null && item.id === previousActiveDrawerId?.current}
+              hideTooltipOnFocus={activeDrawerId === null && isForPreviousActiveDrawer}
               hasTooltip={true}
               hasOpenDrawer={hasOpenDrawer}
               tooltipText={item.ariaLabels?.drawerName}
