@@ -99,7 +99,7 @@ const FilteringToken = forwardRef(
       triggerType: 'text',
       header: editorHeader,
       size: popoverSize,
-      position: 'right',
+      position: 'bottom',
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
