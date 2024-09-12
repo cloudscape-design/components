@@ -18,7 +18,7 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
       <h1 className={styles.header}>{variant}</h1>
       {sizes.map(size => (
         <>
-          <h2 style={{ marginBlockEnd: 8 }}>Icon {size}</h2>
+          <div style={{ marginBlockEnd: 8 }}>Icon {size}</div>
           <div
             key={size}
             style={{ paddingBlockEnd: 8, paddingBlockStart: 2, display: 'flex', flexWrap: 'wrap', gap: 4 }}
