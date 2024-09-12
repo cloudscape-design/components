@@ -35,7 +35,7 @@ export interface AlertFlashContentConfig {
   runReplacer: (context: AlertFlashContentContext, replacementApi: ReplacementApi) => AlertFlashContentResult;
 }
 
-export type AlertFlashContentRegistrationListener = (provider?: AlertFlashContentConfig) => void | (() => void);
+export type AlertFlashContentRegistrationListener = (provider: AlertFlashContentConfig) => () => void;
 
 export interface AlertFlashContentApiPublic {
   registerContentReplacer(config: AlertFlashContentConfig): void;
@@ -48,14 +48,16 @@ export interface AlertFlashContentApiInternal {
 
 export class AlertFlashContentController {
   #listeners: Array<AlertFlashContentRegistrationListener> = [];
-  #cleanups = new Map<AlertFlashContentRegistrationListener, null | (() => void)>();
+  #cleanups = new Map<AlertFlashContentRegistrationListener, () => void>();
   #provider?: AlertFlashContentConfig;
 
   #scheduleUpdate = debounce(
     () =>
       this.#listeners.forEach(listener => {
-        const cleanup = listener(this.#provider) ?? null;
-        this.#cleanups.set(listener, cleanup);
+        if (this.#provider) {
+          const cleanup = listener(this.#provider);
+          this.#cleanups.set(listener, cleanup);
+        }
       }),
     0
   );
@@ -78,12 +80,13 @@ export class AlertFlashContentController {
   };
 
   onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
-    const cleanup = listener(this.#provider);
-    this.#listeners.push(listener);
-    if (cleanup) {
+    if (this.#provider) {
+      const cleanup = listener(this.#provider);
+      this.#listeners.push(listener);
       this.#cleanups.set(listener, cleanup);
+    } else {
+      this.#listeners.push(listener);
     }
-
     return () => {
       this.#cleanups.get(listener)?.();
       this.#listeners = this.#listeners.filter(item => item !== listener);

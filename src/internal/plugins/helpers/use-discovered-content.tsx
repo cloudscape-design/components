@@ -45,7 +45,7 @@ export function createUseDiscoveredContent(
           return true;
         }
 
-        mountedProvider.current = provider?.runReplacer(context, {
+        mountedProvider.current = provider.runReplacer(context, {
           hideHeader() {
             if (checkMounted('hideHeader')) {
               setFoundHeaderReplacement('remove');

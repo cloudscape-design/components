@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 import {
@@ -72,7 +72,7 @@ export default function () {
   const [unrelatedState, setUnrelatedState] = useState(false);
   const [contentSwapped, setContentSwapped] = useState(false);
 
-  const content1 = loading ? <Box>Loading...</Box> : <Box>Content</Box>;
+  const content1 = useMemo(() => (loading ? <Box>Loading...</Box> : <Box>Content</Box>), [loading]);
   const content2 = loading ? <Box>Loading...</Box> : <Box>There was an error: Access denied because of XYZ</Box>;
 
   return (
