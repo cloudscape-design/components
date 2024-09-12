@@ -5,11 +5,11 @@ import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
+import { registerTooltip } from '../../internal/components/tooltip/registry';
 import { fireCancelableEvent, isPlainLeftClick } from '../../internal/events';
 import { BreadcrumbGroupProps, BreadcrumbItemProps } from '../interfaces';
 import { getEventDetail } from '../utils';
 import { FunnelBreadcrumbItem } from './funnel';
-import { registerTooltip } from './tooltips-registry';
 
 import styles from './styles.css.js';
 
