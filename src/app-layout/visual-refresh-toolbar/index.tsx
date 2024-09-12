@@ -33,7 +33,8 @@ import {
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
 
-const CONTENT_RESIZE_THROTTLE = 150;
+const CONTENT_RESIZE_THROTTLE = 500;
+const CONTENT_BORDER_WITDH = 2;
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
   (
@@ -86,7 +87,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           return;
         }
 
-        if (entry.borderBoxWidth < minContentWidth) {
+        if (entry.borderBoxWidth < minContentWidth - CONTENT_BORDER_WITDH) {
           const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
           if (drawers?.find(drawer => drawer.id === drawerToClose)) {
             onActiveDrawerChange(null);

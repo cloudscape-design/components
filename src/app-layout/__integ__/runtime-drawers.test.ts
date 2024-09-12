@@ -120,7 +120,7 @@ describe('Visual refresh toolbar only', () => {
   test(
     'should open 3 drawers (1 local and 2 global) if the screen size permits',
     setupTest(async page => {
-      await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+      await page.setWindowSize({ ...viewports.desktop, width: 1700 });
       await page.click(wrapper.findDrawerTriggerById('security').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
@@ -130,6 +130,22 @@ describe('Visual refresh toolbar only', () => {
       await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
     })
   );
+
+  test('first opened drawer should close when the screen is resized, and the drawers no longer fit', () => {
+    setupTest(async page => {
+      await page.setWindowSize({ ...viewports.desktop, width: 1400 });
+      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
+
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
+
+      await page.setWindowSize({ ...viewports.desktop, width: 1275 });
+
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(false);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
+    });
+  });
 
   describe('active drawers take up all available space on the page and a third drawer is opened', () => {
     test(
