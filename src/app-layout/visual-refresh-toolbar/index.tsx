@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -10,6 +12,7 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
+import { throttle } from '../../internal/utils/throttle';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -29,6 +32,8 @@ import {
 } from './internal';
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
+
+const CONTENT_RESIZE_THROTTLE = 150;
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
   (
@@ -72,6 +77,25 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const contentRef = useRef<HTMLDivElement>(null);
+
+    useResizeObserver(
+      contentRef,
+      throttle(entry => {
+        if (drawersOpenQueue.length === 0 || isMobile) {
+          return;
+        }
+
+        if (entry.borderBoxWidth < minContentWidth) {
+          const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+          if (drawers?.find(drawer => drawer.id === drawerToClose)) {
+            onActiveDrawerChange(null);
+          } else {
+            onActiveGlobalDrawersChange(drawerToClose);
+          }
+        }
+      }, CONTENT_RESIZE_THROTTLE)
+    );
 
     const onNavigationToggle = (open: boolean) => {
       fireNonCancelableEvent(onNavigationChange, { open });
@@ -377,7 +401,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           }
           contentHeader={contentHeader}
           // delay rendering the content until registration of this instance is complete
-          content={registered ? content : null}
+          content={<div ref={contentRef}>{registered ? content : null}</div>}
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={navigationOpen}
           navigationWidth={navigationWidth}
