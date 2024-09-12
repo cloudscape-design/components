@@ -70,13 +70,19 @@ function TriggerButton(
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
-  const containerRef = React.useRef(null);
+  const containerRef = React.useRef<HTMLDivElement | null>(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const [suppressTooltip, setSupressTooltip] = useState<boolean>(false);
   const { hasOpenDrawer, isMobile } = useAppLayoutInternals();
 
   const tooltipVisible =
-    containerRef && containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer) && showTooltip;
+    containerRef &&
+    containerRef?.current &&
+    tooltipValue &&
+    !(isMobile && hasOpenDrawer) &&
+    showTooltip &&
+    !suppressTooltip;
 
   /**
    * Takes the drawer being closed and the data-shift-focus value from a close button on that drawer that persists
@@ -89,7 +95,12 @@ function TriggerButton(
 
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
-        return eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button';
+        return (
+          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button' ||
+          //if tab nav from drawer close button, not clicking or enter/space key on it
+          (eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button' &&
+            (selected || !isForPreviousActiveDrawer))
+        );
       };
 
       // condition for mobile devices and open drawers into a separate function
@@ -114,8 +125,22 @@ function TriggerButton(
       isMobile,
       hasOpenDrawer,
       isForPreviousActiveDrawer,
+      selected,
     ]
   );
+
+  const handleClick = () => {
+    setSupressTooltip(true);
+    onClick();
+  };
+
+  const handleBlur = (event: FocusEvent, keepSupressed = false) => {
+    console.log({ ...event });
+    if (!keepSupressed) {
+      setSupressTooltip(false);
+    }
+    setShowTooltip(false);
+  };
 
   useEffect(() => {
     if (hasTooltip && tooltipValue) {
@@ -142,13 +167,16 @@ function TriggerButton(
         }
       };
 
-      window.addEventListener('pointerdown', handlePointerDownEvent);
-      window.addEventListener('keydown', handleKeyDownEvent);
+      const wrapperDiv = containerRef.current;
+      if (wrapperDiv) {
+        wrapperDiv.addEventListener('pointerdown', handlePointerDownEvent);
+        wrapperDiv.addEventListener('keydown', handleKeyDownEvent);
 
-      return () => {
-        window.removeEventListener('pointerdown', handlePointerDownEvent);
-        window.removeEventListener('keydown', handleKeyDownEvent);
-      };
+        return () => {
+          wrapperDiv.removeEventListener('pointerdown', handlePointerDownEvent);
+          wrapperDiv.removeEventListener('keydown', handleKeyDownEvent);
+        };
+      }
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
@@ -159,7 +187,8 @@ function TriggerButton(
         onPointerEnter: () => setShowTooltip(true),
         onPointerLeave: () => setShowTooltip(false),
         onFocus: e => handleFocus(e as any),
-        onBlur: () => setShowTooltip(false),
+        onBlur: e => handleBlur(e as any, true),
+        onMouseLeave: e => handleBlur(e as any),
       })}
       className={clsx(styles['trigger-wrapper'], {
         [styles['remove-high-contrast-header']]: !highContrastHeader,
@@ -178,7 +207,7 @@ function TriggerButton(
           iconName={iconName}
           iconSvg={iconSvg}
           badge={badge}
-          onClick={onClick}
+          onClick={handleClick}
           variant="icon"
           __nativeAttributes={{
             'aria-haspopup': true,
@@ -204,7 +233,7 @@ function TriggerButton(
               },
               className
             )}
-            onClick={onClick}
+            onClick={handleClick}
             ref={ref as Ref<HTMLButtonElement>}
             type="button"
             data-testid={testId}
