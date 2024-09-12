@@ -72,8 +72,8 @@ export default function () {
   const [unrelatedState, setUnrelatedState] = useState(false);
   const [contentSwapped, setContentSwapped] = useState(false);
 
-  const content1 = loading ? 'Loading...' : 'Content';
-  const content2 = loading ? 'Loading...' : 'There was an error: Access denied because of XYZ';
+  const content1 = loading ? <Box>Loading...</Box> : <Box>Content</Box>;
+  const content2 = loading ? <Box>Loading...</Box> : <Box>There was an error: Access denied because of XYZ</Box>;
 
   return (
     <Box margin="m">

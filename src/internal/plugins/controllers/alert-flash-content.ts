@@ -35,10 +35,7 @@ export interface AlertFlashContentConfig {
   runReplacer: (context: AlertFlashContentContext, replacementApi: ReplacementApi) => AlertFlashContentResult;
 }
 
-export interface AlertFlashContentRegistrationListener {
-  (provider?: AlertFlashContentConfig): void | (() => void);
-  cleanup?: void | (() => void);
-}
+export type AlertFlashContentRegistrationListener = (provider?: AlertFlashContentConfig) => void | (() => void);
 
 export interface AlertFlashContentApiPublic {
   registerContentReplacer(config: AlertFlashContentConfig): void;
