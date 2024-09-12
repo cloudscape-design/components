@@ -17,8 +17,7 @@ export interface SideNavigationProps extends BaseComponentProps {
   header?: SideNavigationProps.Header;
 
   /**
-   * The region below the header and above the items to control filtering of menu items
-   * Use existing Cloudscape components such as Select or MultiSelect.
+   * A slot located below the header and above the items.
    **/
   itemsControl?: React.ReactNode;
 
