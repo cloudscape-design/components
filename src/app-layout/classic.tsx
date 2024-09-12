@@ -411,7 +411,7 @@ const ClassicAppLayout = React.forwardRef(
             onToolsOpen={() => onToolsToggle(true)}
             unfocusable={anyPanelOpen}
             mobileBarRef={mobileBarRef}
-            drawers={drawers}
+            drawers={drawers?.filter(item => !!item.trigger)}
             activeDrawerId={activeDrawerId}
             onDrawerChange={newDrawerId => {
               onActiveDrawerChange(newDrawerId);
@@ -592,7 +592,7 @@ const ClassicAppLayout = React.forwardRef(
               bottomOffset={placement.insetBlockEnd}
               topOffset={placement.insetBlockStart}
               isMobile={isMobile}
-              drawers={drawers}
+              drawers={drawers.filter(item => !!item.trigger)}
               activeDrawerId={activeDrawerId}
               onDrawerChange={newDrawerId => {
                 if (activeDrawerId !== newDrawerId) {

@@ -93,11 +93,7 @@ export function MobileToolbar({
     }
   }, [anyPanelOpen]);
 
-  const { overflowItems, visibleItems } = splitItems(
-    drawers?.filter(item => !!item.trigger),
-    2,
-    activeDrawerId
-  );
+  const { overflowItems, visibleItems } = splitItems(drawers, 2, activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (

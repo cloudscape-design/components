@@ -195,14 +195,14 @@ export function AppLayoutToolbarImplementation({
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
-              drawers={drawers ?? []}
+              drawers={drawers?.filter(item => !!item.trigger) ?? []}
               drawersFocusRef={drawersFocusRef}
               onActiveDrawerChange={onActiveDrawerChange}
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
               globalDrawersFocusControl={globalDrawersFocusControl!}
-              globalDrawers={globalDrawers ?? []}
+              globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
             />

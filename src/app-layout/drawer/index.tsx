@@ -212,11 +212,7 @@ export const DrawerTriggersBar = ({
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(
-    drawers?.filter(item => !!item.trigger),
-    getIndexOfOverflowItem(),
-    activeDrawerId
-  );
+  const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (

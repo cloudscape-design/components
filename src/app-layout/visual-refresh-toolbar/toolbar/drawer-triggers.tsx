@@ -92,7 +92,7 @@ export function DrawerTriggers({
   const indexOfOverflowItem = getIndexOfOverflowItem();
 
   const { visibleItems, overflowItems } = splitItems(
-    [...drawers, ...globalDrawers].filter(item => !!item.trigger),
+    [...drawers, ...globalDrawers],
     indexOfOverflowItem,
     activeDrawerId ?? null
   );
