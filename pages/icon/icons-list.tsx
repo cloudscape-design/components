@@ -17,8 +17,8 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
     <ScreenshotArea key={variant} className={className}>
       <h1 className={styles.header}>{variant}</h1>
       {sizes.map(size => (
-        <>
-          <div style={{ marginBlockEnd: 8 }}>Icon {size}</div>
+        <React.Fragment key={size}>
+          <h2 style={{ marginBlockEnd: 8 }}>Icon {size}</h2>
           <div
             key={size}
             style={{ paddingBlockEnd: 8, paddingBlockStart: 2, display: 'flex', flexWrap: 'wrap', gap: 4 }}
@@ -27,7 +27,7 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
               <Icon key={icon} name={icon as IconProps['name']} variant={variant} size={size} />
             ))}
           </div>
-        </>
+        </React.Fragment>
       ))}
     </ScreenshotArea>
   );
