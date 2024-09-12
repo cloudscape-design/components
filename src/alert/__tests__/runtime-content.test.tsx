@@ -93,6 +93,55 @@ describe.each([true, false])('existing header:%p', existingHeader => {
   });
 });
 
+test('restores content and header', async () => {
+  const { rerender } = render(<Alert header="Alert header">Alert content</Alert>);
+  const alertWrapper = createWrapper().findAlert()!;
+  expectContent(alertWrapper, stylesCss, {
+    header: 'Alert header',
+    headerReplaced: false,
+    content: 'Alert content',
+    contentReplaced: false,
+  });
+
+  awsuiPlugins.alertContent.registerContentReplacer({
+    id: 'test-content',
+    runReplacer(context, replacer) {
+      const runUpdate = () => {
+        if (context.headerRef.current?.textContent?.includes('Alert')) {
+          replacer.replaceHeader(container => container.append('New header'));
+          replacer.replaceContent(container => container.append('New content'));
+        } else {
+          replacer.restoreHeader();
+          replacer.restoreContent();
+        }
+      };
+      runUpdate();
+      return {
+        update: runUpdate,
+        unmount: () => {},
+      };
+    },
+  });
+  await waitFor(() => {
+    expectContent(alertWrapper, stylesCss, {
+      header: 'New header',
+      headerReplaced: true,
+      content: 'New content',
+      contentReplaced: true,
+    });
+  });
+
+  rerender(<Alert header="Updated header">Alert content</Alert>);
+  await waitFor(() => {
+    expectContent(alertWrapper, stylesCss, {
+      header: 'Updated header',
+      headerReplaced: false,
+      content: 'Alert content',
+      contentReplaced: false,
+    });
+  });
+});
+
 test('removes styling if replacement is explicitly empty', () => {
   const plugin: AlertFlashContentConfig = {
     id: 'test-content',
