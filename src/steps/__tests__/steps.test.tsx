@@ -6,6 +6,8 @@ import { render } from '@testing-library/react';
 import Steps, { StepsProps } from '../../../lib/components/steps';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+
 const defaultProps: StepsProps = {
   steps: [],
   ariaLabel: 'Steps Execution',
@@ -120,8 +122,12 @@ describe('Steps', () => {
     });
 
     testStatus.forEach((_, index) => {
-      expect(wrapper.findItems()[index]!.findStatusIndicator()).not.toBeNull();
-      expect(wrapper.findItems()[index]!.findStatusIndicator()?.getElement()).toHaveTextContent('');
+      expect(
+        wrapper.findItems()[index]!.findHeader()!.findByClassName(statusIconStyles.icon)!.getElement()
+      ).not.toBeNull();
+      expect(
+        wrapper.findItems()[index]!.findHeader()!.findByClassName(statusIconStyles.icon)!.getElement()
+      ).toHaveTextContent('');
     });
   });
 
@@ -154,9 +160,9 @@ describe('Steps', () => {
       const wrapper = renderSteps({ steps: stepsWithIconAriaLabel });
 
       stepsWithIconAriaLabel.forEach((step, index) => {
-        expect(wrapper.findItems()[index]!.findStatusIndicator()?.getElement()).toHaveAccessibleName(
-          step.statusIconAriaLabel
-        );
+        expect(
+          wrapper.findItems()[index]!.findHeader()!.findByClassName(statusIconStyles.icon)!.getElement()
+        ).toHaveAccessibleName(step.statusIconAriaLabel);
       });
     });
   });

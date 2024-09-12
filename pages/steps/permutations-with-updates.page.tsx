@@ -112,7 +112,7 @@ export default function StepsPermutationsWithUpdates() {
 
   return (
     <ScreenshotArea disableAnimations={false}>
-      <article>
+      <article aria-live="polite">
         <h1>Steps permutations with updates</h1>
         <Box margin={{ bottom: 'xl' }}>
           <Box variant={'div'} fontWeight={'bold'} margin={'s'}>

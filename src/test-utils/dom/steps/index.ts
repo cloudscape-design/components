@@ -2,17 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import statusIconStyles from '../../../status-indicator/styles.selectors.js';
 import styles from '../../../steps/styles.selectors.js';
 
 export class StepWrapper extends ComponentWrapper {
-  /**
-   * Finds the status of a step
-   */
-  findStatusIndicator(): ElementWrapper | null {
-    return this.findByClassName(statusIconStyles.icon);
-  }
-
   /**
    * Finds the header of a step
    */

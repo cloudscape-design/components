@@ -15,17 +15,18 @@ type InternalStepsProps = SomeRequired<StepsProps, 'steps'> & InternalBaseCompon
 const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsProps.Step) => {
   return (
     <li className={styles.container}>
-      <div className={styles.status}>
-        <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel} />
+      <div className={styles.header}>
+        <StatusIndicator type={status} iconAriaLabel={statusIconAriaLabel}>
+          {header}
+        </StatusIndicator>
       </div>
-      <div className={styles.header}>{header}</div>
-      <hr className={styles.connector} />
+      <hr className={styles.connector} role="none" />
       {details && <div className={styles.details}>{details}</div>}
     </li>
   );
 };
 
-export const InternalSteps = ({ steps, ...props }: InternalStepsProps) => {
+export const InternalSteps = ({ steps, __internalRootRef, ...props }: InternalStepsProps) => {
   return (
     <div
       {...props}
@@ -33,7 +34,7 @@ export const InternalSteps = ({ steps, ...props }: InternalStepsProps) => {
       aria-label={props.ariaLabel}
       aria-labelledby={props.ariaLabelledby}
       aria-describedby={props.ariaDescribedby}
-      ref={props.__internalRootRef}
+      ref={__internalRootRef}
     >
       <ol className={styles.list}>
         {steps.map((step, index) => (
