@@ -78,6 +78,7 @@ const EllipsisDropdown = ({
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
         customTriggerBuilder={getDropdownTrigger}
+        linkStyle={true}
         analyticsMetadataTransformer={metadata => {
           if (metadata.detail?.id) {
             delete metadata.detail.id;
