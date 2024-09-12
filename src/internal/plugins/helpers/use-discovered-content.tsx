@@ -5,7 +5,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import {
   AlertFlashContentController,
   AlertFlashContentResult,
-  ReplacementTypeSafe,
+  ReplacementType,
 } from '../controllers/alert-flash-content';
 
 export function createUseDiscoveredContent(
@@ -25,8 +25,8 @@ export function createUseDiscoveredContent(
     const contentRef = useRef<HTMLDivElement>(null);
     const replacementHeaderRef = useRef<HTMLDivElement>(null);
     const replacementContentRef = useRef<HTMLDivElement>(null);
-    const [foundHeaderReplacement, setFoundHeaderReplacement] = useState<ReplacementTypeSafe>('original');
-    const [foundContentReplacement, setFoundContentReplacement] = useState<ReplacementTypeSafe>('original');
+    const [headerReplacementType, setFoundHeaderReplacement] = useState<ReplacementType>('original');
+    const [contentReplacementType, setFoundContentReplacement] = useState<ReplacementType>('original');
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
 
     useEffect(() => {
@@ -59,7 +59,7 @@ export function createUseDiscoveredContent(
           replaceHeader(replacer: (container: HTMLElement) => void) {
             if (checkMounted('replaceHeader')) {
               replacer(replacementHeaderRef.current!);
-              setFoundHeaderReplacement(true);
+              setFoundHeaderReplacement('replaced');
             }
           },
           hideContent() {
@@ -75,7 +75,7 @@ export function createUseDiscoveredContent(
           replaceContent(replacer: (container: HTMLElement) => void) {
             if (checkMounted('replaceContent')) {
               replacer(replacementContentRef.current!);
-              setFoundContentReplacement(true);
+              setFoundContentReplacement('replaced');
             }
           },
         });
@@ -95,8 +95,8 @@ export function createUseDiscoveredContent(
     }, [type, header, children]);
 
     return {
-      hasReplacementHeader: foundHeaderReplacement,
-      hasReplacementContent: foundContentReplacement,
+      headerReplacementType,
+      contentReplacementType,
       headerRef: headerRef as React.Ref<HTMLDivElement>,
       replacementHeaderRef: replacementHeaderRef as React.Ref<HTMLDivElement>,
       contentRef: contentRef as React.Ref<HTMLDivElement>,

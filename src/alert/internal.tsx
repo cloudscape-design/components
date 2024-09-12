@@ -71,8 +71,8 @@ const InternalAlert = React.forwardRef(
 
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
-      hasReplacementHeader,
-      hasReplacementContent,
+      headerReplacementType,
+      contentReplacementType,
       headerRef: headerRefContent,
       contentRef: contentRefContent,
       replacementHeaderRef,
@@ -85,7 +85,7 @@ const InternalAlert = React.forwardRef(
     const isRefresh = useVisualRefresh();
     const size = isRefresh
       ? 'normal'
-      : hasReplacementHeader !== 'remove' && header && hasReplacementContent !== 'remove' && children
+      : headerReplacementType !== 'remove' && header && contentReplacementType !== 'remove' && children
         ? 'big'
         : 'normal';
 
@@ -123,7 +123,7 @@ const InternalAlert = React.forwardRef(
                   <div
                     className={clsx(
                       header && styles.header,
-                      hasReplacementHeader !== 'original' ? styles.hidden : analyticsSelectors.header
+                      headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
                     )}
                     ref={headerRef}
                   >
@@ -132,18 +132,21 @@ const InternalAlert = React.forwardRef(
                   <div
                     className={clsx(
                       styles['header-replacement'],
-                      hasReplacementHeader !== true ? styles.hidden : analyticsSelectors.header
+                      headerReplacementType !== 'replaced' ? styles.hidden : analyticsSelectors.header
                     )}
                     ref={replacementHeaderRef}
                   ></div>
                   <div
-                    className={clsx(styles.content, hasReplacementContent !== 'original' && styles.hidden)}
+                    className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
                     ref={contentRef}
                   >
                     {children}
                   </div>
                   <div
-                    className={clsx(styles['content-replacement'], hasReplacementContent !== true && styles.hidden)}
+                    className={clsx(
+                      styles['content-replacement'],
+                      contentReplacementType !== 'replaced' && styles.hidden
+                    )}
                     ref={replacementContentRef}
                   ></div>
                 </div>

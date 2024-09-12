@@ -124,8 +124,8 @@ export const Flash = React.forwardRef(
     const contentRefObject = useRef<HTMLDivElement>(null);
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
-      hasReplacementHeader,
-      hasReplacementContent,
+      headerReplacementType,
+      contentReplacementType,
       headerRef: headerRefContent,
       contentRef: contentRefContent,
       replacementHeaderRef,
@@ -191,27 +191,27 @@ export const Flash = React.forwardRef(
               <div
                 className={clsx(
                   styles['flash-header'],
-                  hasReplacementHeader !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
+                  headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
                 )}
                 ref={headerRef}
               >
                 {header}
               </div>
               <div
-                className={clsx(
-                  styles['header-replacement'],
-                  hasReplacementHeader !== true ? styles.hidden : analyticsSelectors['flash-header']
-                )}
+                className={clsx(styles['header-replacement'], headerReplacementType !== 'replaced' && styles.hidden)}
                 ref={replacementHeaderRef}
               ></div>
               <div
-                className={clsx(styles['flash-content'], hasReplacementContent !== 'original' && styles.hidden)}
+                className={clsx(
+                  styles['flash-content'],
+                  contentReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
+                )}
                 ref={contentRef}
               >
                 {content}
               </div>
               <div
-                className={clsx(styles['content-replacement'], hasReplacementContent !== true && styles.hidden)}
+                className={clsx(styles['content-replacement'], contentReplacementType !== 'replaced' && styles.hidden)}
                 ref={replacementContentRef}
               ></div>
             </div>

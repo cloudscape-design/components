@@ -14,7 +14,7 @@ export interface AlertFlashContentContext {
   contentRef: RefShim<HTMLElement>;
 }
 
-export type ReplacementTypeSafe = 'original' | 'remove' | true;
+export type ReplacementType = 'original' | 'remove' | 'replaced';
 
 export interface ReplacementApi {
   hideHeader(): void;
