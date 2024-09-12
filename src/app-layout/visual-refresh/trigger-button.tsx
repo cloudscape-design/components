@@ -84,7 +84,7 @@ function TriggerButton(
    * @param event
    */
   const handleFocus = useCallback(
-    (event: KeyboardEvent | PointerEvent) => {
+    (event: FocusEvent) => {
       const eventWithRelatedTarget = event as any;
 
       // condition for showing the tooltip hard into a separate function

@@ -90,9 +90,9 @@ function TriggerButton(
     selected = false,
     highContrastHeader,
     hasTooltip = false,
-    hideTooltipOnFocus = false,
+    // hideTooltipOnFocus = false,
     tooltipText,
-    isForPreviousActiveDrawer = false,
+    // isForPreviousActiveDrawer = false,
     hasOpenDrawer = false,
     isMobile = false,
   }: TriggerButtonProps,
@@ -101,36 +101,30 @@ function TriggerButton(
   const containerRef = useRef(null);
   const tooltipValue = tooltipText ? tooltipText : ariaLabel ? ariaLabel : '';
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
-  //there is an override to used to hide the tooltip on certan programatic focus events
-  const [showTooltipOverride, setShowTooltipOverride] = useState<boolean>(false);
-
-  const onShowTooltipSoft = (show: boolean) => {
-    setShowTooltipOverride(false);
-    setShowTooltip(show);
-  };
-
-  const onShowTooltipHard = (show: boolean) => {
-    if (!showTooltipOverride) {
-      setShowTooltip(show);
-    }
-  };
 
   const handleOnClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setShowTooltipOverride(false);
-    onShowTooltipHard(false);
+    setShowTooltip(false);
     onClick(event);
   };
 
-  const handleOnBlur = () => {
-    setShowTooltipOverride(false);
-    setShowTooltip(false);
-  };
+  const handleOnFocus = useCallback(
+    (event: KeyboardEvent | PointerEvent) => {
+      const eventWithRelatedTarget = event as any;
 
-  const handleOnFocus = useCallback(() => {
-    if (!(isForPreviousActiveDrawer && hideTooltipOnFocus)) {
-      setShowTooltip(true);
-    }
-  }, [hideTooltipOnFocus, isForPreviousActiveDrawer]);
+      // condition for showing the tooltip hard into a separate function
+      const shouldShowTooltip = () => {
+        return eventWithRelatedTarget?.relatedTarget !== null;
+      };
+
+      if (shouldShowTooltip()) {
+        setShowTooltip(true);
+      }
+    },
+    [
+      // hideTooltipOnFocus,
+      // isForPreviousActiveDrawer
+    ]
+  );
 
   const tooltipVisible = useMemo(() => {
     return hasTooltip && showTooltip && !!containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer);
@@ -139,15 +133,20 @@ function TriggerButton(
   useEffect(() => {
     if (hasTooltip && tooltipValue) {
       const close = () => {
-        setShowTooltipOverride(false);
         setShowTooltip(false);
       };
 
-      const handlePointerDownEvent = (event: PointerEvent) => {
+      const shouldCloseTooltip = (event: PointerEvent) => {
         if (event.target && containerRef && (containerRef.current as any)?.contains(event.target as HTMLElement)) {
-          return;
+          return false;
         }
-        close();
+        return true;
+      };
+
+      const handlePointerDownEvent = (event: PointerEvent) => {
+        if (shouldCloseTooltip(event)) {
+          close();
+        }
       };
 
       const handleKeyDownEvent = (event: KeyboardEvent) => {
@@ -166,19 +165,14 @@ function TriggerButton(
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
-  useEffect(() => {
-    if (hideTooltipOnFocus && !showTooltipOverride) {
-      setShowTooltipOverride(true);
-    }
-  }, [hideTooltipOnFocus, showTooltipOverride]);
   return (
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => onShowTooltipSoft(true),
-        onPointerLeave: () => onShowTooltipSoft(false),
-        onFocus: () => handleOnFocus(),
-        onBlur: () => handleOnBlur(),
+        onPointerEnter: () => setShowTooltip(true),
+        onPointerLeave: () => setShowTooltip(false),
+        onFocus: e => handleOnFocus(e as any),
+        onBlur: () => setShowTooltip(false),
       })}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
         [styles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
