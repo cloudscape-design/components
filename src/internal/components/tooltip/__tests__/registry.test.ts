@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { fireEvent } from '@testing-library/react';
 
-import { registerTooltip } from '../item/tooltips-registry';
+import { registerTooltip } from '../registry';
 
 describe('registerTooltip', () => {
   test('calls previous callbacks when registering new callback', () => {
