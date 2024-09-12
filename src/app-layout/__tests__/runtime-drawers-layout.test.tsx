@@ -99,11 +99,11 @@ describe('toolbar mode only features', () => {
       });
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
+      await delay();
+
       expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
       expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
       expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
-
-      await delay();
 
       wrapper.findDrawerTriggerById('local-drawer')!.click();
 
