@@ -16304,7 +16304,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -18711,8 +18711,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-heading-secondary": Object {
@@ -21118,7 +21118,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -23525,7 +23525,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -25932,7 +25932,7 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
+            "dark": "#e9ebed",
             "light": "#000716",
           },
         },
@@ -28339,8 +28339,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-heading-secondary": Object {
@@ -30746,8 +30746,8 @@ Object {
         "color-text-heading-default": Object {
           "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
           "$value": Object {
-            "dark": "#d1d5db",
-            "light": "#d1d5db",
+            "dark": "#e9ebed",
+            "light": "#e9ebed",
           },
         },
         "color-text-heading-secondary": Object {
@@ -33153,7 +33153,7 @@ Object {
     "color-text-heading-default": Object {
       "$description": "The default color for headings 2-5. For example: headings in containers, form sections, forms, and app layout panels.",
       "$value": Object {
-        "dark": "#d1d5db",
+        "dark": "#e9ebed",
         "light": "#000716",
       },
     },
