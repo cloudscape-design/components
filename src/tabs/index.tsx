@@ -46,7 +46,11 @@ export default function Tabs({
     checkSafeUrl('Tabs', tab.href);
   }
   const { __internalRootRef } = useBaseComponent('Tabs', {
-    props: { disableContentPaddings, variant },
+    props: { disableContentPaddings, variant, fitHeight },
+    metadata: {
+      hasActions: tabs.some(tab => !!tab.action),
+      hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
+    },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
 
