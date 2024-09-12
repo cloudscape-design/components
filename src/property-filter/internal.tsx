@@ -49,7 +49,7 @@ import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
-  'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering'
+  'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering' | 'hideOperations'
 > &
   InternalBaseComponentProps;
 
