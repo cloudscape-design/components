@@ -4,8 +4,11 @@ import React from 'react';
 import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useInternalI18n } from '../i18n/context';
 import { Transition } from '../internal/components/transition';
+import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
@@ -79,9 +82,17 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
     }
 
     return (
-      <ul className={styles['flash-list']} aria-label={ariaLabel}>
+      <ul
+        className={styles['flash-list']}
+        aria-label={ariaLabel}
+        {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, false))}
+      >
         {items.map((item, index) => (
-          <li key={item.id ?? index} className={styles['flash-list-item']}>
+          <li
+            key={item.id ?? index}
+            className={styles['flash-list-item']}
+            {...getAnalyticsMetadataAttribute(getItemAnalyticsMetadata(index + 1, item.type || 'info', item.id))}
+          >
             {renderItem(item, item.id ?? index)}
           </li>
         ))}

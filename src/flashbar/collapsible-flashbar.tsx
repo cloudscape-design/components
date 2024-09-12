@@ -4,6 +4,8 @@ import React, { ReactNode, useCallback, useLayoutEffect, useMemo, useRef, useSta
 import { TransitionGroup } from 'react-transition-group';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
@@ -16,6 +18,8 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { findUpUntil } from '../internal/utils/dom';
 import { scrollElementIntoView } from '../internal/utils/scrollable-containers';
 import { throttle } from '../internal/utils/throttle';
+import { GeneratedAnalyticsMetadataFlashbarExpand } from './analytics-metadata/interfaces';
+import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
@@ -271,6 +275,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                     : undefined
                 }
                 key={getItemId(item)}
+                {...getAnalyticsMetadataAttribute(getItemAnalyticsMetadata(index + 1, item.type || 'info', item.id))}
               >
                 {showInnerContent(item) && (
                   <Flash
@@ -308,6 +313,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isVisualRefresh && styles['visual-refresh']
       )}
       ref={mergedRef}
+      {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, true, isFlashbarStackExpanded))}
     >
       {isFlashbarStackExpanded && renderList()}
       {isCollapsible && (
@@ -322,6 +328,13 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
           )}
           onClick={toggleCollapseExpand}
           ref={notificationBarRef}
+          {...getAnalyticsMetadataAttribute({
+            action: 'expand',
+            detail: {
+              label: 'h2',
+              expanded: `${!isFlashbarStackExpanded}`,
+            },
+          } as GeneratedAnalyticsMetadataFlashbarExpand)}
         >
           <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
             {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
