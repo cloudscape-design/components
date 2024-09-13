@@ -2,8 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useImperativeHandle, useRef, useState } from 'react';
 
-import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -12,7 +10,6 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
-import { throttle } from '../../internal/utils/throttle';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -32,9 +29,6 @@ import {
 } from './internal';
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
-
-const CONTENT_RESIZE_THROTTLE = 500;
-const CONTENT_BORDER_WITDH = 2;
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
   (
@@ -79,24 +73,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const contentRef = useRef<HTMLDivElement>(null);
-
-    useResizeObserver(
-      contentRef,
-      throttle(entry => {
-        if (drawersOpenQueue.length === 0 || isMobile) {
-          return;
-        }
-
-        if (entry.borderBoxWidth < minContentWidth - CONTENT_BORDER_WITDH) {
-          const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
-          if (drawers?.find(drawer => drawer.id === drawerToClose)) {
-            onActiveDrawerChange(null);
-          } else {
-            onActiveGlobalDrawersChange(drawerToClose);
-          }
-        }
-      }, CONTENT_RESIZE_THROTTLE)
-    );
 
     const onNavigationToggle = (open: boolean) => {
       fireNonCancelableEvent(onNavigationChange, { open });
