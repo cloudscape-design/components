@@ -11,7 +11,8 @@
   display: none;
 }
 
-.breadcrumb {
+.breadcrumb,
+.ghost-breadcrumb {
   display: flex;
 
   > .icon {
@@ -22,6 +23,14 @@
 
   > .anchor {
     @include styles.link-inline('body-m');
+    min-inline-size: 0;
+    overflow: hidden;
+    > .text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
 
     @include focus-visible.when-visible {
       @include styles.link-focus;
@@ -39,20 +48,6 @@
       cursor: default;
     }
   }
-}
-.compressed {
-  min-inline-size: 0;
-  overflow: hidden;
-  > .text {
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
-  }
-}
-.virtual-item {
-  @include styles.awsui-util-hide;
-  visibility: hidden;
 }
 
 .text-hidden {

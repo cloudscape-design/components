@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
 import PopoverContainer from '../../../popover/container';
+import { PopoverProps } from '../../../popover/interfaces';
 import Portal from '../portal';
 import { Transition } from '../transition';
 
@@ -18,6 +19,7 @@ export interface TooltipProps {
   position?: 'top' | 'right' | 'bottom' | 'left';
   className?: string;
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
+  size?: PopoverProps['size'];
 }
 
 export default function Tooltip({
@@ -27,6 +29,7 @@ export default function Tooltip({
   className,
   contentAttributes = {},
   position = 'top',
+  size = 'small',
 }: TooltipProps) {
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
     trackKey = value;
@@ -40,7 +43,7 @@ export default function Tooltip({
             <PopoverContainer
               trackRef={trackRef}
               trackKey={trackKey}
-              size="small"
+              size={size}
               fixedWidth={false}
               position={position}
               zIndex={7000}

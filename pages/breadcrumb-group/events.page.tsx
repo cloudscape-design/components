@@ -6,7 +6,7 @@ import { SpaceBetween } from '~components';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '~components/breadcrumb-group';
 
 import ScreenshotArea from '../utils/screenshot-area';
-const items = [
+const defaultItems = [
   'First that is very very very very very very long long long text',
   'Second',
   'Third',
@@ -14,8 +14,6 @@ const items = [
   'Fifth',
   'Sixth that is very very very very very very long long long text',
 ];
-
-const shortItems = ['1', '2', '3', '4'];
 
 export default function ButtonDropdownPage() {
   const [onFollowMessage, setOnFollowMessage] = useState('');
@@ -27,6 +25,7 @@ export default function ButtonDropdownPage() {
   const onClickCallback = (event: CustomEvent<BreadcrumbGroupProps.ClickDetail>) => {
     setOnClickMessage(`OnClick: ${event.detail.text} item was selected`);
   };
+  const [items, setItems] = useState(defaultItems);
   return (
     <ScreenshotArea disableAnimations={true}>
       <article>
@@ -50,12 +49,13 @@ export default function ButtonDropdownPage() {
             <button type="button" id="focus-target-short-text">
               focus short text
             </button>
-            <BreadcrumbGroup
-              ariaLabel="Navigation short text"
-              expandAriaLabel="Show path for short text"
-              items={shortItems.map(text => ({ text, href: `#` }))}
-            />
           </div>
+          <button type="button" id="add" onClick={() => setItems([...items, defaultItems[5]])}>
+            Add
+          </button>
+          <button type="button" id="remove" onClick={() => setItems(items.slice(0, items.length - 1))}>
+            Remove
+          </button>
         </SpaceBetween>
       </article>
     </ScreenshotArea>
