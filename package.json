@@ -23,7 +23,7 @@
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
     "prepare": "husky",
-    "postinstall": "node ./scripts/install-peer-dependency.js browser-test-tools:chore-webdriverio8"
+    "postinstall": "node ./scripts/install-peer-dependency.js browser-test-tools:chore-webdriverio8 && npm install webdriverio@8"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",

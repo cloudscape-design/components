@@ -39,6 +39,7 @@ execCommand(`rm -rf ${nodeModulesPackagePath}`);
 console.log(`Copying build ${targetRepository} to node_modules...`);
 execCommand(`mkdir -p ${nodeModulesPackagePath}`);
 execCommand(`cp -R ${tempDir}/lib/* ${nodeModulesPackagePath}`);
+execCommand(`cp -R ${tempDir}/node_modules ${nodeModulesPackagePath}`);
 
 // Clean up
 console.log('Cleaning up...');
