@@ -15,6 +15,7 @@ function Breadcrumbs() {
     <BreadcrumbGroup
       items={[
         { text: 'Home', href: '#' },
+        { text: 'Second', href: '#' },
         { text: 'Service with a long long long long long long long long long long long long long title', href: '#' },
       ]}
     />

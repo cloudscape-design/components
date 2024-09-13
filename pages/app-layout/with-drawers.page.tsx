@@ -2,12 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import { AppLayout, Button, ContentLayout, Header, SpaceBetween, SplitPanel, Toggle } from '~components';
+import {
+  AppLayout,
+  BreadcrumbGroup,
+  Button,
+  ContentLayout,
+  Header,
+  SpaceBetween,
+  SplitPanel,
+  Toggle,
+} from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+import { Containers } from './utils/content-blocks';
 import { drawerItems, drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
 
@@ -38,7 +47,22 @@ export default function WithDrawers() {
       <AppLayout
         ref={appLayoutRef}
         ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
-        breadcrumbs={<Breadcrumbs />}
+        breadcrumbs={
+          <BreadcrumbGroup
+            items={[
+              { text: 'Home', href: '#' },
+              { text: 'Second', href: '#' },
+              { text: 'Third', href: '#' },
+              { text: 'Fourth', href: '#' },
+              { text: 'Fifth', href: '#' },
+              { text: 'Sixth', href: '#' },
+              {
+                text: 'Service with a long long long long long long long long long long long long long title',
+                href: '#',
+              },
+            ]}
+          />
+        }
         content={
           <ContentLayout
             data-test-id="content"
