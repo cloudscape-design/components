@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Box from '~components/box';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
 
@@ -18,19 +17,11 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
     <ScreenshotArea key={variant} className={className}>
       <h1 className={styles.header}>{variant}</h1>
       {sizes.map(size => (
-        <React.Fragment key={size}>
-          <Box variant="h3" padding={{ top: 'm' }}>
-            Icon {size}
-          </Box>
-          <div
-            key={size}
-            style={{ paddingBlockEnd: 8, paddingBlockStart: 2, display: 'flex', flexWrap: 'wrap', gap: 4 }}
-          >
-            {Object.keys(icons).map(icon => (
-              <Icon key={icon} name={icon as IconProps['name']} variant={variant} size={size} />
-            ))}
-          </div>
-        </React.Fragment>
+        <div key={size} style={{ paddingBlockEnd: 8, paddingBlockStart: 2, display: 'flex', flexWrap: 'wrap', gap: 4 }}>
+          {Object.keys(icons).map(icon => (
+            <Icon key={icon} name={icon as IconProps['name']} variant={variant} size={size} />
+          ))}
+        </div>
       ))}
     </ScreenshotArea>
   );
