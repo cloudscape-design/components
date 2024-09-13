@@ -35,7 +35,7 @@
     display: grid;
     column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-    grid-template-columns: min-content minmax(0, 3fr) minmax(140px, 1fr);
+    grid-template-columns: min-content minmax(0, 3fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
     > .universal-toolbar-nav {
