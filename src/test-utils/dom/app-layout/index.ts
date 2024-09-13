@@ -7,6 +7,7 @@ import SplitPanelWrapper from '../split-panel';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
+
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
 
@@ -57,6 +58,7 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findActiveDrawer(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['active-drawer']);
   }
+
   findActiveDrawerCloseButton(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['active-drawer-close-button']);
   }
@@ -64,6 +66,7 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   findDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
+
   findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
     return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
   }
