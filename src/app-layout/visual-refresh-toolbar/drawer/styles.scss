@@ -45,19 +45,6 @@
     z-index: constants.$drawer-z-index-last-opened;
   }
 
-  &.drawer-global {
-    @include desktop-only {
-      background: transparent;
-
-      > .drawer-content-container {
-        border-start-start-radius: 8px;
-        border-start-end-radius: 8px;
-        margin-inline-start: awsui.$space-s;
-        background-color: awsui.$color-background-container-content;
-      }
-    }
-  }
-
   > .drawer-content-container {
     grid-column: 1 / span 2;
     grid-row: 1;
