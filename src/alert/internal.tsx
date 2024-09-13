@@ -20,7 +20,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
-import { createUseDiscoveredAction } from '../internal/plugins/helpers';
+import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
 import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
@@ -39,6 +39,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps<HTMLDivElement>;
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
+const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent.onContentRegistered);
 
 const InternalAlert = React.forwardRef(
   (
@@ -68,10 +69,25 @@ const InternalAlert = React.forwardRef(
     const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
     const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
-    const isRefresh = useVisualRefresh();
-    const size = isRefresh ? 'normal' : header && children ? 'big' : 'normal';
+    const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
+    const {
+      headerReplacementType,
+      contentReplacementType,
+      headerRef: headerRefContent,
+      contentRef: contentRefContent,
+      replacementHeaderRef,
+      replacementContentRef,
+    } = useDiscoveredContent({ type, header, children });
 
-    const { discoveredActions, headerRef, contentRef } = useDiscoveredAction(type);
+    const headerRef = useMergeRefs(headerRefAction, headerRefContent);
+    const contentRef = useMergeRefs(contentRefAction, contentRefContent);
+
+    const isRefresh = useVisualRefresh();
+    const size = isRefresh
+      ? 'normal'
+      : headerReplacementType !== 'remove' && header && contentReplacementType !== 'remove' && children
+        ? 'big'
+        : 'normal';
 
     const hasAction = Boolean(action || buttonText || discoveredActions.length);
 
@@ -104,14 +120,35 @@ const InternalAlert = React.forwardRef(
                   <InternalIcon name={typeToIcon[type]} size={size} />
                 </div>
                 <div className={clsx(styles.message, styles.text)}>
-                  {header && (
-                    <div className={clsx(styles.header, analyticsSelectors.header)} ref={headerRef}>
-                      {header}
-                    </div>
-                  )}
-                  <div className={styles.content} ref={contentRef}>
+                  <div
+                    className={clsx(
+                      header && styles.header,
+                      headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
+                    )}
+                    ref={headerRef}
+                  >
+                    {header}
+                  </div>
+                  <div
+                    className={clsx(
+                      styles['header-replacement'],
+                      headerReplacementType !== 'replaced' ? styles.hidden : analyticsSelectors.header
+                    )}
+                    ref={replacementHeaderRef}
+                  ></div>
+                  <div
+                    className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
+                    ref={contentRef}
+                  >
                     {children}
                   </div>
+                  <div
+                    className={clsx(
+                      styles['content-replacement'],
+                      contentReplacementType !== 'replaced' && styles.hidden
+                    )}
+                    ref={replacementContentRef}
+                  ></div>
                 </div>
               </div>
               <ActionsWrapper
