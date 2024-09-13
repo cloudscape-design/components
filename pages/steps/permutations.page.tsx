@@ -6,7 +6,7 @@ import Steps from '~components/steps';
 
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { stepsPermutations } from './permutationts-utils';
+import { stepsPermutations } from './permutations-utils';
 
 export default function StepsPermutations() {
   return (

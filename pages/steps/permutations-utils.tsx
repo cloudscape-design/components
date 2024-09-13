@@ -9,14 +9,12 @@ import { StepsProps } from '~components/steps';
 
 import createPermutations from '../utils/permutations';
 
-import styles from './styles.scss';
-
 const initialSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
     statusIconAriaLabel: 'loading',
     header: 'Listing EC2 instances',
-    details: <span className={styles.details}>Using the ec2_DescribeInstances</span>,
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Using the ec2_DescribeInstances</span>,
   },
 ];
 
@@ -26,7 +24,7 @@ const loadingSteps: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
     header: <span style={{ margin: '0' }}>Listed EC2 instances</span>,
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -40,7 +38,7 @@ const loadingSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathering Security Group IDs',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Using the ec2_DescribeSecurityGroupsTool:
         <ul>
           <li>securityGroupID1</li>
@@ -58,7 +56,7 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -74,7 +72,7 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
@@ -97,7 +95,7 @@ export const loadingSteps3: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -113,7 +111,7 @@ export const loadingSteps3: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
@@ -141,7 +139,7 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -157,7 +155,7 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
@@ -185,7 +183,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -201,7 +199,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
@@ -216,7 +214,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Need Cross Region Consent',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
         account.
       </span>
@@ -230,7 +228,7 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -261,7 +259,7 @@ export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'loading',
     statusIconAriaLabel: 'loading',
     header: <span style={{ margin: '0' }}>Listing EC2 instances</span>,
-    details: <span className={styles.details}>Using the ec2_DescribeInstances</span>,
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Using the ec2_DescribeInstances</span>,
   },
 ];
 
@@ -275,7 +273,7 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -294,7 +292,7 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: <span style={{ margin: '0' }}>Gathering Security Group IDs</span>,
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Using the ec2_DescribeSecurityGroupsTool:
         <ul>
           <li>securityGroupID1</li>
@@ -316,7 +314,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -341,7 +339,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
@@ -373,7 +371,7 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -398,7 +396,7 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
@@ -435,7 +433,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -460,7 +458,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
@@ -497,7 +495,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -522,7 +520,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'Security Group IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
@@ -542,7 +540,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: <span style={{ margin: '0' }}>Need Cross Region Consent</span>,
     details: (
-      <span className={styles.details}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
         account.
       </span>
@@ -560,7 +558,7 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -593,7 +591,7 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
@@ -631,7 +629,7 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span className={styles.details}>
+            <span style={{ marginBlock: 0, fontSize: '12px' }}>
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
