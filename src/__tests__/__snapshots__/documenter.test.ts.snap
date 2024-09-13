@@ -14070,7 +14070,13 @@ Object that represents an expandable group of links.
       "type": "ReadonlyArray<SideNavigationProps.Item>",
     },
   ],
-  "regions": Array [],
+  "regions": Array [
+    Object {
+      "description": "A slot located below the header and above the items.",
+      "isDefault": false,
+      "name": "itemsControl",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
