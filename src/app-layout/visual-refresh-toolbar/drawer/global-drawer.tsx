@@ -71,6 +71,7 @@ export function AppLayoutGlobalDrawerImplementation({
       aria-hidden={!show}
       aria-label={computedAriaLabels.content}
       className={clsx(styles.drawer, sharedStyles['with-motion'], {
+        [styles['drawer-global']]: show,
         [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
         [testutilStyles['active-drawer']]: show,
       })}

@@ -105,7 +105,6 @@
   @include desktop-only {
     display: flex;
     grid-area: global-tools;
-    border-inline-start: 1px solid awsui.$color-border-divider-panel-side;
   }
 }
 
