@@ -50,9 +50,9 @@ export function AppLayoutGlobalDrawerImplementation({
     content: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const activeDrawerSize = activeGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0;
-  const minDrawerSize = minGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0;
-  const maxDrawerSize = maxGlobalDrawersSizes[activeDrawerId ?? ''] ?? 0;
+  const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
+  const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
+  const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const refs = globalDrawersFocusControl.refs[activeDrawerId];
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
