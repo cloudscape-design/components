@@ -40,6 +40,7 @@ export function AppLayoutGlobalDrawerImplementation({
     minGlobalDrawersSizes,
     maxGlobalDrawersSizes,
     activeGlobalDrawersSizes,
+    verticalOffsets,
     drawersOpenQueue,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
@@ -50,6 +51,7 @@ export function AppLayoutGlobalDrawerImplementation({
     content: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
+  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
   const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
@@ -70,8 +72,8 @@ export function AppLayoutGlobalDrawerImplementation({
       id={activeDrawerId}
       aria-hidden={!show}
       aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, sharedStyles['with-motion'], {
-        [styles['drawer-global']]: show,
+      className={clsx(styles.drawer, styles['drawer-global'], sharedStyles['with-motion'], {
+        [styles['drawer-hidden']]: !show,
         [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
         [testutilStyles['active-drawer']]: show,
       })}
@@ -82,9 +84,9 @@ export function AppLayoutGlobalDrawerImplementation({
         }
       }}
       style={{
-        blockSize: show ? `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)` : 0,
-        insetBlockStart: placement.insetBlockStart,
-        ...(!isMobile && { [customCssProps.drawerSize]: `${show ? size : 0}px` }),
+        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: drawersTopOffset,
+        ...(!isMobile && { [customCssProps.drawerSize]: `${size}px` }),
       }}
       data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
     >
