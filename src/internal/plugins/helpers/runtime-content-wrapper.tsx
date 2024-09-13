@@ -2,10 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
+import { MountContentContext } from '../controllers/drawers';
+
 type VisibilityCallback = (isVisible: boolean) => void;
 
 interface RuntimeContentWrapperProps {
-  mountContent: (container: HTMLElement, visibilityCallback?: (callback: VisibilityCallback) => () => void) => void;
+  mountContent: (container: HTMLElement, mountContent?: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   isVisible?: boolean;
 }
@@ -16,11 +18,13 @@ export function RuntimeContentWrapper({ mountContent, unmountContent, isVisible 
 
   useEffect(() => {
     const container = ref.current!;
-    mountContent(container, cb => {
-      visibilityChangeCallback.current = cb;
-      return () => {
-        visibilityChangeCallback.current = null;
-      };
+    mountContent(container, {
+      onVisibilityChange: cb => {
+        visibilityChangeCallback.current = cb;
+        return () => {
+          visibilityChangeCallback.current = null;
+        };
+      },
     });
     return () => {
       unmountContent(container);

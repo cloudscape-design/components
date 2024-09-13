@@ -157,12 +157,9 @@ awsuiPlugins.appLayout.registerDrawer({
     console.log('resize', event.detail);
   },
 
-  mountContent: (
-    container: HTMLElement,
-    onVisibilityChange?: (callback: (isVisible: boolean) => void) => () => void
-  ) => {
+  mountContent: (container, mountContext) => {
     ReactDOM.render(
-      <AutoIncrementCounter onVisibilityChange={onVisibilityChange}>
+      <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
         global widget content circle 1
       </AutoIncrementCounter>,
       container

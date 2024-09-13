@@ -964,9 +964,9 @@ describe('toolbar mode only features', () => {
         ...drawerDefaults,
         id: 'global-drawer-1',
         type: 'global',
-        mountContent: (container, onVisibilityChange) => {
-          if (onVisibilityChange) {
-            onVisibilityChange(onVisibilityChangeMock);
+        mountContent: (container, mountContext) => {
+          if (mountContext?.onVisibilityChange) {
+            mountContext.onVisibilityChange(onVisibilityChangeMock);
           }
           container.textContent = 'global drawer content 1';
         },
