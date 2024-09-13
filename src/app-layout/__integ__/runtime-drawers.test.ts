@@ -131,7 +131,7 @@ describe('Visual refresh toolbar only', () => {
     })
   );
 
-  test('first opened drawer should close when the screen is resized, and the drawers no longer fit', () => {
+  test('first opened drawer should close when the screen is resized if the drawers no longer fit', () => {
     setupTest(async page => {
       await page.setWindowSize({ ...viewports.desktop, width: 1400 });
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
