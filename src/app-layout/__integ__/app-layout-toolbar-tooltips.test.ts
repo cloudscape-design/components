@@ -119,7 +119,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
         const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
         await page.click(firstDrawerTriggerSelector);
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
-        await page.click(`button[aria-label="Security close button`);
+        await page.click(`button[aria-label="Security close button"`);
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
         await page.hoverElement(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
