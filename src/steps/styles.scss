@@ -8,9 +8,7 @@
 
 .root {
   @include styles.styles-reset;
-}
 
-.steps {
   > .list {
     list-style: none;
 

@@ -30,7 +30,7 @@ export const InternalSteps = ({ steps, __internalRootRef, ...props }: InternalSt
   return (
     <div
       {...props}
-      className={clsx(styles.root, styles.steps, props.className)}
+      className={clsx(styles.root, props.className)}
       aria-label={props.ariaLabel}
       aria-labelledby={props.ariaLabelledby}
       aria-describedby={props.ariaDescribedby}

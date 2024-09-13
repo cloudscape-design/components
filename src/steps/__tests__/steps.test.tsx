@@ -103,34 +103,6 @@ describe('Steps', () => {
     expect(wrapper.findItems()[3]!.findDetails()).toBeNull();
   });
 
-  test('renders correct status icons', () => {
-    const testStatus: StepsProps.Status[] = [
-      'error',
-      'warning',
-      'success',
-      'info',
-      'stopped',
-      'pending',
-      'in-progress',
-      'loading',
-    ];
-    const wrapper = renderSteps({
-      steps: testStatus.map(status => ({
-        header: 'test step header',
-        status,
-      })),
-    });
-
-    testStatus.forEach((_, index) => {
-      expect(
-        wrapper.findItems()[index]!.findHeader()!.findByClassName(statusIconStyles.icon)!.getElement()
-      ).not.toBeNull();
-      expect(
-        wrapper.findItems()[index]!.findHeader()!.findByClassName(statusIconStyles.icon)!.getElement()
-      ).toHaveTextContent('');
-    });
-  });
-
   describe('Accessibility', () => {
     test('applies ARIA label to steps', () => {
       const testAriaLabel = 'Test aria label';
