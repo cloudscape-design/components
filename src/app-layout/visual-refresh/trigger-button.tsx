@@ -8,6 +8,7 @@ import { InternalButton } from '../../button/internal';
 import { IconProps } from '../../icon/interfaces';
 import Icon from '../../icon/internal';
 import Tooltip from '../../internal/components/tooltip';
+import { registerTooltip } from '../../internal/components/tooltip/registry';
 import { useAppLayoutInternals } from './context';
 
 import styles from './styles.css.js';
@@ -95,57 +96,54 @@ function TriggerButton(
 
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
-        return (
-          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus !== 'last-opened-toolbar-trigger-button' ||
-          //if tab nav from drawer close button, not clicking or enter/space key on it
-          (eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button' &&
-            (selected || !isForPreviousActiveDrawer))
-        );
-      };
-
-      // condition for mobile devices and open drawers into a separate function
-      const isMobileWithOpenDrawerCondition = () => {
-        return isMobile && (!hasOpenDrawer || isForPreviousActiveDrawer);
-      };
-
-      if (isMobileWithOpenDrawerCondition()) {
-        if (shouldShowTooltip()) {
-          setShowTooltip(true);
-        } else {
-          setShowTooltip(false);
+        const isFromDrawer =
+          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
+        const isFromAnotherTrigger =
+          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
+        if (isFromDrawer) {
+          if (isForPreviousActiveDrawer) {
+            return selected;
+          } else if (!selected) {
+            return true;
+          }
+        } else if (isFromAnotherTrigger) {
+          return true;
         }
-      } else if (shouldShowTooltip()) {
-        setShowTooltip(true);
-      } else {
-        setShowTooltip(false);
-      }
+
+        return !isFromDrawer || isFromAnotherTrigger;
+      };
+
+      setSupressTooltip(!shouldShowTooltip());
+      setShowTooltip(true);
     },
     [
       // To assert reference equality check
-      isMobile,
-      hasOpenDrawer,
       isForPreviousActiveDrawer,
       selected,
     ]
   );
 
-  const handleClick = () => {
+  const handleClick = (event: MouseEvent) => {
     setSupressTooltip(true);
     onClick();
+    event.stopPropagation();
   };
 
-  const handleBlur = (event: FocusEvent, keepSupressed = false) => {
-    console.log({ ...event });
-    if (!keepSupressed) {
-      setSupressTooltip(false);
-    }
+  const handleBlur = (keepSupressed = false) => {
+    setSupressTooltip(keepSupressed);
     setShowTooltip(false);
+  };
+
+  const handleMouseEnter = () => {
+    setSupressTooltip(false);
+    setShowTooltip(true);
   };
 
   useEffect(() => {
     if (hasTooltip && tooltipValue) {
       const close = () => {
         setShowTooltip(false);
+        setSupressTooltip(false);
       };
 
       const shouldCloseTooltip = (event: PointerEvent) => {
@@ -180,15 +178,25 @@ function TriggerButton(
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
+  useEffect(() => {
+    if (tooltipVisible) {
+      return registerTooltip(() => {
+        setShowTooltip(false);
+        setSupressTooltip(false);
+      });
+    }
+  }, [tooltipVisible]);
+
   return (
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => setShowTooltip(true),
-        onPointerLeave: () => setShowTooltip(false),
+        onPointerEnter: () => handleMouseEnter(),
+        onPointerLeave: () => handleBlur(false),
         onFocus: e => handleFocus(e as any),
-        onBlur: e => handleBlur(e as any, true),
-        onMouseLeave: e => handleBlur(e as any),
+        onBlur: () => handleBlur(true),
+        onMouseLeave: () => handleBlur(false),
+        onMouseEnter: () => handleMouseEnter(),
       })}
       className={clsx(styles['trigger-wrapper'], {
         [styles['remove-high-contrast-header']]: !highContrastHeader,
@@ -207,12 +215,13 @@ function TriggerButton(
           iconName={iconName}
           iconSvg={iconSvg}
           badge={badge}
-          onClick={handleClick}
+          onClick={e => handleClick(e as any)}
           variant="icon"
           __nativeAttributes={{
             'aria-haspopup': true,
             ...(testId && {
               'data-testid': testId,
+              'data-shift-focus': 'awsui-layout-drawer-trigger',
             }),
           }}
         />
@@ -233,10 +242,11 @@ function TriggerButton(
               },
               className
             )}
-            onClick={handleClick}
+            onClick={e => handleClick(e as any)}
             ref={ref as Ref<HTMLButtonElement>}
             type="button"
             data-testid={testId}
+            data-shift-focus="awsui-layout-drawer-trigger"
           >
             <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
               {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}

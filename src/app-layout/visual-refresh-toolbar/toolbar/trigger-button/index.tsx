@@ -7,6 +7,7 @@ import { ButtonProps } from '../../../../button/interfaces';
 import { IconProps } from '../../../../icon/interfaces';
 import Icon from '../../../../icon/internal';
 import Tooltip from '../../../../internal/components/tooltip';
+import { registerTooltip } from '../../../../internal/components/tooltip/registry';
 
 import styles from './styles.css.js';
 
@@ -107,21 +108,15 @@ function TriggerButton(
     }
   }, [selected]);
 
-  const handleBlur = useCallback(
-    (event: FocusEvent) => {
-      const eventWithRelatedTarget = event;
-      console.log({
-        event: { ...eventWithRelatedTarget },
-        tooltipValue,
-        isForPreviousActiveDrawer,
-        hideTooltipOnFocus,
-        selected,
-      });
-      setSupressTooltip(false);
-      setShowTooltip(false);
-    },
-    [selected, tooltipValue, isForPreviousActiveDrawer, hideTooltipOnFocus]
-  );
+  const handleBlur = () => {
+    setSupressTooltip(false);
+    setShowTooltip(false);
+  };
+
+  const handleMouseEnter = () => {
+    setSupressTooltip(false);
+    setShowTooltip(true);
+  };
 
   const handleOnFocus = useCallback(
     (event: KeyboardEvent | PointerEvent) => {
@@ -144,8 +139,15 @@ function TriggerButton(
   );
 
   const tooltipVisible = useMemo(() => {
-    return hasTooltip && showTooltip && !!containerRef?.current && tooltipValue && !(isMobile && hasOpenDrawer);
-  }, [hasTooltip, showTooltip, containerRef, tooltipValue, isMobile, hasOpenDrawer]);
+    return (
+      hasTooltip &&
+      showTooltip &&
+      !suppressTooltip &&
+      !!containerRef?.current &&
+      tooltipValue &&
+      !(isMobile && hasOpenDrawer)
+    );
+  }, [hasTooltip, showTooltip, containerRef, tooltipValue, isMobile, hasOpenDrawer, suppressTooltip]);
 
   useEffect(() => {
     if (hasTooltip && tooltipValue) {
@@ -186,15 +188,25 @@ function TriggerButton(
     }
   }, [containerRef, hasTooltip, tooltipValue]);
 
+  useEffect(() => {
+    if (tooltipVisible) {
+      return registerTooltip(() => {
+        setShowTooltip(false);
+        setSupressTooltip(false);
+      });
+    }
+  }, [tooltipVisible]);
+
   return (
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => setShowTooltip(true),
-        onPointerLeave: e => handleBlur(e as any),
-        onMouseLeave: e => handleBlur(e as any),
+        onPointerEnter: () => handleMouseEnter(),
+        onPointerLeave: () => handleBlur(),
+        onMouseEnter: () => handleMouseEnter(),
+        onMouseLeave: () => handleBlur(),
         onFocus: e => handleOnFocus(e as any),
-        onBlur: e => handleBlur(e as any),
+        onBlur: () => handleBlur(),
         onClick: () => handleWrapperClick(),
       })}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
