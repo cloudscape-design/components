@@ -3,7 +3,14 @@
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, isDrawerClosed, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
+import {
+  describeEachAppLayout,
+  isDrawerClosed,
+  renderComponent,
+  testDrawer,
+  testDrawerWithoutLabels,
+  testIf,
+} from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -11,8 +18,9 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
-  test('Default state', () => {
+describeEachAppLayout(({ size, theme }) => {
+  // TODO[Toolbar]: Ensure tools are rendered in the dom by default
+  testIf(theme !== 'refresh-toolbar')('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
 
     expect(wrapper.findNavigationToggle()).toBeTruthy();
@@ -43,7 +51,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
       openProp: 'navigationOpen',
       hideProp: 'navigationHide',
       handler: 'onNavigationChange',
-      expectedCallsOnMobileToggle: 2,
+      expectedCallsOnMobileToggle: theme === 'refresh-toolbar' ? 1 : 2,
       findLandmarks: (wrapper: AppLayoutWrapper) => wrapper.findAll('nav'),
       findElement: (wrapper: AppLayoutWrapper) => wrapper.findNavigation(),
       findToggle: (wrapper: AppLayoutWrapper) => wrapper.findNavigationToggle(),
@@ -111,7 +119,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
           expect(onToggle).toHaveBeenLastCalledWith(expect.objectContaining({ detail: { open: false } }));
         });
 
-        test('Renders two landmarks in closed state', () => {
+        // TODO[Toolbar]: Ensure tools are rendered in the dom by default
+        testIf(theme !== 'refresh-toolbar')('Renders two landmarks in closed state', () => {
           const props = {
             [openProp]: false,
             [handler]: () => {},
@@ -131,8 +140,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
             expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'true');
           }
         });
-
-        test('Renders two landmarks in open state', () => {
+        // TODO[Toolbar]: Ensure tools are rendered in the dom by default
+        testIf(theme !== 'refresh-toolbar')('Renders two landmarks in open state', () => {
           const props = {
             [openProp]: true,
             [handler]: () => {},
@@ -142,7 +151,17 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
           expect(landmarks).toHaveLength(2);
           const toggleElement = findToggle(wrapper).getElement();
 
-          if (landmarks[0].getElement().contains(toggleElement)) {
+          // Toolbar toggles remain visible regardless of panel state
+          if (theme === 'refresh-toolbar') {
+            if (landmarks[0].getElement().contains(toggleElement)) {
+              expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'false');
+              expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
+            } else {
+              expect(landmarks[1].getElement()).toContainElement(toggleElement);
+              expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
+              expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'false');
+            }
+          } else if (landmarks[0].getElement().contains(toggleElement)) {
             expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'true');
             expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
           } else {
@@ -152,7 +171,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
           }
         });
 
-        test('Renders aria-expanded only on toggle', () => {
+        // TODO[Toolbar]: Ensure tools are rendered in the dom by default
+        testIf(theme !== 'refresh-toolbar')('Renders aria-expanded only on toggle', () => {
           const props = {
             [openProp]: false,
             [handler]: () => {},
@@ -202,7 +222,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
           expect(findClose(wrapper).getElement()).not.toHaveAttribute('aria-label');
         });
 
-        test('Opens and closes drawer in uncontrolled mode', () => {
+        // TODO[Toolbar]: Ensure tools are rendered in the dom by default
+        testIf(theme !== 'refresh-toolbar')('Opens and closes drawer in uncontrolled mode', () => {
           // use content type with initial closed state for all drawers
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
           expect(isDrawerClosed(findElement(wrapper))).toBe(true);

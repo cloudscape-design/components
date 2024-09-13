@@ -44,6 +44,8 @@ export function renderComponent(jsx: React.ReactElement) {
   return { wrapper, rerender, isUsingGridLayout, container };
 }
 
+export const testIf = (condition: boolean) => (condition ? test : test.skip);
+
 type Theme = 'refresh' | 'refresh-toolbar' | 'classic';
 type Size = 'desktop' | 'mobile';
 

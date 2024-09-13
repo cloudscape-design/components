@@ -73,6 +73,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [notificationsHeight, setNotificationsHeight] = useState(0);
 
     const onNavigationToggle = (open: boolean) => {
+      navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     };
 
