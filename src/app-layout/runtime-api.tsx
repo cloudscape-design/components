@@ -6,7 +6,6 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/e
 import { DrawerConfig as RuntimeDrawerConfig } from '../internal/plugins/controllers/drawers';
 import { RuntimeContentWrapper } from '../internal/plugins/helpers';
 import { sortByPriority } from '../internal/plugins/helpers/utils';
-import VisibilityStateManager from '../internal/plugins/helpers/visibility-state-manager';
 import { AppLayoutProps } from './interfaces';
 
 export interface DrawersLayout {
@@ -14,28 +13,19 @@ export interface DrawersLayout {
   after: Array<AppLayoutProps.Drawer>;
 }
 
-const visibilityStateManagerMap = new Map<string, VisibilityStateManager>();
-
-export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): DrawersLayout {
+export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig & { isVisible?: boolean }>): DrawersLayout {
   const converted = drawers.map(
     ({
       mountContent,
       unmountContent,
       trigger,
+      isVisible,
       ...runtimeDrawer
     }): AppLayoutProps.Drawer & {
       orderPriority?: number;
       onShow?: NonCancelableEventHandler;
       onHide?: NonCancelableEventHandler;
     } => {
-      let visibilityStateManager: VisibilityStateManager;
-      if (visibilityStateManagerMap.has(runtimeDrawer.id)) {
-        visibilityStateManager = visibilityStateManagerMap.get(runtimeDrawer.id)!;
-      } else {
-        visibilityStateManager = new VisibilityStateManager();
-        visibilityStateManagerMap.set(runtimeDrawer.id, visibilityStateManager);
-      }
-
       return {
         ...runtimeDrawer,
         ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
@@ -52,14 +42,12 @@ export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): Draw
             key={runtimeDrawer.id}
             mountContent={mountContent}
             unmountContent={unmountContent}
-            registerVisibilityCallback={visibilityStateManager.registerVisibilityCallback}
+            isVisible={isVisible}
           />
         ),
         onResize: event => {
           fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
         },
-        onShow: visibilityStateManager.show,
-        onHide: visibilityStateManager.hide,
       };
     }
   );

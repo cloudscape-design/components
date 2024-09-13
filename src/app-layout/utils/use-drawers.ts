@@ -73,7 +73,14 @@ function useRuntimeDrawers(
       const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
       const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
       setRuntimeLocalDrawers(convertRuntimeDrawers(localDrawers));
-      setRuntimeGlobalDrawers(convertRuntimeDrawers(globalDrawers).after);
+      setRuntimeGlobalDrawers(
+        convertRuntimeDrawers(
+          globalDrawers.map(drawer => ({
+            ...drawer,
+            isVisible: activeGlobalDrawersIds.includes(drawer.id),
+          }))
+        ).after
+      );
       if (!localDrawerWasOpenRef.current) {
         const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
         if (defaultActiveLocalDrawer) {

@@ -959,21 +959,14 @@ describe('toolbar mode only features', () => {
     });
 
     test('should call visibilityChange callback when global drawer with preserveInactiveContent is opened and closed', async () => {
-      const onShow = jest.fn();
-      const onHide = jest.fn();
+      const onVisibilityChangeMock = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'global-drawer-1',
         type: 'global',
         mountContent: (container, onVisibilityChange) => {
           if (onVisibilityChange) {
-            onVisibilityChange((isVisible: boolean) => {
-              if (isVisible) {
-                onShow();
-              } else {
-                onHide();
-              }
-            });
+            onVisibilityChange(onVisibilityChangeMock);
           }
           container.textContent = 'global drawer content 1';
         },
@@ -987,13 +980,13 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
+      await delay();
+
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
-      expect(onShow).toHaveBeenCalledTimes(1);
-      expect(onHide).toHaveBeenCalledTimes(0);
+      expect(onVisibilityChangeMock).toHaveBeenCalledWith(true);
 
       globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
-      expect(onShow).toHaveBeenCalledTimes(1);
-      expect(onHide).toHaveBeenCalledTimes(1);
+      expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
     });
   });
 });

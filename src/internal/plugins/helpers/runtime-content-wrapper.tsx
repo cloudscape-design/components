@@ -7,24 +7,34 @@ type VisibilityCallback = (isVisible: boolean) => void;
 interface RuntimeContentWrapperProps {
   mountContent: (container: HTMLElement, visibilityCallback?: (callback: VisibilityCallback) => () => void) => void;
   unmountContent: (container: HTMLElement) => void;
-  registerVisibilityCallback?: (callback: VisibilityCallback) => () => void;
+  isVisible?: boolean;
 }
 
-export function RuntimeContentWrapper({
-  mountContent,
-  unmountContent,
-  registerVisibilityCallback,
-}: RuntimeContentWrapperProps) {
+export function RuntimeContentWrapper({ mountContent, unmountContent, isVisible }: RuntimeContentWrapperProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const visibilityChangeCallback = useRef<VisibilityCallback | null>(null);
 
   useEffect(() => {
     const container = ref.current!;
-    mountContent(container, registerVisibilityCallback);
+    mountContent(container, cb => {
+      visibilityChangeCallback.current = cb;
+      return () => {
+        visibilityChangeCallback.current = null;
+      };
+    });
     return () => {
       unmountContent(container);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (isVisible === undefined) {
+      return;
+    }
+
+    visibilityChangeCallback.current?.(isVisible);
+  }, [isVisible]);
 
   return <div ref={ref}></div>;
 }
