@@ -234,6 +234,7 @@ export interface ItemListProps extends HighlightProps {
   variant?: InternalButtonDropdownProps['variant'];
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
+  linkStyle?: boolean;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -252,6 +253,7 @@ export interface ItemProps {
   variant?: ItemListProps['variant'];
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
+  linkStyle?: boolean;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {
@@ -294,6 +296,13 @@ export interface InternalButtonDropdownProps
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+
+  /**
+   * Determines whether simple items should be displayed with the link styles.
+   * Used in Breadcrumb group component for collapsed breadcrumbs
+   */
+  linkStyle?: boolean;
+
   analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
 }
 

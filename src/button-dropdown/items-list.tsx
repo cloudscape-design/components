@@ -27,6 +27,7 @@ export default function ItemsList({
   variant = 'normal',
   analyticsMetadataTransformer,
   position,
+  linkStyle,
 }: ItemListProps) {
   const isMobile = useMobile();
 
@@ -48,6 +49,7 @@ export default function ItemsList({
           variant={variant}
           position={`${position ? `${position},` : ''}${index + 1}`}
           analyticsMetadataTransformer={analyticsMetadataTransformer}
+          linkStyle={linkStyle}
         />
       );
     }

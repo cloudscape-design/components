@@ -51,6 +51,7 @@ const InternalButtonDropdown = React.forwardRef(
       showMainActionOnly,
       __internalRootRef,
       analyticsMetadataTransformer,
+      linkStyle,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -364,6 +365,7 @@ const InternalButtonDropdown = React.forwardRef(
               expandToViewport={expandToViewport}
               variant={variant}
               analyticsMetadataTransformer={analyticsMetadataTransformer}
+              linkStyle={linkStyle}
             />
           </OptionsList>
         </Dropdown>

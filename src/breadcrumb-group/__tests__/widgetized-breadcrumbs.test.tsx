@@ -27,8 +27,8 @@ const defaultProps: BreadcrumbGroupProps = {
 
 const WidgetizedBreadcrumbs = createWidgetizedBreadcrumbGroup(BreadcrumbGroupSkeleton);
 
-function getFunnelNameElement(container: HTMLElement) {
-  return container.querySelector(getFunnelNameSelector());
+function getFunnelNameElements(container: HTMLElement) {
+  return container.querySelectorAll(getFunnelNameSelector());
 }
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
@@ -43,7 +43,8 @@ describe('Classic design', () => {
   test('should render normal layout by default', () => {
     const { wrapper, container } = renderComponent(<WidgetizedBreadcrumbs {...defaultProps} />);
     expect(wrapper).toBeTruthy();
-    expect(getFunnelNameElement(container)).toHaveTextContent('Page name');
+    expect(getFunnelNameElements(container).length).toEqual(1);
+    expect(getFunnelNameElements(container)[0]).toHaveTextContent('Page name');
   });
 });
 
@@ -55,20 +56,22 @@ describe('Refresh design', () => {
   test('should render normal layout by default', () => {
     const { wrapper, container } = renderComponent(<WidgetizedBreadcrumbs {...defaultProps} />);
     expect(wrapper).toBeTruthy();
-    expect(getFunnelNameElement(container)).toHaveTextContent('Page name');
+    expect(getFunnelNameElements(container).length).toEqual(1);
+    expect(getFunnelNameElements(container)[0]).toHaveTextContent('Page name');
   });
 
   describeWithAppLayoutFeatureFlagEnabled(() => {
     test('should render funnel name using loader', () => {
       const { wrapper, container } = renderComponent(<WidgetizedBreadcrumbs {...defaultProps} />);
       expect(wrapper).toBeFalsy();
-      expect(getFunnelNameElement(container)).toHaveTextContent('Page name');
+      expect(getFunnelNameElements(container).length).toEqual(1);
+      expect(getFunnelNameElements(container)[0]).toHaveTextContent('Page name');
     });
 
     test('should not render funnel name if breadcrumbs list is empty', () => {
       const { wrapper, container } = renderComponent(<WidgetizedBreadcrumbs items={[]} />);
       expect(wrapper).toBeFalsy();
-      expect(getFunnelNameElement(container)).toEqual(null);
+      expect(getFunnelNameElements(container).length).toEqual(0);
     });
   });
 });

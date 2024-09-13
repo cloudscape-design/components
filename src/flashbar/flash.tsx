@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
 import { ButtonProps } from '../button/interfaces';
@@ -20,10 +21,12 @@ import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction } from '../internal/plugins/helpers';
 import { throttle } from '../internal/utils/throttle';
 import InternalSpinner from '../spinner/internal';
+import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
 import { sendDismissMetric } from './internal/analytics';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const ICON_TYPES = {
@@ -41,7 +44,12 @@ function dismissButton(
   onDismiss: FlashbarProps.MessageDefinition['onDismiss']
 ) {
   return (
-    <div className={styles['dismiss-button-wrapper']}>
+    <div
+      className={styles['dismiss-button-wrapper']}
+      {...getAnalyticsMetadataAttribute({
+        action: 'dismiss',
+      } as Partial<GeneratedAnalyticsMetadataFlashbarDismiss>)}
+    >
       <InternalButton
         onClick={onDismiss}
         className={styles['dismiss-button']}
@@ -165,7 +173,7 @@ export const Flash = React.forwardRef(
               {icon}
             </div>
             <div className={clsx(styles['flash-message'], styles['flash-text'])}>
-              <div className={styles['flash-header']} ref={headerRef}>
+              <div className={clsx(styles['flash-header'], analyticsSelectors['flash-header'])} ref={headerRef}>
                 {header}
               </div>
               <div className={styles['flash-content']} ref={contentRef}>

@@ -34,6 +34,7 @@ const ItemElement = ({
   isKeyboardHighlighted = false,
   analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
+  linkStyle,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const isCheckbox = isCheckboxItem(item);
@@ -83,7 +84,7 @@ const ItemElement = ({
             }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
-      <MenuItem item={item} disabled={disabled} highlighted={highlighted} />
+      <MenuItem item={item} disabled={disabled} highlighted={highlighted} linkStyle={linkStyle} />
     </li>
   );
 };
@@ -100,9 +101,10 @@ interface MenuItemProps {
   item: InternalItemProps | InternalCheckboxItemProps;
   disabled: boolean;
   highlighted: boolean;
+  linkStyle?: boolean;
 }
 
-function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
+function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
 
@@ -116,7 +118,7 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     'aria-label': item.ariaLabel,
-    className: clsx(styles['menu-item'], analyticsLabels['menu-item']),
+    className: clsx(styles['menu-item'], analyticsLabels['menu-item'], linkStyle && styles['link-style']),
     lang: item.lang,
     ref: menuItemRef,
     // We are using the roving tabindex technique to manage the focus state of the dropdown.
