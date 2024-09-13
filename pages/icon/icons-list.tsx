@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Box from '~components/box';
 import Icon, { IconProps } from '~components/icon';
 import icons from '~components/icon/generated/icons';
 
@@ -18,7 +19,9 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
       <h1 className={styles.header}>{variant}</h1>
       {sizes.map(size => (
         <React.Fragment key={size}>
-          <h2 style={{ marginBlockEnd: 8 }}>Icon {size}</h2>
+          <Box variant="h3" padding={{ top: 'm' }}>
+            Icon {size}
+          </Box>
           <div
             key={size}
             style={{ paddingBlockEnd: 8, paddingBlockStart: 2, display: 'flex', flexWrap: 'wrap', gap: 4 }}
