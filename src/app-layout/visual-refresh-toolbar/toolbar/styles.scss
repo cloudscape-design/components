@@ -30,7 +30,7 @@
   }
 
   > .toolbar-container {
-    block-size: 48px;
+    block-size: 100%;
     align-items: center;
     display: grid;
     column-gap: awsui.$space-static-xs;
@@ -86,7 +86,7 @@
 }
 
 .group-divider {
-  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   block-size: 60%;
 }
 
