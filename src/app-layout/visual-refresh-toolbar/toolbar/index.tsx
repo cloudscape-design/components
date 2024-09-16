@@ -201,7 +201,7 @@ export function AppLayoutToolbarImplementation({
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
-              globalDrawersFocusControl={globalDrawersFocusControl!}
+              globalDrawersFocusControl={globalDrawersFocusControl}
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}

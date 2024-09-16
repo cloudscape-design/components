@@ -34,7 +34,7 @@ interface DrawerTriggersProps {
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
   activeGlobalDrawersIds: ReadonlyArray<string>;
-  globalDrawersFocusControl: FocusControlMultipleStates;
+  globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
 
