@@ -31,6 +31,9 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
     }
   }
 }
+.inner-root {
+  block-size: 100%;
+}
 
 .token,
 .inner-token {
