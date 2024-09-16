@@ -180,8 +180,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
       })
     );
 
-    //todo fix or remove test
-    test.only(
+    test(
       'Shows tooltip correctly on drawer trigger for pointer interactions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -193,8 +192,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
       })
     );
 
-    //todo fix or remove test
-    test.only(
+    test(
       'Removes tooltip from drawer trigger on escape key press after showing from pointer down',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
