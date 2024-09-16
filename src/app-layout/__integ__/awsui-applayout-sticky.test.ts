@@ -5,6 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
+import { getUrlParams, testIf, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 const stickyToggleSelector = createWrapper().findFlashbar().findItems().get(1).findActionButton().toSelector();
@@ -23,24 +24,19 @@ class AppLayoutStickyPage extends BasePageObject {
   }
 }
 
-function setupTest(
-  { viewport = viewports.desktop, theme = 'default' },
-  testFn: (page: AppLayoutStickyPage) => Promise<void>
-) {
-  return useBrowser(async browser => {
-    const page = new AppLayoutStickyPage(browser);
-    await page.setWindowSize(viewport);
-    await browser.url(
-      `#/light/app-layout/with-sticky-notifications/?visualRefresh=${theme === 'visual-refresh' ? 'true' : 'false'}`
-    );
-    await page.waitForVisible(wrapper.findContentRegion().toSelector());
-    await testFn(page);
-  });
-}
-['default', 'visual-refresh'].forEach(theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new AppLayoutStickyPage(browser);
+      await page.setWindowSize(viewport);
+      await browser.url(`#/light/app-layout/with-sticky-notifications/?${getUrlParams(theme)}`);
+      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await testFn(page);
+    });
+  }
   test(
     'Notifications can stick',
-    setupTest({ theme }, async page => {
+    setupTest({}, async page => {
       await expect(page.isNotificationVisible()).resolves.toBe(true);
       await page.windowScrollTo({ top: 2000 });
       await expect(page.isNotificationVisible()).resolves.toBe(true);
@@ -49,7 +45,7 @@ function setupTest(
 
   test(
     'Sticky state can be disabled',
-    setupTest({ theme }, async page => {
+    setupTest({}, async page => {
       await page.toggleStickiness();
       await expect(page.isNotificationVisible()).resolves.toBe(true);
       await page.windowScrollTo({ top: 2000 });
@@ -57,9 +53,10 @@ function setupTest(
     })
   );
 
-  test(
+  // TODO: Implement in toolbar
+  testIf(theme !== 'refresh-toolbar')(
     'Notifications are never sticky in narrow viewports',
-    setupTest({ viewport: viewports.mobile, theme }, async page => {
+    setupTest({ viewport: viewports.mobile }, async page => {
       await expect(page.isNotificationVisible()).resolves.toBe(true);
       await page.windowScrollTo({ top: 2000 });
       await expect(page.isNotificationVisible()).resolves.toBe(false);
