@@ -12,20 +12,19 @@ interface FunnelBreadcrumbItemProps {
   text: string;
   last: boolean;
   hidden?: boolean;
-  ghost?: boolean;
 }
 
 export const FunnelBreadcrumbItem = React.forwardRef<HTMLSpanElement, FunnelBreadcrumbItemProps>(
-  ({ text, hidden, last, ghost }, ref) => {
+  ({ text, hidden, last }, ref) => {
     const funnelAttributes: Record<string, string> = {};
-    if (last && !ghost) {
+    if (last) {
       funnelAttributes[DATA_ATTR_FUNNEL_KEY] = FUNNEL_KEY_FUNNEL_NAME;
     }
 
     return (
       <span
         {...funnelAttributes}
-        className={clsx(styles.text, hidden && styles['text-hidden'], !ghost && analyticsSelectors['breadcrumb-item'])}
+        className={clsx(styles.text, hidden && styles['text-hidden'], analyticsSelectors['breadcrumb-item'])}
         ref={ref}
       >
         {text}
