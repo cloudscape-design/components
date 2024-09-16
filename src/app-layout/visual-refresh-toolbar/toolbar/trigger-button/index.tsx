@@ -49,24 +49,6 @@ export interface TriggerButtonProps {
    */
   isMobile?: boolean;
   /**
-   * @prop {boolean} [disableTooltipOnProgrammaticFocus]
-   * Determines whether the tooltip should be hidden or disabled when the button
-   * receives focus due to a programmatic event or trigger, rather than user
-   * interaction (e.g., mouse hover or keyboard focus).
-   *
-   * When set to `true`, the tooltip will not be displayed if the button is focused
-   * programmatically, for example, by calling the `focus()` method on the button
-   * element from JavaScript code.
-   *
-   * This prop can be useful in situations where you want to prevent the tooltip
-   * from appearing when the focus is set on the button as a result of some
-   * programmatic logic or event, rather than user-initiated actions.
-   *
-   * If not provided or set to `false`, the tooltip will behave as usual and
-   * be displayed on both user-initiated focus and programmatic focus events.
-   */
-  hideTooltipOnFocus?: boolean;
-  /**
    * set to true if the trigger button was used to open the last active drawer
    */
   isForPreviousActiveDrawer?: boolean;
@@ -88,7 +70,6 @@ function TriggerButton(
     selected = false,
     highContrastHeader,
     hasTooltip = false,
-    hideTooltipOnFocus = false,
     tooltipText,
     hasOpenDrawer = false,
     isMobile = false,
@@ -108,8 +89,8 @@ function TriggerButton(
     }
   }, [selected]);
 
-  const handleBlur = () => {
-    setSupressTooltip(false);
+  const handleBlur = (keepSupressed = false) => {
+    setSupressTooltip(keepSupressed);
     setShowTooltip(false);
   };
 
@@ -118,24 +99,40 @@ function TriggerButton(
     setShowTooltip(true);
   };
 
+  /**
+   * Takes the drawer being closed and the data-shift-focus value from a close button on that drawer that persists
+   * on the event relatedTarget to determine not to show the tooltip
+   * @param event
+   */
   const handleOnFocus = useCallback(
-    (event: KeyboardEvent | PointerEvent) => {
+    (event: FocusEvent) => {
       const eventWithRelatedTarget = event as any;
 
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
-        return (
-          (!suppressTooltip && !isForPreviousActiveDrawer) ||
-          (isForPreviousActiveDrawer && !hideTooltipOnFocus) ||
-          eventWithRelatedTarget?.relatedTarget !== null
-        );
+        const isFromDrawer =
+          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
+        const isFromAnotherTrigger =
+          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
+        if (isForPreviousActiveDrawer) {
+          if (isFromAnotherTrigger) {
+            return true;
+          }
+          //button will only be selected if drawer still open and user trying to navigate from key from drawer close to first trigger element
+          return selected;
+        }
+
+        return !isFromDrawer || isFromAnotherTrigger;
       };
 
-      if (shouldShowTooltip()) {
-        setShowTooltip(true);
-      }
+      setSupressTooltip(!shouldShowTooltip());
+      setShowTooltip(true);
     },
-    [hideTooltipOnFocus, isForPreviousActiveDrawer, suppressTooltip]
+    [
+      // To assert reference equality check
+      isForPreviousActiveDrawer,
+      selected,
+    ]
   );
 
   const tooltipVisible = useMemo(() => {
@@ -202,11 +199,11 @@ function TriggerButton(
       ref={containerRef}
       {...(hasTooltip && {
         onPointerEnter: () => handleMouseEnter(),
-        onPointerLeave: () => handleBlur(),
+        onPointerLeave: () => handleBlur(false),
         onMouseEnter: () => handleMouseEnter(),
-        onMouseLeave: () => handleBlur(),
+        onMouseLeave: () => handleBlur(false),
         onFocus: e => handleOnFocus(e as any),
-        onBlur: () => handleBlur(),
+        onBlur: () => handleBlur(true),
         onClick: () => handleWrapperClick(),
       })}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
@@ -232,6 +229,7 @@ function TriggerButton(
         ref={ref as Ref<HTMLButtonElement>}
         type="button"
         data-testid={testId}
+        data-shift-focus="awsui-layout-drawer-trigger"
       >
         <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
           {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}

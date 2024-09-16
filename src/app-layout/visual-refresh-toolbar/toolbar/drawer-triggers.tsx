@@ -144,7 +144,6 @@ export function DrawerTriggers({
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
-              hideTooltipOnFocus={activeDrawerId === null && isForPreviousActiveDrawer}
               hasTooltip={true}
               hasOpenDrawer={hasOpenDrawer}
               tooltipText={item.ariaLabels?.drawerName}
