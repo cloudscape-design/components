@@ -1,18 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
+import { BreadcrumbItem } from '../../../lib/components/breadcrumb-group/item/item';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../../lib/components/internal/analytics/selectors';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
 
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(true),
-}));
+import breadcrumbItemStyles from '../../../lib/components/breadcrumb-group/item/styles.selectors.js';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const { container } = render(<BreadcrumbGroup {...props} />);
@@ -137,15 +136,16 @@ describe('BreadcrumbGroup Item', () => {
     });
   });
 
-  describe('compressed item', () => {
-    beforeEach(() => {
-      (useMobile as jest.Mock).mockReturnValue(true);
-    });
-
-    test('renders item content', () => {
-      const wrapper = renderBreadcrumbGroup({ items });
-
-      expect(wrapper.findBreadcrumbLinks()[0].getElement()).toHaveTextContent(items[0].text);
-    });
+  test('displays tooltip', () => {
+    const { container } = render(
+      <BreadcrumbItem item={{ text: 'Long Breadcrumb text', href: '#' }} isTruncated={true} />
+    );
+    const elementAnchor = createWrapper(container).find(`.${breadcrumbItemStyles.anchor}`)!.getElement();
+    elementAnchor.focus();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    elementAnchor.blur();
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
+    fireEvent.mouseEnter(elementAnchor);
+    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
   });
 });

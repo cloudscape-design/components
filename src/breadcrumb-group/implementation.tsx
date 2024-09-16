@@ -1,8 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
@@ -12,7 +14,7 @@ import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent } from '../internal/events';
-import { useMobile } from '../internal/hooks/use-mobile';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { createWidgetizedComponent } from '../internal/widgets';
 import {
@@ -21,7 +23,7 @@ import {
 } from './analytics-metadata/interfaces';
 import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
 import { BreadcrumbItem } from './item/item';
-import { getEventDetail } from './utils';
+import { getEventDetail, getItemsDisplayProperties } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -64,11 +66,12 @@ const EllipsisDropdown = ({
   dropdownItems,
   onDropdownItemClick,
   onDropdownItemFollow,
+  visible,
 }: EllipsisDropdownProps) => {
   const i18n = useInternalI18n('breadcrumb-group');
 
   return (
-    <li className={styles.ellipsis}>
+    <li className={clsx(styles.ellipsis, visible && styles.visible)}>
       <InternalButtonDropdown
         ariaLabel={i18n('expandAriaLabel', ariaLabel) ?? DEFAULT_EXPAND_ARIA_LABEL}
         items={dropdownItems}
@@ -93,6 +96,23 @@ const EllipsisDropdown = ({
   );
 };
 
+interface ItemsRefsType {
+  ghost: Record<string, HTMLLIElement>;
+  real: Record<string, HTMLLIElement>;
+}
+
+interface ItemsWidthsType {
+  ghost: Array<number>;
+  real: Array<number>;
+}
+
+const areArrayEqual = (first: Array<number>, second: Array<number>) => {
+  if (first.length !== second.length) {
+    return false;
+  }
+  return first.every((item, index) => item === second[index]);
+};
+
 export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
   ariaLabel,
@@ -107,10 +127,45 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     checkSafeUrl('BreadcrumbGroup', item.href);
   }
   const baseProps = getBaseProps(props);
-  const isMobile = useMobile();
+  const [navWidth, navRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+  const mergedRef = useMergeRefs(navRef, __internalRootRef);
+
+  const itemsRefs = useRef<ItemsRefsType>({ ghost: {}, real: {} });
+  const setBreadcrumb = (type: keyof ItemsRefsType, index: string, node: null | HTMLLIElement) => {
+    if (node) {
+      itemsRefs.current[type][index] = node;
+    } else {
+      delete itemsRefs.current[type][index];
+    }
+  };
+
+  const [itemsWidths, setItemsWidths] = useState<ItemsWidthsType>({ ghost: [], real: [] });
+
+  useEffect(() => {
+    if (itemsRefs.current) {
+      const newItemsWidths: ItemsWidthsType = { ghost: [], real: [] };
+      for (const node of Object.values(itemsRefs.current.ghost)) {
+        const width = getLogicalBoundingClientRect(node).inlineSize;
+        newItemsWidths.ghost.push(width);
+      }
+      for (const node of Object.values(itemsRefs.current.real)) {
+        const width = getLogicalBoundingClientRect(node).inlineSize;
+        newItemsWidths.real.push(width);
+      }
+      if (
+        !areArrayEqual(newItemsWidths.ghost, itemsWidths.ghost) ||
+        !areArrayEqual(newItemsWidths.real, itemsWidths.real)
+      ) {
+        setItemsWidths(newItemsWidths);
+      }
+    }
+  }, [itemsWidths, items, navWidth]);
+
+  const { shrinkFactors, minWidths, collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
 
   let breadcrumbItems = items.map((item, index) => {
     const isLast = index === items.length - 1;
+    const isDisplayed = index === 0 || index > collapsed;
 
     const clickAnalyticsMetadata: GeneratedAnalyticsMetadataBreadcrumbGroupClick = {
       action: 'click',
@@ -120,21 +175,30 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         href: item.href || '',
       },
     };
-
     return (
       <li
-        className={styles.item}
+        className={clsx(styles.item, !isDisplayed && styles.hide)}
         key={index}
         {...(isLast ? {} : getAnalyticsMetadataAttribute(clickAnalyticsMetadata))}
+        style={{ flexShrink: shrinkFactors[index], minWidth: `${minWidths[index]}px` }}
+        ref={node => setBreadcrumb('real', `${index}`, node)}
       >
         <BreadcrumbItem
           item={item}
           onClick={onClick}
           onFollow={onFollow}
-          isCompressed={isMobile}
           isLast={isLast}
-          isDisplayed={!isMobile || isLast || index === 0}
+          isTruncated={itemsWidths.ghost[index] - itemsWidths.real[index] > 0}
         />
+      </li>
+    );
+  });
+
+  const hiddenBreadcrumbItems = items.map((item, index) => {
+    const isLast = index === items.length - 1;
+    return (
+      <li className={styles.item} key={index} ref={node => setBreadcrumb('ghost', `${index}`, node)}>
+        <BreadcrumbItem item={item} isLast={isLast} isGhost={true} />
       </li>
     );
   });
@@ -147,7 +211,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   // Add ellipsis
   if (breadcrumbItems.length >= 2) {
     const dropdownItems: Array<LinkItem> = items
-      .slice(1, items.length - 1)
+      .slice(1, 1 + collapsed)
       .map((item: BreadcrumbGroupProps.Item, index: number) => ({
         id: (index + 1).toString(), // the first item doesn't get inside dropdown
         text: item.text,
@@ -158,6 +222,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
       breadcrumbItems[0],
       <EllipsisDropdown
         key={'ellipsis'}
+        visible={collapsed > 0}
         ariaLabel={expandAriaLabel}
         dropdownItems={dropdownItems}
         onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
@@ -175,14 +240,9 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   return (
     <nav
       {...baseProps}
-      className={clsx(
-        styles['breadcrumb-group'],
-        isMobile && styles.mobile,
-        items.length <= 2 && styles['mobile-short'],
-        baseProps.className
-      )}
+      className={clsx(styles['breadcrumb-group'], baseProps.className)}
       aria-label={ariaLabel || undefined}
-      ref={__internalRootRef}
+      ref={mergedRef}
       {...(__injectAnalyticsComponentMetadata
         ? {
             ...getAnalyticsMetadataAttribute({
@@ -192,6 +252,9 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         : {})}
     >
       <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+      <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
+        {hiddenBreadcrumbItems}
+      </ol>
     </nav>
   );
 }
