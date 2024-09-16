@@ -21,13 +21,11 @@ export function RuntimeContentWrapper({ mountContent, unmountContent, isVisible 
     mountContent(container, {
       onVisibilityChange: cb => {
         visibilityChangeCallback.current = cb;
-        return () => {
-          visibilityChangeCallback.current = null;
-        };
       },
     });
     return () => {
       unmountContent(container);
+      visibilityChangeCallback.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

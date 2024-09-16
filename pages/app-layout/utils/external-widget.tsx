@@ -95,7 +95,7 @@ const Counter: React.FC = ({ children }) => {
 };
 
 const AutoIncrementCounter: React.FC<{
-  onVisibilityChange?: (callback: (isVisible: boolean) => void) => () => void;
+  onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
 }> = ({ children, onVisibilityChange }) => {
   const [count, setCount] = useState(0);
   const [isPaused, setIsPaused] = useState(true);
@@ -112,13 +112,9 @@ const AutoIncrementCounter: React.FC<{
 
   useEffect(() => {
     if (onVisibilityChange) {
-      const unsubscribe = onVisibilityChange((isVisible: boolean) => {
+      onVisibilityChange((isVisible: boolean) => {
         setIsPaused(!isVisible);
       });
-
-      return () => {
-        unsubscribe();
-      };
     }
   }, [onVisibilityChange]);
 

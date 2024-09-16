@@ -3,7 +3,7 @@
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 
-export type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => () => void;
+export type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
 export interface MountContentContext {
   onVisibilityChange?: DrawerVisibilityChange;
