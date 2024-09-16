@@ -1,11 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Simulate } from 'react-dom/test-utils';
+import { Simulate } from "react-dom/test-utils";
 
-import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import { act } from '@cloudscape-design/test-utils-core/utils-dom';
+import {
+  ComponentWrapper,
+  ElementWrapper,
+  usesDom,
+} from "@cloudscape-design/test-utils-core/dom";
+import { act } from "@cloudscape-design/test-utils-core/utils-dom";
 
-import testutilStyles from '../../../prompt-input/test-classes/styles.selectors.js';
+import testutilStyles from "../../../prompt-input/test-classes/styles.selectors.js";
 
 export default class PromptInputWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
@@ -15,7 +19,21 @@ export default class PromptInputWrapper extends ComponentWrapper {
   }
 
   findActionButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(testutilStyles['action-button'])!;
+    return this.findByClassName<HTMLButtonElement>(
+      testutilStyles["action-button"],
+    )!;
+  }
+
+  findSecondaryActions(): ElementWrapper<HTMLDivElement> {
+    return this.findByClassName<HTMLDivElement>(
+      testutilStyles["secondary-actions"],
+    )!;
+  }
+
+  findSecondaryContent(): ElementWrapper<HTMLDivElement> {
+    return this.findByClassName<HTMLDivElement>(
+      testutilStyles["secondary-content"],
+    )!;
   }
 
   /**

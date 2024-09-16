@@ -1,24 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useCallback, useEffect, useImperativeHandle, useRef } from 'react';
-import clsx from 'clsx';
+import React, {
+  Ref,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+} from "react";
+import clsx from "clsx";
 
-import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import { useDensityMode } from "@cloudscape-design/component-toolkit/internal";
 
-import InternalButton from '../button/internal';
-import { convertAutoComplete } from '../input/utils';
-import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import * as tokens from '../internal/generated/styles/tokens';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { PromptInputProps } from './interfaces';
+import InternalButton from "../button/internal";
+import { convertAutoComplete } from "../input/utils";
+import { getBaseProps } from "../internal/base-component";
+import { useFormFieldContext } from "../internal/context/form-field-context";
+import { fireKeyboardEvent, fireNonCancelableEvent } from "../internal/events";
+import * as tokens from "../internal/generated/styles/tokens";
+import { InternalBaseComponentProps } from "../internal/hooks/use-base-component";
+import { useVisualRefresh } from "../internal/hooks/use-visual-mode";
+import { PromptInputProps } from "./interfaces";
 
-import styles from './styles.css.js';
-import testutilStyles from './test-classes/styles.css.js';
+import styles from "./styles.css.js";
+import testutilStyles from "./test-classes/styles.css.js";
 
-export interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
+export interface InternalPromptInputProps
+  extends PromptInputProps,
+    InternalBaseComponentProps {}
 
 const InternalPromptInput = React.forwardRef(
   (
@@ -52,16 +60,17 @@ const InternalPromptInput = React.forwardRef(
       __internalRootRef = null,
       ...rest
     }: InternalPromptInputProps,
-    ref: Ref<PromptInputProps.Ref>
+    ref: Ref<PromptInputProps.Ref>,
   ) => {
-    const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } = useFormFieldContext(rest);
+    const { ariaLabelledby, ariaDescribedby, controlId, invalid, warning } =
+      useFormFieldContext(rest);
 
     const baseProps = getBaseProps(rest);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const isRefresh = useVisualRefresh();
-    const isCompactMode = useDensityMode(textareaRef) === 'compact';
+    const isCompactMode = useDensityMode(textareaRef) === "compact";
 
     const PADDING = isRefresh ? tokens.spaceXxs : tokens.spaceXxxs;
     const LINE_HEIGHT = tokens.lineHeightBodyM;
@@ -69,14 +78,14 @@ const InternalPromptInput = React.forwardRef(
     useImperativeHandle(
       ref,
       () => ({
-        focus(...args: Parameters<HTMLElement['focus']>) {
+        focus(...args: Parameters<HTMLElement["focus"]>) {
           textareaRef.current?.focus(...args);
         },
         select() {
           textareaRef.current?.select();
         },
       }),
-      [textareaRef]
+      [textareaRef],
     );
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
@@ -84,8 +93,12 @@ const InternalPromptInput = React.forwardRef(
         fireKeyboardEvent(onKeyDown, event);
       }
 
-      if (event.key === 'Enter' && !event.shiftKey) {
-        if ('form' in event.target && event.target.form !== null && !event.isDefaultPrevented()) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        if (
+          "form" in event.target &&
+          event.target.form !== null &&
+          !event.isDefaultPrevented()
+        ) {
           (event.target.form as HTMLFormElement).requestSubmit();
         }
 
@@ -99,11 +112,12 @@ const InternalPromptInput = React.forwardRef(
       adjustTextareaHeight();
     };
 
-    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
+    const hasActionButton =
+      actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
 
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
-        textareaRef.current.style.height = 'auto';
+        textareaRef.current.style.height = "auto";
         const maxRowsHeight = `calc(${maxRows <= 0 ? 3 : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
         const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
         textareaRef.current.style.height = `min(${scrollHeight}, ${maxRowsHeight})`;
@@ -115,10 +129,10 @@ const InternalPromptInput = React.forwardRef(
         adjustTextareaHeight();
       };
 
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
 
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
       };
     }, [adjustTextareaHeight]);
 
@@ -127,10 +141,10 @@ const InternalPromptInput = React.forwardRef(
     }, [value, adjustTextareaHeight, maxRows, isCompactMode]);
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
-      'aria-label': ariaLabel,
-      'aria-labelledby': ariaLabelledby,
-      'aria-describedby': ariaDescribedby,
-      'aria-invalid': invalid ? 'true' : undefined,
+      "aria-label": ariaLabel,
+      "aria-labelledby": ariaLabelledby,
+      "aria-describedby": ariaDescribedby,
+      "aria-invalid": invalid ? "true" : undefined,
       name,
       placeholder,
       autoFocus,
@@ -141,23 +155,26 @@ const InternalPromptInput = React.forwardRef(
       readOnly: readOnly ? true : undefined,
       rows: minRows || 1,
       onKeyDown: handleKeyDown,
-      onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
+      onKeyUp: onKeyUp && ((event) => fireKeyboardEvent(onKeyUp, event)),
       // We set a default value on the component in order to force it into the controlled mode.
-      value: value || '',
+      value: value || "",
       onChange: handleChange,
       onBlur: onBlur && (() => fireNonCancelableEvent(onBlur)),
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
 
     if (disableBrowserAutocorrect) {
-      attributes.autoCorrect = 'off';
-      attributes.autoCapitalize = 'off';
+      attributes.autoCorrect = "off";
+      attributes.autoCapitalize = "off";
     }
 
     const action = (
       <div className={styles.button}>
         <InternalButton
-          className={clsx(styles['action-button'], testutilStyles['action-button'])}
+          className={clsx(
+            styles["action-button"],
+            testutilStyles["action-button"],
+          )}
           ariaLabel={actionButtonAriaLabel}
           disabled={disabled || readOnly || disableActionButton}
           iconName={actionButtonIconName}
@@ -174,29 +191,43 @@ const InternalPromptInput = React.forwardRef(
       <div
         {...baseProps}
         className={clsx(styles.root, testutilStyles.root, baseProps.className, {
-          [styles['textarea-readonly']]: readOnly,
-          [styles['textarea-invalid']]: invalid,
-          [styles['textarea-warning']]: warning && !invalid,
+          [styles["textarea-readonly"]]: readOnly,
+          [styles["textarea-invalid"]]: invalid,
+          [styles["textarea-warning"]]: warning && !invalid,
           [styles.disabled]: disabled,
         })}
         ref={__internalRootRef}
         tabIndex={0}
         onFocus={() => textareaRef.current?.focus()}
       >
-        {secondaryContent && <div className={styles['secondary-content']}>{secondaryContent}</div>}
-        <div className={styles['textarea-wrapper']}>
+        {secondaryContent && (
+          <div
+            className={clsx(
+              styles["secondary-content"],
+              testutilStyles["secondary-content"],
+            )}
+          >
+            {secondaryContent}
+          </div>
+        )}
+        <div className={styles["textarea-wrapper"]}>
           <textarea ref={textareaRef} id={controlId} {...attributes} />
           {hasActionButton && !secondaryActions && action}
         </div>
         {secondaryActions && (
-          <div className={styles['secondary-actions']}>
+          <div
+            className={clsx(
+              styles["secondary-actions"],
+              testutilStyles["secondary-actions"],
+            )}
+          >
             {secondaryActions}
             {hasActionButton && action}
           </div>
         )}
       </div>
     );
-  }
+  },
 );
 
 export default InternalPromptInput;
