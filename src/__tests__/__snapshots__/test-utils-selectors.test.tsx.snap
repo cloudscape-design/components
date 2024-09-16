@@ -1,8 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`test-utils selectors 1`] = `
-Object {
-  "alert": Array [
+{
+  "alert": [
     "awsui_action-button_mx3cw",
     "awsui_action-slot_mx3cw",
     "awsui_alert_mx3cw",
@@ -11,7 +11,7 @@ Object {
     "awsui_header_mx3cw",
     "awsui_root_mx3cw",
   ],
-  "anchor-navigation": Array [
+  "anchor-navigation": [
     "awsui_anchor-item--active_17oho",
     "awsui_anchor-link-info_17oho",
     "awsui_anchor-link-text_17oho",
@@ -19,7 +19,7 @@ Object {
     "awsui_anchor-list_17oho",
     "awsui_root_17oho",
   ],
-  "annotation-context": Array [
+  "annotation-context": [
     "awsui_annotation_1hpp3",
     "awsui_content_1hpp3",
     "awsui_finish-button_1hpp3",
@@ -29,7 +29,7 @@ Object {
     "awsui_previous-button_1hpp3",
     "awsui_step-counter-content_1hpp3",
   ],
-  "app-layout": Array [
+  "app-layout": [
     "awsui_active-drawer-close-button_1fj9k",
     "awsui_active-drawer_1fj9k",
     "awsui_breadcrumbs_1fj9k",
@@ -46,12 +46,12 @@ Object {
     "awsui_tools-toggle_1fj9k",
     "awsui_tools_1fj9k",
   ],
-  "area-chart": Array [
+  "area-chart": [
     "awsui_root_y1yrh",
     "awsui_series--highlighted_y1yrh",
     "awsui_series_y1yrh",
   ],
-  "attribute-editor": Array [
+  "attribute-editor": [
     "awsui_add-button_n4qlp",
     "awsui_additional-info_n4qlp",
     "awsui_empty_n4qlp",
@@ -61,31 +61,31 @@ Object {
     "awsui_row-control_n4qlp",
     "awsui_row_n4qlp",
   ],
-  "autosuggest": Array [
+  "autosuggest": [
     "awsui_root_12hwc",
   ],
-  "badge": Array [
+  "badge": [
     "awsui_badge_1yjyg",
   ],
-  "bar-chart": Array [
+  "bar-chart": [
     "awsui_root_1gfe1",
   ],
-  "box": Array [
+  "box": [
     "awsui_root_18wu0",
   ],
-  "breadcrumb-group": Array [
+  "breadcrumb-group": [
     "awsui_anchor_1kosq",
     "awsui_breadcrumb-group_d19fg",
     "awsui_breadcrumb_1kosq",
     "awsui_item_d19fg",
   ],
-  "button": Array [
+  "button": [
     "awsui_button_vjswe",
     "awsui_content_vjswe",
     "awsui_disabled-reason-tooltip_1ueyk",
     "awsui_icon-left_vjswe",
   ],
-  "button-dropdown": Array [
+  "button-dropdown": [
     "awsui_button-dropdown_sne0l",
     "awsui_description_sne0l",
     "awsui_dropdown-trigger_sne0l",
@@ -96,12 +96,12 @@ Object {
     "awsui_test-utils-button-trigger_sne0l",
     "awsui_title_sne0l",
   ],
-  "button-group": Array [
+  "button-group": [
     "awsui_button-group-item_1v2mg",
     "awsui_button-group-tooltip_1v2mg",
     "awsui_button-group_1v2mg",
   ],
-  "calendar": Array [
+  "calendar": [
     "awsui_calendar-date-selected_1ykar",
     "awsui_calendar-date_1ykar",
     "awsui_calendar-header_1ykar",
@@ -111,7 +111,7 @@ Object {
     "awsui_disabled-reason-tooltip_1ykar",
     "awsui_root_1ykar",
   ],
-  "cards": Array [
+  "cards": [
     "awsui_card-header-inner_p8a6i",
     "awsui_card-selected_p8a6i",
     "awsui_card_p8a6i",
@@ -123,10 +123,10 @@ Object {
     "awsui_section_p8a6i",
     "awsui_selection-control_p8a6i",
   ],
-  "checkbox": Array [
+  "checkbox": [
     "awsui_root_k2y2q",
   ],
-  "code-editor": Array [
+  "code-editor": [
     "awsui_code-editor_1gl9c",
     "awsui_editor_1gl9c",
     "awsui_error-screen_1gl9c",
@@ -137,7 +137,7 @@ Object {
     "awsui_tab-button--errors_1gl9c",
     "awsui_tab-button--warnings_1gl9c",
   ],
-  "collection-preferences": Array [
+  "collection-preferences": [
     "awsui_cancel-button_tc96w",
     "awsui_confirm-button_tc96w",
     "awsui_content-density_tc96w",
@@ -171,11 +171,11 @@ Object {
     "awsui_visible-content_tc96w",
     "awsui_wrap-lines_tc96w",
   ],
-  "column-layout": Array [
+  "column-layout": [
     "awsui_column-layout_vvxn7",
     "awsui_item_zqq3x",
   ],
-  "container": Array [
+  "container": [
     "awsui_content-wrapper_14iqq",
     "awsui_content_14iqq",
     "awsui_footer_14iqq",
@@ -183,7 +183,7 @@ Object {
     "awsui_media_14iqq",
     "awsui_root_14iqq",
   ],
-  "content-layout": Array [
+  "content-layout": [
     "awsui_breadcrumbs_64tge",
     "awsui_content_5gtk3",
     "awsui_header_64tge",
@@ -191,18 +191,18 @@ Object {
     "awsui_notifications_64tge",
     "awsui_secondary-header_64tge",
   ],
-  "copy-to-clipboard": Array [
+  "copy-to-clipboard": [
     "awsui_root_ljpwc",
     "awsui_text-to-copy_ljpwc",
   ],
-  "date-input": Array [
+  "date-input": [
     "awsui_root_yodkx",
   ],
-  "date-picker": Array [
+  "date-picker": [
     "awsui_open-calendar-button_145pa",
     "awsui_root_145pa",
   ],
-  "date-range-picker": Array [
+  "date-range-picker": [
     "awsui_apply-button_mgja0",
     "awsui_calendar-header_mgja0",
     "awsui_calendar-next-month-btn_mgja0",
@@ -229,12 +229,12 @@ Object {
     "awsui_validation-error_mgja0",
     "awsui_week_1mfbn",
   ],
-  "drawer": Array [
+  "drawer": [
     "awsui_drawer_1sxt8",
     "awsui_header_1sxt8",
     "awsui_test-utils-drawer-content_1sxt8",
   ],
-  "expandable-section": Array [
+  "expandable-section": [
     "awsui_content-expanded_gwq0h",
     "awsui_content_gwq0h",
     "awsui_expand-button_gwq0h",
@@ -243,7 +243,7 @@ Object {
     "awsui_icon-container_gwq0h",
     "awsui_root_gwq0h",
   ],
-  "file-upload": Array [
+  "file-upload": [
     "awsui_file-option-last-modified_ezgb4",
     "awsui_file-option-name_ezgb4",
     "awsui_file-option-size_ezgb4",
@@ -253,7 +253,7 @@ Object {
     "awsui_upload-button_4xu1k",
     "awsui_upload-input_4xu1k",
   ],
-  "flashbar": Array [
+  "flashbar": [
     "awsui_action-button_1q84n",
     "awsui_action-slot_1q84n",
     "awsui_dismiss-button_1q84n",
@@ -268,7 +268,7 @@ Object {
     "awsui_flashbar_1q84n",
     "awsui_notification-bar_1q84n",
   ],
-  "form": Array [
+  "form": [
     "awsui_actions_1i0s3",
     "awsui_content_1i0s3",
     "awsui_error_1i0s3",
@@ -276,7 +276,7 @@ Object {
     "awsui_root_1i0s3",
     "awsui_secondary-actions_1i0s3",
   ],
-  "form-field": Array [
+  "form-field": [
     "awsui_constraint_14mhv",
     "awsui_control_14mhv",
     "awsui_description_14mhv",
@@ -290,11 +290,11 @@ Object {
     "awsui_warning_14mhv",
     "awsui_warning__message_14mhv",
   ],
-  "grid": Array [
+  "grid": [
     "awsui_grid-column_14yj0",
     "awsui_grid_14yj0",
   ],
-  "header": Array [
+  "header": [
     "awsui_actions_2qdw9",
     "awsui_counter_2qdw9",
     "awsui_description_2qdw9",
@@ -302,25 +302,25 @@ Object {
     "awsui_info_2qdw9",
     "awsui_root_2qdw9",
   ],
-  "help-panel": Array [
+  "help-panel": [
     "awsui_content_1d237",
     "awsui_footer_1d237",
     "awsui_header_1d237",
     "awsui_help-panel_1d237",
   ],
-  "hotspot": Array [
+  "hotspot": [
     "awsui_root_cqcqk",
   ],
-  "icon": Array [
+  "icon": [
     "awsui_icon_h11ix",
   ],
-  "input": Array [
+  "input": [
     "awsui_input-button-right_2rhyz",
     "awsui_input-container_2rhyz",
     "awsui_input_2rhyz",
     "awsui_root_2rhyz",
   ],
-  "internal": Array [
+  "internal": [
     "awsui_application_1fcus",
     "awsui_axis-label--x_f0fot",
     "awsui_axis-label--y_f0fot",
@@ -368,42 +368,42 @@ Object {
     "awsui_value_10ipo",
     "awsui_wrapper_1wepg",
   ],
-  "key-value-pairs": Array [
+  "key-value-pairs": [
     "awsui_detail_1y9fy",
     "awsui_group-list-item_1y9fy",
     "awsui_info_1y9fy",
     "awsui_key-label_1y9fy",
     "awsui_key-value-pairs_1y9fy",
   ],
-  "line-chart": Array [
+  "line-chart": [
     "awsui_root_g9v3m",
   ],
-  "link": Array [
+  "link": [
     "awsui_link_4c84z",
   ],
-  "mixed-line-bar-chart": Array [
+  "mixed-line-bar-chart": [
     "awsui_bar-group_1yz9c",
     "awsui_root_1yz9c",
     "awsui_series--highlighted_1yz9c",
     "awsui_series_1yz9c",
   ],
-  "modal": Array [
+  "modal": [
     "awsui_content_1d2i7",
     "awsui_dismiss-control_1d2i7",
     "awsui_footer_1d2i7",
     "awsui_header_1d2i7",
     "awsui_root_1d2i7",
   ],
-  "multiselect": Array [
+  "multiselect": [
     "awsui_root_f8g6q",
   ],
-  "pagination": Array [
+  "pagination": [
     "awsui_button-current_fvjdu",
     "awsui_button_fvjdu",
     "awsui_page-number_fvjdu",
     "awsui_root_fvjdu",
   ],
-  "pie-chart": Array [
+  "pie-chart": [
     "awsui_inner-content_1edmh",
     "awsui_label--highlighted_1edmh",
     "awsui_label_1edmh",
@@ -411,7 +411,7 @@ Object {
     "awsui_segment--highlighted_1edmh",
     "awsui_segment_1edmh",
   ],
-  "popover": Array [
+  "popover": [
     "awsui_body_xjuzf",
     "awsui_content_xjuzf",
     "awsui_dismiss-control_xjuzf",
@@ -419,7 +419,7 @@ Object {
     "awsui_root_xjuzf",
     "awsui_trigger_xjuzf",
   ],
-  "progress-bar": Array [
+  "progress-bar": [
     "awsui_additional-info_11huc",
     "awsui_percentage_11huc",
     "awsui_result-button_11huc",
@@ -428,12 +428,12 @@ Object {
     "awsui_result-text_11huc",
     "awsui_root_11huc",
   ],
-  "prompt-input": Array [
+  "prompt-input": [
     "awsui_action-button_nr3gs",
     "awsui_root_nr3gs",
     "awsui_textarea_nr3gs",
   ],
-  "property-filter": Array [
+  "property-filter": [
     "awsui_constraint_1wzqe",
     "awsui_custom-control_1wzqe",
     "awsui_custom-filter-actions_1wzqe",
@@ -457,11 +457,11 @@ Object {
     "awsui_token-editor-token-add-actions_1heb1",
     "awsui_token-editor-token-remove-actions_1heb1",
   ],
-  "radio-group": Array [
+  "radio-group": [
     "awsui_radio_1mabk",
     "awsui_root_1mabk",
   ],
-  "s3-resource-selector": Array [
+  "s3-resource-selector": [
     "awsui_alert_1u0yw",
     "awsui_browse-button_1vtzr",
     "awsui_layout-uri_1vtzr",
@@ -471,19 +471,19 @@ Object {
     "awsui_submit-button_12hyz",
     "awsui_view-button_1vtzr",
   ],
-  "segmented-control": Array [
+  "segmented-control": [
     "awsui_disabled-reason-tooltip_8cbea",
     "awsui_root_8cbea",
     "awsui_segment_8cbea",
     "awsui_selected_8cbea",
   ],
-  "select": Array [
+  "select": [
     "awsui_disabled-reason-tooltip_dwuol",
     "awsui_inline-label_dwuol",
     "awsui_placeholder_dwuol",
     "awsui_root_r2vco",
   ],
-  "side-navigation": Array [
+  "side-navigation": [
     "awsui_divider_l0dv0",
     "awsui_expandable-link-group_l0dv0",
     "awsui_header-link_l0dv0",
@@ -497,17 +497,17 @@ Object {
     "awsui_section-group_l0dv0",
     "awsui_section_l0dv0",
   ],
-  "slider": Array [
+  "slider": [
     "awsui_root_pcgz5",
     "awsui_thumb_pcgz5",
   ],
-  "space-between": Array [
+  "space-between": [
     "awsui_root_18582",
   ],
-  "spinner": Array [
+  "spinner": [
     "awsui_root_1612d",
   ],
-  "split-panel": Array [
+  "split-panel": [
     "awsui_close-button_rjqu5",
     "awsui_header-text_rjqu5",
     "awsui_open-button_rjqu5",
@@ -517,10 +517,10 @@ Object {
     "awsui_root_rjqu5",
     "awsui_slider_rjqu5",
   ],
-  "status-indicator": Array [
+  "status-indicator": [
     "awsui_root_1cbgc",
   ],
-  "table": Array [
+  "table": [
     "awsui_body-cell-edit-active_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
     "awsui_body-cell-editor_c6tup",
@@ -544,7 +544,7 @@ Object {
     "awsui_tools-preferences_wih1l",
     "awsui_wrapper_wih1l",
   ],
-  "tabs": Array [
+  "tabs": [
     "awsui_disabled-reason-tooltip_14rmt",
     "awsui_root_14rmt",
     "awsui_tab-dismiss-button_1nq1i",
@@ -556,40 +556,40 @@ Object {
     "awsui_tabs-tab-link_14rmt",
     "awsui_tabs-tab_14rmt",
   ],
-  "tag-editor": Array [
+  "tag-editor": [
     "awsui_loading_brdst",
     "awsui_root_brdst",
     "awsui_undo-button_brdst",
   ],
-  "text-content": Array [
+  "text-content": [
     "awsui_text-content_6absk",
   ],
-  "text-filter": Array [
+  "text-filter": [
     "awsui_input_1sdq3",
     "awsui_results_1sdq3",
     "awsui_root_1sdq3",
   ],
-  "textarea": Array [
+  "textarea": [
     "awsui_root_qk1j1",
     "awsui_textarea_qk1j1",
   ],
-  "tiles": Array [
+  "tiles": [
     "awsui_image_vj6p7",
     "awsui_root_vj6p7",
     "awsui_tile-container_vj6p7",
   ],
-  "time-input": Array [
+  "time-input": [
     "awsui_root_l809c",
   ],
-  "toggle": Array [
+  "toggle": [
     "awsui_root_4yi2u",
   ],
-  "token-group": Array [
+  "token-group": [
     "awsui_dismiss-button_dm8gx",
     "awsui_root_dm8gx",
     "awsui_token_dm8gx",
   ],
-  "top-navigation": Array [
+  "top-navigation": [
     "awsui_hidden_1ca1i",
     "awsui_hidden_k5dlb",
     "awsui_identity_1ca1i",
@@ -611,7 +611,7 @@ Object {
     "awsui_utility-wrapper_1ca1i",
     "awsui_utility-wrapper_k5dlb",
   ],
-  "tutorial-panel": Array [
+  "tutorial-panel": [
     "awsui_collapse-button_ig8mp",
     "awsui_completed_ig8mp",
     "awsui_completion-screen-description_1u70p",
@@ -632,7 +632,7 @@ Object {
     "awsui_tutorial-description_ig8mp",
     "awsui_tutorial-panel_1oin5",
   ],
-  "wizard": Array [
+  "wizard": [
     "awsui_cancel-button_1xupv",
     "awsui_form-header-component_1xupv",
     "awsui_form-header_1xupv",
