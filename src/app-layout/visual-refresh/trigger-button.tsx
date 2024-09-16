@@ -98,11 +98,10 @@ function TriggerButton(
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-        // const isFromClickInside = false;
-        // console.log({...eventWithRelatedTarget})
-        if (isFromAnotherTrigger) {
-          return true;
-        } else if (!isForPreviousActiveDrawer) {
+        if (
+          isFromAnotherTrigger || //for keyed navigation
+          !isForPreviousActiveDrawer //this is true when the last activeId was this drawer
+        ) {
           return true; //for keyed navigation inside the toolbar
         } else {
           if (
@@ -128,15 +127,9 @@ function TriggerButton(
     ]
   );
 
-  const handleWrapperClick = useCallback(() => {
-    setShowTooltip(false);
-    if (selected) {
-      setSupressTooltip(true);
-    }
-  }, [selected]);
-
   const handleTriggerClick = (event: MouseEvent) => {
     event.stopPropagation();
+    setShowTooltip(false);
     setSupressTooltip(true);
     onClick();
   };
@@ -146,7 +139,7 @@ function TriggerButton(
     setShowTooltip(false);
   };
 
-  const handleMouseEnter = () => {
+  const handlePointerEnter = () => {
     setSupressTooltip(false);
     setShowTooltip(true);
   };
@@ -203,13 +196,10 @@ function TriggerButton(
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => handleMouseEnter(),
+        onPointerEnter: () => handlePointerEnter(),
         onPointerLeave: () => handleBlur(false),
         onFocus: e => handleFocus(e as any),
         onBlur: () => handleBlur(true),
-        onMouseLeave: () => handleBlur(false),
-        onMouseEnter: () => handleMouseEnter(),
-        onClick: () => handleWrapperClick(),
       })}
       className={clsx(styles['trigger-wrapper'], {
         [styles['remove-high-contrast-header']]: !highContrastHeader,
