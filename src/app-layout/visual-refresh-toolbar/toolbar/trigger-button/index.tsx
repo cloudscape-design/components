@@ -87,15 +87,10 @@ function TriggerButton(
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const [suppressTooltip, setSupressTooltip] = useState<boolean>(false);
 
-  const handleWrapperClick = useCallback(() => {
-    setShowTooltip(false);
-    if (!selected || isForSplitPanel) {
-      setSupressTooltip(true);
-    }
-  }, [selected, isForSplitPanel]);
-
   const handleTriggerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation(); // Stop the event from propagating to the badge icon
+    setShowTooltip(false);
+    setSupressTooltip(true);
     onClick(event);
   };
 
@@ -104,7 +99,7 @@ function TriggerButton(
     setShowTooltip(false);
   };
 
-  const handleMouseEnter = () => {
+  const handlePointerEnter = () => {
     setSupressTooltip(false);
     setShowTooltip(true);
   };
@@ -119,6 +114,7 @@ function TriggerButton(
       const eventWithRelatedTarget = event as any;
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
+        console.log('shouldshowtooltip firint', selected);
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
         if (isForSplitPanel) {
@@ -128,9 +124,6 @@ function TriggerButton(
             eventWithRelatedTarget?.relatedTarget &&
             breadcrumbsComponent.contains(eventWithRelatedTarget.relatedTarget)
           ) {
-            if (isForPreviousActiveDrawer) {
-              setSupressTooltip(true); //must be set here for split panel becuse no blur event on click due to focus stayign on button
-            }
             return true;
           }
           return isFromAnotherTrigger;
@@ -154,6 +147,7 @@ function TriggerButton(
       // To assert reference equality check
       isForPreviousActiveDrawer,
       isForSplitPanel,
+      selected,
     ]
   );
 
@@ -220,13 +214,10 @@ function TriggerButton(
     <div
       ref={containerRef}
       {...(hasTooltip && {
-        onPointerEnter: () => handleMouseEnter(),
-        onPointerLeave: () => handleBlur(false),
-        onMouseEnter: () => handleMouseEnter(),
-        onMouseLeave: () => handleBlur(false),
+        onPointerEnter: () => handlePointerEnter(),
+        onPointerLeave: () => handleBlur(true),
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
-        onClick: () => handleWrapperClick(),
       })}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
         [styles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
