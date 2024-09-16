@@ -103,7 +103,6 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             onClick={() => onActiveDrawerChange(null)}
             ref={drawersFocusControl.refs.close}
             variant="icon"
-            data-shift-focus="last-opened-toolbar-trigger-button"
           />
         </div>
         <div
