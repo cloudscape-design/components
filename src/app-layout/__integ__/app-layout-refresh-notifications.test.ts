@@ -5,6 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
+import { getUrlParams, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -38,83 +39,85 @@ class AppLayoutRefreshNotoficationsPage extends BasePageObject {
   }
 }
 
-function setupTest(
-  { viewport = viewports.desktop, removeNotifications = false },
-  testFn: (page: AppLayoutRefreshNotoficationsPage) => Promise<void>
-) {
-  return useBrowser(async browser => {
-    const page = new AppLayoutRefreshNotoficationsPage(browser);
-    await page.setWindowSize(viewport);
-    await browser.url(
-      `#/light/app-layout/notifications-refresh/?visualRefresh=true${removeNotifications ? `&removeNotifications` : ''}`
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest(
+    { viewport = viewports.desktop, removeNotifications = false },
+    testFn: (page: AppLayoutRefreshNotoficationsPage) => Promise<void>
+  ) {
+    return useBrowser(async browser => {
+      const page = new AppLayoutRefreshNotoficationsPage(browser);
+      await page.setWindowSize(viewport);
+      await browser.url(
+        `#/light/app-layout/notifications-refresh/?${getUrlParams(theme)}${removeNotifications ? `&removeNotifications` : ''}`
+      );
+      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await testFn(page);
+    });
+  }
+
+  describe('Notifications have the same width as content', () => {
+    test(
+      'upon rendering',
+      setupTest({}, async page => {
+        await page.assertNotificationsWidth();
+      })
     );
-    await page.waitForVisible(wrapper.findContentRegion().toSelector());
-    await testFn(page);
+    test(
+      'with smaller maxContentWidth',
+      setupTest({}, async page => {
+        await page.setMaxContentWidth('400');
+        await page.assertNotificationsWidth();
+      })
+    );
+    test(
+      'after opening navigation',
+      setupTest({}, async page => {
+        await page.setMaxContentWidth('400');
+        await page.toggleNavigation();
+        await page.assertNotificationsWidth();
+      })
+    );
+    test(
+      'after opening tools',
+      setupTest({}, async page => {
+        await page.setMaxContentWidth('400');
+        await page.toggleTools();
+        await page.assertNotificationsWidth();
+      })
+    );
+    test(
+      'after opening navigation and tools',
+      setupTest({}, async page => {
+        await page.setMaxContentWidth('400');
+        await page.toggleNavigation();
+        await page.toggleTools();
+        await page.assertNotificationsWidth();
+      })
+    );
+    test(
+      'in mobile view',
+      setupTest({ viewport: viewports.mobile }, async page => {
+        await page.assertNotificationsWidth();
+      })
+    );
   });
-}
 
-describe('Notifications have the same width as content', () => {
-  test(
-    'upon rendering',
-    setupTest({}, async page => {
-      await page.assertNotificationsWidth();
-    })
-  );
-  test(
-    'with smaller maxContentWidth',
-    setupTest({}, async page => {
-      await page.setMaxContentWidth('400');
-      await page.assertNotificationsWidth();
-    })
-  );
-  test(
-    'after opening navigation',
-    setupTest({}, async page => {
-      await page.setMaxContentWidth('400');
-      await page.toggleNavigation();
-      await page.assertNotificationsWidth();
-    })
-  );
-  test(
-    'after opening tools',
-    setupTest({}, async page => {
-      await page.setMaxContentWidth('400');
-      await page.toggleTools();
-      await page.assertNotificationsWidth();
-    })
-  );
-  test(
-    'after opening navigation and tools',
-    setupTest({}, async page => {
-      await page.setMaxContentWidth('400');
-      await page.toggleNavigation();
-      await page.toggleTools();
-      await page.assertNotificationsWidth();
-    })
-  );
-  test(
-    'in mobile view',
-    setupTest({ viewport: viewports.mobile }, async page => {
-      await page.assertNotificationsWidth();
-    })
-  );
-});
-
-describe('Notifications have smaller width than content', () => {
-  test(
-    'with larger maxContentWidth',
-    setupTest({}, async page => {
-      await page.setMaxContentWidth('2000');
-      await page.assertNotificationsWidth(-1);
-    })
-  );
-  test(
-    'with a max content width of 800, after opening navigation and tools',
-    setupTest({}, async page => {
-      await page.setMaxContentWidth('800');
-      await page.toggleNavigation();
-      await page.toggleTools();
-      await page.assertNotificationsWidth(-1);
-    })
-  );
+  describe('Notifications have smaller width than content', () => {
+    test(
+      'with larger maxContentWidth',
+      setupTest({}, async page => {
+        await page.setMaxContentWidth('2000');
+        await page.assertNotificationsWidth(-1);
+      })
+    );
+    test(
+      'with a max content width of 800, after opening navigation and tools',
+      setupTest({}, async page => {
+        await page.setMaxContentWidth('800');
+        await page.toggleNavigation();
+        await page.toggleTools();
+        await page.assertNotificationsWidth(-1);
+      })
+    );
+  });
 });

@@ -17,7 +17,7 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
    * to ensure that valid markup is generated.
 
    * Note: The last breadcrumb item is automatically considered the current item, and it's
-   * attributed with the proper `aria-current` value and rendered as inactive.
+   * not a link.
    */
   items: ReadonlyArray<T>;
   /**
