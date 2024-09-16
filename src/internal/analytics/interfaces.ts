@@ -152,6 +152,30 @@ export interface IFunnelMetrics {
   externalLinkInteracted: FunnelMethod<FunnelLinkInteractionProps>;
 }
 
+// Interface for task completion method props
+export interface TaskCompletionDataProps {
+  // Time taken to respond to customers after customers submit the form
+  // in milliseconds
+  timeToRespondAfterFormSubmit: number;
+  // Unique identifier for the task aka funnelInteractionId.
+  // Default: ''
+  taskInteractionId: string;
+  // Task name identifier to identify the task aka funnelName
+  // Default: ''
+  taskIdentifier?: string;
+  // To identify create or edit flow
+  // Default: ''
+  taskFlowType?: string;
+  //"single-page" | "multi-page"
+  // Default: ''
+  taskType?: FunnelType;
+  // Additional metadata related to completion such as success or error
+  completionMetadata?: string;
+}
+
+export type TaskCompletionDataMethod = (props: TaskCompletionDataProps) => void;
+
 export interface IPerformanceMetrics {
   tableInteraction: TableInteractionMethod;
+  taskCompletionData: TaskCompletionDataMethod;
 }

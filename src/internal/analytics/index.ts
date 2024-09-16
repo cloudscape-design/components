@@ -43,4 +43,5 @@ export let FunnelMetrics: IFunnelMetrics = {
  */
 export let PerformanceMetrics: IPerformanceMetrics = {
   tableInteraction(): void {},
+  taskCompletionData(): void {},
 };

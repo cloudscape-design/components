@@ -17,13 +17,14 @@ import {
   FunnelSubStepContextValue,
 } from '../context/analytics-context';
 import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
-import { FunnelMetrics } from '../index';
+import { FunnelMetrics, PerformanceMetrics } from '../index';
 import {
   AnalyticsMetadata,
   FunnelStartProps,
   FunnelStepProps,
   StepConfiguration,
   SubStepConfiguration,
+  TaskCompletionDataProps,
 } from '../interfaces';
 import {
   DATA_ATTR_FUNNEL_STEP,
@@ -82,14 +83,12 @@ const onFunnelCancelled = ({
   FunnelMetrics.funnelCancelled({ funnelInteractionId, funnelIdentifier });
 };
 
-const onFunnelComplete = ({
-  funnelInteractionId,
-  funnelIdentifier,
-}: {
-  funnelInteractionId: string;
-  funnelIdentifier?: string;
-}) => {
-  FunnelMetrics.funnelComplete({ funnelInteractionId, funnelIdentifier });
+const onFunnelComplete = (taskCompletionDataProps: TaskCompletionDataProps) => {
+  FunnelMetrics.funnelComplete({
+    funnelInteractionId: taskCompletionDataProps.taskInteractionId,
+    funnelIdentifier: taskCompletionDataProps.taskIdentifier,
+  });
+  PerformanceMetrics.taskCompletionData(taskCompletionDataProps);
   dispatchCreateEditFlowDoneEvent();
 };
 
@@ -114,7 +113,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
   const loadingButtonCount = useRef<number>(0);
   const wizardCount = useRef<number>(0);
   const latestFocusCleanupFunction = useRef<undefined | (() => void)>(undefined);
-
+  const formSubmitStartTime = useRef<number>(0);
   // This useEffect hook is run once on component mount to initiate the funnel analytics.
   // It first calls the 'funnelStart' method from FunnelMetrics, providing all necessary details
   // about the funnel, and receives a unique interaction id.
@@ -134,7 +133,6 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
     let funnelInteractionId: string;
     const handle = setTimeout(() => {
       funnelNameSelector.current = evaluateSelectors(props.funnelNameSelectors || [], getFunnelNameSelector());
-
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
       }
@@ -176,10 +174,16 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
       }
-
       if (funnelState.current === 'validating') {
         // Finish the validation phase early.
-        onFunnelComplete({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
+        const taskCompletionDataProps: TaskCompletionDataProps = {
+          taskIdentifier: props.funnelIdentifier,
+          taskType: props.funnelType,
+          timeToRespondAfterFormSubmit: performance.now() - formSubmitStartTime.current,
+          taskInteractionId: funnelInteractionId,
+          taskFlowType: props.funnelFlowType,
+        };
+        onFunnelComplete(taskCompletionDataProps);
         funnelState.current = 'complete';
       }
 
@@ -195,7 +199,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 
   const funnelSubmit = () => {
     funnelState.current = 'validating';
-
+    formSubmitStartTime.current = performance.now();
     /*
       When the user attempts to submit the form, we wait for 50 milliseconds before checking
       if any form validation errors are present. This value was chosen to give enough time
@@ -222,13 +226,19 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         /*
           If no validation errors are rendered, we treat the funnel as complete.
         */
-        onFunnelComplete({ funnelInteractionId });
+        const taskCompletionDataProps: TaskCompletionDataProps = {
+          taskIdentifier: props.funnelIdentifier,
+          taskType: props.funnelType,
+          timeToRespondAfterFormSubmit: performance.now() - formSubmitStartTime.current,
+          taskInteractionId: funnelInteractionId,
+          taskFlowType: props.funnelFlowType,
+        };
+        onFunnelComplete(taskCompletionDataProps);
         funnelState.current = 'complete';
       } else {
         funnelState.current = 'default';
       }
     };
-
     setTimeout(checkForCompleteness, VALIDATION_WAIT_DELAY);
   };
 
