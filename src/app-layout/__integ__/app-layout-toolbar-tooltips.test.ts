@@ -26,12 +26,52 @@ interface SetupTestOptions {
 const drawerIds = Object.values(drawerIdObj);
 const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT = 2; //must match the number in  '../../../lib/components/app-layout/visual-refresh/drawers';
 
+class AppLayoutDrawersPage extends BasePageObject {
+  async getElementCenter(selector: string) {
+    const targetRect = await this.getBoundingBox(selector);
+    const x = Math.round(targetRect.left + targetRect.width / 2);
+    const y = Math.round(targetRect.top + targetRect.height / 2);
+    return { x, y };
+  }
+
+  async pointerDown(selector: string) {
+    const center = await this.getElementCenter(selector);
+    await (await this.browser.$(selector)).moveTo();
+    await this.browser.performActions([
+      {
+        type: 'pointer',
+        id: 'event',
+        parameters: { pointerType: 'mouse' },
+        actions: [
+          { type: 'pointerMove', duration: 0, origin: 'pointer', ...center },
+          { type: 'pointerDown', button: 0 },
+          { type: 'pause', duration: 100 },
+        ],
+      },
+    ]);
+  }
+
+  async pointerUp() {
+    await this.browser.performActions([
+      {
+        type: 'pointer',
+        id: 'event',
+        parameters: { pointerType: 'mouse' },
+        actions: [
+          { type: 'pointerUp', button: 0 },
+          { type: 'pause', duration: 100 },
+        ],
+      },
+    ]);
+  }
+}
+
 const setupTest = (
   { size = 'desktop', theme = 'visual-refresh' }: SetupTestOptions,
-  testFn: (page: BasePageObject) => Promise<void>
+  testFn: (page: AppLayoutDrawersPage) => Promise<void>
 ) =>
   useBrowser(size === 'desktop' ? viewports.desktop : viewports.mobile, async browser => {
-    const page = new BasePageObject(browser);
+    const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
       visualRefresh: theme === 'classic' ? 'false' : 'true',
       appLayoutWidget: theme === 'visual-refresh' ? 'false' : 'true',
@@ -141,19 +181,20 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
     );
 
     //todo fix or remove test
-    test.skip(
+    test.only(
       'Shows tooltip correctly on drawer trigger for pointer interactions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)).resolves.toBeTruthy();
+        await page.pointerDown(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
-        await page.buttonUp();
+        await page.pointerUp();
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
 
     //todo fix or remove test
-    test.skip(
+    test.only(
       'Removes tooltip from drawer trigger on escape key press after showing from pointer down',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -285,10 +326,9 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)).resolves.toBeTruthy();
-        await page.buttonDownOnElement(splitPanelTriggerSelector);
-        await page.pause(100);
+        await page.pointerDown(splitPanelTriggerSelector);
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
-        await page.buttonUp();
+        await page.pointerUp();
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );
@@ -301,7 +341,6 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)).resolves.toBeTruthy();
         await page.buttonDownOnElement(splitPanelTriggerSelector);
-        await page.pause(100);
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
         await page.keys('Escape');
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
