@@ -52,6 +52,10 @@ export interface TriggerButtonProps {
    * set to true if the trigger button was used to open the last active drawer
    */
   isForPreviousActiveDrawer?: boolean;
+  /**
+   * if the trigger button is for the split panel
+   */
+  isForSplitPanel?: boolean;
   tabIndex?: number | undefined;
 }
 
@@ -74,6 +78,7 @@ function TriggerButton(
     hasOpenDrawer = false,
     isMobile = false,
     isForPreviousActiveDrawer = false,
+    isForSplitPanel = false,
   }: TriggerButtonProps,
   ref: React.Ref<ButtonProps.Ref>
 ) {
@@ -84,10 +89,10 @@ function TriggerButton(
 
   const handleWrapperClick = useCallback(() => {
     setShowTooltip(false);
-    if (!selected) {
+    if (!selected || isForSplitPanel) {
       setSupressTooltip(true);
     }
-  }, [selected]);
+  }, [selected, isForSplitPanel]);
 
   const handleTriggerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.stopPropagation(); // Stop the event from propagating to the badge icon
@@ -112,12 +117,24 @@ function TriggerButton(
   const handleOnFocus = useCallback(
     (event: FocusEvent) => {
       const eventWithRelatedTarget = event as any;
-
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-
+        if (isForSplitPanel) {
+          const breadcrumbsComponent = document.querySelector('nav[data-awsui-discovered-breadcrumbs="true"]');
+          if (
+            breadcrumbsComponent &&
+            eventWithRelatedTarget?.relatedTarget &&
+            breadcrumbsComponent.contains(eventWithRelatedTarget.relatedTarget)
+          ) {
+            if (isForPreviousActiveDrawer) {
+              setSupressTooltip(true); //must be set here for split panel becuse no blur event on click due to focus stayign on button
+            }
+            return true;
+          }
+          return isFromAnotherTrigger;
+        }
         if (!isForPreviousActiveDrawer) {
           return true; //for keyed navigation inside the toolbar
         } else {
@@ -136,6 +153,7 @@ function TriggerButton(
     [
       // To assert reference equality check
       isForPreviousActiveDrawer,
+      isForSplitPanel,
     ]
   );
 

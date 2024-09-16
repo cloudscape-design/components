@@ -53,12 +53,14 @@ const mockEventBubble = {
   relatedTarget: null,
 };
 
-// const mockEventBubbleWithShiftFocus = {
-//   ...mockEventBubble,
-//   relatedTarget: {
-
-//   },
-// };
+const mockEventBubbleWithShiftFocus = {
+  ...mockEventBubble,
+  relatedTarget: {
+    dataset: {
+      shiftFocus: 'last-opened-toolbar-trigger-button',
+    },
+  },
+};
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
@@ -261,7 +263,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
         expect(() => getByText(mockTooltipText)).toThrow();
         expect(button).toBeTruthy();
         expect(document.activeElement).not.toBe(button!.getElement());
-        (ref.current as any)?.focus(mockEventBubble);
+        (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
         expect(document.activeElement).toBe(button!.getElement());
         expect(getByTestId(mockTestId)).toBeTruthy();
         expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
@@ -488,7 +490,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           expect(() => getByText(mockTooltipText)).toThrow();
           expect(button).toBeTruthy();
           expect(document.activeElement).not.toBe(button!.getElement());
-          (ref.current as any)?.focus(mockEventBubble);
+          (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
           expect(document.activeElement).toBe(button!.getElement());
           expect(getByTestId(mockTestId)).toBeTruthy();
           expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();

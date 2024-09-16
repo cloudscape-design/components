@@ -195,7 +195,6 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
     );
 
     test(
-      //flagged
       'Removes tooltip from drawer trigger on escape key press after showing from keyboard event',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -257,7 +256,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
     );
 
     testIf(theme === 'visual-refresh-toolbar')(
-      'Shows tooltip correctly on plit panel trigger for mouse interactions during split-panel actions',
+      'Shows tooltip correctly on split panel trigger for mouse interactions during split-panel actions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         await expect(page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)).resolves.toBeTruthy();
