@@ -100,16 +100,19 @@ function TriggerButton(
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-        // if (tooltipValue === 'Security') debugger;
+
         if (isForPreviousActiveDrawer) {
-          if (isFromAnotherTrigger) {
+          //needed for safari which doesn't read the relatedTarget when drawer closed via
+          //drawer close button
+          if (
+            isFromAnotherTrigger ||
+            selected //neccessary in VR mode because tab navigation from close to 1st trigger button
+          ) {
             return true;
           }
-          //button will only be selected if drawer still open and user trying to navigate from key from drawer close to first trigger element
-          return selected;
+          return false;
         }
-
-        return !isFromDrawer || isFromAnotherTrigger;
+        return !isFromDrawer; //for keyed navigation inside the toolbar
       };
 
       setSupressTooltip(!shouldShowTooltip());
