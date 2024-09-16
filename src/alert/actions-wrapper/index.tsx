@@ -41,14 +41,14 @@ interface ActionsWrapperProps {
   onButtonClick: InternalButtonProps['onClick'];
 }
 
-export function ActionsWrapper({
+export const ActionsWrapper = ({
   className,
   testUtilClasses,
   action,
   discoveredActions,
   buttonText,
   onButtonClick,
-}: ActionsWrapperProps) {
+}: ActionsWrapperProps) => {
   const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
   if (!actionButton && discoveredActions.length === 0) {
     return null;
@@ -60,4 +60,4 @@ export function ActionsWrapper({
       {discoveredActions}
     </div>
   );
-}
+};
