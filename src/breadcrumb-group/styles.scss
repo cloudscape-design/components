@@ -13,6 +13,11 @@
   padding-block: awsui.$space-xxs;
   padding-inline: 0;
 
+  > .item {
+    @include styles.styles-reset;
+    display: inline;
+  }
+
   > .breadcrumb-group-list {
     display: flex;
     align-items: center;
@@ -22,13 +27,7 @@
     margin-inline: 0;
     list-style: none;
     inline-size: 100%;
-    flex-wrap: nowrap;
-
-    &.ghost {
-      flex-wrap: wrap;
-      position: absolute;
-      inset-inline-start: -9000px;
-    }
+    flex-wrap: wrap;
 
     > .item,
     > .ellipsis {
@@ -39,22 +38,43 @@
       margin-inline: 0;
     }
 
-    > .item.hide {
-      display: none;
-    }
-
     > .ellipsis {
       display: none;
-
-      &.visible {
-        display: flex;
-        flex-shrink: 0;
-      }
 
       > .icon {
         margin-block: 0;
         margin-inline: styles.$base-size;
         color: awsui.$color-text-breadcrumb-icon;
+      }
+    }
+  }
+
+  // In the smallest screen, breadcrumbs truncate into
+  // BC1 > ... > BCL
+  // and we apply ellipsis if the breadcrumb items are too long
+  &.mobile {
+    > .breadcrumb-group-list {
+      flex-wrap: nowrap;
+
+      > .ellipsis {
+        display: flex;
+        flex-shrink: 0;
+      }
+      > .item {
+        min-inline-size: 0;
+        &:not(:first-child):not(:last-child) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  // Test utils rely on the ellipsis being present even if there are
+  // only 2 items in the list, so we display but hide it.
+  &.mobile-short {
+    > .breadcrumb-group-list {
+      > .ellipsis {
+        display: none;
       }
     }
   }
