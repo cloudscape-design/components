@@ -94,10 +94,28 @@ function TriggerButton(
       const eventWithRelatedTarget = event as any;
 
       const shouldSupressTooltip = () => {
-        const isFromDrawer =
+        const isFromDrawerCloseButton =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
+
+        if (selected && isForPreviousActiveDrawer && !isFromDrawerCloseButton) {
+          const resizeButtonWrapper = document.querySelector('div[data-shift-focus="drawer-resize-button-handle"]');
+          if (
+            resizeButtonWrapper &&
+            eventWithRelatedTarget?.relatedTarget &&
+            resizeButtonWrapper.contains(eventWithRelatedTarget.relatedTarget)
+          ) {
+            //focus will be on the close or resize upon opening drawer via trigger
+            //and will still remain on sumsequent close
+            return false;
+          }
+        } else if (!selected && isForPreviousActiveDrawer) {
+          if (isFromDrawerCloseButton) {
+            //for tab being returned to toggle button from clicking the close button
+            return false;
+          }
+        }
         if (
           isFromAnotherTrigger || //for keyed navigation
           !isForPreviousActiveDrawer //this is true when the last activeId was this drawer
@@ -109,7 +127,7 @@ function TriggerButton(
           ) {
             return true;
           }
-          if (isFromDrawer) {
+          if (isFromDrawerCloseButton) {
             //exception made for click from close drawer button
             return false;
           }
