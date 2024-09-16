@@ -85,12 +85,14 @@ const FilteringToken = forwardRef(
     ref: React.Ref<FilteringTokenRef>
   ) => {
     const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-    const onFocusMoved = () => setNextFocusIndex(null);
     const tokenListRef = useListFocusController({
       nextFocusIndex,
-      onFocusMoved,
+      onFocusMoved: target => {
+        target.focus();
+        setNextFocusIndex(null);
+      },
       listItemSelector: `.${styles['inner-root']}`,
-      outsideSelector: `.${styles.root}`,
+      fallbackSelector: `.${styles.root}`,
     });
 
     const popoverRef = useRef<InternalPopoverRef>(null);
