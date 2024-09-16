@@ -91,6 +91,10 @@
     inline-size: var(#{custom-props.$navigationWidth});
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   }
+
+  @include mobile-only {
+    z-index: constants.$drawer-z-index-mobile;
+  }
 }
 
 .tools {
