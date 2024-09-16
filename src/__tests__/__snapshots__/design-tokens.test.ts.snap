@@ -14904,8 +14904,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -14933,14 +14933,14 @@ Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-default": Object {
           "$description": "The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-focused": Object {
@@ -15926,8 +15926,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -16171,7 +16171,7 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
+            "dark": "#8c8c94",
             "light": "#656871",
           },
         },
@@ -16179,7 +16179,7 @@ Object {
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-active": Object {
@@ -16199,8 +16199,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -16227,8 +16227,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -17311,8 +17311,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -18333,8 +18333,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -18578,8 +18578,8 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-breadcrumb-icon": Object {
@@ -18606,8 +18606,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -18634,8 +18634,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -19718,8 +19718,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -19747,14 +19747,14 @@ Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-default": Object {
           "$description": "The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-focused": Object {
@@ -20740,8 +20740,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -20985,7 +20985,7 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
+            "dark": "#8c8c94",
             "light": "#656871",
           },
         },
@@ -20993,7 +20993,7 @@ Object {
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-active": Object {
@@ -21013,8 +21013,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -21041,8 +21041,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -22125,8 +22125,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -22154,14 +22154,14 @@ Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-default": Object {
           "$description": "The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-focused": Object {
@@ -23147,8 +23147,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -23392,7 +23392,7 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
+            "dark": "#8c8c94",
             "light": "#656871",
           },
         },
@@ -23400,7 +23400,7 @@ Object {
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-active": Object {
@@ -23420,8 +23420,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -23448,8 +23448,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -24532,8 +24532,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -24561,14 +24561,14 @@ Object {
           "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-default": Object {
           "$description": "The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-border-input-focused": Object {
@@ -25554,8 +25554,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -25799,7 +25799,7 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
+            "dark": "#8c8c94",
             "light": "#656871",
           },
         },
@@ -25807,7 +25807,7 @@ Object {
           "$description": "The color used for the icon delimiter between breadcrumb items.",
           "$value": Object {
             "dark": "#656871",
-            "light": "#8d8d95",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-active": Object {
@@ -25827,8 +25827,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -25855,8 +25855,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -26939,8 +26939,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -27961,8 +27961,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -28206,8 +28206,8 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-breadcrumb-icon": Object {
@@ -28234,8 +28234,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -28262,8 +28262,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -29346,8 +29346,8 @@ Object {
         "color-border-control-default": Object {
           "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-border-divider-default": Object {
@@ -30368,8 +30368,8 @@ Object {
         "color-charts-status-neutral": Object {
           "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-charts-status-positive": Object {
@@ -30613,8 +30613,8 @@ Object {
         "color-text-breadcrumb-current": Object {
           "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-breadcrumb-icon": Object {
@@ -30641,8 +30641,8 @@ Object {
         "color-text-button-normal-disabled": Object {
           "$description": "The text color of normal buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-normal-hover": Object {
@@ -30669,8 +30669,8 @@ Object {
         "color-text-button-primary-disabled": Object {
           "$description": "The text color of primary buttons in disabled state.",
           "$value": Object {
-            "dark": "#8d8d95",
-            "light": "#8d8d95",
+            "dark": "#8c8c94",
+            "light": "#8c8c94",
           },
         },
         "color-text-button-primary-hover": Object {
@@ -31753,8 +31753,8 @@ Object {
     "color-border-control-default": Object {
       "$description": "The default border color of form controls. For example: radio buttons and checkboxes.",
       "$value": Object {
-        "dark": "#8d8d95",
-        "light": "#8d8d95",
+        "dark": "#8c8c94",
+        "light": "#8c8c94",
       },
     },
     "color-border-divider-default": Object {
@@ -31782,14 +31782,14 @@ Object {
       "$description": "The border color of dropdown items on hover. For example: border of hovered items in select, multiselect, autosuggest, and hovered days in datepicker.",
       "$value": Object {
         "dark": "#656871",
-        "light": "#8d8d95",
+        "light": "#8c8c94",
       },
     },
     "color-border-input-default": Object {
       "$description": "The default border color of form inputs. For example: input, textarea, autosuggest, datepicker, select, and multiselect.",
       "$value": Object {
         "dark": "#656871",
-        "light": "#8d8d95",
+        "light": "#8c8c94",
       },
     },
     "color-border-input-focused": Object {
@@ -32775,8 +32775,8 @@ Object {
     "color-charts-status-neutral": Object {
       "$description": "Color to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: \\"Pending\\" or \\"Sev-5\\"",
       "$value": Object {
-        "dark": "#8d8d95",
-        "light": "#8d8d95",
+        "dark": "#8c8c94",
+        "light": "#8c8c94",
       },
     },
     "color-charts-status-positive": Object {
@@ -33020,7 +33020,7 @@ Object {
     "color-text-breadcrumb-current": Object {
       "$description": "The text color that marks the breadcrumb item for the page the user is currently viewing.",
       "$value": Object {
-        "dark": "#8d8d95",
+        "dark": "#8c8c94",
         "light": "#656871",
       },
     },
@@ -33028,7 +33028,7 @@ Object {
       "$description": "The color used for the icon delimiter between breadcrumb items.",
       "$value": Object {
         "dark": "#656871",
-        "light": "#8d8d95",
+        "light": "#8c8c94",
       },
     },
     "color-text-button-normal-active": Object {
@@ -33048,8 +33048,8 @@ Object {
     "color-text-button-normal-disabled": Object {
       "$description": "The text color of normal buttons in disabled state.",
       "$value": Object {
-        "dark": "#8d8d95",
-        "light": "#8d8d95",
+        "dark": "#8c8c94",
+        "light": "#8c8c94",
       },
     },
     "color-text-button-normal-hover": Object {
@@ -33076,8 +33076,8 @@ Object {
     "color-text-button-primary-disabled": Object {
       "$description": "The text color of primary buttons in disabled state.",
       "$value": Object {
-        "dark": "#8d8d95",
-        "light": "#8d8d95",
+        "dark": "#8c8c94",
+        "light": "#8c8c94",
       },
     },
     "color-text-button-primary-hover": Object {
