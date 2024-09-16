@@ -15,7 +15,6 @@ export const tokens: StyleDictionary.ColorPaletteDictionary = {
   colorBlue700: '#004a9e',
   colorBlue800: '#002b66',
   colorBlue900: '#001129',
-  colorBlueOpaque: 'rgba(51, 136, 221, 0.5)',
   colorGreen100: '#effff1',
   colorGreen500: '#2bb534',
   colorGreen600: '#00802f',

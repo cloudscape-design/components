@@ -13,7 +13,6 @@ export type ColorPaletteTokenName =
   | 'colorBlue700'
   | 'colorBlue800'
   | 'colorBlue900'
-  | 'colorBlueOpaque'
   | 'colorGreen100'
   | 'colorGreen500'
   | 'colorGreen600'
