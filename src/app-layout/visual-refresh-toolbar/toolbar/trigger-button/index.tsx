@@ -115,12 +115,12 @@ function TriggerButton(
 
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
-        const isFromDrawer =
-          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
 
-        if (isForPreviousActiveDrawer) {
+        if (!isForPreviousActiveDrawer) {
+          return true; //for keyed navigation inside the toolbar
+        } else {
           //needed for safari which doesn't read the relatedTarget when drawer closed via
           //drawer close button
           if (isFromAnotherTrigger) {
@@ -128,9 +128,6 @@ function TriggerButton(
           }
           return false;
         }
-        //this is for key navigation from breadcrumb to show split panel trigger button
-        //or other keyed navigation withint he toolbar
-        return !isFromDrawer;
       };
 
       setSupressTooltip(!shouldShowTooltip());

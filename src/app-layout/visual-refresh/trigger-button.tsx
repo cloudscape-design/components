@@ -93,25 +93,28 @@ function TriggerButton(
     (event: FocusEvent) => {
       const eventWithRelatedTarget = event as any;
 
-      // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
         const isFromDrawer =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-
-        if (isForPreviousActiveDrawer) {
-          //needed for safari which doesn't read the relatedTarget when drawer closed via
-          //drawer close button
+        if (isFromAnotherTrigger) {
+          return true;
+        } else if (!isForPreviousActiveDrawer) {
+          return true; //for keyed navigation inside the toolbar
+        } else {
           if (
-            isFromAnotherTrigger ||
-            selected //neccessary in VR mode because tab navigation from close to 1st trigger button
+            selected //neccessary in VR mode because tab navigation from drawer close to 1st trigger button
           ) {
             return true;
           }
-          return false;
+          if (isFromDrawer) {
+            //exception made for click from close drawer button
+            return false;
+          }
+          //for keyed navigation inside and outside the toolbar
+          return true;
         }
-        return !isFromDrawer; //for keyed navigation inside the toolbar
       };
 
       setSupressTooltip(!shouldShowTooltip());
