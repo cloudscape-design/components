@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -18,7 +18,7 @@ import { PACKAGE_VERSION } from '../internal/environment';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
-import { createUseDiscoveredAction } from '../internal/plugins/helpers';
+import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { throttle } from '../internal/utils/throttle';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
@@ -38,6 +38,7 @@ const ICON_TYPES = {
 } as const;
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.flashbar.onActionRegistered);
+const useDiscoveredContent = createUseDiscoveredContent('flash', awsuiPluginsInternal.flashContent.onContentRegistered);
 
 function dismissButton(
   dismissLabel: FlashbarProps.MessageDefinition['dismissLabel'],
@@ -118,7 +119,21 @@ export const Flash = React.forwardRef(
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
     const mergedRef = useMergeRefs(ref, elementRef);
-    const { discoveredActions, headerRef, contentRef } = useDiscoveredAction(type);
+
+    const headerRefObject = useRef<HTMLDivElement>(null);
+    const contentRefObject = useRef<HTMLDivElement>(null);
+    const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
+    const {
+      headerReplacementType,
+      contentReplacementType,
+      headerRef: headerRefContent,
+      contentRef: contentRefContent,
+      replacementHeaderRef,
+      replacementContentRef,
+    } = useDiscoveredContent({ type, header, children: content });
+
+    const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
+    const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
 
     const iconType = ICON_TYPES[type];
 
@@ -173,12 +188,32 @@ export const Flash = React.forwardRef(
               {icon}
             </div>
             <div className={clsx(styles['flash-message'], styles['flash-text'])}>
-              <div className={clsx(styles['flash-header'], analyticsSelectors['flash-header'])} ref={headerRef}>
+              <div
+                className={clsx(
+                  styles['flash-header'],
+                  headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
+                )}
+                ref={headerRef}
+              >
                 {header}
               </div>
-              <div className={styles['flash-content']} ref={contentRef}>
+              <div
+                className={clsx(styles['header-replacement'], headerReplacementType !== 'replaced' && styles.hidden)}
+                ref={replacementHeaderRef}
+              ></div>
+              <div
+                className={clsx(
+                  styles['flash-content'],
+                  contentReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
+                )}
+                ref={contentRef}
+              >
                 {content}
               </div>
+              <div
+                className={clsx(styles['content-replacement'], contentReplacementType !== 'replaced' && styles.hidden)}
+                ref={replacementContentRef}
+              ></div>
             </div>
           </div>
           <ActionsWrapper
@@ -194,7 +229,7 @@ export const Flash = React.forwardRef(
           />
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        {ariaRole === 'status' && <LiveRegion source={[statusIconAriaLabel, headerRef, contentRef]} />}
+        {ariaRole === 'status' && <LiveRegion source={[statusIconAriaLabel, headerRefObject, contentRefObject]} />}
       </div>
     );
   }
