@@ -16,17 +16,22 @@ const defaultProps = {
 interface RenderResult {
   wrapper: TagEditorWrapper;
   onChangeSpy: jest.Mock;
+  onChangeDiffSpy: jest.Mock;
   rerender: any;
 }
 
 function renderTagEditor(props: Partial<TagEditorProps> = {}): RenderResult {
   const onChangeSpy = jest.fn();
-  const { container, rerender } = render(<TagEditor onChange={onChangeSpy} {...defaultProps} {...props} />);
+  const onChangeDiffSpy = jest.fn();
+  const { container, rerender } = render(
+    <TagEditor onChange={onChangeSpy} onChangeDiff={onChangeDiffSpy} {...defaultProps} {...props} />
+  );
   const wrapper = createWrapper(container).findTagEditor()!;
 
   return {
     wrapper,
     onChangeSpy,
+    onChangeDiffSpy,
     rerender: (props: Partial<TagEditorProps>) =>
       rerender(<TagEditor onChange={onChangeSpy} {...defaultProps} {...props} />),
   };
@@ -91,6 +96,102 @@ describe('Tag Editor component', () => {
           },
         })
       );
+    });
+  });
+
+  describe('onChangeDiff', () => {
+    test('returns newly created tags', () => {
+      const initialTags = [{ key: '123', value: '456', existing: true }];
+      const { wrapper, onChangeDiffSpy } = renderTagEditor({
+        initialTags,
+        tags: [
+          { key: '123', value: '456', existing: true },
+          { key: '234', value: '456', existing: false },
+        ],
+      });
+      // Trigger revalidation and update
+      wrapper.findRow(2)!.findField(1)!.findControl()!.findAutosuggest()!.focus();
+      wrapper.findRow(2)!.findField(1)!.findControl()!.findAutosuggest()!.blur();
+      expect(onChangeDiffSpy).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          detail: {
+            created: [{ key: '234', value: '456', existing: false }],
+            updated: [],
+            removed: [],
+          },
+        })
+      );
+    });
+
+    test('returns updated existing tags', () => {
+      const initialTags = [{ key: '123', value: '456', existing: true }];
+      const { wrapper, onChangeDiffSpy } = renderTagEditor({
+        initialTags,
+        tags: [{ key: '123', value: '567', existing: true }],
+      });
+      // Trigger revalidation and update
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.focus();
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.blur();
+      expect(onChangeDiffSpy).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          detail: {
+            created: [],
+            updated: [{ key: '123', value: '567', existing: true }],
+            removed: [],
+          },
+        })
+      );
+    });
+
+    test('returns deleted existing tags', () => {
+      const initialTags = [{ key: '123', value: '456', existing: true }];
+      const { wrapper, onChangeDiffSpy } = renderTagEditor({
+        initialTags,
+        tags: [
+          { key: '123', value: '456', existing: true, markedForRemoval: true },
+          { key: '234', value: '567', existing: false },
+        ],
+      });
+      // Trigger revalidation and update
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.focus();
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.blur();
+      expect(onChangeDiffSpy).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          detail: {
+            created: [{ key: '234', value: '567', existing: false }],
+            updated: [],
+            removed: [{ key: '123', value: '456', existing: true, markedForRemoval: true }],
+          },
+        })
+      );
+    });
+
+    test('not called if the changes are invalid', () => {
+      const initialTags = [{ key: '123', value: '456', existing: true }];
+      const { wrapper, onChangeDiffSpy } = renderTagEditor({
+        initialTags,
+        tags: [
+          { key: '123', value: '456', existing: true, markedForRemoval: true },
+          { key: '$$234', value: '567', existing: false },
+        ],
+      });
+      // Trigger revalidation and update
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.focus();
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.blur();
+      expect(onChangeDiffSpy).not.toHaveBeenCalled();
+    });
+
+    test("not called if initialTags isn't provided", () => {
+      const { wrapper, onChangeDiffSpy } = renderTagEditor({
+        tags: [
+          { key: '123', value: '456', existing: true, markedForRemoval: true },
+          { key: '234', value: '567', existing: false },
+        ],
+      });
+      // Trigger revalidation and update
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.focus();
+      wrapper.findRow(1)!.findField(1)!.findControl()!.findAutosuggest()!.blur();
+      expect(onChangeDiffSpy).not.toHaveBeenCalled();
     });
   });
 

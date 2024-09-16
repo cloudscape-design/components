@@ -15558,7 +15558,9 @@ Object {
       "cancelable": false,
       "description": "Called when any tag operation occurs.
 The event \`detail\` object contains the full updated state of \`tags\`,
-and whether the component is in a \`valid\` state.",
+and whether the component is in a \`valid\` state.
+Use this event handler to track the UI state of the component only.
+",
       "detailInlineType": Object {
         "name": "TagEditorProps.ChangeDetail",
         "properties": Array [
@@ -15577,6 +15579,37 @@ and whether the component is in a \`valid\` state.",
       },
       "detailType": "TagEditorProps.ChangeDetail",
       "name": "onChange",
+    },
+    Object {
+      "cancelable": false,
+      "description": "Called when any valid tag operation occurs if the initialTags property is provided.
+The event \`detail\` object contains the newly \`created\` tags, the \`updated\` tags and the
+\`removed\` tags relative to the \`initialTags\` property.
+Use this event handler to track the state that should be submitted to the backend.
+",
+      "detailInlineType": Object {
+        "name": "TagEditorProps.ChangeDiffDetail",
+        "properties": Array [
+          Object {
+            "name": "created",
+            "optional": false,
+            "type": "ReadonlyArray<TagEditorProps.Tag>",
+          },
+          Object {
+            "name": "removed",
+            "optional": false,
+            "type": "ReadonlyArray<TagEditorProps.Tag>",
+          },
+          Object {
+            "name": "updated",
+            "optional": false,
+            "type": "ReadonlyArray<TagEditorProps.Tag>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "TagEditorProps.ChangeDiffDetail",
+      "name": "onChangeDiff",
     },
   ],
   "functions": Array [
@@ -15800,6 +15833,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    Object {
+      "description": "Specifies the initial tags to compare the current state against when the onChangeDiff event is called.",
+      "name": "initialTags",
+      "optional": true,
+      "type": "ReadonlyArray<TagEditorProps.Tag>",
     },
     Object {
       "description": "Specifies a function that returns all the keys for a resource.

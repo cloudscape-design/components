@@ -20,6 +20,11 @@ export interface TagEditorProps extends BaseComponentProps {
   tags?: ReadonlyArray<TagEditorProps.Tag>;
 
   /**
+   * Specifies the initial tags to compare the current state against when the onChangeDiff event is called.
+   */
+  initialTags?: ReadonlyArray<TagEditorProps.Tag>;
+
+  /**
    * An object containing all the necessary localized strings required by the component.
    * @i18n
    */
@@ -61,8 +66,19 @@ export interface TagEditorProps extends BaseComponentProps {
    * Called when any tag operation occurs.
    * The event `detail` object contains the full updated state of `tags`,
    * and whether the component is in a `valid` state.
+   *
+   * Use this event handler to track the UI state of the component only.
    */
   onChange?: NonCancelableEventHandler<TagEditorProps.ChangeDetail>;
+
+  /**
+   * Called when any valid tag operation occurs if the initialTags property is provided.
+   * The event `detail` object contains the newly `created` tags, the `updated` tags and the
+   * `removed` tags relative to the `initialTags` property.
+   *
+   * Use this event handler to track the state that should be submitted to the backend.
+   */
+  onChangeDiff?: NonCancelableEventHandler<TagEditorProps.ChangeDiffDetail>;
 }
 
 export namespace TagEditorProps {
@@ -134,6 +150,12 @@ export namespace TagEditorProps {
   export interface ChangeDetail {
     tags: ReadonlyArray<TagEditorProps.Tag>;
     valid: boolean;
+  }
+
+  export interface ChangeDiffDetail {
+    created: ReadonlyArray<TagEditorProps.Tag>;
+    updated: ReadonlyArray<TagEditorProps.Tag>;
+    removed: ReadonlyArray<TagEditorProps.Tag>;
   }
 
   export interface Ref {

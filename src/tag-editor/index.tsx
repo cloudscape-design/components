@@ -38,6 +38,7 @@ const TagEditor = React.forwardRef(
   (
     {
       tags = [],
+      initialTags,
       i18nStrings,
       loading = false,
       tagLimit = 50,
@@ -45,6 +46,7 @@ const TagEditor = React.forwardRef(
       keysRequest,
       valuesRequest,
       onChange,
+      onChangeDiff,
       ...restProps
     }: TagEditorProps,
     ref: React.Ref<TagEditorProps.Ref>
@@ -101,18 +103,27 @@ const TagEditor = React.forwardRef(
 
     const validateAndFire = useCallback(
       (newTags: ReadonlyArray<TagEditorProps.Tag>) => {
-        fireNonCancelableEvent(onChange, {
-          tags: newTags,
-          valid: !validate(
-            newTags,
-            keyDirtyStateRef.current,
-            i18n,
-            i18nStrings,
-            allowedCharacterPattern ? new RegExp(allowedCharacterPattern) : undefined
-          ).some(error => error),
-        });
+        const valid = !validate(
+          newTags,
+          keyDirtyStateRef.current,
+          i18n,
+          i18nStrings,
+          allowedCharacterPattern ? new RegExp(allowedCharacterPattern) : undefined
+        ).some(error => !!error);
+
+        fireNonCancelableEvent(onChange, { tags: newTags, valid });
+
+        if (valid && initialTags) {
+          fireNonCancelableEvent(onChangeDiff, {
+            created: newTags.filter(tag => !tag.existing),
+            removed: newTags.filter(tag => tag.existing && tag.markedForRemoval),
+            updated: newTags.filter(tag =>
+              initialTags.some(({ key, value }) => tag.key === key && tag.existing && tag.value !== value)
+            ),
+          });
+        }
       },
-      [onChange, i18n, i18nStrings, allowedCharacterPattern]
+      [onChange, onChangeDiff, initialTags, i18n, i18nStrings, allowedCharacterPattern]
     );
 
     const onAddButtonClick = () => {
