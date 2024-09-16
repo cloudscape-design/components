@@ -46,15 +46,15 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    */
   countText?: string;
   /**
-   * An object representing the current query displayed in the property filter. Has two properties: `tokens` and `operation`.
-   * `tokens` is an array of objects that will be displayed to the user beneath the filtering input.
-   * Each token has the following properties:
+   * An object representing the current query displayed in the property filter. Has three properties: `operation`, `tokens`, and `tokenGroups`.
+   * The `operation` has two valid values: "and", "or", and controls the join operation to be applied between tokens when filtering the items.
+   * The `tokens` is an array of objects that will be displayed to the user beneath the filtering input. When `enableTokenGroups=true`, the
+   * `tokenGroups` property is populated instead, which supports nested tokens.
    *
+   * Each token has the following properties:
    * * value [string]: The string value of the token to be used as a filter.
    * * propertyKey [string]: The key of the corresponding property in filteringProperties.
    * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
-   *
-   * `operation` has two valid values [and, or] and controls the join operation to be applied between tokens when filtering the items.
    */
   query: PropertyFilterProps.Query;
   /**
