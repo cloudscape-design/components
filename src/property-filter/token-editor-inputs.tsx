@@ -124,7 +124,7 @@ interface ValueInputProps {
   i18nStrings: I18nStringsInternal;
   onChangeValue: (value: string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  operator: undefined | ComparisonOperator;
+  operator: ComparisonOperator;
   property: null | InternalFilteringProperty;
   value: undefined | string;
 }
@@ -151,11 +151,7 @@ export function ValueInput({
     : { empty: asyncProps.empty };
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
-  const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
-
-  return OperatorForm ? (
-    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
-  ) : (
+  return (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={matchedOption?.label ?? value ?? ''}

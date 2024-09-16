@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 
 import InternalButton from '../button/internal';
 import InternalFormField from '../form-field/internal';
+import InternalSpaceBetween from '../space-between/internal';
 import { I18nStringsInternal } from './i18n-utils';
 import { ComparisonOperator, ExtendedOperatorForm, InternalFilteringProperty, InternalToken } from './interfaces';
 
@@ -31,11 +32,17 @@ export function PropertyEditor<TokenValue = any>({
 }: PropertyEditorProps<TokenValue>) {
   const [value, onChange] = useState<null | TokenValue>(null);
   const submitToken = () => onSubmit({ property, operator, value });
+  const form = operatorForm({ value, onChange, operator, filter });
+  const formMain = form && typeof form === 'object' && 'main' in form ? form.main : form;
+  const formSecondary = form && typeof form === 'object' && form && 'secondary' in form ? form.secondary : null;
   return (
     <div className={styles['property-editor']}>
       <div className={styles['property-editor-form']}>
         <InternalFormField label={property.groupValuesLabel}>
-          {operatorForm({ value, onChange, operator, filter })}
+          <InternalSpaceBetween size="m">
+            {formMain}
+            {formSecondary}
+          </InternalSpaceBetween>
         </InternalFormField>
       </div>
 

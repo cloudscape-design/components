@@ -90,37 +90,38 @@ export function DateTimeForm({
     onChange: event => onChangeTime(event.detail.value),
   };
 
-  return (
-    <div className={styles['date-time-form']}>
-      {typeof filter === 'undefined' && !legacy ? (
-        <>
-          <FormField description="Date">
-            <DatePicker placeholder="YYYY/MM/DD" {...calendarProps} />
-          </FormField>
+  if (typeof filter === 'undefined' && !legacy) {
+    return (
+      <div className={styles['date-time-form']}>
+        <FormField description="Date">
+          <DatePicker placeholder="YYYY/MM/DD" {...calendarProps} />
+        </FormField>
 
-          <FormField description="Time">
-            <TimeInput {...timeInputProps} />
-          </FormField>
-        </>
-      ) : (
-        <>
-          <FormField description="Date">
-            <DateInput placeholder="YYYY/MM/DD" {...calendarProps} />
-          </FormField>
+        <FormField description="Time">
+          <TimeInput {...timeInputProps} />
+        </FormField>
+      </div>
+    );
+  }
 
-          <FormField description="Time">
-            <TimeInput {...timeInputProps} />
-          </FormField>
+  return {
+    main: (
+      <div className={styles['date-time-form']}>
+        <FormField description="Date">
+          <DateInput placeholder="YYYY/MM/DD" {...calendarProps} />
+        </FormField>
 
-          <Calendar {...calendarProps} />
-        </>
-      )}
-    </div>
-  );
+        <FormField description="Time">
+          <TimeInput {...timeInputProps} />
+        </FormField>
+      </div>
+    ),
+    secondary: <Calendar {...calendarProps} />,
+  };
 }
 
 export function DateTimeFormLegacy(props: ExtendedOperatorFormProps<string>) {
-  return <DateTimeForm {...props} legacy={true} />;
+  return DateTimeForm({ ...props, legacy: true });
 }
 
 export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {

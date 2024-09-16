@@ -156,18 +156,32 @@ export function TokenEditor({
             triggerVariant={supportsGroups ? 'label' : 'option'}
           />
         )}
-        renderValue={index => (
-          <ValueInput
-            property={groups[index].property}
-            operator={groups[index].operator}
-            value={groups[index].value}
-            onChangeValue={groups[index].onChangeValue}
-            asyncProps={asyncProps}
-            filteringOptions={filteringOptions}
-            onLoadItems={onLoadItems}
-            i18nStrings={i18nStrings}
-          />
-        )}
+        renderValue={index => {
+          const { property, operator, value, onChangeValue } = groups[index];
+          const renderForm = (property?.propertyKey && operator && property?.getValueFormRenderer(operator)) || null;
+          const form = renderForm?.({ value, onChange: onChangeValue, operator });
+          if (form) {
+            return {
+              main: form && typeof form === 'object' && 'main' in form ? form.main : form,
+              secondary: form && typeof form === 'object' && 'secondary' in form ? form.secondary : form,
+            };
+          }
+          return {
+            main: (
+              <ValueInput
+                property={property}
+                operator={operator}
+                value={value}
+                onChangeValue={onChangeValue}
+                asyncProps={asyncProps}
+                filteringOptions={filteringOptions}
+                onLoadItems={onLoadItems}
+                i18nStrings={i18nStrings}
+              />
+            ),
+            secondary: null,
+          };
+        }}
         i18nStrings={i18nStrings}
       />
 
@@ -245,7 +259,10 @@ interface TokenEditorLayout {
   onSubmit: () => void;
   renderProperty: (index: number) => React.ReactNode;
   renderOperator: (index: number) => React.ReactNode;
-  renderValue: (index: number) => React.ReactNode;
+  renderValue: (index: number) => {
+    main: React.ReactNode;
+    secondary: React.ReactNode;
+  };
   i18nStrings: I18nStringsInternal;
 }
 
@@ -295,80 +312,102 @@ function TokenEditorFields({
     >
       {!isNarrow && headers}
 
-      {tokens.map((token, index) => (
-        <div
-          key={index}
-          role="group"
-          aria-label={i18nStrings.formatToken(token).formattedText}
-          className={clsx(styles['token-editor-grid-group'], supportsGroups && styles['token-editor-supports-groups'])}
-        >
-          <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
-            <TokenEditorField
-              isNarrow={isNarrow}
-              label={i18nStrings.propertyText}
-              labelId={propertyLabelId}
-              className={clsx(styles['token-editor-field-property'], testUtilStyles['token-editor-field-property'])}
-              index={index}
-            >
-              {renderProperty(index)}
-            </TokenEditorField>
-          </div>
-
-          <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
-            <TokenEditorField
-              isNarrow={isNarrow}
-              label={i18nStrings.operatorText}
-              labelId={operatorLabelId}
-              className={clsx(styles['token-editor-field-operator'], testUtilStyles['token-editor-field-operator'])}
-              index={index}
-            >
-              {renderOperator(index)}
-            </TokenEditorField>
-          </div>
-
-          <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
-            <TokenEditorField
-              isNarrow={isNarrow}
-              label={i18nStrings.valueText}
-              labelId={valueLabelId}
-              className={clsx(styles['token-editor-field-value'], testUtilStyles['token-editor-field-value'])}
-              index={index}
-            >
-              {renderValue(index)}
-            </TokenEditorField>
-          </div>
-
-          {supportsGroups && (
+      {tokens.map((token, index) => {
+        const valueForm = renderValue(index);
+        return (
+          <div
+            key={index}
+            role="group"
+            aria-label={i18nStrings.formatToken(token).formattedText}
+            className={clsx(
+              styles['token-editor-grid-group'],
+              supportsGroups && styles['token-editor-supports-groups']
+            )}
+          >
             <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
-              <div className={styles['token-editor-remove-token']}>
-                <TokenEditorRemoveActions
-                  isNarrow={isNarrow}
-                  ariaLabel={i18nStrings.tokenEditorTokenActionsAriaLabel?.(token) ?? ''}
-                  mainActionAriaLabel={i18nStrings.tokenEditorTokenRemoveAriaLabel?.(token) ?? ''}
-                  disabled={tokens.length === 1}
-                  items={[
-                    {
-                      id: 'remove',
-                      text: i18nStrings.tokenEditorTokenRemoveLabel ?? '',
-                      disabled: token.standaloneIndex !== undefined,
-                    },
-                    { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
-                  ]}
-                  onItemClick={itemId => {
-                    switch (itemId) {
-                      case 'remove':
-                        return onRemove(index);
-                      case 'remove-from-group':
-                        return onRemoveFromGroup(index);
-                    }
-                  }}
-                  index={index}
-                />
-              </div>
+              <TokenEditorField
+                isNarrow={isNarrow}
+                label={i18nStrings.propertyText}
+                labelId={propertyLabelId}
+                className={clsx(styles['token-editor-field-property'], testUtilStyles['token-editor-field-property'])}
+                index={index}
+              >
+                {renderProperty(index)}
+              </TokenEditorField>
             </div>
-          )}
-        </div>
-      ))}
+
+            <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
+              <TokenEditorField
+                isNarrow={isNarrow}
+                label={i18nStrings.operatorText}
+                labelId={operatorLabelId}
+                className={clsx(styles['token-editor-field-operator'], testUtilStyles['token-editor-field-operator'])}
+                index={index}
+              >
+                {renderOperator(index)}
+              </TokenEditorField>
+            </div>
+
+            <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
+              <TokenEditorField
+                isNarrow={isNarrow}
+                label={i18nStrings.valueText}
+                labelId={valueLabelId}
+                className={clsx(styles['token-editor-field-value'], testUtilStyles['token-editor-field-value'])}
+                index={index}
+              >
+                {valueForm.main}
+              </TokenEditorField>
+            </div>
+
+            {supportsGroups && (
+              <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}>
+                <div className={styles['token-editor-remove-token']}>
+                  <TokenEditorRemoveActions
+                    isNarrow={isNarrow}
+                    ariaLabel={i18nStrings.tokenEditorTokenActionsAriaLabel?.(token) ?? ''}
+                    mainActionAriaLabel={i18nStrings.tokenEditorTokenRemoveAriaLabel?.(token) ?? ''}
+                    disabled={tokens.length === 1}
+                    items={[
+                      {
+                        id: 'remove',
+                        text: i18nStrings.tokenEditorTokenRemoveLabel ?? '',
+                        disabled: token.standaloneIndex !== undefined,
+                      },
+                      { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
+                    ]}
+                    onItemClick={itemId => {
+                      switch (itemId) {
+                        case 'remove':
+                          return onRemove(index);
+                        case 'remove-from-group':
+                          return onRemoveFromGroup(index);
+                      }
+                    }}
+                    index={index}
+                  />
+                </div>
+              </div>
+            )}
+
+            {valueForm.secondary && (
+              <>
+                <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])} />
+                <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])} />
+                <div
+                  className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])}
+                  style={{ justifyContent: 'flex-start' }}
+                >
+                  {valueForm.secondary}
+                </div>
+                {supportsGroups && (
+                  <div className={clsx(styles['token-editor-grid-cell'], isNarrow && styles['token-editor-narrow'])} />
+                )}
+              </>
+            )}
+          </div>
+        );
+      })}
     </form>
   );
 }
