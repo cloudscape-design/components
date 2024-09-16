@@ -32,7 +32,6 @@ export interface TriggerButtonProps {
   onClick: () => void;
   badge?: boolean;
   highContrastHeader?: boolean;
-
   /**
    * If the button is expected to have a tooltip. When false it will not set the event listeners
    *

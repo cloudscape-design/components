@@ -89,6 +89,11 @@ function TriggerButton(
     }
   }, [selected]);
 
+  const handleTriggerClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation(); // Stop the event from propagating to the badge icon
+    onClick(event);
+  };
+
   const handleBlur = (keepSupressed = false) => {
     setSupressTooltip(keepSupressed);
     setShowTooltip(false);
@@ -114,9 +119,7 @@ function TriggerButton(
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-        if (isFromDrawer && selected) {
-          return true;
-        }
+
         if (isForPreviousActiveDrawer) {
           //needed for safari which doesn't read the relatedTarget when drawer closed via
           //drawer close button
@@ -125,9 +128,9 @@ function TriggerButton(
           }
           return false;
         }
-        console.log('should show tooltip on focus outside return');
-        return !isFromDrawer; //this is for key navigation from breadcrumb to show split panel trigger button tooltip
-        // isFromAnotherTrigger //this is for all other keys
+        //this is for key navigation from breadcrumb to show split panel trigger button
+        //or other keyed navigation withint he toolbar
+        return !isFromDrawer;
       };
 
       setSupressTooltip(!shouldShowTooltip());
@@ -136,7 +139,6 @@ function TriggerButton(
     [
       // To assert reference equality check
       isForPreviousActiveDrawer,
-      selected,
     ]
   );
 
@@ -230,7 +232,7 @@ function TriggerButton(
           },
           className
         )}
-        onClick={onClick}
+        onClick={handleTriggerClick}
         ref={ref as Ref<HTMLButtonElement>}
         type="button"
         data-testid={testId}
