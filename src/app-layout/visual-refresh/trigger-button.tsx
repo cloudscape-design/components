@@ -93,11 +93,13 @@ function TriggerButton(
     (event: FocusEvent) => {
       const eventWithRelatedTarget = event as any;
 
-      const shouldShowTooltip = () => {
+      const shouldSupressTooltip = () => {
         const isFromDrawer =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
+        // const isFromClickInside = false;
+        // console.log({...eventWithRelatedTarget})
         if (isFromAnotherTrigger) {
           return true;
         } else if (!isForPreviousActiveDrawer) {
@@ -116,8 +118,7 @@ function TriggerButton(
           return true;
         }
       };
-
-      setSupressTooltip(!shouldShowTooltip());
+      setSupressTooltip(!shouldSupressTooltip());
       setShowTooltip(true);
     },
     [
@@ -127,7 +128,14 @@ function TriggerButton(
     ]
   );
 
-  const handleClick = (event: MouseEvent) => {
+  const handleWrapperClick = useCallback(() => {
+    setShowTooltip(false);
+    if (selected) {
+      setSupressTooltip(true);
+    }
+  }, [selected]);
+
+  const handleTriggerClick = (event: MouseEvent) => {
     event.stopPropagation();
     setSupressTooltip(true);
     onClick();
@@ -201,6 +209,7 @@ function TriggerButton(
         onBlur: () => handleBlur(true),
         onMouseLeave: () => handleBlur(false),
         onMouseEnter: () => handleMouseEnter(),
+        onClick: () => handleWrapperClick(),
       })}
       className={clsx(styles['trigger-wrapper'], {
         [styles['remove-high-contrast-header']]: !highContrastHeader,
@@ -219,7 +228,7 @@ function TriggerButton(
           iconName={iconName}
           iconSvg={iconSvg}
           badge={badge}
-          onClick={e => handleClick(e as any)}
+          onClick={e => handleTriggerClick(e as any)}
           variant="icon"
           __nativeAttributes={{
             'aria-haspopup': true,
@@ -246,7 +255,7 @@ function TriggerButton(
               },
               className
             )}
-            onClick={e => handleClick(e as any)}
+            onClick={e => handleTriggerClick(e as any)}
             ref={ref as Ref<HTMLButtonElement>}
             type="button"
             data-testid={testId}
