@@ -100,14 +100,13 @@ function TriggerButton(
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'last-opened-toolbar-trigger-button';
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-        if (isFromDrawer) {
-          if (isForPreviousActiveDrawer) {
-            return selected;
-          } else if (!selected) {
+        // if (tooltipValue === 'Security') debugger;
+        if (isForPreviousActiveDrawer) {
+          if (isFromAnotherTrigger) {
             return true;
           }
-        } else if (isFromAnotherTrigger) {
-          return true;
+          //button will only be selected if drawer still open and user trying to navigate from key from drawer close to first trigger element
+          return selected;
         }
 
         return !isFromDrawer || isFromAnotherTrigger;
