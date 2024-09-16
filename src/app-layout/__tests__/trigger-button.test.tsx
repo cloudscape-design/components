@@ -35,7 +35,6 @@ const mockProps = {
   isForPreviousActiveDrawer: false,
 };
 const mockHorizontalToolbarProps = {
-  hideTooltipOnFocus: false,
   hasOpenDrawer: false,
   isMobile: false,
 };
@@ -478,7 +477,6 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             {
               hasTooltip,
               isMobile,
-              hideTooltipOnFocus: true,
             },
             ref
           );
