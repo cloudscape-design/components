@@ -242,10 +242,9 @@ describe('Date picker calendar at month granularity', () => {
       const isDateEnabled = (date: Date) => date.getTime() > minDate;
       const wrapper = openDatePicker({ value: '2018-03', isDateEnabled });
       expect(findCalendarHeaderText(wrapper)).toBe('2018');
-      expect(
-        wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
-          .textContent
-      ).toBe('Mar');
+      expect(wrapper.findCalendar()!.findSelectedDate()?.find('[aria-hidden="true"]')?.getElement().textContent).toBe(
+        'Mar'
+      );
       expect(findFocusableDateText(wrapper)).toBeNull();
     });
 

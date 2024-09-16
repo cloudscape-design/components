@@ -34,7 +34,7 @@ function renderCalendar(props: CalendarProps = defaultProps) {
 
 function findCalendarWeekdays(wrapper: CalendarWrapper) {
   return wrapper
-    .findAll(`.${styles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
+    .findAll(`.${styles['calendar-date-header']} [aria-hidden="true"]`)
     .map(day => day.getElement().textContent!.trim());
 }
 
