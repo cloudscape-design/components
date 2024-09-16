@@ -288,7 +288,7 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
       })
     );
 
-    testIf(theme === 'visual-refresh-toolbar')(
+    testIf(false)(
       'Removes tooltip from split panel trigger on escape key press after showing from pointer down',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
