@@ -63,9 +63,9 @@ export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = B
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;
-  isTruncated?: boolean;
+  isDisplayed: boolean;
   isLast?: boolean;
-  isGhost?: boolean;
+  isCompressed?: boolean;
   onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
   onFollow?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
 }
@@ -75,5 +75,4 @@ export interface EllipsisDropdownProps {
   dropdownItems: ReadonlyArray<LinkItem>;
   onDropdownItemClick: CancelableEventHandler<{ id: string }>;
   onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
-  visible?: boolean;
 }

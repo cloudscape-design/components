@@ -112,8 +112,8 @@ describe('BreadcrumbGroup Component', () => {
     // Test for AWSUI-6738
     test('all the icons stay visible when changing the items', () => {
       const { container, rerender } = render(<BreadcrumbGroup items={items} />);
-      const wrapper = createWrapper(container).findBreadcrumbGroup()!;
-      const getIcons = () => wrapper.findAll(`.${itemStyles.breadcrumb} .${itemStyles.icon}`);
+      const wrapper = createWrapper(container).findBreadcrumbGroup(`.${styles['breadcrumb-group']}`)!;
+      const getIcons = () => wrapper.findAll(`.${itemStyles.icon}`);
       expect(getIcons()).toHaveLength(2);
       rerender(<BreadcrumbGroup items={items.slice(0, 2)} />);
       rerender(<BreadcrumbGroup items={[]} />);
@@ -141,7 +141,7 @@ describe('BreadcrumbGroup Component', () => {
         }}
       />
     );
-    const wrapper = createWrapper(container).findBreadcrumbGroup()!;
+    const wrapper = createWrapper(container).findBreadcrumbGroup(`.${styles['breadcrumb-group']}`)!;
     wrapper.findBreadcrumbLink(2)!.click();
     expect(onClick).toHaveBeenCalledWith(items[1]);
   });
@@ -196,39 +196,6 @@ describe('BreadcrumbGroup Component', () => {
       );
       const wrapper = createWrapper(container).findBreadcrumbGroup()!;
       expect(wrapper.findDropdown()?.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Custom show path');
-    });
-  });
-
-  describe('Ghost breadcrumb group', () => {
-    test('has aria-hidden property', () => {
-      const breadCrumbGroup = renderBreadcrumbGroup({ items: [] });
-      expect(breadCrumbGroup.find(`.${styles.ghost}`)?.getElement()).toHaveAttribute('aria-hidden', 'true');
-    });
-    test('has tab-index=-1', () => {
-      const breadCrumbGroup = renderBreadcrumbGroup({
-        items: [
-          {
-            text: 'Item 1',
-            href: '/#1',
-          },
-          {
-            text: 'Item 2',
-            href: '/#3',
-          },
-          {
-            text: 'Item 3',
-            href: '/#3',
-          },
-        ],
-      });
-      expect(breadCrumbGroup.find(`.${styles.ghost}`)?.getElement()).toHaveAttribute('tabindex', '-1');
-      const anchors = breadCrumbGroup
-        .find(`.${styles.ghost}`)!
-        .findAll('a')
-        .map(wrapper => wrapper.getElement());
-      anchors.forEach(anchor => {
-        expect(anchor).toHaveAttribute('tabindex', '-1');
-      });
     });
   });
 });
