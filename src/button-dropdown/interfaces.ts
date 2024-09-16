@@ -234,6 +234,7 @@ export interface ItemListProps extends HighlightProps {
   variant?: InternalButtonDropdownProps['variant'];
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
+  linkStyle?: boolean;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -252,6 +253,7 @@ export interface ItemProps {
   variant?: ItemListProps['variant'];
   position?: string;
   analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
+  linkStyle?: boolean;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {
@@ -284,10 +286,23 @@ export interface InternalButtonDropdownProps
   description?: string;
 
   /**
+   * Only show main action button as a regular, non-split button.
+   * That is needed so that button dropdown test utils wrapper can still be used.
+   */
+  showMainActionOnly?: boolean;
+
+  /**
    * Determines that the dropdown should preferably be aligned to the center of the trigger
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+
+  /**
+   * Determines whether simple items should be displayed with the link styles.
+   * Used in Breadcrumb group component for collapsed breadcrumbs
+   */
+  linkStyle?: boolean;
+
   analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
 }
 

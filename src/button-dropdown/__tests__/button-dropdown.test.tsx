@@ -6,6 +6,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
+import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -230,6 +231,20 @@ describe('with main action', () => {
 
     wrapper.openDropdown();
     expect(wrapper.findItems()).toHaveLength(1);
+  });
+
+  test('renders main action only', () => {
+    const onClick = jest.fn();
+    const renderResult = render(
+      <InternalButtonDropdown items={[]} mainAction={{ text: 'Main action', onClick }} showMainActionOnly={true} />
+    );
+    const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
+
+    expect(wrapper.findTriggerButton()).toBe(null);
+    expect(wrapper.findMainAction()).not.toBe(null);
+
+    wrapper.findMainAction()!.click();
+    expect(onClick).toHaveBeenCalledTimes(1);
   });
 
   test('main action onClick is triggered', () => {

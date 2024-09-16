@@ -168,6 +168,17 @@ const permutations = createPermutations<ItemProps>([
     onItemActivate: [() => {}],
     highlightItem: [() => {}],
   },
+  // with link style
+  {
+    item: [{ id: '1', text: 'Option' }],
+    disabled: [false],
+    highlighted: [false],
+    hasCategoryHeader: [false],
+    showDivider: [false],
+    onItemActivate: [() => {}],
+    highlightItem: [() => {}],
+    linkStyle: [true],
+  },
 ]);
 
 export default function () {

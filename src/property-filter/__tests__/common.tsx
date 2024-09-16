@@ -45,6 +45,7 @@ export const i18nStrings: I18nStrings = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
+  clearAriaLabel: 'clear',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 
   formatToken: token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
@@ -73,8 +74,14 @@ export const i18nStringsTokenGroups: I18nStringsTokenGroups = {
 };
 
 export const providedI18nStrings = {
+  autosuggest: {
+    enteredTextLabel: 'Use: "{value}"',
+  },
+  popover: {
+    dismissAriaLabel: 'Dismiss',
+  },
   'property-filter': {
-    'i18nStrings.editTokenHeader': 'Edit token',
+    'i18nStrings.editTokenHeader': 'Edit filter',
     'i18nStrings.propertyText': 'Property',
     'i18nStrings.operatorText': 'Operator',
     'i18nStrings.valueText': 'Value',

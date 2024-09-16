@@ -4,8 +4,9 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { getUrlParams, testIf, Theme } from './utils';
 
-describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   describe.each([[true], [false]])('iframe=%s', iframe => {
     describe('MultiAppLayout simple', () => {
       const mainLayout = createWrapper().find('[data-testid="main-layout"]').findAppLayout();
@@ -28,9 +29,7 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
             // go back to top
             await browser.switchToFrame(null);
           };
-          await browser.url(
-            `#/light/app-layout/multi-layout-${iframe ? 'iframe' : 'simple'}?visualRefresh=${visualRefresh}`
-          );
+          await browser.url(`#/light/app-layout/multi-layout-${iframe ? 'iframe' : 'simple'}?${getUrlParams(theme)}`);
           await switchToIframe(async () => {
             await page.waitForVisible(secondaryLayout.findContentRegion().toSelector());
           });
@@ -46,7 +45,8 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
         })
       );
 
-      test(
+      // TODO: Fix for toolbar
+      testIf(theme !== 'refresh-toolbar')(
         'tools panel the secondary layout works',
         setupTest(async (page, switchToIframe) => {
           await switchToIframe(async () => {
