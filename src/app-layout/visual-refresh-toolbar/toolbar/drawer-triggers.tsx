@@ -120,6 +120,7 @@ export function DrawerTriggers({
               testId={`awsui-app-layout-trigger-slide-panel`}
               isMobile={isMobile}
               isForPreviousActiveDrawer={splitPanelToggleProps.active}
+              isForSplitPanel={true}
             />
             {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
           </>

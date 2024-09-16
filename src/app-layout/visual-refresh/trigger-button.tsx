@@ -128,9 +128,9 @@ function TriggerButton(
   );
 
   const handleClick = (event: MouseEvent) => {
+    event.stopPropagation();
     setSupressTooltip(true);
     onClick();
-    event.stopPropagation();
   };
 
   const handleBlur = (keepSupressed = false) => {
