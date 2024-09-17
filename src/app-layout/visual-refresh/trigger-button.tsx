@@ -126,7 +126,7 @@ function TriggerButton(
             selected //neccessary because tab navigation from drawer close to 1st trigger button
           ) {
             //determine if from a badge button
-            return false;
+            return true;
           }
           if (isFromDrawerCloseButton) {
             //exception made for click from close drawer button

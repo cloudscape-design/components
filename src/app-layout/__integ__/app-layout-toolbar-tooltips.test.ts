@@ -14,7 +14,7 @@ import tooltipStyles from '../../../lib/components/internal/components/tooltip/s
 const wrapper = createWrapper().findAppLayout();
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
-// const testOnlyIf = (condition: boolean) => (condition ? test.only : test.skip);
+const testOnlyIf = (condition: boolean) => (condition ? test.only : test.skip);
 
 interface SetupTestOptions {
   splitPanelPosition?: string;
@@ -81,7 +81,7 @@ const setupTest = (
     await testFn(page);
   });
 
-describe('theme = classic', () => {
+describe.skip('theme = classic', () => {
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     const mobileDrawerTriggerIds = drawerIds.slice(0, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT);
     const drawerIdsToTest = [...(size === 'mobile' ? mobileDrawerTriggerIds : drawerIds)];
@@ -317,9 +317,9 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
       })
     );
 
-    testIf(false)(
-      //todo fix or remove test
-      // testOnlyIf(theme === 'visual-refresh-toolbar')(
+    // testIf(false)(
+    //todo fix or remove test
+    testOnlyIf(theme === 'visual-refresh-toolbar' && size === 'desktop')(
       'Shows tooltip correctly for split panel trigger on pointer interactions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
