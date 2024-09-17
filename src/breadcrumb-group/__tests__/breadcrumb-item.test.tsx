@@ -147,5 +147,7 @@ describe('BreadcrumbGroup Item', () => {
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
     fireEvent.mouseEnter(elementAnchor);
     expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+    fireEvent.keyDown(document, { key: 'Escape' });
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
   });
 });
