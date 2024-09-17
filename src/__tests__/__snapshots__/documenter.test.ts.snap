@@ -2998,7 +2998,7 @@ You should specify the link even if you have a click handler for a breadcrumb it
 to ensure that valid markup is generated.
 
 Note: The last breadcrumb item is automatically considered the current item, and it's
-attributed with the proper \`aria-current\` value and rendered as inactive.
+not a link.
 ",
       "name": "items",
       "optional": false,
@@ -14124,7 +14124,13 @@ Object that represents an expandable group of links.
       "type": "ReadonlyArray<SideNavigationProps.Item>",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "A slot located below the header and above the items.",
+      "isDefault": false,
+      "name": "itemsControl",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
