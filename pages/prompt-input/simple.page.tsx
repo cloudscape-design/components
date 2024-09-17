@@ -75,13 +75,21 @@ export default function PromptInputPage() {
           </Checkbox>
           <Checkbox
             checked={hasSecondaryContent}
-            onChange={() => setUrlParams({ hasSecondaryContent: !hasSecondaryContent })}
+            onChange={() =>
+              setUrlParams({
+                hasSecondaryContent: !hasSecondaryContent,
+              })
+            }
           >
             Secondary content
           </Checkbox>
           <Checkbox
             checked={hasSecondaryActions}
-            onChange={() => setUrlParams({ hasSecondaryActions: !hasSecondaryActions })}
+            onChange={() =>
+              setUrlParams({
+                hasSecondaryActions: !hasSecondaryActions,
+              })
+            }
           >
             Secondary actions
           </Checkbox>

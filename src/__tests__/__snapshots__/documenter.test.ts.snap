@@ -12057,6 +12057,16 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
       "isDefault": false,
       "name": "actionButtonIconSvg",
     },
+    Object {
+      "description": "Use this slot if you want to add secondary actions to the prompt input.",
+      "isDefault": false,
+      "name": "secondaryActions",
+    },
+    Object {
+      "description": "Use this slot if you want to add secondary content, such as file attachments, to the prompt input.",
+      "isDefault": false,
+      "name": "secondaryContent",
+    },
   ],
   "releaseStatus": "stable",
 }
