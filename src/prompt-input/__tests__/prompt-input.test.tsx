@@ -5,9 +5,7 @@ import { act, render, within } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import { KeyCode } from '../../../lib/components/internal/keycode';
-import PromptInput, {
-  PromptInputProps,
-} from '../../../lib/components/prompt-input';
+import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-input';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
 
@@ -16,9 +14,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [800, () => {}],
 }));
 
-const renderPromptInput = (
-  promptInputProps: PromptInputProps & React.RefAttributes<HTMLTextAreaElement>
-) => {
+const renderPromptInput = (promptInputProps: PromptInputProps & React.RefAttributes<HTMLTextAreaElement>) => {
   const { container } = render(<PromptInput {...promptInputProps} />);
   return { wrapper: new PromptInputWrapper(container)!, container };
 };
@@ -38,13 +34,9 @@ describe('ref', () => {
   test('can be used to focus the component', () => {
     const ref = React.createRef<HTMLTextAreaElement>();
     const { wrapper } = renderPromptInput({ value: '', ref });
-    expect(document.activeElement).not.toBe(
-      wrapper.findNativeTextarea().getElement()
-    );
+    expect(document.activeElement).not.toBe(wrapper.findNativeTextarea().getElement());
     ref.current?.focus();
-    expect(document.activeElement).toBe(
-      wrapper.findNativeTextarea().getElement()
-    );
+    expect(document.activeElement).toBe(wrapper.findNativeTextarea().getElement());
   });
 
   test('can be used to select all text', () => {
@@ -133,9 +125,7 @@ describe('action button', () => {
       actionButtonIconName: 'send',
     });
 
-    const secondaryActionsContainer = wrapper
-      .findSecondaryActions()!
-      .getElement();
+    const secondaryActionsContainer = wrapper.findSecondaryActions()!.getElement();
     const actionButton = within(secondaryActionsContainer).getByRole('button');
 
     expect(actionButton).toBeInTheDocument();
@@ -161,18 +151,14 @@ describe('action button', () => {
 });
 
 describe('prompt input in form', () => {
-  function renderPromptInputInForm(
-    props: PromptInputProps = { value: '', actionButtonIconName: 'send' }
-  ) {
+  function renderPromptInputInForm(props: PromptInputProps = { value: '', actionButtonIconName: 'send' }) {
     const submitSpy = jest.fn();
     const renderResult = render(
       <form onSubmit={submitSpy}>
         <PromptInput {...props} />
       </form>
     );
-    const promptInputWrapper = createWrapper(
-      renderResult.container
-    ).findPromptInput()!;
+    const promptInputWrapper = createWrapper(renderResult.container).findPromptInput()!;
     return [promptInputWrapper, submitSpy] as const;
   }
 
@@ -274,26 +260,17 @@ describe('events', () => {
 describe('min and max rows', () => {
   test('defaults to 1', () => {
     const { wrapper } = renderPromptInput({ value: '' });
-    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-      'rows',
-      '1'
-    );
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
   });
 
   test('updates based on min row property', () => {
     const { wrapper } = renderPromptInput({ value: '', minRows: 4 });
-    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-      'rows',
-      '4'
-    );
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '4');
   });
 
   test('does not update based on max row property', () => {
     const { wrapper } = renderPromptInput({ value: '', maxRows: 4 });
-    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-      'rows',
-      '1'
-    );
+    expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('rows', '1');
   });
 });
 
@@ -305,9 +282,7 @@ describe('secondary actions', () => {
       secondaryActions: 'secondary actions',
     });
 
-    expect(wrapper.findSecondaryActions()?.getElement()).toHaveTextContent(
-      'secondary actions'
-    );
+    expect(wrapper.findSecondaryActions()?.getElement()).toHaveTextContent('secondary actions');
   });
 });
 
@@ -319,17 +294,13 @@ describe('secondary content', () => {
       secondaryContent: 'secondary content',
     });
 
-    expect(wrapper.findSecondaryContent()?.getElement()).toHaveTextContent(
-      'secondary content'
-    );
+    expect(wrapper.findSecondaryContent()?.getElement()).toHaveTextContent('secondary content');
   });
 });
 
 describe('a11y', () => {
   test('Valides a11y', async () => {
-    const { container } = render(
-      <PromptInput ariaLabel="Prompt input" value="" />
-    );
+    const { container } = render(<PromptInput ariaLabel="Prompt input" value="" />);
 
     await expect(container).toValidateA11y();
   });
@@ -337,38 +308,28 @@ describe('a11y', () => {
   describe('aria-label', () => {
     test('is not added if not defined', () => {
       const { wrapper } = renderPromptInput({ value: '' });
-      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute(
-        'aria-label'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-label');
     });
     test('can be set to custom value', () => {
       const { wrapper } = renderPromptInput({
         value: '',
         ariaLabel: 'my-custom-label',
       });
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-        'aria-label',
-        'my-custom-label'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-label', 'my-custom-label');
     });
   });
 
   describe('aria-describedby', () => {
     test('is not added if set to null', () => {
       const { wrapper } = renderPromptInput({ value: '' });
-      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute(
-        'aria-describedby'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-describedby');
     });
     test('can be set to custom value', () => {
       const { wrapper } = renderPromptInput({
         value: '',
         ariaDescribedby: 'my-custom-id',
       });
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-        'aria-describedby',
-        'my-custom-id'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
     test('can be customized without controlId', () => {
       const { wrapper } = renderPromptInput({
@@ -377,29 +338,21 @@ describe('a11y', () => {
         ariaDescribedby: 'my-custom-id',
       });
 
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-        'aria-describedby',
-        'my-custom-id'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
   });
 
   describe('aria-labelledby', () => {
     test('is not added if not defined', () => {
       const { wrapper } = renderPromptInput({ value: '' });
-      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute(
-        'aria-labelledby'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-labelledby');
     });
     test('can be set to custom value', () => {
       const { wrapper } = renderPromptInput({
         value: '',
         ariaLabelledby: 'my-custom-id',
       });
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute(
-        'aria-labelledby',
-        'my-custom-id'
-      );
+      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
     });
   });
 });
