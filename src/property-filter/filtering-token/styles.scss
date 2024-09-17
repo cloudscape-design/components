@@ -14,6 +14,8 @@ $token-grouped-padding-block: 2px;
 $token-grouped-padding-inline: styles.$control-padding-horizontal;
 $inner-token-padding-block: 1px;
 $inner-token-padding-inline: styles.$control-padding-horizontal;
+$border-radius-token: awsui.$border-radius-token;
+$border-radius-inner-token: calc(#{awsui.$border-radius-token} / 2);
 
 .root,
 .inner-root {
@@ -31,6 +33,7 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
     }
   }
 }
+
 .inner-root {
   block-size: 100%;
 }
@@ -42,16 +45,23 @@ $inner-token-padding-inline: styles.$control-padding-horizontal;
   display: flex;
   align-items: stretch;
   background: constants.$token-background;
-  border-start-start-radius: awsui.$border-radius-token;
-  border-start-end-radius: awsui.$border-radius-token;
-  border-end-start-radius: awsui.$border-radius-token;
-  border-end-end-radius: awsui.$border-radius-token;
+  border-start-start-radius: $border-radius-token;
+  border-start-end-radius: $border-radius-token;
+  border-end-start-radius: $border-radius-token;
+  border-end-end-radius: $border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
 
   &.grouped {
     justify-content: space-between;
   }
+}
+
+.inner-token {
+  border-start-start-radius: $border-radius-inner-token;
+  border-start-end-radius: $border-radius-inner-token;
+  border-end-start-radius: $border-radius-inner-token;
+  border-end-end-radius: $border-radius-inner-token;
 }
 
 .list {

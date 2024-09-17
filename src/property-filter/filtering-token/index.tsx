@@ -247,7 +247,7 @@ const TokenGroup = forwardRef(
 
         <div
           className={clsx(
-            styles.token,
+            parent ? styles.token : styles['inner-token'],
             !!operation && styles['show-operation'],
             grouped && styles.grouped,
             disabled && styles['token-disabled']
