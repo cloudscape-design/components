@@ -7,14 +7,12 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 import { drawerIds as drawerIdObj } from '../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
 import { viewports } from './constants';
 
-import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
-// const testOnlyIf = (condition: boolean) => (condition ? test.only : test.skip);
 
 interface SetupTestOptions {
   splitPanelPosition?: string;
@@ -81,14 +79,14 @@ const setupTest = (
     await testFn(page);
   });
 
-describe('theme = classic', () => {
+describe.each(['visual-refresh', 'classic'] as const)('%s', theme => {
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     const mobileDrawerTriggerIds = drawerIds.slice(0, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT);
     const drawerIdsToTest = [...(size === 'mobile' ? mobileDrawerTriggerIds : drawerIds)];
 
     test(
       'No tooltip showing for mouse interactions',
-      setupTest({ size, theme: 'classic' }, async page => {
+      setupTest({ size, theme }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
         await page.hoverElement(firstDrawerTriggerSelector);
@@ -98,7 +96,7 @@ describe('theme = classic', () => {
 
     test(
       'No tooltip showing for pointer interactions',
-      setupTest({ size, theme: 'classic' }, async page => {
+      setupTest({ size, theme }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
         await page.buttonDownOnElement(firstDrawerTriggerSelector);
@@ -108,7 +106,7 @@ describe('theme = classic', () => {
 
     test(
       'No tooltip showing for keyboard (tab) interactions',
-      setupTest({ size, theme: 'classic' }, async page => {
+      setupTest({ size, theme }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
         //set focus by clicking open and close
         const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
@@ -126,14 +124,13 @@ describe('theme = classic', () => {
   });
 });
 
-describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
-  // const toolbarDrawerIds = [...(theme === 'visual-refresh-toolbar' ? ['slide-panel'] : []), ...drawerIds];
+describe.each(['visual-refresh-toolbar'] as const)('%s', theme => {
   const mobileDrawerTriggerIds = drawerIds.slice(
     0,
     VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + (theme === 'visual-refresh-toolbar' ? 1 : 0)
   );
 
-  const appliedThemeStyles = theme === 'visual-refresh' ? visualRefreshStyles : toolbarStyles;
+  const appliedThemeStyles = toolbarStyles; //use visualRefreshStyles when theme === 'visual-refresh'
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     const drawersTriggerContainerClassKey = `drawers-${size === 'desktop' ? 'desktop' : 'mobile'}-triggers-container`;
@@ -313,34 +310,6 @@ describe.each(['visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme
         await page.hoverElement(splitPanelTriggerSelector);
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
         await page.keys(['Escape']);
-        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
-      })
-    );
-
-    testIf(false)(
-      //todo fix or remove test
-      // testOnlyIf(theme === 'visual-refresh-toolbar')(
-      'Shows tooltip correctly for split panel trigger on pointer interactions',
-      setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
-        await expect(page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)).resolves.toBeTruthy();
-        await page.pointerDown(splitPanelTriggerSelector);
-        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
-        await page.pointerUp();
-        await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
-      })
-    );
-
-    testIf(false)(
-      //todo fix or remove test
-      // testOnlyIf(theme === 'visual-refresh-toolbar')(
-      'Removes tooltip from split panel trigger on escape key press after showing from pointer down',
-      setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
-        await expect(page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)).resolves.toBeTruthy();
-        await page.buttonDownOnElement(splitPanelTriggerSelector);
-        await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
-        await page.keys('Escape');
         await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
       })
     );

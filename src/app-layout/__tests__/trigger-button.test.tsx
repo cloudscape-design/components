@@ -105,6 +105,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
   describe.each([true, false])('Toolbar trigger-button with isMobile=%s', isMobile => {
     describe.each([true, false])('AppLayoutInternals with hasOpenDrawer=%s', hasOpenDrawer => {
       testIf(!isMobile)('applies the correct class when selected', () => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper } = renderVisualRefreshTriggerButton(
           {
             selected: true,
@@ -112,7 +113,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          }
+          },
+          ref
         );
         expect(wrapper).not.toBeNull();
         const seletedButton = wrapper.findByClassName(visualRefreshStyles.selected);
@@ -120,6 +122,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
       });
 
       test('renders correctly with wit badge', () => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
             badge: false,
@@ -127,7 +130,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          }
+          },
+          ref
         );
 
         expect(wrapper).not.toBeNull();
@@ -138,7 +142,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
         expect(wrapper.findBadge()).toBeNull();
       });
 
-      test('renders correctly with aria controls and aria label', () => {
+      test('renders correctly with aria controls adn aria label', () => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const mockAriaControls = 'mock-aria-control';
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
@@ -147,7 +152,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          }
+          },
+          ref
         );
 
         expect(wrapper).not.toBeNull();
@@ -164,6 +170,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
             <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8z" />
           </svg>
         );
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
             iconName: hasIconSvg ? undefined : (mockProps.iconName as IconProps.Name),
@@ -172,7 +179,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          }
+          },
+          ref
         );
 
         expect(wrapper).not.toBeNull();
@@ -183,6 +191,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
       });
 
       test.each([true, false])('Disables click events when disabled prop is %s', disabledValue => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const mockClickSpy = jest.fn();
         const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
           {
@@ -192,7 +201,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          }
+          },
+          ref
         );
         expect(wrapper).not.toBeNull();
         const button = wrapper.find('button')!;
@@ -202,6 +212,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
       });
 
       test('renders an empty button when no iconName and iconSVG prop', () => {
+        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
         const { wrapper } = renderVisualRefreshTriggerButton(
           {
             iconName: '' as IconProps.Name,
@@ -210,7 +221,8 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
           {
             isMobile,
             hasOpenDrawer,
-          }
+          },
+          ref
         );
         expect(wrapper).not.toBeNull();
         const button = wrapper.find('button');
@@ -221,13 +233,15 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
   });
 
   test('renders correctly with badge using dot class on desktop', () => {
+    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
     const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
       {
         badge: true,
       },
       {
         isMobile: false,
-      }
+      },
+      ref
     );
 
     expect(wrapper).not.toBeNull();
@@ -238,163 +252,22 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
     expect(wrapper.findByClassName(visualRefreshStyles.dot)).toBeTruthy();
   });
 
-  describe('Shared trigger wrapper events', () => {
-    test.each([true, false] as const)(
-      'Is focusable using the forwarded ref with no tooltip with mobile is %s',
-      isMobile => {
-        const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-        const { wrapper, getByTestId, getByText } = renderVisualRefreshTriggerButton(
-          {
-            hasTooltip: true,
-            tooltipText: mockTooltipText,
-          },
-          {
-            isMobile,
-          },
-          ref
-        );
-        expect(getByTestId(mockTestId)).toBeTruthy();
-        const button = wrapper!.find('button');
-        expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-          false
-        );
-        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-        expect(() => getByText(mockTooltipText)).toThrow();
-        expect(button).toBeTruthy();
-        expect(document.activeElement).not.toBe(button!.getElement());
-        (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
-        expect(document.activeElement).toBe(button!.getElement());
-        expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-      }
+  test.each([true, false] as const)('Is focusable using the forwarded ref with mobile is %s', isMobile => {
+    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
+    const { wrapper, getByTestId } = renderVisualRefreshTriggerButton(
+      {},
+      {
+        isMobile,
+      },
+      ref
     );
-
-    test.each([true, false] as const)(
-      'Does not show tooltip on pointerEnter when hasTooltip is %s',
-      async hasTooltip => {
-        const { wrapper, getByText, getByTestId } = await renderVisualRefreshTriggerButton({
-          hasTooltip,
-          tooltipText: mockTooltipText,
-        });
-        expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-          false
-        );
-        expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-        expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.pointerEnter(wrapper!.getElement());
-        if (hasTooltip) {
-          expect(getByText(mockTooltipText)).toBeTruthy();
-          expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-            true
-          );
-          //trigger event again to assert the tooltip remains
-          fireEvent.pointerDown(wrapper!.getElement());
-          expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-            true
-          );
-        } else {
-          expect(() => getByText(mockTooltipText)).toThrow();
-          expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-            false
-          );
-        }
-        fireEvent.pointerLeave(wrapper!.getElement(), mockEventBubble);
-        expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-          false
-        );
-        expect(() => getByText(mockTooltipText)).toThrow();
-      }
-    );
-
-    test('Shows tooltip on focus and removes on key escape when drawer is open on mobile', async () => {
-      const { wrapper, getByText, getByTestId } = await renderVisualRefreshTriggerButton({
-        hasTooltip: true,
-        tooltipText: mockTooltipText,
-      });
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-      expect(() => getByText(mockTooltipText)).toThrow();
-      fireEvent.focus(wrapper!.getElement());
-      expect(getByText(mockTooltipText)).toBeTruthy();
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        true
-      );
-
-      fireEvent.keyDown(wrapper!.getElement(), {
-        ...mockEventBubble,
-        key: 'Escape',
-        code: KeyCode.escape,
-      });
-
-      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(() => getByText(mockTooltipText)).toThrow();
-    });
-
-    test('Does not show tooltip on pointerEnter when there is no arialLabel nor tooltipText', async () => {
-      const { wrapper, getByTestId } = await renderVisualRefreshTriggerButton({
-        ariaLabel: '',
-        tooltipText: '',
-      });
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-
-      fireEvent.pointerEnter(wrapper!.getElement());
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-    });
-
-    test('Does not show tooltip on focus when no ariaLabel nor tooltipText', async () => {
-      const { wrapper, getByTestId } = await renderVisualRefreshTriggerButton({
-        ariaLabel: '',
-        tooltipText: '',
-      });
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-      fireEvent.focus(wrapper!.getElement());
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-    });
-
-    test('Does not show tooltip if mobile and hasOpenDrawer', async () => {
-      const { wrapper, getByTestId } = await renderVisualRefreshTriggerButton(
-        {
-          hasTooltip: true,
-          tooltipText: mockTooltipText,
-        },
-        {
-          isMobile: true,
-          hasOpenDrawer: true,
-        }
-      );
-      expect(getByTestId(mockTestId)).toBeTruthy();
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper!.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-      fireEvent.focus(wrapper!.getElement());
-      expect(wrapper!.getElement().classList.contains(visualRefreshStyles['trigger-wrapper-tooltip-visible'])).toBe(
-        false
-      );
-      expect(wrapper.findByClassName(visualRefreshStyles['trigger-tooltip'])).toBeNull();
-    });
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    const button = wrapper!.find('button');
+    expect(getByTestId(mockTestId)).toBeTruthy();
+    expect(button).toBeTruthy();
+    expect(document.activeElement).not.toBe(button!.getElement());
+    (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
+    expect(document.activeElement).toBe(button!.getElement());
   });
 });
 
