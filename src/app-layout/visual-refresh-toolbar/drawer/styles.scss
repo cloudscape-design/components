@@ -44,6 +44,14 @@
     @include desktop-only {
       border-inline-start: 1px solid awsui.$color-border-layout;
     }
+
+    @include mobile-only {
+      display: none;
+
+      &.last-opened {
+        display: block;
+      }
+    }
   }
 
   &.drawer-hidden {
