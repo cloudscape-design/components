@@ -99,7 +99,7 @@ const FilteringToken = forwardRef(
       triggerType: 'text',
       header: editorHeader,
       size: popoverSize,
-      position: 'right',
+      position: 'bottom',
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
@@ -247,7 +247,7 @@ const TokenGroup = forwardRef(
 
         <div
           className={clsx(
-            styles.token,
+            parent ? styles.token : styles['inner-token'],
             !!operation && styles['show-operation'],
             grouped && styles.grouped,
             disabled && styles['token-disabled']

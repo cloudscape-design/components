@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -19,10 +20,11 @@ const PropertyFilter = React.forwardRef(
     {
       filteringOptions = [],
       customGroupsText = [],
+      enableTokenGroups = false,
       disableFreeTextFiltering = false,
       asyncProperties,
       expandToViewport,
-      hideOperations,
+      hideOperations = false,
       tokenLimit,
       virtualScroll,
       ...rest
@@ -30,7 +32,15 @@ const PropertyFilter = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const baseComponentProps = useBaseComponent('PropertyFilter', {
-      props: { asyncProperties, disableFreeTextFiltering, expandToViewport, hideOperations, tokenLimit, virtualScroll },
+      props: {
+        asyncProperties,
+        disableFreeTextFiltering,
+        enableTokenGroups,
+        expandToViewport,
+        hideOperations,
+        tokenLimit,
+        virtualScroll,
+      },
     });
 
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataPropertyFilterComponent = {
@@ -42,12 +52,18 @@ const PropertyFilter = React.forwardRef(
       },
     };
 
+    if (hideOperations && enableTokenGroups) {
+      warnOnce('PropertyFilter', 'Operations cannot be hidden when token groups are enabled.');
+      hideOperations = false;
+    }
+
     return (
       <PropertyFilterInternal
         ref={ref}
         {...baseComponentProps}
         filteringOptions={filteringOptions}
         customGroupsText={customGroupsText}
+        enableTokenGroups={enableTokenGroups}
         disableFreeTextFiltering={disableFreeTextFiltering}
         asyncProperties={asyncProperties}
         expandToViewport={expandToViewport}
