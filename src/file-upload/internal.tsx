@@ -57,13 +57,15 @@ function InternalFileUpload(
   externalRef: ForwardedRef<ButtonProps.Ref>
 ) {
   const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-  const onFocusMoved = () => setNextFocusIndex(null);
   const tokenListRef = useListFocusController({
     nextFocusIndex,
-    onFocusMoved,
+    onFocusMoved: target => {
+      target.focus();
+      setNextFocusIndex(null);
+    },
     listItemSelector: `.${tokenListStyles['list-item']}`,
     showMoreSelector: `.${tokenListStyles.toggle}`,
-    outsideSelector: `.${fileInputStyles['upload-input']}`,
+    fallbackSelector: `.${fileInputStyles['upload-input']}`,
   });
 
   const baseProps = getBaseProps(restProps);

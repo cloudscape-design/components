@@ -74,12 +74,14 @@ export function TokenEditor({
   onChangeTempGroup,
 }: TokenEditorProps) {
   const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-  const onFocusMoved = () => setNextFocusIndex(null);
   const tokenListRef = useListFocusController({
     nextFocusIndex,
-    onFocusMoved,
+    onFocusMoved: target => {
+      target.focus();
+      setNextFocusIndex(null);
+    },
     listItemSelector: `.${styles['token-editor-field-property']}`,
-    outsideSelector: `.${styles['token-editor-add-token']}`,
+    fallbackSelector: `.${styles['token-editor-add-token']}`,
   });
 
   const groups = tempGroup.map((temporaryToken, index) => {

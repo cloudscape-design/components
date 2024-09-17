@@ -91,13 +91,19 @@ const PropertyFilterInternal = React.forwardRef(
     ref: React.Ref<Ref>
   ) => {
     const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-    const onFocusMoved = () => setNextFocusIndex(null);
     const tokenListRef = useListFocusController({
       nextFocusIndex,
-      onFocusMoved,
+      onFocusMoved: (target, targetType) => {
+        if (targetType === 'fallback') {
+          inputRef.current?.focus({ preventDropdown: true });
+        } else {
+          target.focus();
+        }
+        setNextFocusIndex(null);
+      },
       listItemSelector: `.${tokenListStyles['list-item']}`,
       showMoreSelector: `.${tokenListStyles.toggle}`,
-      outsideSelector: `.${styles.input}`,
+      fallbackSelector: `.${styles.input}`,
     });
 
     const mergedRef = useMergeRefs(tokenListRef, __internalRootRef);

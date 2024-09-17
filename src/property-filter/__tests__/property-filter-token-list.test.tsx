@@ -160,6 +160,7 @@ describe('filtering tokens', () => {
       });
       act(() => wrapper.findTokens()![0].findRemoveButton()!.click());
       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
 
     test('has a label from i18nStrings', () => {
