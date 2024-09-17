@@ -31,7 +31,7 @@ function renderTable(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findTable()!;
   // stub all timers from this moment
-  jest.useFakeTimers({ legacyFakeTimers: true });
+  jest.useFakeTimers();
   // override getBoundingClientRect method we use for position calculation
   wrapper.findColumnHeaders().forEach(header => {
     header.getElement().getBoundingClientRect = fakeBoundingClientRect;
