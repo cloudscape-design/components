@@ -50,6 +50,8 @@ export interface TriggerButtonProps {
   isMobile?: boolean;
   /**
    * set to true if the trigger button was used to open the last active drawer
+   * this is also used to hide the tooltip should the focus be set programmatically
+   * on focus from a drawer close using this
    */
   isForPreviousActiveDrawer?: boolean;
   /**
@@ -112,34 +114,25 @@ function TriggerButton(
   const handleOnFocus = useCallback(
     (event: FocusEvent) => {
       const eventWithRelatedTarget = event as any;
-      // condition for showing the tooltip hard into a separate function
-      const shouldShowTooltip = () => {
-        const isFromAnotherTrigger =
-          eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-        if (isForSplitPanel) {
-          const breadcrumbsComponent = document.querySelector('nav[data-awsui-discovered-breadcrumbs="true"]');
-          if (
-            breadcrumbsComponent &&
-            eventWithRelatedTarget?.relatedTarget &&
-            breadcrumbsComponent.contains(eventWithRelatedTarget.relatedTarget)
-          ) {
-            return true;
-          }
-          return isFromAnotherTrigger;
-        }
-        if (!isForPreviousActiveDrawer) {
-          return true; //for keyed navigation inside the toolbar
+      const relatedTarget = eventWithRelatedTarget?.relatedTarget;
+      const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
+      let shouldShowTooltip = false;
+      if (isForSplitPanel) {
+        const breadcrumbsComponent = document.querySelector('nav[data-awsui-discovered-breadcrumbs="true"]');
+        if (breadcrumbsComponent && relatedTarget && breadcrumbsComponent.contains(relatedTarget)) {
+          //show tooltip when using keys to navigate to it from the breadcrumbs
+          shouldShowTooltip = true;
         } else {
-          //needed for safari which doesn't read the relatedTarget when drawer closed via
-          //drawer close button
-          if (isFromAnotherTrigger) {
-            return true;
-          }
-          return false;
+          shouldShowTooltip = isFromAnotherTrigger;
         }
-      };
-
-      setSupressTooltip(!shouldShowTooltip());
+      } else if (!isForPreviousActiveDrawer) {
+        shouldShowTooltip = true; //for keyed navigation inside the toolbar
+      } else if (isFromAnotherTrigger) {
+        //needed for safari which doesn't read the relatedTarget when drawer closed via
+        //drawer close button
+        shouldShowTooltip = true;
+      }
+      setSupressTooltip(!shouldShowTooltip);
       setShowTooltip(true);
     },
     [

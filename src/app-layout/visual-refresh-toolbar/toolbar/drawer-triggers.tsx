@@ -54,7 +54,6 @@ export function DrawerTriggers({
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
-
   const previousActiveDrawerId = useRef(activeDrawerId);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
   if (!drawers && !splitPanelToggleProps) {

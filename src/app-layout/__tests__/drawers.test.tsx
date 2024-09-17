@@ -44,7 +44,7 @@ describeEachAppLayout(({ size, theme }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(1);
     rerender(<AppLayout />);
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
-    expect(wrapper!.findByClassName(tooltipStyles.root)).toBeNull();
+    expect(wrapper.findByClassName(tooltipStyles.root)).toBeNull();
   });
 
   test('should not apply drawers treatment to the tools if the drawers array is empty', () => {
