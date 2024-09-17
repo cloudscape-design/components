@@ -405,7 +405,7 @@ describe('Date picker calendar', () => {
         wrapper.findOpenCalendarButton().click();
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
         expect(
-          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root})`)?.getElement()
             .textContent
         ).toBe('21');
         expect(findFocusableDateText(wrapper)).toBeNull();

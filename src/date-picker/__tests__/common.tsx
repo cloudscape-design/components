@@ -37,7 +37,7 @@ export function findFocusedDate(wrapper: DatePickerWrapper) {
   return wrapper
     .findCalendar()!
     .find(`.${calendarStyles['calendar-date']}[tabIndex="0"]`)
-    ?.find(`:not(.${screenreaderOnlyStyles.root}`);
+    ?.find(`:not(.${screenreaderOnlyStyles.root})`);
 }
 
 export function findFocusableDateText(wrapper: DatePickerWrapper) {
