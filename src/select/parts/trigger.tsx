@@ -27,6 +27,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   isOpen?: boolean;
   triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
   inFilteringToken?: 'root' | 'nested';
+  showAsLabel?: boolean;
   selectedOptions?: ReadonlyArray<OptionDefinition>;
 }
 
@@ -44,6 +45,7 @@ const Trigger = React.forwardRef(
       selectedOptions,
       triggerVariant,
       inFilteringToken,
+      showAsLabel,
       isOpen,
       placeholder,
       disabled,
@@ -115,6 +117,7 @@ const Trigger = React.forwardRef(
         pressed={!!isOpen}
         disabled={disabled}
         readOnly={readOnly}
+        showAsLabel={showAsLabel}
         invalid={invalid}
         warning={warning && !invalid}
         inFilteringToken={inFilteringToken}
