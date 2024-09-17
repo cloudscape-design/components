@@ -31,7 +31,7 @@ describe('Date picker calendar', () => {
   const findCalendarWeekdays = (wrapper: DatePickerWrapper) => {
     return wrapper
       .findCalendar()!
-      .findAll(`.${calendarStyles['calendar-date-header']} [aria-hidden="true"]`)
+      .findAll(`.${calendarStyles['calendar-date-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
@@ -404,9 +404,10 @@ describe('Date picker calendar', () => {
         const { wrapper } = renderDatePicker({ ...defaultProps, value: '2018-03-21', isDateEnabled });
         wrapper.findOpenCalendarButton().click();
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
-        expect(wrapper.findCalendar()!.findSelectedDate()?.find('[aria-hidden="true"]')?.getElement().textContent).toBe(
-          '21'
-        );
+        expect(
+          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+            .textContent
+        ).toBe('21');
         expect(findFocusableDateText(wrapper)).toBeNull();
       });
 

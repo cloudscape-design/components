@@ -10,6 +10,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
 
 import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
+import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 export const outsideId = 'outside';
 
@@ -36,7 +37,7 @@ export function findFocusedDate(wrapper: DatePickerWrapper) {
   return wrapper
     .findCalendar()!
     .find(`.${calendarStyles['calendar-date']}[tabIndex="0"]`)
-    ?.find(`[aria-hidden="true"]`);
+    ?.find(`:not(.${screenreaderOnlyStyles.root}`);
 }
 
 export function findFocusableDateText(wrapper: DatePickerWrapper) {

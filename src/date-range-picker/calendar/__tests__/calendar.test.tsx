@@ -54,7 +54,10 @@ describe('Date range picker calendar', () => {
   }
 
   const findFocusableDate = (wrapper: DateRangePickerWrapper) => {
-    return wrapper.findDropdown()!.find(`.${gridDayStyles.day}[tabIndex="0"]`)?.find('[aria-hidden="true"]');
+    return wrapper
+      .findDropdown()!
+      .find(`.${gridDayStyles.day}[tabIndex="0"]`)
+      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
   };
 
   const findFocusableDateText = (wrapper: DateRangePickerWrapper) => {
@@ -69,7 +72,7 @@ describe('Date range picker calendar', () => {
   const findDropdownWeekdays = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .findAll(`.${gridDayStyles['day-header']} [aria-hidden="true"]`)
+      .findAll(`.${gridDayStyles['day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
