@@ -269,9 +269,6 @@ function DesktopTriggers() {
               testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
               selected={item.id === activeDrawerId}
-              hasTooltip={true}
-              tooltipText={item.ariaLabels?.drawerName}
-              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
             />
           );
         })}
@@ -380,9 +377,6 @@ export function MobileTriggers() {
               testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
               selected={item.id === activeDrawerId}
-              hasTooltip={true}
-              tooltipText={item.ariaLabels?.drawerName}
-              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
             />
           );
         })}
