@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`CSS Custom Properties match previous snapshot for mode "compact" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -450,8 +450,8 @@ Object {
   "font-chart-detail-size": "14px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-link-button-letter-spacing": "normal",
@@ -650,7 +650,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1099,8 +1099,8 @@ Object {
   "font-chart-detail-size": "14px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-link-button-letter-spacing": "normal",
@@ -1299,7 +1299,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "light" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -1748,8 +1748,8 @@ Object {
   "font-chart-detail-size": "14px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-link-button-letter-spacing": "normal",
@@ -1948,7 +1948,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "reduced-motion" 1`] = `
-Object {
+{
   "border-active-width": "2px",
   "border-code-editor-status-divider-width": "0px",
   "border-container-sticky-width": "1px",
@@ -2397,8 +2397,8 @@ Object {
   "font-chart-detail-size": "14px",
   "font-display-label-weight": "400",
   "font-expandable-heading-size": "14px",
-  "font-family-base": "\\"Noto Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Noto Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "16px",
   "font-header-h2-description-size": "12px",
   "font-link-button-letter-spacing": "normal",
@@ -2597,7 +2597,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -3046,8 +3046,8 @@ Object {
   "font-chart-detail-size": "12px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "20px",
   "font-header-h2-description-size": "14px",
   "font-link-button-letter-spacing": "0.005em",
@@ -3246,7 +3246,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-compact" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -3695,8 +3695,8 @@ Object {
   "font-chart-detail-size": "12px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "20px",
   "font-header-h2-description-size": "14px",
   "font-link-button-letter-spacing": "0.005em",
@@ -3895,7 +3895,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-content-header" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -4344,8 +4344,8 @@ Object {
   "font-chart-detail-size": "12px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "20px",
   "font-header-h2-description-size": "14px",
   "font-link-button-letter-spacing": "0.005em",
@@ -4544,7 +4544,7 @@ Object {
 `;
 
 exports[`CSS Custom Properties match previous snapshot for mode "visual-refresh-dark" 1`] = `
-Object {
+{
   "border-active-width": "4px",
   "border-code-editor-status-divider-width": "1px",
   "border-container-sticky-width": "0px",
@@ -4993,8 +4993,8 @@ Object {
   "font-chart-detail-size": "12px",
   "font-display-label-weight": "700",
   "font-expandable-heading-size": "16px",
-  "font-family-base": "\\"Open Sans\\", \\"Helvetica Neue\\", Roboto, Arial, sans-serif",
-  "font-family-monospace": "Monaco, Menlo, Consolas, \\"Courier Prime\\", Courier, \\"Courier New\\", monospace",
+  "font-family-base": ""Open Sans", "Helvetica Neue", Roboto, Arial, sans-serif",
+  "font-family-monospace": "Monaco, Menlo, Consolas, "Courier Prime", Courier, "Courier New", monospace",
   "font-header-h2-description-line-height": "20px",
   "font-header-h2-description-size": "14px",
   "font-link-button-letter-spacing": "0.005em",
