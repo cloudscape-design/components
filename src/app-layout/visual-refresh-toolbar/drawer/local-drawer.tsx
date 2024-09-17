@@ -5,7 +5,9 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
+import customCssProps from '../../../internal/generated/custom-css-properties';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
@@ -54,6 +56,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     handleRef: drawersFocusControl.refs.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
+  const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
 
   return (
@@ -75,6 +78,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
       style={{
         blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
         insetBlockStart: drawersTopOffset,
+        ...(!isMobile && { [customCssProps.drawerSize]: `${size}px` }),
       }}
       data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
     >

@@ -100,7 +100,6 @@
 .tools {
   @include desktop-only {
     grid-area: tools;
-    inline-size: var(#{custom-props.$toolsWidth});
     border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   }
 }
