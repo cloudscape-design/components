@@ -73,6 +73,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [notificationsHeight, setNotificationsHeight] = useState(0);
 
     const onNavigationToggle = (open: boolean) => {
+      navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     };
 
@@ -305,7 +306,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={navigationOpen}
           navigationWidth={navigationWidth}
-          tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
+          tools={
+            ((drawers!.length > 0 && !toolsHide) || activeDrawer) && (
+              <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />
+            )
+          }
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={
