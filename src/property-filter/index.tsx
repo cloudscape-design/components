@@ -25,6 +25,7 @@ const PropertyFilter = React.forwardRef(
       asyncProperties,
       expandToViewport,
       hideOperations = false,
+      fixedOperations = false,
       tokenLimit,
       virtualScroll,
       ...rest
@@ -38,6 +39,7 @@ const PropertyFilter = React.forwardRef(
         enableTokenGroups,
         expandToViewport,
         hideOperations,
+        fixedOperations,
         tokenLimit,
         virtualScroll,
       },
@@ -68,6 +70,7 @@ const PropertyFilter = React.forwardRef(
         asyncProperties={asyncProperties}
         expandToViewport={expandToViewport}
         hideOperations={hideOperations}
+        fixedOperations={fixedOperations}
         tokenLimit={tokenLimit}
         virtualScroll={virtualScroll}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
