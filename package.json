@@ -82,7 +82,6 @@
     "@typescript-eslint/parser": "^5.45.0",
     "axe-core": "^4.4.1",
     "babel-jest": "^29.7.0",
-    "caniuse-lite": "^1.0.30001565",
     "change-case": "^4.1.2",
     "commenting": "^1.1.0",
     "copy-webpack-plugin": "^9.0.1",
