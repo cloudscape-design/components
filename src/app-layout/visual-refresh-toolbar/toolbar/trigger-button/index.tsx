@@ -114,6 +114,7 @@ function TriggerButton(
       const eventWithRelatedTarget = event as any;
       // condition for showing the tooltip hard into a separate function
       const shouldShowTooltip = () => {
+        console.log('shouldshowtooltip firint', selected);
         const isFromAnotherTrigger =
           eventWithRelatedTarget?.relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
         if (isForSplitPanel) {
@@ -123,7 +124,6 @@ function TriggerButton(
             eventWithRelatedTarget?.relatedTarget &&
             breadcrumbsComponent.contains(eventWithRelatedTarget.relatedTarget)
           ) {
-            //show tooltip when using keys to navigate to it from the breadcrumbs
             return true;
           }
           return isFromAnotherTrigger;
@@ -147,6 +147,7 @@ function TriggerButton(
       // To assert reference equality check
       isForPreviousActiveDrawer,
       isForSplitPanel,
+      selected,
     ]
   );
 
