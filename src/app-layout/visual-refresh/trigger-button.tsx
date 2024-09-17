@@ -118,14 +118,15 @@ function TriggerButton(
         }
         if (
           isFromAnotherTrigger || //for keyed navigation
-          !isForPreviousActiveDrawer //this is true when the last activeId was this drawer
+          !isForPreviousActiveDrawer
         ) {
           return true; //for keyed navigation inside the toolbar
         } else {
           if (
-            selected //neccessary in VR mode because tab navigation from drawer close to 1st trigger button
+            selected //neccessary because tab navigation from drawer close to 1st trigger button
           ) {
-            return true;
+            //determine if from a badge button
+            return false;
           }
           if (isFromDrawerCloseButton) {
             //exception made for click from close drawer button
