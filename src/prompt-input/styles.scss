@@ -11,15 +11,19 @@
 
 $send-icon-right-spacing: awsui.$space-static-xxs;
 
-.root {
-  @include styles.styles-reset;
-  cursor: text;
-  padding-inline-start: styles.$control-padding-horizontal;
-
+@mixin control-border-radius {
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;
   border-end-start-radius: styles.$control-border-radius;
   border-end-end-radius: styles.$control-border-radius;
+}
+
+.root {
+  @include styles.styles-reset;
+  @include control-border-radius();
+  cursor: text;
+  padding-inline-start: styles.$control-padding-horizontal;
+
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
 
@@ -60,6 +64,8 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
 
 .textarea {
   @include styles.styles-reset;
+  @include control-border-radius();
+  @include styles.font-body-m;
   // Restore browsers' default resize values
   resize: none;
   // Restore default text cursor
@@ -70,7 +76,6 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   padding-block: styles.$control-padding-vertical;
   padding-inline-end: styles.$control-padding-horizontal;
 
-
   color: awsui.$color-text-body-default;
   max-inline-size: 100%;
   inline-size: 100%;
@@ -78,12 +83,6 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   box-sizing: border-box;
   background-color: awsui.$color-background-input-default;
   border: 0;
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
-
-  @include styles.font-body-m;
 
   &::placeholder {
     @include styles.form-placeholder;
@@ -120,7 +119,6 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
 
   &-wrapper {
     display: flex;
-
   }
 }
 
@@ -129,36 +127,31 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   padding-inline-end: calc(styles.$control-padding-horizontal / 2);
   padding-block-end: awsui.$space-scaled-xxxs;
 
-  >.action-button {
+  > .action-button {
     padding: 0;
 
     // offset the focus ring by 1px per side so it doesn't blend into the textarea border
     @include focus-visible.when-visible {
-      @include styles.focus-highlight(('vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
+      @include styles.focus-highlight(
+        (
+          'vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
           'horizontal': calc((#{awsui.$space-xxxs}) - 1px),
-        ));
+        )
+      );
     }
   }
 }
 
 .secondary-content {
+  @include control-border-radius();
   padding-block-end: awsui.$space-scaled-xs;
   padding-inline-end: calc(styles.$control-padding-horizontal / 2);
   width: fit-content;
-
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
 }
 
 .secondary-actions {
+  @include control-border-radius();
   display: flex;
   justify-content: space-between;
   padding-block-start: awsui.$space-scaled-xs;
-
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
 }
