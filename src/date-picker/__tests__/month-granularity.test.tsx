@@ -243,7 +243,7 @@ describe('Date picker calendar at month granularity', () => {
       const wrapper = openDatePicker({ value: '2018-03', isDateEnabled });
       expect(findCalendarHeaderText(wrapper)).toBe('2018');
       expect(
-        wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+        wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root})`)?.getElement()
           .textContent
       ).toBe('Mar');
       expect(findFocusableDateText(wrapper)).toBeNull();
