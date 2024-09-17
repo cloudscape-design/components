@@ -31,15 +31,15 @@ const placeholderText =
 
 export default function PromptInputPage() {
   const [textareaValue, setTextareaValue] = useState('');
-  const [items, setItems] = React.useState([
-    { label: 'Item 1', dismissLabel: 'Remove item 1' },
-    { label: 'Item 2', dismissLabel: 'Remove item 2' },
-    { label: 'Item 3', dismissLabel: 'Remove item 3' },
-  ]);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText, hasSecondaryActions, hasSecondaryContent } =
     urlParams;
+  const [items, setItems] = React.useState([
+    { label: 'Item 1', dismissLabel: 'Remove item 1', disabled: isDisabled },
+    { label: 'Item 2', dismissLabel: 'Remove item 2', disabled: isDisabled },
+    { label: 'Item 3', dismissLabel: 'Remove item 3', disabled: isDisabled },
+  ]);
 
   useEffect(() => {
     if (hasText) {
@@ -53,6 +53,23 @@ export default function PromptInputPage() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textareaValue]);
+
+  useEffect(() => {
+    if (items.length === 0) {
+      ref.current?.focus();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items]);
+
+  useEffect(() => {
+    const newItems = items.map(item => ({
+      label: item.label,
+      dismissLabel: item.dismissLabel,
+      disabled: isDisabled,
+    }));
+    setItems([...newItems]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDisabled]);
 
   const ref = React.createRef<HTMLTextAreaElement>();
 
@@ -135,18 +152,21 @@ export default function PromptInputPage() {
                         id: 'copy',
                         iconName: 'upload',
                         text: 'Upload files',
+                        disabled: isDisabled || isReadOnly,
                       },
                       {
                         type: 'icon-button',
                         id: 'add',
                         iconName: 'add-plus',
                         text: 'Add',
+                        disabled: isDisabled || isReadOnly,
                       },
                       {
                         type: 'icon-button',
                         id: 'remove',
                         iconName: 'remove',
                         text: 'Remove',
+                        disabled: isDisabled || isReadOnly,
                       },
                     ]}
                     variant="icon"
@@ -160,6 +180,7 @@ export default function PromptInputPage() {
                       setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
                     }}
                     items={items}
+                    readOnly={isReadOnly}
                   />
                 ) : undefined
               }
