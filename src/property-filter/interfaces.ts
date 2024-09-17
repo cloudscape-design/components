@@ -69,6 +69,12 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   hideOperations?: boolean;
   /**
    * Activates token grouping mechanism to support token nesting (up to one level).
+   * If fixedOperations it set, the indicator of the operation (that is, `and` or `or`) is shown, but the
+   * operation cannot be changed. This is also supported for nested tokens when `enableTokenGroups=true`.
+   */
+  fixedOperations?: boolean;
+  /**
+   * Activates token grouping mechanism to support token nesting (up to one level).
    * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.
    */
   enableTokenGroups?: boolean;
