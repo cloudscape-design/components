@@ -127,7 +127,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     checkSafeUrl('BreadcrumbGroup', item.href);
   }
   const baseProps = getBaseProps(props);
-  const [navWidth, navRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
+  const [navWidth, navRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
   const mergedRef = useMergeRefs(navRef, __internalRootRef);
 
   const itemsRefs = useRef<ItemsRefsType>({ ghost: {}, real: {} });
@@ -152,14 +152,18 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         const width = getLogicalBoundingClientRect(node).inlineSize;
         newItemsWidths.real.push(width);
       }
-      if (
-        !areArrayEqual(newItemsWidths.ghost, itemsWidths.ghost) ||
-        !areArrayEqual(newItemsWidths.real, itemsWidths.real)
-      ) {
-        setItemsWidths(newItemsWidths);
-      }
+      setItemsWidths(oldWidths => {
+        if (
+          !areArrayEqual(newItemsWidths.ghost, oldWidths.ghost) ||
+          !areArrayEqual(newItemsWidths.real, oldWidths.real)
+        ) {
+          return newItemsWidths;
+        } else {
+          return oldWidths;
+        }
+      });
     }
-  }, [itemsWidths, items, navWidth]);
+  }, [items, navWidth]);
 
   const { shrinkFactors, minWidths, collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
 
