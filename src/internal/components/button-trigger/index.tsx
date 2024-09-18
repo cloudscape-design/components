@@ -78,6 +78,7 @@ const ButtonTrigger = (
       warning && !invalid && styles.warning,
       !hideCaret && styles['has-caret'],
       readOnly && styles.readonly,
+      inFilteringToken && styles['in-filtering-token'],
       inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens']
     ),
