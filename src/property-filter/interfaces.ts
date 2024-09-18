@@ -46,7 +46,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    */
   countText?: string;
   /**
-   * An object representing the current query displayed in the property filter. Has three properties: `operation`, `tokens`, and `tokenGroups`.
+   * An object representing the current query displayed in the property filter, which has three properties: `operation`, `tokens`, and `tokenGroups`.
    * The `operation` property has two valid values: "and", "or", and controls the join operation to be applied between tokens when filtering the items.
    * The `tokens` property is an array of objects that will be displayed to the user beneath the filtering input. When `enableTokenGroups=true`, the
    * `tokenGroups` property is used instead, which supports nested tokens.
@@ -62,10 +62,12 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * (applied to the property and value token) are hidden from the user. Only use when you have a custom
    * filtering logic which combines tokens in different way than the default one. When used, ensure that
    * operations are communicated to the user in another way.
+   *
+   * This property cannot be set when `enableTokenGroups=true`.
    */
   hideOperations?: boolean;
   /**
-   * Activates token grouping mechanism to support tokens nesting (up to one level).
+   * Activates token grouping mechanism to support token nesting (up to one level).
    * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.
    */
   enableTokenGroups?: boolean;

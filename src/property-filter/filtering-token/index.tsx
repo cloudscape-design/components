@@ -293,7 +293,7 @@ function OperationSelector({
 }) {
   return (
     <InternalSelect
-      __inFilteringToken={true}
+      __inFilteringToken={parent ? 'root' : 'nested'}
       className={clsx(
         parent
           ? clsx(styles.select, testUtilStyles['filtering-token-select'])
