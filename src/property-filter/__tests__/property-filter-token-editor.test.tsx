@@ -6,17 +6,14 @@ import { act, fireEvent, render as reactRender } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { FilteringOption, FilteringProperty } from '../../../lib/components/property-filter/interfaces';
-import PropertyFilterInternal, { PropertyFilterInternalProps } from '../../../lib/components/property-filter/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter';
+import PropertyFilter from '../../../lib/components/property-filter';
 import {
-  createDefaultProps,
-  i18nStrings,
-  i18nStringsTokenGroups,
-  providedI18nStrings,
-  StatefulInternalPropertyFilter,
-} from './common';
+  FilteringOption,
+  FilteringProperty,
+  PropertyFilterProps,
+} from '../../../lib/components/property-filter/interfaces';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { createDefaultProps, i18nStrings, providedI18nStrings, StatefulPropertyFilter } from './common';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-mobile'),
@@ -71,26 +68,25 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'default-operator', value: 'value' },
 ];
 
-const defaultProps: PropertyFilterInternalProps = {
+const defaultProps: PropertyFilterProps = {
   filteringOptions: [],
   customGroupsText: [],
   disableFreeTextFiltering: false,
-  i18nStringsTokenGroups,
   ...createDefaultProps(filteringProperties, filteringOptions),
 };
 
-function renderComponent(props?: Partial<PropertyFilterInternalProps>, withI18nProvider = false) {
+function renderComponent(props?: Partial<PropertyFilterProps>, withI18nProvider = false) {
   return withI18nProvider
     ? reactRender(
         <TestI18nProvider messages={providedI18nStrings}>
-          <PropertyFilterInternal {...defaultProps} {...props} i18nStrings={{}} i18nStringsTokenGroups={{}} />
+          <PropertyFilter {...defaultProps} {...props} i18nStrings={{}} />
         </TestI18nProvider>
       )
-    : reactRender(<PropertyFilterInternal {...defaultProps} {...props} />);
+    : reactRender(<PropertyFilter {...defaultProps} {...props} />);
 }
 
 function openEditor(tokenIndex: number, options: { expandToViewport?: boolean; isMobile?: boolean }) {
-  const propertyFilter = new PropertyFilterWrapperInternal(createWrapper().findPropertyFilter()!.getElement());
+  const propertyFilter = createWrapper().findPropertyFilter()!;
   const token = propertyFilter.findTokens()[tokenIndex];
   if (token.findEditButton()) {
     token.findEditButton()!.click();
@@ -104,7 +100,7 @@ function findEditor(
   tokenIndex: number,
   { expandToViewport = false, isMobile = false }: { expandToViewport?: boolean; isMobile?: boolean }
 ) {
-  const propertyFilter = new PropertyFilterWrapperInternal(createWrapper().findPropertyFilter()!.getElement());
+  const propertyFilter = createWrapper().findPropertyFilter()!;
   const editor = propertyFilter.findTokens()[tokenIndex].findEditorDropdown({ expandToViewport })!;
   return editor
     ? {
@@ -450,12 +446,12 @@ describe('token editor with groups', () => {
     jest.mocked(useMobile).mockReturnValue(false);
   });
 
-  function render(props: Partial<PropertyFilterInternalProps>) {
+  function render(props: Partial<PropertyFilterProps>) {
     return renderComponent({ enableTokenGroups: true, ...props });
   }
 
-  function renderStateful(props?: Partial<PropertyFilterInternalProps>) {
-    return reactRender(<StatefulInternalPropertyFilter {...defaultProps} {...props} enableTokenGroups={true} />);
+  function renderStateful(props?: Partial<PropertyFilterProps>) {
+    return reactRender(<StatefulPropertyFilter {...defaultProps} {...props} enableTokenGroups={true} />);
   }
 
   test('changes filter property', () => {
