@@ -87,13 +87,12 @@ export function DrawerTriggers({
   return (
     <aside
       className={styles['drawers-desktop-triggers-container']}
-      aria-label={ariaLabels?.drawers}
+      aria-label={toolsOnlyMode ? ariaLabels?.tools : ariaLabels?.drawers}
       ref={triggersContainerRef}
       role="region"
     >
       <div
         className={clsx(styles['drawers-trigger-content'], {
-          [styles['has-multiple-triggers']]: hasMultipleTriggers,
           [styles['has-open-drawer']]: activeDrawerId,
         })}
         role="toolbar"
