@@ -22,6 +22,7 @@ function render(props: RenderProps) {
     itemCount: 10,
     loading: undefined,
     instanceIdentifier: undefined,
+    interactionMetadata: () => '',
   } satisfies RenderProps;
 
   const { result, rerender, unmount } = renderHook(useTableInteractionMetrics, {
