@@ -130,7 +130,6 @@ describe('visual-refresh-toolbar', () => {
     0,
     VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + (theme === 'visual-refresh-toolbar' ? 1 : 0)
   );
-
   const appliedThemeStyles = toolbarStyles; //use visualRefreshStyles when theme === 'visual-refresh'
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
