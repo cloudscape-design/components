@@ -16,8 +16,8 @@ import Calendar from './calendar';
 import { DateRangePickerProps } from './interfaces';
 import ModeSwitcher from './mode-switcher';
 import RelativeRangePicker from './relative-range';
-import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 import { normalizeTimeOffset } from './time-offset';
+import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 
 import styles from './styles.css.js';
 
