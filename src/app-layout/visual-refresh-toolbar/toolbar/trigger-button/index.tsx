@@ -113,22 +113,15 @@ function TriggerButton(
    */
   const handleOnFocus = useCallback(
     (event: FocusEvent) => {
+      let shouldShowTooltip = false;
       const eventWithRelatedTarget = event as any;
       const relatedTarget = eventWithRelatedTarget?.relatedTarget;
       const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
-      let shouldShowTooltip = false;
-      if (isForSplitPanel) {
-        const breadcrumbsComponent = document.querySelector('nav[data-awsui-discovered-breadcrumbs="true"]');
-        if (breadcrumbsComponent && relatedTarget && breadcrumbsComponent.contains(relatedTarget)) {
-          //show tooltip when using keys to navigate to it from the breadcrumbs as
-          //breadcrumbs do not have a data-shift-focus like other drawer triggers
-          shouldShowTooltip = true;
-        } else {
-          shouldShowTooltip = isFromAnotherTrigger;
-        }
-      } else if (!isForPreviousActiveDrawer) {
-        shouldShowTooltip = true; //for keyed navigation inside the toolbar
-      } else if (isFromAnotherTrigger) {
+      if (
+        isForSplitPanel || //for tab/key navigation to button from breadcrume
+        isFromAnotherTrigger || //for kay navigation from another trigger button
+        !isForPreviousActiveDrawer //for when the drawer was not opened recently
+      ) {
         shouldShowTooltip = true;
       }
       setSupressTooltip(!shouldShowTooltip);

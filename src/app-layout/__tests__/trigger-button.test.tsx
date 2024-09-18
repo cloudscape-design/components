@@ -521,10 +521,19 @@ describe('Visual Refresh Toolbar trigger-button', () => {
         expect(() => getByText(mockTooltipText)).toThrow();
         fireEvent.focus(wrapper!.getElement());
 
+        expect(getByText(mockTooltipText)).toBeTruthy();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(true);
+        fireEvent.blur(wrapper!.getElement());
+        expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
         expect(() => getByText(mockTooltipText)).toThrow();
       });
 
-      test('Focus and blur events work properly for split panel and from a breadcrumb', () => {
+      test('Focus events work properly for split panel and not from a close button', () => {
         const mockBreadcrumbWrapper = {
           contains: jest.fn().mockReturnValue(true),
         };
@@ -545,7 +554,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
         expect(getByText(mockTooltipText)).toBeTruthy();
       });
 
-      test('Focus and blur events work properly for isForPreviousDrawer', () => {
+      test('Focus events work properly for isForPreviousDrawer', () => {
         const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
           hasTooltip: true,
           isMobile,
