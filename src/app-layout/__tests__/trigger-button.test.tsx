@@ -53,13 +53,15 @@ const mockEventBubble = {
   relatedTarget: null,
 };
 
-const mockEventBubbleWithShiftFocusCloseDrawerButton = {
+const mockRelatedTarget = new EventTarget();
+const mockEventBubbleWithRelatedTarget = {
   ...mockEventBubble,
-  relatedTarget: {
-    dataset: {
-      shiftFocus: 'last-opened-toolbar-trigger-button',
-    },
-  },
+  relatedTarget: mockRelatedTarget,
+  // {
+  //   dataset: {
+  //     shiftFocus: 'last-opened-toolbar-trigger-button',
+  //   },
+  // },
 };
 
 const mockQuerySelector = jest.spyOn(document, 'querySelector');
@@ -268,7 +270,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
     expect(getByTestId(mockTestId)).toBeTruthy();
     expect(button).toBeTruthy();
     expect(document.activeElement).not.toBe(button!.getElement());
-    (ref.current as any)?.focus(mockEventBubbleWithShiftFocusCloseDrawerButton);
+    (ref.current as any)?.focus(mockEventBubbleWithRelatedTarget);
     expect(document.activeElement).toBe(button!.getElement());
   });
 });
@@ -365,7 +367,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           expect(() => getByText(mockTooltipText)).toThrow();
           expect(button).toBeTruthy();
           expect(document.activeElement).not.toBe(button!.getElement());
-          (ref.current as any)?.focus(mockEventBubbleWithShiftFocusCloseDrawerButton);
+          (ref.current as any)?.focus(mockEventBubbleWithRelatedTarget);
           expect(document.activeElement).toBe(button!.getElement());
           expect(getByTestId(mockTestId)).toBeTruthy();
           expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
@@ -543,7 +545,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
         ).toBe(false);
         expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.focus(wrapper!.getElement(), { relatedTarget: new EventTarget() });
+        fireEvent.focus(wrapper!.getElement(), { relatedTarget: mockRelatedTarget });
 
         expect(getByText(mockTooltipText)).toBeTruthy();
       });

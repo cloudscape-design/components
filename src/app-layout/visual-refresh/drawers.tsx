@@ -122,11 +122,7 @@ function ActiveDrawer() {
         }
       }}
     >
-      {!isMobile && activeDrawer?.resizable && (
-        <div className={styles['drawer-slider']} data-shift-focus="drawer-resize-button-handle">
-          {resizeHandle}
-        </div>
-      )}
+      {!isMobile && activeDrawer?.resizable && <div className={styles['drawer-slider']}>{resizeHandle}</div>}
       <div className={styles['drawer-content-container']}>
         <div className={styles['drawer-close-button']}>
           <InternalButton
@@ -143,7 +139,6 @@ function ActiveDrawer() {
             }}
             ref={drawersRefs.close}
             variant="icon"
-            data-shift-focus="last-opened-toolbar-trigger-button"
           />
         </div>
         {toolsContent && (

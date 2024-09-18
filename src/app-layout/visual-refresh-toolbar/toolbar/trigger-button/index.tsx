@@ -120,7 +120,8 @@ function TriggerButton(
       if (isForSplitPanel) {
         const breadcrumbsComponent = document.querySelector('nav[data-awsui-discovered-breadcrumbs="true"]');
         if (breadcrumbsComponent && relatedTarget && breadcrumbsComponent.contains(relatedTarget)) {
-          //show tooltip when using keys to navigate to it from the breadcrumbs
+          //show tooltip when using keys to navigate to it from the breadcrumbs as
+          //breadcrumbs do not have a data-shift-focus like other drawer triggers
           shouldShowTooltip = true;
         } else {
           shouldShowTooltip = isFromAnotherTrigger;
@@ -128,8 +129,6 @@ function TriggerButton(
       } else if (!isForPreviousActiveDrawer) {
         shouldShowTooltip = true; //for keyed navigation inside the toolbar
       } else if (isFromAnotherTrigger) {
-        //needed for safari which doesn't read the relatedTarget when drawer closed via
-        //drawer close button
         shouldShowTooltip = true;
       }
       setSupressTooltip(!shouldShowTooltip);
