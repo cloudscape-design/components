@@ -57,11 +57,6 @@ const mockRelatedTarget = new EventTarget();
 const mockEventBubbleWithRelatedTarget = {
   ...mockEventBubble,
   relatedTarget: mockRelatedTarget,
-  // {
-  //   dataset: {
-  //     shiftFocus: 'last-opened-toolbar-trigger-button',
-  //   },
-  // },
 };
 
 const mockQuerySelector = jest.spyOn(document, 'querySelector');

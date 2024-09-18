@@ -124,7 +124,8 @@ describe.each(['visual-refresh', 'classic'] as const)('%s', theme => {
   });
 });
 
-describe.each(['visual-refresh-toolbar'] as const)('%s', theme => {
+describe('visual-refresh-toolbar', () => {
+  const theme = 'visual-refresh-toolbar';
   const mobileDrawerTriggerIds = drawerIds.slice(
     0,
     VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + (theme === 'visual-refresh-toolbar' ? 1 : 0)
@@ -286,7 +287,8 @@ describe.each(['visual-refresh-toolbar'] as const)('%s', theme => {
       })
     );
 
-    testIf(theme === 'visual-refresh-toolbar')(
+    //vr-toolbar-only
+    test(
       'Shows tooltip correctly on split panel trigger for mouse interactions during split-panel actions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -302,7 +304,8 @@ describe.each(['visual-refresh-toolbar'] as const)('%s', theme => {
       })
     );
 
-    testIf(theme === 'visual-refresh-toolbar')(
+    //vr-toolbar-only
+    test(
       'Removes tooltip from split panel trigger on escape key press after showing from mouse hover',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -314,7 +317,8 @@ describe.each(['visual-refresh-toolbar'] as const)('%s', theme => {
       })
     );
 
-    testIf(theme === 'visual-refresh-toolbar')(
+    //vr-toolbar-only
+    test(
       'Shows tooltip correctly for split panel trigger for keyboard (tab) interactions',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
@@ -336,7 +340,8 @@ describe.each(['visual-refresh-toolbar'] as const)('%s', theme => {
       })
     );
 
-    testIf(theme === 'visual-refresh-toolbar')(
+    //vr-toolbar-only
+    test(
       'Removes tooltip from split panel trigger on escape key press after showing from keyboard event',
       setupTest({ theme, size }, async page => {
         await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(0);
