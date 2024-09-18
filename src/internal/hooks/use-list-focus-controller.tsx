@@ -7,9 +7,9 @@ import { getFirstFocusable, isFocusable } from '../components/focus-lock/utils.j
 
 interface UseListFocusControllerOptions {
   nextFocusIndex: null | number;
-  onFocusMoved?: (target: HTMLElement) => void;
+  onFocusMoved: (target: HTMLElement, targetType: 'next' | 'prev' | 'show-more' | 'fallback') => void;
   listItemSelector: string;
-  outsideSelector?: string;
+  fallbackSelector?: string;
   showMoreSelector?: string;
 }
 
@@ -17,7 +17,7 @@ export function useListFocusController({
   nextFocusIndex,
   onFocusMoved,
   listItemSelector,
-  outsideSelector,
+  fallbackSelector,
   showMoreSelector,
 }: UseListFocusControllerOptions) {
   const tokenListRef = useRef<HTMLDivElement>(null);
@@ -28,7 +28,7 @@ export function useListFocusController({
     }
 
     const tokenElements = tokenListRef.current.querySelectorAll(listItemSelector);
-    const outsideElement = outsideSelector ? selectElement(tokenListRef.current, outsideSelector) : null;
+    const fallbackElement = fallbackSelector ? selectElement(tokenListRef.current, fallbackSelector) : null;
     const toggleButton = showMoreSelector ? selectElement(tokenListRef.current, showMoreSelector) : null;
 
     let closestPrevIndex = Number.NEGATIVE_INFINITY;
@@ -46,25 +46,31 @@ export function useListFocusController({
 
     const nextElement = tokenElements[closestNextIndex];
     const prevElement = tokenElements[closestPrevIndex];
-    const focusTarget = getFirstEligible(nextElement, prevElement, toggleButton, outsideElement);
+    const focusTarget = getFirstEligible(
+      { id: 'next', element: nextElement } as const,
+      { id: 'prev', element: prevElement } as const,
+      { id: 'show-more', element: toggleButton } as const,
+      { id: 'fallback', element: fallbackElement } as const
+    );
 
     if (focusTarget) {
-      focusTarget.focus();
-      onFocusMoved?.(focusTarget);
+      onFocusMoved(focusTarget.element, focusTarget.id);
     }
 
     // Expecting onFocusMoved to be pure
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nextFocusIndex, listItemSelector, outsideSelector, showMoreSelector]);
+  }, [nextFocusIndex, listItemSelector, fallbackSelector, showMoreSelector]);
 
   return tokenListRef;
 }
 
-function getFirstEligible(...elements: Array<null | Element>): null | HTMLElement {
-  for (const element of elements) {
+function getFirstEligible<Key>(
+  ...elements: Array<{ id: Key; element: null | Element }>
+): null | { id: Key; element: HTMLElement } {
+  for (const { id, element } of elements) {
     const focusable = element ? getFocusableElement(element) : null;
     if (focusable) {
-      return focusable;
+      return { id, element: focusable };
     }
   }
   return null;

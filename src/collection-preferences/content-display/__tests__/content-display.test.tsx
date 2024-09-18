@@ -30,7 +30,7 @@ describe('Content Display preference', () => {
       const descriptionId = wrapper.findDescription().getElement().id;
       expect(descriptionId).toBeTruthy();
       expect(titleId).not.toBe(descriptionId);
-      const list = wrapper.findAll('UL')[0].getElement();
+      const list = wrapper.findAll('ul')[0].getElement();
       expect(list.getAttribute('aria-labelledby')).toBe(titleId);
       expect(list.getAttribute('aria-describedby')).toBe(descriptionId);
     });

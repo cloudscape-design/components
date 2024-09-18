@@ -85,12 +85,14 @@ const FilteringToken = forwardRef(
     ref: React.Ref<FilteringTokenRef>
   ) => {
     const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-    const onFocusMoved = () => setNextFocusIndex(null);
     const tokenListRef = useListFocusController({
       nextFocusIndex,
-      onFocusMoved,
+      onFocusMoved: target => {
+        target.focus();
+        setNextFocusIndex(null);
+      },
       listItemSelector: `.${styles['inner-root']}`,
-      outsideSelector: `.${styles.root}`,
+      fallbackSelector: `.${styles.root}`,
     });
 
     const popoverRef = useRef<InternalPopoverRef>(null);
@@ -99,7 +101,7 @@ const FilteringToken = forwardRef(
       triggerType: 'text',
       header: editorHeader,
       size: popoverSize,
-      position: 'right',
+      position: 'bottom',
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
@@ -247,7 +249,7 @@ const TokenGroup = forwardRef(
 
         <div
           className={clsx(
-            styles.token,
+            parent ? styles.token : styles['inner-token'],
             !!operation && styles['show-operation'],
             grouped && styles.grouped,
             disabled && styles['token-disabled']
@@ -291,7 +293,7 @@ function OperationSelector({
 }) {
   return (
     <InternalSelect
-      __inFilteringToken={true}
+      __inFilteringToken={parent ? 'root' : 'nested'}
       className={clsx(
         parent
           ? clsx(styles.select, testUtilStyles['filtering-token-select'])

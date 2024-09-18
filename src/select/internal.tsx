@@ -34,7 +34,7 @@ import { useSelect } from './utils/use-select';
 import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
-  __inFilteringToken?: boolean;
+  __inFilteringToken?: 'root' | 'nested';
 }
 
 const InternalSelect = React.forwardRef(
@@ -248,7 +248,7 @@ const InternalSelect = React.forwardRef(
             dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
           }
           open={isOpen}
-          stretchTriggerHeight={__inFilteringToken}
+          stretchTriggerHeight={!!__inFilteringToken}
           stretchBeyondTriggerWidth={true}
           trigger={trigger}
           header={filter}
