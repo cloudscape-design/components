@@ -431,6 +431,8 @@ exports[`test-utils selectors 1`] = `
   "prompt-input": [
     "awsui_action-button_nr3gs",
     "awsui_root_nr3gs",
+    "awsui_secondary-actions_nr3gs",
+    "awsui_secondary-content_nr3gs",
     "awsui_textarea_nr3gs",
   ],
   "property-filter": [
