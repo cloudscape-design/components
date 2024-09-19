@@ -85,6 +85,7 @@ function TriggerButton(
             disabled={disabled}
             className={clsx(
               styles.trigger,
+              styles['trigger-button-styles'],
               {
                 [styles.selected]: selected,
                 [styles.badge]: badge,
@@ -96,7 +97,7 @@ function TriggerButton(
             type="button"
             data-testid={testId}
           >
-            <span className={clsx(badge && styles['trigger-badge-wrapper'])}>
+            <span className={clsx(badge && clsx(styles['trigger-badge-wrapper'], styles['trigger-button-styles']))}>
               {(iconName || iconSvg) && <Icon name={iconName} svg={iconSvg} />}
             </span>
           </button>

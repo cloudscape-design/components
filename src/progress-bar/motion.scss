@@ -17,8 +17,8 @@
 
 .result-state {
   @include styles.with-motion {
-    @include styles.animation-fade-in;
     animation: awsui-motion-fade-in awsui.$motion-duration-transition-show-paced
       awsui.$motion-easing-transition-show-paced;
+    @include styles.animation-fade-in;
   }
 }

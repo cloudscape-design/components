@@ -22,9 +22,9 @@
   }
 
   > .anchor {
-    @include styles.link-inline('body-m');
     min-inline-size: 0;
     overflow: hidden;
+    @include styles.link-inline('body-m');
     > .text {
       overflow: hidden;
       text-overflow: ellipsis;

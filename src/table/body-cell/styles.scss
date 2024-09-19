@@ -118,16 +118,16 @@ $cell-negative-space-vertical: 2px;
 
 .body-cell {
   box-sizing: border-box;
-  @include cell-padding-inline-start($cell-horizontal-padding);
-  @include cell-padding-block-start($cell-vertical-padding);
-  @include cell-padding-block-end($cell-vertical-padding-w-border);
-  @include cell-padding-inline-end($cell-horizontal-padding);
   border-block-start: awsui.$border-divider-list-width solid transparent;
   word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
   font-weight: inherit;
-
   text-align: start;
+
+  @include cell-padding-inline-start($cell-horizontal-padding);
+  @include cell-padding-block-start($cell-vertical-padding);
+  @include cell-padding-block-end($cell-vertical-padding-w-border);
+  @include cell-padding-inline-end($cell-horizontal-padding);
 
   &-content {
     box-sizing: border-box;
@@ -243,6 +243,11 @@ $cell-negative-space-vertical: 2px;
     position: sticky;
     background: awsui.$color-background-container-content;
     z-index: 798; // Our sticky elements should have z-index in the range of 800-850, this value needs to be lower
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
     &-pad-left:not(.has-selection):not(.is-visual-refresh.body-cell:first-child.has-striped-rows) {
       @include cell-padding-inline-start(awsui.$space-table-horizontal);
     }
@@ -291,11 +296,6 @@ $cell-negative-space-vertical: 2px;
         clip-path: inset(0 -24px 0 0);
       }
     }
-    @include styles.with-motion {
-      transition-property: padding;
-      transition-duration: awsui.$motion-duration-transition-show-quick;
-      transition-timing-function: awsui.$motion-easing-sticky;
-    }
   }
 
   // Use padding as a selected border placeholder to make sure rows don't change height on selection (visual refresh)
@@ -307,8 +307,8 @@ $cell-negative-space-vertical: 2px;
     @include cell-padding-block-end(calc(#{$cell-vertical-padding} + #{awsui.$border-divider-list-width}));
   }
   &-selected.body-cell-prev-selected {
-    @include cell-padding-block-start($cell-vertical-padding-w-border);
     border-block-start: $selected-border-placeholder;
+    @include cell-padding-block-start($cell-vertical-padding-w-border);
   }
   &-selected.body-cell-next-selected {
     border-block-end-width: awsui.$border-divider-list-width;
