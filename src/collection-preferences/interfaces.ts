@@ -219,11 +219,7 @@ export namespace CollectionPreferencesProps {
     dragHandleAriaLabel?: string;
     dragHandleAriaDescription?: string;
     searchableColumns?: boolean;
-    columnFilteringPlaceholderText?: string;
-    columnFilteringAriaLabel?: string;
-    columnFilteringCountText?: (count: number) => string;
-    columnFilteringEmptyText?: string;
-    columnFilteringClearFilterText?: string;
+    i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
 
   export interface ContentDisplayOption {
@@ -294,5 +290,37 @@ export namespace CollectionPreferencesProps {
   export interface StickyColumnsPreference {
     firstColumns?: StickyColumnPreference;
     lastColumns?: StickyColumnPreference;
+  }
+
+  export interface ContentDisplayPreferenceI18nStrings {
+    /**
+     * Specifies a `placeholder` for the filtering input.
+     * @i18n
+     */
+    columnFilteringPlaceholder?: string;
+
+    /**
+     * Specifies an `aria-label` for the filtering input.
+     * @i18n
+     */
+    columnFilteringAriaLabel?: string;
+
+    /**
+     * Specifies the `count text` for the filtering input to reflect matches found.
+     * @i18n
+     */
+    columnFilteringCountText?: (count: number) => string;
+
+    /**
+     * Specifies the `no match` text for when there are no matching options in the filtering.
+     * @i18n
+     */
+    columnFilteringNoMatchText?: string;
+
+    /**
+     * Specifies both an `aria-label` for the clear filtering input action and the `clear filter button` text for the no match button.
+     * @i18n
+     */
+    columnFilteringClearFilterText?: string;
   }
 }

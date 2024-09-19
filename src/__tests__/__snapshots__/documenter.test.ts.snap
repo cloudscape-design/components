@@ -5205,6 +5205,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "type": "string",
           },
           {
+            "name": "i18nStrings",
+            "optional": true,
+            "type": "CollectionPreferencesProps.ContentDisplayPreferenceI18nStrings",
+          },
+          {
             "name": "liveAnnouncementDndDiscarded",
             "optional": true,
             "type": "string",
@@ -5228,6 +5233,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "options",
             "optional": false,
             "type": "ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>",
+          },
+          {
+            "name": "searchableColumns",
+            "optional": true,
+            "type": "false | true",
           },
           {
             "name": "title",

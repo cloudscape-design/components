@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "順序変更をキャンセルしました",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "フィルター列",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "フィルター列",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "一致が見つかりません",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "フィルターをクリア",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0 件の一致} one {1 件の一致} other {{count} 件の一致}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "コピー"

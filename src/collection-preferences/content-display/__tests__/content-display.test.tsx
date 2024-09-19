@@ -211,7 +211,7 @@ describe('Content Display preference', () => {
       const options = wrapper.findOptions();
       expect(options).toHaveLength(0);
 
-      const emptyState = wrapper.findEmptyState();
+      const emptyState = wrapper.findNoMatch();
       expect(emptyState).not.toBeNull();
       expect(emptyState!.getElement()).toHaveTextContent('No matches found');
 

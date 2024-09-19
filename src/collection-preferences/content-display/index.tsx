@@ -45,11 +45,7 @@ export default function ContentDisplayPreference({
   dragHandleAriaDescription,
   dragHandleAriaLabel,
   searchableColumns = false,
-  columnFilteringPlaceholderText,
-  columnFilteringAriaLabel,
-  columnFilteringCountText,
-  columnFilteringEmptyText,
-  columnFilteringClearFilterText,
+  i18nStrings,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
   const i18n = useInternalI18n('collection-preferences');
@@ -122,33 +118,41 @@ export default function ContentDisplayPreference({
           <InternalTextFilter
             filteringText={columnFilteringText}
             filteringPlaceholder={i18n(
-              'contentDisplayPreference.columnFilteringPlaceholderText',
-              columnFilteringPlaceholderText
+              'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
+              i18nStrings?.columnFilteringPlaceholder
             )}
-            filteringAriaLabel={i18n('contentDisplayPreference.columnFilteringAriaLabel', columnFilteringAriaLabel)}
+            filteringAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
+              i18nStrings?.columnFilteringAriaLabel
+            )}
             filteringClearAriaLabel={i18n(
-              'contentDisplayPreference.columnFilteringClearFilterText',
-              columnFilteringClearFilterText
+              'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+              i18nStrings?.columnFilteringClearFilterText
             )}
             onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
-            countText={
-              columnFilteringText.length > 0 && columnFilteringCountText
-                ? columnFilteringCountText(sortedOptions?.length)
-                : ''
-            }
+            countText={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringCountText',
+              i18nStrings?.columnFilteringCountText ? i18nStrings?.columnFilteringCountText(sortedOptions?.length) : ''
+            )}
           />
         </div>
       )}
 
-      {/* Empty state */}
+      {/* No match */}
       {sortedOptions.length === 0 && (
-        <div className={getClassName('empty-state')}>
+        <div className={getClassName('no-match')}>
           <InternalSpaceBetween size="s" alignItems="center">
             <InternalBox margin={{ top: 'm' }}>
-              {i18n('contentDisplayPreference.columnFilteringEmptyText', columnFilteringEmptyText)}
+              {i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
+                i18nStrings?.columnFilteringNoMatchText
+              )}
             </InternalBox>
             <InternalButton onClick={() => setColumnFilteringText('')}>
-              {i18n('contentDisplayPreference.columnFilteringClearFilterText', columnFilteringClearFilterText)}
+              {i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+                i18nStrings?.columnFilteringClearFilterText
+              )}
             </InternalButton>
           </InternalSpaceBetween>
         </div>
