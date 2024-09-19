@@ -47,7 +47,6 @@ describe('useTableInteractionMetrics', () => {
       jest.advanceTimersByTime(3456);
 
       expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledTimes(0);
-
       rerender({ loading: false });
 
       expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledTimes(1);
@@ -110,6 +109,27 @@ describe('useTableInteractionMetrics', () => {
       expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledWith(
         expect.objectContaining({
           userAction: 'filter',
+        })
+      );
+    });
+
+    test('interactionMetadata is added to the performance metrics', () => {
+      const { setLastUserAction, rerender } = render({});
+      const interactionMetadataValue = '{filterText = test}';
+      setLastUserAction('filter');
+      rerender({ loading: true });
+      rerender({
+        loading: false,
+        interactionMetadata: () => {
+          return interactionMetadataValue;
+        },
+      });
+
+      expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledTimes(1);
+      expect(PerformanceMetrics.tableInteraction).toHaveBeenCalledWith(
+        expect.objectContaining({
+          userAction: 'filter',
+          interactionMetadata: interactionMetadataValue,
         })
       );
     });
