@@ -76,9 +76,9 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
   }
 
   /**
-   * Returns the empty state with the clear filter button.
+   * Returns no match with the clear filter button.
    */
-  findEmptyState(): ElementWrapper | null {
-    return this.findByClassName(styles['content-display-empty-state']);
+  findNoMatch(): ElementWrapper | null {
+    return this.findByClassName(styles['content-display-no-match']);
   }
 }

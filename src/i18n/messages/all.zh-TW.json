@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "使用空白鍵或 ENTER 鍵啟用項目拖曳功能，然後使用方向鍵移動項目的位置。若要完成位置移動，請使用空白鍵或 ENTER 鍵，或者若要捨棄移動，請使用 ESC 鍵。",
     "contentDisplayPreference.liveAnnouncementDndStarted": "在第 {position} 位置 (共 {total} 個位置) 拾取了項目",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "重新排序已取消",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "篩選欄",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "篩選欄",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "找不到相符項目",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "清除篩選條件",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0 個符合} one {1 個符合} other {{count} 個符合}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "複製"
