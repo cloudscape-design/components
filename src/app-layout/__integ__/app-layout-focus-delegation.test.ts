@@ -84,8 +84,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      //TODO create separate split panel test for 'visual-refresh-toolbar' theme
-      testIf(theme !== 'visual-refresh-toolbar')(
+      test(
         'navigation panel focus toggles between open and close buttons',
         setupTest(
           async page => {
