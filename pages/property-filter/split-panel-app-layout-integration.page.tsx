@@ -35,6 +35,7 @@ type PageContext = React.Context<
     enableTokenGroups?: boolean;
     disableFreeTextFiltering?: boolean;
     hideOperations?: boolean;
+    fixedOperations?: boolean;
     asyncOptions?: boolean;
     emptyOptions?: boolean;
   }>
@@ -48,6 +49,7 @@ export default function () {
       enableTokenGroups = true,
       disableFreeTextFiltering = false,
       hideOperations = false,
+      fixedOperations = false,
       asyncOptions = false,
       emptyOptions = false,
     },
@@ -179,6 +181,12 @@ export default function () {
                   disableFreeTextFiltering
                 </Checkbox>
                 <Checkbox
+                  checked={fixedOperations}
+                  onChange={({ detail }) => setUrlParams({ fixedOperations: detail.checked })}
+                >
+                  fixedOperations
+                </Checkbox>
+                <Checkbox
                   checked={hideOperations}
                   onChange={({ detail }) => setUrlParams({ hideOperations: detail.checked })}
                 >
@@ -215,6 +223,7 @@ export default function () {
                   enableTokenGroups={enableTokenGroups}
                   disableFreeTextFiltering={disableFreeTextFiltering}
                   hideOperations={hideOperations}
+                  fixedOperations={fixedOperations}
                   virtualScroll={virtualScroll}
                   expandToViewport={expandToViewport}
                   countText={`${items.length} matches`}
