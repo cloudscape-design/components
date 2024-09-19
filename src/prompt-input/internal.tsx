@@ -165,6 +165,7 @@ const InternalPromptInput = React.forwardRef(
           className={clsx(styles['action-button'], testutilStyles['action-button'])}
           ariaLabel={actionButtonAriaLabel}
           disabled={disabled || readOnly || disableActionButton}
+          __focusable={readOnly}
           iconName={actionButtonIconName}
           iconUrl={actionButtonIconUrl}
           iconSvg={actionButtonIconSvg}
