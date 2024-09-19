@@ -203,9 +203,9 @@ export default class TagEditorPage extends BasePageObject {
   }
 
   async getTags() {
-    const elements = await this.browser.$$(tagEditorWrapper.findRows().toSelector());
+    const elementsCount = await this.getElementsCount(tagEditorWrapper.findRows().toSelector());
     const tags = [];
-    for (let index = 1; index <= elements.length; index++) {
+    for (let index = 1; index <= elementsCount; index++) {
       tags.push(await this.getTag(index));
     }
     return tags;
