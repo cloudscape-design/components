@@ -7,10 +7,9 @@
 @use '../../styles/tokens' as awsui;
 
 .dimmed {
+  @include styles.styles-reset;
   @include styles.with-motion {
     transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
     transition-delay: awsui.$motion-duration-transition-quick;
   }
-
-  @include styles.styles-reset;
 }
