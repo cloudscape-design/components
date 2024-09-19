@@ -150,7 +150,7 @@ describe('Visual refresh toolbar only', () => {
       })
     );
 
-    test('first opened drawer should be closed when active drawers can not be shrunk to accommodate it', () => {
+    test('first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1400px)', () => {
       setupTest(async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1400 });
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
@@ -159,6 +159,21 @@ describe('Visual refresh toolbar only', () => {
 
         await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(false);
         await expect(page.isClickable(findDrawerById(wrapper, 'security')!.toSelector())).resolves.toBe(true);
+        await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
+      });
+    });
+
+    test('first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1200px)', () => {
+      setupTest(async page => {
+        await page.setWindowSize({ ...viewports.desktop, width: 1200 });
+        await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
+        await page.click(wrapper.findDrawerTriggerById('security').toSelector());
+        await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+        await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
+
+        await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(false);
+        await expect(page.isClickable(findDrawerById(wrapper, 'security')!.toSelector())).resolves.toBe(false);
+        await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
         await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
       });
     });

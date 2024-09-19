@@ -210,7 +210,9 @@ export function useDrawers(
 
     if (newDrawerId) {
       drawersOpenQueue.current = [newDrawerId, ...drawersOpenQueue.current];
-    } else if (activeDrawerId) {
+    }
+
+    if (activeDrawerId) {
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== activeDrawerId);
     }
   }
