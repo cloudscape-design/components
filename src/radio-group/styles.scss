@@ -48,6 +48,9 @@ $radio-size: awsui.$size-control;
   stroke: awsui.$color-background-control-checked;
   fill: awsui.$color-foreground-control-default;
   opacity: 0;
+  @include styles.with-motion {
+    transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
   &.styled-circle-checked {
     opacity: 1;
   }
@@ -58,8 +61,5 @@ $radio-size: awsui.$size-control;
   &.styled-circle-readonly {
     fill: awsui.$color-foreground-control-read-only;
     stroke: awsui.$color-background-control-disabled;
-  }
-  @include styles.with-motion {
-    transition: opacity awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
   }
 }

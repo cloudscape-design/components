@@ -139,6 +139,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         setupTest(
           async page => {
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+            await expect(page.isExisting(wrapper.findSplitPanel().toSelector())).resolves.toBeTruthy();
+            await page.keys('Escape'); //escape tooltip from still hovering over open trigger button
             await page.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
             await page.keys(['Tab', 'Left', 'Tab', 'Tab', 'Enter']);
             await expect(page.isFocused(wrapper.findSplitPanel().findPreferencesButton().toSelector())).resolves.toBe(
@@ -311,7 +313,6 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
               await page.click(wrapper.findContentRegion().findContainer().toSelector());
               await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
               await expect(page.isFocused(infoLink)).resolves.toBe(false);
-
               await expect(page.isFocused(wrapper.findDrawerTriggerById('pro-help').toSelector())).resolves.toBe(true);
             },
             { pageName: 'with-drawers', theme, mobile }

@@ -59,7 +59,6 @@
 
 .toggle {
   @include styles.styles-reset;
-  @include styles.link-default('body-m');
 
   display: flex;
   align-items: center;
@@ -73,6 +72,8 @@
   // Icon svg has one pixel around it. We need to shift the button one
   // pixel to the left to vertically align it with the input field
   margin-inline-start: -1px;
+
+  @include styles.link-default('body-m');
 
   &:active,
   &:focus,

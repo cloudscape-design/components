@@ -7,7 +7,7 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
-@import './motion';
+@use './motion';
 
 $_status-colors: (
   'error': awsui.$color-text-status-error,
