@@ -23,6 +23,7 @@ export interface FunnelErrorProps extends BaseFunnelProps {
 
 export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteractionId'> {
   flowType?: FlowType;
+  resourceType?: string;
   funnelNameSelector: string;
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
