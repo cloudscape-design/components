@@ -186,6 +186,7 @@ const InternalPromptInput = React.forwardRef(
           [styles.disabled]: disabled,
         })}
         ref={__internalRootRef}
+        role="region"
       >
         {secondaryContent && (
           <div
