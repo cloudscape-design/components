@@ -18,6 +18,7 @@ import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/ev
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalStatusIndicator from '../status-indicator/internal';
+import useTagEditor from './hooks/use-tag-editor';
 import { TagEditorProps } from './interfaces';
 import { TagControl, UndoButton } from './internal';
 import { findIndex, useMemoizedArray } from './utils';
@@ -25,7 +26,7 @@ import { validate, ValidationError } from './validation';
 
 import styles from './styles.css.js';
 
-export { TagEditorProps };
+export { TagEditorProps, useTagEditor };
 
 interface InternalTag {
   tag: TagEditorProps.Tag;
