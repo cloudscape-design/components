@@ -106,6 +106,10 @@ handleSplitPanelMaxWidth function in the context.
   }
 }
 
+.trigger-wrapper-tooltip-visible {
+  /* used in test-utils*/
+}
+
 .dot {
   position: absolute;
   inline-size: 9px;
@@ -117,4 +121,8 @@ handleSplitPanelMaxWidth function in the context.
   background-color: awsui.$color-background-badge-icon;
   inset-block-start: 0;
   inset-inline-end: 0;
+}
+
+.trigger-tooltip {
+  /* used in test-utils */
 }

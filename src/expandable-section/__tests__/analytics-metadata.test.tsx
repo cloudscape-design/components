@@ -138,7 +138,7 @@ test('Internal ExpandableSection does not render "component" metadata', () => {
   expect(getGeneratedAnalyticsMetadata(button)).toEqual({
     action: 'expand',
     detail: {
-      label: '',
+      label: 'whatever',
       expanded: 'true',
     },
   });

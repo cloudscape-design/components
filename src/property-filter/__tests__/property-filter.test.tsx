@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
 import '../../__a11y__/to-validate-a11y';
@@ -17,6 +18,15 @@ import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../l
 import { createDefaultProps } from './common';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 const states: Record<string, string> = {
   0: 'Stopped',
@@ -450,4 +460,31 @@ describe('property filter parts', () => {
     const { container } = render(<PropertyFilter {...defaultProps} />);
     await expect(container).toValidateA11y();
   });
+});
+
+test('warns and does not hide operations when using hideOperations and enableTokenGroups', () => {
+  const { propertyFilterWrapper: wrapper } = renderComponent({
+    query: {
+      operation: 'or',
+      tokenGroups: [
+        { propertyKey: 'string', operator: '=', value: 'first' },
+        {
+          operation: 'and',
+          tokens: [
+            { propertyKey: 'string', operator: ':', value: 'se' },
+            { propertyKey: 'string', operator: ':', value: 'cond' },
+          ],
+        },
+      ],
+      tokens: [],
+    },
+    hideOperations: true,
+    enableTokenGroups: true,
+  });
+
+  expect(wrapper.findTokens()[1].findTokenOperation()).not.toBe(null);
+  expect(wrapper.findTokens()[1].findGroupTokens()[1].findTokenOperation()).not.toBe(null);
+
+  expect(warnOnce).toHaveBeenCalledTimes(1);
+  expect(warnOnce).toHaveBeenCalledWith('PropertyFilter', 'Operations cannot be hidden when token groups are enabled.');
 });

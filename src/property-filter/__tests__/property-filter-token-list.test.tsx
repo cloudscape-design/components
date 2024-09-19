@@ -6,16 +6,8 @@ import { act, render } from '@testing-library/react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
 import { PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
-import PropertyFilterInternal, { PropertyFilterInternalProps } from '../../../lib/components/property-filter/internal';
 import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter';
-import {
-  createDefaultProps,
-  i18nStrings,
-  i18nStringsTokenGroups,
-  StatefulInternalPropertyFilter,
-  StatefulPropertyFilter,
-} from './common';
+import { createDefaultProps, i18nStrings, StatefulPropertyFilter } from './common';
 
 const defaultProps = createDefaultProps(
   [
@@ -51,34 +43,14 @@ const renderStatefulComponent = (props?: Partial<PropertyFilterProps>) => {
   return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
 };
 
-function renderInternalComponent(props: Partial<PropertyFilterInternalProps>) {
-  const { container } = render(
-    <PropertyFilterInternal
-      {...defaultProps}
-      enableTokenGroups={true}
-      i18nStringsTokenGroups={i18nStringsTokenGroups}
-      filteringOptions={[]}
-      customGroupsText={[]}
-      disableFreeTextFiltering={false}
-      {...props}
-    />
-  );
-  return new PropertyFilterWrapperInternal(container);
+function renderWithGroups(props: Partial<PropertyFilterProps>) {
+  const { container } = render(<PropertyFilter {...defaultProps} enableTokenGroups={true} {...props} />);
+  return createWrapper(container).findPropertyFilter()!;
 }
 
-const renderStatefulInternalComponent = (props?: Partial<PropertyFilterInternalProps>) => {
-  const { container } = render(
-    <StatefulInternalPropertyFilter
-      {...defaultProps}
-      enableTokenGroups={true}
-      i18nStringsTokenGroups={i18nStringsTokenGroups}
-      filteringOptions={[]}
-      customGroupsText={[]}
-      disableFreeTextFiltering={false}
-      {...props}
-    />
-  );
-  return new PropertyFilterWrapperInternal(container);
+const renderWithGroupsStateful = (props?: Partial<PropertyFilterProps>) => {
+  const { container } = render(<StatefulPropertyFilter {...defaultProps} enableTokenGroups={true} {...props} />);
+  return createWrapper(container).findPropertyFilter()!;
 };
 
 describe('filtering tokens', () => {
@@ -188,6 +160,7 @@ describe('filtering tokens', () => {
       });
       act(() => wrapper.findTokens()![0].findRemoveButton()!.click());
       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
+      expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
     });
 
     test('has a label from i18nStrings', () => {
@@ -213,7 +186,7 @@ describe('filtering tokens', () => {
     });
 
     test('moves focus to the adjacent grouped token and to the single remaining token', () => {
-      const wrapper = renderStatefulInternalComponent({
+      const wrapper = renderWithGroupsStateful({
         query: {
           operation: 'and',
           tokenGroups: [
@@ -372,7 +345,7 @@ describe('grouped token', () => {
   const tokenJack = { propertyKey: 'string', operator: '=', value: 'Jack' };
 
   test('token group has correct ARIA label and edit button ARIA label', () => {
-    const wrapper = renderInternalComponent({
+    const wrapper = renderWithGroups({
       query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
     });
 
@@ -384,7 +357,7 @@ describe('grouped token', () => {
 
   test('changes group operation', () => {
     const onChange = jest.fn();
-    const wrapper = renderInternalComponent({
+    const wrapper = renderWithGroups({
       query: { operation: 'and', tokenGroups: [{ operation: 'and', tokens: [tokenJohn, tokenJane] }], tokens: [] },
       onChange,
     });
@@ -406,7 +379,7 @@ describe('grouped token', () => {
 
   test('removes token from group', () => {
     const onChange = jest.fn();
-    const wrapper = renderInternalComponent({
+    const wrapper = renderWithGroups({
       query: {
         operation: 'and',
         tokenGroups: [{ operation: 'and', tokens: [tokenJohn, tokenJane, tokenJack] }],

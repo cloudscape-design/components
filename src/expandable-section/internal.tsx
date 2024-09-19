@@ -15,6 +15,7 @@ import { ExpandableSectionHeader } from './expandable-section-header';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import { variantSupportsDescription } from './utils';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
@@ -100,7 +101,7 @@ export default function InternalExpandableSection({
     <ExpandableSectionContainer
       {...baseProps}
       expanded={expanded}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
       disableContentPaddings={disableContentPaddings}
       __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}

@@ -2,14 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { useInternalI18n } from '../i18n/context';
-import {
-  ComparisonOperator,
-  FormattedToken,
-  I18nStrings,
-  I18nStringsTokenGroups,
-  InternalToken,
-  InternalTokenGroup,
-} from './interfaces';
+import { ComparisonOperator, FormattedToken, I18nStrings, InternalToken, InternalTokenGroup } from './interfaces';
 import { tokenGroupToTokens } from './utils';
 
 export type I18nStringsOperators = Pick<
@@ -27,31 +20,32 @@ export type I18nStringsOperators = Pick<
 >;
 
 // Replacing i18n function with ones taking internal tokens as argument.
-export type I18nStringsInternal = Omit<I18nStrings, 'formatToken' | 'removeTokenButtonAriaLabel'> &
-  Omit<
-    I18nStringsTokenGroups,
-    | 'groupEditAriaLabel'
-    | 'tokenEditorTokenActionsAriaLabel'
-    | 'tokenEditorTokenRemoveAriaLabel'
-    | 'tokenEditorAddExistingTokenAriaLabel'
-    | 'tokenEditorAddExistingTokenLabel'
-  > & {
-    formatToken: (token: InternalToken) => {
-      propertyLabel: string;
-      operator: string;
-      value: string;
-      formattedText: string;
-    };
-    groupAriaLabel: (group: InternalTokenGroup) => string;
-    groupEditAriaLabel: (group: InternalTokenGroup) => string;
-    removeTokenButtonAriaLabel: (token: InternalToken) => string;
-    tokenEditorTokenActionsAriaLabel: (token: InternalToken) => string;
-    tokenEditorTokenRemoveAriaLabel: (token: InternalToken) => string;
-    tokenEditorAddExistingTokenAriaLabel: (token: InternalToken) => string;
-    tokenEditorAddExistingTokenLabel: (token: InternalToken) => string;
+export type I18nStringsInternal = Omit<
+  I18nStrings,
+  | 'formatToken'
+  | 'removeTokenButtonAriaLabel'
+  | 'groupEditAriaLabel'
+  | 'tokenEditorTokenActionsAriaLabel'
+  | 'tokenEditorTokenRemoveAriaLabel'
+  | 'tokenEditorAddExistingTokenAriaLabel'
+  | 'tokenEditorAddExistingTokenLabel'
+> & {
+  formatToken: (token: InternalToken) => {
+    propertyLabel: string;
+    operator: string;
+    value: string;
+    formattedText: string;
   };
+  groupAriaLabel: (group: InternalTokenGroup) => string;
+  groupEditAriaLabel: (group: InternalTokenGroup) => string;
+  removeTokenButtonAriaLabel: (token: InternalToken) => string;
+  tokenEditorTokenActionsAriaLabel: (token: InternalToken) => string;
+  tokenEditorTokenRemoveAriaLabel: (token: InternalToken) => string;
+  tokenEditorAddExistingTokenAriaLabel: (token: InternalToken) => string;
+  tokenEditorAddExistingTokenLabel: (token: InternalToken) => string;
+};
 
-export function usePropertyFilterI18n(def: I18nStrings & I18nStringsTokenGroups = {}): I18nStringsInternal {
+export function usePropertyFilterI18n(def: I18nStrings = {}): I18nStringsInternal {
   const i18n = useInternalI18n('property-filter');
 
   const allPropertiesLabel = i18n('i18nStrings.allPropertiesLabel', def?.allPropertiesLabel);

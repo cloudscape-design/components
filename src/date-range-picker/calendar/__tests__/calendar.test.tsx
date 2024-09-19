@@ -57,7 +57,7 @@ describe('Date range picker calendar', () => {
     return wrapper
       .findDropdown()!
       .find(`.${gridDayStyles.day}[tabIndex="0"]`)
-      ?.find(`:not(.${screenreaderOnlyStyles.root}`);
+      ?.find(`:not(.${screenreaderOnlyStyles.root})`);
   };
 
   const findFocusableDateText = (wrapper: DateRangePickerWrapper) => {

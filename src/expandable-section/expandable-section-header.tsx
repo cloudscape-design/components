@@ -65,7 +65,7 @@ const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
   const metadata: GeneratedAnalyticsMetadataExpandableSectionExpand = {
     action: 'expand',
     detail: {
-      label: { root: 'component' },
+      label: { rootSelector: `.${analyticsSelectors.root}` },
       expanded: `${!expanded}`,
     },
   };
