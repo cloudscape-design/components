@@ -38,6 +38,7 @@ interface DrawerTriggersProps {
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: (() => void) | undefined;
+  disabled: boolean;
 }
 
 export function DrawerTriggers({
@@ -51,6 +52,7 @@ export function DrawerTriggers({
   splitPanelFocusRef,
   splitPanelToggleProps,
   onSplitPanelToggle,
+  disabled = false,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -120,6 +122,7 @@ export function DrawerTriggers({
               isMobile={isMobile}
               isForPreviousActiveDrawer={splitPanelToggleProps.active}
               isForSplitPanel={true}
+              disabled={disabled}
             />
             {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
           </>
@@ -149,6 +152,7 @@ export function DrawerTriggers({
               tooltipText={item.ariaLabels?.drawerName}
               isForPreviousActiveDrawer={isForPreviousActiveDrawer}
               isMobile={isMobile}
+              disabled={disabled}
             />
           );
         })}
@@ -165,6 +169,7 @@ export function DrawerTriggers({
                 className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
                 iconName="ellipsis"
                 onClick={onClick}
+                disabled={disabled}
               />
             )}
             onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
