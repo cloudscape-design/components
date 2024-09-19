@@ -28,6 +28,7 @@ export interface TriggerButtonProps {
    */
   selected?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
+
   badge?: boolean;
   highContrastHeader?: boolean;
   /**
@@ -118,9 +119,10 @@ function TriggerButton(
       const relatedTarget = eventWithRelatedTarget?.relatedTarget;
       const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
       if (
-        isForSplitPanel || //for key navigation to button from breadcrumb
-        isFromAnotherTrigger || //for key navigation from another trigger button
-        !isForPreviousActiveDrawer //for when the drawer was not opened recently
+        (isForSplitPanel && !!relatedTarget) || //for when a split panel is closed via button
+        (!isForSplitPanel &&
+          (isFromAnotherTrigger || //for key navigation from another trigger button
+            !isForPreviousActiveDrawer)) //for when the drawer was not opened recently
       ) {
         shouldShowTooltip = true;
       }

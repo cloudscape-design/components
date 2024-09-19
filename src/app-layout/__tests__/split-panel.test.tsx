@@ -113,8 +113,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
     });
 
-    // Not implemented on the toolbar version yet
-    (theme !== 'refresh-toolbar' ? test : test.skip)('Moves focus to slider when opened', () => {
+    test('Moves focus to slider when opened', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -122,12 +121,15 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-      wrapper.findSplitPanelOpenButton()!.click();
+      const slidePanelTrigger =
+        theme === 'refresh-toolbar'
+          ? wrapper.find(`button[data-testid="awsui-app-layout-trigger-slide-panel"]`)
+          : wrapper.findSplitPanelOpenButton();
+      slidePanelTrigger!.click();
       expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
-    // Not implemented on the toolbar version yet
-    (theme !== 'refresh-toolbar' ? test : test.skip)('Moves focus to open button when closed', () => {
+    test('Moves focus to open button when closed', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -135,7 +137,11 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-      wrapper.findSplitPanelOpenButton()!.click();
+      const slidePanelTrigger =
+        theme === 'refresh-toolbar'
+          ? wrapper.find(`button[data-testid="awsui-app-layout-trigger-slide-panel"]`)
+          : wrapper.findSplitPanelOpenButton();
+      slidePanelTrigger!.click();
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
     });

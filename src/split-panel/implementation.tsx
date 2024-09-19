@@ -123,7 +123,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
               variant="icon"
               formAction="none"
               ariaLabel={i18nStrings.openButtonAriaLabel}
-              ref={refs.toggle}
+              ref={!isToolbar ? refs.toggle : undefined}
               ariaExpanded={isOpen}
             />
           )}
