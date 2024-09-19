@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createRef, RefObject, useCallback, useEffect, useMemo, useRef } from 'react';
+import { createRef, RefObject, useCallback, useEffect, useRef } from 'react';
 
 export interface Focusable {
   focus(): void;
@@ -29,19 +29,17 @@ export function useMultipleFocusControl(
   activeDrawersIds: Array<string>
 ): FocusControlMultipleStates {
   const isOpen = activeDrawersIds.length > 0;
+  const refs = useRef<Record<string, FocusControlRefs>>({});
 
-  const refs: Record<string, FocusControlRefs> = useMemo(() => {
-    return activeDrawersIds.reduce((acc, activeDrawerId) => {
-      return {
-        ...acc,
-        [activeDrawerId]: {
-          toggle: createRef<Focusable>(),
-          close: createRef<Focusable>(),
-          slider: createRef<HTMLDivElement>(),
-        },
+  activeDrawersIds.forEach(drawerId => {
+    if (!refs.current[drawerId]) {
+      refs.current[drawerId] = {
+        toggle: createRef<Focusable>(),
+        close: createRef<Focusable>(),
+        slider: createRef<HTMLDivElement>(),
       };
-    }, {});
-  }, [activeDrawersIds]);
+    }
+  });
 
   const doFocus = useCallback(
     (drawerId: string | null) => {
@@ -49,7 +47,7 @@ export function useMultipleFocusControl(
         return;
       }
       if (drawerId) {
-        const ref = refs[drawerId];
+        const ref = refs.current[drawerId];
         previousFocusedElement.current =
           document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
         if (ref?.slider?.current) {
@@ -89,7 +87,7 @@ export function useMultipleFocusControl(
   }, [isOpen, activeDrawersIds, doFocus]);
 
   return {
-    refs,
+    refs: refs.current,
     setFocus,
     loseFocus,
   };
