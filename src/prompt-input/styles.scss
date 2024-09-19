@@ -7,9 +7,11 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles/foundation/' as foundation;
+@use '../internal/styles/forms/constants' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $send-icon-right-spacing: awsui.$space-static-xxs;
+$invalid-border-offset: constants.$invalid-control-left-padding;
 
 @mixin control-border-radius {
   border-start-start-radius: styles.$control-border-radius;
@@ -30,22 +32,31 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
     @include styles.form-readonly-element;
   }
 
+  &.disabled {
+    @include styles.form-disabled-element;
+    cursor: default;
+  }
+
   &.textarea-invalid {
     @include styles.form-invalid-control();
+    padding-inline-start: 0;
 
     &:focus-within,
     &:focus {
       @include styles.form-invalid-control();
+      padding-inline-start: 0;
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }
 
   &.textarea-warning {
     @include styles.form-warning-control();
+    padding-inline-start: 0;
 
     &:focus-within,
     &:focus {
       @include styles.form-warning-control();
+      padding-inline-start: 0;
       box-shadow: foundation.$box-shadow-focused-light-invalid;
     }
   }
@@ -53,11 +64,6 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   &:focus-within,
   &:focus {
     @include styles.form-focus-element;
-  }
-
-  &.disabled {
-    @include styles.form-disabled-element;
-    cursor: default;
   }
 }
 
@@ -99,6 +105,11 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   &:invalid {
     // discard built-in invalid styles, customers should use `invalid` property only (AWSUI-3947)
     box-shadow: none;
+  }
+
+  &.invalid,
+  &.warning {
+    padding-inline-start: $invalid-border-offset;
   }
 
   &:disabled {
@@ -150,6 +161,11 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   &.with-paddings {
     padding-inline-start: styles.$control-padding-horizontal;
     padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+
+    &.invalid,
+    &.warning {
+      padding-inline-start: $invalid-border-offset;
+    }
   }
 }
 
@@ -168,6 +184,11 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
     padding-inline-start: styles.$control-padding-horizontal;
     padding-block-start: awsui.$space-scaled-s;
     padding-block-end: styles.$control-padding-vertical;
+
+    &.invalid,
+    &.warning {
+      padding-inline-start: $invalid-border-offset;
+    }
 
     > .button {
       padding-block-end: 0;

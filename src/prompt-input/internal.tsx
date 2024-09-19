@@ -136,7 +136,10 @@ const InternalPromptInput = React.forwardRef(
       name,
       placeholder,
       autoFocus,
-      className: clsx(styles.textarea, testutilStyles.textarea),
+      className: clsx(styles.textarea, testutilStyles.textarea, {
+        [styles.invalid]: invalid,
+        [styles.warning]: warning,
+      }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
       disabled,
@@ -187,6 +190,8 @@ const InternalPromptInput = React.forwardRef(
           <div
             className={clsx(styles['secondary-content'], testutilStyles['secondary-content'], {
               [styles['with-paddings']]: !disableSecondaryContentPaddings,
+              [styles.invalid]: invalid,
+              [styles.warning]: warning,
             })}
           >
             {secondaryContent}
@@ -200,6 +205,8 @@ const InternalPromptInput = React.forwardRef(
           <div
             className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
               [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+              [styles.invalid]: invalid,
+              [styles.warning]: warning,
             })}
           >
             {secondaryActions}
