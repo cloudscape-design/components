@@ -190,6 +190,10 @@ export function DrawerTriggers({
               selected={activeGlobalDrawersIds.includes(item.id)}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
+              hasTooltip={true}
+              hasOpenDrawer={hasOpenDrawer}
+              tooltipText={item.ariaLabels?.drawerName}
+              isMobile={isMobile}
             />
           );
         })}
