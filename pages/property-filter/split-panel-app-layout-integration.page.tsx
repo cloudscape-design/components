@@ -28,6 +28,8 @@ type PageContext = React.Context<
     enableTokenGroups?: boolean;
     tokenGroupPropertyAllowance?: 'all-properties' | 'same-property';
     disableFreeTextFiltering?: boolean;
+    fixedOperations?: boolean;
+    hideOperations?: boolean;
   }>
 >;
 
@@ -39,6 +41,8 @@ export default function () {
       enableTokenGroups = true,
       tokenGroupPropertyAllowance = 'all-properties',
       disableFreeTextFiltering = false,
+      fixedOperations = false,
+      hideOperations = false,
     },
     setUrlParams,
   } = useContext(AppContext as PageContext);
@@ -114,6 +118,18 @@ export default function () {
                 >
                   disableFreeTextFiltering
                 </Checkbox>
+                <Checkbox
+                  checked={fixedOperations}
+                  onChange={({ detail }) => setUrlParams({ fixedOperations: detail.checked })}
+                >
+                  fixedOperations
+                </Checkbox>
+                <Checkbox
+                  checked={hideOperations}
+                  onChange={({ detail }) => setUrlParams({ hideOperations: detail.checked })}
+                >
+                  hideOperations
+                </Checkbox>
                 <Select
                   inlineLabelText="tokenGroupPropertyAllowanceOptions"
                   options={tokenGroupPropertyAllowanceOptions}
@@ -144,6 +160,8 @@ export default function () {
                   enableTokenGroups={enableTokenGroups}
                   tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
                   disableFreeTextFiltering={disableFreeTextFiltering}
+                  fixedOperations={fixedOperations}
+                  hideOperations={hideOperations}
                   expandToViewport={true}
                   virtualScroll={true}
                   filteringEmpty="No properties"
