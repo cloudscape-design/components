@@ -120,7 +120,8 @@ export default function PromptInputPage() {
 
         <ColumnLayout columns={2}>
           <FormField
-            errorText={textareaValue.length > MAX_CHARS && 'The query has too many characters.'}
+            errorText={(textareaValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
+            warningText={hasWarning && 'This input has a warning'}
             constraintText={
               <>
                 This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
