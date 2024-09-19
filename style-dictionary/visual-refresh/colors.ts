@@ -4,6 +4,7 @@ import { expandColorDictionary } from '../utils';
 import { StyleDictionary } from '../utils/interfaces';
 
 const tokens: StyleDictionary.ColorsDictionary = {
+  colorGreyOpaque10: 'rgba(0, 0, 0, 0.1)',
   colorGreyOpaque25: 'rgba(255, 255, 255, 0.25)',
   colorGreyOpaque40: 'rgba(0, 0, 0, 0.4)',
   colorGreyOpaque50: 'rgba(0, 0, 0, 0.5)',
@@ -134,7 +135,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDropdownItemFocused: { light: '{colorGrey600}', dark: '{colorGrey300}' },
   colorBorderItemPlaceholder: '{colorBorderItemSelected}',
   colorBorderItemSelected: { light: '{colorBlue600}', dark: '{colorBlue500}' },
-  colorBorderLayout: '{colorBorderDividerDefault}',
+  colorBorderLayout: { light: '{colorGrey400}', dark: '{colorGrey600}' },
   colorBorderNotificationStackBar: '{colorGrey700}',
   colorBorderPanelHeader: '{colorBorderDividerDefault}',
   colorBorderPopover: { light: '{colorGrey400}', dark: '{colorGrey550}' },

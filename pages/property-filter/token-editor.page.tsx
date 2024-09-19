@@ -4,14 +4,12 @@ import React from 'react';
 
 import PropertyFilter from '~components/property-filter';
 import { PropertyFilterProps } from '~components/property-filter/interfaces';
-import PropertyFilterInternal from '~components/property-filter/internal';
 
 import ScreenshotArea from '../utils/screenshot-area';
 import {
   columnDefinitions,
   filteringProperties as commonFilteringProperties,
   i18nStrings,
-  i18nStringsTokenGroups,
   labels,
 } from './common-props';
 
@@ -28,7 +26,6 @@ const commonProps = {
   filteringProperties,
   filteringOptions: [],
   i18nStrings,
-  i18nStringsTokenGroups,
   countText: '5 matches',
   disableFreeTextFiltering: false,
   virtualScroll: true,
@@ -102,7 +99,7 @@ export default function () {
           {...commonProps}
           freeTextFiltering={{ operators: [':', '!:', '=', '!=', '^', '!^'] }}
         />
-        <PropertyFilterInternal
+        <PropertyFilter
           className="property-filter-group-editor"
           query={{
             tokens: [

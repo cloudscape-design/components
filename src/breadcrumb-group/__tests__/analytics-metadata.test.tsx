@@ -7,15 +7,19 @@ import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
+import { getItemsDisplayProperties } from '../../../lib/components/breadcrumb-group/utils';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
 import ownLabels from '../../../lib/components/breadcrumb-group/analytics-metadata/styles.css.js';
 import buttonDropdownLabels from '../../../lib/components/button-dropdown/analytics-metadata/styles.css.js';
 
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(false),
+jest.mock('../../../lib/components/breadcrumb-group/utils', () => ({
+  getItemsDisplayProperties: jest.fn().mockReturnValue({
+    shrinkFactors: [0, 0, 0, 0],
+    minWidths: [100, 100, 100, 100],
+    collapsed: 0,
+  }),
 }));
 
 const labels = { ...ownLabels, ...buttonDropdownLabels };
@@ -79,7 +83,11 @@ describe('BreadcrumbGroup renders correct analytics metadata', () => {
     });
   });
   test('in mobile view', () => {
-    (useMobile as jest.Mock).mockReturnValue(true);
+    (getItemsDisplayProperties as jest.Mock).mockReturnValue({
+      shrinkFactors: [0, 0, 0, 0],
+      minWidths: [100, 100, 100, 100],
+      collapsed: 2,
+    });
     const wrapper = renderBreadcrumbGroup();
 
     const firstBreadcrumb = wrapper.findBreadcrumbLink(1)!.getElement();

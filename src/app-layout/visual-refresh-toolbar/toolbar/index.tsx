@@ -154,7 +154,7 @@ export function AppLayoutToolbarImplementation({
     >
       <div className={styles['toolbar-container']}>
         {hasNavigation && (
-          <nav className={clsx(styles['universal-toolbar-nav'], testutilStyles['drawer-closed'])}>
+          <nav className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={false}

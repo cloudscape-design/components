@@ -5,12 +5,17 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import clsx from 'clsx';
 
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
+import {
+  copyAnalyticsMetadataAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../../icon/internal';
 import { useListFocusController } from '../../internal/hooks/use-list-focus-controller';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import InternalPopover, { InternalPopoverProps, InternalPopoverRef } from '../../popover/internal';
 import InternalSelect from '../../select/internal';
+import { GeneratedAnalyticsMetadataPropertyEditStart } from '../analytics-metadata/interfaces';
 
 import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -75,16 +80,19 @@ const FilteringToken = forwardRef(
       onEditorOpen,
       hasGroups,
       popoverSize,
+      ...rest
     }: FilteringTokenProps,
     ref: React.Ref<FilteringTokenRef>
   ) => {
     const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-    const onFocusMoved = () => setNextFocusIndex(null);
     const tokenListRef = useListFocusController({
       nextFocusIndex,
-      onFocusMoved,
+      onFocusMoved: target => {
+        target.focus();
+        setNextFocusIndex(null);
+      },
       listItemSelector: `.${styles['inner-root']}`,
-      outsideSelector: `.${styles.root}`,
+      fallbackSelector: `.${styles.root}`,
     });
 
     const popoverRef = useRef<InternalPopoverRef>(null);
@@ -93,10 +101,11 @@ const FilteringToken = forwardRef(
       triggerType: 'text',
       header: editorHeader,
       size: popoverSize,
-      position: 'right',
+      position: 'bottom',
       dismissAriaLabel: editorDismissAriaLabel,
       renderWithPortal: editorExpandToViewport,
       __onOpen: onEditorOpen,
+      __closeAnalyticsAction: 'editClose',
     };
     useImperativeHandle(ref, () => ({ closeEditor: () => popoverRef.current?.dismissPopover() }));
 
@@ -135,10 +144,17 @@ const FilteringToken = forwardRef(
         grouped={tokens.length > 1}
         disabled={disabled}
         hasGroups={hasGroups}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {tokens.length === 1 ? (
           <InternalPopover ref={popoverRef} {...popoverProps}>
-            {tokens[0].content}
+            <span
+              {...getAnalyticsMetadataAttribute({
+                action: 'editStart',
+              } as Partial<GeneratedAnalyticsMetadataPropertyEditStart>)}
+            >
+              {tokens[0].content}
+            </span>
           </InternalPopover>
         ) : (
           <ul className={styles.list}>
@@ -199,6 +215,7 @@ const TokenGroup = forwardRef(
       grouped,
       disabled,
       hasGroups,
+      ...rest
     }: {
       ariaLabel?: string;
       children: React.ReactNode;
@@ -226,12 +243,13 @@ const TokenGroup = forwardRef(
         )}
         role="group"
         aria-label={ariaLabel}
+        {...copyAnalyticsMetadataAttribute(rest)}
       >
         {operation}
 
         <div
           className={clsx(
-            styles.token,
+            parent ? styles.token : styles['inner-token'],
             !!operation && styles['show-operation'],
             grouped && styles.grouped,
             disabled && styles['token-disabled']
@@ -275,7 +293,7 @@ function OperationSelector({
 }) {
   return (
     <InternalSelect
-      __inFilteringToken={true}
+      __inFilteringToken={parent ? 'root' : 'nested'}
       className={clsx(
         parent
           ? clsx(styles.select, testUtilStyles['filtering-token-select'])
@@ -315,6 +333,7 @@ function TokenDismissButton({
       aria-label={ariaLabel}
       onClick={onClick}
       disabled={disabled}
+      {...getAnalyticsMetadataAttribute({ action: 'dismiss' })}
     >
       <InternalIcon name="close" />
     </button>

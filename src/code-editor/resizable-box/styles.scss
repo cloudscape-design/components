@@ -25,6 +25,7 @@
   box-sizing: border-box;
   background-position: bottom right;
   background-size: awsui.$space-l;
+  cursor: ns-resize;
   @include utils.background-inline-svg(
     $path: '../assets/resize-handler.svg',
     $stroke: 'colorStrokeCodeEditorResizeHandler'
@@ -33,8 +34,6 @@
   @include styles.with-direction('rtl') {
     transform: scaleX(-1);
   }
-
-  cursor: ns-resize;
 }
 
 .resize-active {

@@ -19,15 +19,15 @@
   }
 }
 
-@mixin trigger-button-styles {
+.trigger-button-styles {
   background: transparent;
   color: awsui.$color-text-interactive-default;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
   border-end-start-radius: 50%;
   border-end-end-radius: 50%;
-  block-size: 34px;
-  inline-size: 34px;
+  block-size: 30px;
+  inline-size: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -45,7 +45,6 @@
 }
 
 .trigger-badge-wrapper {
-  @include trigger-button-styles();
   position: absolute;
   inset-block-start: 0;
   inset-inline-start: 0;
@@ -63,13 +62,7 @@
   }
 }
 
-/*
-Warning! If these design tokens for width change it will adversely impact 
-the calculation used to determine the Split Panel maximum width in the 
-handleSplitPanelMaxWidth function in the context.
-*/
 .trigger {
-  @include trigger-button-styles();
   border-block: none;
   border-inline: none;
   cursor: pointer;
@@ -106,6 +99,10 @@ handleSplitPanelMaxWidth function in the context.
   border-end-end-radius: 50%;
 }
 
+.trigger-wrapper-tooltip-visible {
+  /* used in test-utils*/
+}
+
 .dot {
   position: absolute;
   inline-size: 8px;
@@ -117,4 +114,8 @@ handleSplitPanelMaxWidth function in the context.
   background-color: awsui.$color-background-badge-icon;
   inset-block-start: 1px;
   inset-inline-end: 1px;
+}
+
+.trigger-tooltip {
+  /* used in test-utils */
 }

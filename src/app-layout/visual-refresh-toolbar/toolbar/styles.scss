@@ -30,12 +30,12 @@
   }
 
   > .toolbar-container {
-    block-size: 48px;
+    block-size: 100%;
     align-items: center;
     display: grid;
     column-gap: awsui.$space-static-xs;
     inline-size: 100%;
-    grid-template-columns: min-content auto minmax(140px, 1fr);
+    grid-template-columns: min-content minmax(0, 3fr) minmax(auto, 1fr);
     grid-template-rows: 1fr;
 
     > .universal-toolbar-nav {
@@ -86,7 +86,7 @@
 }
 
 .group-divider {
-  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   block-size: 60%;
 }
 

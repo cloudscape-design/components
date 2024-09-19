@@ -4,15 +4,7 @@
 import React, { useState } from 'react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
-import PropertyFilterInternal, { PropertyFilterInternalProps } from '../../../lib/components/property-filter/internal';
-import {
-  FilteringProperty,
-  I18nStrings,
-  I18nStringsTokenGroups,
-  InternalFilteringProperty,
-  PropertyFilterProps,
-  Token,
-} from '../interfaces';
+import { FilteringProperty, I18nStrings, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
 
 export const i18nStrings: I18nStrings = {
   dismissAriaLabel: 'Dismiss',
@@ -45,14 +37,13 @@ export const i18nStrings: I18nStrings = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
+  clearAriaLabel: 'clear',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
 
   formatToken: token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
   removeTokenButtonAriaLabel: (token: Token) =>
     'Remove token ' + token.propertyKey + ' ' + formatOperator(token.operator) + ' ' + token.value,
-};
 
-export const i18nStringsTokenGroups: I18nStringsTokenGroups = {
   groupEditAriaLabel: group =>
     'Edit filter, ' +
     group.tokens
@@ -142,9 +133,4 @@ export function toInternalProperties(properties: FilteringProperty[]): InternalF
 export function StatefulPropertyFilter(props: Omit<PropertyFilterProps, 'onChange'>) {
   const [query, setQuery] = useState<PropertyFilterProps.Query>(props.query);
   return <PropertyFilter {...props} query={query} onChange={e => setQuery(e.detail)} />;
-}
-
-export function StatefulInternalPropertyFilter(props: Omit<PropertyFilterInternalProps, 'onChange'>) {
-  const [query, setQuery] = useState<PropertyFilterInternalProps['query']>(props.query);
-  return <PropertyFilterInternal {...props} query={query} onChange={e => setQuery(e.detail)} />;
 }

@@ -20,6 +20,14 @@ export default function ProgressBarPermutations() {
             statusIconAriaLabel: 'info',
           }))}
         />
+        <Flashbar
+          items={permutations.map(permutation => ({
+            type: 'warning',
+            content: <ProgressBar {...permutation} variant="flash" />,
+            buttonText: permutation.resultButtonText,
+            statusIconAriaLabel: 'warning',
+          }))}
+        />
       </ScreenshotArea>
     </article>
   );

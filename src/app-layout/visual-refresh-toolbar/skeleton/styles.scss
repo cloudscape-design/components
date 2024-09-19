@@ -132,7 +132,7 @@
 
 .toolbar-container {
   grid-area: toolbar;
-  block-size: 48px;
+  block-size: 42px;
   border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
 }
 
@@ -153,11 +153,11 @@
   margin-block-start: awsui.$space-scaled-s;
   margin-block-end: awsui.$space-layout-content-bottom;
   &-disable-paddings {
+    margin-block: 0;
     grid-column: 1 / -1;
     @include desktop-only {
       grid-column: 2 / span 3;
     }
-    margin-block: 0;
   }
 }
 

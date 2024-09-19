@@ -6,9 +6,7 @@ import { act, render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import PropertyFilter from '../../../lib/components/property-filter';
-import InternalPropertyFilter from '../../../lib/components/property-filter/internal';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { PropertyFilterWrapperInternal } from '../../../lib/components/test-utils/dom/property-filter/index.js';
 import { createDefaultProps } from './common';
 
 import styles from '../../../lib/components/property-filter/styles.selectors.js';
@@ -280,7 +278,7 @@ describe('i18n', () => {
           },
         }}
       >
-        <InternalPropertyFilter
+        <PropertyFilter
           {...defaultProps}
           i18nStrings={{}}
           query={{
@@ -306,7 +304,7 @@ describe('i18n', () => {
         />
       </TestI18nProvider>
     );
-    const wrapper = new PropertyFilterWrapperInternal(createWrapper(container).findPropertyFilter()!.getElement());
+    const wrapper = createWrapper(container).findPropertyFilter()!;
     const token = (index: number) => wrapper.findTokens()[index];
     const groupToken = (index: number, inGroupIndex: number) => token(index).findGroupTokens()[inGroupIndex];
 

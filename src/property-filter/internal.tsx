@@ -4,6 +4,7 @@ import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { PropertyFilterOperator } from '@cloudscape-design/collection-hooks';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -18,13 +19,13 @@ import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
+import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
 import { usePropertyFilterI18n } from './i18n-utils';
 import {
   ComparisonOperator,
   ExtendedOperator,
   FilteringProperty,
-  I18nStringsTokenGroups,
   InternalFilteringOption,
   InternalFilteringProperty,
   InternalFreeTextFiltering,
@@ -43,16 +44,14 @@ import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
-  'filteringOptions' | 'customGroupsText' | 'disableFreeTextFiltering'
+  'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering' | 'hideOperations'
 > &
-  InternalBaseComponentProps & {
-    enableTokenGroups?: boolean;
-    i18nStringsTokenGroups?: I18nStringsTokenGroups;
-  };
+  InternalBaseComponentProps;
 
 const PropertyFilterInternal = React.forwardRef(
   (
@@ -85,28 +84,33 @@ const PropertyFilterInternal = React.forwardRef(
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
-      enableTokenGroups = false,
-      i18nStringsTokenGroups,
+      enableTokenGroups,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
     ref: React.Ref<Ref>
   ) => {
     const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
-    const onFocusMoved = () => setNextFocusIndex(null);
     const tokenListRef = useListFocusController({
       nextFocusIndex,
-      onFocusMoved,
+      onFocusMoved: (target, targetType) => {
+        if (targetType === 'fallback') {
+          inputRef.current?.focus({ preventDropdown: true });
+        } else {
+          target.focus();
+        }
+        setNextFocusIndex(null);
+      },
       listItemSelector: `.${tokenListStyles['list-item']}`,
       showMoreSelector: `.${tokenListStyles.toggle}`,
-      outsideSelector: `.${styles.input}`,
+      fallbackSelector: `.${styles.input}`,
     });
 
     const mergedRef = useMergeRefs(tokenListRef, __internalRootRef);
     const inputRef = useRef<AutosuggestInputRef>(null);
     const baseProps = getBaseProps(rest);
 
-    const i18nStrings = usePropertyFilterI18n({ ...rest.i18nStrings, ...i18nStringsTokenGroups });
+    const i18nStrings = usePropertyFilterI18n(rest.i18nStrings);
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
     const showResults = !!query.tokens?.length && !disabled && !!countText;
@@ -305,7 +309,7 @@ const PropertyFilterInternal = React.forwardRef(
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
-        <div className={styles['search-field']}>
+        <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
             ref={inputRef}
@@ -404,17 +408,23 @@ const PropertyFilterInternal = React.forwardRef(
                   customFilterActions ? (
                     <div className={styles['custom-filter-actions']}>{customFilterActions}</div>
                   ) : (
-                    <InternalButton
-                      formAction="none"
-                      onClick={() => {
-                        removeAllTokens();
-                        inputRef.current?.focus({ preventDropdown: true });
-                      }}
-                      className={styles['remove-all']}
-                      disabled={disabled}
+                    <span
+                      {...getAnalyticsMetadataAttribute({
+                        action: 'clearFilters',
+                      } as Partial<GeneratedAnalyticsMetadataPropertyFilterClearFilters>)}
                     >
-                      {i18nStrings.clearFiltersText}
-                    </InternalButton>
+                      <InternalButton
+                        formAction="none"
+                        onClick={() => {
+                          removeAllTokens();
+                          inputRef.current?.focus({ preventDropdown: true });
+                        }}
+                        className={styles['remove-all']}
+                        disabled={disabled}
+                      >
+                        {i18nStrings.clearFiltersText}
+                      </InternalButton>
+                    </span>
                   )
                 }
               />
