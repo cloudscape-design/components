@@ -36,18 +36,19 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
-  variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
-  badge?: boolean;
-  __nativeAttributes?:
-    | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
-    | Record<`data-${string}`, string>;
-  __iconClass?: string;
-  __focusable?: boolean;
-  __injectAnalyticsComponentMetadata?: boolean;
-  __title?: string;
-  __emitPerformanceMarks?: boolean;
-} & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
+export type InternalButtonProps = Omit<ButtonProps, 'variant'> &
+  Required<Pick<ButtonProps, 'formAction'>> & {
+    variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
+    badge?: boolean;
+    __nativeAttributes?:
+      | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
+      | Record<`data-${string}`, string>;
+    __iconClass?: string;
+    __focusable?: boolean;
+    __injectAnalyticsComponentMetadata?: boolean;
+    __title?: string;
+    __emitPerformanceMarks?: boolean;
+  } & InternalBaseComponentProps<HTMLAnchorElement | HTMLButtonElement>;
 
 export const InternalButton = React.forwardRef(
   (
@@ -71,7 +72,7 @@ export const InternalButton = React.forwardRef(
       target,
       rel,
       download,
-      formAction = 'submit',
+      formAction,
       ariaLabel,
       ariaDescribedby,
       ariaExpanded,
