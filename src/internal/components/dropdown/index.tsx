@@ -369,8 +369,11 @@ const Dropdown = ({
     if (!open) {
       return;
     }
-    const clickListener = (e: MouseEvent) => {
-      if (!nodeBelongs(dropdownRef.current, e.target) && !nodeBelongs(triggerRef.current, e.target)) {
+    const clickListener = (event: MouseEvent) => {
+      // Since the listener is registered on the window, `event.target` will incorrectly point at the
+      // shadow root if the component is rendered inside shadow DOM.
+      const target = event.composedPath()[0];
+      if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
         fireNonCancelableEvent(onDropdownClose);
       }
     };
