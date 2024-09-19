@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
+import { Checkbox, Select, SpaceBetween } from '~components';
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
 import Button from '~components/button';
@@ -14,6 +15,7 @@ import PropertyFilter from '~components/property-filter';
 import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Navigation, Tools } from '../app-layout/utils/content-blocks';
 import appLayoutLabels from '../app-layout/utils/labels';
 import * as toolsContent from '../app-layout/utils/tools-content';
@@ -21,7 +23,26 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { columnDefinitions, filteringProperties, labels } from './common-props';
 import { allItems, states, TableItem } from './table.data';
 
+type PageContext = React.Context<
+  AppContextType<{
+    enableTokenGroups?: boolean;
+    tokenGroupPropertyAllowance?: 'all-properties' | 'same-property';
+    disableFreeTextFiltering?: boolean;
+  }>
+>;
+
+const tokenGroupPropertyAllowanceOptions = [{ value: 'all-properties' }, { value: 'same-property' }];
+
 export default function () {
+  const {
+    urlParams: {
+      enableTokenGroups = true,
+      tokenGroupPropertyAllowance = 'all-properties',
+      disableFreeTextFiltering = false,
+    },
+    setUrlParams,
+  } = useContext(AppContext as PageContext);
+
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
   const { items, collectionProps, actions, propertyFilterProps } = useCollection(allItems, {
     propertyFiltering: {
@@ -80,7 +101,31 @@ export default function () {
                 resizeHandleAriaLabel: 'Slider',
               }}
             >
-              {' '}
+              <SpaceBetween size="s">
+                <Checkbox
+                  checked={enableTokenGroups}
+                  onChange={({ detail }) => setUrlParams({ enableTokenGroups: detail.checked })}
+                >
+                  enableTokenGroups
+                </Checkbox>
+                <Checkbox
+                  checked={disableFreeTextFiltering}
+                  onChange={({ detail }) => setUrlParams({ disableFreeTextFiltering: detail.checked })}
+                >
+                  disableFreeTextFiltering
+                </Checkbox>
+                <Select
+                  inlineLabelText="tokenGroupPropertyAllowanceOptions"
+                  options={tokenGroupPropertyAllowanceOptions}
+                  selectedOption={
+                    tokenGroupPropertyAllowanceOptions.find(option => option.value === tokenGroupPropertyAllowance) ??
+                    null
+                  }
+                  onChange={({ detail }) =>
+                    setUrlParams({ tokenGroupPropertyAllowance: detail.selectedOption.value as any })
+                  }
+                />
+              </SpaceBetween>
             </SplitPanel>
           }
           content={
@@ -95,13 +140,13 @@ export default function () {
                   {...labels}
                   {...propertyFilterProps}
                   filteringOptions={filteringOptions}
-                  virtualScroll={true}
                   countText={`${items.length} matches`}
-                  enableTokenGroups={true}
+                  enableTokenGroups={enableTokenGroups}
+                  tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
+                  disableFreeTextFiltering={disableFreeTextFiltering}
                   expandToViewport={true}
+                  virtualScroll={true}
                   filteringEmpty="No properties"
-                  customGroupsText={[]}
-                  disableFreeTextFiltering={false}
                 />
               }
               columnDefinitions={columnDefinitions.slice(0, 2)}

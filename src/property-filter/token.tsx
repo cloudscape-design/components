@@ -21,6 +21,7 @@ import {
   InternalTokenGroup,
   JoinOperation,
   LoadItemsDetail,
+  TokenGroupPropertyAllowance,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
 import { tokenGroupToTokens } from './utils';
@@ -47,6 +48,7 @@ interface TokenProps {
   i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   enableTokenGroups: boolean;
+  tokenGroupPropertyAllowance: TokenGroupPropertyAllowance;
 }
 
 export const TokenButton = ({
@@ -68,6 +70,7 @@ export const TokenButton = ({
   freeTextFiltering,
   expandToViewport,
   enableTokenGroups,
+  tokenGroupPropertyAllowance,
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
 
@@ -126,6 +129,7 @@ export const TokenButton = ({
       editorContent={
         <TokenEditor
           supportsGroups={enableTokenGroups}
+          tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
           tempGroup={tempTokens}

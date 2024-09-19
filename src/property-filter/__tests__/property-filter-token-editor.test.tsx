@@ -755,6 +755,208 @@ describe('token editor with groups', () => {
     );
   });
 
+  test('can select any property for a single token when tokenGroupPropertyAllowance="same-property"', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [tokenJohn], tokens: [] },
+      tokenGroupPropertyAllowance: 'same-property',
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.propertySelect(1).openDropdown();
+    expect(
+      editor
+        .propertySelect(1)
+        .findDropdown()
+        .findOptions()
+        .map(wrapper => wrapper.getElement().textContent)
+    ).toEqual(['All properties', 'string', 'string-other', 'default', 'string!=', 'range']);
+
+    editor.propertySelect(1).selectOption(3);
+    editor.submitButton.click();
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: null }],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('can only select same property as first for the second token when tokenGroupPropertyAllowance="same-property"', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [tokenJohn], tokens: [] },
+      tokenGroupPropertyAllowance: 'same-property',
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.findMainAction()!.click();
+
+    for (let filterIndex = 1; filterIndex <= 2; filterIndex++) {
+      expect(editor.propertySelect(filterIndex).findTrigger().getElement().textContent).toBe('string');
+
+      editor.propertySelect(filterIndex).openDropdown();
+      expect(
+        editor
+          .propertySelect(filterIndex)
+          .findDropdown()
+          .findOptions()
+          .map(wrapper => wrapper.getElement().textContent)
+      ).toEqual(['string']);
+    }
+
+    editor.submitButton.click();
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [
+            { operation: 'or', tokens: [tokenJohn, { propertyKey: 'string', operator: '=', value: null }] },
+          ],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('can only select same property as first for the second token when tokenGroupPropertyAllowance="same-property" and first property is free text', () => {
+    const onChange = jest.fn();
+    render({
+      query: { operation: 'and', tokenGroups: [{ operator: '!:', value: 'text' }], tokens: [] },
+      tokenGroupPropertyAllowance: 'same-property',
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.findMainAction()!.click();
+
+    for (let filterIndex = 1; filterIndex <= 2; filterIndex++) {
+      expect(editor.propertySelect(filterIndex).findTrigger().getElement().textContent).toBe('All properties');
+
+      editor.propertySelect(filterIndex).openDropdown();
+      expect(
+        editor
+          .propertySelect(filterIndex)
+          .findDropdown()
+          .findOptions()
+          .map(wrapper => wrapper.getElement().textContent)
+      ).toEqual(['All properties']);
+    }
+
+    editor.submitButton.click();
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [
+            {
+              operation: 'or',
+              tokens: [
+                { operator: '!:', value: 'text' },
+                { operator: ':', value: null },
+              ],
+            },
+          ],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('can only capture same property as first when tokenGroupPropertyAllowance="same-property"', () => {
+    const onChange = jest.fn();
+    render({
+      query: {
+        operation: 'and',
+        tokenGroups: [
+          tokenJohn,
+          tokenJane,
+          { propertyKey: 'other-string', operator: '=', value: 'other' },
+          { operator: ':', value: 'free text' },
+        ],
+        tokens: [],
+      },
+      tokenGroupPropertyAllowance: 'same-property',
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.openDropdown();
+    expect(editor.addActions.findItems().map(w => w.getElement().textContent)).toEqual([
+      'Add filter string = Jane to group',
+    ]);
+
+    editor.addActions.findItems()[0].click();
+
+    editor.submitButton.click();
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [
+            {
+              operation: 'or',
+              tokens: [tokenJohn, tokenJane],
+            },
+            { propertyKey: 'other-string', operator: '=', value: 'other' },
+            { operator: ':', value: 'free text' },
+          ],
+          tokens: [],
+        },
+      })
+    );
+  });
+
+  test('can only capture same property as first when tokenGroupPropertyAllowance="same-property" and first property is free text', () => {
+    const onChange = jest.fn();
+    render({
+      query: {
+        operation: 'and',
+        tokenGroups: [
+          { operator: '!:', value: 'free text' },
+          { propertyKey: 'other-string', operator: '=', value: 'other' },
+          { operator: ':', value: 'another free text' },
+        ],
+        tokens: [],
+      },
+      tokenGroupPropertyAllowance: 'same-property',
+      onChange,
+    });
+    const editor = openEditor(0, { expandToViewport: false });
+
+    editor.addActions.openDropdown();
+    expect(editor.addActions.findItems().map(w => w.getElement().textContent)).toEqual([
+      'Add filter All properties : another free text to group',
+    ]);
+
+    editor.addActions.findItems()[0].click();
+
+    editor.submitButton.click();
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokenGroups: [
+            {
+              operation: 'or',
+              tokens: [
+                { operator: '!:', value: 'free text' },
+                { operator: ':', value: 'another free text' },
+              ],
+            },
+            { propertyKey: 'other-string', operator: '=', value: 'other' },
+          ],
+          tokens: [],
+        },
+      })
+    );
+  });
+
   test.each(['and', 'or'] as const)(
     'defines group operation as the opposite of query operation when a group is created, query operation=%s',
     operation => {

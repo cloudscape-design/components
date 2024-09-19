@@ -30,6 +30,7 @@ import {
   InternalFreeTextFiltering,
   InternalToken,
   LoadItemsDetail,
+  TokenGroupPropertyAllowance,
 } from './interfaces.js';
 import { OperatorInput, PropertyInput, ValueInput } from './token-editor-inputs.js';
 
@@ -38,6 +39,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 export interface TokenEditorProps {
   supportsGroups: boolean;
+  tokenGroupPropertyAllowance: TokenGroupPropertyAllowance;
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
   customGroupsText: readonly GroupText[];
@@ -57,6 +59,7 @@ export interface TokenEditorProps {
 
 export function TokenEditor({
   supportsGroups,
+  tokenGroupPropertyAllowance,
   asyncProperties,
   asyncProps,
   customGroupsText,
@@ -117,6 +120,22 @@ export function TokenEditor({
 
     return { token: temporaryToken, property, onChangePropertyKey, operator, onChangeOperator, value, onChangeValue };
   });
+
+  const isAnotherPropertyAllowed = (property: null | InternalFilteringProperty) => {
+    if (tokenGroupPropertyAllowance === 'all-properties') {
+      return true;
+    }
+    return groups[0]?.property === property;
+  };
+  const isPropertyAllowed = (property: null | InternalFilteringProperty) => {
+    if (groups.length <= 1) {
+      return true;
+    }
+    return isAnotherPropertyAllowed(property);
+  };
+  filteringProperties = filteringProperties.filter(isPropertyAllowed);
+  freeTextFiltering = { ...freeTextFiltering, disabled: freeTextFiltering.disabled || !isPropertyAllowed(null) };
+  tokensToCapture = tokensToCapture.filter(token => isAnotherPropertyAllowed(token.property));
 
   return (
     <div className={styles['token-editor']} ref={tokenListRef}>
@@ -198,7 +217,11 @@ export function TokenEditor({
             mainAction={{
               text: i18nStrings.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => {
-                onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]);
+                const property = tokenGroupPropertyAllowance === 'all-properties' ? null : groups[0]?.property;
+                onChangeTempGroup([
+                  ...tempGroup,
+                  { property, operator: property?.defaultOperator ?? ':', value: null },
+                ]);
                 setNextFocusIndex(groups.length);
               },
             }}

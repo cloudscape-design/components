@@ -52,6 +52,7 @@ export type PropertyFilterInternalProps = SomeRequired<
   | 'filteringOptions'
   | 'customGroupsText'
   | 'enableTokenGroups'
+  | 'tokenGroupPropertyAllowance'
   | 'disableFreeTextFiltering'
   | 'hideOperations'
   | 'fixedOperations'
@@ -91,6 +92,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups,
+      tokenGroupPropertyAllowance,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -405,6 +407,7 @@ const PropertyFilterInternal = React.forwardRef(
                     disabled={disabled}
                     expandToViewport={expandToViewport}
                     enableTokenGroups={enableTokenGroups}
+                    tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
                   />
                 )}
                 i18nStrings={{

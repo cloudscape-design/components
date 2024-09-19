@@ -12621,6 +12621,25 @@ Each token has the following properties:
       "type": "PropertyFilterProps.Query",
     },
     {
+      "defaultValue": "'all-properties'",
+      "description": "Only used when \`enableTokenGroups=true\`.
+Controls the allowed property keys within token groups:
+- When set to \`"all-properties"\` (default), nested groups can include tokens with different property keys.
+- When set to \`"same-property"\`, the nested groups can only include tokens having the same property key.
+",
+      "inlineType": {
+        "name": "PropertyFilterProps.TokenGroupPropertyAllowance",
+        "type": "union",
+        "values": [
+          "all-properties",
+          "same-property",
+        ],
+      },
+      "name": "tokenGroupPropertyAllowance",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.",
       "name": "tokenLimit",
       "optional": true,
