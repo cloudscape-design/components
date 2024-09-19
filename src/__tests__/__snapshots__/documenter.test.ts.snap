@@ -14860,6 +14860,11 @@ scroll parent scrolls to reveal the first row of the table.",
         "name": "TableProps.AnalyticsMetadata",
         "properties": [
           {
+            "name": "flowType",
+            "optional": true,
+            "type": ""view-resource"",
+          },
+          {
             "name": "instanceIdentifier",
             "optional": true,
             "type": "string",

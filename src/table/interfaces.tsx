@@ -381,6 +381,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
 export namespace TableProps {
   export interface AnalyticsMetadata {
     instanceIdentifier?: string;
+    flowType?: 'view-resource';
   }
 
   export type TrackBy<T> = string | ((item: T) => string);
