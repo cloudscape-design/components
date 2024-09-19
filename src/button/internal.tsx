@@ -255,8 +255,6 @@ export const InternalButton = React.forwardRef(
 
     return (
       <>
-        {/* This is the root implementation of the button component, so "submit" is okay here. */}
-        {/* eslint-disable-next-line react/button-has-type */}
         <button
           {...buttonProps}
           type={formAction === 'none' ? 'button' : 'submit'}

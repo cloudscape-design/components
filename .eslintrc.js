@@ -170,7 +170,7 @@ module.exports = {
         '@cloudscape-design/no-implicit-svg-focusable': 'error',
         '@cloudscape-design/no-internal-button-without-form-action': 'error',
         '@cloudscape-design/prefer-live-region': 'warn',
-        'react/button-has-type': ['error', { submit: false, reset: false }],
+        'react/button-has-type': ['error'],
         'no-restricted-imports': [
           'error',
           {
