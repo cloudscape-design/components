@@ -11938,7 +11938,19 @@ of the user's browser.",
       "optional": true,
       "type": "boolean",
     },
-    {
+    Object {
+      "description": "Determines whether the secondary actions of the input has padding. If true, removes the default padding from the secondary actions area.",
+      "name": "disableSecondaryActionsPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
+      "description": "Determines whether the secondary content of the input has padding. If true, removes the default padding from the secondary content area.",
+      "name": "disableSecondaryContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    Object {
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
 being included in a form submission. A disabled control can't
