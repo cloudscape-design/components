@@ -16,6 +16,7 @@ import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
+import { ActiveDrawersContext } from '../utils/visibility-context';
 import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
 import { AppLayoutInternals } from './interfaces';
 import {
@@ -383,17 +384,20 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigationWidth={navigationWidth}
           tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
-            !!globalDrawers.length &&
-            globalDrawers
-              .filter(drawer => activeGlobalDrawersIds.includes(drawer.id) || drawer.preserveInactiveContent)
-              .map(drawer => (
-                <AppLayoutGlobalDrawer
-                  key={drawer.id}
-                  show={activeGlobalDrawersIds.includes(drawer.id)}
-                  activeGlobalDrawer={drawer}
-                  appLayoutInternals={appLayoutInternals}
-                />
-              ))
+            !!globalDrawers.length && (
+              <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
+                {globalDrawers
+                  .filter(drawer => activeGlobalDrawersIds.includes(drawer.id) || drawer.preserveInactiveContent)
+                  .map(drawer => (
+                    <AppLayoutGlobalDrawer
+                      key={drawer.id}
+                      show={activeGlobalDrawersIds.includes(drawer.id)}
+                      activeGlobalDrawer={drawer}
+                      appLayoutInternals={appLayoutInternals}
+                    />
+                  ))}
+              </ActiveDrawersContext.Provider>
+            )
           }
           globalToolsOpen={!!activeGlobalDrawersIds.length}
           toolsOpen={!!activeDrawer}

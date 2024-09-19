@@ -55,13 +55,16 @@ function useRuntimeDrawers(
   setActiveGlobalDrawersIds: (newDrawerId: string) => void,
   drawers: AppLayoutProps.Drawer[]
 ) {
-  const [runtimeLocalDrawers, setRuntimeLocalDrawers] = useState<DrawersLayout>({ before: [], after: [] });
-  const [runtimeGlobalDrawers, setRuntimeGlobalDrawers] = useState<Array<AppLayoutProps.Drawer>>([]);
+  const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({
+    localBefore: [],
+    localAfter: [],
+    global: [],
+  });
   const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
   const onGlobalDrawersChangeStable = useStableCallback(setActiveGlobalDrawersIds);
 
   const localDrawerWasOpenRef = useRef(false);
-  localDrawerWasOpenRef.current = localDrawerWasOpenRef.current || !!activeDrawerId;
+  localDrawerWasOpenRef.current = localDrawerWasOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
 
   const globalDrawersWereOpenRef = useRef(false);
 
@@ -72,15 +75,7 @@ function useRuntimeDrawers(
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers => {
       const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
       const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
-      setRuntimeLocalDrawers(convertRuntimeDrawers(localDrawers));
-      setRuntimeGlobalDrawers(
-        convertRuntimeDrawers(
-          globalDrawers.map(drawer => ({
-            ...drawer,
-            isVisible: activeGlobalDrawersIds.includes(drawer.id),
-          }))
-        ).after
-      );
+      setRuntimeDrawers(convertRuntimeDrawers(localDrawers, globalDrawers));
       if (!localDrawerWasOpenRef.current) {
         const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
         if (defaultActiveLocalDrawer) {
@@ -89,27 +84,24 @@ function useRuntimeDrawers(
       }
 
       if (!globalDrawersWereOpenRef.current) {
-        const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(
-          drawer => drawer.defaultActive && !activeGlobalDrawersIds.includes(drawer.id)
-        );
+        const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(drawer => drawer.defaultActive);
         defaultActiveGlobalDrawers.forEach(drawer => {
           onGlobalDrawersChangeStable(drawer.id);
         });
-        globalDrawersWereOpenRef.current = true;
       }
     });
     return () => {
       unsubscribe();
-      setRuntimeLocalDrawers({ before: [], after: [] });
+      setRuntimeDrawers({ localBefore: [], localAfter: [], global: [] });
     };
-  }, [activeGlobalDrawersIds, disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
+  }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
 
   useEffect(() => {
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
-      const localDrawer = [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]?.find(
+      const localDrawer = [...runtimeDrawers.localBefore, ...drawers, ...runtimeDrawers.localAfter]?.find(
         drawer => drawer.id === drawerId
       );
-      const globalDrawer = runtimeGlobalDrawers?.find(drawer => drawer.id === drawerId);
+      const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId !== drawerId) {
         onActiveDrawerChange(drawerId);
       }
@@ -126,18 +118,16 @@ function useRuntimeDrawers(
     activeGlobalDrawersIds,
     drawers,
     onActiveDrawerChange,
-    runtimeGlobalDrawers,
-    runtimeLocalDrawers.after,
-    runtimeLocalDrawers.before,
+    runtimeDrawers,
     setActiveGlobalDrawersIds,
   ]);
 
   useEffect(() => {
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerClosed(drawerId => {
-      const localDrawer = [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]?.find(
+      const localDrawer = [...runtimeDrawers.localBefore, ...drawers, ...runtimeDrawers.localAfter]?.find(
         drawer => drawer.id === drawerId
       );
-      const globalDrawer = runtimeGlobalDrawers?.find(drawer => drawer.id === drawerId);
+      const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId === drawerId) {
         onActiveDrawerChange(null);
       }
@@ -154,20 +144,15 @@ function useRuntimeDrawers(
     activeGlobalDrawersIds,
     drawers,
     onActiveDrawerChange,
-    runtimeGlobalDrawers,
-    runtimeLocalDrawers.after,
-    runtimeLocalDrawers.before,
+    runtimeDrawers,
     setActiveGlobalDrawersIds,
   ]);
 
-  return {
-    local: runtimeLocalDrawers,
-    global: runtimeGlobalDrawers,
-  };
+  return runtimeDrawers;
 }
 
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
-  const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
+  const drawers = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter];
   if (drawers.length === 0 && toolsProps.disableDrawersMerge) {
     return null;
   }
@@ -248,7 +233,7 @@ export function useDrawers(
   }
 
   const hasOwnDrawers = !!drawers;
-  const { local: runtimeLocalDrawers, global: runtimeGlobalDrawers } = useRuntimeDrawers(
+  const runtimeDrawers = useRuntimeDrawers(
     disableRuntimeDrawers,
     activeDrawerId,
     onActiveDrawerChange,
@@ -256,9 +241,10 @@ export function useDrawers(
     onActiveGlobalDrawersChange,
     drawers ?? []
   );
+  const { localBefore, localAfter, global: runtimeGlobalDrawers } = runtimeDrawers;
   const combinedLocalDrawers = drawers
-    ? [...runtimeLocalDrawers.before, ...drawers, ...runtimeLocalDrawers.after]
-    : applyToolsDrawer(toolsProps, runtimeLocalDrawers);
+    ? [...localBefore, ...drawers, ...localAfter]
+    : applyToolsDrawer(toolsProps, runtimeDrawers);
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
   const activeDrawer = combinedLocalDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
