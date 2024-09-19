@@ -93,6 +93,16 @@ export interface PromptInputProps
    * Use this slot if you want to add secondary content, such as file attachments, to the prompt input.
    */
   secondaryContent?: React.ReactNode;
+
+  /**
+   * Determines whether the secondary actions of the input has padding. If true, removes the default padding from the secondary actions area.
+   */
+  disableSecondaryActionsPaddings?: boolean;
+
+  /**
+   * Determines whether the secondary content of the input has padding. If true, removes the default padding from the secondary content area.
+   */
+  disableSecondaryContentPaddings?: boolean;
 }
 
 export namespace PromptInputProps {

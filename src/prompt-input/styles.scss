@@ -22,7 +22,6 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   @include styles.styles-reset;
   @include control-border-radius();
   cursor: text;
-  padding-inline-start: styles.$control-padding-horizontal;
 
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
@@ -74,7 +73,7 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   white-space: pre-wrap;
 
   padding-block: styles.$control-padding-vertical;
-  padding-inline-end: styles.$control-padding-horizontal;
+  padding-inline: styles.$control-padding-horizontal;
 
   color: awsui.$color-text-body-default;
   max-inline-size: 100%;
@@ -143,15 +142,35 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
 }
 
 .secondary-content {
+  @include styles.styles-reset;
   @include control-border-radius();
-  padding-block-end: awsui.$space-scaled-xs;
-  padding-inline-end: calc(styles.$control-padding-horizontal / 2);
-  width: fit-content;
+  padding-block-start: styles.$control-padding-vertical;
+  padding-block-end: awsui.$space-scaled-s;
+
+  &.with-paddings {
+    padding-inline-start: styles.$control-padding-horizontal;
+    padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+  }
 }
 
 .secondary-actions {
+  @include styles.styles-reset;
   @include control-border-radius();
   display: flex;
   justify-content: space-between;
-  padding-block-start: awsui.$space-scaled-xs;
+  align-items: end;
+
+  > .button {
+    padding-block-end: awsui.$space-scaled-xxxs;
+  }
+
+  &.with-paddings {
+    padding-inline-start: styles.$control-padding-horizontal;
+    padding-block-start: awsui.$space-scaled-s;
+    padding-block-end: styles.$control-padding-vertical;
+
+    > .button {
+      padding-block-end: 0;
+    }
+  }
 }
