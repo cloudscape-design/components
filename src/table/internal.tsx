@@ -19,6 +19,7 @@ import { CollectionLabelContext } from '../internal/context/collection-label-con
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useComponentAnalytics } from '../internal/hooks/use-component-analytics';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
@@ -58,6 +59,7 @@ import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
 
+import buttonStyles from '../button/styles.css.js';
 import headerStyles from '../header/styles.css.js';
 import styles from './styles.css.js';
 
@@ -182,6 +184,17 @@ const InternalTable = React.forwardRef(
     const getHeaderText = () =>
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
         ?.innerText ?? toolsHeaderPerformanceMarkRef.current?.innerText;
+    const getPatternIdentifier = () => {
+      const hasActions = !!toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(
+        `.${headerStyles.actions} .${buttonStyles.button}`
+      );
+
+      if (hasActions) {
+        return 'table-with-actions';
+      }
+
+      return '';
+    };
 
     const performanceMarkAttributes = usePerformanceMarks(
       'table',
@@ -195,6 +208,13 @@ const InternalTable = React.forwardRef(
     );
 
     const analyticsMetadata = getAnalyticsMetadataProps(rest);
+    useComponentAnalytics('table', () => ({
+      variant,
+      flowType: rest.analyticsMetadata?.flowType,
+      instanceIdentifier: analyticsMetadata?.instanceIdentifier,
+      taskName: getHeaderText(),
+      patternIdentifier: getPatternIdentifier(),
+    }));
 
     const { setLastUserAction } = useTableInteractionMetrics({
       loading,

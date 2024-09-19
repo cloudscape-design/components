@@ -14,13 +14,23 @@ import screenreaderOnlyStyles from '../../../lib/components/internal/components/
 
 export const outsideId = 'outside';
 
-export function renderDatePicker(props: DatePickerProps) {
+export function renderDatePicker(props: DatePickerProps, { withShadowRoot }: { withShadowRoot?: boolean } = {}) {
+  let customContainer: Element | undefined;
+  if (withShadowRoot) {
+    const div = document.createElement('div');
+    document.body.appendChild(div);
+    const shadowRoot = div.attachShadow({ mode: 'open' });
+    customContainer = shadowRoot.ownerDocument.createElement('div');
+    shadowRoot.ownerDocument.body.appendChild(customContainer);
+  }
+
   const { container, getByTestId } = render(
     <div>
       <button value={'Used to change the focus in this test suite'} data-testid={outsideId} />
       <br />
       <DatePicker {...props} />
-    </div>
+    </div>,
+    { container: customContainer }
   );
 
   const wrapper = createWrapper(container).findDatePicker()!;

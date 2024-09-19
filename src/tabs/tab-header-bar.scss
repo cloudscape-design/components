@@ -178,6 +178,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   padding-inline-start: calc(#{awsui.$space-xxs} - 1px);
   padding-inline-end: awsui.$space-xxs;
+  @include styles.font-smoothing;
 
   &.refresh {
     padding-block-start: calc(awsui.$space-static-xs - 1px);
@@ -194,12 +195,10 @@ $label-horizontal-spacing: awsui.$space-xs;
     outline: none;
   }
 
-  @include styles.font-smoothing;
-
   @include focus-visible.when-visible {
     z-index: 1;
-    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
     border-inline-end-color: transparent;
+    @include styles.focus-highlight(awsui.$space-tabs-focus-outline-gutter);
   }
 }
 
