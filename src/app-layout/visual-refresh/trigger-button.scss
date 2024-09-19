@@ -19,7 +19,7 @@
   }
 }
 
-@mixin trigger-button-styles {
+.trigger-button-styles {
   background: awsui.$color-background-layout-toggle-default;
   border-start-start-radius: 50%;
   border-start-end-radius: 50%;
@@ -38,7 +38,6 @@
 }
 
 .trigger-badge-wrapper {
-  @include trigger-button-styles();
   position: absolute;
   inset-block-start: 0;
   inset-inline-start: 0;
@@ -57,12 +56,11 @@
 }
 
 /*
-Warning! If these design tokens for width change it will adversely impact 
-the calculation used to determine the Split Panel maximum width in the 
+Warning! If these design tokens for width change it will adversely impact
+the calculation used to determine the Split Panel maximum width in the
 handleSplitPanelMaxWidth function in the context.
 */
 .trigger {
-  @include trigger-button-styles();
   border-block: none;
   border-inline: none;
   padding-inline: 0;

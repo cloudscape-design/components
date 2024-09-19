@@ -96,7 +96,10 @@ export function describeEachAppLayout(
 export function isDrawerClosed(drawer: ElementWrapper) {
   // The visibility class name we are attaching to the wrapping element,
   // however the test-util points to the inner element, which has the scrollbar
-  return !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']));
+  return (
+    drawer === null ||
+    !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']))
+  );
 }
 
 export function findActiveDrawerLandmark(wrapper: AppLayoutWrapper) {
