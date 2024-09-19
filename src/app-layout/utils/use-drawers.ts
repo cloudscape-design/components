@@ -192,7 +192,7 @@ export function useDrawers(
   const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
   // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
-  const [drawersOpenQueue, setDrawersOpenQueue] = useState<Array<string>>([]);
+  const drawersOpenQueue = useRef<Array<string>>([]);
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
@@ -213,9 +213,9 @@ export function useDrawers(
     }
 
     if (newDrawerId) {
-      setDrawersOpenQueue(oldQueue => [newDrawerId, ...oldQueue]);
+      drawersOpenQueue.current = [newDrawerId, ...drawersOpenQueue.current];
     } else if (activeDrawerId) {
-      setDrawersOpenQueue(oldQueue => oldQueue.filter(id => id !== activeDrawerId));
+      drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== activeDrawerId);
     }
   }
 
@@ -223,12 +223,12 @@ export function useDrawers(
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus && onGlobalDrawerFocus();
-      setDrawersOpenQueue(oldQueue => oldQueue.filter(id => id !== drawerId));
+      drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId);
-      setDrawersOpenQueue(oldQueue => [drawerId, ...oldQueue]);
+      drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
     }
   }
 
@@ -287,7 +287,7 @@ export function useDrawers(
     minDrawerSize,
     minGlobalDrawersSizes,
     drawerSizes,
-    drawersOpenQueue,
+    drawersOpenQueue: drawersOpenQueue.current,
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
