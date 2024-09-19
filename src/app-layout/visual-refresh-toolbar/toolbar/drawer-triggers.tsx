@@ -52,7 +52,7 @@ export function DrawerTriggers({
   splitPanelFocusRef,
   splitPanelToggleProps,
   onSplitPanelToggle,
-  disabled = false,
+  disabled,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
