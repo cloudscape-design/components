@@ -152,6 +152,7 @@ export function AppLayoutToolbarImplementation({
   }, [pinnedToolbar, setToolbarState, toolbarState]);
 
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
+  const disableButtons = !!isMobile && (!!activeDrawerId || !!navigationOpen);
 
   return (
     <ToolbarSlot
@@ -175,6 +176,7 @@ export function AppLayoutToolbarImplementation({
               onClick={() => onNavigationToggle?.(!navigationOpen)}
               ref={navigationFocusRef}
               selected={navigationOpen}
+              disabled={disableButtons}
             />
           </nav>
         )}
@@ -201,6 +203,7 @@ export function AppLayoutToolbarImplementation({
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
+              disabled={disableButtons}
               globalDrawersFocusControl={globalDrawersFocusControl}
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
