@@ -564,17 +564,16 @@ describe('Date picker calendar', () => {
     });
   });
 
-  describe('change event', () => {
+  describe.each([false, true])('change event (withShadowRoot=%s)', withShadowRoot => {
     let onChangeSpy: jest.Mock<NonCancelableEventHandler<DatePickerProps.ChangeDetail>>;
     let wrapper: DatePickerWrapper;
 
     beforeEach(() => {
       onChangeSpy = jest.fn();
-      ({ wrapper } = renderDatePicker({
-        ...defaultProps,
-        value: '2018-03-01',
-        onChange: onChangeSpy,
-      }));
+      ({ wrapper } = renderDatePicker(
+        { ...defaultProps, value: '2018-03-01', onChange: onChangeSpy },
+        { withShadowRoot }
+      ));
       wrapper.findOpenCalendarButton().click();
     });
 
