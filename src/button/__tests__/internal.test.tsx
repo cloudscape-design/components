@@ -14,25 +14,30 @@ import styles from '../../../lib/components/button/styles.css.js';
 
 test('specific properties take precedence over nativeAttributes', () => {
   const { container } = render(
-    <InternalButton ariaLabel="property" __nativeAttributes={{ 'aria-label': 'native attribute' }} />
+    <InternalButton formAction="none" ariaLabel="property" __nativeAttributes={{ 'aria-label': 'native attribute' }} />
   );
   expect(container.querySelector('button')).toHaveAttribute('aria-label', 'property');
 });
 
 test('supports providing custom attributes', () => {
-  const { container } = render(<InternalButton __nativeAttributes={{ 'aria-hidden': 'true' }} />);
+  const { container } = render(<InternalButton formAction="none" __nativeAttributes={{ 'aria-hidden': 'true' }} />);
   expect(container.querySelector('button')).toHaveAttribute('aria-hidden', 'true');
 });
 
 test('supports __iconClass property', () => {
   const { container } = render(
-    <InternalButton __iconClass="example-class" iconName="settings" __nativeAttributes={{ 'aria-expanded': 'true' }} />
+    <InternalButton
+      formAction="none"
+      __iconClass="example-class"
+      iconName="settings"
+      __nativeAttributes={{ 'aria-expanded': 'true' }}
+    />
   );
   expect(container.querySelector(`button .${styles.icon}`)).toHaveClass('example-class');
 });
 
 test('sets disabled and does not set aria-disabled, when __focusable is not provided', () => {
-  const { container } = render(<InternalButton disabled={true} />);
+  const { container } = render(<InternalButton formAction="none" disabled={true} />);
 
   const button = container.querySelector('button');
 
@@ -41,7 +46,7 @@ test('sets disabled and does not set aria-disabled, when __focusable is not prov
 });
 
 test('sets aria-disabled when __focusable is provided', () => {
-  const { container } = render(<InternalButton disabled={true} __focusable={true} />);
+  const { container } = render(<InternalButton formAction="none" disabled={true} __focusable={true} />);
   const button = container.querySelector('button');
 
   expect(button).toHaveAttribute('aria-disabled', 'true');
