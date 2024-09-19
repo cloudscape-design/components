@@ -63,7 +63,7 @@ export default (props: PreferencesModalProps) => {
             <InternalButton onClick={onCancel} formAction="none" variant="link">
               {props.i18nStrings.cancel}
             </InternalButton>
-            <InternalButton onClick={onConfirm} variant="primary">
+            <InternalButton onClick={onConfirm} formAction="none" variant="primary">
               {props.i18nStrings.confirm}
             </InternalButton>
           </InternalSpaceBetween>

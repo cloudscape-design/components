@@ -36,6 +36,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
         <span className={styles[`offset-right-${offsetRight}`]}>
           <InternalButton
             variant="primary"
+            formAction="none"
             href={definition.href}
             target={definition.external ? '_blank' : undefined}
             onClick={definition.onClick}

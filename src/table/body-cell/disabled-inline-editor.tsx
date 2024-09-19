@@ -89,6 +89,7 @@ export function DisabledInlineEditor<ItemType>({
 
       <div className={styles['body-cell-editor-wrapper']}>
         <button
+          type="button"
           ref={buttonRef}
           tabIndex={tabIndex}
           className={clsx(styles['body-cell-editor'], styles['body-cell-editor-disabled'])}

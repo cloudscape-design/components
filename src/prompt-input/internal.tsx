@@ -167,6 +167,7 @@ const InternalPromptInput = React.forwardRef(
         {hasActionButton && (
           <div className={styles.button}>
             <InternalButton
+              formAction="none"
               className={clsx(styles['action-button'], testutilStyles['action-button'])}
               ariaLabel={actionButtonAriaLabel}
               disabled={disabled || readOnly || disableActionButton}

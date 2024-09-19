@@ -39,6 +39,7 @@ const IconButtonItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalButton
+          formAction="none"
           variant="icon"
           loading={item.loading}
           loadingText={item.loadingText}

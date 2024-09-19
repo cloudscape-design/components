@@ -119,6 +119,7 @@ const ButtonTrigger = (
 
   return (
     <button
+      type="button"
       ref={ref}
       {...attributes}
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}

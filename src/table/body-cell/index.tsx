@@ -138,6 +138,7 @@ function TableCellEditable<ItemType>({
 
           <div className={styles['body-cell-editor-wrapper']}>
             <button
+              type="button"
               className={styles['body-cell-editor']}
               aria-label={ariaLabels?.activateEditLabel?.(column, item)}
               ref={editActivateRef}

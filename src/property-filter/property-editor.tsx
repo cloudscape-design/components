@@ -40,10 +40,15 @@ export function PropertyEditor<TokenValue = any>({
       </div>
 
       <div className={styles['property-editor-actions']}>
-        <InternalButton variant="link" className={styles['property-editor-cancel']} onClick={onCancel}>
+        <InternalButton
+          formAction="none"
+          variant="link"
+          className={styles['property-editor-cancel']}
+          onClick={onCancel}
+        >
           {i18nStrings.cancelActionText}
         </InternalButton>
-        <InternalButton className={styles['property-editor-submit']} onClick={submitToken}>
+        <InternalButton formAction="none" className={styles['property-editor-submit']} onClick={submitToken}>
           {i18nStrings.applyActionText}
         </InternalButton>
       </div>

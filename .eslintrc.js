@@ -168,7 +168,9 @@ module.exports = {
       excludedFiles: ['src/**/__tests__/**', 'src/**/__integ__/**', 'src/**/__a11y__/**', 'src/**/__motion__/**'],
       rules: {
         '@cloudscape-design/no-implicit-svg-focusable': 'error',
+        '@cloudscape-design/no-internal-button-without-form-action': 'error',
         '@cloudscape-design/prefer-live-region': 'warn',
+        'react/button-has-type': ['error', { submit: false, reset: false }],
         'no-restricted-imports': [
           'error',
           {

@@ -78,6 +78,7 @@ const ButtonItem = forwardRef(
   ) => {
     return (
       <button
+        type="button"
         ref={ref}
         className={styles['overflow-menu-control']}
         onClick={onClick}
@@ -134,6 +135,7 @@ const ExpandableItem: React.FC<
   return (
     <>
       <button
+        type="button"
         className={clsx(styles['overflow-menu-control'], styles['overflow-menu-control-expandable-menu-trigger'])}
         onClick={() => setExpanded(value => !value)}
         aria-expanded={expanded}
