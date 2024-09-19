@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
-import { TokenGroup } from '~components';
+import { Box, TokenGroup } from '~components';
 import ButtonGroup from '~components/button-group';
 import Checkbox from '~components/checkbox';
 import ColumnLayout from '~components/column-layout';
@@ -142,35 +142,38 @@ export default function PromptInputPage() {
               invalid={isInvalid || textareaValue.length > MAX_CHARS}
               warning={hasWarning}
               ref={ref}
+              disableSecondaryActionsPaddings={true}
               secondaryActions={
                 hasSecondaryActions ? (
-                  <ButtonGroup
-                    ariaLabel="Chat actions"
-                    items={[
-                      {
-                        type: 'icon-button',
-                        id: 'copy',
-                        iconName: 'upload',
-                        text: 'Upload files',
-                        disabled: isDisabled || isReadOnly,
-                      },
-                      {
-                        type: 'icon-button',
-                        id: 'add',
-                        iconName: 'add-plus',
-                        text: 'Add',
-                        disabled: isDisabled || isReadOnly,
-                      },
-                      {
-                        type: 'icon-button',
-                        id: 'remove',
-                        iconName: 'remove',
-                        text: 'Remove',
-                        disabled: isDisabled || isReadOnly,
-                      },
-                    ]}
-                    variant="icon"
-                  />
+                  <Box padding={{ left: 'xxs', top: 'xs' }}>
+                    <ButtonGroup
+                      ariaLabel="Chat actions"
+                      items={[
+                        {
+                          type: 'icon-button',
+                          id: 'copy',
+                          iconName: 'upload',
+                          text: 'Upload files',
+                          disabled: isDisabled || isReadOnly,
+                        },
+                        {
+                          type: 'icon-button',
+                          id: 'add',
+                          iconName: 'add-plus',
+                          text: 'Add',
+                          disabled: isDisabled || isReadOnly,
+                        },
+                        {
+                          type: 'icon-button',
+                          id: 'remove',
+                          iconName: 'remove',
+                          text: 'Remove',
+                          disabled: isDisabled || isReadOnly,
+                        },
+                      ]}
+                      variant="icon"
+                    />
+                  </Box>
                 ) : undefined
               }
               secondaryContent={

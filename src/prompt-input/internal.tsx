@@ -49,6 +49,8 @@ const InternalPromptInput = React.forwardRef(
       spellcheck,
       secondaryActions,
       secondaryContent,
+      disableSecondaryActionsPaddings,
+      disableSecondaryContentPaddings,
       __internalRootRef = null,
       ...rest
     }: InternalPromptInputProps,
@@ -182,7 +184,11 @@ const InternalPromptInput = React.forwardRef(
         ref={__internalRootRef}
       >
         {secondaryContent && (
-          <div className={clsx(styles['secondary-content'], testutilStyles['secondary-content'])}>
+          <div
+            className={clsx(styles['secondary-content'], testutilStyles['secondary-content'], {
+              [styles['with-paddings']]: !disableSecondaryContentPaddings,
+            })}
+          >
             {secondaryContent}
           </div>
         )}
@@ -191,7 +197,11 @@ const InternalPromptInput = React.forwardRef(
           {hasActionButton && !secondaryActions && action}
         </div>
         {secondaryActions && (
-          <div className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'])}>
+          <div
+            className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
+              [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+            })}
+          >
             {secondaryActions}
             {hasActionButton && action}
           </div>
