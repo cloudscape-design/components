@@ -13,16 +13,9 @@
 $send-icon-right-spacing: awsui.$space-static-xxs;
 $invalid-border-offset: constants.$invalid-control-left-padding;
 
-@mixin control-border-radius {
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
-}
-
 .root {
   @include styles.styles-reset;
-  @include control-border-radius();
+  @include styles.control-border-radius-full();
   cursor: text;
 
   background-color: awsui.$color-background-input-default;
@@ -41,25 +34,33 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
   &.textarea-invalid {
     @include styles.form-invalid-control();
-    padding-inline-start: 0;
+    & {
+      padding-inline-start: 0;
+    }
 
     &:focus-within,
     &:focus {
       @include styles.form-invalid-control();
-      padding-inline-start: 0;
-      box-shadow: foundation.$box-shadow-focused-light-invalid;
+      & {
+        padding-inline-start: 0;
+        box-shadow: foundation.$box-shadow-focused-light-invalid;
+      }
     }
   }
 
   &.textarea-warning {
     @include styles.form-warning-control();
-    padding-inline-start: 0;
+    & {
+      padding-inline-start: 0;
+    }
 
     &:focus-within,
     &:focus {
       @include styles.form-warning-control();
-      padding-inline-start: 0;
-      box-shadow: foundation.$box-shadow-focused-light-invalid;
+      & {
+        padding-inline-start: 0;
+        box-shadow: foundation.$box-shadow-focused-light-invalid;
+      }
     }
   }
 
@@ -71,7 +72,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
 .textarea {
   @include styles.styles-reset;
-  @include control-border-radius();
+  @include styles.control-border-radius-full();
   @include styles.font-body-m;
   // Restore browsers' default resize values
   resize: none;
@@ -157,7 +158,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
 .secondary-content {
   @include styles.styles-reset;
-  @include control-border-radius();
+  @include styles.control-border-radius-full();
   padding-block-start: styles.$control-padding-vertical;
   padding-block-end: awsui.$space-scaled-s;
 
@@ -174,14 +175,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
 .secondary-actions {
   @include styles.styles-reset;
-  @include control-border-radius();
+  @include styles.control-border-radius-full();
   display: flex;
   justify-content: space-between;
   align-items: end;
-
-  > .button {
-    padding-block-end: awsui.$space-scaled-xxxs;
-  }
 
   &.with-paddings {
     padding-inline-start: styles.$control-padding-horizontal;
@@ -196,5 +193,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     > .button {
       padding-block-end: 0;
     }
+  }
+
+  > .button {
+    padding-block-end: awsui.$space-scaled-xxxs;
   }
 }
