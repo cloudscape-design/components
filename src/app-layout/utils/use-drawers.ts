@@ -63,10 +63,8 @@ function useRuntimeDrawers(
   const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
   const onGlobalDrawersChangeStable = useStableCallback(setActiveGlobalDrawersIds);
 
-  const localDrawerWasOpenRef = useRef(false);
-  localDrawerWasOpenRef.current = localDrawerWasOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
-
-  const globalDrawersWereOpenRef = useRef(false);
+  const drawersWereOpenRef = useRef(false);
+  drawersWereOpenRef.current = drawersWereOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
@@ -76,14 +74,12 @@ function useRuntimeDrawers(
       const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
       const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
       setRuntimeDrawers(convertRuntimeDrawers(localDrawers, globalDrawers));
-      if (!localDrawerWasOpenRef.current) {
+      if (!drawersWereOpenRef.current) {
         const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
         if (defaultActiveLocalDrawer) {
           onLocalDrawerChangeStable(defaultActiveLocalDrawer.id);
         }
-      }
 
-      if (!globalDrawersWereOpenRef.current) {
         const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(drawer => drawer.defaultActive);
         defaultActiveGlobalDrawers.forEach(drawer => {
           onGlobalDrawersChangeStable(drawer.id);
