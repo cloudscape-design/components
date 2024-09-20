@@ -13,20 +13,24 @@ import { AppLayoutProps } from '../interfaces';
 
 import testutilStyles from '../test-classes/styles.css.js';
 
+type Drawer = AppLayoutProps.Drawer & { active?: boolean };
+
 interface OverflowMenuProps {
-  items: Array<AppLayoutProps.Drawer>;
+  items: Array<Drawer>;
   onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   customTriggerBuilder?: InternalButtonDropdownProps['customTriggerBuilder'];
   ariaLabel?: string;
   globalDrawersStartIndex?: number;
 }
 
-const mapDrawerToItem = (drawer: AppLayoutProps.Drawer) => ({
+const mapDrawerToItem = (drawer: Drawer) => ({
   id: drawer.id,
   text: drawer.ariaLabels.drawerName,
   iconName: drawer.trigger!.iconName,
   iconSvg: drawer.trigger!.iconSvg,
   badge: drawer.badge,
+  itemType: 'checkbox' as ButtonDropdownProps.ItemType,
+  checked: drawer.active,
 });
 
 export default function OverflowMenu({

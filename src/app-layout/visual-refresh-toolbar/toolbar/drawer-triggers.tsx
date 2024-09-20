@@ -210,7 +210,10 @@ export function DrawerTriggers({
         })}
         {overflowItems.length > 0 && (
           <OverflowMenu
-            items={overflowItems}
+            items={overflowItems.map(item => ({
+              ...item,
+              active: activeGlobalDrawersIds.includes(item.id),
+            }))}
             ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
             customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
               return (
