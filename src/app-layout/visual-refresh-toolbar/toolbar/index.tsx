@@ -140,7 +140,7 @@ export function AppLayoutToolbarImplementation({
   }, [pinnedToolbar, setToolbarState, toolbarState]);
 
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
-  const disableButtons = !!isMobile && (!!activeDrawerId || (!!navigationOpen && hasNavigation));
+  const disableButtons = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
 
   return (
     <ToolbarSlot
