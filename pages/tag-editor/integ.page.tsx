@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 
-import { NonCancelableCustomEvent } from '~components';
-import TagEditor, { TagEditorProps } from '~components/tag-editor';
+import TagEditor, { TagEditorProps, useTagEditor } from '~components/tag-editor';
 
 import { I18N_STRINGS } from './shared';
 
@@ -52,16 +51,12 @@ export const localizedI18nStrings = {
 
 export default function Page() {
   const tagEditorRef = useRef<TagEditorProps.Ref | null>(null);
-  const [tags, setTags] = useState<ReadonlyArray<TagEditorProps.Tag>>(initialTags);
+  const { tagEditorProps } = useTagEditor(initialTags);
   const [locale, setLocale] = useState<'en' | 'de'>('en');
 
   document.addEventListener('onlocalechange', (({ detail }: LocaleChangeEvent) => {
     setLocale(detail.value);
   }) as EventListener);
-
-  const onChange = useCallback((event: NonCancelableCustomEvent<TagEditorProps.ChangeDetail>) => {
-    setTags(event.detail.tags);
-  }, []);
 
   return (
     <>
@@ -73,9 +68,8 @@ export default function Page() {
         ref={tagEditorRef}
         i18nStrings={localizedI18nStrings[locale]}
         tagLimit={4}
-        tags={tags}
         loading={false}
-        onChange={onChange}
+        {...tagEditorProps}
         keysRequest={key => onKeyRequest({ key })}
         valuesRequest={(key: string, value: string) => onValueRequest({ key, value })}
       />
