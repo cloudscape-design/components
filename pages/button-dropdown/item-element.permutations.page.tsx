@@ -42,6 +42,12 @@ const permutations = createPermutations<ItemProps>([
         external: true,
         externalIconAriaLabel: ' (opens in new tab)',
       },
+      {
+        id: '1',
+        text: 'External link option without href',
+        external: true,
+        externalIconAriaLabel: ' (opens in new tab)',
+      },
     ],
     disabled: [false, true],
     highlighted: [false],
