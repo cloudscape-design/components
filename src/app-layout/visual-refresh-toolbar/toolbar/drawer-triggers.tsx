@@ -65,14 +65,19 @@ export function DrawerTriggers({
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
-  const previousActiveDrawerId = useRef(activeDrawerId);
+  const previousActiveLocalDrawerId = useRef(activeDrawerId);
+  const previousActiveGlobalDrawersIds = useRef(activeGlobalDrawersIds);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
   if (!drawers && !splitPanelToggleProps) {
     return null;
   }
 
   if (activeDrawerId) {
-    previousActiveDrawerId.current = activeDrawerId;
+    previousActiveLocalDrawerId.current = activeDrawerId;
+  }
+
+  if (activeGlobalDrawersIds.length) {
+    previousActiveGlobalDrawersIds.current = activeGlobalDrawersIds;
   }
 
   const getIndexOfOverflowItem = () => {
@@ -104,8 +109,7 @@ export function DrawerTriggers({
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const globalDrawersStartIndex = drawers.length;
-  const hasOpenDrawer =
-    (!!activeDrawerId && activeDrawerId !== null) || (splitPanelPosition === 'side' && splitPanelOpen);
+  const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
 
   return (
     <aside
@@ -144,7 +148,7 @@ export function DrawerTriggers({
           </>
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
-          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
+          const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -159,7 +163,7 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
-              ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
+              ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
@@ -174,6 +178,7 @@ export function DrawerTriggers({
         })}
         {visibleItems.length > globalDrawersStartIndex && <div className={styles['group-divider']}></div>}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
+          const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -197,7 +202,9 @@ export function DrawerTriggers({
               hasTooltip={true}
               hasOpenDrawer={hasOpenDrawer}
               tooltipText={item.ariaLabels?.drawerName}
+              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
               isMobile={isMobile}
+              disabled={disabled}
             />
           );
         })}
