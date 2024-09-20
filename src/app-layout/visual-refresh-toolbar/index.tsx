@@ -89,8 +89,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       fireNonCancelableEvent(onToolsChange, { open });
     };
 
-    const onGlobalDrawerFocus = (drawerId?: string) => {
-      globalDrawersFocusControl.setFocus({ force: true, drawerId });
+    const onGlobalDrawerFocus = (drawerId: string, open: boolean) => {
+      globalDrawersFocusControl.setFocus({ force: true, drawerId, open });
     };
 
     const onAddNewActiveDrawer = (drawerId: string) => {

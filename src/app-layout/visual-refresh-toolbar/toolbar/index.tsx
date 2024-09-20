@@ -94,13 +94,13 @@ export function AppLayoutToolbarImplementation({
     toolbarState,
     setToolbarState,
     setToolbarHeight,
+    globalDrawersFocusControl,
   } = appLayoutInternals;
   const {
     ariaLabels,
     activeDrawerId,
     drawers,
     drawersFocusRef,
-    globalDrawersFocusControl,
     onActiveDrawerChange,
     globalDrawers,
     activeGlobalDrawersIds,
@@ -152,7 +152,7 @@ export function AppLayoutToolbarImplementation({
   }, [pinnedToolbar, setToolbarState, toolbarState]);
 
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
-  const disableButtons = !!isMobile && (!!activeDrawerId || !!navigationOpen);
+  const disableButtons = isMobile && (!!activeDrawerId || !!navigationOpen);
 
   return (
     <ToolbarSlot

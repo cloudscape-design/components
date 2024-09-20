@@ -164,7 +164,7 @@ export const MIN_DRAWER_SIZE = 290;
 
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
-  onGlobalDrawerFocus?: (drawerId?: string) => void;
+  onGlobalDrawerFocus?: (drawerId: string, open: boolean) => void;
   onAddNewActiveDrawer?: (drawerId: string) => void;
 };
 
@@ -220,12 +220,12 @@ export function useDrawers(
   function onActiveGlobalDrawersChange(drawerId: string) {
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
-      onGlobalDrawerFocus && onGlobalDrawerFocus();
+      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
-      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId);
+      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
     }
   }

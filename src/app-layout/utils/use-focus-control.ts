@@ -20,7 +20,7 @@ export interface FocusControlState {
 
 export interface FocusControlMultipleStates {
   refs: Record<string, FocusControlRefs>;
-  setFocus: (params?: { force?: boolean; drawerId?: string }) => void;
+  setFocus: (params?: { force?: boolean; drawerId?: string; open?: boolean }) => void;
   loseFocus: () => void;
 }
 
@@ -28,7 +28,6 @@ export function useMultipleFocusControl(
   restoreFocus: boolean,
   activeDrawersIds: Array<string>
 ): FocusControlMultipleStates {
-  const isOpen = activeDrawersIds.length > 0;
   const refs = useRef<Record<string, FocusControlRefs>>({});
 
   activeDrawersIds.forEach(drawerId => {
@@ -42,12 +41,12 @@ export function useMultipleFocusControl(
   });
 
   const doFocus = useCallback(
-    (drawerId: string | null) => {
+    (drawerId: string, open = true) => {
       if (!shouldFocus.current) {
         return;
       }
-      if (drawerId) {
-        const ref = refs.current[drawerId];
+      const ref = refs.current[drawerId];
+      if (open) {
         previousFocusedElement.current =
           document.activeElement !== document.body ? (document.activeElement as HTMLElement) : undefined;
         if (ref?.slider?.current) {
@@ -59,6 +58,8 @@ export function useMultipleFocusControl(
         if (restoreFocus && previousFocusedElement.current && document.contains(previousFocusedElement.current)) {
           previousFocusedElement.current.focus();
           previousFocusedElement.current = undefined;
+        } else {
+          ref?.toggle?.current?.focus();
         }
       }
       shouldFocus.current = false;
@@ -66,11 +67,11 @@ export function useMultipleFocusControl(
     [refs, restoreFocus]
   );
 
-  const setFocus = (params?: { force?: boolean; drawerId?: string }) => {
-    const { force = false, drawerId = null } = params || {};
+  const setFocus = (params?: { force?: boolean; drawerId?: string; open?: boolean }) => {
+    const { force = false, drawerId = null, open = true } = params || {};
     shouldFocus.current = true;
-    if (force && isOpen && (!drawerId || activeDrawersIds.includes(drawerId))) {
-      doFocus(drawerId);
+    if (force && (!drawerId || activeDrawersIds.includes(drawerId))) {
+      doFocus(drawerId!, open);
     }
   };
 
@@ -84,7 +85,7 @@ export function useMultipleFocusControl(
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     doFocus(activeDrawersIds[0]);
-  }, [isOpen, activeDrawersIds, doFocus]);
+  }, [activeDrawersIds, doFocus]);
 
   return {
     refs: refs.current,
