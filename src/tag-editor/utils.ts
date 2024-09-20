@@ -51,7 +51,7 @@ export function useMemoizedArray<T>(array: ReadonlyArray<T>, isEqual: (prev: T, 
   return updated;
 }
 
-interface GetDiffingTagResult {
+interface IdentifyTagsStatesResult {
   created: TagEditorProps.Tag[];
   removed: TagEditorProps.Tag[];
   updated: TagEditorProps.Tag[];
@@ -75,7 +75,7 @@ interface GetDiffingTagResult {
 export function identifyTagStates(
   initialTags: readonly TagEditorProps.Tag[],
   tags: readonly TagEditorProps.Tag[]
-): GetDiffingTagResult {
+): IdentifyTagsStatesResult {
   if (initialTags.some(t => !t.existing)) {
     warnOnce('identifyTagStates', 'all initial tags should have `existing` property set to `true`.');
   }
