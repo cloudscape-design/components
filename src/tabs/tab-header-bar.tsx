@@ -517,7 +517,8 @@ const TabTrigger = forwardRef(
     const children = (
       <>
         <span className={clsx(styles['tabs-tab-label'], analyticsSelectors['tab-label'])} ref={tabLabelRefObject}>
-          {tab.label}
+          {/* The label is wrapped with span so that whitespaces inside don't get trimmed. */}
+          <span>{tab.label}</span>
         </span>
         {isDisabledWithReason && (
           <>
