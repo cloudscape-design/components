@@ -133,6 +133,7 @@ export default function PromptInputPage() {
             i18nStrings={{ errorIconAriaLabel: 'Error' }}
           >
             <PromptInput
+              ariaLabel="Chat input"
               actionButtonIconName="send"
               actionButtonAriaLabel="Submit prompt"
               value={textareaValue}
