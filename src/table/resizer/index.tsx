@@ -64,6 +64,8 @@ export function Resizer({
 
   useEffect(() => {
     const elements = getResizerElements(resizerToggleRef.current);
+    const document = resizerToggleRef.current?.ownerDocument ?? window.document;
+
     if ((!isDragging && !resizerHasFocus) || !elements) {
       return;
     }
@@ -80,7 +82,6 @@ export function Resizer({
     };
 
     const updateColumnWidth = (newWidth: number) => {
-      console.log('updateColumnWidth');
       const { insetInlineEnd, inlineSize } = getLogicalBoundingClientRect(elements.header);
       const updatedWidth = newWidth < minWidth ? minWidth : newWidth;
       updateTrackerPosition(insetInlineEnd + updatedWidth - inlineSize);
@@ -92,7 +93,6 @@ export function Resizer({
     };
 
     const resizeColumn = (offset: number) => {
-      console.log('resizeColumn');
       if (offset > inlineStartEdge) {
         const cellLeft = getLogicalBoundingClientRect(elements.header).insetInlineStart;
         const newWidth = offset - cellLeft;
@@ -110,7 +110,6 @@ export function Resizer({
     };
 
     const onMouseMove = (event: MouseEvent) => {
-      console.log('onMouseMove');
       clearTimeout(autoGrowTimeout.current);
       const offset = getLogicalPageX(event);
       if (offset > inlineEndEdge) {
@@ -121,7 +120,6 @@ export function Resizer({
     };
 
     const onMouseUp = (event: MouseEvent) => {
-      console.log('onMouseUp');
       resizeColumn(getLogicalPageX(event));
       setIsDragging(false);
       onWidthUpdateCommit();
@@ -207,7 +205,6 @@ export function Resizer({
           setIsDragging(true);
         }}
         onClick={() => {
-          console.log('click on the resizer');
           // Prevent mouse drag activation and activate keyboard dragging for VO+Space click.
           setIsDragging(false);
           setResizerHasFocus(true);
@@ -215,7 +212,6 @@ export function Resizer({
           resizerSeparatorRef.current?.focus();
         }}
         onFocus={() => {
-          console.log('focused on the resizer');
           setHeaderCellWidth(getHeaderWidth(resizerToggleRef.current));
           setResizerHasFocus(true);
         }}
@@ -249,7 +245,6 @@ export function Resizer({
         aria-valuemin={minWidth}
         data-focus-id={focusId}
         onBlur={() => {
-          console.log('onBlur');
           setResizerHasFocus(false);
           if (isKeyboardDragging) {
             setIsKeyboardDragging(false);

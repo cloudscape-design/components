@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
+import { findUpUntil } from '../../internal/utils/dom.js';
 import { getOverflowParents } from '../../internal/utils/scrollable-containers.js';
 
 import tableStyles from '../styles.css.js';

@@ -1,23 +1,29 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import zipObject from 'lodash/zipObject';
 
-import { NonCancelableCustomEvent } from '~components';
+import { NonCancelableCustomEvent, TextFilter } from '~components';
 import AppLayout from '~components/app-layout';
 import Button from '~components/button';
 import Drawer from '~components/drawer';
 import Header from '~components/header';
-import Input from '~components/input';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 import Table, { TableProps } from '~components/table';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers, Navigation } from './utils/content-blocks';
 import labels from './utils/labels';
+
+type PageContext = React.Context<
+  AppContextType<{
+    iframe?: boolean;
+  }>
+>;
 
 interface Item {
   id: number;
@@ -87,6 +93,7 @@ const items: Item[] = [
 
 function DrawerContent() {
   const [selectedItems, setSelectedItems] = useState<Array<Item>>([]);
+  const [sorting, setSorting] = useState<null | TableProps.SortingState<Item>>(null);
   const [columns, setColumns] = useState(columnsConfig);
   const [columnDisplay] = useState([
     { id: 'name', visible: true },
@@ -115,28 +122,34 @@ function DrawerContent() {
 
   return (
     <Drawer header={<h2>Simple table</h2>}>
-      <Input value={''} />
-      <Table<Item>
-        selectedItems={selectedItems}
-        onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
-        stickyHeader={true}
-        resizableColumns={true}
-        enableKeyboardNavigation={false}
-        contentDensity="compact"
-        selectionType="multi"
-        variant="embedded"
-        columnDefinitions={columns}
-        columnDisplay={columnDisplay}
-        items={items}
-        wrapLines={false}
-        empty={
-          <>
-            <p>No resources to display</p>
-            <Button>Create some</Button>
-          </>
-        }
-        onColumnWidthsChange={handleWidthChange}
-      />
+      <SpaceBetween size="m">
+        <TextFilter filteringText="" />
+
+        <Table<Item>
+          selectedItems={selectedItems}
+          onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
+          stickyHeader={true}
+          sortingColumn={sorting?.sortingColumn}
+          sortingDescending={sorting?.isDescending}
+          onSortingChange={({ detail }) => setSorting(detail)}
+          resizableColumns={true}
+          enableKeyboardNavigation={false}
+          contentDensity="compact"
+          selectionType="multi"
+          variant="embedded"
+          columnDefinitions={columns}
+          columnDisplay={columnDisplay}
+          items={items}
+          wrapLines={false}
+          empty={
+            <>
+              <p>No resources to display</p>
+              <Button>Create some</Button>
+            </>
+          }
+          onColumnWidthsChange={handleWidthChange}
+        />
+      </SpaceBetween>
     </Drawer>
   );
 }
@@ -179,6 +192,9 @@ function InnerApp() {
 }
 
 export default function () {
+  const {
+    urlParams: { iframe = true },
+  } = useContext(AppContext as PageContext);
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -192,7 +208,7 @@ export default function () {
             <ScreenreaderOnly>
               <h1>Multiple app layouts with iframe</h1>
             </ScreenreaderOnly>
-            <IframeWrapper id="inner-iframe" AppComponent={InnerApp} />
+            {iframe ? <IframeWrapper id="inner-iframe" AppComponent={InnerApp} /> : <InnerApp />}
           </>
         }
       />

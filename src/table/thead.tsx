@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { findUpUntil } from '../internal/utils/dom';
 import { GeneratedAnalyticsMetadataTableSelectAll } from './analytics-metadata/interfaces';
 import { TableHeaderCell } from './header-cell';
 import { TableThElement } from './header-cell/th-element';
