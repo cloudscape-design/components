@@ -140,13 +140,14 @@ describe('action button', () => {
     expect(wrapper.findActionButton().getElement()).toHaveAttribute('disabled');
   });
 
-  test('disabled when in read-only state', () => {
+  test('focusable when in read-only state', () => {
     const { wrapper } = renderPromptInput({
       value: '',
       actionButtonIconName: 'send',
       readOnly: true,
     });
-    expect(wrapper.findActionButton().getElement()).toHaveAttribute('disabled');
+
+    expect(wrapper.findActionButton().getElement()).toHaveAttribute('aria-disabled', 'true');
   });
 });
 
