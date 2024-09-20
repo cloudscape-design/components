@@ -51,41 +51,43 @@ export function useMemoizedArray<T>(array: ReadonlyArray<T>, isEqual: (prev: T, 
   return updated;
 }
 
-interface IdentifyTagsStatesResult {
-  created: TagEditorProps.Tag[];
-  removed: TagEditorProps.Tag[];
-  updated: TagEditorProps.Tag[];
+interface GetTagsDiffResult {
+  createdTags: {
+    key: string;
+    value: string;
+  }[];
+  removedKeys: string[];
 }
 
 /**
  * Compares the initial tags with the current tags passed to the tag editor
- * and returns the differences, indicating which tags have been created, removed, or updated.
+ * and returns the differences, identifying which tags have been created or removed.
  *
- * This utility can be used to track tag changes and inform a tagging service about
- * which tags need to be added, removed, or updated.
+ * This utility can be used to track tag changes and inform your tagging service about
+ * the removed and added tags.
  *
  * @param initialTags - The original tags fetched from the backend or tagging service.
- * @param tags - The current tags provided to the tag editor.
- * @returns An object containing three arrays:
- * - `created`: Tags that are new and were not present in the initial tags.
- * - `removed`: Tags that were marked for removal from the initial tags.
- * - `updated`: Tags that existed in the initial tags but had their values modified.
+ * @param tags - The current tags provided to the tag editor, including any new or modified tags.
+ * @returns An object containing two arrays:
+ * - `createdTags`: An array of tags that are new or updated (with modified values).
+ *    Each tag is represented by its `key` and `value`.
+ * - `removedKeys`: An array of tag keys that were present in the initial tags but marked for removal.
  */
 
-export function identifyTagStates(
+export function getTagsDiff(
   initialTags: readonly TagEditorProps.Tag[],
   tags: readonly TagEditorProps.Tag[]
-): IdentifyTagsStatesResult {
+): GetTagsDiffResult {
   if (initialTags.some(t => !t.existing)) {
     warnOnce('identifyTagStates', 'all initial tags should have `existing` property set to `true`.');
   }
-  const created = tags.filter(tag => !tag.existing);
-  const removed = tags.filter(tag => tag.existing && tag.markedForRemoval);
   const updated = tags.filter(tag =>
     initialTags.some(({ key, value }) => {
       return !tag.markedForRemoval && tag.key === key && tag.existing && tag.value !== value;
     })
   );
+  const created = [...tags.filter(tag => !tag.existing), ...updated].map(({ key, value }) => ({ key, value }));
+  const removed = [...tags.filter(tag => tag.existing && tag.markedForRemoval), ...updated].map(t => t.key);
 
-  return { created, removed, updated };
+  return { createdTags: created, removedKeys: removed };
 }
