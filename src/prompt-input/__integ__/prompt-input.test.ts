@@ -17,7 +17,7 @@ class PromptInputPage extends BasePageObject {
 const setupTest = (testFn: (page: PromptInputPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new PromptInputPage(browser);
-    await browser.url(`#/light/prompt-input/simple`);
+    await browser.url(`#/light/prompt-input/simple/?isReadOnly=true`);
     await page.waitForVisible(promptInputWrapper.toSelector());
     await testFn(page);
   });
@@ -29,6 +29,15 @@ describe('Prompt input', () => {
       await expect(page.getPromptInputHeight()).resolves.toEqual(32);
       await page.click('#placeholder-text-button');
       await expect(page.getPromptInputHeight()).resolves.toEqual(96);
+    })
+  );
+
+  test(
+    'Action button should be focusable in read-only state',
+    setupTest(async page => {
+      await page.click('#focus-button');
+      await page.keys('Tab');
+      await expect(page.isFocused(promptInputWrapper.find('button').toSelector())).resolves.toBe(true);
     })
   );
 });
