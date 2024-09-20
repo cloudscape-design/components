@@ -302,36 +302,35 @@ describe('secondary content', () => {
 
 describe('a11y', () => {
   test('Valides a11y', async () => {
-    const { container } = render(<PromptInput ariaLabel="Prompt input" value="" />);
-
+    const { container } = render(<PromptInput ariaLabel="Prompt input" placeholder="placeholder" value="" />);
     await expect(container).toValidateA11y();
   });
 
   describe('aria-label', () => {
     test('is not added if not defined', () => {
       const { wrapper } = renderPromptInput({ value: '' });
-      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-label');
+      expect(within(wrapper.getElement()).getByRole('region')).not.toHaveAttribute('aria-label');
     });
     test('can be set to custom value', () => {
       const { wrapper } = renderPromptInput({
         value: '',
         ariaLabel: 'my-custom-label',
       });
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-label', 'my-custom-label');
+      expect(within(wrapper.getElement()).getByRole('region')).toHaveAttribute('aria-label', 'my-custom-label');
     });
   });
 
   describe('aria-describedby', () => {
     test('is not added if set to null', () => {
       const { wrapper } = renderPromptInput({ value: '' });
-      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-describedby');
+      expect(within(wrapper.getElement()).getByRole('region')).not.toHaveAttribute('aria-describedby');
     });
     test('can be set to custom value', () => {
       const { wrapper } = renderPromptInput({
         value: '',
         ariaDescribedby: 'my-custom-id',
       });
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
+      expect(within(wrapper.getElement()).getByRole('region')).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
     test('can be customized without controlId', () => {
       const { wrapper } = renderPromptInput({
@@ -340,21 +339,21 @@ describe('a11y', () => {
         ariaDescribedby: 'my-custom-id',
       });
 
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
+      expect(within(wrapper.getElement()).getByRole('region')).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
   });
 
   describe('aria-labelledby', () => {
     test('is not added if not defined', () => {
       const { wrapper } = renderPromptInput({ value: '' });
-      expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-labelledby');
+      expect(within(wrapper.getElement()).getByRole('region')).not.toHaveAttribute('aria-labelledby');
     });
     test('can be set to custom value', () => {
       const { wrapper } = renderPromptInput({
         value: '',
         ariaLabelledby: 'my-custom-id',
       });
-      expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
+      expect(within(wrapper.getElement()).getByRole('region')).toHaveAttribute('aria-labelledby', 'my-custom-id');
     });
   });
 });

@@ -129,10 +129,6 @@ const InternalPromptInput = React.forwardRef(
     }, [value, adjustTextareaHeight, maxRows, isCompactMode]);
 
     const attributes: React.TextareaHTMLAttributes<HTMLTextAreaElement> = {
-      'aria-label': ariaLabel,
-      'aria-labelledby': ariaLabelledby,
-      'aria-describedby': ariaDescribedby,
-      'aria-invalid': invalid ? 'true' : undefined,
       name,
       placeholder,
       autoFocus,
@@ -179,6 +175,11 @@ const InternalPromptInput = React.forwardRef(
     return (
       <div
         {...baseProps}
+        role="region"
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+        aria-invalid={invalid ? 'true' : undefined}
         className={clsx(styles.root, testutilStyles.root, baseProps.className, {
           [styles['textarea-readonly']]: readOnly,
           [styles['textarea-invalid']]: invalid,
@@ -186,7 +187,6 @@ const InternalPromptInput = React.forwardRef(
           [styles.disabled]: disabled,
         })}
         ref={__internalRootRef}
-        role="region"
       >
         {secondaryContent && (
           <div
