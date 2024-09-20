@@ -125,7 +125,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         const pageHeaderBottom = (await page.getBoundingBox(pageHeaderSelector)).bottom;
         await page.windowScrollTo({ top: 200 });
         const tableStickyHeaderTop = (await page.getBoundingBox(tableStickyHeaderSelector.toSelector())).top;
-        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom);
+        // Take into account toolbar height
+        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom + (theme === 'refresh-toolbar' ? 42 : 0));
       }
     )
   );
