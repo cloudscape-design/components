@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export type FunnelType = 'single-page' | 'multi-page';
-export type FlowType = 'create' | 'edit' | 'home' | 'dashboard';
+export type FlowType = 'create' | 'edit' | 'home' | 'dashboard' | 'view-resource';
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
   flowType?: FlowType;
@@ -178,4 +178,13 @@ export type TaskCompletionDataMethod = (props: TaskCompletionDataProps) => void;
 export interface IPerformanceMetrics {
   tableInteraction: TableInteractionMethod;
   taskCompletionData: TaskCompletionDataMethod;
+}
+
+export interface ComponentMountedProps {
+  componentName: string;
+  details: Record<string, string | boolean | number | undefined>;
+}
+export type ComponentMountedMethod = (props: ComponentMountedProps) => string;
+export interface IComponentMetrics {
+  componentMounted: ComponentMountedMethod;
 }

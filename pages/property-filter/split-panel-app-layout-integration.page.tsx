@@ -10,7 +10,7 @@ import Button from '~components/button';
 import Header from '~components/header';
 import I18nProvider from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
-import PropertyFilter from '~components/property-filter/internal';
+import PropertyFilter from '~components/property-filter';
 import SplitPanel from '~components/split-panel';
 import Table from '~components/table';
 

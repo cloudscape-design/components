@@ -62,8 +62,8 @@
   text-decoration: none;
 
   &.link-style {
-    @include styles.link-inline('body-m');
     padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+    @include styles.link-inline('body-m');
   }
 
   &:focus {

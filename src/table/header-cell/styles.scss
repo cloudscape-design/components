@@ -84,6 +84,11 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
     position: sticky;
     background: awsui.$color-background-table-header;
     z-index: 798; // Lower than the AppLayout's notification slot z-index(799)
+    @include styles.with-motion {
+      transition-property: padding;
+      transition-duration: awsui.$motion-duration-transition-show-quick;
+      transition-timing-function: awsui.$motion-easing-sticky;
+    }
     &-pad-left:not(.has-selection) {
       padding-inline-start: awsui.$space-table-horizontal;
     }
@@ -108,12 +113,6 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
         clip-path: inset(0 -24px 0 0);
       }
     }
-
-    @include styles.with-motion {
-      transition-property: padding;
-      transition-duration: awsui.$motion-duration-transition-show-quick;
-      transition-timing-function: awsui.$motion-easing-sticky;
-    }
   }
 }
 
@@ -134,8 +133,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 .header-cell-content {
   position: relative;
   padding-block: awsui.$space-scaled-xxs;
-  @include cell-offset(awsui.$space-s);
   padding-inline-end: awsui.$space-s;
+  @include cell-offset(awsui.$space-s);
 
   .header-cell-sortable > & {
     padding-inline-end: calc(#{awsui.$space-xl} + #{awsui.$space-xxs});

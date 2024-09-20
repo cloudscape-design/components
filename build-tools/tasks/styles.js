@@ -78,6 +78,7 @@ function stylesTask(theme) {
       designTokensFileName: theme.designTokensOutput,
       descriptions,
       jsonSchema: true,
+      failOnDeprecations: true,
     });
   });
 }
