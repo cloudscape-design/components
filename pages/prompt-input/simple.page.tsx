@@ -115,7 +115,9 @@ export default function PromptInputPage() {
           Fill with placeholder text
         </button>
 
-        <button onClick={() => ref.current?.focus()}>Focus component</button>
+        <button id="focus-button" onClick={() => ref.current?.focus()}>
+          Focus component
+        </button>
         <button onClick={() => ref.current?.select()}>Select all text</button>
 
         <ColumnLayout columns={2}>
@@ -159,9 +161,9 @@ export default function PromptInputPage() {
                         },
                         {
                           type: 'icon-button',
-                          id: 'add',
-                          iconName: 'add-plus',
-                          text: 'Add',
+                          id: 'expand',
+                          iconName: 'expand',
+                          text: 'Go full page',
                           disabled: isDisabled || isReadOnly,
                         },
                         {
