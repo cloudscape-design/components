@@ -55,27 +55,26 @@ function AppLayoutWithControlledNavigation({
 
 describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
   // In refactored Visual Refresh different styles are used compared to Classic
-  const mobileBarClassName =
-    theme === 'refresh'
-      ? testUtilsStyles['mobile-bar']
-      : theme === 'refresh-toolbar'
-        ? toolbarSkeletonStyles['toolbar-container']
-        : mobileToolbarStyles['mobile-bar'];
-  const drawerBarClassName =
-    theme === 'refresh'
-      ? visualRefreshRefactoredStyles['drawers-mobile-triggers-container']
-      : theme === 'refresh-toolbar'
-        ? toolbarStyles['drawers-trigger-content']
-        : drawersMobileStyles['drawers-container'];
-  const blockBodyScrollClassName = theme.startsWith('refresh')
-    ? visualRefreshRefactoredStyles['block-body-scroll']
-    : mobileToolbarStyles['block-body-scroll'];
-  const unfocusableClassName =
-    theme === 'refresh'
-      ? visualRefreshRefactoredStyles.unfocusable
-      : theme === 'refresh-toolbar'
-        ? toolbarSkeletonStyles['unfocusable-mobile']
-        : styles.unfocusable;
+  const mobileBarClassName = {
+    refresh: testUtilsStyles['mobile-bar'],
+    'refresh-toolbar': toolbarSkeletonStyles['toolbar-container'],
+    classic: mobileToolbarStyles['mobile-bar'],
+  }[theme];
+  const drawerBarClassName = {
+    refresh: visualRefreshRefactoredStyles['drawers-mobile-triggers-container'],
+    'refresh-toolbar': toolbarStyles['drawers-trigger-content'],
+    classic: drawersMobileStyles['drawers-container'],
+  }[theme];
+  const blockBodyScrollClassName = {
+    refresh: visualRefreshRefactoredStyles['block-body-scroll'],
+    'refresh-toolbar': toolbarStyles['block-body-scroll'],
+    classic: mobileToolbarStyles['block-body-scroll'],
+  }[theme];
+  const unfocusableClassName = {
+    refresh: visualRefreshRefactoredStyles.unfocusable,
+    'refresh-toolbar': toolbarSkeletonStyles['unfocusable-mobile'],
+    classic: styles.unfocusable,
+  }[theme];
 
   const triggerBadgeClassName =
     theme === 'refresh-toolbar' ? toolbarTriggerButtonStyles['trigger-badge-wrapper'] : iconStyles.badge;
@@ -129,20 +128,14 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     const { wrapper } = renderComponent(<AppLayout navigationOpen={true} onNavigationChange={() => {}} />);
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
     expect(isDrawerClosed(wrapper.findTools())).toBe(true);
-    // TODO: Enable when bodyscroll is handled
-    if (theme !== 'refresh-toolbar') {
-      expect(document.body).toHaveClass(blockBodyScrollClassName);
-    }
+    expect(document.body).toHaveClass(blockBodyScrollClassName);
     expect(wrapper.findNavigationToggle().getElement()).toBeDisabled();
     expect(wrapper.findToolsToggle().getElement()).toBeDisabled();
   });
 
   test('renders open tools state', () => {
     const { wrapper } = renderComponent(<AppLayout toolsOpen={true} onToolsChange={() => {}} />);
-    // TODO: Enable when bodyscroll is handled
-    if (theme !== 'refresh-toolbar') {
-      expect(document.body).toHaveClass(blockBodyScrollClassName);
-    }
+    expect(document.body).toHaveClass(blockBodyScrollClassName);
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
     expect(isDrawerClosed(wrapper.findTools())).toBe(false);
     expect(wrapper.findNavigationToggle().getElement()).toBeDisabled();
@@ -153,10 +146,7 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     const { wrapper } = renderComponent(
       <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
     );
-    // TODO: Enable when bodyscroll is handled
-    if (theme !== 'refresh-toolbar') {
-      expect(document.body).toHaveClass(blockBodyScrollClassName);
-    }
+    expect(document.body).toHaveClass(blockBodyScrollClassName);
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
     expect(isDrawerClosed(wrapper.findTools())).toBe(true);
     expect(wrapper.findActiveDrawer()).toBeTruthy();
@@ -173,8 +163,7 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     expect(findMobileToolbar(wrapper)).toBeFalsy();
   });
 
-  // TODO: Enable when bodyscroll is handled
-  (theme !== 'refresh-toolbar' ? test : test.skip)('clears up body scroll class when component is destroyed', () => {
+  test('clears up body scroll class when component is destroyed', () => {
     const { rerender } = renderComponent(<AppLayout navigationOpen={true} onNavigationChange={() => {}} />);
     expect(document.body).toHaveClass(blockBodyScrollClassName);
 
