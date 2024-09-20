@@ -306,6 +306,7 @@ const InternalTable = React.forwardRef(
       onSortingChange,
       onFocusMove: moveFocus,
       onResizeFinish(newWidth) {
+        console.log('onResizeFinish');
         const widthsDetail = columnDefinitions.map(
           (column, index) =>
             newWidth.get(getColumnKey(column, index)) || (column.width as number) || DEFAULT_COLUMN_WIDTH
