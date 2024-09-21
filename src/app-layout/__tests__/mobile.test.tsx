@@ -22,7 +22,7 @@ import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
-import { findUpUntil } from '../../../lib/components/internal/utils/dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import SideNavigation from '../../../lib/components/side-navigation';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({

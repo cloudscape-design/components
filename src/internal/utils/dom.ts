@@ -1,20 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import balanced from 'balanced-match';
 
-export function findUpUntil(node: HTMLElement, callback: (element: HTMLElement) => boolean): HTMLElement | null {
-  let current: HTMLElement | null = node;
-  while (current && !callback(current)) {
-    current = current.parentElement;
-    // If a component is used within an svg (i.e. as foreignObject), then it will
-    // have some ancestor nodes that are SVGElement. We want to skip those,
-    // as they have very different properties to HTMLElements.
-    while (current && !isHTMLElement(current)) {
-      current = (current as Element).parentElement;
-    }
-  }
-  return current;
-}
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 /**
  * Returns an element that is used to position the given element.
