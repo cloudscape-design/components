@@ -78,6 +78,7 @@ const dateTimeProperty: InternalFilteringProperty = {
 
 const defaultProps: Omit<TokenEditorProps, 'i18nStrings'> = {
   supportsGroups: true,
+  tokenGroupPropertyAllowance: 'all-properties',
   asyncProps: {},
   customGroupsText: [],
   freeTextFiltering: {

@@ -29,6 +29,7 @@ export interface FilteringTokenProps {
   operation: FilteringTokenProps.Operation;
   groupOperation: FilteringTokenProps.Operation;
   showOperation: boolean;
+  fixedOperations: boolean;
   andText: string;
   orText: string;
   groupAriaLabel: string;
@@ -62,6 +63,7 @@ const FilteringToken = forwardRef(
     {
       tokens,
       showOperation,
+      fixedOperations,
       operation,
       groupOperation,
       andText,
@@ -122,6 +124,7 @@ const FilteringToken = forwardRef(
               andText={andText}
               orText={orText}
               parent={true}
+              fixedOperations={fixedOperations}
               disabled={disabled}
             />
           )
@@ -171,6 +174,7 @@ const FilteringToken = forwardRef(
                         andText={andText}
                         orText={orText}
                         parent={false}
+                        fixedOperations={fixedOperations}
                         disabled={disabled}
                       />
                     )
@@ -281,6 +285,7 @@ function OperationSelector({
   andText,
   orText,
   parent,
+  fixedOperations,
   disabled,
 }: {
   operation: FilteringTokenProps.Operation;
@@ -289,11 +294,13 @@ function OperationSelector({
   orText: string;
   ariaLabel: string;
   parent: boolean;
+  fixedOperations: boolean;
   disabled?: boolean;
 }) {
   return (
     <InternalSelect
       __inFilteringToken={parent ? 'root' : 'nested'}
+      __showAsLabel={fixedOperations}
       className={clsx(
         parent
           ? clsx(styles.select, testUtilStyles['filtering-token-select'])

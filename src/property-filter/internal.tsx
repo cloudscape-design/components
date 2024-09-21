@@ -49,7 +49,13 @@ import styles from './styles.css.js';
 
 export type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
-  'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering' | 'hideOperations'
+  | 'filteringOptions'
+  | 'customGroupsText'
+  | 'enableTokenGroups'
+  | 'tokenGroupPropertyAllowance'
+  | 'disableFreeTextFiltering'
+  | 'hideOperations'
+  | 'fixedOperations'
 > &
   InternalBaseComponentProps;
 
@@ -60,6 +66,7 @@ const PropertyFilterInternal = React.forwardRef(
       countText,
       query,
       hideOperations,
+      fixedOperations,
       onChange,
       filteringProperties,
       filteringOptions,
@@ -85,6 +92,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups,
+      tokenGroupPropertyAllowance,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -393,11 +401,13 @@ const PropertyFilterInternal = React.forwardRef(
                     i18nStrings={i18nStrings}
                     asyncProperties={asyncProperties}
                     hideOperations={hideOperations}
+                    fixedOperations={fixedOperations}
                     customGroupsText={customGroupsText}
                     freeTextFiltering={internalFreeText}
                     disabled={disabled}
                     expandToViewport={expandToViewport}
                     enableTokenGroups={enableTokenGroups}
+                    tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
                   />
                 )}
                 i18nStrings={{

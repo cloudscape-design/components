@@ -21,6 +21,7 @@ import {
   InternalTokenGroup,
   JoinOperation,
   LoadItemsDetail,
+  TokenGroupPropertyAllowance,
 } from './interfaces';
 import { TokenEditor } from './token-editor';
 import { tokenGroupToTokens } from './utils';
@@ -43,9 +44,11 @@ interface TokenProps {
   filteringProperties: readonly InternalFilteringProperty[];
   filteringOptions: readonly InternalFilteringOption[];
   hideOperations?: boolean;
+  fixedOperations?: boolean;
   i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   enableTokenGroups: boolean;
+  tokenGroupPropertyAllowance: TokenGroupPropertyAllowance;
 }
 
 export const TokenButton = ({
@@ -61,11 +64,13 @@ export const TokenButton = ({
   i18nStrings,
   asyncProperties,
   hideOperations,
+  fixedOperations,
   customGroupsText,
   disabled,
   freeTextFiltering,
   expandToViewport,
   enableTokenGroups,
+  tokenGroupPropertyAllowance,
 }: TokenProps) => {
   const tokenRef = useRef<FilteringTokenRef>(null);
 
@@ -105,6 +110,7 @@ export const TokenButton = ({
         };
       })}
       showOperation={!first && !hideOperations}
+      fixedOperations={!!fixedOperations}
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}
@@ -123,6 +129,7 @@ export const TokenButton = ({
       editorContent={
         <TokenEditor
           supportsGroups={enableTokenGroups}
+          tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
           tempGroup={tempTokens}

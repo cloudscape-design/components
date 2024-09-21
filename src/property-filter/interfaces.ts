@@ -68,9 +68,23 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
   hideOperations?: boolean;
   /**
    * Activates token grouping mechanism to support token nesting (up to one level).
+   * If fixedOperations it set, the indicator of the operation (that is, `and` or `or`) is shown, but the
+   * operation cannot be changed. This is also supported for nested tokens when `enableTokenGroups=true`.
+   */
+  fixedOperations?: boolean;
+  /**
+   * Activates token grouping mechanism to support token nesting (up to one level).
    * When `true`, the `query.tokens` property is ignored and `query.tokenGroups` is used instead.
    */
   enableTokenGroups?: boolean;
+  /**
+   * Only used when `enableTokenGroups=true`.
+   *
+   * Controls the allowed property keys within token groups:
+   * - When set to `"all-properties"` (default), nested groups can include tokens with different property keys.
+   * - When set to `"same-property"`, the nested groups can only include tokens having the same property key.
+   */
+  tokenGroupPropertyAllowance?: PropertyFilterProps.TokenGroupPropertyAllowance;
   /**
    * Fired when the `query` gets changed. Filter the dataset in response to this event using the values in the `detail` object.
    */
@@ -302,6 +316,8 @@ export namespace PropertyFilterProps {
     tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
   }
 
+  export type TokenGroupPropertyAllowance = 'all-properties' | 'same-property';
+
   export interface FormattedToken {
     propertyKey?: string;
     propertyLabel: string;
@@ -349,6 +365,7 @@ export type FilteringProperty = PropertyFilterProps.FilteringProperty;
 export type Query = PropertyFilterProps.Query;
 export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
 export type I18nStrings = PropertyFilterProps.I18nStrings;
+export type TokenGroupPropertyAllowance = PropertyFilterProps.TokenGroupPropertyAllowance;
 export type GroupText = PropertyFilterProps.GroupText;
 export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
 export type FormattedToken = PropertyFilterProps.FormattedToken;

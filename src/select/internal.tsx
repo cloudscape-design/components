@@ -35,6 +35,7 @@ import styles from './styles.css.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
+  __showAsLabel?: boolean;
 }
 
 const InternalSelect = React.forwardRef(
@@ -69,6 +70,7 @@ const InternalSelect = React.forwardRef(
       expandToViewport,
       autoFocus,
       __inFilteringToken,
+      __showAsLabel,
       __internalRootRef = null,
       ...restProps
     }: InternalSelectProps,
@@ -174,6 +176,7 @@ const InternalSelect = React.forwardRef(
         selectedOption={selectedOption}
         isOpen={isOpen}
         inFilteringToken={__inFilteringToken}
+        showAsLabel={__showAsLabel}
         inlineLabelText={inlineLabelText}
         {...formFieldContext}
         controlId={controlId}

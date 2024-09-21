@@ -12335,6 +12335,15 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "string",
     },
     {
+      "defaultValue": "false",
+      "description": "Activates token grouping mechanism to support token nesting (up to one level).
+If fixedOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) is shown, but the
+operation cannot be changed. This is also supported for nested tokens when \`enableTokenGroups=true\`.",
+      "name": "fixedOperations",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "An object configuring the operators for free text filtering, which has the following properties:
 * operators [Array]: A list of all operators supported for free text filtering. If you omit the contains operator because your API does not support it, make sure to set \`defaultOperator\` to a supported operator from this list.
 * defaultOperator [ComparisonOperator]: An optional parameter that changes the default operator used for free text filtering. Use this parameter only if your API does not support "contains" free test filtering terms.
@@ -12610,6 +12619,25 @@ Each token has the following properties:
       "name": "query",
       "optional": false,
       "type": "PropertyFilterProps.Query",
+    },
+    {
+      "defaultValue": "'all-properties'",
+      "description": "Only used when \`enableTokenGroups=true\`.
+Controls the allowed property keys within token groups:
+- When set to \`"all-properties"\` (default), nested groups can include tokens with different property keys.
+- When set to \`"same-property"\`, the nested groups can only include tokens having the same property key.
+",
+      "inlineType": {
+        "name": "PropertyFilterProps.TokenGroupPropertyAllowance",
+        "type": "union",
+        "values": [
+          "all-properties",
+          "same-property",
+        ],
+      },
+      "name": "tokenGroupPropertyAllowance",
+      "optional": true,
+      "type": "string",
     },
     {
       "description": "Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.",

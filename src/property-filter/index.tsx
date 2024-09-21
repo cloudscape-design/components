@@ -21,10 +21,12 @@ const PropertyFilter = React.forwardRef(
       filteringOptions = [],
       customGroupsText = [],
       enableTokenGroups = false,
+      tokenGroupPropertyAllowance = 'all-properties',
       disableFreeTextFiltering = false,
       asyncProperties,
       expandToViewport,
       hideOperations = false,
+      fixedOperations = false,
       tokenLimit,
       virtualScroll,
       ...rest
@@ -38,6 +40,7 @@ const PropertyFilter = React.forwardRef(
         enableTokenGroups,
         expandToViewport,
         hideOperations,
+        fixedOperations,
         tokenLimit,
         virtualScroll,
       },
@@ -64,10 +67,12 @@ const PropertyFilter = React.forwardRef(
         filteringOptions={filteringOptions}
         customGroupsText={customGroupsText}
         enableTokenGroups={enableTokenGroups}
+        tokenGroupPropertyAllowance={tokenGroupPropertyAllowance}
         disableFreeTextFiltering={disableFreeTextFiltering}
         asyncProperties={asyncProperties}
         expandToViewport={expandToViewport}
         hideOperations={hideOperations}
+        fixedOperations={fixedOperations}
         tokenLimit={tokenLimit}
         virtualScroll={virtualScroll}
         {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
