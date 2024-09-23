@@ -313,6 +313,19 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
     })
   );
 
+  test(
+    'side panel stays in the viewport when scrolling down',
+    setupTest(async page => {
+      const splitPanelSelector = wrapper.findSplitPanel().findOpenPanelSide().toSelector();
+      await page.openPanel();
+      await page.switchPosition('side');
+      const { top: offsetBefore } = await page.getBoundingBox(splitPanelSelector);
+      await page.windowScrollTo({ top: 500 });
+      const { top: offsetAfter } = await page.getBoundingBox(splitPanelSelector);
+      expect(offsetAfter).toEqual(offsetBefore);
+    })
+  );
+
   describe('interaction with table sticky header', () => {
     // bottom padding is included into the offset in VR but not in classic
     const splitPanelPadding = theme === 'visual-refresh' ? 40 : 0;

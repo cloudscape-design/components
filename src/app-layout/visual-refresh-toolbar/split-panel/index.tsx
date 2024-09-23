@@ -19,15 +19,16 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   appLayoutInternals,
   splitPanelInternals,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
-  const { splitPanelControlId, placement } = appLayoutInternals;
+  const { splitPanelControlId, placement, verticalOffsets } = appLayoutInternals;
+  const drawerTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
   return (
     <SplitPanelProvider {...splitPanelInternals}>
       <section
         id={splitPanelControlId}
         className={styles['split-panel-side']}
         style={{
-          blockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
-          insetBlockStart: placement.insetBlockStart,
+          blockSize: `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`,
+          insetBlockStart: drawerTopOffset,
         }}
       >
         {children}
