@@ -42,7 +42,11 @@ describe('identifyTagStates', () => {
     expect(result.created).toEqual({});
     expect(result.removed).toEqual(['tag1', 'tag3', 'tag4']);
   });
-
+  test('should return empty removed and created tags if no changes are detected', () => {
+    const result = getTagsDiff(initialTags, []);
+    expect(result.created).toEqual({});
+    expect(result.removed).toEqual([]);
+  });
   test('should handle mixed created, removed, and updated tags', () => {
     const newTags: TagEditorProps.Tag[] = [
       { key: 'tag1', value: 'new-value1', existing: true },
@@ -58,14 +62,6 @@ describe('identifyTagStates', () => {
     });
     expect(result.removed).toEqual(['tag3', 'tag1']);
   });
-
-  test('should return empty arrays if no changes are detected', () => {
-    const result = getTagsDiff(initialTags, initialTags);
-
-    expect(result.created).toEqual({});
-    expect(result.removed).toEqual([]);
-  });
-
   describe('warnings', () => {
     beforeEach(() => {
       jest.spyOn(console, 'warn').mockImplementation();
