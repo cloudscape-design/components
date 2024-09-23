@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -20,6 +20,7 @@ import triggerStyles from '../../../lib/components/app-layout/visual-refresh/sty
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
+import { Button } from '../../../lib/components';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -31,7 +32,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+  const { container, rerender, getByTestId } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
   const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
   await delay();
@@ -39,6 +40,7 @@ async function renderComponent(jsx: React.ReactElement) {
     wrapper,
     globalDrawersWrapper,
     rerender,
+    getByTestId,
   };
 }
 
@@ -987,6 +989,42 @@ describe('toolbar mode only features', () => {
 
       globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
       expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
+    });
+
+    test('should restore focus to a custom trigger when a global drawer does not have trigger button', async () => {
+      const drawerId = 'global-drawer-without-trigger';
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: drawerId,
+        type: 'global',
+        trigger: undefined,
+      });
+
+      const { globalDrawersWrapper, getByTestId } = await renderComponent(
+        <AppLayout
+          drawers={[testDrawer]}
+          content={
+            <>
+              <Button data-testid="trigger-button" onClick={() => awsuiPlugins.appLayout.openDrawer(drawerId)}>
+                Open a drawer without a trigger
+              </Button>
+            </>
+          }
+        />
+      );
+
+      getByTestId('trigger-button').focus();
+      getByTestId('trigger-button').click();
+
+      expect(globalDrawersWrapper.findDrawerById(drawerId)!.isActive()).toBe(true);
+
+      // globalDrawersWrapper.findDrawerById(drawerId)!.blur() does not trigger the blur event on the active drawer
+      fireEvent.blur(globalDrawersWrapper.findDrawerById(drawerId)!.getElement());
+      expect(getByTestId('trigger-button')).not.toHaveFocus();
+
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
+
+      expect(getByTestId('trigger-button')).toHaveFocus();
     });
   });
 });

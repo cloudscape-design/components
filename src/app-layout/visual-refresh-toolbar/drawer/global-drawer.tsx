@@ -66,6 +66,7 @@ export function AppLayoutGlobalDrawerImplementation({
   });
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
+  const hasTriggerButton = !!activeGlobalDrawer?.trigger;
 
   return (
     <aside
@@ -79,6 +80,15 @@ export function AppLayoutGlobalDrawerImplementation({
       })}
       ref={drawerRef}
       onBlur={e => {
+        // Drawers with trigger buttons follow this restore focus logic:
+        // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
+        // This function resets the previously focused element.
+        // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
+        // which ideally should never happen.
+        if (!hasTriggerButton) {
+          return;
+        }
+
         if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
           globalDrawersFocusControl.loseFocus();
         }
