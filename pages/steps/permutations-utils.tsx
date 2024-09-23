@@ -248,9 +248,72 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
+const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
+  {
+    status: 'error',
+    statusIconAriaLabel: 'error',
+    header: 'error step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'warning',
+    statusIconAriaLabel: 'warning',
+    header: 'warning step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'success',
+    statusIconAriaLabel: 'success',
+    header: 'success step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'info',
+    statusIconAriaLabel: 'info',
+    header: 'info step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'stopped',
+    statusIconAriaLabel: 'stopped',
+    header: 'stopped step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'pending',
+    statusIconAriaLabel: 'pending',
+    header: 'pending step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'in-progress',
+    statusIconAriaLabel: 'in-progress',
+    header: 'in-progress step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+  {
+    status: 'loading',
+    statusIconAriaLabel: 'loading',
+    header: 'loading step',
+    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+  },
+];
+
+const emptySteps: ReadonlyArray<StepsProps.Step> = [];
+
 export const stepsPermutations = createPermutations<StepsProps>([
   {
-    steps: [initialSteps, loadingSteps, loadingSteps2, loadingSteps3, successfulSteps, blockedSteps, failedSteps],
+    steps: [
+      initialSteps,
+      loadingSteps,
+      loadingSteps2,
+      loadingSteps3,
+      successfulSteps,
+      blockedSteps,
+      failedSteps,
+      emptySteps,
+      allStatusesSteps,
+    ],
     ariaLabel: ['test label'],
   },
 ]);
