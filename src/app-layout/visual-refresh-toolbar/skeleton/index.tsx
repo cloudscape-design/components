@@ -97,7 +97,13 @@ export function SkeletonLayout({
         )}
       </main>
       {sideSplitPanel && (
-        <div className={clsx(styles['split-panel-side'], !splitPanelOpen && styles['panel-hidden'])}>
+        <div
+          className={clsx(
+            styles['split-panel-side'],
+            sharedStyles['with-motion'],
+            !splitPanelOpen && styles['panel-hidden']
+          )}
+        >
           {sideSplitPanel}
         </div>
       )}
