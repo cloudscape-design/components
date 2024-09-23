@@ -152,6 +152,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
       drawerSizes,
       drawersOpenQueue,
+      openDrawersHistory,
       onActiveDrawerChange,
       onActiveDrawerResize,
       onActiveGlobalDrawersChange,
@@ -396,7 +397,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             !!globalDrawers.length && (
               <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
                 {globalDrawers
-                  .filter(drawer => activeGlobalDrawersIds.includes(drawer.id) || drawer.preserveInactiveContent)
+                  .filter(
+                    drawer =>
+                      activeGlobalDrawersIds.includes(drawer.id) ||
+                      (drawer.preserveInactiveContent && openDrawersHistory.has(drawer.id))
+                  )
                   .map(drawer => (
                     <AppLayoutGlobalDrawer
                       key={drawer.id}

@@ -941,7 +941,7 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findDrawerTriggerById('global-drawer-1')!.getElement()).toHaveFocus();
     });
 
-    test('should keep global drawer in DOM tree if preserveInactiveContent is set to true', async () => {
+    test('when keepContentMounted is set to true, initially closed drawer does not exist in dom (but mounted and persists when opened and closed)', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'global-drawer-1',
@@ -952,12 +952,15 @@ describe('toolbar mode only features', () => {
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
     });
 
     test('should call visibilityChange callback when global drawer with preserveInactiveContent is opened and closed', async () => {
@@ -976,9 +979,6 @@ describe('toolbar mode only features', () => {
       });
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
-
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 

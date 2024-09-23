@@ -98,7 +98,7 @@ const AutoIncrementCounter: React.FC<{
   onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
 }> = ({ children, onVisibilityChange }) => {
   const [count, setCount] = useState(0);
-  const [isPaused, setIsPaused] = useState(true);
+  const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
