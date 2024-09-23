@@ -656,7 +656,7 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
   });
 
-  test('closes a drawer when closeDrawer is called', async () => {
+  test('closes a drawer when closeDrawer is called (local drawer)', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
 
     const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
@@ -1025,6 +1025,24 @@ describe('toolbar mode only features', () => {
       globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
 
       expect(getByTestId('trigger-button')).toHaveFocus();
+    });
+
+    test('closes a drawer when closeDrawer is called (global drawer)', async () => {
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      awsuiPlugins.appLayout.openDrawer('test');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+      awsuiPlugins.appLayout.closeDrawer('test');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()).toBeFalsy();
     });
   });
 });
