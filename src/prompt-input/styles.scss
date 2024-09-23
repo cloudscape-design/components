@@ -138,7 +138,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 
 .button {
   align-self: end;
-  padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+  padding-inline: calc(styles.$control-padding-horizontal / 2);
   padding-block-end: awsui.$space-scaled-xxxs;
 
   > .action-button {
@@ -196,6 +196,6 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   }
 
   > .button {
-    padding-block-end: awsui.$space-scaled-xxxs;
+    padding-block-end: awsui.$space-scaled-xxs;
   }
 }

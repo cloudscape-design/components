@@ -16,8 +16,8 @@ const permutations = createPermutations<PromptInputProps>([
     actionButtonIconName: [undefined, 'send'],
     value: [
       '',
-      'Short value',
-      'Long value, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Short value 1',
+      'Long value 1, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ],
   },
   {
@@ -30,13 +30,13 @@ const permutations = createPermutations<PromptInputProps>([
   {
     disabled: [false, true],
     actionButtonIconName: [undefined, 'send'],
-    value: ['', 'Short value'],
+    value: ['', 'Short value 2'],
   },
   {
     value: [
       '',
-      'Short value',
-      'Long value, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Short value 3',
+      'Long value 3, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ],
     actionButtonIconSvg: [
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" focusable="false" key="0">
@@ -52,24 +52,24 @@ const permutations = createPermutations<PromptInputProps>([
   {
     value: [
       '',
-      'Short value',
-      'Long value, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+      'Short value 4',
+      'Long value 4, enough to extend beyond the input width.  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
     ],
     actionButtonIconUrl: [img],
     actionButtonIconAlt: ['Letter A'],
   },
   {
-    value: ['Short value'],
+    value: ['Short value 5'],
     actionButtonIconName: [undefined, 'send'],
-    secondaryActions: [undefined, 'secondary actions'],
-    secondaryContent: [undefined, 'secondary content'],
+    secondaryActions: [undefined, 'secondary actions 1'],
+    secondaryContent: [undefined, 'secondary content 1'],
     invalid: [false, true],
   },
   {
-    value: ['Short value'],
+    value: ['Short value 6'],
     actionButtonIconName: ['send'],
-    secondaryActions: ['secondary actions'],
-    secondaryContent: ['secondary content'],
+    secondaryActions: ['secondary actions 2'],
+    secondaryContent: ['secondary content 2'],
     disableSecondaryActionsPaddings: [false, true],
     disableSecondaryContentPaddings: [false, true],
   },
@@ -84,7 +84,7 @@ export default function PromptInputPermutations() {
           permutations={permutations}
           render={permutation => (
             <PromptInput
-              ariaLabel="Prompt input field"
+              ariaLabel={`Prompt input test-${permutation.value}-${permutation.actionButtonIconName}-${permutation.invalid}-${permutation.warning}-${permutation.placeholder}`}
               actionButtonAriaLabel="Action button aria label"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
