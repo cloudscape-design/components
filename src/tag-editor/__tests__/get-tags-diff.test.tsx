@@ -26,11 +26,11 @@ describe('identifyTagStates', () => {
 
     const result = getTagsDiff(initialTags, newTags);
 
-    expect(result.createdTags).toEqual({
+    expect(result.created).toEqual({
       tag4: 'value4',
       tag2: 'new-value2',
     });
-    expect(result.removedTags).toEqual(['tag2']);
+    expect(result.removed).toEqual(['tag2']);
   });
 
   it('should return removed tags including updated ones', () => {
@@ -41,8 +41,8 @@ describe('identifyTagStates', () => {
 
     const result = getTagsDiff(initialTags, newTags);
 
-    expect(result.createdTags).toEqual({});
-    expect(result.removedTags).toEqual(['tag2']);
+    expect(result.created).toEqual({});
+    expect(result.removed).toEqual(['tag2']);
   });
 
   it('should handle mixed created, removed, and updated tags', () => {
@@ -54,11 +54,11 @@ describe('identifyTagStates', () => {
 
     const result = getTagsDiff(initialTags, newTags);
 
-    expect(result.createdTags).toEqual({
+    expect(result.created).toEqual({
       tag4: 'value4',
       tag1: 'new-value1',
     });
-    expect(result.removedTags).toEqual(['tag3', 'tag1']);
+    expect(result.removed).toEqual(['tag3', 'tag1']);
   });
 
   it('should warn if initial tags are missing the `existing` property', () => {
@@ -75,7 +75,7 @@ describe('identifyTagStates', () => {
   it('should return empty arrays if no changes are detected', () => {
     const result = getTagsDiff(initialTags, initialTags);
 
-    expect(result.createdTags).toEqual({});
-    expect(result.removedTags).toEqual([]);
+    expect(result.created).toEqual({});
+    expect(result.removed).toEqual([]);
   });
 });
