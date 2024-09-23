@@ -177,7 +177,7 @@ const ClassicAppLayout = React.forwardRef(
       return () => cancelAnimationFrame(id);
     }, [placement.insetBlockStart, placement.insetBlockEnd]);
     const contentHeightStyle = {
-      [disableBodyScroll ? 'height' : 'minHeight']: `calc(100vh - ${headerFooterHeight}px)`,
+      [disableBodyScroll ? 'blockSize' : 'minBlockSize']: `calc(100vh - ${headerFooterHeight}px)`,
     };
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.contentBoxHeight);

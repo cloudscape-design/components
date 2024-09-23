@@ -181,7 +181,7 @@ export function AppLayoutToolbarImplementation({
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
-          <span className={clsx(styles['universal-toolbar-drawers'])}>
+          <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
@@ -193,7 +193,7 @@ export function AppLayoutToolbarImplementation({
               onSplitPanelToggle={onSplitPanelToggle}
               disabled={disableButtons}
             />
-          </span>
+          </div>
         )}
       </div>
     </ToolbarSlot>
