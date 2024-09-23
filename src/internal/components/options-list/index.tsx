@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
@@ -14,7 +15,6 @@ import {
   NonCancelableEventHandler,
 } from '../../events';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-import { findUpUntil } from '../../utils/dom';
 import { DropdownStatusProps } from '../dropdown-status';
 
 import styles from './styles.css.js';

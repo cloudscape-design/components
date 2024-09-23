@@ -4,13 +4,13 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { findUpUntil } from '../internal/utils/dom';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
   CONSTRAINED_PAGE_HEIGHT,

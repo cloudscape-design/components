@@ -64,6 +64,8 @@ export function Resizer({
 
   useEffect(() => {
     const elements = getResizerElements(resizerToggleRef.current);
+    const document = resizerToggleRef.current?.ownerDocument ?? window.document;
+
     if ((!isDragging && !resizerHasFocus) || !elements) {
       return;
     }

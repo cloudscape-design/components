@@ -25,7 +25,7 @@ import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visua
 import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
-import { findUpUntil } from '../../../lib/components/internal/utils/dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import SideNavigation from '../../../lib/components/side-navigation';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
