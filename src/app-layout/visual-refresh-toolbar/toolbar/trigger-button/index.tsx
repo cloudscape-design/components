@@ -119,10 +119,10 @@ function TriggerButton(
       const relatedTarget = eventWithRelatedTarget?.relatedTarget;
       const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
       if (
-        (isForSplitPanel && !!relatedTarget) || //for when a split panel is closed via button
+        (isForSplitPanel && !!relatedTarget) || // relatedTarget is null when split panel is closed
         (!isForSplitPanel &&
-          (isFromAnotherTrigger || //for key navigation from another trigger button
-            !isForPreviousActiveDrawer)) //for when the drawer was not opened recently
+          (isFromAnotherTrigger || // for key navigation from another trigger button
+            !isForPreviousActiveDrawer)) // for when the drawer was not opened recently
       ) {
         shouldShowTooltip = true;
       }

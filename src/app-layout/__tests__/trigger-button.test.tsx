@@ -59,8 +59,6 @@ const mockEventBubbleWithRelatedTarget = {
   relatedTarget: mockRelatedTarget,
 };
 
-const mockQuerySelector = jest.spyOn(document, 'querySelector');
-
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const renderVisualRefreshTriggerButton = (
@@ -508,6 +506,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
       });
 
       //the realatedTarget here would be truthy when key or click navigation
+      //relatedTarget exists on events that are not associated with closeing the split panel from within
       test('Focus and blur events work properly for split panel and related target exists', () => {
         const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
           hasTooltip: true,
@@ -521,7 +520,6 @@ describe('Visual Refresh Toolbar trigger-button', () => {
         expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
         fireEvent.focus(wrapper!.getElement(), mockEventBubbleWithRelatedTarget);
-
         expect(getByText(mockTooltipText)).toBeTruthy();
         expect(
           wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
@@ -534,7 +532,8 @@ describe('Visual Refresh Toolbar trigger-button', () => {
         expect(() => getByText(mockTooltipText)).toThrow();
       });
 
-      //the relatedTarget here will be null just like when a split panel close button is clicked/keyed
+      //the relatedTarget here will be null just like when a split panel closed via mouse or key interaction
+      //with the close button on the split panel
       test('Focus and blur events work properly for split panel and relatedTarget is null', () => {
         const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
           hasTooltip: true,
@@ -547,33 +546,12 @@ describe('Visual Refresh Toolbar trigger-button', () => {
         ).toBe(false);
         expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.focus(wrapper!.getElement(), { relatedTarget: null });
+        fireEvent.focus(wrapper!.getElement());
 
         expect(() => getByText(mockTooltipText)).toThrow();
         expect(
           wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
         ).toBeFalsy();
-      });
-
-      test('Focus events work properly for split panel and not from a close button', () => {
-        const mockBreadcrumbWrapper = {
-          contains: jest.fn().mockReturnValue(true),
-        };
-        mockQuerySelector.mockReturnValue(mockBreadcrumbWrapper as any);
-        const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
-          hasTooltip: true,
-          isMobile,
-          isForSplitPanel: true,
-        });
-        expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
-        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
-        expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.focus(wrapper!.getElement(), { relatedTarget: mockRelatedTarget });
-
-        expect(getByText(mockTooltipText)).toBeTruthy();
       });
 
       test('Focus events work properly for isForPreviousDrawer', () => {
