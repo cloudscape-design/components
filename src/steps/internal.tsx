@@ -26,17 +26,22 @@ const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsPro
   );
 };
 
-export const InternalSteps = ({ steps, __internalRootRef, ...props }: InternalStepsProps) => {
+export const InternalSteps = ({
+  steps,
+  ariaLabel,
+  ariaLabelledby,
+  ariaDescribedby,
+  __internalRootRef,
+  ...props
+}: InternalStepsProps) => {
   return (
-    <div
-      {...props}
-      className={clsx(styles.root, props.className)}
-      aria-label={props.ariaLabel}
-      aria-labelledby={props.ariaLabelledby}
-      aria-describedby={props.ariaDescribedby}
-      ref={__internalRootRef}
-    >
-      <ol className={styles.list}>
+    <div {...props} className={clsx(styles.root, props.className)} ref={__internalRootRef}>
+      <ol
+        className={styles.list}
+        aria-label={ariaLabel}
+        aria-labelledby={ariaLabelledby}
+        aria-describedby={ariaDescribedby}
+      >
         {steps.map((step, index) => (
           <InternalStep
             key={index}

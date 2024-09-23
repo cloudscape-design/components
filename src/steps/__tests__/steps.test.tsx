@@ -7,6 +7,7 @@ import Steps, { StepsProps } from '../../../lib/components/steps';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
+import stepsStyles from '../../../lib/components/steps/styles.selectors.js';
 
 const defaultProps: StepsProps = {
   steps: [],
@@ -108,24 +109,27 @@ describe('Steps', () => {
       const testAriaLabel = 'Test aria label';
       const wrapper = renderSteps({ steps: successfullSteps, ariaLabel: testAriaLabel });
 
-      const stepsComponent = wrapper.getElement();
-      expect(stepsComponent).toHaveAccessibleName(testAriaLabel);
+      expect(wrapper.findByClassName(stepsStyles.list)!.getElement()).toHaveAccessibleName(testAriaLabel);
     });
 
     test('applies ARIA labelledby to steps', () => {
       const testAriaLabelledBy = 'test-id';
       const wrapper = renderSteps({ steps: successfullSteps, ariaLabelledby: testAriaLabelledBy });
 
-      const stepsComponent = wrapper.getElement();
-      expect(stepsComponent).toHaveAttribute('aria-labelledby', testAriaLabelledBy);
+      expect(wrapper.findByClassName(stepsStyles.list)!.getElement()).toHaveAttribute(
+        'aria-labelledby',
+        testAriaLabelledBy
+      );
     });
 
     test('applies ARIA describedby to steps', () => {
       const testAriaDescribedBy = 'test-id';
       const wrapper = renderSteps({ steps: successfullSteps, ariaDescribedby: testAriaDescribedBy });
 
-      const stepsComponent = wrapper.getElement();
-      expect(stepsComponent).toHaveAttribute('aria-describedby', testAriaDescribedBy);
+      expect(wrapper.findByClassName(stepsStyles.list)!.getElement()).toHaveAttribute(
+        'aria-describedby',
+        testAriaDescribedBy
+      );
     });
 
     test('applies ARIA label to steps status indicators', () => {

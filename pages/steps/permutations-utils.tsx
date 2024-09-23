@@ -251,6 +251,7 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
 export const stepsPermutations = createPermutations<StepsProps>([
   {
     steps: [initialSteps, loadingSteps, loadingSteps2, loadingSteps3, successfulSteps, blockedSteps, failedSteps],
+    ariaLabel: ['test label'],
   },
 ]);
 
