@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { Badge, SpaceBetween } from '~components';
 import { PropertyFilterProps } from '~components/property-filter';
-import { I18nStringsTokenGroups } from '~components/property-filter/interfaces';
 
 import {
   DateForm,
@@ -41,7 +43,7 @@ export const columnDefinitions = [
     header: 'Stopped',
     type: 'boolean',
     propertyLabel: 'Stopped',
-    cell: (item: TableItem) => item.state === 0,
+    cell: (item: TableItem) => item.state === 'STOPPED',
   },
   {
     id: 'instancetype',
@@ -139,6 +141,21 @@ export const columnDefinitions = [
     propertyLabel: 'Last event occurrence (legacy)',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
+  {
+    id: 'tags',
+    sortingField: 'tagsIndex',
+    header: 'Tags',
+    type: 'enum',
+    propertyLabel: 'Tags',
+    minWidth: 150,
+    cell: (item: TableItem) => (
+      <SpaceBetween size="s" direction="horizontal">
+        {(item.tags ?? []).map(tag => (
+          <Badge key={tag}>{tag}</Badge>
+        ))}
+      </SpaceBetween>
+    ),
+  },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
 export const labels = {
@@ -184,9 +201,7 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
 
   formatToken,
   removeTokenButtonAriaLabel: token => `Remove token, ${formatToken(token)}`,
-};
 
-export const i18nStringsTokenGroups: I18nStringsTokenGroups = {
   groupEditAriaLabel: group => `Edit group with ${group.tokens.length} tokens`,
   tokenEditorTokenActionsAriaLabel: token => `Filter remove actions for ${formatToken(token)}`,
   tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${formatToken(token)}`,

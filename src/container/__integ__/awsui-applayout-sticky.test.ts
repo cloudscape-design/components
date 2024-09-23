@@ -18,12 +18,8 @@ const headerSelector = '#b #h';
 const scrollableDivSelector = '#scrollable-div';
 
 class AppLayoutStickyPage extends BasePageObject {
-  async isNotificationVisible() {
-    const elements = await this.browser.$$(appLayoutWrapper.findNotifications().toSelector());
-    if (elements.length === 0) {
-      return false;
-    }
-    return elements[0].isDisplayedInViewport();
+  isNotificationVisible() {
+    return this.isDisplayedInViewport(appLayoutWrapper.findNotifications().toSelector());
   }
 
   async toggleStickiness() {

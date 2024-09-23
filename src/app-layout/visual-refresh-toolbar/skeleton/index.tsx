@@ -65,7 +65,7 @@ export function SkeletonLayout({
         [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
       })}
       style={{
-        minBlockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
+        minBlockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
         [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
         [customCssProps.navigationWidth]: `${navigationWidth}px`,
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
@@ -101,7 +101,14 @@ export function SkeletonLayout({
           {sideSplitPanel}
         </div>
       )}
-      <div className={clsx(styles.tools, !toolsOpen && styles['panel-hidden'], sharedStyles['with-motion'])}>
+      <div
+        className={clsx(
+          styles.tools,
+          !toolsOpen && styles['panel-hidden'],
+          sharedStyles['with-motion'],
+          navigationOpen && !toolsOpen && styles['unfocusable-mobile']
+        )}
+      >
         {tools}
       </div>
     </div>

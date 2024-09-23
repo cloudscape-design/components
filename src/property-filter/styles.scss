@@ -40,7 +40,6 @@ $operator-field-width: 120px;
 }
 
 .property-editor {
-  user-select: text;
   margin-block: awsui.$space-xxs;
   margin-inline: awsui.$space-xxs;
   padding-block: awsui.$space-m;
@@ -83,7 +82,6 @@ $operator-field-width: 120px;
   display: flex;
   flex-direction: column;
   gap: awsui.$space-s;
-  user-select: text;
   margin-block: awsui.$space-xxs;
   margin-inline: awsui.$space-xxs;
 

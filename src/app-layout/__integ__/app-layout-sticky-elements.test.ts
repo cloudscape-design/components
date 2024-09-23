@@ -5,6 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
+import { getUrlParams, testIf, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -23,66 +24,65 @@ class AppLayoutStickyPage extends BasePageObject {
     return alertText;
   }
 }
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest({ viewport = viewports.desktop, url = '' }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new AppLayoutStickyPage(browser);
+      await page.setWindowSize(viewport);
+      await browser.url(url);
+      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await testFn(page);
+    });
+  }
 
-function setupTest({ viewport = viewports.desktop, url = '' }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
-  return useBrowser(async browser => {
-    const page = new AppLayoutStickyPage(browser);
-    await page.setWindowSize(viewport);
-    await browser.url(url);
-    await page.waitForVisible(wrapper.findContentRegion().toSelector());
-    await testFn(page);
-  });
-}
+  test(
+    'correctly stacks table header below notifications in visual refresh',
+    setupTest({ url: `#/light/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
+      await page.windowScrollTo({ top: viewports.desktop.height });
 
-test(
-  'correctly stacks table header below notifications in visual refresh',
-  setupTest({ url: '#/light/app-layout/with-sticky-notifications-and-header?visualRefresh=true' }, async page => {
-    await page.windowScrollTo({ top: viewports.desktop.height });
-
-    const { bottom: secondNotificationBottom } = await page.getBoundingBox(
-      page.findNotificationByIndex(2).toSelector()
-    );
-    const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
-    expect(tableHeaderTop - secondNotificationBottom).toEqual(0);
-  })
-);
-
-test(
-  'properly restores vertical offset for sticky headers when resizing to mobile and back to desktop',
-  setupTest({ url: '#/light/app-layout/with-sticky-notifications-and-header?visualRefresh=false' }, async page => {
-    await page.windowScrollTo({ top: viewports.desktop.height });
-    const stickyHeaderSelector = wrapper.findContentRegion().findTable().findHeaderSlot().toSelector();
-    const { top: oldTop } = await page.getBoundingBox(stickyHeaderSelector);
-    await page.setWindowSize(viewports.mobile);
-    await page.windowScrollTo({ top: viewports.desktop.height });
-    const { top: mobileTop } = await page.getBoundingBox(stickyHeaderSelector);
-    expect(mobileTop).not.toEqual(oldTop);
-    await page.setWindowSize(viewports.desktop);
-    await page.windowScrollTo({ top: viewports.desktop.height });
-    const { top: newTop } = await page.getBoundingBox(stickyHeaderSelector);
-    expect(newTop).toEqual(oldTop);
-  })
-);
-
-test(
-  'sets sticky notifications offset to zero when notifications are not sticky',
-  setupTest(
-    { viewport: { width: 1200, height: 300 }, url: '#/light/app-layout/with-table?visualRefresh=false' },
-    async page => {
-      await page.windowScrollTo({ top: 200 });
-      const { bottom: pageHeaderBottom } = await page.getBoundingBox('header');
+      const { bottom: secondNotificationBottom } = await page.getBoundingBox(
+        page.findNotificationByIndex(2).toSelector()
+      );
       const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
-      expect(tableHeaderTop).toEqual(pageHeaderBottom);
-    }
-  )
-);
+      expect(tableHeaderTop - secondNotificationBottom).toEqual(0);
+    })
+  );
 
-describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
+  test(
+    'properly restores vertical offset for sticky headers when resizing to mobile and back to desktop',
+    setupTest({ url: `#/light/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
+      await page.windowScrollTo({ top: viewports.desktop.height });
+      const stickyHeaderSelector = wrapper.findContentRegion().findTable().findHeaderSlot().toSelector();
+      const { top: oldTop } = await page.getBoundingBox(stickyHeaderSelector);
+      await page.setWindowSize(viewports.mobile);
+      await page.windowScrollTo({ top: viewports.desktop.height });
+      const { top: mobileTop } = await page.getBoundingBox(stickyHeaderSelector);
+      expect(mobileTop).not.toEqual(oldTop);
+      await page.setWindowSize(viewports.desktop);
+      await page.windowScrollTo({ top: viewports.desktop.height });
+      const { top: newTop } = await page.getBoundingBox(stickyHeaderSelector);
+      expect(newTop).toEqual(oldTop);
+    })
+  );
+
+  testIf(theme === 'classic')(
+    'sets sticky notifications offset to zero when notifications are not sticky',
+    setupTest(
+      { viewport: { width: 1200, height: 300 }, url: '#/light/app-layout/with-table?visualRefresh=false' },
+      async page => {
+        await page.windowScrollTo({ top: 200 });
+        const { bottom: pageHeaderBottom } = await page.getBoundingBox('header');
+        const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
+        expect(tableHeaderTop).toEqual(pageHeaderBottom);
+      }
+    )
+  );
+
   test(
     'should render popover from split panel above sticky header',
     setupTest(
       {
-        url: `#/light/app-layout/with-full-page-table-and-split-panel?visualRefresh=${visualRefresh}&splitPanelPosition=side`,
+        url: `#/light/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
       },
       async page => {
         const popover = createWrapper().findPopover('[data-testid="split-panel"]');
@@ -97,7 +97,7 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
     'should render popover from help panel above sticky header',
     setupTest(
       {
-        url: `#/light/app-layout/with-full-page-table-and-split-panel?visualRefresh=${visualRefresh}&splitPanelPosition=side`,
+        url: `#/light/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
       },
       async page => {
         // close split panel which is open by default
@@ -117,7 +117,7 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
     'should not leave any space between page header and sticky header in content layout',
     setupTest(
       {
-        url: `#/light/app-layout/with-sticky-header-table-in-content-layout?visualRefresh=${visualRefresh}`,
+        url: `#/light/app-layout/with-sticky-header-table-in-content-layout?${getUrlParams(theme)}`,
       },
       async page => {
         const pageHeaderSelector = '#h';
@@ -125,7 +125,8 @@ describe.each([[true], [false]])('visualRefresh=%s', visualRefresh => {
         const pageHeaderBottom = (await page.getBoundingBox(pageHeaderSelector)).bottom;
         await page.windowScrollTo({ top: 200 });
         const tableStickyHeaderTop = (await page.getBoundingBox(tableStickyHeaderSelector.toSelector())).top;
-        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom);
+        // Take into account toolbar height
+        expect(tableStickyHeaderTop).toEqual(pageHeaderBottom + (theme === 'refresh-toolbar' ? 42 : 0));
       }
     )
   );

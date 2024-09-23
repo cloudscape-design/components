@@ -112,9 +112,9 @@ div.column-layout {
     }
 
     &.grid-variant-text-grid {
-      @include make-vertical-borders('inline-start');
       margin-block: calc(-1 * #{$grid-gutter-width} / 2);
       margin-inline: calc(-1 * #{$grid-gutter-width});
+      @include make-vertical-borders('inline-start');
     }
     /* stylelint-disable-next-line selector-max-universal */
     &:not(.grid-no-gutters) > * {

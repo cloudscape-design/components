@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
+
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
 
 import * as AllContext from '../../../lib/components/app-layout/visual-refresh/context.js';
 import VisualRefreshTriggerButton, {
@@ -21,12 +23,20 @@ const MockUseAppLayoutInternals = jest.spyOn(AllContext, 'useAppLayoutInternals'
 
 const mockDrawerId = 'mock-drawer-id';
 const mockTestId = `awsui-app-layout-trigger-${mockDrawerId}`;
+const mockTooltipText = 'Mock Tooltip';
 
 const mockProps = {
   ariaLabel: 'Aria label',
   className: 'class-from-props',
   iconName: 'bug',
   testId: mockTestId,
+  tooltipText: mockTooltipText,
+  hasTooltip: false,
+  isForPreviousActiveDrawer: false,
+};
+const mockHorizontalToolbarProps = {
+  hasOpenDrawer: false,
+  isMobile: false,
 };
 const mockOtherEl = {
   class: 'other-el-class',
@@ -43,21 +53,20 @@ const mockEventBubble = {
   relatedTarget: null,
 };
 
-const mockEventBubbleWithShiftFocus = {
+const mockRelatedTarget = new EventTarget();
+const mockEventBubbleWithRelatedTarget = {
   ...mockEventBubble,
-  relatedTarget: {
-    dataset: {
-      shiftFocus: 'last-opened-toolbar-trigger-button',
-    },
-  },
+  relatedTarget: mockRelatedTarget,
 };
+
+const mockQuerySelector = jest.spyOn(document, 'querySelector');
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const renderVisualRefreshTriggerButton = (
   props: Partial<VisualRefreshTriggerButtonProps> = {},
   useAppLayoutInternalsValues: Partial<AllContext.AppLayoutInternals> = {},
-  ref: React.Ref<ButtonProps.Ref>
+  ref: React.Ref<ButtonProps.Ref> = null
 ) => {
   MockUseAppLayoutInternals.mockReturnValue({
     ...mockUseLayoutInternalValues,
@@ -76,9 +85,9 @@ const renderVisualRefreshTriggerButton = (
 
 const renderVisualRefreshToolbarTriggerButton = (
   props: Partial<VisualRefreshToolbarTriggerButtonProps> = {},
-  ref: React.Ref<ButtonProps.Ref>
+  ref: React.Ref<ButtonProps.Ref> = null
 ) => {
-  const renderProps = { ...mockProps, ...props };
+  const renderProps = { ...mockProps, ...mockHorizontalToolbarProps, ...props };
   const { container, rerender, getByTestId, getByText } = render(
     <div>
       <VisualRefreshToolbarTriggerButton {...(renderProps as VisualRefreshToolbarTriggerButtonProps)} ref={ref} />
@@ -86,7 +95,7 @@ const renderVisualRefreshToolbarTriggerButton = (
     </div>
   );
   const wrapper = createWrapper(container).findByClassName(toolbarTriggerButtonStyles['trigger-wrapper'])!;
-  return { wrapper, rerender, getByTestId, getByText };
+  return { wrapper, rerender, getByTestId, getByText, container };
 };
 
 describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () => {
@@ -256,7 +265,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
     expect(getByTestId(mockTestId)).toBeTruthy();
     expect(button).toBeTruthy();
     expect(document.activeElement).not.toBe(button!.getElement());
-    (ref.current as any)?.focus(mockEventBubbleWithShiftFocus);
+    (ref.current as any)?.focus(mockEventBubbleWithRelatedTarget);
     expect(document.activeElement).toBe(button!.getElement());
   });
 });
@@ -265,13 +274,9 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   beforeEach(() => jest.clearAllMocks());
 
   test('renders correctly with badge using dot class', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
-      {
-        badge: true,
-      },
-      ref
-    );
+    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+      badge: true,
+    });
 
     expect(wrapper).not.toBeNull();
     const button = wrapper.find('button');
@@ -282,13 +287,9 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   });
 
   test('applies the correct class when selected', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper } = renderVisualRefreshToolbarTriggerButton(
-      {
-        selected: true,
-      },
-      ref
-    );
+    const { wrapper } = renderVisualRefreshToolbarTriggerButton({
+      selected: true,
+    });
     expect(wrapper).not.toBeNull();
     const seletedButton = wrapper.findByClassName(toolbarTriggerButtonStyles.selected);
     expect(seletedButton).toBeTruthy();
@@ -317,15 +318,11 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   });
 
   test.each([true, false])('click events work as expected when disabled is %s', disabledValue => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
     const mockClickSpy = jest.fn();
-    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton(
-      {
-        disabled: disabledValue,
-        onClick: mockClickSpy,
-      },
-      ref
-    );
+    const { wrapper, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+      disabled: disabledValue,
+      onClick: mockClickSpy,
+    });
     expect(wrapper).not.toBeNull();
     const button = wrapper.find('button')!;
     expect(getByTestId(mockTestId)).toBeTruthy();
@@ -334,16 +331,245 @@ describe('Visual Refresh Toolbar trigger-button', () => {
   });
 
   test('renders an empty button when no iconName and iconSVG prop', () => {
-    const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
-    const { wrapper } = renderVisualRefreshToolbarTriggerButton(
-      {
-        iconName: '' as IconProps.Name,
-      },
-      ref
-    );
+    const { wrapper } = renderVisualRefreshToolbarTriggerButton({
+      iconName: '' as IconProps.Name,
+    });
     expect(wrapper).not.toBeNull();
     const button = wrapper.find('button');
     expect(button).toBeTruthy();
     expect(button?.findIcon()).toBeNull();
+  });
+
+  describe('Shared trigger wrapper events', () => {
+    describe.each([true, false] as const)('isMobile=%s', isMobile => {
+      describe.each([true, false] as const)('hastTooltip=%s', hasTooltip => {
+        test('Is focusable using the forwarded ref with no tooltip', () => {
+          const ref: React.MutableRefObject<ButtonProps.Ref | null> = React.createRef();
+          const { wrapper, getByTestId, getByText } = renderVisualRefreshToolbarTriggerButton(
+            {
+              hasTooltip,
+              isMobile,
+            },
+            ref
+          );
+          expect(getByTestId(mockTestId)).toBeTruthy();
+          const button = wrapper!.find('button');
+          expect(getByTestId(mockTestId)).toBeTruthy();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(() => getByText(mockTooltipText)).toThrow();
+          expect(button).toBeTruthy();
+          expect(document.activeElement).not.toBe(button!.getElement());
+          (ref.current as any)?.focus(mockEventBubbleWithRelatedTarget);
+          expect(document.activeElement).toBe(button!.getElement());
+          expect(getByTestId(mockTestId)).toBeTruthy();
+          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        });
+
+        test('pointer events work properly', () => {
+          const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+            hasTooltip,
+            isMobile,
+          });
+          expect(getByTestId(mockTestId)).toBeTruthy();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(() => getByText(mockTooltipText)).toThrow();
+          fireEvent.pointerEnter(wrapper!.getElement());
+          if (hasTooltip) {
+            expect(getByText(mockTooltipText)).toBeTruthy();
+            expect(
+              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+            ).toBe(true);
+            //trigger event again to assert the tooltip remains
+            fireEvent.pointerDown(wrapper!.getElement());
+            expect(
+              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+            ).toBe(true);
+          } else {
+            expect(() => getByText(mockTooltipText)).toThrow();
+            expect(
+              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+            ).toBe(false);
+          }
+          fireEvent.pointerLeave(wrapper!.getElement(), mockEventBubble);
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(() => getByText(mockTooltipText)).toThrow();
+        });
+
+        test('Focus and blur events work properly', () => {
+          const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+            hasTooltip,
+            isMobile,
+          });
+          expect(getByTestId(mockTestId)).toBeTruthy();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(() => getByText(mockTooltipText)).toThrow();
+          fireEvent.focus(wrapper!.getElement());
+
+          if (hasTooltip) {
+            expect(getByText(mockTooltipText)).toBeTruthy();
+          } else {
+            expect(() => getByText(mockTooltipText)).toThrow();
+          }
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(hasTooltip);
+
+          fireEvent.blur(wrapper!.getElement());
+          expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(() => getByText(mockTooltipText)).toThrow();
+        });
+
+        testIf(hasTooltip)('Tooltip can be hidden on escape key press when open', async () => {
+          const { wrapper, getByText, getByTestId } = await renderVisualRefreshToolbarTriggerButton({
+            hasTooltip,
+            isMobile,
+          });
+          expect(getByTestId(mockTestId)).toBeTruthy();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(() => getByText(mockTooltipText)).toThrow();
+          fireEvent.focus(wrapper!.getElement());
+          expect(getByText(mockTooltipText)).toBeTruthy();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(true);
+
+          fireEvent.keyDown(wrapper!.getElement(), {
+            ...mockEventBubble,
+            key: 'Escape',
+            code: KeyCode.escape,
+          });
+
+          expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(
+            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+          ).toBe(false);
+          expect(() => getByText(mockTooltipText)).toThrow();
+        });
+
+        testIf(hasTooltip)(
+          'Does not show tooltip on pointerEnter or focus when there is no arialLabel nor tooltipText',
+          async () => {
+            const { wrapper, getByTestId } = await renderVisualRefreshToolbarTriggerButton({
+              ariaLabel: '',
+              tooltipText: '',
+            });
+            expect(getByTestId(mockTestId)).toBeTruthy();
+            expect(
+              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+            ).toBe(false);
+            expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+
+            fireEvent.pointerEnter(wrapper!.getElement());
+            expect(
+              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+            ).toBe(false);
+            expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+
+            fireEvent.focus(wrapper!.getElement());
+            expect(
+              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+            ).toBe(false);
+            expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          }
+        );
+      });
+      testIf(isMobile)('Does not show tooltip if hasOpenDrawer', async () => {
+        const { wrapper, getByTestId } = await renderVisualRefreshToolbarTriggerButton({
+          isMobile,
+          hasOpenDrawer: true,
+        });
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
+        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        fireEvent.focus(wrapper!.getElement());
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
+        expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+      });
+
+      test('Focus and blur events work properly for split panel and not from another trigger', () => {
+        const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+          hasTooltip: true,
+          isMobile,
+          isForSplitPanel: true,
+        });
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
+        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(() => getByText(mockTooltipText)).toThrow();
+        fireEvent.focus(wrapper!.getElement());
+
+        expect(getByText(mockTooltipText)).toBeTruthy();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(true);
+        fireEvent.blur(wrapper!.getElement());
+        expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
+        expect(() => getByText(mockTooltipText)).toThrow();
+      });
+
+      test('Focus events work properly for split panel and not from a close button', () => {
+        const mockBreadcrumbWrapper = {
+          contains: jest.fn().mockReturnValue(true),
+        };
+        mockQuerySelector.mockReturnValue(mockBreadcrumbWrapper as any);
+        const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+          hasTooltip: true,
+          isMobile,
+          isForSplitPanel: true,
+        });
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
+        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(() => getByText(mockTooltipText)).toThrow();
+        fireEvent.focus(wrapper!.getElement(), { relatedTarget: mockRelatedTarget });
+
+        expect(getByText(mockTooltipText)).toBeTruthy();
+      });
+
+      test('Focus events work properly for isForPreviousDrawer', () => {
+        const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
+          hasTooltip: true,
+          isMobile,
+          isForPreviousActiveDrawer: true,
+        });
+        expect(getByTestId(mockTestId)).toBeTruthy();
+        expect(
+          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
+        ).toBe(false);
+        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(() => getByText(mockTooltipText)).toThrow();
+        fireEvent.focus(wrapper!.getElement());
+
+        expect(() => getByText(mockTooltipText)).toThrow();
+      });
+    });
   });
 });

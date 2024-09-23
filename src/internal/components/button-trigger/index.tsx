@@ -21,7 +21,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
   readOnly?: boolean;
   invalid?: boolean;
   warning?: boolean;
-  inFilteringToken?: boolean;
+  inFilteringToken?: 'root' | 'nested';
   inlineTokens?: boolean;
   ariaHasPopup?: 'true' | 'listbox' | 'dialog';
   ariaControls?: string;
@@ -79,6 +79,7 @@ const ButtonTrigger = (
       !hideCaret && styles['has-caret'],
       readOnly && styles.readonly,
       inFilteringToken && styles['in-filtering-token'],
+      inFilteringToken && styles[`in-filtering-token-${inFilteringToken}`],
       inlineTokens && styles['inline-tokens']
     ),
     disabled: disabled,

@@ -9,8 +9,8 @@
 .content {
   &-enter {
     @include styles.with-motion {
-      @include styles.animation-fade-in;
       animation: awsui-motion-fade-in tokens.$motion-duration-show-paced tokens.$motion-easing-show-paced;
+      @include styles.animation-fade-in;
     }
   }
 }

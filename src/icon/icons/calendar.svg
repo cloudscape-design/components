@@ -1,11 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <rect class="stroke-linejoin-round" x="2" y="2" width="12" height="12"/>
-  <rect x="4.99" y="8" width="0.01" height="0.01"/>
-  <rect x="7.99" y="8" width="0.01" height="0.01"/>
-  <rect x="10.99" y="8" width="0.01" height="0.01"/>
-  <rect x="4.99" y="5" width="0.01" height="0.01"/>
-  <rect x="7.99" y="5" width="0.01" height="0.01"/>
-  <rect x="10.99" y="5" width="0.01" height="0.01"/>
-  <rect x="4.99" y="11" width="0.01" height="0.01"/>
-  <rect x="7.99" y="11" width="0.01" height="0.01"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 2H2V14H14V2Z" class="stroke-linejoin-round"/>
+<path d="M4 6V4H6V6H4Z" class="filled no-stroke"/>
+<path d="M7 6V4H9V6H7Z" class="filled no-stroke"/>
+<path d="M10 6V4H12V6H10Z" class="filled no-stroke"/>
+<path d="M4 9V7H6V9H4Z" class="filled no-stroke"/>
+<path d="M7 9V7H9V9H7Z" class="filled no-stroke"/>
+<path d="M4 12V10H6V12H4Z" class="filled no-stroke"/>
+<path d="M7 12V10H9V12H7Z" class="filled no-stroke"/>
+<path d="M10 9V7H12V9H10Z" class="filled no-stroke"/>
 </svg>

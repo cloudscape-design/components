@@ -139,6 +139,18 @@ export function AppLayoutToolbarImplementation({
     };
   }, [pinnedToolbar, setToolbarState, toolbarState]);
 
+  const anyPanelOpenInMobile = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
+  useEffect(() => {
+    if (anyPanelOpenInMobile) {
+      document.body.classList.add(styles['block-body-scroll']);
+    } else {
+      document.body.classList.remove(styles['block-body-scroll']);
+    }
+    return () => {
+      document.body.classList.remove(styles['block-body-scroll']);
+    };
+  }, [anyPanelOpenInMobile]);
+
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
 
   return (
@@ -154,7 +166,7 @@ export function AppLayoutToolbarImplementation({
     >
       <div className={styles['toolbar-container']}>
         {hasNavigation && (
-          <nav className={clsx(styles['universal-toolbar-nav'], testutilStyles['drawer-closed'])}>
+          <nav className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={false}
@@ -163,6 +175,7 @@ export function AppLayoutToolbarImplementation({
               onClick={() => onNavigationToggle?.(!navigationOpen)}
               ref={navigationFocusRef}
               selected={navigationOpen}
+              disabled={anyPanelOpenInMobile}
             />
           </nav>
         )}
@@ -179,7 +192,7 @@ export function AppLayoutToolbarImplementation({
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
-          <span className={clsx(styles['universal-toolbar-drawers'])}>
+          <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
@@ -189,8 +202,9 @@ export function AppLayoutToolbarImplementation({
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
+              disabled={anyPanelOpenInMobile}
             />
-          </span>
+          </div>
         )}
       </div>
     </ToolbarSlot>

@@ -8,8 +8,8 @@
 
 .empty-appear {
   @include styles.with-motion {
-    @include styles.animation-fade-in;
     animation: awsui-motion-fade-in tokens.$motion-duration-transition-show-paced
       tokens.$motion-easing-transition-show-paced;
+    @include styles.animation-fade-in;
   }
 }

@@ -3,6 +3,8 @@
 import React, { ReactNode, useCallback, useEffect, useMemo, useState } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalBox from '../box/internal';
 import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
@@ -10,9 +12,11 @@ import InternalIcon from '../icon/internal';
 import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metadata/interfaces';
 import { SideNavigationProps } from './interfaces';
 import { hasActiveLink } from './util';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface BaseItemComponentProps {
@@ -26,6 +30,7 @@ interface BaseItemComponentProps {
       | SideNavigationProps.ExpandableLinkGroup,
     event: React.SyntheticEvent | Event
   ) => void;
+  position?: string;
 }
 
 export interface HeaderProps extends BaseItemComponentProps {
@@ -43,6 +48,16 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
     [fireFollow, definition]
   );
 
+  const clickActionAnalyticsMetadata: GeneratedAnalyticsMetadataSideNavigationClick = {
+    action: 'click',
+    detail: {
+      label: `.${analyticsSelectors['header-link-text']}`,
+      external: 'false',
+      href: definition.href,
+      position: 'header',
+    },
+  };
+
   return (
     <>
       <h2 className={styles.header}>
@@ -51,6 +66,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
           className={clsx(styles['header-link'], { [styles['header-link--has-logo']]: !!definition.logo })}
           aria-current={definition.href === activeHref ? 'page' : undefined}
           onClick={onClick}
+          {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
         >
           {definition.logo && (
             <img
@@ -60,7 +76,9 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
               {...definition.logo}
             />
           )}
-          <span className={styles['header-link-text']}>{definition.text}</span>
+          <span className={clsx(styles['header-link-text'], analyticsSelectors['header-link-text'])}>
+            {definition.text}
+          </span>
         </a>
       </h2>
       <Divider isPresentational={true} variant="header" />
@@ -79,7 +97,14 @@ interface Item {
   items?: Array<Item>;
 }
 
-export function NavigationItemsList({ items, variant, activeHref, fireChange, fireFollow }: NavigationItemsListProps) {
+export function NavigationItemsList({
+  items,
+  variant,
+  activeHref,
+  fireChange,
+  fireFollow,
+  position = '',
+}: NavigationItemsListProps) {
   const lists: Array<Item> = [];
   let currentListIndex = 0;
   lists[currentListIndex] = {
@@ -89,6 +114,7 @@ export function NavigationItemsList({ items, variant, activeHref, fireChange, fi
 
   items.forEach((item, index) => {
     const itemid = index + 1;
+    const itemPosition = `${position ? `${position},` : ''}${itemid}`;
     switch (item.type) {
       case 'divider': {
         const dividerIndex = lists.length;
@@ -110,7 +136,13 @@ export function NavigationItemsList({ items, variant, activeHref, fireChange, fi
         lists[currentListIndex].items?.push({
           element: (
             <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
-              <Link definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+              <Link
+                definition={item}
+                activeHref={activeHref}
+                fireChange={fireChange}
+                fireFollow={fireFollow}
+                position={itemPosition}
+              />
             </li>
           ),
         });
@@ -126,6 +158,7 @@ export function NavigationItemsList({ items, variant, activeHref, fireChange, fi
                 variant={variant}
                 fireChange={fireChange}
                 fireFollow={fireFollow}
+                position={itemPosition}
               />
             </li>
           ),
@@ -136,7 +169,13 @@ export function NavigationItemsList({ items, variant, activeHref, fireChange, fi
         lists[currentListIndex].items?.push({
           element: (
             <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
-              <SectionGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+              <SectionGroup
+                definition={item}
+                activeHref={activeHref}
+                fireChange={fireChange}
+                fireFollow={fireFollow}
+                position={itemPosition}
+              />
             </li>
           ),
         });
@@ -146,7 +185,13 @@ export function NavigationItemsList({ items, variant, activeHref, fireChange, fi
         lists[currentListIndex].items?.push({
           element: (
             <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
-              <LinkGroup definition={item} activeHref={activeHref} fireChange={fireChange} fireFollow={fireFollow} />
+              <LinkGroup
+                definition={item}
+                activeHref={activeHref}
+                fireChange={fireChange}
+                fireFollow={fireFollow}
+                position={itemPosition}
+              />
             </li>
           ),
         });
@@ -162,6 +207,7 @@ export function NavigationItemsList({ items, variant, activeHref, fireChange, fi
                 fireChange={fireChange}
                 fireFollow={fireFollow}
                 variant={variant}
+                position={itemPosition}
               />
             </li>
           ),
@@ -223,7 +269,7 @@ interface LinkProps extends BaseItemComponentProps {
   expanded?: boolean;
 }
 
-function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
+function Link({ definition, expanded, activeHref, fireFollow, position }: LinkProps) {
   checkSafeUrl('SideNavigation', definition.href);
   const isActive = definition.href === activeHref;
 
@@ -236,6 +282,16 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
     [fireFollow, definition]
   );
 
+  const clickActionAnalyticsMetadata: GeneratedAnalyticsMetadataSideNavigationClick = {
+    action: 'click',
+    detail: {
+      label: `.${analyticsSelectors['link-text']}`,
+      external: `${!!definition.external}`,
+      href: definition.href,
+      position,
+    },
+  };
+
   return (
     <>
       <a
@@ -246,8 +302,9 @@ function Link({ definition, expanded, activeHref, fireFollow }: LinkProps) {
         aria-expanded={expanded}
         aria-current={definition.href === activeHref ? 'page' : undefined}
         onClick={onClick}
+        {...getAnalyticsMetadataAttribute(clickActionAnalyticsMetadata)}
       >
-        {definition.text}
+        <span className={analyticsSelectors['link-text']}>{definition.text}</span>
         {definition.external && (
           <span
             aria-label={definition.externalIconAriaLabel}
@@ -267,7 +324,7 @@ interface SectionProps extends BaseItemComponentProps {
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function Section({ definition, activeHref, fireFollow, fireChange, variant }: SectionProps) {
+function Section({ definition, activeHref, fireFollow, fireChange, variant, position }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
   const isVisualRefresh = useVisualRefresh();
 
@@ -301,6 +358,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant }: Se
         fireFollow={fireFollow}
         fireChange={fireChange}
         activeHref={activeHref}
+        position={position}
       />
     </InternalExpandableSection>
   );
@@ -310,7 +368,7 @@ interface SectionGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.SectionGroup;
 }
 
-function SectionGroup({ definition, activeHref, fireFollow, fireChange }: SectionGroupProps) {
+function SectionGroup({ definition, activeHref, fireFollow, fireChange, position }: SectionGroupProps) {
   return (
     <div className={styles['section-group']}>
       <InternalBox className={styles['section-group-title']} variant="h3">
@@ -322,6 +380,7 @@ function SectionGroup({ definition, activeHref, fireFollow, fireChange }: Sectio
         fireFollow={fireFollow}
         fireChange={fireChange}
         activeHref={activeHref}
+        position={position}
       />
     </div>
   );
@@ -331,7 +390,7 @@ interface LinkGroupProps extends BaseItemComponentProps {
   definition: SideNavigationProps.LinkGroup;
 }
 
-function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroupProps) {
+function LinkGroup({ definition, activeHref, fireFollow, fireChange, position }: LinkGroupProps) {
   checkSafeUrl('SideNavigation', definition.href);
 
   return (
@@ -341,6 +400,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
         fireFollow={(_, event) => fireFollow(definition, event)}
         fireChange={fireChange}
         activeHref={activeHref}
+        position={position}
       />
       <NavigationItemsList
         variant="link-group"
@@ -348,6 +408,7 @@ function LinkGroup({ definition, activeHref, fireFollow, fireChange }: LinkGroup
         fireFollow={fireFollow}
         fireChange={fireChange}
         activeHref={activeHref}
+        position={position}
       />
     </>
   );
@@ -358,7 +419,14 @@ interface ExpandableLinkGroupProps extends BaseItemComponentProps {
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }
 
-function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, variant }: ExpandableLinkGroupProps) {
+function ExpandableLinkGroup({
+  definition,
+  fireFollow,
+  fireChange,
+  activeHref,
+  variant,
+  position,
+}: ExpandableLinkGroupProps) {
   // Check whether the definition contains an active link and memoize it to avoid
   // rechecking every time.
   const containsActiveLink = useMemo(() => {
@@ -418,6 +486,7 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
           fireFollow={onHeaderFollow}
           fireChange={fireChange}
           activeHref={activeHref}
+          position={position}
         />
       }
     >
@@ -427,6 +496,7 @@ function ExpandableLinkGroup({ definition, fireFollow, fireChange, activeHref, v
         fireFollow={fireFollow}
         fireChange={fireChange}
         activeHref={activeHref}
+        position={position}
       />
     </InternalExpandableSection>
   );

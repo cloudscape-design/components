@@ -86,6 +86,16 @@ export class FilteringTokenWrapper extends ComponentWrapper {
     const popoverBody = root.findByClassName(popoverStyles.body);
     return popoverBody ? new PropertyFilterEditorDropdownWrapper(popoverBody.getElement()) : null;
   }
+
+  findEditButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
+  }
+
+  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
+    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
+      w => new FilteringGroupedTokenWrapper(w.getElement())
+    );
+  }
 }
 
 export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
@@ -101,70 +111,6 @@ export class PropertyFilterEditorDropdownWrapper extends ComponentWrapper {
     return this.findByClassName(styles['token-editor-form'])!;
   }
 
-  findPropertyField(): FormFieldWrapper {
-    return this.findComponent(`.${testUtilStyles['token-editor-field-property']}`, FormFieldWrapper)!;
-  }
-
-  findOperatorField(): FormFieldWrapper {
-    return this.findComponent(`.${testUtilStyles['token-editor-field-operator']}`, FormFieldWrapper)!;
-  }
-
-  findValueField(): FormFieldWrapper {
-    return this.findComponent(`.${testUtilStyles['token-editor-field-value']}`, FormFieldWrapper)!;
-  }
-
-  findCancelButton(): ButtonWrapper {
-    return this.findComponent(`.${testUtilStyles['token-editor-cancel']}`, ButtonWrapper)!;
-  }
-
-  findSubmitButton(): ButtonWrapper {
-    return this.findComponent(`.${testUtilStyles['token-editor-submit']}`, ButtonWrapper)!;
-  }
-}
-
-export class PropertyFilterWrapperInternal extends PropertyFilterWrapper {
-  findTokens(): Array<FilteringTokenWrapperInternal> {
-    return this.findAllByClassName(FilteringTokenWrapperInternal.rootSelector).map(
-      (elementWrapper: ElementWrapper) => new FilteringTokenWrapperInternal(elementWrapper.getElement())
-    );
-  }
-}
-
-export class FilteringTokenWrapperInternal extends FilteringTokenWrapper {
-  findEditorDropdown(options = { expandToViewport: false }): null | PropertyFilterEditorDropdownWrapperInternal {
-    const root = options.expandToViewport ? createWrapper() : this;
-    const popoverBody = root.findByClassName(popoverStyles.body);
-    return popoverBody ? new PropertyFilterEditorDropdownWrapperInternal(popoverBody.getElement()) : null;
-  }
-
-  findEditButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-edit-button'])!;
-  }
-
-  findGroupTokens(): Array<FilteringGroupedTokenWrapper> {
-    return this.findAllByClassName(testUtilStyles['filtering-token-inner']).map(
-      w => new FilteringGroupedTokenWrapper(w.getElement())
-    );
-  }
-}
-
-export class FilteringGroupedTokenWrapper extends ComponentWrapper {
-  static rootSelector = testUtilStyles['filtering-token-inner'];
-
-  findLabel(): ElementWrapper {
-    return this.findByClassName(testUtilStyles['filtering-token-inner-content'])!;
-  }
-
-  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
-    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-inner-dismiss-button'])!;
-  }
-
-  findTokenOperation(): SelectWrapper | null {
-    return this.findComponent(`.${testUtilStyles['filtering-token-inner-select']}`, SelectWrapper);
-  }
-}
-
-export class PropertyFilterEditorDropdownWrapperInternal extends PropertyFilterEditorDropdownWrapper {
   findPropertyField(index = 1): FormFieldWrapper {
     const dataIndex = `[data-testindex="${index - 1}"]`;
     return this.findComponent(`.${testUtilStyles['token-editor-field-property']}${dataIndex}`, FormFieldWrapper)!;
@@ -189,5 +135,29 @@ export class PropertyFilterEditorDropdownWrapperInternal extends PropertyFilterE
   findTokenAddActions(): null | ButtonDropdownWrapper {
     const buttonDropdown = this.find(`.${testUtilStyles['token-editor-token-add-actions']}`)!;
     return buttonDropdown ? new ButtonDropdownWrapper(buttonDropdown.getElement()) : null;
+  }
+
+  findCancelButton(): ButtonWrapper {
+    return this.findComponent(`.${testUtilStyles['token-editor-cancel']}`, ButtonWrapper)!;
+  }
+
+  findSubmitButton(): ButtonWrapper {
+    return this.findComponent(`.${testUtilStyles['token-editor-submit']}`, ButtonWrapper)!;
+  }
+}
+
+export class FilteringGroupedTokenWrapper extends ComponentWrapper {
+  static rootSelector = testUtilStyles['filtering-token-inner'];
+
+  findLabel(): ElementWrapper {
+    return this.findByClassName(testUtilStyles['filtering-token-inner-content'])!;
+  }
+
+  findRemoveButton(): ElementWrapper<HTMLButtonElement> {
+    return this.findByClassName<HTMLButtonElement>(testUtilStyles['filtering-token-inner-dismiss-button'])!;
+  }
+
+  findTokenOperation(): SelectWrapper | null {
+    return this.findComponent(`.${testUtilStyles['filtering-token-inner-select']}`, SelectWrapper);
   }
 }

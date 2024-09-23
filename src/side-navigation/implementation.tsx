@@ -19,6 +19,7 @@ export type SideNavigationInternalProps = SideNavigationProps & InternalBaseComp
 
 export function SideNavigationImplementation({
   header,
+  itemsControl,
   activeHref,
   items = [],
   onFollow,
@@ -68,6 +69,7 @@ export function SideNavigationImplementation({
       {header && (
         <Header definition={header} activeHref={activeHref} fireChange={onChangeHandler} fireFollow={onFollowHandler} />
       )}
+      {itemsControl && <div className={styles['items-control']}>{itemsControl}</div>}
       {items && (
         <div className={styles['list-container']}>
           <NavigationItemsList
