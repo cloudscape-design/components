@@ -52,11 +52,8 @@ export function useMemoizedArray<T>(array: ReadonlyArray<T>, isEqual: (prev: T, 
 }
 
 interface GetTagsDiffResult {
-  createdTags: {
-    key: string;
-    value: string;
-  }[];
-  removedKeys: string[];
+  createdTags: Record<string, string>;
+  removedTags: string[];
 }
 
 /**
@@ -69,7 +66,7 @@ interface GetTagsDiffResult {
  * @param initialTags - The original tags fetched from the backend or tagging service.
  * @param tags - The current tags provided to the tag editor, including any new or modified tags.
  * @returns An object containing two arrays:
- * - `createdTags`: An array of tags that are new or updated (with modified values).
+ * - `createdTags`: An record of tags that are new or updated (with modified values).
  *    Each tag is represented by its `key` and `value`.
  * - `removedKeys`: An array of tag keys that were present in the initial tags but marked for removal.
  */
@@ -86,8 +83,13 @@ export function getTagsDiff(
       return !tag.markedForRemoval && tag.key === key && tag.existing && tag.value !== value;
     })
   );
-  const created = [...tags.filter(tag => !tag.existing), ...updated].map(({ key, value }) => ({ key, value }));
+  const created = [...tags.filter(tag => !tag.existing), ...updated]
+    .map(({ key, value }) => ({ key, value }))
+    .reduce((acc: Record<string, string>, tag) => {
+      acc[tag.key] = tag.value;
+      return acc;
+    }, {});
   const removed = [...tags.filter(tag => tag.existing && tag.markedForRemoval), ...updated].map(t => t.key);
 
-  return { createdTags: created, removedKeys: removed };
+  return { createdTags: created, removedTags: removed };
 }

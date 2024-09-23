@@ -26,11 +26,11 @@ describe('identifyTagStates', () => {
 
     const result = getTagsDiff(initialTags, newTags);
 
-    expect(result.createdTags).toEqual([
-      { key: 'tag4', value: 'value4' },
-      { key: 'tag2', value: 'new-value2' }, // Updated tags now part of created
-    ]);
-    expect(result.removedKeys).toEqual(['tag2']);
+    expect(result.createdTags).toEqual({
+      tag4: 'value4',
+      tag2: 'new-value2',
+    });
+    expect(result.removedTags).toEqual(['tag2']);
   });
 
   it('should return removed tags including updated ones', () => {
@@ -41,8 +41,8 @@ describe('identifyTagStates', () => {
 
     const result = getTagsDiff(initialTags, newTags);
 
-    expect(result.createdTags).toEqual([]);
-    expect(result.removedKeys).toEqual(['tag2']);
+    expect(result.createdTags).toEqual({});
+    expect(result.removedTags).toEqual(['tag2']);
   });
 
   it('should handle mixed created, removed, and updated tags', () => {
@@ -54,17 +54,15 @@ describe('identifyTagStates', () => {
 
     const result = getTagsDiff(initialTags, newTags);
 
-    expect(result.createdTags).toEqual([
-      { key: 'tag4', value: 'value4' },
-      { key: 'tag1', value: 'new-value1' },
-    ]);
-    expect(result.removedKeys).toEqual(['tag3', 'tag1']);
+    expect(result.createdTags).toEqual({
+      tag4: 'value4',
+      tag1: 'new-value1',
+    });
+    expect(result.removedTags).toEqual(['tag3', 'tag1']);
   });
 
   it('should warn if initial tags are missing the `existing` property', () => {
-    const invalidInitialTags: TagEditorProps.Tag[] = [
-      { key: 'tag1', value: 'value1' } as any, // Missing `existing` property
-    ];
+    const invalidInitialTags: TagEditorProps.Tag[] = [{ key: 'tag1', value: 'value1', existing: false }];
 
     getTagsDiff(invalidInitialTags, initialTags);
 
@@ -77,7 +75,7 @@ describe('identifyTagStates', () => {
   it('should return empty arrays if no changes are detected', () => {
     const result = getTagsDiff(initialTags, initialTags);
 
-    expect(result.createdTags).toEqual([]);
-    expect(result.removedKeys).toEqual([]);
+    expect(result.createdTags).toEqual({});
+    expect(result.removedTags).toEqual([]);
   });
 });
