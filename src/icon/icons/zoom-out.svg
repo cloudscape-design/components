@@ -1,7 +1,5 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-    <g id="icon">
-        <circle cx="6.88462" cy="6.88462" r="5.38462"/>
-        <line x1="14.5" y1="14.5" x2="10.65385" y2="10.65385"/>
-        <line x1="10" y1="7" x2="4" y2="7"/>
-    </g>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 11L15 15" />
+<circle cx="7" cy="7" r="6" />
+<path d="M4 7L10 7.01" />
 </svg>
