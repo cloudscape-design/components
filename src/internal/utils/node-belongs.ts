@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { findUpUntil, nodeContains } from '@cloudscape-design/component-toolkit/dom';
 
-import { findUpUntil, isHTMLElement, isNode } from './dom';
+import { isHTMLElement, isNode } from './dom';
 
 /**
  * Checks whether the given node (target) belongs to the container.
