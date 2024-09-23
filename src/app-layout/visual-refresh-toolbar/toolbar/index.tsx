@@ -139,8 +139,19 @@ export function AppLayoutToolbarImplementation({
     };
   }, [pinnedToolbar, setToolbarState, toolbarState]);
 
+  const anyPanelOpenInMobile = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
+  useEffect(() => {
+    if (anyPanelOpenInMobile) {
+      document.body.classList.add(styles['block-body-scroll']);
+    } else {
+      document.body.classList.remove(styles['block-body-scroll']);
+    }
+    return () => {
+      document.body.classList.remove(styles['block-body-scroll']);
+    };
+  }, [anyPanelOpenInMobile]);
+
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
-  const disableButtons = !!isMobile && (!!activeDrawerId || (!!navigationOpen && !!hasNavigation));
 
   return (
     <ToolbarSlot
@@ -164,7 +175,7 @@ export function AppLayoutToolbarImplementation({
               onClick={() => onNavigationToggle?.(!navigationOpen)}
               ref={navigationFocusRef}
               selected={navigationOpen}
-              disabled={disableButtons}
+              disabled={anyPanelOpenInMobile}
             />
           </nav>
         )}
@@ -181,7 +192,7 @@ export function AppLayoutToolbarImplementation({
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
-          <span className={clsx(styles['universal-toolbar-drawers'])}>
+          <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
@@ -191,9 +202,9 @@ export function AppLayoutToolbarImplementation({
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
-              disabled={disableButtons}
+              disabled={anyPanelOpenInMobile}
             />
-          </span>
+          </div>
         )}
       </div>
     </ToolbarSlot>
