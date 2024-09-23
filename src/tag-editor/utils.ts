@@ -68,7 +68,7 @@ interface GetTagsDiffResult {
  * @returns An object containing two arrays:
  * - `createdTags`: An record of tags that are new or updated (with modified values).
  *    Each tag is represented by its `key` and `value`.
- * - `removedKeys`: An array of tag keys that were present in the initial tags but marked for removal.
+ * - `removedTags`: An array of tag keys that were present in the initial tags but marked for removal.
  */
 
 export function getTagsDiff(

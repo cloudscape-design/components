@@ -21,12 +21,12 @@ import InternalStatusIndicator from '../status-indicator/internal';
 import { TagEditorProps } from './interfaces';
 import { TagControl, UndoButton } from './internal';
 import { findIndex, useMemoizedArray } from './utils';
-import { identifyTagStates } from './utils';
+import { getTagsDiff } from './utils';
 import { validate, ValidationError } from './validation';
 
 import styles from './styles.css.js';
 
-export { TagEditorProps, identifyTagStates };
+export { TagEditorProps, getTagsDiff };
 
 interface InternalTag {
   tag: TagEditorProps.Tag;
