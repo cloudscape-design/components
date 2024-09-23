@@ -87,8 +87,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      //TODO create separate split panel test for 'visual-refresh-toolbar' theme
-      testIf(theme !== 'visual-refresh-toolbar')(
+      test(
         'navigation panel focus toggles between open and close buttons',
         setupTest(
           async page => {
@@ -121,7 +120,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      testIf(theme === 'visual-refresh-toolbar')(
+      test(
         'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position in toolbar theme',
         setupTest(
           async page => {
@@ -259,15 +258,16 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      testIf(theme === 'visual-refresh-toolbar')(
+      test(
         'split panel focus toggles between open and close buttons',
         setupTest(
           async page => {
             //Altermatomg between triggers because test-1 trigger hidden in overflow menu on mobile,
             //security has resize button on desktop
-            const triggerSelector = wrapper
-              .find(`button[data-testid="awsui-app-layout-trigger-slide-panel"]`)
-              .toSelector();
+            const triggerSelector =
+              theme === 'visual-refresh-toolbar'
+                ? wrapper.find(`button[data-testid="awsui-app-layout-trigger-slide-panel"]`).toSelector()
+                : wrapper.findSplitPanel().findOpenButton().toSelector();
             await page.click(triggerSelector);
             await page.isFocused(wrapper.findSplitPanel().findSlider().toSelector());
             await page.keys(['Tab', 'Tab']);
