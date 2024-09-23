@@ -52,6 +52,11 @@ class BreadcrumbGroupPage extends BasePageObject {
   getTooltipText() {
     return this.getText(`.${tooltipStyles.root}`);
   }
+  countElements(selector: string) {
+    return this.browser.execute(function (selector) {
+      return Array.from(document.querySelectorAll(selector)).length;
+    }, selector);
+  }
 }
 const setupTest = (
   testFn: (page: BreadcrumbGroupPage, browser: WebdriverIO.Browser) => Promise<void>,
@@ -89,6 +94,12 @@ describe('BreadcrumbGroup', () => {
       await page.setWindowSize({ width: 400, height: 800 });
       await page.openDropdown();
       expect(await page.getElementsCount(dropdownItemsSelector)).toBe(4);
+    })
+  );
+  test(
+    'Does not return ghost items',
+    setupTest(async page => {
+      await expect(page.countElements(breadcrumbGroupWrapper.findBreadcrumbLink(1).toSelector())).resolves.toBe(1);
     })
   );
   test(
