@@ -1,5 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { Badge, SpaceBetween } from '~components';
 import { PropertyFilterProps } from '~components/property-filter';
 
 import {
@@ -40,7 +43,7 @@ export const columnDefinitions = [
     header: 'Stopped',
     type: 'boolean',
     propertyLabel: 'Stopped',
-    cell: (item: TableItem) => item.state === 0,
+    cell: (item: TableItem) => item.state === 'STOPPED',
   },
   {
     id: 'instancetype',
@@ -137,6 +140,21 @@ export const columnDefinitions = [
     type: 'datetime-legacy',
     propertyLabel: 'Last event occurrence (legacy)',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
+  },
+  {
+    id: 'tags',
+    sortingField: 'tagsIndex',
+    header: 'Tags',
+    type: 'enum',
+    propertyLabel: 'Tags',
+    minWidth: 150,
+    cell: (item: TableItem) => (
+      <SpaceBetween size="s" direction="horizontal">
+        {(item.tags ?? []).map(tag => (
+          <Badge key={tag}>{tag}</Badge>
+        ))}
+      </SpaceBetween>
+    ),
   },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
