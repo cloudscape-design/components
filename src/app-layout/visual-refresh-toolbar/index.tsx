@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -75,6 +75,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [notificationsHeight, setNotificationsHeight] = useState(0);
 
     const onNavigationToggle = (open: boolean) => {
+      navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     };
 
@@ -357,6 +358,14 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       setSplitPanelToggle: setSplitPanelToggleConfig,
       refs: splitPanelFocusControl.refs,
     };
+
+    useEffect(() => {
+      // Close navigation drawer on mobile so that the main content is visible
+      if (isMobile) {
+        onNavigationToggle(false);
+      }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isMobile]);
 
     return (
       <>

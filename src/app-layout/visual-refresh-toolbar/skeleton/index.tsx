@@ -105,7 +105,14 @@ export function SkeletonLayout({
           {sideSplitPanel}
         </div>
       )}
-      <div className={clsx(styles.tools, !toolsOpen && styles['panel-hidden'], sharedStyles['with-motion'])}>
+      <div
+        className={clsx(
+          styles.tools,
+          !toolsOpen && styles['panel-hidden'],
+          sharedStyles['with-motion'],
+          navigationOpen && !toolsOpen && styles['unfocusable-mobile']
+        )}
+      >
         {tools}
       </div>
       <div
