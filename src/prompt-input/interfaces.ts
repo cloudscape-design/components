@@ -85,22 +85,22 @@ export interface PromptInputProps
   maxRows?: number;
 
   /**
-   * Use this slot if you want to add secondary actions to the prompt input.
+   * Use this slot to add secondary actions to the prompt input.
    */
   secondaryActions?: React.ReactNode;
 
   /**
-   * Use this slot if you want to add secondary content, such as file attachments, to the prompt input.
+   * Use this slot to add secondary content, such as file attachments, to the prompt input.
    */
   secondaryContent?: React.ReactNode;
 
   /**
-   * Determines whether the secondary actions of the input has padding. If true, removes the default padding from the secondary actions area.
+   * Determines whether the secondary actions area of the input has padding. If true, removes the default padding from the secondary actions area.
    */
   disableSecondaryActionsPaddings?: boolean;
 
   /**
-   * Determines whether the secondary content of the input has padding. If true, removes the default padding from the secondary content area.
+   * Determines whether the secondary content area of the input has padding. If true, removes the default padding from the secondary content area.
    */
   disableSecondaryContentPaddings?: boolean;
 }
