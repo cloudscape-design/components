@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { findUpUntil } from './dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 export interface BoundingBox {
   blockSize: number;
   inlineSize: number;

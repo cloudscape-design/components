@@ -69,7 +69,7 @@ export function SkeletonLayout({
         [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
       })}
       style={{
-        minBlockSize: `calc(100vh - ${placement.insetBlockStart}px - ${placement.insetBlockEnd}px)`,
+        minBlockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
         [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
         [customCssProps.navigationWidth]: `${navigationWidth}px`,
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
