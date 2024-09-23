@@ -34,10 +34,6 @@ export function RuntimeContentWrapper({ mountContent, unmountContent, id }: Runt
   }, []);
 
   useEffect(() => {
-    if (isVisible === undefined) {
-      return;
-    }
-
     visibilityChangeCallback.current?.(isVisible);
   }, [isVisible]);
 
