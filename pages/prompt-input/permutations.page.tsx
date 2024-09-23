@@ -82,9 +82,9 @@ export default function PromptInputPermutations() {
       <ScreenshotArea>
         <PermutationsView
           permutations={permutations}
-          render={permutation => (
+          render={(permutation, index) => (
             <PromptInput
-              ariaLabel={`Prompt input test-${permutation.value}-${permutation.actionButtonIconName}-${permutation.invalid}-${permutation.warning}-${permutation.placeholder}`}
+              ariaLabel={`Prompt input test ${index}`}
               actionButtonAriaLabel="Action button aria label"
               onChange={() => {
                 /*empty handler to suppress react controlled property warning*/
