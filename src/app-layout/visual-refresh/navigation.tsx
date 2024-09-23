@@ -3,10 +3,11 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import { InternalButton } from '../../button/internal';
 import { Transition } from '../../internal/components/transition';
 import customCssProps from '../../internal/generated/custom-css-properties';
-import { findUpUntil } from '../../internal/utils/dom';
 import { useAppLayoutInternals } from './context';
 import TriggerButton from './trigger-button';
 
