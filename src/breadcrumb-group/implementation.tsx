@@ -201,7 +201,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   const hiddenBreadcrumbItems = items.map((item, index) => {
     const isLast = index === items.length - 1;
     return (
-      <li className={styles.item} key={index} ref={node => setBreadcrumb('ghost', `${index}`, node)}>
+      <li className={styles['ghost-item']} key={index} ref={node => setBreadcrumb('ghost', `${index}`, node)}>
         <BreadcrumbItem item={item} isLast={isLast} isGhost={true} />
       </li>
     );
