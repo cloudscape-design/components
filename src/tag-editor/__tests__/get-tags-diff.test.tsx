@@ -26,6 +26,11 @@ describe('identifyTagStates', () => {
     });
     expect(result.removed).toEqual([]);
   });
+  test('should return empty created and removed fields if tags and initial tags are equal', () => {
+    const result = getTagsDiff(initialTags, initialTags);
+    expect(result.created).toEqual({});
+    expect(result.removed).toEqual([]);
+  });
   test('should return removed tags only when all tags are removed', () => {
     const removedTags: TagEditorProps.Tag[] = [
       { key: 'tag1', value: 'value1', existing: true, markedForRemoval: true },
