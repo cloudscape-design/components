@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import { isDevelopment } from '../internal/is-development';
 import { TagEditorProps } from './interfaces';
 
 /**
@@ -56,6 +57,12 @@ interface GetTagsDiffResult {
   removed: string[];
 }
 
+function hasDuplicateKeys(arr: readonly TagEditorProps.Tag[]): boolean {
+  const keys = arr.map(obj => obj.key);
+  const uniqueKeys = new Set(keys);
+  return uniqueKeys.size !== keys.length;
+}
+
 /**
  * Compares the initial tags with the current tags passed to the tag editor
  * and returns the differences, identifying which tags have been created or removed.
@@ -69,14 +76,20 @@ interface GetTagsDiffResult {
  * - `created`: An record of tags that are new or updated (with modified values).
  *    Each tag is represented by its `key` and `value`.
  * - `removed`: An array of tag keys that were present in the initial tags but marked for removal.
+ *
+ * Updated tags are treated as both `created` and `removed` tags.
  */
-
 export function getTagsDiff(
   initialTags: readonly TagEditorProps.Tag[],
   tags: readonly TagEditorProps.Tag[]
 ): GetTagsDiffResult {
-  if (initialTags.some(t => !t.existing)) {
-    warnOnce('identifyTagStates', 'all initial tags should have `existing` property set to `true`.');
+  if (isDevelopment) {
+    if (initialTags.some(t => !t.existing)) {
+      warnOnce('getTagsDiff: existing property', 'all initial tags should have `existing` property set to `true`.');
+    }
+    if (hasDuplicateKeys(initialTags) || hasDuplicateKeys(tags)) {
+      warnOnce('getTagsDiff: duplicate keys', 'tags should not have duplicate keys.');
+    }
   }
   const updated = tags.filter(tag =>
     initialTags.some(({ key, value }) => {
