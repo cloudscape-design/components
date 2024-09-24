@@ -308,6 +308,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutNotifications appLayoutInternals={appLayoutInternals}>{notifications}</AppLayoutNotifications>
             )
           }
+          headerVariant={headerVariant}
           contentHeader={contentHeader}
           // delay rendering the content until registration of this instance is complete
           content={registered ? content : null}

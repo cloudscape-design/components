@@ -34,7 +34,11 @@ export function AppLayoutNotificationsImplementation({
   return (
     <NotificationsSlot
       ref={ref}
-      className={clsx(stickyNotifications && styles['sticky-notifications'])}
+      className={clsx(
+        appLayoutInternals.headerVariant === 'high-contrast' && 'awsui-context-content-header',
+        stickyNotifications && styles['sticky-notifications'],
+        appLayoutInternals.headerVariant !== 'high-contrast' && styles['sticky-notifications-with-background']
+      )}
       style={{
         insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
       }}

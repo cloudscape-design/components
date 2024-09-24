@@ -29,7 +29,6 @@ export interface TriggerButtonProps {
   selected?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
   badge?: boolean;
-  highContrastHeader?: boolean;
   /**
    * If the button is expected to have a tooltip. When false it will not set the event listeners
    *
@@ -74,7 +73,6 @@ function TriggerButton(
     disabled = false,
     badge,
     selected = false,
-    highContrastHeader,
     hasTooltip = false,
     tooltipText,
     hasOpenDrawer = false,
@@ -202,7 +200,7 @@ function TriggerButton(
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
       })}
-      className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
+      className={clsx(styles['trigger-wrapper'], {
         [styles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
       })}
     >

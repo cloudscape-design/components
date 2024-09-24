@@ -4,9 +4,8 @@ import React from 'react';
 
 import AppLayout from '../../../lib/components/app-layout';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
-import { renderComponent } from './utils';
+import { describeEachAppLayout, renderComponent } from './utils';
 
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 
@@ -25,13 +24,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   useReducedMotion: jest.fn().mockReturnValue(true),
 }));
 
-beforeEach(() => {
-  (useVisualRefresh as jest.Mock).mockReturnValue(true);
-});
-afterEach(() => {
-  (useVisualRefresh as jest.Mock).mockReset();
-});
-describe('headerVariant - desktop', () => {
+describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'] }, () => {
   test('default', () => {
     const { wrapper } = renderComponent(<AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" />);
     expect(wrapper.findNotifications()!.getElement()).not.toHaveClass(highContrastHeaderClassName);
