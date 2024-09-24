@@ -55,6 +55,8 @@ test(
         componentIdentifier: 'Instances',
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 19,
+        interactionMetadata:
+          '{"filterData":{"filterText":"238-1"},"paginationData":{"currentPageIndex":1,"totalPageCount":1}}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -76,6 +78,8 @@ test(
         componentIdentifier: 'Instances',
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
+        interactionMetadata:
+          '{"filterData":{"filterText":""},"paginationData":{"currentPageIndex":2,"totalPageCount":200}}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -97,6 +101,8 @@ test(
         componentIdentifier: 'Instances',
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
+        interactionMetadata:
+          '{"filterData":{"filterText":""},"paginationData":{"currentPageIndex":1,"totalPageCount":200},"sortingColumn":"type","sortingOrder":"Ascending"}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
