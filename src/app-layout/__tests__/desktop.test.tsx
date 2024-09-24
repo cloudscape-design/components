@@ -18,6 +18,8 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import visualRefreshToolbarNotificationStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { KeyCode } from '../../internal/keycode';
@@ -126,15 +128,14 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
   });
 
-  // Not implemented on the toolbar version yet
-  (theme !== 'refresh-toolbar' ? test : test.skip)('Allows notifications to be sticky', () => {
+  test('Allows notifications to be sticky', () => {
     const { wrapper } = renderComponent(<AppLayout notifications="Test" stickyNotifications={true} />);
-    const hasStickyClass = Boolean(wrapper.find(`.${notificationStyles['notifications-sticky']}`));
-    const hasVisualRefreshStickyClass = wrapper
-      .findNotifications()!
-      .getElement()
-      .classList.contains(visualRefreshStyles['sticky-notifications']);
-    expect(hasStickyClass || hasVisualRefreshStickyClass).toBe(true);
+    const stickyNotificationsClassName = {
+      classic: notificationStyles['notifications-sticky'],
+      refresh: visualRefreshStyles['sticky-notifications'],
+      'refresh-toolbar': visualRefreshToolbarNotificationStyles['sticky-notifications'],
+    }[theme];
+    expect(wrapper.findByClassName(stickyNotificationsClassName)).not.toBeNull();
   });
 
   describe('unfocusable content', () => {
@@ -170,8 +171,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
-  // Not implemented on the toolbar version yet
-  (theme !== 'refresh-toolbar' ? test : test.skip)(`Moves focus to slider when opened`, () => {
+  test(`Moves focus to slider when opened`, () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[{ ...testDrawer, resizable: true }]} />);
 
     wrapper.findDrawerTriggerById('security')!.click();
@@ -305,25 +305,16 @@ describe('Classic only features', () => {
   });
 });
 
-describe('VR only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(true);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-  });
-
+describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop'] }, ({ theme }) => {
+  const styles = theme === 'refresh' ? visualRefreshStyles : toolbarStyles;
   test('renders roles only when aria labels are not provided', () => {
     const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
 
     expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
-    expect(
-      wrapper.findByClassName(visualRefreshStyles['drawers-desktop-triggers-container'])!.getElement()
-    ).not.toHaveAttribute('aria-label');
-    expect(wrapper.findByClassName(visualRefreshStyles['drawers-trigger-content'])!.getElement()).toHaveAttribute(
-      'role',
-      'toolbar'
+    expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).not.toHaveAttribute(
+      'aria-label'
     );
+    expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 
   test('renders roles and aria labels when provided', () => {
@@ -333,12 +324,10 @@ describe('VR only features', () => {
       'aria-label',
       'Security trigger button'
     );
-    expect(
-      wrapper.findByClassName(visualRefreshStyles['drawers-desktop-triggers-container'])!.getElement()
-    ).toHaveAttribute('aria-label', 'Drawers');
-    expect(wrapper.findByClassName(visualRefreshStyles['drawers-trigger-content'])!.getElement()).toHaveAttribute(
-      'role',
-      'toolbar'
+    expect(wrapper.findByClassName(styles['drawers-desktop-triggers-container'])!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Drawers'
     );
+    expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 });
