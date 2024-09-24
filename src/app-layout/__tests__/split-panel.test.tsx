@@ -121,11 +121,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-      const slidePanelTrigger =
-        theme === 'refresh-toolbar'
-          ? wrapper.find(`button[data-testid="awsui-app-layout-trigger-slide-panel"]`)
-          : wrapper.findSplitPanelOpenButton();
-      slidePanelTrigger!.click();
+      wrapper.findSplitPanelOpenButton()!.click();
       expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
@@ -137,11 +133,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
           onSplitPanelPreferencesChange={noop}
         />
       );
-      const slidePanelTrigger =
-        theme === 'refresh-toolbar'
-          ? wrapper.find(`button[data-testid="awsui-app-layout-trigger-slide-panel"]`)
-          : wrapper.findSplitPanelOpenButton();
-      slidePanelTrigger!.click();
+      wrapper.findSplitPanelOpenButton()!.click();
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
     });
