@@ -3,12 +3,12 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { drawerIds as drawerIdObj } from '../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
-import { viewports } from './constants';
+import createWrapper from '../../../../lib/components/test-utils/selectors';
+import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
+import { viewports } from '../../__integ__/constants';
 
-import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
-import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import toolbarStyles from '../../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
+import tooltipStyles from '../../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
 
