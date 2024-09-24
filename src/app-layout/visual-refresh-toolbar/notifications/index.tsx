@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
+import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
 import { NotificationsSlot } from '../skeleton/slot-wrappers';
@@ -34,7 +35,11 @@ export function AppLayoutNotificationsImplementation({
   return (
     <NotificationsSlot
       ref={ref}
-      className={clsx(stickyNotifications && styles['sticky-notifications'])}
+      className={clsx(
+        appLayoutInternals.headerVariant === 'high-contrast' && highContrastHeaderClassName,
+        stickyNotifications && styles['sticky-notifications'],
+        appLayoutInternals.headerVariant !== 'high-contrast' && styles['sticky-notifications-with-background']
+      )}
       style={{
         insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
       }}

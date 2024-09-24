@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { AppLayoutPropsWithDefaults } from '../../interfaces';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -16,6 +17,7 @@ interface SkeletonLayoutProps
   extends Pick<
     AppLayoutPropsWithDefaults,
     | 'notifications'
+    | 'headerVariant'
     | 'contentHeader'
     | 'content'
     | 'contentType'
@@ -41,6 +43,7 @@ interface SkeletonLayoutProps
 export function SkeletonLayout({
   style,
   notifications,
+  headerVariant,
   contentHeader,
   content,
   navigation,
@@ -89,6 +92,14 @@ export function SkeletonLayout({
         </div>
       )}
       <main className={clsx(styles['main-landmark'], anyPanelOpen && styles['unfocusable-mobile'])}>
+        {notifications && (
+          <div
+            className={clsx(
+              styles['notifications-background'],
+              headerVariant === 'high-contrast' && highContrastHeaderClassName
+            )}
+          ></div>
+        )}
         {notifications}
         <div className={clsx(styles.main, { [styles['main-disable-paddings']]: disableContentPaddings })} style={style}>
           {contentHeader && <div className={styles['content-header']}>{contentHeader}</div>}
@@ -110,7 +121,8 @@ export function SkeletonLayout({
           styles.tools,
           !toolsOpen && styles['panel-hidden'],
           sharedStyles['with-motion'],
-          navigationOpen && !toolsOpen && styles['unfocusable-mobile']
+          navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
+          toolsOpen && styles['tools-open']
         )}
       >
         {tools}

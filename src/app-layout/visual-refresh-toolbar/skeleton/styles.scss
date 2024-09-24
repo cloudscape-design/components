@@ -19,6 +19,13 @@
   }
 }
 
+@mixin grid-column-full-content-width {
+  grid-column: 1 / -1;
+  @include desktop-only {
+    grid-column: 2 / span 4;
+  }
+}
+
 .root {
   @include styles.styles-reset;
   color: awsui.$color-text-body-default;
@@ -105,7 +112,9 @@
     /* stylelint-disable plugin/no-unsupported-browser-features */
     &:not(:has(> [data-testid])) {
       inline-size: var(#{custom-props.$toolsWidth});
-      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      &.tools-open {
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
     }
   }
 }
@@ -130,10 +139,7 @@
   z-index: 840;
   align-self: end;
   grid-area: main;
-  grid-column: 1 / -1;
-  @include desktop-only {
-    grid-column: 2 / span 3;
-  }
+  @include grid-column-full-content-width;
 }
 
 .panel-hidden {
@@ -161,6 +167,12 @@
   }
 }
 
+.notifications-background {
+  background: awsui.$color-background-layout-main;
+  grid-area: notifications;
+  @include grid-column-full-content-width;
+}
+
 .main-landmark {
   // does not participate in the layout, rendered for accessibility grouping
   display: contents;
@@ -172,10 +184,7 @@
   margin-block-end: awsui.$space-layout-content-bottom;
   &-disable-paddings {
     margin-block: 0;
-    grid-column: 1 / -1;
-    @include desktop-only {
-      grid-column: 2 / span 3;
-    }
+    @include grid-column-full-content-width;
   }
 }
 
