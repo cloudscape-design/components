@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
@@ -60,70 +61,78 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
 
   return (
-    <aside
-      id={activeDrawerId}
-      aria-hidden={!activeDrawer}
-      aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, sharedStyles['with-motion'], {
-        [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
-        [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
-        [testutilStyles.tools]: isToolsDrawer,
-      })}
-      ref={drawerRef}
-      onBlur={e => {
-        if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-          drawersFocusControl.loseFocus();
-        }
-      }}
-      style={{
-        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: drawersTopOffset,
-        ...(!isMobile && { [customCssProps.drawerSize]: `${size}px` }),
-      }}
-      data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
-    >
-      {!isMobile && activeDrawer?.resizable && (
-        <div className={styles['drawer-slider']}>
-          <PanelResizeHandle
-            ref={drawersFocusControl.refs.slider}
-            position="side"
-            className={testutilStyles['drawers-slider']}
-            ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-            ariaValuenow={resizeProps.relativeSize}
-            onKeyDown={resizeProps.onKeyDown}
-            onPointerDown={resizeProps.onPointerDown}
-          />
-        </div>
-      )}
-      <div
-        className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}
-        style={{ width: isMobile ? '100%' : `${activeDrawerSize}px` }}
-      >
-        <div className={clsx(styles['drawer-close-button'])}>
-          <InternalButton
-            ariaLabel={computedAriaLabels.closeButton}
-            className={clsx({
-              [testutilStyles['active-drawer-close-button']]: !isToolsDrawer && activeDrawerId,
-              [testutilStyles['tools-close']]: isToolsDrawer,
-            })}
-            formAction="none"
-            iconName={isMobile ? 'close' : 'angle-right'}
-            onClick={() => onActiveDrawerChange(null)}
-            ref={drawersFocusControl.refs.close}
-            variant="icon"
-          />
-        </div>
-        <div
-          className={clsx(
-            styles['drawer-content'],
-            activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
-          )}
+    <Transition nodeRef={drawerRef} in={true} appear={true} timeout={0}>
+      {state => (
+        <aside
+          id={activeDrawerId}
+          aria-hidden={!activeDrawer}
+          aria-label={computedAriaLabels.content}
+          className={clsx(styles.drawer, sharedStyles['with-motion'], {
+            [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+            [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
+            [testutilStyles.tools]: isToolsDrawer,
+          })}
+          ref={drawerRef}
+          onBlur={e => {
+            if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+              drawersFocusControl.loseFocus();
+            }
+          }}
+          style={{
+            blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+            insetBlockStart: drawersTopOffset,
+            ...(!isMobile && {
+              [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+            }),
+          }}
+          data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
         >
-          {toolsContent}
-        </div>
-        {activeDrawerId !== TOOLS_DRAWER_ID && <div className={styles['drawer-content']}>{activeDrawer?.content}</div>}
-      </div>
-    </aside>
+          {!isMobile && activeDrawer?.resizable && (
+            <div className={styles['drawer-slider']}>
+              <PanelResizeHandle
+                ref={drawersFocusControl.refs.slider}
+                position="side"
+                className={testutilStyles['drawers-slider']}
+                ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+                ariaValuenow={resizeProps.relativeSize}
+                onKeyDown={resizeProps.onKeyDown}
+                onPointerDown={resizeProps.onPointerDown}
+              />
+            </div>
+          )}
+          <div
+            className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}
+            style={{ width: isMobile ? '100%' : `${activeDrawerSize}px` }}
+          >
+            <div className={clsx(styles['drawer-close-button'])}>
+              <InternalButton
+                ariaLabel={computedAriaLabels.closeButton}
+                className={clsx({
+                  [testutilStyles['active-drawer-close-button']]: !isToolsDrawer && activeDrawerId,
+                  [testutilStyles['tools-close']]: isToolsDrawer,
+                })}
+                formAction="none"
+                iconName={isMobile ? 'close' : 'angle-right'}
+                onClick={() => onActiveDrawerChange(null)}
+                ref={drawersFocusControl.refs.close}
+                variant="icon"
+              />
+            </div>
+            <div
+              className={clsx(
+                styles['drawer-content'],
+                activeDrawerId !== TOOLS_DRAWER_ID && styles['drawer-content-hidden']
+              )}
+            >
+              {toolsContent}
+            </div>
+            {activeDrawerId !== TOOLS_DRAWER_ID && (
+              <div className={styles['drawer-content']}>{activeDrawer?.content}</div>
+            )}
+          </div>
+        </aside>
+      )}
+    </Transition>
   );
 }
 

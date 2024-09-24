@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef } from 'react';
+import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
@@ -69,67 +70,75 @@ export function AppLayoutGlobalDrawerImplementation({
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
 
   return (
-    <aside
-      id={activeDrawerId}
-      aria-hidden={!show}
-      aria-label={computedAriaLabels.content}
-      className={clsx(styles.drawer, styles['drawer-global'], sharedStyles['with-motion'], {
-        [styles['drawer-hidden']]: !show,
-        [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
-        [testutilStyles['active-drawer']]: show,
-      })}
-      ref={drawerRef}
-      onBlur={e => {
-        // Drawers with trigger buttons follow this restore focus logic:
-        // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
-        // This function resets the previously focused element.
-        // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
-        // which ideally should never happen.
-        if (!hasTriggerButton) {
-          return;
-        }
-
-        if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
-          globalDrawersFocusControl.loseFocus();
-        }
-      }}
-      style={{
-        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: drawersTopOffset,
-        ...(!isMobile && { [customCssProps.drawerSize]: `${size}px` }),
-      }}
-      data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
-    >
-      {!isMobile && activeGlobalDrawer?.resizable && (
-        <div className={styles['drawer-slider']}>
-          <PanelResizeHandle
-            ref={refs?.slider}
-            position="side"
-            className={testutilStyles['drawers-slider']}
-            ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
-            ariaValuenow={resizeProps.relativeSize}
-            onKeyDown={resizeProps.onKeyDown}
-            onPointerDown={resizeProps.onPointerDown}
-          />
-        </div>
-      )}
-      <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
-        <div className={clsx(styles['drawer-close-button'])}>
-          <InternalButton
-            ariaLabel={computedAriaLabels.closeButton}
-            className={clsx({
-              [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+    <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
+      {state => {
+        return (
+          <aside
+            id={activeDrawerId}
+            aria-hidden={!show}
+            aria-label={computedAriaLabels.content}
+            className={clsx(styles.drawer, styles['drawer-global'], styles[state], sharedStyles['with-motion'], {
+              [styles['drawer-hidden']]: !show,
+              [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+              [testutilStyles['active-drawer']]: show,
             })}
-            formAction="none"
-            iconName={isMobile ? 'close' : 'angle-right'}
-            onClick={() => onActiveGlobalDrawersChange(activeDrawerId)}
-            ref={refs?.close}
-            variant="icon"
-          />
-        </div>
-        <div className={styles['drawer-content']}>{activeGlobalDrawer?.content}</div>
-      </div>
-    </aside>
+            ref={drawerRef}
+            onBlur={e => {
+              // Drawers with trigger buttons follow this restore focus logic:
+              // If a previously focused element exists, restore focus on it; otherwise, focus on the associated trigger button.
+              // This function resets the previously focused element.
+              // If the drawer has no trigger button and loses focus on the previously focused element, it defaults to document.body,
+              // which ideally should never happen.
+              if (!hasTriggerButton) {
+                return;
+              }
+
+              if (!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) {
+                globalDrawersFocusControl.loseFocus();
+              }
+            }}
+            style={{
+              blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+              insetBlockStart: drawersTopOffset,
+              ...(!isMobile && {
+                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+              }),
+            }}
+            data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
+          >
+            {!isMobile && activeGlobalDrawer?.resizable && (
+              <div className={styles['drawer-slider']}>
+                <PanelResizeHandle
+                  ref={refs?.slider}
+                  position="side"
+                  className={testutilStyles['drawers-slider']}
+                  ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
+                  ariaValuenow={resizeProps.relativeSize}
+                  onKeyDown={resizeProps.onKeyDown}
+                  onPointerDown={resizeProps.onPointerDown}
+                />
+              </div>
+            )}
+            <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
+              <div className={clsx(styles['drawer-close-button'])}>
+                <InternalButton
+                  ariaLabel={computedAriaLabels.closeButton}
+                  className={clsx({
+                    [testutilStyles['active-drawer-close-button']]: activeDrawerId,
+                  })}
+                  formAction="none"
+                  iconName={isMobile ? 'close' : 'angle-right'}
+                  onClick={() => onActiveGlobalDrawersChange(activeDrawerId)}
+                  ref={refs?.close}
+                  variant="icon"
+                />
+              </div>
+              <div className={styles['drawer-content']}>{activeGlobalDrawer?.content}</div>
+            </div>
+          </aside>
+        );
+      }}
+    </Transition>
   );
 }
 
