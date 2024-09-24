@@ -235,6 +235,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }));
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
+    const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
     const {
       maxDrawerSize,
       maxSplitPanelSize,
@@ -284,10 +285,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
-      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide' && !isMobile,
+      hasVisibleToolbar: hasToolbar && toolbarState !== 'hide',
       notificationsHeight: notificationsHeight ?? 0,
       toolbarHeight: toolbarHeight ?? 0,
-      stickyNotifications: !!stickyNotifications,
+      stickyNotifications: resolvedStickyNotifications,
     });
 
     const appLayoutInternals: AppLayoutInternals = {
@@ -296,7 +297,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       isMobile,
       breadcrumbs,
       discoveredBreadcrumbs,
-      stickyNotifications,
+      stickyNotifications: resolvedStickyNotifications,
       navigationOpen,
       navigation: resolvedNavigation,
       navigationFocusControl,

@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-import { getUrlParams, testIf, Theme } from './utils';
+import { getUrlParams, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 const stickyToggleSelector = createWrapper().findFlashbar().findItems().get(1).findActionButton().toSelector();
@@ -49,8 +49,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
-  // TODO: Implement in toolbar
-  testIf(theme !== 'refresh-toolbar')(
+  test(
     'Notifications are never sticky in narrow viewports',
     setupTest({ viewport: viewports.mobile }, async page => {
       await expect(page.isNotificationVisible()).resolves.toBe(true);
