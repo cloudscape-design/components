@@ -14704,25 +14704,25 @@ and truncates it with an ellipsis.",
 `;
 
 exports[`Documenter definition for steps matches the snapshot: steps 1`] = `
-Object {
-  "events": Array [],
-  "functions": Array [],
+{
+  "events": [],
+  "functions": [],
   "name": "Steps",
-  "properties": Array [
-    Object {
+  "properties": [
+    {
       "description": "Sets the \`aria-describedby\` property on the progress steps container.",
       "name": "ariaDescribedby",
       "optional": true,
       "type": "string",
     },
-    Object {
+    {
       "description": "Provides an \`aria-label\` to progress steps container.
 Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },
-    Object {
+    {
       "description": "Sets the \`aria-labelledby\` property on the progress steps container.
 If there's a visible label element that you can reference, use this instead of \`ariaLabel\`.
 Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
@@ -14730,14 +14730,14 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "optional": true,
       "type": "string",
     },
-    Object {
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
       "optional": true,
       "type": "string",
     },
-    Object {
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -14746,20 +14746,20 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "optional": true,
       "type": "string",
     },
-    Object {
+    {
       "description": "An array of individual steps
 Each step definition has the following properties:
  * \`status\` (string) - Status of the step corresponding to a status indicator.
  * \`statusIconAriaLabel\` - (string) - (Optional) Text alternative for the status icon.
- * \`header\` (react.ReactNode) - Area next to the status indicator of the step.
- * \`details\` (react.ReactNode) - (Optional) The corresponding details of the step.
+ * \`header\` (ReactNode) - Summary corresponding to the step.
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
 ",
       "name": "steps",
       "optional": false,
       "type": "ReadonlyArray<StepsProps.Step>",
     },
   ],
-  "regions": Array [],
+  "regions": [],
   "releaseStatus": "stable",
 }
 `;

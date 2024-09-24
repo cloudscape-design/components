@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
-import { type StatusIndicatorProps } from '../status-indicator/internal';
+import { StatusIndicatorProps } from '../status-indicator/internal';
 
 export interface StepsProps extends BaseComponentProps {
   /**

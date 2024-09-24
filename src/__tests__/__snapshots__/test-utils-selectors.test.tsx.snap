@@ -520,13 +520,13 @@ exports[`test-utils selectors 1`] = `
   "status-indicator": [
     "awsui_root_1cbgc",
   ],
-  "steps": Array [
+  "steps": [
     "awsui_container_gxp9y",
     "awsui_details_gxp9y",
     "awsui_header_gxp9y",
     "awsui_root_gxp9y",
   ],
-  "table": Array [
+  "table": [
     "awsui_body-cell-edit-active_c6tup",
     "awsui_body-cell-editor-controls_c6tup",
     "awsui_body-cell-editor_c6tup",
