@@ -82,10 +82,13 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       controlledProp: 'toolsOpen',
       changeHandler: 'onToolsChange',
     });
-    const onToolsToggle = (open: boolean) => {
-      setToolsOpen(open);
-      drawersFocusControl.setFocus();
-      fireNonCancelableEvent(onToolsChange, { open });
+
+    const onToolsToggleHandler = (open: boolean) => {
+      if (controlledToolsOpen === undefined) {
+        setToolsOpen(open);
+        drawersFocusControl.setFocus();
+        fireNonCancelableEvent(onToolsChange, { open });
+      }
     };
 
     const {
@@ -102,8 +105,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       toolsOpen,
       tools,
       toolsWidth,
-      onToolsToggle,
+      onToolsToggle: onToolsToggleHandler,
     });
+
+    console.log({ toolsOpen, controlledToolsOpen });
 
     const onActiveDrawerChangeHandler = (drawerId: string | null) => {
       onActiveDrawerChange(drawerId);
@@ -168,7 +173,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     useImperativeHandle(forwardRef, () => ({
       closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
-      openTools: () => onToolsToggle(true),
+      openTools: () => onToolsToggleHandler(true),
       focusToolsClose: () => drawersFocusControl.setFocus(true),
       focusActiveDrawer: () => drawersFocusControl.setFocus(true),
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
@@ -314,8 +319,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={navigationOpen}
           navigationWidth={navigationWidth}
-          tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
-          toolsOpen={!!activeDrawer}
+          tools={toolsOpen && activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
+          toolsOpen={toolsOpen}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={
             splitPanelPosition === 'side' && (
