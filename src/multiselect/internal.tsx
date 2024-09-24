@@ -17,8 +17,8 @@ import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
 import PlainList, { SelectListProps } from '../select/parts/plain-list';
@@ -36,13 +36,17 @@ import { MultiselectProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps & { inlineTokens?: boolean };
+type InternalMultiselectProps = SomeRequired<
+  MultiselectProps,
+  'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
+> &
+  InternalBaseComponentProps & { inlineTokens?: boolean };
 
 const InternalMultiselect = React.forwardRef(
   (
     {
-      options = [],
-      filteringType = 'none',
+      options,
+      filteringType,
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
@@ -52,16 +56,16 @@ const InternalMultiselect = React.forwardRef(
       disabled,
       readOnly,
       ariaLabel,
-      statusType = 'finished',
+      statusType,
       empty,
       loadingText,
       finishedText,
       errorText,
       noMatch,
       renderHighlightedAriaLive,
-      selectedOptions = [],
+      selectedOptions,
       deselectAriaLabel,
-      keepOpen = true,
+      keepOpen,
       tokenLimit,
       i18nStrings,
       onBlur,
@@ -70,7 +74,7 @@ const InternalMultiselect = React.forwardRef(
       onChange,
       virtualScroll,
       inlineTokens = false,
-      hideTokens = false,
+      hideTokens,
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
@@ -145,8 +149,6 @@ const InternalMultiselect = React.forwardRef(
       },
       [onChange, selectedOptions, filteredOptions]
     );
-
-    const rootRef = useRef<HTMLDivElement>(null);
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
@@ -301,14 +303,12 @@ const InternalMultiselect = React.forwardRef(
       limitShowMore: i18nStrings?.tokenLimitShowMore,
     };
 
-    const mergedRef = useMergeRefs(rootRef, __internalRootRef);
-
     const dropdownProps = getDropdownProps();
 
     return (
       <div
         {...baseProps}
-        ref={mergedRef}
+        ref={__internalRootRef}
         className={clsx(styles.root, baseProps.className)}
         onKeyPress={handleNativeSearch}
       >
