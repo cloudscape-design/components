@@ -223,7 +223,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     });
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
-    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, !isMobile, activeDrawer?.id);
+    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
