@@ -15,7 +15,7 @@ export interface StepsProps extends BaseComponentProps {
    */
   steps: ReadonlyArray<StepsProps.Step>;
   /**
-   * Provides an `aria-label` to progress steps container.
+   * Provides an `aria-label` to the progress steps container.
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabel?: string;

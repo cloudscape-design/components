@@ -14716,7 +14716,7 @@ exports[`Documenter definition for steps matches the snapshot: steps 1`] = `
       "type": "string",
     },
     {
-      "description": "Provides an \`aria-label\` to progress steps container.
+      "description": "Provides an \`aria-label\` to the progress steps container.
 Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "name": "ariaLabel",
       "optional": true,

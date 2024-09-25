@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Box from '~components/box';
 import Button from '~components/button';
 import Link from '~components/link';
 import Popover from '~components/popover';
@@ -14,7 +15,7 @@ const initialSteps: ReadonlyArray<StepsProps.Step> = [
     status: 'loading',
     statusIconAriaLabel: 'loading',
     header: 'Listing EC2 instances',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Using the ec2_DescribeInstances</span>,
+    details: <Box fontSize="body-s">Using the ec2_DescribeInstances</Box>,
   },
 ];
 
@@ -22,9 +23,9 @@ const loadingSteps: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'success',
     statusIconAriaLabel: 'success',
-    header: <span style={{ margin: '0' }}>Listed EC2 instances</span>,
+    header: 'Listed EC2 instances',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -32,20 +33,20 @@ const loadingSteps: ReadonlyArray<StepsProps.Step> = [
           <li>ec2InstanceID3</li>
           <li>ec2InstanceID4</li>
         </ul>
-      </span>
+      </Box>
     ),
   },
   {
     header: 'Gathering Security Group IDs',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         Using the ec2_DescribeSecurityGroupsTool:
         <ul>
           <li>securityGroupID1</li>
           <li>securityGroupID2</li>
           <li>securityGroupID3</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'loading',
     statusIconAriaLabel: 'loading',
@@ -56,7 +57,7 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -64,7 +65,7 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
           <li>ec2InstanceID3</li>
           <li>ec2InstanceID4</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -72,14 +73,14 @@ export const loadingSteps2: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
           <li>securityGroupID2</li>
           <li>securityGroupID3</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -95,7 +96,7 @@ export const loadingSteps3: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -103,7 +104,7 @@ export const loadingSteps3: ReadonlyArray<StepsProps.Step> = [
           <li>ec2InstanceID3</li>
           <li>ec2InstanceID4</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -111,14 +112,14 @@ export const loadingSteps3: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
           <li>securityGroupID2</li>
           <li>securityGroupID3</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -139,7 +140,7 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -147,7 +148,7 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
           <li>ec2InstanceID3</li>
           <li>ec2InstanceID4</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -155,14 +156,14 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
           <li>securityGroupID2</li>
           <li>securityGroupID3</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -183,7 +184,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -191,7 +192,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
           <li>ec2InstanceID3</li>
           <li>ec2InstanceID4</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -199,14 +200,14 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
           <li>securityGroupID2</li>
           <li>securityGroupID3</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -214,10 +215,10 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Need Cross Region Consent',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
         account.
-      </span>
+      </Box>
     ),
     status: 'warning',
     statusIconAriaLabel: 'warning',
@@ -228,7 +229,7 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -236,7 +237,7 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
           <li>ec2InstanceID3</li>
           <li>ec2InstanceID4</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'success',
     statusIconAriaLabel: 'success',
@@ -253,49 +254,49 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     status: 'error',
     statusIconAriaLabel: 'error',
     header: 'error step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'warning',
     statusIconAriaLabel: 'warning',
     header: 'warning step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'success',
     statusIconAriaLabel: 'success',
     header: 'success step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'info',
     statusIconAriaLabel: 'info',
     header: 'info step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'stopped',
     statusIconAriaLabel: 'stopped',
     header: 'stopped step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'pending',
     statusIconAriaLabel: 'pending',
     header: 'pending step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'in-progress',
     statusIconAriaLabel: 'in-progress',
     header: 'in-progress step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
   {
     status: 'loading',
     statusIconAriaLabel: 'loading',
     header: 'loading step',
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Test description</span>,
+    details: <Box fontSize="body-s">Test description</Box>,
   },
 ];
 
@@ -305,8 +306,8 @@ export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
     statusIconAriaLabel: 'loading',
-    header: <span style={{ margin: '0' }}>Listing EC2 instances</span>,
-    details: <span style={{ marginBlock: 0, fontSize: '12px' }}>Using the ec2_DescribeInstances</span>,
+    header: <span>Listing EC2 instances</span>,
+    details: <Box fontSize="body-s">Using the ec2_DescribeInstances</Box>,
   },
 ];
 
@@ -315,19 +316,19 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
     statusIconAriaLabel: 'success',
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -337,16 +338,16 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     ),
   },
   {
-    header: <span style={{ margin: '0' }}>Gathering Security Group IDs</span>,
+    header: <span>Gathering Security Group IDs</span>,
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         Using the ec2_DescribeSecurityGroupsTool:
         <ul>
           <li>securityGroupID1</li>
           <li>securityGroupID2</li>
           <li>securityGroupID3</li>
         </ul>
-      </span>
+      </Box>
     ),
     status: 'loading',
     statusIconAriaLabel: 'loading',
@@ -356,19 +357,19 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -381,18 +382,18 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
                 <li>securityGroupID3</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -404,7 +405,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Checking Cross Region Consent</span>,
+    header: <span>Checking Cross Region Consent</span>,
     status: 'loading',
     statusIconAriaLabel: 'loading',
   },
@@ -413,19 +414,19 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
 export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -438,18 +439,18 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
                 <li>securityGroupID3</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -461,12 +462,12 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Checked Cross Region Consent</span>,
+    header: <span>Checked Cross Region Consent</span>,
     status: 'success',
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Analyzing security rules</span>,
+    header: <span>Analyzing security rules</span>,
     status: 'loading',
     statusIconAriaLabel: 'loading',
   },
@@ -475,19 +476,19 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
 export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -500,18 +501,18 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
                 <li>securityGroupID3</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -523,12 +524,12 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Checked Cross Region Consent</span>,
+    header: <span>Checked Cross Region Consent</span>,
     status: 'success',
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Analyzing security rules</span>,
+    header: <span>Analyzing security rules</span>,
     status: 'success',
     statusIconAriaLabel: 'success',
   },
@@ -537,19 +538,19 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -562,18 +563,18 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>securityGroupID1</li>
                 <li>securityGroupID2</li>
                 <li>securityGroupID3</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -585,12 +586,12 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Need Cross Region Consent</span>,
+    header: <span>Need Cross Region Consent</span>,
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
         account.
-      </span>
+      </Box>
     ),
     status: 'warning',
     statusIconAriaLabel: 'warning',
@@ -600,19 +601,19 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -624,7 +625,7 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Could not fetch security groups</span>,
+    header: <span>Could not fetch security groups</span>,
     status: 'error',
     statusIconAriaLabel: 'error',
   },
@@ -633,19 +634,19 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
 export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -657,11 +658,11 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Could not fetch security groups</span>,
+    header: <span>Could not fetch security groups</span>,
     details: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <Box fontSize="body-s">
         The request expired due to a server issue. <Link href="#">Retry</Link>
-      </span>
+      </Box>
     ),
     status: 'error',
     statusIconAriaLabel: 'error',
@@ -671,19 +672,19 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
 export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ marginBlock: 0, fontSize: '12px' }}>
+      <span>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
           content={
-            <span style={{ marginBlock: 0, fontSize: '12px' }}>
+            <Box fontSize="body-s">
               <ul>
                 <li>ec2InstanceID1</li>
                 <li>ec2InstanceID2</li>
                 <li>ec2InstanceID3</li>
                 <li>ec2InstanceID4</li>
               </ul>
-            </span>
+            </Box>
           }
           position={'bottom'}
         >
@@ -695,10 +696,10 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span style={{ margin: '0' }}>Could not fetch security groups</span>,
+    header: <span>Could not fetch security groups</span>,
     details: (
       <>
-        <span style={{ marginBlock: 0, fontSize: '12px' }}>The request expired due to a server issue.</span>
+        <Box fontSize="body-s">The request expired due to a server issue.</Box>
         <Button ariaLabel="Retry" iconName="refresh">
           Retry
         </Button>
@@ -714,7 +715,7 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
     statusIconAriaLabel: 'success',
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Create S3 <Link href="#">bucket-12</Link>
       </span>
     ),
@@ -723,7 +724,7 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'success',
     statusIconAriaLabel: 'success',
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Create CloudWatch <Link href="#">alarm</Link>
       </span>
     ),
@@ -732,7 +733,7 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     status: 'loading',
     statusIconAriaLabel: 'loading',
     header: (
-      <span style={{ margin: '0' }}>
+      <span>
         Update <Link href="#">Lambda-1</Link>
       </span>
     ),
