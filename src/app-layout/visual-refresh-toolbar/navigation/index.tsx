@@ -3,8 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import { InternalButton } from '../../../button/internal';
-import { findUpUntil } from '../../../internal/utils/dom';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
 

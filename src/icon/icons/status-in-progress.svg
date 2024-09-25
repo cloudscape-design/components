@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <circle class="stroke-linejoin-round" cx="8" cy="8" r="7"/>
-  <rect class="stroke-linecap-round" x="4.99" y="7.995" width="0.01" height="0.01"/>
-  <rect class="stroke-linecap-round" x="7.99" y="7.995" width="0.01" height="0.01"/>
-  <rect class="stroke-linecap-round" x="10.99" y="7.995" width="0.01" height="0.01"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<circle cx="8" cy="8" r="7"/>
+<path d="M9 7H7V9H9V7Z" class="filled no-stroke"/>
+<path d="M6 7H4V9H6V7Z" class="filled no-stroke"/>
+<path d="M12 7H10V9H12V7Z" class="filled no-stroke"/>
 </svg>

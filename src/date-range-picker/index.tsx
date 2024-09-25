@@ -196,7 +196,12 @@ const DateRangePicker = React.forwardRef(
     };
 
     const onApply = (newValue: null | DateRangePickerProps.Value): DateRangePickerProps.ValidationResult => {
-      const validationResult = isValidRange(newValue);
+      const formattedValue = formatValue(newValue, {
+        dateOnly,
+        timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
+      });
+
+      const validationResult = isValidRange(formattedValue);
       if (validationResult?.valid === false) {
         return validationResult;
       }
@@ -213,12 +218,7 @@ const DateRangePicker = React.forwardRef(
           }
         }
       }
-      fireNonCancelableEvent(onChange, {
-        value: formatValue(newValue, {
-          dateOnly,
-          timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
-        }),
-      });
+      fireNonCancelableEvent(onChange, { value: formattedValue });
       return validationResult || { valid: true };
     };
 
@@ -345,6 +345,8 @@ const DateRangePicker = React.forwardRef(
                 i18nStrings={i18nStrings}
                 onClear={onClear}
                 onApply={onApply}
+                getTimeOffset={getTimeOffset}
+                timeOffset={timeOffset}
                 relativeOptions={relativeOptions}
                 isValidRange={isValidRange}
                 dateOnly={dateOnly}

@@ -27,6 +27,7 @@ module.exports = task('test:a11y', async () => {
   }
   await execa('jest', commands, {
     stdio: 'inherit',
+    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
   });
 
   devServer.cancel();
