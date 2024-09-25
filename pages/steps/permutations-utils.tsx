@@ -301,23 +301,6 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
 
 const emptySteps: ReadonlyArray<StepsProps.Step> = [];
 
-export const stepsPermutations = createPermutations<StepsProps>([
-  {
-    steps: [
-      initialSteps,
-      loadingSteps,
-      loadingSteps2,
-      loadingSteps3,
-      successfulSteps,
-      blockedSteps,
-      failedSteps,
-      emptySteps,
-      allStatusesSteps,
-    ],
-    ariaLabel: ['test label'],
-  },
-]);
-
 export const initialStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     status: 'loading',
@@ -676,7 +659,7 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
   {
     header: <span style={{ margin: '0' }}>Could not fetch security groups</span>,
     details: (
-      <span style={{ margin: '0' }}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         The request expired due to a server issue. <Link href="#">Retry</Link>
       </span>
     ),
@@ -688,7 +671,7 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
 export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Step> = [
   {
     header: (
-      <span style={{ margin: '0' }}>
+      <span style={{ marginBlock: 0, fontSize: '12px' }}>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
@@ -715,7 +698,7 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
     header: <span style={{ margin: '0' }}>Could not fetch security groups</span>,
     details: (
       <>
-        <span style={{ margin: '0' }}>The request expired due to a server issue.</span>
+        <span style={{ marginBlock: 0, fontSize: '12px' }}>The request expired due to a server issue.</span>
         <Button ariaLabel="Retry" iconName="refresh">
           Retry
         </Button>
@@ -756,9 +739,18 @@ const changesetStepsInteractive: ReadonlyArray<StepsProps.Step> = [
   },
 ];
 
-export const stepsPermutationsInteractive = createPermutations<StepsProps>([
+export const stepsPermutations = createPermutations<StepsProps>([
   {
     steps: [
+      initialSteps,
+      loadingSteps,
+      loadingSteps2,
+      loadingSteps3,
+      successfulSteps,
+      blockedSteps,
+      failedSteps,
+      emptySteps,
+      allStatusesSteps,
       initialStepsInteractive,
       loadingStepsInteractive,
       loadingSteps2Interactive,
@@ -770,5 +762,6 @@ export const stepsPermutationsInteractive = createPermutations<StepsProps>([
       failedStepsWithRetryButtonInteractive,
       changesetStepsInteractive,
     ],
+    ariaLabel: ['test label'],
   },
 ]);

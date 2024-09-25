@@ -35,7 +35,7 @@ export const InternalSteps = ({
   ...props
 }: InternalStepsProps) => {
   return (
-    <div {...props} className={clsx(styles.root, props.className)} ref={__internalRootRef}>
+    <div {...props} className={clsx(styles.root)} ref={__internalRootRef}>
       <ol
         className={styles.list}
         aria-label={ariaLabel}

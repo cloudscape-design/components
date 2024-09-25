@@ -11,6 +11,7 @@
 
   > .list {
     list-style: none;
+    padding-inline-start: 0;
 
     > .container {
       display: grid;
