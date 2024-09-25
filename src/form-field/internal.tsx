@@ -15,8 +15,8 @@ import {
   DATA_ATTR_FIELD_ERROR,
   DATA_ATTR_FIELD_LABEL,
   getFieldSlotSeletor,
-  getNameFromSelector,
   getSubStepAllSelector,
+  getTextFromSelector,
 } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
@@ -174,8 +174,8 @@ export default function InternalFormField({
 
   useEffect(() => {
     if (funnelInteractionId && errorText && funnelState.current !== 'complete') {
-      const stepName = getNameFromSelector(stepNameSelector);
-      const subStepName = getNameFromSelector(subStepNameSelector);
+      const stepName = getTextFromSelector(stepNameSelector);
+      const subStepName = getTextFromSelector(subStepNameSelector);
 
       errorCount.current++;
 

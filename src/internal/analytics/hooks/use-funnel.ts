@@ -14,8 +14,8 @@ import {
 import {
   DATA_ATTR_FUNNEL_INTERACTION_ID,
   DATA_ATTR_FUNNEL_SUBSTEP,
-  getNameFromSelector,
   getSubStepAllSelector,
+  getTextFromSelector,
 } from '../selectors';
 
 /**
@@ -69,8 +69,8 @@ export const useFunnelSubStep = () => {
       */
       latestFocusCleanupFunction.current?.();
 
-      const subStepName = getNameFromSelector(subStepNameSelector);
-      const stepName = getNameFromSelector(stepNameSelector);
+      const subStepName = getTextFromSelector(subStepNameSelector);
+      const stepName = getTextFromSelector(stepNameSelector);
       const subStepNumber = subStepConfiguration.current
         ?.get(stepNumber)
         ?.find(step => step.name === subStepName)?.number;
