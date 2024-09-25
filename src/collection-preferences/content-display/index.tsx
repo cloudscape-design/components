@@ -132,7 +132,10 @@ export default function ContentDisplayPreference({
             onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
             countText={i18n(
               'contentDisplayPreference.i18nStrings.columnFilteringCountText',
-              i18nStrings?.columnFilteringCountText ? i18nStrings?.columnFilteringCountText(sortedOptions?.length) : ''
+              i18nStrings?.columnFilteringCountText
+                ? i18nStrings?.columnFilteringCountText(sortedOptions?.length)
+                : undefined,
+              format => format({ count: sortedOptions?.length })
             )}
           />
         </div>

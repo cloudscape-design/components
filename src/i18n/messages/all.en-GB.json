@@ -112,7 +112,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Clear filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}",
-    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0 matches} one {1 match} other {{count} matches}}"
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 matches} one {1 match} other {{count} matches}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copy"

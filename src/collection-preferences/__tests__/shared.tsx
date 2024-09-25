@@ -4,11 +4,34 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 
 import CollectionPreferences, { CollectionPreferencesProps } from '../../../lib/components/collection-preferences';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
 
-export function renderCollectionPreferences(props: Partial<CollectionPreferencesProps>): CollectionPreferencesWrapper {
-  render(<CollectionPreferences title="Preferences title" confirmLabel="Confirm" cancelLabel="Cancel" {...props} />);
+const i18nMessages = {
+  'collection-preferences': {
+    'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder': 'Filter columns',
+    'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel': 'Filter columns',
+    'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText': 'No matches found',
+    'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText': 'Clear filter',
+    'contentDisplayPreference.i18nStrings.columnFilteringCountText':
+      '{count, select, zero {0 matches} one {1 match} other {{count} matches}}',
+  },
+};
+
+export function renderCollectionPreferences(
+  props: Partial<CollectionPreferencesProps>,
+  withI18nProvider = false
+): CollectionPreferencesWrapper {
+  let contentToRender = (
+    <CollectionPreferences title="Preferences title" confirmLabel="Confirm" cancelLabel="Cancel" {...props} />
+  );
+
+  if (withI18nProvider) {
+    contentToRender = <TestI18nProvider messages={i18nMessages}>{contentToRender}</TestI18nProvider>;
+  }
+
+  render(contentToRender);
   return createWrapper().findCollectionPreferences()!;
 }
 
@@ -102,11 +125,4 @@ export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplay
       ? `Item moved back to its original position ${initialPosition} of ${total}`
       : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
   searchableColumns: true,
-  i18nStrings: {
-    columnFilteringPlaceholder: 'Filter columns',
-    columnFilteringAriaLabel: 'Filter columns',
-    columnFilteringClearFilterText: 'Clear filter',
-    columnFilteringNoMatchText: 'No matches found',
-    columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
-  },
 };
