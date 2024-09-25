@@ -17,6 +17,7 @@ export interface UseTableInteractionMetricsProps {
   loading: boolean | undefined;
   itemCount: number;
   getComponentIdentifier: () => string | undefined;
+  interactionMetadata: () => string;
 }
 
 export function useTableInteractionMetrics({
@@ -24,14 +25,14 @@ export function useTableInteractionMetrics({
   instanceIdentifier,
   getComponentIdentifier,
   loading = false,
+  interactionMetadata,
 }: UseTableInteractionMetricsProps) {
   const lastUserAction = useRef<{ name: string; time: number } | null>(null);
   const capturedUserAction = useRef<string | null>(null);
   const loadingStartTime = useRef<number | null>(null);
 
-  const metadata = useRef({ itemCount, getComponentIdentifier });
-  metadata.current = { itemCount, getComponentIdentifier };
-
+  const metadata = useRef({ itemCount, getComponentIdentifier, interactionMetadata });
+  metadata.current = { itemCount, getComponentIdentifier, interactionMetadata };
   useEffect(() => {
     if (loading) {
       loadingStartTime.current = performance.now();
@@ -52,7 +53,7 @@ export function useTableInteractionMetrics({
       PerformanceMetrics.tableInteraction({
         userAction: capturedUserAction.current ?? '',
         interactionTime: Math.round(loadingDuration),
-        interactionMetadata: undefined,
+        interactionMetadata: metadata.current.interactionMetadata(),
         componentIdentifier: metadata.current.getComponentIdentifier(),
         instanceIdentifier,
         noOfResourcesInTable: metadata.current.itemCount,
