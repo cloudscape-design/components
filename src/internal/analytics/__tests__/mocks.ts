@@ -26,7 +26,7 @@ export function mockFunnelMetrics() {
 }
 
 export function mockPerformanceMetrics() {
-  setPerformanceMetrics({ tableInteraction: jest.fn() });
+  setPerformanceMetrics({ tableInteraction: jest.fn(), taskCompletionData: jest.fn() });
 }
 
 export function mockInnerText() {
