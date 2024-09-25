@@ -1028,7 +1028,7 @@ describe('toolbar mode only features', () => {
     });
 
     test('closes a drawer when closeDrawer is called (global drawer)', async () => {
-      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true, type: 'global' });
 
       const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
