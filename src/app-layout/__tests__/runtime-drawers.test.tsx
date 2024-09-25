@@ -784,7 +784,6 @@ describe('toolbar mode only features', () => {
         ...drawerDefaults,
         id: 'test-resizable',
         resizable: true,
-        defaultActive: true,
         type: 'global',
         ariaLabels: {
           triggerButton: 'drawer trigger',
@@ -793,8 +792,11 @@ describe('toolbar mode only features', () => {
           closeButton: 'drawer close',
         },
       });
-      const { globalDrawersWrapper } = await renderComponent(<AppLayout />);
+      const { globalDrawersWrapper, wrapper } = await renderComponent(<AppLayout />);
 
+      wrapper.findDrawerTriggerById('test-resizable')!.click();
+
+      expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveFocus();
       expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
         'aria-label',
         'drawer resize'
