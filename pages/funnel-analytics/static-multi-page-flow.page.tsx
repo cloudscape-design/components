@@ -16,7 +16,6 @@ import {
 import { setFunnelMetrics } from '~components/internal/analytics';
 
 import { i18nStrings } from '../wizard/common';
-import { getAnalyticsProps } from './metadata';
 import { MockedFunnelMetrics } from './mock-funnel';
 
 import styles from '../wizard/styles.scss';
@@ -41,10 +40,9 @@ export default function MultiPageCreate() {
         <SpaceBetween size="s">
           <Container
             header={<Header>Container 1 - header</Header>}
-            {...getAnalyticsProps({
+            analyticsMetadata={{
               instanceIdentifier: 'step1-container1',
-              errorContext: value === 'error' ? 'errors.fields' : undefined,
-            })}
+            }}
           >
             <SpaceBetween size="s">
               <FormField
@@ -55,10 +53,6 @@ export default function MultiPageCreate() {
                 }
                 errorText={value === 'error' ? 'Trigger error' : ''}
                 label="Field 1"
-                {...getAnalyticsProps({
-                  instanceIdentifier: 'field1',
-                  errorContext: value === 'error' ? 'errors.triggered' : undefined,
-                })}
               >
                 <Input
                   data-testid="field1"
@@ -81,7 +75,7 @@ export default function MultiPageCreate() {
           </Container>
           <Container
             header={<Header>Container 2 - header</Header>}
-            {...getAnalyticsProps({ instanceIdentifier: 'step1-container2' })}
+            analyticsMetadata={{ instanceIdentifier: 'step1-container2' }}
           >
             <SpaceBetween size="s">
               <FormField label="Field 3">
@@ -106,7 +100,7 @@ export default function MultiPageCreate() {
           </Container>
         </SpaceBetween>
       ),
-      ...getAnalyticsProps({ instanceIdentifier: 'step-1' }),
+      analyticsMetadata: { instanceIdentifier: 'step-1' },
     },
     {
       title: 'Step 2',
@@ -117,7 +111,7 @@ export default function MultiPageCreate() {
           <div id="content-text">Content 2</div>
         </div>
       ),
-      ...getAnalyticsProps({ instanceIdentifier: 'step-2' }),
+      analyticsMetadata: { instanceIdentifier: 'step-2' },
     },
     {
       title: 'Step 3',
@@ -132,7 +126,7 @@ export default function MultiPageCreate() {
           ))}
         </div>
       ),
-      ...getAnalyticsProps({ instanceIdentifier: 'step-3', errorContext: 'errors.validation' }),
+      analyticsMetadata: { instanceIdentifier: 'step-3' },
     },
   ];
 
@@ -154,10 +148,10 @@ export default function MultiPageCreate() {
       </button>
       {mounted && (
         <Wizard
-          {...getAnalyticsProps({
+          analyticsMetadata={{
             instanceIdentifier: 'multi-page-demo',
             flowType: 'create',
-          })}
+          }}
           i18nStrings={i18nStrings}
           steps={steps}
           activeStepIndex={activeStepIndex}

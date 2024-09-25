@@ -5,6 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
+import { getUrlParams, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -35,65 +36,67 @@ class AppLayoutRefreshNotoficationsPage extends BasePageObject {
   }
 }
 
-function setupTest(viewportWidth: number, testFn: (page: AppLayoutRefreshNotoficationsPage) => Promise<void>) {
-  return useBrowser(async browser => {
-    const page = new AppLayoutRefreshNotoficationsPage(browser);
-    await page.setWindowSize({ ...viewports.desktop, width: viewportWidth });
-    await browser.url('#/light/app-layout/refresh-content-width/?visualRefresh=true');
-    await page.waitForVisible(wrapper.findContentRegion().toSelector());
-    await testFn(page);
-  });
-}
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest(viewportWidth: number, testFn: (page: AppLayoutRefreshNotoficationsPage) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new AppLayoutRefreshNotoficationsPage(browser);
+      await page.setWindowSize({ ...viewports.desktop, width: viewportWidth });
+      await browser.url(`#/light/app-layout/refresh-content-width/?${getUrlParams(theme)}`);
+      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await testFn(page);
+    });
+  }
 
-const vrBorderOffset = 1;
+  const vrBorderOffset = theme === 'refresh' ? 1 : 0;
 
-describe('Default width per contentType', () => {
-  const testCases = [
-    { viewPortWidth: 1920, navigationWidth: 280, contentWidth: 1280, toolsWidth: 290 }, // XXXS - L breakpoint
-    { viewPortWidth: 1921, navigationWidth: 280, contentWidth: 1440, toolsWidth: 290 }, // L -XL breakpoint
-    { viewPortWidth: 2541, navigationWidth: 280, contentWidth: 1620, toolsWidth: 290 }, // XL - > XXL breakpoint
-  ];
+  describe('Default width per contentType', () => {
+    const testCases = [
+      { viewPortWidth: 1920, navigationWidth: 280, contentWidth: 1280, toolsWidth: 290 }, // XXXS - L breakpoint
+      { viewPortWidth: 1921, navigationWidth: 280, contentWidth: 1440, toolsWidth: 290 }, // L -XL breakpoint
+      { viewPortWidth: 2541, navigationWidth: 280, contentWidth: 1620, toolsWidth: 290 }, // XL - > XXL breakpoint
+    ];
 
-  testCases.forEach(({ viewPortWidth, navigationWidth, contentWidth, toolsWidth }) => {
-    for (const contentType of ['default', 'form', 'wizard']) {
+    testCases.forEach(({ viewPortWidth, navigationWidth, contentWidth, toolsWidth }) => {
+      for (const contentType of ['default', 'form', 'wizard']) {
+        test(
+          `Browser viewPortWidth ${viewPortWidth}: contentType '${contentType}' has default width for content, navigation and tools slot.`,
+          setupTest(viewPortWidth, async page => {
+            await page.setContentType(contentType);
+            await expect(page.getContentWidth()).resolves.toBe(contentWidth);
+
+            // Open the drawers and check their width
+            await page.setDrawersOpen();
+            await expect(page.getNavigationWidth()).resolves.toBe(navigationWidth + vrBorderOffset);
+            await expect(page.getToolsWidth()).resolves.toBe(toolsWidth + vrBorderOffset);
+          })
+        );
+      }
+    });
+
+    for (const contentType of ['table', 'cards']) {
       test(
-        `Browser viewPortWidth ${viewPortWidth}: contentType '${contentType}' has default width for content, navigation and tools slot.`,
-        setupTest(viewPortWidth, async page => {
+        `ContentType '${contentType}' uses the full available horizontal width.`,
+        setupTest(2000, async page => {
           await page.setContentType(contentType);
-          await expect(page.getContentWidth()).resolves.toBe(contentWidth);
-
-          // Open the drawers and check their width
-          await page.setDrawersOpen();
-          await expect(page.getNavigationWidth()).resolves.toBe(navigationWidth + vrBorderOffset);
-          await expect(page.getToolsWidth()).resolves.toBe(toolsWidth + vrBorderOffset);
+          await expect(page.getContentWidth()).resolves.toBeGreaterThan(1830);
         })
       );
     }
-  });
 
-  for (const contentType of ['table', 'cards']) {
     test(
-      `ContentType '${contentType}' uses the full available horizontal width.`,
-      setupTest(2000, async page => {
-        await page.setContentType(contentType);
-        await expect(page.getContentWidth()).resolves.toBeGreaterThan(1830);
+      'Use the full available width when maxContentWidth is set to Number.MAX_VALUE',
+      setupTest(3000, async page => {
+        await page.setContentWidthToMaxValue();
+        await expect(page.getContentWidth()).resolves.toBeGreaterThan(2830);
       })
     );
-  }
 
-  test(
-    'Use the full available width when maxContentWidth is set to Number.MAX_VALUE',
-    setupTest(3000, async page => {
-      await page.setContentWidthToMaxValue();
-      await expect(page.getContentWidth()).resolves.toBeGreaterThan(2830);
-    })
-  );
-
-  test(
-    'Content could have a width of 400 when maxContentWidth is set to 400',
-    setupTest(2000, async page => {
-      await page.setContentWidthTo400();
-      await expect(page.getContentWidth()).resolves.toBe(400);
-    })
-  );
+    test(
+      'Content could have a width of 400 when maxContentWidth is set to 400',
+      setupTest(2000, async page => {
+        await page.setContentWidthTo400();
+        await expect(page.getContentWidth()).resolves.toBe(400);
+      })
+    );
+  });
 });

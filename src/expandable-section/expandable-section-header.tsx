@@ -4,13 +4,21 @@ import React, { KeyboardEventHandler, MouseEventHandler, ReactNode } from 'react
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalHeader, { Description as HeaderDescription } from '../header/internal';
 import InternalIcon from '../icon/internal';
 import { isDevelopment } from '../internal/is-development';
+import { GeneratedAnalyticsMetadataExpandableSectionExpand } from './analytics-metadata/interfaces';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
-import { variantSupportsDescription, variantSupportsInteractiveElements } from './utils';
+import {
+  variantRequiresActionsDivider,
+  variantSupportsActions,
+  variantSupportsDescription,
+  variantSupportsInfoLink,
+} from './utils';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export const componentName = 'ExpandableSection';
@@ -53,6 +61,16 @@ interface ExpandableSectionHeaderProps extends Omit<ExpandableDefaultHeaderProps
   ariaLabelledBy?: string;
 }
 
+const getExpandActionAnalyticsMetadataAttribute = (expanded: boolean) => {
+  const metadata: GeneratedAnalyticsMetadataExpandableSectionExpand = {
+    action: 'expand',
+    detail: {
+      label: { rootSelector: `.${analyticsSelectors.root}` },
+      expanded: `${!expanded}`,
+    },
+  };
+  return getAnalyticsMetadataAttribute(metadata);
+};
 const ExpandableDeprecatedHeader = ({
   id,
   className,
@@ -70,7 +88,13 @@ const ExpandableDeprecatedHeader = ({
     <div
       id={id}
       role="button"
-      className={clsx(className, styles['expand-button'], styles['click-target'], styles['header-deprecated'])}
+      className={clsx(
+        className,
+        styles['expand-button'],
+        styles['click-target'],
+        styles['header-deprecated'],
+        analyticsSelectors['header-label']
+      )}
       tabIndex={0}
       onKeyUp={onKeyUp}
       onKeyDown={onKeyDown}
@@ -78,6 +102,7 @@ const ExpandableDeprecatedHeader = ({
       aria-label={ariaLabel}
       aria-controls={ariaControls}
       aria-expanded={expanded}
+      {...getExpandActionAnalyticsMetadataAttribute(expanded)}
     >
       <div className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</div>
       {children}
@@ -97,7 +122,7 @@ const ExpandableNavigationHeader = ({
   icon,
 }: ExpandableNavigationHeaderProps) => {
   return (
-    <div id={id} className={clsx(className, styles['click-target'])}>
+    <div id={id} className={clsx(className, styles['click-target'], analyticsSelectors['header-label'])}>
       <button
         className={clsx(styles['icon-container'], styles['expand-button'])}
         aria-labelledby={ariaLabelledBy}
@@ -106,6 +131,7 @@ const ExpandableNavigationHeader = ({
         aria-expanded={expanded}
         type="button"
         onClick={onClick}
+        {...getExpandActionAnalyticsMetadataAttribute(expanded)}
       >
         {icon}
       </button>
@@ -135,7 +161,7 @@ const ExpandableHeaderTextWrapper = ({
 }: ExpandableHeaderTextWrapperProps) => {
   const isContainer = variant === 'container';
   const HeadingTag = headingTagOverride || 'div';
-  const supportsInteractiveElements = variantSupportsInteractiveElements(variant);
+  const supportsInteractiveElements = variantSupportsActions(variant);
   const restrictClickableArea = supportsInteractiveElements && (headerInfo || headerActions);
   const actions = supportsInteractiveElements && headerActions;
   const description = variantSupportsDescription(variant) && headerDescription && (
@@ -169,16 +195,21 @@ const ExpandableHeaderTextWrapper = ({
       aria-controls={ariaControls}
       aria-expanded={expanded}
       {...headerButtonListeners}
+      {...(headerButtonListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
     >
       <span className={clsx(styles['icon-container'], styles[`icon-container-${variant}`])}>{icon}</span>
-      <span id={id} className={styles['header-text']}>
+      <span id={id} className={clsx(styles['header-text'], analyticsSelectors['header-label'])}>
         {children}
       </span>
     </span>
   );
 
   return (
-    <div className={clsx(className, wrapperListeners && styles['click-target'])} {...wrapperListeners}>
+    <div
+      className={clsx(className, wrapperListeners && styles['click-target'])}
+      {...wrapperListeners}
+      {...(wrapperListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
+    >
       {isContainer ? (
         <InternalHeader
           variant="h2"
@@ -196,6 +227,7 @@ const ExpandableHeaderTextWrapper = ({
             <HeadingTag
               className={clsx(styles['header-wrapper'], headingTagListeners && styles['click-target'])}
               {...headingTagListeners}
+              {...(headingTagListeners ? getExpandActionAnalyticsMetadataAttribute(expanded) : {})}
             >
               {headerButton}
             </HeadingTag>
@@ -228,6 +260,7 @@ export const ExpandableSectionHeader = ({
   onKeyDown,
   onClick,
 }: ExpandableSectionHeaderProps) => {
+  const alwaysShowDivider = variantRequiresActionsDivider(variant) && headerActions;
   const icon = (
     <InternalIcon
       size={variant === 'container' ? 'medium' : 'normal'}
@@ -245,18 +278,26 @@ export const ExpandableSectionHeader = ({
     variant,
   };
 
-  if ((headerCounter || headerInfo || headerActions) && !variantSupportsInteractiveElements(variant) && isDevelopment) {
+  if ((headerCounter || headerInfo) && !variantSupportsInfoLink(variant) && isDevelopment) {
     warnOnce(
       componentName,
-      'The `headerCounter`, `headerInfo` and `headerActions` props are only supported for the "container" variant.'
+      'The `headerCounter` and `headerInfo` props are only supported for the "container" variant.'
     );
+  }
+
+  if (headerActions && !variantSupportsActions(variant) && isDevelopment) {
+    warnOnce(componentName, `The \`headerActions\` prop is only supported for the "container" and "default" variants.`);
   }
 
   if (headerDescription && !variantSupportsDescription(variant) && isDevelopment) {
     warnOnce(componentName, `The \`headerDescription\` prop is not supported for the ${variant} variant.`);
   }
 
-  const wrapperClassName = clsx(styles.wrapper, styles[`wrapper-${variant}`], expanded && styles['wrapper-expanded']);
+  const wrapperClassName = clsx(
+    styles.wrapper,
+    styles[`wrapper-${variant}`],
+    (expanded || alwaysShowDivider) && styles['wrapper-expanded']
+  );
   if (variant === 'navigation') {
     return (
       <ExpandableNavigationHeader
@@ -269,7 +310,10 @@ export const ExpandableSectionHeader = ({
     );
   }
 
-  if (headerText) {
+  if (headerText || variant === 'inline') {
+    if (!headerText && header && variant === 'inline') {
+      warnOnce(componentName, 'Only `headerText` instead of `header` is supported for `inline` variant.');
+    }
     return (
       <ExpandableHeaderTextWrapper
         className={clsx(className, wrapperClassName, expanded && styles.expanded)}

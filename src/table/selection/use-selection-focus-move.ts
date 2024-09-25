@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { KeyboardEvent } from 'react';
 
-import { findUpUntil } from '../../internal/utils/dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import { TableProps } from '../interfaces';
 import { SELECTION_ITEM } from './utils';
 

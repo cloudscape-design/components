@@ -10,6 +10,7 @@
 
 .navigation {
   position: sticky;
+  z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   inset-block-end: 0;
   block-size: 100%;
@@ -19,35 +20,12 @@
   overscroll-behavior-y: contain;
   word-wrap: break-word;
   pointer-events: auto;
-  z-index: 1001;
-
-  // TODO:re-enable all transitions
-  @keyframes openNavigation {
-    from {
-      opacity: 0;
-      inline-size: calc(#{awsui.$space-layout-toggle-padding} * 2 + #{awsui.$space-layout-toggle-diameter});
-    }
-
-    to {
-      opacity: 1;
-      inline-size: var(#{custom-props.$navigationWidth});
-    }
-  }
 
   // All content is hidden by the overflow-x property
   &:not(.is-navigation-open) {
-    inline-size: 0;
+    inline-size: 0px;
     // We need to hide the closed panel to make containing focusable elements not focusable anymore.
     display: none;
-  }
-
-  // Apply the animation when the Navigation is opened
-  &.is-navigation-open {
-    &.animating {
-      @include styles.with-motion {
-        animation: openNavigation awsui.$motion-duration-refresh-only-fast;
-      }
-    }
   }
 
   /*
@@ -62,6 +40,7 @@
   // The Navigation drawer will take up the entire viewport on mobile
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$navigationWidth}: 100vw;
+    z-index: constants.$drawer-z-index-mobile;
   }
 }
 

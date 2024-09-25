@@ -11,7 +11,7 @@ export { ToggleProps };
 
 const Toggle = React.forwardRef<ToggleProps.Ref, ToggleProps>((props, ref) => {
   const baseComponentProps = useBaseComponent('Toggle');
-  return <InternalToggle {...props} {...baseComponentProps} ref={ref} />;
+  return <InternalToggle {...props} {...baseComponentProps} ref={ref} __injectAnalyticsComponentMetadata={true} />;
 });
 
 applyDisplayName(Toggle, 'Toggle');

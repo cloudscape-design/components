@@ -3,8 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
-
+import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import LiveRegion from '../internal/components/live-region';
@@ -28,11 +27,11 @@ export function HelpPanelImplementation({
   ...restProps
 }: HelpPanelInternalProps) {
   const baseProps = getBaseProps(restProps);
+  const isToolbar = useAppLayoutToolbarEnabled();
   const i18n = useInternalI18n('help-panel');
-  const hasToolbar = getGlobalFlag('appLayoutWidget');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles['help-panel'], hasToolbar && styles['with-toolbar']),
+    className: clsx(baseProps.className, styles['help-panel'], isToolbar && styles['with-toolbar']),
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>

@@ -15,6 +15,10 @@ export default function () {
     <ScreenshotArea gutters={false}>
       <AppLayout
         ariaLabels={labels}
+        analyticsMetadata={{
+          flowType: 'home',
+          instanceIdentifier: 'demo-page',
+        }}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}

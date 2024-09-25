@@ -2,14 +2,19 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
 import InternalAlert from './internal';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { AlertProps };
 
@@ -73,7 +78,24 @@ const Alert = React.forwardRef(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
 
-    return <InternalAlert type={type} visible={visible} {...props} {...baseComponentProps} ref={ref} />;
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAlertComponent = {
+      name: 'awsui.Alert',
+      label: `.${analyticsSelectors.header}`,
+      properties: {
+        type,
+      },
+    };
+
+    return (
+      <InternalAlert
+        type={type}
+        visible={visible}
+        {...props}
+        {...baseComponentProps}
+        ref={ref}
+        {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
+      />
+    );
   }
 );
 

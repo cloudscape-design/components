@@ -46,13 +46,13 @@
 }
 
 .container-body-size-large {
-  max-inline-size: 480px;
-  @media (max-width: 480px) {
+  max-inline-size: 482px;
+  @media (max-width: 482px) {
     // On viewports smaller than 480px, we default to the body-size-medium width
     max-inline-size: 310px;
   }
   &.fixed-width {
-    inline-size: 480px;
+    inline-size: 482px;
   }
 }
 

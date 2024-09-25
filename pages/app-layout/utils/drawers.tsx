@@ -4,6 +4,8 @@ import React from 'react';
 
 import { AppLayoutProps, Drawer, SpaceBetween } from '~components';
 
+import { drawerIds } from './drawer-ids';
+
 import styles from '../styles.scss';
 
 const getAriaLabels = (title: string, badge: boolean) => {
@@ -31,7 +33,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
   {
     ariaLabels: getAriaLabels('Security', false),
     content: <Security />,
-    id: 'security',
+    id: drawerIds.security,
     resizable: true,
     onResize: (event: any) => {
       // A drawer implementer may choose to listen to THEIR drawer's
@@ -48,7 +50,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     content: <Drawer header={<h2>Pro help</h2>}>Pro help.</Drawer>,
     badge: true,
     defaultSize: 600,
-    id: 'pro-help',
+    id: drawerIds.proHelp,
     trigger: {
       iconName: 'contact',
     },
@@ -58,7 +60,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     resizable: true,
     defaultSize: 500,
     content: <Drawer header={<h2>Links</h2>}>Links.</Drawer>,
-    id: 'links',
+    id: drawerIds.links,
     trigger: {
       iconName: 'share',
     },
@@ -67,7 +69,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Test 1', true),
     content: <Drawer header={<h2>Test 1</h2>}>Test 1.</Drawer>,
     badge: true,
-    id: 'test-1',
+    id: drawerIds.test1,
     trigger: {
       iconName: 'contact',
     },
@@ -77,7 +79,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     resizable: true,
     defaultSize: 500,
     content: <Drawer header={<h2>Test 2</h2>}>Test 2.</Drawer>,
-    id: 'test-2',
+    id: drawerIds.test2,
     trigger: {
       iconName: 'share',
     },
@@ -86,7 +88,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     ariaLabels: getAriaLabels('Test 3', true),
     content: <Drawer header={<h2>Test 3</h2>}>Test 3.</Drawer>,
     badge: true,
-    id: 'test-3',
+    id: drawerIds.test3,
     trigger: {
       iconName: 'contact',
     },
@@ -96,7 +98,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     resizable: true,
     defaultSize: 500,
     content: <Drawer header={<h2>Test 4</h2>}>Test 4.</Drawer>,
-    id: 'test-4',
+    id: drawerIds.test4,
     trigger: {
       iconName: 'edit',
     },
@@ -106,7 +108,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     resizable: true,
     defaultSize: 500,
     content: <Drawer header={<h2>Test 5</h2>}>Test 5.</Drawer>,
-    id: 'test-5',
+    id: drawerIds.test5,
     trigger: {
       iconName: 'add-plus',
     },
@@ -116,7 +118,7 @@ export const drawerItems: Array<AppLayoutProps.Drawer> = [
     resizable: true,
     defaultSize: 500,
     content: <Drawer header={<h2>Test 6</h2>}>Test 6.</Drawer>,
-    id: 'test-6',
+    id: drawerIds.test6,
     trigger: {
       iconName: 'call',
     },

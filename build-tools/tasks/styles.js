@@ -74,11 +74,11 @@ function stylesTask(theme) {
       variablesMap,
       scssDir: workspace.sourcePath,
       componentsOutputDir: theme.outputPath,
-      skip: designTokensOutputDir ? [] : ['design-tokens'],
       designTokensOutputDir,
       designTokensFileName: theme.designTokensOutput,
       descriptions,
       jsonSchema: true,
+      failOnDeprecations: true,
     });
   });
 }

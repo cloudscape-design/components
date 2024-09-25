@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
-import { waitFor } from '@testing-library/react';
-import { act } from 'react-dom/test-utils';
+import { act, waitFor } from '@testing-library/react';
 import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
-describeEachAppLayout({ themes: ['classic', 'refresh'] }, () => {
+describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, () => {
   test('opens tools drawer', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);

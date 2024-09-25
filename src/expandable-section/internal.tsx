@@ -15,11 +15,13 @@ import { ExpandableSectionHeader } from './expandable-section-header';
 import { ExpandableSectionProps, InternalVariant } from './interfaces';
 import { variantSupportsDescription } from './utils';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
   InternalBaseComponentProps & {
     variant?: InternalVariant;
+    __injectAnalyticsComponentMetadata?: boolean;
   };
 
 export default function InternalExpandableSection({
@@ -38,6 +40,7 @@ export default function InternalExpandableSection({
   disableContentPaddings,
   headerAriaLabel,
   __internalRootRef,
+  __injectAnalyticsComponentMetadata,
   ...props
 }: InternalExpandableSectionProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -98,9 +101,10 @@ export default function InternalExpandableSection({
     <ExpandableSectionContainer
       {...baseProps}
       expanded={expanded}
-      className={clsx(baseProps.className, styles.root)}
+      className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}
       disableContentPaddings={disableContentPaddings}
+      __injectAnalyticsComponentMetadata={__injectAnalyticsComponentMetadata}
       header={
         <ExpandableSectionHeader
           id={triggerControlId}

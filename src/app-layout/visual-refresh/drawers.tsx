@@ -20,6 +20,15 @@ import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 /**
+ * The VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT is used to reduce the number
+ * of triggers that are initially visible on the mobile toolbar, the rest
+ * are then placed into an overflow menu
+ *
+ * Note if one of the triggers is for a split-panel, it would not count that
+ */
+export const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT = 2;
+
+/**
  * The Drawers root component is mounted in the AppLayout index file. It will only
  * render if the drawers are defined, and it will take over the mounting of and
  * rendering of the Tools and SplitPanel (side position) if they exist. If drawers
@@ -213,7 +222,11 @@ function DesktopTriggers() {
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(
+    drawers?.filter(item => !!item.trigger) ?? undefined,
+    getIndexOfOverflowItem(),
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -235,6 +248,7 @@ function DesktopTriggers() {
         aria-orientation="vertical"
       >
         {visibleItems.map(item => {
+          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -245,15 +259,15 @@ function DesktopTriggers() {
                 testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
-              ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-              selected={item.id === activeDrawerId}
+              ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               highContrastHeader={headerVariant === 'high-contrast'}
+              selected={item.id === activeDrawerId}
             />
           );
         })}
@@ -313,6 +327,7 @@ export function MobileTriggers() {
     drawersRefs,
     handleDrawersClick,
     hasDrawerViewportOverlay,
+    headerVariant,
   } = useAppLayoutInternals();
 
   const previousActiveDrawerId = useRef(activeDrawerId);
@@ -325,7 +340,11 @@ export function MobileTriggers() {
     previousActiveDrawerId.current = activeDrawerId;
   }
 
-  const { visibleItems, overflowItems } = splitItems(drawers, 2, activeDrawerId);
+  const { visibleItems, overflowItems } = splitItems(
+    drawers.filter(item => !!item.trigger),
+    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT,
+    activeDrawerId
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -338,27 +357,32 @@ export function MobileTriggers() {
       role="region"
     >
       <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
-        {visibleItems.map(item => (
-          <InternalButton
-            ariaExpanded={item.id === activeDrawerId}
-            ariaLabel={item.ariaLabels?.triggerButton}
-            className={clsx(
-              styles['drawers-trigger'],
-              testutilStyles['drawers-trigger'],
-              item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-            )}
-            disabled={hasDrawerViewportOverlay}
-            ref={item.id === previousActiveDrawerId.current ? drawersRefs.toggle : undefined}
-            formAction="none"
-            iconName={item.trigger.iconName}
-            iconSvg={item.trigger.iconSvg}
-            badge={item.badge}
-            key={item.id}
-            onClick={() => handleDrawersClick(item.id)}
-            variant="icon"
-            __nativeAttributes={{ 'aria-haspopup': true, 'data-testid': `awsui-app-layout-trigger-${item.id}` }}
-          />
-        ))}
+        {visibleItems.map(item => {
+          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
+          return (
+            <TriggerButton
+              ariaExpanded={item.id === activeDrawerId}
+              ariaLabel={item.ariaLabels?.triggerButton}
+              ariaControls={activeDrawerId === item.id ? item.id : undefined}
+              className={clsx(
+                `awsui-app-layout-trigger-${item.id}`,
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
+              )}
+              disabled={hasDrawerViewportOverlay}
+              ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
+              badge={item.badge}
+              key={item.id}
+              onClick={() => handleDrawersClick(item.id)}
+              testId={`awsui-app-layout-trigger-${item.id}`}
+              highContrastHeader={headerVariant === 'high-contrast'}
+              selected={item.id === activeDrawerId}
+            />
+          );
+        })}
         {overflowItems.length > 0 && (
           <OverflowMenu
             items={overflowItems}

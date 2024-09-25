@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import InternalBox from '../box/internal';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import InternalLink from '../link/internal';
 import { WizardProps } from './interfaces';
 
@@ -15,7 +16,6 @@ interface NavigationProps {
   allowSkipTo: boolean;
   hidden: boolean;
   i18nStrings: WizardProps.I18nStrings;
-  isVisualRefresh: boolean;
   isLoadingNextStep: boolean;
   onStepClick: (stepIndex: number) => void;
   onSkipToClick: (stepIndex: number) => void;
@@ -44,12 +44,12 @@ export default function Navigation({
   allowSkipTo,
   hidden,
   i18nStrings,
-  isVisualRefresh,
   isLoadingNextStep,
   onStepClick,
   onSkipToClick,
   steps,
 }: NavigationProps) {
+  const isVisualRefresh = useVisualRefresh();
   return (
     <nav
       className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}

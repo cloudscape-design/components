@@ -24,6 +24,7 @@ export function ExpandToggleButton({
   const { tabIndex } = useSingleTabStopNavigation(buttonRef);
   return (
     <button
+      type="button"
       ref={buttonRef}
       tabIndex={tabIndex}
       aria-label={isExpanded ? collapseButtonLabel : expandButtonLabel}

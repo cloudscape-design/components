@@ -70,7 +70,6 @@ function StickyHeader(
   return (
     <div
       className={clsx(styles['header-secondary'], styles[`variant-${variant}`], {
-        [styles.stuck]: isStuck,
         [styles['table-has-header']]: tableHasHeader,
       })}
       aria-hidden={true}

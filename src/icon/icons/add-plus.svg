@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <line x1="8" y1="1" x2="8" y2="15"/>
-  <line x1="15" y1="8" x2="1" y2="8"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M2.01001 8H14.01" />
+<path d="M8 14L8.01 2" />
 </svg>

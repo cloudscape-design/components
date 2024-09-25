@@ -18,7 +18,10 @@ function setupTest(
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
     };
-    const getElementByPerformanceMark = (id: string) => browser.$(`[data-analytics-performance-mark="${id}"]`);
+    const getElementByPerformanceMark = async (id: string) => {
+      const element = await browser.$(`[data-analytics-performance-mark="${id}"]`);
+      return element;
+    };
 
     await testFn({ page, getMarks, getElementByPerformanceMark });
   });

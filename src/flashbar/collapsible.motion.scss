@@ -10,8 +10,8 @@
   > .animation-running > .flash-list-item,
   > .animation-running.notification-bar {
     @include styles.with-motion {
-      transition-timing-function: tokens.$motion-easing-refresh-only-a;
-      transition-duration: tokens.$motion-duration-refresh-only-fast;
+      transition-timing-function: tokens.$motion-easing-responsive;
+      transition-duration: tokens.$motion-duration-responsive;
     }
   }
   > .collapsed.animation-ready > .expanded-only,

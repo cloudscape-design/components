@@ -5,13 +5,27 @@
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/styles' as styles;
 @use '../../constants.scss' as constants;
+@use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+
+@mixin desktop-only {
+  @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
+
+@mixin mobile-only {
+  @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+    @content;
+  }
+}
 
 .drawer {
   position: sticky;
-  z-index: 830;
+  z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   display: grid;
   grid-template-columns: awsui.$space-m 1fr;
+  inline-size: var(#{custom-props.$drawerSize});
 
   block-size: 100%;
   overflow: hidden;
@@ -19,6 +33,30 @@
   overscroll-behavior-y: contain;
   pointer-events: auto;
   word-wrap: break-word;
+
+  &.last-opened {
+    @include mobile-only {
+      z-index: constants.$drawer-z-index-mobile;
+    }
+  }
+
+  &.drawer-global {
+    @include desktop-only {
+      border-inline-start: 1px solid awsui.$color-border-layout;
+    }
+
+    @include mobile-only {
+      display: none;
+
+      &.last-opened {
+        display: block;
+      }
+    }
+  }
+
+  &.drawer-hidden {
+    display: none;
+  }
 
   > .drawer-content-container {
     grid-column: 1 / span 2;

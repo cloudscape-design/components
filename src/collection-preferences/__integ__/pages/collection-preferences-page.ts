@@ -1,20 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import { CollectionPreferencesWrapper } from '../../../../lib/components/test-utils/selectors';
+import DndPageObject from '../../content-display/__integ__/pages/dnd-page-object';
 
-export const collectionPreferencesPageMixin = (Base: BasePageObject & any) =>
-  class extends Base {
-    wrapper: CollectionPreferencesWrapper | null = null;
-    constructor(browser: ConstructorParameters<typeof BasePageObject>[0]) {
-      super(browser);
-    }
-    async openCollectionPreferencesModal(wrapper: CollectionPreferencesWrapper) {
-      this.wrapper = wrapper;
-      await this.click(wrapper.findTriggerButton().toSelector());
-      return expect(this.isExisting(wrapper.findModal().toSelector())).resolves.toBe(true);
-    }
-  };
+export default class CollectionPreferencesPageObject extends DndPageObject {
+  protected _wrapper?: CollectionPreferencesWrapper;
 
-export default class CollectionPreferencesPageObject extends collectionPreferencesPageMixin(BasePageObject) {}
+  set wrapper(wrapper: CollectionPreferencesWrapper) {
+    this._wrapper = wrapper;
+  }
+
+  get wrapper() {
+    if (!this._wrapper) {
+      throw new Error('Must set collection preferences wrapper');
+    }
+    return this._wrapper;
+  }
+
+  async openCollectionPreferencesModal() {
+    await this.click(this.wrapper.findTriggerButton().toSelector());
+    return expect(this.isExisting(this.wrapper.findModal().toSelector())).resolves.toBe(true);
+  }
+}

@@ -41,7 +41,7 @@ const getMetadataContexts = (label: string, variant: string, disabled?: boolean)
 };
 
 const items: ButtonDropdownProps['items'] = [
-  { text: 'Delete', id: 'rm', disabled: false },
+  { text: 'Delete', id: 'rm', disabled: false, href: '#' },
   { text: 'Rename', id: 'rn', disabled: true },
   {
     text: 'Instances',
@@ -155,7 +155,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledSimpleItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
         action: 'click',
-        detail: { label: 'Delete', id: 'rm', position: '1' },
+        detail: { label: 'Delete', id: 'rm', position: '1', href: '#' },
         ...getMetadataContexts(label, 'normal'),
       });
 
@@ -177,7 +177,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledSimpleItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
         action: 'click',
-        detail: { label: 'Delete', id: 'rm', position: '1' },
+        detail: { label: 'Delete', id: 'rm', position: '1', href: '#' },
         ...getMetadataContexts(label, 'normal'),
       });
     });
@@ -192,7 +192,7 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledNestedItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toEqual({
         action: 'click',
-        detail: { label: 'Restart', id: 'restart', position: '3,2' },
+        detail: { label: 'Restart', id: 'restart', position: '3,2', href: '' },
         ...getMetadataContexts(label, 'normal'),
       });
 
@@ -240,21 +240,43 @@ describe('Button Dropdown renders correct analytics metadata', () => {
       validateComponentNameAndLabels(enabledNestedItem, labels);
       expect(getGeneratedAnalyticsMetadata(enabledNestedItem)).toEqual({
         action: 'click',
-        detail: { label: 'Restart', id: 'restart', position: '3,2' },
+        detail: { label: 'Restart', id: 'restart', position: '3,2', href: '' },
         ...getMetadataContexts(label, 'normal'),
       });
     });
   });
 });
 
-test('Internal Button Dropdown does not render "component" metadata', () => {
-  const renderResult = render(<InternalButtonDropdown items={items}>Action text</InternalButtonDropdown>);
-  const wrapper = createWrapper(renderResult.container).findButtonDropdown()!.findTriggerButton()!;
-  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-    action: 'expand',
-    detail: {
-      label: 'Action text',
-      expanded: 'true',
-    },
+describe('Internal Button Dropdown', () => {
+  test('does not render "component" metadata', () => {
+    const renderResult = render(<InternalButtonDropdown items={items}>Action text</InternalButtonDropdown>);
+    const wrapper = createWrapper(renderResult.container).findButtonDropdown()!.findTriggerButton()!;
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
+      action: 'expand',
+      detail: {
+        label: 'Action text',
+        expanded: 'true',
+      },
+    });
+  });
+  test('accepts analyticsMetadataTransformer', () => {
+    const renderResult = render(
+      <InternalButtonDropdown
+        analyticsMetadataTransformer={md => {
+          delete md!.detail!.id;
+          return md;
+        }}
+        items={items}
+      >
+        Action text
+      </InternalButtonDropdown>
+    );
+    const wrapper = createWrapper(renderResult.container).findButtonDropdown()!;
+    wrapper.openDropdown();
+    const enabledSimpleItem = wrapper.findItemById('rm')!.getElement();
+    expect(getGeneratedAnalyticsMetadata(enabledSimpleItem)).toEqual({
+      action: 'click',
+      detail: { label: 'Delete', position: '1', href: '#' },
+    });
   });
 });

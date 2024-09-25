@@ -33,7 +33,8 @@ $padding-block-inner-filtering-token: 0px;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
   min-block-size: awsui.$size-vertical-input;
 
-  &.in-filtering-token {
+  &.in-filtering-token-root,
+  &.in-filtering-token-nested {
     padding-block: $padding-block-inner-filtering-token;
     padding-inline: $padding-inline-inner-filtering-token;
 
@@ -46,6 +47,11 @@ $padding-block-inner-filtering-token: 0px;
     @include focus-visible.when-visible {
       @include styles.focus-highlight(awsui.$space-filtering-token-operation-select-focus-outline-gutter);
     }
+  }
+
+  &.in-filtering-token-nested {
+    border-start-start-radius: calc(#{styles.$control-border-radius} / 2);
+    border-end-start-radius: calc(#{styles.$control-border-radius} / 2);
   }
 
   &.has-caret {

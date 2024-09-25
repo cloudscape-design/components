@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
+import { GeneratedAnalyticsMetadataAutosuggestComponent } from './analytics-metadata/interfaces';
 import { AutosuggestProps } from './interfaces';
 import InternalAutosuggest from './internal';
 
@@ -25,6 +28,15 @@ const Autosuggest = React.forwardRef(
         virtualScroll: props.virtualScroll,
       },
     });
+
+    const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAutosuggestComponent = {
+      name: 'awsui.Autosuggest',
+      label: 'input',
+      properties: {
+        disabled: `${!!props.disabled}`,
+      },
+    };
+
     const externalProps = getExternalProps(props);
     return (
       <InternalAutosuggest
@@ -34,6 +46,7 @@ const Autosuggest = React.forwardRef(
         {...externalProps}
         {...baseComponentProps}
         ref={ref}
+        {...getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })}
       />
     );
   }

@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 
@@ -633,6 +632,14 @@ describe('Details popover', () => {
     wrapper.findApplication()!.keydown(KeyCode.space);
 
     expect(createWrapper(wrapper.getElement()).findPopover()?.findDismissButton()).not.toBeNull();
+  });
+
+  test('artificial mouseover event during touch does not open popover', () => {
+    const { wrapper } = renderPieChart(<PieChart data={defaultData} />);
+    const element = wrapper.findSegments()[1].getElement();
+    element.dispatchEvent(new TouchEvent('touchstart', { bubbles: true }));
+    element.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    expect(wrapper.findDetailPopover()?.findContent()).toBeFalsy();
   });
 
   test('details popover can be customized', () => {

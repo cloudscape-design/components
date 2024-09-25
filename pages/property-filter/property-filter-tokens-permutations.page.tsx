@@ -24,8 +24,8 @@ const token2 = {
 
 const token3 = {
   content: 'very-long-property-name-3 = very-long-property-value',
-  ariaLabel: 'filter property3 = value',
-  dismissAriaLabel: 'remove filter property3 = value',
+  ariaLabel: 'filter very-long-property-name-3 = very-long-property-value',
+  dismissAriaLabel: 'remove filter very-long-property-name-3 = very-long-property-value',
 } as const;
 
 const tokenProps: FilteringTokenProps = {
@@ -47,6 +47,7 @@ const tokenProps: FilteringTokenProps = {
   editorDismissAriaLabel: 'dismiss token editor',
   editorExpandToViewport: false,
   hasGroups: false,
+  popoverSize: 'content',
 };
 
 const tokenPermutations = createPermutations<Partial<FilteringTokenProps>>([

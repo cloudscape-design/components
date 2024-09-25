@@ -4,6 +4,7 @@ import { ThemeBuilder } from '@cloudscape-design/theming-build';
 
 import {
   createAlertContext,
+  createAppLayoutToolsDrawerTriggerContext,
   createCompactTableContext,
   createFlashbarContext,
   createFlashbarWarningContext,
@@ -46,6 +47,8 @@ export function buildClassicOpenSource(builder: ThemeBuilder) {
   builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createAlertContext(require('./contexts/alert').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createAppLayoutToolsDrawerTriggerContext(require('./contexts/tools-drawer-trigger').tokens));
 
   return builder.build();
 }

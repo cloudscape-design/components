@@ -13,6 +13,8 @@ interface HorizontalLayoutInput {
   splitPanelOpen: boolean;
   splitPanelPosition: 'side' | 'bottom' | undefined;
   splitPanelSize: number;
+  isMobile: boolean;
+  activeGlobalDrawersSizes: Record<string, number>;
 }
 
 export function computeHorizontalLayout({
@@ -24,20 +26,37 @@ export function computeHorizontalLayout({
   splitPanelOpen,
   splitPanelPosition,
   splitPanelSize,
+  isMobile,
+  activeGlobalDrawersSizes,
 }: HorizontalLayoutInput) {
   const contentPadding = 2 * 24; // space-xl
   const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
 
-  const resizableSpaceAvailable = Math.max(
+  let resizableSpaceAvailable = Math.max(
     0,
     placement.inlineSize - minContentWidth - contentPadding - activeNavigationWidth
   );
+  const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
-  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH;
+  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH || isMobile;
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
-  const maxSplitPanelSize = resizableSpaceAvailable - activeDrawerSize;
-  const maxDrawerSize = resizableSpaceAvailable - sideSplitPanelSize;
+  const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
+  resizableSpaceAvailable -= sideSplitPanelSize;
+  const maxDrawerSize = resizableSpaceAvailable - totalActiveGlobalDrawersSize;
+  const maxGlobalDrawersSizes: Record<string, number> = Object.keys(activeGlobalDrawersSizes).reduce(
+    (acc, drawerId) => {
+      return {
+        ...acc,
+        [drawerId]:
+          resizableSpaceAvailable -
+          activeDrawerSize -
+          totalActiveGlobalDrawersSize +
+          activeGlobalDrawersSizes[drawerId],
+      };
+    },
+    {}
+  );
 
   return {
     splitPanelPosition: resolvedSplitPanelPosition,
@@ -45,6 +64,9 @@ export function computeHorizontalLayout({
     sideSplitPanelSize,
     maxSplitPanelSize,
     maxDrawerSize,
+    maxGlobalDrawersSizes,
+    totalActiveGlobalDrawersSize,
+    resizableSpaceAvailable,
   };
 }
 
@@ -60,6 +82,7 @@ export interface VerticalLayoutOutput {
   toolbar: number;
   notifications: number;
   header: number;
+  drawers: number;
 }
 
 export function computeVerticalLayout({
@@ -71,13 +94,16 @@ export function computeVerticalLayout({
 }: VerticalLayoutInput): VerticalLayoutOutput {
   const toolbar = topOffset;
   let notifications = topOffset;
+  let drawers = topOffset;
+
   if (hasVisibleToolbar) {
     notifications += toolbarHeight;
+    drawers += toolbarHeight;
   }
   let header = notifications;
   if (stickyNotifications) {
     header += notificationsHeight;
   }
 
-  return { toolbar, notifications, header };
+  return { toolbar, notifications, header, drawers };
 }

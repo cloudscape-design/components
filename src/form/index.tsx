@@ -65,7 +65,20 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, errorText, ...props
 
 export default function Form({ variant = 'full-page', ...props }: FormProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent('Form', { props: { variant } }, analyticsMetadata);
+  const baseComponentProps = useBaseComponent(
+    'Form',
+    {
+      props: {
+        variant,
+        flowType: analyticsMetadata?.flowType,
+      },
+      metadata: {
+        hasResourceType: Boolean(analyticsMetadata?.resourceType),
+        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+      },
+    },
+    analyticsMetadata
+  );
   const inheritedFunnelNameSelector = useFunnelNameSelector();
   const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
 
@@ -74,6 +87,7 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       funnelIdentifier={analyticsMetadata?.instanceIdentifier}
       funnelFlowType={analyticsMetadata?.flowType}
       funnelErrorContext={analyticsMetadata?.errorContext}
+      funnelResourceType={analyticsMetadata?.resourceType}
       funnelType="single-page"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}

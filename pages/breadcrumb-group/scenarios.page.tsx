@@ -31,6 +31,7 @@ export default function ButtonDropdownPage() {
           <BreadcrumbGroup
             key={index}
             ariaLabel={'Navigation' + index}
+            data-testid={`breadcrumbs-${index}`}
             expandAriaLabel="Show path"
             items={testcase.map((text, i) => ({ text, href: `#item-${index}-${i}` }))}
           />

@@ -172,7 +172,7 @@ const InternalLink = React.forwardRef(
         styles[getColorStyle(variant, color)]
       ),
       'aria-label': ariaLabel,
-      'aria-labelledby': '',
+      'aria-labelledby': undefined as string | undefined,
       [DATA_ATTR_FUNNEL_VALUE]: uniqueId,
     };
 

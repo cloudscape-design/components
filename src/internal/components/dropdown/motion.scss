@@ -8,18 +8,17 @@
 
 .dropdown-content-wrapper {
   @include styles.with-motion {
-    @include styles.animation-fade-in-dropdown;
     animation: awsui-motion-fade-in-dropdown awsui.$motion-duration-show-quick awsui.$motion-easing-show-quick;
+    @include styles.animation-fade-in-dropdown;
   }
 
   &.refresh {
     transform-origin: top;
     @include styles.with-motion {
-      @include styles.animation-fade-in-0;
-
       animation-name: awsui-motion-fade-in-0;
       animation-duration: awsui.$motion-duration-show-quick;
       animation-timing-function: awsui.$motion-easing-show-quick;
+      @include styles.animation-fade-in-0;
     }
   }
 }

@@ -89,6 +89,16 @@ for (const visualRefresh of [true, false]) {
           await expect(page.isDisplayed(wrapper.findToolsClose().toSelector())).resolves.toBeFalsy();
         })
       );
+
+      test(
+        'should move focus to previous focused element after closing tools',
+        setupTest(async page => {
+          await page.click('[data-testid="info-link-header"]');
+          await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
+          await page.click(wrapper.findToolsClose().toSelector());
+          await expect(page.isFocused('[data-testid="info-link-header"]')).resolves.toBe(true);
+        })
+      );
     });
   }
 }

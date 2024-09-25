@@ -776,3 +776,43 @@ describe('Disabled item with reason', () => {
     expect(onChange).not.toHaveBeenCalled();
   });
 });
+
+test('group options can have description, label tag, tags, disabled reason', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect
+      options={[
+        {
+          label: 'First category',
+          value: 'group1',
+          options: [{ value: '1.1' }],
+        },
+        {
+          label: 'Second category',
+          value: 'group2',
+          description: 'Description',
+          labelTag: 'Label tag',
+          tags: ['Tag 1', 'Tag 2'],
+          disabled: true,
+          disabledReason: 'Disabled reason',
+          options: [{ value: '2.1' }],
+        },
+      ]}
+      selectedOptions={[]}
+    />
+  );
+  wrapper.openDropdown();
+
+  // Moving focus to the second group to make the disabled reason visible.
+  wrapper.findTrigger()!.keydown(KeyCode.down);
+  wrapper.findDropdown().find('ul')!.keydown(KeyCode.down);
+  wrapper.findDropdown().find('ul')!.keydown(KeyCode.down);
+
+  const groupOption = wrapper.findDropdown().findOptionByValue('group2')!;
+
+  expect(groupOption.findLabel()!.getElement().textContent).toBe('Second category');
+  expect(groupOption.findDescription()!.getElement().textContent).toBe('Description');
+  expect(groupOption.findLabelTag()!.getElement().textContent).toBe('Label tag');
+  expect(groupOption.findTags()![0].getElement().textContent).toBe('Tag 1');
+  expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
+  expect(groupOption.findDisabledReason()!.getElement().textContent).toBe('Disabled reason');
+});

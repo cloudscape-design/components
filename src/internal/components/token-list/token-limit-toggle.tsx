@@ -3,9 +3,12 @@
 
 import React, { useCallback } from 'react';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { useInternalI18n } from '../../../i18n/context';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { GeneratedAnalyticsMetadataTokenListShowMore } from './analytics-metadata/interfaces';
 import { I18nStrings } from './interfaces';
 
 import styles from './styles.css.js';
@@ -42,6 +45,14 @@ export default function TokenLimitToggle({
     fireNonCancelableEvent(onClick, null);
   }, [onClick]);
 
+  const analyticsMetadata: GeneratedAnalyticsMetadataTokenListShowMore = {
+    action: 'showMore',
+    detail: {
+      label: { root: 'self' },
+      expanded: `${!expanded}`,
+    },
+  };
+
   return (
     <button
       type="button"
@@ -50,6 +61,7 @@ export default function TokenLimitToggle({
       aria-controls={controlId}
       aria-expanded={expanded}
       aria-label={ariaLabel}
+      {...getAnalyticsMetadataAttribute(analyticsMetadata)}
     >
       <InternalIcon name={expanded ? 'treeview-collapse' : 'treeview-expand'} />
       <span className={styles.description}>{description}</span>

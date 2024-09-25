@@ -6,10 +6,13 @@ const os = require('os');
 module.exports = {
   verbose: true,
   testEnvironment: 'node',
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.integ.json',
-    },
+  transform: {
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.integ.json',
+      },
+    ],
   },
   reporters: ['default', 'github-actions'],
   testTimeout: 60_000, // 1min
@@ -19,5 +22,4 @@ module.exports = {
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'integ', 'setup.integ.js')],
   moduleFileExtensions: ['js', 'ts'],
   testRegex: '(/(__integ__|__a11y__)/.*(\\.|/)test)\\.[jt]sx?$',
-  preset: 'ts-jest',
 };

@@ -81,3 +81,159 @@ awsuiPlugins.appLayout.registerDrawer({
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
+
+const Counter: React.FC = ({ children }) => {
+  const [count, setCount] = useState(0);
+
+  return (
+    <div>
+      <span data-testid="count">{count}</span>
+      <button onClick={() => setCount(count + 1)}>+</button>
+      {children}
+    </div>
+  );
+};
+
+const AutoIncrementCounter: React.FC<{
+  onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
+}> = ({ children, onVisibilityChange }) => {
+  const [count, setCount] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (!isPaused) {
+        setCount(prevCount => prevCount + 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isPaused]);
+
+  useEffect(() => {
+    if (onVisibilityChange) {
+      onVisibilityChange((isVisible: boolean) => {
+        setIsPaused(!isVisible);
+      });
+    }
+  }, [onVisibilityChange]);
+
+  return (
+    <div>
+      <h3>Auto Increment Counter</h3>
+      <div>Count: {count}</div>
+      {children}
+    </div>
+  );
+};
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 350,
+  preserveInactiveContent: true,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  onResize: event => {
+    console.log('resize', event.detail);
+  },
+
+  mountContent: (container, mountContext) => {
+    ReactDOM.render(
+      <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
+        global widget content circle 1
+      </AutoIncrementCounter>,
+      container
+    );
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle2-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<Counter>global widget content circle 2</Counter>, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle3-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  trigger: {
+    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+    </svg>`,
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<Counter>global widget content circle 3</Counter>, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
+
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle4-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: {
+    closeButton: 'Close button',
+    content: 'Content',
+    triggerButton: 'Trigger button',
+    resizeHandle: 'Resize handle',
+  },
+
+  mountContent: container => {
+    ReactDOM.render(<div>global widget content circle 3 (without trigger button)</div>, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});

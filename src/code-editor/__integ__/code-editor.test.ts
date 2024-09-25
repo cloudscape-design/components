@@ -48,9 +48,6 @@ class CodeEditorPageObject extends BasePageObject {
     const { height } = await this.getBoundingBox(`#${elementId} .${styles['resizable-box']}`);
     return height;
   }
-  async isDisplayedInViewport(selector: string) {
-    return (await this.browser.$(selector)).isDisplayedInViewport();
-  }
   async getEventValue() {
     return (await this.browser.$(`#event-content`)).getText();
   }

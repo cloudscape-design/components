@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
@@ -24,12 +25,18 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';
+import {
+  GeneratedAnalyticsMetadataModalComponent,
+  GeneratedAnalyticsMetadataModalDismiss,
+} from './analytics-metadata/interfaces';
 import { disableBodyScrolling, enableBodyScrolling } from './body-scroll';
 import { ModalProps } from './interfaces';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-type InternalModalProps = SomeRequired<ModalProps, 'size'> & InternalBaseComponentProps;
+type InternalModalProps = SomeRequired<ModalProps, 'size'> &
+  InternalBaseComponentProps & { __injectAnalyticsComponentMetadata?: boolean };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
   return (
@@ -52,6 +59,7 @@ function PortaledModal({
   disableContentPaddings,
   onDismiss,
   __internalRootRef = null,
+  __injectAnalyticsComponentMetadata,
   ...rest
 }: PortaledModalProps) {
   const instanceUniqueId = useUniqueId();
@@ -68,6 +76,15 @@ function PortaledModal({
   const isRefresh = useVisualRefresh();
 
   const baseProps = getBaseProps(rest);
+
+  const analyticsComponentMetadata: GeneratedAnalyticsMetadataModalComponent = {
+    name: 'awsui.Modal',
+    label: `.${analyticsSelectors.header} h2`,
+  };
+
+  const metadataAttribute = __injectAnalyticsComponentMetadata
+    ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
+    : {};
 
   // enable body scroll and restore focus if unmounting while visible
   useEffect(() => {
@@ -151,21 +168,28 @@ function PortaledModal({
                   isRefresh && styles.refresh
                 )}
                 onKeyDown={escKeyHandler}
+                {...metadataAttribute}
               >
                 <div className={styles.container}>
-                  <div className={styles.header}>
+                  <div className={clsx(styles.header, analyticsSelectors.header)}>
                     <InternalHeader
                       variant="h2"
                       __disableActionsWrapping={true}
                       actions={
-                        <InternalButton
-                          ariaLabel={closeAriaLabel}
-                          className={styles['dismiss-control']}
-                          variant="modal-dismiss"
-                          iconName="close"
-                          formAction="none"
-                          onClick={onCloseButtonClick}
-                        />
+                        <div
+                          {...getAnalyticsMetadataAttribute({
+                            action: 'dismiss',
+                          } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
+                        >
+                          <InternalButton
+                            ariaLabel={closeAriaLabel}
+                            className={styles['dismiss-control']}
+                            variant="modal-dismiss"
+                            iconName="close"
+                            formAction="none"
+                            onClick={onCloseButtonClick}
+                          />
+                        </div>
                       }
                     >
                       <span id={headerId} className={styles['header--text']}>

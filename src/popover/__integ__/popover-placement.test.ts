@@ -170,7 +170,7 @@ test(
     const containerSelector = largePopover.findByClassName(styles.container).toSelector();
     await page.click(triggerSelector);
     const { width: desktopContainerWidth } = await page.getBoundingBox(containerSelector);
-    expect(desktopContainerWidth).toEqual(480);
+    expect(desktopContainerWidth).toEqual(482);
 
     // Set mobile window size
     const [width, height] = VIEWPORT_MOBILE;

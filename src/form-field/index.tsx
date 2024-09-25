@@ -17,7 +17,18 @@ export { FormFieldProps };
 
 export default function FormField({ stretch = false, ...props }: FormFieldProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent('FormField', { props: { stretch } }, analyticsMetadata);
+  const baseComponentProps = useBaseComponent(
+    'FormField',
+    {
+      props: {
+        stretch,
+      },
+      metadata: {
+        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+      },
+    },
+    analyticsMetadata
+  );
 
   return (
     <InternalFormField

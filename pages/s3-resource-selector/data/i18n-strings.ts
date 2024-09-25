@@ -17,6 +17,7 @@ export const i18nStrings: S3ResourceSelectorProps.I18nStrings = {
   modalCancelButton: 'Cancel',
   modalSubmitButton: 'Choose',
   modalBreadcrumbRootItem: 'S3 buckets',
+  modalLastUpdatedText: 'Last updated',
 
   selectionBuckets: 'Buckets',
   selectionObjects: 'Objects',

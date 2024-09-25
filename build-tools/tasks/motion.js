@@ -14,7 +14,10 @@ module.exports = task('test:motion', async () => {
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__motion__/**/*.test.ts');
-  await execa('jest', ['-c', 'jest.motion.config.js', ...files], { stdio: 'inherit' });
+  await execa('jest', ['-c', 'jest.motion.config.js', ...files], {
+    stdio: 'inherit',
+    env: { ...process.env, NODE_OPTIONS: '--experimental-vm-modules' },
+  });
 
   devServer.cancel();
 });

@@ -3,6 +3,8 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
@@ -13,6 +15,7 @@ import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } 
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { GeneratedAnalyticsMetadataInputClearInput } from './analytics-metadata/interfaces';
 import { BaseChangeDetail, BaseInputProps, InputAutoCorrect, InputProps } from './interfaces';
 import { convertAutoComplete, useSearchProps } from './utils';
 
@@ -188,7 +191,14 @@ function InternalInput(
       )}
       <input ref={mergedRef} {...attributes} />
       {__rightIcon && (
-        <span className={styles['input-icon-right']}>
+        <span
+          className={styles['input-icon-right']}
+          {...(__rightIcon === 'close'
+            ? getAnalyticsMetadataAttribute({
+                action: 'clearInput',
+              } as Partial<GeneratedAnalyticsMetadataInputClearInput>)
+            : {})}
+        >
           <InternalButton
             // Used for test utils
             // eslint-disable-next-line react/forbid-component-props

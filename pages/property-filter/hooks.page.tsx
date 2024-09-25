@@ -13,7 +13,7 @@ import PropertyFilter from '~components/property-filter';
 import Table from '~components/table';
 
 import ScreenshotArea from '../utils/screenshot-area';
-import { columnDefinitions, filteringProperties, i18nStrings } from './common-props';
+import { columnDefinitions, filteringProperties, i18nStrings, labels } from './common-props';
 import { allItems, TableItem } from './table.data';
 
 export default function () {
@@ -101,6 +101,7 @@ export default function () {
           {...collectionProps}
           filter={
             <PropertyFilter
+              {...labels}
               {...propertyFilterProps}
               virtualScroll={true}
               countText={`${items.length} matches`}

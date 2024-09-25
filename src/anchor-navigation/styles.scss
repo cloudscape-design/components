@@ -39,16 +39,17 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
 }
 
 .anchor-item {
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-slow;
-    transition-property: all;
-  }
   @include styles.font-body-m;
 
   color: awsui.$color-text-body-secondary;
   font-weight: styles.$font-weight-normal;
   margin-block: awsui.$space-scaled-xxs;
   margin-inline: 0;
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
 
   &--active {
     position: relative;
@@ -70,15 +71,6 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
 }
 
 .anchor-link {
-  @include styles.with-motion {
-    transition: awsui.$motion-duration-slow;
-    transition-property: all;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.link-focus;
-  }
-
   @include styles.font-body-m;
 
   align-items: baseline;
@@ -87,6 +79,15 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   flex-direction: row;
   font-weight: styles.$font-weight-normal;
   text-decoration: none;
+
+  @include styles.with-motion {
+    transition: awsui.$motion-duration-slow;
+    transition-property: all;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.link-focus;
+  }
 
   &:hover {
     color: awsui.$color-text-accent;

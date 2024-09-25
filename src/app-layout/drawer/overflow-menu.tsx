@@ -2,30 +2,58 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonDropdownProps, InternalButtonDropdownProps } from '../../button-dropdown/interfaces';
+import {
+  ButtonDropdownProps,
+  InternalButtonDropdownProps,
+  InternalItemOrGroup,
+} from '../../button-dropdown/interfaces';
 import InternalButtonDropdown from '../../button-dropdown/internal';
 import { CancelableEventHandler } from '../../internal/events';
 import { AppLayoutProps } from '../interfaces';
 
 import testutilStyles from '../test-classes/styles.css.js';
 
+type Drawer = AppLayoutProps.Drawer & { active?: boolean };
+
 interface OverflowMenuProps {
-  items: Array<AppLayoutProps.Drawer>;
+  items: Array<Drawer>;
   onItemClick: CancelableEventHandler<ButtonDropdownProps.ItemClickDetails>;
   customTriggerBuilder?: InternalButtonDropdownProps['customTriggerBuilder'];
   ariaLabel?: string;
+  globalDrawersStartIndex?: number;
 }
 
-export default function OverflowMenu({ items, onItemClick, customTriggerBuilder, ariaLabel }: OverflowMenuProps) {
+const mapDrawerToItem = (drawer: Drawer) => ({
+  id: drawer.id,
+  text: drawer.ariaLabels.drawerName,
+  iconName: drawer.trigger!.iconName,
+  iconSvg: drawer.trigger!.iconSvg,
+  badge: drawer.badge,
+  itemType: 'checkbox' as ButtonDropdownProps.ItemType,
+  checked: drawer.active,
+});
+
+export default function OverflowMenu({
+  items: drawers,
+  onItemClick,
+  customTriggerBuilder,
+  ariaLabel,
+  globalDrawersStartIndex,
+}: OverflowMenuProps) {
+  const itemsFlatList = drawers.map(mapDrawerToItem);
+  let items: ReadonlyArray<InternalItemOrGroup>;
+  if (globalDrawersStartIndex !== undefined && globalDrawersStartIndex > 0) {
+    items = [
+      { items: itemsFlatList.slice(0, globalDrawersStartIndex) },
+      { items: itemsFlatList.slice(globalDrawersStartIndex) },
+    ];
+  } else {
+    items = itemsFlatList;
+  }
+
   return (
     <InternalButtonDropdown
-      items={items.map(item => ({
-        id: item.id,
-        text: item.ariaLabels.drawerName,
-        iconName: item.trigger.iconName,
-        iconSvg: item.trigger.iconSvg,
-        badge: item.badge,
-      }))}
+      items={items}
       className={testutilStyles['overflow-menu']}
       onItemClick={onItemClick}
       ariaLabel={ariaLabel}

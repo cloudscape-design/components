@@ -9,6 +9,8 @@ import S3ResourceSelector, { S3ResourceSelectorProps } from '../../../lib/compon
 import createWrapper, { S3ResourceSelectorWrapper } from '../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
 
+import styles from '../../../lib/components/s3-resource-selector/s3-modal/styles.css.js';
+
 jest.setTimeout(10_000);
 
 const defaultProps = {
@@ -209,6 +211,7 @@ describe('i18n', () => {
             'i18nStrings.modalCancelButton': 'Custom cancel',
             'i18nStrings.modalSubmitButton': 'Custom submit',
             'i18nStrings.modalBreadcrumbRootItem': 'Custom root',
+            'i18nStrings.modalLastUpdatedText': 'Custom last updated',
             'i18nStrings.selectionBuckets': 'Custom buckets',
             'i18nStrings.labelRefresh': 'Custom refresh',
             'i18nStrings.selectionBucketsSearchPlaceholder': 'Custom find buckets',
@@ -225,6 +228,7 @@ describe('i18n', () => {
       </TestI18nProvider>
     );
     await openBrowseDialog(wrapper);
+    await waitForFetch();
     expect(wrapper.findModal()!.findHeader().getElement()).toHaveTextContent('Custom modal title');
     expect(
       wrapper.findModal()!.findFooter()!.findSpaceBetween()!.find(':nth-child(1)')!.findButton()!.getElement()
@@ -236,10 +240,8 @@ describe('i18n', () => {
     expect(modalContent.findBreadcrumbGroup()!.getElement()).toHaveTextContent('Custom root');
     const table = modalContent.findTable()!;
     expect(table.findHeaderSlot()!.findHeader()!.findHeadingText().getElement()).toHaveTextContent('Custom buckets');
-    expect(table.findHeaderSlot()!.findHeader()!.findActions()!.findButton()!.getElement()).toHaveAttribute(
-      'aria-label',
-      'Custom refresh'
-    );
+    const refreshButton = table.findHeaderSlot()!.findHeader()!.findActions()!.findButton();
+    expect(refreshButton!.getElement()).toHaveAttribute('aria-label', 'Custom refresh');
     expect(table.findHeaderSlot()!.findTextFilter()!.findInput()!.findNativeInput()!.getElement()).toHaveAttribute(
       'placeholder',
       'Custom find buckets'
@@ -265,6 +267,12 @@ describe('i18n', () => {
     expect(table.findColumnSortingArea(2)!.getElement()).toHaveAttribute(
       'aria-label',
       'Custom Custom name sorted descending'
+    );
+
+    refreshButton?.click();
+    await waitForFetch();
+    expect(table.findHeaderSlot()!.findByClassName(styles['last-updated-caption'])!.getElement()).toHaveTextContent(
+      /^Custom last updated.+$/
     );
   });
 });

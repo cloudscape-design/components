@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index';
-import { findUpUntil } from '../internal/utils/dom';
 import { TableProps } from './interfaces';
 
 import styles from './styles.css.js';

@@ -21,7 +21,7 @@ export default function Pagination(props: PaginationProps) {
       {...getAnalyticsMetadataAttribute({
         component: {
           name: 'awsui.Pagination',
-          label: '',
+          label: { root: 'self' },
           properties: {
             openEnd: `${!!props.openEnd}`,
             pagesCount: `${props.pagesCount || ''}`,

@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../background-inline-svg.scss' as utils;
 
@@ -24,12 +25,15 @@
   box-sizing: border-box;
   background-position: bottom right;
   background-size: awsui.$space-l;
+  cursor: ns-resize;
   @include utils.background-inline-svg(
     $path: '../assets/resize-handler.svg',
     $stroke: 'colorStrokeCodeEditorResizeHandler'
   );
 
-  cursor: ns-resize;
+  @include styles.with-direction('rtl') {
+    transform: scaleX(-1);
+  }
 }
 
 .resize-active {

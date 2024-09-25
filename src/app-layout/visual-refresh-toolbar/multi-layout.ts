@@ -61,8 +61,12 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
       toolbar.splitPanelToggleProps = props.splitPanelToggleProps;
       toolbar.onSplitPanelToggle = props.onSplitPanelToggle;
     }
+    if (props.breadcrumbs && !checkAlreadyExists(!!toolbar.hasBreadcrumbsPortal, 'hasBreadcrumbsPortal')) {
+      toolbar.hasBreadcrumbsPortal = true;
+    }
   }
-  return Object.keys(toolbar).length > 0 ? toolbar : null;
+  // do not render toolbar if no fields are defined, except ariaLabels, which are always there
+  return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
 export function useMultiAppLayout(props: SharedProps) {

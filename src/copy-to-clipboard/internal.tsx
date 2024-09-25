@@ -60,8 +60,10 @@ export default function InternalCopyToClipboard({
     } as const
   )[variant];
 
+  const isInline = variant === 'inline';
   const trigger = (
     <InternalPopover
+      className={clsx(isInline && styles['inline-trigger'])}
       size="medium"
       position="top"
       triggerType="custom"
@@ -84,7 +86,7 @@ export default function InternalCopyToClipboard({
 
   return (
     <span {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
-      {variant === 'inline' ? (
+      {isInline ? (
         <span className={styles['inline-container']}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
           <span className={testStyles['text-to-copy']}>{textToCopy}</span>

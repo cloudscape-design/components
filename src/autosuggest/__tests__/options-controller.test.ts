@@ -165,7 +165,8 @@ describe('useAutosuggestItems', () => {
     });
 
     result.current[1].selectHighlightedOptionWithKeyboard();
-    expect(onSelectItem).not.toBeCalled();
+    expect(onSelectItem).toBeCalledWith({ value: '1', type: 'use-entered', option: { value: '1' } });
+    jest.mocked(onSelectItem).mockClear();
 
     result.current[1].moveHighlightWithKeyboard(1);
     result.current[1].selectHighlightedOptionWithKeyboard();

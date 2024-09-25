@@ -30,7 +30,7 @@ export interface PopoverContainerProps {
   arrow: (position: InternalPosition | null) => React.ReactNode;
   children: React.ReactNode;
   renderWithPortal?: boolean;
-  size: PopoverProps.Size;
+  size: PopoverProps.Size | 'content';
   fixedWidth: boolean;
   variant?: 'annotation';
   // When keepPosition is true, the popover will not recalculate its position when it resizes nor when it receives clicks.

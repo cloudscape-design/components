@@ -6,7 +6,11 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
 export namespace ExpandableSectionProps {
-  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked';
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
+
+  export type Variant = 'default' | 'footer' | 'container' | 'navigation' | 'stacked' | 'inline';
   export interface ChangeDetail {
     expanded: boolean;
   }
@@ -16,6 +20,13 @@ export namespace ExpandableSectionProps {
 export type InternalVariant = ExpandableSectionProps.Variant | 'compact';
 
 export interface ExpandableSectionProps extends BaseComponentProps {
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * @analytics
+   */
+  analyticsMetadata?: ExpandableSectionProps.AnalyticsMetadata;
+
   /**
    * Determines whether the component initially displays in expanded state (that is, with content visible). The component operates in an uncontrolled
    * manner even if you provide a value for this property.
@@ -36,6 +47,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
    *  * `navigation` - Use this variant in the navigation panel with anchors and custom styled content.
    *    It doesn't have any default styles.
    * * `stacked` - Use this variant directly adjacent to other stacked containers (such as a container, table).
+   * * `inline` - Use this variant in any context where you need reduced padding around the header.
    * @visualrefresh `stacked` variant
    * */
   variant?: ExpandableSectionProps.Variant;
@@ -97,7 +109,7 @@ export interface ExpandableSectionProps extends BaseComponentProps {
   headerInfo?: React.ReactNode;
 
   /**
-   * Actions for the header. Use with the container variant.
+   * Actions for the header. Use with the default or container variant.
    */
   headerActions?: React.ReactNode;
 }

@@ -12,6 +12,6 @@
 }
 @media (min-width: 688px) {
   .date-time-form {
-    grid-template-columns: min-content minmax(100px, max-content);
+    grid-template-columns: repeat(2, minmax(100px, max-content));
   }
 }

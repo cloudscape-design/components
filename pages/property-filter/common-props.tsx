@@ -1,10 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+
+import { Badge, SpaceBetween } from '~components';
 import { PropertyFilterProps } from '~components/property-filter';
 
 import {
   DateForm,
   DateTimeForm,
+  DateTimeFormLegacy,
   formatDateTime,
   formatOwners,
   OwnerMultiSelectForm,
@@ -39,7 +43,7 @@ export const columnDefinitions = [
     header: 'Stopped',
     type: 'boolean',
     propertyLabel: 'Stopped',
-    cell: (item: TableItem) => item.state === 0,
+    cell: (item: TableItem) => item.state === 'STOPPED',
   },
   {
     id: 'instancetype',
@@ -129,13 +133,39 @@ export const columnDefinitions = [
     propertyLabel: 'Last event occurrence',
     cell: (item: TableItem) => item.lasteventat?.toISOString(),
   },
+  {
+    id: 'lasteventat-legacy',
+    sortingField: 'lasteventat',
+    header: 'Last event occurrence (legacy)',
+    type: 'datetime-legacy',
+    propertyLabel: 'Last event occurrence (legacy)',
+    cell: (item: TableItem) => item.lasteventat?.toISOString(),
+  },
+  {
+    id: 'tags',
+    sortingField: 'tagsIndex',
+    header: 'Tags',
+    type: 'enum',
+    propertyLabel: 'Tags',
+    minWidth: 150,
+    cell: (item: TableItem) => (
+      <SpaceBetween size="s" direction="horizontal">
+        {(item.tags ?? []).map(tag => (
+          <Badge key={tag}>{tag}</Badge>
+        ))}
+      </SpaceBetween>
+    ),
+  },
 ].map((item, ind) => ({ order: ind + 1, ...item }));
 
-export const i18nStrings: PropertyFilterProps.I18nStrings = {
+export const labels = {
   filteringAriaLabel: 'your choice',
+  filteringPlaceholder: 'Search',
+};
+
+export const i18nStrings: PropertyFilterProps.I18nStrings = {
   dismissAriaLabel: 'Dismiss',
 
-  filteringPlaceholder: 'Search',
   groupValuesText: 'Values',
   groupPropertiesText: 'Properties',
   operatorsText: 'Operators',
@@ -151,6 +181,8 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   operatorDoesNotContainText: 'Does not contain',
   operatorEqualsText: 'Equal',
   operatorDoesNotEqualText: 'Does not equal',
+  operatorStartsWithText: 'Starts with',
+  operatorDoesNotStartWithText: 'Does not starts with',
 
   editTokenHeader: 'Edit filter',
   propertyText: 'Property',
@@ -165,9 +197,56 @@ export const i18nStrings: PropertyFilterProps.I18nStrings = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
-  removeTokenButtonAriaLabel: () => 'Remove token',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
+
+  formatToken,
+  removeTokenButtonAriaLabel: token => `Remove token, ${formatToken(token)}`,
+
+  groupEditAriaLabel: group => `Edit group with ${group.tokens.length} tokens`,
+  tokenEditorTokenActionsAriaLabel: token => `Filter remove actions for ${formatToken(token)}`,
+  tokenEditorTokenRemoveAriaLabel: token => `Remove filter, ${formatToken(token)}`,
+  tokenEditorTokenRemoveLabel: 'Remove filter',
+  tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
+  tokenEditorAddNewTokenLabel: 'Add new filter',
+  tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
+  tokenEditorAddExistingTokenAriaLabel: token => `Add filter ${formatToken(token)} to group`,
+  tokenEditorAddExistingTokenLabel: token => `Add filter ${getTokenLabel(token)} to group`,
 };
+
+function getTokenLabel(token: PropertyFilterProps.FormattedToken) {
+  return `${token.propertyLabel} ${token.operator} ${token.value}`;
+}
+
+function formatToken(token: PropertyFilterProps.FormattedToken) {
+  return `${token.propertyLabel} ${operatorToLabel(token.operator)} ${token.value}`;
+}
+
+function operatorToLabel(operator: string) {
+  switch (operator) {
+    case '=':
+      return i18nStrings.operatorEqualsText;
+    case '!=':
+      return i18nStrings.operatorDoesNotEqualText;
+    case '>':
+      return i18nStrings.operatorGreaterText;
+    case '>=':
+      return i18nStrings.operatorGreaterOrEqualText;
+    case '<':
+      return i18nStrings.operatorLessText;
+    case '<=':
+      return i18nStrings.operatorLessOrEqualText;
+    case ':':
+      return i18nStrings.operatorContainsText;
+    case '!:':
+      return i18nStrings.operatorDoesNotContainText;
+    case '^':
+      return i18nStrings.operatorStartsWithText;
+    case '!^':
+      return i18nStrings.operatorDoesNotStartWithText;
+    default:
+      return operator;
+  }
+}
 
 export const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = columnDefinitions.map(def => {
   let operators: any[] = [];
@@ -195,12 +274,12 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     }));
   }
 
-  if (def.type === 'datetime') {
+  if (def.type === 'datetime' || def.type === 'datetime-legacy') {
     groupValuesLabel = `${def.propertyLabel} value`;
     defaultOperator = '>';
     operators = ['<', '<=', '>', '>='].map(operator => ({
       operator,
-      form: DateTimeForm,
+      form: def.type === 'datetime' ? DateTimeForm : DateTimeFormLegacy,
       format: formatDateTime,
       match: 'datetime',
     }));

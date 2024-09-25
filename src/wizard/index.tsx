@@ -14,7 +14,20 @@ import InternalWizard from './internal';
 
 function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent('Wizard', { props: { allowSkipTo } }, analyticsMetadata);
+  const baseComponentProps = useBaseComponent(
+    'Wizard',
+    {
+      props: {
+        allowSkipTo,
+        flowType: analyticsMetadata.flowType,
+      },
+      metadata: {
+        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+        hasResourceType: Boolean(analyticsMetadata?.resourceType),
+      },
+    },
+    analyticsMetadata
+  );
   const { wizardCount } = useFunnel();
   const externalProps = getExternalProps(props);
 
@@ -29,6 +42,7 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
       funnelIdentifier={analyticsMetadata?.instanceIdentifier}
       funnelFlowType={analyticsMetadata?.flowType}
       funnelErrorContext={analyticsMetadata?.errorContext}
+      funnelResourceType={analyticsMetadata?.resourceType}
       funnelType="multi-page"
       optionalStepNumbers={props.steps
         .map((step, index) => (step.isOptional ? index + 1 : -1))

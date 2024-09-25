@@ -59,6 +59,7 @@ export default function AutosuggestEventsPage() {
             appendLog('onChange');
             setValue(event.detail.value);
           }}
+          onSelect={event => appendLog(`onSelect: ${event.detail.value}`)}
           onBlur={() => appendLog('onBlur')}
           onFocus={() => appendLog('onFocus')}
           enteredTextLabel={enteredTextLabel}

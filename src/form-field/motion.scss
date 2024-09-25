@@ -2,26 +2,28 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
 
 .error-icon-shake-wrapper,
 .warning-icon-shake-wrapper {
   @include styles.with-motion {
-    @include styles.animation-shake-horizontally;
     animation: awsui-motion-shake-horizontally awsui.$motion-duration-refresh-only-medium;
+    @include styles.animation-shake-horizontally;
   }
 }
 .error-icon-scale-wrapper,
 .warning-icon-scale-wrapper {
   @include styles.with-motion {
-    @include styles.animation-scale-popup;
     animation: awsui-motion-scale-popup awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-a;
+    @include styles.animation-scale-popup;
   }
 }
 
 .warning,
 .error {
   @include styles.with-motion {
-    @include styles.animation-fade-in-0;
     animation: awsui-motion-fade-in-0 awsui.$motion-duration-refresh-only-medium awsui.$motion-easing-refresh-only-a;
+    @include styles.animation-fade-in-0;
   }
 }

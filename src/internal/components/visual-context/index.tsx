@@ -3,7 +3,7 @@
 import React, { useLayoutEffect, useState } from 'react';
 import clsx from 'clsx';
 
-import { findUpUntil } from '../../utils/dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 interface VisualContextProps {
   contextName: string;

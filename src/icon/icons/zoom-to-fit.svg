@@ -1,7 +1,7 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-  <path d="M14 11.0001V14.0001H10"/>
-  <path d="M2 11.0001V14.0001H6"/>
-  <path d="M2 5V2H6"/>
-  <path d="M14 5V2H10"/>
-  <path d="M10 6H6V10H10V6Z"/>
+<path d="M11 5H5V11H11V5Z" class="stroke-linejoin-round"/>
+<path d="M6 1H1V6" class="stroke-linejoin-round"/>
+<path d="M10 1H15V6" class="stroke-linejoin-round"/>
+<path d="M6 15H1V10" class="stroke-linejoin-round"/>
+<path d="M10 15H15V10" class="stroke-linejoin-round"/>
 </svg>

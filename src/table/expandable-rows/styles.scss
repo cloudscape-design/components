@@ -38,12 +38,11 @@
   padding-inline: 0;
   background: none;
   outline: 0;
+  color: awsui.$color-text-interactive-default;
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
   }
-
-  color: awsui.$color-text-interactive-default;
 
   &:hover {
     color: awsui.$color-text-interactive-hover;

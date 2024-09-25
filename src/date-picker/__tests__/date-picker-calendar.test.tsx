@@ -405,7 +405,7 @@ describe('Date picker calendar', () => {
         wrapper.findOpenCalendarButton().click();
         expect(findCalendarHeaderText(wrapper)).toBe('March 2018');
         expect(
-          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root}`)?.getElement()
+          wrapper.findCalendar()!.findSelectedDate()?.find(`:not(.${screenreaderOnlyStyles.root})`)?.getElement()
             .textContent
         ).toBe('21');
         expect(findFocusableDateText(wrapper)).toBeNull();
@@ -564,17 +564,16 @@ describe('Date picker calendar', () => {
     });
   });
 
-  describe('change event', () => {
+  describe.each([false, true])('change event (withShadowRoot=%s)', withShadowRoot => {
     let onChangeSpy: jest.Mock<NonCancelableEventHandler<DatePickerProps.ChangeDetail>>;
     let wrapper: DatePickerWrapper;
 
     beforeEach(() => {
       onChangeSpy = jest.fn();
-      ({ wrapper } = renderDatePicker({
-        ...defaultProps,
-        value: '2018-03-01',
-        onChange: onChangeSpy,
-      }));
+      ({ wrapper } = renderDatePicker(
+        { ...defaultProps, value: '2018-03-01', onChange: onChangeSpy },
+        { withShadowRoot }
+      ));
       wrapper.findOpenCalendarButton().click();
     });
 

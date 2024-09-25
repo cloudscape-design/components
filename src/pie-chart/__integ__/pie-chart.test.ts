@@ -19,6 +19,21 @@ class PieChartPageObject extends BasePageObject {
     await this.click(this.wrapper.findDefaultFilter().findTrigger().toSelector());
     await this.waitForVisible(this.wrapper.findDefaultFilter().findDropdown().findOpenDropdown().toSelector());
   }
+
+  /**
+   * Pretty niche util, basically imitates what a browser does when you're half-way through a tap.
+   *
+   * In the pie chart, the popover was previously being triggered at this point, which meant that if
+   * it then displayed directly under the tap action, the tap action would not be completed,
+   * and the popover left as if it were a mouse hover.
+   */
+  halfTap(selector: string) {
+    return this.browser.execute(selector => {
+      const element = document.querySelector(selector)!;
+      element.dispatchEvent(new TouchEvent('touchstart', { bubbles: true }));
+      element.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+    }, selector);
+  }
 }
 
 const createSetupTest = (wrapper: PieChartWrapper) => (testFn: (page: PieChartPageObject) => Promise<void>) => {
@@ -53,6 +68,14 @@ describe('Segments', () => {
       await page.click('#focus-target');
       await page.keys(['Tab', 'Tab', 'Enter']);
       await expect(page.getText(pieWrapper.findHighlightedSegmentLabel().toSelector())).resolves.toContain('Potatoes');
+    })
+  );
+
+  test(
+    'does not open popover on imcomplete tap',
+    setupTest(async page => {
+      await page.halfTap(pieWrapper.findSegments().get(1).toSelector());
+      await expect(page.isDisplayed(pieWrapper.findDetailPopover().toSelector())).resolves.toBeFalsy();
     })
   );
 

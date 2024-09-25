@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act } from 'react-dom/test-utils';
-import { fireEvent, render as renderJsx } from '@testing-library/react';
+import { act, fireEvent, render as renderJsx } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 

@@ -30,6 +30,7 @@ export function useResize({ currentWidth, minWidth, maxWidth, panelRef, handleRe
     panelRef,
     handleRef,
     onResize: onResizeHandler,
+    hasTransitions: true,
   };
 
   const clampedWidth = getLimitedValue(minWidth, currentWidth, maxWidth);

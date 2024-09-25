@@ -191,7 +191,7 @@
     "i18nStrings.tokenLimitShowFewer": "แสดงน้อยลง",
     "i18nStrings.tokenLimitShowMore": "แสดงเพิ่มเติม",
     "i18nStrings.valueText": "ค่า",
-    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {ลบตัวกรอง {token__propertyKey} เท่ากับ {token__value}} not_equals {ลบตัวกรอง {token__propertyKey} ไม่เท่ากับ {token__value}} greater_than {ลบตัวกรอง {token__propertyKey} มากกว่า {token__value}} greater_than_equal {ลบตัวกรอง {token__propertyKey} มากกว่าหรือเท่ากับ {token__value}} less_than {ลบตัวกรอง {token__propertyKey} น้อยกว่า {token__value}} less_than_equal {ลบตัวกรอง {token__propertyKey} น้อยกว่าหรือเท่ากับ {token__value}} contains {ลบตัวกรอง {token__propertyKey} ประกอบด้วย {token__value}} not_contains {ลบตัวกรอง {token__propertyKey} ไม่มี {token__value}} starts_with {ลบตัวกรอง {token__propertyKey} เริ่มต้นด้วย {token__value}} other {}}"
+    "i18nStrings.removeTokenButtonAriaLabel": "{token__operator, select, equals {ลบตัวกรอง {token__propertyLabel} เท่ากับ {token__value}} not_equals {ลบตัวกรอง {token__propertyLabel} ไม่เท่ากับ {token__value}} greater_than {ลบตัวกรอง {token__propertyLabel} มากกว่า {token__value}} greater_than_equal {ลบตัวกรอง {token__propertyLabel} มากกว่าหรือเท่ากับ {token__value}} less_than {ลบตัวกรอง {token__propertyLabel} น้อยกว่า {token__value}} less_than_equal {ลบตัวกรอง {token__propertyLabel} น้อยกว่าหรือเท่ากับ {token__value}} contains {ลบตัวกรอง {token__propertyLabel} ประกอบด้วย {token__value}} not_contains {ลบตัวกรอง {token__propertyLabel} ไม่มี {token__value}} starts_with {ลบตัวกรอง {token__propertyLabel} เริ่มต้นด้วย {token__value}} other {}}"
   },
   "s3-resource-selector": {
     "i18nStrings.inContextSelectPlaceholder": "เลือกเวอร์ชัน",

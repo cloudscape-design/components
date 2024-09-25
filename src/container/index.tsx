@@ -26,7 +26,15 @@ export default function Container({
   const baseComponentProps = useBaseComponent(
     'Container',
     {
-      props: { disableContentPaddings, disableHeaderPaddings, fitHeight, variant },
+      props: {
+        disableContentPaddings,
+        disableHeaderPaddings,
+        fitHeight,
+        variant,
+      },
+      metadata: {
+        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+      },
     },
     analyticsMetadata
   );
@@ -34,7 +42,7 @@ export default function Container({
 
   const analyticsComponentMetadata: GeneratedAnalyticsMetadataContainerComponent = {
     name: 'awsui.Container',
-    label: '',
+    label: { root: 'self' },
   };
 
   return (

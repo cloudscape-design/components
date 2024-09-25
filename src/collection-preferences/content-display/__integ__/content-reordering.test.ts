@@ -24,8 +24,8 @@ describe('Collection preferences - Content Display preference', () => {
     test(
       'moves item down',
       setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
 
@@ -40,8 +40,8 @@ describe('Collection preferences - Content Display preference', () => {
     test(
       'moves item up',
       setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
 
@@ -56,8 +56,8 @@ describe('Collection preferences - Content Display preference', () => {
     test(
       'cancels reordering when pressing Escape',
       setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
 
@@ -67,16 +67,16 @@ describe('Collection preferences - Content Display preference', () => {
         await page.keys('Escape');
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2', 'Item 3', 'Item 4'])).toBe(true);
-        await expect(wrapper.findModal()).not.toBeNull();
+        await expect(page.wrapper.findModal()).not.toBeNull();
       })
     );
 
     describe('does not cause overflow when reaching the edge of the window', () => {
       const testByDraggingToPosition = async (page: ContentDisplayPageObject, x: number, y: number) => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
-        const modal = wrapper.findModal();
-        const modalContentSelector = wrapper.findModal().findContent().toSelector();
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
+        const modal = page.wrapper.findModal();
+        const modalContentSelector = page.wrapper.findModal().findContent().toSelector();
         const modalContentBox = await page.getBoundingBox(modalContentSelector);
 
         const dragHandleSelector = modal
@@ -97,12 +97,18 @@ describe('Collection preferences - Content Display preference', () => {
 
       test(
         'horizontally',
-        setupTest(page => testByDraggingToPosition(page, windowDimensions.width, windowDimensions.height / 2))
+        setupTest(async page => {
+          const { width: windowWidth, height: windowHeight } = await page.getViewportSize();
+          await testByDraggingToPosition(page, windowWidth, windowHeight / 2);
+        })
       );
 
       test(
         'vertically',
-        setupTest(page => testByDraggingToPosition(page, windowDimensions.width / 2, windowDimensions.height))
+        setupTest(async page => {
+          const { width: windowWidth, height: windowHeight } = await page.getViewportSize();
+          await testByDraggingToPosition(page, windowWidth / 2, windowHeight);
+        })
       );
     });
   });
@@ -111,8 +117,8 @@ describe('Collection preferences - Content Display preference', () => {
     test(
       'cancels reordering when pressing Tab',
       setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
 
@@ -131,8 +137,8 @@ describe('Collection preferences - Content Display preference', () => {
     test(
       'cancels reordering when clicking somewhere else',
       setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-        await page.openCollectionPreferencesModal(wrapper);
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+        await page.openCollectionPreferencesModal();
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
 
@@ -141,7 +147,7 @@ describe('Collection preferences - Content Display preference', () => {
         await page.expectAnnouncement('Picked up item at position 1 of 6');
         await page.keys('ArrowDown');
         await page.expectAnnouncement('Moving item to position 2 of 6');
-        await page.click(wrapper.findModal().findContentDisplayPreference().findTitle().toSelector());
+        await page.click(page.wrapper.findModal().findContentDisplayPreference().findTitle().toSelector());
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
         await page.expectAnnouncement('Reordering canceled');
@@ -151,8 +157,8 @@ describe('Collection preferences - Content Display preference', () => {
     test(
       'scrolls if necessary',
       setupTest(async page => {
-        const wrapper = createWrapper().findCollectionPreferences('.cp-2');
-        await page.openCollectionPreferencesModal(wrapper);
+        page.wrapper = createWrapper().findCollectionPreferences('.cp-2');
+        await page.openCollectionPreferencesModal();
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
 

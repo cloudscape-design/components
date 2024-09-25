@@ -4,13 +4,13 @@ import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } 
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { findUpUntil } from '../internal/utils/dom';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
   CONSTRAINED_PAGE_HEIGHT,
@@ -91,7 +91,11 @@ const ClassicAppLayout = React.forwardRef(
     });
     const onToolsToggle = (open: boolean) => {
       setToolsOpen(open);
-      focusToolsButtons();
+      if (hasDrawers) {
+        focusDrawersButtons();
+      } else {
+        focusToolsButtons();
+      }
       fireNonCancelableEvent(onToolsChange, { open });
     };
 
@@ -173,7 +177,7 @@ const ClassicAppLayout = React.forwardRef(
       return () => cancelAnimationFrame(id);
     }, [placement.insetBlockStart, placement.insetBlockEnd]);
     const contentHeightStyle = {
-      [disableBodyScroll ? 'height' : 'minHeight']: `calc(100vh - ${headerFooterHeight}px)`,
+      [disableBodyScroll ? 'blockSize' : 'minBlockSize']: `calc(100vh - ${headerFooterHeight}px)`,
     };
 
     const [notificationsHeight, notificationsRef] = useContainerQuery(rect => rect.contentBoxHeight);
@@ -211,24 +215,6 @@ const ClassicAppLayout = React.forwardRef(
 
     const closedDrawerWidth = 40;
     const effectiveNavigationWidth = navigationHide ? 0 : navigationOpen ? navigationWidth : closedDrawerWidth;
-
-    const getEffectiveToolsWidth = () => {
-      if (activeDrawerSize) {
-        return activeDrawerSize;
-      }
-
-      if (toolsHide || drawers) {
-        return 0;
-      }
-
-      if (toolsOpen) {
-        return toolsWidth;
-      }
-
-      return closedDrawerWidth;
-    };
-
-    const effectiveToolsWidth = getEffectiveToolsWidth();
 
     const defaultSplitPanelSize = getSplitPanelDefaultSize(splitPanelPosition);
     const [splitPanelSize = defaultSplitPanelSize, setSplitPanelSize] = useControllable(
@@ -295,6 +281,24 @@ const ClassicAppLayout = React.forwardRef(
       placement.inlineSize - effectiveNavigationWidth - minContentWidth - contentPadding - rightDrawerBarWidth
     );
 
+    const getEffectiveToolsWidth = () => {
+      if (activeDrawerSize && activeDrawer) {
+        return Math.min(resizableSpaceAvailable, activeDrawerSize);
+      }
+
+      if (toolsHide || drawers) {
+        return 0;
+      }
+
+      if (toolsOpen) {
+        return toolsWidth;
+      }
+
+      return closedDrawerWidth;
+    };
+
+    const effectiveToolsWidth = getEffectiveToolsWidth();
+
     // if there is no space to display split panel in the side, force to bottom
     const isSplitPanelForcedPosition =
       isMobile || resizableSpaceAvailable - effectiveToolsWidth < SPLIT_PANEL_MIN_WIDTH;
@@ -303,7 +307,7 @@ const ClassicAppLayout = React.forwardRef(
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
 
     const sideSplitPanelSize = splitPaneAvailableOnTheSide ? (splitPanelOpen ? splitPanelSize : closedDrawerWidth) : 0;
-    const splitPanelMaxWidth = Math.max(0, resizableSpaceAvailable - effectiveToolsWidth);
+    const sideSplitPanelMaxWidth = Math.max(0, resizableSpaceAvailable - effectiveToolsWidth);
     const drawerMaxSize = Math.max(0, resizableSpaceAvailable - sideSplitPanelSize);
 
     const navigationClosedWidth = navigationHide || isMobile ? 0 : closedDrawerWidth;
@@ -322,7 +326,7 @@ const ClassicAppLayout = React.forwardRef(
       rightOffset: isMobile ? 0 : placement.insetInlineEnd + effectiveToolsWidth + rightDrawerBarWidth,
       position: finalSplitPanePosition,
       size: splitPanelSize,
-      maxWidth: splitPanelMaxWidth,
+      maxWidth: sideSplitPanelMaxWidth,
       getMaxHeight: getSplitPanelMaxHeight,
       disableContentPaddings,
       contentWidthStyles: contentMaxWidthStyle,
@@ -407,7 +411,7 @@ const ClassicAppLayout = React.forwardRef(
             onToolsOpen={() => onToolsToggle(true)}
             unfocusable={anyPanelOpen}
             mobileBarRef={mobileBarRef}
-            drawers={drawers}
+            drawers={drawers?.filter(item => !!item.trigger)}
             activeDrawerId={activeDrawerId}
             onDrawerChange={newDrawerId => {
               onActiveDrawerChange(newDrawerId);
@@ -588,7 +592,7 @@ const ClassicAppLayout = React.forwardRef(
               bottomOffset={placement.insetBlockEnd}
               topOffset={placement.insetBlockStart}
               isMobile={isMobile}
-              drawers={drawers}
+              drawers={drawers.filter(item => !!item.trigger)}
               activeDrawerId={activeDrawerId}
               onDrawerChange={newDrawerId => {
                 if (activeDrawerId !== newDrawerId) {

@@ -3,16 +3,13 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
-
+import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
 import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
-import { Transition } from '../internal/components/transition';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -31,10 +28,11 @@ export { SplitPanelProps };
 
 export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanelProps>(
   (
-    { header, children, hidePreferencesButton = false, closeBehavior = 'collapse', i18nStrings, ...restProps },
+    { header, children, hidePreferencesButton = false, closeBehavior = 'collapse', i18nStrings = {}, ...restProps },
     __internalRootRef
   ) => {
     const isRefresh = useVisualRefresh();
+    const isToolbar = useAppLayoutToolbarEnabled();
 
     const {
       position,
@@ -53,13 +51,11 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       refs,
     } = useSplitPanelContext();
     const baseProps = getBaseProps(restProps);
-    const i18n = useInternalI18n('split-panel');
-    const hasToolbar = getGlobalFlag('appLayoutWidget');
     const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
 
     const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
 
-    const openButtonAriaLabel = i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel);
+    const openButtonAriaLabel = i18nStrings.openButtonAriaLabel;
     useEffect(() => {
       setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: openButtonAriaLabel });
     }, [setSplitPanelToggle, openButtonAriaLabel, closeBehavior]);
@@ -71,6 +67,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       panelRef: splitPanelRefObject,
       handleRef: refs.slider,
       onResize,
+      hasTransitions: true,
     };
     const onSliderPointerDown = usePointerEvents(sizeControlProps);
     const onKeyDown = useKeyboardEvents(sizeControlProps);
@@ -83,7 +80,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const panelHeaderId = useUniqueId('split-panel-header');
 
     const wrappedHeader = (
-      <div className={clsx(styles.header, hasToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
+      <div className={clsx(styles.header, isToolbar && styles['with-toolbar'])} style={appLayoutMaxWidth}>
         <h2 className={clsx(styles['header-text'], testUtilStyles['header-text'])} id={panelHeaderId}>
           {header}
         </h2>
@@ -96,7 +93,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
                 variant="icon"
                 onClick={() => setPreferencesOpen(true)}
                 formAction="none"
-                ariaLabel={i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle)}
+                ariaLabel={i18nStrings.preferencesTitle}
                 ref={refs.preferences}
               />
               <span className={styles.divider} />
@@ -116,7 +113,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
               variant="icon"
               onClick={onToggle}
               formAction="none"
-              ariaLabel={i18n('i18nStrings.closeButtonAriaLabel', i18nStrings?.closeButtonAriaLabel)}
+              ariaLabel={i18nStrings.closeButtonAriaLabel}
               ariaExpanded={isOpen}
             />
           ) : position === 'side' ? null : (
@@ -125,7 +122,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
               iconName="angle-up"
               variant="icon"
               formAction="none"
-              ariaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
+              ariaLabel={i18nStrings.openButtonAriaLabel}
               ref={refs.toggle}
               ariaExpanded={isOpen}
             />
@@ -138,7 +135,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
       <PanelResizeHandle
         ref={refs.slider}
         className={testUtilStyles.slider}
-        ariaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
+        ariaLabel={i18nStrings.resizeHandleAriaLabel}
         // Allows us to use the logical left/right keys to move the slider left/right,
         // but match aria keyboard behavior of using left/right to decrease/increase
         // the slider value.
@@ -186,80 +183,71 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
      * is still needed for the early return to prevent execution
      * of the following code.
      */
-    if (isRefresh && !isOpen && position === 'side') {
+    if (isRefresh && !isToolbar && !isOpen && position === 'side') {
       return <></>;
     }
 
     return (
-      <Transition in={isOpen ?? false}>
-        {(state, transitioningElementRef) => (
-          <>
-            {position === 'side' && (
-              <SplitPanelContentSide
-                style={contentStyle}
-                resizeHandle={resizeHandle}
-                baseProps={baseProps}
-                isOpen={isOpen}
-                splitPanelRef={mergedRef}
-                cappedSize={size}
-                onToggle={onToggle}
-                openButtonAriaLabel={i18n('i18nStrings.openButtonAriaLabel', i18nStrings?.openButtonAriaLabel)}
-                toggleRef={refs.toggle}
-                header={wrappedHeader}
-                panelHeaderId={panelHeaderId}
-              >
-                {children}
-              </SplitPanelContentSide>
-            )}
-
-            {position === 'bottom' && (
-              <SplitPanelContentBottom
-                style={contentStyle}
-                resizeHandle={resizeHandle}
-                baseProps={baseProps}
-                isOpen={isOpen}
-                splitPanelRef={mergedRef}
-                cappedSize={size}
-                onToggle={onToggle}
-                header={wrappedHeader}
-                panelHeaderId={panelHeaderId}
-                state={state}
-                transitioningElementRef={transitioningElementRef}
-                appLayoutMaxWidth={appLayoutMaxWidth}
-              >
-                {children}
-              </SplitPanelContentBottom>
-            )}
-            {isPreferencesOpen && (
-              <PreferencesModal
-                visible={true}
-                preferences={{ position }}
-                disabledSidePosition={position === 'bottom' && isForcedPosition}
-                isRefresh={isRefresh}
-                i18nStrings={{
-                  header: i18n('i18nStrings.preferencesTitle', i18nStrings?.preferencesTitle),
-                  confirm: i18n('i18nStrings.preferencesConfirm', i18nStrings?.preferencesConfirm),
-                  cancel: i18n('i18nStrings.preferencesCancel', i18nStrings?.preferencesCancel),
-                  positionLabel: i18n('i18nStrings.preferencesPositionLabel', i18nStrings?.preferencesPositionLabel),
-                  positionDescription: i18n(
-                    'i18nStrings.preferencesPositionDescription',
-                    i18nStrings?.preferencesPositionDescription
-                  ),
-                  positionBottom: i18n('i18nStrings.preferencesPositionBottom', i18nStrings?.preferencesPositionBottom),
-                  positionSide: i18n('i18nStrings.preferencesPositionSide', i18nStrings?.preferencesPositionSide),
-                }}
-                onConfirm={preferences => {
-                  onPreferencesChange({ ...preferences });
-                  setPreferencesOpen(false);
-                }}
-                onDismiss={() => {
-                  setPreferencesOpen(false);
-                }}
-              />
-            )}
-          </>
+      <>
+        {position === 'side' && (
+          <SplitPanelContentSide
+            style={contentStyle}
+            resizeHandle={resizeHandle}
+            baseProps={baseProps}
+            isOpen={isOpen}
+            splitPanelRef={mergedRef}
+            cappedSize={size}
+            onToggle={onToggle}
+            openButtonAriaLabel={openButtonAriaLabel}
+            toggleRef={refs.toggle}
+            header={wrappedHeader}
+            panelHeaderId={panelHeaderId}
+          >
+            {children}
+          </SplitPanelContentSide>
         )}
-      </Transition>
+
+        {position === 'bottom' && (
+          <SplitPanelContentBottom
+            style={contentStyle}
+            resizeHandle={resizeHandle}
+            baseProps={baseProps}
+            isOpen={isOpen}
+            splitPanelRef={mergedRef}
+            cappedSize={size}
+            onToggle={onToggle}
+            header={wrappedHeader}
+            panelHeaderId={panelHeaderId}
+            appLayoutMaxWidth={appLayoutMaxWidth}
+          >
+            {children}
+          </SplitPanelContentBottom>
+        )}
+        {isPreferencesOpen && (
+          <PreferencesModal
+            visible={true}
+            preferences={{ position }}
+            disabledSidePosition={position === 'bottom' && isForcedPosition}
+            isRefresh={isRefresh}
+            i18nStrings={{
+              header: i18nStrings.preferencesTitle,
+              confirm: i18nStrings.preferencesConfirm,
+              cancel: i18nStrings.preferencesCancel,
+              positionLabel: i18nStrings.preferencesPositionLabel,
+              positionDescription: i18nStrings.preferencesPositionDescription,
+              positionBottom: i18nStrings.preferencesPositionBottom,
+              positionSide: i18nStrings.preferencesPositionSide,
+            }}
+            onConfirm={preferences => {
+              onPreferencesChange({ ...preferences });
+              setPreferencesOpen(false);
+            }}
+            onDismiss={() => {
+              setPreferencesOpen(false);
+            }}
+          />
+        )}
+      </>
     );
   }
 );

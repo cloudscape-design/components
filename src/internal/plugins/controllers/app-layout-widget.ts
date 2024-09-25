@@ -42,7 +42,7 @@ export class AppLayoutWidgetController<Props = unknown> {
     if (forcedPrimary) {
       return forcedPrimary;
     }
-    for (const registration of this.#registrations.slice().reverse()) {
+    for (const registration of this.#registrations.slice()) {
       if (registration.forceType !== 'secondary') {
         return registration;
       }

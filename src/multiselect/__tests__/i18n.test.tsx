@@ -71,7 +71,7 @@ describe('i18n provider', () => {
     expect(statusIcon).toHaveAttribute('aria-label', 'Custom error icon');
   });
 
-  test('utilises selectedAriaLabel from Select messages', () => {
+  test('utilizes selectedAriaLabel from Select messages', () => {
     const { wrapper } = renderElement(
       <TestI18nProvider messages={{ select: { selectedAriaLabel: 'Custom selected' } }}>
         <Multiselect {...defaultProps} selectedOptions={[{ label: 'First', value: '1' }]} />

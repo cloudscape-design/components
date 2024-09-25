@@ -60,6 +60,18 @@ export default function DateInputScenario() {
             copySuccessText="Lorem ipsum sentence copied"
             copyErrorText="Lorem ipsum sentence failed to copy"
           />
+
+          <div style={{ width: '150px' }}>
+            <div style={{ overflow: 'hidden', whiteSpace: 'nowrap', textOverflow: 'ellipsis' }}>
+              <CopyToClipboard
+                variant="inline"
+                copyButtonAriaLabel="Copy lorem ipsum sentence"
+                textToCopy="Relatively long text that we don't want to wrap"
+                copySuccessText="Lorem ipsum sentence copied"
+                copyErrorText="Lorem ipsum sentence failed to copy"
+              />
+            </div>
+          </div>
         </SpaceBetween>
       </Box>
     </ScreenshotArea>

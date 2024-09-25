@@ -1,6 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DrawerConfig, DrawersController } from '../../../../../lib/components/internal/plugins/controllers/drawers';
+import {
+  DrawerConfig,
+  DrawersController,
+  UpdateDrawerConfig,
+} from '../../../../../lib/components/internal/plugins/controllers/drawers';
 
 const drawerA = { id: 'drawerA' } as DrawerConfig;
 const drawerB = { id: 'drawerB' } as DrawerConfig;
@@ -50,6 +54,30 @@ test('change listener is not called after cleanup', async () => {
   drawers.registerDrawer(drawerA);
   await delay();
   expect(onDrawersRegistered).not.toHaveBeenCalled();
+});
+
+describe('update drawer', () => {
+  test('notifies about updated drawers', async () => {
+    const onDrawersRegistered = jest.fn();
+    const drawers = new DrawersController();
+    drawers.onDrawersRegistered(onDrawersRegistered);
+    drawers.registerDrawer(drawerA);
+    drawers.registerDrawer(drawerB);
+    expect(onDrawersRegistered).not.toHaveBeenCalled();
+    await delay();
+    expect(onDrawersRegistered).toHaveBeenCalledWith([drawerA, drawerB]);
+    const updatedDrawer = { ...drawerA, badge: true };
+    drawers.updateDrawer(updatedDrawer);
+    await delay();
+    expect(onDrawersRegistered).toHaveBeenLastCalledWith([updatedDrawer, drawerB]);
+  });
+
+  test('throw error if the update drawer is not registered', () => {
+    const drawers = new DrawersController();
+    expect(() => drawers.updateDrawer({ id: 'test-drawer' } as UpdateDrawerConfig)).toThrowError(
+      '[AwsUi] [runtime drawers] drawer with id test-drawer not found'
+    );
+  });
 });
 
 describe('console warnings', () => {

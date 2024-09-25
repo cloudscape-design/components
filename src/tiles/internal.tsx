@@ -3,6 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -10,9 +12,11 @@ import useRadioGroupForwardFocus from '../internal/hooks/forward-focus/radio-gro
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { GeneratedAnalyticsMetadataTilesSelect } from './analytics-metadata/interfaces';
 import { TilesProps } from './interfaces';
 import { Tile } from './tile';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const COLUMN_TRIGGERS: TilesProps.Breakpoint[] = ['default', 'xxs', 'xs'];
@@ -71,6 +75,16 @@ const InternalTiles = React.forwardRef(
                 breakpoint={breakpoint}
                 onChange={onChange}
                 readOnly={readOnly}
+                {...(!item.disabled && !readOnly
+                  ? getAnalyticsMetadataAttribute({
+                      action: 'select',
+                      detail: {
+                        position: `${index + 1}`,
+                        value: item.value,
+                        label: `.${analyticsSelectors['radio-button']}`,
+                      } as Partial<GeneratedAnalyticsMetadataTilesSelect['detail']>,
+                    })
+                  : {})}
               />
             ))}
         </div>

@@ -3,13 +3,16 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { ItemProps } from '../interfaces';
+import { ItemProps, LinkItem } from '../interfaces';
 import { ButtonDropdownProps } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
@@ -29,7 +32,9 @@ const ItemElement = ({
   showDivider,
   hasCategoryHeader,
   isKeyboardHighlighted = false,
+  analyticsMetadataTransformer = (metadata: GeneratedAnalyticsMetadataFragment) => metadata,
   variant = 'normal',
+  linkStyle,
 }: ItemProps) => {
   const isLink = isLinkItem(item);
   const isCheckbox = isCheckboxItem(item);
@@ -68,17 +73,18 @@ const ItemElement = ({
       {...getAnalyticsMetadataAttribute(
         disabled
           ? {}
-          : ({
+          : (analyticsMetadataTransformer!({
               action: 'click',
               detail: {
                 position,
                 id: item.id,
                 label: `.${analyticsLabels['menu-item']}`,
+                href: (item as LinkItem).href || '',
               },
-            } as GeneratedAnalyticsMetadataButtonDropdownClick)
+            }) as GeneratedAnalyticsMetadataButtonDropdownClick)
       )}
     >
-      <MenuItem item={item} disabled={disabled} highlighted={highlighted} />
+      <MenuItem item={item} disabled={disabled} highlighted={highlighted} linkStyle={linkStyle} />
     </li>
   );
 };
@@ -95,9 +101,10 @@ interface MenuItemProps {
   item: InternalItemProps | InternalCheckboxItemProps;
   disabled: boolean;
   highlighted: boolean;
+  linkStyle?: boolean;
 }
 
-function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
+function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
 
@@ -110,7 +117,8 @@ function MenuItem({ item, disabled, highlighted }: MenuItemProps) {
   const isDisabledWithReason = disabled && item.disabledReason;
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
-    className: clsx(styles['menu-item'], analyticsLabels['menu-item']),
+    'aria-label': item.ariaLabel,
+    className: clsx(styles['menu-item'], analyticsLabels['menu-item'], linkStyle && styles['link-style']),
     lang: item.lang,
     ref: menuItemRef,
     // We are using the roving tabindex technique to manage the focus state of the dropdown.

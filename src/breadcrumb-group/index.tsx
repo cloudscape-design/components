@@ -21,7 +21,14 @@ export default function BreadcrumbGroup<T extends BreadcrumbGroupProps.Item = Br
     return <></>;
   }
 
-  return <InternalBreadcrumbGroup items={items} {...props} {...baseComponentProps} />;
+  return (
+    <InternalBreadcrumbGroup
+      items={items}
+      {...props}
+      {...baseComponentProps}
+      __injectAnalyticsComponentMetadata={true}
+    />
+  );
 }
 
 applyDisplayName(BreadcrumbGroup, 'BreadcrumbGroup');

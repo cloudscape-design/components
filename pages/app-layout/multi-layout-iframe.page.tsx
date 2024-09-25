@@ -7,9 +7,9 @@ import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import SpaceBetween from '~components/space-between';
 
+import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
-import { IframeWrapper } from './utils/iframe-wrapper';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
 

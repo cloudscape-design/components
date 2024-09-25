@@ -1,16 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 interface GeneratedAnalyticsMetadataButtonClick {
   action: 'click';
   detail: {
-    label: string;
+    label: string | LabelIdentifier;
   };
 }
 
 interface GeneratedAnalyticsMetadataButtonComponent {
   name: 'awsui.Button';
-  label: string;
+  label: string | LabelIdentifier;
   properties: {
     variant: string;
     disabled: string;

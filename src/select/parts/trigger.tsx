@@ -26,7 +26,7 @@ export interface TriggerProps extends FormFieldValidationControlProps {
   inlineLabelText?: string;
   isOpen?: boolean;
   triggerVariant?: SelectProps.TriggerVariant | MultiselectProps.TriggerVariant;
-  inFilteringToken?: boolean;
+  inFilteringToken?: 'root' | 'nested';
   selectedOptions?: ReadonlyArray<OptionDefinition>;
 }
 

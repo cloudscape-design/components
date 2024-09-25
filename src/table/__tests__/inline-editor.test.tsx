@@ -99,7 +99,7 @@ describe('InlineEditor', () => {
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
     waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
-      expect(handleSubmitEdit.mock.lastCall.length).toBe(3);
+      expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
     });
 
     expect(handleEditEnd).toHaveBeenCalled();
@@ -120,7 +120,7 @@ describe('InlineEditor', () => {
     fireEvent.click(wrapper.getElement().querySelector('[aria-label="save edit"]')!);
     waitFor(() => {
       expect(handleSubmitEdit).toHaveBeenCalled();
-      expect(handleSubmitEdit.mock.lastCall.length).toBe(3);
+      expect(handleSubmitEdit.mock.lastCall!.length).toBe(3);
       expect(handleEditEnd).not.toHaveBeenCalled();
     });
   });

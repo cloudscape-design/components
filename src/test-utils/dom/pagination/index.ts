@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../pagination/styles.selectors.js';
 
@@ -32,5 +32,10 @@ export default class PaginationWrapper extends ComponentWrapper {
 
   findNextPageButton(): ElementWrapper {
     return this.find(`li:last-child .${styles.button}`)!;
+  }
+
+  @usesDom
+  isDisabled(): boolean {
+    return this.element.classList.contains(styles['root-disabled']);
   }
 }

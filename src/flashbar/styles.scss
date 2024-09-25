@@ -102,11 +102,17 @@
   @include styles.text-flex-wrapping;
 }
 
-.flash-header {
+.hidden {
+  display: none;
+}
+
+.flash-header,
+.header-replacement {
   font-weight: styles.$font-weight-bold;
 }
 
-.flash-content {
+.flash-content,
+.content-replacement {
   /* Only used as a selector for test-utils */
 }
 

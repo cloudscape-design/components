@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 const path = require('path');
-const merge = require('lodash/merge');
-const tsPreset = require('ts-jest/jest-preset');
 const cloudscapePreset = require('@cloudscape-design/jest-preset/jest-preset');
+const mergePresets = require('@cloudscape-design/jest-preset/merge');
 
-module.exports = merge({}, tsPreset, cloudscapePreset, {
+module.exports = mergePresets(cloudscapePreset, {
   verbose: true,
   testEnvironment: 'jsdom',
   reporters: ['default', 'github-actions'],
@@ -31,16 +30,17 @@ module.exports = merge({}, tsPreset, cloudscapePreset, {
       statements: 90,
     },
   },
-  globals: {
-    'ts-jest': {
-      tsconfig: 'tsconfig.unit.json',
-    },
-  },
   transform: {
     '(?!node_modules).*/lib/(components|design-tokens)/.*\\.js$': require.resolve(
       '@cloudscape-design/jest-preset/js-transformer'
     ),
     '(?!node_modules).*/lib/components/.*\\.css$': require.resolve('@cloudscape-design/jest-preset/css-transformer'),
+    '^.+\\.tsx?$': [
+      'ts-jest',
+      {
+        tsconfig: 'tsconfig.unit.json',
+      },
+    ],
   },
   setupFilesAfterEnv: [path.join(__dirname, 'build-tools', 'jest', 'setup.js')],
   testRegex: '(/__tests__/.*(\\.|/)test)\\.[jt]sx?$',

@@ -8,14 +8,14 @@
 
 .container {
   @include styles.with-motion {
-    @include styles.animation-fade-in;
     animation: awsui-motion-fade-in tokens.$motion-duration-show-paced tokens.$motion-easing-show-paced;
+    @include styles.animation-fade-in;
   }
 
   &.refresh {
     @include styles.with-motion {
-      @include styles.animation-fade-in;
       animation: awsui-motion-fade-in tokens.$motion-duration-refresh-only-fast tokens.$motion-easing-refresh-only-a;
+      @include styles.animation-fade-in;
     }
   }
 }

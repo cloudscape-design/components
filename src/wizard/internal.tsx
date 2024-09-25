@@ -152,7 +152,6 @@ export default function InternalWizard({
           allowSkipTo={allowSkipTo}
           hidden={smallContainer}
           i18nStrings={i18nStrings}
-          isVisualRefresh={isVisualRefresh}
           isLoadingNextStep={isLoadingNextStep}
           onStepClick={onStepClick}
           onSkipToClick={onSkipToClick}
@@ -163,7 +162,6 @@ export default function InternalWizard({
         >
           <WizardForm
             steps={steps}
-            isVisualRefresh={isVisualRefresh}
             showCollapsedSteps={smallContainer}
             i18nStrings={i18nStrings}
             submitButtonText={submitButtonText}

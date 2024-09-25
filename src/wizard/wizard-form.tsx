@@ -14,7 +14,6 @@ import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytic
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMobile } from '../internal/hooks/use-mobile';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
@@ -24,7 +23,6 @@ import styles from './styles.css.js';
 interface WizardFormProps extends InternalBaseComponentProps {
   steps: ReadonlyArray<WizardProps.Step>;
   activeStepIndex: number;
-  isVisualRefresh: boolean;
   showCollapsedSteps: boolean;
   i18nStrings: WizardProps.I18nStrings;
   submitButtonText?: string;
@@ -61,7 +59,6 @@ export function WizardForm({
   __internalRootRef,
   steps,
   activeStepIndex,
-  isVisualRefresh,
   showCollapsedSteps,
   i18nStrings,
   submitButtonText,
@@ -76,7 +73,6 @@ export function WizardForm({
   const { title, info, description, content, errorText, isOptional } = steps[activeStepIndex] || {};
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
-  const isMobile = useMobile();
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
   const { funnelInteractionId, funnelIdentifier } = useFunnel();
   const { funnelStepProps, stepErrorContext } = useFunnelStep();
@@ -105,7 +101,7 @@ export function WizardForm({
 
   return (
     <>
-      <WizardFormHeader isMobile={isMobile || showCollapsedSteps} isVisualRefresh={isVisualRefresh}>
+      <WizardFormHeader>
         <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
           {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
         </div>

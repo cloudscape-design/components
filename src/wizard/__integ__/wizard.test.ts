@@ -14,12 +14,8 @@ class WizardPageObject extends BasePageObject {
   resetFocus() {
     return this.click('#focus-reset');
   }
-  async isContentDisplayedInViewport() {
-    const elements = await this.browser.$$('#content-text');
-    if (elements.length === 0) {
-      return false;
-    }
-    return elements[0].isDisplayedInViewport();
+  isContentDisplayedInViewport() {
+    return this.isDisplayedInViewport('#content-text');
   }
   toggleScrollableContainer() {
     return this.click(createWrapper().findToggle().findNativeInput().toSelector());

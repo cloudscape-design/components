@@ -59,7 +59,11 @@ function renderTable(props: Partial<TableProps>) {
       items={items}
       columnDefinitions={columnDefinitions}
       trackBy="value"
-      header={<Header variant="h2">{componentLabel}</Header>}
+      header={
+        <Header variant="h2" counter="2" info="Info">
+          {componentLabel}
+        </Header>
+      }
       isItemDisabled={isItemDisabled}
     />
   );

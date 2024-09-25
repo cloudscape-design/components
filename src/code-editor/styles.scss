@@ -27,9 +27,9 @@
   inset: 0;
 
   &:focus {
-    @include styles.focus-highlight(3px);
     position: absolute;
     overflow: visible;
+    @include styles.focus-highlight(3px);
   }
 }
 
@@ -44,12 +44,12 @@
   vertical-align: middle;
   border-block-start: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
   background-color: awsui.$color-background-code-editor-status-bar;
+  @include styles.text-wrapping;
+
   &-with-hidden-pane {
     border-end-start-radius: awsui.$border-radius-code-editor;
     border-end-end-radius: awsui.$border-radius-code-editor;
   }
-
-  @include styles.text-wrapping;
 
   &__left {
     flex: 1;

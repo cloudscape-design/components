@@ -1,6 +1,5 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-  <path class="stroke-linejoin-round" d="M7 15V1L1 6V10L7 15Z"/>
-  <path class="stroke-linejoin-round" d="M15 3V13"/>
-  <path class="stroke-linejoin-round" d="M11 5V11"/>
+<path d="M6.47 13.7071L4 10.9971H1V4.99705H4L6.47 2.28706C7.01 1.69706 8 2.07706 8 2.87706V13.1071C8 13.9071 7.01 14.2971 6.47 13.6971V13.7071Z" class="stroke-linejoin-round"/>
+<path d="M10 12.9971C12.76 12.9971 15 10.7571 15 7.99707C15 5.23707 12.76 2.99707 10 2.99707" />
+<path d="M10 9.99707C11.1 9.99707 12 9.09707 12 7.99707C12 6.89707 11.1 5.99707 10 5.99707" />
 </svg>
-

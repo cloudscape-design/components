@@ -39,6 +39,12 @@ $gutter: awsui.$space-grid-gutter;
   padding-block: awsui.$space-xs;
   padding-inline: awsui.$space-scaled-m;
 
+  @include styles.with-motion {
+    transition:
+      border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+      background-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+
   &.refresh {
     padding-block: awsui.$space-xs;
     padding-inline: awsui.$space-s;
@@ -65,12 +71,6 @@ $gutter: awsui.$space-grid-gutter;
 
   &.readonly {
     @include styles.form-readonly-element;
-  }
-
-  @include styles.with-motion {
-    transition:
-      border-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
-      background-color awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
   }
 }
 

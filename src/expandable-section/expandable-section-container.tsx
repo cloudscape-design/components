@@ -2,10 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import {
+  getAnalyticsLabelAttribute,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { InternalContainerAsSubstep } from '../container/internal';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { GeneratedAnalyticsMetadataExpandableSectionComponent } from './analytics-metadata/interfaces';
 import { InternalVariant } from './interfaces';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   className?: string;
@@ -14,6 +22,7 @@ export interface ExpandableSectionContainerProps extends InternalBaseComponentPr
   variant: InternalVariant;
   expanded: boolean | undefined;
   disableContentPaddings: boolean | undefined;
+  __injectAnalyticsComponentMetadata?: boolean;
 }
 
 export const ExpandableSectionContainer = ({
@@ -24,8 +33,19 @@ export const ExpandableSectionContainer = ({
   expanded,
   disableContentPaddings,
   __internalRootRef,
+  __injectAnalyticsComponentMetadata,
   ...rest
 }: ExpandableSectionContainerProps) => {
+  const analyticsComponentMetadata: GeneratedAnalyticsMetadataExpandableSectionComponent = {
+    name: 'awsui.ExpandableSection',
+    label: { root: 'self' },
+    properties: { variant, expanded: `${!!expanded}` },
+  };
+
+  const metadataAttribute = __injectAnalyticsComponentMetadata
+    ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
+    : {};
+
   if (variant === 'container' || variant === 'stacked') {
     return (
       <AnalyticsFunnelSubStep>
@@ -38,6 +58,7 @@ export const ExpandableSectionContainer = ({
           disableHeaderPaddings={true}
           __hiddenContent={!expanded}
           __internalRootRef={__internalRootRef}
+          {...metadataAttribute}
         >
           {children}
         </InternalContainerAsSubstep>
@@ -46,7 +67,13 @@ export const ExpandableSectionContainer = ({
   }
 
   return (
-    <div className={className} {...rest} ref={__internalRootRef}>
+    <div
+      className={className}
+      {...rest}
+      ref={__internalRootRef}
+      {...metadataAttribute}
+      {...getAnalyticsLabelAttribute(`.${analyticsSelectors['header-label']}`)}
+    >
       {header}
       {children}
     </div>

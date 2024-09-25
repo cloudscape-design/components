@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
+import { getVisualContextClassname } from '../../internal/components/visual-context';
 import { AppLayoutProps } from '../interfaces';
 import { CloseButton, ToggleButton, togglesConfig } from '../toggles';
 import { TOOLS_DRAWER_ID } from '../utils/use-drawers';
@@ -165,12 +166,19 @@ const DrawerTrigger = React.forwardRef(
     }: DrawerTriggerProps,
     ref: React.Ref<{ focus: () => void }>
   ) => (
-    <div className={clsx(styles['drawer-trigger'], isActive && styles['drawer-trigger-active'])} onClick={onClick}>
+    <div
+      className={clsx(
+        styles['drawer-trigger'],
+        isActive && styles['drawer-trigger-active'],
+        isActive && getVisualContextClassname('app-layout-tools-drawer-trigger')
+      )}
+      onClick={onClick}
+    >
       <ToggleButton
         ref={ref}
         className={testUtilsClassName}
-        iconName={trigger.iconName}
-        iconSvg={trigger.iconSvg}
+        iconName={trigger!.iconName}
+        iconSvg={trigger!.iconSvg}
         ariaLabel={ariaLabel}
         ariaExpanded={ariaExpanded}
         ariaControls={ariaControls}

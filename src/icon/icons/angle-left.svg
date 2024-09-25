@@ -1,3 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <polyline points="12 1 5 8 12 15"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M11 2L5 8L11 14" class="stroke-linejoin-round"/>
 </svg>

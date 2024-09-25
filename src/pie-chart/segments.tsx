@@ -21,6 +21,7 @@ interface SegmentsProps<T> {
   segmentAriaRoleDescription?: string;
   onMouseDown: (datum: InternalChartDatum<T>) => void;
   onMouseOver: (datum: InternalChartDatum<T>) => void;
+  onTouchStart: () => void;
 }
 
 export default function Segments<T extends PieChartProps.Datum>({
@@ -33,6 +34,7 @@ export default function Segments<T extends PieChartProps.Datum>({
   segmentAriaRoleDescription,
   onMouseDown,
   onMouseOver,
+  onTouchStart,
 }: SegmentsProps<T>) {
   const i18n = useInternalI18n('pie-chart');
 
@@ -76,6 +78,7 @@ export default function Segments<T extends PieChartProps.Datum>({
         return (
           <g
             key={datum.data.index}
+            onTouchStart={() => onTouchStart()}
             onMouseDown={e => {
               onMouseDown(datum.data);
               e.preventDefault();

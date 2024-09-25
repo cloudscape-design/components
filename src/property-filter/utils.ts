@@ -90,14 +90,6 @@ export function matchTokenValue(
   return bestMatch;
 }
 
-export function getFormattedToken(token: InternalToken) {
-  const valueFormatter = token.property?.getValueFormatter(token.operator);
-  const propertyLabel = token.property && token.property.propertyLabel;
-  const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
-  const label = `${propertyLabel ?? ''} ${token.operator} ${tokenValue}`;
-  return { property: propertyLabel ?? '', operator: token.operator, value: tokenValue, label };
-}
-
 export function trimStart(source: string): string {
   let spacesLength = 0;
   for (let i = 0; i < source.length; i++) {
@@ -126,4 +118,34 @@ export function removeOperator(source: string, operator: string) {
 
 function startsWith(source: string, target: string): boolean {
   return source.indexOf(target) === 0;
+}
+
+interface AbstractToken {
+  operator: any;
+}
+
+interface AbstractTokenGroup<T extends AbstractToken> {
+  operation: any;
+  tokens: readonly (T | AbstractTokenGroup<T>)[];
+}
+
+/**
+ * Transforms query token groups to tokens (only taking 1 level of nesting).
+ */
+export function tokenGroupToTokens<T extends AbstractToken>(tokenGroups: readonly (T | AbstractTokenGroup<T>)[]): T[] {
+  const tokens: T[] = [];
+  for (const tokenOrGroup of tokenGroups) {
+    if ('operator' in tokenOrGroup) {
+      tokens.push(tokenOrGroup);
+    } else {
+      for (const nestedTokenOrGroup of tokenOrGroup.tokens) {
+        if ('operator' in nestedTokenOrGroup) {
+          tokens.push(nestedTokenOrGroup);
+        } else {
+          // Ignore deeply nested tokens
+        }
+      }
+    }
+  }
+  return tokens;
 }

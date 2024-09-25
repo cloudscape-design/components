@@ -9,12 +9,12 @@
 
 .root {
   display: flex;
-  flex-wrap: wrap;
   gap: awsui.$space-scaled-xs;
 
   &.horizontal {
     gap: awsui.$space-xs;
     flex-direction: row;
+    flex-wrap: wrap;
   }
   &.vertical {
     flex-direction: column;
@@ -32,11 +32,11 @@
   &.horizontal,
   &.vertical {
     display: flex;
-    flex-wrap: wrap;
     gap: awsui.$space-xs;
   }
   &.horizontal {
     flex-direction: row;
+    flex-wrap: wrap;
   }
   &.vertical {
     flex-direction: column;
@@ -59,7 +59,6 @@
 
 .toggle {
   @include styles.styles-reset;
-  @include styles.link-default('body-m');
 
   display: flex;
   align-items: center;
@@ -73,6 +72,8 @@
   // Icon svg has one pixel around it. We need to shift the button one
   // pixel to the left to vertically align it with the input field
   margin-inline-start: -1px;
+
+  @include styles.link-default('body-m');
 
   &:active,
   &:focus,

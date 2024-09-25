@@ -57,10 +57,11 @@ export default function TableLatencyMetricsPage() {
         (window as any).tableInteractionMetrics.push(props);
         console.log('tableInteraction:', props);
       },
+      taskCompletionData() {},
     });
 
     return () => {
-      setPerformanceMetrics({ tableInteraction: () => {} });
+      setPerformanceMetrics({ tableInteraction: () => {}, taskCompletionData: () => {} });
       delete (window as any).tableInteractionMetrics;
     };
   }, []);
@@ -98,7 +99,7 @@ export default function TableLatencyMetricsPage() {
           Refresh the table without user interaction
         </Button>
         <Table<Instance>
-          {...{ __analyticsMetadata: { instanceIdentifier: 'the-instances-table' } }}
+          analyticsMetadata={{ instanceIdentifier: 'the-instances-table' }}
           variant="full-page"
           {...collectionProps}
           onSortingChange={e => {

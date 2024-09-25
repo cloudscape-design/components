@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useLayoutEffect } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import times from 'lodash/times';
 
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
@@ -443,7 +443,7 @@ describe('column header content', () => {
   });
 });
 
-test('should set last column width to "auto" when container width exceeds total column width', () => {
+test('should set last column width to "auto" when container width exceeds total column width', async () => {
   const totalColumnsWidth = 150 + 300;
 
   const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
@@ -460,13 +460,19 @@ test('should set last column width to "auto" when container width exceeds total 
   });
 
   const { wrapper } = renderTable(<Table {...defaultProps} />);
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  await waitFor(() => {
+    expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  });
 
   fireCallbacks({ contentBoxWidth: totalColumnsWidth } as unknown as ContainerQueryEntry);
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', '300px']);
+  await waitFor(() => {
+    expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', '300px']);
+  });
 
   fireCallbacks({ contentBoxWidth: totalColumnsWidth + 1 } as unknown as ContainerQueryEntry);
-  expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  await waitFor(() => {
+    expect(wrapper.findColumnHeaders().map(w => w.getElement().style.width)).toEqual(['150px', 'auto']);
+  });
 });
 
 describe('resize in rtl', () => {

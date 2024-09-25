@@ -7,7 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-@import './motion';
+@use './motion';
 
 .root {
   @include styles.styles-reset;

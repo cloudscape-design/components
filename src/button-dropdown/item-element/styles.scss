@@ -61,6 +61,11 @@
   color: inherit;
   text-decoration: none;
 
+  &.link-style {
+    padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
+    @include styles.link-inline('body-m');
+  }
+
   &:focus {
     outline: none;
   }

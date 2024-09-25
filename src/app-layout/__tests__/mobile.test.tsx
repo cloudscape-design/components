@@ -2,8 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
-import { act } from 'react-dom/test-utils';
-import { within } from '@testing-library/react';
+import { act, within } from '@testing-library/react';
 import {
   describeEachAppLayout,
   isDrawerClosed,
@@ -18,12 +17,15 @@ import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
-import toolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
+import mobileToolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
+import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
-import { findUpUntil } from '../../../lib/components/internal/utils/dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import SideNavigation from '../../../lib/components/side-navigation';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
@@ -51,16 +53,31 @@ function AppLayoutWithControlledNavigation({
   );
 }
 
-describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ theme }) => {
+describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
   // In refactored Visual Refresh different styles are used compared to Classic
-  const mobileBarClassName = theme === 'refresh' ? testUtilsStyles['mobile-bar'] : toolbarStyles['mobile-bar'];
-  const drawerBarClassName =
-    theme === 'refresh'
-      ? visualRefreshRefactoredStyles['drawers-mobile-triggers-container']
-      : drawersMobileStyles['drawers-container'];
-  const blockBodyScrollClassName =
-    theme === 'refresh' ? visualRefreshRefactoredStyles['block-body-scroll'] : toolbarStyles['block-body-scroll'];
-  const unfocusableClassName = theme === 'refresh' ? visualRefreshRefactoredStyles.unfocusable : styles.unfocusable;
+  const mobileBarClassName = {
+    refresh: testUtilsStyles['mobile-bar'],
+    'refresh-toolbar': toolbarSkeletonStyles['toolbar-container'],
+    classic: mobileToolbarStyles['mobile-bar'],
+  }[theme];
+  const drawerBarClassName = {
+    refresh: visualRefreshRefactoredStyles['drawers-mobile-triggers-container'],
+    'refresh-toolbar': toolbarStyles['drawers-trigger-content'],
+    classic: drawersMobileStyles['drawers-container'],
+  }[theme];
+  const blockBodyScrollClassName = {
+    refresh: visualRefreshRefactoredStyles['block-body-scroll'],
+    'refresh-toolbar': toolbarStyles['block-body-scroll'],
+    classic: mobileToolbarStyles['block-body-scroll'],
+  }[theme];
+  const unfocusableClassName = {
+    refresh: visualRefreshRefactoredStyles.unfocusable,
+    'refresh-toolbar': toolbarSkeletonStyles['unfocusable-mobile'],
+    classic: styles.unfocusable,
+  }[theme];
+
+  const triggerBadgeClassName =
+    theme === 'refresh-toolbar' ? toolbarTriggerButtonStyles['trigger-badge-wrapper'] : iconStyles.badge;
   const isUnfocusable = (element: HTMLElement) =>
     !!findUpUntil(element, current => current.classList.contains(unfocusableClassName));
 
@@ -70,8 +87,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
   test('Renders closed drawer state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
     expect(document.body).not.toHaveClass(blockBodyScrollClassName);
-    expect(wrapper.findNavigation()).toBeTruthy();
-    expect(wrapper.findTools()).toBeTruthy();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+    expect(isDrawerClosed(wrapper.findTools())).toBe(true);
     expect(wrapper.findNavigationToggle().getElement()).toBeEnabled();
     expect(wrapper.findToolsToggle().getElement()).toBeEnabled();
   });
@@ -109,8 +126,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
 
   test('renders open navigation state', () => {
     const { wrapper } = renderComponent(<AppLayout navigationOpen={true} onNavigationChange={() => {}} />);
-    expect(wrapper.findNavigation()).toBeTruthy();
-    expect(wrapper.findTools()).toBeTruthy();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+    expect(isDrawerClosed(wrapper.findTools())).toBe(true);
     expect(document.body).toHaveClass(blockBodyScrollClassName);
     expect(wrapper.findNavigationToggle().getElement()).toBeDisabled();
     expect(wrapper.findToolsToggle().getElement()).toBeDisabled();
@@ -119,8 +136,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
   test('renders open tools state', () => {
     const { wrapper } = renderComponent(<AppLayout toolsOpen={true} onToolsChange={() => {}} />);
     expect(document.body).toHaveClass(blockBodyScrollClassName);
-    expect(wrapper.findNavigation()).toBeTruthy();
-    expect(wrapper.findTools()).toBeTruthy();
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+    expect(isDrawerClosed(wrapper.findTools())).toBe(false);
     expect(wrapper.findNavigationToggle().getElement()).toBeDisabled();
     expect(wrapper.findToolsToggle().getElement()).toBeDisabled();
   });
@@ -130,8 +147,8 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
       <AppLayout activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
     );
     expect(document.body).toHaveClass(blockBodyScrollClassName);
-    expect(wrapper.findNavigation()).toBeTruthy();
-    expect(wrapper.findTools()).toBeFalsy(); // no tools rendered in drawers mode
+    expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+    expect(isDrawerClosed(wrapper.findTools())).toBe(true);
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
 
@@ -328,6 +345,16 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
     });
   });
 
+  test('Navigation Toggle is enabled with toolsOpen + toolsHide', () => {
+    const { wrapper } = renderComponent(<AppLayout toolsHide={true} toolsOpen={true} navigation="nav content" />);
+    expect(wrapper.findNavigationToggle().getElement()).toBeEnabled();
+  });
+
+  test('Tools Toggle is enabled with navigationOpen + navigationHide', () => {
+    const { wrapper } = renderComponent(<AppLayout navigationHide={true} navigationOpen={true} tools="nav content" />);
+    expect(wrapper.findToolsToggle().getElement()).toBeEnabled();
+  });
+
   test('does not pass min and max width to the content', () => {
     const { wrapper } = renderComponent(<AppLayout minContentWidth={120} maxContentWidth={800} />);
     expect(wrapper.find('[style*="max-width"')).toBeNull();
@@ -370,7 +397,16 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
     test('content and toolbar is unfocusable when navigation is open', () => {
       const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} navigationOpen={true} />);
 
-      if (isUsingGridLayout) {
+      if (theme === 'refresh-toolbar') {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.tools)!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles['main-landmark'])!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.navigation)!.getElement()).not.toHaveClass(
+          unfocusableClassName
+        );
+      } else if (isUsingGridLayout) {
         // In refactored Visual Refresh we make tools-container unfocusable. This is needed
         // because of CSS animations the tools-container is not set to `display: none;` anymore.
         expect(isUnfocusable(wrapper.findTools().getElement())).toBe(true);
@@ -383,7 +419,9 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
         );
       } else {
         expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(2);
-        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(mobileToolbarStyles['mobile-bar'])?.getElement()).toHaveClass(
+          unfocusableClassName
+        );
         expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
       }
     });
@@ -391,7 +429,18 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
     test('content and toolbar is unfocusable when tools is open', () => {
       const { wrapper, isUsingGridLayout } = renderComponent(<AppLayout {...props} toolsOpen={true} />);
 
-      if (isUsingGridLayout) {
+      if (theme === 'refresh-toolbar') {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.tools)!.getElement()).not.toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles['main-landmark'])!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.navigation)!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+      } else if (isUsingGridLayout) {
         // In refactored Visual Refresh we make navigation-container unfocusable. This is needed
         // because of CSS animations the tools-container is not set to `display: none;` anymore.
         expect(isUnfocusable(wrapper.findTools().getElement())).toBe(false);
@@ -404,7 +453,9 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
         ).toHaveClass(unfocusableClassName);
       } else {
         expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
-        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(mobileToolbarStyles['mobile-bar'])?.getElement()).toHaveClass(
+          unfocusableClassName
+        );
         expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
       }
     });
@@ -414,7 +465,18 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
         <AppLayout {...props} activeDrawerId={testDrawer.id} drawers={[testDrawer]} onDrawerChange={() => {}} />
       );
 
-      if (isUsingGridLayout) {
+      if (theme === 'refresh-toolbar') {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.tools)!.getElement()).not.toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles['main-landmark'])!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.navigation)!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+      } else if (isUsingGridLayout) {
         expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(6);
         expect(wrapper.findByClassName(testUtilsStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
         expect(wrapper.findByClassName(testUtilsStyles.content)!.getElement()).toHaveClass(unfocusableClassName);
@@ -423,7 +485,9 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
         ).toHaveClass(unfocusableClassName);
       } else {
         expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
-        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(mobileToolbarStyles['mobile-bar'])!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
         expect(wrapper.findByClassName(styles['layout-main'])!.getElement()).toHaveClass(unfocusableClassName);
       }
     });
@@ -433,12 +497,25 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
         <AppLayout {...props} navigationOpen={true} toolsOpen={true} />
       );
 
-      if (isUsingGridLayout) {
+      if (theme === 'refresh-toolbar') {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.tools)!.getElement()).not.toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles['main-landmark'])!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.navigation)!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+      } else if (isUsingGridLayout) {
         expect(isUnfocusable(wrapper.findTools().getElement())).toBe(false);
         expect(isUnfocusable(wrapper.findNavigation().getElement())).toBe(true);
       } else {
         expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
-        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(mobileToolbarStyles['mobile-bar'])?.getElement()).toHaveClass(
+          unfocusableClassName
+        );
         expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
       }
     });
@@ -447,23 +524,40 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
       const { wrapper, isUsingGridLayout } = renderComponent(
         <AppLayout {...props} navigationOpen={true} toolsOpen={true} toolsHide={true} />
       );
-      if (isUsingGridLayout) {
+      if (theme === 'refresh-toolbar') {
+        expect(wrapper.findAllByClassName(unfocusableClassName)).toHaveLength(2);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.tools)!.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(toolbarSkeletonStyles['main-landmark'])!.getElement()).toHaveClass(
+          unfocusableClassName
+        );
+        expect(wrapper.findByClassName(toolbarSkeletonStyles.navigation)!.getElement()).not.toHaveClass(
+          unfocusableClassName
+        );
+      } else if (isUsingGridLayout) {
         expect(isUnfocusable(wrapper.findNavigation().getElement())).toBe(false);
       } else {
         expect(wrapper.findAllByClassName(styles.unfocusable)).toHaveLength(2);
-        expect(wrapper.findByClassName(toolbarStyles['mobile-bar'])?.getElement()).toHaveClass(unfocusableClassName);
+        expect(wrapper.findByClassName(mobileToolbarStyles['mobile-bar'])?.getElement()).toHaveClass(
+          unfocusableClassName
+        );
         expect(wrapper.findByClassName(styles['layout-main'])?.getElement()).toHaveClass(unfocusableClassName);
       }
     });
 
     test("ignores programatically opened navigation when it's hidden", () => {
       const { wrapper } = renderComponent(<AppLayout {...props} navigationOpen={true} navigationHide={true} />);
-      expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
+      expect(isDrawerClosed(wrapper.findNavigation())).toBe(true);
+      if (theme !== 'refresh-toolbar') {
+        expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
+      }
     });
 
     test("ignores programatically opened tools when it's hidden", () => {
       const { wrapper } = renderComponent(<AppLayout {...props} toolsOpen={true} toolsHide={true} />);
-      expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
+      expect(isDrawerClosed(wrapper.findTools())).toBe(true);
+      if (theme !== 'refresh-toolbar') {
+        expect(wrapper.findByClassName(unfocusableClassName)).toBeFalsy();
+      }
     });
   });
 
@@ -477,7 +571,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh'], sizes: ['mobile'] }, ({ 
 
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
-    expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(iconStyles.badge);
+    expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(triggerBadgeClassName);
   });
 
   test('renders roles only when aria labels are not provided', () => {

@@ -28,9 +28,9 @@ test('registers and unregisters multiple instances', async () => {
   const cleanupSecond = controller.register(undefined, onRegisterSecond);
   expect(controller.getStateForTesting().registrations).toHaveLength(2);
   expect(onRegisterFirst).toHaveBeenCalledTimes(1);
-  expect(onRegisterFirst).toHaveBeenCalledWith({ type: 'secondary', update: expect.any(Function) });
+  expect(onRegisterFirst).toHaveBeenCalledWith({ type: 'primary', discoveredProps: [{}] });
   expect(onRegisterSecond).toHaveBeenCalledTimes(1);
-  expect(onRegisterSecond).toHaveBeenCalledWith({ type: 'primary', discoveredProps: [{}] });
+  expect(onRegisterSecond).toHaveBeenCalledWith({ type: 'secondary', update: expect.any(Function) });
 
   onRegisterFirst.mockClear();
   onRegisterSecond.mockClear();
@@ -50,13 +50,13 @@ test('delivers property updates from secondary to primary instance', async () =>
   const controller = new AppLayoutWidgetController();
   controller.register(undefined, onRegisterFirst);
   controller.register(undefined, onRegisterSecond);
-  onRegisterSecond.mockClear();
+  onRegisterFirst.mockClear();
 
-  onRegisterFirst.mock.lastCall[0].update({ foo: '123' });
+  onRegisterSecond.mock.lastCall[0].update({ foo: '123' });
   await delay();
 
-  expect(onRegisterSecond).toHaveBeenCalledTimes(1);
-  expect(onRegisterSecond).toHaveBeenCalledWith({ type: 'primary', discoveredProps: [{ foo: '123' }] });
+  expect(onRegisterFirst).toHaveBeenCalledTimes(1);
+  expect(onRegisterFirst).toHaveBeenCalledWith({ type: 'primary', discoveredProps: [{ foo: '123' }] });
 });
 
 test('delivers property updates from multiple secondary instances', async () => {
@@ -68,15 +68,15 @@ test('delivers property updates from multiple secondary instances', async () => 
   controller.register(undefined, state => (stateSecond = state));
   controller.register(undefined, state => (stateThird = state));
 
-  expect(stateFirst.type).toEqual('secondary');
+  expect(stateFirst.type).toEqual('primary');
   expect(stateSecond.type).toEqual('secondary');
-  expect(stateThird.type).toEqual('primary');
+  expect(stateThird.type).toEqual('secondary');
 
-  stateFirst.update({ foo: '123' });
-  stateSecond.update({ bar: '456' });
+  stateSecond.update({ foo: '123' });
+  stateThird.update({ bar: '456' });
   await delay();
 
-  expect(stateThird).toEqual({ type: 'primary', discoveredProps: [{ foo: '123' }, { bar: '456' }] });
+  expect(stateFirst).toEqual({ type: 'primary', discoveredProps: [{ foo: '123' }, { bar: '456' }] });
 });
 
 test('when primary instance is unregistered, the next becomes primary', async () => {
@@ -84,18 +84,20 @@ test('when primary instance is unregistered, the next becomes primary', async ()
   let stateSecond: any;
   let stateThird: any;
   const controller = new AppLayoutWidgetController();
-  controller.register(undefined, state => (stateFirst = state));
+  const cleanupFirst = controller.register(undefined, state => (stateFirst = state));
   controller.register(undefined, state => (stateSecond = state));
-  const cleanupLast = controller.register(undefined, state => (stateThird = state));
+  controller.register(undefined, state => (stateThird = state));
 
-  expect(stateThird.type).toEqual('primary');
+  expect(stateFirst.type).toEqual('primary');
+  expect(stateThird.type).toEqual('secondary');
 
-  cleanupLast();
+  cleanupFirst();
   expect(stateSecond.type).toEqual('secondary');
+  expect(stateThird.type).toEqual('secondary');
 
   await delay();
   expect(stateSecond.type).toEqual('primary');
-  expect(stateFirst.type).toEqual('secondary');
+  expect(stateThird.type).toEqual('secondary');
 });
 
 test('supports forced primary registration', () => {

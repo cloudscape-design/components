@@ -8,7 +8,7 @@
 
 .alert {
   @include styles.with-motion {
-    @include styles.animation-fade-in;
     animation: awsui-motion-fade-in awsui.$motion-duration-show-paced awsui.$motion-easing-show-paced;
+    @include styles.animation-fade-in;
   }
 }

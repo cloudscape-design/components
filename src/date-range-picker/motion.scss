@@ -8,8 +8,8 @@
 
 .calendar {
   @include styles.with-motion {
-    @include styles.animation-fade-in-0;
     animation: awsui-motion-fade-in-0 awsui.$motion-duration-show-quick awsui.$motion-easing-show-quick;
     animation-fill-mode: both;
+    @include styles.animation-fade-in-0;
   }
 }

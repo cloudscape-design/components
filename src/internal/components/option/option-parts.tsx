@@ -7,6 +7,7 @@ import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
 import HighlightMatch from './highlight-match';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 interface LabelProps {
@@ -16,7 +17,7 @@ interface LabelProps {
   triggerVariant: boolean;
 }
 export const Label = ({ label, prefix, highlightText, triggerVariant }: LabelProps) => (
-  <span className={clsx(styles.label, triggerVariant && styles['trigger-variant'])}>
+  <span className={clsx(styles.label, analyticsSelectors.label, triggerVariant && styles['trigger-variant'])}>
     {prefix && (
       <span className={clsx(styles['label-prefix'], triggerVariant && styles['trigger-variant'])}>{prefix} </span>
     )}

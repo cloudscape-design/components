@@ -18,7 +18,7 @@ const renderWithTrigger = (props: ButtonDropdownProps, triggerName: string) => {
 };
 
 const items: ButtonDropdownProps.Items = [
-  { id: 'i1', text: 'item1', description: 'Item 1 description' },
+  { id: 'i1', text: 'item1', description: 'Item 1 description', ariaLabel: 'item1 (aria)' },
   { id: 'i2', text: 'item2', description: 'Item 2 description', checked: true, itemType: 'checkbox' },
   {
     text: 'category1',
@@ -162,6 +162,14 @@ it('sets aria-owns attribute when dropdown is open and expandToViewport is activ
 it('can set ariaLabel', () => {
   const wrapper = renderButtonDropdown({ items, ariaLabel: 'Some dropdown' });
   expect(wrapper.findNativeButton().getElement()).toHaveAttribute('aria-label', 'Some dropdown');
+});
+
+it('can set item ariaLabel', () => {
+  const wrapper = renderButtonDropdown({ items });
+  wrapper.openDropdown();
+
+  expect(wrapper.findItems()[0].find('[role="menuitem"]')!.getElement().textContent).toBe('item1');
+  expect(wrapper.findItems()[0].find('[role="menuitem"]')!.getElement()).toHaveAccessibleName('item1 (aria)');
 });
 
 it('a11y: default', async () => {

@@ -1,5 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <path class="stroke-linejoin-round" d="M8,2.16667c-3.5,0-3.5,4.66666-3.5,4.66666L1,11.5H15L11.5,6.83333S11.5,2.16667,8,2.16667Z"/>
-  <path class="stroke-linejoin-round" d="M5.66667,11.5v1.16667a2.33333,2.33333,0,0,0,4.66666,0V11.5"/>
-  <line class="stroke-linecap-round" x1="8" y1="1" x2="8" y2="2.16667"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M14 12H2C1.61 12 1.36999 11.56 1.58999 11.24L4 8V5C4 2.79 5.79 1 8 1C10.21 1 12 2.79 12 5V8L14.41 11.24C14.63 11.57 14.39 12 14 12Z" class="stroke-linejoin-round"/>
+<path d="M6 13C6 14.1 6.9 15 8 15C9.1 15 10 14.1 10 13" class="stroke-linejoin-round"/>
 </svg>

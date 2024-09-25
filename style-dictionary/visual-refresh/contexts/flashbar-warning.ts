@@ -21,6 +21,11 @@ export const sharedTokens: StyleDictionary.ColorsDictionary = {
   colorTextInteractiveInvertedDefault: '{colorGrey600}',
   colorTextInteractiveInvertedHover: '{colorGrey900}',
 
+  // Progress bars in flashbars should be using variant="flash" (which uses a white background by default).
+  // For the warning state, it should use colorGrey900.
+  colorBackgroundProgressBarContentInFlash: '{colorGrey900}',
+  colorBackgroundProgressBarLayoutInFlash: '{colorGreyOpaque10}',
+
   // Expandable sections
   colorTextExpandableSectionDefault: '{colorTextNotificationYellow}',
   colorTextExpandableSectionHover: '{colorTextNotificationYellow}',

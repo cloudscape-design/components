@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 
 import PropertyFilter from '../../../lib/components/property-filter';
-import { FilteringProperty, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
+import { FilteringProperty, I18nStrings, InternalFilteringProperty, PropertyFilterProps, Token } from '../interfaces';
 
-export const i18nStrings = {
+export const i18nStrings: I18nStrings = {
   dismissAriaLabel: 'Dismiss',
 
   groupValuesText: 'Values',
@@ -37,10 +37,69 @@ export const i18nStrings = {
   tokenLimitShowFewer: 'Show fewer',
   clearFiltersText: 'Clear filters',
   tokenOperatorAriaLabel: 'Boolean Operator',
-  removeTokenButtonAriaLabel: (token: Token) =>
-    'Remove token ' + token.propertyKey + ' ' + token.operator + ' ' + token.value,
+  clearAriaLabel: 'clear',
   enteredTextLabel: (text: string) => `Use: "${text}"`,
-} as const;
+
+  formatToken: token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
+  removeTokenButtonAriaLabel: (token: Token) =>
+    'Remove token ' + token.propertyKey + ' ' + formatOperator(token.operator) + ' ' + token.value,
+
+  groupEditAriaLabel: group =>
+    'Edit filter, ' +
+    group.tokens
+      .map(token => `${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`)
+      .join(` ${group.operationLabel} `),
+  tokenEditorTokenActionsAriaLabel: token =>
+    `Remove actions, ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
+  tokenEditorTokenRemoveAriaLabel: token =>
+    `Remove filter, ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value}`,
+  tokenEditorTokenRemoveLabel: 'Remove filter',
+  tokenEditorTokenRemoveFromGroupLabel: 'Remove filter from group',
+  tokenEditorAddNewTokenLabel: 'Add new filter',
+  tokenEditorAddTokenActionsAriaLabel: 'Add filter actions',
+  tokenEditorAddExistingTokenAriaLabel: token =>
+    `Add filter ${token.propertyLabel} ${formatOperator(token.operator)} ${token.value} to group`,
+  tokenEditorAddExistingTokenLabel: token =>
+    `Add filter ${token.propertyLabel} ${token.operator} ${token.value} to group`,
+};
+
+export const providedI18nStrings = {
+  autosuggest: {
+    enteredTextLabel: 'Use: "{value}"',
+  },
+  popover: {
+    dismissAriaLabel: 'Dismiss',
+  },
+  'property-filter': {
+    'i18nStrings.editTokenHeader': 'Edit filter',
+    'i18nStrings.propertyText': 'Property',
+    'i18nStrings.operatorText': 'Operator',
+    'i18nStrings.valueText': 'Value',
+    'i18nStrings.cancelActionText': 'Cancel',
+    'i18nStrings.applyActionText': 'Apply',
+    'i18nStrings.formatToken': '{token__propertyLabel} {token__operator} {token__value}',
+    'i18nStrings.tokenEditorTokenActionsAriaLabel': 'Remove actions, {token__formattedText}',
+    'i18nStrings.tokenEditorTokenRemoveAriaLabel': 'Remove filter, {token__formattedText}',
+    'i18nStrings.tokenEditorTokenRemoveLabel': 'Remove filter',
+    'i18nStrings.tokenEditorTokenRemoveFromGroupLabel': 'Remove filter from group',
+    'i18nStrings.tokenEditorAddNewTokenLabel': 'Add new filter',
+    'i18nStrings.tokenEditorAddTokenActionsAriaLabel': 'Add filter actions',
+    'i18nStrings.tokenEditorAddExistingTokenAriaLabel': 'Add filter {token__formattedText} to group',
+    'i18nStrings.tokenEditorAddExistingTokenLabel':
+      'Add filter {token__propertyLabel} {token__operator} {token__value} to group',
+  },
+};
+
+function formatOperator(operator: string) {
+  switch (operator) {
+    case '=':
+      return 'equals';
+    case '!=':
+      return 'does_not_equal';
+    default:
+      return operator;
+  }
+}
 
 export const createDefaultProps = (
   filteringProperties: PropertyFilterProps['filteringProperties'],

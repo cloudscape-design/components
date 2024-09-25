@@ -45,6 +45,7 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   autoWidth: (value: number) => void;
   fitHeight?: boolean;
   minHeight: number;
+  isRTL?: boolean;
 }
 
 export default memo(ChartContainer) as typeof ChartContainer;
@@ -74,6 +75,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
   xTickFormatter = deprecatedXTickFormatter,
   yTickFormatter = deprecatedYTickFormatter,
   detailTotalFormatter = deprecatedDetailTotalFormatter,
+  isRTL,
 }: ChartContainerProps<T>) {
   const [inlineStartLabelsWidth, setInlineStartLabelsWidth] = useState(0);
   const [containerWidth, containerWidthRef] = useContainerWidth(DEFAULT_CHART_WIDTH);
@@ -182,6 +184,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
             ariaRoleDescription={xAxisAriaRoleDescription}
             offsetLeft={inlineStartLabelsWidth + BLOCK_END_LABELS_OFFSET}
             offsetRight={BLOCK_END_LABELS_OFFSET}
+            isRTL={isRTL}
           />
 
           <EmphasizedBaseline width={model.width} height={model.height} scale={model.computed.yScale} />

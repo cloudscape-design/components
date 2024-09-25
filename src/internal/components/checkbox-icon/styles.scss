@@ -17,6 +17,11 @@
     fill: awsui.$color-background-control-default;
     stroke: awsui.$color-border-control-default;
     stroke-width: styles.$control-border-width;
+    @include styles.with-motion {
+      transition:
+        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
+        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+    }
     &-checked,
     &-indeterminate {
       fill: awsui.$color-background-control-checked;
@@ -26,11 +31,6 @@
     &-readonly {
       fill: awsui.$color-background-control-disabled;
       stroke: awsui.$color-border-control-disabled;
-    }
-    @include styles.with-motion {
-      transition:
-        fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
-        stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
     }
   }
 

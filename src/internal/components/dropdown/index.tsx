@@ -31,28 +31,35 @@ import { DropdownProps } from './interfaces';
 import styles from './styles.css.js';
 
 interface DropdownContainerProps {
+  triggerRef: React.RefObject<HTMLElement>;
   children?: React.ReactNode;
-  renderWithPortal?: boolean;
+  renderWithPortal: boolean;
   id?: string;
   referrerId?: string;
   open?: boolean;
 }
 
-const DropdownContainer = ({ children, renderWithPortal = false, id, referrerId, open }: DropdownContainerProps) => {
-  if (renderWithPortal) {
-    if (open) {
-      return createPortal(
-        <div id={id} data-awsui-referrer-id={referrerId}>
-          {children}
-        </div>,
-        document.body
-      );
-    } else {
-      return null;
-    }
-  } else {
+const DropdownContainer = ({
+  triggerRef,
+  children,
+  renderWithPortal,
+  id,
+  referrerId,
+  open,
+}: DropdownContainerProps) => {
+  if (!renderWithPortal) {
     return <>{children}</>;
   }
+  if (!open) {
+    return null;
+  }
+  const currentDocument = triggerRef.current?.ownerDocument ?? document;
+  return createPortal(
+    <div id={id} data-awsui-referrer-id={referrerId}>
+      {children}
+    </div>,
+    currentDocument.body
+  );
 };
 
 interface TransitionContentProps {
@@ -362,8 +369,11 @@ const Dropdown = ({
     if (!open) {
       return;
     }
-    const clickListener = (e: MouseEvent) => {
-      if (!nodeBelongs(dropdownRef.current, e.target) && !nodeBelongs(triggerRef.current, e.target)) {
+    const clickListener = (event: MouseEvent) => {
+      // Since the listener is registered on the window, `event.target` will incorrectly point at the
+      // shadow root if the component is rendered inside shadow DOM.
+      const target = event.composedPath()[0];
+      if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
         fireNonCancelableEvent(onDropdownClose);
       }
     };
@@ -431,6 +441,7 @@ const Dropdown = ({
       />
 
       <DropdownContainer
+        triggerRef={triggerRef}
         renderWithPortal={expandToViewport && !interior}
         id={dropdownId}
         referrerId={referrerId}

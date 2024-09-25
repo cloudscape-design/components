@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-  <circle class="stroke-linejoin-round" cx="8" cy="8" r="7"/>
-  <polyline class="stroke-linecap-square" points="5 8 7 10 10.521 6.479"/>
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<circle cx="8" cy="8" r="7" />
+<path d="M4.5 7.5L7 10L11 5" class="stroke-linejoin-round"/>
 </svg>

@@ -13,7 +13,7 @@ jest.mock('../../internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(true),
 }));
 
-jest.mock('../../internal/utils/dom', () => ({
+jest.mock('@cloudscape-design/component-toolkit/dom', () => ({
   findUpUntil: jest.fn(),
 }));
 

@@ -9,10 +9,10 @@
   $flashbar-translate-y-content: -8px;
   $flashbar-translate-y: -20px;
 
-  $flash-icon-transition-delay: calc(tokens.$motion-duration-refresh-only-slow - 50ms);
-  $flash-header-transition-delay: calc(tokens.$motion-duration-refresh-only-slow + 10ms);
-  $flash-content-transition-delay: calc(tokens.$motion-duration-refresh-only-slow + 10ms);
-  $flash-button-wrapper-transition-delay: calc(tokens.$motion-duration-refresh-only-slow * 2 - 100ms);
+  $flash-icon-transition-delay: calc(tokens.$motion-duration-complex - 50ms);
+  $flash-header-transition-delay: calc(tokens.$motion-duration-complex + 10ms);
+  $flash-content-transition-delay: calc(tokens.$motion-duration-complex + 10ms);
+  $flash-button-wrapper-transition-delay: calc(tokens.$motion-duration-complex * 2 - 100ms);
 
   &.enter {
     @include styles.with-motion {
@@ -37,8 +37,8 @@
   &.entering {
     @include styles.with-motion {
       transition-property: transform, opacity;
-      transition-duration: tokens.$motion-duration-refresh-only-slow;
-      transition-timing-function: tokens.$motion-easing-refresh-only-c;
+      transition-duration: tokens.$motion-duration-complex;
+      transition-timing-function: tokens.$motion-easing-expressive;
       opacity: 1;
       transform: translateY(0);
     }
@@ -55,8 +55,8 @@
         opacity: 1;
         transform: translateY(0);
         transition-property: transform, opacity;
-        transition-duration: tokens.$motion-duration-refresh-only-slow;
-        transition-timing-function: tokens.$motion-easing-refresh-only-c;
+        transition-duration: tokens.$motion-duration-complex;
+        transition-timing-function: tokens.$motion-easing-expressive;
       }
     }
     > .flash-icon {
@@ -87,8 +87,8 @@
       opacity: 0;
       transform: translateY($flashbar-translate-y);
       transition-property: transform, opacity;
-      transition-duration: tokens.$motion-duration-refresh-only-fast;
-      transition-timing-function: tokens.$motion-easing-refresh-only-c;
+      transition-duration: tokens.$motion-duration-responsive;
+      transition-timing-function: tokens.$motion-easing-expressive;
     }
   }
 }

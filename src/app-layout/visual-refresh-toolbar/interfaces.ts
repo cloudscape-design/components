@@ -6,7 +6,7 @@ import React from 'react';
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
-import { FocusControlState } from '../utils/use-focus-control';
+import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
 
@@ -29,18 +29,27 @@ export interface AppLayoutInternals {
   activeDrawerSize: number;
   minDrawerSize: number;
   maxDrawerSize: number;
+  minGlobalDrawersSizes: Record<string, number>;
+  maxGlobalDrawersSizes: Record<string, number>;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusControl: FocusControlState;
+  globalDrawersFocusControl: FocusControlMultipleStates;
+  activeGlobalDrawersIds: ReadonlyArray<string>;
+  activeGlobalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  activeGlobalDrawersSizes: Record<string, number>;
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;
   verticalOffsets: VerticalLayoutOutput;
+  drawersOpenQueue: ReadonlyArray<string>;
   setNotificationsHeight: (height: number) => void;
   setToolbarHeight: (height: number) => void;
   onSplitPanelToggle: () => void;
   onNavigationToggle: (open: boolean) => void;
   onActiveDrawerChange: (newDrawerId: string | null) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
+  onActiveGlobalDrawersChange: (newDrawerId: string) => void;
 }

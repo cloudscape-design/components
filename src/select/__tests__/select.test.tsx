@@ -560,4 +560,33 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     const { wrapper } = renderSelect({ autoFocus: true });
     expect(wrapper.findTrigger().getElement()).toHaveFocus();
   });
+
+  test('group options can have description, label tag, tags', () => {
+    const { wrapper } = renderSelect({
+      options: [
+        {
+          label: 'First category',
+          value: 'group1',
+          options: [{ value: '1.1' }],
+        },
+        {
+          label: 'Second category',
+          value: 'group2',
+          description: 'Description',
+          labelTag: 'Label tag',
+          tags: ['Tag 1', 'Tag 2'],
+          options: [{ value: '2.1' }],
+        },
+      ],
+    });
+    wrapper.openDropdown();
+
+    const groupOption = wrapper.findDropdown({ expandToViewport }).findOptionByValue('group2')!;
+
+    expect(groupOption.findLabel()!.getElement().textContent).toBe('Second category');
+    expect(groupOption.findDescription()!.getElement().textContent).toBe('Description');
+    expect(groupOption.findLabelTag()!.getElement().textContent).toBe('Label tag');
+    expect(groupOption.findTags()![0].getElement().textContent).toBe('Tag 1');
+    expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
+  });
 });

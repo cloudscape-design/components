@@ -18,28 +18,31 @@ describe('Collection preferences', () => {
   test(
     'renders no columns if there is only custom content',
     setupTest(async page => {
-      const wrapper = createWrapper().findCollectionPreferences('.cp-3');
-      await page.openCollectionPreferencesModal(wrapper);
+      page.wrapper = createWrapper().findCollectionPreferences('.cp-3');
+
+      await page.openCollectionPreferencesModal();
 
       // The content is small enough so that it doesn't need column layout
-      const columnLayout = wrapper.findModal().findContent().findColumnLayout();
+      const columnLayout = page.wrapper.findModal().findContent().findColumnLayout();
       await expect(page.isExisting(columnLayout.toSelector())).resolves.toBe(false);
 
-      await expect(page.isExisting(wrapper.findModal().findWrapLinesPreference().toSelector())).resolves.toBe(true);
+      await expect(page.isExisting(page.wrapper.findModal().findWrapLinesPreference().toSelector())).resolves.toBe(
+        true
+      );
     })
   );
 
   test(
     'renders no columns if there is only visible content preferences',
     setupTest(async page => {
-      const wrapper = createWrapper().findCollectionPreferences('.cp-4');
-      await page.openCollectionPreferencesModal(wrapper);
+      page.wrapper = createWrapper().findCollectionPreferences('.cp-4');
+      await page.openCollectionPreferencesModal();
 
       // The content is small enough so that it doesn't need column layout
-      const columnLayout = wrapper.findModal().findContent().findColumnLayout();
+      const columnLayout = page.wrapper.findModal().findContent().findColumnLayout();
       await expect(page.isExisting(columnLayout.toSelector())).resolves.toBe(false);
 
-      await expect(page.isExisting(wrapper.findModal().findVisibleContentPreference().toSelector())).resolves.toBe(
+      await expect(page.isExisting(page.wrapper.findModal().findVisibleContentPreference().toSelector())).resolves.toBe(
         true
       );
     })
@@ -48,10 +51,10 @@ describe('Collection preferences', () => {
   test(
     'renders 2 columns if all preferences are present',
     setupTest(async page => {
-      const wrapper = createWrapper().findCollectionPreferences('.cp-1');
-      await page.openCollectionPreferencesModal(wrapper);
+      page.wrapper = createWrapper().findCollectionPreferences('.cp-1');
+      await page.openCollectionPreferencesModal();
 
-      const columnLayout = wrapper.findModal().findContent().findColumnLayout();
+      const columnLayout = page.wrapper.findModal().findContent().findColumnLayout();
       await expect(page.isExisting(columnLayout.findColumn(1).toSelector())).resolves.toBe(true);
       await expect(page.isExisting(columnLayout.findColumn(2).toSelector())).resolves.toBe(true);
       await expect(page.isExisting(columnLayout.findColumn(3).toSelector())).resolves.toBe(false);

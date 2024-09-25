@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createContext, RefObject, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
-import { findUpUntil } from '../internal/utils/dom';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
 
 interface StickyHeaderContextProps {

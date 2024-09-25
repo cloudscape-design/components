@@ -51,7 +51,12 @@
   }
 }
 
-.header {
+.hidden {
+  display: none;
+}
+
+.header,
+.header-replacement {
   font-weight: styles.$font-weight-bold;
 }
 
@@ -111,7 +116,8 @@
   }
 }
 
-.content {
+.content,
+.content-replacement {
   /* used in test-utils */
 }
 

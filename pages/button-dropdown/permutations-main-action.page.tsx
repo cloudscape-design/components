@@ -32,6 +32,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
       { ...launchInstanceItem },
       { ...launchInstanceItem, disabled: true },
       { ...launchInstanceItem, loading: true, loadingText: 'Loading' },
+      { iconName: 'add-plus', ariaLabel: 'Add resource' },
     ],
     items: [
       [
@@ -42,6 +43,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
     disabled: [false, true],
     loading: [false, true],
     variant: ['primary', 'normal'],
+    children: ['Trigger', null],
   },
   {
     mainAction: [{ ...viewInstancesItem }, { ...viewInstancesItem, disabled: true }],

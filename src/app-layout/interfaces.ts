@@ -3,11 +3,21 @@
 import React from 'react';
 
 import { IconProps } from '../icon/interfaces';
+import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { SomeRequired } from '../internal/types';
 
 export interface AppLayoutProps extends BaseComponentProps {
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` -  Identifies the type of flow represented by the component.
+   * **Note:** This API is currently experimental.
+   * @analytics
+   */
+  analyticsMetadata?: AppLayoutProps.AnalyticsMetadata;
+
   /**
    * Determines the default behavior of the component based on some predefined page layouts.
    * Individual properties will always take precedence over the default coming from the content type.
@@ -32,7 +42,7 @@ export interface AppLayoutProps extends BaseComponentProps {
    * - `iconSvg` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
    *
    * #### DrawerAriaLabels
-   * - `drawerName` (string) - Label for the drawer itself.
+   * - `drawerName` (string) - Label for the drawer itself, and for the drawer trigger button tooltip text.
    * - `closeButton` (string) - (Optional) Label for the close button.
    * - `triggerButton` (string) - (Optional) Label for the trigger button.
    * - `resizeHandle` (string) - (Optional) Label for the resize handle.
@@ -247,6 +257,11 @@ export interface AppLayoutProps extends BaseComponentProps {
 }
 
 export namespace AppLayoutProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+  }
+
   export type ContentType = 'default' | 'form' | 'table' | 'cards' | 'wizard' | 'dashboard';
 
   export interface Ref {
@@ -283,7 +298,7 @@ export namespace AppLayoutProps {
   export interface Drawer {
     id: string;
     content: React.ReactNode;
-    trigger: {
+    trigger?: {
       iconName?: IconProps.Name;
       iconSvg?: React.ReactNode;
     };
@@ -292,6 +307,7 @@ export namespace AppLayoutProps {
     resizable?: boolean;
     defaultSize?: number;
     onResize?: NonCancelableEventHandler<{ size: number }>;
+    preserveInactiveContent?: boolean;
   }
 
   export interface DrawerAriaLabels {

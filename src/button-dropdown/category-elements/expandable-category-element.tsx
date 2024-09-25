@@ -78,7 +78,7 @@ const ExpandableCategoryElement = ({
               action: 'expand',
               detail: {
                 position: position || '0',
-                label: '',
+                label: { root: 'self' },
                 id: item.id || '',
                 expanded: `${!expanded}`,
               },

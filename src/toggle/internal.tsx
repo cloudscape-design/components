@@ -3,17 +3,28 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
+import {
+  GeneratedAnalyticsMetadataFragment,
+  getAnalyticsMetadataAttribute,
+} from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { getBaseProps } from '../internal/base-component';
 import AbstractSwitch from '../internal/components/abstract-switch';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import {
+  GeneratedAnalyticsMetadataToggleComponent,
+  GeneratedAnalyticsMetadataToggleSelect,
+} from './analytics-metadata/interfaces';
 import { ToggleProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-type InternalToggleProps = ToggleProps & InternalBaseComponentProps;
+interface InternalToggleProps extends ToggleProps, InternalBaseComponentProps {
+  __injectAnalyticsComponentMetadata?: boolean;
+}
 
 const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
   (
@@ -31,6 +42,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
       onBlur,
       onChange,
       __internalRootRef = null,
+      __injectAnalyticsComponentMetadata,
       ...rest
     },
     ref
@@ -38,6 +50,22 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
     const { ariaDescribedby, ariaLabelledby } = useFormFieldContext(rest);
     const baseProps = getBaseProps(rest);
     const checkboxRef = useRef<HTMLInputElement>(null);
+
+    const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {};
+    const analyticsComponentMetadata: GeneratedAnalyticsMetadataToggleComponent = {
+      name: 'awsui.Toggle',
+      label: { root: 'self' },
+    };
+
+    if (__injectAnalyticsComponentMetadata) {
+      analyticsMetadata.component = analyticsComponentMetadata;
+    }
+
+    if (!disabled && !readOnly) {
+      analyticsMetadata.detail = {
+        selected: `${!checked}`,
+      } as Partial<GeneratedAnalyticsMetadataToggleSelect['detail']>;
+    }
     useForwardFocus(ref, checkboxRef);
 
     return (
@@ -89,6 +117,7 @@ const InternalToggle = React.forwardRef<ToggleProps.Ref, InternalToggleProps>(
           />
         }
         __internalRootRef={__internalRootRef}
+        {...getAnalyticsMetadataAttribute(analyticsMetadata)}
       />
     );
   }

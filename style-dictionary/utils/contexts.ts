@@ -49,3 +49,11 @@ export const createAlertContext = (tokens: TokenCategory<string, GlobalValue | M
     tokens,
   };
 };
+
+export const createAppLayoutToolsDrawerTriggerContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'app-layout-tools-drawer-trigger',
+    selector: '.awsui-context-app-layout-tools-drawer-trigger',
+    tokens,
+  };
+};

@@ -22,6 +22,7 @@ type DemoContext = React.Context<
     resizableColumns: boolean;
     stickyHeader: boolean;
     sortingDisabled: boolean;
+    stripedRows: boolean;
     selectionType: undefined | 'single' | 'multi';
     stickyColumnsFirst: string;
     stickyColumnsLast: string;
@@ -193,6 +194,13 @@ export default () => {
               onChange={event => setUrlParams({ sortingDisabled: event.detail.checked })}
             >
               Sorting disabled
+            </Checkbox>
+
+            <Checkbox
+              checked={urlParams.stripedRows}
+              onChange={event => setUrlParams({ stripedRows: event.detail.checked })}
+            >
+              Striped rows
             </Checkbox>
 
             <Checkbox

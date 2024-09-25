@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
+
 import { ButtonProps } from '../button/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -11,7 +13,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 
 export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewport {
   /**
-   * Array of objects with a number of suppoted types.
+   * Array of objects with a number of supported types.
    *
    * The following properties are supported across all types:
    *
@@ -22,6 +24,7 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * - `disabled` (boolean) - whether the item is disabled. Disabled items are not clickable, but they can be highlighted with the keyboard to make them accessible.
    * - `disabledReason` (string) - (Optional) Displays text near the `text` property when item is disabled. Use to provide additional context.
    * - `description` (string) - additional data that will be passed to a `data-description` attribute.
+   * - `ariaLabel` (string) - (Optional) - ARIA label of the item element.
    *
    * ### action
    *
@@ -118,7 +121,7 @@ export namespace ButtonDropdownProps {
   export type ItemType = 'action' | 'group';
 
   export interface MainAction {
-    text: string;
+    text?: string;
     ariaLabel?: string;
     onClick?: CancelableEventHandler<ButtonProps.ClickDetail>;
     onFollow?: CancelableEventHandler<ButtonProps.FollowDetail>;
@@ -142,6 +145,7 @@ export namespace ButtonDropdownProps {
     itemType?: ItemType;
     id: string;
     text: string;
+    ariaLabel?: string;
     lang?: string;
     disabled?: boolean;
     disabledReason?: string;
@@ -229,6 +233,8 @@ export interface ItemListProps extends HighlightProps {
   expandToViewport?: boolean;
   variant?: InternalButtonDropdownProps['variant'];
   position?: string;
+  analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
+  linkStyle?: boolean;
 }
 
 export interface LinkItem extends ButtonDropdownProps.Item {
@@ -246,6 +252,8 @@ export interface ItemProps {
   isKeyboardHighlighted?: boolean;
   variant?: ItemListProps['variant'];
   position?: string;
+  analyticsMetadataTransformer?: InternalButtonDropdownProps['analyticsMetadataTransformer'];
+  linkStyle?: boolean;
 }
 
 export interface InternalItem extends ButtonDropdownProps.Item {
@@ -278,10 +286,24 @@ export interface InternalButtonDropdownProps
   description?: string;
 
   /**
+   * Only show main action button as a regular, non-split button.
+   * That is needed so that button dropdown test utils wrapper can still be used.
+   */
+  showMainActionOnly?: boolean;
+
+  /**
    * Determines that the dropdown should preferably be aligned to the center of the trigger
    * instead of dropping left or right.
    */
   preferCenter?: boolean;
+
+  /**
+   * Determines whether simple items should be displayed with the link styles.
+   * Used in Breadcrumb group component for collapsed breadcrumbs
+   */
+  linkStyle?: boolean;
+
+  analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
 }
 
 export interface CustomTriggerProps {

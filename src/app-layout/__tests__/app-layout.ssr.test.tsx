@@ -32,9 +32,15 @@ test('should render refresh app layout', () => {
   const content = renderToStaticMarkup(<AppLayout />);
   expect(content).toContain(refreshStyles.layout);
 });
-test('should render refresh-toolbar app layout', () => {
+test('should render refresh-toolbar app layout with the widget flag', () => {
   globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutWidget: true };
+  const content = renderToStaticMarkup(<AppLayout />);
+  expect(content).toContain(refreshToolbarStyles.root);
+});
+test('should render refresh-toolbar app layout with the toolbar flag', () => {
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+  globalWithFlags[Symbol.for('awsui-global-flags')] = { appLayoutToolbar: true };
   const content = renderToStaticMarkup(<AppLayout />);
   expect(content).toContain(refreshToolbarStyles.root);
 });

@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { findUpUntil } from './dom';
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 export interface BoundingBox {
   blockSize: number;
   inlineSize: number;
@@ -13,7 +14,7 @@ export const getOverflowParents = (element: HTMLElement): HTMLElement[] => {
   const parents = [];
   let node: HTMLElement | null = element;
 
-  while ((node = node.parentElement) && node !== document.body) {
+  while ((node = node.parentElement) && node !== element.ownerDocument.body) {
     getComputedStyle(node).overflow !== 'visible' && parents.push(node);
   }
   return parents;
@@ -45,6 +46,7 @@ export const getOverflowParentDimensions = ({
       });
 
   if (canExpandOutsideViewport && !expandToViewport) {
+    const document = element.ownerDocument;
     const documentDimensions = document.documentElement.getBoundingClientRect();
     parents.push({
       inlineSize: Math.max(documentDimensions.width, document.documentElement.clientWidth),
@@ -53,9 +55,10 @@ export const getOverflowParentDimensions = ({
       insetInlineStart: documentDimensions.left,
     });
   } else {
+    const owningWindow = element.ownerDocument.defaultView ?? window;
     parents.push({
-      blockSize: window.visualViewport?.height ?? window.innerHeight,
-      inlineSize: window.visualViewport?.width ?? window.innerWidth,
+      blockSize: owningWindow.visualViewport?.height ?? owningWindow.innerHeight,
+      inlineSize: owningWindow.visualViewport?.width ?? owningWindow.innerWidth,
       insetBlockStart: 0,
       insetInlineStart: 0,
     });

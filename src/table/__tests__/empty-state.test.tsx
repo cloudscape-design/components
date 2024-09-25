@@ -17,9 +17,11 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   useResizeObserver: jest.fn(),
 }));
 
+jest.mock('@cloudscape-design/component-toolkit/dom', () => ({
+  findUpUntil: jest.fn(),
+}));
 jest.mock('../../../lib/components/internal/utils/dom', () => ({
   getContainingBlock: jest.fn(() => null),
-  findUpUntil: jest.fn(),
 }));
 
 jest.mock('../../../lib/components/table/sticky-columns', () => ({

@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act } from 'react-dom/test-utils';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';

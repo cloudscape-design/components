@@ -32,7 +32,7 @@ import useBackgroundOverlap from './use-background-overlap';
 
 import styles from './styles.css.js';
 
-interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
+export interface AppLayoutInternals extends AppLayoutPropsWithDefaults {
   activeDrawerId: string | null;
   drawers: Array<AppLayoutProps.Drawer> | undefined;
   drawersAriaLabel: string | undefined;
@@ -478,7 +478,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
             isMobile && handleNavigationClick(false);
           },
           openTools: function () {
-            handleToolsClick(true);
+            handleToolsClick(true, hasDrawers);
+            if (hasDrawers) {
+              focusDrawersButtons(true);
+            }
           },
           focusToolsClose: () => {
             if (hasDrawers) {

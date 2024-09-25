@@ -78,6 +78,7 @@ const Item = (
       ariaSetsize={ariaSetsize}
       highlightType={highlightType}
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
+      value={option.option.value}
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>
@@ -86,16 +87,13 @@ const Item = (
             <CheckboxIcon checked={selected || false} disabled={option.disabled} />
           </div>
         )}
-        {isParent ? (
-          <span>{wrappedOption.label || wrappedOption.value}</span>
-        ) : (
-          <Option
-            option={{ ...wrappedOption, disabled }}
-            highlightedOption={highlighted}
-            selectedOption={selected}
-            highlightText={filteringValue}
-          />
-        )}
+        <Option
+          option={{ ...wrappedOption, disabled }}
+          highlightedOption={highlighted}
+          selectedOption={selected}
+          highlightText={filteringValue}
+          isGroupOption={isParent}
+        />
         {!hasCheckbox && !isParent && selected && (
           <div className={styles['selected-icon']}>
             <InternalIcon name="check" />

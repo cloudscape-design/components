@@ -3,29 +3,16 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { HighlightType } from '../options-list/utils/use-highlight-option.js';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { getBaseProps } from '../../base-component';
+import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils';
+import { SelectableItemProps } from './interfaces';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export type SelectableItemProps = BaseComponentProps & {
-  children: React.ReactNode;
-  selected?: boolean;
-  highlighted?: boolean;
-  disabled?: boolean;
-  hasBackground?: boolean;
-  isParent?: boolean;
-  isChild?: boolean;
-  virtualPosition?: number;
-  padBottom?: boolean;
-  isNextSelected?: boolean;
-  useInteractiveGroups?: boolean;
-  screenReaderContent?: string;
-  ariaPosinset?: number;
-  ariaSetsize?: number;
-  highlightType?: HighlightType['type'];
-  ariaDescribedby?: string;
-} & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
+export { SelectableItemProps };
 
 const SelectableItem = (
   {
@@ -46,6 +33,7 @@ const SelectableItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
+    value,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -56,6 +44,7 @@ const SelectableItem = (
     [styles.highlighted]: highlighted,
     [styles['has-background']]: hasBackground,
     [styles.parent]: isParent,
+    [analyticsSelectors.parent]: isParent,
     [styles.child]: isChild,
     [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
@@ -118,8 +107,17 @@ const SelectableItem = (
   }
 
   return (
-    <li role="option" className={classNames} style={style} {...a11yProperties} {...rest}>
-      <div className={styles['option-content']} ref={contentRef}>
+    <li
+      role="option"
+      className={classNames}
+      style={style}
+      {...a11yProperties}
+      {...rest}
+      {...(isParent || disabled
+        ? {}
+        : getAnalyticsMetadataAttribute(getAnalyticsSelectActionMetadata({ isChild, value, ...restProps })))}
+    >
+      <div className={clsx(styles['option-content'], analyticsSelectors['option-content'])} ref={contentRef}>
         {content}
       </div>
       <div className={styles['measure-strut']} ref={ref} />
