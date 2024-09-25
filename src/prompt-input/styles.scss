@@ -137,7 +137,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
 }
 
 .button {
-  align-self: end;
+  align-self: flex-end;
   padding-inline: calc(styles.$control-padding-horizontal / 2);
   padding-block-end: awsui.$space-scaled-xxxs;
 
@@ -178,7 +178,7 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   @include styles.control-border-radius-full();
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
 
   &.with-paddings {
     padding-inline-start: styles.$control-padding-horizontal;
