@@ -184,7 +184,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <Box fontSize="body-s">
+      <Box>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -200,7 +200,7 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Gathered Security Group IDs',
     details: (
-      <Box fontSize="body-s">
+      <Box>
         Security Groups ID
         <ul>
           <li>securityGroupID1</li>
@@ -214,12 +214,8 @@ export const blockedSteps: ReadonlyArray<StepsProps.Step> = [
   },
   {
     header: 'Need Cross Region Consent',
-    details: (
-      <Box fontSize="body-s">
-        To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS
-        account.
-      </Box>
-    ),
+    details:
+      'To answer questions about your account resources, Amazon Q might need to make Cross-Region calls within this AWS account.',
     status: 'warning',
     statusIconAriaLabel: 'warning',
   },
@@ -229,7 +225,7 @@ export const failedSteps: ReadonlyArray<StepsProps.Step> = [
   {
     header: 'Listed EC2 instances',
     details: (
-      <Box fontSize="body-s">
+      <Box>
         EC2 Instances IDs:
         <ul>
           <li>ec2InstanceID1</li>
@@ -254,49 +250,49 @@ const allStatusesSteps: ReadonlyArray<StepsProps.Step> = [
     status: 'error',
     statusIconAriaLabel: 'error',
     header: 'error step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'warning',
     statusIconAriaLabel: 'warning',
     header: 'warning step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'success',
     statusIconAriaLabel: 'success',
     header: 'success step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'info',
     statusIconAriaLabel: 'info',
     header: 'info step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'stopped',
     statusIconAriaLabel: 'stopped',
     header: 'stopped step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'pending',
     statusIconAriaLabel: 'pending',
     header: 'pending step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'in-progress',
     statusIconAriaLabel: 'in-progress',
     header: 'in-progress step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
   {
     status: 'loading',
     statusIconAriaLabel: 'loading',
     header: 'loading step',
-    details: <Box fontSize="body-s">Test description</Box>,
+    details: 'Test description',
   },
 ];
 
