@@ -270,7 +270,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
                 ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
                 : wrapper.findSplitPanel().findOpenButton().toSelector();
             await page.click(triggerSelector);
-            await page.isFocused(wrapper.findSplitPanel().findSlider().toSelector());
+            await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
             await page.keys(['Tab', 'Tab']);
             await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
             await page.keys('Enter');
