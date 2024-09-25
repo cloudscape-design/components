@@ -2,7 +2,11 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-.sticky-notifications {
-  position: sticky;
-  z-index: 850;
+@use '../../../internal/styles/' as styles;
+
+@include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
+  &.sticky-notifications {
+    position: sticky;
+    z-index: 850;
+  }
 }
