@@ -174,13 +174,33 @@ describe('Content Display preference', () => {
     });
   });
 
-  describe('Filtering', () => {
+  describe.each<boolean>([false, true])('Filtering (with i18n = %s)', withI18nProvider => {
     it('filters options', () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(
+        withI18nProvider
+          ? undefined
+          : {
+              contentDisplayPreference: {
+                ...contentDisplayPreference,
+                i18nStrings: {
+                  columnFilteringPlaceholder: 'Filter columns',
+                  columnFilteringAriaLabel: 'Filter columns',
+                  columnFilteringClearFilterText: 'Clear filter',
+                  columnFilteringNoMatchText: 'No matches found',
+                  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+                },
+              },
+            },
+        withI18nProvider
+      );
       const filterInput = wrapper.findTextFilter();
       expect(filterInput).not.toBeNull();
-
       filterInput!.findInput().setInputValue('Item 1');
+
+      expect(filterInput?.findInput().findNativeInput().getElement()).toHaveAttribute('placeholder', 'Filter columns');
+      expect(filterInput?.findInput().findNativeInput().getElement()).toHaveAttribute('aria-label', 'Filter columns');
+      expect(filterInput?.findInput().findClearButton()?.getElement()).toHaveAccessibleName('Clear filter');
+
       expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('1 match');
 
       const options = wrapper.findOptions();
@@ -201,7 +221,23 @@ describe('Content Display preference', () => {
     });
 
     it('shows empty state when no options match and clears filter', () => {
-      const wrapper = renderContentDisplay();
+      const wrapper = renderContentDisplay(
+        withI18nProvider
+          ? undefined
+          : {
+              contentDisplayPreference: {
+                ...contentDisplayPreference,
+                i18nStrings: {
+                  columnFilteringPlaceholder: 'Filter columns',
+                  columnFilteringAriaLabel: 'Filter columns',
+                  columnFilteringClearFilterText: 'Clear filter',
+                  columnFilteringNoMatchText: 'No matches found',
+                  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+                },
+              },
+            },
+        withI18nProvider
+      );
       const filterInput = wrapper.findTextFilter();
       expect(filterInput).not.toBeNull();
 
@@ -385,8 +421,11 @@ describe('Content Display preference', () => {
   });
 });
 
-function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
-  const collectionPreferencesWrapper = renderCollectionPreferences({ contentDisplayPreference, ...props });
+function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}, withI18nProvider = false) {
+  const collectionPreferencesWrapper = renderCollectionPreferences(
+    { contentDisplayPreference, ...props },
+    withI18nProvider
+  );
   collectionPreferencesWrapper.findTriggerButton().click();
   return collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 }

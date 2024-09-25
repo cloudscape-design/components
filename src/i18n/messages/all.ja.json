@@ -112,7 +112,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "フィルターをクリア",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {項目を位置 {currentPosition}/{total} に戻しています} false {項目を位置 {currentPosition}/{total} に移動しています} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目は元の位置 {initialPosition}/{total} に戻りました} false {項目が位置 {initialPosition} から位置 {finalPosition}/{total} に移動しました} other {}}",
-    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0 件の一致} one {1 件の一致} other {{count} 件の一致}}"
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 件の一致} one {1 件の一致} other {{count} 件の一致}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "コピー"

@@ -112,7 +112,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "清除篩選條件",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {將項目移回 {currentPosition} 位置 (共 {total} 個位置)} false {將項目移到 {currentPosition} 位置 (共 {total} 個位置)} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {項目移回原來的 {initialPosition} 位置 (共 {total} 個位置)} false {項目已從 {initialPosition} 位置移到 {finalPosition} 位置 (共 {total} 個位置)} other {}}",
-    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0 個符合} one {1 個符合} other {{count} 個符合}}"
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 個符合} one {1 個符合} other {{count} 個符合}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "複製"

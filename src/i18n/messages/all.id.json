@@ -112,7 +112,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Hapus filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Memindahkan item kembali ke posisi {currentPosition} dari {total}} false {Memindahkan item ke posisi {currentPosition} dari {total}} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item dipindahkan kembali ke posisi aslinya {initialPosition} dari {total}} false {Item dipindahkan dari posisi {initialPosition} ke posisi {finalPosition} dari {total}} other {}}",
-    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0 kecocokan} one {1 kecocokan} other {{count} kecocokan}}"
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 kecocokan} one {1 kecocokan} other {{count} kecocokan}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Salin"

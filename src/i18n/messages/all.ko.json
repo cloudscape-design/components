@@ -112,7 +112,7 @@
     "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "필터 지우기",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {{currentPosition}/{total} 위치로 항목 다시 이동} false {{currentPosition}/{total} 위치로 항목 이동} other {}}",
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}",
-    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, select, zero {0개 일치} one {1개 일치} other {{count}개 일치}}"
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0개 일치} one {1개 일치} other {{count}개 일치}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "복사"

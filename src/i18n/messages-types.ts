@@ -147,7 +147,7 @@ export interface I18nFormatArgTypes {
       "finalPosition": string | number;
     }
     "contentDisplayPreference.i18nStrings.columnFilteringCountText": {
-      "count": string;
+      "count": number;
     }
   }
   "copy-to-clipboard": {
