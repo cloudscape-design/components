@@ -82,7 +82,6 @@ export function useMultiselect({
   checkOptionValueField('Multiselect', 'options', options);
 
   const i18n = useInternalI18n('multiselect');
-
   const i18nCommon = useInternalI18n('select');
   const recoveryText = i18nCommon('recoveryText', restProps.recoveryText);
   const errorIconAriaLabel = i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel);
