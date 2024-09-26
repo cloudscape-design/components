@@ -8,7 +8,7 @@ function setupTest(
   testFn: (parameters: {
     page: BasePageObject;
     getMarks: () => Promise<PerformanceMark[]>;
-    getElementByPerformanceMark: (id: string) => Promise<WebdriverIO.Element>;
+    getElementPerformanceMarkText: (id: string) => Promise<string>;
   }) => Promise<void>
 ) {
   return useBrowser(async browser => {
@@ -18,19 +18,16 @@ function setupTest(
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
     };
-    const getElementByPerformanceMark = async (id: string) => {
-      const element = await browser.$(`[data-analytics-performance-mark="${id}"]`);
-      return element;
-    };
+    const getElementPerformanceMarkText = (id: string) => page.getText(`[data-analytics-performance-mark="${id}"]`);
 
-    await testFn({ page, getMarks, getElementByPerformanceMark });
+    await testFn({ page, getMarks, getElementPerformanceMarkText });
   });
 }
 
 describe('ButtonDropdown', () => {
   test(
     'Emits a single mark',
-    setupTest('main-action', async ({ getMarks, getElementByPerformanceMark }) => {
+    setupTest('main-action', async ({ getMarks, getElementPerformanceMarkText }) => {
       const marks = await getMarks();
 
       expect(marks).toHaveLength(1);
@@ -43,9 +40,7 @@ describe('ButtonDropdown', () => {
         text: 'Launch instance',
       });
 
-      expect(await getElementByPerformanceMark(marks[0].detail.instanceIdentifier).then(e => e.getText())).toBe(
-        'Launch instance'
-      );
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe('Launch instance');
     })
   );
 });

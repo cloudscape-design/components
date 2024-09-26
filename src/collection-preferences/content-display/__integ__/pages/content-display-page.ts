@@ -15,7 +15,7 @@ export default class ContentDisplayPageObject extends CollectionPreferencesPageO
     );
     // Using getHTML because getText returns an empty string if the live region is outside the viewport.
     // See https://webdriver.io/docs/api/element/getText/
-    return expect(liveRegion.getHTML(false)).resolves.toBe(announcement);
+    return expect(liveRegion.getHTML()).resolves.toContain(announcement);
   }
 
   findDragHandle(index = 0) {
