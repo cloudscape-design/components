@@ -3,7 +3,7 @@
 
 export {
   AppLayoutDrawerImplementation as AppLayoutDrawer,
-  AppLayoutGlobalDrawerImplementation as AppLayoutGlobalDrawer,
+  AppLayoutGlobalDrawersImplementation as AppLayoutGlobalDrawers,
 } from './drawer';
 export { AppLayoutNavigationImplementation as AppLayoutNavigation } from './navigation';
 export { AppLayoutNotificationsImplementation as AppLayoutNotifications } from './notifications';
