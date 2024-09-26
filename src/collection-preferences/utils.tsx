@@ -68,21 +68,12 @@ export const ModalContentLayout = ({ left, right }: ModalContentLayoutProps) => 
   const [breakpoint, ref] = useContainerBreakpoints(['xs']);
   const smallContainer = breakpoint === 'default';
 
-  if (smallContainer) {
-    return (
-      <div ref={ref}>
-        {left && <div>{left}</div>}
-        {right && <div className={clsx(left && styles['second-column-small'])}>{right}</div>}
-      </div>
-    );
-  }
-
   const columns = left && right ? 2 : 1;
   return (
     <div ref={ref}>
-      <InternalColumnLayout columns={columns} variant="text-grid">
+      <InternalColumnLayout columns={smallContainer ? 1 : columns} variant="text-grid">
         {left && <div>{left}</div>}
-        {right && <div>{right}</div>}
+        {right && <div className={clsx(left && smallContainer && styles['second-column-small'])}>{right}</div>}
       </InternalColumnLayout>
     </div>
   );

@@ -44,7 +44,7 @@ export default function ContentDisplayPreference({
   liveAnnouncementDndDiscarded,
   dragHandleAriaDescription,
   dragHandleAriaLabel,
-  searchableColumns = false,
+  columnFiltering = false,
   i18nStrings,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
@@ -58,19 +58,19 @@ export default function ContentDisplayPreference({
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const sortedOptions = useMemo(
+  const sortedAndFilteredOptions = useMemo(
     () =>
       getSortedOptions({ options, contentDisplay: value }).filter(option =>
-        option.label.toLowerCase().includes(columnFilteringText.toLowerCase())
+        option.label.toLowerCase().trim().includes(columnFilteringText.toLowerCase().trim())
       ),
     [columnFilteringText, options, value]
   );
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
-    sortedOptions,
+    sortedOptions: sortedAndFilteredOptions,
   });
 
-  const activeOption = activeItem ? sortedOptions.find(({ id }) => id === activeItem) : null;
+  const activeOption = activeItem ? sortedAndFilteredOptions.find(({ id }) => id === activeItem) : null;
 
   const announcements = useLiveAnnouncements({
     isDragging: activeItem !== null,
@@ -113,7 +113,7 @@ export default function ContentDisplayPreference({
       </p>
 
       {/* Filter input */}
-      {searchableColumns && (
+      {columnFiltering && (
         <div className={getClassName('text-filter')}>
           <InternalTextFilter
             filteringText={columnFilteringText}
@@ -133,16 +133,16 @@ export default function ContentDisplayPreference({
             countText={i18n(
               'contentDisplayPreference.i18nStrings.columnFilteringCountText',
               i18nStrings?.columnFilteringCountText
-                ? i18nStrings?.columnFilteringCountText(sortedOptions?.length)
+                ? i18nStrings?.columnFilteringCountText(sortedAndFilteredOptions.length)
                 : undefined,
-              format => format({ count: sortedOptions?.length })
+              format => format({ count: sortedAndFilteredOptions.length })
             )}
           />
         </div>
       )}
 
       {/* No match */}
-      {sortedOptions.length === 0 && (
+      {sortedAndFilteredOptions.length === 0 && (
         <div className={getClassName('no-match')}>
           <InternalSpaceBetween size="s" alignItems="center">
             <InternalBox margin={{ top: 'm' }}>
@@ -194,11 +194,11 @@ export default function ContentDisplayPreference({
           role="list"
         >
           <SortableContext
-            disabled={columnFilteringText.length > 0}
-            items={sortedOptions.map(({ id }) => id)}
+            disabled={columnFilteringText.trim().length > 0}
+            items={sortedAndFilteredOptions.map(({ id }) => id)}
             strategy={verticalListSortingStrategy}
           >
-            {sortedOptions.map(option => {
+            {sortedAndFilteredOptions.map(option => {
               return (
                 <DraggableOption
                   dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}

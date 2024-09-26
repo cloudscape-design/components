@@ -208,18 +208,6 @@ describe('Content Display preference', () => {
       expect(options[0].findLabel().getElement()).toHaveTextContent('Item 1');
     });
 
-    it('clears filter and shows all options', () => {
-      const wrapper = renderContentDisplay();
-      const filterInput = wrapper.findTextFilter();
-      expect(filterInput).not.toBeNull();
-
-      filterInput!.findInput().setInputValue('Item 1');
-      filterInput!.findInput().findClearButton()?.click();
-
-      const options = wrapper.findOptions();
-      expect(options).toHaveLength(4);
-    });
-
     it('shows empty state when no options match and clears filter', () => {
       const wrapper = renderContentDisplay(
         withI18nProvider
@@ -258,6 +246,31 @@ describe('Content Display preference', () => {
 
       expect(filterInput!.findInput().getInputValue()).toBe('');
       expect(filterInput!.findResultsCount()).toBeNull();
+    });
+  });
+
+  describe('Filtering - continued', () => {
+    it('does not render the text filter with searchable columns turned off', () => {
+      const wrapper = renderContentDisplay({
+        contentDisplayPreference: {
+          ...contentDisplayPreference,
+          columnFiltering: false,
+        },
+      });
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).toBeNull();
+    });
+
+    it('clears filter and shows all options', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 1');
+      filterInput!.findInput().findClearButton()?.click();
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(4);
     });
 
     it('sets the drag-handle to a disabled state when filtering', () => {

@@ -162,7 +162,7 @@ describe('Collection preferences - Content Display preference', () => {
 
         await expect(await page.containsOptionsInOrder(['Item 1', 'Item 2'])).toBe(true);
 
-        await page.focusDragHandle(0, 6);
+        await page.focusDragHandle(0);
         await page.keys('Space');
         await page.expectAnnouncement('Picked up item at position 1 of 50');
         for (let i = 0; i < 30; i++) {

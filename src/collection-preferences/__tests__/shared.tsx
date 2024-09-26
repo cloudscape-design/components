@@ -124,5 +124,5 @@ export const contentDisplayPreference: CollectionPreferencesProps.ContentDisplay
     initialPosition === finalPosition
       ? `Item moved back to its original position ${initialPosition} of ${total}`
       : `Item moved from position ${initialPosition} to position ${finalPosition} of ${total}`,
-  searchableColumns: true,
+  columnFiltering: true,
 };

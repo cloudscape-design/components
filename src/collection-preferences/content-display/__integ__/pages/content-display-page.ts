@@ -28,12 +28,12 @@ export default class ContentDisplayPageObject extends CollectionPreferencesPageO
     return this.wrapper.findModal().findContentDisplayPreference().findOptions();
   }
 
-  /**
-   * @param index The index of the drag handle to focus on. (Optional, default 0)
-   * @param offset The number of times to press the tab key to focus on the drag handle.
-   * Use 5 for collection preferences without searchable columns enabled, and 6 as the offset for searchable columns enabled. (Optional, default 5)
-   */
-  focusDragHandle(index = 0, offset = 5) {
+  async focusDragHandle(index = 0) {
+    const isSearchable = await this.isExisting(
+      this.wrapper.findModal().findContentDisplayPreference().findTextFilter().toSelector()
+    );
+    const offset = isSearchable ? 6 : 5;
+
     return this.keys(new Array(offset + index * 2).fill('Tab'));
   }
 

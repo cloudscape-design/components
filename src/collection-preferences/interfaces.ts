@@ -218,7 +218,7 @@ export namespace CollectionPreferencesProps {
     liveAnnouncementDndDiscarded?: string;
     dragHandleAriaLabel?: string;
     dragHandleAriaDescription?: string;
-    searchableColumns?: boolean;
+    columnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
 
