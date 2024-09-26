@@ -78,7 +78,7 @@ describe('Button renders correct analytics metadata', () => {
 });
 
 test('Internal Button does not render "component" metadata', () => {
-  const renderResult = render(<InternalButton>inline button text</InternalButton>);
+  const renderResult = render(<InternalButton formAction="none">inline button text</InternalButton>);
   const wrapper = createWrapper(renderResult.container).findButton()!;
   validateComponentNameAndLabels(wrapper.getElement(), labels);
   expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({

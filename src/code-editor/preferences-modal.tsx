@@ -80,8 +80,10 @@ export default (props: PreferencesModalProps) => {
       footer={
         <InternalBox float="right">
           <InternalSpaceBetween direction="horizontal" size="xs">
-            <InternalButton onClick={props.onDismiss}>{props.i18nStrings.cancel}</InternalButton>
-            <InternalButton onClick={() => props.onConfirm({ wrapLines, theme })} variant="primary">
+            <InternalButton formAction="none" onClick={props.onDismiss}>
+              {props.i18nStrings.cancel}
+            </InternalButton>
+            <InternalButton formAction="none" onClick={() => props.onConfirm({ wrapLines, theme })} variant="primary">
               {props.i18nStrings.confirm}
             </InternalButton>
           </InternalSpaceBetween>

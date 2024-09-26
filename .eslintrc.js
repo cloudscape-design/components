@@ -169,6 +169,7 @@ module.exports = {
       rules: {
         '@cloudscape-design/no-implicit-svg-focusable': 'error',
         '@cloudscape-design/prefer-live-region': 'warn',
+        'react/button-has-type': ['error'],
         'no-restricted-imports': [
           'error',
           {

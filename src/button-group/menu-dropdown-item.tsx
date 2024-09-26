@@ -53,6 +53,7 @@ const MenuDropdownItem = React.forwardRef(
               />
             )}
             <InternalButton
+              formAction="none"
               ref={triggerRef}
               variant="icon"
               ariaLabel={ariaLabel}

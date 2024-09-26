@@ -32,6 +32,7 @@ const Header: React.FC<HeaderProps> = ({
           ariaLabel={backIconAriaLabel}
           iconName="angle-left"
           variant="icon"
+          formAction="none"
           onClick={() => onBack()}
         />
       )}
@@ -45,6 +46,7 @@ const Header: React.FC<HeaderProps> = ({
         ariaLabel={dismissIconAriaLabel}
         iconName="close"
         variant="icon"
+        formAction="none"
         onClick={() => onClose && onClose()}
       />
     </div>

@@ -128,7 +128,7 @@ export function BasicS3Table<T>({
             title={i18nStrings.noMatchTitle}
             subtitle={i18nStrings.noMatchSubtitle}
             action={
-              <InternalButton onClick={() => actions.setFiltering('')}>
+              <InternalButton formAction="none" onClick={() => actions.setFiltering('')}>
                 {i18nStrings.clearFilterButtonText}
               </InternalButton>
             }
@@ -218,7 +218,7 @@ export function InternalHeaderActions<T>({ i18nStrings, reloadData, lastUpdated 
   return (
     <InternalSpaceBetween size="s" direction="horizontal" alignItems="center">
       {getLastUpdated()}
-      <InternalButton iconName="refresh" ariaLabel={i18nStrings.labelRefresh} onClick={reloadData} />
+      <InternalButton formAction="none" iconName="refresh" ariaLabel={i18nStrings.labelRefresh} onClick={reloadData} />
     </InternalSpaceBetween>
   );
 }

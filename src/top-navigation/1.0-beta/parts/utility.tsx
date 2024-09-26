@@ -39,6 +39,7 @@ export default function Utility({ hideText, definition, last, isNarrowViewport }
           iconAlt={definition.iconAlt}
           iconSvg={definition.iconSvg}
           className={clsx(last && styles['last-utility'])}
+          formAction="none"
         >
           {shouldHideText ? null : (
             <>

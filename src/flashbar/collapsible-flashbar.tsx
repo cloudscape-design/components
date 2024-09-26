@@ -350,6 +350,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             </span>
           </span>
           <button
+            type="button"
             aria-controls={flashbarElementId}
             aria-describedby={itemCountElementId}
             aria-expanded={isFlashbarStackExpanded}
