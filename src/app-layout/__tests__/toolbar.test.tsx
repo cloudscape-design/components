@@ -7,13 +7,6 @@ import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
 
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
-// import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-
-// import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-
-// function findToolbar(wrapper: AppLayoutWrapper) {
-//   return wrapper.findByClassName(testUtilStyles.toolbar)?.getElement();
-// }
 
 // no-op function to suppress controllability warnings
 function noop() {}

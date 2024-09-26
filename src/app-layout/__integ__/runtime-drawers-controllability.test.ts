@@ -9,7 +9,7 @@ const wrapper = createWrapper().findAppLayout();
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
     describe(`page=${pageName}`, () => {
       function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
@@ -20,8 +20,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
             `#/light/app-layout/${pageName}?${new URLSearchParams({
               hasDrawers: 'false',
               hasTools: 'true',
-              visualRefresh: `${theme.startsWith('visual-refresh')}`,
-              appLayoutToolbar: theme === 'visual-refresh-toolbar' ? 'true' : 'false',
+              visualRefresh: `${theme !== 'classic'}`,
+              appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
             }).toString()}`
           );
           await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
@@ -47,7 +47,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         })
       );
 
-      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should allow switching to a drawer after clicking an info link',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -61,7 +61,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         })
       );
 
-      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should open and close tools via controlled mode',
         setupTest(async page => {
           const toolsContentSelector = wrapper.findTools().getElement();
@@ -76,7 +76,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         })
       );
 
-      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should switch help panel content and close the panel afterwards',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -93,7 +93,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         })
       );
 
-      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should move focus to previous focused element after closing tools',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');

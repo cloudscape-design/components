@@ -11,19 +11,19 @@ import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.s
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
 
-  findNavigation(): ElementWrapper | null {
+  findNavigation(): ElementWrapper {
     return this.findByClassName(testutilStyles.navigation)!;
   }
 
-  findNavigationToggle(): ElementWrapper<HTMLButtonElement> | null {
+  findNavigationToggle(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['navigation-toggle'])!;
   }
 
-  findNavigationClose(): ElementWrapper<HTMLButtonElement> | null {
+  findNavigationClose(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['navigation-close'])!;
   }
 
-  findContentRegion(): ElementWrapper | null {
+  findContentRegion(): ElementWrapper {
     return this.findByClassName(testutilStyles.content)!;
   }
 
@@ -35,15 +35,15 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles.breadcrumbs);
   }
 
-  findTools(): ElementWrapper | null {
+  findTools(): ElementWrapper {
     return this.findByClassName(testutilStyles.tools)!;
   }
 
-  findToolsClose(): ElementWrapper<HTMLButtonElement> | null {
+  findToolsClose(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['tools-close'])!;
   }
 
-  findToolsToggle(): ElementWrapper<HTMLButtonElement> | null {
+  findToolsToggle(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['tools-toggle'])!;
   }
 
@@ -79,22 +79,11 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles['drawers-slider']);
   }
 
-  // findToolbarTriggerButtonContainer(isMobile: boolean): ElementWrapper | null {
-  //   const drawersTriggerContainerClassKey = `drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`;
-  //   return this.findByClassName(appLayoutToolbarStyles[drawersTriggerContainerClassKey]);
-  //   //if not working try createWrapper().find(`.${}`);
-  // }
-
   findToolbar(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.toolbar);
   }
 
-  findDrawerTriggerWrapperWithTooltip(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles['trigger-wrapper-tooltip-visible']);
-  }
-
   findDrawerTriggerTooltip(): ElementWrapper | null {
-    // return this.findByClassName(testutilStyles['trigger-tooltip']);
     return createWrapper().findByClassName(testutilStyles['trigger-tooltip']);
   }
 }

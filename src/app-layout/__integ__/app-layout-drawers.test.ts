@@ -4,18 +4,21 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { drawerIds as drawerIdObj } from '../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
 import { viewports } from './constants';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const wrapper = createWrapper().findAppLayout();
+const drawerIds = Object.values(drawerIdObj);
+
 class AppLayoutDrawersPage extends BasePageObject {
   async openFirstDrawer() {
-    await this.click(wrapper.findDrawersTriggers().get(1).toSelector());
+    await this.click(wrapper.findDrawerTriggerById(drawerIds[0]).toSelector());
   }
 
   async openThirdDrawer() {
-    await this.click(wrapper.findDrawerTriggerById('links').toSelector());
+    await this.click(wrapper.findDrawerTriggerById(drawerIds[1]).toSelector());
   }
 
   async openSplitPanel() {
@@ -89,14 +92,14 @@ const setupTest = (
       splitPanelPosition,
       disableContentPaddings,
       visualRefresh: `${theme !== 'classic'}`,
-      appLayoutToolbar: theme === 'visual-refresh-toolbar' ? 'true' : 'false',
+      appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
     }).toString();
     await browser.url(`#/light/app-layout/with-drawers?${params}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   // there is an extra 2 borders inside drawer box in visual refresh
   const vrBorderOffset = theme !== 'classic' ? 2 : 0;
 
@@ -133,19 +136,19 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       await page.dragResizerTo({ x: width, y: 0 });
       // there are different layouts between these two designs
       await expect(page.getActiveDrawerWidth()).resolves.toEqual(
-        theme === 'visual-refresh-toolbar' ? 291 : 290 + vrBorderOffset
+        theme === 'refresh-toolbar' ? 291 : 290 + vrBorderOffset
       );
       await page.dragResizerTo({ x: 0, y: 0 });
       const expectedWidths = {
         ['classic']: 520,
-        ['visual-refresh']: 447,
-        ['visual-refresh-toolbar']: 593,
+        ['refresh']: 447,
+        ['refresh-toolbar']: 593,
       };
       await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidths[theme]);
     })
   );
 
-  testIf(theme !== 'visual-refresh-toolbar')(
+  testIf(theme !== 'refresh-toolbar')(
     'automatically shrinks drawer when screen resizes',
     setupTest({ theme }, async page => {
       const largeWindowWidth = 1400;
@@ -160,7 +163,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
     })
   );
 
-  testIf(theme !== 'visual-refresh-toolbar')(
+  testIf(theme !== 'refresh-toolbar')(
     `should not shrink drawer beyond min width`,
     setupTest({ theme, screenSize: { ...viewports.desktop, width: 700 } }, async page => {
       await page.openThirdDrawer();
@@ -188,7 +191,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
     })
   );
 
-  testIf(theme !== 'visual-refresh-toolbar')(
+  testIf(theme !== 'refresh-toolbar')(
     'updates side split panel position when using different width drawers',
     setupTest({ theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } }, async page => {
       await page.openFirstDrawer();

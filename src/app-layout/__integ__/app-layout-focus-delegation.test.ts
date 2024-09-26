@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import createWrapper from '../../../lib/components/test-utils/selectors/index';
 import { viewports } from './constants';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
@@ -24,8 +24,8 @@ function setupTest(
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     const params = new URLSearchParams({
-      visualRefresh: `${theme.startsWith('visual-refresh')}`,
-      appLayoutWidget: `${theme === 'visual-refresh-toolbar'}`,
+      visualRefresh: `${theme.startsWith('refresh')}`,
+      appLayoutWidget: `${theme === 'refresh-toolbar'}`,
       ...(splitPanelPosition
         ? {
             splitPanelPosition,
@@ -39,7 +39,7 @@ function setupTest(
   });
 }
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   [true, false].forEach(mobile =>
     describe(`mobile=${mobile}`, () => {
       test(
@@ -57,7 +57,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         setupTest(
           async page => {
             const splitPanelOpenActionEl =
-              theme === 'visual-refresh-toolbar'
+              theme === 'refresh-toolbar'
                 ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
                 : wrapper.findSplitPanel().findOpenButton().toSelector();
             await page.click(splitPanelOpenActionEl);
@@ -108,7 +108,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       );
 
       //todo tools functionality needs to be added to toolbar
-      testIf(theme !== 'visual-refresh-toolbar')(
+      testIf(theme !== 'refresh-toolbar')(
         'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position',
         setupTest(
           async page => {
@@ -126,7 +126,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         setupTest(
           async page => {
             const triggerSelector =
-              theme === 'visual-refresh-toolbar'
+              theme === 'refresh-toolbar'
                 ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
                 : wrapper.findSplitPanel().findOpenButton().toSelector();
             await page.setWindowSize({ width: 1000, height: 800 });
@@ -266,7 +266,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
           async page => {
             //Alternating between triggers because test-1 trigger hidden in overflow menu on mobile,
             const triggerSelector =
-              theme === 'visual-refresh-toolbar'
+              theme === 'refresh-toolbar'
                 ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
                 : wrapper.findSplitPanel().findOpenButton().toSelector();
             await page.click(triggerSelector);
@@ -284,7 +284,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
 
       describe('drawer focus interaction with tools buttons', () => {
         //todo resolve focus on mobile issue returning to previously focued element on mobile for drawer open button
-        testIf(!(theme === 'visual-refresh-toolbar' && mobile))(
+        testIf(!(theme === 'refresh-toolbar' && mobile))(
           'moves focus to close button when panel is opened from button',
           setupTest(
             async page => {
