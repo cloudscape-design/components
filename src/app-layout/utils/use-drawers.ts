@@ -223,13 +223,13 @@ export function useDrawers(
   function onActiveGlobalDrawersChange(drawerId: string) {
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
-      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId, false);
+      onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       openDrawersHistory.current.add(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
-      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId, true);
+      onGlobalDrawerFocus?.(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
     }
   }
