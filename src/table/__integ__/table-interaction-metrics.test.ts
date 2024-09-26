@@ -55,6 +55,8 @@ test(
         componentIdentifier: 'Instances',
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 19,
+        interactionMetadata:
+          '{"filterData":{"filterText":"238-1"},"paginationData":{"currentPageIndex":1,"totalPageCount":1}}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -76,6 +78,8 @@ test(
         componentIdentifier: 'Instances',
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
+        interactionMetadata:
+          '{"filterData":{"filterText":""},"paginationData":{"currentPageIndex":2,"totalPageCount":200}}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -97,6 +101,8 @@ test(
         componentIdentifier: 'Instances',
         instanceIdentifier: 'the-instances-table',
         noOfResourcesInTable: 20,
+        interactionMetadata:
+          '{"filterData":{"filterText":""},"paginationData":{"currentPageIndex":1,"totalPageCount":200},"sortingColumn":"type","sortingOrder":"Ascending"}',
       })
     );
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
@@ -143,6 +149,46 @@ test(
         noOfResourcesInTable: 20,
       })
     );
+    expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
+    expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
+  })
+);
+
+test(
+  'emits a metric when the user filters and then paginates the page',
+  setupTest(async ({ page, wrapper, getInteractionMetrics, waitForLoadingFinished }) => {
+    await page.click(wrapper.findFilterSlot().findTextFilter().toSelector());
+    await page.keys('m4.4xlarge');
+    await waitForLoadingFinished();
+
+    let metrics = await getInteractionMetrics();
+    expect(metrics).toHaveLength(1);
+    expect(metrics[0]).toEqual(
+      expect.objectContaining({
+        userAction: 'filter',
+        componentIdentifier: 'Instances',
+        instanceIdentifier: 'the-instances-table',
+        noOfResourcesInTable: 20,
+        interactionMetadata:
+          '{"filterData":{"filterText":"m4.4xlarge"},"paginationData":{"currentPageIndex":1,"totalPageCount":5}}',
+      })
+    );
+
+    await page.click(wrapper.findPagination().findPageNumberByIndex(2).toSelector());
+    await waitForLoadingFinished();
+    metrics = await getInteractionMetrics();
+    expect(metrics).toHaveLength(2);
+    expect(metrics[1]).toEqual(
+      expect.objectContaining({
+        userAction: 'pagination',
+        componentIdentifier: 'Instances',
+        instanceIdentifier: 'the-instances-table',
+        noOfResourcesInTable: 20,
+        interactionMetadata:
+          '{"filterData":{"filterText":"m4.4xlarge"},"paginationData":{"currentPageIndex":2,"totalPageCount":5}}',
+      })
+    );
+
     expect(metrics[0].interactionTime).toBeGreaterThanOrEqual(500);
     expect(metrics[0].interactionTime).toBeLessThanOrEqual(2000);
   })

@@ -54,6 +54,7 @@ describe('Multi-page create', () => {
         funnelIdentifier: FUNNEL_IDENTIFIER,
         flowType: 'create',
         funnelType: 'multi-page',
+        resourceType: 'Components',
         optionalStepNumbers: [2],
         componentTheme: 'vr',
         totalFunnelSteps: 3,

@@ -17,6 +17,7 @@ import LiveRegion from '../internal/components/live-region';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
+import { FilterRef, PaginationRef, TableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useComponentAnalytics } from '../internal/hooks/use-component-analytics';
@@ -179,7 +180,8 @@ const InternalTable = React.forwardRef(
     const stickyHeaderRef = React.useRef<StickyHeaderRef>(null);
     const scrollbarRef = React.useRef<HTMLDivElement>(null);
     const { cancelEdit, ...cellEditing } = useCellEditing({ onCancel: onEditCancel, onSubmit: submitEdit });
-
+    const paginationRef = useRef<PaginationRef>({});
+    const filterRef = useRef<FilterRef>({});
     /* istanbul ignore next: performance marks do not work in JSDOM */
     const getHeaderText = () =>
       toolsHeaderPerformanceMarkRef.current?.querySelector<HTMLElement>(`.${headerStyles['heading-text']}`)
@@ -216,11 +218,23 @@ const InternalTable = React.forwardRef(
       patternIdentifier: getPatternIdentifier(),
     }));
 
+    const interactionMetadata = () => {
+      const filterData = filterRef.current;
+      const paginationData = paginationRef.current;
+      return JSON.stringify({
+        filterData,
+        paginationData,
+        sortingColumn: sortingColumn?.sortingField,
+        sortingOrder: sortingColumn ? (sortingDescending ? 'Descending' : 'Ascending') : undefined,
+      });
+    };
+
     const { setLastUserAction } = useTableInteractionMetrics({
       loading,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
       itemCount: items.length,
       getComponentIdentifier: getHeaderText,
+      interactionMetadata,
     });
 
     useImperativeHandle(
@@ -374,183 +388,267 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <ColumnWidthsProvider
-          visibleColumns={visibleColumnWidthsWithSelection}
-          resizableColumns={resizableColumns}
-          containerRef={wrapperMeasureRefObject}
-        >
-          <InternalContainer
-            {...baseProps}
-            __internalRootRef={__internalRootRef}
-            className={clsx(baseProps.className, styles.root)}
-            __funnelSubStepProps={__funnelSubStepProps}
-            __fullPage={variant === 'full-page'}
-            header={
-              <>
-                {hasHeader && (
-                  <div>
-                    <div
-                      ref={toolsHeaderWrapper}
-                      className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
-                    >
-                      <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
-                        <ToolsHeader
-                          header={header}
-                          filter={filter}
-                          pagination={pagination}
-                          preferences={preferences}
-                          setLastUserAction={setLastUserAction}
-                        />
-                      </CollectionLabelContext.Provider>
+        <TableComponentsContext.Provider value={{ paginationRef, filterRef }}>
+          <ColumnWidthsProvider
+            visibleColumns={visibleColumnWidthsWithSelection}
+            resizableColumns={resizableColumns}
+            containerRef={wrapperMeasureRefObject}
+          >
+            <InternalContainer
+              {...baseProps}
+              __internalRootRef={__internalRootRef}
+              className={clsx(baseProps.className, styles.root)}
+              __funnelSubStepProps={__funnelSubStepProps}
+              __fullPage={variant === 'full-page'}
+              header={
+                <>
+                  {hasHeader && (
+                    <div>
+                      <div
+                        ref={toolsHeaderWrapper}
+                        className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
+                      >
+                        <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
+                          <ToolsHeader
+                            header={header}
+                            filter={filter}
+                            pagination={pagination}
+                            preferences={preferences}
+                            setLastUserAction={setLastUserAction}
+                          />
+                        </CollectionLabelContext.Provider>
+                      </div>
+                    </div>
+                  )}
+                  {stickyHeader && (
+                    <StickyHeader
+                      ref={stickyHeaderRef}
+                      variant={computedVariant}
+                      theadProps={theadProps}
+                      wrapperRef={wrapperRefObject}
+                      theadRef={theadRef}
+                      secondaryWrapperRef={secondaryWrapperRef}
+                      tableRef={tableRefObject}
+                      onScroll={handleScroll}
+                      tableHasHeader={hasHeader}
+                      contentDensity={contentDensity}
+                      tableRole={tableRole}
+                    />
+                  )}
+                </>
+              }
+              disableHeaderPaddings={true}
+              disableContentPaddings={true}
+              variant={toContainerVariant(computedVariant)}
+              __disableFooterPaddings={true}
+              __disableFooterDivider={true}
+              __disableStickyMobile={false}
+              footer={
+                hasFooter ? (
+                  <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
+                    <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
+                      {footer && <span>{footer}</span>}
+                      {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
                     </div>
                   </div>
-                )}
-                {stickyHeader && (
-                  <StickyHeader
-                    ref={stickyHeaderRef}
-                    variant={computedVariant}
-                    theadProps={theadProps}
-                    wrapperRef={wrapperRefObject}
-                    theadRef={theadRef}
-                    secondaryWrapperRef={secondaryWrapperRef}
-                    tableRef={tableRefObject}
-                    onScroll={handleScroll}
-                    tableHasHeader={hasHeader}
-                    contentDensity={contentDensity}
-                    tableRole={tableRole}
-                  />
-                )}
-              </>
-            }
-            disableHeaderPaddings={true}
-            disableContentPaddings={true}
-            variant={toContainerVariant(computedVariant)}
-            __disableFooterPaddings={true}
-            __disableFooterDivider={true}
-            __disableStickyMobile={false}
-            footer={
-              hasFooter ? (
-                <div className={clsx(styles['footer-wrapper'], styles[`variant-${computedVariant}`])}>
-                  <div className={clsx(styles.footer, hasFooterPagination && styles['footer-with-pagination'])}>
-                    {footer && <span>{footer}</span>}
-                    {hasFooterPagination && <div className={styles['footer-pagination']}>{pagination}</div>}
-                  </div>
-                </div>
-              ) : null
-            }
-            __stickyHeader={stickyHeader}
-            __mobileStickyOffset={toolsHeaderHeight ?? 0}
-            __stickyOffset={stickyHeaderVerticalOffset}
-            {...focusMarkers.root}
-          >
-            <div
-              ref={wrapperRef}
-              className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
-                [styles['has-footer']]: hasFooter,
-                [styles['has-header']]: hasHeader,
-              })}
-              style={stickyState.style.wrapper}
-              onScroll={handleScroll}
-              {...wrapperProps}
+                ) : null
+              }
+              __stickyHeader={stickyHeader}
+              __mobileStickyOffset={toolsHeaderHeight ?? 0}
+              __stickyOffset={stickyHeaderVerticalOffset}
+              {...focusMarkers.root}
             >
-              <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
-              {!!renderAriaLive && !!firstIndex && (
-                <LiveRegion>
-                  <span>
-                    {renderAriaLive({
-                      firstIndex,
-                      lastIndex: firstIndex + items.length - 1,
-                      visibleItemsCount: allItems.length,
-                      totalItemsCount,
-                    })}
-                  </span>
-                </LiveRegion>
-              )}
-              <GridNavigationProvider
-                keyboardNavigation={!!enableKeyboardNavigation}
-                pageSize={GRID_NAVIGATION_PAGE_SIZE}
-                getTable={() => tableRefObject.current}
+              <div
+                ref={wrapperRef}
+                className={clsx(styles.wrapper, styles[`variant-${computedVariant}`], {
+                  [styles['has-footer']]: hasFooter,
+                  [styles['has-header']]: hasHeader,
+                })}
+                style={stickyState.style.wrapper}
+                onScroll={handleScroll}
+                {...wrapperProps}
               >
-                <table
-                  {...performanceMarkAttributes}
-                  ref={tableRef}
-                  className={clsx(
-                    styles.table,
-                    resizableColumns && styles['table-layout-fixed'],
-                    contentDensity === 'compact' && getVisualContextClassname('compact-table')
-                  )}
-                  {...getTableRoleProps({
-                    tableRole,
-                    totalItemsCount,
-                    totalColumnsCount: totalColumnsCount,
-                    ariaLabel: ariaLabels?.tableLabel,
-                    ariaLabelledby,
-                  })}
+                <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
+                {!!renderAriaLive && !!firstIndex && (
+                  <LiveRegion>
+                    <span>
+                      {renderAriaLive({
+                        firstIndex,
+                        lastIndex: firstIndex + items.length - 1,
+                        visibleItemsCount: allItems.length,
+                        totalItemsCount,
+                      })}
+                    </span>
+                  </LiveRegion>
+                )}
+                <GridNavigationProvider
+                  keyboardNavigation={!!enableKeyboardNavigation}
+                  pageSize={GRID_NAVIGATION_PAGE_SIZE}
+                  getTable={() => tableRefObject.current}
                 >
-                  <Thead
-                    ref={theadRef}
-                    hidden={stickyHeader}
-                    onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
-                    {...theadProps}
-                  />
-                  <tbody>
-                    {loading || allItems.length === 0 ? (
-                      <tr>
-                        <NoDataCell
-                          totalColumnsCount={totalColumnsCount}
-                          hasFooter={hasFooter}
-                          loading={loading}
-                          loadingText={loadingText}
-                          empty={empty}
-                          tableRef={tableRefObject}
-                          containerRef={wrapperMeasureRefObject}
-                        />
-                      </tr>
-                    ) : (
-                      allRows.map((row, rowIndex) => {
-                        const isFirstRow = rowIndex === 0;
-                        const isLastRow = rowIndex === allRows.length - 1;
-                        const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
-                        const rowRoleProps = getTableRowRoleProps({
-                          tableRole,
-                          firstIndex,
-                          rowIndex,
-                          level: row.type === 'loader' ? row.level : undefined,
-                          ...expandableProps,
-                        });
-                        const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
-                        const sharedCellProps = {
-                          isVisualRefresh,
-                          isFirstRow,
-                          isLastRow,
-                          isSelected: hasSelection && isRowSelected(row),
-                          isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
-                          isNextSelected: hasSelection && !isLastRow && isRowSelected(allRows[rowIndex + 1]),
-                          isEvenRow: rowIndex % 2 === 0,
-                          stripedRows,
-                          hasSelection,
-                          hasFooter,
-                          stickyState,
-                          tableRole,
-                        };
-                        if (row.type === 'data') {
+                  <table
+                    {...performanceMarkAttributes}
+                    ref={tableRef}
+                    className={clsx(
+                      styles.table,
+                      resizableColumns && styles['table-layout-fixed'],
+                      contentDensity === 'compact' && getVisualContextClassname('compact-table')
+                    )}
+                    {...getTableRoleProps({
+                      tableRole,
+                      totalItemsCount,
+                      totalColumnsCount: totalColumnsCount,
+                      ariaLabel: ariaLabels?.tableLabel,
+                      ariaLabelledby,
+                    })}
+                  >
+                    <Thead
+                      ref={theadRef}
+                      hidden={stickyHeader}
+                      onFocusedComponentChange={focusId => stickyHeaderRef.current?.setFocus(focusId)}
+                      {...theadProps}
+                    />
+                    <tbody>
+                      {loading || allItems.length === 0 ? (
+                        <tr>
+                          <NoDataCell
+                            totalColumnsCount={totalColumnsCount}
+                            hasFooter={hasFooter}
+                            loading={loading}
+                            loadingText={loadingText}
+                            empty={empty}
+                            tableRef={tableRefObject}
+                            containerRef={wrapperMeasureRefObject}
+                          />
+                        </tr>
+                      ) : (
+                        allRows.map((row, rowIndex) => {
+                          const isFirstRow = rowIndex === 0;
+                          const isLastRow = rowIndex === allRows.length - 1;
+                          const expandableProps = row.type === 'data' ? getExpandableItemProps(row.item) : undefined;
+                          const rowRoleProps = getTableRowRoleProps({
+                            tableRole,
+                            firstIndex,
+                            rowIndex,
+                            level: row.type === 'loader' ? row.level : undefined,
+                            ...expandableProps,
+                          });
+                          const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
+                          const sharedCellProps = {
+                            isVisualRefresh,
+                            isFirstRow,
+                            isLastRow,
+                            isSelected: hasSelection && isRowSelected(row),
+                            isPrevSelected: hasSelection && !isFirstRow && isRowSelected(allRows[rowIndex - 1]),
+                            isNextSelected: hasSelection && !isLastRow && isRowSelected(allRows[rowIndex + 1]),
+                            isEvenRow: rowIndex % 2 === 0,
+                            stripedRows,
+                            hasSelection,
+                            hasFooter,
+                            stickyState,
+                            tableRole,
+                          };
+                          if (row.type === 'data') {
+                            return (
+                              <tr
+                                key={getTableItemKey(row.item)}
+                                className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
+                                onFocus={({ currentTarget }) => {
+                                  // When an element inside table row receives focus we want to adjust the scroll.
+                                  // However, that behaviour is unwanted when the focus is received as result of a click
+                                  // as it causes the click to never reach the target element.
+                                  if (!currentTarget.contains(getMouseDownTarget())) {
+                                    stickyHeaderRef.current?.scrollToRow(currentTarget);
+                                  }
+                                }}
+                                {...focusMarkers.item}
+                                onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
+                                onContextMenu={
+                                  onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
+                                }
+                                {...rowRoleProps}
+                              >
+                                {getItemSelectionProps && (
+                                  <TableTdElement
+                                    {...sharedCellProps}
+                                    className={styles['selection-control']}
+                                    wrapLines={false}
+                                    columnId={selectionColumnId}
+                                    colIndex={0}
+                                  >
+                                    <SelectionControl
+                                      onFocusDown={moveFocusDown}
+                                      onFocusUp={moveFocusUp}
+                                      {...getItemSelectionProps(row.item)}
+                                      rowIndex={rowIndex}
+                                      itemKey={`${getTableItemKey(row.item)}`}
+                                    />
+                                  </TableTdElement>
+                                )}
+
+                                {visibleColumnDefinitions.map((column, colIndex) => {
+                                  const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
+                                  const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
+                                  const isEditable = !!column.editConfig && !cellEditing.isLoading;
+                                  const cellExpandableProps =
+                                    isExpandable && colIndex === 0 ? expandableProps : undefined;
+
+                                  const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
+                                    component: {
+                                      innerContext: {
+                                        position: `${rowIndex + 1},${colIndex + 1}`,
+                                        columnId: column.id ? `${column.id}` : '',
+                                        columnLabel: {
+                                          selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
+                                          root: 'component',
+                                        },
+                                        item: `${getTableItemKey(row.item)}`,
+                                      } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
+                                    },
+                                  };
+
+                                  return (
+                                    <TableBodyCell
+                                      key={getColumnKey(column, colIndex)}
+                                      {...sharedCellProps}
+                                      style={
+                                        resizableColumns
+                                          ? {}
+                                          : {
+                                              width: column.width,
+                                              minWidth: column.minWidth,
+                                              maxWidth: column.maxWidth,
+                                            }
+                                      }
+                                      ariaLabels={ariaLabels}
+                                      column={column}
+                                      item={row.item}
+                                      wrapLines={wrapLines}
+                                      isEditable={isEditable}
+                                      isEditing={isEditing}
+                                      isRowHeader={column.isRowHeader}
+                                      successfulEdit={successfulEdit}
+                                      resizableColumns={resizableColumns}
+                                      onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
+                                      onEditEnd={editCancelled =>
+                                        cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
+                                      }
+                                      submitEdit={cellEditing.submitEdit}
+                                      columnId={column.id ?? colIndex}
+                                      colIndex={colIndex + colIndexOffset}
+                                      verticalAlign={column.verticalAlign}
+                                      {...cellExpandableProps}
+                                      {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+                                    />
+                                  );
+                                })}
+                              </tr>
+                            );
+                          }
                           return (
                             <tr
-                              key={getTableItemKey(row.item)}
-                              className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
-                              onFocus={({ currentTarget }) => {
-                                // When an element inside table row receives focus we want to adjust the scroll.
-                                // However, that behaviour is unwanted when the focus is received as result of a click
-                                // as it causes the click to never reach the target element.
-                                if (!currentTarget.contains(getMouseDownTarget())) {
-                                  stickyHeaderRef.current?.scrollToRow(currentTarget);
-                                }
-                              }}
-                              {...focusMarkers.item}
-                              onClick={onRowClickHandler && onRowClickHandler.bind(null, rowIndex, row.item)}
-                              onContextMenu={
-                                onRowContextMenuHandler && onRowContextMenuHandler.bind(null, rowIndex, row.item)
-                              }
+                              key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
+                              className={styles.row}
                               {...rowRoleProps}
                             >
                               {getItemSelectionProps && (
@@ -561,134 +659,52 @@ const InternalTable = React.forwardRef(
                                   columnId={selectionColumnId}
                                   colIndex={0}
                                 >
-                                  <SelectionControl
-                                    onFocusDown={moveFocusDown}
-                                    onFocusUp={moveFocusUp}
-                                    {...getItemSelectionProps(row.item)}
-                                    rowIndex={rowIndex}
-                                    itemKey={`${getTableItemKey(row.item)}`}
-                                  />
+                                  {null}
                                 </TableTdElement>
                               )}
-
-                              {visibleColumnDefinitions.map((column, colIndex) => {
-                                const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                                const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
-                                const isEditable = !!column.editConfig && !cellEditing.isLoading;
-                                const cellExpandableProps =
-                                  isExpandable && colIndex === 0 ? expandableProps : undefined;
-
-                                const analyticsMetadata: GeneratedAnalyticsMetadataFragment = {
-                                  component: {
-                                    innerContext: {
-                                      position: `${rowIndex + 1},${colIndex + 1}`,
-                                      columnId: column.id ? `${column.id}` : '',
-                                      columnLabel: {
-                                        selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
-                                        root: 'component',
-                                      },
-                                      item: `${getTableItemKey(row.item)}`,
-                                    } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
-                                  },
-                                };
-
-                                return (
-                                  <TableBodyCell
-                                    key={getColumnKey(column, colIndex)}
-                                    {...sharedCellProps}
-                                    style={
-                                      resizableColumns
-                                        ? {}
-                                        : {
-                                            width: column.width,
-                                            minWidth: column.minWidth,
-                                            maxWidth: column.maxWidth,
-                                          }
-                                    }
-                                    ariaLabels={ariaLabels}
-                                    column={column}
-                                    item={row.item}
-                                    wrapLines={wrapLines}
-                                    isEditable={isEditable}
-                                    isEditing={isEditing}
-                                    isRowHeader={column.isRowHeader}
-                                    successfulEdit={successfulEdit}
-                                    resizableColumns={resizableColumns}
-                                    onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                                    onEditEnd={editCancelled =>
-                                      cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                                    }
-                                    submitEdit={cellEditing.submitEdit}
-                                    columnId={column.id ?? colIndex}
-                                    colIndex={colIndex + colIndexOffset}
-                                    verticalAlign={column.verticalAlign}
-                                    {...cellExpandableProps}
-                                    {...getAnalyticsMetadataAttribute(analyticsMetadata)}
-                                  />
-                                );
-                              })}
+                              {visibleColumnDefinitions.map((column, colIndex) => (
+                                <TableTdElement
+                                  key={getColumnKey(column, colIndex)}
+                                  {...sharedCellProps}
+                                  wrapLines={false}
+                                  columnId={column.id ?? colIndex}
+                                  colIndex={colIndex + colIndexOffset}
+                                  isRowHeader={colIndex === 0}
+                                  level={row.level}
+                                >
+                                  {colIndex === 0 ? (
+                                    <ItemsLoader
+                                      item={row.item}
+                                      loadingStatus={row.status}
+                                      renderLoaderPending={renderLoaderPending}
+                                      renderLoaderLoading={renderLoaderLoading}
+                                      renderLoaderError={renderLoaderError}
+                                      trackBy={trackBy}
+                                    />
+                                  ) : null}
+                                </TableTdElement>
+                              ))}
                             </tr>
                           );
-                        }
-                        return (
-                          <tr
-                            key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
-                            className={styles.row}
-                            {...rowRoleProps}
-                          >
-                            {getItemSelectionProps && (
-                              <TableTdElement
-                                {...sharedCellProps}
-                                className={styles['selection-control']}
-                                wrapLines={false}
-                                columnId={selectionColumnId}
-                                colIndex={0}
-                              >
-                                {null}
-                              </TableTdElement>
-                            )}
-                            {visibleColumnDefinitions.map((column, colIndex) => (
-                              <TableTdElement
-                                key={getColumnKey(column, colIndex)}
-                                {...sharedCellProps}
-                                wrapLines={false}
-                                columnId={column.id ?? colIndex}
-                                colIndex={colIndex + colIndexOffset}
-                                isRowHeader={colIndex === 0}
-                                level={row.level}
-                              >
-                                {colIndex === 0 ? (
-                                  <ItemsLoader
-                                    item={row.item}
-                                    loadingStatus={row.status}
-                                    renderLoaderPending={renderLoaderPending}
-                                    renderLoaderLoading={renderLoaderLoading}
-                                    renderLoaderError={renderLoaderError}
-                                    trackBy={trackBy}
-                                  />
-                                ) : null}
-                              </TableTdElement>
-                            ))}
-                          </tr>
-                        );
-                      })
-                    )}
-                  </tbody>
-                </table>
-              </GridNavigationProvider>
+                        })
+                      )}
+                    </tbody>
+                  </table>
+                </GridNavigationProvider>
 
-              {resizableColumns && <ResizeTracker />}
-            </div>
+                {resizableColumns && <ResizeTracker />}
+              </div>
 
-            <StickyScrollbar
-              ref={scrollbarRef}
-              wrapperRef={wrapperRefObject}
-              tableRef={tableRefObject}
-              onScroll={handleScroll}
-              hasStickyColumns={hasStickyColumns}
-            />
-          </InternalContainer>
-        </ColumnWidthsProvider>
+              <StickyScrollbar
+                ref={scrollbarRef}
+                wrapperRef={wrapperRefObject}
+                tableRef={tableRefObject}
+                onScroll={handleScroll}
+                hasStickyColumns={hasStickyColumns}
+              />
+            </InternalContainer>
+          </ColumnWidthsProvider>
+        </TableComponentsContext.Provider>
       </LinkDefaultVariantContext.Provider>
     );
   }

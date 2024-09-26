@@ -13,8 +13,8 @@ import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytic
 import {
   DATA_ATTR_FUNNEL_VALUE,
   getFunnelValueSelector,
-  getNameFromSelector,
   getSubStepAllSelector,
+  getTextFromSelector,
 } from '../internal/analytics/selectors';
 import LiveRegion from '../internal/components/live-region';
 import Tooltip from '../internal/components/tooltip/index.js';
@@ -131,8 +131,8 @@ export const InternalButton = React.forwardRef(
         fireCancelableEvent(onFollow, { href, target }, event);
 
         if ((iconName === 'external' || target === '_blank') && funnelInteractionId) {
-          const stepName = getNameFromSelector(stepNameSelector);
-          const subStepName = getNameFromSelector(subStepNameSelector);
+          const stepName = getTextFromSelector(stepNameSelector);
+          const subStepName = getTextFromSelector(subStepNameSelector);
 
           FunnelMetrics.externalLinkInteracted({
             funnelInteractionId,

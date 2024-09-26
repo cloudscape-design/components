@@ -28,11 +28,12 @@ import {
 } from '../interfaces';
 import {
   DATA_ATTR_FUNNEL_STEP,
+  getBreadcrumbLinkSelector,
   getFunnelNameSelector,
-  getNameFromSelector,
   getSubStepAllSelector,
   getSubStepNameSelector,
   getSubStepSelector,
+  getTextFromSelector,
 } from '../selectors';
 
 export const FUNNEL_VERSION = '1.4';
@@ -144,7 +145,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         {
           number: 1,
           isOptional: false,
-          name: getNameFromSelector(funnelNameSelector.current) ?? '',
+          name: getTextFromSelector(funnelNameSelector.current) ?? '',
           stepIdentifier: props.funnelIdentifier,
         },
       ];
@@ -160,6 +161,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
         componentTheme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
+        resourceType: props.funnelResourceType || getTextFromSelector(getBreadcrumbLinkSelector(3)),
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -400,7 +402,7 @@ const InnerAnalyticsFunnelStep = ({
       return;
     }
 
-    const stepName = getNameFromSelector(stepNameSelector);
+    const stepName = getTextFromSelector(stepNameSelector);
 
     if (funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
