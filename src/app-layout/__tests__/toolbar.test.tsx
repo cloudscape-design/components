@@ -7,13 +7,13 @@ import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
 
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+// import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
-import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
+// import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
-function findToolbar(wrapper: AppLayoutWrapper) {
-  return wrapper.findByClassName(testUtilStyles.toolbar)?.getElement();
-}
+// function findToolbar(wrapper: AppLayoutWrapper) {
+//   return wrapper.findByClassName(testUtilStyles.toolbar)?.getElement();
+// }
 
 // no-op function to suppress controllability warnings
 function noop() {}
@@ -22,21 +22,21 @@ describe('toolbar mode only features', () => {
   describeEachAppLayout({ themes: ['refresh-toolbar'] }, ({ size }) => {
     test('does not render the toolbar when all panels are hidden', () => {
       const { wrapper } = renderComponent(<AppLayout navigationHide={true} toolsHide={true} />);
-      expect(findToolbar(wrapper)).toBeFalsy();
+      expect(wrapper.findToolbar()).toBeFalsy();
     });
 
     test('renders toggle buttons when drawers are closed', () => {
       const { wrapper } = renderComponent(
         <AppLayout navigationOpen={false} toolsOpen={false} onNavigationChange={noop} onToolsChange={noop} />
       );
-      expect(findToolbar(wrapper)).toBeTruthy();
-      expect(findToolbar(wrapper)).toContainElement(wrapper.findNavigationToggle().getElement());
-      expect(findToolbar(wrapper)).toContainElement(wrapper.findToolsToggle().getElement());
+      expect(wrapper.findToolbar()).toBeTruthy();
+      expect(wrapper.findToolbar()).toContainElement(wrapper.findNavigationToggle().getElement());
+      expect(wrapper.findToolbar()).toContainElement(wrapper.findToolsToggle().getElement());
     });
 
     test('renders navigation toggle button for open state', () => {
       const { wrapper } = renderComponent(<AppLayout navigationOpen={true} onNavigationChange={noop} />);
-      expect(findToolbar(wrapper)).toBeTruthy();
+      expect(wrapper.findToolbar()).toBeTruthy();
       expect(wrapper.findNavigationToggle()).toBeTruthy();
     });
 
@@ -44,8 +44,8 @@ describe('toolbar mode only features', () => {
       const { wrapper } = renderComponent(
         <AppLayout splitPanel={<SplitPanel header="Testing">Dummy for testing</SplitPanel>} />
       );
-      expect(findToolbar(wrapper)).toBeTruthy();
-      expect(findToolbar(wrapper)).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
+      expect(wrapper.findToolbar()).toBeTruthy();
+      expect(wrapper.findToolbar()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
     });
 
     test('renders toolbar with split panel trigger in active state', () => {
@@ -56,8 +56,8 @@ describe('toolbar mode only features', () => {
           onSplitPanelToggle={noop}
         />
       );
-      expect(findToolbar(wrapper)).toBeTruthy();
-      expect(findToolbar(wrapper)).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
+      expect(wrapper.findToolbar()).toBeTruthy();
+      expect(wrapper.findToolbar()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
       expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
 
@@ -65,8 +65,8 @@ describe('toolbar mode only features', () => {
     (size === 'mobile' ? describe : describe.skip)('multiple drawers', () => {
       test('renders multiple toggle buttons', () => {
         const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
-        expect(findToolbar(wrapper)).toBeTruthy();
-        expect(findToolbar(wrapper)).toContainElement(wrapper.findDrawerTriggerById(manyDrawers[0].id)!.getElement());
+        expect(wrapper.findToolbar()).toBeTruthy();
+        expect(wrapper.findToolbar()).toContainElement(wrapper.findDrawerTriggerById(manyDrawers[0].id)!.getElement());
         expect(wrapper.findDrawerTriggerById(manyDrawers[0].id)!.getElement()).toHaveAttribute(
           'aria-expanded',
           'false'
@@ -77,8 +77,8 @@ describe('toolbar mode only features', () => {
         const { wrapper } = renderComponent(
           <AppLayout activeDrawerId={manyDrawers[0].id} drawers={manyDrawers} onDrawerChange={noop} />
         );
-        expect(findToolbar(wrapper)).toBeTruthy();
-        expect(findToolbar(wrapper)).toContainElement(wrapper.findDrawerTriggerById(manyDrawers[0].id)!.getElement());
+        expect(wrapper.findToolbar()).toBeTruthy();
+        expect(wrapper.findToolbar()).toContainElement(wrapper.findDrawerTriggerById(manyDrawers[0].id)!.getElement());
         expect(wrapper.findDrawerTriggerById(manyDrawers[0].id)!.getElement()).toHaveAttribute('aria-expanded', 'true');
       });
     });

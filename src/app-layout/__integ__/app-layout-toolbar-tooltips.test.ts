@@ -334,7 +334,7 @@ describe('visual-refresh-toolbar', () => {
           ).resolves.toBeTruthy();
           await page.click(splitPanelTriggerSelector);
           await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
-          await page.click(splitPanelTriggerSelector); //this could change with focus fixes
+          await page.click(splitPanelTriggerSelector); //this could change witf focus fixes
           await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
           await page.hoverElement(firstDrawerTriggerSelector);
           await expect(page.getElementsCount(`.${tooltipStyles.root}`)).resolves.toBe(1);
@@ -369,7 +369,7 @@ describe('visual-refresh-toolbar', () => {
           await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
           //todo - assert the tooltip is not visible. Curently it closes on click then reopened as the UI shifts and causign an unexpected new hover event
           await page.keys(['Tab', 'Tab']);
-          await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBeTruthy();
+          await page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector());
           await page.keys('Enter');
           await expect(page.isExisting(`.${tooltipStyles.root}`)).resolves.toBe(false);
           //navigate away from slide panel

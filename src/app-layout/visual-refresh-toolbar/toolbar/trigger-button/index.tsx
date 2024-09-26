@@ -9,6 +9,7 @@ import Icon from '../../../../icon/internal';
 import Tooltip from '../../../../internal/components/tooltip';
 import { registerTooltip } from '../../../../internal/components/tooltip/registry';
 
+import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TriggerButtonProps {
@@ -205,7 +206,7 @@ function TriggerButton(
         onBlur: () => handleBlur(true),
       })}
       className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
-        [styles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
+        [testutilStyles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
       })}
     >
       <button
@@ -235,7 +236,9 @@ function TriggerButton(
         </span>
       </button>
       {badge && <div className={styles.dot} />}
-      {tooltipVisible && <Tooltip trackRef={containerRef} value={tooltipValue} className={styles['trigger-tooltip']} />}
+      {tooltipVisible && (
+        <Tooltip trackRef={containerRef} value={tooltipValue} className={testutilStyles['trigger-tooltip']} />
+      )}
     </div>
   );
 }

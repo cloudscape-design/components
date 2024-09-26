@@ -6,6 +6,7 @@ import ButtonDropdownWrapper from '../button-dropdown';
 import SplitPanelWrapper from '../split-panel';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
+import appLayoutToolbarStyles from '../../../app-layout/visual-refresh-toolbar/toolbar/stlyes.selectors.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
 
 export default class AppLayoutWrapper extends ComponentWrapper {
@@ -77,5 +78,23 @@ export default class AppLayoutWrapper extends ComponentWrapper {
 
   findActiveDrawerResizeHandle(): ElementWrapper | null {
     return this.findByClassName(testutilStyles['drawers-slider']);
+  }
+
+  findToolbarTriggerButtonContainer(isMobile: boolean): ElementWrapper | null {
+    const drawersTriggerContainerClassKey = `drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`;
+    return this.findByClassName(appLayoutToolbarStyles[drawersTriggerContainerClassKey]);
+    //if not working try createWrapper().find(`.${}`);
+  }
+
+  findToolbar(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles.toolbar);
+  }
+
+  findDrawerTriggerWrapperWithTooltip(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['trigger-wrapper-tooltip-visible']);
+  }
+
+  findDrawerTriggerTooltip(): ElementWrapper | null {
+    return this.findByClassName(testutilStyles['trigger-tooltip']);
   }
 }
