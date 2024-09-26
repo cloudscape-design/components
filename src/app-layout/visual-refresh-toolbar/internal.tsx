@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawer } from './drawer';
+import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
 import {
@@ -11,7 +11,7 @@ import { createWidgetizedAppLayoutToolbar } from './toolbar';
 
 export const AppLayoutNavigation = createWidgetizedAppLayoutNavigation();
 export const AppLayoutDrawer = createWidgetizedAppLayoutDrawer();
-export const AppLayoutGlobalDrawer = createWidgetizedAppLayoutGlobalDrawer();
+export const AppLayoutGlobalDrawers = createWidgetizedAppLayoutGlobalDrawers();
 export const AppLayoutNotifications = createWidgetizedAppLayoutNotifications();
 export const AppLayoutToolbar = createWidgetizedAppLayoutToolbar();
 export const AppLayoutSplitPanelBottom = createWidgetizedAppLayoutSplitPanelDrawerBottom();

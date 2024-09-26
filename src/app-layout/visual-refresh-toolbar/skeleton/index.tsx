@@ -115,15 +115,7 @@ export function SkeletonLayout({
       >
         {tools}
       </div>
-      <div
-        className={clsx(
-          styles['global-tools'],
-          !globalToolsOpen && styles['panel-hidden'],
-          sharedStyles['with-motion']
-        )}
-      >
-        {globalTools}
-      </div>
+      <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
     </div>
   );
 }

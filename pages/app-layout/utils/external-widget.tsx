@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import Drawer from '~components/drawer';
@@ -98,22 +98,22 @@ const AutoIncrementCounter: React.FC<{
   onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
 }> = ({ children, onVisibilityChange }) => {
   const [count, setCount] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const isPaused = useRef(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      if (!isPaused) {
+      if (!isPaused.current) {
         setCount(prevCount => prevCount + 1);
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isPaused]);
+  }, []);
 
   useEffect(() => {
     if (onVisibilityChange) {
       onVisibilityChange((isVisible: boolean) => {
-        setIsPaused(!isVisible);
+        isPaused.current = !isVisible;
       });
     }
   }, [onVisibilityChange]);

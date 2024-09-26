@@ -7,9 +7,11 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findAppLayout();
 
-for (const visualRefresh of [true, false]) {
+const testIf = (condition: boolean) => (condition ? test : test.skip);
+
+describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
   for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
-    describe(`page=${pageName} visualRefresh=${visualRefresh}`, () => {
+    describe(`page=${pageName}`, () => {
       function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
         return useBrowser(async browser => {
           const page = new BasePageObject(browser);
@@ -18,7 +20,8 @@ for (const visualRefresh of [true, false]) {
             `#/light/app-layout/${pageName}?${new URLSearchParams({
               hasDrawers: 'false',
               hasTools: 'true',
-              visualRefresh: `${visualRefresh}`,
+              visualRefresh: `${theme.startsWith('visual-refresh')}`,
+              appLayoutToolbar: theme === 'visual-refresh-toolbar' ? 'true' : 'false',
             }).toString()}`
           );
           await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
@@ -44,7 +47,7 @@ for (const visualRefresh of [true, false]) {
         })
       );
 
-      test(
+      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should allow switching to a drawer after clicking an info link',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -58,7 +61,7 @@ for (const visualRefresh of [true, false]) {
         })
       );
 
-      test(
+      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should open and close tools via controlled mode',
         setupTest(async page => {
           const toolsContentSelector = wrapper.findTools().getElement();
@@ -73,7 +76,7 @@ for (const visualRefresh of [true, false]) {
         })
       );
 
-      test(
+      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should switch help panel content and close the panel afterwards',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -90,7 +93,7 @@ for (const visualRefresh of [true, false]) {
         })
       );
 
-      test(
+      testIf(!(theme === 'visual-refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
         'should move focus to previous focused element after closing tools',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -101,4 +104,4 @@ for (const visualRefresh of [true, false]) {
       );
     });
   }
-}
+});

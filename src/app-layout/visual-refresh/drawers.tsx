@@ -222,11 +222,7 @@ function DesktopTriggers() {
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(
-    drawers?.filter(item => !!item.trigger) ?? undefined,
-    getIndexOfOverflowItem(),
-    activeDrawerId
-  );
+  const { visibleItems, overflowItems } = splitItems(drawers ?? undefined, getIndexOfOverflowItem(), activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (
@@ -340,11 +336,7 @@ export function MobileTriggers() {
     previousActiveDrawerId.current = activeDrawerId;
   }
 
-  const { visibleItems, overflowItems } = splitItems(
-    drawers.filter(item => !!item.trigger),
-    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT,
-    activeDrawerId
-  );
+  const { visibleItems, overflowItems } = splitItems(drawers, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT, activeDrawerId);
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
 
   return (

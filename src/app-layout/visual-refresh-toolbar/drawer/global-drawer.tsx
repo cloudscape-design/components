@@ -8,7 +8,6 @@ import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import { NonCancelableEventHandler } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
-import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
 import { AppLayoutInternals } from '../interfaces';
@@ -26,7 +25,7 @@ interface AppLayoutGlobalDrawerImplementationProps {
     | undefined;
 }
 
-export function AppLayoutGlobalDrawerImplementation({
+function AppLayoutGlobalDrawerImplementation({
   appLayoutInternals,
   show,
   activeGlobalDrawer,
@@ -142,4 +141,4 @@ export function AppLayoutGlobalDrawerImplementation({
   );
 }
 
-export const createWidgetizedAppLayoutGlobalDrawer = createWidgetizedComponent(AppLayoutGlobalDrawerImplementation);
+export default AppLayoutGlobalDrawerImplementation;

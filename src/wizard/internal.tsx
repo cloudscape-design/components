@@ -8,7 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { useInternalI18n } from '../i18n/context';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
+import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -62,7 +62,7 @@ export default function InternalWizard({
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
     if (funnelInteractionId) {
-      const stepName = getNameFromSelector(STEP_NAME_SELECTOR);
+      const stepName = getTextFromSelector(STEP_NAME_SELECTOR);
 
       FunnelMetrics.funnelStepNavigation({
         navigationType: reason,

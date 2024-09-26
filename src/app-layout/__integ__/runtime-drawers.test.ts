@@ -11,25 +11,27 @@ const findDrawerById = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
 };
 
-for (const visualRefresh of [true, false]) {
-  describe(`visualRefresh=${visualRefresh}`, () => {
-    function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
-      return useBrowser(async browser => {
-        const page = new BasePageObject(browser);
+describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+  function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new BasePageObject(browser);
 
-        await browser.url(
-          `#/light/app-layout/runtime-drawers?${new URLSearchParams({
-            hasDrawers: 'false',
-            hasTools: 'true',
-            splitPanelPosition: 'side',
-            visualRefresh: `${visualRefresh}`,
-          }).toString()}`
-        );
-        await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
-        await testFn(page);
-      });
-    }
+      await browser.url(
+        `#/light/app-layout/runtime-drawers?${new URLSearchParams({
+          hasDrawers: 'false',
+          hasTools: 'true',
+          splitPanelPosition: 'side',
+          visualRefresh: `${theme.startsWith('visual-refresh')}`,
+          appLayoutToolbar: theme === 'visual-refresh-toolbar' ? 'true' : 'false',
+        }).toString()}`
+      );
+      await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
+      await testFn(page);
+    });
+  }
 
+  //drawer width assertions not neccessary for mobile
+  describe('desktop', () => {
     test(
       'should resize equally with tools or drawers',
       setupTest(async page => {
@@ -49,6 +51,7 @@ for (const visualRefresh of [true, false]) {
     test(
       'renders according to defaultSize property',
       setupTest(async page => {
+        await page.setWindowSize(viewports.desktop);
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
         // using `clientWidth` to neglect possible border width set on this element
         const width = await page.getElementProperty(wrapper.findActiveDrawer().toSelector(), 'clientWidth');
@@ -59,6 +62,7 @@ for (const visualRefresh of [true, false]) {
     test(
       'should call resize handler',
       setupTest(async page => {
+        await page.setWindowSize(viewports.desktop);
         // close navigation panel to give drawer more room to resize
         await page.click(wrapper.findNavigationClose().toSelector());
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
@@ -70,7 +74,7 @@ for (const visualRefresh of [true, false]) {
       })
     );
   });
-}
+});
 
 describe('Visual refresh toolbar only', () => {
   function setupTest(testFn: (page: BasePageObject) => Promise<void>) {

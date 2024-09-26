@@ -54,6 +54,7 @@ describe('Single-page create', () => {
         funnelIdentifier: FUNNEL_IDENTIFIER,
         flowType: 'create',
         funnelType: 'single-page',
+        resourceType: 'Components',
         optionalStepNumbers: [],
         componentTheme: 'vr',
         totalFunnelSteps: 1,

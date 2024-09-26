@@ -21,7 +21,7 @@ import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
-  AppLayoutGlobalDrawer,
+  AppLayoutGlobalDrawers,
   AppLayoutNavigation,
   AppLayoutNotifications,
   AppLayoutSplitPanelBottom,
@@ -152,7 +152,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
       drawerSizes,
       drawersOpenQueue,
-      openDrawersHistory,
       onActiveDrawerChange,
       onActiveDrawerResize,
       onActiveGlobalDrawersChange,
@@ -223,7 +222,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     });
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
-    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, !isMobile, activeDrawer?.id);
+    const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
@@ -394,24 +393,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigationWidth={navigationWidth}
           tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
-            !!globalDrawers.length && (
-              <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
-                {globalDrawers
-                  .filter(
-                    drawer =>
-                      activeGlobalDrawersIds.includes(drawer.id) ||
-                      (drawer.preserveInactiveContent && openDrawersHistory.has(drawer.id))
-                  )
-                  .map(drawer => (
-                    <AppLayoutGlobalDrawer
-                      key={drawer.id}
-                      show={activeGlobalDrawersIds.includes(drawer.id)}
-                      activeGlobalDrawer={drawer}
-                      appLayoutInternals={appLayoutInternals}
-                    />
-                  ))}
-              </ActiveDrawersContext.Provider>
-            )
+            <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
+              <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals} />
+            </ActiveDrawersContext.Provider>
           }
           globalToolsOpen={!!activeGlobalDrawersIds.length}
           toolsOpen={!!activeDrawer}

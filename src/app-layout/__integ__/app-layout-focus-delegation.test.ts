@@ -279,13 +279,15 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
           )
         );
 
-        testIf(!mobile)(
+        test(
           'moves focus back to last opened button when panel is closed',
           setupTest(
             async page => {
-              await page.click(
-                wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
-              );
+              if (!mobile) {
+                await page.click(
+                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
+                );
+              }
               await page.click(
                 wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
               );

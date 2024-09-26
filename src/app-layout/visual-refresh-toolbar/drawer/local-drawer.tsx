@@ -58,7 +58,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
-  const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
+  const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : activeDrawerId;
 
   return (
     <Transition nodeRef={drawerRef} in={true} appear={true} timeout={0}>
@@ -100,10 +100,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
               />
             </div>
           )}
-          <div
-            className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}
-            style={{ width: isMobile ? '100%' : `${activeDrawerSize}px` }}
-          >
+          <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
             <div className={clsx(styles['drawer-close-button'])}>
               <InternalButton
                 ariaLabel={computedAriaLabels.closeButton}

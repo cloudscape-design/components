@@ -6,6 +6,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
 
+const testIf = (condition: boolean) => (condition ? test : test.skip);
+
 const wrapper = createWrapper().findAppLayout();
 class AppLayoutDrawersPage extends BasePageObject {
   async openFirstDrawer() {
@@ -69,7 +71,7 @@ interface SetupTestOptions {
   splitPanelPosition?: string;
   screenSize?: (typeof viewports)['desktop' | 'mobile'];
   disableContentPaddings?: string;
-  visualRefresh?: string;
+  theme: string;
 }
 
 const setupTest = (
@@ -77,152 +79,144 @@ const setupTest = (
     splitPanelPosition = 'bottom',
     screenSize = viewports.desktop,
     disableContentPaddings = 'false',
-    visualRefresh = 'false',
+    theme,
   }: SetupTestOptions,
   testFn: (page: AppLayoutDrawersPage) => Promise<void>
 ) =>
   useBrowser(screenSize, async browser => {
     const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
-      visualRefresh,
       splitPanelPosition,
       disableContentPaddings,
+      visualRefresh: `${theme !== 'classic'}`,
+      appLayoutToolbar: theme === 'visual-refresh-toolbar' ? 'true' : 'false',
     }).toString();
     await browser.url(`#/light/app-layout/with-drawers?${params}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
 
-for (const visualRefresh of ['true', 'false']) {
-  describe(`visualRefresh=${visualRefresh}`, () => {
-    // there is an extra 2 borders inside drawer box in visual refresh
-    const vrBorderOffset = visualRefresh === 'true' ? 2 : 0;
+describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+  // there is an extra 2 borders inside drawer box in visual refresh
+  const vrBorderOffset = theme !== 'classic' ? 2 : 0;
 
-    test(
-      'slider is accessible by keyboard in side position',
-      setupTest({ visualRefresh }, async page => {
-        await page.openFirstDrawer();
-        await page.keys(['Enter']);
-        await expect(page.isFocused(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(true);
-
-        const width = await page.getActiveDrawerWidth();
-        await page.keys(['ArrowLeft']);
-        const expectedWidth = width + 10;
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidth);
-      })
-    );
-
-    test(
-      'hides the resize handle on mobile',
-      setupTest({ visualRefresh }, async page => {
-        await page.openFirstDrawer();
-        await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(true);
-
-        await page.setWindowSize(viewports.mobile);
-        await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(false);
-      })
-    );
-
-    test(
-      `should not allow resize drawer beyond min and max limits`,
-      setupTest({ visualRefresh }, async page => {
-        await page.openFirstDrawer();
-        const { width } = await page.getWindowSize();
-        await page.dragResizerTo({ x: width, y: 0 });
-        // there are different layouts between these two designs
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
-        await page.dragResizerTo({ x: 0, y: 0 });
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(visualRefresh === 'true' ? 447 : 520);
-      })
-    );
-
-    test(
-      'automatically shrinks drawer when screen resizes',
-      setupTest({ visualRefresh }, async page => {
-        const largeWindowWidth = 1400;
-        const smallWindowWidth = 900;
-        await page.setWindowSize({ ...viewports.desktop, width: largeWindowWidth });
-        await page.openThirdDrawer();
-        const originalWidth = await page.getActiveDrawerWidth();
-        await page.setWindowSize({ ...viewports.desktop, width: smallWindowWidth });
-        const newWidth = await page.getActiveDrawerWidth();
-        expect(newWidth).toBeLessThan(originalWidth);
-        expect(newWidth).toBeLessThan(smallWindowWidth);
-      })
-    );
-
-    test(
-      `should not shrink drawer beyond min width`,
-      setupTest({ visualRefresh, screenSize: { ...viewports.desktop, width: 700 } }, async page => {
-        await page.openThirdDrawer();
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
-      })
-    );
-
-    test(
-      'split panel and drawer can resize independently',
-      setupTest(
-        { visualRefresh, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1800 } },
-        async page => {
-          await page.openFirstDrawer();
-          await page.openSplitPanel();
-
-          const originalSplitPanelWidth = await page.getSplitPanelWidth();
-          const originalDrawerWidth = await page.getActiveDrawerWidth();
-          await page.dragAndDrop(wrapper.findSplitPanel().findSlider().toSelector(), 100);
-
-          const newSplitPanelWidth = await page.getSplitPanelWidth();
-          expect(newSplitPanelWidth).toBeLessThan(originalSplitPanelWidth);
-          await expect(page.getActiveDrawerWidth()).resolves.toEqual(originalDrawerWidth);
-
-          await page.dragAndDrop(wrapper.findActiveDrawerResizeHandle().toSelector(), -100);
-          await expect(page.getSplitPanelWidth()).resolves.toEqual(newSplitPanelWidth);
-          await expect(page.getActiveDrawerWidth()).resolves.toBeGreaterThan(originalDrawerWidth);
-        }
-      )
-    );
-
-    test(
-      'updates side split panel position when using different width drawers',
-      setupTest(
-        { visualRefresh, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } },
-        async page => {
-          await page.openFirstDrawer();
-          await page.openSplitPanel();
-          await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toEqual(
-            true
-          );
-
-          await page.openThirdDrawer();
-          await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())).resolves.toEqual(
-            true
-          );
-
-          await page.openFirstDrawer();
-          await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toEqual(
-            true
-          );
-        }
-      )
-    );
-
-    test(
-      'scrolling drawer does not affect resize handle position',
-      setupTest({}, async page => {
-        await page.openFirstDrawer();
-        const resizeHandleBefore = await page.getResizeHandlePosition();
-        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
-        const resizeHandleAfter = await page.getResizeHandlePosition();
-        await expect(resizeHandleAfter).toEqual(resizeHandleBefore);
-      })
-    );
-  });
-}
-
-describe('Visual refresh only', () => {
   test(
+    'slider is accessible by keyboard in side position',
+    setupTest({ theme }, async page => {
+      await page.openFirstDrawer();
+      await page.keys(['Enter']);
+      await expect(page.isFocused(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(true);
+
+      const width = await page.getActiveDrawerWidth();
+      await page.keys(['ArrowLeft']);
+      const expectedWidth = width + 10;
+      await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidth);
+    })
+  );
+
+  test(
+    'hides the resize handle on mobile',
+    setupTest({ theme }, async page => {
+      await page.openFirstDrawer();
+      await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(true);
+
+      await page.setWindowSize(viewports.mobile);
+      await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(false);
+    })
+  );
+
+  test(
+    `should not allow resize drawer beyond min and max limits`,
+    setupTest({ theme }, async page => {
+      await page.openFirstDrawer();
+      const { width } = await page.getWindowSize();
+      await page.dragResizerTo({ x: width, y: 0 });
+      // there are different layouts between these two designs
+      await expect(page.getActiveDrawerWidth()).resolves.toEqual(
+        theme === 'visual-refresh-toolbar' ? 290 : 290 + vrBorderOffset
+      );
+      await page.dragResizerTo({ x: 0, y: 0 });
+      const expectedWidths = {
+        ['classic']: 520,
+        ['visual-refresh']: 447,
+        ['visual-refresh-toolbar']: 592,
+      };
+      await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidths[theme]);
+    })
+  );
+
+  testIf(theme !== 'visual-refresh-toolbar')(
+    'automatically shrinks drawer when screen resizes',
+    setupTest({ theme }, async page => {
+      const largeWindowWidth = 1400;
+      const smallWindowWidth = 900;
+      await page.setWindowSize({ ...viewports.desktop, width: largeWindowWidth });
+      await page.openThirdDrawer();
+      const originalWidth = await page.getActiveDrawerWidth();
+      await page.setWindowSize({ ...viewports.desktop, width: smallWindowWidth });
+      const newWidth = await page.getActiveDrawerWidth();
+      expect(newWidth).toBeLessThan(originalWidth);
+      expect(newWidth).toBeLessThan(smallWindowWidth);
+    })
+  );
+
+  testIf(theme !== 'visual-refresh-toolbar')(
+    `should not shrink drawer beyond min width`,
+    setupTest({ theme, screenSize: { ...viewports.desktop, width: 700 } }, async page => {
+      await page.openThirdDrawer();
+      await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
+    })
+  );
+
+  test(
+    'split panel and drawer can resize independently',
+    setupTest({ theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1800 } }, async page => {
+      await page.openFirstDrawer();
+      await page.openSplitPanel();
+
+      const originalSplitPanelWidth = await page.getSplitPanelWidth();
+      const originalDrawerWidth = await page.getActiveDrawerWidth();
+      await page.dragAndDrop(wrapper.findSplitPanel().findSlider().toSelector(), 100);
+
+      const newSplitPanelWidth = await page.getSplitPanelWidth();
+      expect(newSplitPanelWidth).toBeLessThan(originalSplitPanelWidth);
+      await expect(page.getActiveDrawerWidth()).resolves.toEqual(originalDrawerWidth);
+
+      await page.dragAndDrop(wrapper.findActiveDrawerResizeHandle().toSelector(), -100);
+      await expect(page.getSplitPanelWidth()).resolves.toEqual(newSplitPanelWidth);
+      await expect(page.getActiveDrawerWidth()).resolves.toBeGreaterThan(originalDrawerWidth);
+    })
+  );
+
+  testIf(theme !== 'visual-refresh-toolbar')(
+    'updates side split panel position when using different width drawers',
+    setupTest({ theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } }, async page => {
+      await page.openFirstDrawer();
+      await page.openSplitPanel();
+      await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toEqual(true);
+
+      await page.openThirdDrawer();
+      await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())).resolves.toEqual(true);
+
+      await page.openFirstDrawer();
+      await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toEqual(true);
+    })
+  );
+
+  test(
+    'scrolling drawer does not affect resize handle position',
+    setupTest({ theme }, async page => {
+      await page.openFirstDrawer();
+      const resizeHandleBefore = await page.getResizeHandlePosition();
+      await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+      const resizeHandleAfter = await page.getResizeHandlePosition();
+      await expect(resizeHandleAfter).toEqual(resizeHandleBefore);
+    })
+  );
+
+  (theme === 'classic' ? test : test.skip)(
     'pushes content over with disableContentPaddings',
-    setupTest({ disableContentPaddings: 'true', visualRefresh: 'true' }, async page => {
+    setupTest({ disableContentPaddings: 'true', theme }, async page => {
       const width = await page.getMainContentWidth();
       await page.openFirstDrawer();
       const newWidth = await page.getMainContentWidth();

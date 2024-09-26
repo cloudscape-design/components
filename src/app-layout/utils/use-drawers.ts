@@ -52,7 +52,7 @@ function useRuntimeDrawers(
   activeDrawerId: string | null,
   onActiveDrawerChange: (newDrawerId: string | null) => void,
   activeGlobalDrawersIds: Array<string>,
-  setActiveGlobalDrawersIds: (newDrawerId: string) => void,
+  onActiveGlobalDrawersChange: (newDrawerId: string) => void,
   drawers: AppLayoutProps.Drawer[]
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({
@@ -61,7 +61,7 @@ function useRuntimeDrawers(
     global: [],
   });
   const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
-  const onGlobalDrawersChangeStable = useStableCallback(setActiveGlobalDrawersIds);
+  const onGlobalDrawersChangeStable = useStableCallback(onActiveGlobalDrawersChange);
 
   const drawersWereOpenRef = useRef(false);
   drawersWereOpenRef.current = drawersWereOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
@@ -102,7 +102,7 @@ function useRuntimeDrawers(
         onActiveDrawerChange(drawerId);
       }
       if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
-        setActiveGlobalDrawersIds(drawerId);
+        onActiveGlobalDrawersChange(drawerId);
       }
     });
 
@@ -115,7 +115,7 @@ function useRuntimeDrawers(
     drawers,
     onActiveDrawerChange,
     runtimeDrawers,
-    setActiveGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
   ]);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ function useRuntimeDrawers(
         onActiveDrawerChange(null);
       }
       if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
-        setActiveGlobalDrawersIds(drawerId);
+        onActiveGlobalDrawersChange(drawerId);
       }
     });
 
@@ -141,7 +141,7 @@ function useRuntimeDrawers(
     drawers,
     onActiveDrawerChange,
     runtimeDrawers,
-    setActiveGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
   ]);
 
   return runtimeDrawers;
@@ -189,8 +189,6 @@ export function useDrawers(
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
   // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
   const drawersOpenQueue = useRef<Array<string>>([]);
-  // set containing all drawers that have ever been opened
-  const openDrawersHistory = useRef<Set<string>>(new Set());
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
@@ -203,7 +201,6 @@ export function useDrawers(
     setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
       onAddNewActiveDrawer?.(newDrawerId);
-      openDrawersHistory.current.add(newDrawerId);
     }
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
@@ -223,13 +220,12 @@ export function useDrawers(
   function onActiveGlobalDrawersChange(drawerId: string) {
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
-      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId, false);
+      onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
-      openDrawersHistory.current.add(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
-      onGlobalDrawerFocus && onGlobalDrawerFocus(drawerId, true);
+      onGlobalDrawerFocus?.(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
     }
   }
@@ -290,7 +286,6 @@ export function useDrawers(
     minGlobalDrawersSizes,
     drawerSizes,
     drawersOpenQueue: drawersOpenQueue.current,
-    openDrawersHistory: openDrawersHistory.current,
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,

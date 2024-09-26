@@ -8,7 +8,7 @@ import { MountContentContext } from '../controllers/drawers';
 type VisibilityCallback = (isVisible: boolean) => void;
 
 interface RuntimeContentWrapperProps {
-  mountContent: (container: HTMLElement, mountContent?: MountContentContext) => void;
+  mountContent: (container: HTMLElement, mountContent: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   id?: string;
 }
