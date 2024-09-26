@@ -82,7 +82,6 @@ export function useMultipleFocusControl(
   const previousFocusedElement = useRef<HTMLElement>();
   const shouldFocus = useRef(false);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     doFocus(activeDrawersIds[0]);
   }, [activeDrawersIds, doFocus]);
