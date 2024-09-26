@@ -100,10 +100,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
               />
             </div>
           )}
-          <div
-            className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}
-            style={{ width: isMobile ? '100%' : `${activeDrawerSize}px` }}
-          >
+          <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
             <div className={clsx(styles['drawer-close-button'])}>
               <InternalButton
                 ariaLabel={computedAriaLabels.closeButton}
