@@ -23,12 +23,8 @@ import { ResizableDrawer } from './drawer/resizable-drawer';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { MobileToolbar } from './mobile-toolbar';
 import { Notifications } from './notifications';
-import {
-  SideSplitPanelDrawer,
-  SPLIT_PANEL_MIN_WIDTH,
-  SplitPanelProvider,
-  SplitPanelProviderProps,
-} from './split-panel';
+import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel';
+import { isSplitPanelPositionForced } from './split-panel/split-panel-utils';
 import { togglesConfig } from './toggles';
 import { getStickyOffsetVars } from './utils/sticky-offsets';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
@@ -300,11 +296,16 @@ const ClassicAppLayout = React.forwardRef(
     const effectiveToolsWidth = getEffectiveToolsWidth();
 
     // if there is no space to display split panel in the side, force to bottom
-    const isSplitPanelForcedPosition =
-      isMobile || resizableSpaceAvailable - effectiveToolsWidth < SPLIT_PANEL_MIN_WIDTH;
-    const finalSplitPanePosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
+    const finalSplitPanelPositionRef = useRef(splitPanelPosition);
+    const isSplitPanelForcedPosition = isSplitPanelPositionForced({
+      isMobile,
+      currentPosition: finalSplitPanelPositionRef.current,
+      availableSpace: resizableSpaceAvailable - effectiveToolsWidth,
+    });
+    const finalSplitPanelPosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
+    finalSplitPanelPositionRef.current = finalSplitPanelPosition;
 
-    const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
+    const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanelPosition === 'side';
 
     const sideSplitPanelSize = splitPaneAvailableOnTheSide ? (splitPanelOpen ? splitPanelSize : closedDrawerWidth) : 0;
     const sideSplitPanelMaxWidth = Math.max(0, resizableSpaceAvailable - effectiveToolsWidth);
@@ -318,13 +319,13 @@ const ClassicAppLayout = React.forwardRef(
     const [splitPanelReportedHeaderHeight, setSplitPanelReportedHeaderHeight] = useState(0);
 
     const splitPanelContextProps: SplitPanelProviderProps = {
-      topOffset: placement.insetBlockStart + (finalSplitPanePosition === 'bottom' ? stickyNotificationsHeight : 0),
+      topOffset: placement.insetBlockStart + (finalSplitPanelPosition === 'bottom' ? stickyNotificationsHeight : 0),
       bottomOffset: placement.insetBlockEnd,
       leftOffset:
         placement.insetInlineStart +
         (isMobile ? 0 : !navigationHide && navigationOpen ? navigationWidth : navigationClosedWidth),
       rightOffset: isMobile ? 0 : placement.insetInlineEnd + effectiveToolsWidth + rightDrawerBarWidth,
-      position: finalSplitPanePosition,
+      position: finalSplitPanelPosition,
       size: splitPanelSize,
       maxWidth: sideSplitPanelMaxWidth,
       getMaxHeight: getSplitPanelMaxHeight,
@@ -342,7 +343,7 @@ const ClassicAppLayout = React.forwardRef(
     };
     const splitPanelWrapped = splitPanel && (
       <SplitPanelProvider {...splitPanelContextProps}>
-        {finalSplitPanePosition === 'side' ? (
+        {finalSplitPanelPosition === 'side' ? (
           <SideSplitPanelDrawer displayed={splitPanelDisplayed}>{splitPanel}</SideSplitPanelDrawer>
         ) : (
           splitPanel
@@ -358,7 +359,7 @@ const ClassicAppLayout = React.forwardRef(
         // tools padding is displayed in one of the three cases
         // 1. Nothing on the that screen edge (no tools panel and no split panel)
         toolsHide ||
-        (hasDrawers && !activeDrawer && (!splitPanelDisplayed || finalSplitPanePosition !== 'side')) ||
+        (hasDrawers && !activeDrawer && (!splitPanelDisplayed || finalSplitPanelPosition !== 'side')) ||
         // 2. Tools panel is present and open
         toolsVisible ||
         // 3. Split panel is open in side position
@@ -385,7 +386,7 @@ const ClassicAppLayout = React.forwardRef(
     }));
 
     const splitPanelBottomOffset =
-      (!splitPanelDisplayed || finalSplitPanePosition !== 'bottom'
+      (!splitPanelDisplayed || finalSplitPanelPosition !== 'bottom'
         ? undefined
         : splitPanelOpen
           ? splitPanelReportedSize
@@ -518,10 +519,10 @@ const ClassicAppLayout = React.forwardRef(
                 {content}
               </ContentWrapper>
             </div>
-            {finalSplitPanePosition === 'bottom' && splitPanelWrapped}
+            {finalSplitPanelPosition === 'bottom' && splitPanelWrapped}
           </main>
 
-          {finalSplitPanePosition === 'side' && splitPanelWrapped}
+          {finalSplitPanelPosition === 'side' && splitPanelWrapped}
 
           {hasDrawers ? (
             <ResizableDrawer

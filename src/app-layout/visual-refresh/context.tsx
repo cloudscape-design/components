@@ -23,6 +23,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
+import { isSplitPanelPositionForced } from '../split-panel/split-panel-utils';
 import { useDrawers } from '../utils/use-drawers';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import useResize from '../utils/use-resize';
@@ -241,8 +242,14 @@ export const AppLayoutInternalsProvider = React.forwardRef(
      * minimum width exceeds this value then there is not enough horizontal space and we must
      * force it to the bottom position.
      */
-    const isSplitPanelForcedPosition = isMobile || SPLIT_PANEL_MIN_WIDTH > splitPanelMaxWidth;
+    const finalSplitPanelPositionRef = useRef(splitPanelPreferences?.position ?? 'bottom');
+    const isSplitPanelForcedPosition = isSplitPanelPositionForced({
+      isMobile,
+      currentPosition: finalSplitPanelPositionRef.current,
+      availableSpace: splitPanelMaxWidth,
+    });
     const splitPanelPosition = getSplitPanelPosition(isSplitPanelForcedPosition, splitPanelPreferences);
+    finalSplitPanelPositionRef.current = splitPanelPosition;
 
     /**
      * The useControllable hook will set the default size of the SplitPanel based

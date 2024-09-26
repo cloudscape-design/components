@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -175,6 +175,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }));
 
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
+    const splitPanelPositionRef = useRef(splitPanelPreferences?.position ?? 'bottom');
     const { maxDrawerSize, maxSplitPanelSize, splitPanelForcedPosition, splitPanelPosition } = computeHorizontalLayout({
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
@@ -184,8 +185,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement,
       splitPanelOpen,
       splitPanelPosition: splitPanelPreferences?.position,
+      currentSplitPanelPosition: splitPanelPositionRef.current,
       isMobile,
     });
+    splitPanelPositionRef.current = splitPanelPosition;
 
     const { registered, toolbarProps } = useMultiAppLayout({
       forceDeduplicationType,
