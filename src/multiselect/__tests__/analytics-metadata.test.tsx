@@ -306,6 +306,10 @@ test('Internal Multiselect does not render "component" metadata', () => {
       selectedOptions={[]}
       ariaLabel="multiselect with metadatada"
       onChange={() => {}}
+      keepOpen={true}
+      hideTokens={false}
+      statusType="finished"
+      filteringType="none"
     />
   );
   const wrapper = createWrapper(renderResult.container).findMultiselect()!;
