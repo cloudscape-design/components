@@ -8,7 +8,7 @@ function setupTest(
   testFn: (parameters: {
     page: BasePageObject;
     getMarks: () => Promise<PerformanceMark[]>;
-    getElementByPerformanceMark: (id: string) => Promise<WebdriverIO.Element>;
+    getElementPerformanceMarkText: (id: string) => Promise<string>;
   }) => Promise<void>
 ) {
   return useBrowser(async browser => {
@@ -18,19 +18,16 @@ function setupTest(
       const marks = await browser.execute(() => performance.getEntriesByType('mark') as PerformanceMark[]);
       return marks.filter(m => m.detail?.source === 'awsui');
     };
-    const getElementByPerformanceMark = async (id: string) => {
-      const element = await browser.$(`[data-analytics-performance-mark="${id}"]`);
-      return element;
-    };
+    const getElementPerformanceMarkText = (id: string) => page.getText(`[data-analytics-performance-mark="${id}"]`);
 
-    await testFn({ page, getMarks, getElementByPerformanceMark });
+    await testFn({ page, getMarks, getElementPerformanceMarkText });
   });
 }
 
 describe('Button', () => {
   test(
     'Emits a mark only for primary visible buttons',
-    setupTest('performance-marks', async ({ getMarks, getElementByPerformanceMark }) => {
+    setupTest('performance-marks', async ({ getMarks, getElementPerformanceMarkText }) => {
       const marks = await getMarks();
 
       expect(marks).toHaveLength(1);
@@ -43,15 +40,13 @@ describe('Button', () => {
         text: 'Primary button',
       });
 
-      expect(await getElementByPerformanceMark(marks[0].detail.instanceIdentifier).then(e => e.getText())).toBe(
-        'Primary button'
-      );
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe('Primary button');
     })
   );
 
   test(
     'Emits a mark when properties change',
-    setupTest('performance-marks', async ({ page, getMarks, getElementByPerformanceMark }) => {
+    setupTest('performance-marks', async ({ page, getMarks, getElementPerformanceMarkText }) => {
       await page.click('#disabled');
       await page.click('#loading');
       const marks = await getMarks();
@@ -66,9 +61,7 @@ describe('Button', () => {
         text: 'Primary button',
       });
 
-      expect(await getElementByPerformanceMark(marks[1].detail.instanceIdentifier).then(e => e.getText())).toBe(
-        'Primary button'
-      );
+      await expect(getElementPerformanceMarkText(marks[1].detail.instanceIdentifier)).resolves.toBe('Primary button');
 
       expect(marks[2].name).toBe('primaryButtonUpdated');
       expect(marks[2].detail).toMatchObject({
@@ -79,22 +72,20 @@ describe('Button', () => {
         text: 'Primary button',
       });
 
-      expect(await getElementByPerformanceMark(marks[2].detail.instanceIdentifier).then(e => e.getText())).toBe(
-        'Primary button'
-      );
+      await expect(getElementPerformanceMarkText(marks[2].detail.instanceIdentifier)).resolves.toBe('Primary button');
     })
   );
 
   test(
     'Does not emit a mark when inside a modal',
-    setupTest('performance-marks-in-modal', async ({ getMarks, getElementByPerformanceMark }) => {
+    setupTest('performance-marks-in-modal', async ({ getMarks, getElementPerformanceMarkText }) => {
       const marks = await getMarks();
 
       expect(marks).toHaveLength(1);
       expect(marks[0].detail).toMatchObject({
         text: 'Button OUTSIDE modal',
       });
-      expect(await getElementByPerformanceMark(marks[0].detail.instanceIdentifier).then(e => e.getText())).toBe(
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe(
         'Button OUTSIDE modal'
       );
     })
