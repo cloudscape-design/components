@@ -205,9 +205,7 @@ function TriggerButton(
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
       })}
-      className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
-        [testutilStyles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
-      })}
+      className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '')}
     >
       <button
         aria-expanded={ariaExpanded}

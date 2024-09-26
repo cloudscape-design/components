@@ -1,30 +1,29 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonDropdownWrapper from '../button-dropdown';
 import SplitPanelWrapper from '../split-panel';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
-import appLayoutToolbarStyles from '../../../app-layout/visual-refresh-toolbar/toolbar/stlyes.selectors.js';
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.selectors.js';
 
 export default class AppLayoutWrapper extends ComponentWrapper {
   static rootSelector = testutilStyles.root;
 
-  findNavigation(): ElementWrapper {
+  findNavigation(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.navigation)!;
   }
 
-  findNavigationToggle(): ElementWrapper<HTMLButtonElement> {
+  findNavigationToggle(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['navigation-toggle'])!;
   }
 
-  findNavigationClose(): ElementWrapper<HTMLButtonElement> {
+  findNavigationClose(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['navigation-close'])!;
   }
 
-  findContentRegion(): ElementWrapper {
+  findContentRegion(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.content)!;
   }
 
@@ -36,15 +35,15 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles.breadcrumbs);
   }
 
-  findTools(): ElementWrapper {
+  findTools(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.tools)!;
   }
 
-  findToolsClose(): ElementWrapper<HTMLButtonElement> {
+  findToolsClose(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['tools-close'])!;
   }
 
-  findToolsToggle(): ElementWrapper<HTMLButtonElement> {
+  findToolsToggle(): ElementWrapper<HTMLButtonElement> | null {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['tools-toggle'])!;
   }
 
@@ -80,11 +79,11 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles['drawers-slider']);
   }
 
-  findToolbarTriggerButtonContainer(isMobile: boolean): ElementWrapper | null {
-    const drawersTriggerContainerClassKey = `drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`;
-    return this.findByClassName(appLayoutToolbarStyles[drawersTriggerContainerClassKey]);
-    //if not working try createWrapper().find(`.${}`);
-  }
+  // findToolbarTriggerButtonContainer(isMobile: boolean): ElementWrapper | null {
+  //   const drawersTriggerContainerClassKey = `drawers-${isMobile ? 'mobile' : 'desktop'}-triggers-container`;
+  //   return this.findByClassName(appLayoutToolbarStyles[drawersTriggerContainerClassKey]);
+  //   //if not working try createWrapper().find(`.${}`);
+  // }
 
   findToolbar(): ElementWrapper | null {
     return this.findByClassName(testutilStyles.toolbar);
@@ -95,6 +94,7 @@ export default class AppLayoutWrapper extends ComponentWrapper {
   }
 
   findDrawerTriggerTooltip(): ElementWrapper | null {
-    return this.findByClassName(testutilStyles['trigger-tooltip']);
+    // return this.findByClassName(testutilStyles['trigger-tooltip']);
+    return createWrapper().findByClassName(testutilStyles['trigger-tooltip']);
   }
 }
