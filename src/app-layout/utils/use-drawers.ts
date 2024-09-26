@@ -52,7 +52,7 @@ function useRuntimeDrawers(
   activeDrawerId: string | null,
   onActiveDrawerChange: (newDrawerId: string | null) => void,
   activeGlobalDrawersIds: Array<string>,
-  setActiveGlobalDrawersIds: (newDrawerId: string) => void,
+  onActiveGlobalDrawersChange: (newDrawerId: string) => void,
   drawers: AppLayoutProps.Drawer[]
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({
@@ -61,7 +61,7 @@ function useRuntimeDrawers(
     global: [],
   });
   const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
-  const onGlobalDrawersChangeStable = useStableCallback(setActiveGlobalDrawersIds);
+  const onGlobalDrawersChangeStable = useStableCallback(onActiveGlobalDrawersChange);
 
   const drawersWereOpenRef = useRef(false);
   drawersWereOpenRef.current = drawersWereOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
@@ -102,7 +102,7 @@ function useRuntimeDrawers(
         onActiveDrawerChange(drawerId);
       }
       if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
-        setActiveGlobalDrawersIds(drawerId);
+        onActiveGlobalDrawersChange(drawerId);
       }
     });
 
@@ -115,7 +115,7 @@ function useRuntimeDrawers(
     drawers,
     onActiveDrawerChange,
     runtimeDrawers,
-    setActiveGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
   ]);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ function useRuntimeDrawers(
         onActiveDrawerChange(null);
       }
       if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
-        setActiveGlobalDrawersIds(drawerId);
+        onActiveGlobalDrawersChange(drawerId);
       }
     });
 
@@ -141,7 +141,7 @@ function useRuntimeDrawers(
     drawers,
     onActiveDrawerChange,
     runtimeDrawers,
-    setActiveGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
   ]);
 
   return runtimeDrawers;
