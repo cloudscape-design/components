@@ -76,15 +76,27 @@ describe('Button renders correct analytics metadata', () => {
     expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual(getMetadata('button text aria', 'inline-icon'));
   });
 });
-
-test('Internal Button does not render "component" metadata', () => {
-  const renderResult = render(<InternalButton>inline button text</InternalButton>);
-  const wrapper = createWrapper(renderResult.container).findButton()!;
-  validateComponentNameAndLabels(wrapper.getElement(), labels);
-  expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
-    action: 'click',
-    detail: {
-      label: 'inline button text',
-    },
+describe('Internal Button', () => {
+  test('does not render "component" metadata', () => {
+    const renderResult = render(<InternalButton>inline button text</InternalButton>);
+    const wrapper = createWrapper(renderResult.container).findButton()!;
+    validateComponentNameAndLabels(wrapper.getElement(), labels);
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
+      action: 'click',
+      detail: {
+        label: 'inline button text',
+      },
+    });
+  });
+  test('allows to override the analytics action', () => {
+    const renderResult = render(<InternalButton analyticsAction="open">inline button text</InternalButton>);
+    const wrapper = createWrapper(renderResult.container).findButton()!;
+    validateComponentNameAndLabels(wrapper.getElement(), labels);
+    expect(getGeneratedAnalyticsMetadata(wrapper.getElement())).toEqual({
+      action: 'open',
+      detail: {
+        label: 'inline button text',
+      },
+    });
   });
 });
