@@ -592,7 +592,7 @@ const ClassicAppLayout = React.forwardRef(
               bottomOffset={placement.insetBlockEnd}
               topOffset={placement.insetBlockStart}
               isMobile={isMobile}
-              drawers={drawers.filter(item => !!item.trigger)}
+              drawers={drawers}
               activeDrawerId={activeDrawerId}
               onDrawerChange={newDrawerId => {
                 if (activeDrawerId !== newDrawerId) {
