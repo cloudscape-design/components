@@ -6,7 +6,7 @@ import { NonCancelableEventHandler } from '../../events';
 export type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
 export interface MountContentContext {
-  onVisibilityChange?: DrawerVisibilityChange;
+  onVisibilityChange: DrawerVisibilityChange;
 }
 
 export interface DrawerConfig {
@@ -27,7 +27,7 @@ export interface DrawerConfig {
   trigger?: {
     iconSvg: string;
   };
-  mountContent: (container: HTMLElement, mountContext?: MountContentContext) => void;
+  mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
 }
