@@ -12,8 +12,10 @@ const tableWrapper = createWrapper().findTable();
 
 class ContainerStickyPage extends BasePageObject {
   async hasHeaderCover() {
-    const elements = await this.browser.$$(tableWrapper.findByClassName(styles['header-cover']).toSelector());
-    if (elements.length === 0) {
+    const elementsCount = await this.getElementsCount(
+      tableWrapper.findByClassName(styles['header-cover']).toSelector()
+    );
+    if (elementsCount === 0) {
       return false;
     }
     return true;

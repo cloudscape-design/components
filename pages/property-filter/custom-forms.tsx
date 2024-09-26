@@ -234,7 +234,11 @@ export function OwnerMultiSelectForm({ value, onChange }: ExtendedOperatorFormPr
               .filter((value): value is string => typeof value !== 'undefined')
           )
         }
+        statusType="finished"
+        filteringType="none"
         expandToViewport={true}
+        keepOpen={true}
+        hideTokens={false}
         inlineTokens={true}
       />
     </FormField>
