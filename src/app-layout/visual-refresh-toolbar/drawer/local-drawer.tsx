@@ -58,7 +58,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
-  const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
+  const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : activeDrawerId;
 
   return (
     <Transition nodeRef={drawerRef} in={true} appear={true} timeout={0}>
