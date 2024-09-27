@@ -4,11 +4,17 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FUNNEL_KEY,
+  FUNNEL_KEY_STEP_NAME,
+  getSubStepAllSelector,
+  getTextFromSelector,
+} from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -17,13 +23,17 @@ import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useFunnelChangeEvent } from './analytics';
+import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces';
 import { WizardProps } from './interfaces';
 import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
 import WizardNavigation from './wizard-navigation';
 
 import styles from './styles.css.js';
 
-type InternalWizardProps = WizardProps & InternalBaseComponentProps;
+type InternalWizardProps = WizardProps &
+  InternalBaseComponentProps & {
+    __injectAnalyticsComponentMetadata?: boolean;
+  };
 
 export default function InternalWizard({
   steps,
@@ -36,6 +46,7 @@ export default function InternalWizard({
   onSubmit,
   onNavigate,
   __internalRootRef,
+  __injectAnalyticsComponentMetadata = false,
   ...rest
 }: InternalWizardProps) {
   const baseProps = getBaseProps(rest);
@@ -141,8 +152,30 @@ export default function InternalWizard({
     );
   }
 
+  const componentAnalyticsMetadata: GeneratedAnalyticsMetadataWizardComponent = {
+    name: 'awsui.Wizard',
+    label: {
+      root: 'body',
+      selector: '[data-analytics-funnel-key="funnel-name"]',
+    },
+    properties: {
+      stepsCount: `${(steps || []).length}`,
+      activeStepIndex: `${activeStepIndex}`,
+      activeStepLabel: `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_STEP_NAME}"]`,
+      ...(rest.analyticsMetadata || {}),
+    },
+  };
+
   return (
-    <div {...baseProps} {...funnelProps} ref={ref} className={clsx(styles.root, baseProps.className)}>
+    <div
+      {...baseProps}
+      {...funnelProps}
+      ref={ref}
+      className={clsx(styles.root, baseProps.className)}
+      {...(__injectAnalyticsComponentMetadata
+        ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
+        : {})}
+    >
       <div
         className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
       >
