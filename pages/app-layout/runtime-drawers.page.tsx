@@ -4,6 +4,7 @@ import React, { useContext, useRef, useState } from 'react';
 
 import {
   AppLayout,
+  Button,
   ContentLayout,
   Drawer,
   Header,
@@ -14,6 +15,7 @@ import {
   Toggle,
 } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
+import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
@@ -99,6 +101,13 @@ export default function WithDrawers() {
                 <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
                   Use Drawers
                 </Toggle>
+
+                <Button onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}>
+                  Open a drawer without a trigger
+                </Button>
+                <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
+                  Close a drawer without a trigger
+                </Button>
               </SpaceBetween>
             </SpaceBetween>
           }

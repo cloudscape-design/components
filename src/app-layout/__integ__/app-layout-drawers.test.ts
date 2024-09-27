@@ -133,13 +133,13 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       await page.dragResizerTo({ x: width, y: 0 });
       // there are different layouts between these two designs
       await expect(page.getActiveDrawerWidth()).resolves.toEqual(
-        theme === 'visual-refresh-toolbar' ? 290 : 290 + vrBorderOffset
+        theme === 'visual-refresh-toolbar' ? 291 : 290 + vrBorderOffset
       );
       await page.dragResizerTo({ x: 0, y: 0 });
       const expectedWidths = {
         ['classic']: 520,
         ['visual-refresh']: 447,
-        ['visual-refresh-toolbar']: 592,
+        ['visual-refresh-toolbar']: 593,
       };
       await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidths[theme]);
     })

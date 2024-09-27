@@ -139,8 +139,8 @@ export function MobileToolbar({
                     testutilStyles['drawers-trigger'],
                     item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
                   )}
-                  iconName={item.trigger.iconName}
-                  iconSvg={item.trigger.iconSvg}
+                  iconName={item.trigger!.iconName}
+                  iconSvg={item.trigger!.iconSvg}
                   badge={item.badge}
                   ariaLabel={item.ariaLabels?.triggerButton}
                   ariaExpanded={activeDrawerId === item.id}
