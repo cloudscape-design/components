@@ -6,7 +6,7 @@ import SpaceBetween from '~components/space-between';
 
 interface PermutationsViewProps<T> {
   permutations: ReadonlyArray<T>;
-  render: (props: T) => React.ReactElement;
+  render: (props: T, index?: number) => React.ReactElement;
 }
 
 function formatValue(key: string, value: any) {
@@ -24,11 +24,11 @@ function formatValue(key: string, value: any) {
 export default function PermutationsView<T>({ permutations, render }: PermutationsViewProps<T>) {
   return (
     <SpaceBetween size="m">
-      {permutations.map(permutation => {
+      {permutations.map((permutation, index) => {
         const id = JSON.stringify(permutation, formatValue);
         return (
           <div key={id} data-permutation={id}>
-            {render(permutation)}
+            {render(permutation, index)}
           </div>
         );
       })}

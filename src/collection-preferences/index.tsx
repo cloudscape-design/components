@@ -4,6 +4,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
@@ -14,9 +15,11 @@ import { CollectionPreferencesMetadata } from '../internal/context/collection-pr
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalModal from '../modal/internal';
 import InternalSpaceBetween from '../space-between/internal';
+import { getComponentAnalyticsMetadata } from './analytics-metadata/utils';
 import ContentDisplayPreference from './content-display';
 import { CollectionPreferencesProps } from './interfaces';
 import {
@@ -32,6 +35,7 @@ import {
 } from './utils';
 import VisibleContentPreference from './visible-content';
 
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export { CollectionPreferencesProps };
@@ -119,123 +123,134 @@ export default function CollectionPreferences({
     );
   }
 
+  const referrerId = useUniqueId();
+
   return (
     <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
-      <InternalButton
-        ref={triggerRef}
-        className={styles['trigger-button']}
-        disabled={disabled}
-        ariaLabel={i18n('title', title)}
-        onClick={() => {
-          setTemporaryPreferences(copyPreferences(preferences || {}));
-          setModalVisible(true);
-        }}
-        variant="icon"
-        iconName="settings"
-        formAction="none"
-      />
-      {!disabled && modalVisible && (
-        <InternalModal
-          className={styles['modal-root']}
-          visible={true}
-          getModalRoot={getModalRoot}
-          removeModalRoot={removeModalRoot}
-          header={i18n('title', title)}
-          footer={
-            <InternalBox float="right">
-              <InternalSpaceBetween direction="horizontal" size="xs">
-                <InternalButton
-                  className={styles['cancel-button']}
-                  variant="link"
-                  formAction="none"
-                  onClick={onCancelListener}
-                >
-                  {i18n('cancelLabel', cancelLabel)}
-                </InternalButton>
-                <InternalButton
-                  className={styles['confirm-button']}
-                  variant="primary"
-                  formAction="none"
-                  onClick={onConfirmListener}
-                >
-                  {i18n('confirmLabel', confirmLabel)}
-                </InternalButton>
-              </InternalSpaceBetween>
-            </InternalBox>
-          }
-          closeAriaLabel={cancelLabel}
-          size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
-          onDismiss={onCancelListener}
-        >
-          <ModalContentLayout
-            left={
-              hasContentOnTheLeft && (
-                <InternalSpaceBetween size="l">
-                  {pageSizePreference && (
-                    <PageSizePreference
-                      value={temporaryPreferences.pageSize}
-                      {...pageSizePreference}
-                      onChange={pageSize => onChange({ pageSize })}
-                    />
-                  )}
-                  {wrapLinesPreference && (
-                    <WrapLinesPreference
-                      value={temporaryPreferences.wrapLines}
-                      {...wrapLinesPreference}
-                      onChange={wrapLines => onChange({ wrapLines })}
-                    />
-                  )}
-                  {stripedRowsPreference && (
-                    <StripedRowsPreference
-                      value={temporaryPreferences.stripedRows}
-                      {...stripedRowsPreference}
-                      onChange={stripedRows => onChange({ stripedRows })}
-                    />
-                  )}
-                  {contentDensityPreference && (
-                    <ContentDensityPreference
-                      value={temporaryPreferences.contentDensity}
-                      {...contentDensityPreference}
-                      onChange={contentDensity => onChange({ contentDensity })}
-                    />
-                  )}
-                  {stickyColumnsPreference && (
-                    <StickyColumnsPreference
-                      value={temporaryPreferences.stickyColumns}
-                      {...stickyColumnsPreference}
-                      onChange={stickyColumns => onChange({ stickyColumns })}
-                    />
-                  )}
-                  {customPreference && (
-                    <CustomPreference
-                      value={temporaryPreferences.custom}
-                      customPreference={customPreference}
-                      onChange={custom => onChange({ custom })}
-                    />
-                  )}
+      <div
+        id={referrerId}
+        {...getAnalyticsMetadataAttribute({ component: getComponentAnalyticsMetadata(disabled, preferences) })}
+      >
+        <InternalButton
+          ref={triggerRef}
+          className={clsx(styles['trigger-button'], analyticsSelectors['trigger-button'])}
+          disabled={disabled}
+          ariaLabel={i18n('title', title)}
+          onClick={() => {
+            setTemporaryPreferences(copyPreferences(preferences || {}));
+            setModalVisible(true);
+          }}
+          variant="icon"
+          iconName="settings"
+          formAction="none"
+          analyticsAction="open"
+        />
+        {!disabled && modalVisible && (
+          <InternalModal
+            className={styles['modal-root']}
+            visible={true}
+            getModalRoot={getModalRoot}
+            removeModalRoot={removeModalRoot}
+            header={i18n('title', title)}
+            referrerId={referrerId}
+            footer={
+              <InternalBox float="right">
+                <InternalSpaceBetween direction="horizontal" size="xs">
+                  <InternalButton
+                    className={styles['cancel-button']}
+                    variant="link"
+                    formAction="none"
+                    onClick={onCancelListener}
+                    analyticsAction="cancel"
+                  >
+                    {i18n('cancelLabel', cancelLabel)}
+                  </InternalButton>
+                  <InternalButton
+                    className={styles['confirm-button']}
+                    variant="primary"
+                    formAction="none"
+                    onClick={onConfirmListener}
+                    analyticsAction="confirm"
+                  >
+                    {i18n('confirmLabel', confirmLabel)}
+                  </InternalButton>
                 </InternalSpaceBetween>
-              )
+              </InternalBox>
             }
-            right={
-              contentDisplayPreference ? (
-                <ContentDisplayPreference
-                  {...contentDisplayPreference}
-                  value={temporaryPreferences.contentDisplay}
-                  onChange={contentDisplay => onChange({ contentDisplay })}
-                />
-              ) : (
-                visibleContentPreference && (
-                  <VisibleContentPreference
-                    value={temporaryPreferences.visibleContent}
-                    {...visibleContentPreference}
-                    onChange={visibleItems => onChange({ visibleContent: visibleItems })}
-                  />
+            closeAriaLabel={cancelLabel}
+            size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
+            onDismiss={onCancelListener}
+          >
+            <ModalContentLayout
+              left={
+                hasContentOnTheLeft && (
+                  <InternalSpaceBetween size="l">
+                    {pageSizePreference && (
+                      <PageSizePreference
+                        value={temporaryPreferences.pageSize}
+                        {...pageSizePreference}
+                        onChange={pageSize => onChange({ pageSize })}
+                      />
+                    )}
+                    {wrapLinesPreference && (
+                      <WrapLinesPreference
+                        value={temporaryPreferences.wrapLines}
+                        {...wrapLinesPreference}
+                        onChange={wrapLines => onChange({ wrapLines })}
+                      />
+                    )}
+                    {stripedRowsPreference && (
+                      <StripedRowsPreference
+                        value={temporaryPreferences.stripedRows}
+                        {...stripedRowsPreference}
+                        onChange={stripedRows => onChange({ stripedRows })}
+                      />
+                    )}
+                    {contentDensityPreference && (
+                      <ContentDensityPreference
+                        value={temporaryPreferences.contentDensity}
+                        {...contentDensityPreference}
+                        onChange={contentDensity => onChange({ contentDensity })}
+                      />
+                    )}
+                    {stickyColumnsPreference && (
+                      <StickyColumnsPreference
+                        value={temporaryPreferences.stickyColumns}
+                        {...stickyColumnsPreference}
+                        onChange={stickyColumns => onChange({ stickyColumns })}
+                      />
+                    )}
+                    {customPreference && (
+                      <CustomPreference
+                        value={temporaryPreferences.custom}
+                        customPreference={customPreference}
+                        onChange={custom => onChange({ custom })}
+                      />
+                    )}
+                  </InternalSpaceBetween>
                 )
-              )
-            }
-          />
-        </InternalModal>
-      )}
+              }
+              right={
+                contentDisplayPreference ? (
+                  <ContentDisplayPreference
+                    {...contentDisplayPreference}
+                    value={temporaryPreferences.contentDisplay}
+                    onChange={contentDisplay => onChange({ contentDisplay })}
+                  />
+                ) : (
+                  visibleContentPreference && (
+                    <VisibleContentPreference
+                      value={temporaryPreferences.visibleContent}
+                      {...visibleContentPreference}
+                      onChange={visibleItems => onChange({ visibleContent: visibleItems })}
+                    />
+                  )
+                )
+              }
+            />
+          </InternalModal>
+        )}
+      </div>
     </div>
   );
 }
