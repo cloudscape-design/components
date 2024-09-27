@@ -165,7 +165,8 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
           stripedRows: 'false',
           contentDensity: 'compact',
           visibleContentCount: '3',
-          stickyColumns: '1-2',
+          stickyColumnsFirst: '1',
+          stickyColumnsLast: '2',
           contentDisplayVisibleCount: '2',
         }),
       });
@@ -183,7 +184,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
         ...actionMetadata,
         ...getMetadata({
-          stickyColumns: '0-2',
+          stickyColumnsLast: '2',
         }),
       });
     });
@@ -200,7 +201,7 @@ describe('CollectionPreferences renders correct analytics metadata', () => {
       expect(getGeneratedAnalyticsMetadata(triggerButton)).toEqual({
         ...actionMetadata,
         ...getMetadata({
-          stickyColumns: '1-0',
+          stickyColumnsFirst: '1',
         }),
       });
     });

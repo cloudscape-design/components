@@ -39,7 +39,8 @@ export interface GeneratedAnalyticsMetadataCollectionPreferencesComponent {
     stripedRows?: string;
     contentDensity?: string;
     visibleContentCount?: string;
-    stickyColumns?: string;
+    stickyColumnsFirst?: string;
+    stickyColumnsLast?: string;
     contentDisplayVisibleCount?: string;
   };
   innerContext?: {

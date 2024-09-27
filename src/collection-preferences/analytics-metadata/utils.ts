@@ -35,7 +35,12 @@ export const getComponentAnalyticsMetadata = (
     metadata.properties.visibleContentCount = `${preferences.visibleContent.length}`;
   }
   if (preferences.stickyColumns) {
-    metadata.properties.stickyColumns = `${preferences.stickyColumns.first || 0}-${preferences.stickyColumns.last || 0}`;
+    if (preferences.stickyColumns.first) {
+      metadata.properties.stickyColumnsFirst = `${preferences.stickyColumns.first}`;
+    }
+    if (preferences.stickyColumns.last) {
+      metadata.properties.stickyColumnsLast = `${preferences.stickyColumns.last}`;
+    }
   }
   if (preferences.contentDisplay) {
     metadata.properties.contentDisplayVisibleCount = `${preferences.contentDisplay.filter(({ visible }) => !!visible).length}`;
