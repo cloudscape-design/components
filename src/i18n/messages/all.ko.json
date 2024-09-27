@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "스페이스 또는 Enter를 사용하여 항목 끌기 기능을 활성화하고 화살표 키를 사용하여 항목의 위치를 이동합니다. 위치 이동을 완료하려면 스페이스 또는 Enter를 사용하거나 이동을 취소하려면 Escape를 사용합니다.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total}개 위치에서 선택한 항목",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "재정렬 취소됨",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "열 필터링",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "열 필터링",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "일치 항목 없음",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "필터 지우기",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {{currentPosition}/{total} 위치로 항목 다시 이동} false {{currentPosition}/{total} 위치로 항목 이동} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {항목이 원래 위치인 {initialPosition}/{total} 위치로 다시 이동됨} false {항목이 {initialPosition}/{total} 위치에서 인 {finalPosition}/{total} 위치로 이동됨} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0개 일치} one {1개 일치} other {{count}개 일치}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "복사"

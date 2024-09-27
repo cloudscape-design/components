@@ -5205,6 +5205,16 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "type": "string",
           },
           {
+            "name": "enableColumnFiltering",
+            "optional": true,
+            "type": "false | true",
+          },
+          {
+            "name": "i18nStrings",
+            "optional": true,
+            "type": "CollectionPreferencesProps.ContentDisplayPreferenceI18nStrings",
+          },
+          {
             "name": "liveAnnouncementDndDiscarded",
             "optional": true,
             "type": "string",

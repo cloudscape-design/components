@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "Bir öğe için sürüklemeyi etkinleştirmek üzere Boşluk veya Enter tuşunu ve öğenin konumunu taşımak için ok tuşlarını kullanın. Konum taşıma işlemini tamamlamak için Boşluk veya Enter tuşunu ya da taşıma işlemini iptal etmek için ESC tuşunu kullanın.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Öğe {position}/{total} konumundan alındı",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Yeniden sıralama iptal edildi",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtre sütunları",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Filtre sütunları",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "Eşleşme bulunamadı",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Filtreyi temizle",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Öğe {currentPosition}/{total} konumuna geri taşınıyor} false {Öğe {currentPosition}/{total} konumuna taşınıyor} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Öğe ilk {initialPosition}/{total} konumuna geri taşındı} false {Öğe {initialPosition} konumundan {finalPosition}/{total} konumuna taşındı} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 eşleşme} one {1 eşleşme} other {{count} eşleşme}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Kopyala"

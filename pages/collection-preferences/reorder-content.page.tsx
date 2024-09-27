@@ -69,6 +69,7 @@ export default function App() {
         contentDensityPreference={contentDensityPreference}
         customPreference={customPreference}
         contentDisplayPreference={{
+          enableColumnFiltering: true,
           title: 'Column preferences',
           description: 'Customize the columns visibility and order.',
           options: longOptionsList,
