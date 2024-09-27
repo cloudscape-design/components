@@ -34,6 +34,10 @@
   pointer-events: auto;
   word-wrap: break-word;
 
+  @include desktop-only {
+    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  }
+
   &.last-opened {
     @include mobile-only {
       z-index: constants.$drawer-z-index-mobile;
@@ -41,10 +45,6 @@
   }
 
   &.drawer-global {
-    @include desktop-only {
-      border-inline-start: 1px solid awsui.$color-border-layout;
-    }
-
     @include mobile-only {
       display: none;
 

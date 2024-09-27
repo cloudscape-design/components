@@ -270,7 +270,10 @@ export function useDrawers(
       [globalDrawer.id]: Math.min(globalDrawer.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE),
     };
   }, {});
-  const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+  const minDrawerSize = Math.min(
+    toolsProps?.toolsOpen ? toolsProps.toolsWidth : activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE,
+    MIN_DRAWER_SIZE
+  );
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
