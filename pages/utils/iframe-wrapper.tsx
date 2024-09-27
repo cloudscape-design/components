@@ -40,13 +40,14 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     iframeEl.className = styles['full-screen'];
     iframeEl.id = id;
     iframeEl.title = id;
-    iframeEl.srcdoc = '<!DOCTYPE html>';
     container.appendChild(iframeEl);
 
     const iframeDocument = iframeEl.contentDocument!;
     // Prevent iframe document instance from reload
     // https://bugzilla.mozilla.org/show_bug.cgi?id=543435
     iframeDocument.open();
+    // set html5 doctype
+    iframeDocument.writeln('<!DOCTYPE html>');
     iframeDocument.close();
 
     const innerAppRoot = iframeDocument.createElement('div');
