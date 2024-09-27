@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BoundingBox, Dimensions, InternalPosition, PopoverProps } from '../interfaces';
+import { BoundingBox, Dimensions, InternalPosition, PopoverProps, Rect } from '../interfaces';
 
 // A structure describing how the popover should be positioned
 interface CalculatedPosition {
@@ -335,4 +335,11 @@ export function getDimensions(element: HTMLElement) {
 
 function isTopOrBottom(internalPosition: InternalPosition) {
   return ['top', 'bottom'].includes(internalPosition.split('-')[0]);
+}
+
+export function isCenterOutside(child: Rect, parent: Rect) {
+  const childCenter = child.insetBlockStart + child.blockSize / 2;
+  const overflowsBlockStart = childCenter < parent.insetBlockStart;
+  const overflowsBlockEnd = childCenter > parent.insetBlockEnd;
+  return overflowsBlockStart || overflowsBlockEnd;
 }
