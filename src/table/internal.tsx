@@ -210,7 +210,7 @@ const InternalTable = React.forwardRef(
     );
 
     const analyticsMetadata = getAnalyticsMetadataProps(rest);
-    useComponentAnalytics('table', () => ({
+    const { attributes: componentAnalyticsAttributes } = useComponentAnalytics('table', tableRefObject, () => ({
       variant,
       flowType: rest.analyticsMetadata?.flowType,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
@@ -488,6 +488,7 @@ const InternalTable = React.forwardRef(
                 >
                   <table
                     {...performanceMarkAttributes}
+                    {...componentAnalyticsAttributes}
                     ref={tableRef}
                     className={clsx(
                       styles.table,
