@@ -45,41 +45,110 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
   };
 }
 
+const DRAWERS_LIMIT = 2;
+
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
   activeDrawerId: string | null,
-  onActiveDrawerChange: (newDrawerId: string | null) => void
+  onActiveDrawerChange: (newDrawerId: string | null) => void,
+  activeGlobalDrawersIds: Array<string>,
+  onActiveGlobalDrawersChange: (newDrawerId: string) => void,
+  drawers: AppLayoutProps.Drawer[]
 ) {
-  const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({ before: [], after: [] });
-  const onActiveDrawerChangeStable = useStableCallback(onActiveDrawerChange);
+  const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({
+    localBefore: [],
+    localAfter: [],
+    global: [],
+  });
+  const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
+  const onGlobalDrawersChangeStable = useStableCallback(onActiveGlobalDrawersChange);
 
-  const drawerWasOpenRef = useRef(false);
-  drawerWasOpenRef.current = drawerWasOpenRef.current || !!activeDrawerId;
+  const drawersWereOpenRef = useRef(false);
+  drawersWereOpenRef.current = drawersWereOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
       return;
     }
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawersRegistered(drawers => {
-      setRuntimeDrawers(convertRuntimeDrawers(drawers));
-      if (!drawerWasOpenRef.current) {
-        const defaultActiveDrawer = sortByPriority(drawers).find(drawer => drawer.defaultActive);
-        if (defaultActiveDrawer) {
-          onActiveDrawerChangeStable(defaultActiveDrawer.id);
+      const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
+      const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
+      setRuntimeDrawers(convertRuntimeDrawers(localDrawers, globalDrawers));
+      if (!drawersWereOpenRef.current) {
+        const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
+        if (defaultActiveLocalDrawer) {
+          onLocalDrawerChangeStable(defaultActiveLocalDrawer.id);
         }
+
+        const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(drawer => drawer.defaultActive);
+        defaultActiveGlobalDrawers.forEach(drawer => {
+          onGlobalDrawersChangeStable(drawer.id);
+        });
       }
     });
     return () => {
       unsubscribe();
-      setRuntimeDrawers({ before: [], after: [] });
+      setRuntimeDrawers({ localBefore: [], localAfter: [], global: [] });
     };
-  }, [disableRuntimeDrawers, onActiveDrawerChangeStable]);
+  }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
+
+  useEffect(() => {
+    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
+      const localDrawer = [...runtimeDrawers.localBefore, ...drawers, ...runtimeDrawers.localAfter]?.find(
+        drawer => drawer.id === drawerId
+      );
+      const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
+      if (localDrawer && activeDrawerId !== drawerId) {
+        onActiveDrawerChange(drawerId);
+      }
+      if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
+        onActiveGlobalDrawersChange(drawerId);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [
+    activeDrawerId,
+    activeGlobalDrawersIds,
+    drawers,
+    onActiveDrawerChange,
+    runtimeDrawers,
+    onActiveGlobalDrawersChange,
+  ]);
+
+  useEffect(() => {
+    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerClosed(drawerId => {
+      const localDrawer = [...runtimeDrawers.localBefore, ...drawers, ...runtimeDrawers.localAfter]?.find(
+        drawer => drawer.id === drawerId
+      );
+      const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
+      if (localDrawer && activeDrawerId === drawerId) {
+        onActiveDrawerChange(null);
+      }
+      if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
+        onActiveGlobalDrawersChange(drawerId);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [
+    activeDrawerId,
+    activeGlobalDrawersIds,
+    drawers,
+    onActiveDrawerChange,
+    runtimeDrawers,
+    onActiveGlobalDrawersChange,
+  ]);
 
   return runtimeDrawers;
 }
 
 function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout) {
-  const drawers = [...runtimeDrawers.before, ...runtimeDrawers.after];
+  const drawers = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter];
   if (drawers.length === 0 && toolsProps.disableDrawersMerge) {
     return null;
   }
@@ -91,8 +160,12 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
   return drawers;
 }
 
+export const MIN_DRAWER_SIZE = 290;
+
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
+  onGlobalDrawerFocus?: (drawerId: string, open: boolean) => void;
+  onAddNewActiveDrawer?: (drawerId: string) => void;
 };
 
 export function useDrawers(
@@ -100,6 +173,8 @@ export function useDrawers(
     drawers,
     activeDrawerId: controlledActiveDrawerId,
     onDrawerChange,
+    onGlobalDrawerFocus,
+    onAddNewActiveDrawer,
     __disableRuntimeDrawers: disableRuntimeDrawers,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
@@ -110,46 +185,112 @@ export function useDrawers(
     controlledProp: 'activeDrawerId',
     changeHandler: 'onChange',
   });
+  const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
+  // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
+  const drawersOpenQueue = useRef<Array<string>>([]);
 
   function onActiveDrawerResize({ id, size }: { id: string; size: number }) {
     setDrawerSizes(oldSizes => ({ ...oldSizes, [id]: size }));
     fireNonCancelableEvent(activeDrawer?.onResize, { id, size });
+    const activeGlobalDrawer = runtimeGlobalDrawers.find(drawer => drawer.id === id);
+    fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {
     setActiveDrawerId(newDrawerId);
+    if (newDrawerId) {
+      onAddNewActiveDrawer?.(newDrawerId);
+    }
     if (hasOwnDrawers) {
       fireNonCancelableEvent(onDrawerChange, { activeDrawerId: newDrawerId });
     } else if (!toolsProps.toolsHide) {
       toolsProps.onToolsToggle(newDrawerId === TOOLS_DRAWER_ID);
     }
+
+    if (newDrawerId) {
+      drawersOpenQueue.current = [newDrawerId, ...drawersOpenQueue.current];
+    }
+
+    if (activeDrawerId) {
+      drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== activeDrawerId);
+    }
+  }
+
+  function onActiveGlobalDrawersChange(drawerId: string) {
+    if (activeGlobalDrawersIds.includes(drawerId)) {
+      setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
+      onGlobalDrawerFocus?.(drawerId, false);
+      drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
+    } else if (drawerId) {
+      onAddNewActiveDrawer?.(drawerId);
+      setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
+      onGlobalDrawerFocus?.(drawerId, true);
+      drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
+    }
   }
 
   const hasOwnDrawers = !!drawers;
-  const runtimeDrawers = useRuntimeDrawers(disableRuntimeDrawers, activeDrawerId, onActiveDrawerChange);
-  const combinedDrawers = drawers
-    ? [...runtimeDrawers.before, ...drawers, ...runtimeDrawers.after]
+  const runtimeDrawers = useRuntimeDrawers(
+    disableRuntimeDrawers,
+    activeDrawerId,
+    onActiveDrawerChange,
+    activeGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
+    drawers ?? []
+  );
+  const { localBefore, localAfter, global: runtimeGlobalDrawers } = runtimeDrawers;
+  const combinedLocalDrawers = drawers
+    ? [...localBefore, ...drawers, ...localAfter]
     : applyToolsDrawer(toolsProps, runtimeDrawers);
   // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
-  const activeDrawer = combinedDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
+  const activeDrawer = combinedLocalDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;
+  const activeGlobalDrawers = runtimeGlobalDrawers.filter(drawer => activeGlobalDrawersIds.includes(drawer.id));
 
   const activeDrawerSize = activeDrawerIdResolved
     ? drawerSizes[activeDrawerIdResolved] ?? activeDrawer?.defaultSize ?? toolsProps.toolsWidth
     : toolsProps.toolsWidth;
-  const minDrawerSize = Math.min(activeDrawer?.defaultSize ?? 290, 290);
+  const activeGlobalDrawersSizes: Record<string, number> = activeGlobalDrawersIds.reduce(
+    (acc, currentGlobalDrawerId) => {
+      const currentGlobalDrawer = runtimeGlobalDrawers.find(drawer => drawer.id === currentGlobalDrawerId);
+      return {
+        ...acc,
+        [currentGlobalDrawerId]:
+          drawerSizes[currentGlobalDrawerId] ?? currentGlobalDrawer?.defaultSize ?? MIN_DRAWER_SIZE,
+      };
+    },
+    {}
+  );
+  const minGlobalDrawersSizes: Record<string, number> = runtimeGlobalDrawers.reduce((acc, globalDrawer) => {
+    return {
+      ...acc,
+      [globalDrawer.id]: Math.min(globalDrawer.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE),
+    };
+  }, {});
+  const minDrawerSize = Math.min(
+    toolsProps?.toolsOpen ? toolsProps.toolsWidth : activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE,
+    MIN_DRAWER_SIZE
+  );
 
   return {
     ariaLabelsWithDrawers: ariaLabels,
-    drawers: combinedDrawers || undefined,
+    drawers: combinedLocalDrawers || undefined,
     activeDrawer,
     activeDrawerId: activeDrawerIdResolved,
+    globalDrawers: runtimeGlobalDrawers,
+    activeGlobalDrawers: activeGlobalDrawers,
+    activeGlobalDrawersIds,
+    activeGlobalDrawersSizes,
     activeDrawerSize,
     minDrawerSize,
+    minGlobalDrawersSizes,
+    drawerSizes,
+    drawersOpenQueue: drawersOpenQueue.current,
     onActiveDrawerChange,
     onActiveDrawerResize,
+    onActiveGlobalDrawersChange,
   };
 }

@@ -47,7 +47,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     });
   }
 
-  const vrBorderOffset = theme === 'refresh' ? 1 : 0;
+  const drawerBorderOffset = 1;
+  const navigationBorderOffset = theme === 'refresh' ? 1 : 0;
 
   describe('Default width per contentType', () => {
     const testCases = [
@@ -66,8 +67,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
 
             // Open the drawers and check their width
             await page.setDrawersOpen();
-            await expect(page.getNavigationWidth()).resolves.toBe(navigationWidth + vrBorderOffset);
-            await expect(page.getToolsWidth()).resolves.toBe(toolsWidth + vrBorderOffset);
+            await expect(page.getNavigationWidth()).resolves.toBe(navigationWidth + navigationBorderOffset);
+            await expect(page.getToolsWidth()).resolves.toBe(toolsWidth + drawerBorderOffset);
           })
         );
       }

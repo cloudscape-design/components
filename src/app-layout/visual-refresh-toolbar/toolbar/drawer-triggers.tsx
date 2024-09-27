@@ -10,7 +10,7 @@ import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
-import { Focusable } from '../../utils/use-focus-control';
+import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import TriggerButton from './trigger-button';
 
 import splitPanelTestUtilStyles from '../../../split-panel/test-classes/styles.css.js';
@@ -33,6 +33,11 @@ interface DrawerTriggersProps {
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
 
+  activeGlobalDrawersIds: ReadonlyArray<string>;
+  globalDrawersFocusControl?: FocusControlMultipleStates;
+  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
+
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
@@ -53,17 +58,26 @@ export function DrawerTriggers({
   splitPanelToggleProps,
   onSplitPanelToggle,
   disabled,
+  activeGlobalDrawersIds,
+  globalDrawers,
+  globalDrawersFocusControl,
+  onActiveGlobalDrawersChange,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
-  const previousActiveDrawerId = useRef(activeDrawerId);
+  const previousActiveLocalDrawerId = useRef(activeDrawerId);
+  const previousActiveGlobalDrawersIds = useRef(activeGlobalDrawersIds);
   const [containerWidth, triggersContainerRef] = useContainerQuery(rect => rect.contentBoxWidth);
-  if (!drawers && !splitPanelToggleProps) {
+  if (!drawers.length && !globalDrawers.length && !splitPanelToggleProps) {
     return null;
   }
 
   if (activeDrawerId) {
-    previousActiveDrawerId.current = activeDrawerId;
+    previousActiveLocalDrawerId.current = activeDrawerId;
+  }
+
+  if (activeGlobalDrawersIds.length) {
+    previousActiveGlobalDrawersIds.current = activeGlobalDrawersIds;
   }
 
   const getIndexOfOverflowItem = () => {
@@ -85,11 +99,17 @@ export function DrawerTriggers({
     return 0;
   };
 
-  const { visibleItems, overflowItems } = splitItems(drawers, getIndexOfOverflowItem(), activeDrawerId ?? null);
+  const indexOfOverflowItem = getIndexOfOverflowItem();
+
+  const { visibleItems, overflowItems } = splitItems(
+    [...drawers, ...globalDrawers],
+    indexOfOverflowItem,
+    activeDrawerId ?? null
+  );
   const overflowMenuHasBadge = !!overflowItems.find(item => item.badge);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
-  const hasOpenDrawer =
-    (!!activeDrawerId && activeDrawerId !== null) || (splitPanelPosition === 'side' && splitPanelOpen);
+  const globalDrawersStartIndex = drawers.length;
+  const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
 
   return (
     <aside
@@ -127,8 +147,8 @@ export function DrawerTriggers({
             {hasMultipleTriggers ? <div className={styles['group-divider']}></div> : null}
           </>
         )}
-        {visibleItems.map(item => {
-          const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
+        {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
+          const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
@@ -139,12 +159,44 @@ export function DrawerTriggers({
                 !toolsOnlyMode && testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
-              iconName={item.trigger.iconName}
-              iconSvg={item.trigger.iconSvg}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
-              ref={item.id === previousActiveDrawerId.current ? drawersFocusRef : undefined}
+              ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
               selected={item.id === activeDrawerId}
+              badge={item.badge}
+              testId={`awsui-app-layout-trigger-${item.id}`}
+              hasTooltip={true}
+              hasOpenDrawer={hasOpenDrawer}
+              tooltipText={item.ariaLabels?.drawerName}
+              isForPreviousActiveDrawer={isForPreviousActiveDrawer}
+              isMobile={isMobile}
+              disabled={disabled}
+            />
+          );
+        })}
+        {visibleItems.length > globalDrawersStartIndex && <div className={styles['group-divider']}></div>}
+        {visibleItems.slice(globalDrawersStartIndex).map(item => {
+          const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
+          return (
+            <TriggerButton
+              ariaLabel={item.ariaLabels?.triggerButton}
+              ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
+              ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
+              className={clsx(
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                testutilStyles['drawers-trigger-global']
+              )}
+              iconName={item.trigger!.iconName}
+              iconSvg={item.trigger!.iconSvg}
+              key={item.id}
+              onClick={() => {
+                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);
+              }}
+              ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
+              selected={activeGlobalDrawersIds.includes(item.id)}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}
@@ -158,21 +210,39 @@ export function DrawerTriggers({
         })}
         {overflowItems.length > 0 && (
           <OverflowMenu
-            items={overflowItems}
+            items={overflowItems.map(item => ({
+              ...item,
+              active: activeGlobalDrawersIds.includes(item.id),
+            }))}
             ariaLabel={overflowMenuHasBadge ? ariaLabels?.drawersOverflowWithBadge : ariaLabels?.drawersOverflow}
-            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => (
-              <TriggerButton
-                ref={triggerRef}
-                ariaLabel={ariaLabel}
-                ariaExpanded={ariaExpanded}
-                badge={overflowMenuHasBadge}
-                className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], testUtilsClass)}
-                iconName="ellipsis"
-                onClick={onClick}
-                disabled={disabled}
-              />
-            )}
-            onItemClick={event => onActiveDrawerChange?.(event.detail.id)}
+            customTriggerBuilder={({ onClick, triggerRef, ariaLabel, ariaExpanded, testUtilsClass }) => {
+              return (
+                <TriggerButton
+                  ref={triggerRef}
+                  ariaLabel={ariaLabel}
+                  ariaExpanded={ariaExpanded}
+                  badge={overflowMenuHasBadge}
+                  className={clsx(
+                    styles['drawers-trigger'],
+                    testutilStyles['drawers-trigger'],
+                    testutilStyles['drawers-trigger-global'],
+                    testUtilsClass
+                  )}
+                  iconName="ellipsis"
+                  onClick={onClick}
+                  disabled={disabled}
+                />
+              );
+            }}
+            onItemClick={event => {
+              const id = event.detail.id;
+              if (globalDrawers.find(drawer => drawer.id === id)) {
+                onActiveGlobalDrawersChange?.(id);
+              } else {
+                onActiveDrawerChange?.(event.detail.id);
+              }
+            }}
+            globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}
           />
         )}
       </div>
