@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Checkbox, FileInput, FileUploadProps, FormField, Header } from '~components';
+import { Box, Checkbox, FileInput, FileToken, FileUploadProps, FormField, Header } from '~components';
 import SpaceBetween from '~components/space-between';
 
 import { PageNotifications, useContractFilesForm } from './page-helpers';
@@ -28,6 +28,12 @@ export default function FileUploadScenarioStandalone() {
     const newValue = acceptMultiple ? [...formState.files, ...newFiles] : newFiles[0] ? newFiles : [...formState.files];
     formState.onFilesChange(newValue);
     formState.onUploadFiles(!validateContractFiles(newValue) ? newValue : []);
+  };
+
+  const onFileRemove = (removeFileIndex: number) => {
+    const newValue = formState.files.filter((_, fileIndex) => fileIndex !== removeFileIndex);
+    formState.onFilesChange(newValue);
+    // setNextFocusIndex(removeFileIndex);
   };
 
   return (
@@ -56,7 +62,19 @@ export default function FileUploadScenarioStandalone() {
           />
         </FormField>
 
-        <div>{formState.files.map(file => file.name)}</div>
+        <div>
+          {formState.files.map((file, index) => (
+            <FileToken
+              key={index}
+              showFileLastModified={true}
+              showFileSize={true}
+              showFileThumbnail={true}
+              file={file}
+              onDismiss={() => onFileRemove(index)}
+              i18nStrings={i18nStrings}
+            />
+          ))}
+        </div>
       </SpaceBetween>
     </Box>
   );
