@@ -33,7 +33,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     isMobile,
     placement,
     verticalOffsets,
-    drawersOpenQueue = [],
+    drawersOpenQueue,
     onActiveDrawerChange,
     onActiveDrawerResize,
   } = appLayoutInternals;
@@ -57,6 +57,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     handleRef: drawersFocusControl.refs.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
+  // temporary handle a situation when app-layout is old, but this component come as a widget
+  const isLegacyDrawer = drawersOpenQueue === undefined;
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
 
@@ -69,6 +71,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           aria-label={computedAriaLabels.content}
           className={clsx(styles.drawer, sharedStyles['with-motion'], {
             [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+            [styles.legacy]: isLegacyDrawer,
             [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
             [testutilStyles.tools]: isToolsDrawer,
           })}
@@ -81,9 +84,10 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           style={{
             blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
             insetBlockStart: drawersTopOffset,
-            ...(!isMobile && {
-              [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
-            }),
+            ...(!isMobile &&
+              !isLegacyDrawer && {
+                [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
+              }),
           }}
           data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
         >
