@@ -174,7 +174,7 @@ export const successfulSteps: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: 'Analyzing security rules',
+    header: 'Analyzed security rules',
     status: 'success',
     statusIconAriaLabel: 'success',
   },
@@ -525,7 +525,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
     statusIconAriaLabel: 'success',
   },
   {
-    header: <span>Analyzing security rules</span>,
+    header: <span>Analyzed security rules</span>,
     status: 'success',
     statusIconAriaLabel: 'success',
   },
