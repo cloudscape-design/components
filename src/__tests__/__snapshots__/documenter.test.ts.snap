@@ -5190,11 +5190,6 @@ You must provide an ordered list of the items to display in the \`preferences.co
         "name": "CollectionPreferencesProps.ContentDisplayPreference",
         "properties": [
           {
-            "name": "columnFiltering",
-            "optional": true,
-            "type": "false | true",
-          },
-          {
             "name": "description",
             "optional": true,
             "type": "string",
@@ -5208,6 +5203,11 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "name": "dragHandleAriaLabel",
             "optional": true,
             "type": "string",
+          },
+          {
+            "name": "enableColumnFiltering",
+            "optional": true,
+            "type": "false | true",
           },
           {
             "name": "i18nStrings",

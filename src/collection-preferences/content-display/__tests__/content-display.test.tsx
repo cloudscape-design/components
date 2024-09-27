@@ -254,7 +254,7 @@ describe('Content Display preference', () => {
       const wrapper = renderContentDisplay({
         contentDisplayPreference: {
           ...contentDisplayPreference,
-          columnFiltering: false,
+          enableColumnFiltering: false,
         },
       });
       const filterInput = wrapper.findTextFilter();

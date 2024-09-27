@@ -45,7 +45,7 @@ export default function ContentDisplayPreference({
   liveAnnouncementDndDiscarded,
   dragHandleAriaDescription,
   dragHandleAriaLabel,
-  columnFiltering = false,
+  enableColumnFiltering = false,
   i18nStrings,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
@@ -114,7 +114,7 @@ export default function ContentDisplayPreference({
       </p>
 
       {/* Filter input */}
-      {columnFiltering && (
+      {enableColumnFiltering && (
         <div className={getClassName('text-filter')}>
           <InternalTextFilter
             filteringText={columnFilteringText}
