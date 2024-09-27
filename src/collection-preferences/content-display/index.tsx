@@ -7,6 +7,7 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import { useInternalI18n } from '../../i18n/context';
 import Portal from '../../internal/components/portal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
@@ -91,7 +92,7 @@ export default function ContentDisplayPreference({
   );
 
   return (
-    <div className={styles[componentPrefix]}>
+    <div className={styles[componentPrefix]} {...getAnalyticsInnerContextAttribute('contentDisplay')}>
       <h3 className={getClassName('title')} id={titleId}>
         {i18n('contentDisplayPreference.title', title)}
       </h3>
