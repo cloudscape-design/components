@@ -25,6 +25,7 @@ describe('refresh-toolbar', () => {
     const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[0]).toSelector();
     const splitPanelTriggerSelector = wrapper.findSplitPanelOpenButton().toSelector();
     const tooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
+    const expectedTooltipText = 'Open panel';
 
     describe.each(['bottom', 'side'] as const)('splitPanelPosition=%s', splitPanelPosition => {
       test(
@@ -32,6 +33,7 @@ describe('refresh-toolbar', () => {
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(0);
           await page.hoverElement(splitPanelTriggerSelector);
+          await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
           await page.hoverElement(wrapper.findNavigationToggle().toSelector());
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
@@ -64,6 +66,7 @@ describe('refresh-toolbar', () => {
             page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)
           ).resolves.toBeTruthy();
           await page.hoverElement(splitPanelTriggerSelector);
+          await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
           await page.keys(['Escape']);
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
@@ -90,6 +93,7 @@ describe('refresh-toolbar', () => {
           //navigate back to drawer trigger
           await page.keys(['Tab']);
           await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBeTruthy();
+          await await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
           await page.keys(['Shift', 'Tab', 'Null']);
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
@@ -115,6 +119,7 @@ describe('refresh-toolbar', () => {
           //navigate back to drawer trigger
           await page.keys(['Tab']);
           await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBeTruthy();
+          await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
           await page.keys('Escape');
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
