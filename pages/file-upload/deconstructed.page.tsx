@@ -46,6 +46,7 @@ export default function FileUploadScenarioStandalone() {
           description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
         >
           <FileInput
+            variant="icon"
             ref={contractsRef}
             multiple={acceptMultiple}
             value={formState.files}

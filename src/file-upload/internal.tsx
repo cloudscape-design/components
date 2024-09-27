@@ -9,6 +9,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
+import InternalFileInput from '../file-input/internal';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
 import TokenList from '../internal/components/token-list';
@@ -22,7 +23,6 @@ import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { Token } from '../token-group/token';
 import { Dropzone, useDropzoneVisible } from './dropzone';
-import FileInput from './file-input';
 import { FileOption } from './file-option';
 import { FileUploadProps } from './interfaces';
 
@@ -126,7 +126,7 @@ function InternalFileUpload(
         {isDropzoneVisible ? (
           <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
         ) : (
-          <FileInput
+          <InternalFileInput
             ref={ref}
             accept={accept}
             ariaRequired={ariaRequired}
@@ -136,9 +136,8 @@ function InternalFileUpload(
             {...restProps}
             ariaDescribedby={ariaDescribedBy}
             invalid={invalid}
-          >
-            {i18nStrings.uploadButtonText(multiple)}
-          </FileInput>
+            i18nStrings={{ uploadButtonText: multiple => i18nStrings.uploadButtonText(multiple) }}
+          />
         )}
 
         {(constraintText || errorText || warningText) && (
