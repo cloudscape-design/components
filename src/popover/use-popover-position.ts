@@ -12,8 +12,8 @@ import {
   getFirstScrollableParent,
   scrollRectangleIntoView,
 } from '../internal/utils/scrollable-containers';
-import { BoundingBox, InternalPosition, Offset, PopoverProps } from './interfaces';
-import { calculatePosition, getDimensions, getOffsetDimensions } from './utils/positions';
+import { BoundingBox, InternalPosition, Offset, PopoverProps, Rect } from './interfaces';
+import { calculatePosition, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions';
 
 export default function usePopoverPosition({
   popoverRef,
@@ -26,6 +26,7 @@ export default function usePopoverPosition({
   preferredPosition,
   renderWithPortal,
   keepPosition,
+  setHideDueToOverscroll,
 }: {
   popoverRef: React.RefObject<HTMLDivElement | null>;
   bodyRef: React.RefObject<HTMLDivElement | null>;
@@ -37,6 +38,7 @@ export default function usePopoverPosition({
   preferredPosition: PopoverProps.Position;
   renderWithPortal?: boolean;
   keepPosition?: boolean;
+  setHideDueToOverscroll?: (hide: boolean) => void;
 }) {
   const previousInternalPositionRef = useRef<InternalPosition | null>(null);
   const [popoverStyle, setPopoverStyle] = useState<Partial<Offset>>({});
@@ -44,6 +46,8 @@ export default function usePopoverPosition({
 
   // Store the handler in a ref so that it can still be replaced from outside of the listener closure.
   const positionHandlerRef = useRef<() => void>(() => {});
+
+  const scrollableContainerRectRef = useRef<Rect | null>(null);
 
   const updatePositionHandler = useCallback(
     (onContentResize = false) => {
@@ -152,15 +156,32 @@ export default function usePopoverPosition({
         scrollRectangleIntoView(rect, scrollableParent);
       }
 
+      if (setHideDueToOverscroll) {
+        const scrollableContainer = getFirstScrollableParent(trackRef.current as HTMLElement);
+        if (scrollableContainer) {
+          scrollableContainerRectRef.current = getLogicalBoundingClientRect(scrollableContainer);
+        }
+      }
+
       positionHandlerRef.current = () => {
+        const trackRect = getLogicalBoundingClientRect(track);
+
         const newTrackOffset = toRelativePosition(
-          getLogicalBoundingClientRect(track),
+          trackRect,
           containingBlock ? getLogicalBoundingClientRect(containingBlock) : viewportRect
         );
+
         setPopoverStyle({
           insetBlockStart: newTrackOffset.insetBlockStart + trackRelativeOffset.insetBlockStart,
           insetInlineStart: newTrackOffset.insetInlineStart + trackRelativeOffset.insetInlineStart,
         });
+
+        if (setHideDueToOverscroll && scrollableContainerRectRef.current) {
+          // Assuming the arrow tip is at the vertical center of the popover trigger.
+          // This is good enough for disabled reason tooltip in select and multiselect.
+          // Can be further refined to take the exact arrow position into account if hideOnOverscroll is to be used in other cases.
+          setHideDueToOverscroll(isCenterOutside(trackRect, scrollableContainerRectRef.current));
+        }
       };
     },
     [
@@ -170,10 +191,11 @@ export default function usePopoverPosition({
       contentRef,
       arrowRef,
       keepPosition,
-      allowScrollToFit,
       preferredPosition,
       renderWithPortal,
       allowVerticalOverflow,
+      allowScrollToFit,
+      setHideDueToOverscroll,
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef };

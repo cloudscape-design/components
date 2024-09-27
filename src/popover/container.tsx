@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
@@ -39,6 +39,8 @@ export interface PopoverContainerProps {
   // Do not use this if the popover is open on hover, in order to avoid unexpected movement.
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
+  // Whether the popover should be hidden when the trigger is scrolled away.
+  hideOnOverscroll?: boolean;
 }
 
 export default function PopoverContainer({
@@ -55,11 +57,14 @@ export default function PopoverContainer({
   keepPosition,
   allowScrollToFit,
   allowVerticalOverflow,
+  hideOnOverscroll = false,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
+
+  const [hideDueToOverScroll, setHideDueToOverscroll] = useState(false);
 
   const isRefresh = useVisualRefresh();
 
@@ -75,6 +80,7 @@ export default function PopoverContainer({
     preferredPosition: position,
     renderWithPortal,
     keepPosition,
+    setHideDueToOverscroll: hideOnOverscroll ? setHideDueToOverscroll : undefined,
   });
 
   // Recalculate position when properties change.
@@ -114,7 +120,6 @@ export default function PopoverContainer({
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
-
     window.addEventListener('click', onClick);
     window.addEventListener('resize', updatePositionOnResize);
     window.addEventListener('scroll', refreshPosition, true);
@@ -124,9 +129,9 @@ export default function PopoverContainer({
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
+  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
 
-  return (
+  return hideDueToOverScroll ? null : (
     <div
       ref={popoverRef}
       style={{ ...popoverStyle, zIndex }}
