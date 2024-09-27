@@ -35,7 +35,9 @@
   word-wrap: break-word;
 
   @include desktop-only {
-    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    &:not(.legacy) {
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
   }
 
   &.last-opened {
