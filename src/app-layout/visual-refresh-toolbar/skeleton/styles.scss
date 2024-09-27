@@ -100,7 +100,6 @@
 .tools {
   @include desktop-only {
     grid-area: tools;
-    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
   }
 }
 
