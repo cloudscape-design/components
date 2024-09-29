@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import { useInternalI18n } from '../i18n/context';
+import { PerformanceMetrics } from '../internal/analytics';
 import { FunnelNameSelectorContext } from '../internal/analytics/context/analytics-context';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
@@ -82,26 +83,48 @@ function PortaledModal({
     name: 'awsui.Modal',
     label: `.${analyticsSelectors.header} h2`,
   };
-
   const metadataAttribute = __injectAnalyticsComponentMetadata
     ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
     : {};
-
+  const performanceMetricLogged = useRef<boolean>(false);
+  const loadStartTime = useRef<number>(0);
+  const componentLoadingCount = useRef<number>(0);
   // enable body scroll and restore focus if unmounting while visible
   useEffect(() => {
     return () => {
       enableBodyScrolling();
+      resetModalPerformanceData();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // enable / disable body scroll
   useEffect(() => {
     if (visible) {
       disableBodyScrolling();
+      loadStartTime.current = performance.now();
     } else {
       enableBodyScrolling();
+      resetModalPerformanceData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
+
+  /**
+   * Resets performanceMetricLogged
+   * PerformanceMetricLogged false and componentLoadingCount 0,
+   * indicates that there were no components loading in the modal and it was loaded instantly.
+   * In that case emit 0 as timeToContentReadyInModal
+   */
+  const resetModalPerformanceData = () => {
+    if (loadStartTime.current !== 0 && componentLoadingCount.current === 0 && !performanceMetricLogged.current) {
+      PerformanceMetrics.modalPerformanceData({
+        timeToContentReadyInModal: 0,
+        instanceIdentifier: instanceUniqueId,
+      });
+    }
+    performanceMetricLogged.current = false;
+  };
 
   // Because we hide the element with styles (and not actually detach it from DOM), we need to scroll to top
   useEffect(() => {
@@ -142,7 +165,15 @@ function PortaledModal({
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
       <ResetContextsForModal>
-        <ModalContext.Provider value={{ isInModal: true }}>
+        <ModalContext.Provider
+          value={{
+            isInModal: true,
+            loadStartTime,
+            performanceMetricLogged,
+            componentLoadingCount,
+            instanceIdentifier: instanceUniqueId,
+          }}
+        >
           <div
             {...baseProps}
             className={clsx(

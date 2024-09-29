@@ -3,6 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
+import { ModalPerformanceDataProps } from '../../../lib/components/internal/analytics/interfaces';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
 test(
@@ -114,3 +115,26 @@ test(
     await expect(page.isExisting('#async-modal-root')).resolves.toBe(false);
   })
 );
+
+test(
+  'verifies modal performance metrics are emitted after all components are loaded',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/with-component-load');
+    const getModalPerformanceMetrics = () =>
+      browser.execute(() => ((window as any).modalPerformanceMetrics ?? []) as ModalPerformanceDataProps[]);
+    await page.click('[data-testid="modal-trigger"]');
+    let metrics = await getModalPerformanceMetrics();
+
+    //verify metrics are not emitted until all the components are loaded
+    expect(metrics.length).toBe(0);
+
+    await delay(2000);
+    metrics = await getModalPerformanceMetrics();
+    expect(metrics[0].instanceIdentifier).not.toBeNull();
+    expect(metrics[0].timeToContentReadyInModal).toBeGreaterThanOrEqual(2000);
+    expect(metrics[0].timeToContentReadyInModal).toBeLessThan(2020);
+  })
+);
+
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
