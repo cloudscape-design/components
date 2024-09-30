@@ -103,7 +103,7 @@
 
     // workaround when new app layout and old widgets
     /* stylelint-disable plugin/no-unsupported-browser-features */
-    &:not(:has([data-testid])) {
+    &:not(:has(> [data-testid])) {
       inline-size: var(#{custom-props.$toolsWidth});
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
