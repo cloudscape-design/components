@@ -11949,18 +11949,6 @@ of the user's browser.",
       "type": "boolean",
     },
     {
-      "description": "Determines whether the secondary actions area of the input has padding. If true, removes the default padding from the secondary actions area.",
-      "name": "disableSecondaryActionsPaddings",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "Determines whether the secondary content area of the input has padding. If true, removes the default padding from the secondary content area.",
-      "name": "disableSecondaryContentPaddings",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
 being included in a form submission. A disabled control can't
@@ -12078,16 +12066,6 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
 ",
       "isDefault": false,
       "name": "actionButtonIconSvg",
-    },
-    {
-      "description": "Use this slot to add secondary actions to the prompt input.",
-      "isDefault": false,
-      "name": "secondaryActions",
-    },
-    {
-      "description": "Use this slot to add secondary content, such as file attachments, to the prompt input.",
-      "isDefault": false,
-      "name": "secondaryContent",
     },
   ],
   "releaseStatus": "stable",
