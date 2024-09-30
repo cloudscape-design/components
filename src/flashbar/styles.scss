@@ -59,6 +59,14 @@
   margin-block: 0;
   margin-inline: 0;
 
+  /*
+     Adds a new stacking context for the flashbar
+     This prevents the flashbar shadow to disappear behind its container's
+     background due to z-index: -1
+   */
+  position: relative;
+  z-index: 1;
+
   &:not(.collapsed) {
     > li:not(:last-child) {
       margin-block-end: awsui.$space-xxxs;
