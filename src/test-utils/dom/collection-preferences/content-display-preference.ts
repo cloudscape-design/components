@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import TextFilterWrapper from '../text-filter';
 import ToggleWrapper from '../toggle';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
@@ -65,5 +66,19 @@ export default class ContentDisplayPreferenceWrapper extends ComponentWrapper {
     return this.findAllByClassName(getClassName('option')).map(
       wrapper => new ContentDisplayOptionWrapper(wrapper.getElement())
     );
+  }
+
+  /**
+   * Returns the text filter input.
+   */
+  findTextFilter(): TextFilterWrapper | null {
+    return this.findComponent(`.${styles['content-display-text-filter']}`, TextFilterWrapper);
+  }
+
+  /**
+   * Returns no match with the clear filter button.
+   */
+  findNoMatch(): ElementWrapper | null {
+    return this.findByClassName(styles['content-display-no-match']);
   }
 }

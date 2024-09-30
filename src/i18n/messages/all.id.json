@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "Gunakan Spasi atau Enter untuk mengaktifkan seret item, lalu gunakan tombol panah untuk memindahkan posisi item. Untuk menyelesaikan perpindahan posisi, gunakan Spasi atau Enter, atau untuk membatalkan perpindahan, gunakan Escape.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Mengambil item pada posisi {position} dari {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Pengurutan ulang dibatalkan",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filter kolom",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Filter kolom",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "Tidak ada kecocokan yang ditemukan",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Hapus filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Memindahkan item kembali ke posisi {currentPosition} dari {total}} false {Memindahkan item ke posisi {currentPosition} dari {total}} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item dipindahkan kembali ke posisi aslinya {initialPosition} dari {total}} false {Item dipindahkan dari posisi {initialPosition} ke posisi {finalPosition} dari {total}} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item dipindahkan kembali ke posisi aslinya {initialPosition} dari {total}} false {Item dipindahkan dari posisi {initialPosition} ke posisi {finalPosition} dari {total}} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 kecocokan} one {1 kecocokan} other {{count} kecocokan}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Salin"

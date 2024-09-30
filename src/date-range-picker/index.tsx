@@ -277,34 +277,32 @@ const DateRangePicker = React.forwardRef(
     });
 
     const trigger = (
-      <div className={styles['trigger-wrapper']}>
-        <ButtonTrigger
-          ref={triggerRef}
-          id={controlId}
-          invalid={invalid}
-          warning={warning}
-          ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
-          ariaLabel={i18nStrings?.ariaLabel}
-          ariaDescribedby={ariaDescribedby}
-          className={clsx(styles.label, {
-            [styles['label-enabled']]: !readOnly && !disabled,
-          })}
-          hideCaret={true}
-          onClick={() => {
-            setIsDropDownOpen(true);
-          }}
-          disabled={disabled}
-          readOnly={readOnly}
-          ariaHasPopup="dialog"
-        >
-          <span className={styles['trigger-flexbox']}>
-            <span className={styles['icon-wrapper']}>
-              <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
-            </span>
-            <span id={triggerContentId}>{formattedDate}</span>
+      <ButtonTrigger
+        ref={triggerRef}
+        id={controlId}
+        invalid={invalid}
+        warning={warning}
+        ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
+        ariaLabel={i18nStrings?.ariaLabel}
+        ariaDescribedby={ariaDescribedby}
+        className={clsx(styles.label, {
+          [styles['label-enabled']]: !readOnly && !disabled,
+        })}
+        hideCaret={true}
+        onClick={() => {
+          setIsDropDownOpen(true);
+        }}
+        disabled={disabled}
+        readOnly={readOnly}
+        ariaHasPopup="dialog"
+      >
+        <span className={styles['trigger-flexbox']}>
+          <span className={styles['icon-wrapper']}>
+            <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
           </span>
-        </ButtonTrigger>
-      </div>
+          <span id={triggerContentId}>{formattedDate}</span>
+        </span>
+      </ButtonTrigger>
     );
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);

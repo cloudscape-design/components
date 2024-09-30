@@ -16,15 +16,16 @@ const setupTest = (testFn: (page: CollectionPreferencesPageObject) => Promise<vo
 
 describe('Collection preferences', () => {
   test(
-    'renders no columns if there is only custom content',
+    'renders one column if there is only custom content',
     setupTest(async page => {
       page.wrapper = createWrapper().findCollectionPreferences('.cp-3');
 
       await page.openCollectionPreferencesModal();
 
-      // The content is small enough so that it doesn't need column layout
+      // The content is small enough so that it only needs one column
       const columnLayout = page.wrapper.findModal().findContent().findColumnLayout();
-      await expect(page.isExisting(columnLayout.toSelector())).resolves.toBe(false);
+      await expect(page.isExisting(columnLayout.findColumn(1).toSelector())).resolves.toBe(true);
+      await expect(page.isExisting(columnLayout.findColumn(2).toSelector())).resolves.toBe(false);
 
       await expect(page.isExisting(page.wrapper.findModal().findWrapLinesPreference().toSelector())).resolves.toBe(
         true
@@ -33,14 +34,15 @@ describe('Collection preferences', () => {
   );
 
   test(
-    'renders no columns if there is only visible content preferences',
+    'renders one column if there is only visible content preferences',
     setupTest(async page => {
       page.wrapper = createWrapper().findCollectionPreferences('.cp-4');
       await page.openCollectionPreferencesModal();
 
-      // The content is small enough so that it doesn't need column layout
+      // The content is small enough so that it only needs one column
       const columnLayout = page.wrapper.findModal().findContent().findColumnLayout();
-      await expect(page.isExisting(columnLayout.toSelector())).resolves.toBe(false);
+      await expect(page.isExisting(columnLayout.findColumn(1).toSelector())).resolves.toBe(true);
+      await expect(page.isExisting(columnLayout.findColumn(2).toSelector())).resolves.toBe(false);
 
       await expect(page.isExisting(page.wrapper.findModal().findVisibleContentPreference().toSelector())).resolves.toBe(
         true

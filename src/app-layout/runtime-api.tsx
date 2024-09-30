@@ -9,37 +9,52 @@ import { sortByPriority } from '../internal/plugins/helpers/utils';
 import { AppLayoutProps } from './interfaces';
 
 export interface DrawersLayout {
-  before: Array<AppLayoutProps.Drawer>;
-  after: Array<AppLayoutProps.Drawer>;
+  global: Array<AppLayoutProps.Drawer>;
+  localBefore: Array<AppLayoutProps.Drawer>;
+  localAfter: Array<AppLayoutProps.Drawer>;
 }
 
-export function convertRuntimeDrawers(drawers: Array<RuntimeDrawerConfig>): DrawersLayout {
-  const converted = drawers.map(
-    ({
-      mountContent,
-      unmountContent,
-      trigger,
-      ...runtimeDrawer
-    }): AppLayoutProps.Drawer & { orderPriority?: number } => ({
-      ...runtimeDrawer,
-      ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
-      trigger: {
-        iconSvg: (
-          // eslint-disable-next-line react/no-danger
-          <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
-        ),
-      },
-      content: (
-        <RuntimeContentWrapper key={runtimeDrawer.id} mountContent={mountContent} unmountContent={unmountContent} />
-      ),
-      onResize: event => {
-        fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
-      },
-    })
-  );
+const mapRuntimeConfigToDrawer = (
+  runtimeConfig: RuntimeDrawerConfig
+): AppLayoutProps.Drawer & {
+  orderPriority?: number;
+} => {
+  const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
+
+  return {
+    ...runtimeDrawer,
+    ariaLabels: { drawerName: runtimeDrawer.ariaLabels.content ?? '', ...runtimeDrawer.ariaLabels },
+    trigger: trigger
+      ? {
+          iconSvg: (
+            // eslint-disable-next-line react/no-danger
+            <span dangerouslySetInnerHTML={{ __html: trigger.iconSvg }} />
+          ),
+        }
+      : undefined,
+    content: (
+      <RuntimeContentWrapper
+        key={runtimeDrawer.id}
+        mountContent={mountContent}
+        unmountContent={unmountContent}
+        id={runtimeDrawer.id}
+      />
+    ),
+    onResize: event => {
+      fireNonCancelableEvent(runtimeDrawer.onResize, { size: event.detail.size, id: runtimeDrawer.id });
+    },
+  };
+};
+
+export function convertRuntimeDrawers(
+  localDrawers: Array<RuntimeDrawerConfig>,
+  globalDrawers: Array<RuntimeDrawerConfig>
+): DrawersLayout {
+  const converted = localDrawers.map(mapRuntimeConfigToDrawer);
   const sorted = sortByPriority(converted);
   return {
-    before: sorted.filter(item => (item.orderPriority ?? 0) > 0),
-    after: sorted.filter(item => (item.orderPriority ?? 0) <= 0),
+    global: sortByPriority(globalDrawers.map(mapRuntimeConfigToDrawer)),
+    localBefore: sorted.filter(item => (item.orderPriority ?? 0) > 0),
+    localAfter: sorted.filter(item => (item.orderPriority ?? 0) <= 0),
   };
 }
