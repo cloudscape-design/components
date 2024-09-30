@@ -1,11 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT } from '../../../../lib/components/app-layout/visual-refresh/drawers';
 import createWrapper from '../../../../lib/components/test-utils/selectors/index';
 import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
-import { VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT } from '../constants';
 import { AppLayoutDrawersPage, setupTest } from '../utils';
-
-import toolbarStyles from '../../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -15,12 +13,9 @@ describe('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
   const mobileDrawerTriggerIds = drawerIds.slice(
     0,
-    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + (theme === 'refresh-toolbar' ? 1 : 0)
+    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + 1 //use conditional for 0 when theme is refresh
   );
-  const appliedThemeStyles = toolbarStyles; //use visualRefreshStyles when theme === 'refresh'
-
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    const drawersTriggerContainerClassKey = `drawers-${size === 'desktop' ? 'desktop' : 'mobile'}-triggers-container`;
     const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : drawerIds; //toolbarDrawerIds;
     const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[0]).toSelector();
     const splitPanelTriggerSelector = wrapper.findSplitPanelOpenButton().toSelector();
@@ -31,7 +26,7 @@ describe('refresh-toolbar', () => {
       test(
         'Shows tooltip correctly on split panel trigger for mouse interactions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(0);
+          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.hoverElement(splitPanelTriggerSelector);
           await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
@@ -43,10 +38,7 @@ describe('refresh-toolbar', () => {
       test(
         'Shows tooltip correctly on split panel trigger for mouse interactions during split-panel actions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(0);
-          await expect(
-            page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)
-          ).resolves.toBeTruthy();
+          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.click(splitPanelTriggerSelector);
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.click(splitPanelTriggerSelector); //this could change witf focus fixes
@@ -61,10 +53,7 @@ describe('refresh-toolbar', () => {
       test(
         'Removes tooltip from split panel trigger on escape key press after showing from mouse hover',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(0);
-          await expect(
-            page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)
-          ).resolves.toBeTruthy();
+          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.hoverElement(splitPanelTriggerSelector);
           await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
           await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
@@ -76,14 +65,10 @@ describe('refresh-toolbar', () => {
       test(
         'Shows tooltip correctly for split panel trigger for keyboard (tab) interactions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(0);
-          await expect(
-            page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)
-          ).resolves.toBeTruthy();
+          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.click(splitPanelTriggerSelector);
 
           await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
-          //todo - assert the tooltip is not visible. Curently it closes on click then reopened as the UI shifts and causign an unexpected new hover event
           await page.keys(['Tab', 'Tab']);
           await page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector());
           await page.keys('Enter');
@@ -103,13 +88,9 @@ describe('refresh-toolbar', () => {
       test(
         'Removes tooltip from split panel trigger on escape key press after showing from keyboard event',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(0);
-          await expect(
-            page.isExisting(`.${appliedThemeStyles[drawersTriggerContainerClassKey]}`)
-          ).resolves.toBeTruthy();
+          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.click(splitPanelTriggerSelector);
           await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
-          //todo - assert the tooltip is not visible. Curently it closes on click then reopened as the UI shifts and causign an unexpected new hover event
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           await page.click(splitPanelTriggerSelector);
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);

@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT } from '../../../../lib/components/app-layout/visual-refresh/drawers';
 import createWrapper from '../../../../lib/components/test-utils/selectors/index';
 import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
-import { VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT } from '../constants';
+import { drawerItems } from '../../../../lib/dev-pages/pages/app-layout/utils/drawers.js';
 import { setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
@@ -13,21 +14,21 @@ describe('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
   const mobileDrawerTriggerIds = drawerIds.slice(
     0,
-    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + (theme === 'refresh-toolbar' ? 1 : 0)
+    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + 1 //use conditional for 0 when theme is refresh
   );
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : drawerIds; //toolbarDrawerIds;
     const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[0]).toSelector();
-    const expectedFirstDrawerTriggerTooltipText = 'Security'; //must match drawerItems[0].ariaLabels.drawer from /lib/dev-pages/pages/app-layout/utils/drawers
+    const expectedFirstDrawerTriggerTooltipText = drawerItems[0].ariaLabels.drawer;
     const secondDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[1]).toSelector();
-    const expectedSecondDrawerTriggerTooltipText = 'Pro help'; //must match drawerItems[0].ariaLabels.drawer from /lib/dev-pages/pages/app-layout/utils/drawers
+    const expectedSecondDrawerTriggerTooltipText = drawerItems[0].ariaLabels.drawer;
     const triggerTooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
 
     test(
       'Shows tooltip correctly on drawer trigger for mouse interactions drawer triggers',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.hoverElement(firstDrawerTriggerSelector);
         await expect(page.getText(triggerTooltipSelector)).resolves.toBe(expectedFirstDrawerTriggerTooltipText);
         await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(1);
@@ -39,11 +40,10 @@ describe('refresh-toolbar', () => {
     test(
       'Shows tooltip correctly on drawer trigger for mouse interactions during drawer actions',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.click(firstDrawerTriggerSelector);
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
-        // await page.click(`button[aria-label="Security close button"`);
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.hoverElement(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(1);
@@ -54,7 +54,7 @@ describe('refresh-toolbar', () => {
     test(
       'Removes tooltip from drawer trigger on escape key press after showing from mouse hover',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.hoverElement(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(1);
         await expect(page.getText(triggerTooltipSelector)).resolves.toBe(expectedFirstDrawerTriggerTooltipText);
@@ -66,7 +66,7 @@ describe('refresh-toolbar', () => {
     test(
       'Shows tooltip correctly on drawer trigger for pointer interactions',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.pointerDown(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(1);
         await expect(page.getText(triggerTooltipSelector)).resolves.toBe(expectedFirstDrawerTriggerTooltipText);
@@ -78,7 +78,7 @@ describe('refresh-toolbar', () => {
     test(
       'Removes tooltip from drawer trigger on escape key press after showing from pointer down',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.buttonDownOnElement(firstDrawerTriggerSelector);
         await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(1);
         await expect(page.getText(triggerTooltipSelector)).resolves.toBe(expectedFirstDrawerTriggerTooltipText);
@@ -90,7 +90,7 @@ describe('refresh-toolbar', () => {
     test(
       'Shows tooltip correctly on drawer trigger for keyboard (tab) interactions',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.click(firstDrawerTriggerSelector);
         //close drawer via keys
         await page.keys(size === 'desktop' ? ['Tab', 'Enter'] : ['Enter']); //first focus element is resize in desktop
@@ -118,7 +118,7 @@ describe('refresh-toolbar', () => {
     test(
       'Removes tooltip from drawer trigger on escape key press after showing from keyboard event',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.click(firstDrawerTriggerSelector);
         //close drawer via keys
         await page.keys(size === 'desktop' ? ['Tab', 'Enter'] : ['Enter']); //focus element is resize in desktop
@@ -144,7 +144,7 @@ describe('refresh-toolbar', () => {
     test(
       'Shows tooltip correctly on drawer trigger for keyboard (tab) interactions after drawer actions',
       setupTest({ theme, size }, async page => {
-        await expect(page.getElementsCount(triggerTooltipSelector)).resolves.toBe(0);
+        await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.click(firstDrawerTriggerSelector);
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         //close drawer via keys
