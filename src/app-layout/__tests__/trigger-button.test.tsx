@@ -60,6 +60,8 @@ const mockEventBubbleWithRelatedTarget = {
   relatedTarget: mockRelatedTarget,
 };
 
+const triggerButtoonTooltipClass = testUtilStyles['trigger-tooltip'];
+
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const renderVisualRefreshTriggerButton = (
@@ -354,14 +356,14 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           expect(getByTestId(mockTestId)).toBeTruthy();
           const button = wrapper!.find('button');
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           expect(button).toBeTruthy();
           expect(document.activeElement).not.toBe(button!.getElement());
           (ref.current as any)?.focus(mockEventBubbleWithRelatedTarget);
           expect(document.activeElement).toBe(button!.getElement());
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         });
 
         test('pointer events work properly', () => {
@@ -370,7 +372,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             isMobile,
           });
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           fireEvent.pointerEnter(wrapper!.getElement());
           if (hasTooltip) {
@@ -390,7 +392,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             isMobile,
           });
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           fireEvent.focus(wrapper!.getElement());
 
@@ -401,7 +403,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           }
 
           fireEvent.blur(wrapper!.getElement());
-          expect(wrapper.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
         });
 
@@ -411,7 +413,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             isMobile,
           });
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           fireEvent.focus(wrapper!.getElement());
           expect(getByText(mockTooltipText)).toBeTruthy();
@@ -422,7 +424,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             code: KeyCode.escape,
           });
 
-          expect(wrapper.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
         });
 
@@ -434,13 +436,13 @@ describe('Visual Refresh Toolbar trigger-button', () => {
               tooltipText: '',
             });
             expect(getByTestId(mockTestId)).toBeTruthy();
-            expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+            expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
 
             fireEvent.pointerEnter(wrapper!.getElement());
-            expect(wrapper.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+            expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
 
             fireEvent.focus(wrapper!.getElement());
-            expect(wrapper.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+            expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           }
         );
       });
@@ -450,10 +452,10 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           hasOpenDrawer: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
 
         fireEvent.focus(wrapper!.getElement());
-        expect(wrapper.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
       });
 
       //the realatedTarget here would be truthy when key or click navigation
@@ -465,14 +467,14 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           isForSplitPanel: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
 
         fireEvent.focus(wrapper!.getElement(), mockEventBubbleWithRelatedTarget);
         expect(getByText(mockTooltipText)).toBeTruthy();
 
         fireEvent.blur(wrapper!.getElement());
-        expect(wrapper.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
       });
 
@@ -485,7 +487,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           isForSplitPanel: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
         fireEvent.focus(wrapper!.getElement());
 
@@ -499,7 +501,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           isForPreviousActiveDrawer: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(wrapper!.findByClassName(testUtilStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
 
         fireEvent.focus(wrapper!.getElement());
