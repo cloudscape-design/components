@@ -101,12 +101,10 @@
   @include desktop-only {
     grid-area: tools;
 
-    @-moz-document url-prefix() {
-      // workaround when new app layout and old widgets
-      &:not(:has([data-testid])) {
-        inline-size: var(#{custom-props.$toolsWidth});
-        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
-      }
+    // workaround when new app layout and old widgets
+    &:not(:has([data-testid])) {
+      inline-size: var(#{custom-props.$toolsWidth});
+      border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
     }
   }
 }
