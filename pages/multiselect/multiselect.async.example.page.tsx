@@ -2,8 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
+import { SpaceBetween, TextFilter } from '~components';
 import Box from '~components/box';
+import { fireNonCancelableEvent } from '~components/internal/events';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
+import EmbeddedMultiselect, { EmbeddedMultiselectProps } from '~components/multiselect/embedded';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { useOptionsLoader } from '../common/options-loader';
@@ -19,6 +22,7 @@ type PageContext = React.Context<
     randomErrors?: boolean;
     virtualScroll?: boolean;
     expandToViewport?: boolean;
+    embedded?: boolean;
   }>
 >;
 
@@ -30,7 +34,7 @@ const deselectAriaLabel: MultiselectProps['deselectAriaLabel'] = option => {
 export default function Page() {
   const [selectedOptions, setSelectedOptions] = useState<readonly MultiselectProps.Option[]>([]);
   const {
-    urlParams: { fakeResponses = true, randomErrors = true },
+    urlParams: { fakeResponses = true, randomErrors = true, embedded = false },
   } = useContext(AppContext as PageContext);
 
   const { items, status, filteringText, fetchItems } = useOptionsLoader<MultiselectProps.Option>({
@@ -49,13 +53,16 @@ export default function Page() {
     return '';
   }
 
+  const Component = embedded ? EmbeddedMultiselectIntegration : Multiselect;
+
   return (
     <Box padding="l">
       <Box variant="h1">Multiselect: asynchronously fetched options</Box>
       <Box margin={{ bottom: 'xxs' }} color="text-label">
         <label htmlFor="select_security_group">Security group</label>
       </Box>
-      <Multiselect
+
+      <Component
         controlId="select_security_group"
         filteringType="manual"
         filteringPlaceholder="Find security group"
@@ -82,5 +89,26 @@ export default function Page() {
         i18nStrings={i18nStrings}
       />
     </Box>
+  );
+}
+
+function EmbeddedMultiselectIntegration(props: EmbeddedMultiselectProps) {
+  const [filteringText, setFilteringText] = useState('');
+  const onChangeFilter = (filteringText: string) => {
+    setFilteringText(filteringText);
+    fireNonCancelableEvent(props.onLoadItems, { filteringText, firstPage: true, samePage: false });
+  };
+  return (
+    <SpaceBetween size="s">
+      <TextFilter
+        filteringText={filteringText}
+        onChange={({ detail }) => onChangeFilter(detail.filteringText)}
+        filteringPlaceholder="Find security group"
+      />
+
+      <div style={{ maxBlockSize: 400, display: 'flex' }}>
+        <EmbeddedMultiselect {...props} filteringText={filteringText} />
+      </div>
+    </SpaceBetween>
   );
 }
