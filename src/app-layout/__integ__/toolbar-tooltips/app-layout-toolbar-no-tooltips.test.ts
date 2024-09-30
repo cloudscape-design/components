@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT } from '../../../../lib/components/app-layout/visual-refresh/drawers';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
+import { visibleMobileToolbarTriggersLimit } from '../constants';
 import { setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
@@ -10,7 +10,7 @@ const drawerIds = Object.values(drawerIdObj);
 
 describe.each(['refresh', 'classic'] as const)('%s', theme => {
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    const mobileDrawerTriggerIds = drawerIds.slice(0, VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT);
+    const mobileDrawerTriggerIds = drawerIds.slice(0, visibleMobileToolbarTriggersLimit);
     const drawerIdsToTest = [...(size === 'mobile' ? mobileDrawerTriggerIds : drawerIds)];
     const firstDrawerTriggerSelector = `button[data-testid="awsui-app-layout-trigger-${drawerIdsToTest[0]}"]`;
     const triggerTooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();

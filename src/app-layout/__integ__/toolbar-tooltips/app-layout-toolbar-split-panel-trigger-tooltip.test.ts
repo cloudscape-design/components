@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT } from '../../../../lib/components/app-layout/visual-refresh/drawers';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
+import { visibleMobileToolbarTriggersLimit } from '../constants';
 import { AppLayoutDrawersPage, setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
@@ -13,7 +13,7 @@ describe('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
   const mobileDrawerTriggerIds = drawerIds.slice(
     0,
-    VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT + 1 //use conditional for 0 when theme is refresh
+    visibleMobileToolbarTriggersLimit + 1 //use conditional for 0 when theme is refresh
   );
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : drawerIds; //toolbarDrawerIds;
