@@ -6,40 +6,81 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles/foundation/' as foundation;
+@use '../internal/styles/forms/constants' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 $send-icon-right-spacing: awsui.$space-static-xxs;
+$invalid-border-offset: constants.$invalid-control-left-padding;
 
 .root {
-  position: relative;
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+  cursor: text;
 
-  > .button {
-    position: absolute;
-    inset-inline-end: $send-icon-right-spacing;
-    inset-block-end: 0;
+  background-color: awsui.$color-background-input-default;
 
-    > .action-button {
-      // offset the focus ring by 1px per side so it doesn't blend into the textarea border
-      @include focus-visible.when-visible {
-        @include styles.focus-highlight(
-          (
-            'vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
-            'horizontal': calc((#{awsui.$space-xxxs}) - 1px),
-          )
-        );
+  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
+  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
+
+  &.textarea-readonly {
+    @include styles.form-readonly-element;
+  }
+
+  &.disabled {
+    @include styles.form-disabled-element;
+    cursor: default;
+  }
+
+  &.textarea-invalid {
+    @include styles.form-invalid-control();
+    & {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within,
+    &:focus {
+      @include styles.form-invalid-control();
+      & {
+        padding-inline-start: 0;
+        box-shadow: foundation.$box-shadow-focused-light-invalid;
       }
     }
+  }
+
+  &.textarea-warning {
+    @include styles.form-warning-control();
+    & {
+      padding-inline-start: 0;
+    }
+
+    &:focus-within,
+    &:focus {
+      @include styles.form-warning-control();
+      & {
+        padding-inline-start: 0;
+        box-shadow: foundation.$box-shadow-focused-light-invalid;
+      }
+    }
+  }
+
+  &:focus-within,
+  &:focus {
+    @include styles.form-focus-element;
   }
 }
 
 .textarea {
   @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+  @include styles.font-body-m;
   // Restore browsers' default resize values
   resize: none;
   // Restore default text cursor
   cursor: text;
   // Allow multi-line placeholders
   white-space: pre-wrap;
+  background-color: inherit;
 
   padding-block: styles.$control-padding-vertical;
   padding-inline: styles.$control-padding-horizontal;
@@ -49,19 +90,8 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   inline-size: 100%;
   display: block;
   box-sizing: border-box;
-  background-color: awsui.$color-background-input-default;
-  border-start-start-radius: styles.$control-border-radius;
-  border-start-end-radius: styles.$control-border-radius;
-  border-end-start-radius: styles.$control-border-radius;
-  border-end-end-radius: styles.$control-border-radius;
-  border-block: styles.$control-border-width solid awsui.$color-border-input-default;
-  border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
 
-  @include styles.font-body-m;
-
-  &.textarea-readonly {
-    @include styles.form-readonly-element;
-  }
+  border: 0;
 
   &::placeholder {
     @include styles.form-placeholder;
@@ -73,7 +103,7 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
   }
 
   &:focus {
-    @include styles.form-focus-element;
+    outline: none;
   }
 
   &:invalid {
@@ -81,8 +111,14 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
     box-shadow: none;
   }
 
+  &.invalid,
+  &.warning {
+    padding-inline-start: $invalid-border-offset;
+  }
+
   &:disabled {
     @include styles.form-disabled-element;
+    border: 0;
     cursor: default;
 
     &::placeholder {
@@ -95,14 +131,71 @@ $send-icon-right-spacing: awsui.$space-static-xxs;
     }
   }
 
-  &.textarea-invalid {
-    @include styles.form-invalid-control();
+  &-wrapper {
+    display: flex;
+  }
+}
+
+.button {
+  align-self: flex-end;
+  padding-inline: calc(styles.$control-padding-horizontal / 2);
+  padding-block-end: awsui.$space-scaled-xxxs;
+
+  > .action-button {
+    padding: 0;
+
+    // offset the focus ring by 1px per side so it doesn't blend into the textarea border
+    @include focus-visible.when-visible {
+      @include styles.focus-highlight(
+        (
+          'vertical': calc((-1 * #{awsui.$space-xxxs}) - 1px),
+          'horizontal': calc((#{awsui.$space-xxxs}) - 1px),
+        )
+      );
+    }
+  }
+}
+
+.secondary-content {
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+
+  &.with-paddings {
+    padding-block-start: styles.$control-padding-vertical;
+    padding-block-end: awsui.$space-scaled-s;
+    padding-inline-start: styles.$control-padding-horizontal;
+    padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+
+    &.invalid,
+    &.warning {
+      padding-inline-start: $invalid-border-offset;
+    }
+  }
+}
+
+.secondary-actions {
+  @include styles.styles-reset;
+  @include styles.control-border-radius-full();
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+
+  &.with-paddings {
+    padding-inline-start: styles.$control-padding-horizontal;
+    padding-block-start: awsui.$space-scaled-s;
+    padding-block-end: styles.$control-padding-vertical;
+
+    &.invalid,
+    &.warning {
+      padding-inline-start: $invalid-border-offset;
+    }
+
+    > .button {
+      padding-block-end: 0;
+    }
   }
 
-  &.textarea-warning {
-    @include styles.form-warning-control();
-  }
-  &.textarea-with-button {
-    padding-inline-end: calc(styles.$control-padding-horizontal + $send-icon-right-spacing + awsui.$size-icon-normal);
+  > .button {
+    padding-block-end: awsui.$space-scaled-xxs;
   }
 }
