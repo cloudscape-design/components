@@ -23,6 +23,7 @@ function InternalFileTokenGroup({
   i18nStrings,
   onDismiss,
   limit,
+  alignment = 'vertical',
   __internalRootRef,
 }: InternalFileTokenGroupProps) {
   const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
@@ -41,7 +42,7 @@ function InternalFileTokenGroup({
   return (
     <div ref={mergedRef}>
       <TokenList
-        alignment="vertical"
+        alignment={alignment}
         items={items}
         renderItem={(file, fileIndex) => (
           <InternalFileToken
@@ -56,6 +57,8 @@ function InternalFileTokenGroup({
             errorText={file.errorText}
             warningText={file.warningText}
             i18nStrings={i18nStrings}
+            disabled={file.loading || file.disabled}
+            loading={file.loading}
             data-index={fileIndex}
           />
         )}

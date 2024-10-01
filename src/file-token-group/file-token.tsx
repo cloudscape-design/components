@@ -32,6 +32,7 @@ export interface FileTokenProps extends BaseComponentProps {
   warningText?: React.ReactNode;
   loading?: boolean;
   i18nStrings: FileTokenProps.I18nStrings;
+  disabled?: boolean;
 }
 
 function InternalFileToken({
@@ -43,6 +44,8 @@ function InternalFileToken({
   onDismiss,
   errorText,
   warningText,
+  disabled,
+  loading,
 }: FileTokenProps) {
   const isImage = file.type.startsWith('image/');
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
@@ -57,6 +60,8 @@ function InternalFileToken({
       errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
       warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
       data-index={0}
+      disabled={disabled}
+      loading={loading}
     >
       <InternalBox className={styles['file-option']}>
         {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}

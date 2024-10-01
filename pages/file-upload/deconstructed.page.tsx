@@ -5,7 +5,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Box, Checkbox, FileInput, FileTokenGroup, FileUploadProps, FormField, Header } from '~components';
 import SpaceBetween from '~components/space-between';
 
-import { PageNotifications, useContractFilesForm } from './page-helpers';
+import { useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
 import { useDropzoneVisible } from './use-dropzone-visible';
 import { validateContractFiles } from './validations';
@@ -48,8 +48,6 @@ export default function FileUploadScenarioStandalone() {
         <SpaceBetween size="xl">
           <Header variant="h1">File upload: deconstructed</Header>
 
-          <PageNotifications status={formState.status} />
-
           <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
             Accept multiple files
           </Checkbox>
@@ -70,10 +68,11 @@ export default function FileUploadScenarioStandalone() {
           </FormField>
 
           <FileTokenGroup
+            alignment="horizontal"
             items={formState.files.map(file => ({
-              file: file,
-              disabled: false,
-              loading: false,
+              file,
+              loading: formState.status === 'uploading',
+              errorText: file.size > 1000000 ? 'File size cannot exceed 1MB' : undefined,
             }))}
             showFileLastModified={true}
             showFileSize={true}

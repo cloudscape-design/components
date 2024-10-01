@@ -23,6 +23,7 @@ interface TokenProps {
   warningText?: React.ReactNode;
   warningIconAriaLabel?: string;
   className?: string;
+  loading?: boolean;
 }
 
 export function Token({
@@ -36,6 +37,7 @@ export function Token({
   warningText,
   errorIconAriaLabel,
   warningIconAriaLabel,
+  loading,
   ...restProps
 }: TokenProps) {
   const errorId = useUniqueId('error');
@@ -64,7 +66,13 @@ export function Token({
       >
         {children}
         {onDismiss && (
-          <DismissButton disabled={disabled} dismissLabel={dismissLabel} onDismiss={onDismiss} readOnly={readOnly} />
+          <DismissButton
+            loading={loading}
+            disabled={disabled}
+            dismissLabel={dismissLabel}
+            onDismiss={onDismiss}
+            readOnly={readOnly}
+          />
         )}
       </div>
       {errorText && (
