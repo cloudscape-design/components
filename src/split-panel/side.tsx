@@ -70,8 +70,8 @@ export function SplitPanelContentSide({
         role="region"
       >
         {isOpen ? (
-          <div className={styles['slider-wrapper-side']}>{resizeHandle}</div>
-        ) : (
+          <div className={clsx(styles['slider-wrapper-side'], isToolbar && styles['with-toolbar'])}>{resizeHandle}</div>
+        ) : !isToolbar ? (
           <InternalButton
             className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"
@@ -81,7 +81,7 @@ export function SplitPanelContentSide({
             ariaExpanded={isOpen}
             ref={isRefresh ? null : toggleRef}
           />
-        )}
+        ) : null}
         <div
           className={clsx(styles['content-side'], isToolbar && styles['with-toolbar'])}
           aria-hidden={!isOpen}
