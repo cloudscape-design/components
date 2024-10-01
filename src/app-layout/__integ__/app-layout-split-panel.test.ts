@@ -82,6 +82,18 @@ class AppLayoutSplitViewPage extends BasePageObject {
         }, contentSelector);
     }
   }
+
+  hasPageScrollbar() {
+    return this.browser.execute(
+      () => window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight
+    );
+  }
+
+  verifySplitPanelPosition(targetPosition: 'side' | 'bottom') {
+    return targetPosition === 'side'
+      ? this.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())
+      : this.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector());
+  }
 }
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
@@ -351,4 +363,50 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       }, '#/light/app-layout/with-full-page-table-and-split-panel')
     );
   });
+
+  test(
+    'forces split panel to the bottom or allows on side when page scrollbar appears',
+    useBrowser(async browser => {
+      const page = new AppLayoutSplitViewPage(browser);
+      const dimensions = {
+        classic: { height: 1400, width: 945 },
+        'visual-refresh': { height: 1200, width: 1020 },
+        'visual-refresh-toolbar': { height: 1400, width: 875 },
+      }[theme];
+      const content = wrapper.findContentRegion();
+
+      // Split panel is forced to the bottom when not enough horizontal space.
+      await page.setWindowSize(dimensions);
+      const params = new URLSearchParams({
+        splitPanelPosition: 'side',
+        visualRefresh: `${theme.startsWith('visual-refresh')}`,
+        appLayoutToolbar: `${theme === 'visual-refresh-toolbar'}`,
+      });
+      await browser.url(`#/light/app-layout/with-split-panel?${params.toString()}`);
+      await page.waitForVisible(content.toSelector());
+      await page.click(content.findContainer('[data-testid="container-1"]').findHeader().findButton().toSelector());
+      await page.click(content.findContainer('[data-testid="container-1"]').findHeader().findButton().toSelector());
+
+      // Open split panel and ensure it is forced to the bottom.
+      await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+      await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(true);
+
+      // Make split panel smaller to ensure no page-level scrollbar.
+      const { height: screenHeight } = await page.getViewportSize();
+      await page.dragResizerTo({ x: 0, y: screenHeight });
+      await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(false);
+
+      // Split panel transitions to the side when enough horizontal space.
+      await page.setWindowSize({ ...dimensions, width: dimensions.width + 25 });
+      await expect(page.verifySplitPanelPosition('side')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(true);
+
+      // Split panel transitions to the bottom when not enough horizontal space.
+      await page.setWindowSize(dimensions);
+      await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(false);
+    })
+  );
 });
