@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, render, within } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import { KeyCode } from '../../../lib/components/internal/keycode';
@@ -66,10 +66,7 @@ describe('disableBrowserAutocorrect', () => {
   });
 
   test('does not modify autocorrect features when falsy', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      disableBrowserAutocorrect: false,
-    });
+    const { wrapper } = renderPromptInput({ value: '', disableBrowserAutocorrect: false });
     const textarea = wrapper.findNativeTextarea().getElement();
 
     expect(textarea).not.toHaveAttribute('autocorrect');
@@ -77,10 +74,7 @@ describe('disableBrowserAutocorrect', () => {
   });
 
   test('can disable autocorrect features when set', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      disableBrowserAutocorrect: true,
-    });
+    const { wrapper } = renderPromptInput({ value: '', disableBrowserAutocorrect: true });
     const textarea = wrapper.findNativeTextarea().getElement();
 
     expect(textarea).toHaveAttribute('autocorrect', 'off');
@@ -110,45 +104,18 @@ describe('action button', () => {
   });
 
   test('present when added', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      actionButtonIconName: 'send',
-    });
+    const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send' });
     expect(wrapper.findActionButton().getElement()).toBeInTheDocument();
   });
 
-  test('should render action button inside secondary actions container when secondary actions are present', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      minRows: 4,
-      secondaryActions: 'secondary actions',
-      actionButtonIconName: 'send',
-    });
-
-    const secondaryActionsContainer = wrapper.findSecondaryActions()!.getElement();
-    const actionButton = within(secondaryActionsContainer).getByRole('button');
-
-    expect(actionButton).toBeInTheDocument();
-  });
-
   test('disabled when in disabled state', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      actionButtonIconName: 'send',
-      disabled: true,
-    });
+    const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', disabled: true });
     expect(wrapper.findActionButton().getElement()).toHaveAttribute('disabled');
   });
 
-  test('adds aria disabled but not disabled attribute when in read-only state', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      actionButtonIconName: 'send',
-      readOnly: true,
-    });
-
-    expect(wrapper.findActionButton().getElement()).toHaveAttribute('aria-disabled', 'true');
-    expect(wrapper.findActionButton().getElement()).not.toHaveAttribute('disabled');
+  test('disabled when in read-only state', () => {
+    const { wrapper } = renderPromptInput({ value: '', actionButtonIconName: 'send', readOnly: true });
+    expect(wrapper.findActionButton().getElement()).toHaveAttribute('disabled');
   });
 });
 
@@ -206,10 +173,7 @@ describe('prompt input in form', () => {
   });
 
   test('cancelling key event prevents submission', () => {
-    const [wrapper, submitSpy] = renderPromptInputInForm({
-      value: '',
-      onKeyDown: event => event.preventDefault(),
-    });
+    const [wrapper, submitSpy] = renderPromptInputInForm({ value: '', onKeyDown: event => event.preventDefault() });
     wrapper.findNativeTextarea().keydown(KeyCode.enter);
     expect(submitSpy).not.toHaveBeenCalled();
   });
@@ -276,30 +240,6 @@ describe('min and max rows', () => {
   });
 });
 
-describe('secondary actions', () => {
-  test('should render correct text in secondary actions slot', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      minRows: 4,
-      secondaryActions: 'secondary actions',
-    });
-
-    expect(wrapper.findSecondaryActions()?.getElement()).toHaveTextContent('secondary actions');
-  });
-});
-
-describe('secondary content', () => {
-  test('should render correct text in secondary content slot', () => {
-    const { wrapper } = renderPromptInput({
-      value: '',
-      minRows: 4,
-      secondaryContent: 'secondary content',
-    });
-
-    expect(wrapper.findSecondaryContent()?.getElement()).toHaveTextContent('secondary content');
-  });
-});
-
 describe('a11y', () => {
   test('Valides a11y', async () => {
     const { container } = render(<PromptInput ariaLabel="Prompt input" value="" />);
@@ -313,18 +253,8 @@ describe('a11y', () => {
       expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-label');
     });
     test('can be set to custom value', () => {
-      const { wrapper } = renderPromptInput({
-        value: '',
-        ariaLabel: 'my-custom-label',
-      });
+      const { wrapper } = renderPromptInput({ value: '', ariaLabel: 'my-custom-label' });
       expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-label', 'my-custom-label');
-    });
-    test('is added to the region wrapper', () => {
-      const { wrapper } = renderPromptInput({
-        value: '',
-        ariaLabel: 'my-custom-label',
-      });
-      expect(within(wrapper.getElement()).getByRole('region')).toHaveAttribute('aria-label', 'my-custom-label');
     });
   });
 
@@ -334,18 +264,11 @@ describe('a11y', () => {
       expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-describedby');
     });
     test('can be set to custom value', () => {
-      const { wrapper } = renderPromptInput({
-        value: '',
-        ariaDescribedby: 'my-custom-id',
-      });
+      const { wrapper } = renderPromptInput({ value: '', ariaDescribedby: 'my-custom-id' });
       expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
     test('can be customized without controlId', () => {
-      const { wrapper } = renderPromptInput({
-        value: '',
-        controlId: undefined,
-        ariaDescribedby: 'my-custom-id',
-      });
+      const { wrapper } = renderPromptInput({ value: '', controlId: undefined, ariaDescribedby: 'my-custom-id' });
 
       expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-describedby', 'my-custom-id');
     });
@@ -357,10 +280,7 @@ describe('a11y', () => {
       expect(wrapper.findNativeTextarea().getElement()).not.toHaveAttribute('aria-labelledby');
     });
     test('can be set to custom value', () => {
-      const { wrapper } = renderPromptInput({
-        value: '',
-        ariaLabelledby: 'my-custom-id',
-      });
+      const { wrapper } = renderPromptInput({ value: '', ariaLabelledby: 'my-custom-id' });
       expect(wrapper.findNativeTextarea().getElement()).toHaveAttribute('aria-labelledby', 'my-custom-id');
     });
   });

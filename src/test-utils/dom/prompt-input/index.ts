@@ -18,14 +18,6 @@ export default class PromptInputWrapper extends ComponentWrapper {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['action-button'])!;
   }
 
-  findSecondaryActions(): ElementWrapper<HTMLDivElement> {
-    return this.findByClassName<HTMLDivElement>(testutilStyles['secondary-actions'])!;
-  }
-
-  findSecondaryContent(): ElementWrapper<HTMLDivElement> {
-    return this.findByClassName<HTMLDivElement>(testutilStyles['secondary-content'])!;
-  }
-
   /**
    * Gets the value of the component.
    *
