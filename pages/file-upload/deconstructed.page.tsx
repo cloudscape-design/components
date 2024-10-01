@@ -2,17 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Checkbox, FileInput, FileToken, FileUploadProps, FormField, Header } from '~components';
+import { Box, Checkbox, FileInput, FileTokenGroup, FileUploadProps, FormField, Header } from '~components';
 import SpaceBetween from '~components/space-between';
 
 import { PageNotifications, useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
+import { useDropzoneVisible } from './use-dropzone-visible';
 import { validateContractFiles } from './validations';
 
 export default function FileUploadScenarioStandalone() {
   const contractsRef = useRef<FileUploadProps.Ref>(null);
+
   const [acceptMultiple, setAcceptMultiple] = useState(true);
   const formState = useContractFilesForm();
+
+  const isDropzoneVisible = useDropzoneVisible(acceptMultiple);
 
   // const contractsValidationErrors = validateContractFiles(formState.files);
   // const contractsErrors = contractsValidationErrors ?? formState.fileErrors;
@@ -30,52 +34,55 @@ export default function FileUploadScenarioStandalone() {
     formState.onUploadFiles(!validateContractFiles(newValue) ? newValue : []);
   };
 
-  const onFileRemove = (removeFileIndex: number) => {
-    const newValue = formState.files.filter((_, fileIndex) => fileIndex !== removeFileIndex);
-    formState.onFilesChange(newValue);
-    // setNextFocusIndex(removeFileIndex);
+  const onDismiss = (event: { detail: { fileIndex: number } }) => {
+    const newItems = [...formState.files];
+    newItems.splice(event.detail.fileIndex, 1);
+    formState.onFilesChange(newItems);
   };
 
   return (
     <Box margin="xl">
-      <SpaceBetween size="xl">
-        <Header variant="h1">File upload: deconstructed</Header>
+      {isDropzoneVisible ? (
+        'dropping files'
+      ) : (
+        <SpaceBetween size="xl">
+          <Header variant="h1">File upload: deconstructed</Header>
 
-        <PageNotifications status={formState.status} />
+          <PageNotifications status={formState.status} />
 
-        <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
-          Accept multiple files
-        </Checkbox>
+          <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
+            Accept multiple files
+          </Checkbox>
 
-        <FormField
-          label={acceptMultiple ? 'Contracts' : 'Contract'}
-          description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
-        >
-          <FileInput
-            variant="icon"
-            ref={contractsRef}
-            multiple={acceptMultiple}
-            value={formState.files}
-            onChange={handleFilesChange}
-            accept="application/pdf, image/png, image/jpeg"
-            i18nStrings={i18nStrings}
-          />
-        </FormField>
-
-        <div>
-          {formState.files.map((file, index) => (
-            <FileToken
-              key={index}
-              showFileLastModified={true}
-              showFileSize={true}
-              showFileThumbnail={true}
-              file={file}
-              onDismiss={() => onFileRemove(index)}
+          <FormField
+            label={acceptMultiple ? 'Contracts' : 'Contract'}
+            description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
+          >
+            <FileInput
+              variant="icon"
+              ref={contractsRef}
+              multiple={acceptMultiple}
+              value={formState.files}
+              onChange={handleFilesChange}
+              accept="application/pdf, image/png, image/jpeg"
               i18nStrings={i18nStrings}
             />
-          ))}
-        </div>
-      </SpaceBetween>
+          </FormField>
+
+          <FileTokenGroup
+            items={formState.files.map(file => ({
+              file: file,
+              disabled: false,
+              loading: false,
+            }))}
+            showFileLastModified={true}
+            showFileSize={true}
+            showFileThumbnail={true}
+            i18nStrings={i18nStrings}
+            onDismiss={onDismiss}
+          />
+        </SpaceBetween>
+      )}
     </Box>
   );
 }

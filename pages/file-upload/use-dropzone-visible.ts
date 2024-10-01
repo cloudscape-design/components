@@ -1,0 +1,57 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+import { useEffect, useState } from 'react';
+
+export function useDropzoneVisible(multiple: boolean) {
+  const [isDropzoneVisible, setDropzoneVisible] = useState(false);
+
+  // Registering global drag events listeners.
+  useEffect(() => {
+    // The timer helps avoiding dropzone blinking.
+    let dragTimer: null | ReturnType<typeof setTimeout> = null;
+
+    // The file-upload dropzone is shown when the user drags files over to the browser.
+    const onDocumentDragOver = (event: DragEvent) => {
+      event.preventDefault();
+
+      let files = 0;
+      for (let item = 0; item < (event.dataTransfer?.types.length || 0); item++) {
+        if (event.dataTransfer?.types[item] === 'Files') {
+          files++;
+        }
+      }
+
+      if (files > 0 && (multiple || files === 1)) {
+        setDropzoneVisible(true);
+        dragTimer && clearTimeout(dragTimer);
+      }
+    };
+
+    // When the files are no longer dragged over the browser the state must be reset.
+    const onDocumentDragLeave = (event: DragEvent) => {
+      event.preventDefault();
+
+      dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
+    };
+
+    // If the files were dropped the state must be reset.
+    const onDocumentDrop = (event: DragEvent) => {
+      event.preventDefault();
+
+      dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
+    };
+
+    document.addEventListener('dragover', onDocumentDragOver, false);
+    document.addEventListener('dragleave', onDocumentDragLeave, false);
+    document.addEventListener('drop', onDocumentDrop, false);
+
+    return () => {
+      dragTimer && clearTimeout(dragTimer);
+      document.removeEventListener('dragover', onDocumentDragOver);
+      document.removeEventListener('dragleave', onDocumentDragLeave);
+      document.removeEventListener('drop', onDocumentDrop);
+    };
+  }, [multiple]);
+
+  return isDropzoneVisible;
+}

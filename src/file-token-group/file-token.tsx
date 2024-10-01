@@ -1,32 +1,49 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { forwardRef, Ref } from 'react';
+import React from 'react';
 
-import InternalBox from '../box/internal';
-import { fireNonCancelableEvent } from '../internal/events';
-import InternalSpaceBetween from '../space-between/internal';
-import { Token } from '../token-group/token';
-import * as defaultFormatters from './default-formatters';
-import { FileTokenProps } from './interfaces';
-import { FileOptionThumbnail } from './thumbnail';
+import InternalBox from '../box/internal.js';
+import { BaseComponentProps } from '../internal/base-component';
+import InternalSpaceBetween from '../space-between/internal.js';
+import { Token } from '../token-group/token.js';
+import * as defaultFormatters from './default-formatters.js';
+import { FileOptionThumbnail } from './thumbnail.js';
 
 import styles from './styles.css.js';
 
-function InternalFileToken(
-  {
-    file,
-    showFileLastModified,
-    showFileSize,
-    showFileThumbnail,
-    i18nStrings,
-    onDismiss,
-    errorText,
-    warningText,
-  }: FileTokenProps,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ref: Ref<FileTokenProps.Ref>
-) {
+export namespace FileTokenProps {
+  export interface I18nStrings {
+    removeFileAriaLabel: (fileIndex: number) => string;
+    errorIconAriaLabel?: string;
+    warningIconAriaLabel?: string;
+    formatFileSize?: (sizeInBytes: number) => string;
+    formatFileLastModified?: (date: Date) => string;
+  }
+}
+
+export interface FileTokenProps extends BaseComponentProps {
+  file: File;
+  onDismiss: () => void;
+  showFileSize?: boolean;
+  showFileLastModified?: boolean;
+  showFileThumbnail?: boolean;
+  errorText?: React.ReactNode;
+  warningText?: React.ReactNode;
+  loading?: boolean;
+  i18nStrings: FileTokenProps.I18nStrings;
+}
+
+function InternalFileToken({
+  file,
+  showFileLastModified,
+  showFileSize,
+  showFileThumbnail,
+  i18nStrings,
+  onDismiss,
+  errorText,
+  warningText,
+}: FileTokenProps) {
   const isImage = file.type.startsWith('image/');
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
@@ -34,9 +51,7 @@ function InternalFileToken(
     <Token
       ariaLabel={file.name}
       dismissLabel={i18nStrings.removeFileAriaLabel(0)}
-      onDismiss={() => {
-        fireNonCancelableEvent(onDismiss);
-      }}
+      onDismiss={onDismiss}
       errorText={errorText}
       warningText={warningText}
       errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
@@ -72,4 +87,4 @@ function InternalFileToken(
   );
 }
 
-export default forwardRef(InternalFileToken);
+export default InternalFileToken;
