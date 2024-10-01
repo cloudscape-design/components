@@ -330,6 +330,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onNavigationToggle,
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
+      toolsOpen,
+      onToolsToggle,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
