@@ -106,6 +106,11 @@ export interface Dimensions {
 
 export type BoundingBox = Dimensions & Offset;
 
+export type Rect = BoundingBox & {
+  insetBlockEnd: number;
+  insetInlineEnd: number;
+};
+
 export namespace PopoverProps {
   export type Position = 'top' | 'right' | 'bottom' | 'left';
   export type Size = 'small' | 'medium' | 'large';
