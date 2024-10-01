@@ -1,13 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
 
-import AppLayout, { AppLayoutProps } from '~components/app-layout';
-import Header from '~components/header';
-import Popover from '~components/popover';
-import SpaceBetween from '~components/space-between';
-import SplitPanel from '~components/split-panel';
-import Toggle from '~components/toggle';
+import React, { useContext } from 'react';
+
+import { AppLayout, AppLayoutProps, Box, Header, Popover, SpaceBetween, SplitPanel, Toggle } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -77,10 +73,10 @@ const DEMO_CONTENT = (
 );
 
 export default function () {
-  const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
-  const [splitPanelEnabled, setSplitPanelEnabled] = useState(urlParams.splitPanelEnabled ?? true);
-  const [toolsPanelEnabled, setToolsPanelEnabled] = useState(urlParams.toolsEnabled ?? true);
-
+  const {
+    urlParams: { splitPanelEnabled = true, toolsEnabled = true, splitPanelPosition },
+    setUrlParams,
+  } = useContext(AppContext as SplitPanelDemoContext);
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -88,10 +84,8 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        toolsHide={!toolsPanelEnabled}
-        splitPanelPreferences={{
-          position: urlParams.splitPanelPosition,
-        }}
+        toolsHide={!toolsEnabled}
+        splitPanelPreferences={{ position: splitPanelPosition }}
         onSplitPanelPreferencesChange={event => {
           const { position } = event.detail;
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
@@ -124,28 +118,28 @@ export default function () {
                 Demo page
               </Header>
             </div>
+
             <SpaceBetween size="l">
-              <Toggle
-                id="enable-split-panel"
-                checked={splitPanelEnabled}
-                onChange={e => {
-                  setSplitPanelEnabled(e.detail.checked);
-                  setUrlParams({ splitPanelEnabled: e.detail.checked });
-                }}
-              >
-                Enable split panel
-              </Toggle>
-              <Toggle
-                id="enable-tools-panel"
-                checked={toolsPanelEnabled}
-                onChange={e => {
-                  setToolsPanelEnabled(e.detail.checked);
-                  setUrlParams({ toolsEnabled: e.detail.checked });
-                }}
-              >
-                Enable tools panel
-              </Toggle>
+              <SpaceBetween size="s" direction="horizontal">
+                <Toggle
+                  id="enable-split-panel"
+                  checked={splitPanelEnabled}
+                  onChange={e => setUrlParams({ splitPanelEnabled: e.detail.checked })}
+                >
+                  Enable split panel
+                </Toggle>
+                <Toggle
+                  id="enable-tools-panel"
+                  checked={toolsEnabled}
+                  onChange={e => setUrlParams({ toolsEnabled: e.detail.checked })}
+                >
+                  Enable tools panel
+                </Toggle>
+              </SpaceBetween>
+
               <Containers />
+
+              <Box>{DEMO_CONTENT}</Box>
             </SpaceBetween>
           </>
         }
