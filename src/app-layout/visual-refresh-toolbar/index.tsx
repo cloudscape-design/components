@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -202,10 +202,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       fireNonCancelableEvent(onSplitPanelPreferencesChange, detail);
     };
 
+    const splitPanelDefaultSize = useMemo(
+      () => getSplitPanelDefaultSize(splitPanelPreferences?.position ?? 'bottom'),
+      [splitPanelPreferences?.position]
+    );
+
     const [splitPanelSize = 0, setSplitPanelSize] = useControllable(
       controlledSplitPanelSize,
       onSplitPanelResize,
-      getSplitPanelDefaultSize(splitPanelPreferences?.position ?? 'bottom'),
+      splitPanelDefaultSize,
       { componentName: 'AppLayout', controlledProp: 'splitPanelSize', changeHandler: 'onSplitPanelResize' }
     );
 
