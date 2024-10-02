@@ -34,7 +34,7 @@
     '.           main       .';
   grid-template-columns:
     awsui.$space-layout-content-horizontal
-    1fr
+    minmax(0, 1fr)
     awsui.$space-layout-content-horizontal;
   grid-template-rows: min-content min-content 1fr;
 
