@@ -204,7 +204,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const splitPanelDefaultSize = useMemo(
       () => getSplitPanelDefaultSize(splitPanelPreferences?.position ?? 'bottom'),
-      [splitPanelPreferences?.position]
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+      [splitPanelPreferences?.position, isMobile]
     );
 
     const [splitPanelSize = 0, setSplitPanelSize] = useControllable(
