@@ -61,7 +61,7 @@ function InternalFileToken({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div ref={containerRef}>
+    <div ref={containerRef} className={clsx(styles['file-token'])}>
       <Token
         ariaLabel={file.name}
         dismissLabel={i18nStrings.removeFileAriaLabel(0)}

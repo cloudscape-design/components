@@ -5,6 +5,10 @@
 
 @use '../internal/styles/tokens' as awsui;
 
+.file-token {
+  block-size: 100%;
+}
+
 .file-option-name,
 .file-option-size,
 .file-option-last-modified {
