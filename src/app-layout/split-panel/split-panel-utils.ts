@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { SPLIT_PANEL_MIN_WIDTH } from './constants';
+import { SPLIT_PANEL_MIN_WIDTH, SPLIT_PANEL_SCROLLBAR_MARGIN } from './constants';
 
 /**
  * The Split Panel will be in forced (bottom) position if the defined minimum width is
@@ -30,6 +30,7 @@ function getSplitPanelMinWidth() {
   if (typeof document === 'undefined') {
     return SPLIT_PANEL_MIN_WIDTH;
   }
+  const margin = SPLIT_PANEL_SCROLLBAR_MARGIN / 2;
   const hasScrollbar = window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight;
-  return hasScrollbar ? SPLIT_PANEL_MIN_WIDTH - 10 : SPLIT_PANEL_MIN_WIDTH + 10;
+  return hasScrollbar ? SPLIT_PANEL_MIN_WIDTH - margin : SPLIT_PANEL_MIN_WIDTH + margin;
 }
