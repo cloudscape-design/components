@@ -501,7 +501,7 @@ describe('Loading state', () => {
       await page.waitForJsTimers(2000);
 
       // we only need to validate one of the series here, looping over all
-      // of the series will cause a failure since we might have one series with height 0 (threshold one)
+      // of the series will cause a failure since we might have one series with height 0 (threshold one).
       const seriesBox = await page.getBoundingBox(computedDomainChartWrapper.findSeries().get(1).toSelector());
       expect(seriesBox.height).toBeGreaterThan(200);
     })
