@@ -6,6 +6,7 @@ import React from 'react';
 import InternalBox from '../box/internal.js';
 import { BaseComponentProps } from '../internal/base-component';
 import InternalSpaceBetween from '../space-between/internal.js';
+import { TokenGroupProps } from '../token-group/interfaces.js';
 import { Token } from '../token-group/token.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
@@ -33,6 +34,7 @@ export interface FileTokenProps extends BaseComponentProps {
   loading?: boolean;
   i18nStrings: FileTokenProps.I18nStrings;
   disabled?: boolean;
+  alignment?: TokenGroupProps.Alignment;
 }
 
 function InternalFileToken({
@@ -46,6 +48,7 @@ function InternalFileToken({
   warningText,
   disabled,
   loading,
+  alignment,
 }: FileTokenProps) {
   const isImage = file.type.startsWith('image/');
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
@@ -62,6 +65,7 @@ function InternalFileToken({
       data-index={0}
       disabled={disabled}
       loading={loading}
+      alignment={alignment}
     >
       <InternalBox className={styles['file-option']}>
         {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}

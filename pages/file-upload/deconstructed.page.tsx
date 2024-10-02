@@ -14,6 +14,7 @@ export default function FileUploadScenarioStandalone() {
   const contractsRef = useRef<FileUploadProps.Ref>(null);
 
   const [acceptMultiple, setAcceptMultiple] = useState(true);
+  const [verticalAlign, setVerticalAlign] = useState(false);
   const formState = useContractFilesForm();
 
   const isDropzoneVisible = useDropzoneVisible(acceptMultiple);
@@ -51,6 +52,9 @@ export default function FileUploadScenarioStandalone() {
           <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
             Accept multiple files
           </Checkbox>
+          <Checkbox checked={verticalAlign} onChange={event => setVerticalAlign(event.detail.checked)}>
+            Vertical alignment
+          </Checkbox>
 
           <FormField
             label={acceptMultiple ? 'Contracts' : 'Contract'}
@@ -62,17 +66,17 @@ export default function FileUploadScenarioStandalone() {
               multiple={acceptMultiple}
               value={formState.files}
               onChange={handleFilesChange}
-              accept="application/pdf, image/png, image/jpeg"
+              //   accept="application/pdf, image/*"
               i18nStrings={i18nStrings}
             />
           </FormField>
 
           <FileTokenGroup
-            alignment="horizontal"
+            alignment={verticalAlign ? 'vertical' : 'horizontal'}
             items={formState.files.map(file => ({
               file,
               loading: formState.status === 'uploading',
-              errorText: file.size > 1000000 ? 'File size cannot exceed 1MB' : undefined,
+              errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
             }))}
             showFileLastModified={true}
             showFileSize={true}
