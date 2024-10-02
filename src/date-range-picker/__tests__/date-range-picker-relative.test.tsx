@@ -4,6 +4,8 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import '../../__a11y__/to-validate-a11y';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -12,6 +14,15 @@ import createWrapper, { DateRangePickerWrapper } from '../../../lib/components/t
 import { changeMode } from './change-mode';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  warnOnce: jest.fn(),
+}));
+
+afterEach(() => {
+  (warnOnce as jest.Mock).mockReset();
+});
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
@@ -246,6 +257,23 @@ describe('Date range picker', () => {
         customRelativeRangeUnits: ['hour', 'minute'],
       });
       wrapper.findTrigger().click();
+
+      wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
+      expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['hours', 'minutes']);
+    });
+
+    test('warns about (and ignores) invalid custom units', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        rangeSelectorMode: 'relative-only',
+        relativeOptions: [],
+        customRelativeRangeUnits: ['hour', 'minute', 'foo' as any],
+      });
+      wrapper.findTrigger().click();
+      expect(warnOnce).toHaveBeenCalledWith(
+        'DateRangePicker',
+        'Invalid unit found in customRelativeRangeUnits: foo. This entry will be ignored.'
+      );
 
       wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['hours', 'minutes']);
