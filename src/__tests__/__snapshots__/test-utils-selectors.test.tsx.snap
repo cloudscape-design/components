@@ -42,9 +42,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_notifications_1fj9k",
     "awsui_overflow-menu_1fj9k",
     "awsui_root_1fj9k",
+    "awsui_toolbar_1fj9k",
     "awsui_tools-close_1fj9k",
     "awsui_tools-toggle_1fj9k",
     "awsui_tools_1fj9k",
+    "awsui_trigger-tooltip_1fj9k",
   ],
   "area-chart": [
     "awsui_root_y1yrh",
