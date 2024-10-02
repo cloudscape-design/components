@@ -169,7 +169,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
               ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
-              selected={item.id === activeDrawerId}
+              selected={isActive}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}
