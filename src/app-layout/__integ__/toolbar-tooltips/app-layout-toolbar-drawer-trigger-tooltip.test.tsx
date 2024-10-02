@@ -1,28 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
 import { drawerItems } from '../../../../lib/dev-pages/pages/app-layout/utils/drawers';
-import { visibleMobileToolbarTriggersLimit } from '../constants';
 import { setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
-const drawerIds = Object.values(drawerIdObj);
 
 describe('refresh-toolbar', () => {
   //using a theme variable below that will be set when iterating over ['refresh-toolbar', 'refresh']
   const theme = 'refresh-toolbar';
-  const mobileDrawerTriggerIds = drawerIds.slice(
-    0,
-    visibleMobileToolbarTriggersLimit + 1 //use conditional for 0 when theme is refresh
-  );
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : drawerIds; //toolbarDrawerIds;
-    const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[0]).toSelector();
-    const expectedFirstDrawerTriggerTooltipText = drawerItems[0].ariaLabels.drawer;
-    const secondDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[1]).toSelector();
-    const expectedSecondDrawerTriggerTooltipText = drawerItems[0].ariaLabels.drawer;
+    const firstDrawerId = 'security'; //matches drawerIds[0]
+    const secondDrawerId = 'pro-help'; //matches drawerIds[1]
+    const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(firstDrawerId).toSelector();
+    const expectedFirstDrawerTriggerTooltipText = drawerItems.find(drawer => drawer.id === firstDrawerId)?.ariaLabels
+      ?.drawer;
+    const secondDrawerTriggerSelector = wrapper.findDrawerTriggerById(secondDrawerId).toSelector();
+    const expectedSecondDrawerTriggerTooltipText = drawerItems.find(drawer => drawer.id === secondDrawerId)?.ariaLabels
+      ?.drawer;
     const triggerTooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
 
     test(

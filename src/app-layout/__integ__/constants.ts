@@ -6,4 +6,4 @@ export const viewports = {
 };
 
 //must match the number in  '../../../lib/components/app-layout/visual-refresh/drawers';
-export const visibleMobileToolbarTriggersLimit = 2;
+export const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT = 2;

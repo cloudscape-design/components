@@ -1,23 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { drawerIds as drawerIdObj } from '../../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
-import { visibleMobileToolbarTriggersLimit } from '../constants';
 import { AppLayoutDrawersPage, setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-const drawerIds = Object.values(drawerIdObj);
-
 describe('refresh-toolbar', () => {
   const theme = 'refresh-toolbar';
-  const mobileDrawerTriggerIds = drawerIds.slice(
-    0,
-    visibleMobileToolbarTriggersLimit + 1 //use conditional for 0 when theme is refresh
-  );
+
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    const drawerIdsToTest = size === 'mobile' ? mobileDrawerTriggerIds : drawerIds; //toolbarDrawerIds;
-    const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(drawerIdsToTest[0]).toSelector();
+    //matches drawerItems[0].id from '../../../../lib/dev-pages/pages/app-layout/utils/drawers';
+    const firstDrawerId = 'security';
+    const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(firstDrawerId).toSelector();
     const splitPanelTriggerSelector = wrapper.findSplitPanelOpenButton().toSelector();
     const tooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
     const expectedTooltipText = 'Open panel';

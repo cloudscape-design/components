@@ -71,7 +71,7 @@ export function SplitPanelContentSide({
       >
         {isOpen ? (
           <div className={clsx(styles['slider-wrapper-side'], isToolbar && styles['with-toolbar'])}>{resizeHandle}</div>
-        ) : !isToolbar ? (
+        ) : (
           <InternalButton
             className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"
@@ -79,9 +79,10 @@ export function SplitPanelContentSide({
             formAction="none"
             ariaLabel={openButtonAriaLabel}
             ariaExpanded={isOpen}
-            ref={isRefresh ? null : toggleRef}
+            //toggleRef should only be assigned when there is no other trigger-buttons
+            ref={isRefresh || isToolbar ? null : toggleRef}
           />
-        ) : null}
+        )}
         <div
           className={clsx(styles['content-side'], isToolbar && styles['with-toolbar'])}
           aria-hidden={!isOpen}

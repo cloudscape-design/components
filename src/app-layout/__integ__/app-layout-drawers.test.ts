@@ -4,21 +4,23 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { drawerIds as drawerIdObj } from '../../../lib/dev-pages/pages/app-layout/utils/drawer-ids';
 import { viewports } from './constants';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const wrapper = createWrapper().findAppLayout();
-const drawerIds = Object.values(drawerIdObj);
 
 class AppLayoutDrawersPage extends BasePageObject {
   async openFirstDrawer() {
-    await this.click(wrapper.findDrawerTriggerById(drawerIds[0]).toSelector());
+    //matches drawerItems[0].id from 'lib/dev-pages/pages/app-layout/utils/drawers';
+    const firstDrawerId = 'security';
+    await this.click(wrapper.findDrawerTriggerById(firstDrawerId).toSelector());
   }
 
   async openThirdDrawer() {
-    await this.click(wrapper.findDrawerTriggerById(drawerIds[1]).toSelector());
+    //matches drawerItems[2].id from 'lib/dev-pages/pages/app-layout/utils/drawers';
+    const thirdDrawerId = 'links';
+    await this.click(wrapper.findDrawerTriggerById(thirdDrawerId).toSelector());
   }
 
   async openSplitPanel() {
