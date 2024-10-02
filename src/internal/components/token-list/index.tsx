@@ -15,6 +15,7 @@ export { TokenListProps };
 export default function TokenList<Item>({
   items,
   alignment,
+  isGrid = false,
   renderItem,
   limit,
   after,
@@ -77,7 +78,14 @@ export default function TokenList<Item>({
   return (
     <div className={clsx(styles.root, styles.vertical)}>
       {hasVisibleItems && (
-        <ul id={controlId} className={clsx(styles.list, styles[alignment])}>
+        <ul
+          id={controlId}
+          className={clsx(styles.list, styles[alignment], {
+            [styles.vertical]: alignment === 'vertical',
+            [styles.horizontal]: alignment === 'horizontal' && !isGrid,
+            [styles.grid]: alignment === 'horizontal' && isGrid,
+          })}
+        >
           {visibleItems.map((item, itemIndex) => (
             <li
               key={itemIndex}

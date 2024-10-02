@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import { Box, Checkbox, FileInput, FileTokenGroup, FileUploadProps, FormField, Header } from '~components';
+import { Box, Checkbox, FileInput, FileTokenGroup, FileUploadProps, FormField, Header, PromptInput } from '~components';
 import SpaceBetween from '~components/space-between';
 
 import { useContractFilesForm } from './page-helpers';
@@ -12,6 +12,7 @@ import { validateContractFiles } from './validations';
 
 export default function FileUploadScenarioStandalone() {
   const contractsRef = useRef<FileUploadProps.Ref>(null);
+  const [textareaValue, setTextareaValue] = useState('');
 
   const [acceptMultiple, setAcceptMultiple] = useState(true);
   const [verticalAlign, setVerticalAlign] = useState(false);
@@ -55,6 +56,48 @@ export default function FileUploadScenarioStandalone() {
           <Checkbox checked={verticalAlign} onChange={event => setVerticalAlign(event.detail.checked)}>
             Vertical alignment
           </Checkbox>
+
+          <PromptInput
+            ariaLabel="Chat input"
+            actionButtonIconName="send"
+            actionButtonAriaLabel="Submit prompt"
+            value={textareaValue}
+            onChange={(event: any) => setTextareaValue(event.detail.value)}
+            onAction={(event: any) => window.alert(`Submitted the following: ${event.detail.value}`)}
+            placeholder="Ask a question"
+            maxRows={4}
+            disableSecondaryActionsPaddings={true}
+            secondaryActions={
+              <Box padding={{ left: 'xxs', top: 'xs' }}>
+                <FileInput
+                  variant="icon"
+                  ref={contractsRef}
+                  multiple={acceptMultiple}
+                  value={formState.files}
+                  onChange={handleFilesChange}
+                  //   accept="application/pdf, image/*"
+                  i18nStrings={i18nStrings}
+                />
+              </Box>
+            }
+            secondaryContent={
+              formState.files.length > 0 ? (
+                <FileTokenGroup
+                  alignment={verticalAlign ? 'vertical' : 'horizontal'}
+                  items={formState.files.map(file => ({
+                    file,
+                    loading: formState.status === 'uploading',
+                    errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
+                  }))}
+                  showFileLastModified={true}
+                  showFileSize={true}
+                  showFileThumbnail={true}
+                  i18nStrings={i18nStrings}
+                  onDismiss={onDismiss}
+                />
+              ) : undefined
+            }
+          />
 
           <FormField
             label={acceptMultiple ? 'Contracts' : 'Contract'}

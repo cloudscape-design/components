@@ -42,6 +42,7 @@ function InternalFileTokenGroup({
   return (
     <div ref={mergedRef}>
       <TokenList
+        isGrid={true}
         alignment={alignment}
         items={items}
         renderItem={(file, fileIndex) => (

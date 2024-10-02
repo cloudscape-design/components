@@ -7,9 +7,10 @@
 
 .file-option-name,
 .file-option-size,
-.file-option-last-modified,
-.file-option-thumbnail {
-  /* used in test-utils */
+.file-option-last-modified {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .file-option {
@@ -21,12 +22,12 @@
 
 .file-option-thumbnail {
   margin-block-start: awsui.$space-static-xxs;
-  max-inline-size: 60px;
 }
 
 .file-option-thumbnail-image {
-  inline-size: 100%;
-  block-size: auto;
+  inline-size: 48px;
+  block-size: 48px;
+  object-fit: cover;
 }
 
 .file-option-metadata {
