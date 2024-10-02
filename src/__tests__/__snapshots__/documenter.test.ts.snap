@@ -11949,18 +11949,6 @@ of the user's browser.",
       "type": "boolean",
     },
     {
-      "description": "Determines whether the secondary actions area of the input has padding. If true, removes the default padding from the secondary actions area.",
-      "name": "disableSecondaryActionsPaddings",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
-      "description": "Determines whether the secondary content area of the input has padding. If true, removes the default padding from the secondary content area.",
-      "name": "disableSecondaryContentPaddings",
-      "optional": true,
-      "type": "boolean",
-    },
-    {
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
 being included in a form submission. A disabled control can't
@@ -12078,16 +12066,6 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
 ",
       "isDefault": false,
       "name": "actionButtonIconSvg",
-    },
-    {
-      "description": "Use this slot to add secondary actions to the prompt input.",
-      "isDefault": false,
-      "name": "secondaryActions",
-    },
-    {
-      "description": "Use this slot to add secondary content, such as file attachments, to the prompt input.",
-      "isDefault": false,
-      "name": "secondaryContent",
     },
   ],
   "releaseStatus": "stable",
@@ -14731,6 +14709,67 @@ and truncates it with an ellipsis.",
       "name": "children",
     },
   ],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for steps matches the snapshot: steps 1`] = `
+{
+  "events": [],
+  "functions": [],
+  "name": "Steps",
+  "properties": [
+    {
+      "description": "Sets the \`aria-describedby\` property on the progress steps container.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Provides an \`aria-label\` to the progress steps container.
+Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the \`aria-labelledby\` property on the progress steps container.
+If there's a visible label element that you can reference, use this instead of \`ariaLabel\`.
+Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An array of individual steps
+Each step definition has the following properties:
+ * \`status\` (string) - Status of the step corresponding to a status indicator.
+ * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
+ * \`header\` (ReactNode) - Summary corresponding to the step.
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
+",
+      "name": "steps",
+      "optional": false,
+      "type": "ReadonlyArray<StepsProps.Step>",
+    },
+  ],
+  "regions": [],
   "releaseStatus": "stable",
 }
 `;
