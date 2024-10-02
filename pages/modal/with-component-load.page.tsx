@@ -18,7 +18,6 @@ export default function () {
     setPerformanceMetrics({
       modalPerformanceData(props) {
         (window as any).modalPerformanceMetrics.push(props);
-        console.log('modalPerfMetrics:', props);
       },
       tableInteraction() {},
       taskCompletionData() {},
@@ -33,7 +32,6 @@ export default function () {
       delete (window as any).modalPerformanceMetrics;
     };
   }, []);
-
   useEffect(() => {
     if (visible) {
       setTimeout(() => {
@@ -42,6 +40,9 @@ export default function () {
       setTimeout(() => {
         setTextLoading(false);
       }, 1000);
+    } else {
+      setButtonLoading(true);
+      setTextLoading(true);
     }
     // Start fetching data
   }, [visible]);
@@ -62,7 +63,7 @@ export default function () {
           footer={
             <span style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button variant="link">Cancel</Button>
-              <Button variant="primary" loading={buttonLoading}>
+              <Button id="primary-button" variant="primary" loading={buttonLoading}>
                 Delete
               </Button>
             </span>

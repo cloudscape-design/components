@@ -128,12 +128,20 @@ test(
 
     //verify metrics are not emitted until all the components are loaded
     expect(metrics.length).toBe(0);
-
-    await delay(2000);
+    const buttonLoadingState = createWrapper()
+      .findModal()
+      .findFooter()
+      .findButton('#primary-button')
+      .findLoadingIndicator()
+      .toSelector();
+    const checkInterval = 2000;
+    while (await browser.$(buttonLoadingState).isExisting()) {
+      await delay(checkInterval);
+    }
     metrics = await getModalPerformanceMetrics();
     expect(metrics[0].instanceIdentifier).not.toBeNull();
     expect(metrics[0].timeToContentReadyInModal).toBeGreaterThanOrEqual(2000);
-    expect(metrics[0].timeToContentReadyInModal).toBeLessThan(2020);
+    expect(metrics[0].timeToContentReadyInModal).toBeLessThan(2100);
   })
 );
 

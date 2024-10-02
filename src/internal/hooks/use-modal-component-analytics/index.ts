@@ -7,9 +7,6 @@ import { PerformanceMetrics } from '../../analytics';
 import { ModalContextProps, useModalContext } from '../../context/modal-context';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 
-/**
- *
- */
 export const usePrimaryButtonModalComponentAnalytics = (
   isPrimaryButton: boolean,
   elementRef: React.RefObject<HTMLElement>,

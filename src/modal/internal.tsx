@@ -93,13 +93,27 @@ function PortaledModal({
   useEffect(() => {
     return () => {
       enableBodyScrolling();
-      resetModalPerformanceData();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // enable / disable body scroll
   useEffect(() => {
+    /**
+     * Resets performanceMetricLogged
+     * PerformanceMetricLogged false and componentLoadingCount 0,
+     * indicates that there were no components loading in the modal and it was loaded instantly.
+     * In that case emit 0 as timeToContentReadyInModal
+     */
+    const resetModalPerformanceData = () => {
+      if (loadStartTime.current !== 0 && componentLoadingCount.current === 0 && !performanceMetricLogged.current) {
+        PerformanceMetrics.modalPerformanceData({
+          timeToContentReadyInModal: 0,
+          instanceIdentifier: instanceUniqueId,
+        });
+      }
+      loadStartTime.current = 0;
+      performanceMetricLogged.current = false;
+    };
     if (visible) {
       disableBodyScrolling();
       loadStartTime.current = performance.now();
@@ -107,24 +121,12 @@ function PortaledModal({
       enableBodyScrolling();
       resetModalPerformanceData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [visible]);
-
-  /**
-   * Resets performanceMetricLogged
-   * PerformanceMetricLogged false and componentLoadingCount 0,
-   * indicates that there were no components loading in the modal and it was loaded instantly.
-   * In that case emit 0 as timeToContentReadyInModal
-   */
-  const resetModalPerformanceData = () => {
-    if (loadStartTime.current !== 0 && componentLoadingCount.current === 0 && !performanceMetricLogged.current) {
-      PerformanceMetrics.modalPerformanceData({
-        timeToContentReadyInModal: 0,
-        instanceIdentifier: instanceUniqueId,
-      });
-    }
-    performanceMetricLogged.current = false;
-  };
+    return () => {
+      if (!visible) {
+        resetModalPerformanceData();
+      }
+    };
+  }, [visible, instanceUniqueId]);
 
   // Because we hide the element with styles (and not actually detach it from DOM), we need to scroll to top
   useEffect(() => {
