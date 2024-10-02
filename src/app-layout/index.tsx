@@ -34,6 +34,7 @@ const AppLayout = React.forwardRef(
       navigationOpen: controlledNavigationOpen,
       onNavigationChange: controlledOnNavigationChange,
       analyticsMetadata,
+      splitPanelHide = false,
       ...rest
     }: AppLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
@@ -56,6 +57,7 @@ const AppLayout = React.forwardRef(
           navigationWidth,
           navigationHide: rest.navigationHide,
           toolsHide: rest.toolsHide,
+          splitPanelHide,
           toolsWidth,
           maxContentWidth,
           minContentWidth,
@@ -118,6 +120,8 @@ const AppLayout = React.forwardRef(
     };
 
     const baseProps = getBaseProps(rest);
+
+    console.log({ baseProps, props });
 
     return (
       <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>

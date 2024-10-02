@@ -164,6 +164,7 @@ export function AppLayoutToolbarImplementation({
   }, [anyPanelOpenInMobile]);
 
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
+  console.log(splitPanelToggleProps?.displayed);
 
   return (
     <ToolbarSlot

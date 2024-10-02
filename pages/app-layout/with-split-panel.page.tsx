@@ -89,6 +89,7 @@ export default function () {
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
         toolsHide={!toolsPanelEnabled}
+        splitPanelHide={!splitPanelEnabled}
         splitPanelPreferences={{
           position: urlParams.splitPanelPosition,
         }}

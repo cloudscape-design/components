@@ -80,6 +80,8 @@ export function DrawerTriggers({
     previousActiveGlobalDrawersIds.current = activeGlobalDrawersIds;
   }
 
+  console.log(splitPanelToggleProps?.displayed);
+
   const getIndexOfOverflowItem = () => {
     if (isMobile) {
       return 2;
@@ -126,7 +128,7 @@ export function DrawerTriggers({
         role="toolbar"
         aria-orientation="horizontal"
       >
-        {splitPanelToggleProps && (
+        {splitPanelToggleProps && splitPanelToggleProps?.displayed && (
           <>
             <TriggerButton
               ariaLabel={splitPanelToggleProps.ariaLabel}

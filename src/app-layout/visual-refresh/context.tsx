@@ -118,6 +118,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       placement,
       children,
       splitPanel,
+      splitPanelHide = false,
     } = props;
     const isMobile = useMobile();
 
@@ -261,7 +262,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       displayed: false,
       ariaLabel: undefined,
     });
-    const splitPanelDisplayed = !!(splitPanelToggle.displayed || isSplitPanelOpen) && !!splitPanel;
+    const splitPanelDisplayed = !splitPanelHide && !!(splitPanelToggle.displayed || isSplitPanelOpen) && !!splitPanel;
     const splitPanelControlId = useUniqueId('split-panel-');
     const toolsControlId = useUniqueId('tools-');
 

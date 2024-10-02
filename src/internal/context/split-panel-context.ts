@@ -24,6 +24,7 @@ export interface SplitPanelContextBaseProps {
   };
   isOpen?: boolean;
   isForcedPosition: boolean;
+  isHidden?: boolean;
   onResize: (newSize: number) => void;
   onToggle: () => void;
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;

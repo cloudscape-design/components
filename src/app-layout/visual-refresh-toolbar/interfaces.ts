@@ -23,6 +23,7 @@ export interface AppLayoutInternals {
   splitPanelOpen: boolean;
   splitPanelControlId: string;
   splitPanelFocusControl: SplitPanelFocusControlState;
+  splitPanelHide: boolean;
   splitPanelToggleConfig: SplitPanelSideToggleProps;
   isMobile: boolean;
   activeDrawer: AppLayoutProps.Drawer | undefined;

@@ -55,6 +55,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPreferences: controlledSplitPanelPreferences,
       splitPanelOpen: controlledSplitPanelOpen,
       splitPanel,
+      splitPanelHide = false,
       splitPanelSize: controlledSplitPanelSize,
       onSplitPanelToggle,
       onSplitPanelResize,
@@ -222,10 +223,21 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       displayed: false,
     });
 
+    const onSplitPanelConfigChange = (params: SplitPanelSideToggleProps) => {
+      if (!splitPanelHide) {
+        setSplitPanelToggleConfig(params);
+      }
+    };
+
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
-    const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
+    const splitPanelFocusControl = useSplitPanelFocusControl([
+      splitPanelHide,
+      splitPanelPreferences,
+      splitPanelOpen,
+      splitPanelToggleConfig.displayed,
+    ]);
 
     useImperativeHandle(forwardRef, () => ({
       closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
@@ -256,6 +268,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
     });
 
+    const splitPanelToggleProps = {
+      ...splitPanelToggleConfig,
+      active: splitPanelOpen,
+      controlId: splitPanelControlId,
+      position: splitPanelPosition,
+      ...(splitPanelHide ? { displayed: false } : {}),
+    };
+
+    console.log(splitPanelToggleProps.displayed);
     const { registered, toolbarProps } = useMultiAppLayout({
       forceDeduplicationType,
       ariaLabels: ariaLabelsWithDrawers,
@@ -270,12 +291,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       drawersFocusRef: drawersFocusControl.refs.toggle,
       splitPanel,
-      splitPanelToggleProps: {
-        ...splitPanelToggleConfig,
-        active: splitPanelOpen,
-        controlId: splitPanelControlId,
-        position: splitPanelPosition,
-      },
+      splitPanelToggleProps,
       splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
       onSplitPanelToggle: onSplitPanelToggleHandler,
     });
@@ -318,6 +334,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition,
       splitPanelToggleConfig,
       splitPanelOpen,
+      splitPanelHide,
       splitPanelControlId,
       splitPanelFocusControl,
       placement,
@@ -356,7 +373,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       rightOffset: 0,
       size: splitPanelSize,
       topOffset: 0,
-      setSplitPanelToggle: setSplitPanelToggleConfig,
+      setSplitPanelToggle: onSplitPanelConfigChange,
       refs: splitPanelFocusControl.refs,
     };
 
@@ -402,6 +419,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           toolsOpen={!!activeDrawer}
           toolsWidth={activeDrawerSize}
           sideSplitPanel={
+            !splitPanelHide &&
             splitPanelPosition === 'side' && (
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
@@ -412,6 +430,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             )
           }
           bottomSplitPanel={
+            !splitPanelHide &&
             splitPanelPosition === 'bottom' && (
               <AppLayoutSplitPanelBottom
                 appLayoutInternals={appLayoutInternals}

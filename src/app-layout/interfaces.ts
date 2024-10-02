@@ -226,7 +226,10 @@ export interface AppLayoutProps extends BaseComponentProps {
    * Note: If provided, this property should be set to `null` or `undefined` if a split panel should not be rendered.
    */
   splitPanel?: React.ReactNode;
-
+  /**
+   * If true, the split panel and its open/trigger button will not be displayed at all
+   */
+  splitPanelHide?: boolean;
   /**
    * The size of the split panel in pixels.
    */
