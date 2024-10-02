@@ -132,7 +132,11 @@ export function DrawerTriggers({
               ariaLabel={splitPanelToggleProps.ariaLabel}
               ariaControls={splitPanelToggleProps.controlId}
               ariaExpanded={splitPanelToggleProps.active}
-              className={clsx(styles['drawers-trigger'], splitPanelTestUtilStyles['open-button'])}
+              className={clsx(
+                styles['drawers-trigger'],
+                testutilStyles['drawers-trigger'],
+                splitPanelTestUtilStyles['open-button']
+              )}
               iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => onSplitPanelToggle?.()}
               selected={splitPanelToggleProps.active}
@@ -140,7 +144,6 @@ export function DrawerTriggers({
               hasTooltip={true}
               testId={`awsui-app-layout-trigger-slide-panel`}
               isMobile={isMobile}
-              isForPreviousActiveDrawer={splitPanelToggleProps.active}
               isForSplitPanel={true}
               disabled={disabled}
             />

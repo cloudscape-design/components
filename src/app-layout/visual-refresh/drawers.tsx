@@ -255,8 +255,8 @@ function DesktopTriggers() {
                 testutilStyles['drawers-trigger'],
                 item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
               )}
-              iconName={item.trigger!.iconName}
-              iconSvg={item.trigger!.iconSvg}
+              iconName={item?.trigger?.iconName}
+              iconSvg={item?.trigger?.iconSvg}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}
               ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
@@ -300,6 +300,7 @@ function DesktopTriggers() {
             selected={hasSplitPanel && isSplitPanelOpen}
             ref={splitPanelRefs.toggle}
             highContrastHeader={headerVariant === 'high-contrast'}
+            testId="awsui-app-layout-trigger-slide-panel"
           />
         )}
       </div>
@@ -364,8 +365,8 @@ export function MobileTriggers() {
               )}
               disabled={hasDrawerViewportOverlay}
               ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
-              iconName={item.trigger!.iconName}
-              iconSvg={item.trigger!.iconSvg}
+              iconName={item?.trigger?.iconName}
+              iconSvg={item?.trigger?.iconSvg}
               badge={item.badge}
               key={item.id}
               onClick={() => handleDrawersClick(item.id)}

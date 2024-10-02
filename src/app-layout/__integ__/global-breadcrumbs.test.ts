@@ -32,8 +32,8 @@ function setupTest({ url }: { url: string }, testFn: (page: GlobalBreadcrumbsPag
   });
 }
 
-describe.each(['classic', 'visual-refresh'])('%s', theme => {
-  const visualRefresh = theme === 'visual-refresh' ? 'true' : 'false';
+describe.each(['classic', 'refresh'])('%s', theme => {
+  const visualRefresh = theme === 'refresh' ? 'true' : 'false';
   test(
     'does not work in this design',
     setupTest(
@@ -68,7 +68,7 @@ describe('classic', () => {
   );
 });
 
-describe('visual-refresh-toolbar', () => {
+describe('refresh-toolbar', () => {
   test(
     'deduplicates breadcrumbs',
     setupTest({ url: `#/light/app-layout/global-breadcrumbs/?visualRefresh=true&appLayoutWidget=true` }, async page => {
