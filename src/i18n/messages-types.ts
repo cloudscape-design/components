@@ -131,6 +131,10 @@ export interface I18nFormatArgTypes {
       "total": string | number;
     }
     "contentDisplayPreference.liveAnnouncementDndDiscarded": never;
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": never;
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": never;
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": never;
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": never;
     "contentDisplayPreference.liveAnnouncementDndItemReordered": {
       "isInitialPosition": string;
       "currentPosition": string | number;
@@ -141,6 +145,9 @@ export interface I18nFormatArgTypes {
       "initialPosition": string | number;
       "total": string | number;
       "finalPosition": string | number;
+    }
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": {
+      "count": number;
     }
   }
   "copy-to-clipboard": {

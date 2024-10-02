@@ -16,6 +16,7 @@ import { ButtonProps } from '../../../lib/components/button';
 import { IconProps } from '../../../lib/components/icon/interfaces.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
+import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 
@@ -59,7 +60,7 @@ const mockEventBubbleWithRelatedTarget = {
   relatedTarget: mockRelatedTarget,
 };
 
-const mockQuerySelector = jest.spyOn(document, 'querySelector');
+const triggerButtoonTooltipClass = testUtilStyles['trigger-tooltip'];
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 
@@ -355,17 +356,14 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           expect(getByTestId(mockTestId)).toBeTruthy();
           const button = wrapper!.find('button');
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
-          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           expect(button).toBeTruthy();
           expect(document.activeElement).not.toBe(button!.getElement());
           (ref.current as any)?.focus(mockEventBubbleWithRelatedTarget);
           expect(document.activeElement).toBe(button!.getElement());
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         });
 
         test('pointer events work properly', () => {
@@ -374,32 +372,17 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             isMobile,
           });
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
-          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           fireEvent.pointerEnter(wrapper!.getElement());
           if (hasTooltip) {
             expect(getByText(mockTooltipText)).toBeTruthy();
-            expect(
-              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-            ).toBe(true);
             //trigger event again to assert the tooltip remains
             fireEvent.pointerDown(wrapper!.getElement());
-            expect(
-              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-            ).toBe(true);
           } else {
             expect(() => getByText(mockTooltipText)).toThrow();
-            expect(
-              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-            ).toBe(false);
           }
           fireEvent.pointerLeave(wrapper!.getElement(), mockEventBubble);
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
           expect(() => getByText(mockTooltipText)).toThrow();
         });
 
@@ -409,10 +392,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             isMobile,
           });
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
-          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           fireEvent.focus(wrapper!.getElement());
 
@@ -421,15 +401,9 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           } else {
             expect(() => getByText(mockTooltipText)).toThrow();
           }
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(hasTooltip);
 
           fireEvent.blur(wrapper!.getElement());
-          expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
+          expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
         });
 
@@ -439,16 +413,10 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             isMobile,
           });
           expect(getByTestId(mockTestId)).toBeTruthy();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
-          expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+          expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
           fireEvent.focus(wrapper!.getElement());
           expect(getByText(mockTooltipText)).toBeTruthy();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(true);
 
           fireEvent.keyDown(wrapper!.getElement(), {
             ...mockEventBubble,
@@ -456,10 +424,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
             code: KeyCode.escape,
           });
 
-          expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
-          expect(
-            wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-          ).toBe(false);
+          expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           expect(() => getByText(mockTooltipText)).toThrow();
         });
 
@@ -471,22 +436,13 @@ describe('Visual Refresh Toolbar trigger-button', () => {
               tooltipText: '',
             });
             expect(getByTestId(mockTestId)).toBeTruthy();
-            expect(
-              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-            ).toBe(false);
-            expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+            expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
 
             fireEvent.pointerEnter(wrapper!.getElement());
-            expect(
-              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-            ).toBe(false);
-            expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+            expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
 
             fireEvent.focus(wrapper!.getElement());
-            expect(
-              wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-            ).toBe(false);
-            expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+            expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
           }
         );
       });
@@ -496,62 +452,46 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           hasOpenDrawer: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
-        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
+
         fireEvent.focus(wrapper!.getElement());
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
-        expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
       });
 
-      test('Focus and blur events work properly for split panel and not from another trigger', () => {
+      //the realatedTarget here would be truthy when key or click navigation
+      //relatedTarget exists on events that are not associated with closeing the split panel from within
+      test('Focus and blur events work properly for split panel and related target exists', () => {
         const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
           hasTooltip: true,
           isMobile,
           isForSplitPanel: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
-        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.focus(wrapper!.getElement());
 
+        fireEvent.focus(wrapper!.getElement(), mockEventBubbleWithRelatedTarget);
         expect(getByText(mockTooltipText)).toBeTruthy();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(true);
+
         fireEvent.blur(wrapper!.getElement());
-        expect(wrapper.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
+        expect(wrapper.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
       });
 
-      test('Focus events work properly for split panel and not from a close button', () => {
-        const mockBreadcrumbWrapper = {
-          contains: jest.fn().mockReturnValue(true),
-        };
-        mockQuerySelector.mockReturnValue(mockBreadcrumbWrapper as any);
+      //the relatedTarget here will be null just like when a split panel closed via mouse or key interaction
+      //with the close button on the split panel
+      test('Focus and blur events work properly for split panel and relatedTarget is null', () => {
         const { wrapper, getByText, getByTestId } = renderVisualRefreshToolbarTriggerButton({
           hasTooltip: true,
           isMobile,
           isForSplitPanel: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
-        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.focus(wrapper!.getElement(), { relatedTarget: mockRelatedTarget });
+        fireEvent.focus(wrapper!.getElement());
 
-        expect(getByText(mockTooltipText)).toBeTruthy();
+        expect(() => getByText(mockTooltipText)).toThrow();
       });
 
       test('Focus events work properly for isForPreviousDrawer', () => {
@@ -561,13 +501,10 @@ describe('Visual Refresh Toolbar trigger-button', () => {
           isForPreviousActiveDrawer: true,
         });
         expect(getByTestId(mockTestId)).toBeTruthy();
-        expect(
-          wrapper!.getElement().classList.contains(toolbarTriggerButtonStyles['trigger-wrapper-tooltip-visible'])
-        ).toBe(false);
-        expect(wrapper!.findByClassName(toolbarTriggerButtonStyles['trigger-tooltip'])).toBeNull();
+        expect(wrapper!.findByClassName(triggerButtoonTooltipClass)).toBeNull();
         expect(() => getByText(mockTooltipText)).toThrow();
-        fireEvent.focus(wrapper!.getElement());
 
+        fireEvent.focus(wrapper!.getElement());
         expect(() => getByText(mockTooltipText)).toThrow();
       });
     });

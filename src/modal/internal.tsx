@@ -36,7 +36,7 @@ import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> &
-  InternalBaseComponentProps & { __injectAnalyticsComponentMetadata?: boolean };
+  InternalBaseComponentProps & { __injectAnalyticsComponentMetadata?: boolean; referrerId?: string };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
   return (
@@ -60,6 +60,7 @@ function PortaledModal({
   onDismiss,
   __internalRootRef = null,
   __injectAnalyticsComponentMetadata,
+  referrerId,
   ...rest
 }: PortaledModalProps) {
   const instanceUniqueId = useUniqueId();
@@ -157,7 +158,7 @@ function PortaledModal({
             onClick={onOverlayClick}
             ref={mergedRef}
             style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
-            data-awsui-referrer-id={subStepRef.current?.id}
+            data-awsui-referrer-id={subStepRef.current?.id || referrerId}
           >
             <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
               <div

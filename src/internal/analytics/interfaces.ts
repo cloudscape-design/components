@@ -183,6 +183,7 @@ export interface IPerformanceMetrics {
 
 export interface ComponentMountedProps {
   componentName: string;
+  taskInteractionId?: string;
   details: Record<string, string | boolean | number | undefined>;
 }
 export type ComponentMountedMethod = (props: ComponentMountedProps) => string;

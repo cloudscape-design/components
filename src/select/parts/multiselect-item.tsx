@@ -96,6 +96,7 @@ const MultiSelectItem = (
               trackRef={internalRef}
               value={disabledReason!}
               position="right"
+              hideOnOverscroll={true}
             />
           )}
         </>

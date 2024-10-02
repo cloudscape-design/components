@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Link } from '~components';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
@@ -25,6 +26,11 @@ function InnerApp() {
           <Header variant="h1" description="This page contains nested app layout instances with an iframe">
             Multiple app layouts with iframe
           </Header>
+
+          <Link external={true} href="#">
+            External link
+          </Link>
+
           <Containers />
         </SpaceBetween>
       }

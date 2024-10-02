@@ -1,76 +1,55 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
-
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import DropdownFooter from '../internal/components/dropdown-footer/index.js';
-import { useDropdownStatus } from '../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
-import { isGroup } from '../internal/components/option/utils/filter-options';
-import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useFormFieldContext } from '../internal/context/form-field-context';
-import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
 import Filter from '../select/parts/filter';
-import PlainList, { SelectListProps } from '../select/parts/plain-list';
+import PlainList from '../select/parts/plain-list';
 import Trigger from '../select/parts/trigger';
 import VirtualList from '../select/parts/virtual-list';
-import { checkOptionValueField } from '../select/utils/check-option-value-field.js';
-import { findOptionIndex } from '../select/utils/connect-options';
-import { useAnnouncement } from '../select/utils/use-announcement';
-import { useLoadItems } from '../select/utils/use-load-items';
-import { useNativeSearch } from '../select/utils/use-native-search';
-import { MenuProps, useSelect } from '../select/utils/use-select';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
+import { useMultiselect } from './use-multiselect';
 
 import styles from './styles.css.js';
 
-type InternalMultiselectProps = MultiselectProps & InternalBaseComponentProps & { inlineTokens?: boolean };
+type InternalMultiselectProps = SomeRequired<
+  MultiselectProps,
+  'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
+> &
+  InternalBaseComponentProps & { inlineTokens?: boolean };
 
 const InternalMultiselect = React.forwardRef(
   (
     {
-      options = [],
-      filteringType = 'none',
+      options,
+      filteringType,
       filteringPlaceholder,
       filteringAriaLabel,
       filteringClearAriaLabel,
-      filteringResultsText,
       ariaRequired,
       placeholder,
       disabled,
       readOnly,
       ariaLabel,
-      statusType = 'finished',
-      empty,
-      loadingText,
-      finishedText,
-      errorText,
-      noMatch,
-      renderHighlightedAriaLive,
-      selectedOptions = [],
+      selectedOptions,
       deselectAriaLabel,
-      keepOpen = true,
       tokenLimit,
       i18nStrings,
-      onBlur,
-      onFocus,
-      onLoadItems,
-      onChange,
       virtualScroll,
       inlineTokens = false,
-      hideTokens = false,
+      hideTokens,
       expandToViewport,
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
@@ -80,137 +59,29 @@ const InternalMultiselect = React.forwardRef(
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
   ) => {
-    checkOptionValueField('Multiselect', 'options', options);
-
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
     const i18n = useInternalI18n('multiselect');
 
-    const i18nCommon = useInternalI18n('select');
-    const recoveryText = i18nCommon('recoveryText', restProps.recoveryText);
-    const errorIconAriaLabel = i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel);
-    const selectedAriaLabel = i18nCommon('selectedAriaLabel', restProps.selectedAriaLabel);
-
-    if (restProps.recoveryText && !onLoadItems) {
-      warnOnce('Multiselect', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
-    }
-
-    const { handleLoadMore, handleRecoveryClick, fireLoadItems } = useLoadItems({
-      onLoadItems,
-      options,
-      statusType,
-    });
-    const useInteractiveGroups = true;
-    const [filteringValue, setFilteringValue] = useState('');
-    const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
-      options,
-      filteringType,
-      filteringValue
-    );
-
-    const updateSelectedOption = useCallback(
-      (option: OptionDefinition | OptionGroup) => {
-        const filtered = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
-
-        // switch between selection and deselection behavior, ignores disabled options to prevent
-        // getting stuck on one behavior when an option is disabled and its state cannot be changed
-        const isAllChildrenSelected = (optionsArray: OptionDefinition[]) =>
-          optionsArray.every(item => findOptionIndex(selectedOptions, item) > -1 || item.disabled);
-        const intersection = (visibleOptions: OptionDefinition[], options: OptionDefinition[]) =>
-          visibleOptions.filter(item => findOptionIndex(options, item) > -1 && !item.disabled);
-        const union = (visibleOptions: OptionDefinition[], options: OptionDefinition[]) =>
-          visibleOptions.filter(item => findOptionIndex(options, item) === -1).concat(options);
-        const select = (options: OptionDefinition[], selectedOptions: OptionDefinition[]) => {
-          return union(selectedOptions, options);
-        };
-        const unselect = (options: OptionDefinition[], selectedOptions: OptionDefinition[]) => {
-          return selectedOptions.filter(option => findOptionIndex(options, option) === -1);
-        };
-        let newSelectedOptions = [...selectedOptions];
-
-        if (isGroup(option)) {
-          const visibleOptions = intersection([...option.options], filtered);
-          newSelectedOptions = isAllChildrenSelected(visibleOptions)
-            ? unselect(visibleOptions, newSelectedOptions)
-            : select(visibleOptions, newSelectedOptions);
-        } else {
-          newSelectedOptions = isAllChildrenSelected([option])
-            ? unselect([option], newSelectedOptions)
-            : select([option], newSelectedOptions);
-        }
-
-        fireNonCancelableEvent(onChange, {
-          selectedOptions: newSelectedOptions,
-        });
-      },
-      [onChange, selectedOptions, filteredOptions]
-    );
-
-    const rootRef = useRef<HTMLDivElement>(null);
-
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
-
-    const multiSelectAriaLabelId = useUniqueId('multiselect-arialabel-');
-
+    const ariaLabelId = useUniqueId('multiselect-arialabel-');
     const footerId = useUniqueId('footer');
 
-    const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
-    const {
-      isOpen,
-      highlightType,
-      highlightedOption,
-      highlightedIndex,
-      getTriggerProps,
-      getDropdownProps,
-      getFilterProps,
-      getMenuProps,
-      getOptionProps,
-      highlightOption,
-      announceSelected,
-    } = useSelect({
+    const [filteringValue, setFilteringValue] = useState('');
+    const multiselectProps = useMultiselect({
+      options,
       selectedOptions,
-      updateSelectedOption,
-      options: filteredOptions,
       filteringType,
-      onFocus,
-      onBlur,
-      externalRef,
-      keepOpen,
-      fireLoadItems,
+      disabled,
+      deselectAriaLabel,
+      controlId,
+      ariaLabelId,
+      footerId,
+      filteringValue,
       setFilteringValue,
-      useInteractiveGroups,
-      statusType,
-    });
-
-    const handleNativeSearch = useNativeSearch({
-      isEnabled: filteringType === 'none' && isOpen,
-      options: filteredOptions,
-      highlightOption: highlightOption,
-      highlightedOption: highlightedOption?.option,
-      useInteractiveGroups,
-    });
-
-    const isEmpty = !options || options.length === 0;
-    const isNoMatch = filteredOptions && filteredOptions.length === 0;
-    const isFiltered =
-      filteringType !== 'none' && filteringValue.length > 0 && filteredOptions && filteredOptions.length > 0;
-    const filteredText = isFiltered ? filteringResultsText?.(matchesCount, totalCount) : undefined;
-    const dropdownStatus = useDropdownStatus({
-      statusType,
-      empty,
-      loadingText,
-      finishedText,
-      errorText,
-      recoveryText,
-      isEmpty,
-      isNoMatch,
-      noMatch,
-      isFiltered,
-      filteringResultsText: filteredText,
-      onRecoveryClick: handleRecoveryClick,
-      errorIconAriaLabel: errorIconAriaLabel,
-      hasRecoveryCallback: !!onLoadItems,
+      externalRef,
+      ...restProps,
     });
 
     const filter = (
@@ -221,7 +92,7 @@ const InternalMultiselect = React.forwardRef(
         ariaLabel={filteringAriaLabel}
         ariaRequired={ariaRequired}
         value={filteringValue}
-        {...getFilterProps()}
+        {...multiselectProps.getFilterProps()}
       />
     );
 
@@ -230,31 +101,16 @@ const InternalMultiselect = React.forwardRef(
         placeholder={placeholder}
         disabled={disabled}
         readOnly={readOnly}
-        triggerProps={getTriggerProps(disabled, autoFocus)}
+        triggerProps={multiselectProps.getTriggerProps(disabled, autoFocus)}
         selectedOption={null}
         selectedOptions={selectedOptions}
         triggerVariant={inlineTokens ? 'tokens' : 'placeholder'}
-        isOpen={isOpen}
+        isOpen={multiselectProps.isOpen}
         {...formFieldContext}
         controlId={controlId}
-        ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, multiSelectAriaLabelId)}
+        ariaLabelledby={joinStrings(formFieldContext.ariaLabelledby, ariaLabelId)}
       />
     );
-
-    const menuProps: MenuProps = {
-      ...getMenuProps(),
-      onLoadMore: handleLoadMore,
-      ariaLabelledby: joinStrings(multiSelectAriaLabelId, controlId),
-      ariaDescribedby: dropdownStatus.content ? footerId : undefined,
-    };
-
-    const announcement = useAnnouncement({
-      announceSelected,
-      highlightedOption,
-      getParent: option => parentMap.get(option)?.option as undefined | OptionGroup,
-      selectedAriaLabel,
-      renderHighlightedAriaLive,
-    });
 
     const tokens: TokenGroupProps['items'] = selectedOptions.map(option => ({
       label: option.label,
@@ -271,62 +127,37 @@ const InternalMultiselect = React.forwardRef(
       ),
     }));
 
-    useEffect(() => {
-      scrollToIndex.current?.(highlightedIndex);
-    }, [highlightedIndex]);
-
     const ListComponent = virtualScroll ? VirtualList : PlainList;
 
-    const handleMouseDown = (event: React.MouseEvent) => {
-      const target = event.target as HTMLElement;
-
-      if (target !== document.activeElement) {
-        // prevent currently focused element from losing it
-        event.preventDefault();
-      }
-    };
-
     const showTokens = !hideTokens && !inlineTokens && tokens.length > 0;
-    const handleTokenDismiss: TokenGroupProps['onDismiss'] = ({ detail }) => {
-      const optionToDeselect = selectedOptions[detail.itemIndex];
-      updateSelectedOption(optionToDeselect);
-      const targetRef = getTriggerProps().ref;
-      if (targetRef.current) {
-        targetRef.current.focus();
-      }
-    };
 
     const tokenGroupI18nStrings: TokenGroupProps.I18nStrings = {
       limitShowFewer: i18nStrings?.tokenLimitShowFewer,
       limitShowMore: i18nStrings?.tokenLimitShowMore,
     };
 
-    const mergedRef = useMergeRefs(rootRef, __internalRootRef);
-
-    const dropdownProps = getDropdownProps();
+    const dropdownStatus = multiselectProps.dropdownStatus;
+    const dropdownProps = multiselectProps.getDropdownProps();
 
     return (
       <div
         {...baseProps}
-        ref={mergedRef}
+        ref={__internalRootRef}
         className={clsx(styles.root, baseProps.className)}
-        onKeyPress={handleNativeSearch}
+        {...multiselectProps.getWrapperProps()}
       >
         <Dropdown
           {...dropdownProps}
-          ariaLabelledby={
-            dropdownProps.dropdownContentRole ? joinStrings(multiSelectAriaLabelId, controlId) : undefined
-          }
+          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(ariaLabelId, controlId) : undefined}
           ariaDescribedby={
             dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
           }
-          open={isOpen}
+          open={multiselectProps.isOpen}
           trigger={trigger}
           header={filter}
-          onMouseDown={handleMouseDown}
           footer={
             dropdownStatus.isSticky ? (
-              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+              <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
             ) : null
           }
           expandToViewport={expandToViewport}
@@ -335,28 +166,29 @@ const InternalMultiselect = React.forwardRef(
           <ListComponent
             listBottom={
               !dropdownStatus.isSticky ? (
-                <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+                <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
               ) : null
             }
-            menuProps={menuProps}
-            getOptionProps={getOptionProps}
-            filteredOptions={filteredOptions}
+            menuProps={multiselectProps.getMenuProps()}
+            getOptionProps={multiselectProps.getOptionProps}
+            filteredOptions={multiselectProps.filteredOptions}
             filteringValue={filteringValue}
-            ref={scrollToIndex}
+            ref={multiselectProps.scrollToIndex}
             hasDropdownStatus={dropdownStatus.content !== null}
             checkboxes={true}
-            useInteractiveGroups={useInteractiveGroups}
-            screenReaderContent={announcement}
-            highlightType={highlightType}
+            useInteractiveGroups={true}
+            screenReaderContent={multiselectProps.announcement}
+            highlightType={multiselectProps.highlightType}
           />
         </Dropdown>
+
         {showTokens && (
           <InternalTokenGroup
+            {...multiselectProps.getTokenProps()}
             className={styles.tokens}
             alignment="horizontal"
             limit={tokenLimit}
             items={tokens}
-            onDismiss={handleTokenDismiss}
             i18nStrings={tokenGroupI18nStrings}
             limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
             limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
@@ -364,7 +196,8 @@ const InternalMultiselect = React.forwardRef(
             readOnly={readOnly}
           />
         )}
-        <ScreenreaderOnly id={multiSelectAriaLabelId}>{ariaLabel}</ScreenreaderOnly>
+
+        <ScreenreaderOnly id={ariaLabelId}>{ariaLabel}</ScreenreaderOnly>
       </div>
     );
   }

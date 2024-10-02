@@ -9,6 +9,7 @@ import Icon from '../../../../icon/internal';
 import Tooltip from '../../../../internal/components/tooltip';
 import { registerTooltip } from '../../../../internal/components/tooltip/registry';
 
+import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TriggerButtonProps {
@@ -28,6 +29,7 @@ export interface TriggerButtonProps {
    */
   selected?: boolean;
   onClick: React.MouseEventHandler<HTMLButtonElement>;
+
   badge?: boolean;
   highContrastHeader?: boolean;
   /**
@@ -118,9 +120,10 @@ function TriggerButton(
       const relatedTarget = eventWithRelatedTarget?.relatedTarget;
       const isFromAnotherTrigger = relatedTarget?.dataset?.shiftFocus === 'awsui-layout-drawer-trigger';
       if (
-        isForSplitPanel || //for key navigation to button from breadcrumb
-        isFromAnotherTrigger || //for key navigation from another trigger button
-        !isForPreviousActiveDrawer //for when the drawer was not opened recently
+        (isForSplitPanel && !!relatedTarget) || // relatedTarget is null when split panel is closed
+        (!isForSplitPanel &&
+          (isFromAnotherTrigger || // for key navigation from another trigger button
+            !isForPreviousActiveDrawer)) // for when the drawer was not opened recently
       ) {
         shouldShowTooltip = true;
       }
@@ -202,9 +205,7 @@ function TriggerButton(
         onFocus: e => handleOnFocus(e as any),
         onBlur: () => handleBlur(true),
       })}
-      className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '', {
-        [styles['trigger-wrapper-tooltip-visible']]: tooltipVisible,
-      })}
+      className={clsx(styles['trigger-wrapper'], !highContrastHeader ? styles['remove-high-contrast-header'] : '')}
     >
       <button
         aria-expanded={ariaExpanded}
@@ -233,7 +234,9 @@ function TriggerButton(
         </span>
       </button>
       {badge && <div className={styles.dot} />}
-      {tooltipVisible && <Tooltip trackRef={containerRef} value={tooltipValue} className={styles['trigger-tooltip']} />}
+      {tooltipVisible && (
+        <Tooltip trackRef={containerRef} value={tooltipValue} className={testutilStyles['trigger-tooltip']} />
+      )}
     </div>
   );
 }

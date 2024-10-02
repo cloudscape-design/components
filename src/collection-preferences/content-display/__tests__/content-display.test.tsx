@@ -174,6 +174,120 @@ describe('Content Display preference', () => {
     });
   });
 
+  describe.each<boolean>([false, true])('Filtering (with i18n = %s)', withI18nProvider => {
+    it('filters options', () => {
+      const wrapper = renderContentDisplay(
+        withI18nProvider
+          ? undefined
+          : {
+              contentDisplayPreference: {
+                ...contentDisplayPreference,
+                i18nStrings: {
+                  columnFilteringPlaceholder: 'Filter columns',
+                  columnFilteringAriaLabel: 'Filter columns',
+                  columnFilteringClearFilterText: 'Clear filter',
+                  columnFilteringNoMatchText: 'No matches found',
+                  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+                },
+              },
+            },
+        withI18nProvider
+      );
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+      filterInput!.findInput().setInputValue('Item 1');
+
+      expect(filterInput?.findInput().findNativeInput().getElement()).toHaveAttribute('placeholder', 'Filter columns');
+      expect(filterInput?.findInput().findNativeInput().getElement()).toHaveAttribute('aria-label', 'Filter columns');
+      expect(filterInput?.findInput().findClearButton()?.getElement()).toHaveAccessibleName('Clear filter');
+
+      expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('1 match');
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(1);
+      expect(options[0].findLabel().getElement()).toHaveTextContent('Item 1');
+    });
+
+    it('shows empty state when no options match and clears filter', () => {
+      const wrapper = renderContentDisplay(
+        withI18nProvider
+          ? undefined
+          : {
+              contentDisplayPreference: {
+                ...contentDisplayPreference,
+                i18nStrings: {
+                  columnFilteringPlaceholder: 'Filter columns',
+                  columnFilteringAriaLabel: 'Filter columns',
+                  columnFilteringClearFilterText: 'Clear filter',
+                  columnFilteringNoMatchText: 'No matches found',
+                  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+                },
+              },
+            },
+        withI18nProvider
+      );
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 100');
+      expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('0 matches');
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(0);
+
+      const emptyState = wrapper.findNoMatch();
+      expect(emptyState).not.toBeNull();
+      expect(emptyState!.getElement()).toHaveTextContent('No matches found');
+
+      const emptyStateButton = emptyState?.findButton();
+      expect(emptyStateButton).not.toBeNull();
+      expect(emptyStateButton!.getElement()).toHaveTextContent('Clear filter');
+      emptyStateButton?.click();
+
+      expect(filterInput!.findInput().getInputValue()).toBe('');
+      expect(filterInput!.findResultsCount()).toBeNull();
+    });
+  });
+
+  describe('Filtering - continued', () => {
+    it('does not render the text filter with searchable columns turned off', () => {
+      const wrapper = renderContentDisplay({
+        contentDisplayPreference: {
+          ...contentDisplayPreference,
+          enableColumnFiltering: false,
+        },
+      });
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).toBeNull();
+    });
+
+    it('clears filter and shows all options', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 1');
+      filterInput!.findInput().findClearButton()?.click();
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(4);
+    });
+
+    it('sets the drag-handle to a disabled state when filtering', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      const dragHandleBefore = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      expect(dragHandleBefore.getAttribute('aria-disabled')).toBe('false');
+
+      filterInput!.findInput().setInputValue('Item 1');
+
+      const dragHandleAfter = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      expect(dragHandleAfter.getAttribute('aria-disabled')).toBe('true');
+    });
+  });
+
   describe('State management', () => {
     const initialStateWithCustomVisibility = [
       {
@@ -320,8 +434,11 @@ describe('Content Display preference', () => {
   });
 });
 
-function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
-  const collectionPreferencesWrapper = renderCollectionPreferences({ contentDisplayPreference, ...props });
+function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}, withI18nProvider = false) {
+  const collectionPreferencesWrapper = renderCollectionPreferences(
+    { contentDisplayPreference, ...props },
+    withI18nProvider
+  );
   collectionPreferencesWrapper.findTriggerButton().click();
   return collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 }

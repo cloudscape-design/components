@@ -182,6 +182,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const onSplitPanelToggleHandler = () => {
       setSplitPanelOpen(!splitPanelOpen);
+      splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
     };
 

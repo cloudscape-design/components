@@ -116,7 +116,7 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
               ariaLabel={i18nStrings.closeButtonAriaLabel}
               ariaExpanded={isOpen}
             />
-          ) : position === 'side' ? null : (
+          ) : isToolbar || position === 'side' ? null : (
             <InternalButton
               className={testUtilStyles['open-button']}
               iconName="angle-up"

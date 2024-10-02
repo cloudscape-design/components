@@ -26,10 +26,6 @@ $calendar-header-color: awsui.$color-text-body-default;
   display: contents;
 }
 
-.trigger-wrapper {
-  min-inline-size: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
-}
-
 .trigger-flexbox {
   display: flex;
 }

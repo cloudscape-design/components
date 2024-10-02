@@ -47,6 +47,10 @@ const InternalPromptInput = React.forwardRef(
       placeholder,
       readOnly,
       spellcheck,
+      secondaryActions,
+      secondaryContent,
+      disableSecondaryActionsPaddings,
+      disableSecondaryContentPaddings,
       __internalRootRef = null,
       ...rest
     }: InternalPromptInputProps,
@@ -97,11 +101,13 @@ const InternalPromptInput = React.forwardRef(
       adjustTextareaHeight();
     };
 
+    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
+
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
         const maxRowsHeight = `calc(${maxRows <= 0 ? 3 : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-        const scrollHeight = `calc(${textareaRef.current.scrollHeight}px + ${PADDING})`;
+        const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
         textareaRef.current.style.height = `min(${scrollHeight}, ${maxRowsHeight})`;
       }
     }, [maxRows, LINE_HEIGHT, PADDING]);
@@ -131,10 +137,8 @@ const InternalPromptInput = React.forwardRef(
       placeholder,
       autoFocus,
       className: clsx(styles.textarea, testutilStyles.textarea, {
-        [styles['textarea-readonly']]: readOnly,
-        [styles['textarea-invalid']]: invalid,
-        [styles['textarea-warning']]: warning && !invalid,
-        [styles['textarea-with-button']]: actionButtonIconName,
+        [styles.invalid]: invalid,
+        [styles.warning]: warning,
       }),
       autoComplete: convertAutoComplete(autoComplete),
       spellCheck: spellcheck,
@@ -150,33 +154,66 @@ const InternalPromptInput = React.forwardRef(
       onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
     };
 
-    const hasActionButton = actionButtonIconName || actionButtonIconSvg || actionButtonIconUrl;
-
     if (disableBrowserAutocorrect) {
       attributes.autoCorrect = 'off';
       attributes.autoCapitalize = 'off';
     }
 
+    const action = (
+      <div className={styles.button}>
+        <InternalButton
+          className={clsx(styles['action-button'], testutilStyles['action-button'])}
+          ariaLabel={actionButtonAriaLabel}
+          disabled={disabled || readOnly || disableActionButton}
+          __focusable={readOnly}
+          iconName={actionButtonIconName}
+          iconUrl={actionButtonIconUrl}
+          iconSvg={actionButtonIconSvg}
+          iconAlt={actionButtonIconAlt}
+          onClick={() => fireNonCancelableEvent(onAction, { value })}
+          variant="icon"
+        />
+      </div>
+    );
+
     return (
       <div
         {...baseProps}
-        className={clsx(styles.root, testutilStyles.root, baseProps.className)}
+        aria-label={ariaLabel}
+        className={clsx(styles.root, testutilStyles.root, baseProps.className, {
+          [styles['textarea-readonly']]: readOnly,
+          [styles['textarea-invalid']]: invalid,
+          [styles['textarea-warning']]: warning && !invalid,
+          [styles.disabled]: disabled,
+        })}
         ref={__internalRootRef}
+        role="region"
       >
-        <textarea ref={textareaRef} id={controlId} {...attributes} />
-        {hasActionButton && (
-          <div className={styles.button}>
-            <InternalButton
-              className={clsx(styles['action-button'], testutilStyles['action-button'])}
-              ariaLabel={actionButtonAriaLabel}
-              disabled={disabled || readOnly || disableActionButton}
-              iconName={actionButtonIconName}
-              iconUrl={actionButtonIconUrl}
-              iconSvg={actionButtonIconSvg}
-              iconAlt={actionButtonIconAlt}
-              onClick={() => fireNonCancelableEvent(onAction, { value })}
-              variant="icon"
-            />
+        {secondaryContent && (
+          <div
+            className={clsx(styles['secondary-content'], testutilStyles['secondary-content'], {
+              [styles['with-paddings']]: !disableSecondaryContentPaddings,
+              [styles.invalid]: invalid,
+              [styles.warning]: warning,
+            })}
+          >
+            {secondaryContent}
+          </div>
+        )}
+        <div className={styles['textarea-wrapper']}>
+          <textarea ref={textareaRef} id={controlId} {...attributes} />
+          {hasActionButton && !secondaryActions && action}
+        </div>
+        {secondaryActions && (
+          <div
+            className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
+              [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+              [styles.invalid]: invalid,
+              [styles.warning]: warning,
+            })}
+          >
+            {secondaryActions}
+            {hasActionButton && action}
           </div>
         )}
       </div>

@@ -147,6 +147,9 @@ const defaultProps: Record<string, Record<string, any>> = {
   'key-value-pairs': {
     items: [],
   },
+  steps: {
+    steps: [],
+  },
 };
 
 export function getRequiredPropsForComponent(componentName: string): Record<string, any> {

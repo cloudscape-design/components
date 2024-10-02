@@ -11,7 +11,7 @@ const findDrawerById = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
 };
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
@@ -21,8 +21,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
           hasDrawers: 'false',
           hasTools: 'true',
           splitPanelPosition: 'side',
-          visualRefresh: `${theme.startsWith('visual-refresh')}`,
-          appLayoutToolbar: theme === 'visual-refresh-toolbar' ? 'true' : 'false',
+          visualRefresh: `${theme !== 'classic'}`,
+          appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
         }).toString()}`
       );
       await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);

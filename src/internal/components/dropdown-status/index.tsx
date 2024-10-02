@@ -52,7 +52,7 @@ type UseDropdownStatus = ({
   onRecoveryClick,
 }: DropdownStatusPropsExtended) => DropdownStatusResult;
 
-interface DropdownStatusResult {
+export interface DropdownStatusResult {
   isSticky: boolean;
   content: React.ReactNode | null;
 }

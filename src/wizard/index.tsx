@@ -55,6 +55,7 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
         allowSkipTo={allowSkipTo}
         {...externalProps}
         {...baseComponentProps}
+        __injectAnalyticsComponentMetadata={true}
       />
     </AnalyticsFunnel>
   );

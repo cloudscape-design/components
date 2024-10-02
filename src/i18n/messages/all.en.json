@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Picked up item at position {position} of {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordering canceled",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filter columns",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Filter columns",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "No matches found",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Clear filter",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Moving item back to position {currentPosition} of {total}} false {Moving item to position {currentPosition} of {total}} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Item moved back to its original position {initialPosition} of {total}} false {Item moved from position {initialPosition} to position {finalPosition} of {total}} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 matches} one {1 match} other {{count} matches}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copy"

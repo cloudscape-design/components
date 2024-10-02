@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste), um das Ziehen für ein Element zu aktivieren. Verwenden Sie dann die Pfeiltasten, um die Position abzuschließen. Verwenden Sie Space (Leertaste) oder Enter (Eingabetaste) oder, um den Zug zu verwerfen, verwenden Sie Escape (Escape).",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Aufgeholtes Element an Position {position} von {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Neuanordnung storniert",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Spalten filtern",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Spalten filtern",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "Keine Übereinstimmungen gefunden",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Filter löschen",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Objekt zurück an die Position {currentPosition} von {total} verschieben} false {Objekt an Position {currentPosition} von {total} verschieben} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {Das Objekt wurde zurück an seine ursprüngliche Position {initialPosition} von {total} verschoben} false {Das Objekt wurde von Position {initialPosition} zu Position {finalPosition} von {total} verschoben} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 Übereinstimmungen} one {1 Übereinstimmung} other {{count} Übereinstimmungen}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Kopieren"

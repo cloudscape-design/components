@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Link } from '~components';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
@@ -31,6 +32,11 @@ export default function () {
                 <Header variant="h1" description="This page contains nested app layout instances">
                   Multiple app layouts
                 </Header>
+
+                <Link external={true} href="#">
+                  External link
+                </Link>
+
                 <Containers />
               </SpaceBetween>
             }

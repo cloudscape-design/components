@@ -42,9 +42,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_notifications_1fj9k",
     "awsui_overflow-menu_1fj9k",
     "awsui_root_1fj9k",
+    "awsui_toolbar_1fj9k",
     "awsui_tools-close_1fj9k",
     "awsui_tools-toggle_1fj9k",
     "awsui_tools_1fj9k",
+    "awsui_trigger-tooltip_1fj9k",
   ],
   "area-chart": [
     "awsui_root_y1yrh",
@@ -142,11 +144,13 @@ exports[`test-utils selectors 1`] = `
     "awsui_confirm-button_tc96w",
     "awsui_content-density_tc96w",
     "awsui_content-display-description_tc96w",
+    "awsui_content-display-no-match_tc96w",
     "awsui_content-display-option-content_tc96w",
     "awsui_content-display-option-label_tc96w",
     "awsui_content-display-option-list_tc96w",
     "awsui_content-display-option-toggle_tc96w",
     "awsui_content-display-option_tc96w",
+    "awsui_content-display-text-filter_tc96w",
     "awsui_content-display-title_tc96w",
     "awsui_content-display_tc96w",
     "awsui_custom_tc96w",
@@ -431,6 +435,8 @@ exports[`test-utils selectors 1`] = `
   "prompt-input": [
     "awsui_action-button_nr3gs",
     "awsui_root_nr3gs",
+    "awsui_secondary-actions_nr3gs",
+    "awsui_secondary-content_nr3gs",
     "awsui_textarea_nr3gs",
   ],
   "property-filter": [
@@ -519,6 +525,12 @@ exports[`test-utils selectors 1`] = `
   ],
   "status-indicator": [
     "awsui_root_1cbgc",
+  ],
+  "steps": [
+    "awsui_container_gxp9y",
+    "awsui_details_gxp9y",
+    "awsui_header_gxp9y",
+    "awsui_root_gxp9y",
   ],
   "table": [
     "awsui_body-cell-edit-active_c6tup",

@@ -39,6 +39,8 @@ export interface PopoverContainerProps {
   // Do not use this if the popover is open on hover, in order to avoid unexpected movement.
   allowScrollToFit?: boolean;
   allowVerticalOverflow?: boolean;
+  // Whether the popover should be hidden when the trigger is scrolled away.
+  hideOnOverscroll?: boolean;
 }
 
 export default function PopoverContainer({
@@ -55,6 +57,7 @@ export default function PopoverContainer({
   keepPosition,
   allowScrollToFit,
   allowVerticalOverflow,
+  hideOnOverscroll,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -64,18 +67,20 @@ export default function PopoverContainer({
   const isRefresh = useVisualRefresh();
 
   // Updates the position handler.
-  const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef } = usePopoverPosition({
-    popoverRef,
-    bodyRef,
-    arrowRef,
-    trackRef,
-    contentRef,
-    allowScrollToFit,
-    allowVerticalOverflow,
-    preferredPosition: position,
-    renderWithPortal,
-    keepPosition,
-  });
+  const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling } =
+    usePopoverPosition({
+      popoverRef,
+      bodyRef,
+      arrowRef,
+      trackRef,
+      contentRef,
+      allowScrollToFit,
+      allowVerticalOverflow,
+      preferredPosition: position,
+      renderWithPortal,
+      keepPosition,
+      hideOnOverscroll,
+    });
 
   // Recalculate position when properties change.
   useLayoutEffect(() => {
@@ -124,9 +129,9 @@ export default function PopoverContainer({
       window.removeEventListener('resize', updatePositionOnResize);
       window.removeEventListener('scroll', refreshPosition, true);
     };
-  }, [keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
+  }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
 
-  return (
+  return isOverscrolling ? null : (
     <div
       ref={popoverRef}
       style={{ ...popoverStyle, zIndex }}

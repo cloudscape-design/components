@@ -4,7 +4,7 @@
 import { LabelIdentifier } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 interface GeneratedAnalyticsMetadataButtonClick {
-  action: 'click';
+  action: string;
   detail: {
     label: string | LabelIdentifier;
   };

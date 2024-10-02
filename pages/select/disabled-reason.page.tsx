@@ -7,18 +7,17 @@ import Select from '~components/select';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
-const options = [
-  {
-    value: '1',
-    label: 'Option 1',
-    disabled: true,
-    disabledReason: 'disabled reason',
-  },
-  {
-    value: '2',
-    label: 'Option 2',
-  },
-];
+const options = [...Array(50).keys()].map(n => {
+  const numberToDisplay = (n + 1).toString();
+  const baseOption = {
+    value: numberToDisplay,
+    label: `Option ${numberToDisplay}`,
+  };
+  if (n === 0 || n === 24 || n === 49) {
+    return { ...baseOption, disabled: true, disabledReason: 'disabled reason' };
+  }
+  return baseOption;
+});
 
 export default function SelectPage() {
   return (

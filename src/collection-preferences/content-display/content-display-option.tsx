@@ -18,11 +18,12 @@ export interface ContentDisplayOptionProps {
   listeners?: SyntheticListenerMap;
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
+  disabled?: boolean;
 }
 
 const ContentDisplayOption = forwardRef(
   (
-    { dragHandleAriaLabel, listeners, onToggle, option }: ContentDisplayOptionProps,
+    { dragHandleAriaLabel, listeners, onToggle, option, disabled }: ContentDisplayOptionProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const idPrefix = useUniqueId(componentPrefix);
@@ -34,7 +35,7 @@ const ContentDisplayOption = forwardRef(
 
     return (
       <div ref={ref} className={getClassName('content')}>
-        <DragHandle attributes={dragHandleAttributes} listeners={listeners} />
+        <DragHandle disabled={disabled} attributes={dragHandleAttributes} listeners={listeners} />
 
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}

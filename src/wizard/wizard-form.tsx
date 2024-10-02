@@ -132,6 +132,9 @@ export function WizardForm({
             isPrimaryLoading={isPrimaryLoading}
             showSkipTo={showSkipTo}
             skipToButtonText={skipToButtonText}
+            isLastStep={isLastStep}
+            activeStepIndex={activeStepIndex}
+            skipToStepIndex={skipToTargetIndex}
           />
         }
         secondaryActions={secondaryActions}

@@ -20,6 +20,7 @@ export interface TooltipProps {
   className?: string;
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
   size?: PopoverProps['size'];
+  hideOnOverscroll?: boolean;
 }
 
 export default function Tooltip({
@@ -30,6 +31,7 @@ export default function Tooltip({
   contentAttributes = {},
   position = 'top',
   size = 'small',
+  hideOnOverscroll,
 }: TooltipProps) {
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
     trackKey = value;
@@ -48,6 +50,7 @@ export default function Tooltip({
               position={position}
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
+              hideOnOverscroll={hideOnOverscroll}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {value}
