@@ -113,7 +113,6 @@ const PropertyFilterInternal = React.forwardRef(
     const i18nStrings = usePropertyFilterI18n(rest.i18nStrings);
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
-    const showResults = !!query.tokens?.length && !disabled && !!countText;
     const [filteringText, setFilteringText] = useState<string>('');
 
     const { internalProperties, internalOptions, internalQuery, internalFreeText } = (() => {
@@ -306,6 +305,9 @@ const PropertyFilterInternal = React.forwardRef(
     const textboxAriaDescribedBy = filteringConstraintText
       ? joinStrings(rest.ariaDescribedby, constraintTextId)
       : rest.ariaDescribedby;
+
+    const showResults = !!internalQuery.tokens?.length && !disabled && !!countText;
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
         <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
