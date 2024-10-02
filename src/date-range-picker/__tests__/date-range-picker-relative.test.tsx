@@ -238,6 +238,19 @@ describe('Date range picker', () => {
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['days', 'weeks', 'months', 'years']);
     });
 
+    test('shows custom units list if specified', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        rangeSelectorMode: 'relative-only',
+        relativeOptions: [],
+        customRelativeRangeUnits: ['hour', 'minute'],
+      });
+      wrapper.findTrigger().click();
+
+      wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.openDropdown();
+      expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['hours', 'minutes']);
+    });
+
     describe('i18n', () => {
       test('supports using relative range props from i18n provider', () => {
         const { container } = render(
