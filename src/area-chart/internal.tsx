@@ -112,6 +112,7 @@ export default function InternalAreaChart<T extends AreaChartProps.DataTypes>({
     height,
     width,
     popoverRef,
+    statusType,
   });
 
   const { isEmpty, isNoMatch, showChart } = getChartStatus({

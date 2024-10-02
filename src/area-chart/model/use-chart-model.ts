@@ -40,6 +40,7 @@ export interface UseChartModelProps<T extends AreaChartProps.DataTypes> {
   height: number;
   width: number;
   popoverRef: RefObject<HTMLElement>;
+  statusType: 'loading' | 'finished' | 'error';
 }
 
 // Represents the core the chart logic, including the model of all allowed user interactions.
@@ -58,6 +59,7 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   height: explicitHeight,
   width,
   popoverRef,
+  statusType,
 }: UseChartModelProps<T>): ChartModel<T> {
   // Chart elements refs used in handlers.
   const plotRef = useRef<ChartPlotRef>(null);
@@ -66,8 +68,8 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
 
   const plotMeasureRef = useRef<SVGLineElement>(null);
   const hasVisibleSeries = series.length > 0;
-  const height = useHeightMeasure(() => plotMeasureRef.current, !fitHeight, [hasVisibleSeries]) ?? explicitHeight;
-
+  const height =
+    useHeightMeasure(() => plotMeasureRef.current, !fitHeight, [hasVisibleSeries, statusType]) ?? explicitHeight;
   const stableSetVisibleSeries = useStableCallback(setVisibleSeries);
 
   const model = useMemo(() => {

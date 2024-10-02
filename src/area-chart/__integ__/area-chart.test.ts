@@ -2,7 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
+import { AreaChartWrapper } from '../../../lib/components/test-utils/selectors';
 import AreaChartPageObject from './page-objects/area-chart-page';
+
+const computedDomainChartWrapper = new AreaChartWrapper('#chart');
 
 function setupTest(url: string, name: string, testFn: (page: AreaChartPageObject) => Promise<void>) {
   return useBrowser(async browser => {
@@ -488,7 +491,22 @@ describe('Controlled', () => {
     })
   );
 });
+describe('Loading state', () => {
+  test(
+    'height of the chart is displayed correctly after changing loading state to finished',
+    setupTest('#/light/area-chart/loading', 'chart', async page => {
+      await page.setWindowSize({ width: 500, height: 800 });
+      // the loading is about 1000ms in the loading page and then the
+      // statusType becomes 'finished'. This just waits for it.
+      await page.waitForJsTimers(2000);
 
+      // we only need to validate one of the series here, looping over all
+      // of the series will cause a failure since we might have one series with height 0 (threshold one)
+      const seriesBox = await page.getBoundingBox(computedDomainChartWrapper.findSeries().get(1).toSelector());
+      expect(seriesBox.height).toBeGreaterThan(200);
+    })
+  );
+});
 describe('Labels', () => {
   test(
     'log labels have no intersections',
