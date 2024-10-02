@@ -10,7 +10,7 @@ import { stepsPermutations } from './permutations-utils';
 
 export default function StepsPermutations() {
   return (
-    <ScreenshotArea disableAnimations={false}>
+    <ScreenshotArea disableAnimations={true}>
       <article>
         <h1>Steps permutations</h1>
         <PermutationsView
