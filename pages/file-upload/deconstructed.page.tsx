@@ -76,7 +76,6 @@ export default function FileUploadScenarioStandalone() {
                     multiple={acceptMultiple}
                     value={formState.files}
                     onChange={handleFilesChange}
-                    //   accept="application/pdf, image/*"
                     i18nStrings={i18nStrings}
                   />
                 </Box>
@@ -90,7 +89,7 @@ export default function FileUploadScenarioStandalone() {
                       loading: formState.status === 'uploading',
                       errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
                     }))}
-                    // showFileLastModified={true}
+                    showFileLastModified={true}
                     showFileSize={true}
                     showFileThumbnail={true}
                     i18nStrings={i18nStrings}

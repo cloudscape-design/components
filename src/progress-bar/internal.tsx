@@ -44,6 +44,7 @@ export const Progress = ({ value, isInFlash, ariaLabel, ariaLabelledby, ariaDesc
         aria-labelledby={!ariaLabel ? ariaLabelledby : undefined}
         aria-describedby={ariaDescribedby}
       />
+
       <span aria-hidden="true" className={styles['percentage-container']}>
         <InternalBox className={styles.percentage} variant="small" color={isInFlash ? 'inherit' : undefined}>
           {`${progressValue}%`}

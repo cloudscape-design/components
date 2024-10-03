@@ -8,6 +8,7 @@ import InternalBox from '../box/internal.js';
 import { BaseComponentProps } from '../internal/base-component';
 import Tooltip from '../internal/components/tooltip/index.js';
 import InternalSpaceBetween from '../space-between/internal.js';
+import InternalSpinner from '../spinner/internal.js';
 import { TokenGroupProps } from '../token-group/interfaces.js';
 import { Token } from '../token-group/token.js';
 import * as defaultFormatters from './default-formatters.js';
@@ -61,7 +62,15 @@ function InternalFileToken({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div ref={containerRef} className={clsx(styles['file-token'])}>
+    <div ref={containerRef} className={clsx(styles['file-token'])} style={{ position: 'relative' }}>
+      {loading && (
+        <>
+          <div className={styles['file-loading-overlay']} />
+          <div className={styles['file-loading-overlay-spinner']}>
+            <InternalSpinner size="normal" />
+          </div>
+        </>
+      )}
       <Token
         ariaLabel={file.name}
         dismissLabel={i18nStrings.removeFileAriaLabel(0)}

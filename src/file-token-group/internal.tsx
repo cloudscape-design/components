@@ -58,7 +58,7 @@ function InternalFileTokenGroup({
             errorText={file.errorText}
             warningText={file.warningText}
             i18nStrings={i18nStrings}
-            disabled={file.loading || file.disabled}
+            disabled={file.disabled}
             loading={file.loading}
             alignment={alignment}
             data-index={fileIndex}
