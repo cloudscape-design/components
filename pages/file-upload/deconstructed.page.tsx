@@ -57,47 +57,49 @@ export default function FileUploadScenarioStandalone() {
             Vertical alignment
           </Checkbox>
 
-          <PromptInput
-            ariaLabel="Chat input"
-            actionButtonIconName="send"
-            actionButtonAriaLabel="Submit prompt"
-            value={textareaValue}
-            onChange={(event: any) => setTextareaValue(event.detail.value)}
-            onAction={(event: any) => window.alert(`Submitted the following: ${event.detail.value}`)}
-            placeholder="Ask a question"
-            maxRows={4}
-            disableSecondaryActionsPaddings={true}
-            secondaryActions={
-              <Box padding={{ left: 'xxs', top: 'xs' }}>
-                <FileInput
-                  variant="icon"
-                  ref={contractsRef}
-                  multiple={acceptMultiple}
-                  value={formState.files}
-                  onChange={handleFilesChange}
-                  //   accept="application/pdf, image/*"
-                  i18nStrings={i18nStrings}
-                />
-              </Box>
-            }
-            secondaryContent={
-              formState.files.length > 0 ? (
-                <FileTokenGroup
-                  alignment={verticalAlign ? 'vertical' : 'horizontal'}
-                  items={formState.files.map(file => ({
-                    file,
-                    loading: formState.status === 'uploading',
-                    errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
-                  }))}
-                  showFileLastModified={true}
-                  showFileSize={true}
-                  showFileThumbnail={true}
-                  i18nStrings={i18nStrings}
-                  onDismiss={onDismiss}
-                />
-              ) : undefined
-            }
-          />
+          <FormField>
+            <PromptInput
+              ariaLabel="Chat input"
+              actionButtonIconName="send"
+              actionButtonAriaLabel="Submit prompt"
+              value={textareaValue}
+              onChange={(event: any) => setTextareaValue(event.detail.value)}
+              onAction={(event: any) => window.alert(`Submitted the following: ${event.detail.value}`)}
+              placeholder="Ask a question"
+              maxRows={4}
+              disableSecondaryActionsPaddings={true}
+              secondaryActions={
+                <Box padding={{ left: 'xxs', top: 'xs' }}>
+                  <FileInput
+                    variant="icon"
+                    ref={contractsRef}
+                    multiple={acceptMultiple}
+                    value={formState.files}
+                    onChange={handleFilesChange}
+                    //   accept="application/pdf, image/*"
+                    i18nStrings={i18nStrings}
+                  />
+                </Box>
+              }
+              secondaryContent={
+                formState.files.length > 0 ? (
+                  <FileTokenGroup
+                    alignment={verticalAlign ? 'vertical' : 'horizontal'}
+                    items={formState.files.map(file => ({
+                      file,
+                      loading: formState.status === 'uploading',
+                      errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
+                    }))}
+                    // showFileLastModified={true}
+                    showFileSize={true}
+                    showFileThumbnail={true}
+                    i18nStrings={i18nStrings}
+                    onDismiss={onDismiss}
+                  />
+                ) : undefined
+              }
+            />
+          </FormField>
 
           <FormField
             label={acceptMultiple ? 'Contracts' : 'Contract'}

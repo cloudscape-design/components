@@ -8,6 +8,7 @@ import { FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import DismissButton from './dismiss-button';
+import { TokenGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -24,6 +25,7 @@ interface TokenProps {
   warningIconAriaLabel?: string;
   className?: string;
   loading?: boolean;
+  alignment?: TokenGroupProps.Alignment;
 }
 
 export function Token({
@@ -38,6 +40,7 @@ export function Token({
   errorIconAriaLabel,
   warningIconAriaLabel,
   loading,
+  alignment,
   ...restProps
 }: TokenProps) {
   const errorId = useUniqueId('error');
@@ -61,7 +64,8 @@ export function Token({
           disabled && styles['token-box-disabled'],
           readOnly && styles['token-box-readonly'],
           errorText && styles['token-box-error'],
-          showWarning && styles['token-box-warning']
+          showWarning && styles['token-box-warning'],
+          alignment === 'horizontal' && styles.horizontal
         )}
       >
         {children}
