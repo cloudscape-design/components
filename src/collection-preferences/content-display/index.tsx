@@ -52,20 +52,22 @@ export default function ContentDisplayPreference({
   const i18n = useInternalI18n('collection-preferences');
   const [columnFilteringText, setColumnFilteringText] = useState('');
 
-  const onToggle = (option: OptionWithVisibility) => {
-    onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
-  };
-
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const sortedAndFilteredOptions = useMemo(
-    () =>
-      getSortedOptions({ options, contentDisplay: value }).filter(option =>
-        option.label.toLowerCase().trim().includes(columnFilteringText.toLowerCase().trim())
-      ),
-    [columnFilteringText, options, value]
-  );
+  const [sortedOptions, sortedAndFilteredOptions] = useMemo(() => {
+    const sorted = getSortedOptions({ options, contentDisplay: value });
+    const filtered = sorted.filter(option =>
+      option.label.toLowerCase().trim().includes(columnFilteringText.toLowerCase().trim())
+    );
+    return [sorted, filtered];
+  }, [columnFilteringText, options, value]);
+
+  const onToggle = (option: OptionWithVisibility) => {
+    // We use sortedOptions as base and not value because there might be options that
+    // are not in the value yet, so they're added as non-visible after the known ones.
+    onChange(sortedOptions.map(({ id, visible }) => ({ id, visible: id === option.id ? !option.visible : visible })));
+  };
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions: sortedAndFilteredOptions,
@@ -96,7 +98,7 @@ export default function ContentDisplayPreference({
       'contentDisplayPreference.liveAnnouncementDndDiscarded',
       liveAnnouncementDndDiscarded
     ),
-    sortedOptions: value,
+    sortedOptions: sortedAndFilteredOptions,
   });
 
   const renderedDragHandleAriaDescription = i18n(
@@ -179,9 +181,10 @@ export default function ContentDisplayPreference({
           const { active, over } = event;
 
           if (over && active.id !== over.id) {
-            const oldIndex = value.findIndex(({ id }) => id === active.id);
-            const newIndex = value.findIndex(({ id }) => id === over.id);
-            onChange(arrayMove([...value], oldIndex, newIndex));
+            const oldIndex = sortedOptions.findIndex(({ id }) => id === active.id);
+            const newIndex = sortedOptions.findIndex(({ id }) => id === over.id);
+            // We need to remember to trim the options down to id and visible to emit changes.
+            onChange(arrayMove([...sortedOptions], oldIndex, newIndex).map(({ id, visible }) => ({ id, visible })));
           }
         }}
         onDragCancel={() => setActiveItem(null)}
