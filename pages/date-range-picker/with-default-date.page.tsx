@@ -31,6 +31,7 @@ export default function DatePickerScenario() {
             onChange={e => setValue(e.detail.value)}
             relativeOptions={relativeOptions}
             isValidRange={isValid}
+            customRelativeRangeUnits={['second', 'minute', 'hour']}
           />
         </FormField>
         <br />

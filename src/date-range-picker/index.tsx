@@ -133,6 +133,7 @@ const DateRangePicker = React.forwardRef(
       customAbsoluteRangeControl,
       absoluteFormat = 'iso',
       hideTimeOffset,
+      customRelativeRangeUnits,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -353,6 +354,7 @@ const DateRangePicker = React.forwardRef(
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
+                customRelativeRangeUnits={customRelativeRangeUnits}
               />
             )}
           </ResetContextsForModal>
