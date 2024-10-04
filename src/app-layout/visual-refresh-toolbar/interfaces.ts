@@ -54,4 +54,5 @@ export interface AppLayoutInternals {
   onActiveGlobalDrawersChange: (newDrawerId: string) => void;
   toolsOpen: boolean;
   onToolsToggle: (value: boolean) => void;
+  notificationsHeight: number;
 }
