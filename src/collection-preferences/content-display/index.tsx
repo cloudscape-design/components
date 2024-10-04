@@ -52,20 +52,30 @@ export default function ContentDisplayPreference({
   const i18n = useInternalI18n('collection-preferences');
   const [columnFilteringText, setColumnFilteringText] = useState('');
 
-  const onToggle = (option: OptionWithVisibility) => {
-    onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
-  };
-
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const sortedAndFilteredOptions = useMemo(
-    () =>
-      getSortedOptions({ options, contentDisplay: value }).filter(option =>
-        option.label.toLowerCase().trim().includes(columnFilteringText.toLowerCase().trim())
-      ),
-    [columnFilteringText, options, value]
-  );
+  const [sortedOptions, sortedAndFilteredOptions] = useMemo(() => {
+    const sorted = getSortedOptions({ options, contentDisplay: value });
+    const filtered = sorted.filter(option =>
+      option.label.toLowerCase().trim().includes(columnFilteringText.toLowerCase().trim())
+    );
+    return [sorted, filtered];
+  }, [columnFilteringText, options, value]);
+
+  const addMissingOptionsInValue = () => {
+    // If the options prop includes options that are not in the value, we generate
+    // a new value with the missing options as non-visible added after the known ones.
+    if (value.length < sortedOptions.length) {
+      return sortedOptions.map(({ id, visible }) => ({ id, visible }));
+    }
+    return value;
+  };
+
+  const onToggle = (option: OptionWithVisibility) => {
+    const value = addMissingOptionsInValue();
+    onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
+  };
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions: sortedAndFilteredOptions,
@@ -96,7 +106,7 @@ export default function ContentDisplayPreference({
       'contentDisplayPreference.liveAnnouncementDndDiscarded',
       liveAnnouncementDndDiscarded
     ),
-    sortedOptions: value,
+    sortedOptions: sortedAndFilteredOptions,
   });
 
   const renderedDragHandleAriaDescription = i18n(
@@ -179,6 +189,7 @@ export default function ContentDisplayPreference({
           const { active, over } = event;
 
           if (over && active.id !== over.id) {
+            const value = addMissingOptionsInValue();
             const oldIndex = value.findIndex(({ id }) => id === active.id);
             const newIndex = value.findIndex(({ id }) => id === over.id);
             onChange(arrayMove([...value], oldIndex, newIndex));

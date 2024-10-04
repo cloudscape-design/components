@@ -50,4 +50,24 @@ describe('getSortedOptions', () => {
       },
     ]);
   });
+
+  it('adds options not in the state at the end of the list', () => {
+    const options = [
+      { id: 'a', label: 'a' },
+      { id: 'b', label: 'b' },
+      { id: 'c', label: 'c' },
+      { id: 'd', label: 'd' },
+    ];
+    const contentDisplay = [
+      { id: 'c', visible: false },
+      { id: 'b', visible: true },
+    ];
+    const result = getSortedOptions({ options, contentDisplay });
+    expect(result).toEqual([
+      { id: 'c', label: 'c', visible: false },
+      { id: 'b', label: 'b', visible: true },
+      { id: 'a', label: 'a', visible: false },
+      { id: 'd', label: 'd', visible: false },
+    ]);
+  });
 });
