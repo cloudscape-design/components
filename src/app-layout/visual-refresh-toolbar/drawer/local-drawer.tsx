@@ -10,6 +10,7 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
+import { getDrawerTopOffset } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -45,7 +46,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
+  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID;
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;

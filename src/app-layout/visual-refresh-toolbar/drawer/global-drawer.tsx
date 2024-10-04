@@ -10,6 +10,7 @@ import { NonCancelableEventHandler } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { AppLayoutProps } from '../../interfaces';
+import { getDrawerTopOffset } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -51,7 +52,7 @@ function AppLayoutGlobalDrawerImplementation({
     content: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
+  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
   const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
