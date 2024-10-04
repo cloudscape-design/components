@@ -48,6 +48,10 @@
   display: grid;
   grid-template-rows: max-content auto;
   gap: awsui.$space-xxs;
+
+  &-contains-image {
+    grid-template-rows: 70px auto;
+  }
 }
 
 .token-box {

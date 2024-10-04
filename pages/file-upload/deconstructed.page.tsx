@@ -94,6 +94,7 @@ export default function FileUploadScenarioStandalone() {
                     showFileThumbnail={true}
                     i18nStrings={i18nStrings}
                     onDismiss={onDismiss}
+                    limit={2}
                   />
                 ) : undefined
               }

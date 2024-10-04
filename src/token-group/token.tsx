@@ -25,6 +25,7 @@ interface TokenProps {
   warningIconAriaLabel?: string;
   className?: string;
   alignment?: TokenGroupProps.Alignment;
+  groupContainsImage?: boolean;
 }
 
 export function Token({
@@ -39,6 +40,7 @@ export function Token({
   errorIconAriaLabel,
   warningIconAriaLabel,
   alignment,
+  groupContainsImage,
   ...restProps
 }: TokenProps) {
   const errorId = useUniqueId('error');
@@ -50,7 +52,9 @@ export function Token({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.token, baseProps.className)}
+      className={clsx(styles.token, baseProps.className, {
+        [styles['token-contains-image']]: groupContainsImage,
+      })}
       role="group"
       aria-label={ariaLabel}
       aria-describedby={errorText ? errorId : warningText ? warningId : undefined}

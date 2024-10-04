@@ -39,6 +39,9 @@ function InternalFileTokenGroup({
 
   const mergedRef = useMergeRefs(__internalRootRef, tokenListRef);
 
+  const isImage = (file: File) => file.type.startsWith('image/');
+  const groupContainsImage = items.filter(item => isImage(item.file)).length > 0;
+
   return (
     <div ref={mergedRef}>
       <TokenList
@@ -62,6 +65,7 @@ function InternalFileTokenGroup({
             loading={file.loading}
             alignment={alignment}
             data-index={fileIndex}
+            groupContainsImage={groupContainsImage}
           />
         )}
         limit={limit}
