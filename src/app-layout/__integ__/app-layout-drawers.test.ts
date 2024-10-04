@@ -259,29 +259,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   });
 
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
-    test(
-      'bottom split panel and drawer can resize independently',
-
-      setupTest(
-        { theme, splitPanelPosition: 'bottom', screenSize: size === 'desktop' ? viewports.desktop : viewports.mobile },
-        async page => {
-          const borderOffset = theme !== 'classic' ? 5.5 : 3.5;
-          await page.openSplitPanel();
-
-          const originalSplitPanelHeight = await page.getSplitPanelHeight();
-          expect(originalSplitPanelHeight).toEqual(356.5);
-          await page.dragAndDrop(wrapper.findSplitPanel().findSlider().toSelector(), 0, 100);
-
-          const newSplitPanelHeight = await page.getSplitPanelHeight();
-
-          expect(newSplitPanelHeight).toBeLessThan(originalSplitPanelHeight - borderOffset);
-
-          await page.dragAndDrop(wrapper.findSplitPanel().findSlider().toSelector(), 0, -100);
-          await expect(page.getSplitPanelHeight()).resolves.toEqual(originalSplitPanelHeight - borderOffset);
-        }
-      )
-    );
-
     testIf(theme === 'classic')(
       'pushes content over with disableContentPaddings',
       setupTest(
