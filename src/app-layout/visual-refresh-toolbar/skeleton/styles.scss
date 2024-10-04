@@ -162,9 +162,6 @@
 
 .notifications-container {
   grid-area: notifications;
-  &:not(:empty) {
-    padding-block-start: awsui.$space-scaled-xs;
-  }
 }
 
 .notifications-background {

@@ -326,6 +326,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       setToolbarState,
       verticalOffsets,
       drawersOpenQueue,
+      notificationsHeight,
       setToolbarHeight,
       setNotificationsHeight,
       onSplitPanelToggle: onSplitPanelToggleHandler,
