@@ -6664,6 +6664,12 @@ is provided by its parent form field component.
       "type": "DateRangePickerProps.AbsoluteRangeControl",
     },
     {
+      "description": "Specifies which time units to allow in the custom relative range control.",
+      "name": "customRelativeRangeUnits",
+      "optional": true,
+      "type": "Array<DateRangePickerProps.TimeUnit>",
+    },
+    {
       "defaultValue": "() => ''",
       "description": "Provides a reason why a particular date in the calendar is not enabled (only when \`isDateEnabled\` returns \`false\`).
 If provided, the date becomes focusable.",

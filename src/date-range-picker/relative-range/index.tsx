@@ -3,6 +3,8 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalBox from '../../box/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
@@ -22,6 +24,7 @@ export interface RelativeRangePickerProps {
   onChange: (range: DateRangePickerProps.RelativeValue) => void;
   i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
+  customUnits?: DateRangePickerProps.TimeUnit[];
 }
 
 interface UnitSelectOption {
@@ -41,6 +44,7 @@ export default function RelativeRangePicker({
   onChange: onChangeRangeSize,
   i18nStrings,
   isSingleGrid,
+  customUnits,
 }: RelativeRangePickerProps) {
   const i18n = useInternalI18n('date-range-picker');
   const formatRelativeRange = i18n(
@@ -91,6 +95,20 @@ export default function RelativeRangePicker({
 
   const showRadioControl = clientOptions.length > 0;
   const showCustomControls = clientOptions.length === 0 || selectedRadio === CUSTOM_OPTION_SELECT_KEY;
+
+  let finalUnits = dateOnly ? dayUnits : units;
+  if (customUnits) {
+    finalUnits = customUnits.filter(unit => {
+      if (units.includes(unit)) {
+        return true;
+      }
+      warnOnce(
+        'DateRangePicker',
+        `Invalid unit found in customRelativeRangeUnits: ${unit}. This entry will be ignored.`
+      );
+      return false;
+    });
+  }
 
   return (
     <div>
@@ -188,7 +206,7 @@ export default function RelativeRangePicker({
                         setCustomUnitOfTime(unit);
                         onChangeRangeSize({ amount: customDuration, unit, type: 'relative' });
                       }}
-                      options={(dateOnly ? dayUnits : units).map(unit => ({
+                      options={finalUnits.map(unit => ({
                         value: unit,
                         label: formatUnit?.(unit, customDuration),
                       }))}

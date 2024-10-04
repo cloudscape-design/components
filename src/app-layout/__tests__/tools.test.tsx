@@ -6,7 +6,7 @@ import { act, waitFor } from '@testing-library/react';
 import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
-describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, () => {
+describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ theme }) => {
   test('opens tools drawer', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
@@ -55,5 +55,25 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, () 
     await waitFor(() => {
       expect(wrapper.find('#custom-button')!.getElement()).toEqual(document.activeElement);
     });
+  });
+
+  test('should not open partially controllable tools', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout tools={<button id="custom-button">Click me</button>} toolsOpen={false} />
+    );
+
+    wrapper.findToolsToggle()!.click();
+
+    if (theme === 'refresh-toolbar') {
+      expect(wrapper.findTools()).toBeFalsy();
+    }
+
+    if (theme === 'refresh') {
+      expect(wrapper.findTools().getElement()).toHaveAttribute('aria-hidden', 'true');
+    }
+
+    if (theme === 'classic') {
+      expect(wrapper.findTools().getElement().style).not.toContain('width');
+    }
   });
 });

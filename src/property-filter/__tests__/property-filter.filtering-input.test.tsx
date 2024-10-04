@@ -409,6 +409,15 @@ describe('count text', () => {
     });
     expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
   });
+
+  test('is visible when there is at least 1 token group', () => {
+    const { propertyFilterWrapper: wrapper } = renderComponent({
+      enableTokenGroups: true,
+      countText: '5 matches',
+      query: { operation: 'or', tokens: [], tokenGroups: [{ propertyKey: 'string', value: 'first', operator: ':' }] },
+    });
+    expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
+  });
 });
 
 describe('constraint text', () => {

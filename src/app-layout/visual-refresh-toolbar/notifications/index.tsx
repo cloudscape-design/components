@@ -21,8 +21,10 @@ export function AppLayoutNotificationsImplementation({
   appLayoutInternals,
   children,
 }: AppLayoutNotificationsImplementationProps) {
-  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
+  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets, notificationsHeight } =
+    appLayoutInternals;
   const ref = useRef<HTMLElement>(null);
+  const hasNotificationsContent = notificationsHeight > 0;
   useResizeObserver(ref, entry => setNotificationsHeight(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
@@ -34,7 +36,10 @@ export function AppLayoutNotificationsImplementation({
   return (
     <NotificationsSlot
       ref={ref}
-      className={clsx(stickyNotifications && styles['sticky-notifications'])}
+      className={clsx(
+        stickyNotifications && styles['sticky-notifications'],
+        hasNotificationsContent && styles['has-notifications-content']
+      )}
       style={{
         insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
       }}

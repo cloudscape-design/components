@@ -169,6 +169,11 @@ export interface DateRangePickerProps
   customAbsoluteRangeControl?: DateRangePickerProps.AbsoluteRangeControl;
 
   /**
+   * Specifies which time units to allow in the custom relative range control.
+   */
+  customRelativeRangeUnits?: DateRangePickerProps.TimeUnit[];
+
+  /**
    * Specifies the time format to use for displaying the absolute time range.
    *
    * It can take the following values:

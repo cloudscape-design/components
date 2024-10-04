@@ -107,3 +107,11 @@ export function computeVerticalLayout({
 
   return { toolbar, notifications, header, drawers };
 }
+
+export function getDrawerTopOffset(
+  verticalOffsets: VerticalLayoutOutput,
+  isMobile: boolean,
+  placement: AppLayoutPropsWithDefaults['placement']
+) {
+  return isMobile ? verticalOffsets.toolbar : verticalOffsets.drawers ?? placement.insetBlockStart;
+}

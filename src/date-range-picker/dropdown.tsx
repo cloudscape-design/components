@@ -39,7 +39,13 @@ export interface DateRangePickerDropdownProps
     >,
     Pick<
       DateRangePickerProps,
-      'startOfWeek' | 'getTimeOffset' | 'timeOffset' | 'ariaLabelledby' | 'ariaDescribedby' | 'i18nStrings'
+      | 'startOfWeek'
+      | 'getTimeOffset'
+      | 'timeOffset'
+      | 'ariaLabelledby'
+      | 'ariaDescribedby'
+      | 'i18nStrings'
+      | 'customRelativeRangeUnits'
     > {
   onClear: () => void;
   onApply: (value: null | DateRangePickerProps.Value) => DateRangePickerProps.ValidationResult;
@@ -70,6 +76,7 @@ export function DateRangePickerDropdown({
   ariaLabelledby,
   ariaDescribedby,
   customAbsoluteRangeControl,
+  customRelativeRangeUnits,
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
 
@@ -198,6 +205,7 @@ export function DateRangePickerDropdown({
                       initialSelection={selectedRelativeRange}
                       onChange={range => setSelectedRelativeRange(range)}
                       i18nStrings={i18nStrings}
+                      customUnits={customRelativeRangeUnits}
                     />
                   )}
                 </InternalSpaceBetween>
