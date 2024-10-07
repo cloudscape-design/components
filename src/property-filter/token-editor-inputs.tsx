@@ -6,6 +6,7 @@ import React from 'react';
 import InternalAutosuggest from '../autosuggest/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
+import InternalMultiselect from '../multiselect/internal.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';
 import { getAllowedOperators, getPropertySuggestions } from './controller.js';
@@ -122,14 +123,27 @@ interface ValueInputProps {
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStringsInternal;
-  onChangeValue: (value: string) => void;
+  onChangeValue: (value: unknown) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
-  value: undefined | string;
+  value: unknown;
 }
 
-export function ValueInput({
+export function ValueInput(props: ValueInputProps) {
+  const { property, operator, value, onChangeValue } = props;
+  const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
+
+  if (OperatorForm) {
+    return <OperatorForm value={value} onChange={onChangeValue} operator={operator} />;
+  }
+  if (property?.getTokenType(operator) === 'enum') {
+    return <ValueInputEnum {...props} />;
+  }
+  return <ValueInputAuto {...props} />;
+}
+
+function ValueInputAuto({
   property,
   operator,
   value,
@@ -151,11 +165,7 @@ export function ValueInput({
     : { empty: asyncProps.empty };
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
-  const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
-
-  return OperatorForm ? (
-    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
-  ) : (
+  return (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={matchedOption?.label ?? value ?? ''}
@@ -165,6 +175,44 @@ export function ValueInput({
       options={valueOptions}
       {...asyncValueAutosuggestProps}
       virtualScroll={true}
+    />
+  );
+}
+
+function ValueInputEnum({
+  property,
+  operator,
+  value: unknownValue,
+  onChangeValue,
+  asyncProps,
+  filteringOptions,
+  onLoadItems,
+}: ValueInputProps) {
+  const valueOptions = property
+    ? filteringOptions
+        .filter(option => option.property?.propertyKey === property.propertyKey)
+        .map(({ label, value }) => ({ label, value }))
+    : [];
+
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty, undefined, operator);
+  const asyncValueAutosuggestProps = property?.propertyKey
+    ? { statusType: 'finished' as const, ...valueAutosuggestHandlers, ...asyncProps }
+    : { statusType: 'finished' as const, empty: asyncProps.empty };
+
+  const value = Array.isArray(unknownValue) ? unknownValue : [unknownValue];
+  const selectedOptions = valueOptions.filter(option => value.includes(option.value));
+
+  return (
+    <InternalMultiselect
+      filteringType="auto"
+      selectedOptions={selectedOptions}
+      onChange={e => onChangeValue(e.detail.selectedOptions.map(o => o.value))}
+      disabled={!operator}
+      options={valueOptions}
+      {...asyncValueAutosuggestProps}
+      inlineTokens={true}
+      hideTokens={true}
+      keepOpen={true}
     />
   );
 }

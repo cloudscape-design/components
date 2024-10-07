@@ -114,6 +114,10 @@ export const createDefaultProps = (
   onChange: () => {},
   query: { tokens: [], operation: 'and' },
   i18nStrings,
+  filteringLoadingText: 'Loading status',
+  filteringErrorText: 'Error status',
+  filteringFinishedText: 'Finished status',
+  filteringRecoveryText: 'Retry',
 });
 
 export function toInternalProperties(properties: FilteringProperty[]): InternalFilteringProperty[] {
@@ -124,13 +128,23 @@ export function toInternalProperties(properties: FilteringProperty[]): InternalF
     propertyGroup: property.group,
     operators: (property.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
     defaultOperator: property.defaultOperator ?? '=',
+    getTokenType: () => 'value',
     getValueFormatter: () => null,
     getValueFormRenderer: () => null,
     externalProperty: property,
   }));
 }
 
-export function StatefulPropertyFilter(props: Omit<PropertyFilterProps, 'onChange'>) {
+export function StatefulPropertyFilter(props: PropertyFilterProps) {
   const [query, setQuery] = useState<PropertyFilterProps.Query>(props.query);
-  return <PropertyFilter {...props} query={query} onChange={e => setQuery(e.detail)} />;
+  return (
+    <PropertyFilter
+      {...props}
+      query={query}
+      onChange={event => {
+        props.onChange(event);
+        setQuery(event.detail);
+      }}
+    />
+  );
 }

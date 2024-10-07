@@ -32,6 +32,7 @@ const nameProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Name values',
   operators: ['=', '!='],
   defaultOperator: '=',
+  getTokenType: () => 'value',
   getValueFormatter: () => null,
   getValueFormRenderer: () => null,
   externalProperty,
@@ -43,6 +44,7 @@ const dateProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Date values',
   operators: ['=', '!='],
   defaultOperator: '=',
+  getTokenType: () => 'value',
   getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd') : ''),
   getValueFormRenderer:
     () =>
@@ -60,6 +62,7 @@ const dateTimeProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Date time values',
   operators: ['=', '!='],
   defaultOperator: '=',
+  getTokenType: () => 'value',
   getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd hh:mm') : ''),
   getValueFormRenderer:
     () =>

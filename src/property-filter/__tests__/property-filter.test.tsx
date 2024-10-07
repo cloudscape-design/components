@@ -12,7 +12,6 @@ import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
-  Ref,
 } from '../../../lib/components/property-filter/interfaces';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
@@ -88,7 +87,7 @@ const filteringOptions: readonly FilteringOption[] = [
 
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
+const renderComponent = (props?: Partial<PropertyFilterProps>) => {
   const { container } = render(<PropertyFilter {...defaultProps} {...props} />);
   return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
 };
