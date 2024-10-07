@@ -370,8 +370,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       const page = new AppLayoutSplitViewPage(browser);
       const dimensions = {
         classic: { height: 1400, width: 945 },
-        'visual-refresh': { height: 1200, width: 1020 },
-        'visual-refresh-toolbar': { height: 1400, width: 875 },
+        refresh: { height: 1200, width: 1020 },
+        'refresh-toolbar': { height: 1400, width: 875 },
       }[theme];
       const content = wrapper.findContentRegion();
 
@@ -379,8 +379,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       await page.setWindowSize(dimensions);
       const params = new URLSearchParams({
         splitPanelPosition: 'side',
-        visualRefresh: `${theme.startsWith('visual-refresh')}`,
-        appLayoutToolbar: `${theme === 'visual-refresh-toolbar'}`,
+        visualRefresh: `${theme.startsWith('refresh')}`,
+        appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       });
       await browser.url(`#/light/app-layout/with-split-panel?${params.toString()}`);
       await page.waitForVisible(content.toSelector());
