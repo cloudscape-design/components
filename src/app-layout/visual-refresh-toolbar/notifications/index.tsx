@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
@@ -22,11 +23,10 @@ export function AppLayoutNotificationsImplementation({
   appLayoutInternals,
   children,
 }: AppLayoutNotificationsImplementationProps) {
-  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets, notificationsHeight } =
-    appLayoutInternals;
-  const ref = useRef<HTMLDivElement>(null);
-  const hasNotificationsContent = notificationsHeight > 0;
-  useResizeObserver(ref, entry => setNotificationsHeight(entry.borderBoxHeight));
+  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
+  const [hasNotificationsContent, contentRef] = useContainerQuery(rect => rect.borderBoxHeight > 0);
+  const rootRef = useRef<HTMLDivElement>(null);
+  useResizeObserver(rootRef, entry => setNotificationsHeight(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
       setNotificationsHeight(0);
@@ -36,17 +36,23 @@ export function AppLayoutNotificationsImplementation({
   }, []);
   return (
     <NotificationsSlot
+      ref={rootRef}
       className={clsx(
         appLayoutInternals.headerVariant === 'high-contrast' && highContrastHeaderClassName,
         stickyNotifications && styles['sticky-notifications'],
-          hasNotificationsContent && styles['has-notifications-content'],
+        hasNotificationsContent && styles['has-notifications-content'],
         appLayoutInternals.headerVariant !== 'high-contrast' && styles['sticky-notifications-with-background']
       )}
       style={{
         insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
       }}
     >
-      <div ref={ref} className={testutilStyles.notifications} role="region" aria-label={ariaLabels?.notifications}>
+      <div
+        ref={contentRef}
+        className={testutilStyles.notifications}
+        role="region"
+        aria-label={ariaLabels?.notifications}
+      >
         {children}
       </div>
     </NotificationsSlot>
