@@ -5,6 +5,7 @@ import React, { useEffect, useImperativeHandle, useState } from 'react';
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../internal/events';
+import * as tokens from '../../internal/generated/styles/tokens';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
@@ -378,7 +379,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
           style={{
-            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
+            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px + ${resolvedStickyNotifications && notificationsHeight > 0 ? tokens.spaceXs : '0px'}`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
           }}
