@@ -99,8 +99,10 @@ export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomEr
 
     request.promise
       .then(response => {
-        setItems(prev => [...prev, ...(response.items as Item[])]);
-        setStatus(response.hasNextPage ? 'pending' : 'finished');
+        if (!request.cancelled) {
+          setItems(prev => [...prev, ...(response.items as Item[])]);
+          setStatus(response.hasNextPage ? 'pending' : 'finished');
+        }
       })
       .catch(() => {
         setStatus('error');
