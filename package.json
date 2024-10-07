@@ -122,7 +122,7 @@
     "react-virtual": "^2.8.2",
     "replace-in-files": "^3.0.0",
     "rimraf": "^5.0.5",
-    "rollup": "^3.5.1",
+    "rollup": "^3.29.5",
     "rollup-plugin-license": "^3.0.1",
     "sass": "^1.43.4",
     "sass-loader": "^12.3.0",
