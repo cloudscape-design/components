@@ -262,6 +262,26 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     public: true,
   },
+  colorBackgroundChatBubbleSent: {
+    description: 'The background color of `sent` chat bubble.',
+    themeable: false,
+    public: true,
+  },
+  colorBackgroundChatBubbleReceived: {
+    description: 'The background color of `received` chat bubble.',
+    themeable: false,
+    public: true,
+  },
+  colorTextChatBubbleSent: {
+    description: 'Text color of `sent` chat bubble.',
+    themeable: false,
+    public: true,
+  },
+  colorTextChatBubbleReceived: {
+    description: 'Text color of `received` chat bubble.',
+    themeable: false,
+    public: true,
+  },
   colorBorderButtonNormalActive: {
     description: 'The border color of normal buttons in active state.',
     themeable: true,
