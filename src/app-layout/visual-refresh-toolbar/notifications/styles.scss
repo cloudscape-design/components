@@ -2,7 +2,10 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use '../../../internal/styles/tokens' as awsui;
+
 .sticky-notifications {
   position: sticky;
   z-index: 850;
+  background-color: awsui.$color-background-layout-main;
 }
