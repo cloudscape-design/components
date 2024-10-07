@@ -1,7 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import React, { useState } from 'react';
 
+import { SpaceBetween } from '~components';
 import Select, { SelectProps } from '~components/select';
 
 import ScreenshotArea from '../utils/screenshot-area';
@@ -25,11 +27,16 @@ const options: SelectProps.Options = [
     options: [{ value: 'forth', label: 'Nested option' }],
   },
 ];
+const options2: SelectProps.Options = [
+  {
+    label: 'Option group',
+    options: [{ value: 'forth', label: 'Nested option' }],
+  },
+];
 
 export default function () {
   const [selected, setSelected] = useState<SelectProps['selectedOption']>(null);
   const [virtualScroll, setVirtualScroll] = useState<boolean>(false);
-
   return (
     <>
       <h1>Select for screenshot</h1>
@@ -44,27 +51,41 @@ export default function () {
           paddingBlockEnd: 300,
         }}
       >
-        <Select
-          placeholder="Select an option"
-          selectedOption={selected}
-          options={options}
-          filteringType="manual"
-          finishedText="End of all results"
-          onChange={event => setSelected(event.detail.selectedOption)}
-          virtualScroll={virtualScroll}
-          ariaLabel="select demo"
-          data-testid="select-demo"
-        />
-        <Select
-          placeholder="Select an option"
-          selectedOption={selected}
-          options={options}
-          finishedText="End of all results"
-          onChange={event => setSelected(event.detail.selectedOption)}
-          virtualScroll={virtualScroll}
-          ariaLabel="select demo no filtering"
-          data-testid="select-demo-no-filtering"
-        />
+        <SpaceBetween size="s">
+          <Select
+            placeholder="Demo with manual filtering"
+            selectedOption={selected}
+            options={options}
+            filteringType="manual"
+            finishedText="End of all results"
+            onChange={event => setSelected(event.detail.selectedOption)}
+            virtualScroll={virtualScroll}
+            ariaLabel="select demo"
+            data-testid="select-demo"
+          />
+
+          <Select
+            placeholder="Demo with no filtering"
+            selectedOption={selected}
+            options={options}
+            finishedText="End of all results"
+            onChange={event => setSelected(event.detail.selectedOption)}
+            virtualScroll={virtualScroll}
+            ariaLabel="select demo no filtering"
+            data-testid="select-demo-no-filtering"
+          />
+
+          <Select
+            placeholder="Demo with a single option inside group"
+            selectedOption={selected}
+            options={options2}
+            // finishedText="End of all results"
+            onChange={event => setSelected(event.detail.selectedOption)}
+            // virtualScroll={virtualScroll}
+            ariaLabel="select demo single option inside group"
+            data-testid="select-demo-single-option-inside-group"
+          />
+        </SpaceBetween>
       </ScreenshotArea>
     </>
   );

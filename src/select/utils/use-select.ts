@@ -238,7 +238,7 @@ export function useSelect({
     const hasSelected = totalSelected > 0;
     const allSelected = totalSelected === option.options.length;
     return {
-      selected: hasSelected && allSelected,
+      selected: hasSelected && allSelected && useInteractiveGroups,
       indeterminate: hasSelected && !allSelected,
     };
   };
@@ -252,7 +252,6 @@ export function useSelect({
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
         : __selectedOptions.indexOf(options[index + 1]) > -1;
-
     const optionProps: any = {
       key: index,
       option,
