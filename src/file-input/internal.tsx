@@ -7,6 +7,8 @@ import clsx from 'clsx';
 import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { fireNonCancelableEvent } from '../internal/events';
+import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
@@ -36,8 +38,10 @@ const InternalFileInput = React.forwardRef(
     const onUploadInputBlur = () => setIsFocused(false);
 
     const onUploadInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
-      onChange(target.files ? Array.from(target.files) : []);
+      fireNonCancelableEvent(onChange, { value: target.files ? Array.from(target.files) : [] });
     };
+
+    checkControlled('FileInput', 'value', value, 'onChange', onChange);
 
     const nativeAttributes: React.HTMLAttributes<HTMLInputElement> = {
       'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
@@ -66,7 +70,7 @@ const InternalFileInput = React.forwardRef(
     }, [value]);
 
     return (
-      <div className={styles['file-input-container']}>
+      <div className={clsx(styles['file-input-container'])}>
         {/* This is the actual interactive and accessible file-upload element. */}
         {/* It is visually hidden to achieve the desired UX design. */}
         <input

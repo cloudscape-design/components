@@ -50,10 +50,10 @@ export default function FileUploadScenarioStandalone() {
         <SpaceBetween size="xl">
           <Header variant="h1">File upload: deconstructed</Header>
 
-          <Checkbox checked={acceptMultiple} onChange={event => setAcceptMultiple(event.detail.checked)}>
+          <Checkbox checked={acceptMultiple} onChange={(event: any) => setAcceptMultiple(event.detail.checked)}>
             Accept multiple files
           </Checkbox>
-          <Checkbox checked={verticalAlign} onChange={event => setVerticalAlign(event.detail.checked)}>
+          <Checkbox checked={verticalAlign} onChange={(event: any) => setVerticalAlign(event.detail.checked)}>
             Vertical alignment
           </Checkbox>
 
@@ -75,7 +75,7 @@ export default function FileUploadScenarioStandalone() {
                     ref={contractsRef}
                     multiple={acceptMultiple}
                     value={formState.files}
-                    onChange={handleFilesChange}
+                    onChange={(event: any) => handleFilesChange(event.detail.value)}
                     i18nStrings={i18nStrings}
                   />
                 </Box>
@@ -110,7 +110,7 @@ export default function FileUploadScenarioStandalone() {
               ref={contractsRef}
               multiple={acceptMultiple}
               value={formState.files}
-              onChange={handleFilesChange}
+              onChange={(event: any) => handleFilesChange(event.detail.value)}
               //   accept="application/pdf, image/*"
               i18nStrings={i18nStrings}
             />

@@ -131,7 +131,7 @@ function InternalFileUpload(
             accept={accept}
             ariaRequired={ariaRequired}
             multiple={multiple}
-            onChange={handleFilesChange}
+            onChange={event => handleFilesChange(event.detail.value)}
             value={value}
             {...restProps}
             ariaDescribedby={ariaDescribedBy}

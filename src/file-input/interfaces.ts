@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BaseComponentProps } from '../internal/base-component';
 import { FormFieldCommonValidationControlProps } from '../internal/context/form-field-context';
+import { NonCancelableEventHandler } from '../internal/events';
 
 export interface FileInputProps extends BaseComponentProps, FormFieldCommonValidationControlProps {
   /**
@@ -30,7 +31,8 @@ export interface FileInputProps extends BaseComponentProps, FormFieldCommonValid
    * Called when the user selects new file(s), or removes a file.
    * The event `detail` contains the current value of the component.
    */
-  onChange: (files: File[]) => void;
+  onChange: NonCancelableEventHandler<FileInputProps.ChangeDetail>;
+  //onChange: (files: File[]) => void;
   /**
    * Specifies the currently selected file(s).
    * If you want to clear the selection, use empty array.
