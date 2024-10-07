@@ -1,13 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
 
-import AppLayout, { AppLayoutProps } from '~components/app-layout';
-import Header from '~components/header';
-import Popover from '~components/popover';
-import SpaceBetween from '~components/space-between';
-import SplitPanel from '~components/split-panel';
-import Toggle from '~components/toggle';
+import React, { useContext } from 'react';
+
+import { AppLayout, AppLayoutProps, Box, Header, Popover, SpaceBetween, SplitPanel, Toggle } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -61,26 +57,14 @@ const DEMO_CONTENT = (
       pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
       Pharetra pharetra massa massa ultricies mi.
     </p>
-    <p>
-      Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Porttitor
-      eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris nunc congue nisi vitae
-      suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat in. Arcu felis bibendum ut
-      tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In hac habitasse
-      platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi ipsum. Ornare aenean euismod elementum
-      nisi quis. Elementum curabitur vitae nunc sed velit dignissim sodales. Amet tellus cras adipiscing enim eu. Id
-      interdum velit laoreet id donec ultrices tincidunt. Ullamcorper eget nulla facilisi etiam. Sodales neque sodales
-      ut etiam sit amet nisl purus. Auctor urna nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis
-      pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
-      Pharetra pharetra massa massa ultricies mi.
-    </p>
   </div>
 );
 
 export default function () {
-  const { urlParams, setUrlParams } = useContext(AppContext as SplitPanelDemoContext);
-  const [splitPanelEnabled, setSplitPanelEnabled] = useState(urlParams.splitPanelEnabled ?? true);
-  const [toolsPanelEnabled, setToolsPanelEnabled] = useState(urlParams.toolsEnabled ?? true);
-
+  const {
+    urlParams: { splitPanelEnabled = true, toolsEnabled = true, splitPanelPosition },
+    setUrlParams,
+  } = useContext(AppContext as SplitPanelDemoContext);
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
@@ -88,10 +72,8 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        toolsHide={!toolsPanelEnabled}
-        splitPanelPreferences={{
-          position: urlParams.splitPanelPosition,
-        }}
+        toolsHide={!toolsEnabled}
+        splitPanelPreferences={{ position: splitPanelPosition }}
         onSplitPanelPreferencesChange={event => {
           const { position } = event.detail;
           setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
@@ -124,28 +106,28 @@ export default function () {
                 Demo page
               </Header>
             </div>
+
             <SpaceBetween size="l">
-              <Toggle
-                id="enable-split-panel"
-                checked={splitPanelEnabled}
-                onChange={e => {
-                  setSplitPanelEnabled(e.detail.checked);
-                  setUrlParams({ splitPanelEnabled: e.detail.checked });
-                }}
-              >
-                Enable split panel
-              </Toggle>
-              <Toggle
-                id="enable-tools-panel"
-                checked={toolsPanelEnabled}
-                onChange={e => {
-                  setToolsPanelEnabled(e.detail.checked);
-                  setUrlParams({ toolsEnabled: e.detail.checked });
-                }}
-              >
-                Enable tools panel
-              </Toggle>
+              <SpaceBetween size="s" direction="horizontal">
+                <Toggle
+                  id="enable-split-panel"
+                  checked={splitPanelEnabled}
+                  onChange={e => setUrlParams({ splitPanelEnabled: e.detail.checked })}
+                >
+                  Enable split panel
+                </Toggle>
+                <Toggle
+                  id="enable-tools-panel"
+                  checked={toolsEnabled}
+                  onChange={e => setUrlParams({ toolsEnabled: e.detail.checked })}
+                >
+                  Enable tools panel
+                </Toggle>
+              </SpaceBetween>
+
               <Containers />
+
+              <Box>{DEMO_CONTENT}</Box>
             </SpaceBetween>
           </>
         }

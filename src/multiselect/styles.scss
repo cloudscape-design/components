@@ -10,6 +10,14 @@
   @include styles.styles-reset;
 }
 
+.embedded {
+  @include styles.styles-reset;
+
+  display: flex;
+  flex-direction: column;
+  inline-size: 100%;
+}
+
 .tokens {
   margin-block-start: awsui.$space-scaled-xs;
 }

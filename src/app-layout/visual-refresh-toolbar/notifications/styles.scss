@@ -7,6 +7,7 @@
 .sticky-notifications {
   position: sticky;
   z-index: 850;
+  background-color: awsui.$color-background-layout-main;
 }
 
 .has-notifications-content {

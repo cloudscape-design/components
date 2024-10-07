@@ -65,8 +65,8 @@ const InternalMultiselect = React.forwardRef(
 
     const selfControlId = useUniqueId('trigger');
     const controlId = formFieldContext.controlId ?? selfControlId;
-    const ariaLabelId = useUniqueId('multiselect-arialabel-');
-    const footerId = useUniqueId('footer');
+    const ariaLabelId = useUniqueId('multiselect-ariaLabel-');
+    const footerId = useUniqueId('multiselect-footer-');
 
     const [filteringValue, setFilteringValue] = useState('');
     const multiselectProps = useMultiselect({
