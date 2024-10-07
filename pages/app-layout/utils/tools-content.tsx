@@ -1,20 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React from 'react';
 
 import Icon from '~components/icon';
-
-function Counter() {
-  const [count, setCount] = useState(0);
-  return (
-    <>
-      <button data-testid="count-increment" onClick={() => setCount(count + 1)}>
-        Inc
-      </button>
-      <div>Count: {count}</div>
-    </>
-  );
-}
 
 export const long = (
   <>
@@ -22,7 +10,6 @@ export const long = (
       When you want to use CloudFront to distribute your content, you create a distribution and choose the configuration
       settings you want. For example:
     </p>
-    <Counter />
     <ul>
       <li>
         Your content origin—that is, the Amazon S3 bucket, MediaPackage channel, or HTTP server from which CloudFront
