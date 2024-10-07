@@ -38,7 +38,7 @@ import {
   Token,
   TokenGroup,
 } from './interfaces';
-import { PropertyEditor } from './property-editor';
+import { PropertyEditorContent, PropertyEditorFooter } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
@@ -297,8 +297,12 @@ const PropertyFilterInternal = React.forwardRef(
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
 
-    const operatorForm =
-      parsedText.step === 'property' && parsedText.property.getValueFormRenderer(parsedText.operator);
+    const propertyStep = parsedText.step === 'property' ? parsedText : null;
+    const customValueKey = propertyStep ? propertyStep.property.propertyKey + ':' + propertyStep.operator : '';
+    const [customFormValueRecord, setCustomFormValueRecord] = useState<Record<string, any>>({});
+    const customFormValue = customValueKey in customFormValueRecord ? customFormValueRecord[customValueKey] : null;
+    const setCustomFormValue = (value: null | any) => setCustomFormValueRecord({ [customValueKey]: value });
+    const operatorForm = propertyStep && propertyStep.property.getValueFormRenderer(propertyStep.operator);
 
     const searchResultsId = useUniqueId('property-filter-search-results');
     const constraintTextId = useUniqueId('property-filter-constraint');
@@ -330,26 +334,41 @@ const PropertyFilterInternal = React.forwardRef(
             expandToViewport={expandToViewport}
             onOptionClick={handleSelected}
             customForm={
-              operatorForm && (
-                <PropertyEditor
-                  property={parsedText.property}
-                  operator={parsedText.operator}
-                  filter={parsedText.value}
-                  operatorForm={operatorForm}
-                  i18nStrings={i18nStrings}
-                  onCancel={() => {
-                    setFilteringText('');
-                    inputRef.current?.close();
-                    inputRef.current?.focus({ preventDropdown: true });
-                  }}
-                  onSubmit={token => {
-                    addToken(token);
-                    setFilteringText('');
-                    inputRef.current?.focus({ preventDropdown: true });
-                    inputRef.current?.close();
-                  }}
-                />
-              )
+              operatorForm
+                ? {
+                    content: (
+                      <PropertyEditorContent
+                        key={customValueKey}
+                        property={propertyStep.property}
+                        operator={propertyStep.operator}
+                        filter={propertyStep.value}
+                        operatorForm={operatorForm}
+                        value={customFormValue}
+                        onChange={setCustomFormValue}
+                      />
+                    ),
+                    footer: (
+                      <PropertyEditorFooter
+                        key={customValueKey}
+                        property={propertyStep.property}
+                        operator={propertyStep.operator}
+                        value={customFormValue}
+                        i18nStrings={i18nStrings}
+                        onCancel={() => {
+                          setFilteringText('');
+                          inputRef.current?.close();
+                          inputRef.current?.focus({ preventDropdown: true });
+                        }}
+                        onSubmit={token => {
+                          addToken(token);
+                          setFilteringText('');
+                          inputRef.current?.focus({ preventDropdown: true });
+                          inputRef.current?.close();
+                        }}
+                      />
+                    ),
+                  }
+                : undefined
             }
             hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}

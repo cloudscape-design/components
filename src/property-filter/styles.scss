@@ -46,10 +46,6 @@ $operator-field-width: 120px;
   padding-inline: awsui.$space-m;
   overflow-y: auto;
 
-  &-form {
-    margin-block-end: awsui.$space-scaled-l;
-  }
-
   &-field-property {
     /* used in test-utils */
   }
@@ -73,8 +69,6 @@ $operator-field-width: 120px;
   &-actions {
     display: flex;
     justify-content: flex-end;
-    padding-block-start: awsui.$space-s;
-    border-block-start: 1px solid #{awsui.$color-border-dropdown-item-default};
   }
 }
 
@@ -161,6 +155,7 @@ $operator-field-width: 120px;
         align-items: flex-end;
         justify-content: flex-end;
       }
+
       &.token-editor-narrow:nth-child(4) {
         display: flex;
         justify-content: flex-end;
