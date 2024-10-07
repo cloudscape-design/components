@@ -195,7 +195,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   testIf(theme !== 'refresh-toolbar')(
     'updates side split panel position when using different width drawers',
-    setupTest({ theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } }, async page => {
+    setupTest({ theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1430 } }, async page => {
       await page.openFirstDrawer();
       await page.openSplitPanel();
       await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toEqual(true);
