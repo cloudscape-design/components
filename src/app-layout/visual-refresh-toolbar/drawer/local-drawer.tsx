@@ -71,6 +71,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           aria-hidden={!activeDrawer}
           aria-label={computedAriaLabels.content}
           className={clsx(styles.drawer, sharedStyles['with-motion'], {
+            [styles['drawer-hidden']]: !activeDrawer,
             [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
             [styles.legacy]: isLegacyDrawer,
             [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
