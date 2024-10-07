@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import styles from './styles.css.js';
+
 export interface TabTrapProps {
   focusNextCallback: (event: React.FocusEvent) => void;
   disabled?: boolean;
@@ -13,5 +15,5 @@ export interface TabTrapProps {
  * which can forward the focus to another element.
  */
 export default function TabTrap({ focusNextCallback, disabled = false }: TabTrapProps) {
-  return <div tabIndex={disabled ? -1 : 0} onFocus={focusNextCallback} />;
+  return <div className={styles.root} tabIndex={disabled ? -1 : 0} onFocus={focusNextCallback} />;
 }
