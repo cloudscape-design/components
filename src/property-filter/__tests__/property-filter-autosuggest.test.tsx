@@ -172,12 +172,15 @@ describe('Property filter autosuggest', () => {
         enteredTextLabel={() => ''}
         value=""
         onChange={() => {}}
-        customForm={
-          <div>
-            <button id="first-focusable">first focusable</button>
-            <button id="second-focusable">second focusable</button>
-          </div>
-        }
+        customForm={{
+          content: (
+            <div>
+              <button id="first-focusable">first focusable</button>
+              <button id="second-focusable">second focusable</button>
+            </div>
+          ),
+          footer: null,
+        }}
       />
     );
     wrapper.focus();

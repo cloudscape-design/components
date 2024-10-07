@@ -36,7 +36,10 @@ const DROPDOWN_WIDTH_CUSTOM_FORM = 200;
 export interface PropertyFilterAutosuggestProps
   extends Omit<AutosuggestProps, 'filteringResultsText'>,
     InternalBaseComponentProps {
-  customForm?: React.ReactNode;
+  customForm?: {
+    content: React.ReactNode;
+    footer: React.ReactNode;
+  };
   filterText?: string;
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
@@ -164,7 +167,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
     if (customForm) {
       content = (
         <div ref={customFormRef} className={styles['custom-content-wrapper']}>
-          {customForm}
+          {customForm.content}
         </div>
       );
     } else if (autosuggestItemsState.items.length > 0) {
@@ -210,12 +213,14 @@ const PropertyFilterAutosuggest = React.forwardRef(
         dropdownContentKey={customForm ? 'custom' : 'options'}
         dropdownContent={content}
         dropdownFooter={
-          dropdownStatus.isSticky && dropdownStatus.content ? (
+          dropdownStatus.isSticky && dropdownStatus.content && !customForm ? (
             <DropdownFooter
               content={dropdownStatus.content}
               hasItems={autosuggestItemsState.items.length >= 1}
               id={footerId}
             />
+          ) : customForm ? (
+            customForm.footer
           ) : null
         }
         dropdownWidth={customForm ? DROPDOWN_WIDTH_CUSTOM_FORM : DROPDOWN_WIDTH_OPTIONS_LIST}
