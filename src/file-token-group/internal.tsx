@@ -12,6 +12,7 @@ import InternalFileToken from './file-token.js';
 import { FileTokenGroupProps } from './interfaces.js';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 type InternalFileTokenGroupProps = FileTokenGroupProps & InternalBaseComponentProps;
 
@@ -43,7 +44,7 @@ function InternalFileTokenGroup({
   const groupContainsImage = items.filter(item => isImage(item.file)).length > 0;
 
   return (
-    <div ref={mergedRef}>
+    <div ref={mergedRef} className={testStyles.root}>
       <TokenList
         isGrid={true}
         alignment={alignment}
@@ -64,8 +65,8 @@ function InternalFileTokenGroup({
             disabled={file.disabled}
             loading={file.loading}
             alignment={alignment}
-            data-index={fileIndex}
             groupContainsImage={groupContainsImage}
+            dataIndex={fileIndex}
           />
         )}
         limit={limit}

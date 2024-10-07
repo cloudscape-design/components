@@ -40,6 +40,7 @@ export interface FileTokenProps extends BaseComponentProps {
   disabled?: boolean;
   alignment?: TokenGroupProps.Alignment;
   groupContainsImage?: boolean;
+  dataIndex: number;
 }
 
 function InternalFileToken({
@@ -55,6 +56,7 @@ function InternalFileToken({
   loading,
   alignment,
   groupContainsImage,
+  dataIndex,
 }: FileTokenProps) {
   const isImage = file.type.startsWith('image/');
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
@@ -81,10 +83,10 @@ function InternalFileToken({
         warningText={warningText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
         warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-        data-index={0}
         disabled={disabled}
         alignment={alignment}
         groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal'}
+        data-index={dataIndex}
       >
         <InternalBox className={styles['file-option']}>
           {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}

@@ -2,46 +2,47 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import selectors from '../../../file-input/styles.selectors.js';
+import selectors from '../../../file-token-group/styles.selectors.js';
+import testSelectors from '../../../file-token-group/test-classes/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
+import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
 
 export default class FileTokenGroupWrapper extends ComponentWrapper {
+  static rootSelector: string = testSelectors.root;
+
   findFileTokens(): Array<FileTokenWrapper> {
-    return this.findAllByClassName(FileTokenWrapper.rootSelector).map(
-      fileTokenElement => new FileTokenWrapper(fileTokenElement.getElement())
+    return this.findAllByClassName(tokenGroupSelectors.token).map(
+      tokenElement => new FileTokenWrapper(tokenElement.getElement())
     );
   }
 
   /**
-   * Returns a file token from the group for a given index.
+   * Returns a file token from for a given index.
    *
-   * @param tokenIndex 1-based index of the token to return.
+   * @param tokenIndex 1-based index of the file token to return.
    */
-  findFileToken(tokenIndex: number): FileTokenWrapper | null {
-    return this.findComponent(
-      `.${selectors['list-item']}:nth-child(${tokenIndex}) > .${FileTokenWrapper.rootSelector}`,
-      FileTokenWrapper
-    );
+  findFileToken(fileTokenIndex: number): null | FileTokenWrapper {
+    return this.findComponent(`.${tokenGroupSelectors.token}[data-index="${fileTokenIndex - 1}"]`, FileTokenWrapper);
   }
 }
 
 export class FileTokenWrapper extends ComponentWrapper {
-  static rootSelector: string = selectors.token;
+  static rootSelector: string = selectors['file-token'];
 
   findFileName(): ElementWrapper {
-    return this.findByClassName(selectors['file-token-name'])!;
+    return this.findByClassName(selectors['file-option-name'])!;
   }
 
   findFileSize(): ElementWrapper {
-    return this.findByClassName(selectors['file-token-size'])!;
+    return this.findByClassName(selectors['file-option-size'])!;
   }
 
   findFileLastModified(): ElementWrapper {
-    return this.findByClassName(selectors['file-token-last-modified'])!;
+    return this.findByClassName(selectors['file-option-last-modified'])!;
   }
 
   findFileThumbnail(): ElementWrapper {
-    return this.findByClassName(selectors['file-token-thumbnail'])!;
+    return this.findByClassName(selectors['file-option-thumbnail'])!;
   }
 
   findFileError(): ElementWrapper {
@@ -53,6 +54,6 @@ export class FileTokenWrapper extends ComponentWrapper {
   }
 
   findFileDismiss(): ElementWrapper {
-    return this.findByClassName(selectors['dismiss-button'])!;
+    return this.findByClassName(tokenGroupSelectors['dismiss-button'])!;
   }
 }

@@ -80,7 +80,7 @@ export default function TokenList<Item>({
       {hasVisibleItems && (
         <ul
           id={controlId}
-          className={clsx(styles.list, styles[alignment], {
+          className={clsx(styles.list, {
             [styles.vertical]: alignment === 'vertical',
             [styles.horizontal]: alignment === 'horizontal' && !isGrid,
             [styles.grid]: alignment === 'horizontal' && isGrid,

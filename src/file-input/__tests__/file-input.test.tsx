@@ -107,3 +107,34 @@ describe('FileInput input', () => {
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [] } }));
   });
 });
+
+describe('a11y', () => {
+  const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
+    type: 'text/plain',
+    lastModified: 1590962400000,
+  });
+  const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'test-file-2.txt', {
+    type: 'image/png',
+    lastModified: 1590962400000,
+  });
+
+  test('multiple empty', async () => {
+    const wrapper = render({ multiple: true, value: [] });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('single', async () => {
+    const wrapper = render({
+      value: [file1],
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('multiple', async () => {
+    const wrapper = render({
+      multiple: true,
+      value: [file1, file2],
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+});
