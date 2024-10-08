@@ -392,7 +392,7 @@ describeEachAppLayout(({ theme, size }) => {
       expect(onToolsChange).toHaveBeenCalledWith({ open: true });
     });
 
-    it('preserves tools inner state while switching drawers', async () => {
+    test('preserves tools inner state while switching drawers', async () => {
       function Counter() {
         const [count, setCount] = useState(0);
         return (

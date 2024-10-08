@@ -122,7 +122,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
   );
 
   test(
-    'preserves tools inner cotnent state when drawer open and close',
+    'preserves tools inner content state when drawer open and close',
     setupTest({ pageName: 'stateful' }, async page => {
       await page.click(wrapper.findToolsToggle().toSelector());
       await expect(page.isDisplayed(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
