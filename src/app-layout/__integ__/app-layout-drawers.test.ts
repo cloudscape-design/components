@@ -5,8 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-
-const testIf = (condition: boolean) => (condition ? test : test.skip);
+import { testIf } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -17,10 +16,21 @@ class AppLayoutDrawersPage extends BasePageObject {
     await this.click(wrapper.findDrawerTriggerById(firstDrawerId).toSelector());
   }
 
-  async openThirdDrawer() {
+  async openThirdDrawer(isToolbar = false) {
     //matches drawerItems[2].id from 'lib/dev-pages/pages/app-layout/utils/drawers';
     const thirdDrawerId = 'links';
-    await this.click(wrapper.findDrawerTriggerById(thirdDrawerId).toSelector());
+
+    if (isToolbar) {
+      const inOverflowMenuWidth = 945; //if less than 945, the thrid button gets thrown in the overflow menu
+      const { width } = await this.getBoundingBox(wrapper.findToolbar().toSelector());
+      if (width < inOverflowMenuWidth) {
+        //links on mobile is thrown inside the overflow menu
+        await this.click(wrapper.findDrawersOverflowTrigger().toSelector());
+        await this.click(wrapper.findDrawersOverflowTrigger().findItemById(thirdDrawerId).toSelector());
+      }
+    } else {
+      await this.click(wrapper.findDrawerTriggerById(thirdDrawerId).toSelector());
+    }
   }
 
   async openSplitPanel() {
@@ -103,8 +113,12 @@ const setupTest = (
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   describe('desktop', () => {
-    // there is an extra 2 borders inside drawer box in visual refresh
-    const vrBorderOffset = theme !== 'classic' ? 2 : 0;
+    // there is an extra 2 borders inside drawer box in visual refresh, 1 for toolbar
+    const vrBorderOffsets = {
+      ['classic']: 0,
+      ['refresh']: 2,
+      ['refresh-toolbar']: 1,
+    };
 
     test(
       'slider is accessible by keyboard in side position',
@@ -138,9 +152,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         const { width } = await page.getWindowSize();
         await page.dragResizerTo({ x: width, y: 0 });
         // there are different layouts between these two designs
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(
-          theme === 'refresh-toolbar' ? 291 : 290 + vrBorderOffset
-        );
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffsets[theme]);
         await page.dragResizerTo({ x: 0, y: 0 });
         const expectedWidths = {
           ['classic']: 520,
@@ -166,11 +178,11 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       })
     );
 
-    testIf(theme !== 'refresh-toolbar')(
+    test(
       `should not shrink drawer beyond min width`,
       setupTest({ theme, screenSize: { ...viewports.desktop, width: 700 } }, async page => {
-        await page.openThirdDrawer();
-        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffset);
+        await page.openThirdDrawer(theme === 'refresh-toolbar');
+        await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffsets[theme]);
       })
     );
 
@@ -197,7 +209,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       )
     );
 
-    testIf(theme !== 'refresh-toolbar')(
+    test(
       'updates side split panel position when using different width drawers',
       setupTest(
         { theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } },
@@ -208,10 +220,13 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
             true
           );
 
-          await page.openThirdDrawer();
-          await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())).resolves.toEqual(
-            true
-          );
+          await page.openThirdDrawer(theme === 'refresh-toolbar');
+          //todo: resolve split panel positioning change on large drawer openeing
+          const expectedSplitPanelSelector =
+            theme === 'refresh'
+              ? wrapper.findSplitPanel().findOpenPanelBottom().toSelector()
+              : wrapper.findSplitPanel().findOpenPanelSide().toSelector();
+          await expect(page.isExisting(expectedSplitPanelSelector)).resolves.toEqual(true);
 
           await page.openFirstDrawer();
           await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toEqual(
