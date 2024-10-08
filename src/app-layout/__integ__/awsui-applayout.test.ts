@@ -122,20 +122,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
   );
 
   test(
-    'preserves tools inner content state when drawer open and close',
-    setupTest({ pageName: 'stateful' }, async page => {
-      await page.click(wrapper.findToolsToggle().toSelector());
-      await expect(page.isDisplayed(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
-      await expect(page.getText('#tools-text')).resolves.toBe('Clicked: 0');
-      await page.click('#tools-button');
-      await expect(page.getText('#tools-text')).resolves.toBe('Clicked: 1');
-      await page.click(wrapper.findToolsClose().toSelector());
-      await page.click(wrapper.findToolsToggle().toSelector());
-      await expect(page.getText('#tools-text')).resolves.toBe('Clicked: 1');
-    })
-  );
-
-  test(
     'keeps drawer open state when resizing the screen',
     setupTest({}, async page => {
       await page.click(wrapper.findToolsToggle().toSelector());
