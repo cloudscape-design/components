@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
+import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
@@ -88,6 +89,7 @@ export function AppLayoutToolbarImplementation({
 }: AppLayoutToolbarImplementationProps) {
   const {
     breadcrumbs,
+    headerVariant,
     discoveredBreadcrumbs,
     verticalOffsets,
     isMobile,
@@ -173,6 +175,7 @@ export function AppLayoutToolbarImplementation({
       className={clsx(styles['universal-toolbar'], testutilStyles.toolbar, {
         [testutilStyles['mobile-bar']]: isMobile,
         [styles['toolbar-hidden']]: toolbarHidden,
+        [highContrastHeaderClassName]: headerVariant === 'high-contrast',
       })}
       style={{
         insetBlockStart: toolbarHidden ? '-60px' : verticalOffsets.toolbar,
