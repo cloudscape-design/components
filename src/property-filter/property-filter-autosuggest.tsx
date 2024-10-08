@@ -225,6 +225,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
         onPressArrowDown={handlePressArrowDown}
         onPressArrowUp={handlePressArrowUp}
         onPressEnter={handlePressEnter}
+        loopFocus={!!customForm || dropdownStatus.hasRecoveryButton}
       />
     );
   }

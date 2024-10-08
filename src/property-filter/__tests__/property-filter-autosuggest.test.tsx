@@ -10,6 +10,8 @@ import PropertyFilterAutosuggest from '../../../lib/components/property-filter/p
 import createWrapper from '../../../lib/components/test-utils/dom';
 import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest';
 
+import tabTrapStyles from '../../../lib/components/internal/components/tab-trap/styles.selectors.js';
+
 const options: AutosuggestProps.Options = [
   { value: '123', label: '123' },
   { value: 'abc', label: 'abc' },
@@ -18,7 +20,7 @@ const options: AutosuggestProps.Options = [
 function renderAutosuggest(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAutosuggest()!;
-  return { wrapper, rerender };
+  return { container, wrapper, rerender };
 }
 
 describe('Property filter autosuggest', () => {
@@ -185,5 +187,46 @@ describe('Property filter autosuggest', () => {
 
     wrapper.findNativeInput().keydown(KeyCode.down);
     expect(wrapper.find('#first-focusable')!.getElement()).toHaveFocus();
+  });
+
+  test('has no focus trap when no custom form and no recovery button', () => {
+    const { wrapper } = renderAutosuggest(<PropertyFilterAutosuggest options={options} value="" onChange={() => {}} />);
+
+    expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
+
+    wrapper.focus();
+
+    expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
+  });
+
+  test('has focus trap when custom form', () => {
+    const { wrapper } = renderAutosuggest(
+      <PropertyFilterAutosuggest options={[]} value="" onChange={() => {}} customForm={<div />} />
+    );
+
+    expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
+
+    wrapper.focus();
+
+    expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '0');
+  });
+
+  test('has focus trap when recovery button', () => {
+    const { wrapper } = renderAutosuggest(
+      <PropertyFilterAutosuggest
+        options={options}
+        value=""
+        onChange={() => {}}
+        statusType="error"
+        recoveryText="retry"
+        onLoadItems={() => {}}
+      />
+    );
+
+    expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
+
+    wrapper.focus();
+
+    expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '0');
   });
 });
