@@ -198,9 +198,7 @@ export function useDrawers(
   }
 
   function onActiveDrawerChange(newDrawerId: string | null) {
-    if (newDrawerId !== TOOLS_DRAWER_ID) {
-      setActiveDrawerId(newDrawerId);
-    }
+    setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
       onAddNewActiveDrawer?.(newDrawerId);
     }
