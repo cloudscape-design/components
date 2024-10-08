@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getIsRtl, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
-import smoothScroll from './smooth-scroll';
+import { smoothScroll } from '../internal/utils/smooth-scroll';
 
 export const onPaginationClick = (
   headerBarRef: React.RefObject<HTMLUListElement>,
@@ -25,7 +25,7 @@ export const onPaginationClick = (
   // scroll destination needs to be a negative number if the direction is RTL
   const scrollTo = getIsRtl(element) ? scrollDistance * -1 : scrollDistance;
 
-  smoothScroll(element, scrollTo);
+  smoothScroll(element, { left: scrollTo });
 };
 
 export const hasHorizontalOverflow = (
@@ -63,7 +63,7 @@ export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, s
     tabHeader.offsetLeft + tabHeader.offsetWidth - headerBar.offsetWidth + margin
   );
   if (smooth) {
-    smoothScroll(headerBar, updatedLeftScroll);
+    smoothScroll(headerBar, { left: updatedLeftScroll });
   } else {
     headerBar.scrollLeft = updatedLeftScroll;
   }

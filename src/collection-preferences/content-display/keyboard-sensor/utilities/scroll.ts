@@ -3,6 +3,8 @@
 import { KeyboardCode } from '@dnd-kit/core';
 import { canUseDOM, Coordinates, subtract as getCoordinatesDelta } from '@dnd-kit/utilities';
 
+import { smoothScroll } from '../../../../internal/utils/smooth-scroll';
+
 function isDocumentScrollingElement(element: Element | null) {
   if (!canUseDOM || !element) {
     return false;
@@ -112,10 +114,7 @@ export function applyScroll({
       if (canScrollToNewCoordinates) {
         // We don't need to update coordinates, the scroll adjustment alone will trigger
         // logic to auto-detect the new container we are over
-        scrollContainer.scrollTo({
-          top: newScrollCoordinates,
-          behavior: 'smooth',
-        });
+        smoothScroll(scrollContainer, { top: newScrollCoordinates });
         return true;
       }
 
