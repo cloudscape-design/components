@@ -58,6 +58,10 @@ export const SplitPanelImplementation = React.forwardRef<HTMLElement, SplitPanel
     const openButtonAriaLabel = i18nStrings.openButtonAriaLabel;
     useEffect(() => {
       setSplitPanelToggle({ displayed: closeBehavior === 'collapse', ariaLabel: openButtonAriaLabel });
+
+      return () => {
+        setSplitPanelToggle({ displayed: false, ariaLabel: undefined });
+      };
     }, [setSplitPanelToggle, openButtonAriaLabel, closeBehavior]);
 
     const splitPanelRefObject = useRef<HTMLDivElement>(null);
