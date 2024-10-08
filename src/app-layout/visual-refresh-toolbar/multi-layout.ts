@@ -10,7 +10,7 @@ import { AppLayoutProps } from '../interfaces';
 import { Focusable } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
-interface SharedProps {
+export interface SharedMultiAppLayoutProps {
   forceDeduplicationType?: 'primary' | 'secondary';
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
@@ -39,7 +39,10 @@ function checkAlreadyExists(value: boolean, propName: string) {
   return false;
 }
 
-function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partial<SharedProps>>): ToolbarProps | null {
+export function mergeMultiAppLayoutProps(
+  ownProps: SharedMultiAppLayoutProps,
+  additionalProps: ReadonlyArray<Partial<SharedMultiAppLayoutProps>>
+): ToolbarProps | null {
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
@@ -49,6 +52,7 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
       toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
+    //there is never a case where navigation will exist and a toggle will not
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
@@ -69,13 +73,13 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
   return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
-export function useMultiAppLayout(props: SharedProps) {
-  const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
+export function useMultiAppLayout(props: SharedMultiAppLayoutProps) {
+  const [registration, setRegistration] = useState<RegistrationState<SharedMultiAppLayoutProps> | null>(null);
   const { forceDeduplicationType } = props;
 
   useLayoutEffect(() => {
     return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
-      setRegistration(props as RegistrationState<SharedProps>)
+      setRegistration(props as RegistrationState<SharedMultiAppLayoutProps>)
     );
   }, [forceDeduplicationType]);
 
@@ -87,6 +91,7 @@ export function useMultiAppLayout(props: SharedProps) {
 
   return {
     registered: !!registration?.type,
-    toolbarProps: registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
+    toolbarProps:
+      registration?.type === 'primary' ? mergeMultiAppLayoutProps(props, registration.discoveredProps) : null,
   };
 }
