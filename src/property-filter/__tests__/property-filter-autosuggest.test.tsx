@@ -189,7 +189,7 @@ describe('Property filter autosuggest', () => {
     expect(wrapper.find('#first-focusable')!.getElement()).toHaveFocus();
   });
 
-  test('has no focus trap when no custom form or recovery button', () => {
+  test('has no focus trap when no custom form and no recovery button', () => {
     const { wrapper } = renderAutosuggest(<PropertyFilterAutosuggest options={options} value="" onChange={() => {}} />);
 
     expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
