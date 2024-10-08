@@ -248,6 +248,10 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     wrapper.find('[data-testid="toggle-split-panel"]')!.click();
 
     expect(wrapper.findSplitPanelOpenButton()).toBeFalsy();
+
+    wrapper.find('[data-testid="toggle-split-panel"]')!.click();
+
+    expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
   });
 });
 
