@@ -111,7 +111,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
   );
 
   test(
-    'preserves navigation inner state when drawer closes and opens',
+    'preserves inner state when drawer closes and opens',
     setupTest({ pageName: 'stateful' }, async page => {
       await page.click('#navigation-button');
       await expect(page.getText('#navigation-text')).resolves.toBe('Clicked: 1');

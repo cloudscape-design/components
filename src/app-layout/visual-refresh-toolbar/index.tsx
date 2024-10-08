@@ -394,7 +394,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={navigationOpen}
           navigationWidth={navigationWidth}
-          tools={<AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
+          tools={activeDrawer && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
               <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals} />
