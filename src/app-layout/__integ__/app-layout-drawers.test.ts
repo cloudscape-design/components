@@ -61,11 +61,6 @@ class AppLayoutDrawersPage extends BasePageObject {
     return width;
   }
 
-  async getSplitPanelHeight() {
-    const { height } = await this.getBoundingBox(wrapper.findSplitPanel().toSelector());
-    return height;
-  }
-
   async getMainContentWidth() {
     const { width } = await this.getBoundingBox(wrapper.find('[data-test-id="content"]').toSelector());
     return width;
