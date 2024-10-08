@@ -234,11 +234,9 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
         <AppLayout
           splitPanel={splitPanelEnabled && defaultSplitPanel}
           content={
-            <>
-              <button data-testid="toggle-split-panel" onClick={() => setSplitPanelEnabled(!splitPanelEnabled)}>
-                toggle
-              </button>
-            </>
+            <button data-testid="toggle-split-panel" onClick={() => setSplitPanelEnabled(!splitPanelEnabled)}>
+              toggle
+            </button>
           }
         />
       );
