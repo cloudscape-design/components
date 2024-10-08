@@ -12,6 +12,10 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import {
+  mergeMultiAppLayoutProps,
+  SharedMultiAppLayoutProps,
+} from '../../../lib/components/app-layout/visual-refresh-toolbar/multi-layout';
 
 import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
@@ -45,6 +49,115 @@ async function renderAsync(jsx: React.ReactElement) {
   expect(findToolbar(secondLayout)).toBeFalsy();
   return { firstLayout, secondLayout };
 }
+
+describe('mergeMultiAppLayoutProps', () => {
+  const mockParentNavigationToggle = jest.fn();
+  const mockParentActiveDrawerChange = jest.fn();
+  const mockParentSplitPanelToggle = jest.fn();
+  const ownProps: SharedMultiAppLayoutProps = {
+    forceDeduplicationType: 'primary',
+    ariaLabels: {
+      navigation: 'Navigation',
+      drawers: 'Drawers',
+    },
+    navigation: <div>Navigation</div>,
+    navigationOpen: true,
+    navigationFocusRef: React.createRef(),
+    onNavigationToggle: mockParentNavigationToggle,
+    breadcrumbs: <div>Breadcrumbs</div>,
+    activeDrawerId: 'drawer1',
+    drawers: [
+      {
+        id: 'drawer1',
+        ariaLabels: { drawerName: 'Drawer 1' },
+        content: <div>Drawer 1 Content</div>,
+      },
+    ],
+    onActiveDrawerChange: mockParentActiveDrawerChange,
+    drawersFocusRef: React.createRef(),
+    splitPanel: <div>Split Panel</div>,
+    splitPanelToggleProps: {
+      displayed: false,
+      active: false,
+      position: 'bottom',
+      controlId: 'test',
+      ariaLabel: 'test',
+    },
+    splitPanelFocusRef: React.createRef(),
+    onSplitPanelToggle: mockParentSplitPanelToggle,
+  };
+
+  const additionalPropsBase: Partial<SharedMultiAppLayoutProps>[] = [
+    {
+      ariaLabels: {
+        navigation: 'New Navigation',
+      },
+      drawers: [
+        {
+          id: 'drawer2',
+          ariaLabels: { drawerName: 'Drawer 2' },
+          content: <div>Drawer 2 Content</div>,
+        },
+      ],
+      activeDrawerId: 'drawer2',
+    },
+    {
+      splitPanelToggleProps: {
+        displayed: false,
+        active: false,
+        position: 'bottom',
+        controlId: 'test',
+        ariaLabel: 'test',
+      },
+    },
+  ];
+
+  it('should merge ownProps and additionalProps correctly', () => {
+    const result = mergeMultiAppLayoutProps(ownProps, additionalPropsBase);
+
+    expect(result).toEqual({
+      ariaLabels: {
+        navigation: 'New Navigation',
+        drawers: 'Drawers',
+      },
+      hasNavigation: true,
+      navigationOpen: true,
+      navigationFocusRef: ownProps.navigationFocusRef,
+      onNavigationToggle: mockParentNavigationToggle,
+      hasBreadcrumbsPortal: true,
+      hasSplitPanel: true,
+      splitPanelToggleProps: {
+        displayed: false,
+        active: false,
+        position: 'bottom',
+        controlId: 'test',
+        ariaLabel: 'test',
+      },
+      splitPanelFocusRef: ownProps.splitPanelFocusRef,
+      onSplitPanelToggle: mockParentSplitPanelToggle,
+      activeDrawerId: 'drawer2',
+      drawers: [
+        {
+          id: 'drawer2',
+          ariaLabels: { drawerName: 'Drawer 2' },
+          content: <div>Drawer 2 Content</div>,
+        },
+      ],
+      drawersFocusRef: ownProps.drawersFocusRef,
+      onActiveDrawerChange: mockParentActiveDrawerChange,
+    });
+  });
+
+  //other assertions
+  //additional props arial labels overrite initial
+  //hasNavigation vales
+
+  it('should return null if no fields are defined, except ariaLabels', () => {
+    const result = mergeMultiAppLayoutProps({ ariaLabels: {} } as SharedMultiAppLayoutProps, []);
+
+    expect(result).toBeNull();
+  });
+});
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   afterEach(() => {

@@ -224,8 +224,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
     }));
 
-    const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
+    //navigation must be null so  toolbar knows to hide the toggle button
+    const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const {
       maxDrawerSize,
       maxSplitPanelSize,
@@ -292,7 +293,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       breadcrumbs,
       discoveredBreadcrumbs,
       stickyNotifications: resolvedStickyNotifications,
-      navigationOpen,
+      navigationOpen: !!resolvedNavigation && navigationOpen,
       navigation: resolvedNavigation,
       navigationFocusControl,
       activeDrawer,
@@ -441,7 +442,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           // delay rendering the content until registration of this instance is complete
           content={registered ? content : null}
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
-          navigationOpen={navigationOpen}
+          navigationOpen={!!resolvedNavigation && navigationOpen}
           navigationWidth={navigationWidth}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
