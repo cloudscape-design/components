@@ -4,7 +4,8 @@
 import React from 'react';
 
 import InternalButton from '../button/internal';
-import InternalFormField from '../form-field/internal';
+import { FormFieldContext } from '../internal/context/form-field-context';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { I18nStringsInternal } from './i18n-utils';
 import { ComparisonOperator, ExtendedOperatorForm, InternalFilteringProperty, InternalToken } from './interfaces';
 
@@ -25,12 +26,16 @@ export function PropertyEditorContent<TokenValue = any>({
   onChange: (value: null | TokenValue) => void;
   operatorForm: ExtendedOperatorForm<TokenValue>;
 }) {
+  const labelId = useUniqueId();
   return (
     <div className={styles['property-editor']}>
+      <div className={styles['property-editor-header']} id={labelId}>
+        {property.groupValuesLabel}
+      </div>
       <div className={styles['property-editor-form']}>
-        <InternalFormField label={property.groupValuesLabel}>
+        <FormFieldContext.Provider value={{ ariaLabelledby: labelId }}>
           {operatorForm({ value, onChange, operator, filter })}
-        </InternalFormField>
+        </FormFieldContext.Provider>
       </div>
     </div>
   );

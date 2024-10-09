@@ -6,6 +6,7 @@ import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
 
+import Input from '../../../lib/components/input';
 import PropertyFilter from '../../../lib/components/property-filter';
 import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
 import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
@@ -54,11 +55,25 @@ describe('extended operators', () => {
           </button>
         ),
       },
+      {
+        operator: '=',
+        form: ({ value, onChange }) => (
+          <Input name="" value={value} onChange={({ detail }) => onChange(detail.value)} />
+        ),
+      },
     ],
     propertyLabel: 'index',
     groupValuesLabel: 'index value',
   };
   const extendedOperatorProps = { filteringProperties: [indexProperty] };
+
+  test('property label is used to annotate custom form field', () => {
+    const { propertyFilterWrapper: wrapper } = renderComponent(extendedOperatorProps);
+    wrapper.setInputValue('index =');
+    expect(
+      wrapper.findDropdown()!.findOpenDropdown()!.findInput()!.findNativeInput()!.getElement()
+    ).toHaveAccessibleName('index value');
+  });
 
   test('property filter renders operator form instead of options list', () => {
     const { propertyFilterWrapper: wrapper } = renderComponent(extendedOperatorProps);

@@ -2,8 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import DropdownFooter from '../internal/components/dropdown-footer/index.js';
-import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
+import { useFormFieldContext } from '../contexts/form-field';
+import DropdownFooter from '../internal/components/dropdown-footer';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
 import PlainList from '../select/parts/plain-list';
@@ -30,14 +31,15 @@ export type EmbeddedMultiselectProps = SomeRequired<
     | 'finishedText'
     | 'errorText'
     | 'recoveryText'
+    | 'empty'
+    | 'noMatch'
   >,
-  'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'controlId'
+  'options' | 'selectedOptions' | 'filteringType' | 'statusType'
 > & { filteringText?: string };
 
 const EmbeddedMultiselect = React.forwardRef(
   (
     {
-      controlId,
       options,
       filteringType,
       ariaLabel,
@@ -49,8 +51,11 @@ const EmbeddedMultiselect = React.forwardRef(
     }: EmbeddedMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
   ) => {
+    const formFieldContext = useFormFieldContext(restProps);
     const ariaLabelId = useUniqueId('multiselect-ariaLabel-');
     const footerId = useUniqueId('multiselect-footer-');
+    const selfControlId = useUniqueId('multiselect-trigger-');
+    const controlId = formFieldContext.controlId ?? selfControlId;
 
     const multiselectProps = useMultiselect({
       options,
