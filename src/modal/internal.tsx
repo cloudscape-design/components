@@ -86,9 +86,11 @@ function PortaledModal({
   const metadataAttribute = __injectAnalyticsComponentMetadata
     ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
     : {};
-  const performanceMetricLogged = useRef<boolean>(false);
   const loadStartTime = useRef<number>(0);
+  const loadCompleteTime = useRef<number>(0);
   const componentLoadingCount = useRef<number>(0);
+  const performanceMetricLogged = useRef<boolean>(false);
+
   // enable body scroll and restore focus if unmounting while visible
   useEffect(() => {
     return () => {
@@ -96,34 +98,49 @@ function PortaledModal({
     };
   }, []);
 
-  // enable / disable body scroll
+  /**
+   * This useEffect is triggered when the visible attribute of modal changes.
+   * Its purpose is to handle emission of analytics metrics related to the modal component's readiness.
+   * When modal becomes visible, the loadStart time is set and the loadComplete time is reset marking the beginning loading process.
+   * When user exits the modal, the timeToContentReadyInModal is emitted.
+   * This metric signifies that the modal content has finished loading and is ready for interaction.
+   * To ensure that the modal component ready metric is always emitted, a setTimeout is implemented.
+   * This setTimeout automatically emits the component ready metric after a specified duration.
+   */
+
+  const MODAL_READY_TIMEOUT = 3000;
   useEffect(() => {
-    /**
-     * Resets performanceMetricLogged
-     * PerformanceMetricLogged false and componentLoadingCount 0,
-     * indicates that there were no components loading in the modal and it was loaded instantly.
-     * In that case emit 0 as timeToContentReadyInModal
-     */
     const resetModalPerformanceData = () => {
-      if (loadStartTime.current !== 0 && componentLoadingCount.current === 0 && !performanceMetricLogged.current) {
-        PerformanceMetrics.modalPerformanceData({
-          timeToContentReadyInModal: 0,
-          instanceIdentifier: instanceUniqueId,
-        });
-      }
-      loadStartTime.current = 0;
+      loadStartTime.current = performance.now();
+      loadCompleteTime.current = 0;
       performanceMetricLogged.current = false;
     };
+
+    const emitTimeToContentReadyInModal = () => {
+      if (componentLoadingCount.current === 0 && loadStartTime.current !== null && !performanceMetricLogged.current) {
+        const timeToContentReadyInModal =
+          loadCompleteTime.current !== 0 ? loadCompleteTime.current - loadStartTime.current : 0;
+        PerformanceMetrics.modalPerformanceData({
+          timeToContentReadyInModal,
+          instanceIdentifier: instanceUniqueId,
+        });
+        performanceMetricLogged.current = true;
+      }
+    };
+
     if (visible) {
       disableBodyScrolling();
-      loadStartTime.current = performance.now();
+      resetModalPerformanceData();
+      setTimeout(() => {
+        emitTimeToContentReadyInModal();
+      }, MODAL_READY_TIMEOUT);
     } else {
       enableBodyScrolling();
-      resetModalPerformanceData();
+      emitTimeToContentReadyInModal();
     }
     return () => {
       if (!visible) {
-        resetModalPerformanceData();
+        emitTimeToContentReadyInModal();
       }
     };
   }, [visible, instanceUniqueId]);
@@ -170,10 +187,8 @@ function PortaledModal({
         <ModalContext.Provider
           value={{
             isInModal: true,
-            loadStartTime,
-            performanceMetricLogged,
             componentLoadingCount,
-            instanceIdentifier: instanceUniqueId,
+            loadCompleteTime,
           }}
         >
           <div

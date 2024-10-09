@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useModalComponentAnalytics } from '../internal/hooks/use-modal-component-analytics';
+import { useModalContextLoadingComponent } from '../internal/hooks/use-modal-component-analytics';
 import { SpinnerProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -19,7 +19,7 @@ export default function InternalSpinner({
   ...props
 }: InternalSpinnerProps) {
   const baseProps = getBaseProps(props);
-  useModalComponentAnalytics();
+  useModalContextLoadingComponent();
   return (
     <span
       {...baseProps}

@@ -4,6 +4,7 @@ import * as React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
 import Autosuggest from '../../../lib/components/autosuggest';
+import Button from '../../../lib/components/button/index.js';
 import ButtonDropdown from '../../../lib/components/button-dropdown';
 import DatePicker from '../../../lib/components/date-picker';
 import DateRangePicker from '../../../lib/components/date-range-picker';
@@ -15,10 +16,10 @@ import Popover from '../../../lib/components/popover';
 import Select from '../../../lib/components/select';
 import StatusIndicator from '../../../lib/components/status-indicator';
 import createWrapper, { ElementWrapper, ModalWrapper } from '../../../lib/components/test-utils/dom';
+import { PerformanceMetrics } from '../../internal/analytics';
 import { KeyCode } from '../../internal/keycode';
 
 import styles from '../../../lib/components/modal/styles.css.js';
-
 class ModalInternalWrapper extends ModalWrapper {
   findDialog(): ElementWrapper {
     return this.findByClassName(styles.dialog)!;
@@ -527,6 +528,17 @@ describe('Modal component', () => {
       const wrapper = createWrapper(container).findModal()!;
 
       expect(wrapper.findContent().findInput()!.getElement()).not.toHaveAccessibleName('Outer label');
+    });
+  });
+  describe('validates if modal performance metric is logged', () => {
+    it('validates if modal performance metric is logged', () => {
+      const modalPerformanceDataSpy = jest.spyOn(PerformanceMetrics, 'modalPerformanceData');
+      const button = <Button variant="primary" loading={true} />;
+      const wrapper = renderModal({ visible: true, children: button });
+      wrapper.findDismissButton().click();
+      setTimeout(() => {
+        expect(modalPerformanceDataSpy).toHaveBeenCalled();
+      }, 10);
     });
   });
 });

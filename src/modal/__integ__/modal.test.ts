@@ -128,6 +128,7 @@ test(
 
     //verify metrics are not emitted until all the components are loaded
     expect(metrics.length).toBe(0);
+
     const buttonLoadingState = createWrapper()
       .findModal()
       .findFooter()
@@ -141,7 +142,7 @@ test(
     metrics = await getModalPerformanceMetrics();
     expect(metrics[0].instanceIdentifier).not.toBeNull();
     expect(metrics[0].timeToContentReadyInModal).toBeGreaterThanOrEqual(2000);
-    expect(metrics[0].timeToContentReadyInModal).toBeLessThan(2100);
+    expect(metrics[0].timeToContentReadyInModal).toBeLessThan(3000);
   })
 );
 

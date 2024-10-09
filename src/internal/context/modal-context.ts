@@ -1,21 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createContext, MutableRefObject, RefObject, useContext } from 'react';
+import { createContext, MutableRefObject, useContext } from 'react';
 
 export interface ModalContextProps {
   isInModal: boolean;
-  loadStartTime: RefObject<number>;
   componentLoadingCount: MutableRefObject<number>;
-  performanceMetricLogged: MutableRefObject<boolean>;
-  instanceIdentifier?: string;
-  componentIdentifier?: string;
+  loadCompleteTime: MutableRefObject<number>;
 }
 
 export const ModalContext = createContext<ModalContextProps>({
   isInModal: false,
   componentLoadingCount: { current: 0 },
-  loadStartTime: { current: 0 },
-  performanceMetricLogged: { current: false },
+  loadCompleteTime: { current: 0 },
 });
 
 export const useModalContext = () => {
