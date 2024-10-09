@@ -64,7 +64,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
 
   return (
-    <Transition nodeRef={drawerRef} in={true} appear={true} timeout={0}>
+    <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
       {state => (
         <aside
           id={activeDrawerId}
@@ -75,6 +75,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             [styles.legacy]: isLegacyDrawer,
             [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
             [testutilStyles.tools]: isToolsDrawer,
+            [styles['drawer-hidden']]: !activeDrawer,
           })}
           ref={drawerRef}
           onBlur={e => {
