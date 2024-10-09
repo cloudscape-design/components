@@ -370,6 +370,7 @@ const PropertyFilterInternal = React.forwardRef(
                   }
                 : undefined
             }
+            onCloseDropdown={() => setCustomFormValueRecord({})}
             hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
             clearAriaLabel={i18nStrings.clearAriaLabel}
             searchResultsId={showResults ? searchResultsId : undefined}

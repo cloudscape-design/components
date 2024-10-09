@@ -44,6 +44,7 @@ export interface PropertyFilterAutosuggestProps
   onOptionClick?: CancelableEventHandler<AutosuggestProps.Option>;
   hideEnteredTextOption?: boolean;
   searchResultsId?: string;
+  onCloseDropdown?: () => void;
 }
 
 const PropertyFilterAutosuggest = React.forwardRef(
@@ -68,6 +69,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
       onOptionClick,
       hideEnteredTextOption,
       searchResultsId,
+      onCloseDropdown,
       ...rest
     } = props;
     const highlightText = filterText === undefined ? value : filterText;
@@ -141,6 +143,7 @@ const PropertyFilterAutosuggest = React.forwardRef(
 
     const handleCloseDropdown = () => {
       autosuggestItemsHandlers.resetHighlightWithKeyboard();
+      onCloseDropdown?.();
     };
 
     const handleRecoveryClick = () => {
