@@ -204,7 +204,12 @@ describe('Property filter autosuggest', () => {
 
   test('has focus trap when custom form', () => {
     const { wrapper } = renderAutosuggest(
-      <PropertyFilterAutosuggest options={[]} value="" onChange={() => {}} customForm={<div />} />
+      <PropertyFilterAutosuggest
+        options={[]}
+        value=""
+        onChange={() => {}}
+        customForm={{ content: <div />, footer: <div /> }}
+      />
     );
 
     expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
