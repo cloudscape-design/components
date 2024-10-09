@@ -219,6 +219,10 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
+  /**
+   * Allows the filtering input to occupy the full available width.
+   */
+  fullWidth?: boolean;
 }
 
 export namespace PropertyFilterProps {

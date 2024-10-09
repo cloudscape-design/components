@@ -85,6 +85,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups,
+      fullWidth,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -314,7 +315,13 @@ const PropertyFilterInternal = React.forwardRef(
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
-        <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
+        <div
+          className={clsx(
+            styles['search-field'],
+            analyticsSelectors['search-field'],
+            !fullWidth && styles['limited-width']
+          )}
+        >
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
           <PropertyFilterAutosuggest
             ref={inputRef}
