@@ -7,8 +7,6 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findAppLayout();
 
-const testIf = (condition: boolean) => (condition ? test : test.skip);
-
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
     describe(`page=${pageName}`, () => {
@@ -47,7 +45,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         })
       );
 
-      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      test(
         'should allow switching to a drawer after clicking an info link',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -61,7 +59,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         })
       );
 
-      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      test(
         'should open and close tools via controlled mode',
         setupTest(async page => {
           const toolsContentSelector = wrapper.findTools().getElement();
@@ -76,7 +74,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         })
       );
 
-      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      test(
         'should switch help panel content and close the panel afterwards',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
@@ -93,7 +91,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         })
       );
 
-      testIf(!(theme === 'refresh-toolbar' && pageName === 'runtime-drawers-imperative'))(
+      test(
         'should move focus to previous focused element after closing tools',
         setupTest(async page => {
           await page.click('[data-testid="info-link-header"]');
