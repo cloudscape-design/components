@@ -52,6 +52,7 @@ describe('Single-page create', () => {
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         funnelIdentifier: FUNNEL_IDENTIFIER,
+        funnelName: 'Form Header',
         flowType: 'create',
         funnelType: 'single-page',
         resourceType: 'Components',

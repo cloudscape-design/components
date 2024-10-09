@@ -11,26 +11,15 @@ import {
   AnalyticsFunnelSubStep,
 } from '../../../lib/components/internal/analytics/components/analytics-funnel';
 import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+import { mockFunnelMetrics, mockGetBoundingClientRect } from '../../internal/analytics/__tests__/mocks';
+
+mockGetBoundingClientRect();
 
 describe('Alert Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
     mockFunnelMetrics();
-
-    // These numbers were chosen at random
-    jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue({
-      width: 300,
-      height: 200,
-      x: 30,
-      y: 50,
-      left: 30,
-      top: 50,
-      bottom: 100,
-      right: 400,
-      toJSON: () => '',
-    });
   });
 
   test('sends funnelSubStepError metric when the alert is placed inside a substep', () => {
