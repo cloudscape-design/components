@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 
@@ -66,6 +67,15 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
    * render to an element under `document.body`.
    */
   modalRoot?: HTMLElement;
+
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * * `flowType` - Identifies the type of flow represented by the component.
+   * * `resourceType` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.
+   * @analytics
+   */
+  analyticsMetadata?: ModalProps.AnalyticsMetadata;
 }
 
 export namespace ModalProps {
@@ -73,5 +83,11 @@ export namespace ModalProps {
 
   export interface DismissDetail {
     reason: string;
+  }
+
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+    flowType?: FlowType;
+    resourceType?: string;
   }
 }

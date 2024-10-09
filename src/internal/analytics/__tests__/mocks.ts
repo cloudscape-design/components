@@ -48,3 +48,25 @@ export function mockInnerText() {
     afterEach(() => delete (HTMLElement.prototype as Partial<HTMLElement>).innerText);
   }
 }
+
+export function mockGetBoundingClientRect() {
+  beforeEach(() => {
+    Element.prototype.getBoundingClientRect = jest.fn(() => {
+      return {
+        width: 100,
+        height: 100,
+        top: 0,
+        left: 0,
+        bottom: 0,
+        right: 0,
+        x: 0,
+        y: 0,
+        toJSON: jest.fn(),
+      };
+    });
+  });
+
+  afterEach(() => {
+    delete (Element.prototype as Partial<Element>).getBoundingClientRect;
+  });
+}

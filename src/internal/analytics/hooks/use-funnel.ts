@@ -7,6 +7,7 @@ import { nodeBelongs } from '../../utils/node-belongs';
 import { FunnelMetrics } from '../';
 import {
   FunnelContext,
+  FunnelContextValue,
   FunnelNameSelectorContext,
   FunnelStepContext,
   FunnelSubStepContext,
@@ -185,9 +186,14 @@ export const useFunnelStep = () => {
  *
  * The 'data-analytics-funnel-interaction-id' property of funnelProps is used to track the unique identifier of the current interaction with the funnel.
  */
-export const useFunnel = () => {
+export type FunnelProps = Record<string, string | number | boolean | undefined>;
+type UseFunnel = () => FunnelContextValue & {
+  funnelProps: FunnelProps;
+};
+
+export const useFunnel: UseFunnel = () => {
   const context = useContext(FunnelContext);
-  const funnelProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
+  const funnelProps: FunnelProps = context.funnelInteractionId
     ? {
         [DATA_ATTR_FUNNEL_INTERACTION_ID]: context.funnelInteractionId,
       }
