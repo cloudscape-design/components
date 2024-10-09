@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Table from '../../../lib/components/table';
 import { TableProps } from '../../../lib/components/table/interfaces';

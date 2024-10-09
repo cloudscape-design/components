@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { render as rtlRender } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import CollectionPreferences from '../../../lib/components/collection-preferences';
 import { PerformanceMetrics } from '../../../lib/components/internal/analytics';

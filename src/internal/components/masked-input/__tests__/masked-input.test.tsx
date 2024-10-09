@@ -3,7 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import MaskedInput, { MaskedInputProps } from '../../../../../lib/components/internal/components/masked-input';
 import createWrapper, { InputWrapper } from '../../../../../lib/components/test-utils/dom';

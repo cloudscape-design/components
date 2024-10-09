@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import ChartLegend from '../../../../../lib/components/internal/components/chart-legend';
 import createWrapper from '../../../../../lib/components/test-utils/dom';

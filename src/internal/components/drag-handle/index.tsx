@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ButtonHTMLAttributes } from 'react';
-import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import clsx from 'clsx';
 
 import InternalIcon from '../../../icon/internal';
@@ -13,7 +12,9 @@ import styles from './styles.css.js';
 export interface DragHandleProps {
   attributes: ButtonHTMLAttributes<HTMLDivElement>;
   hideFocus?: boolean;
-  listeners?: SyntheticListenerMap;
+  // @dnd-kit uses this type
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  listeners: Record<string, Function> | undefined;
   disabled?: boolean;
 }
 

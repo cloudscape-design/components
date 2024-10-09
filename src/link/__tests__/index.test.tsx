@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import FormField from '../../../lib/components/form-field';
 import Header from '../../../lib/components/header';

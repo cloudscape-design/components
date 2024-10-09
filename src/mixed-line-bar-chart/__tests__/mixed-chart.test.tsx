@@ -4,7 +4,7 @@ import React from 'react';
 import { waitFor } from '@testing-library/react';
 
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import MixedLineBarChart, { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
 import positions from '../../../lib/components/popover/utils/positions';
