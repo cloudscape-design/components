@@ -3,10 +3,10 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
+import { FileTokenWrapper } from '../file-token-group';
 
-import fileUploadInputSelectors from '../../../file-upload/file-input/styles.selectors.js';
-import fileUploadOptionSelectors from '../../../file-upload/file-option/styles.selectors.js';
-import fileUploadSelectors from '../../../file-upload/styles.selectors.js';
+import fileInputSelectors from '../../../file-input/styles.selectors.js';
+import fileUploadSelectors from '../../../file-upload/test-styles/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
@@ -15,11 +15,11 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = fileUploadSelectors.root;
 
   findUploadButton(): ButtonWrapper {
-    return this.findComponent(`.${fileUploadInputSelectors['upload-button']}`, ButtonWrapper)!;
+    return this.findComponent(`.${fileInputSelectors['upload-button']}`, ButtonWrapper)!;
   }
 
   findNativeInput(): ElementWrapper<HTMLInputElement> {
-    return this.findByClassName(fileUploadInputSelectors['upload-input'])!;
+    return this.findByClassName(fileInputSelectors['upload-input'])!;
   }
 
   findFileTokens(): Array<FileTokenWrapper> {
@@ -49,40 +49,11 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
   }
 
   findError(): null | ElementWrapper {
+    console.log(fileUploadSelectors.hints, formFieldStyles.error, formFieldStyles.error__message);
     return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.error} .${formFieldStyles.error__message}`);
   }
 
   findWarning(): null | ElementWrapper {
     return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.warning} .${formFieldStyles.warning__message}`);
-  }
-}
-
-class FileTokenWrapper extends ComponentWrapper {
-  findFileName(): ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-name'])!;
-  }
-
-  findFileSize(): null | ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-size']);
-  }
-
-  findFileLastModified(): null | ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-last-modified']);
-  }
-
-  findFileThumbnail(): null | ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-thumbnail-image']);
-  }
-
-  findFileError(): null | ElementWrapper {
-    return this.find(`.${formFieldStyles.error} .${formFieldStyles.error__message}`);
-  }
-
-  findFileWarning(): null | ElementWrapper {
-    return this.find(`.${formFieldStyles.warning} .${formFieldStyles.warning__message}`);
-  }
-
-  findRemoveButton(): ElementWrapper {
-    return this.findByClassName(tokenGroupSelectors['dismiss-button'])!;
   }
 }

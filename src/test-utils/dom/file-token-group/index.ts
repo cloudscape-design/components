@@ -53,7 +53,7 @@ export class FileTokenWrapper extends ComponentWrapper {
     return this.find(`.${formFieldStyles.warning} .${formFieldStyles.warning__message}`)!;
   }
 
-  findFileDismiss(): ElementWrapper {
+  findRemoveButton(): ElementWrapper {
     return this.findByClassName(tokenGroupSelectors['dismiss-button'])!;
   }
 }

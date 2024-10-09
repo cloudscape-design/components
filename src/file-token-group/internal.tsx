@@ -66,7 +66,7 @@ function InternalFileTokenGroup({
             loading={file.loading}
             alignment={alignment}
             groupContainsImage={groupContainsImage}
-            dataIndex={fileIndex}
+            index={fileIndex}
           />
         )}
         limit={limit}

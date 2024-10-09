@@ -37,8 +37,7 @@ export interface FileTokenGroupProps extends BaseComponentProps {
    *
    * An array of objects representing token items. Each token has the following properties:
    *
-   * - `label` (string) - Title text of the token.
-   * - `description` (string) - (Optional) Further information about the token that appears below the label.
+   * - `file` (string) - File value.
    * - `disabled` [boolean] - (Optional) Determines whether the token is disabled.
    * - `loading` (boolean) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    * - `errorText` (string) - (Optional) Text that displays as a validation error message.
@@ -93,7 +92,7 @@ export namespace FileTokenGroupProps {
     file: File;
     disabled?: boolean;
     loading?: boolean;
-    errorText?: string;
-    warningText?: string;
+    errorText?: string | null;
+    warningText?: string | null;
   }
 }

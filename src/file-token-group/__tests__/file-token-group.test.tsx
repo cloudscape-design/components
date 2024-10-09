@@ -90,17 +90,17 @@ describe('File upload tokens', () => {
 
   test('file token remove button has ARIA label set', () => {
     const wrapper = render({ items: [{ file: file1 }] });
-    expect(wrapper.findFileToken(1)!.findFileDismiss()!.getElement()).toHaveAccessibleName('Remove file 1');
+    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Remove file 1');
   });
 
   test('selected file can be removed', () => {
     const wrapperSingular = render({ items: [{ file: file1 }] });
-    wrapperSingular.findFileToken(1)!.findFileDismiss()!.click();
+    wrapperSingular.findFileToken(1)!.findRemoveButton()!.click();
 
     expect(onDismiss).toHaveBeenCalledWith(expect.objectContaining({ detail: { fileIndex: 0 } }));
 
     const wrapperMultiple = render({ items: [{ file: file1 }, { file: file2 }] });
-    wrapperMultiple.findFileToken(2)!.findFileDismiss()!.click();
+    wrapperMultiple.findFileToken(2)!.findRemoveButton()!.click();
 
     expect(onDismiss).toHaveBeenCalledWith(expect.objectContaining({ detail: { fileIndex: 1 } }));
   });
@@ -209,21 +209,21 @@ describe('File upload tokens', () => {
 describe('Focusing behavior', () => {
   test.each([1, 2])(`Focus is dispatched to the next token when the token before it is removed, limit=%s`, limit => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }], limit });
-    wrapper.findFileToken(1)!.findFileDismiss().click();
+    wrapper.findFileToken(1)!.findRemoveButton().click();
 
-    expect(wrapper.findFileToken(1)!.findFileDismiss().getElement()).toHaveFocus();
+    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
   });
 
   test('Focus is dispatched to the previous token when removing the token at the end', () => {
     const wrapper = renderStateful({ items: [{ file: file1 }, { file: file2 }] });
-    wrapper.findFileToken(2)!.findFileDismiss().click();
+    wrapper.findFileToken(2)!.findRemoveButton().click();
 
-    expect(wrapper.findFileToken(1)!.findFileDismiss().getElement()).toHaveFocus();
+    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
   });
 
   //   test('Focus is dispatched to the file input when the last token is removed, multiple=%s', () => {
   //       const wrapper = renderStateful({ items: [{ file: file1 }] });
-  //       wrapper.findFileToken(1)!.findFileDismiss().click();
+  //       wrapper.findFileToken(1)!.findRemoveButton().click();
 
   //       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
   // });
