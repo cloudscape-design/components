@@ -283,8 +283,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       );
 
       describe('drawer focus interaction with tools buttons', () => {
-        //todo resolve focus on mobile issue returning to previously focued element on mobile for drawer open button
-        testIf(!(theme === 'refresh-toolbar' && mobile))(
+        testIf(!mobile)(
           'moves focus to close button when panel is opened from button',
           setupTest(
             async page => {
