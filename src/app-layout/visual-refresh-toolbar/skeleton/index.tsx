@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import customCssProps from '../../../internal/generated/custom-css-properties';
+import { useMobile } from '../../../internal/hooks/use-mobile';
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { AppLayoutPropsWithDefaults } from '../../interfaces';
 
@@ -63,6 +64,7 @@ export function SkeletonLayout({
   disableContentPaddings,
   globalToolsOpen,
 }: SkeletonLayoutProps) {
+  const isMobile = useMobile();
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
   const anyPanelOpen = navigationOpen || toolsOpen;
   return (
@@ -91,7 +93,7 @@ export function SkeletonLayout({
           {navigation}
         </div>
       )}
-      <main className={clsx(styles['main-landmark'], anyPanelOpen && styles['unfocusable-mobile'])}>
+      <main className={clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile'])}>
         {notifications && (
           <div
             className={clsx(
