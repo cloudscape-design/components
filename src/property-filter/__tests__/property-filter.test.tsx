@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import PropertyFilter from '../../../lib/components/property-filter';

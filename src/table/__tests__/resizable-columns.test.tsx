@@ -6,7 +6,7 @@ import times from 'lodash/times';
 
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
