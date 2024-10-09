@@ -4,6 +4,8 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
+
 import PropertyFilter from '../../../lib/components/property-filter';
 import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
 import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
@@ -120,6 +122,36 @@ describe('extended operators', () => {
       })
     );
     expect(wrapper.findNativeInput().getElement()).toHaveFocus();
+  });
+
+  test('extended operator form value is reset when operator changes', () => {
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({ ...extendedOperatorProps });
+
+    // Increment value
+    wrapper.setInputValue('index >');
+    act(() => pageWrapper.find('[data-testid="change+"]')!.click());
+    expect(wrapper.find('[data-testid="change+"]')!.getElement()).toHaveTextContent('1');
+
+    // Change operator
+    wrapper.setInputValue('index <');
+    expect(wrapper.find('[data-testid="change-"]')!.getElement()).toHaveTextContent('0');
+  });
+
+  test('extended operator form value is reset when dropdown closes', () => {
+    const { propertyFilterWrapper: wrapper, pageWrapper } = renderComponent({ ...extendedOperatorProps });
+
+    // Increment value
+    wrapper.setInputValue('index >');
+    act(() => pageWrapper.find('[data-testid="change+"]')!.click());
+    expect(wrapper.find('[data-testid="change+"]')!.getElement()).toHaveTextContent('1');
+
+    // Close dropdown
+    wrapper.findNativeInput().keydown(KeyCode.escape);
+    expect(wrapper.findDropdown()?.findOpenDropdown()).toBeFalsy();
+
+    // Reopen dropdown
+    wrapper.setInputValue('index >');
+    expect(wrapper.find('[data-testid="change+"]')!.getElement()).toHaveTextContent('0');
   });
 
   test('extended operator form takes chosen operator and entered filter text', () => {

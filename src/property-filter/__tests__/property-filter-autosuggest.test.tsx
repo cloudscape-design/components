@@ -172,12 +172,15 @@ describe('Property filter autosuggest', () => {
         enteredTextLabel={() => ''}
         value=""
         onChange={() => {}}
-        customForm={
-          <div>
-            <button id="first-focusable">first focusable</button>
-            <button id="second-focusable">second focusable</button>
-          </div>
-        }
+        customForm={{
+          content: (
+            <div>
+              <button id="first-focusable">first focusable</button>
+              <button id="second-focusable">second focusable</button>
+            </div>
+          ),
+          footer: null,
+        }}
       />
     );
     wrapper.focus();
@@ -201,7 +204,12 @@ describe('Property filter autosuggest', () => {
 
   test('has focus trap when custom form', () => {
     const { wrapper } = renderAutosuggest(
-      <PropertyFilterAutosuggest options={[]} value="" onChange={() => {}} customForm={<div />} />
+      <PropertyFilterAutosuggest
+        options={[]}
+        value=""
+        onChange={() => {}}
+        customForm={{ content: <div />, footer: <div /> }}
+      />
     );
 
     expect(wrapper.findByClassName(tabTrapStyles.root)!.getElement()).toHaveAttribute('tabIndex', '-1');
