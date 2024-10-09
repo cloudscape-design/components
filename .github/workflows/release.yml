@@ -29,6 +29,9 @@ jobs:
   integTest:
     name: Components integ tests
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -37,7 +40,7 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run build
-      - run: npm run test:integ
+      - run: npm run test:integ -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
   a11yTest:
     name: Components a11y tests
