@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-import { getUrlParams, testIf, Theme } from './utils';
+import { getUrlParams, Theme } from './utils';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 
@@ -20,32 +20,17 @@ class AppLayoutPage extends BasePageObject {
   getContentPosition() {
     return this.getBoundingBox(wrapper.findContentRegion().find('h1').toSelector());
   }
-
-  async trackResizeObserverErrors() {
-    await this.browser.execute(() => {
-      // Resize observer errors are not logged into the devtools messages by default
-      // https://github.com/w3c/csswg-drafts/issues/5248
-      window.addEventListener('error', event => {
-        if (event.message.startsWith('ResizeObserver')) {
-          console.error(event.message);
-        }
-      });
-    });
-  }
 }
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(
-    { viewport = viewports.desktop, pageName = 'default', trackResizeObserverErrors = true },
+    { viewport = viewports.desktop, pageName = 'default' },
     testFn: (page: AppLayoutPage) => Promise<void>
   ) {
     return useBrowser(async browser => {
       const page = new AppLayoutPage(browser);
       await page.setWindowSize(viewport);
       await browser.url(`#/light/app-layout/${pageName}?${getUrlParams(theme)}`);
-      if (trackResizeObserverErrors) {
-        await page.trackResizeObserverErrors();
-      }
       await page.waitForVisible(wrapper.findContentRegion().toSelector());
       await testFn(page);
     });
@@ -88,8 +73,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
-  // TODO: Fix console errors in VR and toolbar
-  testIf(theme === 'classic')(
+  test(
     'preserves inner content state when switching between mobile and desktop',
     setupTest({ viewport: viewports.desktop, pageName: 'stateful' }, async page => {
       await page.click('#content-button');
@@ -99,14 +83,18 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
-  // TODO: Fix console error in VR and preserved state in toolbar
-  testIf(theme === 'classic')(
-    'does not preserve breadcrumbs state',
+  test(
+    'breadcrumbs preservation state works as expected',
     setupTest({ viewport: viewports.desktop, pageName: 'stateful' }, async page => {
       await page.click('#breadcrumbs-button');
       await expect(page.getText('#breadcrumbs-text')).resolves.toBe('Clicked: 1');
       await page.setWindowSize(viewports.mobile);
-      await expect(page.getText('#breadcrumbs-text')).resolves.toBe('Clicked: 0');
+      await expect(page.getText('#breadcrumbs-text')).resolves.toBe(
+        `Clicked: ${
+          //can preserve breadcrumbs on refresh-toolbar
+          theme === 'refresh-toolbar' ? '1' : '0'
+        }`
+      );
     })
   );
 
@@ -178,7 +166,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
 
   test(
     'does not render notifications slot when it is empty',
-    setupTest({ pageName: 'with-notifications', trackResizeObserverErrors: false }, async page => {
+    setupTest({ pageName: 'with-notifications' }, async page => {
       const { height: originalHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
       expect(originalHeight).toBeGreaterThan(0);
       await page.click(wrapper.findNotifications().findFlashbar().findItems().get(1).findDismissButton().toSelector());
