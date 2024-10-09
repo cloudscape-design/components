@@ -60,3 +60,30 @@
     }
   }
 }
+
+.mobile-dropdown-wrapper {
+  display: block !important;
+}
+
+.mobile-dropdown-trigger {
+  block-size: 42px;
+}
+
+.mobile-dropdown-trigger-content {
+  display: flex;
+  color: awsui.$color-text-interactive-default;
+  font-weight: styles.$font-weight-bold;
+  text-align: start;
+
+  &:hover {
+    color: awsui.$color-text-link-default;
+  }
+}
+
+.mobile-dropdown-trigger-text {
+  display: block;
+  padding-inline-start: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

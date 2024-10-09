@@ -21,6 +21,10 @@ export function Breadcrumbs() {
       items={[
         { text: 'Home', href: '#' },
         { text: 'Service', href: '#' },
+        {
+          text: 'Service sdfjlsdk sdjfklds sdjfklds sdjfkldssdjfkldssdjfklds',
+          href: '#',
+        },
       ]}
     />
   );
