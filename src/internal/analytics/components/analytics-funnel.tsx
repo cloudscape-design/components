@@ -293,18 +293,14 @@ function getSubStepConfiguration(): SubStepConfiguration[] {
   const subSteps = Array.from(document.querySelectorAll<HTMLElement>(getSubStepAllSelector()));
 
   const subStepConfiguration = subSteps.map((substep, index) => {
+    const subStepIdentifier = (substep as any)?.__awsuiMetadata__?.analytics?.instanceIdentifier;
     const name = substep.querySelector<HTMLElement>(getSubStepNameSelector())?.innerText?.trim() ?? '';
-    const config: SubStepConfiguration = {
+
+    return {
       name,
       number: index + 1,
+      subStepIdentifier,
     };
-
-    const subStepIdentifier = (substep as any)?.__awsuiMetadata__?.analytics?.instanceIdentifier;
-    if (subStepIdentifier) {
-      config.subStepIdentifier = subStepIdentifier;
-    }
-
-    return config;
   });
   return subStepConfiguration;
 }

@@ -9,55 +9,55 @@ const funnelMetricsLog: { action: string; resolvedProps?: any; props: any }[] = 
 export const MockedFunnelMetrics: IFunnelMetrics = {
   funnelStart(props): string {
     const funnelName = document.querySelector(props.funnelNameSelector)?.innerHTML;
-    console.log({ action: 'funnelStart', props, resolvedProps: { funnelName } });
+    funnelMetricsLog.push({ action: 'funnelStart', props, resolvedProps: { funnelName } });
     return 'mocked-funnel-id';
   },
 
   funnelError(props): void {
-    console.log({ action: 'funnelError', props });
+    funnelMetricsLog.push({ action: 'funnelError', props });
   },
 
   funnelComplete(props): void {
-    console.log({ action: 'funnelComplete', props });
+    funnelMetricsLog.push({ action: 'funnelComplete', props });
   },
 
   funnelSuccessful(props): void {
-    console.log({ action: 'funnelSuccessful', props });
+    funnelMetricsLog.push({ action: 'funnelSuccessful', props });
   },
 
   funnelCancelled(props): void {
-    console.log({ action: 'funnelCancelled', props });
+    funnelMetricsLog.push({ action: 'funnelCancelled', props });
   },
 
   funnelChange(props): void {
-    console.log({ action: 'funnelChange', props });
+    funnelMetricsLog.push({ action: 'funnelChange', props });
   },
 
   funnelStepStart(props): void {
     const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
-    console.log({ action: 'funnelStepStart', props, resolvedProps: { stepName } });
+    funnelMetricsLog.push({ action: 'funnelStepStart', props, resolvedProps: { stepName } });
   },
 
   funnelStepComplete(props): void {
     const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
-    console.log({ action: 'funnelStepComplete', props, resolvedProps: { stepName } });
+    funnelMetricsLog.push({ action: 'funnelStepComplete', props, resolvedProps: { stepName } });
   },
 
   funnelStepNavigation(props): void {
     const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
     // const subStepAllElements = document.querySelectorAll(props.subStepAllSelector); // TODO: Does not work
 
-    console.log({ action: 'funnelStepNavigation', props, resolvedProps: { stepName } });
+    funnelMetricsLog.push({ action: 'funnelStepNavigation', props, resolvedProps: { stepName } });
   },
 
   funnelStepError(props): void {
     const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
-    console.log({ action: 'funnelStepError', props, resolvedProps: { stepName } });
+    funnelMetricsLog.push({ action: 'funnelStepError', props, resolvedProps: { stepName } });
   },
 
   funnelStepChange(props): void {
     const stepName = document.querySelector(props.stepNameSelector!)?.innerHTML;
-    console.log({ action: 'funnelStepChange', props, resolvedProps: { stepName } });
+    funnelMetricsLog.push({ action: 'funnelStepChange', props, resolvedProps: { stepName } });
   },
 
   funnelSubStepStart(props): void {
@@ -66,7 +66,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
     const subStepElement = document.querySelector(props.subStepSelector);
 
-    console.log({
+    funnelMetricsLog.push({
       action: 'funnelSubStepStart',
       props,
       resolvedProps: { stepName, subStepName, subStepAllElements, subStepElement },
@@ -79,7 +79,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
     const subStepElement = document.querySelector(props.subStepSelector);
 
-    console.log({
+    funnelMetricsLog.push({
       action: 'funnelSubStepComplete',
       props,
       resolvedProps: { stepName, subStepName, subStepAllElements, subStepElement },
@@ -92,7 +92,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
     const fieldLabel = document.querySelector(props.fieldLabelSelector!)?.innerHTML;
     const fieldError = document.querySelector(props.fieldErrorSelector!)?.innerHTML;
 
-    console.log({
+    funnelMetricsLog.push({
       action: 'funnelSubStepError',
       props,
       resolvedProps: { fieldLabel, fieldError, stepName, subStepName },
@@ -106,7 +106,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
     const element = document.querySelector(props.elementSelector);
 
-    console.log({
+    funnelMetricsLog.push({
       action: 'helpPanelInteracted',
       props,
       resolvedProps: { stepName, subStepName, subStepAllElements, element, subStepElement },
@@ -120,7 +120,7 @@ export const MockedFunnelMetrics: IFunnelMetrics = {
     const subStepAllElements = document.querySelectorAll(props.subStepAllSelector);
     const element = document.querySelector(props.elementSelector);
 
-    console.log({
+    funnelMetricsLog.push({
       action: 'externalLinkInteracted',
       props,
       resolvedProps: { stepName, subStepName, subStepAllElements, element, subStepElement },

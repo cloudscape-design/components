@@ -58,6 +58,7 @@ function ModalWithAnalyticsFunnel({
 
 export default function Modal({ size = 'medium', ...props }: ModalProps) {
   const { isInFunnel } = useFunnel();
+  console.log('isInFunnel', isInFunnel);
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
     'Modal',

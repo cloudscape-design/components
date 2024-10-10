@@ -38,6 +38,7 @@ import styles from './styles.css.js';
 
 export function InternalModalAsFunnel(props: InternalModalProps) {
   const { funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
+  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
   const onButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
       funnelNextOrSubmitAttempt();
@@ -45,11 +46,20 @@ export function InternalModalAsFunnel(props: InternalModalProps) {
     }
   };
 
-  return <InternalModal onButtonClick={onButtonClick} {...props} />;
+  return (
+    <InternalModal
+      __subStepRef={subStepRef}
+      __subStepFunnelProps={funnelSubStepProps}
+      onButtonClick={onButtonClick}
+      {...props}
+    />
+  );
 }
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> &
   InternalBaseComponentProps & {
+    __subStepRef?: any;
+    __subStepFunnelProps?: any;
     __injectAnalyticsComponentMetadata?: boolean;
     onButtonClick?: ButtonContextProps['onClick'];
     referrerId?: string;
@@ -78,6 +88,8 @@ function PortaledModal({
   onDismiss,
   __internalRootRef = null,
   __injectAnalyticsComponentMetadata,
+  __subStepRef,
+  __subStepFunnelProps,
   referrerId,
   ...rest
 }: PortaledModalProps) {
@@ -155,7 +167,7 @@ function PortaledModal({
   // Add extra scroll padding to account for the height of the sticky footer,
   // to prevent it from covering focused elements.
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
-  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+  const { subStepRef } = useFunnelSubStep();
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
@@ -217,8 +229,8 @@ function PortaledModal({
                     </InternalHeader>
                   </div>
                   <div
-                    ref={subStepRef}
-                    {...funnelSubStepProps}
+                    ref={__subStepRef}
+                    {...__subStepFunnelProps}
                     className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
                   >
                     {children}
