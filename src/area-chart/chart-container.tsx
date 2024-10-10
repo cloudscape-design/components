@@ -44,6 +44,7 @@ interface ChartContainerProps<T extends AreaChartProps.DataTypes>
   model: ChartModel<T>;
   autoWidth: (value: number) => void;
   fitHeight?: boolean;
+  hasFilters: boolean;
   minHeight: number;
   isRTL?: boolean;
 }
@@ -71,6 +72,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
     detailPopoverDismissAriaLabel,
   } = {},
   fitHeight,
+  hasFilters,
   minHeight,
   xTickFormatter = deprecatedXTickFormatter,
   yTickFormatter = deprecatedYTickFormatter,
@@ -119,6 +121,7 @@ function ChartContainer<T extends AreaChartProps.DataTypes>({
       ref={mergedRef}
       minHeight={minHeight + blockEndLabelsProps.height}
       fitHeight={!!fitHeight}
+      hasFilters={hasFilters}
       leftAxisLabel={<AxisLabel axis="y" position="left" title={yTitle} />}
       leftAxisLabelMeasure={
         <LabelsMeasure
