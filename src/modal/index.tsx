@@ -7,30 +7,23 @@ import {
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
 } from '../internal/analytics/components/analytics-funnel';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ModalProps } from './interfaces';
-import { InternalModalAsSubstep } from './internal';
+import InternalModal, { InternalModalAsSubstep } from './internal';
 
 import styles from './styles.css.js';
 
 export { ModalProps };
 
-export default function Modal({ size = 'medium', ...props }: ModalProps) {
-  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent(
-    'Modal',
-    {
-      props: { size, disableContentPaddings: props.disableContentPaddings },
-      metadata: {
-        hasResourceType: Boolean(analyticsMetadata?.resourceType),
-        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
-      },
-    },
-    analyticsMetadata
-  );
-
+function ModalWithAnalytics({
+  analyticsMetadata,
+  baseComponentProps,
+  size = 'medium',
+  ...props
+}: ModalProps & { analyticsMetadata: any; baseComponentProps: ReturnType<typeof useBaseComponent> }) {
   return (
     <AnalyticsFunnel
       funnelIdentifier={analyticsMetadata?.instanceIdentifier}
@@ -61,6 +54,35 @@ export default function Modal({ size = 'medium', ...props }: ModalProps) {
       </AnalyticsFunnelStep>
     </AnalyticsFunnel>
   );
+}
+
+export default function Modal({ size = 'medium', ...props }: ModalProps) {
+  const { funnelInteractionId } = useFunnel();
+  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+  const baseComponentProps = useBaseComponent(
+    'Modal',
+    {
+      props: { size, disableContentPaddings: props.disableContentPaddings },
+      metadata: {
+        hasResourceType: Boolean(analyticsMetadata?.resourceType),
+        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+      },
+    },
+    analyticsMetadata
+  );
+
+  if (!funnelInteractionId) {
+    return (
+      <ModalWithAnalytics
+        analyticsMetadata={analyticsMetadata}
+        baseComponentProps={baseComponentProps}
+        size={size}
+        {...props}
+      />
+    );
+  }
+
+  return <InternalModal size={size} {...props} {...baseComponentProps} __injectAnalyticsComponentMetadata={true} />;
 }
 
 applyDisplayName(Modal, 'Modal');
