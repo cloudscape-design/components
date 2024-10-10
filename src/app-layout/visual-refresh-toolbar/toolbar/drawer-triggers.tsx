@@ -38,9 +38,6 @@ interface DrawerTriggersProps {
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
 
-  toolsOpen: boolean;
-  onToolsToggle: (value: boolean) => void;
-
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
   splitPanelToggleProps: SplitPanelToggleProps | undefined;
@@ -65,7 +62,6 @@ export function DrawerTriggers({
   globalDrawers,
   globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
-  toolsOpen,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -156,12 +152,11 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
-          const isActive = item.id === TOOLS_DRAWER_ID ? toolsOpen : item.id === activeDrawerId;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={isActive}
-              ariaControls={isActive ? item.id : undefined}
+              ariaExpanded={item.id === activeDrawerId}
+              ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
                 !toolsOnlyMode && testutilStyles['drawers-trigger'],
@@ -172,7 +167,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
               ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
-              selected={isActive}
+              selected={item.id === activeDrawerId}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}

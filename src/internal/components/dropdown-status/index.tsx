@@ -55,6 +55,7 @@ type UseDropdownStatus = ({
 export interface DropdownStatusResult {
   isSticky: boolean;
   content: React.ReactNode | null;
+  hasRecoveryButton: boolean;
 }
 
 export const useDropdownStatus: UseDropdownStatus = ({
@@ -72,13 +73,14 @@ export const useDropdownStatus: UseDropdownStatus = ({
   onRecoveryClick,
   hasRecoveryCallback = false,
   errorIconAriaLabel,
-}) => {
+}): DropdownStatusResult => {
   const previousStatusType = usePrevious(statusType);
-  const statusResult: DropdownStatusResult = { isSticky: true, content: null };
+  const statusResult: DropdownStatusResult = { isSticky: true, content: null, hasRecoveryButton: false };
 
   if (statusType === 'loading') {
     statusResult.content = <InternalStatusIndicator type={'loading'}>{loadingText}</InternalStatusIndicator>;
   } else if (statusType === 'error') {
+    statusResult.hasRecoveryButton = !!recoveryText && hasRecoveryCallback;
     statusResult.content = (
       <span>
         <InternalStatusIndicator
@@ -89,7 +91,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
         >
           {errorText}
         </InternalStatusIndicator>{' '}
-        {!!recoveryText && hasRecoveryCallback && (
+        {statusResult.hasRecoveryButton && (
           <InternalLink
             onFollow={() => fireNonCancelableEvent(onRecoveryClick)}
             variant="recovery"

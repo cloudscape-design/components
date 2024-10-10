@@ -40,8 +40,9 @@
     }
   }
 
-  &.last-opened {
-    @include mobile-only {
+  @include mobile-only {
+    inline-size: 100%;
+    &.last-opened {
       z-index: constants.$drawer-z-index-mobile;
     }
   }
