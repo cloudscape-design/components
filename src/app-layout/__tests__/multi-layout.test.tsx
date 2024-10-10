@@ -84,11 +84,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         content={<AppLayout data-testid="second" navigationHide={true} tools="testing tools" />}
       />
     );
-    expect(firstLayout.findTools()).toBeFalsy();
-    expect(secondLayout.findTools()).toBeFalsy();
+    expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
+    expect(isDrawerClosed(secondLayout.findTools())).toEqual(true);
 
     firstLayout.findToolsToggle().click();
-    expect(secondLayout.findTools()).toBeTruthy();
+    expect(isDrawerClosed(secondLayout.findTools())).toEqual(false);
   });
 
   test('merges split panel from two instances', async () => {
@@ -231,10 +231,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         expect.stringContaining('Another app layout instance on this page already defines tools or drawers property')
       );
       expect(firstLayout.findDrawersTriggers()).toHaveLength(0);
-      expect(firstLayout.findTools()).toBeFalsy();
+      expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
 
       firstLayout.findToolsToggle().click();
-      expect(firstLayout.findTools()).toBeTruthy();
+      expect(isDrawerClosed(firstLayout.findTools())).toEqual(false);
     });
   });
 });

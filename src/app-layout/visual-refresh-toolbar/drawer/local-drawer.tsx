@@ -47,8 +47,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   };
 
   const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
-  const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID;
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
+  const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID || toolsOnlyMode;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
   const resizeProps = useResize({
     currentWidth: activeDrawerSize,
@@ -64,7 +64,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
 
   return (
-    <Transition nodeRef={drawerRef} in={true} appear={true} timeout={0}>
+    <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
       {state => (
         <aside
           id={activeDrawerId}
@@ -75,6 +75,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             [styles.legacy]: isLegacyDrawer,
             [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
             [testutilStyles.tools]: isToolsDrawer,
+            [styles['drawer-hidden']]: !activeDrawer,
+            [testutilStyles['drawer-closed']]: !activeDrawer,
           })}
           ref={drawerRef}
           onBlur={e => {
