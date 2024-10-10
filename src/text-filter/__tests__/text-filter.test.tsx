@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import FormField from '../../../lib/components/form-field';
 import { DEBOUNCE_DEFAULT_DELAY } from '../../../lib/components/internal/debounce';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
+import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
 function renderTextFilter(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -108,6 +109,8 @@ test('should pass through properties using form field context', () => {
 });
 
 describe('countText', () => {
+  mockInnerText(); // Used to test the live announcement (<LiveRegion />)
+
   test('not displayed if no value was given', () => {
     const { wrapper } = renderTextFilter(<TextFilter filteringText="" />);
     expect(wrapper.findResultsCount()).toBe(null);
@@ -136,6 +139,23 @@ describe('countText', () => {
 
     expect(document.getElementById(ariaDescribedby[0])).toHaveTextContent('10 matches');
     expect(ariaDescribedby[1]).toBe('test-description');
+  });
+
+  test('re-announces count text when calling renderCountTextAriaLive', () => {
+    jest.useFakeTimers();
+    let ref: TextFilterProps.Ref;
+    const { wrapper } = renderTextFilter(
+      <TextFilter ref={value => (ref = value!)} filteringText="test" countText="10 matches" />
+    );
+    act(() => void jest.runAllTimers());
+    const liveRegionText = wrapper.getElement().querySelector(`[aria-live="polite"]`)!;
+    expect(liveRegionText.textContent).toBe('10 matches');
+
+    ref!.renderCountTextAriaLive();
+    act(() => void jest.runAllTimers());
+    // Expected suffixed dot which is attached when re-announcing the same count text.
+    expect(liveRegionText.textContent).toBe('10 matches.');
+    jest.useRealTimers();
   });
 });
 
