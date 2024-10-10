@@ -15,8 +15,10 @@ $operator-field-width: 120px;
 .search-field {
   display: flex;
   align-items: flex-end;
-  // The xs breakpoint, minus the table tools container padding
-  max-inline-size: calc(#{styles.$breakpoint-x-small} - 2 * #{awsui.$space-l});
+  &.limited-width {
+    // The xs breakpoint, minus the table tools container padding
+    max-inline-size: calc(#{styles.$breakpoint-x-small} - 2 * #{awsui.$space-l});
+  }
 }
 
 .input-wrapper {

@@ -12387,6 +12387,12 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "PropertyFilterProps.FreeTextFiltering",
     },
     {
+      "description": "Allows the filtering input to occupy the full available width.",
+      "name": "fullWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "defaultValue": "false",
       "description": "If hideOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) and the selection of operations
 (applied to the property and value token) are hidden from the user. Only use when you have a custom

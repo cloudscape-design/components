@@ -63,6 +63,7 @@ const permutations = createPermutations<Partial<PropertyFilterProps>>([
     ],
     hideOperations: [true, false],
     disabled: [true, false],
+    fullWidth: [true, false],
   },
   {
     query: [
