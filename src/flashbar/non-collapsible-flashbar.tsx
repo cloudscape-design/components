@@ -7,21 +7,26 @@ import clsx from 'clsx';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
+import { getBaseProps } from '../internal/base-component';
 import { Transition } from '../internal/components/transition';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export { FlashbarProps };
-
-export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+export default function NonCollapsibleFlashbar({
+  __internalRootRef,
+  items,
+  i18nStrings,
+  ...restProps
+}: InternalFlashbarProps) {
+  const baseProps = getBaseProps(restProps);
+  const { allItemsHaveId, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+    __internalRootRef,
     items,
-    ...restProps,
   });
 
   const i18n = useInternalI18n('flashbar');

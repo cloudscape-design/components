@@ -136,7 +136,7 @@ const defaultProps: Record<string, Record<string, any>> = {
     series: [],
   },
   flashbar: {
-    items: [],
+    items: [{ content: 'testing' }],
   },
   'file-upload': {
     value: [],

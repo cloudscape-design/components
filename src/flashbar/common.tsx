@@ -4,32 +4,28 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { focusFlashById } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({
+  __internalRootRef,
   items,
   onItemsAdded,
   onItemsChanged,
   onItemsRemoved,
-  ...restProps
-}: FlashbarProps & {
+}: {
+  __internalRootRef: InternalFlashbarProps['__internalRootRef'];
+  items: InternalFlashbarProps['items'];
   onItemsAdded?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsRemoved?: (items: FlashbarProps.MessageDefinition[]) => void;
   onItemsChanged?: (options?: { allItemsHaveId?: boolean; isReducedMotion?: boolean }) => void;
 }) {
-  const { __internalRootRef } = useBaseComponent('Flashbar', {
-    props: { stackItems: restProps.stackItems },
-  });
   const allItemsHaveId = useMemo(() => items.every(item => 'id' in item), [items]);
-  const baseProps = getBaseProps(restProps);
   const ref = useRef<HTMLDivElement | null>(null);
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
@@ -73,7 +69,6 @@ export function useFlashbar({
 
   return {
     allItemsHaveId,
-    baseProps,
     breakpoint,
     isReducedMotion,
     isVisualRefresh,

@@ -11,6 +11,7 @@ import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
 import { animate, getDOMRects } from '../internal/animate';
+import { getBaseProps } from '../internal/base-component';
 import { Transition } from '../internal/components/transition';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import customCssProps from '../internal/generated/custom-css-properties';
@@ -22,13 +23,11 @@ import { GeneratedAnalyticsMetadataFlashbarExpand } from './analytics-metadata/i
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 import { sendToggleMetric } from './internal/analytics';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
-
-export { FlashbarProps };
 
 // If the number of items is equal or less than this value,
 // the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
@@ -36,7 +35,13 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({
+  __internalRootRef,
+  items,
+  i18nStrings,
+  ...restProps
+}: InternalFlashbarProps) {
+  const baseProps = getBaseProps(restProps);
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -51,9 +56,9 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+    __internalRootRef,
     items,
-    ...restProps,
     onItemsAdded: newItems => {
       setEnteringItems([...enteringItems, ...newItems]);
     },
@@ -143,8 +148,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       updateBottomSpacing.cancel();
     };
   }, [updateBottomSpacing]);
-
-  const { i18nStrings } = restProps;
 
   const i18n = useInternalI18n('flashbar');
   const ariaLabel = i18n('i18nStrings.ariaLabel', i18nStrings?.ariaLabel);

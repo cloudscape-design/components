@@ -171,11 +171,7 @@ describe('Flashbar renders correct analytics metadata', () => {
     });
     test('without items', () => {
       const wrapper = renderFlashbar({ stackItems, items: [] });
-      const list = wrapper.find('ul')!.getElement();
-      validateComponentNameAndLabels(list, labels);
-      expect(getGeneratedAnalyticsMetadata(list)).toEqual({
-        ...getMetadata(undefined, stackItems, false, 0),
-      });
+      expect(wrapper).toBeFalsy();
     });
   });
 
