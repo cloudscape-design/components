@@ -195,5 +195,64 @@ describe('toolbar mode only features', () => {
 
       expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
     });
+
+    test('should prevent the horizontal page scroll from appearing during resize', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('security')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      expect(wrapper.findNavigation().getElement()).toHaveAttribute('aria-hidden', 'false');
+      expect(wrapper.findActiveDrawer()).toBeTruthy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
+
+      act(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+          value: 1210,
+          writable: true,
+          configurable: true,
+        });
+        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+          value: 1200,
+          writable: true,
+          configurable: true,
+        });
+        window.dispatchEvent(new Event('resize'));
+      });
+
+      expect(wrapper.findNavigation().getElement()).toHaveAttribute('aria-hidden', 'true');
+
+      act(() => {
+        Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
+          value: 910,
+          writable: true,
+          configurable: true,
+        });
+        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
+          value: 900,
+          writable: true,
+          configurable: true,
+        });
+        window.dispatchEvent(new Event('resize'));
+      });
+
+      expect(wrapper.findActiveDrawer()).toBeTruthy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
+    });
   });
 });

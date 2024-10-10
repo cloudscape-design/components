@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -10,6 +10,7 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
+import { throttle } from '../../internal/utils/throttle';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -73,11 +74,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
-
-    const onNavigationToggle = (open: boolean) => {
-      navigationFocusControl.setFocus();
-      fireNonCancelableEvent(onNavigationChange, { open });
-    };
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -227,6 +223,14 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
+    const onNavigationToggle = useCallback(
+      (open: boolean) => {
+        navigationFocusControl.setFocus();
+        fireNonCancelableEvent(onNavigationChange, { open });
+      },
+      [navigationFocusControl, onNavigationChange]
+    );
+
     useImperativeHandle(forwardRef, () => ({
       closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
       openTools: () => onToolsToggle(true),
@@ -368,6 +372,42 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile]);
+
+    const onPageResize = useCallback(() => {
+      const hasHorizontalScroll = document.documentElement.scrollWidth - document.documentElement.clientWidth > 0;
+      if (!hasHorizontalScroll) {
+        return;
+      }
+
+      if (navigationOpen) {
+        onNavigationToggle(false);
+        return;
+      }
+
+      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      if (activeDrawer && activeDrawer?.id === drawerToClose) {
+        onActiveDrawerChange(null);
+      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
+        onActiveGlobalDrawersChange(drawerToClose);
+      }
+    }, [
+      activeDrawer,
+      activeGlobalDrawersIds,
+      drawersOpenQueue,
+      navigationOpen,
+      onActiveDrawerChange,
+      onActiveGlobalDrawersChange,
+      onNavigationToggle,
+    ]);
+
+    useEffect(() => {
+      if (isMobile) {
+        return;
+      }
+      const throttledOnPageResize = throttle(onPageResize, 500);
+      window.addEventListener('resize', throttledOnPageResize);
+      return () => window.removeEventListener('resize', throttledOnPageResize);
+    }, [isMobile, onPageResize]);
 
     return (
       <>
