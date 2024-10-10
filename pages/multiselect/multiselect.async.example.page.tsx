@@ -106,7 +106,7 @@ function EmbeddedMultiselectIntegration(props: EmbeddedMultiselectProps) {
         filteringPlaceholder="Find security group"
       />
 
-      <div style={{ maxBlockSize: 400, display: 'flex' }}>
+      <div style={{ maxBlockSize: 400, display: 'flex', flexDirection: 'column' }}>
         <EmbeddedMultiselect {...props} filteringText={filteringText} />
       </div>
     </SpaceBetween>

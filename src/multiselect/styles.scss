@@ -12,10 +12,7 @@
 
 .embedded {
   @include styles.styles-reset;
-
-  display: flex;
-  flex-direction: column;
-  inline-size: 100%;
+  display: contents;
 }
 
 .tokens {

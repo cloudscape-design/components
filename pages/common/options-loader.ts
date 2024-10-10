@@ -38,7 +38,15 @@ export interface FetchItemsProps<Item> {
 }
 
 export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomErrors = false }: OptionsLoaderProps) {
-  const [items, setItems] = useState(new Array<Item>());
+  const [items, setItemsState] = useState(new Array<Item>());
+  const itemsRef = useRef(items);
+  const setItems = (cb: (prev: Item[]) => Item[]) => {
+    setItemsState(prev => {
+      const newItems = cb(prev);
+      itemsRef.current = newItems;
+      return newItems;
+    });
+  };
   const [status, setStatus] = useState<'pending' | 'loading' | 'finished' | 'error'>('pending');
   const [filteringText, setFilteringText] = useState('');
   const requestsRef = useRef(new Array<FakeRequest<APIResponse>>());
@@ -65,7 +73,7 @@ export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomEr
           reject();
         } else {
           const nextItems = sourceItems.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
-          resolve({ items: nextItems, hasNextPage: items.length + nextItems.length < sourceItems.length });
+          resolve({ items: nextItems, hasNextPage: itemsRef.current.length + nextItems.length < sourceItems.length });
         }
       }, timeout)
     );
@@ -80,7 +88,7 @@ export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomEr
 
   function fetchItems({ sourceItems, firstPage, filteringText: nextFilteringText }: FetchItemsProps<Item>) {
     if (firstPage) {
-      setItems([]);
+      setItems(() => []);
       setFilteringText(nextFilteringText);
       cancelRequests();
     }

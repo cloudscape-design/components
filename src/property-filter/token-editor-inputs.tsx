@@ -145,7 +145,7 @@ export function ValueInput({
         .map(({ label, value }) => ({ label, value }))
     : [];
 
-  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty);
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty, value, operator);
   const asyncValueAutosuggestProps = property?.propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
