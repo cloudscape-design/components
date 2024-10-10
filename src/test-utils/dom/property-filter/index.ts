@@ -61,6 +61,26 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   findConstraint(): ElementWrapper | null {
     return this.findByClassName(styles.constraint);
   }
+
+  /**
+   * Returns custom property form cancel button.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findPropertyCancelButton(options = { expandToViewport: false }): null | ButtonWrapper {
+    return this.findDropdown(options).findComponent(`.${testUtilStyles['property-editor-cancel']}`, ButtonWrapper);
+  }
+
+  /**
+   * Returns custom property form submit button.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  findPropertySubmitButton(options = { expandToViewport: false }): null | ButtonWrapper {
+    return this.findDropdown(options).findComponent(`.${testUtilStyles['property-editor-submit']}`, ButtonWrapper);
+  }
 }
 
 export class FilteringTokenWrapper extends ComponentWrapper {

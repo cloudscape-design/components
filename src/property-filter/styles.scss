@@ -61,10 +61,6 @@ $operator-field-width: 120px;
     margin-inline-end: awsui.$space-xs;
   }
 
-  &-submit {
-    /* used in test-utils */
-  }
-
   &-actions {
     display: flex;
     justify-content: flex-end;

@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import clsx from 'clsx';
 
 import InternalButton from '../button/internal';
 import { FormFieldContext } from '../internal/context/form-field-context';
@@ -10,6 +11,7 @@ import { I18nStringsInternal } from './i18n-utils';
 import { ComparisonOperator, ExtendedOperatorForm, InternalFilteringProperty, InternalToken } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export function PropertyEditorContent<TokenValue = any>({
   property,
@@ -59,10 +61,14 @@ export function PropertyEditorFooter<TokenValue = any>({
   const submitToken = () => onSubmit({ property, operator, value });
   return (
     <div className={styles['property-editor-actions']}>
-      <InternalButton variant="link" className={styles['property-editor-cancel']} onClick={onCancel}>
+      <InternalButton
+        variant="link"
+        className={clsx(styles['property-editor-cancel'], testUtilStyles['property-editor-cancel'])}
+        onClick={onCancel}
+      >
         {i18nStrings.cancelActionText}
       </InternalButton>
-      <InternalButton className={styles['property-editor-submit']} onClick={submitToken}>
+      <InternalButton className={testUtilStyles['property-editor-submit']} onClick={submitToken}>
         {i18nStrings.applyActionText}
       </InternalButton>
     </div>

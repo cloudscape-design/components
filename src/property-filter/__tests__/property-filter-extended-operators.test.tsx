@@ -12,8 +12,6 @@ import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/compon
 import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
 
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
-
 const defaultProps = createDefaultProps([], []);
 
 const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
@@ -116,7 +114,7 @@ describe('extended operators', () => {
     act(() => pageWrapper.find('[data-testid="change+"]')!.click());
 
     // Click cancel
-    act(() => pageWrapper.findButton(`.${styles['property-editor-cancel']}`)!.click());
+    act(() => wrapper.findPropertyCancelButton()!.click());
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     expect(onChange).not.toBeCalled();
     expect(wrapper.findNativeInput().getElement()).toHaveFocus();
@@ -126,7 +124,7 @@ describe('extended operators', () => {
     act(() => pageWrapper.find('[data-testid="change-"]')!.click());
 
     // Click submit
-    act(() => pageWrapper.findButton(`.${styles['property-editor-submit']}`)!.click());
+    act(() => wrapper.findPropertySubmitButton()!.click());
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     expect(onChange).toBeCalledWith(
       expect.objectContaining({
