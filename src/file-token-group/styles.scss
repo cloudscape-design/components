@@ -6,6 +6,8 @@
 @use '../internal/styles/tokens' as awsui;
 @use '../internal/styles' as styles;
 
+$image-size: 48px;
+
 .root {
   @include styles.styles-reset();
 }
@@ -49,11 +51,15 @@
 }
 
 .file-option-thumbnail-image {
-  inline-size: 48px;
-  block-size: 48px;
+  inline-size: $image-size;
+  block-size: $image-size;
   object-fit: cover;
 }
 
 .file-option-metadata {
   inline-size: 100%;
+
+  &.with-image {
+    inline-size: calc(100% - $image-size);
+  }
 }

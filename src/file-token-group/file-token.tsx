@@ -70,7 +70,12 @@ function InternalFileToken({
   const [showTooltip, setShowTooltip] = useState(false);
 
   return (
-    <div ref={containerRef} className={clsx(styles['file-token'])} style={{ position: 'relative' }}>
+    <div
+      ref={containerRef}
+      className={clsx(styles['file-token'])}
+      onFocus={() => setShowTooltip(true)}
+      onBlur={() => setShowTooltip(false)}
+    >
       {loading && (
         <>
           <div className={styles['file-loading-overlay']} />
@@ -95,7 +100,11 @@ function InternalFileToken({
         <InternalBox className={styles['file-option']}>
           {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
 
-          <div className={styles['file-option-metadata']}>
+          <div
+            className={clsx(styles['file-option-metadata'], {
+              [styles['with-image']]: showFileThumbnail && isImage,
+            })}
+          >
             <InternalSpaceBetween direction="vertical" size="xxxs">
               <div onMouseOver={() => setShowTooltip(true)} onMouseOut={() => setShowTooltip(false)}>
                 <InternalBox
