@@ -36,12 +36,12 @@ export default function ModalFunnelPage() {
       {visible && (
         <Modal
           analyticsMetadata={{
-            flowType: 'delete-resource',
+            flowType: 'delete',
             instanceIdentifier: 'delete-flow',
             resourceType: 'instance',
           }}
           onDismiss={() => setVisible(false)}
-          visible={visible}
+          visible={true}
           footer={
             <Box float="right">
               <SpaceBetween direction="horizontal" size="xs">

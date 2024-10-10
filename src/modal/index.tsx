@@ -26,6 +26,7 @@ function ModalWithAnalyticsFunnel({
 }: ModalProps & { analyticsMetadata: any; baseComponentProps: ReturnType<typeof useBaseComponent> }) {
   return (
     <AnalyticsFunnel
+      mounted={props.visible}
       funnelIdentifier={analyticsMetadata?.instanceIdentifier}
       funnelFlowType={analyticsMetadata?.flowType}
       funnelErrorContext={analyticsMetadata?.errorContext}
@@ -36,6 +37,7 @@ function ModalWithAnalyticsFunnel({
       funnelNameSelectors={[`.${styles['header--text']}`]}
     >
       <AnalyticsFunnelStep
+        mounted={props.visible}
         stepIdentifier={analyticsMetadata?.instanceIdentifier}
         stepErrorContext={analyticsMetadata?.errorContext}
         stepNumber={1}
@@ -58,7 +60,6 @@ function ModalWithAnalyticsFunnel({
 
 export default function Modal({ size = 'medium', ...props }: ModalProps) {
   const { isInFunnel } = useFunnel();
-  console.log('isInFunnel', isInFunnel);
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
     'Modal',

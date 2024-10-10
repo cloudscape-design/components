@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export type FunnelType = 'single-page' | 'multi-page' | 'modal';
-export type FlowType = 'create' | 'edit' | 'home' | 'dashboard' | 'view-resource' | 'delete-resource';
+export type FlowType = 'create' | 'edit' | 'delete' | 'home' | 'dashboard' | 'view-resource';
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
   flowType?: FlowType;

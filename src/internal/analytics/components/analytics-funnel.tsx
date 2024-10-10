@@ -39,6 +39,7 @@ import {
 export const FUNNEL_VERSION = '1.4';
 
 interface AnalyticsFunnelProps {
+  mounted?: boolean;
   children?: React.ReactNode;
   stepConfiguration?: StepConfiguration[];
   funnelNameSelectors?: string[];
@@ -65,6 +66,7 @@ export const AnalyticsFunnel = (props: AnalyticsFunnelProps) => {
 
   return <InnerAnalyticsFunnel {...props} />;
 };
+
 export const CREATION_EDIT_FLOW_DONE_EVENT_NAME = 'awsui-creation-edit-flow-done';
 const dispatchCreateEditFlowDoneEvent = () => {
   try {
@@ -104,7 +106,7 @@ function evaluateSelectors(selectors: string[], defaultSelector: string) {
   return defaultSelector;
 }
 
-const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
+const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
@@ -126,6 +128,10 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
   // The eslint-disable is required as we deliberately want this effect to run only once on mount and unmount,
   // hence we do not provide any dependencies.
   useEffect(() => {
+    if (!mounted) {
+      return;
+    }
+
     /*
       We run this effect with a delay, in order to detect whether this funnel contains a Wizard.
       If it does contain a Wizard, that Wizard should take precedence for handling the funnel, and
@@ -192,11 +198,11 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
       if (funnelState.current === 'complete') {
         FunnelMetrics.funnelSuccessful({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
       } else {
-        onFunnelCancelled({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
         funnelState.current = 'cancelled';
+        onFunnelCancelled({ funnelInteractionId, funnelIdentifier: props.funnelIdentifier });
       }
     };
-  }, []);
+  }, [mounted]);
   /* eslint-enable react-hooks/exhaustive-deps */
 
   const funnelSubmit = () => {
@@ -274,6 +280,7 @@ const InnerAnalyticsFunnel = ({ children, stepConfiguration, ...props }: Analyti
 };
 
 interface AnalyticsFunnelStepProps {
+  mounted?: boolean;
   stepIdentifier?: AnalyticsMetadata['instanceIdentifier'];
   stepErrorContext?: AnalyticsMetadata['errorContext'];
   children?: React.ReactNode | ((props: FunnelStepContextValue) => React.ReactNode);
@@ -350,6 +357,7 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
 }
 
 const InnerAnalyticsFunnelStep = ({
+  mounted = true,
   children,
   stepNumber,
   stepIdentifier,
@@ -383,6 +391,48 @@ const InnerAnalyticsFunnelStep = ({
     });
   });
 
+  useEffect(() => {
+    if (!funnelInteractionId) {
+      // This step is not inside an active funnel.
+      return;
+    }
+
+    if (mounted) {
+      return;
+    }
+
+    const stepName = getTextFromSelector(stepNameSelector);
+    const handler = setTimeout(() => {
+      if (funnelState.current !== 'cancelled') {
+        FunnelMetrics.funnelStepComplete({
+          funnelIdentifier,
+          funnelInteractionId,
+          stepIdentifier,
+          stepNumber,
+          stepName,
+          stepNameSelector,
+          subStepAllSelector: getSubStepAllSelector(),
+          totalSubSteps: subStepCount.current,
+        });
+      }
+    }, 0);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [
+    stepIdentifier,
+    funnelIdentifier,
+    funnelInteractionId,
+    stepNumber,
+    stepNameSelector,
+    funnelState,
+    parentStepExists,
+    funnelType,
+    parentStepFunnelInteractionId,
+    mounted,
+  ]);
+
   // This useEffect hook is used to track the start and completion of interaction with the step.
   // On mount, if there is a valid funnel interaction id, it calls the 'funnelStepStart' method from FunnelMetrics
   // to record the beginning of the interaction with the current step.
@@ -392,6 +442,7 @@ const InnerAnalyticsFunnelStep = ({
       // This step is not inside an active funnel.
       return;
     }
+
     if (parentStepExists && parentStepFunnelInteractionId) {
       /*
        This step is inside another step, which already reports events as
