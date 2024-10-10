@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 
-import { ModalContextProps, useModalContext } from '../../context/modal-context';
+import { useModalContext } from '../../context/modal-context';
 
 export const useModalContextLoadingButtonComponent = (isPrimaryButton: boolean, loading: boolean) => {
   const modalContext = useModalContext();
@@ -15,7 +15,7 @@ export const useModalContextLoadingButtonComponent = (isPrimaryButton: boolean, 
       modalContext.componentLoadingCount.current++;
       return () => {
         modalContext.componentLoadingCount.current--;
-        setModalLoadCompleteTime(modalContext);
+        modalContext.emitTimeToContentReadyInModal(performance.now());
       };
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,15 +31,8 @@ export const useModalContextLoadingComponent = () => {
     modalContext.componentLoadingCount.current++;
     return () => {
       modalContext.componentLoadingCount.current--;
-      setModalLoadCompleteTime(modalContext);
+      modalContext.emitTimeToContentReadyInModal(performance.now());
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-};
-
-const setModalLoadCompleteTime = (modalContext: ModalContextProps) => {
-  const { componentLoadingCount, loadCompleteTime } = modalContext;
-  if (componentLoadingCount.current === 0 && loadCompleteTime.current === 0) {
-    loadCompleteTime.current = performance.now();
-  }
 };

@@ -98,52 +98,42 @@ function PortaledModal({
     };
   }, []);
 
+  const resetModalPerformanceData = () => {
+    loadStartTime.current = performance.now();
+    loadCompleteTime.current = 0;
+    performanceMetricLogged.current = false;
+  };
+
+  const emitTimeToContentReadyInModal = (loadCompleteTime: number) => {
+    if (componentLoadingCount.current === 0 && loadStartTime.current !== null && !performanceMetricLogged.current) {
+      const timeToContentReadyInModal = loadCompleteTime - loadStartTime.current;
+      PerformanceMetrics.modalPerformanceData({
+        timeToContentReadyInModal,
+        instanceIdentifier: instanceUniqueId,
+      });
+      performanceMetricLogged.current = true;
+    }
+  };
+
+  const MODAL_READY_TIMEOUT = 100;
   /**
    * This useEffect is triggered when the visible attribute of modal changes.
-   * Its purpose is to handle emission of analytics metrics related to the modal component's readiness.
-   * When modal becomes visible, the loadStart time is set and the loadComplete time is reset marking the beginning loading process.
-   * When user exits the modal, the timeToContentReadyInModal is emitted.
-   * This metric signifies that the modal content has finished loading and is ready for interaction.
+   * When modal becomes visible, modal performance metrics are reset marking the beginning loading process.
    * To ensure that the modal component ready metric is always emitted, a setTimeout is implemented.
    * This setTimeout automatically emits the component ready metric after a specified duration.
    */
-
-  const MODAL_READY_TIMEOUT = 3000;
   useEffect(() => {
-    const resetModalPerformanceData = () => {
-      loadStartTime.current = performance.now();
-      loadCompleteTime.current = 0;
-      performanceMetricLogged.current = false;
-    };
-
-    const emitTimeToContentReadyInModal = () => {
-      if (componentLoadingCount.current === 0 && loadStartTime.current !== null && !performanceMetricLogged.current) {
-        const timeToContentReadyInModal =
-          loadCompleteTime.current !== 0 ? loadCompleteTime.current - loadStartTime.current : 0;
-        PerformanceMetrics.modalPerformanceData({
-          timeToContentReadyInModal,
-          instanceIdentifier: instanceUniqueId,
-        });
-        performanceMetricLogged.current = true;
-      }
-    };
-
     if (visible) {
       disableBodyScrolling();
       resetModalPerformanceData();
       setTimeout(() => {
-        emitTimeToContentReadyInModal();
+        emitTimeToContentReadyInModal(loadStartTime.current);
       }, MODAL_READY_TIMEOUT);
     } else {
       enableBodyScrolling();
-      emitTimeToContentReadyInModal();
     }
-    return () => {
-      if (!visible) {
-        emitTimeToContentReadyInModal();
-      }
-    };
-  }, [visible, instanceUniqueId]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visible]);
 
   // Because we hide the element with styles (and not actually detach it from DOM), we need to scroll to top
   useEffect(() => {
@@ -188,7 +178,7 @@ function PortaledModal({
           value={{
             isInModal: true,
             componentLoadingCount,
-            loadCompleteTime,
+            emitTimeToContentReadyInModal,
           }}
         >
           <div

@@ -5,13 +5,13 @@ import { createContext, MutableRefObject, useContext } from 'react';
 export interface ModalContextProps {
   isInModal: boolean;
   componentLoadingCount: MutableRefObject<number>;
-  loadCompleteTime: MutableRefObject<number>;
+  emitTimeToContentReadyInModal: (loadCompleteTime: number) => void;
 }
 
 export const ModalContext = createContext<ModalContextProps>({
   isInModal: false,
   componentLoadingCount: { current: 0 },
-  loadCompleteTime: { current: 0 },
+  emitTimeToContentReadyInModal: () => {},
 });
 
 export const useModalContext = () => {
