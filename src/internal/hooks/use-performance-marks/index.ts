@@ -41,7 +41,6 @@ export function usePerformanceMarks(
   const id = useRandomId();
   const { isInModal } = useModalContext();
   const attributes = usePerformanceMarkAttribute(elementRef, id);
-
   useEffect(() => {
     if (!enabled || !elementRef.current || isInModal) {
       return;
