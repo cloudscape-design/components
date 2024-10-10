@@ -17,7 +17,7 @@ class TablePage extends BasePageObject {
 }
 
 test(
-  'something',
+  'column width adjusts when the column content loads',
   useBrowser(async browser => {
     await browser.url('#/light/table/dynamic-content');
     const page = new TablePage(browser);
