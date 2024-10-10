@@ -61,6 +61,14 @@ export default class PropertyFilterWrapper extends AutosuggestWrapper {
   findConstraint(): ElementWrapper | null {
     return this.findByClassName(styles.constraint);
   }
+
+  findPropertyCancelButton(): null | ButtonWrapper {
+    return this.findComponent(`.${testUtilStyles['property-editor-cancel']}`, ButtonWrapper)!;
+  }
+
+  findPropertySubmitButton(): null | ButtonWrapper {
+    return this.findComponent(`.${testUtilStyles['property-editor-submit']}`, ButtonWrapper)!;
+  }
 }
 
 export class FilteringTokenWrapper extends ComponentWrapper {

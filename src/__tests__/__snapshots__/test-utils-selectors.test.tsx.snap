@@ -452,6 +452,8 @@ exports[`test-utils selectors 1`] = `
     "awsui_filtering-token-inner_1heb1",
     "awsui_filtering-token-select_1heb1",
     "awsui_filtering-token_1heb1",
+    "awsui_property-editor-cancel_1heb1",
+    "awsui_property-editor-submit_1heb1",
     "awsui_remove-all_1wzqe",
     "awsui_root_1wzqe",
     "awsui_token-editor-cancel_1heb1",
