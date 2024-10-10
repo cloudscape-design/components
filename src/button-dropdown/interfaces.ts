@@ -157,6 +157,7 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    linkStyle?: boolean;
   }
 
   export interface CheckboxItem

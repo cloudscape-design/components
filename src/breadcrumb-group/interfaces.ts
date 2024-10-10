@@ -77,3 +77,10 @@ export interface EllipsisDropdownProps {
   onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
   visible?: boolean;
 }
+
+export interface MobileDropdownProps {
+  ariaLabel?: BreadcrumbGroupProps['expandAriaLabel'];
+  dropdownItems: ReadonlyArray<LinkItem>;
+  onDropdownItemClick: CancelableEventHandler<{ id: string }>;
+  onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
+}
