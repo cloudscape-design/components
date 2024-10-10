@@ -36,18 +36,23 @@ import { ModalProps } from './interfaces';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export function InternalModalAsSubstep(props: InternalModalProps) {
-  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+export function InternalModalAsFunnel(props: InternalModalProps) {
+  const { funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
+  const onButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
+    if (variant === 'primary') {
+      funnelNextOrSubmitAttempt();
+      funnelSubmit();
+    }
+  };
 
-  return <InternalModal {...props} __subStepRef={subStepRef} __funnelSubStepProps={funnelSubStepProps} />;
+  return <InternalModal onButtonClick={onButtonClick} {...props} />;
 }
 
 type InternalModalProps = SomeRequired<ModalProps, 'size'> &
   InternalBaseComponentProps & {
     __injectAnalyticsComponentMetadata?: boolean;
+    onButtonClick?: ButtonContextProps['onClick'];
     referrerId?: string;
-    __funnelSubStepProps?: ReturnType<typeof useFunnelSubStep>['funnelSubStepProps'];
-    __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
   };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
@@ -69,11 +74,10 @@ function PortaledModal({
   children,
   footer,
   disableContentPaddings,
+  onButtonClick = () => {},
   onDismiss,
   __internalRootRef = null,
   __injectAnalyticsComponentMetadata,
-  __funnelSubStepProps,
-  __subStepRef,
   referrerId,
   ...rest
 }: PortaledModalProps) {
@@ -151,15 +155,7 @@ function PortaledModal({
   // Add extra scroll padding to account for the height of the sticky footer,
   // to prevent it from covering focused elements.
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
-  const { funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
-  const { subStepRef } = useFunnelSubStep();
-
-  const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
-    if (variant === 'primary') {
-      funnelNextOrSubmitAttempt();
-      funnelSubmit();
-    }
-  };
+  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
 
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
@@ -221,15 +217,15 @@ function PortaledModal({
                     </InternalHeader>
                   </div>
                   <div
-                    ref={__subStepRef}
-                    {...__funnelSubStepProps}
+                    ref={subStepRef}
+                    {...funnelSubStepProps}
                     className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
                   >
                     {children}
                     <div ref={stickySentinelRef} />
                   </div>
                   {footer && (
-                    <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
+                    <ButtonContext.Provider value={{ onClick: onButtonClick }}>
                       <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
                         {footer}
                       </div>

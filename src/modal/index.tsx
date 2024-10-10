@@ -12,13 +12,13 @@ import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../in
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ModalProps } from './interfaces';
-import InternalModal, { InternalModalAsSubstep } from './internal';
+import InternalModal, { InternalModalAsFunnel } from './internal';
 
 import styles from './styles.css.js';
 
 export { ModalProps };
 
-function ModalWithAnalytics({
+function ModalWithAnalyticsFunnel({
   analyticsMetadata,
   baseComponentProps,
   size = 'medium',
@@ -44,7 +44,7 @@ function ModalWithAnalytics({
           subStepIdentifier={analyticsMetadata?.instanceIdentifier}
           subStepErrorContext={analyticsMetadata?.errorContext}
         >
-          <InternalModalAsSubstep
+          <InternalModalAsFunnel
             size={size}
             {...props}
             {...baseComponentProps}
@@ -57,7 +57,7 @@ function ModalWithAnalytics({
 }
 
 export default function Modal({ size = 'medium', ...props }: ModalProps) {
-  const { funnelInteractionId } = useFunnel();
+  const { isInFunnel } = useFunnel();
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
     'Modal',
@@ -71,9 +71,9 @@ export default function Modal({ size = 'medium', ...props }: ModalProps) {
     analyticsMetadata
   );
 
-  if (!funnelInteractionId) {
+  if (!isInFunnel) {
     return (
-      <ModalWithAnalytics
+      <ModalWithAnalyticsFunnel
         analyticsMetadata={analyticsMetadata}
         baseComponentProps={baseComponentProps}
         size={size}
