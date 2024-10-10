@@ -77,9 +77,17 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 });
 
 describe('Visual refresh toolbar only', () => {
-  function setupTest(testFn: (page: BasePageObject, browser: WebdriverIO.Browser) => Promise<void>) {
+  class PageObject extends BasePageObject {
+    public get browser() {
+      return super.browser;
+    }
+    public set browser(value) {
+      super.browser = value;
+    }
+  }
+  function setupTest(testFn: (page: PageObject) => Promise<void>) {
     return useBrowser(async browser => {
-      const page = new BasePageObject(browser);
+      const page = new PageObject(browser);
 
       await browser.url(
         `#/light/app-layout/runtime-drawers?${new URLSearchParams({
@@ -91,7 +99,7 @@ describe('Visual refresh toolbar only', () => {
         }).toString()}`
       );
       await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
-      await testFn(page, browser);
+      await testFn(page);
     });
   }
 
@@ -187,9 +195,9 @@ describe('Visual refresh toolbar only', () => {
 
   test(
     'should prevent the horizontal page scroll from appearing during resize',
-    setupTest(async (page, browser) => {
+    setupTest(async page => {
       const hasHorizontalScroll = () =>
-        browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
+        page.browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
       await page.setWindowSize({ ...viewports.desktop, width: 1600 });
       await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
