@@ -65,6 +65,6 @@
     "stylelint-use-logical",
     "stylelint-order",
     "stylelint-no-unsupported-browser-features",
-    "./build-tools/stylelint"
+    "@cloudscape-design/build-tools/stylelint"
   ]
 }
