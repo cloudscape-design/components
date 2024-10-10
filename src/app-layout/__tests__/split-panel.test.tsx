@@ -7,7 +7,6 @@ import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -65,6 +64,10 @@ afterEach(() => {
 });
 
 describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
+  function isDrawersBarDisplayed(wrapper: AppLayoutWrapper) {
+    return !!wrapper.findByClassName(applayoutTools['has-tools-form']);
+  }
+
   test('should render split panel in bottom position', () => {
     const { wrapper } = renderComponent(
       <AppLayout
@@ -253,21 +256,8 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
 
     expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
   });
-});
 
-describe('Visual refresh only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(true);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-  });
-
-  function isDrawersBarDisplayed(wrapper: AppLayoutWrapper) {
-    return !!wrapper.findByClassName(applayoutTools['has-tools-form']);
-  }
-
-  test('does not render the side open-button if split panel is in bottom position', () => {
+  test(`${theme === 'refresh-toolbar' ?  'renders': 'does not render'} the side open-button correctly when split panel is in bottom position`, () => {
     const { wrapper } = renderComponent(
       <AppLayout
         splitPanel={defaultSplitPanel}
@@ -278,7 +268,21 @@ describe('Visual refresh only features', () => {
       />
     );
     expect(wrapper.findToolsToggle()).toBeTruthy();
-    expect(wrapper.findSplitPanelOpenButton()).toBeFalsy();
+    expect(!!wrapper.findSplitPanelOpenButton()).toBe(theme === 'refresh-toolbar');
+  });
+
+  test(`${theme === 'refresh-toolbar' ?  'renders': 'does not render'} the side open-button if split panel is in bottom position`, () => {
+    const { wrapper } = renderComponent(
+      <AppLayout
+        splitPanel={defaultSplitPanel}
+        splitPanelOpen={true}
+        onSplitPanelToggle={noop}
+        splitPanelPreferences={{ position: 'bottom' }}
+        onSplitPanelPreferencesChange={noop}
+      />
+    );
+    expect(wrapper.findToolsToggle()).toBeTruthy();
+    expect(!!wrapper.findSplitPanelOpenButton()).toBe(theme === 'refresh-toolbar');
   });
 
   test('does not render side open-button when single split panel is open in position side', () => {
@@ -296,7 +300,7 @@ describe('Visual refresh only features', () => {
     expect(isDrawersBarDisplayed(wrapper)).toBeFalsy();
   });
 
-  test('renders side open-button bar when single split panel is closed in position side', () => {
+  test(`${theme === 'refresh' ? 'renders' : 'does not render'} side open-button bar when single split panel is closed in position side`, () => {
     const { wrapper } = renderComponent(
       <AppLayout
         toolsHide={true}
@@ -308,7 +312,7 @@ describe('Visual refresh only features', () => {
       />
     );
     expect(wrapper.findToolsToggle()).toBeFalsy();
-    expect(isDrawersBarDisplayed(wrapper)).toBeTruthy();
+    expect(isDrawersBarDisplayed(wrapper)).toBe(theme === 'refresh');
     expect(wrapper.findSplitPanelOpenButton()).toBeTruthy();
   });
 
@@ -329,35 +333,38 @@ describe('Visual refresh only features', () => {
     expect(wrapper.findSplitPanelOpenButton()).toBeFalsy();
   });
 
-  test('should not show background color of split panel drawer when there is no splitPanel', () => {
-    isMocked = true;
+  (theme === 'refresh' ? test : test.skip)(
+    'should not show background color of split panel drawer when there is no splitPanel',
+    () => {
+      isMocked = true;
+      const { wrapper } = renderComponent(
+        <AppLayout
+          splitPanel={null}
+          splitPanelOpen={true}
+          splitPanelSize={400}
+          splitPanelPreferences={{ position: 'side' }}
+          onSplitPanelPreferencesChange={noop}
+          onSplitPanelToggle={noop}
+          onSplitPanelResize={noop}
+        />
+      );
+      expect(wrapper.find('[data-testid="side-split-panel-drawer"]')!.getElement()).not.toHaveClass(
+        applayoutTools['has-tools-form-persistence']
+      );
+      isMocked = false;
+    }
+  );
+
+  test('should not set width on split panel drawer when there is no splitPanel', () => {
     const { wrapper } = renderComponent(
       <AppLayout
         splitPanel={null}
         splitPanelOpen={true}
         splitPanelSize={400}
-        splitPanelPreferences={{ position: 'side' }}
-        onSplitPanelPreferencesChange={noop}
         onSplitPanelToggle={noop}
-        onSplitPanelResize={noop}
+        splitPanelPreferences={{ position: 'side' }}
       />
     );
-    expect(wrapper.find('[data-testid="side-split-panel-drawer"]')!.getElement()).not.toHaveClass(
-      applayoutTools['has-tools-form-persistence']
-    );
-    isMocked = false;
+    expect(wrapper.find('[data-testid="side-split-panel-drawer"]')?.getElement().style.width).toBeFalsy();
   });
-});
-
-test('should not set width on split panel drawer when there is no splitPanel', () => {
-  const { wrapper } = renderComponent(
-    <AppLayout
-      splitPanel={null}
-      splitPanelOpen={true}
-      splitPanelSize={400}
-      onSplitPanelToggle={noop}
-      splitPanelPreferences={{ position: 'side' }}
-    />
-  );
-  expect(wrapper.find('[data-testid="side-split-panel-drawer"]')?.getElement().style.width).toBeFalsy();
 });
