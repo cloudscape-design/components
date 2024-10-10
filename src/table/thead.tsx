@@ -176,6 +176,7 @@ const Thead = React.forwardRef(
                 // Expandable option is only applicable to the first data column of the table.
                 // When present, the header content receives extra padding to match the first offset in the data cells.
                 isExpandable={colIndex === 0 && isExpandable}
+                hasDynamicContent={column.hasDynamicContent}
               />
             );
           })}
