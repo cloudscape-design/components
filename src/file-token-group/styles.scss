@@ -4,6 +4,11 @@
 */
 
 @use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+
+.root {
+  @include styles.styles-reset();
+}
 
 .file-token {
   block-size: 100%;

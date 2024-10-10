@@ -6,6 +6,7 @@ import clsx from 'clsx';
 
 import InternalBox from '../box/internal.js';
 import { BaseComponentProps } from '../internal/base-component';
+import LiveRegion from '../internal/components/live-region';
 import Tooltip from '../internal/components/tooltip/index.js';
 import InternalSpaceBetween from '../space-between/internal.js';
 import InternalSpinner from '../spinner/internal.js';
@@ -36,6 +37,7 @@ export interface FileTokenProps extends BaseComponentProps {
   errorText?: React.ReactNode;
   warningText?: React.ReactNode;
   loading?: boolean;
+  loadingText?: string;
   i18nStrings: FileTokenProps.I18nStrings;
   disabled?: boolean;
   dismissLabel?: string;
@@ -55,6 +57,7 @@ function InternalFileToken({
   warningText,
   disabled,
   loading,
+  loadingText,
   alignment,
   groupContainsImage,
   index,
@@ -72,7 +75,7 @@ function InternalFileToken({
         <>
           <div className={styles['file-loading-overlay']} />
           <div className={styles['file-loading-overlay-spinner']}>
-            <InternalSpinner size="normal" />
+            <InternalSpinner variant="disabled" size="normal" />
           </div>
         </>
       )}
@@ -133,6 +136,7 @@ function InternalFileToken({
           value={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
         />
       )}
+      {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
     </div>
   );
 }

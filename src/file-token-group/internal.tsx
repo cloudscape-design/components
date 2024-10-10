@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useState } from 'react';
+import clsx from 'clsx';
 
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -12,6 +13,7 @@ import InternalFileToken from './file-token.js';
 import { FileTokenGroupProps } from './interfaces.js';
 
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
+import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
 type InternalFileTokenGroupProps = FileTokenGroupProps & InternalBaseComponentProps;
@@ -44,7 +46,7 @@ function InternalFileTokenGroup({
   const groupContainsImage = items.filter(item => isImage(item.file)).length > 0;
 
   return (
-    <div ref={mergedRef} className={testStyles.root}>
+    <div ref={mergedRef} className={clsx(styles.root, testStyles.root)}>
       <TokenList
         isGrid={true}
         alignment={alignment}
@@ -64,6 +66,7 @@ function InternalFileTokenGroup({
             i18nStrings={i18nStrings}
             disabled={file.disabled}
             loading={file.loading}
+            loadingText={file.loadingText}
             alignment={alignment}
             groupContainsImage={groupContainsImage}
             index={fileIndex}

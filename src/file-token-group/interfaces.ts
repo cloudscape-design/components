@@ -40,6 +40,7 @@ export interface FileTokenGroupProps extends BaseComponentProps {
    * - `file` (string) - File value.
    * - `disabled` [boolean] - (Optional) Determines whether the token is disabled.
    * - `loading` (boolean) - (Optional) Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * - `loadingText` (string) - (Optional) Specifies the text that screen reader announces when the button is in a loading state.
    * - `errorText` (string) - (Optional) Text that displays as a validation error message.
    * - `warningText` (string) - (Optional) - Text that displays as a validation warning message.
    */
@@ -92,6 +93,7 @@ export namespace FileTokenGroupProps {
     file: File;
     disabled?: boolean;
     loading?: boolean;
+    loadingText?: string;
     errorText?: string | null;
     warningText?: string | null;
   }
