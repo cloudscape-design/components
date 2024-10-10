@@ -5,6 +5,7 @@ import React, { forwardRef, Ref } from 'react';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalIcon from '../icon/internal';
+import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataTokenGroupDismiss } from './analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
@@ -12,6 +13,7 @@ import styles from './styles.css.js';
 interface DismissButtonProps {
   disabled?: boolean;
   readOnly?: boolean;
+  loading?: boolean;
   onDismiss?: () => void;
   dismissLabel?: string;
 }
@@ -19,7 +21,7 @@ interface DismissButtonProps {
 export default forwardRef(DismissButton);
 
 function DismissButton(
-  { disabled, dismissLabel, onDismiss, readOnly }: DismissButtonProps,
+  { disabled, dismissLabel, onDismiss, readOnly, loading }: DismissButtonProps,
   ref: Ref<HTMLButtonElement>
 ) {
   const analyticsMetadata: GeneratedAnalyticsMetadataTokenGroupDismiss = {
@@ -44,7 +46,7 @@ function DismissButton(
       aria-label={dismissLabel}
       {...(disabled || readOnly ? {} : getAnalyticsMetadataAttribute(analyticsMetadata))}
     >
-      <InternalIcon name="close" />
+      {loading ? <InternalSpinner /> : <InternalIcon name="close" />}
     </button>
   );
 }

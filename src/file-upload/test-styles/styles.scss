@@ -2,9 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
-@use '../internal/styles/tokens' as awsui;
-
+.root,
 .hints {
-  margin-block-start: awsui.$space-static-xxs;
+  /* used in test-utils */
 }
