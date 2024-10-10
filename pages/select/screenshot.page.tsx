@@ -79,9 +79,9 @@ export default function () {
             placeholder="Demo with a single option inside group"
             selectedOption={selected}
             options={options2}
-            // finishedText="End of all results"
+            finishedText="End of all results"
             onChange={event => setSelected(event.detail.selectedOption)}
-            // virtualScroll={virtualScroll}
+            virtualScroll={virtualScroll}
             ariaLabel="select demo single option inside group"
             data-testid="select-demo-single-option-inside-group"
           />
