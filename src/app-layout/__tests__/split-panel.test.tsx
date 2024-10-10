@@ -257,7 +257,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
   });
 
-  test(`${theme === 'refresh-toolbar' ?  'renders': 'does not render'} the side open-button correctly when split panel is in bottom position`, () => {
+  test(`${theme === 'refresh-toolbar' ? 'renders' : 'does not render'} the side open-button correctly when split panel is in bottom position`, () => {
     const { wrapper } = renderComponent(
       <AppLayout
         splitPanel={defaultSplitPanel}
@@ -271,7 +271,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(!!wrapper.findSplitPanelOpenButton()).toBe(theme === 'refresh-toolbar');
   });
 
-  test(`${theme === 'refresh-toolbar' ?  'renders': 'does not render'} the side open-button if split panel is in bottom position`, () => {
+  test(`${theme === 'refresh-toolbar' ? 'renders' : 'does not render'} the side open-button if split panel is in bottom position`, () => {
     const { wrapper } = renderComponent(
       <AppLayout
         splitPanel={defaultSplitPanel}
