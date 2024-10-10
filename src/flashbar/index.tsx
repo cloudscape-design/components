@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 
+import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import CollapsibleFlashbar from './collapsible-flashbar';
 import { FlashbarProps } from './interfaces';
@@ -17,10 +18,18 @@ export default function Flashbar(props: FlashbarProps) {
     }
   }, [props.items]);
 
+  const { __internalRootRef } = useBaseComponent('Flashbar', {
+    props: { stackItems: props.stackItems },
+  });
+
+  if (props.items.length === 0) {
+    return <></>;
+  }
+
   if (props.stackItems) {
-    return <CollapsibleFlashbar {...props} />;
+    return <CollapsibleFlashbar __internalRootRef={__internalRootRef} {...props} />;
   } else {
-    return <NonCollapsibleFlashbar {...props} />;
+    return <NonCollapsibleFlashbar __internalRootRef={__internalRootRef} {...props} />;
   }
 }
 

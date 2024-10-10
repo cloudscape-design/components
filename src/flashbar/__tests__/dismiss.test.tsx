@@ -52,20 +52,23 @@ test.each([{ stackItems: false }, { stackItems: true }])(
     }
 
     render(<StatefulFlashbar stackItems={stackItems} />);
-    const flashbar = createWrapper().findFlashbar()!;
+    const getFlashbarItems = () => {
+      const flashbar = createWrapper().findFlashbar();
+      return flashbar ? flashbar.findItems() : [];
+    };
 
-    expect(flashbar.findItems()).toHaveLength(stackItems ? 1 : 3);
-    expect(flashbar.findItems()[0].getElement()).toHaveTextContent('Success');
+    expect(getFlashbarItems()).toHaveLength(stackItems ? 1 : 3);
+    expect(getFlashbarItems()[0].getElement()).toHaveTextContent('Success');
 
-    flashbar.findItems()[0].findDismissButton()!.click();
-    expect(flashbar.findItems()).toHaveLength(stackItems ? 1 : 2);
-    expect(flashbar.findItems()[0].getElement()).toHaveTextContent('Error');
+    getFlashbarItems()[0].findDismissButton()!.click();
+    expect(getFlashbarItems()).toHaveLength(stackItems ? 1 : 2);
+    expect(getFlashbarItems()[0].getElement()).toHaveTextContent('Error');
 
-    flashbar.findItems()[0].findDismissButton()!.click();
-    expect(flashbar.findItems()).toHaveLength(1);
-    expect(flashbar.findItems()[0].getElement()).toHaveTextContent('Info');
+    getFlashbarItems()[0].findDismissButton()!.click();
+    expect(getFlashbarItems()).toHaveLength(1);
+    expect(getFlashbarItems()[0].getElement()).toHaveTextContent('Info');
 
-    flashbar.findItems()[0].findDismissButton()!.click();
-    expect(flashbar.findItems()).toHaveLength(0);
+    getFlashbarItems()[0].findDismissButton()!.click();
+    expect(getFlashbarItems()).toHaveLength(0);
   }
 );

@@ -50,7 +50,7 @@ describe('Flashbar component', () => {
 
     test('renders no flash when items are empty', () => {
       const wrapper = createFlashbarWrapper(<Flashbar items={[]} />);
-      expect(wrapper.findItems().length).toBe(0);
+      expect(wrapper).toBeFalsy();
     });
 
     test('renders correct count of flash messages', () => {
