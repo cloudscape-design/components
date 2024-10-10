@@ -10,10 +10,11 @@ import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import { useInternalI18n } from '../i18n/context';
 import { FunnelNameSelectorContext } from '../internal/analytics/context/analytics-context';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
 import Portal from '../internal/components/portal';
+import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
 import { ModalContext } from '../internal/context/modal-context';
 import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -35,8 +36,34 @@ import { ModalProps } from './interfaces';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
+export function InternalModalAsFunnel(props: InternalModalProps) {
+  const { funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
+  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
+  const onButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
+    if (variant === 'primary') {
+      funnelNextOrSubmitAttempt();
+      funnelSubmit();
+    }
+  };
+
+  return (
+    <InternalModal
+      __subStepRef={subStepRef}
+      __subStepFunnelProps={funnelSubStepProps}
+      onButtonClick={onButtonClick}
+      {...props}
+    />
+  );
+}
+
 type InternalModalProps = SomeRequired<ModalProps, 'size'> &
-  InternalBaseComponentProps & { __injectAnalyticsComponentMetadata?: boolean; referrerId?: string };
+  InternalBaseComponentProps & {
+    __subStepRef?: any;
+    __subStepFunnelProps?: any;
+    __injectAnalyticsComponentMetadata?: boolean;
+    onButtonClick?: ButtonContextProps['onClick'];
+    referrerId?: string;
+  };
 
 export default function InternalModal({ modalRoot, getModalRoot, removeModalRoot, ...rest }: InternalModalProps) {
   return (
@@ -57,9 +84,12 @@ function PortaledModal({
   children,
   footer,
   disableContentPaddings,
+  onButtonClick = () => {},
   onDismiss,
   __internalRootRef = null,
   __injectAnalyticsComponentMetadata,
+  __subStepRef,
+  __subStepFunnelProps,
   referrerId,
   ...rest
 }: PortaledModalProps) {
@@ -198,14 +228,20 @@ function PortaledModal({
                       </span>
                     </InternalHeader>
                   </div>
-                  <div className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}>
+                  <div
+                    ref={__subStepRef}
+                    {...__subStepFunnelProps}
+                    className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
+                  >
                     {children}
                     <div ref={stickySentinelRef} />
                   </div>
                   {footer && (
-                    <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
-                      {footer}
-                    </div>
+                    <ButtonContext.Provider value={{ onClick: onButtonClick }}>
+                      <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                        {footer}
+                      </div>
+                    </ButtonContext.Provider>
                   )}
                 </div>
               </div>
