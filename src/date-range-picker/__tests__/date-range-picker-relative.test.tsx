@@ -262,6 +262,17 @@ describe('Date range picker', () => {
       expect(getCustomRelativeRangeUnits(wrapper)).toEqual(['hours', 'minutes']);
     });
 
+    test('ensures default unit is a valid one specified from list', () => {
+      const { wrapper } = renderDateRangePicker({
+        ...defaultProps,
+        rangeSelectorMode: 'relative-only',
+        relativeOptions: [],
+        customRelativeRangeUnits: ['hour', 'day'],
+      });
+      wrapper.findTrigger().click();
+      expect(wrapper.findDropdown()!.findCustomRelativeRangeUnit()!.getElement()).toHaveTextContent('hours');
+    });
+
     test('warns about (and ignores) invalid custom units', () => {
       const { wrapper } = renderDateRangePicker({
         ...defaultProps,
