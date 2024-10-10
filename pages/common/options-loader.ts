@@ -64,8 +64,9 @@ export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomEr
         if (randomErrors && Math.random() < 0.3) {
           reject();
         } else {
-          const nextItems = sourceItems.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
-          resolve({ items: nextItems, hasNextPage: items.length + nextItems.length < sourceItems.length });
+          const newItems = sourceItems.slice(pageNumber * pageSize, (pageNumber + 1) * pageSize);
+          const nextItems = [...items, ...newItems];
+          resolve({ items: nextItems, hasNextPage: nextItems.length < sourceItems.length });
         }
       }, timeout)
     );
@@ -100,7 +101,7 @@ export function useOptionsLoader<Item>({ pageSize = 25, timeout = 1000, randomEr
     request.promise
       .then(response => {
         if (!request.cancelled) {
-          setItems(prev => [...prev, ...(response.items as Item[])]);
+          setItems(response.items as Item[]);
           setStatus(response.hasNextPage ? 'pending' : 'finished');
         }
       })
