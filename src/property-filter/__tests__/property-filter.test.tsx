@@ -294,6 +294,31 @@ describe('property filter parts', () => {
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['Stopped', 'Stopping', 'Running']);
     });
+
+    test('calls onLoadItem when opening editor value autosuggest', () => {
+      const onLoadItems = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems,
+        filteringOptions: [],
+        filteringStatusType: 'pending',
+        query: { operation: 'and', tokens: [{ propertyKey: 'state', operator: ':', value: 'Sto' }] },
+      });
+
+      const [contentWrapper] = openTokenEditor(wrapper);
+      const valueSelectWrapper = findValueSelector(contentWrapper);
+      valueSelectWrapper.focus();
+      expect(onLoadItems).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            filteringProperty: expect.objectContaining({ key: 'state' }),
+            filteringOperator: ':',
+            filteringText: 'Sto',
+            firstPage: true,
+            samePage: false,
+          },
+        })
+      );
+    });
   });
 
   describe('labelled values', () => {
