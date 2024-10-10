@@ -385,7 +385,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
 
       const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
-      console.log('drawerToClose: ', drawerToClose);
       if (activeDrawer && activeDrawer?.id === drawerToClose) {
         onActiveDrawerChange(null);
       } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
