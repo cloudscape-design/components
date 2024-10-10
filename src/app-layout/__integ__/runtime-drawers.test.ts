@@ -77,7 +77,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 });
 
 describe('Visual refresh toolbar only', () => {
-  function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
+  function setupTest(testFn: (page: BasePageObject, browser: WebdriverIO.Browser) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
 
@@ -91,7 +91,7 @@ describe('Visual refresh toolbar only', () => {
         }).toString()}`
       );
       await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
-      await testFn(page);
+      await testFn(page, browser);
     });
   }
 
@@ -154,7 +154,8 @@ describe('Visual refresh toolbar only', () => {
       })
     );
 
-    test('first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1400px)', () => {
+    test(
+      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1400px)',
       setupTest(async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1400 });
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
@@ -164,12 +165,13 @@ describe('Visual refresh toolbar only', () => {
         await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(false);
         await expect(page.isClickable(findDrawerById(wrapper, 'security')!.toSelector())).resolves.toBe(true);
         await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
-      });
-    });
+      })
+    );
 
-    test('first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1200px)', () => {
+    test(
+      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1330px)',
       setupTest(async page => {
-        await page.setWindowSize({ ...viewports.desktop, width: 1200 });
+        await page.setWindowSize({ ...viewports.desktop, width: 1330 });
         await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
@@ -179,7 +181,41 @@ describe('Visual refresh toolbar only', () => {
         await expect(page.isClickable(findDrawerById(wrapper, 'security')!.toSelector())).resolves.toBe(false);
         await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
         await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
-      });
-    });
+      })
+    );
   });
+
+  test(
+    'should prevent the horizontal page scroll from appearing during resize',
+    setupTest(async (page, browser) => {
+      const hasHorizontalScroll = () =>
+        browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
+      await page.setWindowSize({ ...viewports.desktop, width: 1600 });
+      await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
+      await page.click(wrapper.findDrawerTriggerById('circle3-global').toSelector());
+
+      await expect(page.isClickable(wrapper.findNavigation().toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
+      await expect(hasHorizontalScroll()).resolves.toBe(false);
+
+      await page.setWindowSize({ ...viewports.desktop, width: 1200 });
+      // navigation panel closes first
+      await expect(page.isClickable(wrapper.findNavigation().toSelector())).resolves.toBe(false);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
+      await expect(hasHorizontalScroll()).resolves.toBe(false);
+
+      await page.setWindowSize({ ...viewports.desktop, width: 900 });
+      // then the first opened drawer closes
+      await expect(page.isClickable(wrapper.findNavigation().toSelector())).resolves.toBe(false);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(false);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
+      await expect(hasHorizontalScroll()).resolves.toBe(false);
+    })
+  );
 });

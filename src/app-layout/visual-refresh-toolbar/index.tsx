@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+
+import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -73,6 +75,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const rootRef = useRef<HTMLDivElement>(null);
 
     const onNavigationToggle = (open: boolean) => {
       navigationFocusControl.setFocus();
@@ -93,6 +96,28 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const onGlobalDrawerFocus = (drawerId: string, open: boolean) => {
       globalDrawersFocusControl.setFocus({ force: true, drawerId, open });
     };
+
+    useResizeObserver(rootRef, ({ target, contentBoxWidth }) => {
+      if (isMobile) {
+        return;
+      }
+      const hasHorizontalScroll = target.scrollWidth - contentBoxWidth > 0;
+      if (!hasHorizontalScroll) {
+        return;
+      }
+
+      if (navigationOpen) {
+        onNavigationToggle(false);
+        return;
+      }
+
+      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      if (activeDrawer && activeDrawer?.id === drawerToClose) {
+        onActiveDrawerChange(null);
+      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
+        onActiveGlobalDrawersChange(drawerToClose);
+      }
+    });
 
     const onAddNewActiveDrawer = (drawerId: string) => {
       // If a local drawer is already open, and we attempt to open a new one,
@@ -374,6 +399,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
+          ref={rootRef}
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
