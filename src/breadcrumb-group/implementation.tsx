@@ -115,16 +115,14 @@ const MobileDropdown = ({
       className={styles['mobile-dropdown-wrapper']}
       preferCenter={true}
       ariaLabel={i18n('expandAriaLabel', ariaLabel) ?? DEFAULT_EXPAND_ARIA_LABEL}
-      items={dropdownItems.map((item, index) =>
-        index === dropdownItems.length - 1 ? { ...item, href: undefined } : item
-      )}
+      items={dropdownItems}
       onItemClick={onDropdownItemClick}
       onItemFollow={onDropdownItemFollow}
       customTriggerBuilder={props => (
         <InternalButton
           fullWidth={true}
           ref={props.triggerRef}
-          className={clsx(props.testUtilsClass, styles['mobile-dropdown-trigger'])}
+          className={props.testUtilsClass}
           disabled={props.disabled}
           onClick={event => {
             event.preventDefault();
@@ -306,7 +304,6 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   if (isMobile) {
     return (
       <MobileDropdown
-        key={'ellipsis'}
         ariaLabel={expandAriaLabel}
         dropdownItems={items.map((item: BreadcrumbGroupProps.Item, index: number) => {
           const isLast = index === items.length - 1;
@@ -315,6 +312,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
             text: item.text,
             href: item.href || '#',
             linkStyle: !isLast,
+            disabled: isLast,
           };
         })}
         onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
