@@ -88,14 +88,6 @@ export default function RelativeRangePicker({
     return NaN;
   });
 
-  const initialCustomTimeUnit = dateOnly ? 'day' : 'minute';
-  const [customUnitOfTime, setCustomUnitOfTime] = useState<DateRangePickerProps.TimeUnit>(
-    initialRange?.unit ?? initialCustomTimeUnit
-  );
-
-  const showRadioControl = clientOptions.length > 0;
-  const showCustomControls = clientOptions.length === 0 || selectedRadio === CUSTOM_OPTION_SELECT_KEY;
-
   let finalUnits = dateOnly ? dayUnits : units;
   if (customUnits) {
     finalUnits = customUnits.filter(unit => {
@@ -109,6 +101,17 @@ export default function RelativeRangePicker({
       return false;
     });
   }
+
+  let initialCustomTimeUnit: DateRangePickerProps.TimeUnit = dateOnly ? 'day' : 'minute';
+  if (!finalUnits.includes(initialCustomTimeUnit)) {
+    initialCustomTimeUnit = finalUnits[0];
+  }
+  const [customUnitOfTime, setCustomUnitOfTime] = useState<DateRangePickerProps.TimeUnit>(
+    initialRange?.unit ?? initialCustomTimeUnit
+  );
+
+  const showRadioControl = clientOptions.length > 0;
+  const showCustomControls = clientOptions.length === 0 || selectedRadio === CUSTOM_OPTION_SELECT_KEY;
 
   return (
     <div>

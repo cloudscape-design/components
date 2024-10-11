@@ -316,70 +316,72 @@ const PropertyFilterInternal = React.forwardRef(
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
         <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
-          <PropertyFilterAutosuggest
-            ref={inputRef}
-            virtualScroll={virtualScroll}
-            enteredTextLabel={i18nStrings.enteredTextLabel}
-            ariaLabel={filteringAriaLabel ?? i18nStrings.filteringAriaLabel}
-            placeholder={filteringPlaceholder ?? i18nStrings.filteringPlaceholder}
-            ariaLabelledby={rest.ariaLabelledby}
-            ariaDescribedby={textboxAriaDescribedBy}
-            controlId={rest.controlId}
-            value={filteringText}
-            disabled={disabled}
-            {...autosuggestOptions}
-            onChange={event => setFilteringText(event.detail.value)}
-            empty={filteringEmpty}
-            {...asyncAutosuggestProps}
-            expandToViewport={expandToViewport}
-            onOptionClick={handleSelected}
-            customForm={
-              operatorForm
-                ? {
-                    content: (
-                      <PropertyEditorContent
-                        key={customValueKey}
-                        property={propertyStep.property}
-                        operator={propertyStep.operator}
-                        filter={propertyStep.value}
-                        operatorForm={operatorForm}
-                        value={customFormValue}
-                        onChange={setCustomFormValue}
-                      />
-                    ),
-                    footer: (
-                      <PropertyEditorFooter
-                        key={customValueKey}
-                        property={propertyStep.property}
-                        operator={propertyStep.operator}
-                        value={customFormValue}
-                        i18nStrings={i18nStrings}
-                        onCancel={() => {
-                          setFilteringText('');
-                          inputRef.current?.close();
-                          inputRef.current?.focus({ preventDropdown: true });
-                        }}
-                        onSubmit={token => {
-                          addToken(token);
-                          setFilteringText('');
-                          inputRef.current?.focus({ preventDropdown: true });
-                          inputRef.current?.close();
-                        }}
-                      />
-                    ),
-                  }
-                : undefined
-            }
-            onCloseDropdown={() => setCustomFormValueRecord({})}
-            hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
-            clearAriaLabel={i18nStrings.clearAriaLabel}
-            searchResultsId={showResults ? searchResultsId : undefined}
-          />
-          {showResults ? (
-            <div className={styles.results}>
-              <SearchResults id={searchResultsId}>{countText}</SearchResults>
-            </div>
-          ) : null}
+          <div className={styles['input-wrapper']}>
+            <PropertyFilterAutosuggest
+              ref={inputRef}
+              virtualScroll={virtualScroll}
+              enteredTextLabel={i18nStrings.enteredTextLabel}
+              ariaLabel={filteringAriaLabel ?? i18nStrings.filteringAriaLabel}
+              placeholder={filteringPlaceholder ?? i18nStrings.filteringPlaceholder}
+              ariaLabelledby={rest.ariaLabelledby}
+              ariaDescribedby={textboxAriaDescribedBy}
+              controlId={rest.controlId}
+              value={filteringText}
+              disabled={disabled}
+              {...autosuggestOptions}
+              onChange={event => setFilteringText(event.detail.value)}
+              empty={filteringEmpty}
+              {...asyncAutosuggestProps}
+              expandToViewport={expandToViewport}
+              onOptionClick={handleSelected}
+              customForm={
+                operatorForm
+                  ? {
+                      content: (
+                        <PropertyEditorContent
+                          key={customValueKey}
+                          property={propertyStep.property}
+                          operator={propertyStep.operator}
+                          filter={propertyStep.value}
+                          operatorForm={operatorForm}
+                          value={customFormValue}
+                          onChange={setCustomFormValue}
+                        />
+                      ),
+                      footer: (
+                        <PropertyEditorFooter
+                          key={customValueKey}
+                          property={propertyStep.property}
+                          operator={propertyStep.operator}
+                          value={customFormValue}
+                          i18nStrings={i18nStrings}
+                          onCancel={() => {
+                            setFilteringText('');
+                            inputRef.current?.close();
+                            inputRef.current?.focus({ preventDropdown: true });
+                          }}
+                          onSubmit={token => {
+                            addToken(token);
+                            setFilteringText('');
+                            inputRef.current?.focus({ preventDropdown: true });
+                            inputRef.current?.close();
+                          }}
+                        />
+                      ),
+                    }
+                  : undefined
+              }
+              onCloseDropdown={() => setCustomFormValueRecord({})}
+              hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
+              clearAriaLabel={i18nStrings.clearAriaLabel}
+              searchResultsId={showResults ? searchResultsId : undefined}
+            />
+            {showResults ? (
+              <div className={styles.results}>
+                <SearchResults id={searchResultsId}>{countText}</SearchResults>
+              </div>
+            ) : null}
+          </div>
         </div>
         {filteringConstraintText && (
           <div id={constraintTextId} className={styles.constraint}>
