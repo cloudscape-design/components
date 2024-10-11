@@ -109,9 +109,6 @@ export function TableHeaderCell<ItemType>({
   // - This is the non-sticky version of a sticky header (hidden === true)
   // - Columns are not resizable
   useResizeObserver(hasDynamicContent ? cellRefObject : () => null, entry => {
-    if (!hasDynamicContent || !hidden || resizableColumns) {
-      return;
-    }
     updateColumn(columnId, entry.borderBoxWidth);
   });
 
