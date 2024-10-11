@@ -127,12 +127,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
 
       // now we made sure we cannot accommodate the new drawer with existing ones
-      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
-      if (activeDrawer && activeDrawer?.id === drawerToClose) {
-        onActiveDrawerChange(null);
-      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
-        onActiveGlobalDrawersChange(drawerToClose);
-      }
+      closeFirstDrawer();
     };
 
     const {
@@ -365,6 +360,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       refs: splitPanelFocusControl.refs,
     };
 
+    const closeFirstDrawer = useCallback(() => {
+      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      if (activeDrawer && activeDrawer?.id === drawerToClose) {
+        onActiveDrawerChange(null);
+      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
+        onActiveGlobalDrawersChange(drawerToClose);
+      }
+    }, [activeDrawer, activeGlobalDrawersIds, drawersOpenQueue, onActiveDrawerChange, onActiveGlobalDrawersChange]);
+
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
@@ -384,21 +388,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         return;
       }
 
-      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
-      if (activeDrawer && activeDrawer?.id === drawerToClose) {
-        onActiveDrawerChange(null);
-      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
-        onActiveGlobalDrawersChange(drawerToClose);
-      }
-    }, [
-      activeDrawer,
-      activeGlobalDrawersIds,
-      drawersOpenQueue,
-      navigationOpen,
-      onActiveDrawerChange,
-      onActiveGlobalDrawersChange,
-      onNavigationToggle,
-    ]);
+      closeFirstDrawer();
+    }, [closeFirstDrawer, navigationOpen, onNavigationToggle]);
 
     useEffect(() => {
       if (isMobile) {
