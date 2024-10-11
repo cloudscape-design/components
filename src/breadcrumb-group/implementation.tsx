@@ -313,6 +313,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
             href: item.href || '#',
             linkStyle: !isLast,
             disabled: isLast,
+            className: isLast ? styles['mobile-dropdown-last-item'] : undefined,
           };
         })}
         onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
