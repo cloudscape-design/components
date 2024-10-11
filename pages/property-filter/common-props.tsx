@@ -17,7 +17,8 @@ import {
 } from './custom-forms';
 import { states, TableItem } from './table.data';
 
-const getStateLabel = (value: TableItem['state']) => (value !== undefined && states[value]) || 'Unknown';
+const getStateLabel = (value: TableItem['state'], fallback = 'Invalid value') =>
+  (value !== undefined && states[value]) || fallback;
 
 export const columnDefinitions = [
   {
@@ -73,7 +74,7 @@ export const columnDefinitions = [
     id: 'owner',
     sortingField: 'owner',
     header: 'Owner',
-    type: 'text',
+    type: 'enum',
     propertyLabel: 'Owner',
     cell: (item: TableItem) => item.owner,
   },
@@ -161,6 +162,10 @@ export const columnDefinitions = [
 export const labels = {
   filteringAriaLabel: 'your choice',
   filteringPlaceholder: 'Search',
+  filteringLoadingText: 'Loading suggestions',
+  filteringErrorText: 'Error fetching results.',
+  filteringRecoveryText: 'Retry',
+  filteringFinishedText: 'End of results',
 };
 
 export const i18nStrings: PropertyFilterProps.I18nStrings = {
