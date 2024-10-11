@@ -60,6 +60,16 @@ describe('AnchorNavigation', () => {
     expect(wrapper.findAnchorByIndex(1)!.findInfo()!.getElement()).toHaveTextContent('New');
   });
 
+  it('finds anchor by test id', () => {
+    const wrapper = renderAnchorNavigation({
+      anchors: [
+        { text: 'Section 1', href: '#section1', level: 1, testId: 'section-1' },
+        { text: 'Section 2', href: '#section2', level: 1, testId: 'section-2' },
+      ],
+    });
+    expect(wrapper.findAnchorByTestId('section-1')!.getElement()).toHaveTextContent('Section 1');
+  });
+
   it('applies aria-labelledby correctly', () => {
     const wrapper = renderAnchorNavigation({
       anchors: [],
