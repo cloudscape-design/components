@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { getBaseProps } from '../internal/base-component';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -28,7 +29,10 @@ function InternalFileTokenGroup({
   limit,
   alignment = 'vertical',
   __internalRootRef,
+  ...restProps
 }: InternalFileTokenGroupProps) {
+  const baseProps = getBaseProps(restProps);
+
   const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
   const tokenListRef = useListFocusController({
     nextFocusIndex,
@@ -46,7 +50,7 @@ function InternalFileTokenGroup({
   const groupContainsImage = items.filter(item => isImage(item.file)).length > 0;
 
   return (
-    <div ref={mergedRef} className={clsx(styles.root, testStyles.root)}>
+    <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       <TokenList
         isGrid={true}
         alignment={alignment}
