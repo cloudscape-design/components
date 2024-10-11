@@ -19,7 +19,7 @@ export default function () {
         // the case when `notifications` slot is not falsy, but eventually it renders no HTML
         notifications={<Notifications />}
         content={
-          <div className={styles.highlightBorder}>
+          <div data-testid="content-root" className={styles.highlightBorder}>
             <h1>Distribution details</h1>
             <p>Some information</p>
           </div>

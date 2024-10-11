@@ -167,11 +167,18 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
   test(
     'does not render notifications slot when it is empty',
     setupTest({ pageName: 'with-notifications' }, async page => {
-      const { height: originalHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
-      expect(originalHeight).toBeGreaterThan(0);
       await page.click(wrapper.findNotifications().findFlashbar().findItems().get(1).findDismissButton().toSelector());
-      const { height: newHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
-      expect(newHeight).toEqual(0);
+      await expect(page.isExisting(wrapper.findNotifications().findFlashbar().toSelector())).resolves.toBe(true);
+      await expect(
+        page.getElementsCount(wrapper.findNotifications().findFlashbar().findItems().toSelector())
+      ).resolves.toBe(0);
+      const { top: contentTop } = await page.getBoundingBox('[data-testid="content-root"]');
+      const expectedOffset = {
+        classic: 61,
+        refresh: 57,
+        'refresh-toolbar': 99,
+      }[theme];
+      expect(contentTop).toEqual(expectedOffset);
     })
   );
 });
