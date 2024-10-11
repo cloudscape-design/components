@@ -34,6 +34,9 @@ const Select = React.forwardRef(
         triggerVariant,
         virtualScroll: restProps.virtualScroll,
       },
+      metadata: {
+        hasInlineLabel: Boolean(restProps.inlineLabelText),
+      },
     });
     const externalProps = getExternalProps(restProps);
 
