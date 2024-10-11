@@ -123,9 +123,6 @@ export default function () {
         asyncProperties: false,
         filteringStatusType: optionsLoader.status,
         onLoadItems: handleLoadItems,
-        filteringLoadingText: 'Loading options',
-        filteringErrorText: 'Error fetching results.',
-        filteringRecoveryText: 'Retry',
         filteringFinishedText: filteringText ? `End of "${filteringText}" results` : 'End of all results',
       }
     : {};

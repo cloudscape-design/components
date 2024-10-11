@@ -162,10 +162,10 @@ export const columnDefinitions = [
 export const labels = {
   filteringAriaLabel: 'your choice',
   filteringPlaceholder: 'Search',
-  filteringLoadingText: 'loading text',
-  filteringErrorText: 'error text',
-  filteringRecoveryText: 'recovery text',
-  filteringFinishedText: 'finished text',
+  filteringLoadingText: 'Loading suggestions',
+  filteringErrorText: 'Error fetching results.',
+  filteringRecoveryText: 'Retry',
+  filteringFinishedText: 'End of results',
 };
 
 export const i18nStrings: PropertyFilterProps.I18nStrings = {
