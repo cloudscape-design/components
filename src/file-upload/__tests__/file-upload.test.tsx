@@ -181,9 +181,20 @@ describe('FileUpload input', () => {
 
   test('file input fires onChange with files in details', () => {
     const wrapper = render({ multiple: true });
-    fireEvent(wrapper.findNativeInput().getElement(), new CustomEvent('change', { bubbles: true }));
+    const input = wrapper.findNativeInput().getElement();
+    Object.defineProperty(input, 'files', { value: [file1, file2] });
+    fireEvent(input, new CustomEvent('change', { bubbles: true }));
 
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [] } }));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file1] } }));
+  });
+
+  test('file input fires onChange with only the first file if not multiple', () => {
+    const wrapper = render({});
+    const input = wrapper.findNativeInput().getElement();
+    Object.defineProperty(input, 'files', { value: [file1, file2] });
+    fireEvent(input, new CustomEvent('change', { bubbles: true }));
+
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1] } }));
   });
 });
 
