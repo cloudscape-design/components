@@ -22,6 +22,7 @@ const createTestEvent = (keyCode: KeyCode) =>
     },
   });
 
+const optionChild31 = { value: 'child31', label: 'Child 3-1' };
 const options = [
   {
     label: 'Group 1',
@@ -53,7 +54,11 @@ const options = [
       },
     ],
   },
-];
+  {
+    label: 'Group 3',
+    options: [optionChild31],
+  },
+] as const;
 
 const { flatOptions } = flattenOptions(options);
 const updateSelectedOption = jest.fn();
@@ -137,6 +142,36 @@ describe('useSelect', () => {
     });
   });
 
+  test('option group is not selected when its only option is selected', () => {
+    const hook = renderHook(useSelect, { initialProps: { ...initialProps, selectedOptions: [optionChild31] } });
+    const { getOptionProps, getMenuProps } = hook.result.current;
+    const { id: menuId } = getMenuProps();
+
+    const groupProps = getOptionProps(flatOptions[7], 7);
+    expect(groupProps).toEqual({
+      'data-mouse-target': -1,
+      highlighted: false,
+      key: 7,
+      option: { type: 'parent', option: { label: 'Group 3', options: [{ value: 'child31', label: 'Child 3-1' }] } },
+      selected: false,
+      isNextSelected: true,
+      indeterminate: false,
+      id: getOptionId(menuId!, 7),
+    });
+
+    const optionProps = getOptionProps(flatOptions[8], 8);
+    expect(optionProps).toEqual({
+      'data-mouse-target': 8,
+      highlighted: false,
+      key: 8,
+      option: { type: 'child', option: { value: 'child31', label: 'Child 3-1' } },
+      selected: true,
+      isNextSelected: false,
+      indeterminate: false,
+      id: getOptionId(menuId!, 8),
+    });
+  });
+
   test('should open and close the dropdown', () => {
     const hook = renderHook(useSelect, {
       initialProps,
@@ -177,11 +212,7 @@ describe('useSelect', () => {
 
     act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
     act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.up)));
-    expect(hook.result.current.highlightedOption).toEqual({
-      disabled: true,
-      option: { disabled: true, label: 'Child 2' },
-      type: 'child',
-    });
+    expect(hook.result.current.highlightedOption).toEqual({ type: 'child', option: optionChild31 });
   });
 
   test('should navigate to the first parent option by triggering keyboard:up on second child option (interactive groups)', () => {
