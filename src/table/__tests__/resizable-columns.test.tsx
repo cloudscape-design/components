@@ -449,6 +449,9 @@ test('should set last column width to "auto" when container width exceeds total 
   const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
   const fireCallbacks = (entry: ContainerQueryEntry) => callbacks.forEach(cb => cb(entry));
   jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+    if (!_target || (typeof _target === 'function' && !_target())) {
+      return;
+    }
     // The table uses more than one resize observer.
     // The callback must be triggered for all to ensure the expected one is targeted as well.
     callbacks.push(cb);
