@@ -56,7 +56,7 @@ const ItemElement = ({
 
   return (
     <li
-      className={clsx(styles['item-element'], styles[`variant-${variant}`], item.className, {
+      className={clsx(styles['item-element'], styles[`variant-${variant}`], {
         [styles.highlighted]: highlighted,
         [styles.disabled]: disabled,
         [styles['has-category-header']]: hasCategoryHeader,

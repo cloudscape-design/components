@@ -10,6 +10,10 @@ $dropdown-trigger-icon-offset: 2px;
 
 .button-dropdown {
   display: inline-block;
+
+  &.variant-mobile-breadcrumb {
+    display: block;
+  }
 }
 
 .items-list-container {

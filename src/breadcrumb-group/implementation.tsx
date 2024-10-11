@@ -112,7 +112,7 @@ const MobileDropdown = ({
 
   return (
     <InternalButtonDropdown
-      className={styles['mobile-dropdown-wrapper']}
+      variant="mobile-breadcrumb"
       preferCenter={true}
       ariaLabel={i18n('expandAriaLabel', ariaLabel) ?? DEFAULT_EXPAND_ARIA_LABEL}
       items={dropdownItems}
@@ -308,12 +308,10 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         dropdownItems={items.map((item: BreadcrumbGroupProps.Item, index: number) => {
           const isLast = index === items.length - 1;
           return {
-            id: index.toString(), // the first item doesn't get inside dropdown
+            id: index.toString(),
             text: item.text,
-            href: item.href || '#',
+            href: isLast ? undefined : item.href || '#',
             linkStyle: !isLast,
-            disabled: isLast,
-            className: isLast ? styles['mobile-dropdown-last-item'] : undefined,
           };
         })}
         onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
