@@ -66,18 +66,15 @@ export function Navigation() {
 
 export function Notifications() {
   const [visible, setVisible] = useState(true);
-  const notifications: Array<FlashbarProps.MessageDefinition> = [];
-  if (visible) {
-    notifications.push({
-      type: 'success',
-      header: 'Success message',
-      statusIconAriaLabel: 'success',
-      dismissLabel: 'Dismiss notification',
-      dismissible: true,
-      onDismiss: () => setVisible(false),
-    });
-  }
-  return <Flashbar items={notifications} />;
+  const demoNotification: FlashbarProps.MessageDefinition = {
+    type: 'success',
+    header: 'Success message',
+    statusIconAriaLabel: 'success',
+    dismissLabel: 'Dismiss notification',
+    dismissible: true,
+    onDismiss: () => setVisible(false),
+  };
+  return <Flashbar items={visible ? [demoNotification] : []} />;
 }
 
 export function Footer({ legacyConsoleNav }: { legacyConsoleNav: boolean }) {
