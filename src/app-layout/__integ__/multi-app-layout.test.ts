@@ -4,7 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { getUrlParams, testIf, Theme } from './utils';
+import { getUrlParams, Theme } from './utils';
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   describe.each([[true], [false]])('iframe=%s', iframe => {
@@ -45,13 +45,20 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         })
       );
 
-      // TODO: Fix for toolbar
-      testIf(theme !== 'refresh-toolbar')(
+      test(
         'tools panel the secondary layout works',
         setupTest(async (page, switchToIframe) => {
           await switchToIframe(async () => {
             await expect(page.isDisplayed(secondaryLayout.findToolsClose().toSelector())).resolves.toBe(false);
-            await page.click(secondaryLayout.findToolsToggle().toSelector());
+          });
+          if (theme === 'refresh-toolbar') {
+            await page.click(mainLayout.findToolsToggle().toSelector());
+          } else {
+            await switchToIframe(async () => {
+              await page.click(secondaryLayout.findToolsToggle().toSelector());
+            });
+          }
+          await switchToIframe(async () => {
             await expect(page.isDisplayed(secondaryLayout.findToolsClose().toSelector())).resolves.toBe(true);
           });
         })
