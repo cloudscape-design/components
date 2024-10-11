@@ -78,11 +78,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
 describe('Visual refresh toolbar only', () => {
   class PageObject extends BasePageObject {
-    public get browser() {
-      return super.browser;
-    }
-    public set browser(value) {
-      super.browser = value;
+    getBrowser() {
+      return this.browser;
     }
   }
   function setupTest(testFn: (page: PageObject) => Promise<void>) {
@@ -197,7 +194,7 @@ describe('Visual refresh toolbar only', () => {
     'should prevent the horizontal page scroll from appearing during resize',
     setupTest(async page => {
       const hasHorizontalScroll = () =>
-        page.browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
+        page.getBrowser().execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
       await page.setWindowSize({ ...viewports.desktop, width: 1600 });
       await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle2-global').toSelector());
