@@ -88,10 +88,6 @@ export default function () {
           filteringProperties={filteringProperties}
           filteringOptions={optionsLoader.items}
           filteringStatusType={status}
-          filteringLoadingText={'loading text'}
-          filteringErrorText={'error text'}
-          filteringRecoveryText={'recovery text'}
-          filteringFinishedText={'finished text'}
           onLoadItems={handleLoadItems}
           asyncProperties={urlParams.asyncProperties}
           virtualScroll={true}
