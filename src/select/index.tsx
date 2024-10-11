@@ -33,6 +33,7 @@ const Select = React.forwardRef(
         filteringType,
         triggerVariant,
         virtualScroll: restProps.virtualScroll,
+        readOnly: restProps.readOnly,
       },
     });
     const externalProps = getExternalProps(restProps);
