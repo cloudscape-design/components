@@ -22,29 +22,21 @@ class TablePage extends BasePageObject {
   }
 }
 
-const setupTest = (
-  testFn: (page: TablePage, switchToIframe: (callback: () => Promise<void>) => Promise<void>) => Promise<void>
-) => {
+const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
   return useBrowser({ width: 1600, height: 800 }, async browser => {
     const page = new TablePage(browser);
-    const switchToIframe = async (callback: () => Promise<void>) => {
-      const iframeEl = await browser.$('#inner-iframe');
-      await browser.switchToFrame(iframeEl);
-      await callback();
-      await browser.switchToFrame(null);
-    };
     await browser.url('#/light/table/with-iframe');
-    await switchToIframe(async () => {
+    await page.runInsideIframe('#inner-iframe', true, async () => {
       await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
     });
-    await testFn(page, switchToIframe);
+    await testFn(page);
   });
 };
 
 test(
   'should expand and shrink a column correctly',
-  setupTest(async (page, switchToIframe) => {
-    await switchToIframe(async () => {
+  setupTest(async page => {
+    await page.runInsideIframe('#inner-iframe', true, async () => {
       const delta = 50;
       let prevWidth = await page.getColumnWidth(2);
       await page.resizeColumn(2, delta);
