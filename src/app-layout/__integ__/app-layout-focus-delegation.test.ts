@@ -120,14 +120,17 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         )
       );
 
-      //todo tools functionality needs to be added to toolbar
-      testIf(theme !== 'refresh-toolbar')(
-        'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position',
+      test(
+        'focuses tools panel closed button when it is opened and caused split panel to change position',
         setupTest(
           async page => {
-            await page.setWindowSize({ width: 1000, height: 800 });
+            await page.setWindowSize({ width: 878, height: 800 });
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-            await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
+            if (theme !== 'refresh-toolbar') {
+              await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
+            } else {
+              await page.click(wrapper.findToolsToggle().toSelector());
+            }
             await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile, splitPanelPosition: 'side' }
