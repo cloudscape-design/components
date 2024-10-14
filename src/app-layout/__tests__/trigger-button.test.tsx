@@ -3,7 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import * as AllContext from '../../../lib/components/app-layout/visual-refresh/context.js';
 import VisualRefreshTriggerButton, {
