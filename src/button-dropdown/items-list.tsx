@@ -49,7 +49,7 @@ export default function ItemsList({
           variant={variant}
           position={`${position ? `${position},` : ''}${index + 1}`}
           analyticsMetadataTransformer={analyticsMetadataTransformer}
-          linkStyle={linkStyle}
+          linkStyle={item.linkStyle || linkStyle}
         />
       );
     }

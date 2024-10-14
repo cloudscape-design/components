@@ -120,7 +120,12 @@ const InternalButtonDropdown = React.forwardRef(
 
     const canBeOpened = !loading && !disabled;
 
-    const triggerVariant = variant === 'navigation' ? undefined : variant === 'inline-icon' ? 'inline-icon' : variant;
+    const triggerVariant =
+      variant === 'navigation' || variant === 'mobile-breadcrumb'
+        ? undefined
+        : variant === 'inline-icon'
+          ? 'inline-icon'
+          : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon' || variant === 'inline-icon'
         ? {
