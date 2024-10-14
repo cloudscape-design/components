@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import ChartPlot, { ChartPlotRef } from '../../../../../lib/components/internal/components/chart-plot';
 import { ElementWrapper } from '../../../../../lib/components/test-utils/dom';
