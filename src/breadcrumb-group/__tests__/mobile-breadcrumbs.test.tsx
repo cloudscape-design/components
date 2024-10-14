@@ -8,6 +8,15 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 
 import dropdownItemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 
+const defaultProps = {
+  items: [
+    { text: 'Service home', href: '#' },
+    { text: 'Another page', href: '#' },
+    { text: 'A long page title for a media folder', href: '#' },
+    { text: 'Resource bucket 123456789', href: '#' },
+  ],
+};
+
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);
   return { wrapper: createWrapper(renderResult.container).findBreadcrumbGroup()!, ...renderResult };
@@ -19,15 +28,6 @@ jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
 }));
 
 describe('Mobile BreadcrumbGroup Component', () => {
-  const defaultProps = {
-    items: [
-      { text: 'Service home', href: '#' },
-      { text: 'Another page', href: '#' },
-      { text: 'A long page title for a media folder', href: '#' },
-      { text: 'Resource bucket 123456789', href: '#' },
-    ],
-  };
-
   test('renders correctly (dropdown closed)', () => {
     const { wrapper } = renderBreadcrumbGroup(defaultProps);
 
@@ -64,5 +64,33 @@ describe('Mobile BreadcrumbGroup Component', () => {
     const { wrapper } = renderBreadcrumbGroup({ items: [] });
 
     expect(wrapper.findDropdown()).toBeNull();
+  });
+
+  test('fires a click and follow events when the breadcrumb item is clicked', () => {
+    const onClickSpy = jest.fn();
+    const onFollowSpy = jest.fn();
+    const { wrapper } = renderBreadcrumbGroup({
+      ...defaultProps,
+      onClick: event => {
+        event.preventDefault();
+        onClickSpy(event.detail);
+      },
+      onFollow: event => onFollowSpy(event.detail),
+    });
+
+    const button = wrapper.findDropdown()!.findNativeButton();
+    button.click();
+    wrapper.findDropdown()!.findItems()[0].click();
+
+    expect(onClickSpy).toHaveBeenCalledWith({
+      item: defaultProps.items[0],
+      text: defaultProps.items[0].text,
+      href: defaultProps.items[0].href,
+    });
+    expect(onFollowSpy).toHaveBeenCalledWith({
+      item: defaultProps.items[0],
+      text: defaultProps.items[0].text,
+      href: defaultProps.items[0].href,
+    });
   });
 });
