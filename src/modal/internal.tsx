@@ -105,7 +105,12 @@ function PortaledModal({
   };
 
   const emitTimeToContentReadyInModal = (loadCompleteTime: number) => {
-    if (componentLoadingCount.current === 0 && loadStartTime.current !== null && !performanceMetricLogged.current) {
+    if (
+      componentLoadingCount.current === 0 &&
+      loadStartTime.current &&
+      loadStartTime.current !== 0 &&
+      !performanceMetricLogged.current
+    ) {
       const timeToContentReadyInModal = loadCompleteTime - loadStartTime.current;
       PerformanceMetrics.modalPerformanceData({
         timeToContentReadyInModal,

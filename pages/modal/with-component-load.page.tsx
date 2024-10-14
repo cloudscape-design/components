@@ -2,10 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import { Button, Modal, Spinner } from '~components';
+import { Box, Button, Checkbox, Modal, SpaceBetween, Spinner } from '~components';
 import { setPerformanceMetrics } from '~components/internal/analytics';
-
-import ScreenshotArea from '../utils/screenshot-area';
 
 export default function () {
   const [visible, setVisible] = useState(false);
@@ -32,47 +30,51 @@ export default function () {
       delete (window as any).modalPerformanceMetrics;
     };
   }, []);
-  useEffect(() => {
-    if (visible) {
-      setTimeout(() => {
-        setButtonLoading(false);
-      }, 2000);
-      setTimeout(() => {
-        setTextLoading(false);
-      }, 1000);
-    } else {
-      setButtonLoading(true);
-      setTextLoading(true);
-    }
-    // Start fetching data
-  }, [visible]);
 
+  const checkBoxesForLoadingStateChange = (id: string) => {
+    return (
+      <Box margin="m">
+        <SpaceBetween size="xs">
+          <Checkbox
+            id={'checkbox-button' + id}
+            onChange={() => setButtonLoading(!buttonLoading)}
+            checked={buttonLoading}
+          >
+            Button Loading
+          </Checkbox>
+          <Checkbox id={'checkbox-text' + id} onChange={() => setTextLoading(!textLoading)} checked={textLoading}>
+            Text Loading
+          </Checkbox>
+        </SpaceBetween>
+      </Box>
+    );
+  };
   return (
-    <article>
+    <Box margin="m">
       <h1>Modal with loading component</h1>
-      <Button data-testid="modal-trigger" onClick={() => setVisible(true)}>
-        Show modal
-      </Button>
-
-      <ScreenshotArea>
-        <Modal
-          header={<div>{'Header text'}</div>}
-          visible={visible}
-          onDismiss={() => setVisible(false)}
-          closeAriaLabel="Close modal"
-          footer={
-            <span style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Button variant="link">Cancel</Button>
-              <Button id="primary-button" variant="primary" loading={buttonLoading}>
-                Delete
-              </Button>
-            </span>
-          }
-          disableContentPaddings={true}
-        >
-          <div>{textLoading ? <Spinner /> : 'Content'}</div>
-        </Modal>
-      </ScreenshotArea>
-    </article>
+      <SpaceBetween size="s">
+        {checkBoxesForLoadingStateChange('1')}
+        <Button data-testid="modal-trigger" onClick={() => setVisible(true)}>
+          Show modal
+        </Button>
+      </SpaceBetween>
+      <Modal
+        header={<div>{'Header text'}</div>}
+        visible={visible}
+        onDismiss={() => setVisible(false)}
+        closeAriaLabel="Close modal"
+        footer={
+          <span style={{ display: 'flex', justifyContent: 'flex-end' }}>
+            <Button variant="link">Cancel</Button>
+            <Button id="primary-button" variant="primary" loading={buttonLoading}>
+              Delete
+            </Button>
+          </span>
+        }
+      >
+        <div>{textLoading ? <Spinner /> : 'Content'}</div>
+        {checkBoxesForLoadingStateChange('2')}
+      </Modal>
+    </Box>
   );
 }

@@ -13,6 +13,7 @@ test(
     await browser.url('#/light/modal/with-input-focus');
     await page.click('#open-modal');
     const inputSelector = createWrapper().findInput('#input').findNativeInput().toSelector();
+
     await expect(page.isFocused(inputSelector)).resolves.toBe(true);
   })
 );
@@ -117,7 +118,7 @@ test(
 );
 
 test(
-  'verifies modal performance metrics are emitted after all components are loaded',
+  'should emit modal performance metrics when all components are loaded',
   useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await browser.url('#/light/modal/with-component-load');
@@ -129,20 +130,75 @@ test(
     //verify metrics are not emitted until all the components are loaded
     expect(metrics.length).toBe(0);
 
-    const buttonLoadingState = createWrapper()
-      .findModal()
-      .findFooter()
-      .findButton('#primary-button')
-      .findLoadingIndicator()
-      .toSelector();
-    const checkInterval = 2000;
-    while (await browser.$(buttonLoadingState).isExisting()) {
-      await delay(checkInterval);
-    }
+    //set loading state to false
+    const wrapper = createWrapper();
+    const buttonLoadingCheckBox = wrapper.findCheckbox('#checkbox-button2').findLabel().toSelector();
+    const textLoadingCheckBox = wrapper.findCheckbox('#checkbox-text2').findLabel().toSelector();
+    await page.click(buttonLoadingCheckBox);
+    await page.click(textLoadingCheckBox);
+
     metrics = await getModalPerformanceMetrics();
     expect(metrics[0].instanceIdentifier).not.toBeNull();
-    expect(metrics[0].timeToContentReadyInModal).toBeGreaterThanOrEqual(2000);
-    expect(metrics[0].timeToContentReadyInModal).toBeLessThan(3000);
+    expect(metrics[0].timeToContentReadyInModal).not.toBeNull();
+  })
+);
+
+test(
+  'should emit modal performance metrics with timeToContentReadyInModal 0 when components are already loaded',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/with-component-load');
+    const getModalPerformanceMetrics = () =>
+      browser.execute(() => ((window as any).modalPerformanceMetrics ?? []) as ModalPerformanceDataProps[]);
+
+    //load all components before opening the modal
+    const wrapper = createWrapper();
+    const buttonLoadingCheckBox = wrapper.findCheckbox('#checkbox-button1').findLabel().toSelector();
+    const textLoadingCheckBox = wrapper.findCheckbox('#checkbox-text1').findLabel().toSelector();
+    await page.click(buttonLoadingCheckBox);
+    await page.click(textLoadingCheckBox);
+
+    await page.click('[data-testid="modal-trigger"]');
+
+    // default interval after which modal metrics are automatically emitted.
+    const MODAL_READY_TIMEOUT = 100;
+    await delay(MODAL_READY_TIMEOUT);
+
+    const metrics = await getModalPerformanceMetrics();
+    expect(metrics[0].instanceIdentifier).not.toBeNull();
+    expect(metrics[0].timeToContentReadyInModal).toBe(0);
+  })
+);
+
+test(
+  'should not emit modal performance metrics more than once',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await browser.url('#/light/modal/with-component-load');
+    const getModalPerformanceMetrics = () =>
+      browser.execute(() => ((window as any).modalPerformanceMetrics ?? []) as ModalPerformanceDataProps[]);
+    await page.click('[data-testid="modal-trigger"]');
+
+    //set loading state as false
+    const wrapper = createWrapper();
+    const buttonLoadingCheckBox = wrapper.findCheckbox('#checkbox-button2').findLabel().toSelector();
+    const textLoadingCheckBox = wrapper.findCheckbox('#checkbox-text2').findLabel().toSelector();
+    await page.click(buttonLoadingCheckBox);
+    await page.click(textLoadingCheckBox);
+
+    let metrics = await getModalPerformanceMetrics();
+    expect(metrics[0].instanceIdentifier).not.toBeNull();
+    expect(metrics[0].timeToContentReadyInModal).not.toBeNull();
+
+    //reload the components
+    await page.click(buttonLoadingCheckBox);
+    await page.click(textLoadingCheckBox);
+
+    await page.click(buttonLoadingCheckBox);
+    await page.click(textLoadingCheckBox);
+
+    metrics = await getModalPerformanceMetrics();
+    expect(metrics.length).toBe(1);
   })
 );
 

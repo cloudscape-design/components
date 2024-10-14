@@ -532,7 +532,6 @@ describe('Modal component', () => {
   });
   describe('validates if modal performance metric is logged', () => {
     it('validates if modal performance metric is logged', () => {
-      console.log('test started');
       const modalPerformanceDataSpy = jest.spyOn(PerformanceMetrics, 'modalPerformanceData');
       const button = <Button variant="primary" />;
       const wrapper = renderModal({ visible: true, children: button });
