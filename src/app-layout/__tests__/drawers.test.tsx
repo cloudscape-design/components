@@ -197,7 +197,7 @@ describeEachAppLayout(({ size, theme }) => {
     expect(drawerTrigger!.getElement()).not.toHaveClass(selectedClass);
   });
 
-  testIf(theme === 'refresh-toolbar')('tooltip renders correctly on focus, blur, and escape key press events', () => {
+  testIf(theme !== 'classic')('tooltip renders correctly on focus, blur, and escape key press events', () => {
     const mockDrawers = [testDrawer];
     const result = render(<AppLayout drawers={mockDrawers} />);
     const wrapper = createWrapper(result.container).findAppLayout();
@@ -228,41 +228,38 @@ describeEachAppLayout(({ size, theme }) => {
     expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
   });
 
-  testIf(theme === 'refresh-toolbar')(
-    'tooltip renders correctly on pointer events and is removed on escape key press',
-    () => {
-      const mockDrawers = [testDrawer];
-      const result = render(<AppLayout drawers={mockDrawers} />);
-      const wrapper = createWrapper(result.container).findAppLayout();
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
-      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+  testIf(theme !== 'classic')('tooltip renders correctly on pointer events and is removed on escape key press', () => {
+    const mockDrawers = [testDrawer];
+    const result = render(<AppLayout drawers={mockDrawers} />);
+    const wrapper = createWrapper(result.container).findAppLayout();
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
 
-      const items = wrapper!.findDrawersTriggers();
-      expect(items?.length).toEqual(mockDrawers.length);
+    const items = wrapper!.findDrawersTriggers();
+    expect(items?.length).toEqual(mockDrawers.length);
 
-      fireEvent.pointerEnter(items![0].getElement());
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
-      expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+    fireEvent.pointerEnter(items![0].getElement());
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
+    expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
 
-      fireEvent.pointerLeave(items![0].getElement());
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
-      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+    fireEvent.pointerLeave(items![0].getElement());
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
 
-      fireEvent.pointerEnter(items![0].getElement());
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
-      expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
+    fireEvent.pointerEnter(items![0].getElement());
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeTruthy();
+    expect(result.getByText(testDrawer.ariaLabels.drawerName)).toBeTruthy();
 
-      fireEvent.keyDown(items![0].getElement(), {
-        ...mockEventBubble,
-        key: 'Escape',
-        code: KeyCode.escape,
-      });
-      expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
-      expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
-    }
-  );
+    fireEvent.keyDown(items![0].getElement(), {
+      ...mockEventBubble,
+      key: 'Escape',
+      code: KeyCode.escape,
+    });
+    expect(wrapper!.findDrawerTriggerTooltip()).toBeNull();
+    expect(() => result.getByTestId(testDrawer.ariaLabels.drawerName)).toThrow();
+  });
 
-  testIf(theme === 'refresh-toolbar')('tooltip does not render on trigger focus via close button', () => {
+  testIf(theme !== 'classic')('tooltip does not render on trigger focus via close button', () => {
     const mockDrawers = [testDrawer];
     const result = render(<AppLayout drawers={mockDrawers} />);
     const wrapper = createWrapper(result.container).findAppLayout();

@@ -63,6 +63,45 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
 
+  const handleDrawerClose = () => {
+    onActiveDrawerChange(null);
+    drawersFocusControl.setFocus();
+  };
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    const container = e.currentTarget as any;
+    const focusableElements = getFocusableElements(container);
+    const lastIndex = focusableElements.length - 1;
+
+    if (e.key === 'Tab') {
+      if (e.shiftKey) {
+        // Shift + Tab pressed
+        if (document.activeElement === focusableElements[0]) {
+          // Focus the last focusable element
+          // focusableElements[lastIndex].focus();
+
+          drawersFocusControl.loseFocus();
+          // e.preventDefault();
+        }
+      } else {
+        // Tab pressed
+        if (document.activeElement === focusableElements[lastIndex]) {
+          // Focus the desired element (e.g., the first focusable element)
+          // focusableElements[0].focus();
+          drawersFocusControl.loseFocus();
+          // e.preventDefault();
+        }
+      }
+    }
+  };
+
+  const getFocusableElements = (container: HTMLDivElement): HTMLElement[] => {
+    const focusableElements = Array.from(
+      container.querySelectorAll('a[href], button, input, textarea, select, details, [tabindex]:not([tabindex="-1"])')
+    );
+    return focusableElements as HTMLElement[];
+  };
+
   return (
     <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
       {state => (
@@ -84,6 +123,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
               drawersFocusControl.loseFocus();
             }
           }}
+          onKeyDown={e => handleKeyDown(e)}
           style={{
             blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
             insetBlockStart: drawersTopOffset,
@@ -117,7 +157,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 })}
                 formAction="none"
                 iconName={isMobile ? 'close' : 'angle-right'}
-                onClick={() => onActiveDrawerChange(null)}
+                onClick={handleDrawerClose}
                 ref={drawersFocusControl.refs.close}
                 variant="icon"
               />

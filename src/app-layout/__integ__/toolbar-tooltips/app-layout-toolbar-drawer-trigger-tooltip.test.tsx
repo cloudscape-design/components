@@ -6,10 +6,7 @@ import { setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe('refresh-toolbar', () => {
-  //using a theme variable below that will be set when iterating over ['refresh-toolbar', 'refresh']
-  const theme = 'refresh-toolbar';
-
+describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     const firstDrawerId = 'security'; //matches drawerIds[0]
     const secondDrawerId = 'pro-help'; //matches drawerIds[1]

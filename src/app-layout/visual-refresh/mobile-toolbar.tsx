@@ -42,13 +42,12 @@ export default function MobileToolbar() {
     <section
       className={clsx(
         styles['mobile-toolbar'],
-        [testutilStyles['mobile-bar']],
+        testutilStyles['mobile-bar'],
         {
           [styles['has-breadcrumbs']]: breadcrumbs,
           [styles.unfocusable]: hasDrawerViewportOverlay,
           [highContrastHeaderClassName]: headerVariant === 'high-contrast',
         },
-        testutilStyles['mobile-bar'],
         headerVariant !== 'high-contrast' && styles['remove-high-contrast-header']
       )}
     >

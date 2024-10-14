@@ -5,7 +5,7 @@ import { setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe.each(['refresh', 'classic'] as const)('%s', theme => {
+describe('No tooltips in classic', () => {
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     //matches drawerItems[0].id from 'lib/dev-pages/pages/app-layout/utils/drawers';
     const firstDrawerId = 'security';
@@ -14,7 +14,7 @@ describe.each(['refresh', 'classic'] as const)('%s', theme => {
 
     test(
       'No drawer trigger tooltip showing for mouse interactions',
-      setupTest({ size, theme }, async page => {
+      setupTest({ size, theme: 'classic' }, async page => {
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.hoverElement(firstDrawerTriggerSelector);
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
@@ -23,7 +23,7 @@ describe.each(['refresh', 'classic'] as const)('%s', theme => {
 
     test(
       'No drawer trigger tooltip showing for pointer interactions',
-      setupTest({ size, theme }, async page => {
+      setupTest({ size, theme: 'classic' }, async page => {
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         await page.buttonDownOnElement(firstDrawerTriggerSelector);
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
@@ -32,7 +32,7 @@ describe.each(['refresh', 'classic'] as const)('%s', theme => {
 
     test(
       'No drawer trigger tooltip showing for keyboard (tab) interactions',
-      setupTest({ size, theme }, async page => {
+      setupTest({ size, theme: 'classic' }, async page => {
         await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
         //set focus by clicking open and close
         await page.click(firstDrawerTriggerSelector);
@@ -49,7 +49,7 @@ describe.each(['refresh', 'classic'] as const)('%s', theme => {
     describe.each(['bottom', 'side'] as const)('splitPanelPosition=%s', splitPanelPosition => {
       test(
         'No split panel trigger tooltip showing for mouse interactions',
-        setupTest({ size, theme, splitPanelPosition }, async page => {
+        setupTest({ size, theme: 'classic', splitPanelPosition }, async page => {
           await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
           await page.hoverElement(wrapper.findSplitPanelOpenButton().toSelector());
           await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
@@ -58,7 +58,7 @@ describe.each(['refresh', 'classic'] as const)('%s', theme => {
 
       test(
         'No split panel trigger tooltip showing for pointer interactions',
-        setupTest({ size, theme, splitPanelPosition }, async page => {
+        setupTest({ size, theme: 'classic', splitPanelPosition }, async page => {
           await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
           await page.buttonDownOnElement(wrapper.findSplitPanelOpenButton().toSelector());
           await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
@@ -67,7 +67,7 @@ describe.each(['refresh', 'classic'] as const)('%s', theme => {
 
       test(
         'No split panel trigger tooltip showing for keyboard (tab) interactions',
-        setupTest({ size, theme, splitPanelPosition }, async page => {
+        setupTest({ size, theme: 'classic', splitPanelPosition }, async page => {
           await expect(page.isExisting(triggerTooltipSelector)).resolves.toBe(false);
           //set focus by clicking open and close
           await page.click(wrapper.findSplitPanelOpenButton().toSelector());

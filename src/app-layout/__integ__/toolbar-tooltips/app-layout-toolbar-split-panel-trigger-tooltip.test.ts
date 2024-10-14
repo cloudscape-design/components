@@ -5,9 +5,7 @@ import { AppLayoutDrawersPage, setupTest } from '../utils';
 
 const wrapper = createWrapper().findAppLayout();
 
-describe('refresh-toolbar', () => {
-  const theme = 'refresh-toolbar';
-
+describe.each(['refresh', 'refresh-toolbar'] as const)('%s', theme => {
   describe.each(['desktop', 'mobile'] as const)('%s', size => {
     //matches drawerItems[0].id from '../../../../lib/dev-pages/pages/app-layout/utils/drawers';
     const firstDrawerId = 'security';
