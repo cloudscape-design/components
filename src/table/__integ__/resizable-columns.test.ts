@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { range } from 'lodash';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -186,15 +188,16 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  test(
-    'should expand automatically when the cursor stops outside of the table container',
-    setupStickyTest(async page => {
-      const columnSelector = tableWrapper.findColumnHeaders().get(4).toSelector();
-      const { left: originalLeft } = await page.getBoundingBox(columnSelector);
-      await page.resizeBeyondTableWidth(4);
-      const { left: newLeft } = await page.getBoundingBox(columnSelector);
-      expect(newLeft).toBeLessThan(originalLeft);
-    })
+  test.each(range(0, 25))(
+    'should expand automatically when the cursor stops outside of the table container, i=%s',
+    () =>
+      setupStickyTest(async page => {
+        const columnSelector = tableWrapper.findColumnHeaders().get(4).toSelector();
+        const { left: originalLeft } = await page.getBoundingBox(columnSelector);
+        await page.resizeBeyondTableWidth(4);
+        const { left: newLeft } = await page.getBoundingBox(columnSelector);
+        expect(newLeft).toBeLessThan(originalLeft);
+      })()
   );
 
   test(

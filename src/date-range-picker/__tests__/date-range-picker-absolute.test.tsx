@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 import { render } from '@testing-library/react';
+import { range } from 'lodash';
 
 import '../../__a11y__/to-validate-a11y';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
@@ -53,7 +54,7 @@ afterEach(() => {
 
 describe('Date range picker', () => {
   describe('absolute mode', () => {
-    test('a11y', async () => {
+    test.each(range(0, 100))('a11y, i=%s', async () => {
       const { container } = render(
         <DateRangePicker
           {...defaultProps}
