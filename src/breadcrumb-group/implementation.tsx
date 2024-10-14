@@ -110,6 +110,10 @@ const MobileDropdown = ({
 }: MobileDropdownProps) => {
   const i18n = useInternalI18n('breadcrumb-group');
 
+  if (dropdownItems.length === 0) {
+    return null;
+  }
+
   return (
     <InternalButtonDropdown
       variant="mobile-breadcrumb"
@@ -301,25 +305,6 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     label: { root: 'self' },
   };
 
-  if (isMobile) {
-    return (
-      <MobileDropdown
-        ariaLabel={expandAriaLabel}
-        dropdownItems={items.map((item: BreadcrumbGroupProps.Item, index: number) => {
-          const isLast = index === items.length - 1;
-          return {
-            id: index.toString(),
-            text: item.text,
-            href: isLast ? undefined : item.href || '#',
-            linkStyle: !isLast,
-          };
-        })}
-        onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
-        onDropdownItemFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
-      />
-    );
-  }
-
   return (
     <nav
       {...baseProps}
@@ -334,10 +319,29 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
-      <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
-        {hiddenBreadcrumbItems}
-      </ol>
+      {isMobile ? (
+        <MobileDropdown
+          ariaLabel={expandAriaLabel}
+          dropdownItems={items.map((item: BreadcrumbGroupProps.Item, index: number) => {
+            const isLast = index === items.length - 1;
+            return {
+              id: index.toString(),
+              text: item.text,
+              href: isLast ? undefined : item.href || '#',
+              linkStyle: !isLast,
+            };
+          })}
+          onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
+          onDropdownItemFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
+        />
+      ) : (
+        <>
+          <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+          <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
+            {hiddenBreadcrumbItems}
+          </ol>
+        </>
+      )}
     </nav>
   );
 }
