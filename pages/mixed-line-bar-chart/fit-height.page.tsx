@@ -30,7 +30,7 @@ export default function () {
           hide filter
         </Checkbox>
         <Checkbox checked={urlParams.hideLegend} onChange={e => setUrlParams({ hideLegend: e.detail.checked })}>
-          hide legend
+          hide legend & y-title
         </Checkbox>
         <SpaceBetween size="xs" direction="horizontal" alignItems="center">
           <input
@@ -65,7 +65,7 @@ export default function () {
                   xDomain={data3.map(d => d.x)}
                   yDomain={[0, 650]}
                   xTitle="Food"
-                  yTitle="Calories (kcal)"
+                  yTitle={urlParams.hideLegend ? undefined : 'Calories (kcal)'}
                   xScaleType="categorical"
                   ariaLabel="Mixed chart 1"
                   ariaDescription={barChartInstructions}
