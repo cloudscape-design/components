@@ -44,16 +44,18 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop
         <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" headerVariant="high-contrast" />
       );
       expect(hasHighContrastContext(wrapper.findNotifications()!.getElement())).toBeTruthy();
-      expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeTruthy();
       if (theme === 'refresh') {
         // For refresh toolbar, high-contrast header is not implemented in contentHeader slot, or in conjunction with ContentLayout
+        expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeTruthy();
         expect(
           hasHighContrastContext(wrapper.findByClassName(visualRefreshStyles.background)!.getElement())
         ).toBeTruthy();
       } else {
+        // the toolbar should not have the high-contrast context
+        expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeFalsy();
         expect(
           hasHighContrastContext(wrapper.findByClassName(toolbarSkeletonStyles['toolbar-container'])!.getElement())
-        ).toBeTruthy();
+        ).toBeFalsy();
       }
     });
   });
@@ -69,10 +71,6 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['mobile'
         expect(wrapper.findByClassName(visualRefreshStyles['mobile-toolbar'])!.getElement()).not.toHaveClass(
           highContrastHeaderClassName
         );
-      } else {
-        expect(
-          hasHighContrastContext(wrapper.findByClassName(toolbarSkeletonStyles['toolbar-container'])!.getElement())
-        ).toBeFalsy();
       }
     });
 
@@ -87,7 +85,7 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['mobile'
       } else {
         expect(
           hasHighContrastContext(wrapper.findByClassName(toolbarSkeletonStyles['toolbar-container'])!.getElement())
-        ).toBeTruthy();
+        ).toBeFalsy();
       }
     });
   });

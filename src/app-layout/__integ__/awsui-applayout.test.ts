@@ -13,6 +13,11 @@ const wrapper = createWrapper().findAppLayout();
 const mobileSelector = `.${testutilStyles['mobile-bar']}`;
 
 class AppLayoutPage extends BasePageObject {
+  async visit(url: string) {
+    await this.browser.url(url);
+    await this.waitForVisible(wrapper.findContentRegion().toSelector());
+  }
+
   getNavPosition() {
     return this.getBoundingBox(wrapper.findNavigation().findSideNavigation().findHeaderLink().toSelector());
   }
@@ -24,14 +29,13 @@ class AppLayoutPage extends BasePageObject {
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(
-    { viewport = viewports.desktop, pageName = 'default' },
+    { viewport = viewports.desktop, pageName = 'default', extraParams = {} },
     testFn: (page: AppLayoutPage) => Promise<void>
   ) {
     return useBrowser(async browser => {
       const page = new AppLayoutPage(browser);
       await page.setWindowSize(viewport);
-      await browser.url(`#/light/app-layout/${pageName}?${getUrlParams(theme)}`);
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.visit(`#/light/app-layout/${pageName}?${getUrlParams(theme, extraParams)}`);
       await testFn(page);
     });
   }
@@ -165,13 +169,21 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
   );
 
   test(
-    'does not render notifications slot when it is empty',
-    setupTest({ pageName: 'with-notifications' }, async page => {
-      const { height: originalHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
-      expect(originalHeight).toBeGreaterThan(0);
+    'maintains consistent content top offset between initially empty notifications and dynamically dismissed',
+    setupTest({ pageName: 'with-notifications', extraParams: { disableNotifications: 'true' } }, async page => {
+      // get reference offset on a page with notifications disabled
+      const { top: expectedOffset } = await page.getBoundingBox('[data-testid="content-root"]');
+      // visit the same page with notifications enabled to compare
+      await page.visit(
+        `#/light/app-layout/with-notifications?${getUrlParams(theme, { disableNotifications: 'false' })}`
+      );
       await page.click(wrapper.findNotifications().findFlashbar().findItems().get(1).findDismissButton().toSelector());
-      const { height: newHeight } = await page.getBoundingBox(wrapper.findNotifications().toSelector());
-      expect(newHeight).toEqual(0);
+      await expect(page.isExisting(wrapper.findNotifications().findFlashbar().toSelector())).resolves.toBe(true);
+      await expect(
+        page.getElementsCount(wrapper.findNotifications().findFlashbar().findItems().toSelector())
+      ).resolves.toBe(0);
+      const { top: contentTop } = await page.getBoundingBox('[data-testid="content-root"]');
+      expect(contentTop).toEqual(expectedOffset);
     })
   );
 });

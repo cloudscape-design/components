@@ -7,7 +7,7 @@ import range from 'lodash/range';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Container from '~components/container';
-import Flashbar from '~components/flashbar';
+import Flashbar, { FlashbarProps } from '~components/flashbar';
 import Header from '~components/header';
 import HelpPanel from '~components/help-panel';
 import SideNavigation from '~components/side-navigation';
@@ -66,23 +66,15 @@ export function Navigation() {
 
 export function Notifications() {
   const [visible, setVisible] = useState(true);
-  if (!visible) {
-    return null;
-  }
-  return (
-    <Flashbar
-      items={[
-        {
-          type: 'success',
-          header: 'Success message',
-          statusIconAriaLabel: 'success',
-          dismissLabel: 'Dismiss notification',
-          dismissible: true,
-          onDismiss: () => setVisible(false),
-        },
-      ]}
-    />
-  );
+  const demoNotification: FlashbarProps.MessageDefinition = {
+    type: 'success',
+    header: 'Success message',
+    statusIconAriaLabel: 'success',
+    dismissLabel: 'Dismiss notification',
+    dismissible: true,
+    onDismiss: () => setVisible(false),
+  };
+  return <Flashbar items={visible ? [demoNotification] : []} />;
 }
 
 export function Footer({ legacyConsoleNav }: { legacyConsoleNav: boolean }) {
