@@ -5,7 +5,7 @@ import { render } from '@testing-library/react';
 import { cloneDeep } from 'lodash';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import AreaChart, { AreaChartProps } from '../../../lib/components/area-chart';

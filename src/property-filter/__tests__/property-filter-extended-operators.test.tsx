@@ -4,15 +4,13 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils.js';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Input from '../../../lib/components/input';
 import PropertyFilter from '../../../lib/components/property-filter';
 import { FilteringProperty, PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
 import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
-
-import styles from '../../../lib/components/property-filter/styles.selectors.js';
 
 const defaultProps = createDefaultProps([], []);
 
@@ -116,7 +114,7 @@ describe('extended operators', () => {
     act(() => pageWrapper.find('[data-testid="change+"]')!.click());
 
     // Click cancel
-    act(() => pageWrapper.findButton(`.${styles['property-editor-cancel']}`)!.click());
+    act(() => wrapper.findPropertyCancelButton()!.click());
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     expect(onChange).not.toBeCalled();
     expect(wrapper.findNativeInput().getElement()).toHaveFocus();
@@ -126,7 +124,7 @@ describe('extended operators', () => {
     act(() => pageWrapper.find('[data-testid="change-"]')!.click());
 
     // Click submit
-    act(() => pageWrapper.findButton(`.${styles['property-editor-submit']}`)!.click());
+    act(() => wrapper.findPropertySubmitButton()!.click());
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
     expect(onChange).toBeCalledWith(
       expect.objectContaining({
