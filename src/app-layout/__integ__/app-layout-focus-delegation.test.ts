@@ -5,13 +5,12 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-
-const testIf = (condition: boolean) => (condition ? test : test.skip);
+import { getUrlParams, testIf, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
 interface SetupTestObj {
-  theme: string;
+  theme: Theme;
   pageName: string;
   splitPanelPosition?: string;
   mobile: boolean;
@@ -23,17 +22,16 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    const params = new URLSearchParams({
-      visualRefresh: `${theme.startsWith('refresh')}`,
-      appLayoutWidget: `${theme === 'refresh-toolbar'}`,
-      ...(splitPanelPosition
+    const params = getUrlParams(
+      theme,
+      splitPanelPosition
         ? {
-            splitPanelPosition,
+            splitPanelPosition: splitPanelPosition,
           }
-        : {}),
-    });
+        : {}
+    );
     await page.setWindowSize(mobile ? viewports.mobile : viewports.desktop);
-    await browser.url(`#/light/app-layout/${pageName}?${params.toString()}`);
+    await browser.url(`#/light/app-layout/${pageName}?${params}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
@@ -53,19 +51,17 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       );
 
       test(
-        'split panel focus moves to slider on open and open button on close',
+        'split panel focus moves to slider on open, and open button on close',
         setupTest(
           async page => {
-            const splitPanelOpenActionEl =
-              theme === 'refresh-toolbar'
-                ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
-                : wrapper.findSplitPanel().findOpenButton().toSelector();
-            await page.click(splitPanelOpenActionEl);
+            await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
             await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
             await page.keys(['Tab', 'Tab']);
             await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
             await page.keys('Enter');
-            await expect(page.isFocused(splitPanelOpenActionEl)).resolves.toBe(true);
+            await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
+            await page.keys('Enter');
+            await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile }
         )
@@ -84,6 +80,23 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
             await expect(page.isFocused(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile }
+        )
+      );
+
+      test(
+        'drawers focus toggles between open and close buttons',
+        setupTest(
+          async page => {
+            const triggerSelector = wrapper.findDrawerTriggerById('pro-help').toSelector();
+            await page.click(triggerSelector);
+            await page.keys('Enter');
+            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
+            await page.keys('Enter');
+            await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
+            await page.keys('Enter');
+            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
+          },
+          { pageName: 'with-drawers', theme, mobile }
         )
       );
 
@@ -116,23 +129,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
             await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
             await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
-          },
-          { pageName: 'with-split-panel', theme, mobile, splitPanelPosition: 'side' }
-        )
-      );
-
-      test(
-        'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position in toolbar theme',
-        setupTest(
-          async page => {
-            const triggerSelector =
-              theme === 'refresh-toolbar'
-                ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
-                : wrapper.findSplitPanel().findOpenButton().toSelector();
-            await page.setWindowSize({ width: 1000, height: 800 });
-            await page.click(triggerSelector);
-            await page.keys(['Tab', 'Tab', 'Enter']);
-            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile, splitPanelPosition: 'side' }
         )
@@ -240,47 +236,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           )
         );
       });
-
-      test(
-        'drawers focus toggles between open and close buttons',
-        setupTest(
-          async page => {
-            //Altermatomg between triggers because test-1 trigger hidden in overflow menu on mobile,
-            //security has resize button on desktop
-            const triggerSelector = wrapper.findDrawerTriggerById(mobile ? 'security' : 'test-1').toSelector();
-            await page.click(triggerSelector);
-            await page.keys('Enter');
-            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
-            await page.keys('Enter');
-            await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
-            await page.keys('Enter');
-            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
-          },
-          { pageName: 'with-drawers', theme, mobile }
-        )
-      );
-
-      test(
-        'split panel focus toggles between open and close buttons',
-        setupTest(
-          async page => {
-            //Alternating between triggers because test-1 trigger hidden in overflow menu on mobile,
-            const triggerSelector =
-              theme === 'refresh-toolbar'
-                ? wrapper.findDrawerTriggerById('slide-panel').toSelector()
-                : wrapper.findSplitPanel().findOpenButton().toSelector();
-            await page.click(triggerSelector);
-            await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
-            await page.keys(['Tab', 'Tab']);
-            await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
-            await page.keys('Enter');
-            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
-            await page.keys('Enter');
-            await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
-          },
-          { pageName: 'with-drawers', theme, mobile }
-        )
-      );
 
       describe('drawer focus interaction with tools buttons', () => {
         testIf(!mobile)(
