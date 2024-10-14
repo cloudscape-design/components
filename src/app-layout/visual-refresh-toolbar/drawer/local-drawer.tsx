@@ -35,6 +35,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     placement,
     verticalOffsets,
     drawersOpenQueue,
+    disableBodyScroll,
     onActiveDrawerChange,
     onActiveDrawerResize,
   } = appLayoutInternals;
@@ -86,7 +87,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           }}
           style={{
             blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-            insetBlockStart: drawersTopOffset,
+            ...(!disableBodyScroll ? { insetBlockStart: drawersTopOffset } : {}),
             ...(!isMobile &&
               !isLegacyDrawer && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,

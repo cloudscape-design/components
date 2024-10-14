@@ -60,6 +60,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onSplitPanelResize,
       onSplitPanelPreferencesChange,
       disableContentPaddings,
+      disableBodyScroll,
       minContentWidth,
       maxContentWidth,
       placement,
@@ -332,6 +333,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onNavigationToggle,
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
+      disableBodyScroll,
+      //
+      // offsetBottom,
+      // stickyNotifications,
+      // notificationsHeight,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
@@ -428,6 +434,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           contentType={contentType}
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
+          disableBodyScroll={disableBodyScroll}
         />
       </>
     );

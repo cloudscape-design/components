@@ -43,6 +43,7 @@ function AppLayoutGlobalDrawerImplementation({
     activeGlobalDrawersSizes,
     verticalOffsets,
     drawersOpenQueue,
+    disableBodyScroll,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
@@ -99,7 +100,7 @@ function AppLayoutGlobalDrawerImplementation({
             }}
             style={{
               blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-              insetBlockStart: drawersTopOffset,
+              ...(!disableBodyScroll ? { insetBlockStart: drawersTopOffset } : {}),
               ...(!isMobile && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),

@@ -45,6 +45,8 @@ export interface ToolbarProps {
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
   onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
+
+  disableBodyScroll?: AppLayoutProps['disableBodyScroll'];
 }
 
 interface AppLayoutToolbarImplementationProps {
@@ -77,6 +79,7 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
       position: legacyProps.splitPanelPosition,
     },
     onSplitPanelToggle: toolbarProps.onSplitPanelToggle ?? legacyProps.onSplitPanelToggle,
+    disableBodyScroll: legacyProps.disableBodyScroll,
   };
 }
 
@@ -95,6 +98,7 @@ export function AppLayoutToolbarImplementation({
     setToolbarState,
     setToolbarHeight,
     globalDrawersFocusControl,
+    disableBodyScroll,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -173,7 +177,7 @@ export function AppLayoutToolbarImplementation({
         [styles['toolbar-hidden']]: toolbarHidden,
       })}
       style={{
-        insetBlockStart: toolbarHidden ? '-60px' : verticalOffsets.toolbar,
+        insetBlockStart: disableBodyScroll || toolbarHidden ? '-60px' : verticalOffsets.toolbar,
       }}
     >
       <div className={styles['toolbar-container']}>

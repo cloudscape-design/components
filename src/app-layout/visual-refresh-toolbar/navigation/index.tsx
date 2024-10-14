@@ -28,6 +28,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     navigationFocusControl,
     placement,
     verticalOffsets,
+    disableBodyScroll,
   } = appLayoutInternals;
 
   const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
@@ -59,7 +60,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       onClick={onNavigationClick}
       style={{
         blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: drawersTopOffset,
+        ...(!disableBodyScroll ? { insetBlockStart: drawersTopOffset } : {}),
       }}
     >
       <div className={clsx(styles['animated-content'])}>

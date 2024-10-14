@@ -22,7 +22,8 @@ export function AppLayoutNotificationsImplementation({
   appLayoutInternals,
   children,
 }: AppLayoutNotificationsImplementationProps) {
-  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
+  const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets, disableBodyScroll } =
+    appLayoutInternals;
   const ref = useRef<HTMLElement>(null);
   useResizeObserver(ref, entry => setNotificationsHeight(entry.borderBoxHeight));
   useEffect(() => {
@@ -41,7 +42,7 @@ export function AppLayoutNotificationsImplementation({
         appLayoutInternals.headerVariant !== 'high-contrast' && styles['sticky-notifications-with-background']
       )}
       style={{
-        insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
+        insetBlockStart: !disableBodyScroll && stickyNotifications ? verticalOffsets.notifications : undefined,
       }}
     >
       <div className={testutilStyles.notifications} role="region" aria-label={ariaLabels?.notifications}>

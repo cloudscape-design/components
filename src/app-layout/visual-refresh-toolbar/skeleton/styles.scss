@@ -76,6 +76,11 @@
       }
     }
   }
+
+  &.disable-body-scroll {
+    overflow: hidden;
+    -moz-hidden-unscrollable: hidden;
+  }
 }
 
 .navigation,
@@ -171,11 +176,19 @@
   background: awsui.$color-background-layout-main;
   grid-area: notifications;
   @include grid-column-full-content-width;
+
+  &.disable-body-scroll {
+    block-size: 0;
+  }
 }
 
 .main-landmark {
   // does not participate in the layout, rendered for accessibility grouping
   display: contents;
+
+  &.disable-body-scroll {
+    overflow: auto;
+  }
 }
 
 .main {

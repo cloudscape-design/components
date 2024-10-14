@@ -24,6 +24,7 @@ interface SkeletonLayoutProps
     | 'contentType'
     | 'maxContentWidth'
     | 'disableContentPaddings'
+    | 'disableBodyScroll'
     | 'navigation'
     | 'navigationOpen'
     | 'navigationWidth'
@@ -63,18 +64,22 @@ export function SkeletonLayout({
   maxContentWidth,
   disableContentPaddings,
   globalToolsOpen,
+  disableBodyScroll,
 }: SkeletonLayoutProps) {
   const isMobile = useMobile();
   const isMaxWidth = maxContentWidth === Number.MAX_VALUE || maxContentWidth === Number.MAX_SAFE_INTEGER;
   const anyPanelOpen = navigationOpen || toolsOpen;
+
   return (
     <div
       className={clsx(styles.root, testutilStyles.root, {
         [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
         [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
+        [styles['disable-body-scroll']]: disableBodyScroll,
       })}
       style={{
-        minBlockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
+        [disableBodyScroll ? 'blockSize' : 'minBlockSize']:
+          `calc(100vh - (${placement.insetBlockStart + placement.insetBlockEnd}px))`,
         [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
         [customCssProps.navigationWidth]: `${navigationWidth}px`,
         [customCssProps.toolsWidth]: `${toolsWidth}px`,
@@ -93,11 +98,18 @@ export function SkeletonLayout({
           {navigation}
         </div>
       )}
-      <main className={clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile'])}>
+      <main
+        className={clsx(styles['main-landmark'], styles.layout, {
+          [styles['unfocusable-mobile']]: isMobile && anyPanelOpen,
+          [styles['disable-body-scroll']]: disableBodyScroll,
+          [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
+        })}
+      >
         {notifications && (
           <div
             className={clsx(
               styles['notifications-background'],
+
               headerVariant === 'high-contrast' && highContrastHeaderClassName
             )}
           ></div>

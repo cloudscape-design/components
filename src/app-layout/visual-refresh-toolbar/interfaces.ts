@@ -40,6 +40,11 @@ export interface AppLayoutInternals {
   activeGlobalDrawersSizes: Record<string, number>;
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
+  /**
+   * Needed for backward compatibility
+   * @deprecated
+   */
+  disableBodyScroll?: AppLayoutPropsWithDefaults['disableBodyScroll'];
   discoveredBreadcrumbs: BreadcrumbGroupProps | null;
   toolbarState: 'show' | 'hide';
   setToolbarState: (state: 'show' | 'hide') => void;

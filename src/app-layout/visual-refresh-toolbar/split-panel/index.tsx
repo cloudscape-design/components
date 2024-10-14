@@ -19,7 +19,7 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   appLayoutInternals,
   splitPanelInternals,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
-  const { splitPanelControlId, placement, verticalOffsets } = appLayoutInternals;
+  const { splitPanelControlId, placement, verticalOffsets, disableBodyScroll } = appLayoutInternals;
   const drawerTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
   return (
     <SplitPanelProvider {...splitPanelInternals}>
@@ -28,7 +28,7 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
         className={styles['split-panel-side']}
         style={{
           blockSize: `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`,
-          insetBlockStart: drawerTopOffset,
+          ...(!disableBodyScroll ? { insetBlockStart: drawerTopOffset } : {}),
         }}
       >
         {children}
