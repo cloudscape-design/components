@@ -37,6 +37,9 @@ const ToggleButton = React.forwardRef(
   ) => {
     const baseComponentProps = useBaseComponent('ToggleButton', {
       props: { iconName, pressedIconName, pressed, variant, wrapText },
+      metadata: {
+        hasDisabledReason: Boolean(disabledReason),
+      },
     });
     const baseProps = getBaseProps(props);
 
