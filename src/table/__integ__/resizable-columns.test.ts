@@ -188,7 +188,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  test.each(range(0, 25))(
+  test.each(range(0, 100))(
     'should expand automatically when the cursor stops outside of the table container, i=%s',
     () =>
       setupStickyTest(async page => {
