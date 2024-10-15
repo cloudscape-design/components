@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { FileUploadProps } from '../file-upload/interfaces';
 import { IconProps } from '../icon/interfaces';
 import {
   BaseChangeDetail,
@@ -103,6 +104,22 @@ export interface PromptInputProps
    * Determines whether the secondary content area of the input has padding. If true, removes the default padding from the secondary content area.
    */
   disableSecondaryContentPaddings?: boolean;
+
+  /**
+   * Called when the user selects new file(s), or removes a file.
+   * The event `detail` contains the current value of the component.
+   */
+  onFilesChange?: NonCancelableEventHandler<FileUploadProps.ChangeDetail>;
+
+  /**
+   * Files.
+   */
+  files?: File[];
+
+  /**
+   * Specifies the native file input `multiple` attribute to allow users entering more than one file.
+   */
+  multiple?: boolean;
 }
 
 export namespace PromptInputProps {

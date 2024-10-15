@@ -10,6 +10,7 @@ import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
 import InternalFileInput from '../file-input/internal';
+import * as defaultFormatters from '../file-token-group/default-formatters';
 import InternalFileToken from '../file-token-group/file-token';
 import InternalFileTokenGroup from '../file-token-group/internal';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
@@ -22,7 +23,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
-import * as defaultFormatters from './default-formatters.js';
 import { Dropzone, useDropzoneVisible } from './dropzone';
 import { FileUploadProps } from './interfaces';
 

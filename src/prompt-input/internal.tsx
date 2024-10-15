@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
+import { Dropzone, useDropzoneVisible } from '../file-upload/dropzone';
 import { convertAutoComplete } from '../input/utils';
 import { getBaseProps } from '../internal/base-component';
 import { useFormFieldContext } from '../internal/context/form-field-context';
@@ -51,6 +52,9 @@ const InternalPromptInput = React.forwardRef(
       secondaryContent,
       disableSecondaryActionsPaddings,
       disableSecondaryContentPaddings,
+      onFilesChange,
+      multiple = false,
+      files = [],
       __internalRootRef = null,
       ...rest
     }: InternalPromptInputProps,
@@ -159,6 +163,12 @@ const InternalPromptInput = React.forwardRef(
       attributes.autoCapitalize = 'off';
     }
 
+    const isDropzoneVisible = useDropzoneVisible(multiple);
+    const handleFilesChange = (newFiles: File[]) => {
+      const newValue = multiple ? [...files, ...newFiles] : newFiles[0] ? newFiles : [...files];
+      fireNonCancelableEvent(onFilesChange, { value: newValue });
+    };
+
     const action = (
       <div className={styles.button}>
         <InternalButton
@@ -189,32 +199,38 @@ const InternalPromptInput = React.forwardRef(
         ref={__internalRootRef}
         role="region"
       >
-        {secondaryContent && (
-          <div
-            className={clsx(styles['secondary-content'], testutilStyles['secondary-content'], {
-              [styles['with-paddings']]: !disableSecondaryContentPaddings,
-              [styles.invalid]: invalid,
-              [styles.warning]: warning,
-            })}
-          >
-            {secondaryContent}
-          </div>
-        )}
-        <div className={styles['textarea-wrapper']}>
-          <textarea ref={textareaRef} id={controlId} {...attributes} />
-          {hasActionButton && !secondaryActions && action}
-        </div>
-        {secondaryActions && (
-          <div
-            className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
-              [styles['with-paddings']]: !disableSecondaryActionsPaddings,
-              [styles.invalid]: invalid,
-              [styles.warning]: warning,
-            })}
-          >
-            {secondaryActions}
-            {hasActionButton && action}
-          </div>
+        {isDropzoneVisible ? (
+          <Dropzone onChange={handleFilesChange}>Dropping files</Dropzone>
+        ) : (
+          <>
+            {secondaryContent && (
+              <div
+                className={clsx(styles['secondary-content'], testutilStyles['secondary-content'], {
+                  [styles['with-paddings']]: !disableSecondaryContentPaddings,
+                  [styles.invalid]: invalid,
+                  [styles.warning]: warning,
+                })}
+              >
+                {secondaryContent}
+              </div>
+            )}
+            <div className={styles['textarea-wrapper']}>
+              <textarea ref={textareaRef} id={controlId} {...attributes} />
+              {hasActionButton && !secondaryActions && action}
+            </div>
+            {secondaryActions && (
+              <div
+                className={clsx(styles['secondary-actions'], testutilStyles['secondary-actions'], {
+                  [styles['with-paddings']]: !disableSecondaryActionsPaddings,
+                  [styles.invalid]: invalid,
+                  [styles.warning]: warning,
+                })}
+              >
+                {secondaryActions}
+                {hasActionButton && action}
+              </div>
+            )}
+          </>
         )}
       </div>
     );

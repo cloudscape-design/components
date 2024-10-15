@@ -68,6 +68,7 @@ function InternalFileToken({
 
   const containerRef = React.useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   return (
     <div
@@ -94,11 +95,11 @@ function InternalFileToken({
         warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
         disabled={disabled}
         alignment={alignment}
-        groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal'}
+        groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal' && !imageError}
         data-index={index}
       >
         <InternalBox className={styles['file-option']}>
-          {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
+          {showFileThumbnail && isImage && <FileOptionThumbnail file={file} setHasError={setImageError} />}
 
           <div
             className={clsx(styles['file-option-metadata'], {
