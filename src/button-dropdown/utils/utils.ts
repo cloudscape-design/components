@@ -47,3 +47,13 @@ export function hasCheckboxItems(items: ButtonDropdownProps.Items) {
   });
   return hasCheckboxItems;
 }
+
+export function hasDisabledReasonItems(items: ButtonDropdownProps.Items) {
+  let hasDisabledReasons = false;
+  traverseItems(items, item => {
+    if (item.disabledReason) {
+      hasDisabledReasons = true;
+    }
+  });
+  return hasDisabledReasons;
+}
