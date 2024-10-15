@@ -31,7 +31,7 @@ export default function () {
           hide filter
         </Checkbox>
         <Checkbox checked={urlParams.hideLegend} onChange={e => setUrlParams({ hideLegend: e.detail.checked })}>
-          hide legend
+          hide legend & y-title
         </Checkbox>
         <SpaceBetween size="xs" direction="horizontal" alignItems="center">
           <input
@@ -94,6 +94,7 @@ export default function () {
                   }}
                   xDomain={[0, 119]}
                   {...chartData}
+                  yTitle={urlParams.hideLegend ? undefined : chartData.yTitle}
                 />
               </div>
             </Box>
