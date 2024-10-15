@@ -500,7 +500,7 @@ describe('Details popover', () => {
   test(
     'scrolls if necessary on click',
     setupTest('#/light/bar-chart/drilldown', async page => {
-      await page.setWindowSize({ width: 360, height: 650 });
+      await page.setWindowSize({ width: 360, height: 720 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
       const barGroup = barChart.findBarGroups().get(1).toSelector();
@@ -515,7 +515,7 @@ describe('Details popover', () => {
   test(
     'does not scroll on hover',
     setupTest('#/light/bar-chart/drilldown', async page => {
-      await page.setWindowSize({ width: 360, height: 650 });
+      await page.setWindowSize({ width: 360, height: 720 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
       const barGroup = barChart.findBarGroups().get(1).toSelector();
@@ -529,7 +529,7 @@ describe('Details popover', () => {
   test(
     'scrolls if necessary on click inside a scrollable container',
     setupTest('#/light/bar-chart/in-modal', async page => {
-      await page.setWindowSize({ width: 360, height: 650 });
+      await page.setWindowSize({ width: 360, height: 720 });
       const wrapper = createWrapper();
       await page.click(wrapper.findButton().toSelector());
       const modalSelector = wrapper.findModal().toSelector();
