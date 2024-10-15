@@ -121,16 +121,26 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       );
 
       test(
-        'focuses tools panel closed button when it is opened and caused split panel to change position',
+        'focuses tools panel closed button when it is opened via keyboard and caused split panel to change position',
         setupTest(
           async page => {
-            await page.setWindowSize({ width: 878, height: 800 });
+            // Mobile nav is closed on page load
+            mobile && (await page.click(wrapper.findNavigationToggle().toSelector()));
+            await page.setWindowSize({ width: 1100, height: 800 });
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+            await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toBe(
+              true
+            );
             if (theme !== 'refresh-toolbar') {
               await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
             } else {
-              await page.click(wrapper.findToolsToggle().toSelector());
+              // Click the current page in breadcrumb to reset focus to toolbar
+              await page.click(wrapper.findBreadcrumbs().findBreadcrumbGroup().findBreadcrumbLink(2).toSelector());
+              await page.keys(['Tab', 'Tab', 'Enter']);
             }
+            await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())).resolves.toBe(
+              true
+            );
             await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile, splitPanelPosition: 'side' }
