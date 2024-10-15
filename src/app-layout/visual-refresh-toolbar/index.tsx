@@ -378,6 +378,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
+            ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),
           }}
           toolbar={
             hasToolbar && <AppLayoutToolbar appLayoutInternals={appLayoutInternals} toolbarProps={toolbarProps} />

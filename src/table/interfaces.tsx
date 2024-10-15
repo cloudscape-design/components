@@ -112,6 +112,8 @@ export interface TableProps<T = any> extends BaseComponentProps {
    *     * `cellContext.currentValue` - State to keep track of a value in input fields while editing.
    *     * `cellContext.setValue` - Function to update `currentValue`. This should be called when the value in input field changes.
    * * `isRowHeader` (boolean) - Specifies that cells in this column should be used as row headers.
+   * * `hasDynamicContent` (boolean) - Specifies that cells in this column may have dynamic content. The contents will then be observed to update calculated column widths.
+   *    This may have a negative performance impact, so should be used only if necessary. It has no effect if `resizableColumns` is set to `true`.
    * * `verticalAlign` ('middle' | 'top') - Determines the alignment of the content in the table cell.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
@@ -440,6 +442,7 @@ export namespace TableProps {
     editConfig?: EditConfig<ItemType>;
     isRowHeader?: boolean;
     verticalAlign?: VerticalAlign;
+    hasDynamicContent?: boolean;
     cell(item: ItemType): React.ReactNode;
   } & SortingColumn<ItemType>;
 
