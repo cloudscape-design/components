@@ -65,8 +65,8 @@ function useRuntimeDrawers(
 
   const localDrawerWasOpenRef = useRef(false);
   localDrawerWasOpenRef.current = localDrawerWasOpenRef.current || !!activeDrawerId;
-  const activeGlobalDrawersIdsStable = useRef<Array<string>>([]);
-  activeGlobalDrawersIdsStable.current = activeGlobalDrawersIds;
+  const activeGlobalDrawersIdsRef = useRef<Array<string>>([]);
+  activeGlobalDrawersIdsRef.current = activeGlobalDrawersIds;
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
@@ -84,7 +84,7 @@ function useRuntimeDrawers(
       }
 
       const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(
-        drawer => !activeGlobalDrawersIdsStable.current.includes(drawer.id) && drawer.defaultActive
+        drawer => !activeGlobalDrawersIdsRef.current.includes(drawer.id) && drawer.defaultActive
       );
       defaultActiveGlobalDrawers.forEach(drawer => {
         onGlobalDrawersChangeStable(drawer.id);
@@ -94,7 +94,7 @@ function useRuntimeDrawers(
       unsubscribe();
       setRuntimeDrawers({ localBefore: [], localAfter: [], global: [] });
     };
-  }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable, activeGlobalDrawersIdsStable]);
+  }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
 
   useEffect(() => {
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
