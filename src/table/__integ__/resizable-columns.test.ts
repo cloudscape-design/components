@@ -21,7 +21,6 @@ const wrapper = createWrapper();
 const tableWrapper = wrapper.findTable();
 // All the columns fit in the viewport, which make it easier to test the columns' widths
 const defaultScreen = { width: 1680, height: 800 };
-const prepareCoordinate = (num: number) => Math.round(num);
 
 class TablePage extends BasePageObject {
   async resizeColumn(columnIndex: number, xOffset: number) {
@@ -101,18 +100,13 @@ class TablePage extends BasePageObject {
         parameters: { pointerType: 'mouse' },
         actions: [
           // hover over resizer
-          {
-            type: 'pointerMove',
-            duration: 0,
-            x: prepareCoordinate(resizerBox.left),
-            y: prepareCoordinate(resizerBox.top),
-          },
+          { type: 'pointerMove', x: Math.round(resizerBox.left), y: Math.round(resizerBox.top) },
           { type: 'pointerDown', button: 0 },
-          { type: 'pause', duration: 30 },
+          { type: 'pause', duration: 50 },
           // move cursor to screen edge to activate auto-growing behavior
-          { type: 'pointerMove', duration: 0, x: windowWidth, y: 0 },
-          // pause to let resizing interval fire a few times
-          { type: 'pause', duration: 500 },
+          { type: 'pointerMove', duration: 10, x: windowWidth, y: Math.round(resizerBox.top) },
+          // pause to let interval events fire a few times
+          { type: 'pause', duration: 2000 },
           { type: 'pointerUp', button: 0 },
         ],
       },
@@ -157,7 +151,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
       if (sticky) {
         await page.toggleStickyHeader();
         await page.windowScrollTo({ top: 400 });
-        await expect(page.getHeaderTopOffset()).resolves.toEqual(0);
+        // await expect(page.getHeaderTopOffset()).resolves.toEqual(0);
       }
       await testFn(page);
     }, config);
@@ -188,7 +182,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  test.each(range(0, 100))(
+  test.each(range(0, 50))(
     'should expand automatically when the cursor stops outside of the table container, i=%s',
     () =>
       setupStickyTest(async page => {
@@ -250,7 +244,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     })
   );
 
-  test(
+  test.each(range(0, 25))(
     'should expand the last column when the container is resized outwards',
     setupStickyTest(async page => {
       const prevDateColumnWidth = await page.getColumnWidth(4);

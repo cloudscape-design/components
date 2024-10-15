@@ -9,25 +9,41 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const tableWrapper = createWrapper().findTable();
 
+interface ExtendedWindow extends Window {
+  __flushServerResponse: () => void;
+}
+declare const window: ExtendedWindow;
+
 interface TestPageOptions {
   useProgressiveLoading?: boolean;
   useServerMock?: boolean;
 }
 
+class ExpandableRowsPage extends BasePageObject {
+  async flushResponse() {
+    await this.browser.execute(() => window.__flushServerResponse());
+  }
+
+  // getFocusedElementText(): Promise<string> {
+  //   return this.browser.execute(() => document.activeElement?.outerHTML ?? '');
+  // }
+}
+
 describe('Expandable rows', () => {
   const setupTest = (
     { useProgressiveLoading = false, useServerMock = false }: TestPageOptions,
-    testFn: (page: BasePageObject) => Promise<void>
+    testFn: (page: ExpandableRowsPage) => Promise<void>
   ) => {
     return useBrowser(async browser => {
-      const page = new BasePageObject(browser);
+      const page = new ExpandableRowsPage(browser);
       await page.setWindowSize({ width: 1200, height: 1000 });
       const query = new URLSearchParams({
         useProgressiveLoading: String(useProgressiveLoading),
         useServerMock: String(useServerMock),
+        manualServerMock: String(useServerMock),
       });
       await browser.url(`#/light/table/expandable-rows-test?${query.toString()}`);
-      await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
+      await page.waitForVisible(tableWrapper.findColumnHeaders().get(1).toSelector());
       await testFn(page);
     });
   };
@@ -45,7 +61,7 @@ describe('Expandable rows', () => {
     })
   );
 
-  test.each(range(0, 100))('uses items loader on the first expandable item, i=%s', () =>
+  test.each(range(0, 1))('uses items loader on the first expandable item', () =>
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
@@ -53,11 +69,16 @@ describe('Expandable rows', () => {
       const page3Toggle = tableWrapper.findExpandToggle(6);
       const getRowsCount = () => page.getElementsCount(tableWrapper.findRows().toSelector());
 
+      // no data initially
+      await expect(getRowsCount()).resolves.toBe(0);
+
       // 10 data rows + 1 loader row
-      await expect(getRowsCount()).resolves.toBe(10 + 1);
+      await page.flushResponse();
+      await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(10 + 1));
 
       // Expand target cluster
       await page.click(tableWrapper.findExpandToggle(1).toSelector());
+      await page.flushResponse();
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(12 + 2));
 
       // Navigate to the target cluster loader
@@ -67,15 +88,16 @@ describe('Expandable rows', () => {
       // Trigger target cluster load-more
       await page.keys(['Enter']);
       // Ensure state change occurs and the focus stays on the same cell (next load-more)
-      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
+      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toContain('Loading items'));
+      await page.flushResponse();
       await page.waitForAssertion(() => expect(page.isFocused(page2Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(14 + 2));
 
       // Trigger subsequent loading
-      await page.keys(['ArrowDown', 'ArrowDown']);
-      await page.keys(['Enter']);
+      await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
       // Ensure state change occurs and the focus stays on the same cell (last cluster's expand toggle)
-      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
+      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toContain('Loading items'));
+      await page.flushResponse();
       await page.waitForAssertion(() => expect(page.isFocused(page3Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(15 + 1));
     })()

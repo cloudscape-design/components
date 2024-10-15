@@ -10,6 +10,20 @@ import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 
+interface ExtendedWindow extends Window {
+  __pendingCallbacks: Array<() => void>;
+  __flushServerResponse: () => void;
+}
+declare const window: ExtendedWindow;
+
+window.__pendingCallbacks = [];
+window.__flushServerResponse = () => {
+  for (const cb of window.__pendingCallbacks) {
+    cb();
+  }
+  window.__pendingCallbacks = [];
+};
+
 type DemoContext = React.Context<
   AppContextType<{
     component: string;
@@ -18,6 +32,7 @@ type DemoContext = React.Context<
     virtualScroll: boolean;
     expandToViewport: boolean;
     containerWidth: string;
+    manualServerMock: boolean;
   }>
 >;
 
@@ -207,12 +222,17 @@ function CustomSelect({ expandToViewport, loading, onOpen, onClose, virtualScrol
 
 export default function () {
   const { urlParams } = useContext(AppContext as DemoContext);
-  const { asyncLoading, component, triggerWidth, virtualScroll, expandToViewport, containerWidth } = urlParams;
+  const { asyncLoading, component, triggerWidth, virtualScroll, expandToViewport, containerWidth, manualServerMock } =
+    urlParams;
   const [loading, setLoading] = useState(asyncLoading);
   const onOpen = () => {
     if (asyncLoading) {
       setLoading(true);
-      setTimeout(() => setLoading(false), 500);
+      if (manualServerMock) {
+        window.__pendingCallbacks.push(() => setLoading(false));
+      } else {
+        setTimeout(() => setLoading(false), 500);
+      }
     }
   };
   const onClose = () => setLoading(asyncLoading);

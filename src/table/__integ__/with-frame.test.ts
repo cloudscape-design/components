@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { range } from 'lodash';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -33,7 +35,7 @@ const setupTest = (testFn: (page: TablePage) => Promise<void>) => {
   });
 };
 
-test(
+test.each(range(0, 25))(
   'should expand and shrink a column correctly',
   setupTest(async page => {
     await page.runInsideIframe('#inner-iframe', true, async () => {
