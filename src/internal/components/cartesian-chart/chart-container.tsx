@@ -35,13 +35,12 @@ export const CartesianChartContainer = forwardRef(
   ) => {
     if (fitHeight) {
       return (
-        <div
-          className={clsx(styles['chart-container'], styles['fit-height'], hasFilters && styles['has-filters'])}
-          ref={ref}
-        >
+        <div className={clsx(styles['chart-container'], styles['fit-height'])} ref={ref}>
           {leftAxisLabel}
 
-          <div className={clsx(styles['chart-container-outer'], styles['fit-height'])}>
+          <div
+            className={clsx(styles['chart-container-outer'], styles['fit-height'], hasFilters && styles['has-filters'])}
+          >
             {leftAxisLabelMeasure}
 
             <div className={styles['chart-container-inner']}>
