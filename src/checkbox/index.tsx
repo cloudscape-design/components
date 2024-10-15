@@ -10,7 +10,9 @@ import InternalCheckbox from './internal';
 export { CheckboxProps };
 
 const Checkbox = React.forwardRef(({ ...props }: CheckboxProps, ref: React.Ref<CheckboxProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('Checkbox');
+  const baseComponentProps = useBaseComponent('Checkbox', {
+    props: { readOnly: props.readOnly },
+  });
   return <InternalCheckbox {...props} {...baseComponentProps} ref={ref} __injectAnalyticsComponentMetadata={true} />;
 });
 
