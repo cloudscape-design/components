@@ -14,7 +14,7 @@ export { TilesProps };
 
 const Tiles = React.forwardRef((props: TilesProps, ref: React.Ref<TilesProps.Ref>) => {
   const baseComponentProps = useBaseComponent('Tiles', {
-    props: { columns: props.columns },
+    props: { columns: props.columns, readOnly: props.readOnly },
   });
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTilesComponent = {
     name: 'awsui.Tiles',
