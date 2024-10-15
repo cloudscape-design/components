@@ -185,7 +185,10 @@ describe('FileUpload input', () => {
     Object.defineProperty(input, 'files', { value: [file1, file2] });
     fireEvent(input, new CustomEvent('change', { bubbles: true }));
 
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file1] } }));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file2] } }));
+    // additional equality check, because `expect.objectContaining` above thinks file1 === file2
+    expect((onChange as jest.Mock).mock.lastCall[0].detail.value[0]).toBe(file1);
+    expect((onChange as jest.Mock).mock.lastCall[0].detail.value[1]).toBe(file2);
   });
 
   test('file input fires onChange with only the first file if not multiple', () => {
@@ -195,6 +198,7 @@ describe('FileUpload input', () => {
     fireEvent(input, new CustomEvent('change', { bubbles: true }));
 
     expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1] } }));
+    expect((onChange as jest.Mock).mock.lastCall[0].detail.value[0]).toBe(file1);
   });
 });
 
