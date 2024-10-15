@@ -1042,5 +1042,36 @@ describe('toolbar mode only features', () => {
 
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
     });
+
+    test('dynamically registered drawers with defaultActive: true should open even when there are already open drawer(s) on the page', async () => {
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('security')!.click();
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global1',
+        type: 'global',
+        defaultActive: true,
+      });
+
+      await delay();
+
+      expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global2',
+        type: 'global',
+        defaultActive: true,
+      });
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+      expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+      expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+    });
   });
 });

@@ -63,8 +63,10 @@ function useRuntimeDrawers(
   const onLocalDrawerChangeStable = useStableCallback(onActiveDrawerChange);
   const onGlobalDrawersChangeStable = useStableCallback(onActiveGlobalDrawersChange);
 
-  const drawersWereOpenRef = useRef(false);
-  drawersWereOpenRef.current = drawersWereOpenRef.current || !!activeDrawerId || !!activeGlobalDrawersIds.length;
+  const localDrawerWasOpenRef = useRef(false);
+  localDrawerWasOpenRef.current = localDrawerWasOpenRef.current || !!activeDrawerId;
+  const activeGlobalDrawersIdsStable = useRef<Array<string>>([]);
+  activeGlobalDrawersIdsStable.current = activeGlobalDrawersIds;
 
   useEffect(() => {
     if (disableRuntimeDrawers) {
@@ -74,23 +76,25 @@ function useRuntimeDrawers(
       const localDrawers = drawers.filter(drawer => drawer.type !== 'global');
       const globalDrawers = drawers.filter(drawer => drawer.type === 'global');
       setRuntimeDrawers(convertRuntimeDrawers(localDrawers, globalDrawers));
-      if (!drawersWereOpenRef.current) {
+      if (!localDrawerWasOpenRef.current) {
         const defaultActiveLocalDrawer = sortByPriority(localDrawers).find(drawer => drawer.defaultActive);
         if (defaultActiveLocalDrawer) {
           onLocalDrawerChangeStable(defaultActiveLocalDrawer.id);
         }
-
-        const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(drawer => drawer.defaultActive);
-        defaultActiveGlobalDrawers.forEach(drawer => {
-          onGlobalDrawersChangeStable(drawer.id);
-        });
       }
+
+      const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(
+        drawer => !activeGlobalDrawersIdsStable.current.includes(drawer.id) && drawer.defaultActive
+      );
+      defaultActiveGlobalDrawers.forEach(drawer => {
+        onGlobalDrawersChangeStable(drawer.id);
+      });
     });
     return () => {
       unsubscribe();
       setRuntimeDrawers({ localBefore: [], localAfter: [], global: [] });
     };
-  }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
+  }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable, activeGlobalDrawersIdsStable]);
 
   useEffect(() => {
     const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
