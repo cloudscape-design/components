@@ -72,7 +72,8 @@ describe('Expandable rows', () => {
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(14 + 2));
 
       // Trigger subsequent loading
-      await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
+      await page.keys(['ArrowDown', 'ArrowDown']);
+      await page.keys(['Enter']);
       // Ensure state change occurs and the focus stays on the same cell (last cluster's expand toggle)
       await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
       await page.waitForAssertion(() => expect(page.isFocused(page3Toggle.toSelector())).resolves.toBe(true));

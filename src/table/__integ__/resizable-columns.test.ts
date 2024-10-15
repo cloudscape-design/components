@@ -195,8 +195,10 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
         const columnSelector = tableWrapper.findColumnHeaders().get(4).toSelector();
         const { left: originalLeft } = await page.getBoundingBox(columnSelector);
         await page.resizeBeyondTableWidth(4);
-        const { left: newLeft } = await page.getBoundingBox(columnSelector);
-        expect(newLeft).toBeLessThan(originalLeft);
+        await page.waitForAssertion(async () => {
+          const { left: newLeft } = await page.getBoundingBox(columnSelector);
+          expect(newLeft).toBeLessThan(originalLeft);
+        });
       })()
   );
 
