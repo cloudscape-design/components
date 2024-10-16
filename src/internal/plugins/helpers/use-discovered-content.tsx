@@ -3,15 +3,12 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import {
-  AlertFlashContentController,
+  AlertFlashContentApiInternal,
   AlertFlashContentResult,
   ReplacementType,
 } from '../controllers/alert-flash-content';
 
-export function createUseDiscoveredContent(
-  componentName: string,
-  onContentRegistered: AlertFlashContentController['onContentRegistered']
-) {
+export function createUseDiscoveredContent(componentName: string, controller: AlertFlashContentApiInternal) {
   return function useDiscoveredContent({
     type,
     header,
@@ -25,14 +22,21 @@ export function createUseDiscoveredContent(
     const contentRef = useRef<HTMLDivElement>(null);
     const replacementHeaderRef = useRef<HTMLDivElement>(null);
     const replacementContentRef = useRef<HTMLDivElement>(null);
-    const [headerReplacementType, setFoundHeaderReplacement] = useState<ReplacementType>('original');
-    const [contentReplacementType, setFoundContentReplacement] = useState<ReplacementType>('original');
+    const [initialState] = useState(() =>
+      controller.initialSyncRender({
+        type,
+        header,
+        content: children,
+      })
+    );
+    const [headerReplacementType, setFoundHeaderReplacement] = useState<ReplacementType>(initialState.header);
+    const [contentReplacementType, setFoundContentReplacement] = useState<ReplacementType>(initialState.content);
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
 
     useEffect(() => {
       const context = { type, headerRef, contentRef };
 
-      return onContentRegistered(provider => {
+      return controller.onContentRegistered(provider => {
         let mounted = true;
 
         function checkMounted(methodName: string) {

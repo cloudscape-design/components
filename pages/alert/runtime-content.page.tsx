@@ -60,6 +60,13 @@ awsuiPlugins.alertContent.registerContentReplacer({
       },
     };
   },
+  initialCheck(context) {
+    const found = context.type === 'error' && context.contentText?.match('Access denied');
+    return {
+      header: found ? 'remove' : 'original',
+      content: found ? 'replaced' : 'original',
+    };
+  },
 });
 
 const alertTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
@@ -106,7 +113,7 @@ export default function () {
         <ScreenshotArea gutters={false}>
           {hidden ? null : (
             <SpaceBetween size="m">
-              <Alert
+              {/* <Alert
                 type={type}
                 statusIconAriaLabel={type}
                 dismissAriaLabel="Dismiss"
@@ -114,7 +121,7 @@ export default function () {
                 action={<Button>Action</Button>}
               >
                 {!contentSwapped ? content1 : content2}
-              </Alert>
+              </Alert> */}
 
               <Alert
                 type={type}
