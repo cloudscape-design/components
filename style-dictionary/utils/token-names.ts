@@ -565,6 +565,7 @@ export type BordersTokenName =
   | 'borderRadiusTabsFocusRing'
   | 'borderRadiusTiles'
   | 'borderRadiusToken'
+  | 'borderRadiusChatBubble'
   | 'borderRadiusTutorialPanelItem'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'

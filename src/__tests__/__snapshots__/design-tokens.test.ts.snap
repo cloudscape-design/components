@@ -21,6 +21,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -2454,6 +2458,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
+          "$value": "2px",
+        },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
           "$value": "2px",
         },
         "border-radius-container": {
@@ -4891,6 +4899,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -7324,6 +7336,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
+          "$value": "2px",
+        },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
           "$value": "2px",
         },
         "border-radius-container": {
@@ -9761,6 +9777,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -12196,6 +12216,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -14629,6 +14653,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-radius-calendar-day-focus-ring": {
       "$description": "The border radius of the focused day in date picker and date range picker.",
+      "$value": "2px",
+    },
+    "border-radius-chat-bubble": {
+      "$description": "The border radius of chat bubbles.",
       "$value": "2px",
     },
     "border-radius-container": {
@@ -17071,6 +17099,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -19505,6 +19537,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
+        },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -21941,6 +21977,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -24375,6 +24415,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
+        },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -26811,6 +26855,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -29245,6 +29293,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-calendar-day-focus-ring": {
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
+        },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -31681,6 +31733,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
+        "border-radius-chat-bubble": {
+          "$description": "The border radius of chat bubbles.",
+          "$value": "2px",
+        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -34115,6 +34171,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-radius-calendar-day-focus-ring": {
       "$description": "The border radius of the focused day in date picker and date range picker.",
       "$value": "3px",
+    },
+    "border-radius-chat-bubble": {
+      "$description": "The border radius of chat bubbles.",
+      "$value": "2px",
     },
     "border-radius-container": {
       "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
