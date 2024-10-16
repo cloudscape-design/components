@@ -1075,7 +1075,7 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
       });
 
-      test('should not open if there are already maximum global drawers opened on the page', async () => {
+      test('should not open if there are already global drawers opened by user action on the page', async () => {
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
         wrapper.findDrawerTriggerById('security')!.click();
@@ -1085,11 +1085,11 @@ describe('toolbar mode only features', () => {
           ...drawerDefaults,
           id: 'global1',
           type: 'global',
-          defaultActive: true,
         });
 
         await delay();
 
+        wrapper.findDrawerTriggerById('global1')!.click();
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
 
         awsuiPlugins.appLayout.registerDrawer({
@@ -1103,7 +1103,7 @@ describe('toolbar mode only features', () => {
 
         expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
-        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')).toBeFalsy();
       });
 
       test('should not open if the maximum number (2) of global drawers is already open on the page', async () => {
