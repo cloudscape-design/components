@@ -124,6 +124,7 @@ export const Flash = React.forwardRef(
     const contentRefObject = useRef<HTMLDivElement>(null);
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
+      initialHidden,
       headerReplacementType,
       contentReplacementType,
       headerRef: headerRefContent,
@@ -174,7 +175,8 @@ export const Flash = React.forwardRef(
             [styles.exiting]: transitionState === 'exiting',
             [styles.exited]: transitionState === 'exited',
           },
-          getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar')
+          getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
+          initialHidden && styles['initial-hidden']
         )}
         {...analyticsAttributes}
       >

@@ -63,7 +63,15 @@ awsuiPlugins.alertContent.registerContentReplacer({
     };
   },
   initialCheck(context) {
-    return context.type === 'error' && !!context.contentText?.match('Access denied');
+    return (
+      context.type === 'error' &&
+      !!(
+        context.content &&
+        typeof context.content === 'object' &&
+        'props' in context.content &&
+        context.content.props.children?.match('Access denied')
+      )
+    );
   },
 });
 
