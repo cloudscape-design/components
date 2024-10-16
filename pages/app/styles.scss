@@ -30,3 +30,11 @@ body {
     }
   }
 }
+
+/*
+ This sets a background color to the page's container
+ to reveal the effects of negative z-index.
+*/
+:global(#app) {
+  background-color: tokens.$color-background-container-content;
+}
