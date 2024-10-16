@@ -22,6 +22,7 @@ export default function ExpandableSection({ variant = 'default', ...props }: Exp
       },
       metadata: {
         hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+        hasHeaderActions: Boolean(props.headerActions),
       },
     },
     analyticsMetadata

@@ -10,6 +10,11 @@
   @include styles.styles-reset;
 }
 
+.embedded {
+  @include styles.styles-reset;
+  display: contents;
+}
+
 .tokens {
   margin-block-start: awsui.$space-scaled-xs;
 }

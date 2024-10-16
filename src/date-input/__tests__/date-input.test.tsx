@@ -3,7 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import DateInput, { DateInputProps } from '../../../lib/components/date-input';
 import createWrapper from '../../../lib/components/test-utils/dom';

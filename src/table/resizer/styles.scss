@@ -68,8 +68,10 @@ th:not(:last-child) > .divider {
   }
   &.has-focus {
     @include focus-visible.when-visible-unfocused {
-      position: absolute;
       @include styles.focus-highlight(calc(#{awsui.$space-table-header-focus-outline-gutter} - 2px));
+      & {
+        position: absolute;
+      }
     }
   }
 }

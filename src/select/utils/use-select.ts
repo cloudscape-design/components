@@ -30,11 +30,12 @@ interface UseSelectProps {
   options: ReadonlyArray<DropdownOption>;
   filteringType: string;
   keepOpen?: boolean;
+  embedded?: boolean;
   onBlur?: NonCancelableEventHandler;
   onFocus?: NonCancelableEventHandler;
   externalRef: React.Ref<any>;
   fireLoadItems: (filteringText: string) => void;
-  setFilteringValue: (filteringText: string) => void;
+  setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
 }
@@ -52,6 +53,7 @@ export function useSelect({
   onFocus,
   externalRef,
   keepOpen,
+  embedded,
   fireLoadItems,
   setFilteringValue,
   useInteractiveGroups = false,
@@ -86,10 +88,11 @@ export function useSelect({
   ] = useHighlightedOption({ options, isHighlightable });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
+    defaultOpen: embedded,
     onOpen: () => fireLoadItems(''),
     onClose: () => {
       resetHighlightWithKeyboard();
-      setFilteringValue('');
+      setFilteringValue?.('');
     },
   });
 
@@ -186,7 +189,7 @@ export function useSelect({
   };
 
   const getFilterProps = (): Partial<FilterProps> => {
-    if (!hasFilter) {
+    if (!hasFilter || !setFilteringValue) {
       return {};
     }
 
@@ -225,10 +228,15 @@ export function useSelect({
       },
       statusType,
     };
-    if (!hasFilter) {
+    if (!hasFilter || embedded) {
       menuProps.onKeyDown = activeKeyDownHandler;
       menuProps.nativeAttributes = {
         'aria-activedescendant': highlightedOptionId,
+      };
+    }
+    if (embedded) {
+      menuProps.onFocus = () => {
+        goHomeWithKeyboard();
       };
     }
     return menuProps;
@@ -238,7 +246,7 @@ export function useSelect({
     const hasSelected = totalSelected > 0;
     const allSelected = totalSelected === option.options.length;
     return {
-      selected: hasSelected && allSelected,
+      selected: hasSelected && allSelected && useInteractiveGroups,
       indeterminate: hasSelected && !allSelected,
     };
   };
@@ -252,7 +260,6 @@ export function useSelect({
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
         : __selectedOptions.indexOf(options[index + 1]) > -1;
-
     const optionProps: any = {
       key: index,
       option,

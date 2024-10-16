@@ -96,3 +96,22 @@ test('should set isStuck to false when headerRef is null', () => {
 
   expect(result.current.isStuck).toBe(false);
 });
+
+test('should not react to synthetic window resize events', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 200 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('resize'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
+});

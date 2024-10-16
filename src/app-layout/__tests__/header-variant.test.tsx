@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import AppLayout from '../../../lib/components/app-layout';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
-import { renderComponent } from './utils';
+import { describeEachAppLayout, renderComponent } from './utils';
 
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
+import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
@@ -18,63 +19,74 @@ jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(false),
 }));
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  isMotionDisabled: jest.fn().mockReturnValue(true),
-  useDensityMode: jest.fn().mockReturnValue('comfortable'),
-  useReducedMotion: jest.fn().mockReturnValue(true),
-}));
+const hasHighContrastContext = (element: HTMLElement) =>
+  findUpUntil(element, el => el.classList.contains(highContrastHeaderClassName));
 
-beforeEach(() => {
-  (useVisualRefresh as jest.Mock).mockReturnValue(true);
+describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop'] }, ({ theme }) => {
+  describe('headerVariant', () => {
+    test('default', () => {
+      const { wrapper } = renderComponent(<AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" />);
+      expect(hasHighContrastContext(wrapper.findNotifications()!.getElement())).toBeFalsy();
+      expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeFalsy();
+      if (theme === 'refresh') {
+        expect(
+          hasHighContrastContext(wrapper.findByClassName(visualRefreshStyles.background)!.getElement())
+        ).toBeFalsy();
+      } else {
+        expect(
+          hasHighContrastContext(wrapper.findByClassName(toolbarSkeletonStyles['toolbar-container'])!.getElement())
+        ).toBeFalsy();
+      }
+    });
+
+    test('high-contrast', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" headerVariant="high-contrast" />
+      );
+      expect(hasHighContrastContext(wrapper.findNotifications()!.getElement())).toBeTruthy();
+      if (theme === 'refresh') {
+        // For refresh toolbar, high-contrast header is not implemented in contentHeader slot, or in conjunction with ContentLayout
+        expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeTruthy();
+        expect(
+          hasHighContrastContext(wrapper.findByClassName(visualRefreshStyles.background)!.getElement())
+        ).toBeTruthy();
+      } else {
+        // the toolbar should not have the high-contrast context
+        expect(hasHighContrastContext(wrapper.findBreadcrumbs()!.getElement())).toBeFalsy();
+        expect(
+          hasHighContrastContext(wrapper.findByClassName(toolbarSkeletonStyles['toolbar-container'])!.getElement())
+        ).toBeFalsy();
+      }
+    });
+  });
 });
-afterEach(() => {
-  (useVisualRefresh as jest.Mock).mockReset();
-});
-describe('headerVariant - desktop', () => {
-  test('default', () => {
-    const { wrapper } = renderComponent(<AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" />);
-    expect(wrapper.findNotifications()!.getElement()).not.toHaveClass(highContrastHeaderClassName);
-    expect(wrapper.findBreadcrumbs()!.getElement()).not.toHaveClass(highContrastHeaderClassName);
-    expect(wrapper.findByClassName(visualRefreshStyles.background)!.getElement()).not.toHaveClass(
-      highContrastHeaderClassName
-    );
-  });
 
-  test('high-contrast', () => {
-    const { wrapper } = renderComponent(
-      <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" headerVariant="high-contrast" />
-    );
-    expect(wrapper.findNotifications()!.getElement()).toHaveClass(highContrastHeaderClassName);
-    expect(wrapper.findBreadcrumbs()!.getElement()).toHaveClass(highContrastHeaderClassName);
-    expect(wrapper.findByClassName(visualRefreshStyles.background)!.getElement()).toHaveClass(
-      highContrastHeaderClassName
-    );
-  });
-});
+describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['mobile'] }, ({ theme }) => {
+  describe('headerVariant', () => {
+    test('default', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" content="aaa" />
+      );
+      if (theme === 'refresh') {
+        expect(wrapper.findByClassName(visualRefreshStyles['mobile-toolbar'])!.getElement()).not.toHaveClass(
+          highContrastHeaderClassName
+        );
+      }
+    });
 
-describe('headerVariant - mobile', () => {
-  beforeEach(() => {
-    (useMobile as jest.Mock).mockReturnValue(true);
-  });
-  afterEach(() => {
-    (useMobile as jest.Mock).mockReset();
-  });
-  test('default', () => {
-    const { wrapper } = renderComponent(
-      <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" content="aaa" />
-    );
-    expect(wrapper.findByClassName(visualRefreshStyles['mobile-toolbar'])!.getElement()).not.toHaveClass(
-      highContrastHeaderClassName
-    );
-  });
-
-  test('high-contrast', () => {
-    const { wrapper } = renderComponent(
-      <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" headerVariant="high-contrast" />
-    );
-    expect(wrapper.findByClassName(visualRefreshStyles['mobile-toolbar'])!.getElement()).toHaveClass(
-      highContrastHeaderClassName
-    );
+    test('high-contrast', () => {
+      const { wrapper } = renderComponent(
+        <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" headerVariant="high-contrast" />
+      );
+      if (theme === 'refresh') {
+        expect(wrapper.findByClassName(visualRefreshStyles['mobile-toolbar'])!.getElement()).toHaveClass(
+          highContrastHeaderClassName
+        );
+      } else {
+        expect(
+          hasHighContrastContext(wrapper.findByClassName(toolbarSkeletonStyles['toolbar-container'])!.getElement())
+        ).toBeFalsy();
+      }
+    });
   });
 });

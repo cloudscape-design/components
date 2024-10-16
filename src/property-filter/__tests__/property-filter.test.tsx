@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import PropertyFilter from '../../../lib/components/property-filter';
@@ -12,7 +12,6 @@ import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
-  Ref,
 } from '../../../lib/components/property-filter/interfaces';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
@@ -88,7 +87,7 @@ const filteringOptions: readonly FilteringOption[] = [
 
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
+const renderComponent = (props?: Partial<PropertyFilterProps>) => {
   const { container } = render(<PropertyFilter {...defaultProps} {...props} />);
   return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
 };
@@ -294,6 +293,31 @@ describe('property filter parts', () => {
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['Stopped', 'Stopping', 'Running']);
+    });
+
+    test('calls onLoadItem when opening editor value autosuggest', () => {
+      const onLoadItems = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems,
+        filteringOptions: [],
+        filteringStatusType: 'pending',
+        query: { operation: 'and', tokens: [{ propertyKey: 'state', operator: ':', value: 'Sto' }] },
+      });
+
+      const [contentWrapper] = openTokenEditor(wrapper);
+      const valueSelectWrapper = findValueSelector(contentWrapper);
+      valueSelectWrapper.focus();
+      expect(onLoadItems).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            filteringProperty: expect.objectContaining({ key: 'state' }),
+            filteringOperator: ':',
+            filteringText: 'Sto',
+            firstPage: true,
+            samePage: false,
+          },
+        })
+      );
     });
   });
 

@@ -87,19 +87,26 @@ export const useStickyHeader = (
 
   // "stuck" state, when the header has moved from its original posititon has a
   // box-shadow, applied here by a "header-stuck" className
-  const checkIfStuck = useCallback(() => {
-    if (rootRef.current && headerRef.current) {
-      const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
-      const rootTop = rootRef.current.getBoundingClientRect().top + rootTopBorderWidth;
-      const headerTop = headerRef.current.getBoundingClientRect().top;
-
-      if (rootTop < headerTop) {
-        setIsStuck(true);
-      } else {
-        setIsStuck(false);
+  const checkIfStuck = useCallback(
+    ({ isTrusted, target, type }) => {
+      if (type === 'resize' && target === window && !isTrusted) {
+        // The window size didn't actually change, it was a synthetic event
+        return;
       }
-    }
-  }, [rootRef, headerRef]);
+      if (rootRef.current && headerRef.current) {
+        const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
+        const rootTop = rootRef.current.getBoundingClientRect().top + rootTopBorderWidth;
+        const headerTop = headerRef.current.getBoundingClientRect().top;
+
+        if (rootTop < headerTop) {
+          setIsStuck(true);
+        } else {
+          setIsStuck(false);
+        }
+      }
+    },
+    [rootRef, headerRef]
+  );
   useEffect(() => {
     if (isSticky) {
       window.addEventListener('scroll', checkIfStuck, true);

@@ -24,7 +24,7 @@ interface TableThElementProps {
   colIndex: number;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
-  cellRef?: React.RefCallback<HTMLElement>;
+  cellRef?: React.RefCallback<HTMLElement> | null;
   tableRole: TableRole;
   children: React.ReactNode;
 }

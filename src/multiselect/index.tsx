@@ -36,6 +36,7 @@ const Multiselect = React.forwardRef(
         keepOpen,
         tokenLimit: restProps.tokenLimit,
         virtualScroll: restProps.virtualScroll,
+        readOnly: restProps.readOnly,
       },
     });
 

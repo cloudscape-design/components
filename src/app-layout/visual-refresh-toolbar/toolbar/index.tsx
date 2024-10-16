@@ -95,8 +95,6 @@ export function AppLayoutToolbarImplementation({
     setToolbarState,
     setToolbarHeight,
     globalDrawersFocusControl,
-    toolsOpen,
-    onToolsToggle,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -221,8 +219,6 @@ export function AppLayoutToolbarImplementation({
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
-              toolsOpen={toolsOpen}
-              onToolsToggle={onToolsToggle}
             />
           </div>
         )}

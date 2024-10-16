@@ -46,11 +46,11 @@ type UseMultiselectOptions = SomeRequired<
       ariaLabelId: string;
       footerId: string;
       filteringValue: string;
-      setFilteringValue: (value: string) => void;
+      setFilteringValue?: (value: string) => void;
       externalRef: React.Ref<MultiselectProps.Ref>;
     },
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen'
->;
+> & { embedded?: boolean };
 
 export function useMultiselect({
   options,
@@ -77,6 +77,7 @@ export function useMultiselect({
   filteringValue,
   setFilteringValue,
   externalRef,
+  embedded,
   ...restProps
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
@@ -167,6 +168,7 @@ export function useMultiselect({
     setFilteringValue,
     useInteractiveGroups,
     statusType,
+    embedded,
   });
 
   const wrapperOnKeyDown = useNativeSearch({
@@ -260,6 +262,7 @@ export function useMultiselect({
       onLoadMore: handleLoadMore,
       ariaLabelledby: joinStrings(ariaLabelId, controlId),
       ariaDescribedby: dropdownStatus.content ? footerId : undefined,
+      embedded,
     }),
     getOptionProps,
     getTokenProps: () => ({ onDismiss: tokenOnDismiss }),

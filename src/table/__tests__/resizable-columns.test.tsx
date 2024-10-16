@@ -6,7 +6,7 @@ import times from 'lodash/times';
 
 import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
@@ -449,6 +449,9 @@ test('should set last column width to "auto" when container width exceeds total 
   const callbacks: ((entry: ContainerQueryEntry) => void)[] = [];
   const fireCallbacks = (entry: ContainerQueryEntry) => callbacks.forEach(cb => cb(entry));
   jest.mocked(useResizeObserver).mockImplementation((_target, cb) => {
+    if (!_target || (typeof _target === 'function' && !_target())) {
+      return;
+    }
     // The table uses more than one resize observer.
     // The callback must be triggered for all to ensure the expected one is targeted as well.
     callbacks.push(cb);
