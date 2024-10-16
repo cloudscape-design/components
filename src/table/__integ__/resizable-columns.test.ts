@@ -91,6 +91,7 @@ class TablePage extends BasePageObject {
   async resizeBeyondTableWidth(columnIndex: number) {
     const resizerSelector = tableWrapper.findColumnResizer(columnIndex).toSelector();
     const resizerBox = await this.getBoundingBox(resizerSelector);
+    const { width: windowWidth } = await this.browser.getWindowSize();
     await this.browser.performActions([
       {
         type: 'pointer',
@@ -102,7 +103,7 @@ class TablePage extends BasePageObject {
           { type: 'pointerDown', button: 0 },
           { type: 'pause', duration: 50 },
           // move cursor to screen edge to activate auto-growing behavior
-          { type: 'pointerMove', duration: 10, x: Math.round(resizerBox.left) + 15, y: Math.round(resizerBox.top) },
+          { type: 'pointerMove', duration: 10, x: windowWidth, y: Math.round(resizerBox.top) },
           // pause to let resizing interval fire a few times
           { type: 'pause', duration: 2000 },
           { type: 'pointerUp', button: 0 },
