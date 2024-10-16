@@ -1145,6 +1145,7 @@ describe('toolbar mode only features', () => {
         expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
         expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
     });
   });
