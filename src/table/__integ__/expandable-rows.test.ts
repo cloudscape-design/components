@@ -1,9 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import { range } from 'lodash';
+
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { AsyncResponsePage } from '../../__integ__/page-objects/async-response-page';
 
 const tableWrapper = createWrapper().findTable();
 
@@ -15,17 +17,18 @@ interface TestPageOptions {
 describe('Expandable rows', () => {
   const setupTest = (
     { useProgressiveLoading = false, useServerMock = false }: TestPageOptions,
-    testFn: (page: BasePageObject) => Promise<void>
+    testFn: (page: AsyncResponsePage) => Promise<void>
   ) => {
     return useBrowser(async browser => {
-      const page = new BasePageObject(browser);
+      const page = new AsyncResponsePage(browser);
       await page.setWindowSize({ width: 1200, height: 1000 });
       const query = new URLSearchParams({
         useProgressiveLoading: String(useProgressiveLoading),
         useServerMock: String(useServerMock),
+        manualServerMock: String(useServerMock),
       });
       await browser.url(`#/light/table/expandable-rows-test?${query.toString()}`);
-      await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
+      await page.waitForVisible(tableWrapper.findColumnHeaders().get(1).toSelector());
       await testFn(page);
     });
   };
@@ -43,8 +46,7 @@ describe('Expandable rows', () => {
     })
   );
 
-  test(
-    'uses items loader on the first expandable item',
+  test.each(range(0, 100))('uses items loader on the first expandable item, i=%s', () =>
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
@@ -52,11 +54,16 @@ describe('Expandable rows', () => {
       const page3Toggle = tableWrapper.findExpandToggle(6);
       const getRowsCount = () => page.getElementsCount(tableWrapper.findRows().toSelector());
 
+      // no data initially
+      await expect(getRowsCount()).resolves.toBe(0);
+
       // 10 data rows + 1 loader row
-      await expect(getRowsCount()).resolves.toBe(10 + 1);
+      await page.flushResponse();
+      await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(10 + 1));
 
       // Expand target cluster
       await page.click(tableWrapper.findExpandToggle(1).toSelector());
+      await page.flushResponse();
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(12 + 2));
 
       // Navigate to the target cluster loader
@@ -66,16 +73,18 @@ describe('Expandable rows', () => {
       // Trigger target cluster load-more
       await page.keys(['Enter']);
       // Ensure state change occurs and the focus stays on the same cell (next load-more)
-      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
+      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toContain('Loading items'));
+      await page.flushResponse();
       await page.waitForAssertion(() => expect(page.isFocused(page2Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(14 + 2));
 
       // Trigger subsequent loading
       await page.keys(['ArrowDown', 'ArrowDown', 'Enter']);
       // Ensure state change occurs and the focus stays on the same cell (last cluster's expand toggle)
-      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toBe('Loading items'));
+      await page.waitForAssertion(() => expect(page.getFocusedElementText()).resolves.toContain('Loading items'));
+      await page.flushResponse();
       await page.waitForAssertion(() => expect(page.isFocused(page3Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(15 + 1));
-    })
+    })()
   );
 });

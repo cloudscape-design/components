@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { isEqual } from 'lodash';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
@@ -31,10 +31,13 @@ import messages from '~components/i18n/messages/all.en';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import { WindowWithFlushResponse } from '../common/flush-response';
 import { ariaLabels, getHeaderCounterText, Instance } from './expandable-rows/common';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 import { allInstances } from './expandable-rows/expandable-rows-data';
 import { EmptyState, getMatchesCountText, renderAriaLive } from './shared-configs';
+
+declare const window: WindowWithFlushResponse;
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
@@ -51,6 +54,7 @@ type PageContext = React.Context<
     useProgressiveLoading: boolean;
     useServerMock: boolean;
     emulateServerError: boolean;
+    manualServerMock: boolean;
   }>
 >;
 
@@ -195,6 +199,18 @@ const NESTED_PAGE_SIZE = 2;
 function useTableData() {
   const settings = usePageSettings();
   const delay = settings.useServerMock ? SERVER_DELAY : 0;
+  const getServerResponse = useCallback(
+    (cb: () => void) => {
+      if (settings.manualServerMock) {
+        window.__pendingCallbacks.push(cb);
+        return () => {};
+      } else {
+        const timerRef = setTimeout(cb, delay);
+        return () => clearTimeout(timerRef);
+      }
+    },
+    [delay, settings.manualServerMock]
+  );
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
@@ -204,13 +220,13 @@ function useTableData() {
   useEffect(() => {
     setLoading(true);
     setError(false);
-    setTimeout(() => {
+    return getServerResponse(() => {
       setReadyInstances(allInstances);
       setLoading(false);
       setError(settings.emulateServerError);
-    }, delay);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay, setLoading, setError, setReadyInstances]);
+  }, [getServerResponse, setLoading, setError, setReadyInstances]);
 
   const collectionResult = useCollection(readyInstances, {
     pagination: settings.usePagination ? { pageSize: ROOT_PAGE_SIZE } : undefined,
@@ -245,14 +261,13 @@ function useTableData() {
   useEffect(() => {
     setLoading(true);
     setError(false);
-    const timeoutId = setTimeout(() => {
+    return getServerResponse(() => {
       setLoading(false);
       setReadyItems(memoItems);
       setError(settings.emulateServerError);
-    }, delay);
-    return () => clearTimeout(timeoutId);
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [delay, memoItems, setLoading, setError, setReadyItems]);
+  }, [getServerResponse, memoItems, setLoading, setError, setReadyItems]);
 
   // Decorate path options to only show the last node and not the full path.
   collectionResult.propertyFilterProps.filteringOptions = collectionResult.propertyFilterProps.filteringOptions.map(
@@ -277,7 +292,7 @@ function useTableData() {
   const loadItems = (id: string) => {
     setLoadingState(nextLoading(id));
     if (delay) {
-      setTimeout(() => setLoadingState(settings.emulateServerError ? nextError(id) : nextPending(id)), delay);
+      getServerResponse(() => setLoadingState(settings.emulateServerError ? nextError(id) : nextPending(id)));
     } else {
       setLoadingState(nextPending(id));
     }
@@ -355,6 +370,7 @@ function usePageSettings() {
     useProgressiveLoading: urlParams.useProgressiveLoading ?? true,
     groupResources: urlParams.groupResources ?? true,
     useServerMock: urlParams.useServerMock ?? false,
+    manualServerMock: urlParams.manualServerMock ?? false,
     emulateServerError: urlParams.emulateServerError ?? false,
     setUrlParams,
   };
