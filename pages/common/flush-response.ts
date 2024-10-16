@@ -7,10 +7,12 @@ export interface WindowWithFlushResponse extends Window {
 }
 declare const window: WindowWithFlushResponse;
 
-window.__pendingCallbacks = [];
-window.__flushServerResponse = () => {
-  for (const cb of window.__pendingCallbacks) {
-    cb();
-  }
+export function enhanceWindow() {
   window.__pendingCallbacks = [];
-};
+  window.__flushServerResponse = () => {
+    for (const cb of window.__pendingCallbacks) {
+      cb();
+    }
+    window.__pendingCallbacks = [];
+  };
+}

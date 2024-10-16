@@ -9,9 +9,10 @@ import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import { WindowWithFlushResponse } from '../common/flush-response';
+import { enhanceWindow, WindowWithFlushResponse } from '../common/flush-response';
 
 declare const window: WindowWithFlushResponse;
+enhanceWindow();
 
 type DemoContext = React.Context<
   AppContextType<{
