@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { ReactNode } from 'react';
-import flattenChildren from 'react-keyed-flatten-children';
 
 import debounce from '../../debounce';
 
@@ -17,16 +16,10 @@ export interface AlertFlashContentContext {
   contentRef: RefShim<HTMLElement>;
 }
 
-interface AlertFlashContentInitialContextRaw {
+interface AlertFlashContentInitialContext {
   type: string;
   header?: ReactNode;
   content?: ReactNode;
-}
-
-export interface AlertFlashContentInitialContext {
-  type: string;
-  headerText?: string;
-  contentText?: string;
 }
 
 export type ReplacementType = 'original' | 'remove' | 'replaced';
@@ -60,14 +53,8 @@ export interface AlertFlashContentApiPublic {
 export interface AlertFlashContentApiInternal {
   clearRegisteredReplacer(): void;
   onContentRegistered(listener: AlertFlashContentRegistrationListener): () => void;
-  initialCheck(context: AlertFlashContentInitialContextRaw): boolean;
+  initialCheck(context: AlertFlashContentInitialContext): boolean;
 }
-
-const nodeAsString = (node: ReactNode) =>
-  flattenChildren(node)
-    .map(node => (typeof node === 'object' ? node.props.children : node))
-    .filter(node => typeof node === 'string')
-    .join('');
 
 export class AlertFlashContentController {
   #listeners: Array<AlertFlashContentRegistrationListener> = [];
@@ -102,14 +89,9 @@ export class AlertFlashContentController {
     this.#provider = undefined;
   };
 
-  initialCheck = (context: AlertFlashContentInitialContextRaw): boolean => {
+  initialCheck = (context: AlertFlashContentInitialContext): boolean => {
     if (this.#provider?.initialCheck) {
-      const processedContext: AlertFlashContentInitialContext = {
-        type: context.type,
-        headerText: nodeAsString(context.header),
-        contentText: nodeAsString(context.content),
-      };
-      return this.#provider.initialCheck(processedContext);
+      return this.#provider.initialCheck(context);
     }
     return false;
   };

@@ -52,6 +52,11 @@
   }
 }
 
+.initial-hidden {
+  overflow: hidden;
+  block-size: 0;
+}
+
 .flash-list {
   list-style: none;
   padding-block: 0;
