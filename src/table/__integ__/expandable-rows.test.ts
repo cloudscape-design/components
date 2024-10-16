@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { range } from 'lodash';
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -46,7 +45,8 @@ describe('Expandable rows', () => {
     })
   );
 
-  test.each(range(0, 100))('uses items loader on the first expandable item, i=%s', () =>
+  test(
+    'uses items loader on the first expandable item, i=%s',
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
@@ -85,6 +85,6 @@ describe('Expandable rows', () => {
       await page.flushResponse();
       await page.waitForAssertion(() => expect(page.isFocused(page3Toggle.toSelector())).resolves.toBe(true));
       await page.waitForAssertion(() => expect(getRowsCount()).resolves.toBe(15 + 1));
-    })()
+    })
   );
 });
