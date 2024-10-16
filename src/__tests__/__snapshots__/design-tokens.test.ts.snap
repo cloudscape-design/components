@@ -1812,14 +1812,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
@@ -4251,14 +4251,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
@@ -6690,14 +6690,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
@@ -9129,15 +9129,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
+            "dark": "#c6c6cd",
+            "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
+            "dark": "#c6c6cd",
+            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -11568,14 +11568,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#16191f",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#16191f",
+            "dark": "#c6c6cd",
             "light": "#16191f",
           },
         },
@@ -14007,15 +14007,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
+            "dark": "#c6c6cd",
+            "light": "#c6c6cd",
           },
         },
         "color-text-counter": {
@@ -16446,14 +16446,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-text-chat-bubble-incoming": {
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
-        "dark": "#d5dbdb",
+        "dark": "#c6c6cd",
         "light": "#16191f",
       },
     },
     "color-text-chat-bubble-outgoing": {
       "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
-        "dark": "#d5dbdb",
+        "dark": "#c6c6cd",
         "light": "#16191f",
       },
     },
@@ -26207,15 +26207,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
+            "dark": "#c6c6cd",
+            "light": "#0f141a",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
+            "dark": "#c6c6cd",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": {
@@ -28646,14 +28646,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#0f141a",
+            "dark": "#c6c6cd",
             "light": "#0f141a",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#0f141a",
+            "dark": "#c6c6cd",
             "light": "#0f141a",
           },
         },
