@@ -146,15 +146,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -1805,15 +1805,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#16191f",
@@ -2581,15 +2581,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -4240,15 +4240,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#16191f",
@@ -5016,15 +5016,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -6675,15 +6675,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#16191f",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#16191f",
@@ -7451,15 +7451,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -9110,15 +9110,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -9886,15 +9886,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f2f3f3",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -11545,15 +11545,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
@@ -12321,15 +12321,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#131920",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -13980,15 +13980,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
             "light": "#d5dbdb",
@@ -14756,15 +14756,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#f2f3f3",
       },
     },
-    "color-background-chat-bubble-received": {
-      "$description": "The background color of \`received\` chat bubble.",
+    "color-background-chat-bubble-incoming": {
+      "$description": "The background color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#131920",
         "light": "#f2f3f3",
       },
     },
-    "color-background-chat-bubble-sent": {
-      "$description": "The background color of \`sent\` chat bubble.",
+    "color-background-chat-bubble-outgoing": {
+      "$description": "The background color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "transparent",
         "light": "transparent",
@@ -16415,15 +16415,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
-    "color-text-chat-bubble-received": {
-      "$description": "Text color of \`received\` chat bubble.",
+    "color-text-chat-bubble-incoming": {
+      "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#d5dbdb",
         "light": "#16191f",
       },
     },
-    "color-text-chat-bubble-sent": {
-      "$description": "Text color of \`sent\` chat bubble.",
+    "color-text-chat-bubble-outgoing": {
+      "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "#d5dbdb",
         "light": "#16191f",
@@ -17196,15 +17196,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f6f6f9",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -18855,15 +18855,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#0f141a",
@@ -19631,15 +19631,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#131920",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -21290,15 +21290,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
@@ -22066,15 +22066,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f6f6f9",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -23725,15 +23725,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#0f141a",
@@ -24501,15 +24501,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f6f6f9",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -26160,15 +26160,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -26936,15 +26936,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f6f6f9",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#f3f3f7",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -28595,15 +28595,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
@@ -29371,15 +29371,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#131920",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -31030,15 +31030,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
@@ -31806,15 +31806,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#1b232d",
           },
         },
-        "color-background-chat-bubble-received": {
-          "$description": "The background color of \`received\` chat bubble.",
+        "color-background-chat-bubble-incoming": {
+          "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#131920",
             "light": "#131920",
           },
         },
-        "color-background-chat-bubble-sent": {
-          "$description": "The background color of \`sent\` chat bubble.",
+        "color-background-chat-bubble-outgoing": {
+          "$description": "The background color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "transparent",
             "light": "transparent",
@@ -33465,15 +33465,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-received": {
-          "$description": "Text color of \`received\` chat bubble.",
+        "color-text-chat-bubble-incoming": {
+          "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
           },
         },
-        "color-text-chat-bubble-sent": {
-          "$description": "Text color of \`sent\` chat bubble.",
+        "color-text-chat-bubble-outgoing": {
+          "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
             "light": "#c6c6cd",
@@ -34241,15 +34241,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#f6f6f9",
       },
     },
-    "color-background-chat-bubble-received": {
-      "$description": "The background color of \`received\` chat bubble.",
+    "color-background-chat-bubble-incoming": {
+      "$description": "The background color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#131920",
         "light": "#f3f3f7",
       },
     },
-    "color-background-chat-bubble-sent": {
-      "$description": "The background color of \`sent\` chat bubble.",
+    "color-background-chat-bubble-outgoing": {
+      "$description": "The background color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "transparent",
         "light": "transparent",
@@ -35900,15 +35900,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#ffffff",
       },
     },
-    "color-text-chat-bubble-received": {
-      "$description": "Text color of \`received\` chat bubble.",
+    "color-text-chat-bubble-incoming": {
+      "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#c6c6cd",
         "light": "#0f141a",
       },
     },
-    "color-text-chat-bubble-sent": {
-      "$description": "Text color of \`sent\` chat bubble.",
+    "color-text-chat-bubble-outgoing": {
+      "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "#c6c6cd",
         "light": "#0f141a",
