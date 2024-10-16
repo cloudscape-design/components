@@ -45,15 +45,10 @@ export interface AlertFlashContentResult {
   unmount: (containers: { replacementHeaderContainer: HTMLElement; replacementContentContainer: HTMLElement }) => void;
 }
 
-export interface AlertFlashContentInitialResult {
-  header: ReplacementType;
-  content: ReplacementType;
-}
-
 export interface AlertFlashContentConfig {
   id: string;
   runReplacer: (context: AlertFlashContentContext, replacementApi: ReplacementApi) => AlertFlashContentResult;
-  initialCheck?: (context: AlertFlashContentInitialContext) => AlertFlashContentInitialResult;
+  initialCheck?: (context: AlertFlashContentInitialContext) => boolean;
 }
 
 export type AlertFlashContentRegistrationListener = (provider: AlertFlashContentConfig) => () => void;
@@ -65,7 +60,7 @@ export interface AlertFlashContentApiPublic {
 export interface AlertFlashContentApiInternal {
   clearRegisteredReplacer(): void;
   onContentRegistered(listener: AlertFlashContentRegistrationListener): () => void;
-  initialSyncRender(context: AlertFlashContentInitialContextRaw): AlertFlashContentInitialResult;
+  initialCheck(context: AlertFlashContentInitialContextRaw): boolean;
 }
 
 const nodeAsString = (node: ReactNode) =>
@@ -107,7 +102,7 @@ export class AlertFlashContentController {
     this.#provider = undefined;
   };
 
-  initialSyncRender = (context: AlertFlashContentInitialContextRaw): AlertFlashContentInitialResult => {
+  initialCheck = (context: AlertFlashContentInitialContextRaw): boolean => {
     if (this.#provider?.initialCheck) {
       const processedContext: AlertFlashContentInitialContext = {
         type: context.type,
@@ -116,10 +111,7 @@ export class AlertFlashContentController {
       };
       return this.#provider.initialCheck(processedContext);
     }
-    return {
-      header: 'original',
-      content: 'original',
-    };
+    return false;
   };
 
   onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
@@ -145,7 +137,7 @@ export class AlertFlashContentController {
   installInternal(internalApi: Partial<AlertFlashContentApiInternal> = {}): AlertFlashContentApiInternal {
     internalApi.clearRegisteredReplacer ??= this.clearRegisteredReplacer;
     internalApi.onContentRegistered ??= this.onContentRegistered;
-    internalApi.initialSyncRender ??= this.initialSyncRender;
+    internalApi.initialCheck ??= this.initialCheck;
     return internalApi as AlertFlashContentApiInternal;
   }
 }

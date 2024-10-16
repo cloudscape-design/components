@@ -22,19 +22,21 @@ export function createUseDiscoveredContent(componentName: string, controller: Al
     const contentRef = useRef<HTMLDivElement>(null);
     const replacementHeaderRef = useRef<HTMLDivElement>(null);
     const replacementContentRef = useRef<HTMLDivElement>(null);
-    const [initialState] = useState(() =>
-      controller.initialSyncRender({
+    const [initialHidden, setInitialHidden] = useState(() =>
+      controller.initialCheck({
         type,
         header,
         content: children,
       })
     );
-    const [headerReplacementType, setFoundHeaderReplacement] = useState<ReplacementType>(initialState.header);
-    const [contentReplacementType, setFoundContentReplacement] = useState<ReplacementType>(initialState.content);
+    const [headerReplacementType, setFoundHeaderReplacement] = useState<ReplacementType>('original');
+    const [contentReplacementType, setFoundContentReplacement] = useState<ReplacementType>('original');
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
 
     useEffect(() => {
       const context = { type, headerRef, contentRef };
+
+      setInitialHidden(false);
 
       return controller.onContentRegistered(provider => {
         let mounted = true;
@@ -99,6 +101,7 @@ export function createUseDiscoveredContent(componentName: string, controller: Al
     }, [type, header, children]);
 
     return {
+      initialHidden,
       headerReplacementType,
       contentReplacementType,
       headerRef: headerRef as React.Ref<HTMLDivElement>,

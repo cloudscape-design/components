@@ -54,6 +54,14 @@
 .hidden {
   display: none;
 }
+// visibly hidden, but focusable
+.initial-hidden {
+  // TODO: decide if it should take up space:
+  opacity: 0;
+  // or be entirely hidden:
+  // overflow: hidden;
+  // height: 0;
+}
 
 .header,
 .header-replacement {

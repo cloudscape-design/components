@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 
 import {
@@ -20,7 +20,9 @@ import awsuiPlugins from '~components/internal/plugins';
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 
-type PageContext = React.Context<AppContextType<{ loading: boolean; hidden: boolean; type: AlertProps.Type }>>;
+type PageContext = React.Context<
+  AppContextType<{ loading: boolean; hidden: boolean; type: AlertProps.Type; autofocus: boolean }>
+>;
 
 awsuiPlugins.alertContent.registerContentReplacer({
   id: 'awsui/alert-test-action',
@@ -61,11 +63,7 @@ awsuiPlugins.alertContent.registerContentReplacer({
     };
   },
   initialCheck(context) {
-    const found = context.type === 'error' && context.contentText?.match('Access denied');
-    return {
-      header: found ? 'remove' : 'original',
-      content: found ? 'replaced' : 'original',
-    };
+    return context.type === 'error' && !!context.contentText?.match('Access denied');
   },
 });
 
@@ -73,7 +71,7 @@ const alertTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ 
 
 export default function () {
   const {
-    urlParams: { loading = false, hidden = false, type = 'error' },
+    urlParams: { loading = false, hidden = false, type = 'error', autofocus = false },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [unrelatedState, setUnrelatedState] = useState(false);
@@ -81,6 +79,14 @@ export default function () {
 
   const content1 = useMemo(() => (loading ? <Box>Loading...</Box> : <Box>Content</Box>), [loading]);
   const content2 = loading ? <Box>Loading...</Box> : <Box>There was an error: Access denied because of XYZ</Box>;
+
+  const alertRef = useRef<AlertProps.Ref>(null);
+
+  useEffect(() => {
+    if (autofocus && !hidden) {
+      alertRef.current?.focus();
+    }
+  }, [autofocus, hidden]);
 
   return (
     <Box margin="m">
@@ -99,6 +105,9 @@ export default function () {
           <Checkbox onChange={e => setContentSwapped(e.detail.checked)} checked={contentSwapped}>
             Swap content
           </Checkbox>
+          <Checkbox onChange={e => setUrlParams({ autofocus: e.detail.checked })} checked={autofocus}>
+            Auto-focus alert
+          </Checkbox>
           <FormField label="Alert type">
             <Select
               options={alertTypeOptions}
@@ -113,7 +122,7 @@ export default function () {
         <ScreenshotArea gutters={false}>
           {hidden ? null : (
             <SpaceBetween size="m">
-              {/* <Alert
+              <Alert
                 type={type}
                 statusIconAriaLabel={type}
                 dismissAriaLabel="Dismiss"
@@ -121,7 +130,7 @@ export default function () {
                 action={<Button>Action</Button>}
               >
                 {!contentSwapped ? content1 : content2}
-              </Alert> */}
+              </Alert>
 
               <Alert
                 type={type}
@@ -129,6 +138,7 @@ export default function () {
                 dismissAriaLabel="Dismiss"
                 header="Header"
                 action={<Button>Action</Button>}
+                ref={alertRef}
               >
                 {!contentSwapped ? content2 : content1}
               </Alert>
