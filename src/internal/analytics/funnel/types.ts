@@ -1,0 +1,21 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
+export interface FunnelStepConfig {
+  index?: number;
+  optional?: boolean;
+  name?: string;
+}
+export type FunnelStepProps = FunnelStepConfig & { index: number };
+export type FunnelBaseStatus = 'initial' | 'started' | 'error' | 'completed';
+
+export interface ErrorScope {
+  type: 'funnel' | 'funnel-step' | 'funnel-substep' | 'field';
+  label?: string;
+}
+
+export type FunnelStatus = FunnelBaseStatus | 'validating';
+export type FunnelResult = 'submitted' | 'successful' | 'cancelled' | undefined;
+
+export interface Observer {
+  update: (subject: any) => void;
+}

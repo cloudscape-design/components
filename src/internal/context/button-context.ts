@@ -8,9 +8,7 @@ export interface ButtonContextProps {
   onClick: ({ variant }: { variant: InternalButtonProps['variant'] }) => void;
 }
 
-export const ButtonContext = createContext<ButtonContextProps>({
-  onClick: () => {},
-});
+export const ButtonContext = createContext<ButtonContextProps | null>(null);
 
 export function useButtonContext() {
   return useContext(ButtonContext);
