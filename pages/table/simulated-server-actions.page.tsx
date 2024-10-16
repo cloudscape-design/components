@@ -58,15 +58,10 @@ export default function TableLatencyMetricsPage() {
         console.log('tableInteraction:', props);
       },
       taskCompletionData() {},
-      modalPerformanceData() {},
     });
 
     return () => {
-      setPerformanceMetrics({
-        tableInteraction: () => {},
-        taskCompletionData: () => {},
-        modalPerformanceData: () => {},
-      });
+      setPerformanceMetrics({ tableInteraction: () => {}, taskCompletionData: () => {} });
       delete (window as any).tableInteractionMetrics;
     };
   }, []);
