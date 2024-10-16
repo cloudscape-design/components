@@ -21,10 +21,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -148,20 +144,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -1807,20 +1789,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#16191f",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -2460,10 +2428,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -2587,20 +2551,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -4246,20 +4196,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#16191f",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -4899,10 +4835,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -5026,20 +4958,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -6685,20 +6603,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#16191f",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -7338,10 +7242,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -7465,20 +7365,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -9124,20 +9010,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
           },
         },
         "color-text-counter": {
@@ -9777,10 +9649,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -9904,20 +9772,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f2f3f3",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -11565,20 +11419,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
-          },
-        },
         "color-text-counter": {
           "$description": "The default color for counters. For example: counters in table headers",
           "$value": {
@@ -12216,10 +12056,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "2px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "0px",
@@ -12343,20 +12179,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#16191f",
             "light": "#16191f",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#131920",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -14004,20 +13826,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#d5dbdb",
-            "light": "#d5dbdb",
-          },
-        },
         "color-text-counter": {
           "$description": "The default color for counters. For example: counters in table headers",
           "$value": {
@@ -14655,10 +14463,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The border radius of the focused day in date picker and date range picker.",
       "$value": "2px",
     },
-    "border-radius-chat-bubble": {
-      "$description": "The border radius of chat bubbles.",
-      "$value": "2px",
-    },
     "border-radius-container": {
       "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
       "$value": "0px",
@@ -14782,20 +14586,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#16191f",
         "light": "#f2f3f3",
-      },
-    },
-    "color-background-chat-bubble-incoming": {
-      "$description": "The background color of \`incoming\` chat bubble.",
-      "$value": {
-        "dark": "#131920",
-        "light": "#f2f3f3",
-      },
-    },
-    "color-background-chat-bubble-outgoing": {
-      "$description": "The background color of \`outgoing\` chat bubble.",
-      "$value": {
-        "dark": "transparent",
-        "light": "transparent",
       },
     },
     "color-background-container-content": {
@@ -16443,20 +16233,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#ffffff",
       },
     },
-    "color-text-chat-bubble-incoming": {
-      "$description": "Text color of \`incoming\` chat bubble.",
-      "$value": {
-        "dark": "#d5dbdb",
-        "light": "#16191f",
-      },
-    },
-    "color-text-chat-bubble-outgoing": {
-      "$description": "Text color of \`outgoing\` chat bubble.",
-      "$value": {
-        "dark": "#d5dbdb",
-        "light": "#16191f",
-      },
-    },
     "color-text-counter": {
       "$description": "The default color for counters. For example: counters in table headers",
       "$value": {
@@ -17099,10 +16875,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -17226,20 +16998,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f6f6f9",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f3f3f7",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -18885,20 +18643,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#0f141a",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#0f141a",
           },
         },
         "color-text-counter": {
@@ -19538,10 +19282,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -19665,20 +19405,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#131920",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -21324,20 +21050,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#c6c6cd",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#c6c6cd",
           },
         },
         "color-text-counter": {
@@ -21977,10 +21689,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -22104,20 +21812,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f6f6f9",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f3f3f7",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -23763,20 +23457,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#0f141a",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#0f141a",
           },
         },
         "color-text-counter": {
@@ -24416,10 +24096,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -24543,20 +24219,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f6f6f9",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f3f3f7",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -26202,20 +25864,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#ffffff",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
           },
         },
         "color-text-counter": {
@@ -26855,10 +26503,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -26982,20 +26626,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#f6f6f9",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#f3f3f7",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -28643,20 +28273,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#ffffff",
           },
         },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
-          },
-        },
         "color-text-counter": {
           "$description": "The default color for counters. For example: counters in table headers",
           "$value": {
@@ -29294,10 +28910,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -29421,20 +29033,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#131920",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -31080,20 +30678,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#0f141a",
             "light": "#0f141a",
-          },
-        },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#c6c6cd",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#c6c6cd",
           },
         },
         "color-text-counter": {
@@ -31733,10 +31317,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of the focused day in date picker and date range picker.",
           "$value": "3px",
         },
-        "border-radius-chat-bubble": {
-          "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
-        },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
           "$value": "16px",
@@ -31860,20 +31440,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#1b232d",
             "light": "#1b232d",
-          },
-        },
-        "color-background-chat-bubble-incoming": {
-          "$description": "The background color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#131920",
-            "light": "#131920",
-          },
-        },
-        "color-background-chat-bubble-outgoing": {
-          "$description": "The background color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "transparent",
-            "light": "transparent",
           },
         },
         "color-background-container-content": {
@@ -33521,20 +33087,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
-        "color-text-chat-bubble-incoming": {
-          "$description": "Text color of \`incoming\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#c6c6cd",
-          },
-        },
-        "color-text-chat-bubble-outgoing": {
-          "$description": "Text color of \`outgoing\` chat bubble.",
-          "$value": {
-            "dark": "#c6c6cd",
-            "light": "#c6c6cd",
-          },
-        },
         "color-text-counter": {
           "$description": "The default color for counters. For example: counters in table headers",
           "$value": {
@@ -34172,10 +33724,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The border radius of the focused day in date picker and date range picker.",
       "$value": "3px",
     },
-    "border-radius-chat-bubble": {
-      "$description": "The border radius of chat bubbles.",
-      "$value": "2px",
-    },
     "border-radius-container": {
       "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
       "$value": "16px",
@@ -34299,20 +33847,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#1b232d",
         "light": "#f6f6f9",
-      },
-    },
-    "color-background-chat-bubble-incoming": {
-      "$description": "The background color of \`incoming\` chat bubble.",
-      "$value": {
-        "dark": "#131920",
-        "light": "#f3f3f7",
-      },
-    },
-    "color-background-chat-bubble-outgoing": {
-      "$description": "The background color of \`outgoing\` chat bubble.",
-      "$value": {
-        "dark": "transparent",
-        "light": "transparent",
       },
     },
     "color-background-container-content": {
@@ -35958,20 +35492,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#0f141a",
         "light": "#ffffff",
-      },
-    },
-    "color-text-chat-bubble-incoming": {
-      "$description": "Text color of \`incoming\` chat bubble.",
-      "$value": {
-        "dark": "#c6c6cd",
-        "light": "#0f141a",
-      },
-    },
-    "color-text-chat-bubble-outgoing": {
-      "$description": "Text color of \`outgoing\` chat bubble.",
-      "$value": {
-        "dark": "#c6c6cd",
-        "light": "#0f141a",
       },
     },
     "color-text-counter": {
