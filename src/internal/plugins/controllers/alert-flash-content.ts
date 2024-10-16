@@ -1,6 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { ReactNode } from 'react';
+import flattenChildren from 'react-keyed-flatten-children';
+
 import debounce from '../../debounce';
 
 // this code should not depend on React typings, because it is portable between major versions
@@ -12,6 +15,18 @@ export interface AlertFlashContentContext {
   type: string;
   headerRef: RefShim<HTMLElement>;
   contentRef: RefShim<HTMLElement>;
+}
+
+interface AlertFlashContentInitialContextRaw {
+  type: string;
+  header?: ReactNode;
+  content?: ReactNode;
+}
+
+export interface AlertFlashContentInitialContext {
+  type: string;
+  headerText?: string;
+  contentText?: string;
 }
 
 export type ReplacementType = 'original' | 'remove' | 'replaced';
@@ -30,9 +45,15 @@ export interface AlertFlashContentResult {
   unmount: (containers: { replacementHeaderContainer: HTMLElement; replacementContentContainer: HTMLElement }) => void;
 }
 
+export interface AlertFlashContentInitialResult {
+  header: ReplacementType;
+  content: ReplacementType;
+}
+
 export interface AlertFlashContentConfig {
   id: string;
   runReplacer: (context: AlertFlashContentContext, replacementApi: ReplacementApi) => AlertFlashContentResult;
+  initialCheck?: (context: AlertFlashContentInitialContext) => AlertFlashContentInitialResult;
 }
 
 export type AlertFlashContentRegistrationListener = (provider: AlertFlashContentConfig) => () => void;
@@ -44,7 +65,14 @@ export interface AlertFlashContentApiPublic {
 export interface AlertFlashContentApiInternal {
   clearRegisteredReplacer(): void;
   onContentRegistered(listener: AlertFlashContentRegistrationListener): () => void;
+  initialSyncRender(context: AlertFlashContentInitialContextRaw): AlertFlashContentInitialResult;
 }
+
+const nodeAsString = (node: ReactNode) =>
+  flattenChildren(node)
+    .map(node => (typeof node === 'object' ? node.props.children : node))
+    .filter(node => typeof node === 'string')
+    .join('');
 
 export class AlertFlashContentController {
   #listeners: Array<AlertFlashContentRegistrationListener> = [];
@@ -79,6 +107,21 @@ export class AlertFlashContentController {
     this.#provider = undefined;
   };
 
+  initialSyncRender = (context: AlertFlashContentInitialContextRaw): AlertFlashContentInitialResult => {
+    if (this.#provider?.initialCheck) {
+      const processedContext: AlertFlashContentInitialContext = {
+        type: context.type,
+        headerText: nodeAsString(context.header),
+        contentText: nodeAsString(context.content),
+      };
+      return this.#provider.initialCheck(processedContext);
+    }
+    return {
+      header: 'original',
+      content: 'original',
+    };
+  };
+
   onContentRegistered = (listener: AlertFlashContentRegistrationListener) => {
     if (this.#provider) {
       const cleanup = listener(this.#provider);
@@ -102,6 +145,7 @@ export class AlertFlashContentController {
   installInternal(internalApi: Partial<AlertFlashContentApiInternal> = {}): AlertFlashContentApiInternal {
     internalApi.clearRegisteredReplacer ??= this.clearRegisteredReplacer;
     internalApi.onContentRegistered ??= this.onContentRegistered;
+    internalApi.initialSyncRender ??= this.initialSyncRender;
     return internalApi as AlertFlashContentApiInternal;
   }
 }

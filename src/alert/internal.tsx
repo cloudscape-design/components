@@ -39,7 +39,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps<HTMLDivElement>;
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
-const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent.onContentRegistered);
+const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);
 
 const InternalAlert = React.forwardRef(
   (
