@@ -83,6 +83,14 @@ function useRuntimeDrawers(
         }
       }
 
+      const drawersNotActiveByDefault = globalDrawers.filter(drawer => !drawer.defaultActive);
+      const hasDrawersOpenByUserAction = drawersNotActiveByDefault.find(drawer =>
+        activeGlobalDrawersIdsRef.current.includes(drawer.id)
+      );
+      if (hasDrawersOpenByUserAction || activeGlobalDrawersIdsRef.current.length === DRAWERS_LIMIT) {
+        return;
+      }
+
       const defaultActiveGlobalDrawers = sortByPriority(globalDrawers).filter(
         drawer => !activeGlobalDrawersIdsRef.current.includes(drawer.id) && drawer.defaultActive
       );

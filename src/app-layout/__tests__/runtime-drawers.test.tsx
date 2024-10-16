@@ -1043,35 +1043,109 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
     });
 
-    test('dynamically registered drawers with defaultActive: true should open even when there are already open drawer(s) on the page', async () => {
-      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+    describe('dynamically registered drawers with defaultActive: true', () => {
+      test('should open if there are already open local drawer on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      wrapper.findDrawerTriggerById('security')!.click();
-      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
 
-      awsuiPlugins.appLayout.registerDrawer({
-        ...drawerDefaults,
-        id: 'global1',
-        type: 'global',
-        defaultActive: true,
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
       });
 
-      await delay();
+      test('should not open if there are already maximum global drawers opened on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
 
-      awsuiPlugins.appLayout.registerDrawer({
-        ...drawerDefaults,
-        id: 'global2',
-        type: 'global',
-        defaultActive: true,
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
       });
 
-      await delay();
+      test('should not open if the maximum number (2) of global drawers is already open on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
-      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
-      expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
-      expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        // this drawer should not open because there are already two global drawers open on the page, which is the maximum limit
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global3',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+      });
     });
   });
 });
