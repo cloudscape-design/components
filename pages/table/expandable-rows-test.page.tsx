@@ -31,13 +31,14 @@ import messages from '~components/i18n/messages/all.en';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import { WindowWithFlushResponse } from '../common/flush-response';
+import { enhanceWindow, WindowWithFlushResponse } from '../common/flush-response';
 import { ariaLabels, getHeaderCounterText, Instance } from './expandable-rows/common';
 import { createColumns, createPreferences, filteringProperties } from './expandable-rows/expandable-rows-configs';
 import { allInstances } from './expandable-rows/expandable-rows-data';
 import { EmptyState, getMatchesCountText, renderAriaLive } from './shared-configs';
 
 declare const window: WindowWithFlushResponse;
+enhanceWindow();
 
 type LoadingState = Map<string, { pages: number; status: TableProps.LoadingStatus }>;
 
