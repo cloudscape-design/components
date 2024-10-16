@@ -46,7 +46,7 @@ describe('Expandable rows', () => {
   );
 
   test(
-    'uses items loader on the first expandable item, i=%s',
+    'uses items loader on the first expandable item',
     setupTest({ useProgressiveLoading: true, useServerMock: true }, async page => {
       const targetCluster = 'cluster-33387b6c';
       const targetClusterLoadMore = tableWrapper.findItemsLoaderByItemId(targetCluster).findButton();
