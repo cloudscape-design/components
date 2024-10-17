@@ -66,6 +66,7 @@ const DatePicker = React.forwardRef(
   ) => {
     const { __internalRootRef } = useBaseComponent('DatePicker', {
       props: { autoFocus, expandToViewport, granularity, readOnly },
+      metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
     checkControlled('DatePicker', 'value', value, 'onChange', onChange);
 
