@@ -13,7 +13,7 @@ import { FormProps } from './interfaces';
 import InternalForm from './internal';
 
 import headerStyles from '../header/styles.css.js';
-import formStyles from './styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 
 export { FormProps };
 
@@ -80,7 +80,8 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
     analyticsMetadata
   );
   const inheritedFunnelNameSelector = useFunnelNameSelector();
-  const funnelNameSelector = inheritedFunnelNameSelector || `.${headerStyles['heading-text']}`;
+  const funnelNameSelector =
+    inheritedFunnelNameSelector || `.${analyticsSelectors.header} .${headerStyles['heading-text']}`;
 
   return (
     <AnalyticsFunnel
@@ -91,7 +92,7 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
       funnelType="single-page"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
-      funnelNameSelectors={[funnelNameSelector, `.${formStyles.header}`]}
+      funnelNameSelectors={[funnelNameSelector, `.${analyticsSelectors.header}`]}
     >
       <AnalyticsFunnelStep
         stepIdentifier={analyticsMetadata?.instanceIdentifier}

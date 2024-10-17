@@ -52,6 +52,7 @@ describe('Multi-page create', () => {
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         funnelIdentifier: FUNNEL_IDENTIFIER,
+        funnelName: 'Create Resource',
         flowType: 'create',
         funnelType: 'multi-page',
         resourceType: 'Components',
