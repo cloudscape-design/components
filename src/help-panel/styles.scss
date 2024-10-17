@@ -13,9 +13,6 @@
   padding-block-end: 0;
   padding-inline-end: awsui.$space-panel-side-right;
   padding-inline-start: awsui.$space-panel-side-left;
-  &.with-toolbar {
-    padding-block-start: awsui.$space-static-m;
-  }
 
   /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   hr {
@@ -135,7 +132,6 @@
   margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
   .with-toolbar > & {
     border-color: transparent;
-    padding-block-end: awsui.$space-static-m;
     margin-block-end: 0px;
   }
 
@@ -155,15 +151,10 @@
 .content {
   color: awsui.$color-text-body-secondary;
 
-  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
-  h2:first-child,
-  h3:first-child,
-  h4:first-child,
-  h5:first-child,
-  h6:first-child {
+  & > :first-child {
     margin-block-start: 0;
   }
-
+  /* stylelint-disable @cloudscape-design/no-implicit-descendant, selector-max-type */
   a {
     @include styles.link-inline;
   }
