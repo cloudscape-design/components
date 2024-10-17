@@ -12,7 +12,6 @@ import {
   FormField,
   Header,
   Icon,
-  PromptInput,
 } from '~components';
 import SpaceBetween from '~components/space-between';
 
@@ -23,7 +22,6 @@ import { validateContractFiles } from './validations';
 
 export default function FileUploadScenarioStandalone() {
   const contractsRef = useRef<FileUploadProps.Ref>(null);
-  const [textareaValue, setTextareaValue] = useState('');
 
   const [acceptMultiple, setAcceptMultiple] = useState(true);
   const [verticalAlign, setVerticalAlign] = useState(false);
@@ -31,8 +29,8 @@ export default function FileUploadScenarioStandalone() {
 
   const isFileBeingDragged = useDropzoneVisible(acceptMultiple);
 
-  // const contractsValidationErrors = validateContractFiles(formState.files);
-  // const contractsErrors = contractsValidationErrors ?? formState.fileErrors;
+  const contractsValidationErrors = validateContractFiles(formState.files);
+  const contractsErrors = contractsValidationErrors ?? formState.fileErrors;
 
   const hasError = formState.status === 'error';
   useEffect(() => {
@@ -56,7 +54,12 @@ export default function FileUploadScenarioStandalone() {
   return (
     <Box margin="xl">
       <SpaceBetween size="xl">
-        <Header variant="h1">File upload: deconstructed</Header>
+        <Header
+          variant="h1"
+          description="This is the same as the file upload - standalone test page, but made with the deconstructed file upload components."
+        >
+          File upload: deconstructed
+        </Header>
 
         <Checkbox checked={acceptMultiple} onChange={(event: any) => setAcceptMultiple(event.detail.checked)}>
           Accept multiple files
@@ -65,82 +68,40 @@ export default function FileUploadScenarioStandalone() {
           Vertical alignment
         </Checkbox>
 
-        <FormField>
-          <PromptInput
-            ariaLabel="Chat input"
-            actionButtonIconName="send"
-            actionButtonAriaLabel="Submit prompt"
-            value={textareaValue}
-            onChange={(event: any) => setTextareaValue(event.detail.value)}
-            onAction={(event: any) => window.alert(`Submitted the following: ${event.detail.value}`)}
-            placeholder="Ask a question"
-            maxRows={4}
-            disableSecondaryActionsPaddings={true}
-            secondaryActions={
-              <Box padding={{ left: 'xxs', top: 'xs' }}>
-                <FileInput
-                  variant="icon"
-                  ref={contractsRef}
-                  multiple={acceptMultiple}
-                  value={formState.files}
-                  onChange={(event: any) => handleFilesChange(event.detail.value)}
-                  i18nStrings={i18nStrings}
-                />
-              </Box>
-            }
-            secondaryContent={
-              isFileBeingDragged ? (
-                <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
-                  <SpaceBetween size="xs" alignItems="center">
-                    <Icon name="upload" />
-                    Drop files here
-                  </SpaceBetween>
-                </FileDropzone>
-              ) : formState.files.length > 0 ? (
-                <>
-                  <FileTokenGroup
-                    alignment={verticalAlign ? 'vertical' : 'horizontal'}
-                    items={formState.files.map(file => ({
-                      file,
-                      loading: formState.status === 'uploading',
-                      errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
-                    }))}
-                    showFileLastModified={true}
-                    showFileSize={true}
-                    showFileThumbnail={true}
-                    i18nStrings={i18nStrings}
-                    onDismiss={onDismiss}
-                  />
-                </>
-              ) : undefined
-            }
-          />
-        </FormField>
-
         <FormField
           label={acceptMultiple ? 'Contracts' : 'Contract'}
           description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
+          constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
+          errorText={contractsErrors?.errorText}
         >
-          <FileInput
-            variant="icon"
-            ref={contractsRef}
-            multiple={acceptMultiple}
-            value={formState.files}
-            onChange={(event: any) => handleFilesChange(event.detail.value)}
-            //   accept="application/pdf, image/*"
-            i18nStrings={i18nStrings}
-          />
+          {isFileBeingDragged ? (
+            <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
+              <SpaceBetween size="xs" alignItems="center">
+                <Icon name="upload" />
+                Drop files here
+              </SpaceBetween>
+            </FileDropzone>
+          ) : (
+            <FileInput
+              ref={contractsRef}
+              multiple={acceptMultiple}
+              value={formState.files}
+              onChange={(event: any) => handleFilesChange(event.detail.value)}
+              //   accept="application/pdf, image/*"
+              i18nStrings={i18nStrings}
+            />
+          )}
         </FormField>
 
         <FileTokenGroup
           alignment={verticalAlign ? 'vertical' : 'horizontal'}
-          items={formState.files.map(file => ({
+          items={formState.files.map((file, index) => ({
             file,
             loading: formState.status === 'uploading',
-            errorText: file.size > 5000000 ? 'File size cannot exceed 5MB' : undefined,
+            errorText: contractsErrors?.fileErrors?.[index] === null ? undefined : contractsErrors?.fileErrors?.[index],
           }))}
-          // showFileLastModified={true}
-          // showFileSize={true}
+          showFileLastModified={true}
+          showFileSize={true}
           showFileThumbnail={true}
           i18nStrings={i18nStrings}
           onDismiss={onDismiss}

@@ -94,7 +94,7 @@ export namespace FileTokenGroupProps {
     disabled?: boolean;
     loading?: boolean;
     loadingText?: string;
-    errorText?: string | null;
-    warningText?: string | null;
+    errorText?: null | string;
+    warningText?: null | string;
   }
 }
