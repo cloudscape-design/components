@@ -75,6 +75,25 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(false);
   });
 
+  test('merges navigation from two instances with navigation hidden in primary', async () => {
+    const { firstLayout, secondLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        navigation="testing nav"
+        navigationHide={true}
+        toolsHide={true}
+        content={
+          <AppLayout {...defaultAppLayoutProps} data-testid="second" navigationHide={true} tools="testing tools" />
+        }
+      />
+    );
+    expect(firstLayout.findNavigation()).toBeFalsy();
+    expect(firstLayout.findNavigationToggle()).toBeFalsy();
+    expect(secondLayout.findNavigation()).toBeFalsy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
+  });
+
   test('merges tools from two instances', async () => {
     const { firstLayout, secondLayout } = await renderAsync(
       <AppLayout
