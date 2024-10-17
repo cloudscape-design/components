@@ -139,10 +139,7 @@
   z-index: 840;
   align-self: end;
   grid-area: main;
-  grid-column: 1 / -1;
-  @include desktop-only {
-    grid-column: 2 / span 4;
-  }
+  @include grid-column-full-content-width;
 }
 
 .panel-hidden {
