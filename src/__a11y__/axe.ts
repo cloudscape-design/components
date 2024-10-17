@@ -32,6 +32,9 @@ export const spec: Axe.Spec = {
     // Skip the rule which enforces that axe is included in all iframes, which fails on
     // very basic iframes on media container tests
     { id: 'frame-tested', enabled: false },
+    // A new rule added in axe 4.7, need to validate.
+    // See https://dequeuniversity.com/rules/axe/4.7/link-in-text-block?application=axeAPI
+    { id: 'link-in-text-block', enabled: false },
   ],
 };
 
