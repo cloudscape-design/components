@@ -8,7 +8,6 @@ import { TableProps } from './interfaces';
 export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>) {
   for (const column of columnDefinitions) {
     checkProperty(column, 'minWidth');
-    checkProperty(column, 'width');
   }
 }
 
@@ -39,4 +38,15 @@ function checkProperty(column: TableProps.ColumnDefinition<any>, name: 'width' |
       `resizableColumns feature requires ${name} property to be a number, got ${value}. The component may work incorrectly.`
     );
   }
+}
+
+export function treatAsNumber(value: number | string | undefined) {
+  if (typeof value === 'number') {
+    return !isNaN(value);
+  }
+  if (value) {
+    const parsed = parseFloat(value);
+    return !isNaN(parsed) && parsed.toString() === value;
+  }
+  return false;
 }
