@@ -42,7 +42,7 @@ type UseMultiselectOptions = SomeRequired<
     | 'selectedAriaLabel'
   > &
     DropdownStatusProps & {
-      controlId: string;
+      controlId?: string;
       ariaLabelId: string;
       footerId: string;
       filteringValue: string;

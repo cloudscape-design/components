@@ -230,9 +230,7 @@ const InternalButtonDropdown = React.forwardRef(
           {text}
         </InternalButton>
       );
-      trigger = showMainActionOnly ? (
-        <div className={styles['split-trigger']}>{mainActionButton}</div>
-      ) : (
+      trigger = (
         <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div
             className={clsx(
@@ -256,21 +254,23 @@ const InternalButtonDropdown = React.forwardRef(
           >
             {mainActionButton}
           </div>
-          <div
-            className={clsx(
-              styles['trigger-item'],
-              styles['dropdown-trigger'],
-              isVisualRefresh && styles['visual-refresh'],
-              styles[`variant-${variant}`],
-              baseTriggerProps.disabled && styles.disabled,
-              baseTriggerProps.loading && styles.loading
-            )}
-            {...getAnalyticsMetadataAttribute(analyticsMetadata)}
-          >
-            <InternalButton ref={triggerRef} {...baseTriggerProps} __emitPerformanceMarks={false}>
-              {children}
-            </InternalButton>
-          </div>
+          {!showMainActionOnly && (
+            <div
+              className={clsx(
+                styles['trigger-item'],
+                styles['dropdown-trigger'],
+                isVisualRefresh && styles['visual-refresh'],
+                styles[`variant-${variant}`],
+                baseTriggerProps.disabled && styles.disabled,
+                baseTriggerProps.loading && styles.loading
+              )}
+              {...getAnalyticsMetadataAttribute(analyticsMetadata)}
+            >
+              <InternalButton ref={triggerRef} {...baseTriggerProps} __emitPerformanceMarks={false}>
+                {children}
+              </InternalButton>
+            </div>
+          )}
         </div>
       );
     } else {
