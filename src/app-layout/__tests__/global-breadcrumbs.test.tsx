@@ -248,6 +248,19 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(findRootBreadcrumb().getElement()).toHaveTextContent('Static');
     });
   });
+
+  test('allows opt-out from this behavior', async () => {
+    render(
+      <AppLayout
+        breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />}
+        content={<BreadcrumbGroup items={[{ text: 'Local', href: '' }]} {...{ __disableGlobalization: true }} />}
+      />
+    );
+    await waitFor(() =>
+      expect(wrapper.findAppLayout()!.find('[data-awsui-discovered-breadcrumbs="true"]')).toBeTruthy()
+    );
+    expect(findAllBreadcrumbsInstances()).toHaveLength(2);
+  });
 });
 
 describe('without feature flag', () => {

@@ -7,11 +7,17 @@ import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
-function useSetGlobalBreadcrumbsImplementation(props: BreadcrumbGroupProps<any>) {
+function useSetGlobalBreadcrumbsImplementation({
+  __disableGlobalization,
+  ...props
+}: BreadcrumbGroupProps<any> & { __disableGlobalization?: boolean }) {
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
   const [registered, setRegistered] = useState(false);
 
   useEffect(() => {
+    if (__disableGlobalization) {
+      return;
+    }
     const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, () => setRegistered(true));
     registrationRef.current = registration;
 
@@ -20,7 +26,7 @@ function useSetGlobalBreadcrumbsImplementation(props: BreadcrumbGroupProps<any>)
     };
     // subsequent prop changes are handled by another effect
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [__disableGlobalization]);
 
   useLayoutEffect(() => {
     registrationRef.current?.update(props);
