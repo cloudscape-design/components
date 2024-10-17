@@ -59,13 +59,15 @@ export class FunnelStep extends FunnelBase {
 
   error(details: ErrorDetails): void {
     if (details.errorText) {
-      super.error(details);
-      dispatchFunnelEvent({
-        header: 'Step error',
-        details: [this.name].join(' / '),
-        status: 'error',
+      super.error(details, () => {
+        dispatchFunnelEvent({
+          header: 'Step error',
+          details: [this.name].join(' / '),
+          status: 'error',
+        });
       });
     } else if (this.getStatus() === 'error') {
+      this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Step error cleared',
         details: [this.name].join(' / '),

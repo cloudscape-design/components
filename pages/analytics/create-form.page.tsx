@@ -30,6 +30,7 @@ function Content() {
   const [loading, setLoading] = useState(false);
   const [value1, setValue1] = useState('');
   const [value2, setValue2] = useState('');
+  const [value3, setValue3] = useState('');
   const [containersVisible, setContainersVisible] = useState<boolean[]>([true, true, true, true]);
   const [selectedOption, setSelectedOption] = useState<SelectProps['selectedOption']>({
     label: 'Option 1',
@@ -100,7 +101,23 @@ function Content() {
                   }}
                 />
               </FormField>
-              <FormField info={<Link variant="info">Info</Link>} label="Field 2">
+              <FormField
+                info={
+                  <Link data-testid="external-link" external={true} href="#">
+                    Learn more
+                  </Link>
+                }
+                errorText={value2 === 'field2-error' ? 'This is a second field error' : undefined}
+                label="Field 2"
+              >
+                <Input
+                  value={value2}
+                  onChange={event => {
+                    setValue2(event.detail.value);
+                  }}
+                />
+              </FormField>
+              <FormField info={<Link variant="info">Info</Link>} label="Field 3">
                 <UncontrolledS3ResourceSelector />
               </FormField>
             </SpaceBetween>
@@ -140,18 +157,18 @@ function Content() {
             }
           >
             <SpaceBetween size="s">
-              <FormField label="Field 3">
+              <FormField label="Field 4">
                 <DatePicker
                   expandToViewport={true}
-                  onChange={({ detail }) => setValue2(detail.value)}
-                  value={value2}
+                  onChange={({ detail }) => setValue3(detail.value)}
+                  value={value3}
                   openCalendarAriaLabel={selectedDate =>
                     'Choose certificate expiry date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
                   }
                   placeholder="YYYY/MM/DD"
                 />
               </FormField>
-              <FormField label="Field 4">
+              <FormField label="Field 5">
                 <Select
                   expandToViewport={true}
                   selectedOption={selectedOption}

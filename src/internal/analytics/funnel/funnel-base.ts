@@ -27,6 +27,14 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     return this.status[this.status.length - 1];
   }
 
+  getPreviousStatus(): TStatus {
+    if (this.status.length < 2) {
+      return 'unknown' as TStatus;
+    }
+
+    return this.status[this.status.length - 2];
+  }
+
   start(callback?: () => void) {
     if (this.getStatus() === 'started') {
       return;
@@ -45,14 +53,9 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     callback?.();
   }
 
-  error({ errorText }: ErrorDetails, callback?: () => void) {
-    if (errorText) {
-      this.setStatus('error' as TStatus);
-      callback?.();
-    } else if (this.getStatus() === 'error') {
-      this.status.pop();
-      callback?.();
-    }
+  error(details: ErrorDetails, callback?: () => void) {
+    this.setStatus('error' as TStatus);
+    callback?.();
   }
 
   addObserver(observer: Observer) {

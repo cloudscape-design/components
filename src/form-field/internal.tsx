@@ -163,7 +163,7 @@ export default function InternalFormField({
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [__internalRootRef, funnel, errorText]);
+  }, [errorText]);
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
 

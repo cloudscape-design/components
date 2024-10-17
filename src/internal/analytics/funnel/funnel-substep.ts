@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { FunnelBase } from './funnel-base';
-import { dispatchFunnelEvent, Status } from './funnel-logger';
+import { dispatchFunnelEvent } from './funnel-logger';
 import { ErrorDetails } from './types';
 
 export class FunnelSubstep extends FunnelBase {
@@ -65,27 +65,21 @@ export class FunnelSubstep extends FunnelBase {
     this.debounceState('complete');
   }
 
-  error(details: ErrorDetails, callback?: () => void) {
-    super.error(details, () => {
-      const { errorText, scope } = details;
-      const status: Status = errorText ? 'error' : 'info';
-      switch (scope.type) {
-        case 'field': {
-          if (this.getStatus() === 'error') {
-            dispatchFunnelEvent({
-              header: errorText ? 'Field error' : 'Field error cleared',
-              status,
-              details: [this.name, scope.label].join(' / '),
-            });
-          }
-          break;
-        }
-        default:
-          dispatchFunnelEvent({ header: errorText ? 'Field error' : 'Substep error cleared', status });
-          break;
-      }
-
-      callback?.();
-    });
+  error(details: ErrorDetails) {
+    if (details.errorText) {
+      super.error(details, () => {
+        dispatchFunnelEvent({
+          header: 'Field error',
+          status: 'error',
+          details: [this.name, details.scope.label].join(' / '),
+        });
+      });
+    } else if (this.getStatus() === 'error') {
+      dispatchFunnelEvent({
+        header: 'Field error cleared',
+        status: 'info',
+        details: [this.name, details.scope.label].join(' / '),
+      });
+    }
   }
 }
