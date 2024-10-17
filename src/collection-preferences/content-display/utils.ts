@@ -28,10 +28,7 @@ export function getSortedOptions({
   return Array.from(optionsById.values());
 }
 
-export function getFilteredOptions(
-  options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>,
-  filterText: string
-) {
+export function getFilteredOptions(options: ReadonlyArray<OptionWithVisibility>, filterText: string) {
   filterText = filterText.trim().toLowerCase();
 
   if (!filterText) {
