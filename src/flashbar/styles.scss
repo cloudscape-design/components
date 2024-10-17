@@ -38,18 +38,7 @@
   color: awsui.$color-text-notification-default;
   overflow-wrap: break-word;
   word-wrap: break-word;
-
-  &::before {
-    @include styles.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-flashbar;
-    border-start-end-radius: awsui.$border-radius-flashbar;
-    border-end-start-radius: awsui.$border-radius-flashbar;
-    border-end-end-radius: awsui.$border-radius-flashbar;
-    box-shadow: awsui.$shadow-flash-sticky;
-  }
-  &-refresh::before {
-    z-index: -1;
-  }
+  box-shadow: awsui.$shadow-flash-sticky;
 }
 
 .flash-list {
@@ -58,14 +47,6 @@
   padding-inline: 0;
   margin-block: 0;
   margin-inline: 0;
-
-  /*
-     Adds a new stacking context for the flashbar
-     This prevents the flashbar shadow to disappear behind its container's
-     background due to z-index: -1
-   */
-  position: relative;
-  z-index: 0;
 
   &:not(.collapsed) {
     > li:not(:last-child) {
