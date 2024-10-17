@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
-import { act, cleanup, render } from '@testing-library/react';
+import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
@@ -86,9 +86,55 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     );
     expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
     expect(isDrawerClosed(secondLayout.findTools())).toEqual(true);
+    expect(createWrapper().findAllByClassName(testUtilStyles.tools)).toHaveLength(1);
 
     firstLayout.findToolsToggle().click();
     expect(isDrawerClosed(secondLayout.findTools())).toEqual(false);
+  });
+
+  test('cleans and restores the toolbar buttons when inner app layout is unmounted and mounted again', async () => {
+    function ConditionalLayoutsDemo() {
+      const [show, setShow] = React.useState(true);
+      return (
+        <AppLayout
+          {...defaultAppLayoutProps}
+          data-testid="first"
+          toolsHide={true}
+          content={
+            show ? (
+              <AppLayout
+                data-testid="second"
+                navigationHide={true}
+                tools="testing tools"
+                content={
+                  <button data-testid="hide-second-layout" onClick={() => setShow(false)}>
+                    Destroy inner layout
+                  </button>
+                }
+              />
+            ) : (
+              <button data-testid="show-second-layout" onClick={() => setShow(true)}>
+                Render inner layout
+              </button>
+            )
+          }
+        />
+      );
+    }
+    const { firstLayout } = await renderAsync(<ConditionalLayoutsDemo />);
+
+    expect(firstLayout.findToolsToggle()).toBeTruthy();
+    expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'false');
+
+    firstLayout.findToolsToggle().click();
+    await waitFor(() => expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'true'));
+
+    createWrapper().find('[data-testid="hide-second-layout"]')!.click();
+    await waitFor(() => expect(firstLayout.findToolsToggle()).toBeFalsy());
+
+    createWrapper().find('[data-testid="show-second-layout"]')!.click();
+    await waitFor(() => expect(firstLayout.findToolsToggle()).toBeTruthy());
+    expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'false');
   });
 
   test('merges split panel from two instances', async () => {
