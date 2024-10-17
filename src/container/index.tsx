@@ -4,7 +4,6 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -46,21 +45,16 @@ export default function Container({
   };
 
   return (
-    <AnalyticsFunnelSubStep
-      subStepIdentifier={analyticsMetadata?.instanceIdentifier}
-      subStepErrorContext={analyticsMetadata?.errorContext}
-    >
-      <InternalContainerAsSubstep
-        variant={variant}
-        disableContentPaddings={disableContentPaddings}
-        disableHeaderPaddings={disableHeaderPaddings}
-        fitHeight={fitHeight}
-        {...props}
-        {...externalProps}
-        {...baseComponentProps}
-        {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
-      />
-    </AnalyticsFunnelSubStep>
+    <InternalContainerAsSubstep
+      variant={variant}
+      disableContentPaddings={disableContentPaddings}
+      disableHeaderPaddings={disableHeaderPaddings}
+      fitHeight={fitHeight}
+      {...props}
+      {...externalProps}
+      {...baseComponentProps}
+      {...getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })}
+    />
   );
 }
 

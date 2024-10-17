@@ -20,6 +20,7 @@ import { getErrorText, validate } from './validation';
 import styles from './styles.css.js';
 
 interface S3InContextProps {
+  referrerId: string;
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
   inputPlaceholder: string | undefined;
   resource: S3ResourceSelectorProps.Resource;
@@ -39,6 +40,7 @@ export interface S3InContextRef {
 export const S3InContext = React.forwardRef(
   (
     {
+      referrerId,
       i18nStrings,
       inputPlaceholder,
       resource,
@@ -141,7 +143,13 @@ export const S3InContext = React.forwardRef(
           </div>
           <div className={styles['layout-divider']} />
           <div>
-            <InternalButton className={styles['browse-button']} disabled={loading} formAction="none" onClick={onBrowse}>
+            <InternalButton
+              id={referrerId}
+              className={styles['browse-button']}
+              disabled={loading}
+              formAction="none"
+              onClick={onBrowse}
+            >
               {i18n('i18nStrings.inContextBrowseButton', i18nStrings?.inContextBrowseButton)}
             </InternalButton>
           </div>

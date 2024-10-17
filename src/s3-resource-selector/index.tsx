@@ -9,6 +9,7 @@ import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { S3ResourceSelectorProps } from './interfaces';
@@ -53,6 +54,7 @@ const S3ResourceSelector = React.forwardRef(
     const inContextRef = useRef<S3InContextRef>(null);
     const modalWasSubmitted = useRef<boolean>(false);
     useForwardFocus(ref, inContextRef);
+    const referrerId = useUniqueId();
     const { ariaLabelledby, ariaDescribedby } = useFormFieldContext(rest);
 
     useEffect(() => {
@@ -66,6 +68,7 @@ const S3ResourceSelector = React.forwardRef(
 
     const baseProps = getBaseProps(rest);
     const modalProps: S3ModalProps = {
+      referrerId,
       alert,
       i18nStrings,
       fetchBuckets,
@@ -98,6 +101,7 @@ const S3ResourceSelector = React.forwardRef(
         aria-label={ariaLabel}
       >
         <S3InContext
+          referrerId={referrerId}
           ref={inContextRef}
           selectableItemsTypes={selectableItemsTypes}
           i18nStrings={i18nStrings}

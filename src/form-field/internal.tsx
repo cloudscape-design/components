@@ -9,15 +9,8 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import InternalGrid from '../grid/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import {
-  DATA_ATTR_FIELD_ERROR,
-  DATA_ATTR_FIELD_LABEL,
-  getFieldSlotSeletor,
-  getSubStepAllSelector,
-  getTextFromSelector,
-} from '../internal/analytics/selectors';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL, getFieldSlotSeletor } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
@@ -120,20 +113,15 @@ export default function InternalFormField({
   __hideLabel,
   __internalRootRef = null,
   __disableGutters = false,
-  __analyticsMetadata = undefined,
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
 
   const instanceUniqueId = useUniqueId('formField');
+  const funnel = useFunnel();
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
-
-  const { funnelIdentifier, funnelInteractionId, submissionAttempt, funnelState, errorCount } = useFunnel();
-  const { stepIdentifier, stepNumber, stepNameSelector } = useFunnelStep();
-  const { subStepErrorContext, subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
-
   const showWarning = warningText && !errorText;
 
   if (warningText && errorText) {
@@ -148,6 +136,34 @@ export default function InternalFormField({
     errorText,
     showWarning ? warningText : undefined
   );
+
+  const getLabelText = () => {
+    return (slotIds.label && document.getElementById(slotIds.label)?.innerText) || '';
+  };
+
+  const getErrorText = () => {
+    return (slotIds.error && document.getElementById(slotIds.error)?.innerText) || '';
+  };
+
+  useEffect(() => {
+    if (!funnel) {
+      return;
+    }
+
+    const fieldLabel = getLabelText();
+    const fieldError = getErrorText();
+
+    // Move data attribute to common place
+    const parentSubstepElement = __internalRootRef?.current?.closest('[data-funnel-substep-id]');
+    const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id');
+    funnel?.controller?.currentStep?.substeps.forEach(substep => {
+      if (substep.id === substepId) {
+        substep.error({ errorText: fieldError, scope: { type: 'field', label: fieldLabel } });
+      }
+    });
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorText]);
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
 
@@ -171,46 +187,6 @@ export default function InternalFormField({
     [DATA_ATTR_FIELD_LABEL]: slotIds.label ? getFieldSlotSeletor(slotIds.label) : undefined,
     [DATA_ATTR_FIELD_ERROR]: slotIds.error ? getFieldSlotSeletor(slotIds.error) : undefined,
   };
-
-  useEffect(() => {
-    if (funnelInteractionId && errorText && funnelState.current !== 'complete') {
-      const stepName = getTextFromSelector(stepNameSelector);
-      const subStepName = getTextFromSelector(subStepNameSelector);
-
-      errorCount.current++;
-
-      // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
-      const errorIsVisible = (__internalRootRef?.current?.getBoundingClientRect()?.width ?? 0) > 0;
-
-      if (errorIsVisible) {
-        FunnelMetrics.funnelSubStepError({
-          funnelInteractionId,
-          funnelIdentifier,
-          subStepSelector,
-          subStepName,
-          subStepNameSelector,
-          subStepIdentifier,
-          stepNumber,
-          stepName,
-          stepNameSelector,
-          stepIdentifier,
-          subStepErrorContext,
-          fieldErrorSelector: `${getFieldSlotSeletor(slotIds.error)} .${styles.error__message}`,
-          fieldLabelSelector: getFieldSlotSeletor(slotIds.label),
-          subStepAllSelector: getSubStepAllSelector(),
-          fieldIdentifier: __analyticsMetadata?.instanceIdentifier,
-          fieldErrorContext: __analyticsMetadata?.errorContext,
-        });
-      }
-
-      return () => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        errorCount.current--;
-      };
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelInteractionId, errorText, submissionAttempt, errorCount]);
 
   return (
     <div
@@ -246,6 +222,7 @@ export default function InternalFormField({
           <FormFieldContext.Provider
             value={{
               controlId: generatedControlId,
+              getLabelText,
               ...contextValuesWithoutControlId,
             }}
           >
@@ -253,7 +230,12 @@ export default function InternalFormField({
           </FormFieldContext.Provider>
 
           {secondaryControl && (
-            <FormFieldContext.Provider value={contextValuesWithoutControlId}>
+            <FormFieldContext.Provider
+              value={{
+                getLabelText,
+                ...contextValuesWithoutControlId,
+              }}
+            >
               <div className={styles['secondary-control']}>{secondaryControl}</div>
             </FormFieldContext.Provider>
           )}

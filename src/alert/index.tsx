@@ -4,9 +4,7 @@ import React, { useEffect } from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
+import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -29,55 +27,6 @@ const Alert = React.forwardRef(
       analyticsMetadata
     );
 
-    const { funnelIdentifier, funnelInteractionId, funnelErrorContext, submissionAttempt, funnelState, errorCount } =
-      useFunnel();
-    const { stepNumber, stepNameSelector, stepIdentifier } = useFunnelStep();
-    const { subStepSelector, subStepNameSelector, subStepIdentifier, subStepErrorContext } = useFunnelSubStep();
-
-    useEffect(() => {
-      if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
-        const stepName = getTextFromSelector(stepNameSelector);
-        const subStepName = getTextFromSelector(subStepNameSelector);
-
-        errorCount.current++;
-
-        // We don't want to report an error if it is hidden, e.g. inside an Expandable Section.
-        const errorIsVisible = (baseComponentProps.__internalRootRef.current?.getBoundingClientRect()?.width ?? 0) > 0;
-
-        if (errorIsVisible) {
-          if (subStepSelector) {
-            FunnelMetrics.funnelSubStepError({
-              funnelInteractionId,
-              funnelIdentifier,
-              stepIdentifier,
-              subStepSelector,
-              subStepName,
-              subStepNameSelector,
-              stepNumber,
-              stepName,
-              stepNameSelector,
-              subStepAllSelector: getSubStepAllSelector(),
-              subStepIdentifier,
-              subStepErrorContext,
-            });
-          } else {
-            FunnelMetrics.funnelError({
-              funnelIdentifier,
-              funnelInteractionId,
-              funnelErrorContext,
-            });
-          }
-        }
-
-        return () => {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          errorCount.current--;
-        };
-      }
-
-      // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [funnelInteractionId, visible, submissionAttempt, errorCount]);
-
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataAlertComponent = {
       name: 'awsui.Alert',
       label: `.${analyticsSelectors.header}`,
@@ -85,6 +34,34 @@ const Alert = React.forwardRef(
         type,
       },
     };
+
+    const funnel = useFunnel();
+    useEffect(() => {
+      if (!funnel || !funnel.controller) {
+        return;
+      }
+
+      let errorText = '';
+      if (type === 'error') {
+        errorText =
+          baseComponentProps.__internalRootRef.current?.querySelector<HTMLDivElement>(`.${analyticsSelectors.content}`)
+            ?.innerText || '';
+      }
+
+      const parentSubstepElement = baseComponentProps.__internalRootRef.current?.closest('[data-funnel-substep-id]'); // TODO: Move to helper function
+      if (parentSubstepElement) {
+        const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id'); // TODO: Move selectors to own file
+        funnel?.controller?.currentStep?.substeps.forEach(substep => {
+          if (substep.id === substepId) {
+            funnel?.controller?.currentStep?.currentSubstep?.error({ errorText, scope: { type: 'funnel-substep' } });
+          }
+        });
+      } else if (funnel?.controller?.currentStep) {
+        funnel?.controller?.currentStep?.error({ errorText, scope: { type: 'funnel-step' } });
+      } else {
+        funnel?.controller?.error({ errorText, scope: { type: 'funnel' } });
+      }
+    }, [funnel, type, baseComponentProps.__internalRootRef]);
 
     return (
       <InternalAlert

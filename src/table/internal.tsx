@@ -10,8 +10,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalContainer, { InternalContainerProps } from '../container/internal';
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import InternalContainer from '../container/internal';
 import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
@@ -61,6 +60,7 @@ import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinition
 
 import buttonStyles from '../button/styles.css.js';
 import headerStyles from '../header/styles.css.js';
+import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 const GRID_NAVIGATION_PAGE_SIZE = 10;
@@ -68,22 +68,7 @@ const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
 type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
-  InternalBaseComponentProps & {
-    __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
-  };
-
-export const InternalTableAsSubstep = React.forwardRef(
-  <T,>(props: InternalTableProps<T>, ref: React.Ref<TableProps.Ref>) => {
-    const { funnelSubStepProps } = useFunnelSubStep();
-
-    const tableProps: InternalTableProps<T> = {
-      ...props,
-      __funnelSubStepProps: funnelSubStepProps,
-    };
-
-    return <InternalTable {...tableProps} ref={ref} />;
-  }
-) as TableForwardRefType;
+  InternalBaseComponentProps;
 
 const InternalTable = React.forwardRef(
   <T,>(
@@ -133,7 +118,6 @@ const InternalTable = React.forwardRef(
       renderLoaderPending,
       renderLoaderLoading,
       renderLoaderError,
-      __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -413,7 +397,6 @@ const InternalTable = React.forwardRef(
               {...tableInteractionAttributes}
               __internalRootRef={__internalRootRef}
               className={clsx(baseProps.className, styles.root)}
-              __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
               header={
                 <>
@@ -421,7 +404,11 @@ const InternalTable = React.forwardRef(
                     <div>
                       <div
                         ref={toolsHeaderWrapper}
-                        className={clsx(styles['header-controls'], styles[`variant-${computedVariant}`])}
+                        className={clsx(
+                          analyticsSelectors.header,
+                          styles['header-controls'],
+                          styles[`variant-${computedVariant}`]
+                        )}
                       >
                         <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                           <ToolsHeader

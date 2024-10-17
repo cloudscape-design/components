@@ -7,6 +7,7 @@ import { createHashHistory } from 'history';
 
 import { applyDensity, applyMode, disableMotion } from '@cloudscape-design/global-styles';
 
+import { useFunnelLogger } from '../analytics/hooks/use-funnel-logger';
 import AppContext, { AppContextProvider, parseQuery } from './app-context';
 import Header from './components/header';
 import IndexPage from './components/index-page';
@@ -76,6 +77,8 @@ function App() {
       document.body.classList.remove(styles.macos);
     }
   }, [isMacOS]);
+
+  useFunnelLogger();
 
   if (!mode) {
     return <Redirect to="/light/" />;

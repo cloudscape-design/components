@@ -8,14 +8,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import {
-  DATA_ATTR_FUNNEL_VALUE,
-  getFunnelValueSelector,
-  getSubStepAllSelector,
-  getTextFromSelector,
-} from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_VALUE } from '../internal/analytics/selectors';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
@@ -107,10 +100,6 @@ export const InternalButton = React.forwardRef(
     const buttonContext = useButtonContext();
 
     const uniqueId = useUniqueId('button');
-    const { funnelInteractionId } = useFunnel();
-    const { stepNumber, stepNameSelector } = useFunnelStep();
-    const { subStepSelector, subStepNameSelector } = useFunnelSubStep();
-
     const performanceMarkAttributes = usePerformanceMarks(
       'primaryButton',
       variant === 'primary' && __emitPerformanceMarks,
@@ -124,6 +113,10 @@ export const InternalButton = React.forwardRef(
     );
     useModalContextLoadingButtonComponent(variant === 'primary', loading);
 
+    useEffect(() => {
+      buttonContext?.onLoadingChange?.({ value: loading, variant });
+    }, [buttonContext, loading, variant]);
+
     const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
 
     const handleClick = (event: React.MouseEvent) => {
@@ -134,27 +127,12 @@ export const InternalButton = React.forwardRef(
       if (isAnchor && isPlainLeftClick(event)) {
         fireCancelableEvent(onFollow, { href, target }, event);
 
-        if ((iconName === 'external' || target === '_blank') && funnelInteractionId) {
-          const stepName = getTextFromSelector(stepNameSelector);
-          const subStepName = getTextFromSelector(subStepNameSelector);
-
-          FunnelMetrics.externalLinkInteracted({
-            funnelInteractionId,
-            stepNumber,
-            stepName,
-            stepNameSelector,
-            subStepSelector,
-            subStepName,
-            subStepNameSelector,
-            elementSelector: getFunnelValueSelector(uniqueId),
-            subStepAllSelector: getSubStepAllSelector(),
-          });
-        }
+        // TOOD: Handle external link interaction
       }
 
       const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
       fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
-      buttonContext.onClick({ variant });
+      buttonContext?.onClick?.({ variant });
     };
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
@@ -225,17 +203,6 @@ export const InternalButton = React.forwardRef(
         <RightIcon {...iconProps} />
       </>
     );
-
-    const { loadingButtonCount } = useFunnel();
-    useEffect(() => {
-      if (loading) {
-        loadingButtonCount.current++;
-        return () => {
-          // eslint-disable-next-line react-hooks/exhaustive-deps
-          loadingButtonCount.current--;
-        };
-      }
-    }, [loading, loadingButtonCount]);
 
     const disabledReasonProps = {
       onFocus: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
