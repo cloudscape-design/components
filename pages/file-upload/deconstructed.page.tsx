@@ -1,62 +1,25 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 
-import { Box, Checkbox, FileInput, FileTokenGroup, FileUploadProps, FormField, Header, PromptInput } from '~components';
+import {
+  Box,
+  Checkbox,
+  FileDropzone,
+  FileInput,
+  FileTokenGroup,
+  FileUploadProps,
+  FormField,
+  Header,
+  Icon,
+  PromptInput,
+} from '~components';
 import SpaceBetween from '~components/space-between';
 
 import { useContractFilesForm } from './page-helpers';
 import { i18nStrings } from './shared';
 import { useDropzoneVisible } from './use-dropzone-visible';
 import { validateContractFiles } from './validations';
-
-import styles from './styles.scss';
-
-interface DropzoneProps {
-  onChange: (files: File[]) => void;
-  children: React.ReactNode;
-}
-
-export function Dropzone({ onChange, children }: DropzoneProps) {
-  const [isDropzoneHovered, setDropzoneHovered] = useState(false);
-
-  const onDragOver = (event: React.DragEvent) => {
-    event.preventDefault();
-
-    if (event.dataTransfer) {
-      setDropzoneHovered(true);
-      event.dataTransfer.dropEffect = 'copy';
-    }
-  };
-
-  const onDragLeave = (event: React.DragEvent) => {
-    event.preventDefault();
-    setDropzoneHovered(false);
-
-    if (event.dataTransfer) {
-      event.dataTransfer.dropEffect = 'none';
-    }
-  };
-
-  const onDrop = (event: React.DragEvent) => {
-    event.preventDefault();
-    setDropzoneHovered(false);
-
-    onChange(Array.from(event.dataTransfer.files));
-  };
-
-  return (
-    <div
-      className={clsx(styles.dropzone, isDropzoneHovered && styles['dropzone-hovered'])}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
-    >
-      <span>{children}</span>
-    </div>
-  );
-}
 
 export default function FileUploadScenarioStandalone() {
   const contractsRef = useRef<FileUploadProps.Ref>(null);
@@ -66,7 +29,7 @@ export default function FileUploadScenarioStandalone() {
   const [verticalAlign, setVerticalAlign] = useState(false);
   const formState = useContractFilesForm();
 
-  const isDropzoneVisible = useDropzoneVisible(acceptMultiple);
+  const isFileBeingDragged = useDropzoneVisible(acceptMultiple);
 
   // const contractsValidationErrors = validateContractFiles(formState.files);
   // const contractsErrors = contractsValidationErrors ?? formState.fileErrors;
@@ -103,36 +66,38 @@ export default function FileUploadScenarioStandalone() {
         </Checkbox>
 
         <FormField>
-          {isDropzoneVisible ? (
-            <Dropzone onChange={handleFilesChange}>dropping files</Dropzone>
-          ) : (
-            <PromptInput
-              ariaLabel="Chat input"
-              actionButtonIconName="send"
-              actionButtonAriaLabel="Submit prompt"
-              value={textareaValue}
-              onChange={(event: any) => setTextareaValue(event.detail.value)}
-              onAction={(event: any) => window.alert(`Submitted the following: ${event.detail.value}`)}
-              // onFilesChange={(event: any) => handleFilesChange(event.detail.value)}
-              // files={formState.files}
-              // multiple={acceptMultiple}
-              placeholder="Ask a question"
-              maxRows={4}
-              disableSecondaryActionsPaddings={true}
-              secondaryActions={
-                <Box padding={{ left: 'xxs', top: 'xs' }}>
-                  <FileInput
-                    variant="icon"
-                    ref={contractsRef}
-                    multiple={acceptMultiple}
-                    value={formState.files}
-                    onChange={(event: any) => handleFilesChange(event.detail.value)}
-                    i18nStrings={i18nStrings}
-                  />
-                </Box>
-              }
-              secondaryContent={
-                formState.files.length > 0 ? (
+          <PromptInput
+            ariaLabel="Chat input"
+            actionButtonIconName="send"
+            actionButtonAriaLabel="Submit prompt"
+            value={textareaValue}
+            onChange={(event: any) => setTextareaValue(event.detail.value)}
+            onAction={(event: any) => window.alert(`Submitted the following: ${event.detail.value}`)}
+            placeholder="Ask a question"
+            maxRows={4}
+            disableSecondaryActionsPaddings={true}
+            secondaryActions={
+              <Box padding={{ left: 'xxs', top: 'xs' }}>
+                <FileInput
+                  variant="icon"
+                  ref={contractsRef}
+                  multiple={acceptMultiple}
+                  value={formState.files}
+                  onChange={(event: any) => handleFilesChange(event.detail.value)}
+                  i18nStrings={i18nStrings}
+                />
+              </Box>
+            }
+            secondaryContent={
+              isFileBeingDragged ? (
+                <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
+                  <SpaceBetween size="xs" alignItems="center">
+                    <Icon name="upload" />
+                    Drop files here
+                  </SpaceBetween>
+                </FileDropzone>
+              ) : formState.files.length > 0 ? (
+                <>
                   <FileTokenGroup
                     alignment={verticalAlign ? 'vertical' : 'horizontal'}
                     items={formState.files.map(file => ({
@@ -145,12 +110,11 @@ export default function FileUploadScenarioStandalone() {
                     showFileThumbnail={true}
                     i18nStrings={i18nStrings}
                     onDismiss={onDismiss}
-                    limit={2}
                   />
-                ) : undefined
-              }
-            />
-          )}
+                </>
+              ) : undefined
+            }
+          />
         </FormField>
 
         <FormField
