@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useContext, useState } from 'react';
+import React, { ReactNode, useContext, useState } from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
+import flattenChildren from 'react-keyed-flatten-children';
 
 import {
   Box,
@@ -23,6 +24,12 @@ import ScreenshotArea from '../utils/screenshot-area';
 type PageContext = React.Context<
   AppContextType<{ loading: boolean; hidden: boolean; stackItems: boolean; type: FlashbarProps.Type }>
 >;
+
+const nodeAsString = (node: ReactNode) =>
+  flattenChildren(node)
+    .map(node => (typeof node === 'object' ? node.props.children : node))
+    .filter(node => typeof node === 'string')
+    .join('');
 
 awsuiPlugins.flashContent.registerContentReplacer({
   id: 'awsui/flashbar-test-action',
@@ -62,9 +69,31 @@ awsuiPlugins.flashContent.registerContentReplacer({
       },
     };
   },
+  initialCheck(context) {
+    return context.type === 'error' && !!nodeAsString(context.content).match('Access denied');
+  },
 });
 
 const messageTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
+
+const content = (
+  <>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+    <p>There was an error: Access denied because of XYZ</p>
+  </>
+);
 
 export default function () {
   const {
@@ -117,7 +146,7 @@ export default function () {
                   type,
                   statusIconAriaLabel: type,
                   header: 'Header',
-                  content: loading ? 'Loading...' : 'There was an error: Access denied because of XYZ',
+                  content: loading ? 'Loading...' : content,
                   action: <Button>Action</Button>,
                 },
               ]}
