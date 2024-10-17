@@ -55,7 +55,6 @@ interface AppLayoutToolbarImplementationProps {
 
 // support compatibility with changes before this commit: cf0f2b0755af1a28ac7c3c9476418a7ea807d0fd
 function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutInternals): ToolbarProps {
-  console.log({ tbp: toolbarProps.hasNavigation, lp: !!legacyProps.navigation });
   return {
     ariaLabels: toolbarProps.ariaLabels ?? legacyProps.ariaLabels,
     activeDrawerId: toolbarProps.activeDrawerId ?? legacyProps.activeDrawer?.id,
@@ -66,8 +65,7 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     globalDrawers: toolbarProps.globalDrawers ?? legacyProps.globalDrawers,
     activeGlobalDrawersIds: toolbarProps.activeGlobalDrawersIds ?? legacyProps.activeGlobalDrawersIds,
     onActiveGlobalDrawersChange: toolbarProps.onActiveGlobalDrawersChange ?? legacyProps.onActiveGlobalDrawersChange,
-    hasNavigation:
-      typeof toolbarProps.hasNavigation === 'boolean' ? toolbarProps.hasNavigation : !!legacyProps.navigation,
+    hasNavigation: toolbarProps.hasNavigation ?? !!legacyProps.navigation,
     navigationOpen: toolbarProps.navigationOpen ?? legacyProps.navigationOpen,
     navigationFocusRef: toolbarProps.navigationFocusRef ?? legacyProps.navigationFocusControl?.refs.toggle,
     onNavigationToggle: toolbarProps.onNavigationToggle ?? legacyProps.onNavigationToggle,
