@@ -116,6 +116,7 @@ describe('mergeMultiAppLayoutProps', () => {
     const result = mergeMultiAppLayoutProps(ownProps, additionalPropsBase);
 
     expect(result).toEqual({
+      //asserting new aria labels overwrite existing yet preserve others
       ariaLabels: {
         navigation: 'New Navigation',
         drawers: 'Drawers',
@@ -135,22 +136,13 @@ describe('mergeMultiAppLayoutProps', () => {
       },
       splitPanelFocusRef: ownProps.splitPanelFocusRef,
       onSplitPanelToggle: mockParentSplitPanelToggle,
-      activeDrawerId: 'drawer2',
-      drawers: [
-        {
-          id: 'drawer2',
-          ariaLabels: { drawerName: 'Drawer 2' },
-          content: <div>Drawer 2 Content</div>,
-        },
-      ],
+      //asserting the ownProps drawer is not overwritten
+      activeDrawerId: ownProps.activeDrawerId,
+      drawers: ownProps.drawers,
       drawersFocusRef: ownProps.drawersFocusRef,
       onActiveDrawerChange: mockParentActiveDrawerChange,
     });
   });
-
-  //other assertions
-  //additional props arial labels overrite initial
-  //hasNavigation vales
 
   it('should return null if no fields are defined, except ariaLabels', () => {
     const result = mergeMultiAppLayoutProps({ ariaLabels: {} } as SharedMultiAppLayoutProps, []);
@@ -186,6 +178,25 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
     firstLayout.findNavigationToggle().click();
     expect(firstLayout.findOpenNavigationPanel()).toBeTruthy();
+  });
+
+  test('merges navigation from two instances with navigation hidden in primary', async () => {
+    const { firstLayout, secondLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        navigation="testing nav"
+        navigationHide={true}
+        toolsHide={true}
+        content={
+          <AppLayout {...defaultAppLayoutProps} data-testid="second" navigationHide={true} tools="testing tools" />
+        }
+      />
+    );
+    expect(firstLayout.findNavigation()).toBeFalsy();
+    expect(firstLayout.findNavigationToggle()).toBeFalsy();
+    expect(secondLayout.findNavigation()).toBeFalsy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
   });
 
   test('merges tools from two instances', async () => {
