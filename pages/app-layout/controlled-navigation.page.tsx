@@ -57,14 +57,14 @@ export const DEMO_CONTENT = (
 export default function () {
   const [resetNeeded, setResetNeeded] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
-  const [navigationHide, setNavigationHide] = useState(false);
+  const [navigationHide, setNavigationHide] = useState(true);
   const [navigationEmpty, setNavigationEmpty] = useState(true);
 
   const Content = (
     <>
       <div style={{ marginBottom: '1rem' }}>
         <Header variant="h1" description="Basic demo with split panel">
-          Demo page
+          AppLayout where NavigationHide is {navigationHide.toString()}
         </Header>
       </div>
 
