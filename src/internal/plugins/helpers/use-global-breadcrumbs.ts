@@ -1,17 +1,22 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
 import { useAppLayoutToolbarEnabled } from '../../../app-layout/utils/feature-flags';
+import { BreadcrumbsSlotContext } from '../../../app-layout/visual-refresh-toolbar/contexts';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
 
 function useSetGlobalBreadcrumbsImplementation(props: BreadcrumbGroupProps<any>) {
+  const { isInToolbar } = useContext(BreadcrumbsSlotContext) ?? {};
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
   const [registered, setRegistered] = useState(false);
 
   useEffect(() => {
+    if (isInToolbar) {
+      return;
+    }
     const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, () => setRegistered(true));
     registrationRef.current = registration;
 
@@ -20,7 +25,7 @@ function useSetGlobalBreadcrumbsImplementation(props: BreadcrumbGroupProps<any>)
     };
     // subsequent prop changes are handled by another effect
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isInToolbar]);
 
   useLayoutEffect(() => {
     registrationRef.current?.update(props);
