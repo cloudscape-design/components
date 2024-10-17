@@ -204,7 +204,7 @@ describe('Visual refresh toolbar only', () => {
       await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
       await expect(page.hasHorizontalScroll()).resolves.toBe(false);
 
-      await page.setWindowSize({ ...viewports.desktop, width: 1200 });
+      await page.setWindowSize({ ...viewports.desktop, width: 1185 });
       // navigation panel closes first
       await expect(page.isClickable(wrapper.findNavigation().toSelector())).resolves.toBe(false);
       await expect(page.isClickable(findDrawerById(wrapper, 'circle')!.toSelector())).resolves.toBe(true);

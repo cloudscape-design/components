@@ -10,7 +10,6 @@ import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
-import { throttle } from '../../internal/utils/throttle';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
@@ -112,14 +111,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       //   and compare a given number with the new drawer id min size
 
       // the total size of all global drawers resized to their min size
-      let totalActiveDrawersMinSize = activeGlobalDrawersIds
-        .map(
-          activeDrawerId => combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE
-        )
-        .reduce((acc, curr) => acc + curr, 0);
-      if (activeDrawer) {
-        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
-      }
+      const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
 
       const availableSpaceForNewDrawer = resizableSpaceAvailable - totalActiveDrawersMinSize;
       if (availableSpaceForNewDrawer >= newDrawerSize) {
@@ -154,6 +146,23 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       toolsWidth,
       onToolsToggle,
     });
+
+    const getActiveDrawersTotalMinSize = useCallback(() => {
+      const combinedDrawers = [...(drawers || []), ...globalDrawers];
+      let totalActiveDrawersMinSize = activeGlobalDrawersIds
+        .map(activeDrawerId =>
+          Math.min(
+            combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE,
+            MIN_DRAWER_SIZE
+          )
+        )
+        .reduce((acc, curr) => acc + curr, 0);
+      if (activeDrawer) {
+        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+      }
+
+      return totalActiveDrawersMinSize;
+    }, [activeDrawer, activeGlobalDrawersIds, drawers, globalDrawers]);
 
     const onActiveDrawerChangeHandler = (drawerId: string | null) => {
       onActiveDrawerChange(drawerId);
@@ -377,28 +386,35 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile]);
 
-    const onPageResize = useCallback(() => {
-      const hasHorizontalScroll = document.documentElement.scrollWidth - document.documentElement.clientWidth > 0;
-      if (!hasHorizontalScroll) {
-        return;
-      }
-
-      if (navigationOpen) {
-        onNavigationToggle(false);
-        return;
-      }
-
-      closeFirstDrawer();
-    }, [closeFirstDrawer, navigationOpen, onNavigationToggle]);
-
     useEffect(() => {
       if (isMobile) {
         return;
       }
-      const throttledOnPageResize = throttle(onPageResize, 500);
-      window.addEventListener('resize', throttledOnPageResize);
-      return () => window.removeEventListener('resize', throttledOnPageResize);
-    }, [isMobile, onPageResize]);
+
+      const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
+      const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
+      // collapsed content width is $space-layout-content-horizontal * 2 = 48px
+      const minContentVisibleWidth = 48;
+
+      const scrollWidth = activeNavigationWidth + minContentVisibleWidth + totalActiveDrawersMinSize;
+      const hasHorizontalScroll = scrollWidth > placement.inlineSize;
+      if (hasHorizontalScroll) {
+        if (navigationOpen) {
+          onNavigationToggle(false);
+          return;
+        }
+
+        closeFirstDrawer();
+      }
+    }, [
+      closeFirstDrawer,
+      getActiveDrawersTotalMinSize,
+      isMobile,
+      navigationOpen,
+      navigationWidth,
+      onNavigationToggle,
+      placement.inlineSize,
+    ]);
 
     return (
       <>

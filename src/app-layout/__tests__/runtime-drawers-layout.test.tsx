@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
-import React from 'react';
+import React, { RefObject } from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
@@ -10,6 +10,7 @@ import { computeHorizontalLayout } from '../../../lib/components/app-layout/visu
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
+import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -33,6 +34,22 @@ jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/compute-lay
       totalActiveGlobalDrawersSize: 0,
       resizableSpaceAvailable: 1500,
     }),
+  };
+});
+
+jest.mock('../../../lib/components/app-layout/utils/use-app-layout-placement', () => {
+  return {
+    ...jest.requireActual('../../../lib/components/app-layout/utils/use-app-layout-placement'),
+    useAppLayoutPlacement: jest.fn().mockReturnValue([
+      { current: null } as RefObject<HTMLElement>,
+      {
+        insetInlineStart: 0,
+        insetInlineEnd: 0,
+        inlineSize: Infinity,
+        insetBlockStart: 0,
+        insetBlockEnd: 0,
+      },
+    ]),
   };
 });
 
@@ -197,6 +214,17 @@ describe('toolbar mode only features', () => {
     });
 
     test('should prevent the horizontal page scroll from appearing during resize', async () => {
+      const dummyRef = { current: null } as RefObject<HTMLElement>;
+      jest.mocked(useAppLayoutPlacement).mockReturnValue([
+        dummyRef,
+        {
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          inlineSize: 900,
+          insetBlockStart: 0,
+          insetBlockEnd: 0,
+        },
+      ]);
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'global-drawer-1',
@@ -209,50 +237,24 @@ describe('toolbar mode only features', () => {
         type: 'global',
         mountContent: container => (container.textContent = 'global drawer content 2'),
       });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-3',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 3'),
+      });
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       wrapper.findDrawerTriggerById('security')!.click();
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
       wrapper.findDrawerTriggerById('global-drawer-2')!.click();
-      expect(wrapper.findNavigation().getElement()).toHaveAttribute('aria-hidden', 'false');
-      expect(wrapper.findActiveDrawer()).toBeTruthy();
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
-
-      act(() => {
-        Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
-          value: 1210,
-          writable: true,
-          configurable: true,
-        });
-        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
-          value: 1200,
-          writable: true,
-          configurable: true,
-        });
-        window.dispatchEvent(new Event('resize'));
-      });
-
+      wrapper.findDrawerTriggerById('global-drawer-3')!.click();
       expect(wrapper.findNavigation().getElement()).toHaveAttribute('aria-hidden', 'true');
-
-      act(() => {
-        Object.defineProperty(HTMLElement.prototype, 'scrollWidth', {
-          value: 910,
-          writable: true,
-          configurable: true,
-        });
-        Object.defineProperty(HTMLElement.prototype, 'clientWidth', {
-          value: 900,
-          writable: true,
-          configurable: true,
-        });
-        window.dispatchEvent(new Event('resize'));
-      });
-
       expect(wrapper.findActiveDrawer()).toBeTruthy();
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeFalsy();
       expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-3')!.isActive()).toBe(true);
     });
   });
 });
