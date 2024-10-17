@@ -1,13 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
+import { AsyncResponsePage } from '../../../../__integ__/page-objects/async-response-page';
 
 type ComponentId = 'autosuggest' | 'multiselect' | 'select';
 
-export class DropdownPageObject extends BasePageObject {
+export class DropdownPageObject extends AsyncResponsePage {
   getWrapperAndTrigger(componentId: ComponentId) {
     const wrapper = createWrapper();
     let componentWrapper;
@@ -55,7 +55,7 @@ function setupTest(
 ) {
   return useBrowser({ width: pageWidth, height: 1000 }, async browser => {
     await browser.url(
-      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&triggerWidth=${triggerWidth}px&asyncLoading=${asyncLoading}`
+      `#/light/dropdown/width?component=${componentId}&expandToViewport=${expandToViewport}&triggerWidth=${triggerWidth}px&asyncLoading=${asyncLoading}&manualServerMock=${asyncLoading}`
     );
     const page = new DropdownPageObject(browser);
     await page.waitForVisible(page.getWrapperAndTrigger(componentId).wrapper.toSelector());
@@ -148,9 +148,8 @@ describe('Dropdown width', () => {
         });
         expect(dropdownBox.left + dropdownBox.width).toBeLessThanOrEqual(pageWidth);
         await expect(page.getText(dropdownSelector)).resolves.toContain('Loading');
-        await page.waitUntil(async () => (await page.getText(dropdownSelector)).includes('A very'), {
-          timeout: 1000,
-        });
+        await page.flushResponse();
+        await expect(page.getText(dropdownSelector)).resolves.toContain('A very');
         const newBox = await page.getBoundingBox(dropdownSelector);
         expect(newBox.left + newBox.width).toBeLessThanOrEqual(pageWidth);
       }
