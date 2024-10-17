@@ -24,3 +24,16 @@ export function getSortedOptions({
     }))
     .filter(Boolean);
 }
+
+export function getFilteredOptions(
+  options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>,
+  filterText: string
+) {
+  filterText = filterText.trim().toLowerCase();
+
+  if (!filterText) {
+    return options;
+  }
+
+  return options.filter(option => option.label.toLowerCase().trim().includes(filterText));
+}

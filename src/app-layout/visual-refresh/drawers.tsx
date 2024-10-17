@@ -300,7 +300,6 @@ function DesktopTriggers() {
             selected={hasSplitPanel && isSplitPanelOpen}
             ref={splitPanelRefs.toggle}
             highContrastHeader={headerVariant === 'high-contrast'}
-            testId="awsui-app-layout-trigger-slide-panel"
           />
         )}
       </div>

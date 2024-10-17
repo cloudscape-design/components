@@ -85,7 +85,7 @@ function InternalFileUpload(
   }
 
   const handleFilesChange = (newFiles: File[]) => {
-    const newValue = multiple ? [...value, ...newFiles] : newFiles[0] ? newFiles : [...value];
+    const newValue = multiple ? [...value, ...newFiles] : newFiles[0] ? newFiles.slice(0, 1) : [...value];
     fireNonCancelableEvent(onChange, { value: newValue });
   };
 
