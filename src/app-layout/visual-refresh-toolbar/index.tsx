@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -74,11 +74,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
 
-    const onNavigationToggle = (open: boolean) => {
-      navigationFocusControl.setFocus();
-      fireNonCancelableEvent(onNavigationChange, { open });
-    };
-
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
       controlledProp: 'toolsOpen',
@@ -116,14 +111,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       //   and compare a given number with the new drawer id min size
 
       // the total size of all global drawers resized to their min size
-      let totalActiveDrawersMinSize = activeGlobalDrawersIds
-        .map(
-          activeDrawerId => combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE
-        )
-        .reduce((acc, curr) => acc + curr, 0);
-      if (activeDrawer) {
-        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
-      }
+      const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
 
       const availableSpaceForNewDrawer = resizableSpaceAvailable - totalActiveDrawersMinSize;
       if (availableSpaceForNewDrawer >= newDrawerSize) {
@@ -131,12 +119,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
 
       // now we made sure we cannot accommodate the new drawer with existing ones
-      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
-      if (activeDrawer && activeDrawer?.id === drawerToClose) {
-        onActiveDrawerChange(null);
-      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
-        onActiveGlobalDrawersChange(drawerToClose);
-      }
+      closeFirstDrawer();
     };
 
     const {
@@ -163,6 +146,23 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       toolsWidth,
       onToolsToggle,
     });
+
+    const getActiveDrawersTotalMinSize = useCallback(() => {
+      const combinedDrawers = [...(drawers || []), ...globalDrawers];
+      let totalActiveDrawersMinSize = activeGlobalDrawersIds
+        .map(activeDrawerId =>
+          Math.min(
+            combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE,
+            MIN_DRAWER_SIZE
+          )
+        )
+        .reduce((acc, curr) => acc + curr, 0);
+      if (activeDrawer) {
+        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+      }
+
+      return totalActiveDrawersMinSize;
+    }, [activeDrawer, activeGlobalDrawersIds, drawers, globalDrawers]);
 
     const onActiveDrawerChangeHandler = (drawerId: string | null) => {
       onActiveDrawerChange(drawerId);
@@ -226,6 +226,14 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
+
+    const onNavigationToggle = useCallback(
+      (open: boolean) => {
+        navigationFocusControl.setFocus();
+        fireNonCancelableEvent(onNavigationChange, { open });
+      },
+      [navigationFocusControl, onNavigationChange]
+    );
 
     useImperativeHandle(forwardRef, () => ({
       closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
@@ -361,6 +369,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       refs: splitPanelFocusControl.refs,
     };
 
+    const closeFirstDrawer = useCallback(() => {
+      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      if (activeDrawer && activeDrawer?.id === drawerToClose) {
+        onActiveDrawerChange(null);
+      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
+        onActiveGlobalDrawersChange(drawerToClose);
+      }
+    }, [activeDrawer, activeGlobalDrawersIds, drawersOpenQueue, onActiveDrawerChange, onActiveGlobalDrawersChange]);
+
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
@@ -368,6 +385,36 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile]);
+
+    useEffect(() => {
+      if (isMobile) {
+        return;
+      }
+
+      const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
+      const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
+      // collapsed content width is $space-layout-content-horizontal * 2 = 48px
+      const minContentVisibleWidth = 48;
+
+      const scrollWidth = activeNavigationWidth + minContentVisibleWidth + totalActiveDrawersMinSize;
+      const hasHorizontalScroll = scrollWidth > placement.inlineSize;
+      if (hasHorizontalScroll) {
+        if (navigationOpen) {
+          onNavigationToggle(false);
+          return;
+        }
+
+        closeFirstDrawer();
+      }
+    }, [
+      closeFirstDrawer,
+      getActiveDrawersTotalMinSize,
+      isMobile,
+      navigationOpen,
+      navigationWidth,
+      onNavigationToggle,
+      placement.inlineSize,
+    ]);
 
     return (
       <>
