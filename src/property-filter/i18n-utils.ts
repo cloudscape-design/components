@@ -64,7 +64,10 @@ export function usePropertyFilterI18n(def: I18nStrings = {}): I18nStringsInterna
     ) ?? (token => `${token.propertyLabel} ${token.operator} ${token.value}`);
 
   function toFormatted(token: InternalToken): FormattedToken {
-    const valueFormatter = token.property?.getValueFormatter(token.operator);
+    let valueFormatter = token.property?.getValueFormatter(token.operator);
+    if (!valueFormatter && token.property?.getTokenType(token.operator) === 'enum') {
+      valueFormatter = value => (Array.isArray(value) ? value.join(', ') : value);
+    }
     const propertyLabel = token.property ? token.property.propertyLabel : allPropertiesLabel ?? '';
     const tokenValue = valueFormatter ? valueFormatter(token.value) : token.value;
     return { propertyKey: token.property?.propertyKey, propertyLabel, operator: token.operator, value: tokenValue };

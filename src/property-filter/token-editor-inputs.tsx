@@ -6,6 +6,7 @@ import React from 'react';
 import InternalAutosuggest from '../autosuggest/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { NonCancelableEventHandler } from '../internal/events/index.js';
+import InternalMultiselect from '../multiselect/internal.js';
 import { SelectProps } from '../select/interfaces.js';
 import InternalSelect from '../select/internal.js';
 import { getAllowedOperators, getPropertySuggestions } from './controller.js';
@@ -19,6 +20,8 @@ import {
   LoadItemsDetail,
 } from './interfaces.js';
 import { useLoadItems } from './use-load-items.js';
+
+import styles from './styles.css.js';
 
 interface PropertyInputProps {
   asyncProps: null | DropdownStatusProps;
@@ -122,14 +125,27 @@ interface ValueInputProps {
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStringsInternal;
-  onChangeValue: (value: string) => void;
+  onChangeValue: (value: unknown) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   operator: undefined | ComparisonOperator;
   property: null | InternalFilteringProperty;
-  value: undefined | string;
+  value: unknown;
 }
 
-export function ValueInput({
+export function ValueInput(props: ValueInputProps) {
+  const { property, operator, value, onChangeValue } = props;
+  const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
+
+  if (OperatorForm) {
+    return <OperatorForm value={value} onChange={onChangeValue} operator={operator} />;
+  }
+  if (property && operator && property.getTokenType(operator) === 'enum') {
+    return <ValueInputEnum {...props} property={property} operator={operator} />;
+  }
+  return <ValueInputAuto {...props} />;
+}
+
+function ValueInputAuto({
   property,
   operator,
   value,
@@ -145,17 +161,14 @@ export function ValueInput({
         .map(({ label, value }) => ({ label, value }))
     : [];
 
-  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty, value, operator);
+  const valueFilter = typeof value === 'string' ? value : '';
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property?.externalProperty, valueFilter, operator);
   const asyncValueAutosuggestProps = property?.propertyKey
     ? { ...valueAutosuggestHandlers, ...asyncProps }
     : { empty: asyncProps.empty };
   const [matchedOption] = valueOptions.filter(option => option.value === value);
 
-  const OperatorForm = property?.propertyKey && operator && property?.getValueFormRenderer(operator);
-
-  return OperatorForm ? (
-    <OperatorForm value={value} onChange={onChangeValue} operator={operator} />
-  ) : (
+  return (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
       value={matchedOption?.label ?? value ?? ''}
@@ -166,5 +179,44 @@ export function ValueInput({
       {...asyncValueAutosuggestProps}
       virtualScroll={true}
     />
+  );
+}
+
+interface ValueInputPropsEnum extends ValueInputProps {
+  property: InternalFilteringProperty;
+  operator: ComparisonOperator;
+}
+
+function ValueInputEnum({
+  property,
+  operator,
+  value: unknownValue,
+  onChangeValue,
+  asyncProps,
+  filteringOptions,
+  onLoadItems,
+}: ValueInputPropsEnum) {
+  const valueOptions = filteringOptions
+    .filter(option => option.property?.propertyKey === property.propertyKey)
+    .map(({ label, value }) => ({ label, value }));
+  const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property.externalProperty, undefined, operator);
+  const asyncValueAutosuggestProps = { statusType: 'finished' as const, ...valueAutosuggestHandlers, ...asyncProps };
+  const value = Array.isArray(unknownValue) ? unknownValue : [unknownValue];
+  const selectedOptions = valueOptions.filter(option => value.includes(option.value));
+  return (
+    <div className={styles['token-editor-multiselect-wrapper']}>
+      <div className={styles['token-editor-multiselect-wrapper-inner']}>
+        <InternalMultiselect
+          filteringType="auto"
+          selectedOptions={selectedOptions}
+          onChange={e => onChangeValue(e.detail.selectedOptions.map(o => o.value))}
+          options={valueOptions.length > 0 ? [{ options: valueOptions, label: property.groupValuesLabel }] : []}
+          {...asyncValueAutosuggestProps}
+          inlineTokens={true}
+          hideTokens={true}
+          keepOpen={true}
+        />
+      </div>
+    </div>
   );
 }
