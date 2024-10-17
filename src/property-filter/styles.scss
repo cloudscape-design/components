@@ -15,6 +15,8 @@ $operator-field-width: 120px;
 .search-field {
   display: flex;
   align-items: flex-end;
+  flex-wrap: wrap;
+  gap: awsui.$space-xs awsui.$space-s;
 }
 
 .input-wrapper {
@@ -174,7 +176,7 @@ $operator-field-width: 120px;
 }
 
 .custom-control {
-  margin-inline-end: awsui.$space-s;
+  /* used in test-utils */
 }
 
 .input {
