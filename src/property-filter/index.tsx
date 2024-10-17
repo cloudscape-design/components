@@ -18,6 +18,7 @@ export { PropertyFilterProps };
 const PropertyFilter = React.forwardRef(
   (
     {
+      filteringProperties,
       filteringOptions = [],
       customGroupsText = [],
       enableTokenGroups = false,
@@ -31,6 +32,19 @@ const PropertyFilter = React.forwardRef(
     }: PropertyFilterProps,
     ref: React.Ref<Ref>
   ) => {
+    let hasCustomForms = false;
+    let hasEnumTokens = false;
+    let hasCustomFormatters = false;
+    for (const property of filteringProperties) {
+      for (const operator of property.operators ?? []) {
+        if (typeof operator === 'object') {
+          hasCustomForms = hasCustomForms || !!operator.form;
+          hasEnumTokens = hasEnumTokens || operator.tokenType === 'enum';
+          hasCustomFormatters = hasCustomFormatters || !!operator.format;
+        }
+      }
+    }
+
     const baseComponentProps = useBaseComponent('PropertyFilter', {
       props: {
         asyncProperties,
@@ -40,6 +54,11 @@ const PropertyFilter = React.forwardRef(
         hideOperations,
         tokenLimit,
         virtualScroll,
+      },
+      metadata: {
+        hasCustomForms,
+        hasEnumTokens,
+        hasCustomFormatters,
       },
     });
 
@@ -61,6 +80,7 @@ const PropertyFilter = React.forwardRef(
       <PropertyFilterInternal
         ref={ref}
         {...baseComponentProps}
+        filteringProperties={filteringProperties}
         filteringOptions={filteringOptions}
         customGroupsText={customGroupsText}
         enableTokenGroups={enableTokenGroups}

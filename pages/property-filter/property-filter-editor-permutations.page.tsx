@@ -32,6 +32,19 @@ const nameProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Name values',
   operators: ['=', '!='],
   defaultOperator: '=',
+  getTokenType: () => 'value',
+  getValueFormatter: () => null,
+  getValueFormRenderer: () => null,
+  externalProperty,
+};
+
+const stateProperty: InternalFilteringProperty = {
+  propertyKey: 'state',
+  propertyLabel: 'State',
+  groupValuesLabel: 'State values',
+  operators: ['=', '!='],
+  defaultOperator: '=',
+  getTokenType: () => 'enum',
   getValueFormatter: () => null,
   getValueFormRenderer: () => null,
   externalProperty,
@@ -43,6 +56,7 @@ const dateProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Date values',
   operators: ['=', '!='],
   defaultOperator: '=',
+  getTokenType: () => 'value',
   getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd') : ''),
   getValueFormRenderer:
     () =>
@@ -60,6 +74,7 @@ const dateTimeProperty: InternalFilteringProperty = {
   groupValuesLabel: 'Date time values',
   operators: ['=', '!='],
   defaultOperator: '=',
+  getTokenType: () => 'value',
   getValueFormatter: () => (value: Date) => (value ? format(value, 'yyyy-MM-dd hh:mm') : ''),
   getValueFormRenderer:
     () =>
@@ -86,7 +101,11 @@ const defaultProps: Omit<TokenEditorProps, 'i18nStrings'> = {
     defaultOperator: ':',
   },
   filteringProperties: [nameProperty, dateProperty],
-  filteringOptions: [],
+  filteringOptions: [
+    { property: stateProperty, value: 'Happy', label: 'Happy' },
+    { property: stateProperty, value: 'Healthy', label: 'Healthy' },
+    { property: stateProperty, value: 'Wealthy', label: 'Wealthy' },
+  ],
   onSubmit: () => {},
   onDismiss: () => {},
   tokensToCapture: [],
@@ -96,7 +115,7 @@ const defaultProps: Omit<TokenEditorProps, 'i18nStrings'> = {
   onChangeTempGroup: () => {},
 };
 
-const tokenPermutations = createPermutations<Partial<TokenEditorProps>>([
+const editorPermutations = createPermutations<Partial<TokenEditorProps>>([
   // Single name property
   {
     tempGroup: [[{ property: nameProperty, operator: '=', value: 'John' }]],
@@ -116,7 +135,7 @@ const tokenPermutations = createPermutations<Partial<TokenEditorProps>>([
       [
         { property: nameProperty, operator: '=', value: 'John' },
         { property: dateTimeProperty, operator: '=', value: new Date('2020-01-01T01:00') },
-        { property: nameProperty, operator: '=', value: 'Jack' },
+        { property: stateProperty, operator: '=', value: ['Happy', 'Healthy'] },
       ],
     ],
     tokensToCapture: [
@@ -160,7 +179,7 @@ export default function () {
         <h1>Property filter editor permutations</h1>
         <ScreenshotArea disableAnimations={true}>
           <PermutationsView
-            permutations={tokenPermutations}
+            permutations={editorPermutations}
             render={permutation => <TokenEditorStateful {...defaultProps} {...permutation} />}
           />
         </ScreenshotArea>

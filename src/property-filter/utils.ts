@@ -71,19 +71,27 @@ export function matchTokenValue(
   { property, operator, value }: InternalToken,
   filteringOptions: readonly InternalFilteringOption[]
 ): Token {
+  const tokenType = property?.getTokenType(operator);
   const propertyOptions = filteringOptions.filter(option => option.property === property);
-  const bestMatch: Token = { propertyKey: property?.propertyKey, operator, value };
+  const castValue = (value: unknown) => {
+    if (value === null) {
+      return tokenType === 'enum' ? [] : null;
+    }
+    return tokenType === 'enum' && !Array.isArray(value) ? [value] : value;
+  };
+  const bestMatch: Token = { propertyKey: property?.propertyKey, operator, value: castValue(value) };
+
   for (const option of propertyOptions) {
     if ((option.label && option.label === value) || (!option.label && option.value === value)) {
       // exact match found: return it
-      return { propertyKey: property?.propertyKey, operator, value: option.value };
+      return { propertyKey: property?.propertyKey, operator, value: castValue(option.value) };
     }
 
     // By default, the token value is a string, but when a custom property is used,
     // the token value can be any, therefore we need to check for its type before calling toLowerCase()
     if (typeof value === 'string' && value.toLowerCase() === (option.label ?? option.value ?? '').toLowerCase()) {
       // non-exact match: save and keep running in case exact match found later
-      bestMatch.value = option.value;
+      bestMatch.value = castValue(option.value);
     }
   }
 

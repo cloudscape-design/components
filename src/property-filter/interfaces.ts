@@ -16,6 +16,7 @@ import {
   PropertyFilterQuery,
   PropertyFilterToken,
   PropertyFilterTokenGroup,
+  PropertyFilterTokenType,
 } from '@cloudscape-design/collection-hooks';
 
 import { AutosuggestProps } from '../autosuggest/interfaces';
@@ -346,6 +347,7 @@ export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenV
 export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
+export type FilteringPropertyTokenType = PropertyFilterTokenType;
 export type Query = PropertyFilterProps.Query;
 export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
 export type I18nStrings = PropertyFilterProps.I18nStrings;
@@ -364,6 +366,7 @@ export interface InternalFilteringProperty<TokenValue = any> {
   propertyGroup?: string;
   operators: readonly PropertyFilterOperator[];
   defaultOperator: PropertyFilterOperator;
+  getTokenType: (operator?: PropertyFilterOperator) => FilteringPropertyTokenType;
   getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
   getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
   // Original property used in callbacks.
