@@ -13,9 +13,6 @@
   padding-block-end: awsui.$space-panel-content-bottom;
   padding-inline-start: awsui.$space-panel-side-left;
   padding-inline-end: awsui.$space-panel-side-right;
-  &.with-toolbar {
-    padding-block-start: awsui.$space-static-m;
-  }
 }
 
 .header {
@@ -31,7 +28,6 @@
   margin-inline-start: calc(-1 * #{awsui.$space-panel-side-left});
   .with-toolbar > & {
     border-color: transparent;
-    padding-block-end: awsui.$space-static-m;
     margin-block-end: 0px;
   }
 

@@ -20,9 +20,6 @@
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-  .with-toolbar > & {
-    padding-block: awsui.$space-static-m;
-  }
 }
 
 .header-link {
@@ -53,15 +50,15 @@
 }
 
 .items-control {
-  margin-block-start: awsui.$space-panel-content-top;
   padding-inline: awsui.$space-l;
 }
 
 .list-container {
   margin-block-start: awsui.$space-panel-content-top;
-  .with-toolbar > & {
-    margin-block-start: 0px;
-  }
+}
+
+.with-toolbar > .list-container:not(.items-control + .list-container) {
+  margin-block-start: 0;
 }
 
 .list {
@@ -94,6 +91,9 @@
   padding-block: 0;
   padding-inline: 0;
   list-style: none;
+  .list-variant-root > &:first-child {
+    margin-block-start: 0px;
+  }
 }
 
 .section,
@@ -193,8 +193,10 @@
 
 .divider-header {
   margin-block-start: 0;
+  margin-block-end: awsui.$space-panel-content-top;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
   .with-toolbar > & {
     border-color: transparent;
+    margin-block-end: 0;
   }
 }
