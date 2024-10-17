@@ -16,6 +16,7 @@
     display: flex;
     flex-direction: column;
     block-size: 100%;
+
     &.with-side-media {
       flex-direction: row;
     }
@@ -37,6 +38,7 @@
       border-end-start-radius: 0;
       border-block-end-width: 0;
     }
+
     // Meld container top corners into preceding container
     &-stacked + &-stacked,
     &-stacked + &-stacked::before,
@@ -44,6 +46,7 @@
       border-start-start-radius: 0;
       border-start-end-radius: 0;
     }
+
     // Replace container border with a divider
     &-stacked + &-stacked:not(.refresh)::before {
       @include shared.divider;
@@ -55,6 +58,7 @@
     &::before {
       inset-block-start: calc(-1 * #{awsui.$border-container-top-width});
     }
+
     &.variant-stacked::before {
       inset-block-start: calc(-1 * #{awsui.$border-divider-section-width});
     }
@@ -75,6 +79,7 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+
   &-fit-height {
     block-size: 100%;
     overflow: hidden;
@@ -103,6 +108,7 @@
     border-block: 0;
     border-inline: 0;
   }
+
   // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
 
   // reduce border-radius size to fill the visual gap between the parent border and image
@@ -123,12 +129,14 @@
   background-color: awsui.$color-background-container-header;
   border-start-start-radius: awsui.$border-radius-container;
   border-start-end-radius: awsui.$border-radius-container;
+
   &.header-full-page {
     background-color: awsui.$color-background-layout-main;
   }
 
   &.header-with-media {
     background: none;
+
     &:not(:empty) {
       border-block-end: none;
     }
@@ -158,6 +166,7 @@
       border-block: 0;
       border-inline: 0;
     }
+
     &:not(.header-variant-cards) {
       box-shadow: awsui.$shadow-sticky-embedded;
     }
@@ -191,6 +200,7 @@
   &-variant-cards {
     // Border and shadows are applied with ::before and ::after elements (respectively)
     @include styles.container-style;
+
     &:not(.header-sticky-enabled) {
       position: relative;
     }
@@ -244,17 +254,21 @@
 
 .content {
   flex: 1;
+
   &-fit-height {
     overflow: auto;
   }
+
+  // Using margins instead of paddings so that the content overflow works correctly.
   &.with-paddings {
-    padding-block: awsui.$space-scaled-l;
-    padding-inline: awsui.$space-container-horizontal;
+    margin-block: awsui.$space-scaled-l;
+    margin-inline: awsui.$space-container-horizontal;
 
     .header + & {
-      padding-block-start: awsui.$space-container-content-top;
+      margin-block-start: awsui.$space-container-content-top;
+
       &.content-with-media {
-        padding-block-start: 0;
+        margin-block-start: 0;
       }
     }
   }
