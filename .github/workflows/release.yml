@@ -26,9 +26,12 @@ jobs:
       - run: npm run build
       - run: npm run test:unit
 
-  integTest:
-    name: Components integ tests
+  integTestShards:
+    name: Components integ tests shard
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v4
       - name: Setup Node.js
@@ -37,10 +40,18 @@ jobs:
           node-version: 18
       - run: npm install
       - run: npm run build
-      - run: npm run test:integ
+      - run: npm run test:integ -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
 
-  a11yTest:
-    name: Components a11y tests
+  integTest:
+    name: Components integ tests
+    runs-on: ubuntu-latest
+    needs:
+      - integTestShards
+    steps:
+      - run: echo "Completed all integration tests"
+
+  a11yTestShards:
+    name: Components a11y tests shard
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -54,6 +65,14 @@ jobs:
       - run: npm install
       - run: npm run build
       - run: npm run test:a11y -- --shard=${{ matrix.shard }}/${{ strategy.job-total }}
+
+  a11yTest:
+    name: Components a11y tests
+    runs-on: ubuntu-latest
+    needs:
+      - a11yTestShards
+    steps:
+      - run: echo "Completed all a11y tests"
 
   release:
     uses: cloudscape-design/actions/.github/workflows/release.yml@main

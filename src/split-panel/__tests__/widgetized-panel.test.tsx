@@ -5,15 +5,17 @@ import { render } from '@testing-library/react';
 
 import { SplitPanelContextProvider } from '../../../lib/components/internal/context/split-panel-context';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { createWidgetizedSplitPanel } from '../../../lib/components/split-panel/implementation';
-import { SplitPanelProps } from '../../../lib/components/split-panel/interfaces';
+import {
+  createWidgetizedSplitPanel,
+  SplitPanelImplementationProps,
+} from '../../../lib/components/split-panel/implementation';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
 import { defaultSplitPanelContextProps } from './helpers';
 
-const LoaderSkeleton = React.forwardRef<HTMLElement, SplitPanelProps>(() => {
+const LoaderSkeleton = () => {
   return <div data-testid="loader">Loading...</div>;
-});
+};
 
 function findLoader(container: HTMLElement) {
   return container.querySelector('[data-testid="loader"]');
@@ -32,8 +34,10 @@ function renderComponent(jsx: React.ReactElement) {
 
 const WidgetizedPanel = createWidgetizedSplitPanel(LoaderSkeleton);
 
-const defaultProps: SplitPanelProps = {
+const defaultProps: SplitPanelImplementationProps = {
   header: '',
+  hidePreferencesButton: false,
+  closeBehavior: 'collapse',
   children: <></>,
 };
 

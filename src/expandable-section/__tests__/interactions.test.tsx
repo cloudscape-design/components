@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import Button from '../../../lib/components/button';
 import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';

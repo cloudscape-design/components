@@ -9,6 +9,7 @@ import styles from './styles.css.js';
 interface CartesianChartContainerProps {
   minHeight: number;
   fitHeight: boolean;
+  hasFilters: boolean;
   leftAxisLabel: React.ReactNode;
   leftAxisLabelMeasure: React.ReactNode;
   bottomAxisLabel: React.ReactNode;
@@ -28,6 +29,7 @@ export const CartesianChartContainer = forwardRef(
       bottomAxisLabel,
       chartPlot,
       popover,
+      hasFilters,
     }: CartesianChartContainerProps,
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -36,7 +38,9 @@ export const CartesianChartContainer = forwardRef(
         <div className={clsx(styles['chart-container'], styles['fit-height'])} ref={ref}>
           {leftAxisLabel}
 
-          <div className={clsx(styles['chart-container-outer'], styles['fit-height'])}>
+          <div
+            className={clsx(styles['chart-container-outer'], styles['fit-height'], hasFilters && styles['has-filters'])}
+          >
             {leftAxisLabelMeasure}
 
             <div className={styles['chart-container-inner']}>

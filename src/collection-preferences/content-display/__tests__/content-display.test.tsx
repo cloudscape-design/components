@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 import { fireEvent } from '@testing-library/react';
 
 import { CollectionPreferencesProps } from '../../../../lib/components';
@@ -255,6 +256,8 @@ describe('Content Display preference', () => {
         contentDisplayPreference: {
           ...contentDisplayPreference,
           enableColumnFiltering: false,
+          // Adding an option with a non-string label to ensure the filter does not break rendering
+          options: [...contentDisplayPreference.options, { id: 'id-extra', label: (<span>Extra</span>) as any }],
         },
       });
       const filterInput = wrapper.findTextFilter();
