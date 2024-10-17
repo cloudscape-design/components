@@ -27,3 +27,16 @@ export function getSortedOptions({
   }
   return Array.from(optionsById.values());
 }
+
+export function getFilteredOptions(
+  options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>,
+  filterText: string
+) {
+  filterText = filterText.trim().toLowerCase();
+
+  if (!filterText) {
+    return options;
+  }
+
+  return options.filter(option => option.label.toLowerCase().trim().includes(filterText));
+}

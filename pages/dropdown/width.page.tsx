@@ -9,6 +9,10 @@ import Select, { SelectProps } from '~components/select';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import { enhanceWindow, WindowWithFlushResponse } from '../common/flush-response';
+
+declare const window: WindowWithFlushResponse;
+enhanceWindow();
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -18,6 +22,7 @@ type DemoContext = React.Context<
     virtualScroll: boolean;
     expandToViewport: boolean;
     containerWidth: string;
+    manualServerMock: boolean;
   }>
 >;
 
@@ -207,12 +212,17 @@ function CustomSelect({ expandToViewport, loading, onOpen, onClose, virtualScrol
 
 export default function () {
   const { urlParams } = useContext(AppContext as DemoContext);
-  const { asyncLoading, component, triggerWidth, virtualScroll, expandToViewport, containerWidth } = urlParams;
+  const { asyncLoading, component, triggerWidth, virtualScroll, expandToViewport, containerWidth, manualServerMock } =
+    urlParams;
   const [loading, setLoading] = useState(asyncLoading);
   const onOpen = () => {
     if (asyncLoading) {
       setLoading(true);
-      setTimeout(() => setLoading(false), 500);
+      if (manualServerMock) {
+        window.__pendingCallbacks.push(() => setLoading(false));
+      } else {
+        setTimeout(() => setLoading(false), 500);
+      }
     }
   };
   const onClose = () => setLoading(asyncLoading);
