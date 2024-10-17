@@ -57,7 +57,7 @@ export default function ContentDisplayPreference({
 
   const [sortedOptions, sortedAndFilteredOptions] = useMemo(() => {
     const sorted = getSortedOptions({ options, contentDisplay: value });
-    const filtered = getFilteredOptions(sortedOptions, columnFilteringText);
+    const filtered = getFilteredOptions(sorted, columnFilteringText);
     return [sorted, filtered];
   }, [columnFilteringText, options, value]);
 
