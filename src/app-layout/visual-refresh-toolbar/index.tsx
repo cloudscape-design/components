@@ -236,8 +236,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }));
 
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
-    //navigation must be null so  toolbar knows to hide the toggle button
+    //navigation must be null if hidden so toolbar knows to hide the toggle button
     const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
+    //navigation must not be open if navigationHide is true
+    const resolvedNavigationOpen = !!resolvedNavigation && navigationOpen;
     const {
       maxDrawerSize,
       maxSplitPanelSize,
@@ -249,7 +251,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
       minContentWidth,
-      navigationOpen: !!resolvedNavigation && navigationOpen,
+      navigationOpen: resolvedNavigationOpen,
       navigationWidth,
       placement,
       splitPanelOpen,
@@ -262,7 +264,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       forceDeduplicationType,
       ariaLabels: ariaLabelsWithDrawers,
       navigation: resolvedNavigation,
-      navigationOpen,
+      navigationOpen: resolvedNavigationOpen,
       onNavigationToggle,
       navigationFocusRef: navigationFocusControl.refs.toggle,
       breadcrumbs,
@@ -300,7 +302,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       breadcrumbs,
       discoveredBreadcrumbs,
       stickyNotifications: resolvedStickyNotifications,
-      navigationOpen: !!resolvedNavigation && navigationOpen,
+      navigationOpen: resolvedNavigationOpen,
       navigation: resolvedNavigation,
       navigationFocusControl,
       activeDrawer,
@@ -394,7 +396,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           // delay rendering the content until registration of this instance is complete
           content={registered ? content : null}
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
-          navigationOpen={!!resolvedNavigation && navigationOpen}
+          navigationOpen={resolvedNavigationOpen}
           navigationWidth={navigationWidth}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
