@@ -41,8 +41,8 @@ export default class FocusTracker {
 
   private focusOutListener = (event: FocusEvent) => {
     const nextFocused = event.relatedTarget;
-    const isNextFocusedInParent = !nodeBelongs(this.node, nextFocused);
-    if (this.currentlyFocused && (nextFocused === null || isNextFocusedInParent)) {
+    const isNextFocusedInParent = nodeBelongs(this.node, nextFocused);
+    if (this.currentlyFocused && (nextFocused === null || !isNextFocusedInParent)) {
       this.triggerBlur();
     }
   };

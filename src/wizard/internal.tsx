@@ -7,14 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { useInternalI18n } from '../i18n/context';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import {
-  DATA_ATTR_FUNNEL_KEY,
-  FUNNEL_KEY_STEP_NAME,
-  getSubStepAllSelector,
-  getTextFromSelector,
-} from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
@@ -22,10 +15,9 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { useFunnelChangeEvent } from './analytics';
 import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces';
 import { WizardProps } from './interfaces';
-import WizardForm, { STEP_NAME_SELECTOR } from './wizard-form';
+import WizardForm from './wizard-form';
 import WizardNavigation from './wizard-navigation';
 
 import styles from './styles.css.js';
@@ -61,8 +53,7 @@ export default function InternalWizard({
     controlledProp: 'activeStepIndex',
     changeHandler: 'onNavigate',
   });
-  const { funnelIdentifier, funnelInteractionId, funnelSubmit, funnelCancel, funnelProps, funnelNextOrSubmitAttempt } =
-    useFunnel();
+
   const actualActiveStepIndex = activeStepIndex ? Math.min(activeStepIndex, steps.length - 1) : 0;
 
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
@@ -72,42 +63,22 @@ export default function InternalWizard({
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
-    if (funnelInteractionId) {
-      const stepName = getTextFromSelector(STEP_NAME_SELECTOR);
-
-      FunnelMetrics.funnelStepNavigation({
-        navigationType: reason,
-        funnelInteractionId,
-        stepNumber: actualActiveStepIndex + 1,
-        stepName,
-        stepNameSelector: STEP_NAME_SELECTOR,
-        destinationStepNumber: requestedStepIndex + 1,
-        subStepAllSelector: getSubStepAllSelector(),
-      });
-    }
-
     setActiveStepIndex(requestedStepIndex);
     fireNonCancelableEvent(onNavigate, { requestedStepIndex, reason });
   };
   const onStepClick = (stepIndex: number) => navigationEvent(stepIndex, 'step');
   const onSkipToClick = (stepIndex: number) => navigationEvent(stepIndex, 'skip');
   const onCancelClick = () => {
-    funnelCancel();
     fireNonCancelableEvent(onCancel);
   };
   const onPreviousClick = () => navigationEvent(actualActiveStepIndex - 1, 'previous');
   const onPrimaryClick = () => {
-    funnelNextOrSubmitAttempt();
-
     if (isLastStep) {
-      funnelSubmit();
       fireNonCancelableEvent(onSubmit);
     } else {
       navigationEvent(actualActiveStepIndex + 1, 'next');
     }
   };
-
-  useFunnelChangeEvent(funnelInteractionId, funnelIdentifier, steps);
 
   const i18n = useInternalI18n('wizard');
   const skipToButtonLabel = i18n(
@@ -169,7 +140,6 @@ export default function InternalWizard({
   return (
     <div
       {...baseProps}
-      {...funnelProps}
       ref={ref}
       className={clsx(styles.root, baseProps.className)}
       {...(__injectAnalyticsComponentMetadata
