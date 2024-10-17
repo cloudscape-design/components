@@ -25,7 +25,6 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
@@ -122,7 +121,6 @@ export const InternalButton = React.forwardRef(
       }),
       [loading, disabled]
     );
-    useModalContextLoadingButtonComponent(variant === 'primary', loading);
 
     const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
 

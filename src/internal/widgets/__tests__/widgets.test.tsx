@@ -4,28 +4,12 @@ import React from 'react';
 import { render } from '@testing-library/react';
 
 import { useVisualRefresh } from '../../../../lib/components/internal/hooks/use-visual-mode';
-import { createWidgetizedComponent, createWidgetizedForwardRef } from '../../../../lib/components/internal/widgets';
+import { createWidgetizedComponent } from '../../../../lib/components/internal/widgets';
 import { describeWithAppLayoutFeatureFlagEnabled } from './utils';
 
 const LoaderSkeleton = () => <div data-testid="loader">Loading...</div>;
 const RealComponent = () => <div data-testid="content">Real content</div>;
 const WidgetizedComponent = createWidgetizedComponent(RealComponent)(LoaderSkeleton);
-
-const LoaderWithRef = React.forwardRef<HTMLDivElement>((props, ref) => (
-  <div ref={ref} data-testid="loader">
-    Loading...
-  </div>
-));
-const RealComponentWithRef = React.forwardRef<HTMLDivElement>((props, ref) => (
-  <div ref={ref} data-testid="content">
-    Real content
-  </div>
-));
-const WidgetizedComponentWithRef = createWidgetizedForwardRef<
-  { children?: React.ReactNode },
-  HTMLDivElement,
-  typeof RealComponentWithRef
->(RealComponentWithRef)(LoaderWithRef);
 
 function findLoader(container: HTMLElement) {
   return container.querySelector('[data-testid="loader"]');
@@ -74,26 +58,6 @@ describe('Refresh design', () => {
       const { container } = render(<WidgetizedComponent />);
       expect(findContent(container)).toBeFalsy();
       expect(findLoader(container)).toBeTruthy();
-    });
-  });
-});
-
-describe('Ref handling', () => {
-  test('should forward ref to content', () => {
-    const ref = React.createRef<HTMLDivElement>();
-    const { container } = render(<WidgetizedComponentWithRef ref={ref} />);
-    expect(findContent(container)).toBeTruthy();
-    expect(findLoader(container)).toBeFalsy();
-    expect(ref.current).toHaveTextContent('Real content');
-  });
-
-  describeWithAppLayoutFeatureFlagEnabled(() => {
-    test('should forward ref to loader', () => {
-      const ref = React.createRef<HTMLDivElement>();
-      const { container } = render(<WidgetizedComponentWithRef ref={ref} />);
-      expect(findContent(container)).toBeFalsy();
-      expect(findLoader(container)).toBeTruthy();
-      expect(ref.current).toHaveTextContent('Loading...');
     });
   });
 });

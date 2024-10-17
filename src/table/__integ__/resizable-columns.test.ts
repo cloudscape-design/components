@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -19,7 +20,6 @@ const wrapper = createWrapper();
 const tableWrapper = wrapper.findTable();
 // All the columns fit in the viewport, which make it easier to test the columns' widths
 const defaultScreen = { width: 1680, height: 800 };
-const prepareCoordinate = (num: number) => Math.round(num);
 
 class TablePage extends BasePageObject {
   async resizeColumn(columnIndex: number, xOffset: number) {
@@ -99,18 +99,13 @@ class TablePage extends BasePageObject {
         parameters: { pointerType: 'mouse' },
         actions: [
           // hover over resizer
-          {
-            type: 'pointerMove',
-            duration: 0,
-            x: prepareCoordinate(resizerBox.left),
-            y: prepareCoordinate(resizerBox.top),
-          },
+          { type: 'pointerMove', x: Math.round(resizerBox.left), y: Math.round(resizerBox.top) },
           { type: 'pointerDown', button: 0 },
-          { type: 'pause', duration: 30 },
+          { type: 'pause', duration: 50 },
           // move cursor to screen edge to activate auto-growing behavior
-          { type: 'pointerMove', duration: 0, x: windowWidth, y: 0 },
+          { type: 'pointerMove', duration: 10, x: windowWidth, y: Math.round(resizerBox.top) },
           // pause to let resizing interval fire a few times
-          { type: 'pause', duration: 500 },
+          { type: 'pause', duration: 2000 },
           { type: 'pointerUp', button: 0 },
         ],
       },

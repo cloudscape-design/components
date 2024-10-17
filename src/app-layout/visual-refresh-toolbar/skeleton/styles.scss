@@ -22,7 +22,7 @@
 @mixin grid-column-full-content-width {
   grid-column: 1 / -1;
   @include desktop-only {
-    grid-column: 2 / span 4;
+    grid-column: 2 / 5;
   }
 }
 

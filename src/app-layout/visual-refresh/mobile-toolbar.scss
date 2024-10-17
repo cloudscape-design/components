@@ -6,6 +6,7 @@
 @use '../../internal/styles/' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../constants.scss' as constants;
 
 section.mobile-toolbar {
   align-items: center;
@@ -22,7 +23,7 @@ section.mobile-toolbar {
   padding-inline: awsui.$space-m;
   position: sticky;
   inset-block-start: var(#{custom-props.$offsetTop});
-  z-index: 1000;
+  z-index: constants.$toolbar-z-index;
   &:not(.remove-high-contrast-header) {
     background-color: awsui.$color-background-layout-main;
     box-shadow: awsui.$shadow-panel-toggle;

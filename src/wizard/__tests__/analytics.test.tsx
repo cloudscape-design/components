@@ -58,6 +58,7 @@ describe('Wizard Analytics', () => {
         funnelType: 'multi-page',
         totalFunnelSteps: 3, // Length of DEFAULT_STEPS.length,
         optionalStepNumbers: [2], // DEFAULT_STEPS[1] is optional
+        funnelName: '', // Funnel Name is derived from breadcrumbs
         funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),

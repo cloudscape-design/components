@@ -17,7 +17,7 @@ import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
-import { getSortedOptions, OptionWithVisibility } from './utils';
+import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -60,10 +60,7 @@ export default function ContentDisplayPreference({
   const descriptionId = `${idPrefix}-description`;
 
   const sortedAndFilteredOptions = useMemo(
-    () =>
-      getSortedOptions({ options, contentDisplay: value }).filter(option =>
-        option.label.toLowerCase().trim().includes(columnFilteringText.toLowerCase().trim())
-      ),
+    () => getFilteredOptions(getSortedOptions({ options, contentDisplay: value }), columnFilteringText),
     [columnFilteringText, options, value]
   );
 

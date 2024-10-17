@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export type FunnelType = 'single-page' | 'multi-page';
-export type FlowType = 'create' | 'edit' | 'home' | 'dashboard' | 'view-resource';
+export type FunnelType = 'single-page' | 'multi-page' | 'modal';
+export type FlowType = 'create' | 'edit' | 'delete' | 'home' | 'dashboard' | 'view-resource';
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
   flowType?: FlowType;
@@ -24,6 +24,7 @@ export interface FunnelErrorProps extends BaseFunnelProps {
 export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteractionId'> {
   flowType?: FlowType;
   resourceType?: string;
+  funnelName: string;
   funnelNameSelector: string;
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
@@ -179,7 +180,6 @@ export type TaskCompletionDataMethod = (props: TaskCompletionDataProps) => void;
 export interface IPerformanceMetrics {
   tableInteraction: TableInteractionMethod;
   taskCompletionData: TaskCompletionDataMethod;
-  modalPerformanceData: ModalPerformanceDataMethod;
 }
 
 export interface ComponentMountedProps {
@@ -191,20 +191,3 @@ export type ComponentMountedMethod = (props: ComponentMountedProps) => string;
 export interface IComponentMetrics {
   componentMounted: ComponentMountedMethod;
 }
-
-// Interface for modal metrics
-export interface ModalPerformanceDataProps {
-  // Time span from when the modal begins loading to when the primary button or modal has finished loading.
-  // in milliseconds
-  timeToContentReadyInModal: number;
-  // Unique instance identifier for the component.
-  // Default: ''
-  instanceIdentifier?: string;
-  // Component identifier like modal header which can be used to identify the modal
-  // Default: ''
-  componentIdentifier?: string;
-  // Additional metadata related to modal
-  modalMetadata?: string;
-}
-
-export type ModalPerformanceDataMethod = (props: ModalPerformanceDataProps) => void;

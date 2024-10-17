@@ -1042,5 +1042,111 @@ describe('toolbar mode only features', () => {
 
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
     });
+
+    describe('dynamically registered drawers with defaultActive: true', () => {
+      test('should open if there are already open local drawer on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+      });
+
+      test('should not open if there are already global drawers opened by user action on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+        });
+
+        await delay();
+
+        wrapper.findDrawerTriggerById('global1')!.click();
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')).toBeFalsy();
+      });
+
+      test('should not open if the maximum number (2) of global drawers is already open on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        // this drawer should not open because there are already two global drawers open on the page, which is the maximum limit
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global3',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
+      });
+    });
   });
 });

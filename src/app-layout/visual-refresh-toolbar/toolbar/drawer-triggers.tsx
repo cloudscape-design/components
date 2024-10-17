@@ -142,7 +142,6 @@ export function DrawerTriggers({
               selected={splitPanelToggleProps.active}
               ref={splitPanelFocusRef}
               hasTooltip={true}
-              testId={`awsui-app-layout-trigger-slide-panel`}
               isMobile={isMobile}
               isForSplitPanel={true}
               disabled={disabled}

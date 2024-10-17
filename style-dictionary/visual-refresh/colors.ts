@@ -96,6 +96,10 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextAvatar: '{colorWhite}',
   colorBackgroundLoadingBarGenAi:
     'linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)',
+  colorBackgroundChatBubbleOutgoing: 'transparent',
+  colorBackgroundChatBubbleIncoming: { light: '{colorGrey150}', dark: '{colorGrey850}' },
+  colorTextChatBubbleOutgoing: '{colorTextBodyDefault}',
+  colorTextChatBubbleIncoming: '{colorTextBodyDefault}',
   colorBorderButtonNormalActive: { light: '{colorBlue800}', dark: '{colorBlue400}' },
   colorBorderButtonNormalDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorBlue600}', dark: '{colorBlue500}' },

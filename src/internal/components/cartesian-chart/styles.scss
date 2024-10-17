@@ -124,12 +124,11 @@
 .chart-container-outer {
   display: flex;
 
-  &:not(.axis-label + &, &.has-filters) {
-    margin-block-start: calc(0.5 * #{awsui.$font-chart-detail-size});
-  }
-
   &.fit-height {
     flex: 1;
+    &:not(.axis-label + &, &.has-filters) {
+      margin-block-start: calc(0.5 * #{awsui.$font-chart-detail-size});
+    }
   }
 }
 

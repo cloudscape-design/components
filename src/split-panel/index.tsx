@@ -23,7 +23,7 @@ export default function SplitPanel({
   return (
     <SplitPanelInternal
       {...restProps}
-      ref={__internalRootRef}
+      __internalRootRef={__internalRootRef}
       hidePreferencesButton={hidePreferencesButton}
       closeBehavior={closeBehavior}
       i18nStrings={{

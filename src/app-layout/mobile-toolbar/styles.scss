@@ -16,7 +16,7 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  z-index: 1000;
+  z-index: constants.$toolbar-z-index;
   inline-size: 100%;
   box-sizing: border-box;
   background-color: awsui.$color-background-layout-mobile-panel;

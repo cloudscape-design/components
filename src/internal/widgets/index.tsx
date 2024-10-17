@@ -21,20 +21,3 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
     }) as Component;
   };
 }
-
-export function createWidgetizedForwardRef<
-  Props,
-  RefType,
-  Component extends React.ForwardRefExoticComponent<Props & React.RefAttributes<RefType>>,
->(Implementation: Component) {
-  return (Loader?: Component): Component => {
-    return React.forwardRef<RefType, Props>((props, ref) => {
-      const isRefresh = useVisualRefresh();
-      if (isRefresh && getGlobalFlag('appLayoutWidget') && Loader) {
-        return <Loader ref={ref} {...(props as any)} />;
-      }
-
-      return <Implementation ref={ref} {...(props as any)} />;
-    }) as Component;
-  };
-}
