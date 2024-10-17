@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ErrorScope, FunnelBaseStatus, Observer } from './types';
+import { ErrorDetails, FunnelBaseStatus, Observer } from './types';
 import { getUuid } from './utils';
 
 export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
@@ -45,12 +45,13 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     callback?.();
   }
 
-  error(errorText: string, scope: ErrorScope) {
+  error({ errorText }: ErrorDetails, callback?: () => void) {
     if (errorText) {
-      console.log('Error scope', scope);
       this.setStatus('error' as TStatus);
+      callback?.();
     } else if (this.getStatus() === 'error') {
       this.status.pop();
+      callback?.();
     }
   }
 

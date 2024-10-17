@@ -3,17 +3,24 @@
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelStep } from './funnel-step';
-import { ErrorScope, FunnelResult, FunnelStatus, FunnelStepConfig, FunnelStepProps, Observer } from './types';
+import { ErrorDetails, FunnelResult, FunnelStatus, FunnelStepConfig, FunnelStepProps, Observer } from './types';
+
+interface FunnelProps {
+  name?: string;
+  context?: Funnel | undefined;
+}
 
 export class Funnel extends FunnelBase<FunnelStatus> {
   protected result: FunnelResult;
   protected steps: FunnelStep[] = [new FunnelStep({ index: 0 })];
   public currentStep: FunnelStep;
   public name?: string;
+  public context?: Funnel | undefined;
 
-  constructor(name?: string) {
+  constructor(props?: FunnelProps) {
     super('initial');
-    this.name = name;
+    this.name = props?.name;
+    this.context = props?.context;
     this.currentStep = this.steps[0];
   }
 
@@ -23,12 +30,11 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   get domAttributes() {
-    return { 'data-funnel-id': this.id };
+    return { 'data-funnel-id': this.id, id: this.id };
   }
 
   private reset() {
     this.status = ['initial'];
-    this.result = undefined;
   }
 
   start() {
@@ -45,28 +51,40 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   submit() {
-    if (this.getStatus() === 'validating') {
+    if (this.getStatus() === 'submitted') {
       return;
     }
 
     this.currentStep?.complete();
     this.result = 'submitted';
-    this.setStatus('validating');
+    this.setStatus('submitted');
 
-    dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: this.name });
+    dispatchFunnelEvent({ header: 'Funnel submitted', status: 'success', details: this.name });
     this.notifyObservers();
   }
 
-  error(errorText: string, scope: ErrorScope) {
-    super.error(errorText, scope);
+  validate(value: boolean) {
+    if ((value && this.getStatus() === 'validating') || (value === false && this.getStatus() === 'validated')) {
+      return;
+    }
+
+    if (value) {
+      this.setStatus('validating');
+      dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: this.name });
+      this.notifyObservers();
+    } else if (this.getStatus() === 'validating') {
+      this.setStatus('validated');
+      dispatchFunnelEvent({ header: 'Funnel validated', status: 'success', details: this.name });
+      this.notifyObservers();
+    }
+  }
+
+  error(details: ErrorDetails) {
+    super.error(details);
     this.notifyObservers();
   }
 
   cancel() {
-    if (this.getStatus() === 'completed') {
-      return;
-    }
-
     this.result = 'cancelled';
     this.notifyObservers();
   }
@@ -80,24 +98,20 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   complete() {
-    if (this.getStatus() === 'completed') {
-      return;
-    }
-
     this.currentStep?.complete();
-    if (!this.result) {
-      this.result = 'cancelled';
-    }
-
     super.complete(() => {
+      if (!this.result) {
+        this.cancel();
+      }
+
       dispatchFunnelEvent({
-        header: `Funnel ${this.result}`,
+        header: `Funnel completed with result ${this.result}`,
         status: this.result === 'cancelled' ? 'error' : 'success',
         details: this.name,
       });
-
-      this.notifyObservers();
     });
+
+    this.notifyObservers();
   }
 
   addStep(config: FunnelStepConfig): FunnelStep {
@@ -157,8 +171,8 @@ class FunnelConsoleLogger implements Observer {
 }
 
 export class FunnelFactory {
-  static create(name?: string): Funnel {
-    const funnel = new Funnel(name);
+  static create(config?: FunnelProps): Funnel {
+    const funnel = new Funnel(config);
     funnel.addObserver(new FunnelConsoleLogger());
     return funnel;
   }

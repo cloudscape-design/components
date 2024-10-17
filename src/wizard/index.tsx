@@ -35,25 +35,25 @@ function FunnelEnabledWizard({
     analyticsMetadata
   );
 
-  const { funnel } = useFunnel();
+  const funnel = useFunnel();
 
   useLayoutEffect(() => {
-    if (!funnel) {
+    if (!funnel || !funnel.controller) {
       return;
     }
 
     // TODO: Use global breadcrumbs plugin for funnel name
     // TODO: Use global breadcrumbs plugin for resource type
     const funnelName = document.querySelector<HTMLElement>('[data-analytics-funnel-key=funnel-name]')?.innerText || '';
-    funnel.setName(funnelName);
-    funnel.setSteps(
+    funnel.controller.setName(funnelName);
+    funnel.controller.setSteps(
       [...props.steps.map((step, index) => ({ index, name: step.title, optional: step.isOptional }))],
       props.activeStepIndex
     );
-    funnel.start();
+    funnel.controller.start();
 
     return () => {
-      funnel.complete();
+      funnel.controller?.complete();
     };
 
     // Don't rerun hook each time the active step index changes. We only want the initial value
@@ -67,15 +67,15 @@ function FunnelEnabledWizard({
       isLoadingNextStep={isLoadingNextStep}
       allowSkipTo={allowSkipTo}
       onCancel={event => {
-        funnel?.cancel();
+        funnel?.controller?.cancel();
         onCancel?.(event);
       }}
       onSubmit={event => {
-        funnel?.submit();
+        funnel?.controller?.submit();
         onSubmit?.(event);
       }}
       onNavigate={event => {
-        funnel?.navigate(event.detail.reason, event.detail.requestedStepIndex);
+        funnel?.controller?.navigate(event.detail.reason, event.detail.requestedStepIndex);
         onNavigate?.(event);
       }}
       {...externalProps}
@@ -89,7 +89,7 @@ applyDisplayName(Wizard, 'Wizard');
 export { WizardProps };
 export default function Wizard(props: WizardProps) {
   return (
-    <FunnelProvider>
+    <FunnelProvider rootComponent="wizard">
       <FunnelEnabledWizard {...props} />
     </FunnelProvider>
   );

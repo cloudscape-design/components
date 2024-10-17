@@ -30,10 +30,11 @@ const FunnelEnabledForm = ({ variant = 'full-page', actions, errorText, ...props
     analyticsMetadata
   );
 
-  const { funnel, allowNesting } = useFunnelContext();
+  const funnel = useFunnelContext();
+  const controller = funnel?.controller;
 
   useLayoutEffect(() => {
-    if (!funnel) {
+    if (!controller) {
       return;
     }
 
@@ -42,25 +43,31 @@ const FunnelEnabledForm = ({ variant = 'full-page', actions, errorText, ...props
         ['h1', 'h2', 'h3'].map(heading => `.${analyticsSelectors.header} ${heading}`).join(',')
       )?.innerText || '';
 
-    funnel.setName(funnelName);
-    funnel.currentStep.setName(funnelName);
-    funnel.start();
+    controller.setName(funnelName);
+    controller.currentStep.setName(funnelName);
+    controller.start();
 
     return () => {
-      funnel.complete();
+      controller?.complete();
     };
-  }, [funnel, allowNesting, baseComponentProps.__internalRootRef]);
+  }, [controller, baseComponentProps.__internalRootRef]);
 
   useEffect(() => {
     const errorText =
       (baseComponentProps.__internalRootRef.current as HTMLElement).querySelector<HTMLElement>(analyticsSelectors.error)
         ?.innerText || '';
-    funnel?.error(errorText, { type: 'funnel' });
+    funnel?.controller?.error({ errorText, scope: { type: 'funnel' } });
   }, [errorText, funnel, baseComponentProps.__internalRootRef]);
 
   const handleButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
-      funnel?.submit();
+      funnel?.controller?.submit();
+    }
+  };
+
+  const handleButtonLoadingChange: ButtonContextProps['onLoadingChange'] = ({ value, variant }) => {
+    if (variant === 'primary' && typeof value === 'boolean') {
+      funnel?.controller?.validate(Boolean(value));
     }
   };
 
@@ -68,10 +75,14 @@ const FunnelEnabledForm = ({ variant = 'full-page', actions, errorText, ...props
     <InternalForm
       {...props}
       {...baseComponentProps}
-      {...funnel?.domAttributes}
-      {...funnel?.currentStep.domAttributes}
+      {...funnel?.controller?.domAttributes}
+      {...funnel?.controller?.currentStep.domAttributes}
       variant={variant}
-      actions={<ButtonContext.Provider value={{ onClick: handleButtonClick }}>{actions}</ButtonContext.Provider>}
+      actions={
+        <ButtonContext.Provider value={{ onClick: handleButtonClick, onLoadingChange: handleButtonLoadingChange }}>
+          {actions}
+        </ButtonContext.Provider>
+      }
       errorText={errorText}
       __injectAnalyticsComponentMetadata={true}
     />
@@ -83,7 +94,7 @@ applyDisplayName(Form, 'Form');
 export { FormProps };
 export default function Form(props: FormProps) {
   return (
-    <FunnelProvider dedupe={true}>
+    <FunnelProvider rootComponent="form">
       <FunnelEnabledForm {...props} />
     </FunnelProvider>
   );

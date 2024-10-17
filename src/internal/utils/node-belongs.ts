@@ -24,6 +24,7 @@ export function nodeBelongs(container: Node | null, target: Node | EventTarget |
     // We found the container as a direct ancestor without a portal
     return true;
   }
+
   const referrer = isHTMLElement(portal) ? document.getElementById(portal.dataset.awsuiReferrerId ?? '') : null;
   return referrer ? nodeContains(container, referrer) : nodeContains(container, target);
 }

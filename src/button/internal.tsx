@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import {
@@ -112,6 +112,9 @@ export const InternalButton = React.forwardRef(
       [loading, disabled]
     );
     useModalContextLoadingButtonComponent(variant === 'primary', loading);
+    useEffect(() => {
+      buttonContext?.onLoadingChange?.({ value: loading, variant });
+    }, [buttonContext, loading, variant]);
 
     const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
 
@@ -128,7 +131,7 @@ export const InternalButton = React.forwardRef(
 
       const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
       fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
-      buttonContext?.onClick({ variant });
+      buttonContext?.onClick?.({ variant });
     };
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {

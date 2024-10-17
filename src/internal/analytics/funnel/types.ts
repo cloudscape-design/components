@@ -8,12 +8,16 @@ export interface FunnelStepConfig {
 export type FunnelStepProps = FunnelStepConfig & { index: number };
 export type FunnelBaseStatus = 'initial' | 'started' | 'error' | 'completed';
 
+export interface ErrorDetails {
+  errorText?: string;
+  scope: ErrorScope;
+}
 export interface ErrorScope {
   type: 'funnel' | 'funnel-step' | 'funnel-substep' | 'field';
   label?: string;
 }
 
-export type FunnelStatus = FunnelBaseStatus | 'validating';
+export type FunnelStatus = FunnelBaseStatus | 'validating' | 'validated' | 'submitted';
 export type FunnelResult = 'submitted' | 'successful' | 'cancelled' | undefined;
 
 export interface Observer {

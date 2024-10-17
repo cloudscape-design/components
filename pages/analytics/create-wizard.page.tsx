@@ -16,8 +16,6 @@ import {
   Wizard,
 } from '~components';
 
-import { useFunnelLogger } from './hooks/use-funnel-logger';
-
 function Content() {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -144,8 +142,6 @@ function Content() {
 }
 
 function App() {
-  useFunnelLogger();
-
   return (
     <AppLayout
       contentType="wizard"

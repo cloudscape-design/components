@@ -40,17 +40,17 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
   const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
-  const { funnel } = useFunnel();
+  const funnel = useFunnel();
 
   useLayoutEffect(() => {
-    if (!funnel) {
+    if (!funnel || !funnel.controller) {
       return;
     }
 
-    funnel.setCurrentStep(props.activeStepIndex);
+    funnel.controller.setCurrentStep(props.activeStepIndex);
 
     return () => {
-      funnel.currentStep?.complete();
+      funnel.controller?.currentStep?.complete();
     };
   }, [props.activeStepIndex, funnel]);
 

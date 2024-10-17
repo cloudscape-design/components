@@ -3,7 +3,7 @@
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelSubstep } from './funnel-substep';
-import { ErrorScope, FunnelStepProps } from './types';
+import { ErrorDetails, FunnelStepProps } from './types';
 
 export class FunnelStep extends FunnelBase {
   public index: number;
@@ -57,9 +57,9 @@ export class FunnelStep extends FunnelBase {
     });
   }
 
-  error(errorText: string, scope: ErrorScope): void {
-    if (errorText) {
-      super.error(errorText, scope);
+  error(details: ErrorDetails): void {
+    if (details.errorText) {
+      super.error(details);
       dispatchFunnelEvent({
         header: 'Step error',
         details: [this.name].join(' / '),

@@ -2,14 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { AppLayout, BreadcrumbGroup, Button, ContentLayout, SpaceBetween } from '~components';
+import { AppLayout, BreadcrumbGroup, Button, Container, ContentLayout, Form, Header, SpaceBetween } from '~components';
 
 import {
   DeleteWithAdditionalConfirmationModal,
   DeleteWithSimpleConfirmationModal,
   FeedbackModal,
 } from './components/modals';
-import { useFunnelLogger } from './hooks/use-funnel-logger';
 
 function Content() {
   const [simpleDeleteModalVisible, setSimpleDeleteModalVisible] = useState(false);
@@ -30,35 +29,39 @@ function Content() {
 
   return (
     <ContentLayout>
-      <SpaceBetween size="xs" direction="horizontal">
-        <Button
-          onClick={() => {
-            setSimpleDeleteModalVisible(true);
-          }}
-        >
-          Delete with simple confirmation - Modal
-        </Button>
-        <Button
-          onClick={() => {
-            setAdditionalDeleteModalVisible(true);
-          }}
-        >
-          Delete with additional confirmation - Modal
-        </Button>
-        <Button
-          onClick={() => {
-            setFeedbackModalVisible(true);
-          }}
-        >
-          Feedback flow - Modal
-        </Button>
-      </SpaceBetween>
-      <DeleteWithSimpleConfirmationModal
-        visible={simpleDeleteModalVisible}
-        onConfirm={handleSimpleDeleteModalClose}
-        onCancel={handleSimpleDeleteModalClose}
-        onDismiss={handleSimpleDeleteModalClose}
-      />
+      <Form header={<Header>Form Header</Header>}>
+        <Container header={<Header>Section 1</Header>}>
+          <SpaceBetween size="xs" direction="horizontal">
+            <Button
+              onClick={() => {
+                setSimpleDeleteModalVisible(true);
+              }}
+            >
+              Delete with simple confirmation - Modal
+            </Button>
+            <Button
+              onClick={() => {
+                setAdditionalDeleteModalVisible(true);
+              }}
+            >
+              Delete with additional confirmation - Modal
+            </Button>
+            <Button
+              onClick={() => {
+                setFeedbackModalVisible(true);
+              }}
+            >
+              Feedback flow - Modal
+            </Button>
+          </SpaceBetween>
+          <DeleteWithSimpleConfirmationModal
+            visible={simpleDeleteModalVisible}
+            onConfirm={handleSimpleDeleteModalClose}
+            onCancel={handleSimpleDeleteModalClose}
+            onDismiss={handleSimpleDeleteModalClose}
+          />
+        </Container>
+      </Form>
 
       <DeleteWithAdditionalConfirmationModal
         visible={additionalDeleteModalVisible}
@@ -78,8 +81,6 @@ function Content() {
 }
 
 function App() {
-  useFunnelLogger();
-
   return (
     <AppLayout
       contentType="form"

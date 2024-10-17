@@ -119,7 +119,7 @@ export default function InternalFormField({
   const isRefresh = useVisualRefresh();
 
   const instanceUniqueId = useUniqueId('formField');
-  const { funnel } = useFunnel();
+  const funnel = useFunnel();
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
   const showWarning = warningText && !errorText;
@@ -156,9 +156,9 @@ export default function InternalFormField({
     // Move data attribute to common place
     const parentSubstepElement = __internalRootRef?.current?.closest('[data-funnel-substep-id]');
     const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id');
-    funnel?.currentStep?.substeps.forEach(substep => {
+    funnel?.controller?.currentStep?.substeps.forEach(substep => {
       if (substep.id === substepId) {
-        substep.error(fieldError, { type: 'field', label: fieldLabel });
+        substep.error({ errorText: fieldError, scope: { type: 'field', label: fieldLabel } });
       }
     });
 

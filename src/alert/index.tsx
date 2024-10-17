@@ -35,9 +35,9 @@ const Alert = React.forwardRef(
       },
     };
 
-    const { funnel } = useFunnel();
+    const funnel = useFunnel();
     useEffect(() => {
-      if (!funnel) {
+      if (!funnel || !funnel.controller) {
         return;
       }
 
@@ -48,18 +48,18 @@ const Alert = React.forwardRef(
             ?.innerText || '';
       }
 
-      const parentSubstepElement = baseComponentProps.__internalRootRef.current?.closest('[data-funnel-substep-id]');
+      const parentSubstepElement = baseComponentProps.__internalRootRef.current?.closest('[data-funnel-substep-id]'); // TODO: Move to helper function
       if (parentSubstepElement) {
         const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id'); // TODO: Move selectors to own file
-        funnel?.currentStep?.substeps.forEach(substep => {
+        funnel?.controller?.currentStep?.substeps.forEach(substep => {
           if (substep.id === substepId) {
-            funnel?.currentStep?.currentSubstep?.error(errorText, { type: 'funnel-substep' });
+            funnel?.controller?.currentStep?.currentSubstep?.error({ errorText, scope: { type: 'funnel-substep' } });
           }
         });
-      } else if (funnel?.currentStep) {
-        funnel?.currentStep?.error(errorText, { type: 'funnel-step' });
+      } else if (funnel?.controller?.currentStep) {
+        funnel?.controller?.currentStep?.error({ errorText, scope: { type: 'funnel-step' } });
       } else {
-        funnel?.error(errorText, { type: 'funnel' });
+        funnel?.controller?.error({ errorText, scope: { type: 'funnel' } });
       }
     }, [funnel, type, baseComponentProps.__internalRootRef]);
 

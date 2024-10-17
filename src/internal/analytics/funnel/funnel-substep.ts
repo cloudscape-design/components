@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent, Status } from './funnel-logger';
-import { ErrorScope } from './types';
+import { ErrorDetails } from './types';
 
 export class FunnelSubstep extends FunnelBase {
   protected index = -1;
@@ -18,6 +18,7 @@ export class FunnelSubstep extends FunnelBase {
 
   get domAttributes() {
     return {
+      id: this.id,
       'data-funnel-substep-id': this.id,
       'data-funnel-substep-index': `${this.index}`,
     };
@@ -64,21 +65,27 @@ export class FunnelSubstep extends FunnelBase {
     this.debounceState('complete');
   }
 
-  error(errorText: string, scope: ErrorScope): void {
-    super.error(errorText, scope);
+  error(details: ErrorDetails, callback?: () => void) {
+    super.error(details, () => {
+      const { errorText, scope } = details;
+      const status: Status = errorText ? 'error' : 'info';
+      switch (scope.type) {
+        case 'field': {
+          if (this.getStatus() === 'error') {
+            dispatchFunnelEvent({
+              header: errorText ? 'Field error' : 'Field error cleared',
+              status,
+              details: [this.name, scope.label].join(' / '),
+            });
+          }
+          break;
+        }
+        default:
+          dispatchFunnelEvent({ header: errorText ? 'Field error' : 'Substep error cleared', status });
+          break;
+      }
 
-    const status: Status = errorText ? 'error' : 'info';
-    switch (scope.type) {
-      case 'field':
-        dispatchFunnelEvent({
-          header: errorText ? 'Field error' : 'Field error cleared',
-          status,
-          details: [this.name, scope.label].join(' / '),
-        });
-        break;
-      default:
-        dispatchFunnelEvent({ header: errorText ? 'Field error' : 'Substep error cleared', status });
-        break;
-    }
+      callback?.();
+    });
   }
 }

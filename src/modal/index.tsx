@@ -17,39 +17,46 @@ export { ModalProps };
 function FocusEnabledModal({ visible, footer, ...props }: InternalModalProps) {
   const modalId = useUniqueId();
   const ref = useRef<HTMLDivElement>(null);
-  const { funnel } = useFunnel();
+  const funnel = useFunnel();
   const funnelSubstep = useFunnelSubstep(ref);
 
   useEffect(() => {
-    if (!funnel || !visible) {
+    if (!funnel || !funnel?.controller || !visible) {
       return;
     }
 
     const funnelName = document.querySelector<HTMLHeadingElement>(`[data-modalid="${modalId}"] h2`)?.innerText || '';
 
-    funnel.setName(funnelName);
+    funnel.controller?.setName(funnelName);
+    funnel.controller?.currentStep.setName(funnelName);
+
     funnelSubstep.setName(funnelName);
-    funnel.currentStep.setName(funnelName);
-    funnel.currentStep.registerSubstep(funnelSubstep);
+    funnel.controller?.currentStep.registerSubstep(funnelSubstep);
 
     const funnelStartTimeout = setTimeout(() => {
-      funnel.start();
+      funnel.controller?.start();
     }, 0);
 
     return () => {
-      funnel.complete();
+      funnel.controller?.complete();
       clearTimeout(funnelStartTimeout);
     };
   }, [modalId, visible, funnel, funnelSubstep]);
 
   const handleButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
-      funnel?.submit();
+      funnel?.controller?.submit();
     }
   };
 
+  const referrerId =
+    funnel?.controller?.context?.currentStep?.currentSubstep?.id ??
+    funnel?.controller?.context?.currentStep?.id ??
+    funnel?.controller?.context?.id;
+
   return (
     <InternalModal
+      referrerId={referrerId}
       data-modalid={modalId}
       visible={visible}
       footer={<ButtonContext.Provider value={{ onClick: handleButtonClick }}>{footer}</ButtonContext.Provider>}
@@ -65,7 +72,7 @@ export default function Modal({ size = 'medium', ...props }: ModalProps) {
     props: { size, disableContentPaddings: props.disableContentPaddings },
   });
   return (
-    <FunnelProvider allowNesting={false}>
+    <FunnelProvider rootComponent="modal" allowNesting={false}>
       <FocusEnabledModal size={size} {...props} {...baseComponentProps} __injectAnalyticsComponentMetadata={true} />
     </FunnelProvider>
   );

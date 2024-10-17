@@ -11,6 +11,7 @@ import {
   FileUploadProps,
   Form,
   FormField,
+  Header,
   Input,
   Link,
   Modal,
@@ -43,22 +44,24 @@ export const DeleteWithSimpleConfirmationModal = (
         </Box>
       }
     >
-      <SpaceBetween size="m">
-        <Box variant="span">
-          Permanently delete Permanently delete instance{' '}
-          <Box variant="span" fontWeight="bold">
-            5 distributions
+      <Form header={<Header>Inner Form Header</Header>}>
+        <SpaceBetween size="m">
+          <Box variant="span">
+            Permanently delete Permanently delete instance{' '}
+            <Box variant="span" fontWeight="bold">
+              5 distributions
+            </Box>
+            ? You can’t undo this action.
           </Box>
-          ? You can’t undo this action.
-        </Box>
 
-        <Alert type="info" statusIconAriaLabel="Warning">
-          Proceeding with this action will delete the instance with all its content and can affect related resources.{' '}
-          <Link external={true} href="#" ariaLabel="Learn more about resource management, opens in new tab">
-            Learn more
-          </Link>
-        </Alert>
-      </SpaceBetween>
+          <Alert type="info" statusIconAriaLabel="Warning">
+            Proceeding with this action will delete the instance with all its content and can affect related resources.{' '}
+            <Link external={true} href="#" ariaLabel="Learn more about resource management, opens in new tab">
+              Learn more
+            </Link>
+          </Alert>
+        </SpaceBetween>
+      </Form>
     </Modal>
   );
 };

@@ -9,7 +9,7 @@ import { useFunnelContext } from './use-funnel';
 import headerAnalyticsSelectors from '../../../header/analytics-metadata/styles.css.js';
 
 export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>) => {
-  const { funnel } = useFunnelContext();
+  const funnel = useFunnelContext();
   const [, setValue] = useState<number>(-1);
 
   const funnelSubstep = useMemo(() => {
@@ -23,7 +23,7 @@ export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>) 
   }, [setValue]);
 
   useEffect(() => {
-    if (!funnel) {
+    if (!funnel || !funnel.controller) {
       return;
     }
 
@@ -32,20 +32,20 @@ export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>) 
         `.${headerAnalyticsSelectors['heading-text']}`
       )?.innerText || '';
     funnelSubstep.setName(substepName);
-    funnel.currentStep?.registerSubstep(funnelSubstep);
+    funnel.controller.currentStep?.registerSubstep(funnelSubstep);
 
     return () => {
-      funnel.currentStep?.unregisterSubstep(funnelSubstep);
+      funnel.controller?.currentStep?.unregisterSubstep(funnelSubstep);
     };
   }, [funnel, funnelSubstep, rootRef]);
 
   useFocusTracker({
     rootRef,
     onBlur: () => {
-      funnel?.currentStep?.setCurrentSubstep(undefined);
+      funnel?.controller?.currentStep?.setCurrentSubstep(undefined);
     },
     onFocus: () => {
-      funnel?.currentStep?.setCurrentSubstep(funnelSubstep);
+      funnel?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
     },
   });
 

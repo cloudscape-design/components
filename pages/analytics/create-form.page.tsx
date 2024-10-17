@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import {
   Alert,
@@ -22,9 +23,9 @@ import SpaceBetween from '~components/space-between';
 
 import { UncontrolledS3ResourceSelector } from './components/s3-resource-selector';
 import { TableContainerVariant } from './components/table';
-import { useFunnelLogger } from './hooks/use-funnel-logger';
 
 function Content() {
+  const history = useHistory();
   const [errorText] = useState<string>('');
   const [loading, setLoading] = useState(false);
   const [value1, setValue1] = useState('');
@@ -39,11 +40,14 @@ function Content() {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      history.push('/');
       // setErrorText("There was an error with your submission");
     }, 2000);
   };
 
-  const handleCancel = () => {};
+  const handleCancel = () => {
+    history.push('/');
+  };
 
   const hideContainer = (index: number) => {
     const updatedContainersVisible = [...containersVisible];
@@ -206,8 +210,6 @@ function Content() {
 }
 
 function App() {
-  useFunnelLogger();
-
   return (
     <AppLayout
       contentType="form"
