@@ -88,6 +88,9 @@ export function TokenEditor({
     const setTemporaryToken = (newToken: InternalToken) => {
       const copy = [...tempGroup];
       copy[index] = newToken;
+      if (newToken.property?.getTokenType(newToken.operator) === 'enum' && newToken.value === null) {
+        newToken.value = [];
+      }
       onChangeTempGroup(copy);
     };
     const property = temporaryToken.property;
@@ -107,7 +110,11 @@ export function TokenEditor({
 
     const operator = temporaryToken.operator;
     const onChangeOperator = (newOperator: ComparisonOperator) => {
-      setTemporaryToken({ ...temporaryToken, operator: newOperator });
+      const currentOperatorTokenType = property?.getTokenType(operator);
+      const newOperatorTokenType = property?.getTokenType(newOperator);
+      const shouldClearValue = currentOperatorTokenType !== newOperatorTokenType;
+      const value = shouldClearValue ? null : temporaryToken.value;
+      setTemporaryToken({ ...temporaryToken, operator: newOperator, value });
     };
 
     const value = temporaryToken.value;

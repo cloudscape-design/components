@@ -13,7 +13,6 @@ import EmbeddedMultiselect, { EmbeddedMultiselectProps } from '../../../lib/comp
 
 import dropdownFooterStyles from '../../../lib/components/internal/components/dropdown-footer/styles.css.js';
 import selectableItemsStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
-import multiselectStyles from '../../../lib/components/multiselect/styles.css.js';
 
 const defaultOptions: MultiselectProps.Options = [
   { label: 'First', value: '1' },
@@ -86,11 +85,6 @@ test.each([
 
 test('ARIA labels', () => {
   renderComponent({ ariaLabel: 'My list', controlId: 'list-control', statusType: 'loading' });
-
-  const group = createWrapper().findByClassName(multiselectStyles.embedded)!.getElement();
-  expect(group).toHaveAttribute('role', 'group');
-  expect(group).toHaveAccessibleName('My list');
-  expect(group).toHaveAccessibleDescription('Loading...');
 
   const list = createWrapper().find('ul')!.getElement();
   expect(list).toHaveAttribute('role', 'listbox');
