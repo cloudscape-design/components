@@ -10,12 +10,10 @@ export default class ContentDisplayPageObject extends CollectionPreferencesPageO
   }
 
   async expectAnnouncement(announcement: string) {
-    const liveRegion = await this.browser.$(
-      this.wrapper.findModal().findContentDisplayPreference().find('[aria-live="assertive"]').toSelector()
-    );
+    const liveRegion = await this.browser.$('[aria-live="assertive"]');
     // Using getHTML because getText returns an empty string if the live region is outside the viewport.
     // See https://webdriver.io/docs/api/element/getText/
-    return expect(liveRegion.getHTML()).resolves.toContain(announcement);
+    return this.waitForAssertion(() => expect(liveRegion.getHTML()).resolves.toContain(announcement));
   }
 
   findDragHandle(index = 0) {

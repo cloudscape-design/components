@@ -3,9 +3,16 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use '../../styles' as styles;
+
 .root {
-  /* used in test-utils */
+  display: contents;
 }
-.source {
-  /* used in test-utils */
+
+.root[hidden] {
+  display: none;
+}
+
+.announcer {
+  @include styles.awsui-util-hide;
 }

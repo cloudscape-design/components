@@ -6,6 +6,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
+import LiveRegionWrapper from '../../../lib/components/test-utils/selectors/internal/live-region';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
@@ -58,6 +59,19 @@ describe('Button Component', () => {
     const wrapper = createWrapper(renderResult.container);
     button!.focus();
     expect(document.activeElement).toBe(wrapper.findButton()!.getElement());
+  });
+
+  describe('loadingText property', () => {
+    test('renders loadingText in a LiveRegion', () => {
+      renderButton({ children: 'Button', loading: true, loadingText: 'Loading' });
+      expect(createWrapper().findByClassName(LiveRegionWrapper.rootSelector)!.getElement()).toHaveTextContent(
+        'Loading'
+      );
+    });
+    test('does not render loadingText if loading is false', () => {
+      renderButton({ children: 'Button', loading: false, loadingText: 'Loading' });
+      expect(createWrapper().findByClassName(LiveRegionWrapper.rootSelector)).toBeNull();
+    });
   });
 
   describe('disabled property', () => {

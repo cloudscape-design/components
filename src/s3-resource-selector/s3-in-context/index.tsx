@@ -147,17 +147,15 @@ export const S3InContext = React.forwardRef(
           </div>
         </div>
 
-        <div role="alert" aria-live="assertive" aria-atomic="true">
+        <LiveRegion assertive={true}>
           {loading && (
             <InternalBox margin={{ top: 's' }}>
               <InternalStatusIndicator type="loading">
-                <LiveRegion visible={true}>
-                  {i18n('i18nStrings.inContextLoadingText', i18nStrings?.inContextLoadingText)}
-                </LiveRegion>
+                {i18n('i18nStrings.inContextLoadingText', i18nStrings?.inContextLoadingText)}
               </InternalStatusIndicator>
             </InternalBox>
           )}
-        </div>
+        </LiveRegion>
       </div>
     );
   }

@@ -13,7 +13,7 @@ import ChartPopover from '../internal/components/chart-popover';
 import ChartPopoverFooter from '../internal/components/chart-popover-footer';
 import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
@@ -396,7 +396,7 @@ export default <T extends PieChartProps.Datum>({
           {detailPopoverFooterContent && <ChartPopoverFooter>{detailPopoverFooterContent}</ChartPopoverFooter>}
         </ChartPopover>
       )}
-      <LiveRegion source={[popoverContentRef]} />
+      <InternalLiveRegion sources={[popoverContentRef]} />
     </div>
   );
 };

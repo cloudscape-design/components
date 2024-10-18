@@ -81,8 +81,8 @@ allVariants.forEach(variant => {
 
     describe('ARIA live region', () => {
       test('is present in the DOM while in-progress', () => {
-        const wrapper = renderProgressBar({ variant, value: 0 });
-        expect(wrapper.find('[aria-live]')).not.toBeNull();
+        renderProgressBar({ variant, value: 0 });
+        expect(createWrapper().find('[aria-live]')).not.toBeNull();
       });
 
       test('contains result text', () => {

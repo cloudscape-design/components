@@ -33,7 +33,7 @@ export default function LiveRegionContentTestPage() {
           <strong>Live region</strong>
 
           <div style={{ padding: 8, border: '1px solid black' }}>
-            <LiveRegion visible={true}>
+            <LiveRegion>
               <article>
                 <div>Before list</div>
                 <ul>

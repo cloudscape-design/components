@@ -4,6 +4,7 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import Icon from '../../icon/internal';
+import InternalLiveRegion from '../../internal/components/live-region/internal';
 import Portal from '../../internal/components/portal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
@@ -126,7 +127,7 @@ export function DisabledInlineEditor<ItemType>({
                   onDismiss={() => {}}
                   overflowVisible="both"
                 >
-                  <span aria-live="polite">{editDisabledReason}</span>
+                  <InternalLiveRegion tagName="span">{editDisabledReason}</InternalLiveRegion>
                 </PopoverBody>
               </PopoverContainer>
             </span>

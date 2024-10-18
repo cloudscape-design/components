@@ -190,7 +190,7 @@ describe('Date Picker', () => {
       await page.initLiveAnnouncementsObserver();
       await page.setInputValue('2024/02/20', false);
       await page.clickOpenCalendar();
-      await expect(page.getLiveAnnouncements()).resolves.toContain('February 2024');
+      await page.waitForAssertion(() => expect(page.getLiveAnnouncements()).resolves.toContain('February 2024'));
     })
   );
 });

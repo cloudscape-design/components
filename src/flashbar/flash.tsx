@@ -12,7 +12,7 @@ import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
 import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -231,7 +231,9 @@ export const Flash = React.forwardRef(
           />
         </div>
         {dismissible && dismissButton(dismissLabel, handleDismiss)}
-        {ariaRole === 'status' && <LiveRegion source={[statusIconAriaLabel, headerRefObject, contentRefObject]} />}
+        {ariaRole === 'status' && (
+          <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
+        )}
       </div>
     );
   }

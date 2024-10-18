@@ -6,7 +6,7 @@ import Button from '../../button/internal';
 import FormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import FocusLock, { FocusLockRef } from '../../internal/components/focus-lock';
-import LiveRegion from '../../internal/components/live-region';
+import InternalLiveRegion from '../../internal/components/live-region/internal';
 import { Optional } from '../../internal/types';
 import SpaceBetween from '../../space-between/internal';
 import { TableProps } from '../interfaces';
@@ -145,11 +145,14 @@ export function InlineEditor<ItemType>({
                     loading={currentEditLoading}
                   />
                 </SpaceBetween>
-                <LiveRegion>
-                  {currentEditLoading
-                    ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
-                    : ''}
-                </LiveRegion>
+                <InternalLiveRegion
+                  tagName="span"
+                  message={
+                    currentEditLoading
+                      ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
+                      : ''
+                  }
+                />
               </span>
             </div>
           </FormField>

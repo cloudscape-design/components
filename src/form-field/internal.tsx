@@ -19,7 +19,7 @@ import {
   getTextFromSelector,
 } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -61,7 +61,7 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
         </span>
       </div>
 
-      <LiveRegion assertive={true} source={[i18nErrorIconAriaLabel, contentRef]} />
+      <InternalLiveRegion assertive={true} tagName="span" sources={[i18nErrorIconAriaLabel, contentRef]} />
     </>
   );
 }
@@ -84,7 +84,7 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
         </span>
       </div>
 
-      <LiveRegion assertive={true} source={[i18nWarningIconAriaLabel, contentRef]} />
+      <InternalLiveRegion assertive={true} tagName="span" sources={[i18nWarningIconAriaLabel, contentRef]} />
     </>
   );
 }

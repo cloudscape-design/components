@@ -29,11 +29,4 @@ describe('Dropdown footer', () => {
     expect(element).toHaveClass(dropdownFooterStyles.root);
     expect(element).toHaveClass(dropdownFooterStyles.hidden);
   });
-
-  test('adds correct aria attributes', () => {
-    const { wrapper } = renderComponent(<DropdownFooter />);
-    const element = wrapper.find('span')!.getElement();
-    expect(element.firstElementChild).toHaveAttribute('aria-live', 'polite');
-    expect(element.firstElementChild).toHaveAttribute('aria-atomic', 'true');
-  });
 });

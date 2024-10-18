@@ -7,7 +7,7 @@ import { useInternalI18n } from '../../../i18n/context';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { KeyCode } from '../../keycode';
 import { Offset } from '../interfaces';
-import LiveRegion from '../live-region/index';
+import InternalLiveRegion from '../live-region/internal';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
 
@@ -224,7 +224,9 @@ function ChartPlot(
         </g>
       </svg>
 
-      <LiveRegion>{ariaLiveRegion}</LiveRegion>
+      <InternalLiveRegion hidden={true} tagName="span">
+        {ariaLiveRegion}
+      </InternalLiveRegion>
     </>
   );
 }

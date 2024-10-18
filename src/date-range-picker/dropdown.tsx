@@ -10,7 +10,7 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
 import { DateRangePickerProps } from './interfaces';
@@ -222,7 +222,9 @@ export function DateRangePickerDropdown({
                       >
                         <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
                       </InternalAlert>
-                      <LiveRegion>{validationResult.errorMessage}</LiveRegion>
+                      <InternalLiveRegion hidden={true} tagName="span">
+                        {validationResult.errorMessage}
+                      </InternalLiveRegion>
                     </>
                   )}
                 </InternalBox>
