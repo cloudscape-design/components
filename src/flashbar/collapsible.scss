@@ -90,8 +90,8 @@ the grid layout will be:
     );
   }
 
-  > .item:not(:last-child) > .flash::before,
-  > .item.flash::before {
+  > .item:not(:last-child) > .flash,
+  > .item.flash {
     box-shadow: awsui.$shadow-flash-collapsed;
   }
 }
