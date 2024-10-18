@@ -15,7 +15,7 @@ export interface LiveRegionProps extends BaseComponentProps {
   /**
    * Whether the announcements should be made using assertive aria-live.
    * Assertive announcements interrupt the user's action, so they should only
-   * be used under specific situations.
+   * be used when absolutely necessary.
    */
   assertive?: boolean;
 
@@ -31,9 +31,7 @@ export interface LiveRegionProps extends BaseComponentProps {
 
   /**
    * Use the rendered content as the source for the announcement text.
-   *
-   * If interactive content is rendered inside `children`, it will be visually
-   * hidden, but still interactive. Consider using `source` instead.
+   * Prefer `message` if announcement text can be provided as a string.
    */
   children?: React.ReactNode;
 }

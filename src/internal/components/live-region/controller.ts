@@ -19,7 +19,7 @@ class LiveRegionController {
   private _element: HTMLElement | undefined;
   private _timeoutId: number | undefined;
   private _lastAnnouncement = '';
-  private _nextDelay = DEFAULT_MIN_DELAY;
+  private _nextDelay = 0;
   private readonly _nextMessages = new Set<string>();
 
   constructor(public readonly politeness: 'polite' | 'assertive') {}
@@ -98,7 +98,7 @@ class LiveRegionController {
 
     // Reset the state for the next announcement.
     this._timeoutId = undefined;
-    this._nextDelay = DEFAULT_MIN_DELAY;
+    this._nextDelay = 0;
     this._nextMessages.clear();
   }
 }

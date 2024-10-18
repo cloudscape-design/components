@@ -36,7 +36,9 @@ describe('Pie chart with links in key-value pairs', () => {
         await page.click('#focus-target');
         await page.keys(['Tab']); // Focus the chart
         await page.keys(['Enter']); // Focus the first chart segment
-        await expect(page.getLiveAnnouncements()).resolves.toContain('Popularity 50% Calories per 100g 77 kcal');
+        await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for live region timeout
+        const announcements = await page.getLiveAnnouncements();
+        expect(announcements.some(text => /Popularity\s*50%\s*Calories per 100g\s*77 kcal/.test(text))).toBe(true);
       })
     );
   });

@@ -4,6 +4,6 @@ import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import styles from '../../../internal/components/live-region/styles.selectors.js';
 
-export default class ChartLegendWrapper extends ComponentWrapper {
+export default class LiveRegionWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 }
