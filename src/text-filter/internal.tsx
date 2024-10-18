@@ -30,6 +30,7 @@ const InternalTextFilter = React.forwardRef(
       ariaDescribedby,
       disabled,
       countText,
+      disableBrowserAutocorrect,
       onChange,
       onDelayedChange,
       __internalRootRef,
@@ -52,6 +53,7 @@ const InternalTextFilter = React.forwardRef(
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <InternalInput
           __inheritFormFieldProps={true}
+          disableBrowserAutocorrect={disableBrowserAutocorrect}
           ref={inputRef}
           className={styles.input}
           type="search"

@@ -139,6 +139,32 @@ describe('countText', () => {
   });
 });
 
+describe('disableBrowserAutocorrect', () => {
+  test('does not modify autocorrect features by default', () => {
+    const { wrapper } = renderTextFilter(<TextFilter filteringText="" />);
+    const input = wrapper.findInput().findNativeInput().getElement();
+
+    expect(input).not.toHaveAttribute('autocorrect');
+    expect(input).not.toHaveAttribute('autocapitalize');
+  });
+
+  test('does not modify autocorrect features when falsy', () => {
+    const { wrapper } = renderTextFilter(<TextFilter filteringText="" disableBrowserAutocorrect={false} />);
+    const input = wrapper.findInput().findNativeInput().getElement();
+
+    expect(input).not.toHaveAttribute('autocorrect');
+    expect(input).not.toHaveAttribute('autocapitalize');
+  });
+
+  test('can disabled autocorrect features when set', () => {
+    const { wrapper } = renderTextFilter(<TextFilter filteringText="" disableBrowserAutocorrect={true} />);
+    const input = wrapper.findInput().findNativeInput().getElement();
+
+    expect(input).toHaveAttribute('autocorrect', 'off');
+    expect(input).toHaveAttribute('autocapitalize', 'off');
+  });
+});
+
 test('check a11y', async () => {
   const { wrapper } = renderTextFilter(<TextFilter filteringText="" filteringAriaLabel="filter instances" />);
   await expect(wrapper.getElement()).toValidateA11y();
