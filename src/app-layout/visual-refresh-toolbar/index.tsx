@@ -17,7 +17,7 @@ import { MIN_DRAWER_SIZE, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
-import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
+import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
@@ -393,10 +393,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
       const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
       const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
-      // collapsed content width is $space-layout-content-horizontal * 2 = 48px
-      const minContentVisibleWidth = 48;
-
-      const scrollWidth = activeNavigationWidth + minContentVisibleWidth + totalActiveDrawersMinSize;
+      const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
       const hasHorizontalScroll = scrollWidth > placement.inlineSize;
       if (hasHorizontalScroll) {
         if (navigationOpen) {
