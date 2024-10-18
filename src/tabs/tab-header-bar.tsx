@@ -29,13 +29,7 @@ import {
   GeneratedAnalyticsMetadataTabsSelect,
 } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
-import {
-  hasHorizontalOverflow,
-  hasInlineEndOverflow,
-  hasInlineStartOverflow,
-  onPaginationClick,
-  scrollIntoView,
-} from './scroll-utils';
+import { hasHorizontalOverflow, hasInlineEndOverflow, hasInlineStartOverflow, onPaginationClick } from './scroll-utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -128,33 +122,6 @@ export function TabHeaderBar({
     }
   }, [widthChange, tabs]);
 
-  const scrollIntoViewIfPossible = (smooth: boolean) => {
-    if (!activeTabId) {
-      return;
-    }
-    const activeTabRef = tabRefs.current.get(activeTabId);
-    if (activeTabRef && headerBarRef.current) {
-      scrollIntoView(activeTabRef, headerBarRef.current, smooth);
-    }
-  };
-
-  useEffect(() => {
-    // Delay scrollIntoView as the position is depending on parent elements
-    // (effects are called inside-out in the component tree).
-    // Wait one frame to allow parents to complete it's calculation.
-    requestAnimationFrame(() => {
-      scrollIntoViewIfPossible(false);
-    });
-    // Non-smooth scrolling should not be called upon activeId change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [horizontalOverflow, widthChange, tabs.length]);
-
-  useEffect(() => {
-    scrollIntoViewIfPossible(true);
-    // Smooth scrolling should only be called upon activeId change
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activeTabId]);
-
   useEffect(() => {
     /*
      When the selected tab changes and we are currently already focused on a tab,
@@ -162,7 +129,7 @@ export function TabHeaderBar({
     */
     if (headerBarRef.current?.contains(document.activeElement)) {
       if (document.activeElement !== activeTabHeaderRef.current) {
-        activeTabHeaderRef.current?.focus({ preventScroll: true });
+        activeTabHeaderRef.current?.focus();
       }
     }
   }, [activeTabId]);

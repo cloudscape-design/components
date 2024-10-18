@@ -29,6 +29,7 @@ $label-horizontal-spacing: awsui.$space-xs;
   overflow-y: hidden;
   position: relative;
   inline-size: 100%;
+  scroll-snap-type: inline proximity;
   // do not use pointer-events none because it disables scroll by sliding
 
   // Hide scrollbar in all browsers
@@ -74,6 +75,7 @@ $label-horizontal-spacing: awsui.$space-xs;
   flex-shrink: 0;
   display: flex;
   max-inline-size: calc(90% - awsui.$space-l);
+  scroll-snap-align: start;
 }
 
 .tabs-tab-label {
