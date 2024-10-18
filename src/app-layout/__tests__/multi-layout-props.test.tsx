@@ -3,15 +3,15 @@
 import React from 'react';
 
 import {
-  mergeMultiAppLayoutProps,
-  SharedMultiAppLayoutProps,
+  mergeProps,
+  SharedProps,
 } from '../../../lib/components/app-layout/visual-refresh-toolbar/multi-layout';
 
 describe('mergeMultiAppLayoutProps', () => {
   const mockParentNavigationToggle = jest.fn();
   const mockParentActiveDrawerChange = jest.fn();
   const mockParentSplitPanelToggle = jest.fn();
-  const ownProps: SharedMultiAppLayoutProps = {
+  const ownProps: SharedProps = {
     forceDeduplicationType: 'primary',
     ariaLabels: {
       navigation: 'Navigation',
@@ -44,7 +44,7 @@ describe('mergeMultiAppLayoutProps', () => {
     onSplitPanelToggle: mockParentSplitPanelToggle,
   };
 
-  const additionalPropsBase: Partial<SharedMultiAppLayoutProps>[] = [
+  const additionalPropsBase: Partial<SharedProps>[] = [
     {
       ariaLabels: {
         navigation: 'New Navigation',
@@ -70,7 +70,7 @@ describe('mergeMultiAppLayoutProps', () => {
   ];
 
   it('should merge ownProps and additionalProps correctly', () => {
-    const result = mergeMultiAppLayoutProps(ownProps, additionalPropsBase);
+    const result = mergeProps(ownProps, additionalPropsBase);
 
     expect(result).toEqual({
       //asserting new aria labels overwrite existing yet preserve others
@@ -102,7 +102,7 @@ describe('mergeMultiAppLayoutProps', () => {
   });
 
   it('should return null if no fields are defined, except ariaLabels', () => {
-    const result = mergeMultiAppLayoutProps({ ariaLabels: {} } as SharedMultiAppLayoutProps, []);
+    const result = mergeProps({ ariaLabels: {} } as SharedProps, []);
 
     expect(result).toBeNull();
   });

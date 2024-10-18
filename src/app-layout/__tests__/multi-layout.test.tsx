@@ -94,7 +94,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(secondLayout.findNavigationToggle()).toBeFalsy();
   });
 
-  test('merges tools from two instances', async () => {
+  test('merges tools from two instances with navigation hidden in secondary', async () => {
     const { firstLayout, secondLayout } = await renderAsync(
       <AppLayout
         {...defaultAppLayoutProps}
@@ -108,7 +108,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(createWrapper().findAllByClassName(testUtilStyles.tools)).toHaveLength(1);
 
     firstLayout.findToolsToggle().click();
-    expect(secondLayout.findOpenToolsPanel()).toBeTruthy();
+    expect(secondLayout.findNavigation()).toBeFalsy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
+    expect(isDrawerClosed(secondLayout.findTools())).toEqual(false);
   });
 
   test('cleans and restores the toolbar buttons when inner app layout is unmounted and mounted again', async () => {

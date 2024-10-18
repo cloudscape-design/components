@@ -10,7 +10,7 @@ import { AppLayoutProps } from '../interfaces';
 import { Focusable } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
-export interface SharedMultiAppLayoutProps {
+interface SharedProps {
   forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
@@ -39,9 +39,9 @@ function checkAlreadyExists(value: boolean, propName: string) {
   return false;
 }
 
-export function mergeMultiAppLayoutProps(
-  ownProps: SharedMultiAppLayoutProps,
-  additionalProps: ReadonlyArray<Partial<SharedMultiAppLayoutProps>>
+export function mergeProps(
+  ownProps: SharedProps,
+  additionalProps: ReadonlyArray<Partial<SharedProps>>
 ): ToolbarProps | null {
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
@@ -74,8 +74,8 @@ export function mergeMultiAppLayoutProps(
   return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
-export function useMultiAppLayout(props: SharedMultiAppLayoutProps, isEnabled: boolean) {
-  const [registration, setRegistration] = useState<RegistrationState<SharedMultiAppLayoutProps> | null>(null);
+export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
+  const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
 
   useLayoutEffect(() => {
@@ -87,7 +87,7 @@ export function useMultiAppLayout(props: SharedMultiAppLayoutProps, isEnabled: b
       return;
     }
     return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
-      setRegistration(props as RegistrationState<SharedMultiAppLayoutProps>)
+      setRegistration(props as RegistrationState<SharedProps>)
     );
   }, [forceDeduplicationType, isEnabled]);
 
@@ -100,6 +100,6 @@ export function useMultiAppLayout(props: SharedMultiAppLayoutProps, isEnabled: b
   return {
     registered: !!registration?.type,
     toolbarProps:
-      registration?.type === 'primary' ? mergeMultiAppLayoutProps(props, registration.discoveredProps) : null,
+      registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
   };
 }
