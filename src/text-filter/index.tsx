@@ -13,7 +13,9 @@ import InternalTextFilter from './internal';
 export { TextFilterProps };
 
 const TextFilter = React.forwardRef((props: TextFilterProps, ref: React.Ref<TextFilterProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('TextFilter');
+  const baseComponentProps = useBaseComponent('TextFilter', {
+    props: { disabled: props.disabled, disableBrowserAutocorrect: props.disableBrowserAutocorrect },
+  });
 
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTextFilterComponent = {
     name: 'awsui.TextFilter',
