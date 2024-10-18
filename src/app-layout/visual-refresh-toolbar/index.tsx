@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
+
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
@@ -111,8 +113,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       //   and compare a given number with the new drawer id min size
 
       // the total size of all global drawers resized to their min size
-      const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
-
       const availableSpaceForNewDrawer = resizableSpaceAvailable - totalActiveDrawersMinSize;
       if (availableSpaceForNewDrawer >= newDrawerSize) {
         return;
@@ -146,23 +146,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       toolsWidth,
       onToolsToggle,
     });
-
-    const getActiveDrawersTotalMinSize = useCallback(() => {
-      const combinedDrawers = [...(drawers || []), ...globalDrawers];
-      let totalActiveDrawersMinSize = activeGlobalDrawersIds
-        .map(activeDrawerId =>
-          Math.min(
-            combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE,
-            MIN_DRAWER_SIZE
-          )
-        )
-        .reduce((acc, curr) => acc + curr, 0);
-      if (activeDrawer) {
-        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
-      }
-
-      return totalActiveDrawersMinSize;
-    }, [activeDrawer, activeGlobalDrawersIds, drawers, globalDrawers]);
 
     const onActiveDrawerChangeHandler = (drawerId: string | null) => {
       onActiveDrawerChange(drawerId);
@@ -227,13 +210,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
-    const onNavigationToggle = useCallback(
-      (open: boolean) => {
-        navigationFocusControl.setFocus();
-        fireNonCancelableEvent(onNavigationChange, { open });
-      },
-      [navigationFocusControl, onNavigationChange]
-    );
+    const onNavigationToggle = useStableCallback((open: boolean) => {
+      navigationFocusControl.setFocus();
+      fireNonCancelableEvent(onNavigationChange, { open });
+    });
 
     useImperativeHandle(forwardRef, () => ({
       closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
@@ -369,14 +349,14 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       refs: splitPanelFocusControl.refs,
     };
 
-    const closeFirstDrawer = useCallback(() => {
+    const closeFirstDrawer = useStableCallback(() => {
       const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
       if (activeDrawer && activeDrawer?.id === drawerToClose) {
         onActiveDrawerChange(null);
       } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
         onActiveGlobalDrawersChange(drawerToClose);
       }
-    }, [activeDrawer, activeGlobalDrawersIds, drawersOpenQueue, onActiveDrawerChange, onActiveGlobalDrawersChange]);
+    });
 
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
@@ -386,12 +366,30 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile]);
 
+    const getTotalActiveDrawersMinSize = () => {
+      const combinedDrawers = [...(drawers || []), ...globalDrawers];
+      let result = activeGlobalDrawersIds
+        .map(activeDrawerId =>
+          Math.min(
+            combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE,
+            MIN_DRAWER_SIZE
+          )
+        )
+        .reduce((acc, curr) => acc + curr, 0);
+      if (activeDrawer) {
+        result += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+      }
+
+      return result;
+    };
+
+    const totalActiveDrawersMinSize = getTotalActiveDrawersMinSize();
+
     useEffect(() => {
       if (isMobile) {
         return;
       }
 
-      const totalActiveDrawersMinSize = getActiveDrawersTotalMinSize();
       const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
       const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
       const hasHorizontalScroll = scrollWidth > placement.inlineSize;
@@ -404,8 +402,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         closeFirstDrawer();
       }
     }, [
+      totalActiveDrawersMinSize,
       closeFirstDrawer,
-      getActiveDrawersTotalMinSize,
       isMobile,
       navigationOpen,
       navigationWidth,
