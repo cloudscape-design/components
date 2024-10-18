@@ -17,6 +17,8 @@ interface HorizontalLayoutInput {
   activeGlobalDrawersSizes: Record<string, number>;
 }
 
+export const CONTENT_PADDING = 2 * 24; // space-xl
+
 export function computeHorizontalLayout({
   navigationOpen,
   navigationWidth,
@@ -29,12 +31,11 @@ export function computeHorizontalLayout({
   isMobile,
   activeGlobalDrawersSizes,
 }: HorizontalLayoutInput) {
-  const contentPadding = 2 * 24; // space-xl
   const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
 
   let resizableSpaceAvailable = Math.max(
     0,
-    placement.inlineSize - minContentWidth - contentPadding - activeNavigationWidth
+    placement.inlineSize - minContentWidth - CONTENT_PADDING - activeNavigationWidth
   );
   const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
