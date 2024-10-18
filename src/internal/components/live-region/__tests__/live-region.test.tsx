@@ -7,15 +7,18 @@ import InternalLiveRegion, {
   assertive,
   polite,
 } from '../../../../../lib/components/internal/components/live-region/internal';
-import { mockInnerText } from '../../../../internal/analytics/__tests__/mocks';
 
 import styles from '../../../../../lib/components/internal/components/live-region/styles.css.js';
 
-mockInnerText();
+jest.mock<typeof import('../../../is-development')>('../../../is-development', () => ({
+  ...jest.requireActual('../../../is-development'),
+  isTest: false,
+}));
 
 const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
   await waitFor(() => expect(document.querySelector('[aria-live=polite]')));
+  jest.runAllTimers();
 
   return {
     source: container.querySelector(`.${styles.root}`),
@@ -24,9 +27,14 @@ const renderLiveRegion = async (jsx: React.ReactElement) => {
   };
 };
 
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
 // The announcers persist throughout the lifecycle of the application.
 // We need to reset them after each test.
 afterEach(() => {
+  jest.clearAllTimers();
   polite.reset();
   assertive.reset();
 });
@@ -41,6 +49,14 @@ describe('LiveRegion', () => {
     expect(politeRegion).toHaveAttribute('aria-live', 'polite');
     expect(politeRegion).toHaveAttribute('aria-atomic', 'true');
     expect(politeRegion).toHaveTextContent('Announcement');
+  });
+
+  it('does nothing when no message or children are provided', async () => {
+    const { source, politeRegion, assertiveRegion } = await renderLiveRegion(<InternalLiveRegion delay={0} />);
+
+    expect(source).toHaveTextContent('');
+    expect(politeRegion).toHaveTextContent('');
+    expect(assertiveRegion).toHaveTextContent('');
   });
 
   it('renders with a div by default', async () => {
