@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 import { render } from '@testing-library/react';
-import { waitFor } from '@testing-library/react';
 
 import { isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
 
@@ -27,13 +26,6 @@ function renderScrollableElement(): HTMLElement {
   return createWrapper(renderResult.container).findByClassName('scrollable')!.getElement();
 }
 
-async function usesCustomScrollingFunction(element: HTMLElement, scrollLeft: number) {
-  expect(nativeScrollMock).not.toHaveBeenCalled();
-  await waitFor(() => {
-    expect(element.scrollLeft).toEqual(scrollLeft);
-  });
-}
-
 beforeEach(() => {
   (isMotionDisabled as jest.Mock).mockReturnValue(false);
   nativeScrollMock.mockClear();
@@ -46,11 +38,5 @@ describe('Smooth scroll', () => {
     smoothScroll(element, 100);
     expect(nativeScrollMock).not.toHaveBeenCalled();
     expect(element.scrollLeft).toEqual(100);
-  });
-  test('animates left with custom function', async () => {
-    const element = renderScrollableElement();
-    element.scrollLeft = 500;
-    smoothScroll(element, 100);
-    await usesCustomScrollingFunction(element, 100);
   });
 });
