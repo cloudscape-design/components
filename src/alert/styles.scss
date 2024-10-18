@@ -54,6 +54,11 @@
 .hidden {
   display: none;
 }
+// visibly hidden, but focusable
+.initial-hidden {
+  overflow: hidden;
+  block-size: 0;
+}
 
 .header,
 .header-replacement {

@@ -39,7 +39,7 @@ const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
 type InternalAlertProps = SomeRequired<AlertProps, 'type'> & InternalBaseComponentProps<HTMLDivElement>;
 
 const useDiscoveredAction = createUseDiscoveredAction(awsuiPluginsInternal.alert.onActionRegistered);
-const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent.onContentRegistered);
+const useDiscoveredContent = createUseDiscoveredContent('alert', awsuiPluginsInternal.alertContent);
 
 const InternalAlert = React.forwardRef(
   (
@@ -71,6 +71,7 @@ const InternalAlert = React.forwardRef(
 
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
+      initialHidden,
       headerReplacementType,
       contentReplacementType,
       headerRef: headerRefContent,
@@ -100,7 +101,11 @@ const InternalAlert = React.forwardRef(
         {...baseProps}
         {...analyticsAttributes}
         aria-hidden={!visible}
-        className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className)}
+        className={clsx(
+          styles.root,
+          { [styles.hidden]: !visible, [styles['initial-hidden']]: initialHidden },
+          baseProps.className
+        )}
         ref={mergedRef}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
