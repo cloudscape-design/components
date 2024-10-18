@@ -4,7 +4,7 @@ import React from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import LiveRegion from '../../internal/components/live-region';
+import InternalLiveRegion from '../../internal/components/live-region/internal';
 import { TableProps } from '../interfaces';
 import { applyTrackBy } from '../utils';
 
@@ -31,9 +31,9 @@ export function ItemsLoader<T>({
   if (loadingStatus === 'pending' && renderLoaderPending) {
     content = renderLoaderPending({ item });
   } else if (loadingStatus === 'loading' && renderLoaderLoading) {
-    content = <LiveRegion visible={true}>{renderLoaderLoading({ item })}</LiveRegion>;
+    content = <InternalLiveRegion tagName="span">{renderLoaderLoading({ item })}</InternalLiveRegion>;
   } else if (loadingStatus === 'error' && renderLoaderError) {
-    content = <LiveRegion visible={true}>{renderLoaderError({ item })}</LiveRegion>;
+    content = <InternalLiveRegion tagName="span">{renderLoaderError({ item })}</InternalLiveRegion>;
   } else {
     warnOnce(
       'Table',

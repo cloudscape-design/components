@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
@@ -97,11 +97,11 @@ export default function ProgressBar({
                 )}
                 isInFlash={isInFlash}
               />
-              <LiveRegion delay={0}>
+              <InternalLiveRegion hidden={true} tagName="span" delay={0}>
                 {label}
                 {label ? ': ' : null}
                 {announcedValue}
-              </LiveRegion>
+              </InternalLiveRegion>
             </>
           ) : (
             <ResultState

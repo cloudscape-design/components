@@ -152,17 +152,11 @@ describe('last updated status text', () => {
   });
 
   test('renders the last updated time within the aria-live region', async () => {
-    const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
+    await renderModal(<S3Modal {...modalDefaultProps} />);
     await clickRefreshAndWaitForFetch();
-
-    const lastUpdated = wrapper.findByClassName(styles['last-updated-caption'])!.find('[aria-live]')!.getElement();
     await waitFor(() => {
-      /**
-       * <LiveRegion /> component is using innerText for setting the span element's text content.
-       * To populate the textContent from innerText, layout engine is required which JSDom doesn't have.
-       * So falling back to assert against innerText rather than the textContent.
-       */
-      expect(lastUpdated.innerText).toBe('Last updated January 2, 2024, 10:00:00 (UTC)');
+      const lastUpdated = createWrapper().find('[aria-live="polite"]')!.getElement();
+      expect(lastUpdated.textContent).toBe('Last updated January 2, 2024, 10:00:00 (UTC)');
     });
   });
 

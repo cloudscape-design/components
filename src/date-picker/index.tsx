@@ -13,7 +13,7 @@ import { InputProps } from '../input/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import FocusLock from '../internal/components/focus-lock';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -213,9 +213,9 @@ const DatePicker = React.forwardRef(
                       previousMonthAriaLabel: i18nStrings?.previousMonthAriaLabel ?? previousMonthAriaLabel,
                     }}
                   />
-                  <LiveRegion id={calendarDescriptionId}>
+                  <InternalLiveRegion id={calendarDescriptionId} hidden={true} tagName="span">
                     {getBaseDateLabel({ date: baseDate, granularity, locale: normalizedLocale })}
-                  </LiveRegion>
+                  </InternalLiveRegion>
                 </div>
               </FocusLock>
             )}

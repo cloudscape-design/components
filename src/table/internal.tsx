@@ -13,7 +13,7 @@ import {
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
@@ -470,7 +470,7 @@ const InternalTable = React.forwardRef(
               >
                 <div className={styles['wrapper-content-measure']} ref={wrapperMeasureMergedRef}></div>
                 {!!renderAriaLive && !!firstIndex && (
-                  <LiveRegion>
+                  <InternalLiveRegion hidden={true} tagName="span">
                     <span>
                       {renderAriaLive({
                         firstIndex,
@@ -479,7 +479,7 @@ const InternalTable = React.forwardRef(
                         totalItemsCount,
                       })}
                     </span>
-                  </LiveRegion>
+                  </InternalLiveRegion>
                 )}
                 <GridNavigationProvider
                   keyboardNavigation={!!enableKeyboardNavigation}

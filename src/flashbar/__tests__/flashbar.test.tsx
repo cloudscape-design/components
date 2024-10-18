@@ -410,7 +410,7 @@ describe('Flashbar component', () => {
       });
 
       test('renders the label, header, and content in an aria-live region for ariaRole="status"', async () => {
-        const { rerender, container } = reactRender(<Flashbar items={[]} />);
+        const { rerender } = reactRender(<Flashbar items={[]} />);
         rerender(
           <Flashbar
             items={[
@@ -427,7 +427,7 @@ describe('Flashbar component', () => {
         );
 
         await waitFor(() => {
-          expect(container.querySelector('span[aria-live]')).toHaveTextContent('Error The header The content');
+          expect(document.querySelector('[aria-live="polite"]')).toHaveTextContent('Error The header The content');
         });
       });
     });

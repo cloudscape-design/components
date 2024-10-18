@@ -92,7 +92,7 @@ function findParentRow(element: HTMLElement): HTMLTableRowElement {
 
 const getTextContent = (w: ComponentWrapper) => w.getElement().textContent?.trim();
 const getAriaLevel = (w: ComponentWrapper) => findParentRow(w.getElement()).getAttribute('aria-level');
-const getAriaLive = (w: ComponentWrapper) => w.findByClassName(liveRegionStyles.source)!.getElement().textContent;
+const getAriaLive = (w: ComponentWrapper) => w.findByClassName(liveRegionStyles.root)!.getElement().textContent;
 
 describe('Progressive loading', () => {
   test('renders loaders in correct order for normal table', () => {

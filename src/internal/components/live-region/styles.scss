@@ -6,7 +6,11 @@
 @use '../../styles' as styles;
 
 .root {
-  /* used in test-utils */
+  display: contents;
+}
+
+.root[hidden] {
+  display: none;
 }
 
 .announcer {

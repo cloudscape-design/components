@@ -16,7 +16,6 @@ import { changeMode } from './change-mode';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 
-import styles from '../../../lib/components/date-range-picker/styles.css.js';
 import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
@@ -256,7 +255,7 @@ describe('Date range picker', () => {
 
       wrapper.findDropdown()!.findApplyButton().click();
       expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-      expect(wrapper.findDropdown()!.findByClassName(styles['validation-section'])!.find('[aria-live]')).not.toBe(null);
+      expect(createWrapper().find('[aria-live]')!.getElement()).toHaveTextContent('10 is not allowed.');
     });
 
     test('after rendering the error once, displays subsequent errors in real time', () => {

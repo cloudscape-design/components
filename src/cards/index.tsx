@@ -9,7 +9,7 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -132,7 +132,7 @@ const Cards = React.forwardRef(function <T = any>(
     status = (
       <div className={styles.loading}>
         <InternalStatusIndicator type="loading">
-          <LiveRegion visible={true}>{loadingText}</LiveRegion>
+          <InternalLiveRegion tagName="span">{loadingText}</InternalLiveRegion>
         </InternalStatusIndicator>
       </div>
     );
@@ -178,11 +178,11 @@ const Cards = React.forwardRef(function <T = any>(
               )}
             >
               {!!renderAriaLive && !!firstIndex && (
-                <LiveRegion>
+                <InternalLiveRegion hidden={true} tagName="span">
                   <span>
                     {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
                   </span>
-                </LiveRegion>
+                </InternalLiveRegion>
               )}
               {status ?? (
                 <CardsList

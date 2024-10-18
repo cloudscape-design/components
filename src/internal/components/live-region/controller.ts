@@ -1,17 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { isTest } from '../../is-development.js';
+
 import styles from './styles.css.js';
 
+const DEFAULT_MIN_DELAY = isTest ? 0 : 2000;
+
+/**
+ * The controller singleton that manages a single live region container. It has a timer and
+ * a queue to make sure announcements don't collide and messages are debounced correctly.
+ * It also explicitly makes sure that a message is announced again even if it matches the
+ * previous content of the live region.
+ *
+ * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions
+ */
 class LiveRegionController {
   private _element: HTMLElement | undefined;
   private _timeoutId: number | undefined;
-  private _delay = 0;
   private _lastAnnouncement = '';
+  private _nextDelay = DEFAULT_MIN_DELAY;
   private readonly _nextMessages = new Set<string>();
 
   constructor(public readonly politeness: 'polite' | 'assertive') {}
 
+  /**
+   * Lazily create a live region container element in the DOM.
+   */
   initialize() {
     if (!this._element) {
       this._element = document.createElement('div');
@@ -24,26 +39,9 @@ class LiveRegionController {
     }
   }
 
-  announce(message: string, minDelay = 50) {
-    this._nextMessages.add(message);
-
-    // A message was added with a longer delay, so we delay the whole announcement.
-    // This is cleaner than potentially having valid announcements collide.
-    if (this._timeoutId !== undefined && minDelay !== undefined && this._delay < minDelay) {
-      this._delay = minDelay;
-      clearTimeout(this._timeoutId);
-      this._timeoutId = undefined;
-    }
-
-    if (this._delay === 0 && minDelay === 0) {
-      // If the delay is 0, just skip the timeout shenanigans and update the
-      // element synchronously. Great for tests.
-      this._updateElement();
-    } else if (this._timeoutId === undefined) {
-      this._timeoutId = setTimeout(() => this._updateElement(), this._delay);
-    }
-  }
-
+  /**
+   * Reset the state of the controller and clear any active announcements.
+   */
   reset() {
     if (this._element) {
       this._element.textContent = '';
@@ -51,6 +49,31 @@ class LiveRegionController {
     if (this._timeoutId) {
       clearTimeout(this._timeoutId);
       this._timeoutId = undefined;
+    }
+  }
+
+  announce(message: string, minDelay = DEFAULT_MIN_DELAY) {
+    this._nextMessages.add(message);
+
+    if (this._nextDelay < minDelay) {
+      this._nextDelay = minDelay;
+
+      // A message was added with a longer delay, so we delay the whole announcement.
+      // This is cleaner than potentially having valid announcements collide.
+      if (this._timeoutId !== undefined) {
+        clearTimeout(this._timeoutId);
+        this._timeoutId = undefined;
+      }
+    }
+
+    if (this._nextDelay === 0 && minDelay === 0) {
+      // If the delay is 0, just skip the timeout shenanigans and update the
+      // element synchronously. Great for tests.
+      return this._updateElement();
+    }
+
+    if (this._timeoutId === undefined) {
+      this._timeoutId = setTimeout(() => this._updateElement(), this._nextDelay);
     }
   }
 
@@ -64,7 +87,7 @@ class LiveRegionController {
       // A (generally) safe way of forcing re-announcements is toggling the
       // terminal period. If we keep adding periods, it's going to be
       // eventually interpreted as an ellipsis.
-      nextAnnouncement = nextAnnouncement.endsWith('.') ? nextAnnouncement.slice(0, -1) : nextAnnouncement + '.';
+      nextAnnouncement = nextAnnouncement.endsWith('..') ? nextAnnouncement.slice(0, -1) : nextAnnouncement + '.';
     }
 
     // The aria-atomic does not work properly in Voice Over, causing
@@ -75,7 +98,7 @@ class LiveRegionController {
 
     // Reset the state for the next announcement.
     this._timeoutId = undefined;
-    this._delay = 0;
+    this._nextDelay = DEFAULT_MIN_DELAY;
     this._nextMessages.clear();
   }
 }
