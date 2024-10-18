@@ -16,6 +16,8 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+// In a separate file as mixing react-test-renderer and @testing-library/react in a single file can cause some issues.
+// We use react-test-renderer here as it works at a slightly lower level, so doesn't "hide" the first render cycle from tests.
 describe('initialCheck method', () => {
   let initialCheck: jest.Mock<boolean>;
   const getFirstFlash = (basicRender: ReactTestRenderer) =>

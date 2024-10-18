@@ -104,7 +104,11 @@ export default function () {
           <Checkbox onChange={e => setUrlParams({ loading: e.detail.checked })} checked={loading}>
             Content loading
           </Checkbox>
-          <Checkbox onChange={e => setUrlParams({ hidden: e.detail.checked })} checked={hidden}>
+          <Checkbox
+            onChange={e => setUrlParams({ hidden: e.detail.checked })}
+            checked={hidden}
+            data-testid="unmount-all"
+          >
             Unmount all
           </Checkbox>
           <Checkbox onChange={e => setUnrelatedState(e.detail.checked)} checked={unrelatedState}>
@@ -147,6 +151,7 @@ export default function () {
                 header="Header"
                 action={<Button>Action</Button>}
                 ref={alertRef}
+                data-testid="error-alert"
               >
                 {!contentSwapped ? content2 : content1}
               </Alert>
