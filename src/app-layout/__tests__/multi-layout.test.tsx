@@ -75,7 +75,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(firstLayout.findOpenNavigationPanel()).toBeTruthy();
   });
 
-  test('merges navigation from two instances with navigation hidden in primary', async () => {
+  test('navigationHide in primary is respected when navigation is defined when merging from two instances', async () => {
     const { firstLayout, secondLayout } = await renderAsync(
       <AppLayout
         {...defaultAppLayoutProps}
@@ -94,7 +94,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(secondLayout.findNavigationToggle()).toBeFalsy();
   });
 
-  test('merges tools from two instances with navigation hidden in secondary', async () => {
+  test('merges tools from two instances with where navigationHide is true in secondary', async () => {
     const { firstLayout, secondLayout } = await renderAsync(
       <AppLayout
         {...defaultAppLayoutProps}
