@@ -1,11 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { isTest } from '../../is-development.js';
-
 import styles from './styles.css.js';
-
-const DEFAULT_MIN_DELAY = isTest ? 0 : 2000;
 
 /**
  * The controller singleton that manages a single live region container. It has a timer and
@@ -15,7 +11,14 @@ const DEFAULT_MIN_DELAY = isTest ? 0 : 2000;
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Live_Regions
  */
-class LiveRegionController {
+export class LiveRegionController {
+  /**
+   * The default delay for announcements when no delay is explicitly provided.
+   * During unit testing, you can import this and explicitly set it to 0 to make
+   * the live region update the DOM without waiting for a timer.
+   */
+  public static defaultMinDelay = 2000;
+
   private _element: HTMLElement | undefined;
   private _timeoutId: number | undefined;
   private _lastAnnouncement = '';
@@ -52,7 +55,7 @@ class LiveRegionController {
     }
   }
 
-  announce(message: string, minDelay = DEFAULT_MIN_DELAY) {
+  announce(message: string, minDelay = LiveRegionController.defaultMinDelay) {
     this._nextMessages.add(message);
 
     if (this._nextDelay < minDelay) {

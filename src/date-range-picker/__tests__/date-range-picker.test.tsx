@@ -9,6 +9,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import FormField from '../../../lib/components/form-field';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { LiveRegionController } from '../../../lib/components/internal/components/live-region/controller.js';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
@@ -17,6 +18,8 @@ import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 
 import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
+
+LiveRegionController.defaultMinDelay = 0;
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

@@ -19,10 +19,3 @@ declare const process: { env: { NODE_ENV?: string } };
  * and remove the conditional statement for production bundles.
  */
 export const isDevelopment = process.env.NODE_ENV !== 'production';
-
-/**
- * Whether the execution environment is unit testing, like Jest or Vitest.
- * Use this sparingly - components shouldn't behave radically differently in
- * test environments.
- */
-export const isTest = process.env.NODE_ENV === 'test';
