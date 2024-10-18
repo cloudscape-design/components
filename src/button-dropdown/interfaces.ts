@@ -157,6 +157,7 @@ export namespace ButtonDropdownProps {
     iconName?: IconProps.Name;
     iconUrl?: string;
     iconSvg?: React.ReactNode;
+    linkStyle?: boolean;
   }
 
   export interface CheckboxItem
@@ -272,7 +273,7 @@ export interface InternalButtonDropdownProps
   extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
     InternalBaseComponentProps {
   customTriggerBuilder?: (props: CustomTriggerProps) => React.ReactNode;
-  variant?: ButtonDropdownProps['variant'] | 'navigation';
+  variant?: ButtonDropdownProps['variant'] | 'navigation' | 'mobile-breadcrumb';
   items: ReadonlyArray<InternalItemOrGroup>;
 
   /**
