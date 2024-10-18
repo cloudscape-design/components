@@ -223,7 +223,7 @@ const InternalTable = React.forwardRef(
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
 
-      return JSON.stringify({
+      return {
         variant,
         flowType: rest.analyticsMetadata?.flowType,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier,
@@ -238,7 +238,7 @@ const InternalTable = React.forwardRef(
         totalNumberOfResources: paginationData.totalPageCount,
         resourcesPerPage: allRows?.length || 0,
         resourcesSelected: selectedItems?.length > 0,
-      });
+      };
     };
 
     const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics({

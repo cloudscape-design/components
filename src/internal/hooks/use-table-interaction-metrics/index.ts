@@ -4,6 +4,7 @@
 import { useEffect, useRef } from 'react';
 
 import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
+import { JSONObject } from '../../analytics/interfaces';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useRandomId } from '../use-unique-id';
 
@@ -35,7 +36,7 @@ export interface UseTableInteractionMetricsProps {
   loading: boolean | undefined;
   itemCount: number;
   getComponentIdentifier: () => string | undefined;
-  getComponentConfiguration: () => string | undefined;
+  getComponentConfiguration: () => JSONObject;
   interactionMetadata: () => string;
 }
 
