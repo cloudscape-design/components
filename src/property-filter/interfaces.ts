@@ -53,7 +53,7 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * `tokenGroups` property is used instead, which supports nested tokens.
    *
    * Each token has the following properties:
-   * * value [string]: The string value of the token to be used as a filter.
+   * * value [unknown]: The value of the token to be used as a filter. Can be null or string for default tokens, string[] for enum tokens, and anything for tokens with custom forms.
    * * propertyKey [string]: The key of the corresponding property in filteringProperties.
    * * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
    */
