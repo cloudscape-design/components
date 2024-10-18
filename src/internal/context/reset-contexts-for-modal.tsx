@@ -17,7 +17,7 @@ import {
  of the modal should not be affected by the surrounding components/DOM.
  */
 const ResetContextsForModal = ({ children }: { children: React.ReactNode }) => (
-  <ButtonContext.Provider value={{ onClick: () => {} }}>
+  <ButtonContext.Provider value={null}>
     <CollectionLabelContext.Provider value={{ assignId: () => {} }}>
       <FormFieldContext.Provider value={{}}>
         <InfoLinkLabelContext.Provider value="">

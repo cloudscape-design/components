@@ -1,90 +1,81 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import {
-  AnalyticsFunnel,
-  AnalyticsFunnelStep,
-  AnalyticsFunnelSubStep,
-} from '../internal/analytics/components/analytics-funnel';
+import { FunnelProvider } from '../internal/analytics/contexts/funnel-context';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
+import { useFunnelSubstep } from '../internal/analytics/hooks/use-funnel-substep';
+import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ModalProps } from './interfaces';
-import InternalModal, { InternalModalAsFunnel } from './internal';
-
-import styles from './styles.css.js';
+import InternalModal, { InternalModalProps } from './internal';
 
 export { ModalProps };
 
-function ModalWithAnalyticsFunnel({
-  analyticsMetadata,
-  baseComponentProps,
-  size = 'medium',
-  ...props
-}: ModalProps & { analyticsMetadata: any; baseComponentProps: ReturnType<typeof useBaseComponent> }) {
+function FocusEnabledModal({ visible, footer, ...props }: InternalModalProps) {
+  const modalId = useUniqueId();
+  const ref = useRef<HTMLDivElement>(null);
+  const funnel = useFunnel();
+  const funnelSubstep = useFunnelSubstep(ref);
+
+  useEffect(() => {
+    if (!funnel || !funnel?.controller || !visible) {
+      return;
+    }
+
+    const funnelName = document.querySelector<HTMLHeadingElement>(`[data-modalid="${modalId}"] h2`)?.innerText || '';
+
+    funnel.controller?.setName(funnelName);
+    funnel.controller?.currentStep.setName(funnelName);
+
+    funnelSubstep.setName(funnelName);
+    funnel.controller?.currentStep.registerSubstep(funnelSubstep);
+
+    const funnelStartTimeout = setTimeout(() => {
+      funnel.controller?.start();
+    }, 0);
+
+    return () => {
+      funnel.controller?.complete();
+      clearTimeout(funnelStartTimeout);
+    };
+  }, [modalId, visible, funnel, funnelSubstep]);
+
+  const handleButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
+    if (variant === 'primary') {
+      funnel?.controller?.submit();
+    }
+  };
+
+  const referrerId =
+    funnel?.controller?.context?.currentStep?.currentSubstep?.id ??
+    funnel?.controller?.context?.currentStep?.id ??
+    funnel?.controller?.context?.id;
+
   return (
-    <AnalyticsFunnel
-      mounted={props.visible}
-      funnelIdentifier={analyticsMetadata?.instanceIdentifier}
-      funnelFlowType={analyticsMetadata?.flowType}
-      funnelErrorContext={analyticsMetadata?.errorContext}
-      funnelResourceType={analyticsMetadata?.resourceType}
-      funnelType="modal"
-      optionalStepNumbers={[]}
-      totalFunnelSteps={1}
-      funnelNameSelectors={[`.${styles['header--text']}`]}
+    <InternalModal
+      referrerId={referrerId}
+      data-modalid={modalId}
+      visible={visible}
+      footer={<ButtonContext.Provider value={{ onClick: handleButtonClick }}>{footer}</ButtonContext.Provider>}
+      {...props}
     >
-      <AnalyticsFunnelStep
-        mounted={props.visible}
-        stepIdentifier={analyticsMetadata?.instanceIdentifier}
-        stepErrorContext={analyticsMetadata?.errorContext}
-        stepNumber={1}
-      >
-        <AnalyticsFunnelSubStep
-          subStepIdentifier={analyticsMetadata?.instanceIdentifier}
-          subStepErrorContext={analyticsMetadata?.errorContext}
-        >
-          <InternalModalAsFunnel
-            size={size}
-            {...props}
-            {...baseComponentProps}
-            __injectAnalyticsComponentMetadata={true}
-          />
-        </AnalyticsFunnelSubStep>
-      </AnalyticsFunnelStep>
-    </AnalyticsFunnel>
+      <div ref={ref}>{props.children}</div>
+    </InternalModal>
   );
 }
 
 export default function Modal({ size = 'medium', ...props }: ModalProps) {
-  const { isInFunnel } = useFunnel();
-  const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
-  const baseComponentProps = useBaseComponent(
-    'Modal',
-    {
-      props: { size, disableContentPaddings: props.disableContentPaddings },
-      metadata: {
-        hasResourceType: Boolean(analyticsMetadata?.resourceType),
-        hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
-      },
-    },
-    analyticsMetadata
+  const baseComponentProps = useBaseComponent('Modal', {
+    props: { size, disableContentPaddings: props.disableContentPaddings },
+  });
+  return (
+    <FunnelProvider rootComponent="modal" allowNesting={false}>
+      <FocusEnabledModal size={size} {...props} {...baseComponentProps} __injectAnalyticsComponentMetadata={true} />
+    </FunnelProvider>
   );
-
-  if (!isInFunnel) {
-    return (
-      <ModalWithAnalyticsFunnel
-        analyticsMetadata={analyticsMetadata}
-        baseComponentProps={baseComponentProps}
-        size={size}
-        {...props}
-      />
-    );
-  }
-
-  return <InternalModal size={size} {...props} {...baseComponentProps} __injectAnalyticsComponentMetadata={true} />;
 }
 
 applyDisplayName(Modal, 'Modal');

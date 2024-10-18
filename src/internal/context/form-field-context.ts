@@ -4,6 +4,11 @@ import { createContext, useContext } from 'react';
 
 export interface FormFieldControlProps {
   /**
+   * Helper function to return the current innerText of the label slot
+   */
+  getLabelText?: () => string;
+
+  /**
    * Specifies the ID of the native form element. You can use it to relate
    * a label element's `for` attribute to this control.
    *
