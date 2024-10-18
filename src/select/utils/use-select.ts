@@ -66,7 +66,7 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
-  const hasFilter = filteringType !== 'none';
+  const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
@@ -146,8 +146,10 @@ export function useSelect({
     goHome: goHomeWithKeyboard,
     goEnd: goEndWithKeyboard,
     closeDropdown: () => {
-      triggerRef.current?.focus();
-      closeDropdown();
+      if (!embedded) {
+        triggerRef.current?.focus();
+        closeDropdown();
+      }
     },
     preventNativeSpace: !hasFilter,
   });
@@ -228,7 +230,7 @@ export function useSelect({
       },
       statusType,
     };
-    if (!hasFilter || embedded) {
+    if (!hasFilter) {
       menuProps.onKeyDown = activeKeyDownHandler;
       menuProps.nativeAttributes = {
         'aria-activedescendant': highlightedOptionId,
@@ -236,7 +238,12 @@ export function useSelect({
     }
     if (embedded) {
       menuProps.onFocus = () => {
-        goHomeWithKeyboard();
+        if (!highlightedOption) {
+          goHomeWithKeyboard();
+        }
+      };
+      menuProps.onBlur = () => {
+        resetHighlightWithKeyboard();
       };
     }
     return menuProps;
@@ -298,13 +305,13 @@ export function useSelect({
   ]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !embedded) {
       // dropdown-fit calculations ensure that the dropdown will fit inside the current
       // viewport, so prevent the browser from trying to scroll it into view (e.g. if
       // scroll-padding-top is set on a parent)
       activeRef.current?.focus({ preventScroll: true });
     }
-  }, [isOpen, activeRef]);
+  }, [isOpen, activeRef, embedded]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =

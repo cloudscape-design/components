@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import * as React from 'react';
+import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
+import { KeyCode } from '@cloudscape-design/component-toolkit/internal';
 import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import '../../__a11y__/to-validate-a11y';
@@ -32,12 +33,26 @@ const defaultProps: EmbeddedMultiselectProps = {
   errorText: 'Error',
 };
 
+function StatefulEmbeddedMultiselect(props: EmbeddedMultiselectProps) {
+  const [selectedOptions, setSelectedOptions] = useState(props.selectedOptions);
+  return (
+    <EmbeddedMultiselect
+      {...props}
+      selectedOptions={selectedOptions}
+      onChange={event => {
+        props.onChange?.(event);
+        setSelectedOptions(event.detail.selectedOptions);
+      }}
+    />
+  );
+}
+
 function renderComponent(props: Partial<EmbeddedMultiselectProps>) {
   const { container } = render(
     <div>
       <label htmlFor="list-control">Input name</label>
       <input id="list-control" />
-      <EmbeddedMultiselect {...defaultProps} {...props} />
+      <StatefulEmbeddedMultiselect {...defaultProps} {...props} />
     </div>
   );
   return { container };
@@ -83,13 +98,39 @@ test('ARIA labels', () => {
   expect(list).toHaveAccessibleDescription('Loading...');
 });
 
-test('highlights first option when list is focused', () => {
+test('highlights first option when list is focused and removes highlight when the focus is lost', () => {
   renderComponent({});
 
   const list = createWrapper().find('ul')!.getElement();
   list.focus();
 
+  const highlightedItemsAfterFocus = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
+  expect(highlightedItemsAfterFocus).toHaveLength(1);
+  expect(highlightedItemsAfterFocus[0].getElement()).toHaveTextContent('First');
+
+  list.blur();
+
+  const highlightedItemsAfterBlur = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
+  expect(highlightedItemsAfterBlur).toHaveLength(0);
+});
+
+test('selects options with Enter and Space and keeps highlight after Esc is pressed', () => {
+  renderComponent({});
+
+  createWrapper().find('ul')!.focus();
+  createWrapper().find('ul')!.keydown(KeyCode.enter);
+  createWrapper().find('ul')!.keydown(KeyCode.down);
+  createWrapper().find('ul')!.keydown(KeyCode.space);
+
   const highlightedItems = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
+  const selectedItems = createWrapper().findAllByClassName(selectableItemsStyles.selected);
   expect(highlightedItems).toHaveLength(1);
-  expect(highlightedItems[0].getElement()).toHaveTextContent('First');
+  expect(selectedItems).toHaveLength(2);
+
+  createWrapper().find('ul')!.keydown(KeyCode.escape);
+
+  const highlightedItemsAfterEscape = createWrapper().findAllByClassName(selectableItemsStyles.highlighted);
+  const selectedItemsAfterEscape = createWrapper().findAllByClassName(selectableItemsStyles.selected);
+  expect(highlightedItemsAfterEscape).toHaveLength(1);
+  expect(selectedItemsAfterEscape).toHaveLength(2);
 });
