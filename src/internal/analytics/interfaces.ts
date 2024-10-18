@@ -185,9 +185,17 @@ export interface IPerformanceMetrics {
 export interface ComponentMountedProps {
   componentName: string;
   taskInteractionId?: string;
-  details: Record<string, string | boolean | number | undefined>;
+  componentConfiguration: string | undefined;
 }
+
+export interface ComponentUpdatedProps extends ComponentMountedProps {
+  taskInteractionId: string;
+  actionType: string;
+}
+
 export type ComponentMountedMethod = (props: ComponentMountedProps) => string;
+export type ComponentUpdatedMethod = (props: ComponentUpdatedProps) => void;
 export interface IComponentMetrics {
   componentMounted: ComponentMountedMethod;
+  componentUpdated: ComponentUpdatedMethod;
 }

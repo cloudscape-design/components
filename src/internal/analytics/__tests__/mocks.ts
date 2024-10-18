@@ -1,7 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { setFunnelMetrics, setPerformanceMetrics } from '../../../../lib/components/internal/analytics';
+import {
+  setComponentMetrics,
+  setFunnelMetrics,
+  setPerformanceMetrics,
+} from '../../../../lib/components/internal/analytics';
 
 export const mockedFunnelInteractionId = 'mocked-funnel-id';
 export function mockFunnelMetrics() {
@@ -27,6 +31,10 @@ export function mockFunnelMetrics() {
 
 export function mockPerformanceMetrics() {
   setPerformanceMetrics({ tableInteraction: jest.fn(), taskCompletionData: jest.fn() });
+}
+
+export function mockComponentMetrics() {
+  setComponentMetrics({ componentMounted: jest.fn(), componentUpdated: jest.fn() });
 }
 
 export function mockInnerText() {
