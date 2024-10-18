@@ -29,6 +29,10 @@ function findAllBreadcrumbsInstances() {
   return wrapper.findAllByClassName(BreadcrumbGroupWrapper.rootSelector);
 }
 
+function findDiscoveredBreadcrumbs() {
+  return wrapper.findAppLayout()!.find('[data-awsui-discovered-breadcrumbs="true"]');
+}
+
 function findAppLayoutBreadcrumbItems() {
   return wrapper.findAppLayout()!.findBreadcrumbs()!.findBreadcrumbGroup()!.findBreadcrumbLinks();
 }
@@ -45,7 +49,7 @@ function delay() {
 async function renderAsync(jsx: React.ReactElement) {
   render(jsx);
   await waitFor(() => {
-    expect(wrapper.findAppLayout()!.find('[data-awsui-discovered-breadcrumbs="true"]')).toBeTruthy();
+    expect(findDiscoveredBreadcrumbs()).toBeTruthy();
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
   });
 }
@@ -69,14 +73,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(wrapper.findBreadcrumbGroup()!.findBreadcrumbLinks()).toHaveLength(2);
   });
 
-  test('renders breadcrumbs inside app layout breadcrumbs slot', async () => {
-    await renderAsync(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+  test('renders normal breadcrumbs when placed inside the breadcrumbs slot', async () => {
+    render(<AppLayout breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
+    await delay();
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
     expect(findAppLayoutBreadcrumbItems()).toHaveLength(2);
   });
 
   test('no relocation happens on the initial render', () => {
     render(<AppLayout content={<BreadcrumbGroup items={defaultBreadcrumbs} />} />);
     expect(findAllBreadcrumbsInstances()).toHaveLength(1);
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
     expect(wrapper.findAppLayout()!.findBreadcrumbs()).toBeFalsy();
     expect(wrapper.findAppLayout()!.findContentRegion().findBreadcrumbGroup()).toBeTruthy();
   });
@@ -108,15 +115,17 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     );
   });
 
-  test('when breadcrumbs are rendered in multiple slots, the last one takes precedence', async () => {
-    await renderAsync(
+  test('when breadcrumbs are rendered in multiple slots, the one in the breadcrumbs slot takes precedence', async () => {
+    render(
       <AppLayout
         breadcrumbs={<BreadcrumbGroup items={[{ text: 'First', href: '/first' }]} />}
         content={<BreadcrumbGroup items={[{ text: 'Second', href: '/second' }]} />}
       />
     );
-    expect(findAppLayoutBreadcrumbItems()).toHaveLength(1);
-    expect(findRootBreadcrumb().getElement()).toHaveTextContent('Second');
+    await delay();
+    expect(findAllBreadcrumbsInstances()).toHaveLength(2);
+    expect(findDiscoveredBreadcrumbs()).toBeFalsy();
+    expect(findRootBreadcrumb().getElement()).toHaveTextContent('First');
   });
 
   test('when multiple breadcrumbs instances are present the latest is applied', async () => {
@@ -252,8 +261,12 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
   test('allows opt-out from this behavior', async () => {
     render(
       <AppLayout
-        breadcrumbs={<BreadcrumbGroup items={defaultBreadcrumbs} />}
-        content={<BreadcrumbGroup items={[{ text: 'Local', href: '' }]} {...{ __disableGlobalization: true }} />}
+        content={
+          <>
+            <BreadcrumbGroup items={defaultBreadcrumbs} />
+            <BreadcrumbGroup items={[{ text: 'Local', href: '' }]} {...{ __disableGlobalization: true }} />
+          </>
+        }
       />
     );
     await waitFor(() =>
