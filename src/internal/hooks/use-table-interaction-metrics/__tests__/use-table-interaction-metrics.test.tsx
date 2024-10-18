@@ -19,7 +19,7 @@ import { mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
 type RenderProps = Partial<UseTableInteractionMetricsProps>;
 
 const defaultProps = {
-  getComponentConfiguration: () => '',
+  getComponentConfiguration: () => ({}),
   getComponentIdentifier: () => 'My resources',
   itemCount: 10,
   loading: undefined,
@@ -73,7 +73,7 @@ describe('useTableInteractionMetrics', () => {
     expect(componentMounted).toHaveBeenCalledWith({
       taskInteractionId: expect.any(String),
       componentName: 'table',
-      componentConfiguration: '',
+      componentConfiguration: {},
     });
   });
 
@@ -138,7 +138,7 @@ describe('useTableInteractionMetrics', () => {
         taskInteractionId: expect.any(String),
         componentName: 'table',
         actionType: 'filter',
-        componentConfiguration: '',
+        componentConfiguration: {},
       });
     });
 
@@ -227,19 +227,19 @@ describe('useTableInteractionMetrics', () => {
 
     test('componentConfiguration is added to the component updated metrics', () => {
       const { setLastUserAction, rerender } = renderUseTableInteractionMetricsHook({});
-      const componentConfigurationValue = '{filterText = test}';
+      const componentConfiguration = { filterText: 'test' };
       setLastUserAction('filter');
       rerender({ loading: true });
       rerender({
         loading: false,
-        getComponentConfiguration: () => componentConfigurationValue,
+        getComponentConfiguration: () => componentConfiguration,
       });
 
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(1);
       expect(ComponentMetrics.componentUpdated).toHaveBeenCalledWith(
         expect.objectContaining({
           actionType: 'filter',
-          componentConfiguration: componentConfigurationValue,
+          componentConfiguration,
         })
       );
     });
