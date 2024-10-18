@@ -43,6 +43,11 @@ describe('Content Display preference', () => {
         testOption({ wrapper, option: options[i], index: i });
       }
     });
+
+    it('renders all options even if a partial list is provided in preferences', () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      expect(wrapper.findOptions()).toHaveLength(4);
+    });
   });
 
   describe('Content visibility', () => {
@@ -85,6 +90,12 @@ describe('Content Display preference', () => {
       toggleInput.click();
       expect(toggleInput.getElement()).toBeChecked();
       expect(toggleInput.getElement()).toBeDisabled();
+    });
+
+    it('allows toggling options that are not part of the current preferences', () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      wrapper.findOptionByIndex(3)!.findVisibilityToggle().findNativeInput().click();
+      expectVisibilityStatus({ wrapper, statuses: [true, false, true, false] });
     });
   });
 
@@ -172,6 +183,32 @@ describe('Content Display preference', () => {
       pressKey(dragHandle, 'Escape');
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       await expectAnnouncement(wrapper, 'Reordering canceled');
+    });
+
+    it('moves item between options that are not part of the current preferences', async () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      pressKey(dragHandle, 'Space');
+      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      pressKey(dragHandle, 'ArrowDown');
+      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      pressKey(dragHandle, 'ArrowDown');
+      await expectAnnouncement(wrapper, 'Moving item to position 3 of 4');
+      pressKey(dragHandle, 'Space');
+      testOrder({ wrapper, order: [1, 2, 0, 3] });
+      await expectAnnouncement(wrapper, 'Item moved from position 1 to position 3 of 4');
+    });
+
+    it('moves an item not part of the current preferences above the ones that are', async () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
+      pressKey(dragHandle, 'Space');
+      await expectAnnouncement(wrapper, 'Picked up item at position 2 of 4');
+      pressKey(dragHandle, 'ArrowUp');
+      await expectAnnouncement(wrapper, 'Moving item to position 1 of 4');
+      pressKey(dragHandle, 'Space');
+      testOrder({ wrapper, order: [1, 0, 2, 3] });
+      await expectAnnouncement(wrapper, 'Item moved from position 2 to position 1 of 4');
     });
   });
 
