@@ -213,7 +213,7 @@ describe('toolbar mode only features', () => {
       expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
     });
 
-    test('should prevent the horizontal page scroll from appearing during resize', async () => {
+    test('should prevent the horizontal page scroll from appearing during resize (navigation open)', async () => {
       const dummyRef = { current: null } as RefObject<HTMLElement>;
       jest.mocked(useAppLayoutPlacement).mockReturnValue([
         dummyRef,
@@ -237,24 +237,55 @@ describe('toolbar mode only features', () => {
         type: 'global',
         mountContent: container => (container.textContent = 'global drawer content 2'),
       });
-      awsuiPlugins.appLayout.registerDrawer({
-        ...drawerDefaults,
-        id: 'global-drawer-3',
-        type: 'global',
-        mountContent: container => (container.textContent = 'global drawer content 3'),
-      });
 
       const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
 
       wrapper.findDrawerTriggerById('security')!.click();
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
       wrapper.findDrawerTriggerById('global-drawer-2')!.click();
-      wrapper.findDrawerTriggerById('global-drawer-3')!.click();
       expect(wrapper.findNavigation().getElement()).toHaveAttribute('aria-hidden', 'true');
       expect(wrapper.findActiveDrawer()).toBeTruthy();
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeFalsy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
       expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
-      expect(globalDrawersWrapper.findDrawerById('global-drawer-3')!.isActive()).toBe(true);
+    });
+
+    test('should prevent the horizontal page scroll from appearing during resize (navigation closed)', async () => {
+      const dummyRef = { current: null } as RefObject<HTMLElement>;
+      jest.mocked(useAppLayoutPlacement).mockReturnValue([
+        dummyRef,
+        {
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          inlineSize: 700,
+          insetBlockStart: 0,
+          insetBlockEnd: 0,
+        },
+      ]);
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(
+        <AppLayout drawers={[testDrawer]} navigationOpen={false} />
+      );
+
+      await delay();
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+      wrapper.findDrawerTriggerById('security')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeFalsy();
+      expect(wrapper.findActiveDrawer()).toBeTruthy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
     });
   });
 });
