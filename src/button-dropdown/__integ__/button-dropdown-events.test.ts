@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+import { createWrapper } from '@cloudscape-design/test-utils-core/selectors';
 
 import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-page';
 
@@ -74,6 +76,23 @@ describe('clicking on a ButtonDropdown item', () => {
       await page.keys(new Array(6).fill('ArrowDown'));
       await page.keys('Enter');
       await expect(page.getLocation()).resolves.toEqual(oldLocation);
+    })
+  );
+  test(
+    'main action can be pressed with Enter',
+    useBrowser(async browser => {
+      const focusBefore = createWrapper().findButton('[data-testid="focus-before"]');
+
+      const page = new BasePageObject(browser);
+      await browser.url('#/light/button-dropdown/main-action');
+      await page.waitForVisible(focusBefore.toSelector());
+
+      await page.click(focusBefore.toSelector());
+      await page.keys(['Tab', 'Enter']);
+      await expect(page.getElementsText('#clicked')).resolves.toEqual(['Launch instance']);
+
+      await page.keys(['Tab', 'Tab', 'Enter']);
+      await expect(page.getElementsText('#clicked')).resolves.toEqual(['Launch instance (main action only)']);
     })
   );
 });
