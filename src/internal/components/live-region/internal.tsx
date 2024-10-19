@@ -57,6 +57,10 @@ export default function InternalLiveRegion({
   useEffect(() => {
     polite.initialize();
     assertive.initialize();
+    () => {
+      polite.reset();
+      assertive.reset();
+    };
   }, []);
 
   useEffect(() => {

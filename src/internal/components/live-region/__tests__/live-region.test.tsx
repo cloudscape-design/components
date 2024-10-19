@@ -10,11 +10,6 @@ import InternalLiveRegion, {
 
 import styles from '../../../../../lib/components/internal/components/live-region/styles.css.js';
 
-jest.mock<typeof import('../../../is-development')>('../../../is-development', () => ({
-  ...jest.requireActual('../../../is-development'),
-  isTest: false,
-}));
-
 const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
   await waitFor(() => expect(document.querySelector('[aria-live=polite]')));
@@ -56,6 +51,30 @@ describe('LiveRegion', () => {
 
     expect(source).toHaveTextContent('');
     expect(politeRegion).toHaveTextContent('');
+    expect(assertiveRegion).toHaveTextContent('');
+  });
+
+  it('joins multiple live regions into a single update', async () => {
+    const { politeRegion, assertiveRegion } = await renderLiveRegion(
+      <>
+        <InternalLiveRegion>One</InternalLiveRegion>
+        <InternalLiveRegion>Two</InternalLiveRegion>
+      </>
+    );
+
+    expect(politeRegion).toHaveTextContent('One Two');
+    expect(assertiveRegion).toHaveTextContent('');
+  });
+
+  it('joins multiple live regions into a single update', async () => {
+    const { politeRegion, assertiveRegion } = await renderLiveRegion(
+      <>
+        <InternalLiveRegion>One</InternalLiveRegion>
+        <InternalLiveRegion>Two</InternalLiveRegion>
+      </>
+    );
+
+    expect(politeRegion).toHaveTextContent('One Two');
     expect(assertiveRegion).toHaveTextContent('');
   });
 
@@ -104,7 +123,6 @@ describe('LiveRegion', () => {
         Announcement
       </InternalLiveRegion>
     );
-    console.log({ assertiveRegion, politeRegion });
     expect(assertiveRegion).toHaveAttribute('aria-live', 'assertive');
     expect(assertiveRegion).toHaveTextContent('Announcement');
     expect(politeRegion).toBeEmptyDOMElement();
