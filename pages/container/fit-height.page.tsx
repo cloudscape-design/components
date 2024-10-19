@@ -2,14 +2,22 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext } from 'react';
 
-import ColumnLayout from '~components/column-layout';
-import Container, { ContainerProps } from '~components/container';
-import Grid from '~components/grid';
-import Header from '~components/header';
-import Link from '~components/link';
-import SpaceBetween from '~components/space-between';
+import {
+  Box,
+  ColumnLayout,
+  Container,
+  ContainerProps,
+  Grid,
+  Header,
+  KeyValuePairs,
+  Link,
+  SpaceBetween,
+  Table,
+} from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import { generateItems } from '../table/generate-data';
+import { columnsConfig } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 
 import styles from './fit-height.scss';
@@ -101,7 +109,89 @@ export default function () {
         <div className={styles.heightLimit}>
           <LargeContainer />
         </div>
+        <h2>Content variants</h2>
+        <SpaceBetween size="m">
+          <Container fitHeight={true}>
+            <ServiceOverview />
+          </Container>
+
+          <Container fitHeight={true}>
+            <ServiceOverviewWithPadding />
+          </Container>
+
+          <div style={{ maxInlineSize: '500px' }}>
+            <Container fitHeight={true}>
+              <TableWithStickyScrollbar />
+            </Container>
+          </div>
+        </SpaceBetween>
       </ScreenshotArea>
     </article>
+  );
+}
+
+function ServiceOverview() {
+  return (
+    <KeyValuePairs
+      columns={4}
+      items={[
+        {
+          label: 'Running instances',
+          value: (
+            <Link variant="awsui-value-large" href="#" ariaLabel="Running instances (14)">
+              14
+            </Link>
+          ),
+        },
+        {
+          label: 'Volumes',
+          value: (
+            <Link variant="awsui-value-large" href="#" ariaLabel="Volumes (126)">
+              126
+            </Link>
+          ),
+        },
+        {
+          label: 'Security groups',
+          value: (
+            <Link variant="awsui-value-large" href="#" ariaLabel="Security groups (116)">
+              116
+            </Link>
+          ),
+        },
+        {
+          label: 'Load balancers',
+          value: (
+            <Link variant="awsui-value-large" href="#" ariaLabel="Load balancers (28)">
+              28
+            </Link>
+          ),
+        },
+      ]}
+    />
+  );
+}
+
+function ServiceOverviewWithPadding() {
+  return (
+    <Box padding={{ bottom: 'xs' }}>
+      <ServiceOverview />
+    </Box>
+  );
+}
+
+const allItems = generateItems(10);
+function TableWithStickyScrollbar() {
+  return (
+    <Table
+      variant="borderless"
+      header={
+        <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
+          Table with sticky scrollbar
+        </Header>
+      }
+      columnDefinitions={columnsConfig}
+      items={allItems}
+    />
   );
 }
