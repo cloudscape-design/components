@@ -36,6 +36,7 @@ function Content() {
     label: 'Option 1',
     value: '1',
   });
+  const [containerCount, setContainerCount] = useState(0);
 
   const handleSubmit = () => {
     setLoading(true);
@@ -54,6 +55,10 @@ function Content() {
     const updatedContainersVisible = [...containersVisible];
     updatedContainersVisible[index] = false;
     setContainersVisible(updatedContainersVisible);
+  };
+
+  const addContainer = () => {
+    setContainerCount(containerCount + 1); // Increment the container count
   };
 
   return (
@@ -228,6 +233,17 @@ function Content() {
             </SpaceBetween>
           </ExpandableSection>
         )}
+
+        {[...Array(containerCount)].map((_, index) => (
+          <Container key={index} header={<Header variant="h2">{`Dynamic Container ${index + 1}`}</Header>}>
+            <SpaceBetween size="s">
+              <FormField label={`Field ${index + 1}`}>
+                <Input value="" />
+              </FormField>
+            </SpaceBetween>
+          </Container>
+        ))}
+        <Button onClick={addContainer}>Add Dynamic Container</Button>
       </SpaceBetween>
     </Form>
   );

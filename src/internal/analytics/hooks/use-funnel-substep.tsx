@@ -10,7 +10,7 @@ import { useFunnelContext } from './use-funnel';
 import headerAnalyticsSelectors from '../../../header/analytics-metadata/styles.css.js';
 
 export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>, metadata?: AnalyticsMetadata) => {
-  const funnel = useFunnelContext();
+  const funnelContext = useFunnelContext();
   const [, setValue] = useState<number>(-1);
 
   const funnelSubstep = useMemo(() => {
@@ -24,7 +24,7 @@ export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>, 
   }, [setValue]);
 
   useEffect(() => {
-    if (!funnel || !funnel.controller) {
+    if (!funnelContext || !funnelContext.controller) {
       return;
     }
 
@@ -34,20 +34,23 @@ export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>, 
       )?.innerText || '';
     funnelSubstep.setName(substepName);
     funnelSubstep.setMetadata(metadata);
-    funnel.controller.currentStep?.registerSubstep(funnelSubstep);
+    funnelContext.controller.currentStep?.registerSubstep(funnelSubstep);
 
     return () => {
-      funnel.controller?.currentStep?.unregisterSubstep(funnelSubstep);
+      funnelSubstep.complete(() => {
+        funnelContext.controller?.currentStep?.unregisterSubstep(funnelSubstep);
+      });
     };
-  }, [funnel, funnelSubstep, metadata, rootRef]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useFocusTracker({
     rootRef,
     onBlur: () => {
-      funnel?.controller?.currentStep?.setCurrentSubstep(undefined);
+      funnelContext?.controller?.currentStep?.setCurrentSubstep(undefined);
     },
     onFocus: () => {
-      funnel?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
+      funnelContext?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
     },
   });
 

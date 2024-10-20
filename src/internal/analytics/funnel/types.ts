@@ -8,6 +8,7 @@ export interface FunnelStepConfig {
   optional?: boolean;
   name?: string;
   metadata?: AnalyticsMetadata;
+  status?: FunnelBaseStatus;
 }
 export type FunnelStepProps = FunnelStepConfig & { index: number };
 export type FunnelBaseStatus = 'initial' | 'started' | 'error' | 'completed';

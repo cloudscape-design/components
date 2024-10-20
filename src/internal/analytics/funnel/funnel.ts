@@ -142,9 +142,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   setSteps(configs: FunnelStepProps[], intitialStepIndex = 0): FunnelStep[] {
-    this.steps = configs.map(config => {
-      return new FunnelStep(config);
-    });
+    this.steps = configs.map(config => new FunnelStep(config));
 
     this.currentStep = this.steps[intitialStepIndex];
     this.notifyObservers();
@@ -154,6 +152,18 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   removeStep(step: FunnelStep) {
     this.steps = this.steps.filter(s => s !== step);
     this.notifyObservers();
+  }
+
+  updateSteps(configs: FunnelStepProps[]): FunnelStep[] {
+    this.steps = configs.map((config, index) => new FunnelStep({ ...config, status: this.steps[index].getStatus() }));
+
+    dispatchFunnelEvent({
+      header: 'Funnel configuration changed',
+      details: JSON.stringify([...this.steps].map(step => step.name)),
+      status: 'info',
+    });
+    this.notifyObservers();
+    return this.steps;
   }
 
   setCurrentStep(index: number) {

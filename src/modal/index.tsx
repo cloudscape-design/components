@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 
 import { FunnelProvider } from '../internal/analytics/contexts/funnel-context';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
 import { useFunnelSubstep } from '../internal/analytics/hooks/use-funnel-substep';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -17,42 +17,42 @@ export { ModalProps };
 function FocusEnabledModal({ visible, footer, ...props }: InternalModalProps) {
   const modalId = useUniqueId();
   const ref = useRef<HTMLDivElement>(null);
-  const funnel = useFunnel();
+  const funnelContext = useFunnelContext();
   const funnelSubstep = useFunnelSubstep(ref);
 
   useEffect(() => {
-    if (!funnel || !funnel?.controller || !visible) {
+    if (!funnelContext || !funnelContext?.controller || !visible) {
       return;
     }
 
     const funnelName = document.querySelector<HTMLHeadingElement>(`[data-modalid="${modalId}"] h2`)?.innerText || '';
 
-    funnel.controller?.setName(funnelName);
-    funnel.controller?.currentStep.setName(funnelName);
+    funnelContext.controller?.setName(funnelName);
+    funnelContext.controller?.currentStep.setName(funnelName);
 
     funnelSubstep.setName(funnelName);
-    funnel.controller?.currentStep.registerSubstep(funnelSubstep);
+    funnelContext.controller?.currentStep.registerSubstep(funnelSubstep);
 
     const funnelStartTimeout = setTimeout(() => {
-      funnel.controller?.start();
+      funnelContext.controller?.start();
     }, 0);
 
     return () => {
-      funnel.controller?.complete();
+      funnelContext.controller?.complete();
       clearTimeout(funnelStartTimeout);
     };
-  }, [modalId, visible, funnel, funnelSubstep]);
+  }, [modalId, visible, funnelContext, funnelSubstep]);
 
   const handleButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
-      funnel?.controller?.submit();
+      funnelContext?.controller?.submit();
     }
   };
 
   const referrerId =
-    funnel?.controller?.context?.currentStep?.currentSubstep?.id ??
-    funnel?.controller?.context?.currentStep?.id ??
-    funnel?.controller?.context?.id;
+    funnelContext?.controller?.context?.currentStep?.currentSubstep?.id ??
+    funnelContext?.controller?.context?.currentStep?.id ??
+    funnelContext?.controller?.context?.id;
 
   return (
     <InternalModal

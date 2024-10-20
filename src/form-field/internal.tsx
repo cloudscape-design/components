@@ -9,7 +9,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import InternalGrid from '../grid/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL, getFieldSlotSeletor } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
@@ -119,7 +119,7 @@ export default function InternalFormField({
   const isRefresh = useVisualRefresh();
 
   const instanceUniqueId = useUniqueId('formField');
-  const funnel = useFunnel();
+  const funnelContext = useFunnelContext();
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
   const showWarning = warningText && !errorText;
@@ -146,7 +146,7 @@ export default function InternalFormField({
   };
 
   useEffect(() => {
-    if (!funnel) {
+    if (!funnelContext) {
       return;
     }
 
@@ -156,7 +156,7 @@ export default function InternalFormField({
     // Move data attribute to common place
     const parentSubstepElement = __internalRootRef?.current?.closest('[data-funnel-substep-id]');
     const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id');
-    funnel?.controller?.currentStep?.substeps.forEach(substep => {
+    funnelContext?.controller?.currentStep?.substeps.forEach(substep => {
       if (substep.id === substepId) {
         substep.error({ errorText: fieldError, scope: { type: 'field', label: fieldLabel } });
       }
