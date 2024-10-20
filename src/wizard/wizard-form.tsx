@@ -7,7 +7,7 @@ import { useComponentMetadata } from '@cloudscape-design/component-toolkit/inter
 
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
@@ -40,21 +40,18 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
   const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
-  const funnel = useFunnel();
+  const funnelContext = useFunnelContext();
 
   useLayoutEffect(() => {
-    if (!funnel || !funnel.controller) {
-      return;
-    }
+    funnelContext?.controller?.currentStep.setMetadata(analyticsMetadata);
 
-    funnel.controller.setCurrentStep(props.activeStepIndex);
-    funnel.controller.currentStep.setMetadata(analyticsMetadata);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  useEffect(() => {
     return () => {
-      funnel.controller?.currentStep?.complete();
+      funnelContext?.controller?.currentStep?.complete();
     };
-
-    // Don't rerun hook on funnel object changes. We're only interested in on mount/unmount
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

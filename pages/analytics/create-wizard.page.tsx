@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
+import { useHistory } from 'react-router';
 
 import {
   AppLayout,
@@ -10,144 +11,151 @@ import {
   FormField,
   Header,
   Input,
-  KeyValuePairs,
   Link,
   SpaceBetween,
   Wizard,
 } from '~components';
 
 function Content() {
+  const history = useHistory();
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [loading, setLoading] = useState(false);
+  const [steps, setSteps] = useState([
+    {
+      analyticsMetadata: {
+        instanceIdentifier: 'my-custom-first-step',
+      },
+      title: 'Choose instance type',
+      info: <Link variant="info">Info</Link>,
+      description:
+        'Each instance type includes one or more instance sizes, allowing you to scale your resources to the requirements of your target workload.',
+      content: (
+        <SpaceBetween size="l">
+          <Container header={<Header variant="h2">Static container header</Header>}>
+            <SpaceBetween direction="vertical" size="l">
+              <FormField label="First field">
+                <Input value="" />
+              </FormField>
+              <FormField label="Second field">
+                <Input value="" />
+              </FormField>
+            </SpaceBetween>
+          </Container>
+          <DynamicStepContent />
+        </SpaceBetween>
+      ),
+    },
+    {
+      title: 'Add storage',
+      content: (
+        <Container header={<Header variant="h2">Form container header</Header>}>
+          <SpaceBetween direction="vertical" size="l">
+            <FormField label="First field">
+              <Input value="" />
+            </FormField>
+            <FormField label="Second field">
+              <Input value="" />
+            </FormField>
+          </SpaceBetween>
+        </Container>
+      ),
+      isOptional: true,
+    },
+  ]);
 
   const handleSubmit = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
+      history.push('/');
     }, 2000);
   };
 
-  const handleCancel = () => {};
+  const handleCancel = () => {
+    history.push('/');
+  };
+
+  const addStep = () => {
+    const newStep = {
+      title: `New step ${steps.length + 1}`,
+      isOptional: true,
+      content: (
+        <Container header={<Header variant="h2">{`Step ${steps.length + 1} Container`}</Header>}>
+          <FormField label="New field">
+            <Input value="" />
+          </FormField>
+        </Container>
+      ),
+    };
+    setSteps([...steps, newStep]);
+  };
+
+  const removeStep = () => {
+    if (steps.length > 1) {
+      setSteps(steps.slice(0, -1));
+    }
+  };
 
   return (
-    <Wizard
-      analyticsMetadata={{
-        instanceIdentifier: 'my-custom-creation',
-        flowType: 'create',
-      }}
-      onSubmit={handleSubmit}
-      onCancel={handleCancel}
-      isLoadingNextStep={loading}
-      i18nStrings={{
-        stepNumberLabel: stepNumber => `Step ${stepNumber}`,
-        collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
-        skipToButtonLabel: step => `Skip to ${step.title}`,
-        navigationAriaLabel: 'Steps',
-        cancelButton: 'Cancel',
-        previousButton: 'Previous',
-        nextButton: 'Next',
-        submitButton: 'Launch instance',
-        optional: 'optional',
-      }}
-      onNavigate={({ detail }) => setActiveStepIndex(detail.requestedStepIndex)}
-      activeStepIndex={activeStepIndex}
-      allowSkipTo={true}
-      steps={[
-        {
-          analyticsMetadata: {
-            instanceIdentifier: 'my-custom-first-step',
-          },
-          title: 'Choose instance type',
-          info: <Link variant="info">Info</Link>,
-          description:
-            'Each instance type includes one or more instance sizes, allowing you to scale your resources to the requirements of your target workload.',
-          content: (
-            <SpaceBetween direction="vertical" size="l">
-              <Container header={<Header variant="h2">Section 1</Header>}>
-                <SpaceBetween direction="vertical" size="l">
-                  <FormField label="First field">
-                    <Input value="" />
-                  </FormField>
-                  <FormField label="Second field">
-                    <Input value="" />
-                  </FormField>
-                </SpaceBetween>
-              </Container>
-              <Container header={<Header variant="h2">Section 2</Header>}>
-                <SpaceBetween direction="vertical" size="l">
-                  <FormField label="Third field">
-                    <Input value="" />
-                  </FormField>
-                  <FormField label="Forth field">
-                    <Input value="" />
-                  </FormField>
-                </SpaceBetween>
-              </Container>
-            </SpaceBetween>
-          ),
-        },
-        {
-          title: 'Add storage',
-          content: (
-            <Container header={<Header variant="h2">Form container header</Header>}>
-              <SpaceBetween direction="vertical" size="l">
-                <FormField label="First field">
-                  <Input value="" />
-                </FormField>
-                <FormField label="Second field">
-                  <Input value="" />
-                </FormField>
-              </SpaceBetween>
-            </Container>
-          ),
-          isOptional: true,
-        },
-        {
-          title: 'Configure security group',
-          content: (
-            <Container header={<Header variant="h2">Form container header</Header>}>
-              <SpaceBetween direction="vertical" size="l">
-                <FormField label="First field">
-                  <Input value="" />
-                </FormField>
-                <FormField label="Second field">
-                  <Input value="" />
-                </FormField>
-              </SpaceBetween>
-            </Container>
-          ),
-          isOptional: true,
-        },
-        {
-          analyticsMetadata: {
-            instanceIdentifier: 'my-custom-last-step',
-          },
-          title: 'Review and launch',
-          content: (
-            <SpaceBetween size="xs">
-              <Header variant="h3" actions={<Button onClick={() => setActiveStepIndex(0)}>Edit</Button>}>
-                Step 1: Instance type
-              </Header>
-              <Container header={<Header variant="h2">Container title</Header>}>
-                <KeyValuePairs
-                  columns={2}
-                  items={[
-                    {
-                      label: 'First field',
-                      value: 'Value',
-                    },
-                    {
-                      label: 'Second Field',
-                      value: 'Value',
-                    },
-                  ]}
-                />
-              </Container>
-            </SpaceBetween>
-          ),
-        },
-      ]}
-    />
+    <SpaceBetween size="l">
+      <Wizard
+        analyticsMetadata={{
+          instanceIdentifier: 'my-custom-creation',
+          flowType: 'create',
+        }}
+        secondaryActions={
+          <SpaceBetween direction="horizontal" size="s">
+            <Button onClick={addStep}>Add Step</Button>
+            <Button onClick={removeStep} disabled={steps.length === 1}>
+              Remove Last Step
+            </Button>
+          </SpaceBetween>
+        }
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        isLoadingNextStep={loading}
+        i18nStrings={{
+          stepNumberLabel: stepNumber => `Step ${stepNumber}`,
+          collapsedStepsLabel: (stepNumber, stepsCount) => `Step ${stepNumber} of ${stepsCount}`,
+          skipToButtonLabel: step => `Skip to ${step.title}`,
+          navigationAriaLabel: 'Steps',
+          cancelButton: 'Cancel',
+          previousButton: 'Previous',
+          nextButton: 'Next',
+          submitButton: 'Launch instance',
+          optional: 'optional',
+        }}
+        onNavigate={({ detail }) => setActiveStepIndex(detail.requestedStepIndex)}
+        activeStepIndex={activeStepIndex}
+        allowSkipTo={true}
+        steps={steps}
+      />
+    </SpaceBetween>
+  );
+}
+
+function DynamicStepContent() {
+  const [containerCount, setContainerCount] = useState(0);
+
+  const addContainer = () => {
+    setContainerCount(containerCount + 1); // Increment the container count
+  };
+
+  return (
+    <SpaceBetween size="l">
+      {[...Array(containerCount)].map((_, index) => (
+        <Container key={index} header={<Header variant="h2">{`Dynamic Container ${index + 1}`}</Header>}>
+          <SpaceBetween size="s">
+            <FormField label={`Field ${index + 1}`}>
+              <Input value="" />
+            </FormField>
+          </SpaceBetween>
+        </Container>
+      ))}
+      <SpaceBetween direction="horizontal" size="s">
+        <Button onClick={addContainer}>Add Container</Button>
+      </SpaceBetween>
+    </SpaceBetween>
   );
 }
 

@@ -12,8 +12,8 @@ export class FunnelStep extends FunnelBase {
   public currentSubstep: FunnelSubstep | undefined;
   protected optional: boolean;
 
-  constructor({ index, name = '', optional = false, metadata }: FunnelStepProps) {
-    super('initial');
+  constructor({ index, name = '', optional = false, metadata, status = 'initial' }: FunnelStepProps) {
+    super(status);
     this.index = index;
     this.name = name;
     this.optional = optional;
@@ -36,6 +36,16 @@ export class FunnelStep extends FunnelBase {
     Array.from(this.substeps).forEach((substep, index) => {
       substep.setIndex(index);
     });
+
+    if (this.getStatus() !== 'initial') {
+      dispatchFunnelEvent({
+        header: 'Funnel step configuration changed',
+        details: JSON.stringify([...this.substeps].map(substep => substep.name)),
+        status: 'info',
+      });
+
+      this.notifyObservers();
+    }
   }
 
   start(): void {
@@ -80,7 +90,6 @@ export class FunnelStep extends FunnelBase {
   registerSubstep(substep: FunnelSubstep) {
     this.substeps.add(substep);
     this.updateSubstepIndices();
-    this.notifyObservers();
   }
 
   unregisterSubstep(substep: FunnelSubstep) {

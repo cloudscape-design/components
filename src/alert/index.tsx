@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -35,9 +35,9 @@ const Alert = React.forwardRef(
       },
     };
 
-    const funnel = useFunnel();
+    const funnelContext = useFunnelContext();
     useEffect(() => {
-      if (!funnel || !funnel.controller) {
+      if (!funnelContext || !funnelContext.controller) {
         return;
       }
 
@@ -51,17 +51,20 @@ const Alert = React.forwardRef(
       const parentSubstepElement = baseComponentProps.__internalRootRef.current?.closest('[data-funnel-substep-id]'); // TODO: Move to helper function
       if (parentSubstepElement) {
         const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id'); // TODO: Move selectors to own file
-        funnel?.controller?.currentStep?.substeps.forEach(substep => {
+        funnelContext?.controller?.currentStep?.substeps.forEach(substep => {
           if (substep.id === substepId) {
-            funnel?.controller?.currentStep?.currentSubstep?.error({ errorText, scope: { type: 'funnel-substep' } });
+            funnelContext?.controller?.currentStep?.currentSubstep?.error({
+              errorText,
+              scope: { type: 'funnel-substep' },
+            });
           }
         });
-      } else if (funnel?.controller?.currentStep) {
-        funnel?.controller?.currentStep?.error({ errorText, scope: { type: 'funnel-step' } });
+      } else if (funnelContext?.controller?.currentStep) {
+        funnelContext?.controller?.currentStep?.error({ errorText, scope: { type: 'funnel-step' } });
       } else {
-        funnel?.controller?.error({ errorText, scope: { type: 'funnel' } });
+        funnelContext?.controller?.error({ errorText, scope: { type: 'funnel' } });
       }
-    }, [funnel, type, baseComponentProps.__internalRootRef]);
+    }, [funnelContext, type, baseComponentProps.__internalRootRef]);
 
     return (
       <InternalAlert

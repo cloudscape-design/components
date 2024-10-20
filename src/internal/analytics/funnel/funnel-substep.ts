@@ -4,6 +4,7 @@ import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { ErrorDetails } from './types';
 
+const DEBOUNCE_TIMEOUT_IN_MS = 10;
 export class FunnelSubstep extends FunnelBase {
   protected index = -1;
   public name: string;
@@ -34,7 +35,7 @@ export class FunnelSubstep extends FunnelBase {
     this.notifyObservers();
   }
 
-  private debounceState(action: 'start' | 'complete') {
+  private debounceState(action: 'start' | 'complete', callback?: () => void) {
     this.latestAction = action;
 
     if (this.stateTimeout) {
@@ -43,26 +44,28 @@ export class FunnelSubstep extends FunnelBase {
 
     this.stateTimeout = setTimeout(() => {
       if (this.latestAction === 'start') {
-        super.start(() => {
-          dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: this.name });
-        });
+        super.start(callback);
       } else if (this.latestAction === 'complete') {
-        super.complete(() => {
-          dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: this.name });
-        });
+        super.complete(callback);
       }
 
       this.stateTimeout = null;
       this.latestAction = null;
-    }, 10);
+    }, DEBOUNCE_TIMEOUT_IN_MS);
   }
 
-  start(): void {
-    this.debounceState('start');
+  start(callback?: () => void): void {
+    this.debounceState('start', () => {
+      dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: this.name });
+      callback?.();
+    });
   }
 
-  complete(): void {
-    this.debounceState('complete');
+  complete(callback?: () => void): void {
+    this.debounceState('complete', () => {
+      dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: this.name });
+      callback?.();
+    });
   }
 
   error(details: ErrorDetails) {
