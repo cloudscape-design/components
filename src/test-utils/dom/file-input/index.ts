@@ -10,10 +10,10 @@ export default class FileInputWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = selectors['file-input-container'];
 
   findTrigger(): ButtonWrapper {
-    return this.findComponent(`.${selectors['upload-button']}`, ButtonWrapper)!;
+    return this.findComponent(`.${selectors['file-input-button']}`, ButtonWrapper)!;
   }
 
   findNativeInput(): ElementWrapper<HTMLInputElement> {
-    return this.findByClassName(selectors['upload-input'])!;
+    return this.findByClassName(selectors['file-input'])!;
   }
 }

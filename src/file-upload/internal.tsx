@@ -26,8 +26,8 @@ import { Token } from '../token-group/token';
 import { FileOption } from './file-option';
 import { FileUploadProps } from './interfaces';
 
+import fileInputStyles from '../internal/components/file-input/styles.css.js';
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
-import fileInputStyles from './file-input/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalFileUploadProps = FileUploadProps & InternalBaseComponentProps;
@@ -65,7 +65,7 @@ function InternalFileUpload(
     },
     listItemSelector: `.${tokenListStyles['list-item']}`,
     showMoreSelector: `.${tokenListStyles.toggle}`,
-    fallbackSelector: `.${fileInputStyles['upload-input']}`,
+    fallbackSelector: `.${fileInputStyles['file-input']}`,
   });
 
   const baseProps = getBaseProps(restProps);
@@ -138,8 +138,9 @@ function InternalFileUpload(
             {...restProps}
             ariaDescribedby={ariaDescribedBy}
             invalid={invalid}
-            i18nStrings={{ uploadButtonText: multiple => i18nStrings.uploadButtonText(multiple) }}
-          />
+          >
+            {i18nStrings.uploadButtonText(multiple)}
+          </InternalFileInput>
         )}
 
         {(constraintText || errorText || warningText) && (

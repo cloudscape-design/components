@@ -4,6 +4,8 @@
 import React, { ChangeEvent, Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
 import InternalButton from '../../../button/internal';
 import { useFormFieldContext } from '../../../contexts/form-field';
 import { getBaseProps } from '../../base-component';
@@ -21,7 +23,17 @@ export { FileInputProps };
 
 const InternalFileInput = React.forwardRef(
   (
-    { accept, ariaRequired, multiple = false, value, onChange, i18nStrings, variant, ...restProps }: FileInputProps,
+    {
+      accept,
+      ariaRequired,
+      ariaLabel,
+      multiple = false,
+      value,
+      onChange,
+      variant = 'button',
+      children,
+      ...restProps
+    }: FileInputProps,
     ref: Ref<FileInputProps.Ref>
   ) => {
     const uploadInputRef = useRef<HTMLInputElement>(null);
@@ -45,6 +57,7 @@ const InternalFileInput = React.forwardRef(
     checkControlled('FileInput', 'value', value, 'onChange', onChange);
 
     const nativeAttributes: React.HTMLAttributes<HTMLInputElement> = {
+      'aria-label': ariaLabel || children,
       'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
       'aria-describedby': formFieldContext.ariaDescribedby,
     };
@@ -53,6 +66,10 @@ const InternalFileInput = React.forwardRef(
     }
     if (ariaRequired) {
       nativeAttributes['aria-required'] = true;
+    }
+
+    if (variant === 'icon' && !ariaLabel) {
+      warnOnce('FileInput', 'Aria label is required with icon variant.');
     }
 
     // Synchronizing component's value with the native file input state.
@@ -84,7 +101,7 @@ const InternalFileInput = React.forwardRef(
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
-          className={styles['upload-input']}
+          className={styles['file-input']}
           {...nativeAttributes}
         />
 
@@ -95,14 +112,14 @@ const InternalFileInput = React.forwardRef(
           variant={variant === 'icon' ? 'icon' : undefined}
           formAction="none"
           onClick={onUploadButtonClick}
-          className={clsx(styles['upload-button'], isFocused && styles['force-focus-outline'])}
+          className={clsx(styles['file-input-button'], isFocused && styles['force-focus-outline'])}
           __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
         >
-          {i18nStrings.uploadButtonText(multiple)}
+          {variant === 'button' && children}
         </InternalButton>
 
         {/* The file input needs to be labelled with provided content. Can't use the button because it is ARIA-hidden. */}
-        <ScreenreaderOnly id={uploadButtonLabelId}>{i18nStrings.uploadButtonText(multiple)}</ScreenreaderOnly>
+        <ScreenreaderOnly id={uploadButtonLabelId}>{ariaLabel || children}</ScreenreaderOnly>
       </div>
     );
   }
