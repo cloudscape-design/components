@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { RefObject, useLayoutEffect, useRef, useState } from 'react';
+import React, { RefObject, useLayoutEffect, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -72,29 +72,29 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
 export function useMultiAppLayout(props: SharedProps, ref: RefObject<HTMLDivElement>) {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
-  const unregister = useRef<() => void>();
 
   useLayoutEffect(() => {
     if (!ref.current) {
       return;
     }
+    let unregister: () => void | undefined;
 
     const observer = new IntersectionObserver(([entry]) => {
       const isVisible = entry.isIntersecting;
 
       if (isVisible) {
-        unregister.current = awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
+        unregister = awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
           setRegistration(props as RegistrationState<SharedProps>)
         );
       } else {
-        unregister.current?.();
+        unregister?.();
       }
     });
 
     observer.observe(ref.current);
     return () => {
       observer.disconnect();
-      unregister.current?.();
+      unregister?.();
     };
   }, [forceDeduplicationType, ref]);
 
