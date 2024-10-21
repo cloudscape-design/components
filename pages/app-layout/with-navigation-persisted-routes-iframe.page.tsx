@@ -14,7 +14,7 @@ import { Breadcrumbs, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
 
-const SecondaryLayout: React.FC = ({ children }) => {
+const SecondaryLayout = () => {
   return (
     <AppLayout
       data-testid="secondary-layout"
@@ -30,8 +30,6 @@ const SecondaryLayout: React.FC = ({ children }) => {
           <Link external={true} href="#">
             External link
           </Link>
-
-          {children}
         </SpaceBetween>
       }
       tools={<Tools>{toolsContent.long}</Tools>}
@@ -74,7 +72,7 @@ export default function () {
               openPagesHistory.current.add(item.href);
               return (
                 <div key={item.href} style={{ display: item.href !== activeHref ? 'none' : '' }}>
-                  <IframeWrapper id="inner-iframe" AppComponent={SecondaryLayout} props={{ children: item.href }} />
+                  <IframeWrapper id={item.href} AppComponent={SecondaryLayout} />
                 </div>
               );
             })}
