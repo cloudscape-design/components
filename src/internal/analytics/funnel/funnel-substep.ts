@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { Funnel } from './funnel';
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelStep } from './funnel-step';
-import { ErrorDetails, FunnelBaseStatus } from './types';
+import { ErrorDetails, FunnelBaseStatus, InteractionScope } from './types';
 
 const DEBOUNCE_TIMEOUT_IN_MS = 10;
 
 export class FunnelSubstep extends FunnelBase {
-  protected index = -1;
+  public index = -1;
   public context: FunnelStep | null = null;
-  public name: string;
 
   private stateTimeout: ReturnType<typeof setTimeout> | null = null;
   private latestAction: 'start' | 'complete' | null = null;
@@ -30,11 +30,6 @@ export class FunnelSubstep extends FunnelBase {
 
   setIndex(index: number): void {
     this.index = index;
-    this.notifyObservers();
-  }
-
-  setName(name: string): void {
-    this.name = name;
     this.notifyObservers();
   }
 
@@ -67,7 +62,13 @@ export class FunnelSubstep extends FunnelBase {
 
   async start(): Promise<void> {
     await this.debounceState('start');
-    dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: this.name });
+    dispatchFunnelEvent({
+      header: 'Funnel substep started',
+      status: 'success',
+      details: {
+        context: this.getFullContext().join('/'),
+      },
+    });
   }
 
   async complete(): Promise<void> {
@@ -77,7 +78,13 @@ export class FunnelSubstep extends FunnelBase {
     }
 
     await this.debounceState('complete');
-    dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: this.name });
+    dispatchFunnelEvent({
+      header: 'Funnel substep completed',
+      status: 'success',
+      details: {
+        context: this.getFullContext().join('/'),
+      },
+    });
   }
 
   async error(details: ErrorDetails): Promise<void> {
@@ -86,15 +93,45 @@ export class FunnelSubstep extends FunnelBase {
       dispatchFunnelEvent({
         header: 'Field error',
         status: 'error',
-        details: [this.name, details.scope.label].join(' / '),
+        details: {
+          context: [details.scope.label, ...this.getFullContext()].join('/'),
+          metadata: {
+            errorText: details.errorText,
+          },
+        },
       });
     } else if (this.getStatus() === 'error') {
       this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Field error cleared',
         status: 'info',
-        details: [this.name, details.scope.label].join(' / '),
+        details: {
+          context: [details.scope.label, ...this.getFullContext()].join('/'),
+        },
       });
     }
+  }
+
+  getFullContext() {
+    const combinedContext = [this.name];
+
+    let parentContext: Funnel | FunnelStep | null | undefined = this.context;
+    while (parentContext) {
+      combinedContext.push(parentContext.name);
+      parentContext = parentContext.context;
+    }
+
+    return combinedContext.filter(Boolean);
+  }
+
+  logInteractation(scope: InteractionScope): void {
+    dispatchFunnelEvent({
+      header: 'Funnel Substep interaction',
+      status: 'info',
+      details: {
+        context: this.getFullContext().join('/'),
+        metadata: scope.metadata,
+      },
+    });
   }
 }

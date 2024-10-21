@@ -6,9 +6,11 @@ import { ErrorDetails, FunnelBaseStatus, Observer } from './types';
 import { getUuid } from './utils';
 
 export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
-  public id: string;
   protected status: TStatus[] = [];
   protected observers: Observer[] = [];
+
+  public id: string;
+  public name?: string;
   public metadata?: AnalyticsMetadata;
 
   constructor(initialStatus: TStatus) {
@@ -21,6 +23,11 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
       this.status.push(newStatus);
       this.notifyObservers();
     }
+  }
+
+  setName(name: string): void {
+    this.name = name;
+    this.notifyObservers();
   }
 
   setMetadata(metadata?: AnalyticsMetadata): void {

@@ -22,6 +22,11 @@ export interface ErrorScope {
   label?: string;
 }
 
+export interface InteractionScope {
+  componentName: string;
+  metadata: Record<string, string | boolean | number>;
+}
+
 export type FunnelStatus = FunnelBaseStatus | 'validating' | 'validated' | 'submitted';
 export type FunnelResult = 'submitted' | 'successful' | 'cancelled' | undefined;
 

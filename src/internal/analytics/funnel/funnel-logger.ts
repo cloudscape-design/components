@@ -5,7 +5,11 @@ const eventBuffer: FunnelLogEventDetail[] = [];
 interface FunnelLogEventDetail {
   status: Status;
   header: string;
-  details?: string;
+  details?: {
+    context?: string;
+    message?: string;
+    metadata?: Record<string, string | number | boolean>;
+  };
 }
 export type Status = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';
 
