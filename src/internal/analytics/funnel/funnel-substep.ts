@@ -2,11 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
-import { ErrorDetails } from './types';
+import { FunnelStep } from './funnel-step';
+import { ErrorDetails, FunnelBaseStatus } from './types';
 
 const DEBOUNCE_TIMEOUT_IN_MS = 10;
+
 export class FunnelSubstep extends FunnelBase {
   protected index = -1;
+  public context: FunnelStep | null = null;
   public name: string;
 
   private stateTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -25,59 +28,68 @@ export class FunnelSubstep extends FunnelBase {
     };
   }
 
-  setIndex(index: number) {
+  setIndex(index: number): void {
     this.index = index;
     this.notifyObservers();
   }
 
-  setName(name: string) {
+  setName(name: string): void {
     this.name = name;
     this.notifyObservers();
   }
 
-  private debounceState(action: 'start' | 'complete', callback?: () => void) {
-    this.latestAction = action;
+  setContext(funnelStep: FunnelStep | null): void {
+    this.context = funnelStep;
+    this.notifyObservers();
+  }
 
-    if (this.stateTimeout) {
-      clearTimeout(this.stateTimeout);
-    }
+  private debounceState(action: 'start' | 'complete'): Promise<void> {
+    return new Promise(resolve => {
+      this.latestAction = action;
 
-    this.stateTimeout = setTimeout(() => {
-      if (this.latestAction === 'start') {
-        super.start(callback);
-      } else if (this.latestAction === 'complete') {
-        super.complete(callback);
+      if (this.stateTimeout) {
+        clearTimeout(this.stateTimeout);
       }
 
-      this.stateTimeout = null;
-      this.latestAction = null;
-    }, DEBOUNCE_TIMEOUT_IN_MS);
-  }
+      this.stateTimeout = setTimeout(async () => {
+        if (this.latestAction === 'start') {
+          await super.start();
+        } else if (this.latestAction === 'complete') {
+          await super.complete();
+        }
 
-  start(callback?: () => void): void {
-    this.debounceState('start', () => {
-      dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: this.name });
-      callback?.();
+        this.stateTimeout = null;
+        this.latestAction = null;
+        resolve();
+      }, DEBOUNCE_TIMEOUT_IN_MS);
     });
   }
 
-  complete(callback?: () => void): void {
-    this.debounceState('complete', () => {
-      dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: this.name });
-      callback?.();
-    });
+  async start(): Promise<void> {
+    await this.debounceState('start');
+    dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: this.name });
   }
 
-  error(details: ErrorDetails) {
+  async complete(): Promise<void> {
+    const validStates: FunnelBaseStatus[] = ['started', 'error'];
+    if (!validStates.includes(this.getStatus())) {
+      return; // No-op if not in valid state
+    }
+
+    await this.debounceState('complete');
+    dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: this.name });
+  }
+
+  async error(details: ErrorDetails): Promise<void> {
     if (details.errorText) {
-      super.error(details, () => {
-        dispatchFunnelEvent({
-          header: 'Field error',
-          status: 'error',
-          details: [this.name, details.scope.label].join(' / '),
-        });
+      await super.error(details);
+      dispatchFunnelEvent({
+        header: 'Field error',
+        status: 'error',
+        details: [this.name, details.scope.label].join(' / '),
       });
     } else if (this.getStatus() === 'error') {
+      this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Field error cleared',
         status: 'info',

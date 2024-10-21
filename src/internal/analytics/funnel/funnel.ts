@@ -37,27 +37,31 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     this.status = ['initial'];
   }
 
-  start() {
+  async start(): Promise<void> {
     if (this.getStatus() !== 'initial') {
       return;
     }
 
     this.reset();
-    super.start(() => {
-      dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: this.name });
-    });
+    await super.start();
+    dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: this.name });
 
-    this.currentStep?.start();
+    if (this.currentStep) {
+      await this.currentStep.start();
+    }
 
     console.log(this);
   }
 
-  submit() {
+  async submit(): Promise<void> {
     if (this.getStatus() === 'submitted') {
       return;
     }
 
-    this.currentStep?.complete();
+    if (this.currentStep) {
+      await this.currentStep.complete();
+    }
+
     this.result = 'submitted';
     this.setStatus('submitted');
 
@@ -66,7 +70,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   validate(value: boolean) {
-    if ((value && this.getStatus() === 'validating') || (value === false && this.getStatus() === 'validated')) {
+    if ((value && this.getStatus() === 'validating') || (!value && this.getStatus() === 'validated')) {
       return;
     }
 
@@ -81,8 +85,8 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     }
   }
 
-  error(details: ErrorDetails) {
-    super.error(details);
+  async error(details: ErrorDetails): Promise<void> {
+    await super.error(details);
     this.notifyObservers();
   }
 
@@ -99,18 +103,20 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     });
   }
 
-  complete() {
-    this.currentStep?.complete();
-    super.complete(() => {
-      if (!this.result) {
-        this.cancel();
-      }
+  async complete(): Promise<void> {
+    if (this.currentStep) {
+      await this.currentStep.complete();
+    }
 
-      dispatchFunnelEvent({
-        header: `Funnel completed with result ${this.result}`,
-        status: this.result === 'cancelled' ? 'error' : 'success',
-        details: this.name,
-      });
+    await super.complete();
+    if (!this.result) {
+      this.cancel();
+    }
+
+    dispatchFunnelEvent({
+      header: `Funnel completed with result ${this.result}`,
+      status: this.result === 'cancelled' ? 'error' : 'success',
+      details: this.name,
     });
 
     this.notifyObservers();
@@ -141,10 +147,10 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     return steps;
   }
 
-  setSteps(configs: FunnelStepProps[], intitialStepIndex = 0): FunnelStep[] {
+  setSteps(configs: FunnelStepProps[], initialStepIndex = 0): FunnelStep[] {
     this.steps = configs.map(config => new FunnelStep(config));
 
-    this.currentStep = this.steps[intitialStepIndex];
+    this.currentStep = this.steps[initialStepIndex];
     this.notifyObservers();
     return this.steps;
   }
@@ -155,7 +161,10 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   updateSteps(configs: FunnelStepProps[]): FunnelStep[] {
-    this.steps = configs.map((config, index) => new FunnelStep({ ...config, status: this.steps[index].getStatus() }));
+    this.steps = configs.map(
+      (config, index) =>
+        new FunnelStep({ ...config, status: this.steps[index] ? this.steps[index].getStatus() : 'initial' })
+    );
 
     dispatchFunnelEvent({
       header: 'Funnel configuration changed',
@@ -168,10 +177,11 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
   setCurrentStep(index: number) {
     if (this.steps.length > 0 && this.currentStep?.index !== index) {
-      this.currentStep?.complete();
-      this.currentStep = this.steps[index];
-      this.currentStep?.start();
-      this.notifyObservers();
+      this.currentStep?.complete().then(() => {
+        this.currentStep = this.steps[index];
+        this.currentStep?.start();
+        this.notifyObservers();
+      });
     }
   }
 }

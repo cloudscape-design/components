@@ -43,15 +43,17 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const funnelContext = useFunnelContext();
 
   useLayoutEffect(() => {
+    // Ensure the current step is set before substeps register themselves
+    funnelContext?.controller?.setCurrentStep(props.activeStepIndex);
     funnelContext?.controller?.currentStep.setMetadata(analyticsMetadata);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [props.activeStepIndex]);
 
   useEffect(() => {
     return () => {
       funnelContext?.controller?.currentStep?.complete();
     };
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

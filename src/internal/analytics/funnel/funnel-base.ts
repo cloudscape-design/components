@@ -16,14 +16,14 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     this.status = [initialStatus];
   }
 
-  protected setStatus(newStatus: TStatus) {
+  protected setStatus(newStatus: TStatus): void {
     if (this.getStatus() !== newStatus) {
       this.status.push(newStatus);
       this.notifyObservers();
     }
   }
 
-  setMetadata(metadata?: AnalyticsMetadata) {
+  setMetadata(metadata?: AnalyticsMetadata): void {
     if (this.metadata === metadata) {
       return;
     }
@@ -47,38 +47,47 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     return this.status[this.status.length - 2];
   }
 
-  start(callback?: () => void) {
-    if (this.getStatus() === 'started') {
-      return;
-    }
+  start(): Promise<void> {
+    return new Promise(resolve => {
+      if (this.getStatus() === 'started') {
+        resolve();
+        return;
+      }
 
-    this.setStatus('started' as TStatus);
-    callback?.();
+      this.setStatus('started' as TStatus);
+      resolve();
+    });
   }
 
-  complete(callback?: () => void) {
-    if (this.getStatus() === 'completed') {
-      return;
-    }
+  complete(): Promise<void> {
+    return new Promise(resolve => {
+      if (this.getStatus() === 'completed') {
+        resolve();
+        return;
+      }
 
-    this.setStatus('completed' as TStatus);
-    callback?.();
+      this.setStatus('completed' as TStatus);
+      resolve();
+    });
   }
 
-  error(details: ErrorDetails, callback?: () => void) {
-    this.setStatus('error' as TStatus);
-    callback?.();
+  error(details: ErrorDetails): Promise<void> {
+    return new Promise(resolve => {
+      console.log('error', details);
+      this.setStatus('error' as TStatus);
+      resolve();
+    });
   }
 
-  addObserver(observer: Observer) {
+  addObserver(observer: Observer): void {
     this.observers.push(observer);
   }
 
-  removeObserver(observer: Observer) {
+  removeObserver(observer: Observer): void {
     this.observers = this.observers.filter(obs => obs !== observer);
   }
 
-  protected notifyObservers() {
+  protected notifyObservers(): void {
     for (const observer of this.observers) {
       observer.update(this);
     }
