@@ -48,6 +48,21 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
    * * `popoverFeedback` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
    *
+   * * ### icon-toggle-button
+   *
+   * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
+   * * `text` (string) - The name shown as a tooltip or menu text for this button.
+   * * `pressed` (boolean) - The toggle button pressed state.
+   * * `disabled` (optional, boolean) - The disabled state indication for the button.
+   * * `loading` (optional, boolean) - The loading state indication for the button.
+   * * `loadingText` (optional, string) - The loading text announced to screen readers.
+   * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
+   * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
+   * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * * `pressedIconName` (optional, string) - Specifies the name of the icon in pressed state, used with the [icon component](/components/icon/).
+   * * `pressedIconUrl` (optional, string) - Specifies the URL of a custom icon in pressed state.
+   * * `pressedIconSvg` (optional, ReactNode) - Custom SVG icon in pressed state. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   *
    * ### menu-dropdown
    *
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
@@ -75,7 +90,7 @@ export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
@@ -89,6 +104,22 @@ export namespace ButtonGroupProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     popoverFeedback?: React.ReactNode;
+  }
+
+  export interface IconToggleButton {
+    type: 'icon-toggle-button';
+    id: string;
+    text: string;
+    pressed: boolean;
+    disabled?: boolean;
+    loading?: boolean;
+    loadingText?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+    pressedIconName?: IconProps.Name;
+    pressedIconUrl?: string;
+    pressedIconSvg?: React.ReactNode;
   }
 
   export interface MenuDropdown {
@@ -109,6 +140,7 @@ export namespace ButtonGroupProps {
 
   export interface ItemClickDetails {
     id: string;
+    pressed?: boolean;
   }
 
   export interface Ref {
