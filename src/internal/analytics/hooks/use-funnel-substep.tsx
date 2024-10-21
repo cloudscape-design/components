@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { MutableRefObject, useEffect, useMemo, useState } from 'react';
+import { MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useFocusTracker } from '../../hooks/use-focus-tracker';
 import { FunnelSubstep } from '../funnel';
@@ -9,49 +9,57 @@ import { useFunnelContext } from './use-funnel';
 
 import headerAnalyticsSelectors from '../../../header/analytics-metadata/styles.css.js';
 
+const getSubstepName = (rootRef: MutableRefObject<HTMLElement | null>): string => {
+  return (
+    rootRef.current?.querySelector<HTMLHeadingElement>(`.${headerAnalyticsSelectors['heading-text']}`)?.innerText || ''
+  );
+};
+
 export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>, metadata?: AnalyticsMetadata) => {
   const funnelContext = useFunnelContext();
-  const [, setValue] = useState<number>(-1);
+  const [, setTriggerRender] = useState<number>(0);
 
   const funnelSubstep = useMemo(() => {
-    const funnelSubstep = new FunnelSubstep();
-    funnelSubstep.addObserver({
+    const substep = new FunnelSubstep();
+    substep.addObserver({
       update: () => {
-        setValue(Math.random()); // Trigger a re-render
+        setTriggerRender(prev => prev + 1);
       },
     });
-    return funnelSubstep;
-  }, [setValue]);
+    return substep;
+  }, []);
 
   useEffect(() => {
-    if (!funnelContext || !funnelContext.controller) {
-      return;
-    }
-
-    const substepName =
-      (rootRef?.current as HTMLDivElement)?.querySelector<HTMLHeadingElement>(
-        `.${headerAnalyticsSelectors['heading-text']}`
-      )?.innerText || '';
+    const substepName = getSubstepName(rootRef);
     funnelSubstep.setName(substepName);
     funnelSubstep.setMetadata(metadata);
-    funnelContext.controller.currentStep?.registerSubstep(funnelSubstep);
+  }, [funnelContext, funnelSubstep, rootRef, metadata]);
 
+  useEffect(() => {
+    funnelContext?.controller?.currentStep?.registerSubstep(funnelSubstep);
+  }, [funnelContext?.controller?.currentStep, funnelSubstep]);
+
+  useEffect(() => {
     return () => {
-      funnelSubstep.complete(() => {
-        funnelContext.controller?.currentStep?.unregisterSubstep(funnelSubstep);
-      });
+      (async () => {
+        await funnelSubstep.complete();
+        funnelSubstep.context?.unregisterSubstep(funnelSubstep);
+      })();
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [funnelSubstep]);
+
+  const handleBlur = useCallback(() => {
+    funnelContext?.controller?.currentStep?.setCurrentSubstep(undefined);
+  }, [funnelContext]);
+
+  const handleFocus = useCallback(() => {
+    funnelContext?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
+  }, [funnelContext, funnelSubstep]);
 
   useFocusTracker({
     rootRef,
-    onBlur: () => {
-      funnelContext?.controller?.currentStep?.setCurrentSubstep(undefined);
-    },
-    onFocus: () => {
-      funnelContext?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
-    },
+    onBlur: handleBlur,
+    onFocus: handleFocus,
   });
 
   return funnelSubstep;

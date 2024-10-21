@@ -29,23 +29,22 @@ export const useFormFunnel = ({
   const { funnelContext, pageContext } = useFunnel();
 
   useEffect(() => {
-    if (!funnelContext?.controller) {
-      return;
-    }
-
     const funnelName = getFunnelName(rootRef, pageContext);
     const resourceType = analyticsMetadata.resourceType ?? (pageContext.getResourceType() || '');
 
-    funnelContext.controller.setMetadata({ ...analyticsMetadata, resourceType });
-    funnelContext.controller.setName(funnelName);
-    funnelContext.controller.currentStep.setName(funnelName);
-    funnelContext.controller.currentStep.setMetadata({ ...analyticsMetadata, resourceType });
+    funnelContext?.controller?.setMetadata({ ...analyticsMetadata, resourceType });
+    funnelContext?.controller?.setName(funnelName);
+    funnelContext?.controller?.currentStep.setName(funnelName);
+    funnelContext?.controller?.currentStep.setMetadata({ ...analyticsMetadata, resourceType });
+  }, [funnelContext?.controller, pageContext, rootRef, analyticsMetadata]);
 
-    funnelContext.controller.start();
+  useEffect(() => {
+    funnelContext?.controller?.start();
+
     return () => {
-      funnelContext.controller?.complete();
+      funnelContext?.controller?.complete();
     };
-  }, [funnelContext, pageContext, rootRef, analyticsMetadata]);
+  }, [funnelContext?.controller]);
 
   useEffect(() => {
     const errorTextValue = rootRef.current.querySelector<HTMLElement>(analyticsSelectors.error)?.innerText || '';

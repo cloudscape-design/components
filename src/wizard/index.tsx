@@ -1,18 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useLayoutEffect } from 'react';
+import React from 'react';
 
 import { FunnelProvider } from '../internal/analytics/contexts/funnel-context';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
-import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
+import { useWizardFunnel } from './analytics/funnel';
 import { WizardProps } from './interfaces';
 import InternalWizard from './internal';
 
-function FunnelEnabledWizard({
+function BaseWizard({
   onCancel,
   onSubmit,
   onNavigate,
@@ -36,57 +35,13 @@ function FunnelEnabledWizard({
     analyticsMetadata
   );
 
-  const { funnelContext, pageContext } = useFunnel();
-  console.log(pageContext);
-
-  useLayoutEffect(() => {
-    if (!funnelContext || !funnelContext.controller) {
-      return;
-    }
-
-    const steps = [
-      ...props.steps.map((step, index) => {
-        return { index, name: step.title, optional: step.isOptional, metadata: step.analyticsMetadata };
-      }),
-    ];
-
-    funnelContext.controller.setName(pageContext.getPageName() || 'Unknown funnel name');
-    funnelContext.controller.setMetadata(analyticsMetadata);
-    funnelContext.controller.setSteps(steps, props.activeStepIndex);
-
-    // Don't rerun hook each time the active step index changes. We only want the initial value
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [funnelContext, props.steps]);
-
-  useEffectOnUpdate(() => {
-    if (!funnelContext || !funnelContext.controller) {
-      return;
-    }
-
-    const steps = [
-      ...props.steps.map((step, index) => {
-        return { index, name: step.title, optional: step.isOptional, metadata: step.analyticsMetadata };
-      }),
-    ];
-    funnelContext.controller.updateSteps(steps);
-  }, [funnelContext, props.steps]);
-
-  useEffect(() => {
-    funnelContext?.controller?.start();
-
-    return () => {
-      funnelContext?.controller?.complete();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   const externalProps = getExternalProps(props);
-
-  useEffect(() => {
-    if (!isLoadingNextStep) {
-      funnelContext?.controller?.validate(false);
-    }
-  }, [isLoadingNextStep, funnelContext]);
+  const { funnelContext } = useWizardFunnel({
+    steps: props.steps,
+    activeStepIndex: props.activeStepIndex,
+    analyticsMetadata,
+    isLoadingNextStep,
+  });
 
   return (
     <InternalWizard
@@ -107,17 +62,20 @@ function FunnelEnabledWizard({
       }}
       {...externalProps}
       {...baseComponentProps}
+      {...funnelContext?.controller?.domAttributes}
     />
   );
 }
 
+const Wizard = (props: WizardProps) => {
+  return (
+    <FunnelProvider rootComponent="wizard">
+      <BaseWizard {...props} />
+    </FunnelProvider>
+  );
+};
+
 applyDisplayName(Wizard, 'Wizard');
 
 export { WizardProps };
-export default function Wizard(props: WizardProps) {
-  return (
-    <FunnelProvider rootComponent="wizard">
-      <FunnelEnabledWizard {...props} />
-    </FunnelProvider>
-  );
-}
+export default Wizard;
