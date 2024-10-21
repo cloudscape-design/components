@@ -316,7 +316,7 @@ describe('Modal component', () => {
       expect(onDismissSpy).toHaveBeenCalled();
     });
 
-    it('does not dismiss modal if ESC pressed with child date range picker opened', () => {
+    it('does not dismiss modal if ESC pressed with child date range picker opened', async () => {
       const onDismissSpy = jest.fn();
       const dateRangePicker = (
         <DateRangePicker
@@ -338,7 +338,7 @@ describe('Modal component', () => {
       const wrapper = renderModal({ visible: true, onDismiss: onDismissSpy, children: dateRangePicker });
       const dateRangePickerWrapper = wrapper.findContent().findDateRangePicker()!;
 
-      dateRangePickerWrapper.openDropdown();
+      await dateRangePickerWrapper.openDropdown();
 
       act(() => dateRangePickerWrapper.findDropdown()!.findCancelButton()!.keydown(KeyCode.escape));
       expect(dateRangePickerWrapper.findDropdown()).toBeFalsy();
@@ -464,6 +464,7 @@ describe('Modal component', () => {
       expect(document.body).not.toHaveClass(styles['modal-open']);
 
       rerender(<Modal onDismiss={() => null} visible={true} />);
+      console.log('class names', document.body.classList.toString());
       expect(document.body).toHaveClass(styles['modal-open']);
 
       rerender(<Modal onDismiss={() => null} visible={false} />);

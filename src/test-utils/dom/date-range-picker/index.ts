@@ -45,8 +45,9 @@ export default class DateRangePickerWrapper extends ComponentWrapper {
   }
 
   @usesDom
-  openDropdown(): void {
-    act(() => {
+  openDropdown(): Promise<void> {
+    // eslint-disable-next-line require-await
+    return act(async () => {
       this.findTrigger().click();
     });
   }
