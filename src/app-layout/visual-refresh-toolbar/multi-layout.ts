@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useState } from 'react';
+import React, { RefObject, useLayoutEffect, useRef, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -69,15 +69,34 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
   return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
-export function useMultiAppLayout(props: SharedProps) {
+export function useMultiAppLayout(props: SharedProps, ref: RefObject<HTMLDivElement>) {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
+  const unregister = useRef<() => void>();
 
   useLayoutEffect(() => {
-    return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
-      setRegistration(props as RegistrationState<SharedProps>)
-    );
-  }, [forceDeduplicationType]);
+    if (!ref.current) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      const isVisible = entry.isIntersecting;
+
+      if (isVisible) {
+        unregister.current = awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
+          setRegistration(props as RegistrationState<SharedProps>)
+        );
+      } else {
+        unregister.current?.();
+      }
+    });
+
+    observer.observe(ref.current);
+    return () => {
+      observer.disconnect();
+      unregister.current?.();
+    };
+  }, [forceDeduplicationType, ref]);
 
   useLayoutEffect(() => {
     if (registration?.type === 'secondary') {
