@@ -38,21 +38,10 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 
 const mockIntersectionObserver = jest.fn();
 mockIntersectionObserver.mockImplementation((callback: any) => {
-  callback([
-    {
-      isIntersecting: true,
-      target: {},
-      intersectionRatio: 1,
-      boundingClientRect: {} as DOMRectReadOnly,
-      intersectionRect: {} as DOMRectReadOnly,
-      rootBounds: null,
-      time: 1,
-    },
-  ]);
+  callback([{ isIntersecting: true }]);
 
   return {
     observe: jest.fn(),
-    unobserve: jest.fn(),
     disconnect: jest.fn(),
   };
 });
