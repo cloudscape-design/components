@@ -3,7 +3,7 @@
 
 import { MutableRefObject, useEffect } from 'react';
 
-import { useFunnelContext } from '../../../internal/analytics/hooks/use-funnel';
+import { useFunnel } from '../../../internal/analytics/hooks/use-funnel';
 import { useFunnelSubstep } from '../../../internal/analytics/hooks/use-funnel-substep';
 import { ButtonContextProps } from '../../../internal/context/button-context';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id';
@@ -21,8 +21,17 @@ function getFunnelName(modalId: string) {
 
 export const useModalFunnel = ({ contentRef, visible }: UseModalFunnel) => {
   const modalId = useUniqueId();
-  const funnelContext = useFunnelContext();
+  const { funnelContext } = useFunnel();
   const funnelSubstep = useFunnelSubstep(contentRef);
+
+  useEffect(() => {
+    if (!visible) {
+      return;
+    }
+
+    const funnelName = getFunnelName(modalId);
+    funnelSubstep.setName(funnelName);
+  }, [funnelSubstep, modalId, visible]);
 
   useEffect(() => {
     if (!visible) {
@@ -32,8 +41,6 @@ export const useModalFunnel = ({ contentRef, visible }: UseModalFunnel) => {
     const funnelName = getFunnelName(modalId);
     funnelContext?.controller?.setName(funnelName);
     funnelContext?.controller?.currentStep.setName(funnelName);
-
-    funnelSubstep.setName(funnelName);
     funnelContext?.controller?.currentStep.registerSubstep(funnelSubstep);
 
     funnelContext?.controller?.start();
