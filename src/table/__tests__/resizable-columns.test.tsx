@@ -212,6 +212,20 @@ test('should not allow to resize column below 120px if min width is not defined'
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '120px' });
 });
 
+test('takes width as min width if it is less than 120px and min width is not set', () => {
+  const props: TableProps<Item> = {
+    ...defaultProps,
+    columnDefinitions: [{ header: 'id', cell: item => item.id, width: 100 }, defaultProps.columnDefinitions[1]],
+  };
+  const { wrapper } = renderTable(<Table {...props} />);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '100px' });
+
+  fireMousedown(wrapper.findColumnResizer(1)!);
+  fireMouseMove(100);
+  fireMouseup(100);
+  expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '100px' });
+});
+
 test('should follow along each mouse move event', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   expect(wrapper.findColumnHeaders()[0].getElement()).toHaveStyle({ width: '150px' });
