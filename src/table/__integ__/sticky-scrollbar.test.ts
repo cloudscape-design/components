@@ -45,7 +45,8 @@ describe('Sticky scrollbar', () => {
         }, visualRefresh)
       );
 
-      test(
+      // Skipped because #2864 is reverted.
+      test.skip(
         'sticky scrollbar is at the bottom when rendered inside container with fit-height',
         useBrowser(async browser => {
           const page = new BasePageObject(browser);
