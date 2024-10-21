@@ -28,15 +28,7 @@ function syncClasses(from: HTMLElement, to: HTMLElement) {
   };
 }
 
-export function IframeWrapper({
-  id,
-  AppComponent,
-  props,
-}: {
-  id: string;
-  AppComponent: React.ComponentType;
-  props?: Record<string, any>;
-}) {
+export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: React.ComponentType }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,13 +55,13 @@ export function IframeWrapper({
     copyStyles(document, iframeDocument);
     iframeDocument.dir = document.dir;
     const syncClassesCleanup = syncClasses(document.body, iframeDocument.body);
-    ReactDOM.render(<AppComponent {...props} />, innerAppRoot);
+    ReactDOM.render(<AppComponent />, innerAppRoot);
     return () => {
       syncClassesCleanup();
       ReactDOM.unmountComponentAtNode(innerAppRoot);
       container.removeChild(iframeEl);
     };
-  }, [id, AppComponent, props]);
+  }, [id, AppComponent]);
 
   return <div ref={ref}></div>;
 }
