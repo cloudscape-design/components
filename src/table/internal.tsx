@@ -20,7 +20,6 @@ import { LinkDefaultVariantContext } from '../internal/context/link-default-vari
 import { FilterRef, PaginationRef, TableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useComponentAnalytics } from '../internal/hooks/use-component-analytics';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
@@ -210,14 +209,6 @@ const InternalTable = React.forwardRef(
     );
 
     const analyticsMetadata = getAnalyticsMetadataProps(rest);
-    const { attributes: componentAnalyticsAttributes } = useComponentAnalytics('table', tableRefObject, () => ({
-      variant,
-      flowType: rest.analyticsMetadata?.flowType,
-      instanceIdentifier: analyticsMetadata?.instanceIdentifier,
-      taskName: getHeaderText(),
-      patternIdentifier: getPatternIdentifier(),
-    }));
-
     const interactionMetadata = () => {
       const filterData = filterRef.current;
       const paginationData = paginationRef.current;
@@ -228,12 +219,35 @@ const InternalTable = React.forwardRef(
         sortingOrder: sortingColumn ? (sortingDescending ? 'Descending' : 'Ascending') : undefined,
       });
     };
+    const getComponentConfiguration = () => {
+      const filterData = filterRef.current;
+      const paginationData = paginationRef.current;
 
-    const { setLastUserAction } = useTableInteractionMetrics({
+      return {
+        variant,
+        flowType: rest.analyticsMetadata?.flowType,
+        instanceIdentifier: analyticsMetadata?.instanceIdentifier,
+        taskName: getHeaderText(),
+        patternIdentifier: getPatternIdentifier(),
+        sortedBy: {
+          columnId: sortingColumn?.sortingField,
+          sortingOrder: sortingColumn ? (sortingDescending ? 'desc' : 'asc') : undefined,
+        },
+        filtered: Boolean(filterData?.filterText),
+        currentPageIndex: paginationData.currentPageIndex,
+        totalNumberOfResources: paginationData.totalPageCount,
+        resourcesPerPage: allRows?.length || 0,
+        resourcesSelected: selectedItems?.length > 0,
+      };
+    };
+
+    const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics({
+      elementRef: tableRefObject,
       loading,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
       itemCount: items.length,
       getComponentIdentifier: getHeaderText,
+      getComponentConfiguration,
       interactionMetadata,
     });
 
@@ -488,7 +502,7 @@ const InternalTable = React.forwardRef(
                 >
                   <table
                     {...performanceMarkAttributes}
-                    {...componentAnalyticsAttributes}
+                    {...tableInteractionAttributes}
                     ref={tableRef}
                     className={clsx(
                       styles.table,

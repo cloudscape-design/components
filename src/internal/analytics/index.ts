@@ -53,4 +53,6 @@ export let ComponentMetrics: IComponentMetrics = {
   componentMounted(): string {
     return '';
   },
+
+  componentUpdated(): void {},
 };
