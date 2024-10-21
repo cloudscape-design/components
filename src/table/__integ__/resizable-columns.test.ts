@@ -125,10 +125,16 @@ interface PageConfig {
   withColumnIds?: boolean;
   withSelection?: boolean;
   enableKeyboardNavigation?: boolean;
+  percentageWidths?: boolean;
+  columnDisplay?: string;
 }
 
-const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConfig) => {
-  return useBrowser({ ...defaultScreen }, async browser => {
+const setupTest = (
+  testFn: (page: TablePage) => Promise<void>,
+  config?: PageConfig,
+  screenSize?: { width?: number; height?: number }
+) => {
+  return useBrowser({ ...defaultScreen, ...screenSize }, async browser => {
     const page = new TablePage(browser);
     const params = new URLSearchParams({
       visualRefresh: 'false',
@@ -137,6 +143,9 @@ const setupTest = (testFn: (page: TablePage) => Promise<void>, config?: PageConf
       withSelection: config?.withSelection !== undefined ? String(config.withSelection) : 'false',
       enableKeyboardNavigation:
         config?.enableKeyboardNavigation !== undefined ? String(config.enableKeyboardNavigation) : 'false',
+      percentageWidths: config?.percentageWidths !== undefined ? String(config.percentageWidths) : 'false',
+      columnDisplay:
+        config?.columnDisplay !== undefined ? String(config.columnDisplay) : 'name,region,description,state',
     }).toString();
     await browser.url(`#/light/table/resizable-columns?${params}`);
     await page.waitForVisible(tableWrapper.findBodyCell(2, 1).toSelector());
@@ -149,7 +158,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     return setupTest(async page => {
       if (sticky) {
         await page.toggleStickyHeader();
-        await page.windowScrollTo({ top: 400 });
+        await page.windowScrollTo({ top: 421 });
         await expect(page.getHeaderTopOffset()).resolves.toEqual(0);
       }
       await testFn(page);
@@ -245,6 +254,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     setupStickyTest(async page => {
       const prevDateColumnWidth = await page.getColumnWidth(4);
       await page.setWindowSize({ ...defaultScreen, width: defaultScreen.width + 200 });
+      await page.pause(1000);
       const dateColumnWidth = await page.getColumnWidth(4);
       expect(dateColumnWidth).toBeGreaterThan(prevDateColumnWidth);
     })
@@ -255,6 +265,7 @@ describe.each([true, false])('StickyHeader=%s', sticky => {
     setupStickyTest(async page => {
       const prevDateColumnWidth = await page.getColumnWidth(4);
       await page.setWindowSize({ ...defaultScreen, width: defaultScreen.width - 200 });
+      await page.pause(1000);
       const dateColumnWidth = await page.getColumnWidth(4);
       expect(dateColumnWidth).toBeLessThan(prevDateColumnWidth);
     })
@@ -273,12 +284,12 @@ describe('sticky header sync', () => {
   test.each([1680, 620])('sticky and real column headers must have identical widths for screen width %s', width =>
     setupTest(
       async page => {
-        await page.setWindowSize({ ...defaultScreen, width });
         const stickyHeaderWidths = await page.getFirstTableHeaderWidths();
         const realHeaderWidths = await page.getLastTableHeaderWidths();
         expect(stickyHeaderWidths).toEqual(realHeaderWidths);
       },
-      { stickyHeader: true }
+      { stickyHeader: true },
+      { width }
     )()
   );
 
@@ -368,3 +379,54 @@ test.each([false, true])(
     );
   }
 );
+
+describe('percentage column widths', () => {
+  test(
+    'supports percentage column width',
+    setupTest(
+      async page => {
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+        await expect(page.getColumnWidth(3)).resolves.toBe(350);
+      },
+      { percentageWidths: true },
+      { width: 1200 }
+    )
+  );
+  test(
+    'supports percentage column width when dynamically adding a column',
+    setupTest(
+      async page => {
+        await page.toggleColumn('description');
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+        await expect(page.getColumnWidth(3)).resolves.toBe(350);
+      },
+      { percentageWidths: true, columnDisplay: 'name,region,state' },
+      { width: 1200 }
+    )
+  );
+
+  test(
+    'percentage column widths do not change on browser resize',
+    setupTest(
+      async page => {
+        await page.setWindowSize({ ...defaultScreen, width: 1400 });
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+        await expect(page.getColumnWidth(3)).resolves.toBe(350);
+      },
+      { percentageWidths: true },
+      { width: 1200 }
+    )
+  );
+
+  test(
+    'column widths are maintained when other columns resize',
+    setupTest(
+      async page => {
+        await page.resizeColumn(2, 600);
+        await expect(page.getColumnWidth(1)).resolves.toBe(234);
+      },
+      { percentageWidths: true },
+      { width: 1200 }
+    )
+  );
+});
