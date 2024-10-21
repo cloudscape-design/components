@@ -10,6 +10,8 @@ import {
   Container,
   DatePicker,
   ExpandableSection,
+  FileUpload,
+  FileUploadProps,
   Form,
   FormField,
   Link,
@@ -31,6 +33,7 @@ function Content() {
   const [value1, setValue1] = useState('');
   const [value2, setValue2] = useState('');
   const [value3, setValue3] = useState('');
+  const [filesValue, setFilesValue] = useState<FileUploadProps['value']>([]);
   const [containersVisible, setContainersVisible] = useState<boolean[]>([true, true, true, true]);
   const [selectedOption, setSelectedOption] = useState<SelectProps['selectedOption']>({
     label: 'Option 1',
@@ -207,6 +210,25 @@ function Content() {
             }
           >
             <SpaceBetween size="s">
+              <FormField label="Form field label" description="Description">
+                <FileUpload
+                  onChange={({ detail }) => setFilesValue(detail.value)}
+                  value={filesValue}
+                  i18nStrings={{
+                    uploadButtonText: e => (e ? 'Choose files' : 'Choose file'),
+                    dropzoneText: e => (e ? 'Drop files to upload' : 'Drop file to upload'),
+                    removeFileAriaLabel: e => `Remove file ${e + 1}`,
+                    limitShowFewer: 'Show fewer files',
+                    limitShowMore: 'Show more files',
+                    errorIconAriaLabel: 'Error',
+                  }}
+                  showFileLastModified={true}
+                  showFileSize={true}
+                  showFileThumbnail={true}
+                  tokenLimit={3}
+                  constraintText="Hint text for file requirements"
+                />
+              </FormField>
               <FormField label="Field 5">
                 <Input value="" />
               </FormField>

@@ -196,6 +196,14 @@ export class FunnelFactory {
   static create(config?: FunnelProps): Funnel {
     const funnel = new Funnel(config);
     funnel.addObserver(new FunnelConsoleLogger());
+
+    if (!(window as any).__awsuiAnalytics__) {
+      (window as any).__awsuiAnalytics__ = {
+        funnels: {},
+      };
+    }
+
+    (window as any).__awsuiAnalytics__.funnels[funnel.id] = funnel;
     return funnel;
   }
 }
