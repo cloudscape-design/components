@@ -75,6 +75,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const ref = React.useRef<HTMLDivElement>(null);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -245,29 +246,32 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
     });
 
-    const { registered, toolbarProps } = useMultiAppLayout({
-      forceDeduplicationType,
-      ariaLabels: ariaLabelsWithDrawers,
-      navigation: resolvedNavigation,
-      navigationOpen,
-      onNavigationToggle,
-      navigationFocusRef: navigationFocusControl.refs.toggle,
-      breadcrumbs,
-      activeDrawerId: activeDrawer?.id ?? null,
-      // only pass it down if there are non-empty drawers or tools
-      drawers: drawers?.length || !toolsHide ? drawers : undefined,
-      onActiveDrawerChange: onActiveDrawerChangeHandler,
-      drawersFocusRef: drawersFocusControl.refs.toggle,
-      splitPanel,
-      splitPanelToggleProps: {
-        ...splitPanelToggleConfig,
-        active: splitPanelOpen,
-        controlId: splitPanelControlId,
-        position: splitPanelPosition,
+    const { registered, toolbarProps } = useMultiAppLayout(
+      {
+        forceDeduplicationType,
+        ariaLabels: ariaLabelsWithDrawers,
+        navigation: resolvedNavigation,
+        navigationOpen,
+        onNavigationToggle,
+        navigationFocusRef: navigationFocusControl.refs.toggle,
+        breadcrumbs,
+        activeDrawerId: activeDrawer?.id ?? null,
+        // only pass it down if there are non-empty drawers or tools
+        drawers: drawers?.length || !toolsHide ? drawers : undefined,
+        onActiveDrawerChange: onActiveDrawerChangeHandler,
+        drawersFocusRef: drawersFocusControl.refs.toggle,
+        splitPanel,
+        splitPanelToggleProps: {
+          ...splitPanelToggleConfig,
+          active: splitPanelOpen,
+          controlId: splitPanelControlId,
+          position: splitPanelPosition,
+        },
+        splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
+        onSplitPanelToggle: onSplitPanelToggleHandler,
       },
-      splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
-      onSplitPanelToggle: onSplitPanelToggleHandler,
-    });
+      ref
+    );
 
     const hasToolbar = !embeddedViewMode && !!toolbarProps;
     const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
@@ -416,6 +420,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
+          ref={ref}
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
