@@ -218,7 +218,6 @@ export default function () {
                   virtualScroll={virtualScroll}
                   expandToViewport={expandToViewport}
                   countText={`${items.length} matches`}
-                  filteringEmpty="No suggestions found"
                 />
               }
               columnDefinitions={columnDefinitions}

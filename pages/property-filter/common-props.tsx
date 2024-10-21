@@ -158,6 +158,7 @@ export const labels = {
   filteringErrorText: 'Error fetching results.',
   filteringRecoveryText: 'Retry',
   filteringFinishedText: 'End of results',
+  filteringEmpty: 'No suggestions found',
 };
 
 export const i18nStrings: PropertyFilterProps.I18nStrings = {

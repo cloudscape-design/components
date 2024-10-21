@@ -68,7 +68,7 @@ export function PropertyEditorContentEnum({
 }: {
   property: InternalFilteringProperty;
   filter: string;
-  value: null | string[];
+  value: unknown;
   onChange: (value: null | string[]) => void;
   asyncProps: DropdownStatusProps;
   filteringOptions: readonly InternalFilteringOption[];
