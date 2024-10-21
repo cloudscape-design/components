@@ -38,7 +38,7 @@ import {
   Token,
   TokenGroup,
 } from './interfaces';
-import { PropertyEditorContent, PropertyEditorFooter } from './property-editor';
+import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorFooter } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
@@ -128,6 +128,7 @@ const PropertyFilterInternal = React.forwardRef(
           propertyGroup: property?.group,
           operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
           defaultOperator: property?.defaultOperator ?? '=',
+          getTokenType: operator => (operator ? extendedOperators.get(operator)?.tokenType ?? 'value' : 'value'),
           getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
           getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
           externalProperty: property,
@@ -303,6 +304,7 @@ const PropertyFilterInternal = React.forwardRef(
     const customFormValue = customValueKey in customFormValueRecord ? customFormValueRecord[customValueKey] : null;
     const setCustomFormValue = (value: null | any) => setCustomFormValueRecord({ [customValueKey]: value });
     const operatorForm = propertyStep && propertyStep.property.getValueFormRenderer(propertyStep.operator);
+    const isEnumValue = propertyStep?.property.getTokenType(propertyStep.operator) === 'enum';
 
     const searchResultsId = useUniqueId('property-filter-search-results');
     const constraintTextId = useUniqueId('property-filter-constraint');
@@ -335,10 +337,10 @@ const PropertyFilterInternal = React.forwardRef(
               expandToViewport={expandToViewport}
               onOptionClick={handleSelected}
               customForm={
-                operatorForm
+                operatorForm || isEnumValue
                   ? {
-                      content: (
-                        <PropertyEditorContent
+                      content: operatorForm ? (
+                        <PropertyEditorContentCustom
                           key={customValueKey}
                           property={propertyStep.property}
                           operator={propertyStep.operator}
@@ -346,6 +348,17 @@ const PropertyFilterInternal = React.forwardRef(
                           operatorForm={operatorForm}
                           value={customFormValue}
                           onChange={setCustomFormValue}
+                        />
+                      ) : (
+                        <PropertyEditorContentEnum
+                          key={customValueKey}
+                          property={propertyStep.property}
+                          filter={propertyStep.value}
+                          value={customFormValue}
+                          onChange={setCustomFormValue}
+                          asyncProps={asyncProps}
+                          filteringOptions={internalOptions}
+                          onLoadItems={inputLoadItemsHandlers.onLoadItems}
                         />
                       ),
                       footer: (

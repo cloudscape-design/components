@@ -5,16 +5,7 @@ import React from 'react';
 import { Badge, SpaceBetween } from '~components';
 import { PropertyFilterProps } from '~components/property-filter';
 
-import {
-  DateForm,
-  DateTimeForm,
-  DateTimeFormLegacy,
-  formatDateTime,
-  formatOwners,
-  OwnerMultiSelectForm,
-  YesNoForm,
-  yesNoFormat,
-} from './custom-forms';
+import { DateForm, DateTimeForm, DateTimeFormLegacy, formatDateTime, YesNoForm, yesNoFormat } from './custom-forms';
 import { states, TableItem } from './table.data';
 
 const getStateLabel = (value: TableItem['state'], fallback = 'Invalid value') =>
@@ -34,7 +25,8 @@ export const columnDefinitions = [
     sortingField: 'state',
     header: 'State',
     type: 'enum',
-    getLabel: getStateLabel,
+    getLabel: (value: any) =>
+      Array.isArray(value) ? value.map(v => getStateLabel(v)).join(', ') : getStateLabel(value, value),
     propertyLabel: 'State',
     cell: (item: TableItem) => getStateLabel(item.state),
   },
@@ -166,6 +158,7 @@ export const labels = {
   filteringErrorText: 'Error fetching results.',
   filteringRecoveryText: 'Retry',
   filteringFinishedText: 'End of results',
+  filteringEmpty: 'No suggestions found',
 };
 
 export const i18nStrings: PropertyFilterProps.I18nStrings = {
@@ -259,7 +252,20 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
   let groupValuesLabel = `${def.propertyLabel} values`;
 
   if (def.type === 'enum') {
-    operators = ['=', '!='].map(operator => ({ operator, format: def.getLabel }));
+    operators = [
+      ...['=', '!='].map(operator => ({ operator, format: def.getLabel, tokenType: 'enum' })),
+      ...[':', '!:'].map(operator => ({ operator, format: def.getLabel, tokenType: 'value' })),
+    ];
+  }
+  if (def.id === 'tags') {
+    const format = (value: string[]) =>
+      value.length <= 5 ? value.join(', ') : [...value.slice(0, 5), `${value.length - 5} more`].join(', ');
+    operators = [
+      { operator: '=', tokenType: 'enum', format, match: (v: unknown[], t: unknown[]) => checkArrayMatches(v, t) },
+      { operator: '!=', tokenType: 'enum', format, match: (v: unknown[], t: unknown[]) => !checkArrayMatches(v, t) },
+      { operator: ':', tokenType: 'enum', format, match: (v: unknown[], t: unknown[]) => checkArrayContains(v, t) },
+      { operator: '!:', tokenType: 'enum', format, match: (v: unknown[], t: unknown[]) => !checkArrayContains(v, t) },
+    ];
   }
 
   if (def.type === 'text') {
@@ -302,19 +308,6 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     ];
   }
 
-  // This is not recommended as it nests
-  if (def.id === 'owner') {
-    operators = [
-      {
-        operator: '=',
-        form: OwnerMultiSelectForm,
-        format: formatOwners,
-        match: (itemValue: string, tokenValue: string[]) =>
-          Array.isArray(tokenValue) && tokenValue.some(value => itemValue === value),
-      },
-    ];
-  }
-
   return {
     key: def.id,
     operators: operators,
@@ -323,3 +316,35 @@ export const filteringProperties: readonly PropertyFilterProps.FilteringProperty
     groupValuesLabel,
   };
 });
+
+function checkArrayMatches(value: unknown[], token: unknown[]) {
+  if (!Array.isArray(value) || !Array.isArray(token) || value.length !== token.length) {
+    return false;
+  }
+  const valuesMap = value.reduce<Map<unknown, number>>(
+    (map, value) => map.set(value, (map.get(value) ?? 0) + 1),
+    new Map()
+  );
+  for (const tokenEntry of token) {
+    const count = valuesMap.get(tokenEntry);
+    if (count) {
+      count === 1 ? valuesMap.delete(tokenEntry) : valuesMap.set(tokenEntry, count - 1);
+    } else {
+      return false;
+    }
+  }
+  return valuesMap.size === 0;
+}
+
+function checkArrayContains(value: unknown[], token: unknown[]) {
+  if (!Array.isArray(value) || !Array.isArray(token)) {
+    return false;
+  }
+  const valuesSet = new Set(value);
+  for (const tokenEntry of token) {
+    if (!valuesSet.has(tokenEntry)) {
+      return false;
+    }
+  }
+  return true;
+}

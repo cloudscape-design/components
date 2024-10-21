@@ -55,6 +55,18 @@ $operator-field-width: 120px;
     padding-inline: awsui.$space-s;
   }
 
+  &-header-enum {
+    display: flex;
+    gap: awsui.$space-xs;
+
+    @include styles.default-text-style;
+    font-weight: bold;
+    color: awsui.$color-text-dropdown-group-label;
+
+    padding-block: styles.$group-option-padding-with-border-placeholder-vertical;
+    padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+  }
+
   &-form {
     padding-block-start: awsui.$space-xxs;
     padding-block-end: awsui.$space-s;
@@ -73,6 +85,11 @@ $operator-field-width: 120px;
     padding-inline: awsui.$space-l;
     padding-block: awsui.$space-s;
   }
+}
+
+.property-editor-enum {
+  display: flex;
+  flex-direction: column;
 }
 
 .token-editor {
@@ -96,6 +113,17 @@ $operator-field-width: 120px;
 
   &-field-value {
     flex-grow: 2;
+  }
+
+  &-multiselect-wrapper {
+    position: relative;
+    block-size: awsui.$size-vertical-input;
+    min-inline-size: 200px;
+
+    &-inner {
+      position: absolute;
+      inline-size: 100%;
+    }
   }
 
   &-cancel {

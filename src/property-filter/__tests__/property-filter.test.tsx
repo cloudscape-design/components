@@ -113,8 +113,6 @@ describe('property filter parts', () => {
       expandToViewport: true,
       query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
       filteringStatusType: 'error',
-      filteringRecoveryText: 'recovery',
-      filteringErrorText: 'error',
     });
     // find dropdown returns open dropdown
     expect(wrapper.findDropdown({ expandToViewport: true })).toBeNull();
@@ -123,8 +121,8 @@ describe('property filter parts', () => {
     expect(wrapper.findDropdown({ expandToViewport: true }).findOpenDropdown()!.getElement()).not.toBeNull();
     wrapper.setInputValue('string');
     expect(wrapper.findEnteredTextOption({ expandToViewport: true })!.getElement()).toHaveTextContent('Use: "string"');
-    expect(wrapper.findErrorRecoveryButton({ expandToViewport: true })!.getElement()).toHaveTextContent('recovery');
-    expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('error');
+    expect(wrapper.findErrorRecoveryButton({ expandToViewport: true })!.getElement()).toHaveTextContent('Retry');
+    expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('Error status');
     wrapper.selectSuggestion(2, { expandToViewport: true });
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
   });
@@ -133,38 +131,32 @@ describe('property filter parts', () => {
     test('displays error status', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         filteringStatusType: 'error',
-        filteringErrorText: 'Error text',
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error text');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error status');
     });
     test('links error status to dropdown', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
-        filteringStatusType: 'error',
-        filteringErrorText: 'Error text',
-      });
+      const { propertyFilterWrapper: wrapper } = renderComponent({ filteringStatusType: 'error' });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error text`);
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error status Retry`);
     });
     test('displays finished status', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         filteringStatusType: 'finished',
-        filteringFinishedText: 'Finished text',
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished text');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished status');
     });
     test('links finished status to dropdown', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         filteringStatusType: 'finished',
-        filteringFinishedText: 'Finished text',
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished text`);
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished status`);
     });
   });
 

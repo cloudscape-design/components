@@ -12667,7 +12667,7 @@ The \`operation\` property has two valid values: "and", "or", and controls the j
 The \`tokens\` property is an array of objects that will be displayed to the user beneath the filtering input. When \`enableTokenGroups=true\`, the
 \`tokenGroups\` property is used instead, which supports nested tokens.
 Each token has the following properties:
-* value [string]: The string value of the token to be used as a filter.
+* value [unknown]: The value of the token to be used as a filter. Can be null or string for default tokens, string[] for enum tokens, and anything for tokens with custom forms.
 * propertyKey [string]: The key of the corresponding property in filteringProperties.
 * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
 ",
