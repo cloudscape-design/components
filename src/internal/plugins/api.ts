@@ -10,6 +10,7 @@ import {
 import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './controllers/app-layout-widget';
 import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
+import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
@@ -29,6 +30,7 @@ interface AwsuiApi {
     flashbar: ActionsApiInternal;
     flashContent: AlertFlashContentApiInternal;
     breadcrumbs: BreadcrumbsApiInternal<BreadcrumbGroupProps>;
+    sharedReactContexts: SharedReactContextsApiInternal;
   };
 }
 
@@ -99,6 +101,11 @@ function installApi(api: DeepPartial<AwsuiApi>): AwsuiApi {
 
   const breadcrumbs = new BreadcrumbsController<BreadcrumbGroupProps>();
   api.awsuiPluginsInternal.breadcrumbs = breadcrumbs.installInternal(api.awsuiPluginsInternal.breadcrumbs);
+
+  const sharedReactContexts = new SharedReactContexts();
+  api.awsuiPluginsInternal.sharedReactContexts = sharedReactContexts.installInternal(
+    api.awsuiPluginsInternal.sharedReactContexts
+  );
 
   return api as AwsuiApi;
 }

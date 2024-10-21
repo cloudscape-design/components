@@ -270,7 +270,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     });
 
     const hasToolbar = !embeddedViewMode && !!toolbarProps;
-    const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar);
+    const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
