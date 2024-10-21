@@ -58,6 +58,9 @@ class AsyncPropertyFilterPage extends BasePageObject {
     await this.openValueEdit();
     await this.keys(value);
   };
+  clearFilteringInput = async () => {
+    await this.click(wrapper.findClearButton().toSelector());
+  };
 }
 
 function setupTest(
@@ -205,4 +208,25 @@ test.each<TestCase>(testCases)('%p', (_, asyncProperties, token, scenario) =>
       await page.expectLoadItemsEvents(result);
     }
   })()
+);
+
+test(
+  'calls onLoadItems with an empty string if Clear button is clicked',
+  setupTest(true, 'property', async page => {
+    await page.typeInFilteringInput('1');
+    await page.expectLoadItemsEvents([
+      { firstPage: true, samePage: false, filteringText: '' },
+      { filteringText: '1', firstPage: true, samePage: false },
+    ]);
+
+    await page.click('#focus-target');
+    await page.clearFilteringInput();
+    await page.waitForJsTimers(500);
+    await page.expectLoadItemsEvents([
+      { firstPage: true, samePage: false, filteringText: '' },
+      { filteringText: '1', firstPage: true, samePage: false },
+      { filteringText: '1', firstPage: true, samePage: false },
+      { filteringText: '', firstPage: true, samePage: false },
+    ]);
+  })
 );
