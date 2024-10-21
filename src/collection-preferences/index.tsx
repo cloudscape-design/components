@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -84,7 +84,7 @@ export default function CollectionPreferences({
   const triggerRef = useRef<ButtonProps.Ref>(null);
   const dialogPreviouslyOpen = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!modalVisible) {
       dialogPreviouslyOpen.current && triggerRef.current && triggerRef.current.focus();
     } else {

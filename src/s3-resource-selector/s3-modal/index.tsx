@@ -19,6 +19,7 @@ import { VersionsTable } from './versions-table';
 import styles from './styles.css.js';
 
 export interface S3ModalProps {
+  referrerId: string;
   alert: React.ReactNode;
   selectableItemsTypes: S3ResourceSelectorProps['selectableItemsTypes'];
   fetchBuckets: S3ResourceSelectorProps['fetchBuckets'];
@@ -95,6 +96,7 @@ function createResourceInfo({ currentView, breadcrumbs, selectedItem }: S3Browse
 }
 
 export function S3Modal({
+  referrerId,
   i18nStrings,
   alert,
   selectableItemsTypes,
@@ -125,6 +127,7 @@ export function S3Modal({
   return (
     <div>
       <InternalModal
+        referrerId={referrerId}
         visible={true}
         size="max"
         getModalRoot={getModalRoot}

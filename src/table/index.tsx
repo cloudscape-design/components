@@ -4,7 +4,7 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { useFunnelSubstep } from '../internal/analytics/hooks/use-funnel-substep';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -12,7 +12,7 @@ import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { getSortingColumnId } from './header-cell/utils';
 import { TableForwardRefType, TableProps } from './interfaces';
-import InternalTable, { InternalTableAsSubstep } from './internal';
+import InternalTable from './internal';
 
 export { TableProps };
 const Table = React.forwardRef(
@@ -99,6 +99,8 @@ const Table = React.forwardRef(
       tableHasStickyColumns: hasStickyColumns,
     };
 
+    const funnelSubstep = useFunnelSubstep(baseComponentProps.__internalRootRef);
+
     if (variant === 'borderless' || variant === 'embedded') {
       return (
         <CollectionPreferencesMetadata.Provider value={collectionPreferencesMetadata}>
@@ -109,9 +111,7 @@ const Table = React.forwardRef(
 
     return (
       <CollectionPreferencesMetadata.Provider value={collectionPreferencesMetadata}>
-        <AnalyticsFunnelSubStep>
-          <InternalTableAsSubstep {...tableProps} />
-        </AnalyticsFunnelSubStep>
+        <InternalTable {...tableProps} {...funnelSubstep.domAttributes} />
       </CollectionPreferencesMetadata.Provider>
     );
   }

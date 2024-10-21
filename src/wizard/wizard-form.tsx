@@ -1,15 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
-import { FunnelMetrics } from '../internal/analytics';
-import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
@@ -42,17 +40,24 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
   const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
+  const funnelContext = useFunnelContext();
 
-  return (
-    <AnalyticsFunnelStep
-      stepIdentifier={analyticsMetadata?.instanceIdentifier}
-      stepErrorContext={analyticsMetadata?.errorContext}
-      stepNameSelector={STEP_NAME_SELECTOR}
-      stepNumber={props.activeStepIndex + 1}
-    >
-      <WizardForm __internalRootRef={__internalRootRef} {...props} />
-    </AnalyticsFunnelStep>
-  );
+  useLayoutEffect(() => {
+    // Ensure the current step is set before substeps register themselves
+    funnelContext?.controller?.setCurrentStep(props.activeStepIndex);
+    funnelContext?.controller?.currentStep.setMetadata(analyticsMetadata);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.activeStepIndex]);
+
+  useEffect(() => {
+    return () => {
+      funnelContext?.controller?.currentStep?.complete();
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <WizardForm __internalRootRef={__internalRootRef} {...props} />;
 }
 
 export function WizardForm({
@@ -74,8 +79,6 @@ export function WizardForm({
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
   const stepHeaderRef = useRef<HTMLDivElement | null>(null);
-  const { funnelInteractionId, funnelIdentifier } = useFunnel();
-  const { funnelStepProps, stepErrorContext } = useFunnelStep();
 
   useEffect(() => {
     if (stepHeaderRef && stepHeaderRef.current) {
@@ -88,16 +91,6 @@ export function WizardForm({
     skipToTargetIndex !== -1 && i18nStrings.skipToButtonLabel
       ? i18nStrings.skipToButtonLabel(steps[skipToTargetIndex], skipToTargetIndex + 1)
       : undefined;
-
-  useEffect(() => {
-    if (funnelInteractionId && errorText && isLastStep) {
-      FunnelMetrics.funnelError({
-        funnelInteractionId,
-        funnelIdentifier,
-        funnelErrorContext: stepErrorContext,
-      });
-    }
-  }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, stepErrorContext]);
 
   return (
     <>
@@ -140,7 +133,6 @@ export function WizardForm({
         secondaryActions={secondaryActions}
         errorText={errorText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-        {...funnelStepProps}
       >
         {content}
       </InternalForm>

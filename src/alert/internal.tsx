@@ -142,7 +142,11 @@ const InternalAlert = React.forwardRef(
                     ref={replacementHeaderRef}
                   ></div>
                   <div
-                    className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
+                    className={clsx(
+                      styles.content,
+                      analyticsSelectors.content,
+                      contentReplacementType !== 'original' && styles.hidden
+                    )}
                     ref={contentRef}
                   >
                     {children}

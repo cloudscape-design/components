@@ -1,18 +1,24 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { AnalyticsFunnel } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { FunnelProvider } from '../internal/analytics/contexts/funnel-context';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { getExternalProps } from '../internal/utils/external-props';
-import { getStepConfiguration } from './analytics';
+import { useWizardFunnel } from './analytics/funnel';
 import { WizardProps } from './interfaces';
 import InternalWizard from './internal';
 
-function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: WizardProps) {
+function BaseWizard({
+  onCancel,
+  onSubmit,
+  onNavigate,
+  isLoadingNextStep = false,
+  allowSkipTo = false,
+  ...props
+}: WizardProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
     'Wizard',
@@ -28,38 +34,46 @@ function Wizard({ isLoadingNextStep = false, allowSkipTo = false, ...props }: Wi
     },
     analyticsMetadata
   );
-  const { wizardCount } = useFunnel();
-  const externalProps = getExternalProps(props);
 
-  useEffect(() => {
-    wizardCount.current++;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    return () => void wizardCount.current--;
-  }, [wizardCount]);
+  const externalProps = getExternalProps(props);
+  const { funnelContext } = useWizardFunnel({
+    steps: props.steps,
+    activeStepIndex: props.activeStepIndex,
+    analyticsMetadata,
+    isLoadingNextStep,
+  });
 
   return (
-    <AnalyticsFunnel
-      funnelIdentifier={analyticsMetadata?.instanceIdentifier}
-      funnelFlowType={analyticsMetadata?.flowType}
-      funnelErrorContext={analyticsMetadata?.errorContext}
-      funnelResourceType={analyticsMetadata?.resourceType}
-      funnelType="multi-page"
-      optionalStepNumbers={props.steps
-        .map((step, index) => (step.isOptional ? index + 1 : -1))
-        .filter(step => step !== -1)}
-      totalFunnelSteps={props.steps.length}
-      stepConfiguration={getStepConfiguration(props.steps)}
-    >
-      <InternalWizard
-        isLoadingNextStep={isLoadingNextStep}
-        allowSkipTo={allowSkipTo}
-        {...externalProps}
-        {...baseComponentProps}
-        __injectAnalyticsComponentMetadata={true}
-      />
-    </AnalyticsFunnel>
+    <InternalWizard
+      isLoadingNextStep={isLoadingNextStep}
+      allowSkipTo={allowSkipTo}
+      onCancel={event => {
+        funnelContext?.controller?.cancel();
+        onCancel?.(event);
+      }}
+      onSubmit={event => {
+        funnelContext?.controller?.validate(isLoadingNextStep);
+        funnelContext?.controller?.submit();
+        onSubmit?.(event);
+      }}
+      onNavigate={event => {
+        funnelContext?.controller?.navigate(event.detail.reason, event.detail.requestedStepIndex);
+        onNavigate?.(event);
+      }}
+      {...externalProps}
+      {...baseComponentProps}
+      {...funnelContext?.controller?.domAttributes}
+    />
   );
 }
+
+const Wizard = (props: WizardProps) => {
+  return (
+    <FunnelProvider rootComponent="wizard">
+      <BaseWizard {...props} />
+    </FunnelProvider>
+  );
+};
 
 applyDisplayName(Wizard, 'Wizard');
 
