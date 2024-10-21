@@ -73,6 +73,11 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
 
   error(details: ErrorDetails): Promise<void> {
     return new Promise(resolve => {
+      if (!details.errorText) {
+        resolve();
+        return;
+      }
+
       console.log('error', details);
       this.setStatus('error' as TStatus);
       resolve();

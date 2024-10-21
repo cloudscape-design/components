@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { AppLayout, BreadcrumbGroup, Button, Container, ContentLayout, Form, Header, SpaceBetween } from '~components';
+import { AppLayout, BreadcrumbGroup, Button, Container, ContentLayout, Header, SpaceBetween } from '~components';
 
 import {
   DeleteWithAdditionalConfirmationModal,
@@ -29,39 +29,37 @@ function Content() {
 
   return (
     <ContentLayout>
-      <Form header={<Header>Form Header</Header>}>
-        <Container header={<Header>Section 1</Header>}>
-          <SpaceBetween size="xs" direction="horizontal">
-            <Button
-              onClick={() => {
-                setSimpleDeleteModalVisible(true);
-              }}
-            >
-              Delete with simple confirmation - Modal
-            </Button>
-            <Button
-              onClick={() => {
-                setAdditionalDeleteModalVisible(true);
-              }}
-            >
-              Delete with additional confirmation - Modal
-            </Button>
-            <Button
-              onClick={() => {
-                setFeedbackModalVisible(true);
-              }}
-            >
-              Feedback flow - Modal
-            </Button>
-          </SpaceBetween>
-          <DeleteWithSimpleConfirmationModal
-            visible={simpleDeleteModalVisible}
-            onConfirm={handleSimpleDeleteModalClose}
-            onCancel={handleSimpleDeleteModalClose}
-            onDismiss={handleSimpleDeleteModalClose}
-          />
-        </Container>
-      </Form>
+      <Container header={<Header>Section 1</Header>}>
+        <SpaceBetween size="xs" direction="horizontal">
+          <Button
+            onClick={() => {
+              setSimpleDeleteModalVisible(true);
+            }}
+          >
+            Delete with simple confirmation - Modal
+          </Button>
+          <Button
+            onClick={() => {
+              setAdditionalDeleteModalVisible(true);
+            }}
+          >
+            Delete with additional confirmation - Modal
+          </Button>
+          <Button
+            onClick={() => {
+              setFeedbackModalVisible(true);
+            }}
+          >
+            Feedback flow - Modal
+          </Button>
+        </SpaceBetween>
+        <DeleteWithSimpleConfirmationModal
+          visible={simpleDeleteModalVisible}
+          onConfirm={handleSimpleDeleteModalClose}
+          onCancel={handleSimpleDeleteModalClose}
+          onDismiss={handleSimpleDeleteModalClose}
+        />
+      </Container>
 
       <DeleteWithAdditionalConfirmationModal
         visible={additionalDeleteModalVisible}
