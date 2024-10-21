@@ -201,7 +201,7 @@ function ValueInputEnum({
     .map(({ label, value }) => ({ label, value }));
   const valueAutosuggestHandlers = useLoadItems(onLoadItems, '', property.externalProperty, undefined, operator);
   const asyncValueAutosuggestProps = { statusType: 'finished' as const, ...valueAutosuggestHandlers, ...asyncProps };
-  const value = Array.isArray(unknownValue) ? unknownValue : [unknownValue];
+  const value = !unknownValue ? [] : Array.isArray(unknownValue) ? unknownValue : [unknownValue];
   const selectedOptions = valueOptions.filter(option => value.includes(option.value));
   return (
     <div className={styles['token-editor-multiselect-wrapper']}>

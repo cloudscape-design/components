@@ -26,6 +26,9 @@ const formatState = (value: unknown, fallback = value as string) => {
   return typeof value === 'string' ? states[value] || fallback : fallback;
 };
 const formatStateEnum = (value: string[]) => {
+  if (value === null) {
+    return '{null}';
+  }
   return value.map(entry => formatState(entry, 'Unknown option')).join(', ');
 };
 
@@ -69,7 +72,7 @@ const renderComponent = (props?: Partial<PropertyFilterProps>) => {
     <StatefulPropertyFilter {...defaultProps} onChange={onChange} onLoadItems={onLoadItems} {...props} />
   );
   const wrapper = createWrapper(container).findPropertyFilter()!;
-  const openEditor = () => wrapper.findTokens()[0].findLabel().click();
+  const openEditor = () => (wrapper.findTokens()[0].findLabel() ?? wrapper.findTokens()[0].findEditButton()).click();
   const findEditor = () => wrapper.findTokens()[0].findEditorDropdown()!;
   const getTokensContent = () => wrapper.findTokens().map(w => w.findLabel().getElement().textContent);
   const getOptionsContent = () =>
@@ -319,6 +322,46 @@ describe('sync token editing', () => {
     findEditorMultiselect().findFilteringInput()!.setInputValue('ing');
 
     expect(getEditorOptionsContent()).toEqual(['Stopping', 'Running']);
+  });
+
+  test('can render enum query tokens with value=null', () => {
+    const { openEditor, findEditor, onChange } = renderComponent({
+      enableTokenGroups: true,
+      query: {
+        operation: 'and',
+        tokens: [],
+        tokenGroups: [
+          {
+            operation: 'or',
+            tokens: [
+              { propertyKey: 'state', operator: '=', value: null },
+              { propertyKey: 'tags', operator: '=', value: null },
+            ],
+          },
+        ],
+      },
+    });
+
+    openEditor();
+    findEditor().findSubmitButton().click();
+
+    expect(onChange).toHaveBeenCalledWith(
+      expect.objectContaining({
+        detail: {
+          operation: 'and',
+          tokens: [],
+          tokenGroups: [
+            {
+              operation: 'or',
+              tokens: [
+                { propertyKey: 'state', operator: '=', value: [] },
+                { propertyKey: 'tags', operator: '=', value: [] },
+              ],
+            },
+          ],
+        },
+      })
+    );
   });
 });
 
