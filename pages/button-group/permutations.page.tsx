@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { useState } from 'react';
+import cloneDeep from 'lodash/cloneDeep';
 
 import ButtonGroup, { ButtonGroupProps } from '~components/button-group';
 
@@ -14,16 +15,20 @@ const feedbackGroup: ButtonGroupProps.Group = {
   text: 'Vote',
   items: [
     {
-      type: 'icon-button',
+      type: 'icon-toggle-button',
       id: 'like',
       iconName: 'thumbs-up',
+      pressedIconName: 'thumbs-up-filled',
       text: 'Like',
+      pressed: true,
     },
     {
-      type: 'icon-button',
+      type: 'icon-toggle-button',
       id: 'dislike',
       iconName: 'thumbs-down',
+      pressedIconName: 'thumbs-down-filled',
       text: 'Dislike',
+      pressed: false,
     },
   ],
 };
@@ -98,9 +103,40 @@ export default function () {
         <h1>ButtonGroup permutations</h1>
         <PermutationsView
           permutations={buttonGroupPermutations}
-          render={permutation => <div>{<ButtonGroup {...permutation} />}</div>}
+          render={permutation => <div>{<StatefulButtonGroup {...permutation} />}</div>}
         />
       </article>
     </ScreenshotArea>
   );
+}
+
+function StatefulButtonGroup(props: ButtonGroupProps) {
+  const [feedback, setFeedback] = useState<'like' | 'dislike'>('like');
+  return (
+    <ButtonGroup
+      {...props}
+      items={withFeedbackState(props.items, feedback)}
+      onItemClick={({ detail }) => {
+        switch (detail.id) {
+          case 'like':
+            return setFeedback(detail.pressed ? 'like' : 'dislike');
+          case 'dislike':
+            return setFeedback(detail.pressed ? 'dislike' : 'like');
+          default:
+          // not implemented
+        }
+      }}
+    />
+  );
+}
+
+function withFeedbackState(source: readonly ButtonGroupProps.ItemOrGroup[], feedback: 'like' | 'dislike') {
+  const clone = cloneDeep(source);
+  for (const itemOrGroup of clone) {
+    if (itemOrGroup.type === 'group' && itemOrGroup.text === 'Vote') {
+      itemOrGroup.items[0].type === 'icon-toggle-button' && (itemOrGroup.items[0].pressed = feedback === 'like');
+      itemOrGroup.items[1].type === 'icon-toggle-button' && (itemOrGroup.items[1].pressed = feedback === 'dislike');
+    }
+  }
+  return clone;
 }
