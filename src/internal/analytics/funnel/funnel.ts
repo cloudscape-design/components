@@ -12,21 +12,21 @@ interface FunnelProps {
 
 export class Funnel extends FunnelBase<FunnelStatus> {
   protected result: FunnelResult;
-  protected steps: FunnelStep[] = [new FunnelStep({ index: 0 })];
+  protected steps: FunnelStep[] = [];
+
   public currentStep: FunnelStep;
-  public name?: string;
-  public context?: Funnel | undefined;
+  public context?: Funnel | null = null;
 
   constructor(props?: FunnelProps) {
     super('initial');
     this.name = props?.name;
     this.context = props?.context;
-    this.currentStep = this.steps[0];
-  }
 
-  setName(name: string) {
-    this.name = name;
-    this.notifyObservers();
+    const funnelStep = new FunnelStep({ index: 0 });
+    funnelStep.context = this;
+    this.steps.push(funnelStep);
+
+    this.currentStep = funnelStep;
   }
 
   get domAttributes() {
@@ -44,7 +44,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     this.reset();
     await super.start();
-    dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: this.name });
+    dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: { context: this.name } });
 
     if (this.currentStep) {
       await this.currentStep.start();
@@ -65,7 +65,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     this.result = 'submitted';
     this.setStatus('submitted');
 
-    dispatchFunnelEvent({ header: 'Funnel submitted', status: 'success', details: this.name });
+    dispatchFunnelEvent({ header: 'Funnel submitted', status: 'success', details: { context: this.name } });
     this.notifyObservers();
   }
 
@@ -76,11 +76,11 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     if (value) {
       this.setStatus('validating');
-      dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: this.name });
+      dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: { context: this.name } });
       this.notifyObservers();
     } else if (this.getStatus() === 'validating') {
       this.setStatus('validated');
-      dispatchFunnelEvent({ header: 'Funnel validated', status: 'success', details: this.name });
+      dispatchFunnelEvent({ header: 'Funnel validated', status: 'success', details: { context: this.name } });
       this.notifyObservers();
     }
   }
@@ -99,7 +99,13 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     dispatchFunnelEvent({
       header: 'Funnel step navigation',
       status: 'success',
-      details: JSON.stringify({ reason, requestedStepIndex }),
+      details: {
+        context: this.name,
+        metadata: {
+          reason,
+          requestedStepIndex,
+        },
+      },
     });
   }
 
@@ -116,7 +122,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     dispatchFunnelEvent({
       header: `Funnel completed with result ${this.result}`,
       status: this.result === 'cancelled' ? 'error' : 'success',
-      details: this.name,
+      details: { context: this.name },
     });
 
     this.notifyObservers();
@@ -125,6 +131,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   addStep(config: FunnelStepConfig): FunnelStep {
     const index = this.steps.length;
     const step = new FunnelStep({ index, ...config });
+    step.context = this;
     this.steps.push(step);
 
     if (!this.currentStep) {
@@ -139,6 +146,8 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     const steps = configs.map(config => {
       const index = this.steps.length;
       const step = new FunnelStep({ index, ...config });
+      step.context = this;
+
       this.steps.push(step);
       return step;
     });
@@ -148,7 +157,11 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   setSteps(configs: FunnelStepProps[], initialStepIndex = 0): FunnelStep[] {
-    this.steps = configs.map(config => new FunnelStep(config));
+    this.steps = configs.map(config => {
+      const funnelStep = new FunnelStep(config);
+      funnelStep.context = this;
+      return funnelStep;
+    });
 
     this.currentStep = this.steps[initialStepIndex];
     this.notifyObservers();
@@ -161,14 +174,23 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   updateSteps(configs: FunnelStepProps[]): FunnelStep[] {
-    this.steps = configs.map(
-      (config, index) =>
-        new FunnelStep({ ...config, status: this.steps[index] ? this.steps[index].getStatus() : 'initial' })
-    );
+    this.steps = configs.map((config, index) => {
+      const funnelStep = new FunnelStep({
+        ...config,
+        status: this.steps[index] ? this.steps[index].getStatus() : 'initial',
+      });
+      funnelStep.context = this;
+      return funnelStep;
+    });
 
     dispatchFunnelEvent({
       header: 'Funnel configuration changed',
-      details: JSON.stringify([...this.steps].map(step => step.name)),
+      details: {
+        context: this.name,
+        metadata: {
+          steps: [...this.steps].map(step => step.name).join(','),
+        },
+      },
       status: 'info',
     });
     this.notifyObservers();

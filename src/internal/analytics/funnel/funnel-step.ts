@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { Funnel } from './funnel';
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelSubstep } from './funnel-substep';
@@ -7,9 +8,10 @@ import { ErrorDetails, FunnelStepProps } from './types';
 
 export class FunnelStep extends FunnelBase {
   public index: number;
-  public name: string;
   public substeps: Set<FunnelSubstep> = new Set();
   public currentSubstep: FunnelSubstep | undefined;
+  public context: Funnel | null = null;
+
   protected optional: boolean;
 
   constructor({ index, name = '', optional = false, metadata, status = 'initial' }: FunnelStepProps) {
@@ -27,11 +29,6 @@ export class FunnelStep extends FunnelBase {
     };
   }
 
-  setName(name: string): void {
-    this.name = name;
-    this.notifyObservers();
-  }
-
   private updateSubstepIndices(): void {
     Array.from(this.substeps).forEach((substep, index) => {
       substep.setIndex(index);
@@ -40,7 +37,12 @@ export class FunnelStep extends FunnelBase {
     if (this.getStatus() !== 'initial' && this.getStatus() !== 'completed') {
       dispatchFunnelEvent({
         header: 'Funnel step configuration changed',
-        details: JSON.stringify([...this.substeps].map(substep => substep.name)),
+        details: {
+          context: this.name,
+          metadata: {
+            substeps: [...this.substeps].map(substep => substep.name).join(','),
+          },
+        },
         status: 'info',
       });
 
@@ -57,7 +59,9 @@ export class FunnelStep extends FunnelBase {
     dispatchFunnelEvent({
       header: `Funnel step started`,
       status: 'success',
-      details: this.name,
+      details: {
+        context: this.name,
+      },
     });
   }
 
@@ -70,7 +74,9 @@ export class FunnelStep extends FunnelBase {
     dispatchFunnelEvent({
       header: `Funnel step completed`,
       status: 'success',
-      details: this.name,
+      details: {
+        context: this.name,
+      },
     });
   }
 
@@ -79,14 +85,21 @@ export class FunnelStep extends FunnelBase {
       await super.error(details);
       dispatchFunnelEvent({
         header: 'Step error',
-        details: [this.name].join(' / '),
+        details: {
+          context: this.name,
+          metadata: {
+            errorText: details.errorText,
+          },
+        },
         status: 'error',
       });
     } else if (this.getStatus() === 'error') {
       this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Step error cleared',
-        details: [this.name].join(' / '),
+        details: {
+          context: this.name,
+        },
         status: 'info',
       });
     }
