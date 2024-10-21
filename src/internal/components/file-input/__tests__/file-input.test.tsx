@@ -28,15 +28,12 @@ afterEach(() => {
 const defaultProps: FileInputProps = {
   value: [],
   onChange,
-  i18nStrings: {
-    uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
-  },
 };
 
 function render(props: Partial<FileInputProps>) {
   const renderResult = testingLibraryRender(
     <div>
-      <InternalFileInput {...{ ...defaultProps, ...props }} />
+      <InternalFileInput {...{ ...defaultProps, ...props }}>Choose files</InternalFileInput>
       <div id="test-label">Test label</div>
     </div>
   );
@@ -55,11 +52,6 @@ describe('FileInput input', () => {
     expect(render({ accept: 'custom' }).findNativeInput().getElement()).toHaveAttribute('accept', 'custom');
   });
 
-  test('`uploadButtonText` property is assigned', () => {
-    expect(render({}).findTrigger().getElement()).toHaveTextContent('Choose file');
-    expect(render({ multiple: true }).findTrigger().getElement()).toHaveTextContent('Choose files');
-  });
-
   test('`ariaRequired` property is assigned', () => {
     expect(render({ ariaRequired: false }).findNativeInput().getElement()).not.toHaveAttribute('aria-required');
     expect(render({ ariaRequired: true }).findNativeInput().getElement()).toHaveAttribute('aria-required');
@@ -72,7 +64,7 @@ describe('FileInput input', () => {
 
   test('`ariaLabelledby` is joined with `uploadButtonText`', () => {
     const wrapper = render({ ariaLabelledby: 'test-label' });
-    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleName('Test label Choose file');
+    expect(wrapper.findNativeInput().getElement()).toHaveAccessibleName('Test label Choose files');
   });
 
   test('`ariaDescribedby` property is assigned', () => {
@@ -83,6 +75,27 @@ describe('FileInput input', () => {
   test('`invalid` property is assigned', () => {
     expect(render({ invalid: false }).findNativeInput().getElement()).not.toBeInvalid();
     expect(render({ invalid: true }).findNativeInput().getElement()).toBeInvalid();
+  });
+
+  test('`text` property is assigned', () => {
+    expect(render({}).findTrigger().getElement()).toHaveTextContent('Choose files');
+  });
+
+  test('uses `text` as aria label when `ariaLabel` is undefined', () => {
+    expect(render({}).findNativeInput().getElement()).toHaveAttribute('aria-label', 'Choose files');
+  });
+
+  test('`ariaLabel` takes precedence if both `ariaLabel` and `text` are defined', () => {
+    expect(render({ ariaLabel: 'aria label' }).findNativeInput().getElement()).toHaveAttribute(
+      'aria-label',
+      'aria label'
+    );
+  });
+
+  test('dev warning is issued when `variant` is icon and `ariaLabel` is undefined', () => {
+    render({ variant: 'icon' });
+    expect(warnOnce).toHaveBeenCalledTimes(1);
+    expect(warnOnce).toHaveBeenCalledWith('FileInput', 'Aria label is required with icon variant.');
   });
 
   test('dev warning is issued when `onChange` handler is missing', () => {
