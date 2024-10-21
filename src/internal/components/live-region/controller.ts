@@ -45,6 +45,20 @@ export class LiveRegionController {
   /**
    * Reset the state of the controller and clear any active announcements.
    */
+  destroy() {
+    if (this._element) {
+      this._element.remove();
+      this._element = undefined;
+    }
+    if (this._timeoutId) {
+      clearTimeout(this._timeoutId);
+      this._timeoutId = undefined;
+    }
+  }
+
+  /**
+   * Reset the state of the controller and clear any active announcements.
+   */
   reset() {
     if (this._element) {
       this._element.textContent = '';

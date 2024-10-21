@@ -258,7 +258,7 @@ describe('Date range picker', () => {
 
       wrapper.findDropdown()!.findApplyButton().click();
       expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-      expect(createWrapper().find('[aria-live]')!.getElement()).toHaveTextContent('10 is not allowed.');
+      expect(createWrapper().findAll('[aria-live]')[1]!.getElement()).toHaveTextContent('10 is not allowed.');
     });
 
     test('after rendering the error once, displays subsequent errors in real time', () => {

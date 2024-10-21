@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { getBaseProps } from '../../base-component';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-import { assertive, polite } from './controller';
+import { assertive, LiveRegionController, polite } from './controller';
 import { LiveRegionProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -54,14 +54,16 @@ export default function InternalLiveRegion({
   const previousSourceContentRef = useRef<string>();
 
   // Lazily initialize live region containers globally.
+  const liveRegionControllerRef = useRef<LiveRegionController | undefined>();
   useEffect(() => {
-    polite.initialize();
-    assertive.initialize();
-    () => {
-      polite.reset();
-      assertive.reset();
+    const liveRegionController = new LiveRegionController(isAssertive ? 'assertive' : 'polite');
+    liveRegionController.initialize();
+    liveRegionControllerRef.current = liveRegionController;
+    return () => {
+      liveRegionController.destroy();
+      liveRegionControllerRef.current = undefined;
     };
-  }, []);
+  }, [isAssertive]);
 
   useEffect(() => {
     // We have to do this because `inert` isn't properly supported until
@@ -84,8 +86,7 @@ export default function InternalLiveRegion({
           : undefined;
 
     if (content && content !== previousSourceContentRef.current) {
-      const announcer = isAssertive ? assertive : polite;
-      announcer.announce(content, delay);
+      liveRegionControllerRef.current?.announce(content, delay);
     }
     previousSourceContentRef.current = content;
   });

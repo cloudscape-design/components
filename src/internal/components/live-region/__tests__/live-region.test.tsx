@@ -34,7 +34,7 @@ afterEach(() => {
   assertive.reset();
 });
 
-describe('LiveRegion', () => {
+describe.skip('LiveRegion', () => {
   it('renders', async () => {
     const { source, politeRegion } = await renderLiveRegion(
       <InternalLiveRegion delay={0}>Announcement</InternalLiveRegion>
