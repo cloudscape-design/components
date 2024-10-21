@@ -38,12 +38,13 @@ const SecondaryLayout: React.FC = ({ children }) => {
   );
 };
 
+const NAV_ITEMS: Array<SideNavigationProps.Link> = [
+  { type: 'link', text: 'Page 1', href: 'page1' },
+  { type: 'link', text: 'Page 2', href: 'page2' },
+  { type: 'link', text: 'Page 3', href: 'page3' },
+];
+
 export default function () {
-  const NAV_ITEMS: Array<SideNavigationProps.Link> = [
-    { type: 'link', text: 'Page 1', href: 'page1' },
-    { type: 'link', text: 'Page 2', href: 'page2' },
-    { type: 'link', text: 'Page 3', href: 'page3' },
-  ];
   const [activeHref, setActiveHref] = useState('page1');
   const openPagesHistory = useRef<Set<string>>(new Set());
 
@@ -59,6 +60,7 @@ export default function () {
             onFollow={event => {
               if (!event.detail.external) {
                 event.preventDefault();
+                openPagesHistory.current.add(event.detail.href);
                 setActiveHref(event.detail.href);
               }
             }}
@@ -68,16 +70,15 @@ export default function () {
         toolsHide={true}
         disableContentPaddings={true}
         content={
-          <div>
-            {NAV_ITEMS.filter(item => item.href === activeHref || openPagesHistory.current.has(item.href)).map(item => {
-              openPagesHistory.current.add(item.href);
-              return (
-                <div key={item.href} style={{ display: item.href !== activeHref ? 'none' : '' }}>
-                  <SecondaryLayout>{<div>{item.href}</div>}</SecondaryLayout>
-                </div>
-              );
-            })}
-          </div>
+          <>
+            {NAV_ITEMS.filter(item => item.href === activeHref || openPagesHistory.current.has(item.href)).map(item => (
+              <div key={item.href} style={{ display: item.href !== activeHref ? 'none' : '' }}>
+                <SecondaryLayout>
+                  <div>Page content: {item.href}</div>
+                </SecondaryLayout>
+              </div>
+            ))}
+          </>
         }
       />
     </ScreenshotArea>

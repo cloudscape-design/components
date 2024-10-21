@@ -8,6 +8,7 @@ import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
+import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
@@ -75,7 +76,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
-    const ref = React.useRef<HTMLDivElement>(null);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -246,6 +246,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
     });
 
+    const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
     const { registered, toolbarProps } = useMultiAppLayout(
       {
         forceDeduplicationType,
@@ -270,7 +271,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
         onSplitPanelToggle: onSplitPanelToggleHandler,
       },
-      ref
+      isIntersecting
     );
 
     const hasToolbar = !embeddedViewMode && !!toolbarProps;
@@ -420,7 +421,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
-          ref={ref}
+          ref={intersectionObserverRef}
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,

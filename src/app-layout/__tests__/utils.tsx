@@ -36,22 +36,6 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   useReducedMotion: jest.fn().mockReturnValue(true),
 }));
 
-const mockIntersectionObserver = jest.fn();
-mockIntersectionObserver.mockImplementation((callback: any) => {
-  callback([{ isIntersecting: true }]);
-
-  return {
-    observe: jest.fn(),
-    disconnect: jest.fn(),
-  };
-});
-
-Object.defineProperty(window, 'IntersectionObserver', {
-  writable: true,
-  configurable: true,
-  value: mockIntersectionObserver,
-});
-
 export function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
@@ -91,7 +75,6 @@ export function describeEachAppLayout(
           (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
           (useVisualRefresh as jest.Mock).mockReturnValue(theme !== 'classic');
           setGlobalFlag('appLayoutWidget', theme === 'refresh-toolbar');
-          mockIntersectionObserver.mockClear();
         });
         afterEach(() => {
           (useMobile as jest.Mock).mockReset();
