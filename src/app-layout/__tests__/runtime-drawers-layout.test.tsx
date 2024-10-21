@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
-import React from 'react';
+import React, { RefObject } from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
@@ -10,6 +10,7 @@ import { computeHorizontalLayout } from '../../../lib/components/app-layout/visu
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
+import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -33,6 +34,22 @@ jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/compute-lay
       totalActiveGlobalDrawersSize: 0,
       resizableSpaceAvailable: 1500,
     }),
+  };
+});
+
+jest.mock('../../../lib/components/app-layout/utils/use-app-layout-placement', () => {
+  return {
+    ...jest.requireActual('../../../lib/components/app-layout/utils/use-app-layout-placement'),
+    useAppLayoutPlacement: jest.fn().mockReturnValue([
+      { current: null } as RefObject<HTMLElement>,
+      {
+        insetInlineStart: 0,
+        insetInlineEnd: 0,
+        inlineSize: Infinity,
+        insetBlockStart: 0,
+        insetBlockEnd: 0,
+      },
+    ]),
   };
 });
 
@@ -194,6 +211,81 @@ describe('toolbar mode only features', () => {
       globalDrawersWrapper.findResizeHandleByActiveDrawerId('global-drawer-1')!.keydown(KeyCode.left);
 
       expect(onDrawerItemResize).toHaveBeenCalledWith({ size: expect.any(Number), id: 'global-drawer-1' });
+    });
+
+    test('should prevent the horizontal page scroll from appearing during resize (navigation open)', async () => {
+      const dummyRef = { current: null } as RefObject<HTMLElement>;
+      jest.mocked(useAppLayoutPlacement).mockReturnValue([
+        dummyRef,
+        {
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          inlineSize: 900,
+          insetBlockStart: 0,
+          insetBlockEnd: 0,
+        },
+      ]);
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('security')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      expect(wrapper.findNavigation().getElement()).toHaveAttribute('aria-hidden', 'true');
+      expect(wrapper.findActiveDrawer()).toBeTruthy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
+    });
+
+    test('should prevent the horizontal page scroll from appearing during resize (navigation closed)', async () => {
+      const dummyRef = { current: null } as RefObject<HTMLElement>;
+      jest.mocked(useAppLayoutPlacement).mockReturnValue([
+        dummyRef,
+        {
+          insetInlineStart: 0,
+          insetInlineEnd: 0,
+          inlineSize: 700,
+          insetBlockStart: 0,
+          insetBlockEnd: 0,
+        },
+      ]);
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(
+        <AppLayout drawers={[testDrawer]} navigationOpen={false} />
+      );
+
+      await delay();
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+      wrapper.findDrawerTriggerById('security')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeFalsy();
+      expect(wrapper.findActiveDrawer()).toBeTruthy();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.isActive()).toBe(true);
     });
   });
 });
