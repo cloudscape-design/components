@@ -17,15 +17,13 @@ const getFunnelName = (rootRef: MutableRefObject<HTMLElement>, pageContext: Page
   return headerElement?.innerText || pageContext.getPageName() || '';
 };
 
-export const useFormFunnel = ({
-  rootRef,
-  analyticsMetadata,
-  errorText,
-}: {
+interface UseFormFunnel {
   rootRef: MutableRefObject<HTMLElement>;
   analyticsMetadata: AnalyticsMetadata;
   errorText: FormProps['errorText'];
-}) => {
+}
+
+export const useFormFunnel = ({ rootRef, analyticsMetadata, errorText }: UseFormFunnel) => {
   const { funnelContext, pageContext } = useFunnel();
 
   useEffect(() => {

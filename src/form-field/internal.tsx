@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -9,7 +9,6 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import InternalGrid from '../grid/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
 import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL, getFieldSlotSeletor } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
@@ -18,6 +17,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { joinStrings } from '../internal/utils/strings';
 import InternalLiveRegion from '../live-region/internal';
+import { useFormFieldFunnel } from './analytics/funnel';
 import { InternalFormFieldProps } from './interfaces';
 import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
 
@@ -119,7 +119,6 @@ export default function InternalFormField({
   const isRefresh = useVisualRefresh();
 
   const instanceUniqueId = useUniqueId('formField');
-  const funnelContext = useFunnelContext();
   const generatedControlId = controlId || instanceUniqueId;
   const formFieldId = controlId || generatedControlId;
   const showWarning = warningText && !errorText;
@@ -145,25 +144,7 @@ export default function InternalFormField({
     return (slotIds.error && document.getElementById(slotIds.error)?.innerText) || '';
   };
 
-  useEffect(() => {
-    if (!funnelContext) {
-      return;
-    }
-
-    const fieldLabel = getLabelText();
-    const fieldError = getErrorText();
-
-    // Move data attribute to common place
-    const parentSubstepElement = __internalRootRef?.current?.closest('[data-funnel-substep-id]');
-    const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id');
-    funnelContext?.controller?.currentStep?.substeps.forEach(substep => {
-      if (substep.id === substepId) {
-        substep.error({ errorText: fieldError, scope: { type: 'field', label: fieldLabel } });
-      }
-    });
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [errorText]);
+  useFormFieldFunnel({ rootRef: __internalRootRef, getLabelText, getErrorText, errorText });
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
 
