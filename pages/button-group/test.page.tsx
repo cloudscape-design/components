@@ -27,6 +27,7 @@ export default function ButtonGroupPage() {
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
   const [feedback, setFeedback] = useState<'none' | 'like' | 'dislike'>('none');
   const [isFavorite, setFavorite] = useState(false);
+  const [useExperimentalFeatures, setUseExperimentalFeatures] = useState(false);
   const [loadingId, setLoading] = useState<null | string>(null);
   const [canSend, setCanSend] = useState(true);
   const [canRedo, setCanRedo] = useState(true);
@@ -36,16 +37,22 @@ export default function ButtonGroupPage() {
     text: 'Vote',
     items: [
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'like',
-        iconName: feedback === 'like' ? 'thumbs-up-filled' : 'thumbs-up',
+        iconName: 'thumbs-up',
+        pressedIconName: 'thumbs-up-filled',
         text: 'Like',
+        pressedText: 'Liked',
+        pressed: feedback === 'like',
       },
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'dislike',
-        iconName: feedback === 'dislike' ? 'thumbs-down-filled' : 'thumbs-down',
+        iconName: 'thumbs-down',
+        pressedIconName: 'thumbs-down-filled',
         text: 'Dislike',
+        pressedText: 'Disliked',
+        pressed: feedback === 'dislike',
       },
     ],
   };
@@ -55,12 +62,14 @@ export default function ButtonGroupPage() {
     text: 'Favorite',
     items: [
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'favorite',
-        iconName: isFavorite ? 'star-filled' : 'star',
+        iconName: 'star',
+        pressedIconName: 'star-filled',
         text: 'Add to favorites',
+        pressedText: 'Added to favorites',
         loading: loadingId === 'favorite',
-        popoverFeedback: loadingId === 'favorite' ? '...' : isFavorite ? 'Set as favorite' : 'Removed',
+        pressed: isFavorite,
       },
     ],
   };
@@ -142,6 +151,18 @@ export default function ButtonGroupPage() {
           { id: 'search', iconName: 'search', text: 'Search' },
         ],
       },
+      {
+        text: 'Settings',
+        items: [
+          {
+            id: 'experimental-features',
+            itemType: 'checkbox',
+            iconName: 'bug',
+            text: 'Experimental features',
+            checked: useExperimentalFeatures,
+          },
+        ],
+      },
     ],
   };
 
@@ -191,9 +212,9 @@ export default function ButtonGroupPage() {
     switch (detail.id) {
       case 'like':
       case 'dislike':
-        return syncAction(() => setFeedback(prev => (prev !== detail.id ? (detail.id as 'like' | 'dislike') : 'none')));
+        return syncAction(() => setFeedback(detail.pressed ? (detail.id as 'like' | 'dislike') : 'none'));
       case 'favorite':
-        return asyncAction(() => setFavorite(prev => !prev));
+        return asyncAction(() => setFavorite(!!detail.pressed));
       case 'send':
         return syncAction(() => setCanSend(false));
       case 'redo':
@@ -202,6 +223,8 @@ export default function ButtonGroupPage() {
       case 'remove':
       case 'open':
         return asyncAction();
+      case 'experimental-features':
+        return syncAction(() => setUseExperimentalFeatures(!!detail.pressed));
       default:
         return syncAction();
     }

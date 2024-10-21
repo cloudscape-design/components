@@ -11,7 +11,7 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const itemPermutations = createPermutations<ButtonGroupProps.IconButton>([
+const itemPermutations = createPermutations<ButtonGroupProps.Item>([
   // Undefined icon
   {
     type: ['icon-button'],
@@ -41,6 +41,16 @@ const itemPermutations = createPermutations<ButtonGroupProps.IconButton>([
         Status indicator feedback
       </StatusIndicator>,
     ],
+  },
+  // Toggle button
+  {
+    type: ['icon-toggle-button'],
+    id: ['test'],
+    iconName: ['star'],
+    pressedIconName: ['star-filled'],
+    text: ['Add to favorites'],
+    pressedText: ['Added to favorites'],
+    pressed: [false, true],
   },
 ]);
 

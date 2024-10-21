@@ -14,16 +14,22 @@ const feedbackGroup: ButtonGroupProps.Group = {
   text: 'Vote',
   items: [
     {
-      type: 'icon-button',
+      type: 'icon-toggle-button',
       id: 'like',
       iconName: 'thumbs-up',
+      pressedIconName: 'thumbs-up-filled',
       text: 'Like',
+      pressedText: 'Like',
+      pressed: true,
     },
     {
-      type: 'icon-button',
+      type: 'icon-toggle-button',
       id: 'dislike',
       iconName: 'thumbs-down',
+      pressedIconName: 'thumbs-down-filled',
       text: 'Dislike',
+      pressedText: 'Dislike',
+      pressed: false,
     },
   ],
 };

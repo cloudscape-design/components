@@ -77,7 +77,7 @@ test(
   'shows tooltip when a button is focused',
   setup({}, async page => {
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
 
     await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
@@ -92,7 +92,7 @@ test(
   'hides popover after clicking outside',
   setup({}, async page => {
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
 
     await page.click(createWrapper().find('#log').toSelector());
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
@@ -146,7 +146,7 @@ test(
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
 
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
   })
 );
 
