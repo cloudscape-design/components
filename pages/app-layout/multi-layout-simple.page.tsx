@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Link } from '~components';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
+import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';

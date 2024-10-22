@@ -2,9 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { Link } from '~components';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
+import ScreenreaderOnly from '~components/internal/components/screenreader-only';
+import Link from '~components/link';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
@@ -12,36 +13,39 @@ import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
-import * as toolsContent from './utils/tools-content';
 
-const SecondaryLayout = () => {
-  return (
-    <AppLayout
-      {...{ __disableRuntimeDrawers: true }}
-      data-testid="secondary-layout"
-      ariaLabels={labels}
-      breadcrumbs={<Breadcrumbs />}
-      navigationHide={true}
-      content={
-        <SpaceBetween size="s">
-          <Header variant="h1" description="This page contains nested app layout instances">
-            Multiple app layouts
-          </Header>
+function createView(name: string) {
+  return function View() {
+    return (
+      <AppLayout
+        {...{ __disableRuntimeDrawers: true }}
+        data-testid="secondary-layout"
+        ariaLabels={labels}
+        breadcrumbs={<Breadcrumbs />}
+        navigationHide={true}
+        content={
+          <SpaceBetween size="s">
+            <Header variant="h1" description="This page contains nested app layout instances">
+              Multiple app layouts
+            </Header>
 
-          <Link external={true} href="#">
-            External link
-          </Link>
-        </SpaceBetween>
-      }
-      tools={<Tools>{toolsContent.long}</Tools>}
-    />
-  );
-};
+            <Link external={true} href="#">
+              External link
+            </Link>
 
-const NAV_ITEMS: Array<SideNavigationProps.Link> = [
-  { type: 'link', text: 'Page 1', href: 'page1' },
-  { type: 'link', text: 'Page 2', href: 'page2' },
-  { type: 'link', text: 'Page 3', href: 'page3' },
+            <div>Page content: {name}</div>
+          </SpaceBetween>
+        }
+        tools={<Tools>Tools content: {name}</Tools>}
+      />
+    );
+  };
+}
+
+const ROUTES: Array<{ navLink: SideNavigationProps.Link; View: React.ComponentType }> = [
+  { navLink: { type: 'link', text: 'Page 1', href: 'page1' }, View: createView('page1') },
+  { navLink: { type: 'link', text: 'Page 2', href: 'page2' }, View: createView('page2') },
+  { navLink: { type: 'link', text: 'Page 3', href: 'page3' }, View: createView('page2') },
 ];
 
 export default function () {
@@ -64,19 +68,24 @@ export default function () {
                 setActiveHref(event.detail.href);
               }
             }}
-            items={NAV_ITEMS}
+            items={ROUTES.map(route => route.navLink)}
           />
         }
         toolsHide={true}
         disableContentPaddings={true}
         content={
-          <div>
-            {NAV_ITEMS.filter(item => item.href === activeHref || openPagesHistory.current.has(item.href)).map(item => (
-              <div key={item.href} style={{ display: item.href !== activeHref ? 'none' : '' }}>
-                <IframeWrapper id={item.href} AppComponent={SecondaryLayout} />
+          <>
+            <ScreenreaderOnly>
+              <h1>Multiple app layouts with iframe</h1>
+            </ScreenreaderOnly>
+            {ROUTES.filter(
+              item => item.navLink.href === activeHref || openPagesHistory.current.has(item.navLink.href)
+            ).map(item => (
+              <div key={item.navLink.href} style={{ display: item.navLink.href !== activeHref ? 'none' : '' }}>
+                <IframeWrapper id={item.navLink.href} AppComponent={item.View} />
               </div>
             ))}
-          </div>
+          </>
         }
       />
     </ScreenshotArea>
