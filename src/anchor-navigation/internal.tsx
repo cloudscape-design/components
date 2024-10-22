@@ -63,6 +63,7 @@ export default function InternalAnchorNavigation({
               key={index}
               index={index}
               anchor={anchor}
+              testId={anchor.testId}
             />
           );
         })}
@@ -76,9 +77,10 @@ interface AnchorProps {
   onFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
   isActive: boolean;
   index: number;
+  testId?: string;
 }
 
-const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
+const Anchor = ({ anchor, onFollow, isActive, index, testId }: AnchorProps) => {
   checkSafeUrl('AnchorNavigation', anchor.href);
 
   const onClick = useCallback(
@@ -93,7 +95,11 @@ const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
   const activeItemClasses = clsx(styles['anchor-item--active'], testUtilsStyles['anchor-item--active']);
 
   return (
-    <li data-itemid={`anchor-item-${index + 1}`} className={clsx(styles['anchor-item'], isActive && activeItemClasses)}>
+    <li
+      data-itemid={`anchor-item-${index + 1}`}
+      className={clsx(styles['anchor-item'], isActive && activeItemClasses)}
+      data-testid={testId}
+    >
       <a
         onClick={onClick}
         className={clsx(
