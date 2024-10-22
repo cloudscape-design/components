@@ -75,7 +75,7 @@ jobs:
       - run: echo "Completed all a11y tests"
 
   release:
-    uses: cloudscape-design/actions/.github/workflows/release.yml@main
+    uses: cloudscape-design/actions/.github/workflows/release.yml@node20
     secrets: inherit
     with:
       skip-test: true
