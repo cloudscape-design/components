@@ -25,17 +25,6 @@ function renderStatusContainer(jsx: React.ReactElement) {
 }
 
 describe('Chart status container', () => {
-  it('is always an ARIA live region', () => {
-    const { wrapper, rerender } = renderStatusContainer(
-      <ChartStatusContainer {...commonProps} isEmpty={true} statusType="finished" />
-    );
-
-    (['finished', 'loading', 'error'] as const).forEach(statusType => {
-      rerender(<ChartStatusContainer {...commonProps} isEmpty={true} statusType={statusType} />);
-      expect(wrapper.getElement()).toHaveAttribute('aria-live', 'polite');
-    });
-  });
-
   it('renders empty state', () => {
     const { wrapper } = renderStatusContainer(
       <ChartStatusContainer {...commonProps} isEmpty={true} statusType="finished" />

@@ -14,6 +14,7 @@ describe('Date picker at month granularity', () => {
       await page.initLiveAnnouncementsObserver();
       await page.waitForLoad();
       await page.clickOpenCalendar();
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Wait for live region timeout
       await expect(page.getLiveAnnouncements()).resolves.toContain('2024');
     })
   );

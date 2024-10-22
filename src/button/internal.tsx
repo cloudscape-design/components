@@ -16,7 +16,7 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
@@ -252,7 +252,11 @@ export const InternalButton = React.forwardRef(
           >
             {buttonContent}
           </a>
-          {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+          {loading && loadingText && (
+            <InternalLiveRegion tagName="span" hidden={true}>
+              {loadingText}
+            </InternalLiveRegion>
+          )}
         </>
       );
     }
@@ -284,7 +288,11 @@ export const InternalButton = React.forwardRef(
             </>
           )}
         </button>
-        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+        {loading && loadingText && (
+          <InternalLiveRegion tagName="span" hidden={true}>
+            {loadingText}
+          </InternalLiveRegion>
+        )}
       </>
     );
   }

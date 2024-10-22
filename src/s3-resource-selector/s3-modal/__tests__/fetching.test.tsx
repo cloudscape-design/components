@@ -3,6 +3,7 @@
 import React from 'react';
 import { act, render, screen, waitFor } from '@testing-library/react';
 
+import { LiveRegionController } from '../../../../lib/components/internal/components/live-region/controller.js';
 import { S3Modal } from '../../../../lib/components/s3-resource-selector/s3-modal';
 import createWrapper, { ElementWrapper } from '../../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, objects, versions, waitForFetch } from '../../__tests__/fixtures';
@@ -10,6 +11,7 @@ import { getElementsText, modalDefaultProps, navigateToTableItem } from './utils
 
 import styles from '../../../../lib/components/s3-resource-selector/s3-modal/styles.css.js';
 
+LiveRegionController.defaultDelay = 0;
 jest.setTimeout(30_000);
 
 async function renderModal(jsx: React.ReactElement) {
@@ -152,17 +154,11 @@ describe('last updated status text', () => {
   });
 
   test('renders the last updated time within the aria-live region', async () => {
-    const wrapper = await renderModal(<S3Modal {...modalDefaultProps} />);
+    await renderModal(<S3Modal {...modalDefaultProps} />);
     await clickRefreshAndWaitForFetch();
-
-    const lastUpdated = wrapper.findByClassName(styles['last-updated-caption'])!.find('[aria-live]')!.getElement();
     await waitFor(() => {
-      /**
-       * <LiveRegion /> component is using innerText for setting the span element's text content.
-       * To populate the textContent from innerText, layout engine is required which JSDom doesn't have.
-       * So falling back to assert against innerText rather than the textContent.
-       */
-      expect(lastUpdated.innerText).toBe('Last updated January 2, 2024, 10:00:00 (UTC)');
+      const lastUpdated = createWrapper().find('[aria-live="polite"]')!.getElement();
+      expect(lastUpdated.textContent).toBe('Last updated January 2, 2024, 10:00:00 (UTC)');
     });
   });
 

@@ -7,6 +7,7 @@ import { disableMotion } from '@cloudscape-design/global-styles';
 
 import Button from '../../../lib/components/button';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
+import { LiveRegionController } from '../../../lib/components/internal/components/live-region/controller.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
@@ -23,6 +24,8 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
     useVisualRefresh: (...args: any) => useVisualRefresh || originalVisualModeModule.useVisualRefresh(...args),
   };
 });
+
+LiveRegionController.defaultDelay = 0;
 
 mockInnerText();
 
@@ -410,7 +413,7 @@ describe('Flashbar component', () => {
       });
 
       test('renders the label, header, and content in an aria-live region for ariaRole="status"', async () => {
-        const { rerender, container } = reactRender(<Flashbar items={[]} />);
+        const { rerender } = reactRender(<Flashbar items={[]} />);
         rerender(
           <Flashbar
             items={[
@@ -427,7 +430,7 @@ describe('Flashbar component', () => {
         );
 
         await waitFor(() => {
-          expect(container.querySelector('span[aria-live]')).toHaveTextContent('Error The header The content');
+          expect(document.querySelector('[aria-live="polite"]')).toHaveTextContent('Error The header The content');
         });
       });
     });

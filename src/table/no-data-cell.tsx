@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 
 import styles from './styles.css.js';
@@ -45,7 +45,7 @@ export function NoDataCell({
       <div ref={cellContentRef} className={styles['cell-merged-content']} data-awsui-table-suppress-navigation={true}>
         {loading ? (
           <InternalStatusIndicator type="loading" className={styles.loading} wrapText={true}>
-            <LiveRegion visible={true}>{loadingText}</LiveRegion>
+            <InternalLiveRegion tagName="span">{loadingText}</InternalLiveRegion>
           </InternalStatusIndicator>
         ) : (
           <div className={styles.empty}>{empty}</div>
