@@ -14,7 +14,7 @@ permissions:
 
 jobs:
   release:
-    uses: cloudscape-design/actions/.github/workflows/release.yml@main
+    uses: cloudscape-design/actions/.github/workflows/release.yml@gasda/artifact-partial-v4
     secrets: inherit
     with:
       skip-test: true
