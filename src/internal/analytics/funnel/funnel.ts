@@ -33,40 +33,29 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     return { 'data-funnel-id': this.id, id: this.id };
   }
 
-  private reset() {
-    this.status = ['initial'];
-  }
-
-  async start(): Promise<void> {
+  start() {
     if (this.getStatus() !== 'initial') {
       return;
     }
 
-    this.reset();
-    await super.start();
-    dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: { context: this.name } });
+    super.start(() => {
+      dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: { context: this.name } });
 
-    if (this.currentStep) {
-      await this.currentStep.start();
-    }
-
-    console.log(this);
+      this.currentStep?.start();
+    });
   }
 
-  async submit(): Promise<void> {
+  submit() {
     if (this.getStatus() === 'submitted') {
       return;
     }
 
-    if (this.currentStep) {
-      await this.currentStep.complete();
-    }
+    this.currentStep?.complete();
 
     this.result = 'submitted';
-    this.setStatus('submitted');
-
-    dispatchFunnelEvent({ header: 'Funnel submitted', status: 'success', details: { context: this.name } });
-    this.notifyObservers();
+    this.setStatus('submitted', () => {
+      dispatchFunnelEvent({ header: 'Funnel submitted', status: 'success', details: { context: this.name } });
+    });
   }
 
   validate(value: boolean) {
@@ -75,13 +64,13 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     }
 
     if (value) {
-      this.setStatus('validating');
-      dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: { context: this.name } });
-      this.notifyObservers();
+      this.setStatus('validating', () => {
+        dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: { context: this.name } });
+      });
     } else if (this.getStatus() === 'validating') {
-      this.setStatus('validated');
-      dispatchFunnelEvent({ header: 'Funnel validated', status: 'success', details: { context: this.name } });
-      this.notifyObservers();
+      this.setStatus('validated', () => {
+        dispatchFunnelEvent({ header: 'Funnel validated', status: 'success', details: { context: this.name } });
+      });
     }
   }
 
@@ -107,25 +96,24 @@ export class Funnel extends FunnelBase<FunnelStatus> {
         },
       },
     });
+    this.currentStep.validate(true);
   }
 
-  async complete(): Promise<void> {
-    if (this.currentStep) {
-      await this.currentStep.complete();
-    }
+  complete() {
+    this.currentStep?.complete();
+    super.complete(() => {
+      if (!this.result) {
+        this.cancel();
+      }
 
-    await super.complete();
-    if (!this.result) {
-      this.cancel();
-    }
+      dispatchFunnelEvent({
+        header: `Funnel completed with result ${this.result}`,
+        status: this.result === 'cancelled' ? 'error' : 'success',
+        details: { context: this.name },
+      });
 
-    dispatchFunnelEvent({
-      header: `Funnel completed with result ${this.result}`,
-      status: this.result === 'cancelled' ? 'error' : 'success',
-      details: { context: this.name },
+      this.notifyObservers();
     });
-
-    this.notifyObservers();
   }
 
   addStep(config: FunnelStepConfig): FunnelStep {
@@ -198,13 +186,14 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   setCurrentStep(index: number) {
-    if (this.steps.length > 0 && this.currentStep?.index !== index) {
-      this.currentStep?.complete().then(() => {
-        this.currentStep = this.steps[index];
-        this.currentStep?.start();
-        this.notifyObservers();
-      });
+    if (this.steps.length === 0 || this.currentStep?.index === index) {
+      return;
     }
+
+    this.currentStep?.complete();
+    this.currentStep = this.steps[index];
+    this.currentStep?.start();
+    this.notifyObservers();
   }
 }
 

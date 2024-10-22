@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AnalyticsMetadata } from '../interfaces';
-import { ErrorDetails, FunnelBaseStatus, Observer } from './types';
+import { CallbackFunction, ErrorDetails, FunnelBaseStatus, Observer } from './types';
 import { getUuid } from './utils';
 
 export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
@@ -18,10 +18,12 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     this.status = [initialStatus];
   }
 
-  protected setStatus(newStatus: TStatus): void {
+  protected setStatus(newStatus: TStatus, callback?: CallbackFunction): void {
     if (this.getStatus() !== newStatus) {
       this.status.push(newStatus);
       this.notifyObservers();
+
+      callback?.();
     }
   }
 
@@ -54,41 +56,32 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
     return this.status[this.status.length - 2];
   }
 
-  start(): Promise<void> {
-    return new Promise(resolve => {
-      if (this.getStatus() === 'started') {
-        resolve();
-        return;
-      }
+  start(callback?: CallbackFunction) {
+    if (this.getStatus() === 'started') {
+      return;
+    }
 
-      this.setStatus('started' as TStatus);
-      resolve();
-    });
+    this.setStatus('started' as TStatus);
+    callback?.();
   }
 
-  complete(): Promise<void> {
-    return new Promise(resolve => {
-      if (this.getStatus() === 'completed') {
-        resolve();
-        return;
-      }
+  complete(callback?: CallbackFunction) {
+    if (this.getStatus() === 'completed') {
+      return;
+    }
 
-      this.setStatus('completed' as TStatus);
-      resolve();
-    });
+    this.setStatus('completed' as TStatus);
+    callback?.();
   }
 
-  error(details: ErrorDetails): Promise<void> {
-    return new Promise(resolve => {
-      if (!details.errorText) {
-        resolve();
-        return;
-      }
+  error(details: ErrorDetails, callback?: CallbackFunction) {
+    if (!details.errorText) {
+      return;
+    }
 
-      console.log('error', details);
-      this.setStatus('error' as TStatus);
-      resolve();
-    });
+    console.log('error', details);
+    this.setStatus('error' as TStatus);
+    callback?.();
   }
 
   addObserver(observer: Observer): void {

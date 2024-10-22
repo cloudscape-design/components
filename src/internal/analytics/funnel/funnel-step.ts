@@ -4,9 +4,9 @@ import { Funnel } from './funnel';
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelSubstep } from './funnel-substep';
-import { ErrorDetails, FunnelStepProps } from './types';
+import { CallbackFunction, ErrorDetails, FunnelStepProps, FunnelStepStatus } from './types';
 
-export class FunnelStep extends FunnelBase {
+export class FunnelStep extends FunnelBase<FunnelStepStatus> {
   public index: number;
   public substeps: Set<FunnelSubstep> = new Set();
   public currentSubstep: FunnelSubstep | undefined;
@@ -34,7 +34,7 @@ export class FunnelStep extends FunnelBase {
       substep.setIndex(index);
     });
 
-    if (this.getStatus() !== 'initial' && this.getStatus() !== 'completed') {
+    if (this.getStatus() !== 'initial' && this.getStatus() !== 'validating' && this.getStatus() !== 'completed') {
       dispatchFunnelEvent({
         header: 'Funnel step configuration changed',
         details: {
@@ -50,48 +50,61 @@ export class FunnelStep extends FunnelBase {
     }
   }
 
-  async start(): Promise<void> {
-    if (this.getStatus() === 'started') {
-      return;
-    }
-
-    await super.start();
-    dispatchFunnelEvent({
-      header: `Funnel step started`,
-      status: 'success',
-      details: {
-        context: this.name,
-      },
-    });
-  }
-
-  async complete(): Promise<void> {
-    if (this.getStatus() === 'completed') {
-      return;
-    }
-
-    await super.complete();
-    dispatchFunnelEvent({
-      header: `Funnel step completed`,
-      status: 'success',
-      details: {
-        context: this.name,
-      },
-    });
-  }
-
-  async error(details: ErrorDetails): Promise<void> {
-    if (details.errorText) {
-      await super.error(details);
+  start() {
+    super.start(() => {
       dispatchFunnelEvent({
-        header: 'Step error',
+        header: `Funnel step started`,
+        status: 'success',
         details: {
           context: this.name,
-          metadata: {
-            errorText: details.errorText,
-          },
         },
-        status: 'error',
+      });
+    });
+  }
+
+  complete(callback?: CallbackFunction) {
+    super.complete(() => {
+      dispatchFunnelEvent({
+        header: `Funnel step completed`,
+        status: 'success',
+        details: {
+          context: this.name,
+        },
+      });
+
+      callback?.();
+    });
+  }
+
+  validate(value: boolean) {
+    if (value && this.getStatus() === 'validating') {
+      return;
+    }
+
+    if (value) {
+      this.setStatus('validating', () => {
+        dispatchFunnelEvent({
+          header: 'Funnel step validating',
+          status: 'in-progress',
+          details: { context: this.name },
+        });
+      });
+    }
+  }
+
+  error(details: ErrorDetails) {
+    if (details.errorText) {
+      super.error(details, () => {
+        dispatchFunnelEvent({
+          header: 'Step error',
+          details: {
+            context: this.name,
+            metadata: {
+              errorText: details.errorText,
+            },
+          },
+          status: 'error',
+        });
       });
     } else if (this.getStatus() === 'error') {
       this.setStatus(this.getPreviousStatus());
@@ -112,21 +125,19 @@ export class FunnelStep extends FunnelBase {
   }
 
   unregisterSubstep(substep: FunnelSubstep): void {
+    substep.complete();
+    substep.setContext(null);
     this.substeps.delete(substep);
     this.updateSubstepIndices();
     this.notifyObservers();
   }
 
   async setCurrentSubstep(substep: FunnelSubstep | undefined): Promise<void> {
-    if (this.currentSubstep !== substep) {
-      if (this.currentSubstep) {
-        await this.currentSubstep.complete();
-      }
-      this.currentSubstep = substep;
-      if (this.currentSubstep) {
-        await this.currentSubstep.start();
-      }
-      this.notifyObservers();
-    }
+    await this.currentSubstep?.complete();
+    this.currentSubstep = substep;
+    await this.currentSubstep?.start();
+
+    this.notifyObservers();
+    return Promise.resolve();
   }
 }

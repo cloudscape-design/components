@@ -41,7 +41,7 @@ export function useTableInteractionMetrics({
     'data-analytics-task-interaction-id',
     taskInteractionId
   );
-  const { isInFunnel } = useFunnel();
+  const { funnelContext } = useFunnel();
   const lastUserAction = useRef<{ name: string; time: number } | null>(null);
   const capturedUserAction = useRef<string | null>(null);
   const loadingStartTime = useRef<number | null>(null);
@@ -50,7 +50,7 @@ export function useTableInteractionMetrics({
   metadata.current = { itemCount, getComponentIdentifier, getComponentConfiguration, interactionMetadata };
 
   useEffect(() => {
-    if (isInFunnel) {
+    if (funnelContext) {
       return;
     }
 
@@ -59,7 +59,7 @@ export function useTableInteractionMetrics({
       componentName: 'table',
       componentConfiguration: metadata.current.getComponentConfiguration(),
     });
-  }, [taskInteractionId, isInFunnel]);
+  }, [taskInteractionId, funnelContext]);
 
   useEffect(() => {
     if (loading) {
@@ -87,7 +87,7 @@ export function useTableInteractionMetrics({
         noOfResourcesInTable: metadata.current.itemCount,
       });
 
-      if (!isInFunnel) {
+      if (!funnelContext) {
         ComponentMetrics.componentUpdated({
           taskInteractionId,
           componentName: 'table',
@@ -96,7 +96,7 @@ export function useTableInteractionMetrics({
         });
       }
     }
-  }, [instanceIdentifier, loading, taskInteractionId, isInFunnel]);
+  }, [instanceIdentifier, loading, taskInteractionId, funnelContext]);
 
   return {
     tableInteractionAttributes,

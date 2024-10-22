@@ -8,7 +8,7 @@ export interface FunnelStepConfig {
   optional?: boolean;
   name?: string;
   metadata?: AnalyticsMetadata;
-  status?: FunnelBaseStatus;
+  status?: FunnelStepStatus;
 }
 export type FunnelStepProps = FunnelStepConfig & { index: number };
 export type FunnelBaseStatus = 'initial' | 'started' | 'error' | 'completed';
@@ -27,9 +27,12 @@ export interface InteractionScope {
   metadata: Record<string, string | boolean | number>;
 }
 
+export type FunnelStepStatus = FunnelBaseStatus | 'validating';
 export type FunnelStatus = FunnelBaseStatus | 'validating' | 'validated' | 'submitted';
 export type FunnelResult = 'submitted' | 'successful' | 'cancelled' | undefined;
 
 export interface Observer {
   update: (subject: any) => void;
 }
+
+export type CallbackFunction = () => void;

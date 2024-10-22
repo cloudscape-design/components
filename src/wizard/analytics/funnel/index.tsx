@@ -22,7 +22,6 @@ export const useWizardFunnel = ({ isLoadingNextStep, ...props }: UseWizardFunnel
       return;
     }
 
-    console.log('useLayoutEffect');
     const steps = [
       ...props.steps.map((step, index) => {
         return { index, name: step.title, optional: step.isOptional, metadata: step.analyticsMetadata };

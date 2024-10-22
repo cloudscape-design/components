@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { MutableRefObject, useCallback, useEffect, useMemo, useState } from 'react';
+import { MutableRefObject, useEffect, useMemo, useState } from 'react';
 
 import { useFocusTracker } from '../../hooks/use-focus-tracker';
 import { FunnelSubstep } from '../funnel';
@@ -37,24 +37,21 @@ export const useFunnelSubstep = (rootRef: MutableRefObject<HTMLElement | null>, 
 
   useEffect(() => {
     funnelContext?.controller?.currentStep?.registerSubstep(funnelSubstep);
-  }, [funnelContext?.controller?.currentStep, funnelSubstep]);
 
-  useEffect(() => {
     return () => {
-      (async () => {
-        await funnelSubstep.complete();
-        funnelSubstep.context?.unregisterSubstep(funnelSubstep);
-      })();
+      funnelSubstep.context?.unregisterSubstep(funnelSubstep);
     };
-  }, [funnelSubstep]);
 
-  const handleBlur = useCallback(() => {
-    funnelContext?.controller?.currentStep?.setCurrentSubstep(undefined);
-  }, [funnelContext]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  const handleFocus = useCallback(() => {
-    funnelContext?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
-  }, [funnelContext, funnelSubstep]);
+  const handleBlur = async () => {
+    await funnelContext?.controller?.currentStep?.setCurrentSubstep(undefined);
+  };
+
+  const handleFocus = async () => {
+    await funnelContext?.controller?.currentStep?.setCurrentSubstep(funnelSubstep);
+  };
 
   useFocusTracker({
     rootRef,

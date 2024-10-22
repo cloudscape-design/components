@@ -4,16 +4,15 @@ import { Funnel } from './funnel';
 import { FunnelBase } from './funnel-base';
 import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelStep } from './funnel-step';
-import { ErrorDetails, FunnelBaseStatus, InteractionScope } from './types';
+import { ErrorDetails, InteractionScope } from './types';
 
-const DEBOUNCE_TIMEOUT_IN_MS = 10;
+const DEBOUNCE_TIMEOUT_IN_MS = 20;
 
 export class FunnelSubstep extends FunnelBase {
-  public index = -1;
+  protected index = -1;
   public context: FunnelStep | null = null;
 
-  private stateTimeout: ReturnType<typeof setTimeout> | null = null;
-  private latestAction: 'start' | 'complete' | null = null;
+  private debounceTimeout: ReturnType<typeof setTimeout> | null = null;
 
   constructor(name = '') {
     super('initial');
@@ -28,77 +27,62 @@ export class FunnelSubstep extends FunnelBase {
     };
   }
 
-  setIndex(index: number): void {
+  setIndex(index: number) {
     this.index = index;
     this.notifyObservers();
   }
 
-  setContext(funnelStep: FunnelStep | null): void {
+  setName(name: string) {
+    this.name = name;
+    this.notifyObservers();
+  }
+
+  setContext(funnelStep: FunnelStep | null) {
     this.context = funnelStep;
     this.notifyObservers();
   }
 
-  private debounceState(action: 'start' | 'complete'): Promise<void> {
-    return new Promise(resolve => {
-      this.latestAction = action;
-
-      if (this.stateTimeout) {
-        clearTimeout(this.stateTimeout);
-      }
-
-      this.stateTimeout = setTimeout(async () => {
-        if (this.latestAction === 'start') {
-          await super.start();
-        } else if (this.latestAction === 'complete') {
-          await super.complete();
-        }
-
-        this.stateTimeout = null;
-        this.latestAction = null;
-        resolve();
-      }, DEBOUNCE_TIMEOUT_IN_MS);
-    });
-  }
-
-  async start(): Promise<void> {
-    await this.debounceState('start');
-    dispatchFunnelEvent({
-      header: 'Funnel substep started',
-      status: 'success',
-      details: {
-        context: this.getFullContext().join('/'),
-      },
-    });
-  }
-
-  async complete(): Promise<void> {
-    const validStates: FunnelBaseStatus[] = ['started', 'error'];
-    if (!validStates.includes(this.getStatus())) {
-      return; // No-op if not in valid state
+  private debounce(callback: () => void) {
+    if (this.debounceTimeout) {
+      clearTimeout(this.debounceTimeout);
     }
 
-    await this.debounceState('complete');
-    dispatchFunnelEvent({
-      header: 'Funnel substep completed',
-      status: 'success',
-      details: {
-        context: this.getFullContext().join('/'),
-      },
+    this.debounceTimeout = setTimeout(callback, DEBOUNCE_TIMEOUT_IN_MS);
+  }
+
+  start() {
+    this.debounce(() => {
+      super.start(() => {
+        dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: { message: this.name } });
+      });
     });
   }
 
-  async error(details: ErrorDetails): Promise<void> {
+  complete() {
+    if (this.getStatus() === 'initial' || this.getStatus() === 'completed') {
+      return;
+    }
+
+    this.debounce(() => {
+      super.complete(() => {
+        dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: { message: this.name } });
+      });
+    });
+  }
+
+  error(details: ErrorDetails) {
     if (details.errorText) {
-      await super.error(details);
-      dispatchFunnelEvent({
-        header: 'Field error',
-        status: 'error',
-        details: {
-          context: [details.scope.label, ...this.getFullContext()].join('/'),
-          metadata: {
-            errorText: details.errorText,
+      super.error(details, () => {
+        dispatchFunnelEvent({
+          header: 'Field error',
+          status: 'error',
+          details: {
+            context: [details.scope.label, ...this.getFullContext()].join('/'),
+            metadata: {
+              errorText: details.errorText,
+            },
           },
-        },
+        });
       });
     } else if (this.getStatus() === 'error') {
       this.setStatus(this.getPreviousStatus());

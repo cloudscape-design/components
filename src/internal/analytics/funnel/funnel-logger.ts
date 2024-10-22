@@ -8,7 +8,7 @@ interface FunnelLogEventDetail {
   details?: {
     context?: string;
     message?: string;
-    metadata?: Record<string, string | number | boolean>;
+    metadata?: Record<string, string | number | boolean | undefined>;
   };
 }
 export type Status = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';

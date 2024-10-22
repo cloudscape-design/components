@@ -9,16 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import { useInternalI18n } from '../i18n/context';
-<<<<<<< HEAD
 import { PerformanceMetrics } from '../internal/analytics';
-import {
-  FunnelNameSelectorContext,
-  FunnelStepContextValue,
-  FunnelSubStepContextValue,
-} from '../internal/analytics/context/analytics-context';
-import { FunnelProps, useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-=======
->>>>>>> 59befb7a5 (experiment: Refactor Funnel instrumentation)
 import { getBaseProps } from '../internal/base-component';
 import FocusLock from '../internal/components/focus-lock';
 import Portal from '../internal/components/portal';
@@ -185,7 +176,7 @@ function PortaledModal({
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
   return (
     <ResetContextsForModal>
-      <ModalContext.Provider value={{ isInModal: true }}>
+      <ModalContext.Provider value={{ isInModal: true, componentLoadingCount, emitTimeToContentReadyInModal }}>
         <div
           {...baseProps}
           className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, isRefresh && styles.refresh)}

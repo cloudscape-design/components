@@ -52,7 +52,6 @@ function BaseWizard({
         onCancel?.(event);
       }}
       onSubmit={event => {
-        funnelContext?.controller?.validate(isLoadingNextStep);
         funnelContext?.controller?.submit();
         onSubmit?.(event);
       }}
