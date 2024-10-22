@@ -30,6 +30,15 @@ const defaultProps: FileInputProps = {
   onChange,
 };
 
+const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
+  type: 'text/plain',
+  lastModified: 1590962400000,
+});
+const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'test-file-2.txt', {
+  type: 'image/png',
+  lastModified: 1590962400000,
+});
+
 function render(props: Partial<FileInputProps>) {
   const renderResult = testingLibraryRender(
     <div>
@@ -115,22 +124,18 @@ describe('FileInput input', () => {
 
   test('file input fires onChange with files in details', () => {
     const wrapper = render({ multiple: true });
-    fireEvent(wrapper.findNativeInput().getElement(), new CustomEvent('change', { bubbles: true }));
+    const input = wrapper.findNativeInput().getElement();
+    Object.defineProperty(input, 'files', { value: [file1, file2] });
+    fireEvent(input, new CustomEvent('change', { bubbles: true }));
 
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [] } }));
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file2] } }));
+    // additional equality check, because `expect.objectContaining` above thinks file1 === file2
+    expect((onChange as jest.Mock).mock.lastCall[0].detail.value[0]).toBe(file1);
+    expect((onChange as jest.Mock).mock.lastCall[0].detail.value[1]).toBe(file2);
   });
 });
 
 describe('a11y', () => {
-  const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
-    type: 'text/plain',
-    lastModified: 1590962400000,
-  });
-  const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], 'test-file-2.txt', {
-    type: 'image/png',
-    lastModified: 1590962400000,
-  });
-
   test('multiple empty', async () => {
     const wrapper = render({ multiple: true, value: [] });
     await expect(wrapper.getElement()).toValidateA11y();
