@@ -38,6 +38,9 @@ const Multiselect = React.forwardRef(
         virtualScroll: restProps.virtualScroll,
         readOnly: restProps.readOnly,
       },
+      metadata: {
+        hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
+      },
     });
 
     // Private API for inline tokens

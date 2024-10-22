@@ -16,7 +16,12 @@ export default function Calendar({
   granularity = 'day',
   ...props
 }: CalendarProps) {
-  const baseComponentProps = useBaseComponent('Calendar');
+  const baseComponentProps = useBaseComponent('Calendar', {
+    props: { granularity },
+    metadata: {
+      hasDisabledReasons: Boolean(props.dateDisabledReason),
+    },
+  });
   return (
     <InternalCalendar
       {...props}
