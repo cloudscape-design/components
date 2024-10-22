@@ -24,7 +24,9 @@ describe('Live region', () => {
   test(
     `Live region doesn't render child contents as HTML`,
     setupTest(async page => {
-      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt; Testing');
+      // Wait for live region to debounce after page load
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      await expect(page.getInnerHTML('[aria-live]')).resolves.toBe('&lt;p&gt;Testing&lt;/p&gt;Testing');
     })
   );
 });

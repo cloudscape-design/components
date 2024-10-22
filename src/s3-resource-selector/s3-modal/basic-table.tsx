@@ -8,7 +8,7 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { InternalButton } from '../../button/internal';
 import InternalHeader from '../../header/internal';
 import { ComponentFormatFunction } from '../../i18n/context';
-import LiveRegion from '../../internal/components/live-region';
+import InternalLiveRegion from '../../internal/components/live-region/internal';
 import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import formatDateLocalized from '../../internal/utils/date-time/format-date-localized';
 import { PaginationProps } from '../../pagination/interfaces';
@@ -210,7 +210,7 @@ export function InternalHeaderActions<T>({ i18nStrings, reloadData, lastUpdated 
         {i18nStrings.lastUpdatedText}
         <br />
         {formattedDate}
-        <LiveRegion visible={false} source={[i18nStrings.lastUpdatedText, formattedDate]} />
+        <InternalLiveRegion tagName="span" sources={[i18nStrings.lastUpdatedText, formattedDate]} />
       </div>
     );
   }

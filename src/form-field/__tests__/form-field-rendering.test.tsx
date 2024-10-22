@@ -147,27 +147,21 @@ describe('FormField component', () => {
     test('Should render live region for error text', () => {
       const errorText = 'Nope do it again';
       const errorIconAriaLabel = 'Error';
-      const wrapper = renderFormField({
-        errorText,
-        i18nStrings: { errorIconAriaLabel },
-      });
+      renderFormField({ errorText, i18nStrings: { errorIconAriaLabel } });
 
       // Since live region in this componennt uses 'source' prop
       // it is too complex to successfully assert the aria live message
-      expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
+      expect(createWrapper().findByClassName(liveRegionStyles.announcer)?.getElement()).toBeInTheDocument();
     });
 
     test('Should render live region for warning text', () => {
       const warningText = 'Are you sure?';
       const warningIconAriaLabel = 'Warning';
-      const wrapper = renderFormField({
-        warningText,
-        i18nStrings: { warningIconAriaLabel },
-      });
+      renderFormField({ warningText, i18nStrings: { warningIconAriaLabel } });
 
       // Since live region in this componennt uses 'source' prop
       // it is too complex to successfully assert the aria live message
-      expect(wrapper.findByClassName(liveRegionStyles.root)?.getElement()).toBeInTheDocument();
+      expect(createWrapper().findByClassName(liveRegionStyles.announcer)?.getElement()).toBeInTheDocument();
     });
   });
 });

@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
+import { LiveRegionController } from '../../../lib/components/internal/components/live-region/controller.js';
 import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';
@@ -17,6 +18,8 @@ const tableRole = 'table';
 const testItem = {
   test: 'testData',
 };
+
+LiveRegionController.defaultDelay = 0;
 
 const stickyCellRef = jest.fn();
 
@@ -180,13 +183,13 @@ describe('TableBodyCell', () => {
       expect(container.querySelector(bodyCellSuccessIcon$)!).not.toBeInTheDocument();
     });
 
-    test('should render success icon and live region after a successful edit', () => {
+    test('should render success icon and live region after a successful edit', async () => {
       const { container } = render(<TestComponent successfulEdit={true} />);
       // Success icon is shown when cell is focused.
       screen.getByRole('button', { name: 'Edit testData test' }).focus();
 
       expect(container.querySelector(bodyCellSuccessIcon$)!).toBeInTheDocument();
-      expect(screen.getByText('edit successful')).toBeInTheDocument();
+      await waitFor(() => expect(screen.getByText('edit successful')).toBeInTheDocument());
     });
 
     test('should not render success icon when cell lost focus and get focused again', () => {
@@ -252,17 +255,14 @@ describe('TableBodyCell', () => {
       expect(disabledButton).toHaveAttribute('aria-disabled');
     });
 
-    test('activates live region when disabled cell is activated', () => {
-      const { baseElement } = render(
-        <TestComponent {...commonProps} column={disableInlineEditColumn} isEditing={true} />
-      );
+    test('activates live region when disabled cell is activated', async () => {
+      render(<TestComponent {...commonProps} column={disableInlineEditColumn} isEditing={true} />);
 
       const disabledButton = screen.getByRole('button', { name: 'Edit testData test' });
       expect(disabledButton).toHaveAccessibleDescription('Cannot edit');
       expect(disabledButton).toHaveAttribute('aria-disabled');
 
-      const liveRegion = baseElement.querySelector('[aria-live]');
-      expect(liveRegion).toHaveTextContent('Cannot edit');
+      await waitFor(() => expect(document.querySelector('[aria-live]')).toHaveTextContent('Cannot edit'));
     });
 
     test('dynamically disables inline edit based on disabledReason callback', () => {

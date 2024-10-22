@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
-import LiveRegion from '../internal/components/live-region/index.js';
+import InternalLiveRegion from '../internal/components/live-region/internal';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
 import { ButtonGroupProps } from './interfaces.js';
@@ -60,7 +60,10 @@ const IconButtonItem = forwardRef(
           <Tooltip
             trackRef={containerRef}
             trackKey={item.id}
-            value={(showFeedback && <LiveRegion visible={true}>{item.popoverFeedback}</LiveRegion>) || item.text}
+            value={
+              (showFeedback && <InternalLiveRegion tagName="span">{item.popoverFeedback}</InternalLiveRegion>) ||
+              item.text
+            }
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
           />
         )}

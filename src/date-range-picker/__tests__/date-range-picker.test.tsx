@@ -9,6 +9,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/date-range-picker';
 import FormField from '../../../lib/components/form-field';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { LiveRegionController } from '../../../lib/components/internal/components/live-region/controller.js';
 import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import DateRangePickerWrapper from '../../../lib/components/test-utils/dom/date-range-picker';
@@ -16,8 +17,9 @@ import { changeMode } from './change-mode';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 
-import styles from '../../../lib/components/date-range-picker/styles.css.js';
 import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
+
+LiveRegionController.defaultDelay = 0;
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -256,7 +258,7 @@ describe('Date range picker', () => {
 
       wrapper.findDropdown()!.findApplyButton().click();
       expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-      expect(wrapper.findDropdown()!.findByClassName(styles['validation-section'])!.find('[aria-live]')).not.toBe(null);
+      expect(createWrapper().findAll('[aria-live]')[1]!.getElement()).toHaveTextContent('10 is not allowed.');
     });
 
     test('after rendering the error once, displays subsequent errors in real time', () => {
