@@ -9,7 +9,6 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -18,6 +17,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import {
   focusMarkers,

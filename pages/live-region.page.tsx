@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
-import LiveRegion from '~components/internal/components/live-region';
+import LiveRegion from '~components/live-region';
 
 export default function LiveRegionXSS() {
   return (

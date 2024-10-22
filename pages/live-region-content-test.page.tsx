@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 
 import { Box, SpaceBetween } from '~components';
-import LiveRegion from '~components/internal/components/live-region';
+import LiveRegion from '~components/live-region';
 
 export default function LiveRegionContentTestPage() {
   useEffect(() => {

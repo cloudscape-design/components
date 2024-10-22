@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context.js';
-import InternalLiveRegion from '../internal/components/live-region/internal';
+import InternalLiveRegion from '../live-region/internal';
 import { CodeEditorProps } from './interfaces';
 import { TabButton } from './tab-button';
 import { getStatusButtonId, PaneStatus } from './util';

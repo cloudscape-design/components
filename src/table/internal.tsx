@@ -13,7 +13,6 @@ import {
 import InternalContainer, { InternalContainerProps } from '../container/internal';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-component';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
@@ -31,6 +30,7 @@ import { useTableInteractionMetrics } from '../internal/hooks/use-table-interact
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
+import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
 import { TableTdElement } from './body-cell/td-element';

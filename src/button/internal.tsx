@@ -16,7 +16,6 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
@@ -29,6 +28,7 @@ import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-mod
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';

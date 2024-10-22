@@ -9,8 +9,8 @@ import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataFormFragment } from './analytics-metadata/interfaces';
 import { FormProps } from './interfaces';
 

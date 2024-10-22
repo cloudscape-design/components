@@ -8,9 +8,9 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { InternalButton } from '../../button/internal';
 import InternalHeader from '../../header/internal';
 import { ComponentFormatFunction } from '../../i18n/context';
-import InternalLiveRegion from '../../internal/components/live-region/internal';
 import useForwardFocus, { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import formatDateLocalized from '../../internal/utils/date-time/format-date-localized';
+import InternalLiveRegion from '../../live-region/internal';
 import { PaginationProps } from '../../pagination/interfaces';
 import InternalPagination from '../../pagination/internal';
 import InternalSpaceBetween from '../../space-between/internal';

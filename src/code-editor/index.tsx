@@ -9,7 +9,6 @@ import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -20,6 +19,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalLiveRegion from '../live-region/internal';
 import ErrorScreen from './error-screen';
 import { CodeEditorProps } from './interfaces';
 import { useChangeEffect } from './listeners';

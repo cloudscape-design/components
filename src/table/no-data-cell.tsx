@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalLiveRegion from '../internal/components/live-region/internal';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 
 import styles from './styles.css.js';

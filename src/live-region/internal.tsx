@@ -4,9 +4,9 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../../base-component';
-import { InternalBaseComponentProps } from '../../hooks/use-base-component';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { LiveRegionController } from './controller';
 import { LiveRegionProps } from './interfaces';
 
