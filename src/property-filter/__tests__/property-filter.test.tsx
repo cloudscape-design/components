@@ -76,6 +76,7 @@ const filteringProperties: readonly FilteringProperty[] = [
     groupValuesLabel: 'State values',
   },
 ];
+const stateProperty = filteringProperties.find(property => property.key === 'state')!;
 
 const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
@@ -200,6 +201,13 @@ describe('property filter parts', () => {
   });
 
   describe('async loading', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     test('calls onLoadItems with parsed property and operator when operator is selected', () => {
       const onLoadItems = jest.fn();
       const { propertyFilterWrapper: wrapper } = renderComponent({ onLoadItems });
@@ -250,6 +258,59 @@ describe('property filter parts', () => {
           }),
         })
       );
+    });
+
+    test('does not call onLoadItems when clear button is clicked and asyncProperties=false', () => {
+      const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'pending',
+        asyncProperties: false,
+      });
+
+      wrapper.focus();
+      wrapper.setInputValue('state = 123');
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
+      ]);
+
+      wrapper.findClearButton()!.click();
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toHaveLength(1);
+    });
+
+    test('calls onLoadItems when clear button is clicked and asyncProperties=true', () => {
+      const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'pending',
+        asyncProperties: true,
+      });
+
+      wrapper.focus();
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+      ]);
+
+      wrapper.setInputValue('state = 123');
+      expect(loadItemCalls).toHaveLength(2);
+
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
+      ]);
+
+      wrapper.findClearButton()!.click();
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
+        expect.objectContaining({ filteringText: '' }),
+      ]);
     });
 
     test('token editor has matched property options', () => {
