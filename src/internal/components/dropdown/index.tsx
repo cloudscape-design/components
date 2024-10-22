@@ -372,7 +372,7 @@ const Dropdown = ({
     const clickListener = (event: MouseEvent) => {
       // Since the listener is registered on the window, `event.target` will incorrectly point at the
       // shadow root if the component is rendered inside shadow DOM.
-      const target = event.composedPath()[0];
+      const target = event.composedPath ? event.composedPath()[0] : event.target;
       if (!nodeBelongs(dropdownRef.current, target) && !nodeBelongs(triggerRef.current, target)) {
         fireNonCancelableEvent(onDropdownClose);
       }

@@ -8,7 +8,8 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
-import { Focusable } from '../../utils/use-focus-control';
+import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
+import { BreadcrumbsSlotContext } from '../contexts';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
@@ -40,7 +41,11 @@ export interface ToolbarProps {
   activeDrawerId?: string | null;
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
+  globalDrawersFocusControl?: FocusControlMultipleStates;
   onActiveDrawerChange?: (drawerId: string | null) => void;
+  globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalDrawersIds?: ReadonlyArray<string>;
+  onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
 }
 
 interface AppLayoutToolbarImplementationProps {
@@ -55,7 +60,11 @@ function convertLegacyProps(toolbarProps: ToolbarProps, legacyProps: AppLayoutIn
     activeDrawerId: toolbarProps.activeDrawerId ?? legacyProps.activeDrawer?.id,
     drawers: toolbarProps.drawers ?? legacyProps.drawers,
     drawersFocusRef: toolbarProps.drawersFocusRef ?? legacyProps.drawersFocusControl?.refs.toggle,
+    globalDrawersFocusControl: toolbarProps.globalDrawersFocusControl,
     onActiveDrawerChange: toolbarProps.onActiveDrawerChange ?? legacyProps.onActiveDrawerChange,
+    globalDrawers: toolbarProps.globalDrawers ?? legacyProps.globalDrawers,
+    activeGlobalDrawersIds: toolbarProps.activeGlobalDrawersIds ?? legacyProps.activeGlobalDrawersIds,
+    onActiveGlobalDrawersChange: toolbarProps.onActiveGlobalDrawersChange ?? legacyProps.onActiveGlobalDrawersChange,
     hasNavigation: toolbarProps.hasNavigation ?? !!legacyProps.navigation,
     navigationOpen: toolbarProps.navigationOpen ?? legacyProps.navigationOpen,
     navigationFocusRef: toolbarProps.navigationFocusRef ?? legacyProps.navigationFocusControl?.refs.toggle,
@@ -86,6 +95,7 @@ export function AppLayoutToolbarImplementation({
     toolbarState,
     setToolbarState,
     setToolbarHeight,
+    globalDrawersFocusControl,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -93,6 +103,9 @@ export function AppLayoutToolbarImplementation({
     drawers,
     drawersFocusRef,
     onActiveDrawerChange,
+    globalDrawers,
+    activeGlobalDrawersIds,
+    onActiveGlobalDrawersChange,
     hasNavigation,
     navigationOpen,
     navigationFocusRef,
@@ -181,14 +194,16 @@ export function AppLayoutToolbarImplementation({
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
-            {breadcrumbs}
-            {discoveredBreadcrumbs && (
-              <BreadcrumbGroupImplementation
-                {...discoveredBreadcrumbs}
-                data-awsui-discovered-breadcrumbs={true}
-                __injectAnalyticsComponentMetadata={true}
-              />
-            )}
+            <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
+              {breadcrumbs ||
+                (discoveredBreadcrumbs && (
+                  <BreadcrumbGroupImplementation
+                    {...discoveredBreadcrumbs}
+                    data-awsui-discovered-breadcrumbs={true}
+                    __injectAnalyticsComponentMetadata={true}
+                  />
+                ))}
+            </BreadcrumbsSlotContext.Provider>
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
@@ -196,13 +211,17 @@ export function AppLayoutToolbarImplementation({
             <DrawerTriggers
               ariaLabels={ariaLabels}
               activeDrawerId={activeDrawerId ?? null}
-              drawers={drawers ?? []}
+              drawers={drawers?.filter(item => !!item.trigger) ?? []}
               drawersFocusRef={drawersFocusRef}
               onActiveDrawerChange={onActiveDrawerChange}
               splitPanelToggleProps={splitPanelToggleProps?.displayed ? splitPanelToggleProps : undefined}
               splitPanelFocusRef={splitPanelFocusRef}
               onSplitPanelToggle={onSplitPanelToggle}
               disabled={anyPanelOpenInMobile}
+              globalDrawersFocusControl={globalDrawersFocusControl}
+              globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
+              activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
+              onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
             />
           </div>
         )}

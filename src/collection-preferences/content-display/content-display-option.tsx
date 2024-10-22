@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
-import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 
-import DragHandle from '../../internal/components/drag-handle';
+import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalToggle from '../../toggle/internal';
 import { OptionWithVisibility } from './utils';
@@ -15,14 +14,15 @@ export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix
 
 export interface ContentDisplayOptionProps {
   dragHandleAriaLabel?: string;
-  listeners?: SyntheticListenerMap;
+  listeners?: DragHandleProps['listeners'];
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
+  disabled?: boolean;
 }
 
 const ContentDisplayOption = forwardRef(
   (
-    { dragHandleAriaLabel, listeners, onToggle, option }: ContentDisplayOptionProps,
+    { dragHandleAriaLabel, listeners, onToggle, option, disabled }: ContentDisplayOptionProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const idPrefix = useUniqueId(componentPrefix);
@@ -34,7 +34,7 @@ const ContentDisplayOption = forwardRef(
 
     return (
       <div ref={ref} className={getClassName('content')}>
-        <DragHandle attributes={dragHandleAttributes} listeners={listeners} />
+        <DragHandle disabled={disabled} attributes={dragHandleAttributes} listeners={listeners} />
 
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}

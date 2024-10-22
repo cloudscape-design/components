@@ -21,7 +21,7 @@ export default function DraggableOption({
   onToggle: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
 }) {
-  const { isDragging, isSorting, listeners, setNodeRef, transform } = useSortable({
+  const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
     id: option.id,
   });
   const style = {
@@ -48,6 +48,7 @@ export default function DraggableOption({
         dragHandleAriaLabel={dragHandleAriaLabel}
         onToggle={onToggle}
         option={option}
+        disabled={attributes['aria-disabled']}
       />
     </li>
   );

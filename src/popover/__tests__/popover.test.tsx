@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';

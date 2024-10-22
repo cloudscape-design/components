@@ -6,6 +6,7 @@
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
+@use '../../constants.scss' as constants;
 
 .universal-toolbar {
   background-color: awsui.$color-background-layout-panel-content;
@@ -15,7 +16,7 @@
   //right padding set in child trigger-container below for focus indicator to show correctly
   padding-inline-end: 0;
   position: sticky;
-  z-index: 840;
+  z-index: constants.$toolbar-z-index;
   @include styles.with-motion {
     transition: ease awsui.$motion-duration-refresh-only-slow;
     transition-property: inset-block-start, opacity;

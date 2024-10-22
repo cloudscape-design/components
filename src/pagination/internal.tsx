@@ -11,6 +11,7 @@ import {
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
+import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataPaginationClick } from './analytics-metadata/interfaces';
@@ -99,7 +100,6 @@ function PageNumber({ pageIndex, ...rest }: PageButtonProps) {
 }
 
 type InternalPaginationProps = PaginationProps & InternalBaseComponentProps;
-
 export default function InternalPagination({
   openEnd,
   currentPageIndex,
@@ -147,7 +147,11 @@ export default function InternalPagination({
 
   const previousButtonDisabled = disabled || currentPageIndex === 1;
   const nextButtonDisabled = disabled || (!openEnd && (pagesCount === 0 || currentPageIndex === pagesCount));
-
+  const tableComponentContext = useTableComponentsContext();
+  if (tableComponentContext?.paginationRef?.current) {
+    tableComponentContext.paginationRef.current.currentPageIndex = currentPageIndex;
+    tableComponentContext.paginationRef.current.totalPageCount = pagesCount;
+  }
   return (
     <ul
       aria-label={paginationLabel}

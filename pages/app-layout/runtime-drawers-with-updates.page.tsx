@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
-import { AppLayout, ContentLayout, Header, HelpPanel, Link, SpaceBetween, Toggle } from '~components';
+import { AppLayout, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween, Toggle } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
 
@@ -68,6 +68,14 @@ export default function WithDrawers() {
                 <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
                   Use Tools
                 </Toggle>
+
+                <Button
+                  onClick={() => {
+                    awsuiPlugins.appLayout.openDrawer('circle-global');
+                  }}
+                >
+                  Open runtime drawer
+                </Button>
 
                 <Header variant="h2">Security Drawer Updates</Header>
                 <Toggle

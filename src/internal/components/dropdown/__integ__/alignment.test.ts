@@ -12,21 +12,9 @@ describe('Dropdown and trigger element alignment', () => {
 
       function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
         return useBrowser(async browser => {
-          const runInIframe = async (callback: () => Promise<void>) => {
-            if (pageName !== 'expandable-iframe') {
-              // noop if the page does not use iframes
-              return callback();
-            }
-            const iframeEl = await browser.$('#expandable-dropdowns-iframe');
-            await iframeEl.waitForDisplayed();
-            await browser.switchToFrame(iframeEl);
-            await callback();
-            // go back to top
-            await browser.switchToFrame(null);
-          };
           await browser.url(`#/light/dropdown/${pageName}?expandToViewport=${expandToViewport}`);
           const page = new BasePageObject(browser);
-          await runInIframe(async () => {
+          await page.runInsideIframe('#expandable-dropdowns-iframe', pageName === 'expandable-iframe', async () => {
             await page.waitForVisible(createWrapper().findAutosuggest().toSelector());
             await testFn(page);
           });

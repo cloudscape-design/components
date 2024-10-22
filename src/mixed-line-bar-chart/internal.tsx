@@ -253,6 +253,7 @@ export default function InternalMixedLineBarChart<T extends number | string | Da
         showChart ? (
           <ChartContainer
             fitHeight={fitHeight}
+            hasFilters={!!showFilters}
             height={height}
             xScaleType={xScaleType}
             yScaleType={yScaleType}

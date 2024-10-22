@@ -4,6 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { getUrlParams } from './utils';
 
 const wrapper = createWrapper();
 
@@ -32,21 +33,21 @@ function setupTest({ url }: { url: string }, testFn: (page: GlobalBreadcrumbsPag
   });
 }
 
-describe.each(['classic', 'visual-refresh'])('%s', theme => {
-  const visualRefresh = theme === 'visual-refresh' ? 'true' : 'false';
+describe.each(['classic', 'refresh'])('%s', theme => {
+  const visualRefresh = theme === 'refresh' ? 'true' : 'false';
   test(
     'does not work in this design',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh }).toString()}`,
+        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh, hasOwnBreadcrumbs: 'true' }).toString()}`,
       },
       async page => {
-        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
-        await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(2);
 
         await page.toggleExtraBreadcrumb();
-        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
-        await expect(page.getBreadcrumbsCount()).resolves.toEqual(2);
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(3);
       }
     )
   );
@@ -57,31 +58,53 @@ describe('classic', () => {
     'does not react to the feature flag even if it is enabled',
     setupTest(
       {
-        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutWidget: 'true' }).toString()}`,
+        url: `#/light/app-layout/global-breadcrumbs/?${new URLSearchParams({ visualRefresh: 'false', appLayoutWidget: 'true', hasOwnBreadcrumbs: 'true' }).toString()}`,
       },
       async page => {
         await page.toggleExtraBreadcrumb();
-        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
-        await expect(page.getBreadcrumbsCount()).resolves.toEqual(2);
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(3);
       }
     )
   );
 });
 
-describe('visual-refresh-toolbar', () => {
+describe('refresh-toolbar', () => {
   test(
     'deduplicates breadcrumbs',
-    setupTest({ url: `#/light/app-layout/global-breadcrumbs/?visualRefresh=true&appLayoutWidget=true` }, async page => {
-      await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
-      await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
+    setupTest(
+      {
+        url: `#/light/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'false' })}`,
+      },
+      async page => {
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
 
-      await page.toggleExtraBreadcrumb();
-      await expect(page.getRootBreadcrumbText()).resolves.toEqual('Dynamic');
-      await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
+        await page.toggleExtraBreadcrumb();
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Dynamic');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
 
-      await page.toggleExtraBreadcrumb();
-      await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
-      await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
-    })
+        await page.toggleExtraBreadcrumb();
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Default');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(1);
+      }
+    )
+  );
+
+  test(
+    'does not deduplicate breadcrumbs if breadcrumbs slot is not empty',
+    setupTest(
+      {
+        url: `#/light/app-layout/global-breadcrumbs/?${getUrlParams('refresh-toolbar', { hasOwnBreadcrumbs: 'true' })}`,
+      },
+      async page => {
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(2);
+
+        await page.toggleExtraBreadcrumb();
+        await expect(page.getRootBreadcrumbText()).resolves.toEqual('Own');
+        await expect(page.getBreadcrumbsCount()).resolves.toEqual(3);
+      }
+    )
   );
 });

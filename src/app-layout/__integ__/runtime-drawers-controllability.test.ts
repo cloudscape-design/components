@@ -7,9 +7,9 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findAppLayout();
 
-for (const visualRefresh of [true, false]) {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
-    describe(`page=${pageName} visualRefresh=${visualRefresh}`, () => {
+    describe(`page=${pageName}`, () => {
       function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
         return useBrowser(async browser => {
           const page = new BasePageObject(browser);
@@ -18,7 +18,8 @@ for (const visualRefresh of [true, false]) {
             `#/light/app-layout/${pageName}?${new URLSearchParams({
               hasDrawers: 'false',
               hasTools: 'true',
-              visualRefresh: `${visualRefresh}`,
+              visualRefresh: `${theme !== 'classic'}`,
+              appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
             }).toString()}`
           );
           await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
@@ -101,4 +102,4 @@ for (const visualRefresh of [true, false]) {
       );
     });
   }
-}
+});

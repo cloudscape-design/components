@@ -133,6 +133,7 @@ const DateRangePicker = React.forwardRef(
       customAbsoluteRangeControl,
       absoluteFormat = 'iso',
       hideTimeOffset,
+      customRelativeRangeUnits,
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -196,7 +197,12 @@ const DateRangePicker = React.forwardRef(
     };
 
     const onApply = (newValue: null | DateRangePickerProps.Value): DateRangePickerProps.ValidationResult => {
-      const validationResult = isValidRange(newValue);
+      const formattedValue = formatValue(newValue, {
+        dateOnly,
+        timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
+      });
+
+      const validationResult = isValidRange(formattedValue);
       if (validationResult?.valid === false) {
         return validationResult;
       }
@@ -213,12 +219,7 @@ const DateRangePicker = React.forwardRef(
           }
         }
       }
-      fireNonCancelableEvent(onChange, {
-        value: formatValue(newValue, {
-          dateOnly,
-          timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
-        }),
-      });
+      fireNonCancelableEvent(onChange, { value: formattedValue });
       return validationResult || { valid: true };
     };
 
@@ -277,34 +278,32 @@ const DateRangePicker = React.forwardRef(
     });
 
     const trigger = (
-      <div className={styles['trigger-wrapper']}>
-        <ButtonTrigger
-          ref={triggerRef}
-          id={controlId}
-          invalid={invalid}
-          warning={warning}
-          ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
-          ariaLabel={i18nStrings?.ariaLabel}
-          ariaDescribedby={ariaDescribedby}
-          className={clsx(styles.label, {
-            [styles['label-enabled']]: !readOnly && !disabled,
-          })}
-          hideCaret={true}
-          onClick={() => {
-            setIsDropDownOpen(true);
-          }}
-          disabled={disabled}
-          readOnly={readOnly}
-          ariaHasPopup="dialog"
-        >
-          <span className={styles['trigger-flexbox']}>
-            <span className={styles['icon-wrapper']}>
-              <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
-            </span>
-            <span id={triggerContentId}>{formattedDate}</span>
+      <ButtonTrigger
+        ref={triggerRef}
+        id={controlId}
+        invalid={invalid}
+        warning={warning}
+        ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
+        ariaLabel={i18nStrings?.ariaLabel}
+        ariaDescribedby={ariaDescribedby}
+        className={clsx(styles.label, {
+          [styles['label-enabled']]: !readOnly && !disabled,
+        })}
+        hideCaret={true}
+        onClick={() => {
+          setIsDropDownOpen(true);
+        }}
+        disabled={disabled}
+        readOnly={readOnly}
+        ariaHasPopup="dialog"
+      >
+        <span className={styles['trigger-flexbox']}>
+          <span className={styles['icon-wrapper']}>
+            <InternalIcon name="calendar" variant={disabled || readOnly ? 'disabled' : 'normal'} />
           </span>
-        </ButtonTrigger>
-      </div>
+          <span id={triggerContentId}>{formattedDate}</span>
+        </span>
+      </ButtonTrigger>
     );
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
@@ -345,6 +344,8 @@ const DateRangePicker = React.forwardRef(
                 i18nStrings={i18nStrings}
                 onClear={onClear}
                 onApply={onApply}
+                getTimeOffset={getTimeOffset}
+                timeOffset={timeOffset}
                 relativeOptions={relativeOptions}
                 isValidRange={isValidRange}
                 dateOnly={dateOnly}
@@ -353,6 +354,7 @@ const DateRangePicker = React.forwardRef(
                 ariaLabelledby={ariaLabelledby}
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
+                customRelativeRangeUnits={customRelativeRangeUnits}
               />
             )}
           </ResetContextsForModal>

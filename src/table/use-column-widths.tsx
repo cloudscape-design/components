@@ -44,7 +44,13 @@ function updateWidths(
   columnId: PropertyKey
 ) {
   const column = visibleColumns.find(column => column.id === columnId);
-  const minWidth = typeof column?.minWidth === 'number' ? column.minWidth : DEFAULT_COLUMN_WIDTH;
+  let minWidth = DEFAULT_COLUMN_WIDTH;
+  if (typeof column?.width === 'number' && column.width < DEFAULT_COLUMN_WIDTH) {
+    minWidth = column?.width;
+  }
+  if (typeof column?.minWidth === 'number') {
+    minWidth = column?.minWidth;
+  }
   newWidth = Math.max(newWidth, minWidth);
   if (oldWidths.get(columnId) === newWidth) {
     return oldWidths;

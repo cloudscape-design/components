@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export type FunnelType = 'single-page' | 'multi-page';
-export type FlowType = 'create' | 'edit' | 'home' | 'dashboard' | 'view-resource';
+export type FunnelType = 'single-page' | 'multi-page' | 'modal';
+export type FlowType = 'create' | 'edit' | 'delete' | 'home' | 'dashboard' | 'view-resource';
 export interface AnalyticsMetadata {
   instanceIdentifier?: string;
   flowType?: FlowType;
@@ -23,6 +23,8 @@ export interface FunnelErrorProps extends BaseFunnelProps {
 
 export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteractionId'> {
   flowType?: FlowType;
+  resourceType?: string;
+  funnelName: string;
   funnelNameSelector: string;
   totalFunnelSteps: number;
   optionalStepNumbers: number[];
@@ -182,6 +184,7 @@ export interface IPerformanceMetrics {
 
 export interface ComponentMountedProps {
   componentName: string;
+  taskInteractionId?: string;
   details: Record<string, string | boolean | number | undefined>;
 }
 export type ComponentMountedMethod = (props: ComponentMountedProps) => string;

@@ -7,6 +7,7 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
+import { getDrawerTopOffset } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -29,7 +30,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
-  const drawersTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
+  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {

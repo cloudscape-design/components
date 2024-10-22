@@ -6,7 +6,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getNameFromSelector, getSubStepAllSelector } from '../internal/analytics/selectors';
+import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
@@ -36,8 +36,8 @@ const Alert = React.forwardRef(
 
     useEffect(() => {
       if (funnelInteractionId && visible && type === 'error' && funnelState.current !== 'complete') {
-        const stepName = getNameFromSelector(stepNameSelector);
-        const subStepName = getNameFromSelector(subStepNameSelector);
+        const stepName = getTextFromSelector(stepNameSelector);
+        const subStepName = getTextFromSelector(subStepNameSelector);
 
         errorCount.current++;
 

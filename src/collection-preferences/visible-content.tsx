@@ -5,6 +5,7 @@ import React from 'react';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalToggle from '../toggle/internal';
+import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';
 import { CollectionPreferencesProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -71,7 +72,7 @@ export default function VisibleContentPreference({
 
   const outerGroupLabelId = `${idPrefix}-outer`;
   return (
-    <div className={styles['visible-content']}>
+    <div className={styles['visible-content']} {...getAnalyticsInnerContextAttribute('visibleContent')}>
       <h3 {...className('title')} id={outerGroupLabelId}>
         {title}
       </h3>

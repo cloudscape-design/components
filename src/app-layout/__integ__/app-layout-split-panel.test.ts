@@ -72,19 +72,31 @@ class AppLayoutSplitViewPage extends BasePageObject {
         return this.browser.execute(contentSelector => {
           return getComputedStyle(document.querySelector(contentSelector)!.parentElement!.parentElement!).marginBottom;
         }, contentSelector);
-      case 'visual-refresh':
+      case 'refresh':
         return this.browser.execute(contentSelector => {
           return getComputedStyle(document.querySelector(contentSelector)!).paddingBottom;
         }, contentSelector);
-      case 'visual-refresh-toolbar':
+      case 'refresh-toolbar':
         return this.browser.execute(contentSelector => {
           return getComputedStyle(document.querySelector(contentSelector)!.parentElement!).paddingBottom;
         }, contentSelector);
     }
   }
+
+  hasPageScrollbar() {
+    return this.browser.execute(
+      () => window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight
+    );
+  }
+
+  verifySplitPanelPosition(targetPosition: 'side' | 'bottom') {
+    return targetPosition === 'side'
+      ? this.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())
+      : this.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector());
+  }
 }
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   function setupTest(
     testFn: (page: AppLayoutSplitViewPage) => Promise<void>,
     url = '#/light/app-layout/with-split-panel'
@@ -93,8 +105,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       const page = new AppLayoutSplitViewPage(browser);
       await page.setWindowSize(viewports.desktop);
       const params = new URLSearchParams({
-        visualRefresh: `${theme.startsWith('visual-refresh')}`,
-        appLayoutToolbar: `${theme === 'visual-refresh-toolbar'}`,
+        visualRefresh: `${theme.startsWith('refresh')}`,
+        appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       });
       await browser.url(`${url}?${params.toString()}`);
       await page.waitForVisible(wrapper.findContentRegion().toSelector());
@@ -183,7 +195,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       await expect(page.getPanelPosition()).resolves.toEqual('bottom');
       // in VR design, split panel keeps same size as it was open on the side
       const { height: windowHeight } = await page.getViewportSize();
-      const expectedBottomOffset = theme === 'visual-refresh' ? windowHeight / 2 + 40 + 'px' : '160px';
+      const expectedBottomOffset = theme === 'refresh' ? windowHeight / 2 + 40 + 'px' : '160px';
       await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(expectedBottomOffset);
     })
   );
@@ -251,8 +263,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         // different design allows for different split panel max width
         const expectedWidth = {
           classic: 520,
-          'visual-refresh': name === 'paddings enabled' ? 445 : 469,
-          'visual-refresh-toolbar': 592,
+          refresh: name === 'paddings enabled' ? 445 : 469,
+          'refresh-toolbar': 592,
         };
         expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
       }, url)
@@ -328,7 +340,7 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
 
   describe('interaction with table sticky header', () => {
     // bottom padding is included into the offset in VR but not in classic
-    const splitPanelPadding = theme === 'visual-refresh' ? 40 : 0;
+    const splitPanelPadding = theme === 'refresh' ? 40 : 0;
 
     test(
       'should resize main content area when switching to side',
@@ -351,4 +363,50 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
       }, '#/light/app-layout/with-full-page-table-and-split-panel')
     );
   });
+
+  test(
+    'forces split panel to the bottom or allows on side when page scrollbar appears',
+    useBrowser(async browser => {
+      const page = new AppLayoutSplitViewPage(browser);
+      const dimensions = {
+        classic: { height: 1400, width: 945 },
+        refresh: { height: 1200, width: 1020 },
+        'refresh-toolbar': { height: 1400, width: 875 },
+      }[theme];
+      const content = wrapper.findContentRegion();
+
+      // Split panel is forced to the bottom when not enough horizontal space.
+      await page.setWindowSize(dimensions);
+      const params = new URLSearchParams({
+        splitPanelPosition: 'side',
+        visualRefresh: `${theme.startsWith('refresh')}`,
+        appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
+      });
+      await browser.url(`#/light/app-layout/with-split-panel?${params.toString()}`);
+      await page.waitForVisible(content.toSelector());
+      await page.click(content.findContainer('[data-testid="container-1"]').findHeader().findButton().toSelector());
+      await page.click(content.findContainer('[data-testid="container-1"]').findHeader().findButton().toSelector());
+
+      // Open split panel and ensure it is forced to the bottom.
+      await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
+      await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(true);
+
+      // Make split panel smaller to ensure no page-level scrollbar.
+      const { height: screenHeight } = await page.getViewportSize();
+      await page.dragResizerTo({ x: 0, y: screenHeight });
+      await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(false);
+
+      // Split panel transitions to the side when enough horizontal space.
+      await page.setWindowSize({ ...dimensions, width: dimensions.width + 25 });
+      await expect(page.verifySplitPanelPosition('side')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(true);
+
+      // Split panel transitions to the bottom when not enough horizontal space.
+      await page.setWindowSize(dimensions);
+      await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
+      await expect(page.hasPageScrollbar()).resolves.toBe(false);
+    })
+  );
 });

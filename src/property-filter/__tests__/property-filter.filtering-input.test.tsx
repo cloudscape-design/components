@@ -4,7 +4,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import PropertyFilter from '../../../lib/components/property-filter';
 import {
@@ -406,6 +406,15 @@ describe('count text', () => {
     const { propertyFilterWrapper: wrapper } = renderComponent({
       countText: '5 matches',
       query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+    });
+    expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
+  });
+
+  test('is visible when there is at least 1 token group', () => {
+    const { propertyFilterWrapper: wrapper } = renderComponent({
+      enableTokenGroups: true,
+      countText: '5 matches',
+      query: { operation: 'or', tokens: [], tokenGroups: [{ propertyKey: 'string', value: 'first', operator: ':' }] },
     });
     expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
   });

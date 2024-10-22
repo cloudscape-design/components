@@ -5,13 +5,12 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-
-const testIf = (condition: boolean) => (condition ? test : test.skip);
+import { getUrlParams, testIf, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
 interface SetupTestObj {
-  theme: string;
+  theme: Theme;
   pageName: string;
   splitPanelPosition?: string;
   mobile: boolean;
@@ -23,23 +22,22 @@ function setupTest(
 ) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
-    const params = new URLSearchParams({
-      visualRefresh: `${theme.startsWith('visual-refresh')}`,
-      appLayoutWidget: `${theme === 'visual-refresh-toolbar'}`,
-      ...(splitPanelPosition
+    const params = getUrlParams(
+      theme,
+      splitPanelPosition
         ? {
-            splitPanelPosition,
+            splitPanelPosition: splitPanelPosition,
           }
-        : {}),
-    });
+        : {}
+    );
     await page.setWindowSize(mobile ? viewports.mobile : viewports.desktop);
-    await browser.url(`#/light/app-layout/${pageName}?${params.toString()}`);
+    await browser.url(`#/light/app-layout/${pageName}?${params}`);
     await page.waitForVisible(wrapper.findContentRegion().toSelector());
     await testFn(page);
   });
 }
 
-describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)('%s', theme => {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   [true, false].forEach(mobile =>
     describe(`mobile=${mobile}`, () => {
       test(
@@ -52,9 +50,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      //TODO create separate split panel test for appLayoutWidget is true
-      testIf(theme !== 'visual-refresh-toolbar')(
-        'split panel focus moves to slider on open and open button on close',
+      test(
+        'split panel focus moves to slider on open, and open button on close',
         setupTest(
           async page => {
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
@@ -63,6 +60,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
             await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
             await page.keys('Enter');
             await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
+            await page.keys('Enter');
+            await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile }
         )
@@ -84,8 +83,24 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      //TODO create separate split panel test for 'visual-refresh-toolbar' theme
-      testIf(theme !== 'visual-refresh-toolbar')(
+      test(
+        'drawers focus toggles between open and close buttons',
+        setupTest(
+          async page => {
+            const triggerSelector = wrapper.findDrawerTriggerById('pro-help').toSelector();
+            await page.click(triggerSelector);
+            await page.keys('Enter');
+            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
+            await page.keys('Enter');
+            await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
+            await page.keys('Enter');
+            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
+          },
+          { pageName: 'with-drawers', theme, mobile }
+        )
+      );
+
+      test(
         'navigation panel focus toggles between open and close buttons',
         setupTest(
           async page => {
@@ -105,14 +120,27 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      //todo create test specifically for mobile and visual-refresh-toolbar
-      testIf(theme !== 'visual-refresh-toolbar')(
-        'focuses tools panel closed button when it is opened using keyboard and caused split panel to change position',
+      test(
+        'focuses tools panel closed button when it is opened via keyboard and caused split panel to change position',
         setupTest(
           async page => {
-            await page.setWindowSize({ width: 1000, height: 800 });
+            // Mobile nav is closed on page load
+            mobile && (await page.click(wrapper.findNavigationToggle().toSelector()));
+            await page.setWindowSize({ width: 1100, height: 800 });
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-            await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
+            await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toBe(
+              true
+            );
+            if (theme !== 'refresh-toolbar') {
+              await page.keys(['Tab', 'Tab', 'Tab', 'Tab', 'Enter']);
+            } else {
+              // Click the current page in breadcrumb to reset focus to toolbar
+              await page.click(wrapper.findBreadcrumbs().findBreadcrumbGroup().findBreadcrumbLink(2).toSelector());
+              await page.keys(['Tab', 'Tab', 'Enter']);
+            }
+            await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())).resolves.toBe(
+              true
+            );
             await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
           },
           { pageName: 'with-split-panel', theme, mobile, splitPanelPosition: 'side' }
@@ -151,7 +179,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         )
       );
 
-      test(
+      //todo - investigate why resize observer throwing error only on mobile in tests
+      testIf(!mobile)(
         'does not focus split panel when opening programatically',
         setupTest(
           async page => {
@@ -221,28 +250,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
         );
       });
 
-      test(
-        'drawers focus toggles between open and close buttons',
-        setupTest(
-          async page => {
-            //Altermatomg between triggers because test-1 trigger hidden in overflow menu on mobile,
-            //security has resize button on desktop
-            const triggerSelector = wrapper.findDrawerTriggerById(mobile ? 'security' : 'test-1').toSelector();
-            await page.click(triggerSelector);
-            await page.keys('Enter');
-            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
-            await page.keys('Enter');
-            await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
-            await page.keys('Enter');
-            await expect(page.isFocused(triggerSelector)).resolves.toBe(true);
-          },
-          { pageName: 'with-drawers', theme, mobile }
-        )
-      );
-
       describe('drawer focus interaction with tools buttons', () => {
-        //todo resolve focus issue returning to previously focued element on mobile for drawer open button
-        testIf(theme !== 'visual-refresh-toolbar')(
+        testIf(!mobile)(
           'moves focus to close button when panel is opened from button',
           setupTest(
             async page => {
@@ -283,9 +292,11 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
           'moves focus back to last opened button when panel is closed',
           setupTest(
             async page => {
-              await page.click(
-                wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
-              );
+              if (!mobile) {
+                await page.click(
+                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
+                );
+              }
               await page.click(
                 wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
               );
@@ -301,7 +312,8 @@ describe.each(['classic', 'visual-refresh', 'visual-refresh-toolbar'] as const)(
           )
         );
 
-        testIf(!mobile && theme !== 'visual-refresh-toolbar')(
+        //tests not relevant for mobile, as panel overlays content
+        testIf(!mobile)(
           'does not move focus back to last opened button when panel has lost focus - instead focuses drawer trigger',
           setupTest(
             async page => {

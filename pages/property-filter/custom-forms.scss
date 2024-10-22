@@ -10,8 +10,14 @@
   grid-template-columns: auto;
   gap: awsui.$space-scaled-s;
 }
+
 @media (min-width: 688px) {
   .date-time-form {
     grid-template-columns: repeat(2, minmax(100px, max-content));
   }
+}
+
+.multiselect-form {
+  min-width: 200px;
+  max-width: 250px;
 }

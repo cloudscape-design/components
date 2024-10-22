@@ -147,6 +147,7 @@ describe('useChartModel', () => {
         externalSeries: series,
         visibleSeries: series,
         popoverRef: { current: null },
+        statusType: 'finished',
       });
       wrapper.focus();
 
@@ -182,6 +183,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
         wrapper.focus();
 
@@ -215,6 +217,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
         wrapper.focus();
         expect(wrapper.findHighlightedX()?.getElement()).toHaveTextContent('0');
@@ -238,6 +241,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
         wrapper.focus();
 
@@ -273,6 +277,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
         wrapper.focus();
 
@@ -299,6 +304,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
 
         const mouseMoveEvent = {
@@ -335,6 +341,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
 
         const mouseMoveEvent = {
@@ -379,6 +386,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
 
         const mouseMoveEvent = {
@@ -415,6 +423,7 @@ describe('useChartModel', () => {
           externalSeries: series,
           visibleSeries: series,
           popoverRef: { current: null },
+          statusType: 'finished',
         });
 
         const mouseMoveEvent = {

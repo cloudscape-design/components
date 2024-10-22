@@ -13,8 +13,8 @@ import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytic
 import {
   DATA_ATTR_FUNNEL_VALUE,
   getFunnelValueSelector,
-  getNameFromSelector,
   getSubStepAllSelector,
+  getTextFromSelector,
 } from '../internal/analytics/selectors';
 import LiveRegion from '../internal/components/live-region';
 import Tooltip from '../internal/components/tooltip/index.js';
@@ -39,6 +39,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
   variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
   badge?: boolean;
+  analyticsAction?: string;
   __nativeAttributes?:
     | (React.HTMLAttributes<HTMLAnchorElement> & React.HTMLAttributes<HTMLButtonElement>)
     | Record<`data-${string}`, string>;
@@ -84,6 +85,7 @@ export const InternalButton = React.forwardRef(
       __injectAnalyticsComponentMetadata = false,
       __title,
       __emitPerformanceMarks = true,
+      analyticsAction = 'click',
       ...props
     }: InternalButtonProps,
     ref: React.Ref<ButtonProps.Ref>
@@ -131,8 +133,8 @@ export const InternalButton = React.forwardRef(
         fireCancelableEvent(onFollow, { href, target }, event);
 
         if ((iconName === 'external' || target === '_blank') && funnelInteractionId) {
-          const stepName = getNameFromSelector(stepNameSelector);
-          const subStepName = getNameFromSelector(subStepNameSelector);
+          const stepName = getTextFromSelector(stepNameSelector);
+          const subStepName = getTextFromSelector(subStepNameSelector);
 
           FunnelMetrics.externalLinkInteracted({
             funnelInteractionId,
@@ -170,7 +172,7 @@ export const InternalButton = React.forwardRef(
     const analyticsMetadata: GeneratedAnalyticsMetadataButtonFragment = disabled
       ? {}
       : {
-          action: 'click',
+          action: analyticsAction,
           detail: { label: { root: 'self' } },
         };
     if (__injectAnalyticsComponentMetadata) {

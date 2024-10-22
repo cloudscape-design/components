@@ -5,6 +5,7 @@ import { render } from '@testing-library/react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
@@ -199,3 +200,38 @@ export const manyDrawers: Array<AppLayoutProps.Drawer> = [
 export const manyDrawersWithBadges: Array<AppLayoutProps.Drawer> = Array.from({ length: 100 }, (_, index) =>
   getDrawerItem(`${index}`, true)
 );
+
+class AppLayoutDrawerWrapper extends ComponentWrapper {
+  isActive(): boolean {
+    return this.element.classList.contains(testutilStyles['active-drawer']);
+  }
+}
+
+export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
+  return {
+    findActiveDrawers(): Array<ElementWrapper> {
+      return wrapper.findAllByClassName(testutilStyles['active-drawer']);
+    },
+
+    findDrawerById(id: string): AppLayoutDrawerWrapper | null {
+      const element = wrapper.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
+      return element ? new AppLayoutDrawerWrapper(element.getElement()) : null;
+    },
+
+    findGlobalDrawersTriggers(): ElementWrapper<HTMLButtonElement>[] {
+      return wrapper.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger-global']);
+    },
+
+    findResizeHandleByActiveDrawerId(id: string): ElementWrapper | null {
+      return wrapper.find(
+        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['drawers-slider']}`
+      );
+    },
+
+    findCloseButtonByActiveDrawerId(id: string): ElementWrapper | null {
+      return wrapper.find(
+        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-close-button']}`
+      );
+    },
+  };
+};

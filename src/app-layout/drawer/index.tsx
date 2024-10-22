@@ -177,8 +177,8 @@ const DrawerTrigger = React.forwardRef(
       <ToggleButton
         ref={ref}
         className={testUtilsClassName}
-        iconName={trigger.iconName}
-        iconSvg={trigger.iconSvg}
+        iconName={trigger!.iconName}
+        iconSvg={trigger!.iconSvg}
         ariaLabel={ariaLabel}
         ariaExpanded={ariaExpanded}
         ariaControls={ariaControls}

@@ -11,7 +11,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
+describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ theme, size }) => {
   test('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
 
@@ -122,13 +122,19 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
 
           const toggleElement = findToggle(wrapper).getElement();
 
-          if (landmarks[0].getElement().contains(toggleElement)) {
-            expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'false');
+          if (theme === 'refresh-toolbar') {
+            // toggles are always visible, no need to test for aria-hidden
+            expect(landmarks[0].getElement()).toContainElement(toggleElement);
             expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'true');
           } else {
-            expect(landmarks[1].getElement()).toContainElement(toggleElement);
-            expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
-            expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'true');
+            if (landmarks[0].getElement().contains(toggleElement)) {
+              expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'false');
+              expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'true');
+            } else {
+              expect(landmarks[1].getElement()).toContainElement(toggleElement);
+              expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
+              expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'true');
+            }
           }
         });
 
@@ -142,13 +148,19 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
           expect(landmarks).toHaveLength(2);
           const toggleElement = findToggle(wrapper).getElement();
 
-          if (landmarks[0].getElement().contains(toggleElement)) {
-            expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'true');
+          if (theme === 'refresh-toolbar') {
+            // toggles are always visible, no need to test for aria-hidden
+            expect(landmarks[0].getElement()).toContainElement(toggleElement);
             expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
           } else {
-            expect(landmarks[1].getElement()).toContainElement(toggleElement);
-            expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'true');
-            expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'false');
+            if (landmarks[0].getElement().contains(toggleElement)) {
+              expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'true');
+              expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'false');
+            } else {
+              expect(landmarks[1].getElement()).toContainElement(toggleElement);
+              expect(landmarks[1].getElement()).toHaveAttribute('aria-hidden', 'true');
+              expect(landmarks[0].getElement()).toHaveAttribute('aria-hidden', 'false');
+            }
           }
         });
 
@@ -181,7 +193,10 @@ describeEachAppLayout({ themes: ['classic', 'refresh'] }, ({ size }) => {
 
           const { wrapper } = renderComponent(<AppLayout ariaLabels={labels} />);
           expect(findToggle(wrapper).getElement()).toHaveAttribute('aria-label', 'toggle');
-          expect(findLandmarks(wrapper)[0].getElement()).toHaveAttribute('aria-label', 'landmark');
+          expect(findLandmarks(wrapper)[theme === 'refresh-toolbar' ? 1 : 0].getElement()).toHaveAttribute(
+            'aria-label',
+            'landmark'
+          );
         });
 
         test('Close button does have a label if it is defined', () => {

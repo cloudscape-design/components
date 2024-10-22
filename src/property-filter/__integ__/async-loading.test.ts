@@ -155,7 +155,7 @@ const testCases: TestCase[] = [
       { command: 'open-token-editor', result: [] },
       {
         command: 'open-value-edit',
-        result: [{ firstPage: true, samePage: false, filteringText: '', filteringProperty }],
+        result: [{ firstPage: true, samePage: false, filteringProperty, filteringOperator: ':', filteringText: '1' }],
       },
     ],
   ],

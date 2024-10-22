@@ -7,6 +7,14 @@ import Multiselect, { MultiselectProps } from '~components/multiselect';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
+const extraOptions = [...Array(30).keys()].map(n => {
+  const numberToDisplay = (n + 5).toString();
+  return {
+    value: numberToDisplay,
+    label: `Option ${n + 5}`,
+  };
+});
+
 const options: MultiselectProps.Options = [
   { value: 'first', label: 'Simple' },
   { value: 'second', label: 'With small icon', iconName: 'folder' },
@@ -24,6 +32,8 @@ const options: MultiselectProps.Options = [
     disabled: true,
     disabledReason: 'disabled reason',
   },
+  ...extraOptions,
+  { label: 'Last option', disabled: true, disabledReason: 'disabled reason' },
 ];
 
 export default function MultiselectPage() {

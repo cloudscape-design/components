@@ -2,11 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
-import { act, render } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
+  getGlobalDrawersTestUtils,
   isDrawerTriggerWithBadge,
   testDrawer,
 } from './utils';
@@ -17,7 +18,9 @@ import { DrawerConfig } from '../../../lib/components/internal/plugins/controlle
 import createWrapper from '../../../lib/components/test-utils/dom';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
+import { Button } from '../../../lib/components';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
@@ -29,10 +32,16 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+  const { container, rerender, getByTestId } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
+  const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
   await delay();
-  return { wrapper, rerender };
+  return {
+    wrapper,
+    globalDrawersWrapper,
+    rerender,
+    getByTestId,
+  };
 }
 
 function delay() {
@@ -383,43 +392,39 @@ describeEachAppLayout(({ theme, size }) => {
       expect(onToolsChange).toHaveBeenCalledWith({ open: true });
     });
 
-    // Not implemented on the toolbar version yet
-    (theme !== 'refresh-toolbar' ? test : test.skip)(
-      'preserves tools inner state while switching drawers',
-      async () => {
-        function Counter() {
-          const [count, setCount] = useState(0);
-          return (
-            <>
-              <button data-testid="count-increment" onClick={() => setCount(count + 1)}>
-                Inc
-              </button>
-              <div>Count: {count}</div>
-            </>
-          );
-        }
-
-        awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
-        const { wrapper } = await renderComponent(<AppLayout tools={<Counter />} />);
-        wrapper.findToolsToggle().click();
-        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 0');
-        wrapper.find('[data-testid="count-increment"]')!.click();
-
-        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
-
-        wrapper.findToolsClose().click();
-        expect(wrapper.findTools()).toBeFalsy();
-
-        wrapper.findToolsToggle().click();
-        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
-
-        wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
-        expect(wrapper.findTools()).toBeFalsy();
-
-        wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.click();
-        expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+    test('preserves tools inner state while switching drawers', async () => {
+      function Counter() {
+        const [count, setCount] = useState(0);
+        return (
+          <>
+            <button data-testid="count-increment" onClick={() => setCount(count + 1)}>
+              Inc
+            </button>
+            <div>Count: {count}</div>
+          </>
+        );
       }
-    );
+
+      awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+      const { wrapper } = await renderComponent(<AppLayout tools={<Counter />} />);
+      wrapper.findToolsToggle().click();
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 0');
+      wrapper.find('[data-testid="count-increment"]')!.click();
+
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+
+      wrapper.findToolsClose().click();
+      expect(wrapper.findTools()).toBeFalsy();
+
+      wrapper.findToolsToggle().click();
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+
+      wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+      expect(wrapper.findTools()).toBeFalsy();
+
+      wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID)!.click();
+      expect(wrapper.findTools().getElement()).toHaveTextContent('Count: 1');
+    });
   });
 
   test('updates active drawer if multiple are registered', async () => {
@@ -631,5 +636,517 @@ describeEachAppLayout(({ theme, size }) => {
     onToolsChange.mockClear();
     wrapper.findToolsClose().click();
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+
+  test('opens a drawer when openDrawer is called', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+
+    awsuiPlugins.appLayout.openDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+  });
+
+  test('closes a drawer when closeDrawer is called (local drawer)', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+    awsuiPlugins.appLayout.openDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+    awsuiPlugins.appLayout.closeDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+});
+
+describe('toolbar mode only features', () => {
+  describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+    test('registerDrawer registers local drawers if type is not specified', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'local drawer content'),
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      expect(wrapper.findDrawersTriggers()).toHaveLength(2);
+      expect(globalDrawersWrapper.findGlobalDrawersTriggers()).toHaveLength(0);
+    });
+
+    test('should register global runtime drawers and their trigger buttons', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'local drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      await delay();
+
+      expect(wrapper.findDrawersTriggers().length).toBe(4);
+      expect(wrapper.find(`.${toolbarStyles['group-divider']}`)!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(3);
+      expect(globalDrawersWrapper.findDrawerById('local-drawer')!.getElement()).toHaveTextContent(
+        'local drawer content'
+      );
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toHaveTextContent(
+        'global drawer content 1'
+      );
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-2')!.getElement()).toHaveTextContent(
+        'global drawer content 2'
+      );
+    });
+
+    test('if 2 global drawers are already open, and third drawers has opened, it should replace the first opened drawer', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        defaultActive: true,
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-3',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 3'),
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+
+      wrapper.findDrawerTriggerById('global-drawer-3')!.click();
+
+      expect(globalDrawersWrapper.findActiveDrawers()!.length).toBe(2);
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 2');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 3');
+    });
+
+    test('renders resize handle for a global drawer when config is enabled', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'test-resizable',
+        resizable: true,
+        type: 'global',
+        ariaLabels: {
+          triggerButton: 'drawer trigger',
+          content: 'drawer content',
+          resizeHandle: 'drawer resize',
+          closeButton: 'drawer close',
+        },
+      });
+      const { globalDrawersWrapper, wrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('test-resizable')!.click();
+
+      expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveFocus();
+      expect(globalDrawersWrapper.findResizeHandleByActiveDrawerId('test-resizable')!.getElement()).toHaveAttribute(
+        'aria-label',
+        'drawer resize'
+      );
+    });
+
+    test('close active global drawer by clicking on close button', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        ariaLabels: {
+          triggerButton: 'drawer trigger',
+          content: 'drawer content',
+          resizeHandle: 'drawer resize',
+          closeButton: 'drawer close',
+        },
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer')!.getElement()).toBeInTheDocument();
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer')).toBeNull();
+    });
+
+    test('the order of the opened global drawers should match the positions of their corresponding toggle buttons on the toolbar', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(globalDrawersWrapper.findActiveDrawers()[0].getElement()).toHaveTextContent('global drawer content 1');
+      expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 2');
+    });
+
+    test('should close opened global drawer by clicking on its trigger button', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
+    });
+
+    test('opens a drawer when openDrawer is called', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        mountContent: container => (container.textContent = 'local-drawer content'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-2',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 2'),
+      });
+
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+
+      awsuiPlugins.appLayout.openDrawer('global-drawer-1');
+
+      await delay();
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(2);
+    });
+
+    test('does not do anything when openDrawer is called with active drawer id', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'local-drawer',
+        mountContent: container => (container.textContent = 'local-drawer content'),
+      });
+
+      const { globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(0);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+
+      awsuiPlugins.appLayout.openDrawer('local-drawer');
+
+      await delay();
+
+      expect(globalDrawersWrapper.findActiveDrawers()).toHaveLength(1);
+    });
+
+    test('should restore focus when a global drawer is closed', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.focus();
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
+      expect(wrapper.findDrawerTriggerById('global-drawer-1')!.getElement()).toHaveFocus();
+    });
+
+    test('when keepContentMounted is set to true, initially closed drawer does not exist in dom (but mounted and persists when opened and closed)', async () => {
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+        preserveInactiveContent: true,
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')).toBeNull();
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.getElement()).toBeInTheDocument();
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(false);
+    });
+
+    test('should call visibilityChange callback when global drawer with preserveInactiveContent is opened and closed', async () => {
+      const onVisibilityChangeMock = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer-1',
+        type: 'global',
+        mountContent: (container, mountContext) => {
+          if (mountContext?.onVisibilityChange) {
+            mountContext.onVisibilityChange(onVisibilityChangeMock);
+          }
+          container.textContent = 'global drawer content 1';
+        },
+        preserveInactiveContent: true,
+      });
+
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      wrapper.findDrawerTriggerById('global-drawer-1')!.click();
+
+      await delay();
+
+      expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
+      expect(onVisibilityChangeMock).toHaveBeenCalledWith(true);
+
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId('global-drawer-1')!.click();
+      expect(onVisibilityChangeMock).toHaveBeenCalledWith(false);
+    });
+
+    test('should restore focus to a custom trigger when a global drawer does not have trigger button', async () => {
+      const drawerId = 'global-drawer-without-trigger';
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: drawerId,
+        type: 'global',
+        trigger: undefined,
+      });
+
+      const { globalDrawersWrapper, getByTestId } = await renderComponent(
+        <AppLayout
+          drawers={[testDrawer]}
+          content={
+            <>
+              <Button data-testid="trigger-button" onClick={() => awsuiPlugins.appLayout.openDrawer(drawerId)}>
+                Open a drawer without a trigger
+              </Button>
+            </>
+          }
+        />
+      );
+
+      getByTestId('trigger-button').focus();
+      getByTestId('trigger-button').click();
+
+      expect(globalDrawersWrapper.findDrawerById(drawerId)!.isActive()).toBe(true);
+
+      // globalDrawersWrapper.findDrawerById(drawerId)!.blur() does not trigger the blur event on the active drawer
+      fireEvent.blur(globalDrawersWrapper.findDrawerById(drawerId)!.getElement());
+      expect(getByTestId('trigger-button')).not.toHaveFocus();
+
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerId)!.click();
+
+      expect(getByTestId('trigger-button')).toHaveFocus();
+    });
+
+    test('closes a drawer when closeDrawer is called (global drawer)', async () => {
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true, type: 'global' });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      awsuiPlugins.appLayout.openDrawer('test');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+      awsuiPlugins.appLayout.closeDrawer('test');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()).toBeFalsy();
+    });
+
+    test('should not render a trigger button if registered drawer does not have a trigger prop', async () => {
+      awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, trigger: undefined });
+
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      expect(wrapper.findDrawerTriggerById('test')).toBeFalsy();
+
+      awsuiPlugins.appLayout.openDrawer('test');
+
+      await delay();
+
+      expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+    });
+
+    describe('dynamically registered drawers with defaultActive: true', () => {
+      test('should open if there are already open local drawer on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+      });
+
+      test('should not open if there are already global drawers opened by user action on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+        });
+
+        await delay();
+
+        wrapper.findDrawerTriggerById('global1')!.click();
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')).toBeFalsy();
+      });
+
+      test('should not open if the maximum number (2) of global drawers is already open on the page', async () => {
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+        wrapper.findDrawerTriggerById('security')!.click();
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global1',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global2',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        // this drawer should not open because there are already two global drawers open on the page, which is the maximum limit
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global3',
+          type: 'global',
+          defaultActive: true,
+        });
+
+        await delay();
+
+        expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('Security');
+        expect(globalDrawersWrapper.findDrawerById('global1')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
+      });
+    });
   });
 });

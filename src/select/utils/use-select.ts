@@ -30,11 +30,12 @@ interface UseSelectProps {
   options: ReadonlyArray<DropdownOption>;
   filteringType: string;
   keepOpen?: boolean;
+  embedded?: boolean;
   onBlur?: NonCancelableEventHandler;
   onFocus?: NonCancelableEventHandler;
   externalRef: React.Ref<any>;
   fireLoadItems: (filteringText: string) => void;
-  setFilteringValue: (filteringText: string) => void;
+  setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
 }
@@ -52,6 +53,7 @@ export function useSelect({
   onFocus,
   externalRef,
   keepOpen,
+  embedded,
   fireLoadItems,
   setFilteringValue,
   useInteractiveGroups = false,
@@ -64,7 +66,7 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
-  const hasFilter = filteringType !== 'none';
+  const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
@@ -86,10 +88,11 @@ export function useSelect({
   ] = useHighlightedOption({ options, isHighlightable });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
+    defaultOpen: embedded,
     onOpen: () => fireLoadItems(''),
     onClose: () => {
       resetHighlightWithKeyboard();
-      setFilteringValue('');
+      setFilteringValue?.('');
     },
   });
 
@@ -143,8 +146,10 @@ export function useSelect({
     goHome: goHomeWithKeyboard,
     goEnd: goEndWithKeyboard,
     closeDropdown: () => {
-      triggerRef.current?.focus();
-      closeDropdown();
+      if (!embedded) {
+        triggerRef.current?.focus();
+        closeDropdown();
+      }
     },
     preventNativeSpace: !hasFilter,
   });
@@ -186,7 +191,7 @@ export function useSelect({
   };
 
   const getFilterProps = (): Partial<FilterProps> => {
-    if (!hasFilter) {
+    if (!hasFilter || !setFilteringValue) {
       return {};
     }
 
@@ -231,6 +236,16 @@ export function useSelect({
         'aria-activedescendant': highlightedOptionId,
       };
     }
+    if (embedded) {
+      menuProps.onFocus = () => {
+        if (!highlightedOption) {
+          goHomeWithKeyboard();
+        }
+      };
+      menuProps.onBlur = () => {
+        resetHighlightWithKeyboard();
+      };
+    }
     return menuProps;
   };
   const getGroupState = (option: OptionGroup) => {
@@ -238,7 +253,7 @@ export function useSelect({
     const hasSelected = totalSelected > 0;
     const allSelected = totalSelected === option.options.length;
     return {
-      selected: hasSelected && allSelected,
+      selected: hasSelected && allSelected && useInteractiveGroups,
       indeterminate: hasSelected && !allSelected,
     };
   };
@@ -252,7 +267,6 @@ export function useSelect({
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
         : __selectedOptions.indexOf(options[index + 1]) > -1;
-
     const optionProps: any = {
       key: index,
       option,
@@ -291,13 +305,13 @@ export function useSelect({
   ]);
 
   useEffect(() => {
-    if (isOpen) {
+    if (isOpen && !embedded) {
       // dropdown-fit calculations ensure that the dropdown will fit inside the current
       // viewport, so prevent the browser from trying to scroll it into view (e.g. if
       // scroll-padding-top is set on a parent)
       activeRef.current?.focus({ preventScroll: true });
     }
-  }, [isOpen, activeRef]);
+  }, [isOpen, activeRef, embedded]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =

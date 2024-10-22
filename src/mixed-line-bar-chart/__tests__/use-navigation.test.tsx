@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import { ChartScale, NumericChartScale } from '../../../lib/components/internal/components/cartesian-chart/scales';
 import { useNavigation, UseNavigationProps } from '../../../lib/components/mixed-line-bar-chart/hooks/use-navigation';

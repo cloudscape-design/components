@@ -3,12 +3,13 @@
 import { useState } from 'react';
 
 interface OpenStateProps {
+  defaultOpen?: boolean;
   onOpen?: () => void;
   onClose?: () => void;
 }
 
-export const useOpenState = ({ onOpen, onClose }: OpenStateProps) => {
-  const [isOpen, setIsOpen] = useState(false);
+export const useOpenState = ({ onOpen, onClose, defaultOpen = false }: OpenStateProps) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
   const [openedWithKeyboard, setOpenedWithKeyboard] = useState(false);
 
   const openDropdown = (isKeyboard: boolean) => {

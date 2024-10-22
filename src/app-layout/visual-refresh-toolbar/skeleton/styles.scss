@@ -19,6 +19,13 @@
   }
 }
 
+@mixin grid-column-full-content-width {
+  grid-column: 1 / -1;
+  @include desktop-only {
+    grid-column: 2 / 5;
+  }
+}
+
 .root {
   @include styles.styles-reset;
   color: awsui.$color-text-body-default;
@@ -34,16 +41,16 @@
     '.           main       .';
   grid-template-columns:
     awsui.$space-layout-content-horizontal
-    1fr
+    minmax(0, 1fr)
     awsui.$space-layout-content-horizontal;
   grid-template-rows: min-content min-content 1fr;
 
   // desktop grid
   @include desktop-only {
     grid-template-areas:
-      'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar'
-      'navigation .         notifications    .         sideSplitPanel  tools'
-      'navigation .             main         .         sideSplitPanel  tools';
+      'toolbar    toolbar      toolbar       toolbar   toolbar         toolbar  toolbar'
+      'navigation .         notifications    .         sideSplitPanel  tools    global-tools'
+      'navigation .             main         .         sideSplitPanel  tools    global-tools';
     grid-template-columns:
       min-content
       minmax(#{awsui.$space-layout-content-horizontal}, 1fr)
@@ -72,31 +79,50 @@
 }
 
 .navigation,
-.tools {
+.tools,
+.global-tools {
   grid-row: 1 / -1;
   grid-column: 1 / -1;
   background: awsui.$color-background-container-content;
-  z-index: constants.$drawer-z-index;
   opacity: 1;
   @include mobile-only {
     inline-size: 100%;
-    z-index: constants.$drawer-z-index-mobile;
   }
 }
 
 .navigation {
+  z-index: constants.$drawer-z-index;
+
   @include desktop-only {
     grid-area: navigation;
     inline-size: var(#{custom-props.$navigationWidth});
     border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+  }
+
+  @include mobile-only {
+    z-index: constants.$drawer-z-index-mobile;
   }
 }
 
 .tools {
   @include desktop-only {
     grid-area: tools;
-    inline-size: var(#{custom-props.$toolsWidth});
-    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+
+    // workaround when new app layout and old widgets
+    /* stylelint-disable plugin/no-unsupported-browser-features */
+    &:not(:has(> [data-testid])) {
+      inline-size: var(#{custom-props.$toolsWidth});
+      &.tools-open {
+        border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+      }
+    }
+  }
+}
+
+.global-tools {
+  @include desktop-only {
+    display: flex;
+    grid-area: global-tools;
   }
 }
 
@@ -113,10 +139,7 @@
   z-index: 840;
   align-self: end;
   grid-area: main;
-  grid-column: 1 / -1;
-  @include desktop-only {
-    grid-column: 2 / span 3;
-  }
+  @include grid-column-full-content-width;
 }
 
 .panel-hidden {
@@ -125,7 +148,8 @@
   opacity: 0;
   z-index: 0;
   &.navigation,
-  &.tools {
+  &.tools,
+  &.global-tools {
     inline-size: 0px;
   }
 }
@@ -138,9 +162,12 @@
 
 .notifications-container {
   grid-area: notifications;
-  &:not(:empty) {
-    padding-block-start: awsui.$space-scaled-xs;
-  }
+}
+
+.notifications-background {
+  background: awsui.$color-background-layout-main;
+  grid-area: notifications;
+  @include grid-column-full-content-width;
 }
 
 .main-landmark {
@@ -154,10 +181,7 @@
   margin-block-end: awsui.$space-layout-content-bottom;
   &-disable-paddings {
     margin-block: 0;
-    grid-column: 1 / -1;
-    @include desktop-only {
-      grid-column: 2 / span 3;
-    }
+    @include grid-column-full-content-width;
   }
 }
 

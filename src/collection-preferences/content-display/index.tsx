@@ -1,18 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useMemo, useState } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
 
+import InternalBox from '../../box/internal';
+import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
 import Portal from '../../internal/components/portal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import InternalSpaceBetween from '../../space-between/internal';
+import InternalTextFilter from '../../text-filter/internal';
+import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
-import { getSortedOptions, OptionWithVisibility } from './utils';
+import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -40,24 +45,33 @@ export default function ContentDisplayPreference({
   liveAnnouncementDndDiscarded,
   dragHandleAriaDescription,
   dragHandleAriaLabel,
+  enableColumnFiltering = false,
+  i18nStrings,
 }: ContentDisplayPreferenceProps) {
   const idPrefix = useUniqueId(componentPrefix);
   const i18n = useInternalI18n('collection-preferences');
-
-  const onToggle = (option: OptionWithVisibility) => {
-    onChange(value.map(item => (item.id === option.id ? { ...item, visible: !option.visible } : item)));
-  };
+  const [columnFilteringText, setColumnFilteringText] = useState('');
 
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const sortedOptions = getSortedOptions({ options, contentDisplay: value });
+  const [sortedOptions, sortedAndFilteredOptions] = useMemo(() => {
+    const sorted = getSortedOptions({ options, contentDisplay: value });
+    const filtered = getFilteredOptions(sorted, columnFilteringText);
+    return [sorted, filtered];
+  }, [columnFilteringText, options, value]);
+
+  const onToggle = (option: OptionWithVisibility) => {
+    // We use sortedOptions as base and not value because there might be options that
+    // are not in the value yet, so they're added as non-visible after the known ones.
+    onChange(sortedOptions.map(({ id, visible }) => ({ id, visible: id === option.id ? !option.visible : visible })));
+  };
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
-    sortedOptions,
+    sortedOptions: sortedAndFilteredOptions,
   });
 
-  const activeOption = activeItem ? sortedOptions.find(({ id }) => id === activeItem) : null;
+  const activeOption = activeItem ? sortedAndFilteredOptions.find(({ id }) => id === activeItem) : null;
 
   const announcements = useLiveAnnouncements({
     isDragging: activeItem !== null,
@@ -82,7 +96,7 @@ export default function ContentDisplayPreference({
       'contentDisplayPreference.liveAnnouncementDndDiscarded',
       liveAnnouncementDndDiscarded
     ),
-    sortedOptions: value,
+    sortedOptions: sortedAndFilteredOptions,
   });
 
   const renderedDragHandleAriaDescription = i18n(
@@ -91,13 +105,64 @@ export default function ContentDisplayPreference({
   );
 
   return (
-    <div className={styles[componentPrefix]}>
+    <div className={styles[componentPrefix]} {...getAnalyticsInnerContextAttribute('contentDisplay')}>
       <h3 className={getClassName('title')} id={titleId}>
         {i18n('contentDisplayPreference.title', title)}
       </h3>
       <p className={getClassName('description')} id={descriptionId}>
         {i18n('contentDisplayPreference.description', description)}
       </p>
+
+      {/* Filter input */}
+      {enableColumnFiltering && (
+        <div className={getClassName('text-filter')}>
+          <InternalTextFilter
+            filteringText={columnFilteringText}
+            filteringPlaceholder={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringPlaceholder',
+              i18nStrings?.columnFilteringPlaceholder
+            )}
+            filteringAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringAriaLabel',
+              i18nStrings?.columnFilteringAriaLabel
+            )}
+            filteringClearAriaLabel={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+              i18nStrings?.columnFilteringClearFilterText
+            )}
+            onChange={({ detail }) => setColumnFilteringText(detail.filteringText)}
+            countText={i18n(
+              'contentDisplayPreference.i18nStrings.columnFilteringCountText',
+              i18nStrings?.columnFilteringCountText
+                ? i18nStrings?.columnFilteringCountText(sortedAndFilteredOptions.length)
+                : undefined,
+              format => format({ count: sortedAndFilteredOptions.length })
+            )}
+          />
+        </div>
+      )}
+
+      {/* No match */}
+      {sortedAndFilteredOptions.length === 0 && (
+        <div className={getClassName('no-match')}>
+          <InternalSpaceBetween size="s" alignItems="center">
+            <InternalBox margin={{ top: 'm' }}>
+              {i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringNoMatchText',
+                i18nStrings?.columnFilteringNoMatchText
+              )}
+            </InternalBox>
+            <InternalButton onClick={() => setColumnFilteringText('')}>
+              {i18n(
+                'contentDisplayPreference.i18nStrings.columnFilteringClearFilterText',
+                i18nStrings?.columnFilteringClearFilterText
+              )}
+            </InternalButton>
+          </InternalSpaceBetween>
+        </div>
+      )}
+
+      {/* Drag and drop */}
       <DndContext
         sensors={sensors}
         collisionDetection={collisionDetection}
@@ -114,9 +179,10 @@ export default function ContentDisplayPreference({
           const { active, over } = event;
 
           if (over && active.id !== over.id) {
-            const oldIndex = value.findIndex(({ id }) => id === active.id);
-            const newIndex = value.findIndex(({ id }) => id === over.id);
-            onChange(arrayMove([...value], oldIndex, newIndex));
+            const oldIndex = sortedOptions.findIndex(({ id }) => id === active.id);
+            const newIndex = sortedOptions.findIndex(({ id }) => id === over.id);
+            // We need to remember to trim the options down to id and visible to emit changes.
+            onChange(arrayMove([...sortedOptions], oldIndex, newIndex).map(({ id, visible }) => ({ id, visible })));
           }
         }}
         onDragCancel={() => setActiveItem(null)}
@@ -129,8 +195,12 @@ export default function ContentDisplayPreference({
           aria-labelledby={titleId}
           role="list"
         >
-          <SortableContext items={sortedOptions.map(({ id }) => id)} strategy={verticalListSortingStrategy}>
-            {sortedOptions.map(option => {
+          <SortableContext
+            disabled={columnFilteringText.trim().length > 0}
+            items={sortedAndFilteredOptions.map(({ id }) => id)}
+            strategy={verticalListSortingStrategy}
+          >
+            {sortedAndFilteredOptions.map(option => {
               return (
                 <DraggableOption
                   dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}

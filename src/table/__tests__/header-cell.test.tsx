@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import { ContainerQueryEntry } from '@cloudscape-design/component-toolkit/internal/container-queries/interfaces.js';
+
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { TableHeaderCell, TableHeaderCellProps } from '../../../lib/components/table/header-cell';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
@@ -12,6 +14,16 @@ import { TableProps } from '../interfaces';
 
 import styles from '../../../lib/components/table/header-cell/styles.css.js';
 import resizerStyles from '../../../lib/components/table/resizer/styles.css.js';
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  useResizeObserver: (_getElement: () => null | HTMLElement, onObserve: (entry: ContainerQueryEntry) => void) => {
+    React.useLayoutEffect(() => {
+      onObserve({ borderBoxWidth: 234 } as ContainerQueryEntry);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+  },
+}));
 
 const tableRole = 'table';
 
@@ -85,6 +97,16 @@ it('renders a fake focus outline on the resize control', () => {
   // Activate focus-visible
   fireEvent.keyDown(document.body, { key: 'Tab', keyCode: 65 });
   expect(container.querySelector(`.${resizerStyles['has-focus']}`)).toBeInTheDocument();
+});
+
+it('updates based on resize observer if dynamic flag is set', () => {
+  const updateColumn = jest.fn();
+  render(
+    <TableWrapper>
+      <TestComponent hasDynamicContent={true} hidden={true} updateColumn={updateColumn} />
+    </TableWrapper>
+  );
+  expect(updateColumn).toHaveBeenCalledWith('id', 234);
 });
 
 describe('i18n', () => {

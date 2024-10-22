@@ -3,6 +3,7 @@
 import {
   calculatePosition,
   intersectRectangles,
+  isCenterOutside,
   PRIORITY_MAPPING,
 } from '../../../lib/components/popover/utils/positions';
 
@@ -197,5 +198,64 @@ describe('intersectRectangles', () => {
   });
   it('returns null, if no rectangles were passed', () => {
     expect(intersectRectangles([])).toEqual(null);
+  });
+});
+
+describe('isCenterOutside', () => {
+  const parentRect = {
+    blockSize: 50,
+    inlineSize: 10,
+    insetBlockStart: 15,
+    insetBlockEnd: 65,
+    insetInlineStart: 0,
+    insetInlineEnd: 10,
+  };
+
+  test('returns true if the block-level center of the first rect is smaller than the block-level start of the second rect', () => {
+    expect(
+      isCenterOutside(
+        {
+          blockSize: 20,
+          inlineSize: 10,
+          insetBlockStart: 0,
+          insetBlockEnd: 20,
+          insetInlineStart: 0,
+          insetInlineEnd: 10,
+        },
+        parentRect
+      )
+    ).toBe(true);
+  });
+
+  test('returns true if the block-level center of the first rect is bigger than the block-level start of the second rect', () => {
+    expect(
+      isCenterOutside(
+        {
+          blockSize: 20,
+          inlineSize: 10,
+          insetBlockStart: 60,
+          insetBlockEnd: 80,
+          insetInlineStart: 0,
+          insetInlineEnd: 10,
+        },
+        parentRect
+      )
+    ).toBe(true);
+  });
+
+  test('returns false if the block-level center of the first rect is between the block-level start and the block-level end of the second rect', () => {
+    expect(
+      isCenterOutside(
+        {
+          blockSize: 20,
+          inlineSize: 10,
+          insetBlockStart: 10,
+          insetBlockEnd: 30,
+          insetInlineStart: 0,
+          insetInlineEnd: 10,
+        },
+        parentRect
+      )
+    ).toBe(false);
   });
 });

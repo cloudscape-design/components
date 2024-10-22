@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
 import { fireEvent } from '@testing-library/react';
 
 import { CollectionPreferencesProps } from '../../../../lib/components';
@@ -41,6 +42,11 @@ describe('Content Display preference', () => {
       for (let i = 0; i < options.length; i++) {
         testOption({ wrapper, option: options[i], index: i });
       }
+    });
+
+    it('renders all options even if a partial list is provided in preferences', () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      expect(wrapper.findOptions()).toHaveLength(4);
     });
   });
 
@@ -84,6 +90,12 @@ describe('Content Display preference', () => {
       toggleInput.click();
       expect(toggleInput.getElement()).toBeChecked();
       expect(toggleInput.getElement()).toBeDisabled();
+    });
+
+    it('allows toggling options that are not part of the current preferences', () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      wrapper.findOptionByIndex(3)!.findVisibilityToggle().findNativeInput().click();
+      expectVisibilityStatus({ wrapper, statuses: [true, false, true, false] });
     });
   });
 
@@ -171,6 +183,148 @@ describe('Content Display preference', () => {
       pressKey(dragHandle, 'Escape');
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       await expectAnnouncement(wrapper, 'Reordering canceled');
+    });
+
+    it('moves item between options that are not part of the current preferences', async () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      pressKey(dragHandle, 'Space');
+      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      pressKey(dragHandle, 'ArrowDown');
+      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      pressKey(dragHandle, 'ArrowDown');
+      await expectAnnouncement(wrapper, 'Moving item to position 3 of 4');
+      pressKey(dragHandle, 'Space');
+      testOrder({ wrapper, order: [1, 2, 0, 3] });
+      await expectAnnouncement(wrapper, 'Item moved from position 1 to position 3 of 4');
+    });
+
+    it('moves an item not part of the current preferences above the ones that are', async () => {
+      const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
+      const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
+      pressKey(dragHandle, 'Space');
+      await expectAnnouncement(wrapper, 'Picked up item at position 2 of 4');
+      pressKey(dragHandle, 'ArrowUp');
+      await expectAnnouncement(wrapper, 'Moving item to position 1 of 4');
+      pressKey(dragHandle, 'Space');
+      testOrder({ wrapper, order: [1, 0, 2, 3] });
+      await expectAnnouncement(wrapper, 'Item moved from position 2 to position 1 of 4');
+    });
+  });
+
+  describe.each<boolean>([false, true])('Filtering (with i18n = %s)', withI18nProvider => {
+    it('filters options', () => {
+      const wrapper = renderContentDisplay(
+        withI18nProvider
+          ? undefined
+          : {
+              contentDisplayPreference: {
+                ...contentDisplayPreference,
+                i18nStrings: {
+                  columnFilteringPlaceholder: 'Filter columns',
+                  columnFilteringAriaLabel: 'Filter columns',
+                  columnFilteringClearFilterText: 'Clear filter',
+                  columnFilteringNoMatchText: 'No matches found',
+                  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+                },
+              },
+            },
+        withI18nProvider
+      );
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+      filterInput!.findInput().setInputValue('Item 1');
+
+      expect(filterInput?.findInput().findNativeInput().getElement()).toHaveAttribute('placeholder', 'Filter columns');
+      expect(filterInput?.findInput().findNativeInput().getElement()).toHaveAttribute('aria-label', 'Filter columns');
+      expect(filterInput?.findInput().findClearButton()?.getElement()).toHaveAccessibleName('Clear filter');
+
+      expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('1 match');
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(1);
+      expect(options[0].findLabel().getElement()).toHaveTextContent('Item 1');
+    });
+
+    it('shows empty state when no options match and clears filter', () => {
+      const wrapper = renderContentDisplay(
+        withI18nProvider
+          ? undefined
+          : {
+              contentDisplayPreference: {
+                ...contentDisplayPreference,
+                i18nStrings: {
+                  columnFilteringPlaceholder: 'Filter columns',
+                  columnFilteringAriaLabel: 'Filter columns',
+                  columnFilteringClearFilterText: 'Clear filter',
+                  columnFilteringNoMatchText: 'No matches found',
+                  columnFilteringCountText: count => (count > 1 || count === 0 ? `${count} matches` : `${count} match`),
+                },
+              },
+            },
+        withI18nProvider
+      );
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 100');
+      expect(filterInput!.findResultsCount().getElement()).toHaveTextContent('0 matches');
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(0);
+
+      const emptyState = wrapper.findNoMatch();
+      expect(emptyState).not.toBeNull();
+      expect(emptyState!.getElement()).toHaveTextContent('No matches found');
+
+      const emptyStateButton = emptyState?.findButton();
+      expect(emptyStateButton).not.toBeNull();
+      expect(emptyStateButton!.getElement()).toHaveTextContent('Clear filter');
+      emptyStateButton?.click();
+
+      expect(filterInput!.findInput().getInputValue()).toBe('');
+      expect(filterInput!.findResultsCount()).toBeNull();
+    });
+  });
+
+  describe('Filtering - continued', () => {
+    it('does not render the text filter with searchable columns turned off', () => {
+      const wrapper = renderContentDisplay({
+        contentDisplayPreference: {
+          ...contentDisplayPreference,
+          enableColumnFiltering: false,
+          // Adding an option with a non-string label to ensure the filter does not break rendering
+          options: [...contentDisplayPreference.options, { id: 'id-extra', label: (<span>Extra</span>) as any }],
+        },
+      });
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).toBeNull();
+    });
+
+    it('clears filter and shows all options', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      filterInput!.findInput().setInputValue('Item 1');
+      filterInput!.findInput().findClearButton()?.click();
+
+      const options = wrapper.findOptions();
+      expect(options).toHaveLength(4);
+    });
+
+    it('sets the drag-handle to a disabled state when filtering', () => {
+      const wrapper = renderContentDisplay();
+      const filterInput = wrapper.findTextFilter();
+      expect(filterInput).not.toBeNull();
+
+      const dragHandleBefore = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      expect(dragHandleBefore.getAttribute('aria-disabled')).toBe('false');
+
+      filterInput!.findInput().setInputValue('Item 1');
+
+      const dragHandleAfter = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
+      expect(dragHandleAfter.getAttribute('aria-disabled')).toBe('true');
     });
   });
 
@@ -320,8 +474,11 @@ describe('Content Display preference', () => {
   });
 });
 
-function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}) {
-  const collectionPreferencesWrapper = renderCollectionPreferences({ contentDisplayPreference, ...props });
+function renderContentDisplay(props: Partial<CollectionPreferencesProps> = {}, withI18nProvider = false) {
+  const collectionPreferencesWrapper = renderCollectionPreferences(
+    { contentDisplayPreference, ...props },
+    withI18nProvider
+  );
   collectionPreferencesWrapper.findTriggerButton().click();
   return collectionPreferencesWrapper.findModal()!.findContentDisplayPreference()!;
 }

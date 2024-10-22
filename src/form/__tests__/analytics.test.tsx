@@ -13,7 +13,6 @@ import Modal from '../../../lib/components/modal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
-import headerStyles from '../../../lib/components/header/styles.selectors.js';
 import modalStyles from '../../../lib/components/modal/styles.selectors.js';
 
 mockInnerText();
@@ -46,11 +45,12 @@ describe('Form Analytics', () => {
         funnelType: 'single-page',
         totalFunnelSteps: 1,
         optionalStepNumbers: [],
-        funnelNameSelector: `.${headerStyles['heading-text']}`,
+        funnelName: 'My funnel',
+        stepConfiguration: [{ isOptional: false, name: 'My funnel', number: 1 }],
+        funnelNameSelector: expect.any(String),
         funnelVersion: expect.any(String),
         componentVersion: expect.any(String),
         componentTheme: expect.any(String),
-        stepConfiguration: [{ isOptional: false, name: 'My funnel', number: 1 }],
       })
     );
 
@@ -276,7 +276,7 @@ describe('Form Analytics', () => {
     render(<Form errorText="Error" />);
     act(() => void jest.runAllTimers());
 
-    expect(FunnelMetrics.funnelError).toBeCalledTimes(1);
+    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
@@ -377,5 +377,29 @@ describe('Form Analytics', () => {
     const { container } = render(<Form></Form>);
     const form = createWrapper(container).findForm()!.getElement();
     expect(form).toHaveAttribute('data-analytics-funnel-step', '1');
+  });
+
+  test('modals to not create a new funnel', () => {
+    render(
+      <Form header="Form Funnel">
+        <Modal header="Modal Funnel" visible={true} />
+      </Form>
+    );
+
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
+
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        funnelType: 'single-page',
+      })
+    );
+
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        stepName: 'Form Funnel',
+      })
+    );
   });
 });

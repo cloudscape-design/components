@@ -3,15 +3,12 @@
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
 import {
-  AlertFlashContentController,
+  AlertFlashContentApiInternal,
   AlertFlashContentResult,
   ReplacementType,
 } from '../controllers/alert-flash-content';
 
-export function createUseDiscoveredContent(
-  componentName: string,
-  onContentRegistered: AlertFlashContentController['onContentRegistered']
-) {
+export function createUseDiscoveredContent(componentName: string, controller: AlertFlashContentApiInternal) {
   return function useDiscoveredContent({
     type,
     header,
@@ -25,6 +22,13 @@ export function createUseDiscoveredContent(
     const contentRef = useRef<HTMLDivElement>(null);
     const replacementHeaderRef = useRef<HTMLDivElement>(null);
     const replacementContentRef = useRef<HTMLDivElement>(null);
+    const [initialHidden, setInitialHidden] = useState(() =>
+      controller.initialCheck({
+        type,
+        header,
+        content: children,
+      })
+    );
     const [headerReplacementType, setFoundHeaderReplacement] = useState<ReplacementType>('original');
     const [contentReplacementType, setFoundContentReplacement] = useState<ReplacementType>('original');
     const mountedProvider = useRef<AlertFlashContentResult | undefined>();
@@ -32,7 +36,9 @@ export function createUseDiscoveredContent(
     useEffect(() => {
       const context = { type, headerRef, contentRef };
 
-      return onContentRegistered(provider => {
+      setInitialHidden(false);
+
+      return controller.onContentRegistered(provider => {
         let mounted = true;
 
         function checkMounted(methodName: string) {
@@ -95,6 +101,7 @@ export function createUseDiscoveredContent(
     }, [type, header, children]);
 
     return {
+      initialHidden,
       headerReplacementType,
       contentReplacementType,
       headerRef: headerRef as React.Ref<HTMLDivElement>,

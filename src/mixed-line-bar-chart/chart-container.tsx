@@ -45,6 +45,7 @@ export interface ChartContainerProps<T extends ChartDataTypes> {
   visibleSeries: ReadonlyArray<InternalChartSeries<T>>;
 
   fitHeight?: boolean;
+  hasFilters: boolean;
   height: number;
   detailPopoverSize: MixedLineBarChartProps<T>['detailPopoverSize'];
   detailPopoverFooter: MixedLineBarChartProps<T>['detailPopoverFooter'];
@@ -103,6 +104,7 @@ const fallbackContainerWidth = 500;
 
 export default function ChartContainer<T extends ChartDataTypes>({
   fitHeight,
+  hasFilters,
   height: explicitPlotHeight,
   series,
   visibleSeries,
@@ -506,6 +508,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
       ref={containerRef}
       minHeight={explicitPlotHeight + blockEndLabelsProps.height}
       fitHeight={!!fitHeight}
+      hasFilters={hasFilters}
       leftAxisLabel={<AxisLabel axis={y} position="left" title={leftAxisProps.title} />}
       leftAxisLabelMeasure={
         <LabelsMeasure

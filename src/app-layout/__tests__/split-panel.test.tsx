@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
-import React from 'react';
+import React, { useState } from 'react';
 import { screen } from '@testing-library/react';
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
@@ -113,8 +113,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
     });
 
-    // Not implemented on the toolbar version yet
-    (theme !== 'refresh-toolbar' ? test : test.skip)('Moves focus to slider when opened', () => {
+    test('Moves focus to slider when opened', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -126,8 +125,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       expect(wrapper.findSplitPanel()!.findSlider()!.getElement()).toHaveFocus();
     });
 
-    // Not implemented on the toolbar version yet
-    (theme !== 'refresh-toolbar' ? test : test.skip)('Moves focus to open button when closed', () => {
+    test('Moves focus to open button when closed', () => {
       const { wrapper } = renderComponent(
         <AppLayout
           splitPanel={defaultSplitPanel}
@@ -227,6 +225,33 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     );
     wrapper.findSplitPanel()!.findSlider()!.keydown(KeyCode.pageUp);
     expect(onSplitPanelResize).toHaveBeenCalled();
+  });
+
+  test('should dynamically show and hide split panel based on "splitPanel" prop', () => {
+    const CustomAppLayout = () => {
+      const [splitPanelEnabled, setSplitPanelEnabled] = useState(true);
+      return (
+        <AppLayout
+          splitPanel={splitPanelEnabled && defaultSplitPanel}
+          content={
+            <button data-testid="toggle-split-panel" onClick={() => setSplitPanelEnabled(!splitPanelEnabled)}>
+              toggle
+            </button>
+          }
+        />
+      );
+    };
+    const { wrapper } = renderComponent(<CustomAppLayout />);
+
+    expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
+
+    wrapper.find('[data-testid="toggle-split-panel"]')!.click();
+
+    expect(wrapper.findSplitPanelOpenButton()).toBeFalsy();
+
+    wrapper.find('[data-testid="toggle-split-panel"]')!.click();
+
+    expect(wrapper.findSplitPanelOpenButton()!.getElement()).toBeInTheDocument();
   });
 });
 

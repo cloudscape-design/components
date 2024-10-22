@@ -34,6 +34,10 @@ const cssVariableExpression = /--.+?\s*,\s*(.+)/;
  * the fallback value will be extracted and returned instead.
  */
 export function parseCssVariable(value: string) {
+  if (typeof window === 'undefined') {
+    return value;
+  }
+
   if (window.CSS?.supports?.('color', 'var(--dummy, #000)') ?? false) {
     return value;
   }

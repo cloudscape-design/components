@@ -7,6 +7,7 @@ import { nodeBelongs } from '../../utils/node-belongs';
 import { FunnelMetrics } from '../';
 import {
   FunnelContext,
+  FunnelContextValue,
   FunnelNameSelectorContext,
   FunnelStepContext,
   FunnelSubStepContext,
@@ -14,8 +15,8 @@ import {
 import {
   DATA_ATTR_FUNNEL_INTERACTION_ID,
   DATA_ATTR_FUNNEL_SUBSTEP,
-  getNameFromSelector,
   getSubStepAllSelector,
+  getTextFromSelector,
 } from '../selectors';
 
 /**
@@ -69,8 +70,8 @@ export const useFunnelSubStep = () => {
       */
       latestFocusCleanupFunction.current?.();
 
-      const subStepName = getNameFromSelector(subStepNameSelector);
-      const stepName = getNameFromSelector(stepNameSelector);
+      const subStepName = getTextFromSelector(subStepNameSelector);
+      const stepName = getTextFromSelector(stepNameSelector);
       const subStepNumber = subStepConfiguration.current
         ?.get(stepNumber)
         ?.find(step => step.name === subStepName)?.number;
@@ -185,9 +186,14 @@ export const useFunnelStep = () => {
  *
  * The 'data-analytics-funnel-interaction-id' property of funnelProps is used to track the unique identifier of the current interaction with the funnel.
  */
-export const useFunnel = () => {
+export type FunnelProps = Record<string, string | number | boolean | undefined>;
+type UseFunnel = () => FunnelContextValue & {
+  funnelProps: FunnelProps;
+};
+
+export const useFunnel: UseFunnel = () => {
   const context = useContext(FunnelContext);
-  const funnelProps: Record<string, string | number | boolean | undefined> = context.funnelInteractionId
+  const funnelProps: FunnelProps = context.funnelInteractionId
     ? {
         [DATA_ATTR_FUNNEL_INTERACTION_ID]: context.funnelInteractionId,
       }

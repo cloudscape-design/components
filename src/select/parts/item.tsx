@@ -108,6 +108,7 @@ const Item = (
                 trackRef={internalRef}
                 value={disabledReason!}
                 position="right"
+                hideOnOverscroll={true}
               />
             )}
           </>

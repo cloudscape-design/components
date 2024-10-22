@@ -22,6 +22,7 @@ import iconStyles from '../../../lib/components/icon/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import toolbarNotificationsStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
 import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
@@ -75,6 +76,11 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     'refresh-toolbar': toolbarSkeletonStyles['unfocusable-mobile'],
     classic: styles.unfocusable,
   }[theme];
+  const stickyNotificationsClassName = {
+    refresh: '', // does not exist in this design
+    'refresh-toolbar': toolbarNotificationsStyles['sticky-notifications'],
+    classic: `.${styles['notifications-sticky']}`,
+  };
 
   const triggerBadgeClassName =
     theme === 'refresh-toolbar' ? toolbarTriggerButtonStyles['trigger-badge-wrapper'] : iconStyles.badge;
@@ -372,9 +378,10 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     expect(wrapper.findNavigationToggle().getElement()).toEqual(document.activeElement);
   });
 
-  test('Does not allow sticky notification on small screen', () => {
+  // not testable in refresh, because it is implemented with media query
+  (theme === 'refresh' ? test.skip : test)('Does not allow sticky notification on small screen', () => {
     const { wrapper } = renderComponent(<AppLayout notifications="Test" stickyNotifications={true} />);
-    expect(wrapper.find(`.${styles['notifications-sticky']}`)).toBeFalsy();
+    expect(wrapper.find(stickyNotificationsClassName[theme])).toBeFalsy();
   });
 
   describe('unfocusable content', () => {

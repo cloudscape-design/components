@@ -76,6 +76,9 @@ function ChartFilter<T>({ series, i18nStrings, selectedSeries, onChange, ...rest
         onChange={updateSelection}
         className={styles['chart-filter']}
         selectedAriaLabel={i18nStrings?.filterSelectedAriaLabel}
+        filteringType="none"
+        statusType="finished"
+        keepOpen={true}
         hideTokens={true}
       />
     </InternalFormField>

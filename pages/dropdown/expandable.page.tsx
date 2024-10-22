@@ -171,10 +171,6 @@ const components = {
           },
         ]}
         filteringOptions={propertyFilterOptions}
-        filteringLoadingText={'loading text'}
-        filteringErrorText={'error text'}
-        filteringRecoveryText={'recovery text'}
-        filteringFinishedText={'finished text'}
         {...propertyFilterLabels}
         i18nStrings={propertyFilterI18n}
         expandToViewport={expandToViewport}

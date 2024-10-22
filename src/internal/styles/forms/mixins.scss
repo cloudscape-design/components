@@ -255,3 +255,10 @@
   block-size: $height;
   inline-size: $width;
 }
+
+@mixin control-border-radius-full {
+  border-start-start-radius: constants.$control-border-radius;
+  border-start-end-radius: constants.$control-border-radius;
+  border-end-start-radius: constants.$control-border-radius;
+  border-end-end-radius: constants.$control-border-radius;
+}

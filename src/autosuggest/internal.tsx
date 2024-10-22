@@ -254,7 +254,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
           />
         ) : null
       }
-      loopFocus={statusType === 'error' && !!recoveryText && !!onLoadItems}
+      loopFocus={dropdownStatus.hasRecoveryButton}
       onCloseDropdown={handleCloseDropdown}
       onDelayedInput={handleDelayedInput}
       onPressArrowDown={handlePressArrowDown}

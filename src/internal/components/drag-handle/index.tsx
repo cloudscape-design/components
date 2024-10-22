@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ButtonHTMLAttributes } from 'react';
-import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import clsx from 'clsx';
 
 import InternalIcon from '../../../icon/internal';
@@ -13,13 +12,21 @@ import styles from './styles.css.js';
 export interface DragHandleProps {
   attributes: ButtonHTMLAttributes<HTMLDivElement>;
   hideFocus?: boolean;
-  listeners?: SyntheticListenerMap;
+  // @dnd-kit uses this type
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  listeners: Record<string, Function> | undefined;
+  disabled?: boolean;
 }
 
-export default function DragHandle({ attributes, hideFocus, listeners }: DragHandleProps) {
+export default function DragHandle({ attributes, hideFocus, listeners, disabled }: DragHandleProps) {
   return (
-    <Handle className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'])} {...attributes} {...listeners}>
-      <InternalIcon name="drag-indicator" />
+    <Handle
+      aria-disabled={disabled}
+      className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'], disabled && styles['handle-disabled'])}
+      {...attributes}
+      {...listeners}
+    >
+      <InternalIcon variant={disabled ? 'disabled' : undefined} name="drag-indicator" />
     </Handle>
   );
 }

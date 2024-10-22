@@ -13,7 +13,7 @@ import InternalRadioGroup from './internal';
 export { RadioGroupProps };
 
 const RadioGroup = React.forwardRef((props: RadioGroupProps, ref: React.Ref<RadioGroupProps.Ref>) => {
-  const baseComponentProps = useBaseComponent('RadioGroup');
+  const baseComponentProps = useBaseComponent('RadioGroup', { props: { readOnly: props.readOnly } });
   return (
     <InternalRadioGroup
       ref={ref}

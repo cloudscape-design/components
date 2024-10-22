@@ -118,6 +118,9 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   display: flex;
   align-items: center;
   z-index: 1;
+  &.with-toolbar {
+    position: unset;
+  }
 }
 
 .open-button-side {

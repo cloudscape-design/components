@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-import { KeyCode } from '@cloudscape-design/test-utils-core/dist/utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import PropertyFilter from '../../../lib/components/property-filter';
@@ -12,7 +12,6 @@ import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
-  Ref,
 } from '../../../lib/components/property-filter/interfaces';
 import createWrapper, { ElementWrapper, PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
 import { createDefaultProps } from './common';
@@ -77,6 +76,7 @@ const filteringProperties: readonly FilteringProperty[] = [
     groupValuesLabel: 'State values',
   },
 ];
+const stateProperty = filteringProperties.find(property => property.key === 'state')!;
 
 const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
@@ -88,7 +88,7 @@ const filteringOptions: readonly FilteringOption[] = [
 
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
+const renderComponent = (props?: Partial<PropertyFilterProps>) => {
   const { container } = render(<PropertyFilter {...defaultProps} {...props} />);
   return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
 };
@@ -114,8 +114,6 @@ describe('property filter parts', () => {
       expandToViewport: true,
       query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
       filteringStatusType: 'error',
-      filteringRecoveryText: 'recovery',
-      filteringErrorText: 'error',
     });
     // find dropdown returns open dropdown
     expect(wrapper.findDropdown({ expandToViewport: true })).toBeNull();
@@ -124,8 +122,8 @@ describe('property filter parts', () => {
     expect(wrapper.findDropdown({ expandToViewport: true }).findOpenDropdown()!.getElement()).not.toBeNull();
     wrapper.setInputValue('string');
     expect(wrapper.findEnteredTextOption({ expandToViewport: true })!.getElement()).toHaveTextContent('Use: "string"');
-    expect(wrapper.findErrorRecoveryButton({ expandToViewport: true })!.getElement()).toHaveTextContent('recovery');
-    expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('error');
+    expect(wrapper.findErrorRecoveryButton({ expandToViewport: true })!.getElement()).toHaveTextContent('Retry');
+    expect(wrapper.findStatusIndicator({ expandToViewport: true })!.getElement()).toHaveTextContent('Error status');
     wrapper.selectSuggestion(2, { expandToViewport: true });
     expect(wrapper.findNativeInput().getElement()).toHaveValue('string != ');
   });
@@ -134,38 +132,32 @@ describe('property filter parts', () => {
     test('displays error status', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         filteringStatusType: 'error',
-        filteringErrorText: 'Error text',
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error text');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Error status');
     });
     test('links error status to dropdown', () => {
-      const { propertyFilterWrapper: wrapper } = renderComponent({
-        filteringStatusType: 'error',
-        filteringErrorText: 'Error text',
-      });
+      const { propertyFilterWrapper: wrapper } = renderComponent({ filteringStatusType: 'error' });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error text`);
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Error status Retry`);
     });
     test('displays finished status', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         filteringStatusType: 'finished',
-        filteringFinishedText: 'Finished text',
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished text');
+      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent('Finished status');
     });
     test('links finished status to dropdown', () => {
       const { propertyFilterWrapper: wrapper } = renderComponent({
         filteringStatusType: 'finished',
-        filteringFinishedText: 'Finished text',
       });
       wrapper.findNativeInput().focus();
       wrapper.setInputValue('string');
-      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished text`);
+      expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription(`Finished status`);
     });
   });
 
@@ -209,6 +201,13 @@ describe('property filter parts', () => {
   });
 
   describe('async loading', () => {
+    beforeEach(() => {
+      jest.useFakeTimers();
+    });
+    afterEach(() => {
+      jest.useRealTimers();
+    });
+
     test('calls onLoadItems with parsed property and operator when operator is selected', () => {
       const onLoadItems = jest.fn();
       const { propertyFilterWrapper: wrapper } = renderComponent({ onLoadItems });
@@ -261,6 +260,59 @@ describe('property filter parts', () => {
       );
     });
 
+    test('does not call onLoadItems when clear button is clicked and asyncProperties=false', () => {
+      const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'pending',
+        asyncProperties: false,
+      });
+
+      wrapper.focus();
+      wrapper.setInputValue('state = 123');
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
+      ]);
+
+      wrapper.findClearButton()!.click();
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toHaveLength(1);
+    });
+
+    test('calls onLoadItems when clear button is clicked and asyncProperties=true', () => {
+      const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'pending',
+        asyncProperties: true,
+      });
+
+      wrapper.focus();
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+      ]);
+
+      wrapper.setInputValue('state = 123');
+      expect(loadItemCalls).toHaveLength(2);
+
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
+      ]);
+
+      wrapper.findClearButton()!.click();
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
+        expect.objectContaining({ filteringText: '' }),
+      ]);
+    });
+
     test('token editor has matched property options', () => {
       function AsyncPropertyFilter(props: PropertyFilterProps) {
         const [loadedFilteringOptions, setFilteringOptions] = useState<readonly FilteringOption[]>([]);
@@ -294,6 +346,31 @@ describe('property filter parts', () => {
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
       ).toEqual(['Stopped', 'Stopping', 'Running']);
+    });
+
+    test('calls onLoadItem when opening editor value autosuggest', () => {
+      const onLoadItems = jest.fn();
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        onLoadItems,
+        filteringOptions: [],
+        filteringStatusType: 'pending',
+        query: { operation: 'and', tokens: [{ propertyKey: 'state', operator: ':', value: 'Sto' }] },
+      });
+
+      const [contentWrapper] = openTokenEditor(wrapper);
+      const valueSelectWrapper = findValueSelector(contentWrapper);
+      valueSelectWrapper.focus();
+      expect(onLoadItems).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            filteringProperty: expect.objectContaining({ key: 'state' }),
+            filteringOperator: ':',
+            filteringText: 'Sto',
+            firstPage: true,
+            samePage: false,
+          },
+        })
+      );
     });
   });
 

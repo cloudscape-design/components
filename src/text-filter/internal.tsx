@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import InternalInput from '../input/internal';
 import { getBaseProps } from '../internal/base-component';
+import { useTableComponentsContext } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -29,6 +30,7 @@ const InternalTextFilter = React.forwardRef(
       ariaDescribedby,
       disabled,
       countText,
+      disableBrowserAutocorrect,
       onChange,
       onDelayedChange,
       __internalRootRef,
@@ -42,11 +44,16 @@ const InternalTextFilter = React.forwardRef(
 
     const searchResultsId = useUniqueId('text-filter-search-results');
     const showResults = filteringText && countText && !disabled;
+    const tableComponentContext = useTableComponentsContext();
+    if (tableComponentContext?.filterRef?.current) {
+      tableComponentContext.filterRef.current.filterText = filteringText;
+    }
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
         <InternalInput
           __inheritFormFieldProps={true}
+          disableBrowserAutocorrect={disableBrowserAutocorrect}
           ref={inputRef}
           className={styles.input}
           type="search"

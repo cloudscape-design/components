@@ -106,8 +106,13 @@
     "contentDisplayPreference.dragHandleAriaDescription": "Utilice la barra espaciadora o Enter para activar el arrastre de un elemento y, a continuación, utilice las teclas de flecha para mover la posición del elemento. Para completar el movimiento de la posición, utilice la barra espaciadora o Enter, o para descartar el movimiento, utilice Escape.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Recogida del elemento en la posición {position} de {total}",
     "contentDisplayPreference.liveAnnouncementDndDiscarded": "Reordenación cancelada",
+    "contentDisplayPreference.i18nStrings.columnFilteringPlaceholder": "Filtrar columnas",
+    "contentDisplayPreference.i18nStrings.columnFilteringAriaLabel": "Filtrar columnas",
+    "contentDisplayPreference.i18nStrings.columnFilteringNoMatchText": "No se encontraron coincidencias",
+    "contentDisplayPreference.i18nStrings.columnFilteringClearFilterText": "Quitar filtro",
     "contentDisplayPreference.liveAnnouncementDndItemReordered": "{isInitialPosition, select, true {Mover el elemento de nuevo a la posición {currentPosition} de {total}} false {Mover el elemento a la posición {currentPosition} de {total}} other {}}",
-    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {El artículo ha vuelto a su posición original {initialPosition} de {total}} false {El artículo se movió de la posición {initialPosition} a la posición {finalPosition} de {total}} other {}}"
+    "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {El artículo ha vuelto a su posición original {initialPosition} de {total}} false {El artículo se movió de la posición {initialPosition} a la posición {finalPosition} de {total}} other {}}",
+    "contentDisplayPreference.i18nStrings.columnFilteringCountText": "{count, plural, zero {0 coincidencias} one {1 coincidencia} other {{count} coincidencias}}"
   },
   "copy-to-clipboard": {
     "i18nStrings.copyButtonText": "Copiar"
@@ -158,7 +163,7 @@
     "loadingText": "Cargando contenido"
   },
   "input": {
-    "clearAriaLabel": "Despejar"
+    "clearAriaLabel": "Borrar"
   },
   "link": {
     "externalIconAriaLabel": "Se abre en una pestaña nueva."

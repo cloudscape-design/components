@@ -38,7 +38,7 @@ import {
   Token,
   TokenGroup,
 } from './interfaces';
-import { PropertyEditor } from './property-editor';
+import { PropertyEditorContentCustom, PropertyEditorContentEnum, PropertyEditorFooter } from './property-editor';
 import PropertyFilterAutosuggest, { PropertyFilterAutosuggestProps } from './property-filter-autosuggest';
 import { TokenButton } from './token';
 import { useLoadItems } from './use-load-items';
@@ -113,7 +113,6 @@ const PropertyFilterInternal = React.forwardRef(
     const i18nStrings = usePropertyFilterI18n(rest.i18nStrings);
 
     useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
-    const showResults = !!query.tokens?.length && !disabled && !!countText;
     const [filteringText, setFilteringText] = useState<string>('');
 
     const { internalProperties, internalOptions, internalQuery, internalFreeText } = (() => {
@@ -129,6 +128,7 @@ const PropertyFilterInternal = React.forwardRef(
           propertyGroup: property?.group,
           operators: (property?.operators ?? []).map(op => (typeof op === 'string' ? op : op.operator)),
           defaultOperator: property?.defaultOperator ?? '=',
+          getTokenType: operator => (operator ? extendedOperators.get(operator)?.tokenType ?? 'value' : 'value'),
           getValueFormatter: operator => (operator ? extendedOperators.get(operator)?.format ?? null : null),
           getValueFormRenderer: operator => (operator ? extendedOperators.get(operator)?.form ?? null : null),
           externalProperty: property,
@@ -298,8 +298,13 @@ const PropertyFilterInternal = React.forwardRef(
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
 
-    const operatorForm =
-      parsedText.step === 'property' && parsedText.property.getValueFormRenderer(parsedText.operator);
+    const propertyStep = parsedText.step === 'property' ? parsedText : null;
+    const customValueKey = propertyStep ? propertyStep.property.propertyKey + ':' + propertyStep.operator : '';
+    const [customFormValueRecord, setCustomFormValueRecord] = useState<Record<string, any>>({});
+    const customFormValue = customValueKey in customFormValueRecord ? customFormValueRecord[customValueKey] : null;
+    const setCustomFormValue = (value: null | any) => setCustomFormValueRecord({ [customValueKey]: value });
+    const operatorForm = propertyStep && propertyStep.property.getValueFormRenderer(propertyStep.operator);
+    const isEnumValue = propertyStep?.property.getTokenType(propertyStep.operator) === 'enum';
 
     const searchResultsId = useUniqueId('property-filter-search-results');
     const constraintTextId = useUniqueId('property-filter-constraint');
@@ -307,58 +312,89 @@ const PropertyFilterInternal = React.forwardRef(
       ? joinStrings(rest.ariaDescribedby, constraintTextId)
       : rest.ariaDescribedby;
 
+    const showResults = !!internalQuery.tokens?.length && !disabled && !!countText;
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
         <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
           {customControl && <div className={styles['custom-control']}>{customControl}</div>}
-          <PropertyFilterAutosuggest
-            ref={inputRef}
-            virtualScroll={virtualScroll}
-            enteredTextLabel={i18nStrings.enteredTextLabel}
-            ariaLabel={filteringAriaLabel ?? i18nStrings.filteringAriaLabel}
-            placeholder={filteringPlaceholder ?? i18nStrings.filteringPlaceholder}
-            ariaLabelledby={rest.ariaLabelledby}
-            ariaDescribedby={textboxAriaDescribedBy}
-            controlId={rest.controlId}
-            value={filteringText}
-            disabled={disabled}
-            {...autosuggestOptions}
-            onChange={event => setFilteringText(event.detail.value)}
-            empty={filteringEmpty}
-            {...asyncAutosuggestProps}
-            expandToViewport={expandToViewport}
-            onOptionClick={handleSelected}
-            customForm={
-              operatorForm && (
-                <PropertyEditor
-                  property={parsedText.property}
-                  operator={parsedText.operator}
-                  filter={parsedText.value}
-                  operatorForm={operatorForm}
-                  i18nStrings={i18nStrings}
-                  onCancel={() => {
-                    setFilteringText('');
-                    inputRef.current?.close();
-                    inputRef.current?.focus({ preventDropdown: true });
-                  }}
-                  onSubmit={token => {
-                    addToken(token);
-                    setFilteringText('');
-                    inputRef.current?.focus({ preventDropdown: true });
-                    inputRef.current?.close();
-                  }}
-                />
-              )
-            }
-            hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
-            clearAriaLabel={i18nStrings.clearAriaLabel}
-            searchResultsId={showResults ? searchResultsId : undefined}
-          />
-          {showResults ? (
-            <div className={styles.results}>
-              <SearchResults id={searchResultsId}>{countText}</SearchResults>
-            </div>
-          ) : null}
+          <div className={styles['input-wrapper']}>
+            <PropertyFilterAutosuggest
+              ref={inputRef}
+              virtualScroll={virtualScroll}
+              enteredTextLabel={i18nStrings.enteredTextLabel}
+              ariaLabel={filteringAriaLabel ?? i18nStrings.filteringAriaLabel}
+              placeholder={filteringPlaceholder ?? i18nStrings.filteringPlaceholder}
+              ariaLabelledby={rest.ariaLabelledby}
+              ariaDescribedby={textboxAriaDescribedBy}
+              controlId={rest.controlId}
+              value={filteringText}
+              disabled={disabled}
+              {...autosuggestOptions}
+              onChange={event => setFilteringText(event.detail.value)}
+              empty={filteringEmpty}
+              {...asyncAutosuggestProps}
+              expandToViewport={expandToViewport}
+              onOptionClick={handleSelected}
+              customForm={
+                operatorForm || isEnumValue
+                  ? {
+                      content: operatorForm ? (
+                        <PropertyEditorContentCustom
+                          key={customValueKey}
+                          property={propertyStep.property}
+                          operator={propertyStep.operator}
+                          filter={propertyStep.value}
+                          operatorForm={operatorForm}
+                          value={customFormValue}
+                          onChange={setCustomFormValue}
+                        />
+                      ) : (
+                        <PropertyEditorContentEnum
+                          key={customValueKey}
+                          property={propertyStep.property}
+                          filter={propertyStep.value}
+                          value={customFormValue}
+                          onChange={setCustomFormValue}
+                          asyncProps={asyncProps}
+                          filteringOptions={internalOptions}
+                          onLoadItems={inputLoadItemsHandlers.onLoadItems}
+                        />
+                      ),
+                      footer: (
+                        <PropertyEditorFooter
+                          key={customValueKey}
+                          property={propertyStep.property}
+                          operator={propertyStep.operator}
+                          value={customFormValue}
+                          i18nStrings={i18nStrings}
+                          onCancel={() => {
+                            setFilteringText('');
+                            inputRef.current?.close();
+                            inputRef.current?.focus({ preventDropdown: true });
+                          }}
+                          onSubmit={token => {
+                            addToken(token);
+                            setFilteringText('');
+                            inputRef.current?.focus({ preventDropdown: true });
+                            inputRef.current?.close();
+                          }}
+                        />
+                      ),
+                    }
+                  : undefined
+              }
+              onCloseDropdown={() => setCustomFormValueRecord({})}
+              hideEnteredTextOption={internalFreeText.disabled && parsedText.step !== 'property'}
+              clearAriaLabel={i18nStrings.clearAriaLabel}
+              searchResultsId={showResults ? searchResultsId : undefined}
+            />
+            {showResults ? (
+              <div className={styles.results}>
+                <SearchResults id={searchResultsId}>{countText}</SearchResults>
+              </div>
+            ) : null}
+          </div>
         </div>
         {filteringConstraintText && (
           <div id={constraintTextId} className={styles.constraint}>

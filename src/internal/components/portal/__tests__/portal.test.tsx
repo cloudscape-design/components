@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { act, render, screen } from '@testing-library/react';
+import React, { useState } from 'react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -106,6 +106,65 @@ describe('Portal', () => {
       expect(removeContainer).toHaveBeenCalledWith(container);
       expect(screen.queryByTestId('portal-content')).toBeFalsy();
       expect(container).not.toBeInTheDocument();
+    });
+
+    test('allows conditional change of getContainer/removeContainer', async () => {
+      function MovablePortal({ getContainer, removeContainer }: Pick<PortalProps, 'getContainer' | 'removeContainer'>) {
+        const [visible, setVisible] = useState(false);
+        return (
+          <>
+            <button data-testid="toggle-portal" onClick={() => setVisible(!visible)}>
+              Toggle
+            </button>
+            <Portal
+              getContainer={visible ? getContainer : undefined}
+              removeContainer={visible ? removeContainer : undefined}
+            >
+              <div data-testid="portal-content">portal content</div>
+            </Portal>
+          </>
+        );
+      }
+
+      const iframe = document.createElement('iframe');
+      document.body.appendChild(iframe);
+      const externalDocument = iframe.contentDocument!;
+
+      const getContainer = jest.fn(() => {
+        const container = externalDocument.createElement('div');
+        container.setAttribute('data-testid', 'dynamic-container');
+        externalDocument.body.appendChild(container);
+        return Promise.resolve(container);
+      });
+
+      const removeContainer = jest.fn(() => {
+        const allContainers = externalDocument.querySelectorAll('[data-testid="dynamic-container"]');
+        expect(allContainers).toHaveLength(1);
+        allContainers[0].remove();
+      });
+
+      render(<MovablePortal getContainer={getContainer} removeContainer={removeContainer} />);
+      expect(screen.getByTestId('portal-content')).toBeInTheDocument();
+      expect(getContainer).not.toHaveBeenCalled();
+      expect(removeContainer).not.toHaveBeenCalled();
+
+      fireEvent.click(screen.getByTestId('toggle-portal'));
+      // wait a tick to resolve pending promises
+      await act(() => Promise.resolve());
+      expect(screen.queryByTestId('portal-content')).toBeFalsy();
+      expect(externalDocument.querySelector('[data-testid="portal-content"]')).toBeTruthy();
+      expect(externalDocument.querySelectorAll('[data-testid="dynamic-container"]')).toHaveLength(1);
+      expect(getContainer).toHaveBeenCalledTimes(1);
+      expect(removeContainer).toHaveBeenCalledTimes(0);
+
+      fireEvent.click(screen.getByTestId('toggle-portal'));
+      // wait a tick to resolve pending promises
+      await act(() => Promise.resolve());
+      expect(screen.getByTestId('portal-content')).toBeInTheDocument();
+      expect(externalDocument.querySelector('[data-testid="portal-content"]')).toBeFalsy();
+      expect(externalDocument.querySelectorAll('[data-testid="dynamic-container"]')).toHaveLength(0);
+      expect(getContainer).toHaveBeenCalledTimes(1);
+      expect(removeContainer).toHaveBeenCalledTimes(1);
     });
 
     describe('console logging', () => {

@@ -5205,6 +5205,16 @@ You must provide an ordered list of the items to display in the \`preferences.co
             "type": "string",
           },
           {
+            "name": "enableColumnFiltering",
+            "optional": true,
+            "type": "false | true",
+          },
+          {
+            "name": "i18nStrings",
+            "optional": true,
+            "type": "CollectionPreferencesProps.ContentDisplayPreferenceI18nStrings",
+          },
+          {
             "name": "liveAnnouncementDndDiscarded",
             "optional": true,
             "type": "string",
@@ -6652,6 +6662,12 @@ is provided by its parent form field component.
       "name": "customAbsoluteRangeControl",
       "optional": true,
       "type": "DateRangePickerProps.AbsoluteRangeControl",
+    },
+    {
+      "description": "Specifies which time units to allow in the custom relative range control.",
+      "name": "customRelativeRangeUnits",
+      "optional": true,
+      "type": "Array<DateRangePickerProps.TimeUnit>",
     },
     {
       "defaultValue": "() => ''",
@@ -10077,6 +10093,37 @@ The event detail contains the \`reason\`, which can be any of the following:
   "name": "Modal",
   "properties": [
     {
+      "analyticsTag": "",
+      "description": "Specifies additional analytics-related metadata.
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.
+* \`flowType\` - Identifies the type of flow represented by the component.
+* \`resourceType\` - Identifies the type of resource represented by the flow. **Note:** This API is currently experimental.",
+      "inlineType": {
+        "name": "ModalProps.AnalyticsMetadata",
+        "properties": [
+          {
+            "name": "flowType",
+            "optional": true,
+            "type": "FlowType",
+          },
+          {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "resourceType",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "ModalProps.AnalyticsMetadata",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -11939,6 +11986,18 @@ of the user's browser.",
       "type": "boolean",
     },
     {
+      "description": "Determines whether the secondary actions area of the input has padding. If true, removes the default padding from the secondary actions area.",
+      "name": "disableSecondaryActionsPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Determines whether the secondary content area of the input has padding. If true, removes the default padding from the secondary content area.",
+      "name": "disableSecondaryContentPaddings",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
 being included in a form submission. A disabled control can't
@@ -12056,6 +12115,16 @@ In most cases, they aren't needed, as the \`svg\` element inherits styles from t
 ",
       "isDefault": false,
       "name": "actionButtonIconSvg",
+    },
+    {
+      "description": "Use this slot to add secondary actions to the prompt input.",
+      "isDefault": false,
+      "name": "secondaryActions",
+    },
+    {
+      "description": "Use this slot to add secondary content, such as file attachments, to the prompt input.",
+      "isDefault": false,
+      "name": "secondaryContent",
     },
   ],
   "releaseStatus": "stable",
@@ -12598,7 +12667,7 @@ The \`operation\` property has two valid values: "and", "or", and controls the j
 The \`tokens\` property is an array of objects that will be displayed to the user beneath the filtering input. When \`enableTokenGroups=true\`, the
 \`tokenGroups\` property is used instead, which supports nested tokens.
 Each token has the following properties:
-* value [string]: The string value of the token to be used as a filter.
+* value [unknown]: The value of the token to be used as a filter. Can be null or string for default tokens, string[] for enum tokens, and anything for tokens with custom forms.
 * propertyKey [string]: The key of the corresponding property in filteringProperties.
 * operator ['<' | '<=' | '>' | '>=' | ':' | '!:' | '=' | '!=' | '^' | '!^']: The operator which indicates how to filter the dataset using this token.
 ",
@@ -14703,6 +14772,67 @@ and truncates it with an ellipsis.",
 }
 `;
 
+exports[`Documenter definition for steps matches the snapshot: steps 1`] = `
+{
+  "events": [],
+  "functions": [],
+  "name": "Steps",
+  "properties": [
+    {
+      "description": "Sets the \`aria-describedby\` property on the progress steps container.",
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Provides an \`aria-label\` to the progress steps container.
+Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Sets the \`aria-labelledby\` property on the progress steps container.
+If there's a visible label element that you can reference, use this instead of \`ariaLabel\`.
+Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
+      "name": "ariaLabelledby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An array of individual steps
+Each step definition has the following properties:
+ * \`status\` (string) - Status of the step corresponding to a status indicator.
+ * \`statusIconAriaLabel\` - (string) - (Optional) Alternative text for the status icon.
+ * \`header\` (ReactNode) - Summary corresponding to the step.
+ * \`details\` (ReactNode) - (Optional) Additional information corresponding to the step.
+",
+      "name": "steps",
+      "optional": false,
+      "type": "ReadonlyArray<StepsProps.Step>",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for table matches the snapshot: table 1`] = `
 {
   "events": [
@@ -15023,6 +15153,8 @@ add a meaningful description to the whole selection.
     * \`cellContext.currentValue\` - State to keep track of a value in input fields while editing.
     * \`cellContext.setValue\` - Function to update \`currentValue\`. This should be called when the value in input field changes.
 * \`isRowHeader\` (boolean) - Specifies that cells in this column should be used as row headers.
+* \`hasDynamicContent\` (boolean) - Specifies that cells in this column may have dynamic content. The contents will then be observed to update calculated column widths.
+   This may have a negative performance impact, so should be used only if necessary. It has no effect if \`resizableColumns\` is set to \`true\`.
 * \`verticalAlign\` ('middle' | 'top') - Determines the alignment of the content in the table cell.",
       "name": "columnDefinitions",
       "optional": false,
@@ -16048,6 +16180,16 @@ The count text is only displayed when \`filteringText\` isn't empty.
       "name": "countText",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Specifies whether to disable browser autocorrect and related features.
+If you set this to \`true\`, it disables any native browser capabilities
+that automatically correct user input, such as \`autocorrect\` and
+\`autocapitalize\`. If you don't set it, the behavior follows the default behavior
+of the user's browser.",
+      "name": "disableBrowserAutocorrect",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "Specifies if the filtering input is disabled.

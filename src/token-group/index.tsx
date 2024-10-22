@@ -14,7 +14,7 @@ export { TokenGroupProps };
 
 export default function TokenGroup({ items = [], alignment = 'horizontal', ...props }: TokenGroupProps) {
   const baseComponentProps = useBaseComponent('TokenGroup', {
-    props: { alignment, disableOuterPadding: props.disableOuterPadding, limit: props.limit },
+    props: { alignment, disableOuterPadding: props.disableOuterPadding, limit: props.limit, readOnly: props.readOnly },
   });
 
   const componentAnalyticsMetadata: GeneratedAnalyticsMetadataTokenGroupComponent = {
