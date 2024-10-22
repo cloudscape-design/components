@@ -4,12 +4,12 @@ import React, { useContext } from 'react';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
-import { Checkbox, Container, Header, Pagination, SpaceBetween, Table } from '~components';
+import { Button, Checkbox, Container, Header, Pagination, SpaceBetween, Table } from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import { generateItems } from './generate-data';
-import { columnsConfig, paginationLabels } from './shared-configs';
+import { columnsConfig as sharedColumnsConfig, paginationLabels } from './shared-configs';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -20,6 +20,15 @@ type PageContext = React.Context<
 
 const allItems = generateItems();
 const PAGE_SIZE = 50;
+const columnsConfig = [
+  ...sharedColumnsConfig,
+  {
+    id: 'actions',
+    header: 'Fav',
+    cell: () => <Button variant="icon" iconName="star" ariaLabel="make favorite" />,
+    width: 70,
+  },
+];
 
 export default function App() {
   const {
@@ -44,6 +53,8 @@ export default function App() {
               footer={hasFooter ? <Pagination {...paginationProps} ariaLabels={paginationLabels} /> : undefined}
               columnDefinitions={columnsConfig}
               items={items}
+              stickyColumns={{ last: 1 }}
+              resizableColumns={true}
             />
           </Container>
         </div>

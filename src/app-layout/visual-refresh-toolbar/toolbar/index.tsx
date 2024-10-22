@@ -9,6 +9,7 @@ import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/impleme
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
+import { BreadcrumbsSlotContext } from '../contexts';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
@@ -193,14 +194,16 @@ export function AppLayoutToolbarImplementation({
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
-            {breadcrumbs}
-            {discoveredBreadcrumbs && (
-              <BreadcrumbGroupImplementation
-                {...discoveredBreadcrumbs}
-                data-awsui-discovered-breadcrumbs={true}
-                __injectAnalyticsComponentMetadata={true}
-              />
-            )}
+            <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
+              {breadcrumbs ||
+                (discoveredBreadcrumbs && (
+                  <BreadcrumbGroupImplementation
+                    {...discoveredBreadcrumbs}
+                    data-awsui-discovered-breadcrumbs={true}
+                    __injectAnalyticsComponentMetadata={true}
+                  />
+                ))}
+            </BreadcrumbsSlotContext.Provider>
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (

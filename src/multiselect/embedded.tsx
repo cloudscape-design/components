@@ -54,16 +54,13 @@ const EmbeddedMultiselect = React.forwardRef(
     const formFieldContext = useFormFieldContext(restProps);
     const ariaLabelId = useUniqueId('multiselect-ariaLabel-');
     const footerId = useUniqueId('multiselect-footer-');
-    const selfControlId = useUniqueId('multiselect-trigger-');
-    const controlId = formFieldContext.controlId ?? selfControlId;
-
     const multiselectProps = useMultiselect({
       options,
       selectedOptions,
       filteringType,
       disabled: false,
       deselectAriaLabel,
-      controlId,
+      controlId: formFieldContext.controlId,
       ariaLabelId,
       footerId,
       filteringValue: filteringText,
@@ -77,12 +74,7 @@ const EmbeddedMultiselect = React.forwardRef(
     const status = multiselectProps.dropdownStatus;
 
     return (
-      <div
-        role="group"
-        className={styles.embedded}
-        aria-labelledby={ariaLabelId}
-        aria-describedby={status.content ? footerId : undefined}
-      >
+      <div className={styles.embedded}>
         <ListComponent
           menuProps={multiselectProps.getMenuProps()}
           getOptionProps={multiselectProps.getOptionProps}

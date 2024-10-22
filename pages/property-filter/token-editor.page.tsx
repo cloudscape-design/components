@@ -20,11 +20,17 @@ const filteringProperties: readonly PropertyFilterProps.FilteringProperty[] = co
   groupValuesLabel: `${def.propertyLabel} values`,
 }));
 
+const filteringOptions: readonly PropertyFilterProps.FilteringOption[] = [
+  { propertyKey: 'state', value: 'Stopping' },
+  { propertyKey: 'state', value: 'Stopped' },
+  { propertyKey: 'state', value: 'Running' },
+];
+
 const commonProps = {
   ...labels,
   onChange: () => {},
   filteringProperties,
-  filteringOptions: [],
+  filteringOptions,
   i18nStrings,
   countText: '5 matches',
   disableFreeTextFiltering: false,

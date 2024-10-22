@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useImperativeHandle, useState } from 'react';
 
+import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
+
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../internal/events';
@@ -17,7 +19,7 @@ import { MIN_DRAWER_SIZE, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
-import { computeHorizontalLayout, computeVerticalLayout } from './compute-layout';
+import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
@@ -74,11 +76,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
 
-    const onNavigationToggle = (open: boolean) => {
-      navigationFocusControl.setFocus();
-      fireNonCancelableEvent(onNavigationChange, { open });
-    };
-
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
       controlledProp: 'toolsOpen',
@@ -116,27 +113,13 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       //   and compare a given number with the new drawer id min size
 
       // the total size of all global drawers resized to their min size
-      let totalActiveDrawersMinSize = activeGlobalDrawersIds
-        .map(
-          activeDrawerId => combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE
-        )
-        .reduce((acc, curr) => acc + curr, 0);
-      if (activeDrawer) {
-        totalActiveDrawersMinSize += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
-      }
-
       const availableSpaceForNewDrawer = resizableSpaceAvailable - totalActiveDrawersMinSize;
       if (availableSpaceForNewDrawer >= newDrawerSize) {
         return;
       }
 
       // now we made sure we cannot accommodate the new drawer with existing ones
-      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
-      if (activeDrawer && activeDrawer?.id === drawerToClose) {
-        onActiveDrawerChange(null);
-      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
-        onActiveGlobalDrawersChange(drawerToClose);
-      }
+      closeFirstDrawer();
     };
 
     const {
@@ -227,6 +210,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const navigationFocusControl = useFocusControl(navigationOpen);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
+    const onNavigationToggle = useStableCallback((open: boolean) => {
+      navigationFocusControl.setFocus();
+      fireNonCancelableEvent(onNavigationChange, { open });
+    });
+
     useImperativeHandle(forwardRef, () => ({
       closeNavigationIfNecessary: () => isMobile && onNavigationToggle(false),
       openTools: () => onToolsToggle(true),
@@ -282,7 +270,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     });
 
     const hasToolbar = !embeddedViewMode && !!toolbarProps;
-    const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar);
+    const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
 
     const verticalOffsets = computeVerticalLayout({
       topOffset: placement.insetBlockStart,
@@ -361,6 +349,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       refs: splitPanelFocusControl.refs,
     };
 
+    const closeFirstDrawer = useStableCallback(() => {
+      const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
+      if (activeDrawer && activeDrawer?.id === drawerToClose) {
+        onActiveDrawerChange(null);
+      } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
+        onActiveGlobalDrawersChange(drawerToClose);
+      }
+    });
+
     useEffect(() => {
       // Close navigation drawer on mobile so that the main content is visible
       if (isMobile) {
@@ -368,6 +365,51 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isMobile]);
+
+    const getTotalActiveDrawersMinSize = () => {
+      const combinedDrawers = [...(drawers || []), ...globalDrawers];
+      let result = activeGlobalDrawersIds
+        .map(activeDrawerId =>
+          Math.min(
+            combinedDrawers.find(drawer => drawer.id === activeDrawerId)?.defaultSize ?? MIN_DRAWER_SIZE,
+            MIN_DRAWER_SIZE
+          )
+        )
+        .reduce((acc, curr) => acc + curr, 0);
+      if (activeDrawer) {
+        result += Math.min(activeDrawer?.defaultSize ?? MIN_DRAWER_SIZE, MIN_DRAWER_SIZE);
+      }
+
+      return result;
+    };
+
+    const totalActiveDrawersMinSize = getTotalActiveDrawersMinSize();
+
+    useEffect(() => {
+      if (isMobile) {
+        return;
+      }
+
+      const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
+      const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
+      const hasHorizontalScroll = scrollWidth > placement.inlineSize;
+      if (hasHorizontalScroll) {
+        if (navigationOpen) {
+          onNavigationToggle(false);
+          return;
+        }
+
+        closeFirstDrawer();
+      }
+    }, [
+      totalActiveDrawersMinSize,
+      closeFirstDrawer,
+      isMobile,
+      navigationOpen,
+      navigationWidth,
+      onNavigationToggle,
+      placement.inlineSize,
+    ]);
 
     return (
       <>

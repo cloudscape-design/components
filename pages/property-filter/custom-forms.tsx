@@ -6,11 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { DatePicker, FormField, RadioGroup, TimeInput, TimeInputProps } from '~components';
 import Calendar, { CalendarProps } from '~components/calendar';
 import DateInput from '~components/date-input';
-import EmbeddedMultiselect from '~components/multiselect/embedded';
-import InternalMultiselect from '~components/multiselect/internal';
 import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
-
-import { allItems } from './table.data';
 
 import styles from './custom-forms.scss';
 
@@ -217,59 +213,4 @@ function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
     .toFixed(0)
     .padStart(2, '0');
   return `${sign}${hoursOffset}:${minuteOffset}`;
-}
-
-const allOwners = [...new Set(allItems.map(({ owner }) => owner))];
-
-export function OwnerMultiSelectForm({ value, onChange, filter }: ExtendedOperatorFormProps<string[]>) {
-  value = value && Array.isArray(value) ? value : [];
-
-  if (typeof filter !== 'undefined') {
-    return (
-      <EmbeddedMultiselect
-        options={allOwners.map(owner => ({ value: owner, label: owner }))}
-        selectedOptions={value.map(owner => ({ value: owner, label: owner })) ?? []}
-        onChange={event =>
-          onChange(
-            event.detail.selectedOptions
-              .map(({ value }) => value)
-              .filter((value): value is string => typeof value !== 'undefined')
-          )
-        }
-        filteringText={filter}
-        statusType="finished"
-        filteringType="auto"
-        empty="No options available"
-        noMatch="No options matched"
-      />
-    );
-  }
-
-  return (
-    <div className={styles['multiselect-form']}>
-      <FormField stretch={true}>
-        <InternalMultiselect
-          options={allOwners.map(owner => ({ value: owner, label: owner }))}
-          selectedOptions={value.map(owner => ({ value: owner, label: owner })) ?? []}
-          onChange={event =>
-            onChange(
-              event.detail.selectedOptions
-                .map(({ value }) => value)
-                .filter((value): value is string => typeof value !== 'undefined')
-            )
-          }
-          statusType="finished"
-          filteringType="none"
-          expandToViewport={true}
-          keepOpen={true}
-          hideTokens={false}
-          inlineTokens={true}
-        />
-      </FormField>
-    </div>
-  );
-}
-
-export function formatOwners(owners: string[]) {
-  return owners && Array.isArray(owners) ? owners.join(', ') : '';
 }
