@@ -45,9 +45,13 @@
 
 .token {
   block-size: 100%;
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: max-content auto;
   gap: awsui.$space-xxs;
+
+  &-contains-image {
+    grid-template-rows: 70px auto;
+  }
 }
 
 .token-box {
@@ -67,6 +71,10 @@
   border-end-end-radius: awsui.$border-radius-token;
   color: awsui.$color-text-body-default;
   box-sizing: border-box;
+
+  &.horizontal {
+    max-inline-size: 220px;
+  }
 }
 @mixin token-box-validation {
   border-inline-start-width: awsui.$border-invalid-width;

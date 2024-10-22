@@ -8,15 +8,16 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
-  display: flex;
   gap: awsui.$space-scaled-xs;
 
   &.horizontal {
+    display: flex;
     gap: awsui.$space-xs;
     flex-direction: row;
     flex-wrap: wrap;
   }
   &.vertical {
+    display: flex;
     flex-direction: column;
   }
 }
@@ -40,6 +41,11 @@
   }
   &.vertical {
     flex-direction: column;
+  }
+  &.grid {
+    display: grid;
+    gap: awsui.$space-xs;
+    grid-template-columns: repeat(auto-fill, 220px);
   }
 }
 
