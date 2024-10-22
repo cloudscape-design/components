@@ -18,6 +18,10 @@
   margin-block-start: calc(-1 * #{styles.$control-border-width});
   cursor: pointer;
 
+  &.variant-mobile-breadcrumb {
+    color: awsui.$color-text-dropdown-item-secondary;
+  }
+
   &.disabled {
     cursor: default;
     color: awsui.$color-text-dropdown-item-disabled;

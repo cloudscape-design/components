@@ -15,13 +15,19 @@ import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useMobile } from '../internal/hooks/use-mobile';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { createWidgetizedComponent } from '../internal/widgets';
 import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
 } from './analytics-metadata/interfaces';
-import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
+import {
+  BreadcrumbGroupProps,
+  EllipsisDropdownProps,
+  InternalBreadcrumbGroupProps,
+  MobileDropdownProps,
+} from './interfaces';
 import { BreadcrumbItem } from './item/item';
 import { getEventDetail, getItemsDisplayProperties } from './utils';
 
@@ -96,6 +102,63 @@ const EllipsisDropdown = ({
   );
 };
 
+const MobileDropdown = ({
+  ariaLabel,
+  dropdownItems,
+  onDropdownItemClick,
+  onDropdownItemFollow,
+}: MobileDropdownProps) => {
+  const i18n = useInternalI18n('breadcrumb-group');
+
+  if (dropdownItems.length === 0) {
+    return null;
+  }
+
+  return (
+    <InternalButtonDropdown
+      variant="mobile-breadcrumb"
+      preferCenter={true}
+      ariaLabel={i18n('expandAriaLabel', ariaLabel) ?? DEFAULT_EXPAND_ARIA_LABEL}
+      items={dropdownItems}
+      onItemClick={onDropdownItemClick}
+      onItemFollow={onDropdownItemFollow}
+      customTriggerBuilder={props => (
+        <InternalButton
+          fullWidth={true}
+          ref={props.triggerRef}
+          className={props.testUtilsClass}
+          disabled={props.disabled}
+          onClick={event => {
+            event.preventDefault();
+            props.onClick();
+          }}
+          ariaExpanded={props.isOpen}
+          aria-haspopup={true}
+          ariaLabel={ariaLabel}
+          variant="breadcrumb-group"
+          formAction="none"
+        >
+          <div className={styles['mobile-dropdown-trigger-content']}>
+            <InternalIcon name={props.isOpen ? 'caret-down-filled' : 'caret-right-filled'} />
+            <span className={styles['mobile-dropdown-trigger-text']}>
+              {dropdownItems[dropdownItems.length - 1].text}
+            </span>
+          </div>
+        </InternalButton>
+      )}
+      analyticsMetadataTransformer={metadata => {
+        if (metadata.detail?.id) {
+          delete metadata.detail.id;
+        }
+        if (metadata.detail?.position) {
+          metadata.detail.position = `${parseInt(metadata.detail.position as string, 10) + 1}`;
+        }
+        return metadata;
+      }}
+    />
+  );
+};
+
 interface ItemsRefsType {
   ghost: Record<string, HTMLLIElement>;
   real: Record<string, HTMLLIElement>;
@@ -129,6 +192,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   const baseProps = getBaseProps(props);
   const [navWidth, navRef] = useContainerQuery<number>(rect => rect.borderBoxWidth);
   const mergedRef = useMergeRefs(navRef, __internalRootRef);
+  const isMobile = useMobile();
 
   const itemsRefs = useRef<ItemsRefsType>({ ghost: {}, real: {} });
   const setBreadcrumb = (type: keyof ItemsRefsType, index: string, node: null | HTMLLIElement) => {
@@ -255,10 +319,29 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
-      <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
-        {hiddenBreadcrumbItems}
-      </ol>
+      {isMobile ? (
+        <MobileDropdown
+          ariaLabel={expandAriaLabel}
+          dropdownItems={items.map((item: BreadcrumbGroupProps.Item, index: number) => {
+            const isLast = index === items.length - 1;
+            return {
+              id: index.toString(),
+              text: item.text,
+              href: isLast ? undefined : item.href || '#',
+              linkStyle: !isLast,
+            };
+          })}
+          onDropdownItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
+          onDropdownItemFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
+        />
+      ) : (
+        <>
+          <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+          <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
+            {hiddenBreadcrumbItems}
+          </ol>
+        </>
+      )}
     </nav>
   );
 }
