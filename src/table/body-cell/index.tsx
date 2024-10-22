@@ -130,10 +130,9 @@ function TableCellEditable<ItemType>({
               >
                 <Icon name="status-positive" variant="success" />
               </span>
-              <InternalLiveRegion
-                tagName="span"
-                message={i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
-              />
+              <InternalLiveRegion tagName="span" hidden={true}>
+                {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
+              </InternalLiveRegion>
             </>
           )}
 

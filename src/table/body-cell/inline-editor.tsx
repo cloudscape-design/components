@@ -145,14 +145,11 @@ export function InlineEditor<ItemType>({
                     loading={currentEditLoading}
                   />
                 </SpaceBetween>
-                <InternalLiveRegion
-                  tagName="span"
-                  message={
-                    currentEditLoading
-                      ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
-                      : ''
-                  }
-                />
+                <InternalLiveRegion tagName="span" hidden={true}>
+                  {currentEditLoading
+                    ? i18n('ariaLabels.submittingEditText', ariaLabels?.submittingEditText?.(column))
+                    : ''}
+                </InternalLiveRegion>
               </span>
             </div>
           </FormField>

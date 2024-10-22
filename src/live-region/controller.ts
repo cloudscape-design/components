@@ -33,7 +33,6 @@ export class LiveRegionController {
     this._element.className = styles.announcer;
     this._element.setAttribute('aria-live', this.politeness);
     this._element.setAttribute('aria-atomic', 'true');
-    this._element.setAttribute('data-awsui-live-announcer', 'true');
     document.body.appendChild(this._element);
   }
 

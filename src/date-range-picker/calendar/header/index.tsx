@@ -57,7 +57,9 @@ export default function CalendarHeader({
           onChangeMonth={onChangeMonth}
         />
       </div>
-      <InternalLiveRegion message={isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`} />
+      <InternalLiveRegion hidden={true}>
+        {isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}
+      </InternalLiveRegion>
     </>
   );
 }

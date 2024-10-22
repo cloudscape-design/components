@@ -5,14 +5,6 @@ import { BaseComponentProps } from '../internal/base-component';
 
 export interface LiveRegionProps extends BaseComponentProps {
   /**
-   * The string for the aria-live announcement text. When this content
-   * changes, the text will be re-announced to assistive technologies. If this
-   * property is provided, it will be used for the live announcement instead of
-   * the `children` slot.
-   */
-  message?: string;
-
-  /**
    * Whether the announcements should be made using assertive aria-live.
    * Assertive announcements interrupt the user's action, so they should only
    * be used when absolutely necessary.
@@ -25,13 +17,14 @@ export interface LiveRegionProps extends BaseComponentProps {
   tagName?: LiveRegionProps.TagName;
 
   /**
-   * Defines whether to visually hide the contents of the `children` slot.
+   * Determines whether to visually hide the contents of the `children` slot.
    */
   hidden?: boolean;
 
   /**
-   * Use the rendered content as the source for the announcement text.
-   * Prefer `message` if announcement text can be provided as a string.
+   * Use the rendered content as the source for the announcement text. When the
+   * text content inside this slot changes, it will be re-announced to
+   * assistive technologies.
    */
   children?: React.ReactNode;
 }

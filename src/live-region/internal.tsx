@@ -47,7 +47,6 @@ export default React.forwardRef(function InternalLiveRegion(
     tagName: TagName = 'div',
     delay,
     sources,
-    message,
     children,
     __internalRootRef,
     className,
@@ -84,13 +83,12 @@ export default React.forwardRef(function InternalLiveRegion(
   }, [assertive]);
 
   const getContent = () => {
-    return sources
-      ? getSourceContent(sources)
-      : message
-        ? message
-        : childrenRef.current
-          ? extractTextContent(childrenRef.current)
-          : undefined;
+    if (sources) {
+      return getSourceContent(sources);
+    }
+    if (childrenRef.current) {
+      return extractTextContent(childrenRef.current);
+    }
   };
 
   // Call the controller on every render. The controller will deduplicate the
