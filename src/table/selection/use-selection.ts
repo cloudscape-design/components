@@ -20,7 +20,7 @@ type SelectionOptions<T> = Pick<
   | 'selectedItems'
   | 'selectionType'
   | 'trackBy'
->;
+> & { setLastUserAction?: (name: string) => void };
 
 export function useSelection<T>(options: SelectionOptions<T>): {
   isItemSelected: (item: T) => boolean;
@@ -39,6 +39,7 @@ function useSingleSelection<T>({
   selectedItems = [],
   selectionType,
   trackBy,
+  setLastUserAction,
 }: SelectionOptions<T>) {
   // The name assigned to all controls to combine them in a single group.
   const selectionControlName = useUniqueId();
@@ -53,6 +54,7 @@ function useSingleSelection<T>({
 
   const handleToggleItem = (item: T) => {
     if (!isItemDisabled(item) && !isItemSelected(item)) {
+      setLastUserAction?.('selection');
       fireNonCancelableEvent(onSelectionChange, { selectedItems: [item] });
     }
   };
@@ -82,6 +84,7 @@ function useMultiSelection<T>({
   selectedItems = [],
   selectionType,
   trackBy,
+  setLastUserAction,
 }: SelectionOptions<T>) {
   // The name assigned to all controls to combine them in a single group.
   const selectionControlName = useUniqueId();
@@ -151,6 +154,7 @@ function useMultiSelection<T>({
   const handleToggleAll = () => {
     const newSelectedItems = allEnabledItemsSelected ? deselectItems(items) : selectItems(items);
     fireNonCancelableEvent(onSelectionChange, { selectedItems: newSelectedItems });
+    setLastUserAction?.('selection');
   };
 
   const handleToggleItem = (item: T) => {
@@ -159,6 +163,7 @@ function useMultiSelection<T>({
       const selectedItems = isItemSelected(item) ? deselectItems(requestedItems) : selectItems(requestedItems);
       fireNonCancelableEvent(onSelectionChange, { selectedItems });
       setLastClickedItem(item);
+      setLastUserAction?.('selection');
     }
   };
 

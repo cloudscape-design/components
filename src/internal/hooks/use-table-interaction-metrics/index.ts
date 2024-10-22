@@ -5,24 +5,9 @@ import { useEffect, useRef } from 'react';
 
 import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
 import { JSONObject } from '../../analytics/interfaces';
+import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useRandomId } from '../use-unique-id';
-
-function useTaskInteractionAttribute(elementRef: React.RefObject<HTMLElement>, value: string) {
-  const attributeName = 'data-analytics-task-interaction-id';
-
-  const attributeValueRef = useRef<string | undefined>();
-
-  useEffect(() => {
-    // With this effect, we apply the attribute only on the client, to avoid hydration errors.
-    attributeValueRef.current = value;
-    elementRef.current?.setAttribute(attributeName, value);
-  }, [value, elementRef]);
-
-  return {
-    [attributeName]: attributeValueRef.current,
-  };
-}
 
 /*
 If the last user interaction is more than this time ago, it is not considered
@@ -30,17 +15,18 @@ to be the cause of the current loading state.
 */
 const USER_ACTION_TIME_LIMIT = 1_000;
 
-export interface UseTableInteractionMetricsProps {
+export interface UseTableInteractionMetricsProps<T> {
   elementRef: React.RefObject<HTMLElement>;
   instanceIdentifier: string | undefined;
   loading: boolean | undefined;
+  items: readonly T[];
   itemCount: number;
   getComponentIdentifier: () => string | undefined;
   getComponentConfiguration: () => JSONObject;
   interactionMetadata: () => string;
 }
 
-export function useTableInteractionMetrics({
+export function useTableInteractionMetrics<T>({
   elementRef,
   itemCount,
   instanceIdentifier,
@@ -48,9 +34,14 @@ export function useTableInteractionMetrics({
   getComponentConfiguration,
   loading = false,
   interactionMetadata,
-}: UseTableInteractionMetricsProps) {
+  items,
+}: UseTableInteractionMetricsProps<T>) {
   const taskInteractionId = useRandomId();
-  const tableInteractionAttributes = useTaskInteractionAttribute(elementRef, taskInteractionId);
+  const tableInteractionAttributes = useDOMAttribute(
+    elementRef,
+    'data-analytics-task-interaction-id',
+    taskInteractionId
+  );
   const lastUserAction = useRef<{ name: string; time: number } | null>(null);
   const capturedUserAction = useRef<string | null>(null);
   const loadingStartTime = useRef<number | null>(null);
@@ -91,15 +82,19 @@ export function useTableInteractionMetrics({
         instanceIdentifier,
         noOfResourcesInTable: metadata.current.itemCount,
       });
+    }
+  }, [instanceIdentifier, loading, taskInteractionId]);
 
+  useEffectOnUpdate(() => {
+    if (!loading) {
       ComponentMetrics.componentUpdated({
         taskInteractionId,
         componentName: 'table',
-        actionType: capturedUserAction.current ?? '',
+        actionType: (capturedUserAction.current || lastUserAction.current?.name) ?? '',
         componentConfiguration: metadata.current.getComponentConfiguration(),
       });
     }
-  }, [instanceIdentifier, loading, taskInteractionId]);
+  }, [items, taskInteractionId, loading]);
 
   return {
     tableInteractionAttributes,

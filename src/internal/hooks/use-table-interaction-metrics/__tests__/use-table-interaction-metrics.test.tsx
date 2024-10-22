@@ -16,11 +16,12 @@ import {
 import { renderHook } from '../../../../__tests__/render-hook';
 import { mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
 
-type RenderProps = Partial<UseTableInteractionMetricsProps>;
+type RenderProps = Partial<UseTableInteractionMetricsProps<any>>;
 
 const defaultProps = {
   getComponentConfiguration: () => ({}),
   getComponentIdentifier: () => 'My resources',
+  items: [],
   itemCount: 10,
   loading: undefined,
   instanceIdentifier: undefined,
@@ -48,24 +49,22 @@ function TestComponent(props: RenderProps) {
   return <div {...tableInteractionAttributes} ref={elementRef} data-testid="element" />;
 }
 
+const componentMounted = jest.fn();
+const componentUpdated = jest.fn();
+
+setComponentMetrics({
+  componentMounted,
+  componentUpdated,
+});
+
 beforeEach(() => {
   jest.resetAllMocks();
   mockPerformanceMetrics();
 });
+
 jest.useFakeTimers();
 
 describe('useTableInteractionMetrics', () => {
-  let componentMounted: jest.Mock;
-
-  beforeEach(() => {
-    componentMounted = jest.fn();
-
-    setComponentMetrics({
-      componentMounted,
-      componentUpdated: jest.fn(),
-    });
-  });
-
   test('should emit componentMount event on mount', () => {
     render(<TestComponent />);
 
@@ -102,17 +101,6 @@ describe('useTableInteractionMetrics', () => {
   });
 
   describe('Interactions', () => {
-    let componentUpdated: jest.Mock;
-
-    beforeEach(() => {
-      componentUpdated = jest.fn();
-
-      setComponentMetrics({
-        componentMounted: jest.fn(),
-        componentUpdated,
-      });
-    });
-
     test('user actions should be recorded if they happened recently', () => {
       const { setLastUserAction, rerender } = renderUseTableInteractionMetricsHook({});
 

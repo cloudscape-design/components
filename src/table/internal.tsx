@@ -241,10 +241,11 @@ const InternalTable = React.forwardRef(
       };
     };
 
-    const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics({
+    const { setLastUserAction, tableInteractionAttributes } = useTableInteractionMetrics<T>({
       elementRef: tableRefObject,
       loading,
       instanceIdentifier: analyticsMetadata?.instanceIdentifier,
+      items,
       itemCount: items.length,
       getComponentIdentifier: getHeaderText,
       getComponentConfiguration,
@@ -281,6 +282,7 @@ const InternalTable = React.forwardRef(
       onSelectionChange,
       ariaLabels,
       loading,
+      setLastUserAction,
     });
     const isRowSelected = (row: TableRow<T>) => row.type === 'data' && isItemSelected(row.item);
 
