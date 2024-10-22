@@ -11,7 +11,7 @@ import { getElementsText, modalDefaultProps, navigateToTableItem } from './utils
 
 import styles from '../../../../lib/components/s3-resource-selector/s3-modal/styles.css.js';
 
-LiveRegionController.defaultMinDelay = 0;
+LiveRegionController.defaultDelay = 0;
 jest.setTimeout(30_000);
 
 async function renderModal(jsx: React.ReactElement) {

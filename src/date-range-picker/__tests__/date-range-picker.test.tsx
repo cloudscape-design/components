@@ -19,7 +19,7 @@ import { isValidRange } from './is-valid-range';
 
 import segmentedStyles from '../../../lib/components/segmented-control/styles.css.js';
 
-LiveRegionController.defaultMinDelay = 0;
+LiveRegionController.defaultDelay = 0;
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

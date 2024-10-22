@@ -19,7 +19,7 @@ const testItem = {
   test: 'testData',
 };
 
-LiveRegionController.defaultMinDelay = 0;
+LiveRegionController.defaultDelay = 0;
 
 const stickyCellRef = jest.fn();
 

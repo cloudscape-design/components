@@ -3,10 +3,7 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import InternalLiveRegion, {
-  assertive,
-  polite,
-} from '../../../../../lib/components/internal/components/live-region/internal';
+import InternalLiveRegion from '../../../../../lib/components/internal/components/live-region/internal';
 
 import styles from '../../../../../lib/components/internal/components/live-region/styles.css.js';
 
@@ -30,8 +27,6 @@ beforeEach(() => {
 // We need to reset them after each test.
 afterEach(() => {
   jest.clearAllTimers();
-  polite.reset();
-  assertive.reset();
 });
 
 describe.skip('LiveRegion', () => {
@@ -51,30 +46,6 @@ describe.skip('LiveRegion', () => {
 
     expect(source).toHaveTextContent('');
     expect(politeRegion).toHaveTextContent('');
-    expect(assertiveRegion).toHaveTextContent('');
-  });
-
-  it('joins multiple live regions into a single update', async () => {
-    const { politeRegion, assertiveRegion } = await renderLiveRegion(
-      <>
-        <InternalLiveRegion>One</InternalLiveRegion>
-        <InternalLiveRegion>Two</InternalLiveRegion>
-      </>
-    );
-
-    expect(politeRegion).toHaveTextContent('One Two');
-    expect(assertiveRegion).toHaveTextContent('');
-  });
-
-  it('joins multiple live regions into a single update', async () => {
-    const { politeRegion, assertiveRegion } = await renderLiveRegion(
-      <>
-        <InternalLiveRegion>One</InternalLiveRegion>
-        <InternalLiveRegion>Two</InternalLiveRegion>
-      </>
-    );
-
-    expect(politeRegion).toHaveTextContent('One Two');
     expect(assertiveRegion).toHaveTextContent('');
   });
 

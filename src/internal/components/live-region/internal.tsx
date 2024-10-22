@@ -1,19 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../../base-component';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { useMergeRefs } from '../../hooks/use-merge-refs';
-import { assertive, LiveRegionController, polite } from './controller';
+import { LiveRegionController } from './controller';
 import { LiveRegionProps } from './interfaces';
 
 import styles from './styles.css.js';
-
-// Export announcers for components that want to imperatively announce content.
-export { polite, assertive };
 
 export interface InternalLiveRegionProps extends InternalBaseComponentProps, LiveRegionProps {
   /**
@@ -31,39 +28,36 @@ export interface InternalLiveRegionProps extends InternalBaseComponentProps, Liv
   sources?: ReadonlyArray<string | React.RefObject<HTMLElement> | undefined>;
 }
 
-export default function InternalLiveRegion({
-  assertive: isAssertive = false,
-  hidden = false,
-  tagName: TagName = 'div',
-  delay,
-  sources,
-  message,
-  children,
-  className,
-  __internalRootRef,
-  ...restProps
-}: InternalLiveRegionProps) {
+export interface InternalLiveRegionRef {
+  /**
+   * Force the live region to announce the message, even if it's the same as
+   * the previously announced message.
+   *
+   * This is useful when making status updates after a change (e.g. filtering)
+   * where the new message might be the same as the old one, but the announcement
+   * also serves to tell screen reader users that the action was performed.
+   */
+  reannounce(): void;
+}
+
+export default React.forwardRef(function InternalLiveRegion(
+  {
+    assertive = false,
+    hidden = false,
+    tagName: TagName = 'div',
+    delay,
+    sources,
+    message,
+    children,
+    __internalRootRef,
+    className,
+    ...restProps
+  }: InternalLiveRegionProps,
+  ref: React.Ref<InternalLiveRegionRef>
+) {
   const baseProps = getBaseProps(restProps);
   const childrenRef = useRef<HTMLSpanElement & HTMLDivElement>(null);
-  const ref = useMergeRefs(childrenRef, __internalRootRef);
-
-  // The announcer is a globally managed singleton. We're using a ref
-  // here because we're entering imperative land when using the controller
-  // and we don't want things like double-rendering to double-announce
-  // content.
-  const previousSourceContentRef = useRef<string>();
-
-  // Lazily initialize live region containers globally.
-  const liveRegionControllerRef = useRef<LiveRegionController | undefined>();
-  useEffect(() => {
-    const liveRegionController = new LiveRegionController(isAssertive ? 'assertive' : 'polite');
-    liveRegionController.initialize();
-    liveRegionControllerRef.current = liveRegionController;
-    return () => {
-      liveRegionController.destroy();
-      liveRegionControllerRef.current = undefined;
-    };
-  }, [isAssertive]);
+  const mergedRef = useMergeRefs(childrenRef, __internalRootRef);
 
   useEffect(() => {
     // We have to do this because `inert` isn't properly supported until
@@ -76,29 +70,50 @@ export default function InternalLiveRegion({
     }
   }, [hidden]);
 
+  // Initialize the live region controller inside an effect. We have to do this
+  // because the controller depends on DOM elements, which aren't available on the
+  // server.
+  const liveRegionControllerRef = useRef<LiveRegionController | undefined>();
   useEffect(() => {
-    const content = sources
+    const liveRegionController = new LiveRegionController(assertive ? 'assertive' : 'polite');
+    liveRegionControllerRef.current = liveRegionController;
+    return () => {
+      liveRegionController.destroy();
+      liveRegionControllerRef.current = undefined;
+    };
+  }, [assertive]);
+
+  const getContent = () => {
+    return sources
       ? getSourceContent(sources)
       : message
         ? message
         : childrenRef.current
           ? extractTextContent(childrenRef.current)
           : undefined;
+  };
 
-    if (content && content !== previousSourceContentRef.current) {
-      liveRegionControllerRef.current?.announce(content, delay);
-    }
-    previousSourceContentRef.current = content;
+  // Call the controller on every render. The controller will deduplicate the
+  // message against the previous announcement internally.
+  useEffect(() => {
+    liveRegionControllerRef.current?.announce({ message: getContent(), delay });
   });
 
+  useImperativeHandle(ref, () => ({
+    reannounce() {
+      liveRegionControllerRef.current?.announce({ message: getContent(), delay, forceReannounce: true });
+    },
+  }));
+
   return (
-    <TagName ref={ref} {...baseProps} className={clsx(styles.root, className)} hidden={hidden}>
+    <TagName ref={mergedRef} {...baseProps} className={clsx(styles.root, className)} hidden={hidden}>
       {children}
     </TagName>
   );
-}
+});
 
 function extractTextContent(node: HTMLElement): string {
+  // We use the text content of the node as the announcement text.
   // This only extracts text content from the node including all its children which is enough for now.
   // To make it more powerful, it is possible to create a more sophisticated extractor with respect to
   // ARIA properties to ignore aria-hidden nodes and read ARIA labels from the live content.

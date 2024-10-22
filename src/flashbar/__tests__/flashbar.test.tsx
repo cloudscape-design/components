@@ -25,7 +25,7 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
   };
 });
 
-LiveRegionController.defaultMinDelay = 0;
+LiveRegionController.defaultDelay = 0;
 
 mockInnerText();
 
