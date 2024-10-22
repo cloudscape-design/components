@@ -17,6 +17,7 @@ import * as toolsContent from './utils/tools-content';
 const SecondaryLayout = () => {
   return (
     <AppLayout
+      {...{ __disableRuntimeDrawers: true }}
       data-testid="secondary-layout"
       ariaLabels={labels}
       breadcrumbs={<Breadcrumbs />}
@@ -45,7 +46,7 @@ const NAV_ITEMS: Array<SideNavigationProps.Link> = [
 
 export default function () {
   const [activeHref, setActiveHref] = useState('page1');
-  const openPagesHistory = useRef<Set<string>>(new Set());
+  const openPagesHistory = useRef<Set<string>>(new Set([activeHref]));
 
   return (
     <ScreenshotArea gutters={false}>

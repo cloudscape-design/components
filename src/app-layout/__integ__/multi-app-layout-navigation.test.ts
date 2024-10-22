@@ -9,14 +9,12 @@ import { getUrlParams } from './utils';
 const theme = 'refresh-toolbar';
 
 class PageObject extends BasePageObject {
-  findNavItem(href: string) {
-    return this.browser.$(`[href="${href}"]`);
+  clickHref(href: string) {
+    return this.click(`[href="${href}"]`);
   }
 
   isToolsToggleActive() {
-    return this.browser
-      .$(`${createWrapper().findAppLayout().findToolsToggle().toSelector()}[aria-expanded="true"]`)
-      .isExisting();
+    return this.isExisting(`${createWrapper().findAppLayout().findToolsToggle().toSelector()}[aria-expanded="true"]`);
   }
 }
 
@@ -42,13 +40,13 @@ describe('Multi app layout navigation', () => {
           await expect(page.isClickable(secondaryLayout.findTools().toSelector())).resolves.toEqual(true);
         });
 
-        await page.findNavItem('page2').click();
+        await page.clickHref('page2');
         await expect(page.isToolsToggleActive()).resolves.toBe(false);
         await page.runInsideIframe('#page2', !!iframe, async () => {
           await expect(page.isClickable(secondaryLayout.findTools().toSelector())).resolves.toEqual(false);
         });
 
-        await page.findNavItem('page1').click();
+        await page.clickHref('page1');
         await expect(page.isToolsToggleActive()).resolves.toBe(true);
         await page.runInsideIframe('#page1', !!iframe, async () => {
           await expect(page.isClickable(secondaryLayout.findTools().toSelector())).resolves.toEqual(true);
