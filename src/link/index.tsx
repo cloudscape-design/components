@@ -6,6 +6,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { useLinkFunnel } from './analytics/funnel';
 import { GeneratedAnalyticsMetadataLinkFragment } from './analytics-metadata/interfaces';
 import { LinkProps } from './interfaces';
 import InternalLink from './internal';
@@ -13,7 +14,10 @@ import InternalLink from './internal';
 export { LinkProps };
 
 const Link = React.forwardRef(
-  ({ fontSize = 'body-m', color = 'normal', external = false, ...props }: LinkProps, ref: React.Ref<LinkProps.Ref>) => {
+  (
+    { fontSize = 'body-m', color = 'normal', external = false, onFollow, ...props }: LinkProps,
+    ref: React.Ref<LinkProps.Ref>
+  ) => {
     const baseComponentProps = useBaseComponent('Link', {
       props: { color, external, fontSize, rel: props.rel, target: props.target, variant: props.variant },
     });
@@ -35,11 +39,17 @@ const Link = React.forwardRef(
       analyticsMetadata.detail.href = props.href;
     }
 
+    const { eventHandlers } = useLinkFunnel(props.variant, external);
+
     return (
       <InternalLink
         fontSize={fontSize}
         color={color}
         external={external}
+        onFollow={event => {
+          eventHandlers.onFollow?.(event);
+          return onFollow?.(event);
+        }}
         {...props}
         {...baseComponentProps}
         ref={ref}

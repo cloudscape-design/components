@@ -5,14 +5,7 @@ import clsx from 'clsx';
 
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import {
-  DATA_ATTR_FUNNEL_VALUE,
-  getFunnelValueSelector,
-  getSubStepAllSelector,
-  getTextFromSelector,
-} from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_VALUE } from '../internal/analytics/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
@@ -71,55 +64,7 @@ const InternalLink = React.forwardRef(
 
     const infoLinkLabelFromContext = useContext(InfoLinkLabelContext);
 
-    const { funnelIdentifier, funnelInteractionId } = useFunnel();
-    const { stepIdentifier, stepNumber, stepNameSelector } = useFunnelStep();
-    const { subStepIdentifier, subStepSelector, subStepNameSelector } = useFunnelSubStep();
-
-    const fireFunnelEvent = (funnelInteractionId: string) => {
-      if (variant === 'info') {
-        const stepName = getTextFromSelector(stepNameSelector);
-        const subStepName = getTextFromSelector(subStepNameSelector);
-
-        FunnelMetrics.helpPanelInteracted({
-          funnelIdentifier,
-          funnelInteractionId,
-          stepIdentifier,
-          stepNumber,
-          stepName,
-          subStepIdentifier,
-          stepNameSelector,
-          subStepSelector,
-          subStepName,
-          subStepNameSelector,
-          elementSelector: getFunnelValueSelector(uniqueId),
-          subStepAllSelector: getSubStepAllSelector(),
-        });
-      } else if (external) {
-        const stepName = getTextFromSelector(stepNameSelector);
-        const subStepName = getTextFromSelector(subStepNameSelector);
-
-        FunnelMetrics.externalLinkInteracted({
-          funnelIdentifier,
-          funnelInteractionId,
-          stepIdentifier,
-          stepNumber,
-          stepName,
-          stepNameSelector,
-          subStepIdentifier,
-          subStepSelector,
-          subStepName,
-          subStepNameSelector,
-          elementSelector: getFunnelValueSelector(uniqueId),
-          subStepAllSelector: getSubStepAllSelector(),
-        });
-      }
-    };
-
     const fireFollowEvent = (event: React.SyntheticEvent) => {
-      if (funnelInteractionId) {
-        fireFunnelEvent(funnelInteractionId);
-      }
-
       fireCancelableEvent(onFollow, { href, external, target: anchorTarget }, event);
     };
 

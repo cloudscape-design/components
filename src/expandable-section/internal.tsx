@@ -39,7 +39,7 @@ export default function InternalExpandableSection({
   headingTagOverride,
   disableContentPaddings,
   headerAriaLabel,
-  __internalRootRef,
+  __internalRootRef = null,
   __injectAnalyticsComponentMetadata,
   ...props
 }: InternalExpandableSectionProps) {

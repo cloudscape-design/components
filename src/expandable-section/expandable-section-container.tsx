@@ -8,7 +8,6 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalContainerAsSubstep } from '../container/internal';
-import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataExpandableSectionComponent } from './analytics-metadata/interfaces';
 import { InternalVariant } from './interfaces';
@@ -48,21 +47,19 @@ export const ExpandableSectionContainer = ({
 
   if (variant === 'container' || variant === 'stacked') {
     return (
-      <AnalyticsFunnelSubStep>
-        <InternalContainerAsSubstep
-          {...rest}
-          className={className}
-          header={header}
-          variant={variant === 'stacked' ? 'stacked' : 'default'}
-          disableContentPaddings={disableContentPaddings || !expanded}
-          disableHeaderPaddings={true}
-          __hiddenContent={!expanded}
-          __internalRootRef={__internalRootRef}
-          {...metadataAttribute}
-        >
-          {children}
-        </InternalContainerAsSubstep>
-      </AnalyticsFunnelSubStep>
+      <InternalContainerAsSubstep
+        {...rest}
+        className={className}
+        header={header}
+        variant={variant === 'stacked' ? 'stacked' : 'default'}
+        disableContentPaddings={disableContentPaddings || !expanded}
+        disableHeaderPaddings={true}
+        __hiddenContent={!expanded}
+        __internalRootRef={__internalRootRef}
+        {...metadataAttribute}
+      >
+        {children}
+      </InternalContainerAsSubstep>
     );
   }
 

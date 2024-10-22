@@ -5,10 +5,10 @@ import clsx from 'clsx';
 
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnelSubstep } from '../internal/analytics/hooks/use-funnel-substep';
+import { AnalyticsMetadata } from '../internal/analytics/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
-import { useModalContext } from '../internal/context/modal-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -20,7 +20,9 @@ import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
+export interface InternalContainerProps
+  extends Omit<ContainerProps, 'variant'>,
+    InternalBaseComponentProps<HTMLElement> {
   __stickyHeader?: boolean;
   __stickyOffset?: number;
   __mobileStickyOffset?: number;
@@ -37,22 +39,13 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
    * * `full-page` – Only for internal use in table, cards and other components
    */
   variant?: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards';
-
-  __funnelSubStepProps?: ReturnType<typeof useFunnelSubStep>['funnelSubStepProps'];
-  __subStepRef?: ReturnType<typeof useFunnelSubStep>['subStepRef'];
 }
 
-export function InternalContainerAsSubstep(props: InternalContainerProps) {
-  const { subStepRef, funnelSubStepProps } = useFunnelSubStep();
-  const modalContext = useModalContext();
+export function InternalContainerAsSubstep(props: InternalContainerProps & { analyticsMetadata?: AnalyticsMetadata }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const funnelSubstep = useFunnelSubstep(ref, props.analyticsMetadata);
 
-  return (
-    <InternalContainer
-      {...props}
-      __subStepRef={modalContext?.isInModal ? { current: null } : subStepRef}
-      __funnelSubStepProps={modalContext?.isInModal ? {} : funnelSubStepProps}
-    />
-  );
+  return <InternalContainer {...props} __internalRootRef={ref} {...funnelSubstep.domAttributes} />;
 }
 
 export default function InternalContainer({
@@ -64,18 +57,16 @@ export default function InternalContainer({
   disableContentPaddings = false,
   fitHeight,
   media,
+  __internalRootRef,
   __stickyOffset,
   __mobileStickyOffset,
   __stickyHeader = false,
-  __internalRootRef = null,
   __disableFooterDivider = false,
   __disableFooterPaddings = false,
   __hiddenContent = false,
   __headerRef,
   __fullPage = false,
   __disableStickyMobile = true,
-  __funnelSubStepProps,
-  __subStepRef,
   ...restProps
 }: InternalContainerProps) {
   const isMobile = useMobile();
@@ -108,7 +99,6 @@ export default function InternalContainer({
   return (
     <div
       {...baseProps}
-      {...__funnelSubStepProps}
       className={clsx(
         baseProps.className,
         styles.root,
@@ -133,7 +123,6 @@ export default function InternalContainer({
       )}
       <div
         id={contentId}
-        ref={__subStepRef}
         className={clsx(styles['content-wrapper'], fitHeight && styles['content-wrapper-fit-height'])}
       >
         {header && (

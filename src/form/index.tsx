@@ -1,69 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect } from 'react';
+import React from 'react';
 
-import { FunnelMetrics } from '../internal/analytics';
-import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { FunnelProvider } from '../internal/analytics/contexts/funnel-context';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
+import { ButtonContext } from '../internal/context/button-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import { useFormFunnel } from './analytics/funnel';
 import { FormProps } from './interfaces';
 import InternalForm from './internal';
 
-import headerStyles from '../header/styles.css.js';
-import analyticsSelectors from './analytics-metadata/styles.css.js';
-
-export { FormProps };
-
-const FormWithAnalytics = ({ variant = 'full-page', actions, errorText, ...props }: FormProps) => {
-  const {
-    funnelIdentifier,
-    funnelInteractionId,
-    funnelProps,
-    funnelSubmit,
-    funnelNextOrSubmitAttempt,
-    errorCount,
-    submissionAttempt,
-    funnelErrorContext,
-  } = useFunnel();
-  const { funnelStepProps } = useFunnelStep();
-
-  const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
-    if (variant === 'primary') {
-      funnelNextOrSubmitAttempt();
-      funnelSubmit();
-    }
-  };
-
-  useEffect(() => {
-    if (funnelInteractionId && errorText) {
-      errorCount.current++;
-      FunnelMetrics.funnelError({ funnelInteractionId, funnelIdentifier, funnelErrorContext });
-      return () => {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        errorCount.current--;
-      };
-    }
-  }, [funnelInteractionId, funnelIdentifier, errorText, submissionAttempt, errorCount, funnelErrorContext]);
-
-  return (
-    <ButtonContext.Provider value={{ onClick: handleActionButtonClick }}>
-      <InternalForm
-        variant={variant}
-        actions={actions}
-        errorText={errorText}
-        {...props}
-        {...funnelProps}
-        {...funnelStepProps}
-        __injectAnalyticsComponentMetadata={true}
-      />
-    </ButtonContext.Provider>
-  );
-};
-
-export default function Form({ variant = 'full-page', ...props }: FormProps) {
+const BaseForm = ({ variant = 'full-page', errorText, ...props }: FormProps) => {
   const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
   const baseComponentProps = useBaseComponent(
     'Form',
@@ -79,30 +27,35 @@ export default function Form({ variant = 'full-page', ...props }: FormProps) {
     },
     analyticsMetadata
   );
-  const inheritedFunnelNameSelector = useFunnelNameSelector();
-  const funnelNameSelector =
-    inheritedFunnelNameSelector || `.${analyticsSelectors.header} .${headerStyles['heading-text']}`;
+
+  const { funnelContext, buttonContextProps } = useFormFunnel({
+    rootRef: baseComponentProps.__internalRootRef,
+    analyticsMetadata,
+    errorText,
+  });
 
   return (
-    <AnalyticsFunnel
-      funnelIdentifier={analyticsMetadata?.instanceIdentifier}
-      funnelFlowType={analyticsMetadata?.flowType}
-      funnelErrorContext={analyticsMetadata?.errorContext}
-      funnelResourceType={analyticsMetadata?.resourceType}
-      funnelType="single-page"
-      optionalStepNumbers={[]}
-      totalFunnelSteps={1}
-      funnelNameSelectors={[funnelNameSelector, `.${analyticsSelectors.header}`]}
-    >
-      <AnalyticsFunnelStep
-        stepIdentifier={analyticsMetadata?.instanceIdentifier}
-        stepErrorContext={analyticsMetadata?.errorContext}
-        stepNumber={1}
-      >
-        <FormWithAnalytics variant={variant} {...props} {...baseComponentProps} />
-      </AnalyticsFunnelStep>
-    </AnalyticsFunnel>
+    <ButtonContext.Provider value={buttonContextProps}>
+      <InternalForm
+        {...props}
+        {...baseComponentProps}
+        {...funnelContext?.controller?.domAttributes}
+        {...funnelContext?.controller?.currentStep.domAttributes}
+        variant={variant}
+        errorText={errorText}
+        __injectAnalyticsComponentMetadata={true}
+      />
+    </ButtonContext.Provider>
   );
-}
+};
+
+const Form = (props: FormProps) => (
+  <FunnelProvider rootComponent="form">
+    <BaseForm {...props} />
+  </FunnelProvider>
+);
 
 applyDisplayName(Form, 'Form');
+
+export { FormProps };
+export default Form;
