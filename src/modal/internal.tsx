@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { InternalButton } from '../button/internal';
 import InternalHeader from '../header/internal';
 import { useInternalI18n } from '../i18n/context';
+import { PerformanceMetrics } from '../internal/analytics';
 import {
   FunnelNameSelectorContext,
   FunnelStepContextValue,
@@ -123,10 +124,13 @@ function PortaledModal({
     name: 'awsui.Modal',
     label: `.${analyticsSelectors.header} h2`,
   };
-
   const metadataAttribute = __injectAnalyticsComponentMetadata
     ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
     : {};
+  const loadStartTime = useRef<number>(0);
+  const loadCompleteTime = useRef<number>(0);
+  const componentLoadingCount = useRef<number>(0);
+  const performanceMetricLogged = useRef<boolean>(false);
 
   // enable body scroll and restore focus if unmounting while visible
   useEffect(() => {
@@ -135,13 +139,46 @@ function PortaledModal({
     };
   }, []);
 
-  // enable / disable body scroll
+  const resetModalPerformanceData = () => {
+    loadStartTime.current = performance.now();
+    loadCompleteTime.current = 0;
+    performanceMetricLogged.current = false;
+  };
+
+  const emitTimeToContentReadyInModal = (loadCompleteTime: number) => {
+    if (
+      componentLoadingCount.current === 0 &&
+      loadStartTime.current &&
+      loadStartTime.current !== 0 &&
+      !performanceMetricLogged.current
+    ) {
+      const timeToContentReadyInModal = loadCompleteTime - loadStartTime.current;
+      PerformanceMetrics.modalPerformanceData({
+        timeToContentReadyInModal,
+        instanceIdentifier: instanceUniqueId,
+      });
+      performanceMetricLogged.current = true;
+    }
+  };
+
+  const MODAL_READY_TIMEOUT = 100;
+  /**
+   * This useEffect is triggered when the visible attribute of modal changes.
+   * When modal becomes visible, modal performance metrics are reset marking the beginning loading process.
+   * To ensure that the modal component ready metric is always emitted, a setTimeout is implemented.
+   * This setTimeout automatically emits the component ready metric after a specified duration.
+   */
   useEffect(() => {
     if (visible) {
       disableBodyScrolling();
+      resetModalPerformanceData();
+      setTimeout(() => {
+        emitTimeToContentReadyInModal(loadStartTime.current);
+      }, MODAL_READY_TIMEOUT);
     } else {
       enableBodyScrolling();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   // Because we hide the element with styles (and not actually detach it from DOM), we need to scroll to top
@@ -183,7 +220,13 @@ function PortaledModal({
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
       <ResetContextsForModal>
-        <ModalContext.Provider value={{ isInModal: true }}>
+        <ModalContext.Provider
+          value={{
+            isInModal: true,
+            componentLoadingCount,
+            emitTimeToContentReadyInModal,
+          }}
+        >
           <div
             {...baseProps}
             {...__funnelProps}
