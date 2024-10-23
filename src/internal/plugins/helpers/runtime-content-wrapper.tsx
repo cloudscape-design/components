@@ -5,6 +5,8 @@ import React, { useContext, useEffect, useRef } from 'react';
 import { ActiveDrawersContext } from '../../../app-layout/utils/visibility-context';
 import { MountContentContext } from '../controllers/drawers';
 
+import styles from './styles.css.js';
+
 type VisibilityCallback = (isVisible: boolean) => void;
 
 interface RuntimeContentWrapperProps {
@@ -37,5 +39,5 @@ export function RuntimeContentWrapper({ mountContent, unmountContent, id }: Runt
     visibilityChangeCallback.current?.(isVisible);
   }, [isVisible]);
 
-  return <div ref={ref}></div>;
+  return <div ref={ref} className={styles['runtime-content-wrapper']}></div>;
 }

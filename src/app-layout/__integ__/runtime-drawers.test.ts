@@ -49,6 +49,26 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     );
 
     test(
+      'should show sticky elements on scroll in drawer',
+      setupTest(async page => {
+        await page.setWindowSize(viewports.desktop);
+        await page.click(createWrapper().findToggle('[data-testid="use-drawers-toggle"]').toSelector());
+        await page.waitForVisible(wrapper.findDrawerTriggerById('pro-help').toSelector(), true);
+
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
+        await page.click(wrapper.findDrawerTriggerById('pro-help').toSelector());
+        await expect(page.isDisplayedInViewport('[data-testid="drawer-sticky-footer"]')).resolves.toBe(true);
+
+        const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
+        const scrollBefore = await getScrollPosition();
+
+        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+        await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
+      })
+    );
+
+    test(
       'renders according to defaultSize property',
       setupTest(async page => {
         await page.setWindowSize(viewports.desktop);
