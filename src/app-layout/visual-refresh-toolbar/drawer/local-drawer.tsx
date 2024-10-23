@@ -131,7 +131,12 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
               {toolsContent}
             </div>
             {activeDrawerId !== TOOLS_DRAWER_ID && (
-              <div className={styles['drawer-content']}>{activeDrawer?.content}</div>
+              <div
+                className={styles['drawer-content']}
+                style={{ blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)` }}
+              >
+                {activeDrawer?.content}
+              </div>
             )}
           </div>
         </aside>

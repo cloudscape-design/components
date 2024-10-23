@@ -6,7 +6,6 @@ import {
   AppLayout,
   Button,
   ContentLayout,
-  Drawer,
   Header,
   HelpPanel,
   Link,
@@ -19,7 +18,7 @@ import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import appLayoutLabels from './utils/labels';
 
 type DemoContext = React.Context<
@@ -98,7 +97,11 @@ export default function WithDrawers() {
                   Use Tools
                 </Toggle>
 
-                <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
+                <Toggle
+                  checked={hasDrawers}
+                  onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
+                  data-testid="use-drawers-toggle"
+                >
                   Use Drawers
                 </Toggle>
 
@@ -173,5 +176,5 @@ function Info({ helpPathSlug }: { helpPathSlug: string }) {
 }
 
 function ProHelp() {
-  return <Drawer header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</Drawer>;
+  return <CustomDrawerContent />;
 }

@@ -10,7 +10,7 @@
   @include styles.media-breakpoint-up(styles.$breakpoint-x-small) {
     @include styles.with-motion {
       transition: awsui.$motion-duration-refresh-only-medium;
-      transition-property: border-color, opacity, block-size, inline-size, inset-block-start;
+      transition-property: border-color, opacity, inline-size, inset-block-start;
     }
   }
 }

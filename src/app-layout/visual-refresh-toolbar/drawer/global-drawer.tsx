@@ -133,7 +133,12 @@ function AppLayoutGlobalDrawerImplementation({
                   variant="icon"
                 />
               </div>
-              <div className={styles['drawer-content']}>{activeGlobalDrawer?.content}</div>
+              <div
+                className={styles['drawer-content']}
+                style={{ blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)` }}
+              >
+                {activeGlobalDrawer?.content}
+              </div>
             </div>
           </aside>
         );
