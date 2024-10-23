@@ -3,10 +3,10 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
-import { Dropzone, useDropzoneVisible } from '../../../lib/components/file-upload/dropzone';
+import { useDropzoneVisible } from '../../../../../lib/components/file-upload/dropzone';
+import InternalFileDropzone from '../../../../../lib/components/internal/components/file-dropzone';
 
-import selectors from '../../../lib/components/file-upload/dropzone/styles.selectors.js';
+import selectors from '../../../../../lib/components/internal/components/file-dropzone/styles.selectors.js';
 
 const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
   type: 'text/plain',
@@ -31,15 +31,6 @@ function TestDropzoneVisible({ multiple = false }) {
   const isDropzoneVisible = useDropzoneVisible(multiple);
   return <div>{isDropzoneVisible ? 'visible' : 'hidden'}</div>;
 }
-
-const i18nStrings: FileUploadProps.I18nStrings = {
-  uploadButtonText: multiple => (multiple ? 'Choose files' : 'Choose file'),
-  dropzoneText: multiple => (multiple ? 'Drag files to upload' : 'Drag file to upload'),
-  removeFileAriaLabel: fileIndex => `Remove file ${fileIndex + 1}`,
-  errorIconAriaLabel: 'Error',
-  limitShowFewer: 'Show fewer files',
-  limitShowMore: 'Show more files',
-};
 
 describe('File upload dropzone', () => {
   test('Dropzone becomes visible once global dragover event is received', () => {
@@ -97,19 +88,13 @@ describe('File upload dropzone', () => {
     });
   });
 
-  test('dropzone is rendered in component', () => {
-    render(<FileUpload value={[]} i18nStrings={i18nStrings} multiple={true} />);
-    fireEvent(document, createDragEvent('dragover'));
-    expect(screen.getByText('Drag files to upload')).toBeDefined();
-  });
-
   test('dropzone renders provided children', () => {
-    render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
+    render(<InternalFileDropzone onChange={jest.fn()}>Drop files here</InternalFileDropzone>);
     expect(screen.findByText('Drop files here')).toBeDefined();
   });
 
   test('dropzone is hovered on dragover and un-hovered on dragleave', () => {
-    const { container } = render(<Dropzone onChange={jest.fn()}>Drop files here</Dropzone>);
+    const { container } = render(<InternalFileDropzone onChange={jest.fn()}>Drop files here</InternalFileDropzone>);
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
     expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
@@ -125,11 +110,11 @@ describe('File upload dropzone', () => {
 
   test('dropzone fires onChange on drop', () => {
     const onChange = jest.fn();
-    const { container } = render(<Dropzone onChange={onChange}>Drop files here</Dropzone>);
+    const { container } = render(<InternalFileDropzone onChange={onChange}>Drop files here</InternalFileDropzone>);
     const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
 
     fireEvent(dropzone, createDragEvent('drop'));
 
-    expect(onChange).toHaveBeenCalledWith([file1, file2]);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file1, file2] } }));
   });
 });

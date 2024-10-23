@@ -1,17 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
-import React, { useEffect, useState } from 'react';
-import clsx from 'clsx';
-
-import InternalIcon from '../../icon/internal';
-
-import styles from './styles.css.js';
-
-interface DropzoneProps {
-  onChange: (files: File[]) => void;
-  children: React.ReactNode;
-}
+import { useEffect, useState } from 'react';
 
 export function useDropzoneVisible(multiple: boolean) {
   const [isDropzoneVisible, setDropzoneVisible] = useState(false);
@@ -65,45 +54,4 @@ export function useDropzoneVisible(multiple: boolean) {
   }, [multiple]);
 
   return isDropzoneVisible;
-}
-
-export function Dropzone({ onChange, children }: DropzoneProps) {
-  const [isDropzoneHovered, setDropzoneHovered] = useState(false);
-
-  const onDragOver = (event: React.DragEvent) => {
-    event.preventDefault();
-
-    if (event.dataTransfer) {
-      setDropzoneHovered(true);
-      event.dataTransfer.dropEffect = 'copy';
-    }
-  };
-
-  const onDragLeave = (event: React.DragEvent) => {
-    event.preventDefault();
-    setDropzoneHovered(false);
-
-    if (event.dataTransfer) {
-      event.dataTransfer.dropEffect = 'none';
-    }
-  };
-
-  const onDrop = (event: React.DragEvent) => {
-    event.preventDefault();
-    setDropzoneHovered(false);
-
-    onChange(Array.from(event.dataTransfer.files));
-  };
-
-  return (
-    <div
-      className={clsx(styles.dropzone, isDropzoneHovered && styles['dropzone-hovered'])}
-      onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
-      onDrop={onDrop}
-    >
-      <InternalIcon name="upload" />
-      <span>{children}</span>
-    </div>
-  );
 }

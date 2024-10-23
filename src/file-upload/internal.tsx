@@ -11,6 +11,7 @@ import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
+import InternalFileDropzone from '../internal/components/file-dropzone';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -21,7 +22,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { Token } from '../token-group/token';
-import { Dropzone, useDropzoneVisible } from './dropzone';
+import { useDropzoneVisible } from './dropzone/use-dropzone-visible';
 import FileInput from './file-input';
 import { FileOption } from './file-option';
 import { FileUploadProps } from './interfaces';
@@ -124,7 +125,9 @@ function InternalFileUpload(
     >
       <InternalBox>
         {isDropzoneVisible ? (
-          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+          <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
+            {i18nStrings.dropzoneText(multiple)}
+          </InternalFileDropzone>
         ) : (
           <FileInput
             ref={ref}
