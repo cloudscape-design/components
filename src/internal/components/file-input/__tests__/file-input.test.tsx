@@ -6,6 +6,7 @@ import { fireEvent, render as testingLibraryRender, screen } from '@testing-libr
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../../../__a11y__/to-validate-a11y';
+import { Dropzone, useDropzoneVisible } from '../../../../../lib/components/file-upload/dropzone';
 import InternalFileInput, { FileInputProps } from '../../../../../lib/components/internal/components/file-input';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 
@@ -39,6 +40,16 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
   lastModified: 1590962400000,
 });
 
+function createDragEvent(type: string, files = [file1, file2]) {
+  const event = new CustomEvent(type, { bubbles: true });
+  (event as any).dataTransfer = {
+    types: ['Files'],
+    files,
+    items: files.map(() => ({ kind: 'file' })),
+  };
+  return event;
+}
+
 function render(props: Partial<FileInputProps>) {
   const renderResult = testingLibraryRender(
     <div>
@@ -47,6 +58,22 @@ function render(props: Partial<FileInputProps>) {
     </div>
   );
   return createWrapper(renderResult.container).findFileInput()!;
+}
+
+function FileInputWithDropzone(props: Partial<FileInputProps>) {
+  const isDropzoneVisible = useDropzoneVisible(true);
+  return (
+    <div>
+      {isDropzoneVisible ? (
+        <Dropzone onChange={onChange}>Drop files here</Dropzone>
+      ) : (
+        <>
+          <InternalFileInput {...{ ...defaultProps, ...props }}>Choose files</InternalFileInput>
+          <div id="test-label">Test label</div>
+        </>
+      )}
+    </div>
+  );
 }
 
 describe('FileInput input', () => {
@@ -132,6 +159,14 @@ describe('FileInput input', () => {
     // additional equality check, because `expect.objectContaining` above thinks file1 === file2
     expect((onChange as jest.Mock).mock.lastCall[0].detail.value[0]).toBe(file1);
     expect((onChange as jest.Mock).mock.lastCall[0].detail.value[1]).toBe(file2);
+  });
+});
+
+describe('file input with dropzone event', () => {
+  test('renders dropzone correctly', () => {
+    testingLibraryRender(<FileInputWithDropzone />);
+    fireEvent(document, createDragEvent('dragover'));
+    expect(screen.getByText('Drop files here')).toBeDefined();
   });
 });
 
