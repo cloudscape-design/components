@@ -16,12 +16,11 @@ import {
 import { renderHook } from '../../../../__tests__/render-hook';
 import { mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
 
-type RenderProps = Partial<UseTableInteractionMetricsProps<any>>;
+type RenderProps = Partial<UseTableInteractionMetricsProps>;
 
 const defaultProps = {
   getComponentConfiguration: () => ({}),
   getComponentIdentifier: () => 'My resources',
-  items: [],
   itemCount: 10,
   loading: undefined,
   instanceIdentifier: undefined,

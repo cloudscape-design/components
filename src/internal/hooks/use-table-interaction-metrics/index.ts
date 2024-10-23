@@ -15,18 +15,17 @@ to be the cause of the current loading state.
 */
 const USER_ACTION_TIME_LIMIT = 1_000;
 
-export interface UseTableInteractionMetricsProps<T> {
+export interface UseTableInteractionMetricsProps {
   elementRef: React.RefObject<HTMLElement>;
   instanceIdentifier: string | undefined;
   loading: boolean | undefined;
-  items: readonly T[];
   itemCount: number;
   getComponentIdentifier: () => string | undefined;
   getComponentConfiguration: () => JSONObject;
   interactionMetadata: () => string;
 }
 
-export function useTableInteractionMetrics<T>({
+export function useTableInteractionMetrics({
   elementRef,
   itemCount,
   instanceIdentifier,
@@ -34,8 +33,7 @@ export function useTableInteractionMetrics<T>({
   getComponentConfiguration,
   loading = false,
   interactionMetadata,
-  items,
-}: UseTableInteractionMetricsProps<T>) {
+}: UseTableInteractionMetricsProps) {
   const taskInteractionId = useRandomId();
   const tableInteractionAttributes = useDOMAttribute(
     elementRef,
@@ -82,19 +80,15 @@ export function useTableInteractionMetrics<T>({
         instanceIdentifier,
         noOfResourcesInTable: metadata.current.itemCount,
       });
-    }
-  }, [instanceIdentifier, loading, taskInteractionId]);
 
-  useEffectOnUpdate(() => {
-    if (!loading) {
       ComponentMetrics.componentUpdated({
         taskInteractionId,
         componentName: 'table',
-        actionType: (capturedUserAction.current || lastUserAction.current?.name) ?? '',
+        actionType: capturedUserAction.current ?? '',
         componentConfiguration: metadata.current.getComponentConfiguration(),
       });
     }
-  }, [items, taskInteractionId, loading]);
+  }, [instanceIdentifier, loading, taskInteractionId]);
 
   return {
     tableInteractionAttributes,
