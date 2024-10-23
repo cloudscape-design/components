@@ -23,7 +23,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -1813,14 +1813,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#16191f",
+            "light": "#545b64",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#16191f",
+            "light": "#545b64",
           },
         },
         "color-text-counter": {
@@ -2462,7 +2462,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -4252,14 +4252,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#16191f",
+            "light": "#545b64",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#16191f",
+            "light": "#545b64",
           },
         },
         "color-text-counter": {
@@ -4901,7 +4901,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -6691,14 +6691,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#16191f",
+            "light": "#545b64",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#16191f",
+            "light": "#545b64",
           },
         },
         "color-text-counter": {
@@ -7340,7 +7340,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -9129,15 +9129,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
+            "dark": "#d5dbdb",
+            "light": "#545b64",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#fafafa",
-            "light": "#fafafa",
+            "dark": "#d5dbdb",
+            "light": "#545b64",
           },
         },
         "color-text-counter": {
@@ -9779,7 +9779,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -11568,15 +11568,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
+            "dark": "#d5dbdb",
+            "light": "#545b64",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#16191f",
-            "light": "#16191f",
+            "dark": "#d5dbdb",
+            "light": "#545b64",
           },
         },
         "color-text-counter": {
@@ -12218,7 +12218,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -14657,7 +14657,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-radius-chat-bubble": {
       "$description": "The border radius of chat bubbles.",
-      "$value": "2px",
+      "$value": "8px",
     },
     "border-radius-container": {
       "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -16447,14 +16447,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#d5dbdb",
-        "light": "#16191f",
+        "light": "#545b64",
       },
     },
     "color-text-chat-bubble-outgoing": {
       "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "#d5dbdb",
-        "light": "#16191f",
+        "light": "#545b64",
       },
     },
     "color-text-counter": {
@@ -17101,7 +17101,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -18891,14 +18891,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#0f141a",
+            "light": "#424650",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#0f141a",
+            "light": "#424650",
           },
         },
         "color-text-counter": {
@@ -19540,7 +19540,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -21979,7 +21979,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -23769,14 +23769,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#0f141a",
+            "light": "#424650",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#0f141a",
+            "light": "#424650",
           },
         },
         "color-text-counter": {
@@ -24418,7 +24418,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -26207,15 +26207,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
+            "dark": "#c6c6cd",
+            "light": "#424650",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#f9f9fa",
-            "light": "#f9f9fa",
+            "dark": "#c6c6cd",
+            "light": "#424650",
           },
         },
         "color-text-counter": {
@@ -26857,7 +26857,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -28646,15 +28646,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
+            "dark": "#c6c6cd",
+            "light": "#424650",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
+            "dark": "#c6c6cd",
+            "light": "#424650",
           },
         },
         "color-text-counter": {
@@ -29296,7 +29296,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -31735,7 +31735,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "2px",
+          "$value": "8px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -34174,7 +34174,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-radius-chat-bubble": {
       "$description": "The border radius of chat bubbles.",
-      "$value": "2px",
+      "$value": "8px",
     },
     "border-radius-container": {
       "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -35964,14 +35964,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#c6c6cd",
-        "light": "#0f141a",
+        "light": "#424650",
       },
     },
     "color-text-chat-bubble-outgoing": {
       "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "#c6c6cd",
-        "light": "#0f141a",
+        "light": "#424650",
       },
     },
     "color-text-counter": {
