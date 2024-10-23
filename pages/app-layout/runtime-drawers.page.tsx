@@ -105,7 +105,10 @@ export default function WithDrawers() {
                   Use Drawers
                 </Toggle>
 
-                <Button onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}>
+                <Button
+                  onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
+                  data-testid="open-drawer-button"
+                >
                   Open a drawer without a trigger
                 </Button>
                 <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
