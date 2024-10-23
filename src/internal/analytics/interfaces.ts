@@ -183,14 +183,27 @@ export interface IPerformanceMetrics {
   modalPerformanceData: ModalPerformanceDataMethod;
 }
 
+type JSONValue = string | number | boolean | null | undefined;
+export interface JSONObject {
+  [key: string]: JSONObject | JSONValue;
+}
+
 export interface ComponentMountedProps {
   componentName: string;
   taskInteractionId?: string;
-  details: Record<string, string | boolean | number | undefined>;
+  componentConfiguration: JSONObject;
 }
+
+export interface ComponentUpdatedProps extends ComponentMountedProps {
+  taskInteractionId: string;
+  actionType: string;
+}
+
 export type ComponentMountedMethod = (props: ComponentMountedProps) => string;
+export type ComponentUpdatedMethod = (props: ComponentUpdatedProps) => void;
 export interface IComponentMetrics {
   componentMounted: ComponentMountedMethod;
+  componentUpdated: ComponentUpdatedMethod;
 }
 
 // Interface for modal metrics
