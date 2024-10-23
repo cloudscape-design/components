@@ -11,7 +11,7 @@ import InternalLiveRegion from './internal';
 export { LiveRegionProps };
 
 function LiveRegion({ assertive = false, hidden = false, tagName = 'div', ...restProps }: LiveRegionProps) {
-  const baseComponentProps = useBaseComponent('LiveRegion');
+  const baseComponentProps = useBaseComponent('LiveRegion', { props: { assertive, hidden } });
 
   return (
     <InternalLiveRegion

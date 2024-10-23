@@ -110,8 +110,6 @@ export default React.forwardRef(function InternalLiveRegion(
       {...baseProps}
       className={clsx(styles.root, testUtilStyles.root, className)}
       hidden={hidden}
-      // https://github.com/facebook/react/issues/17157#issuecomment-2127180687
-      {...{ inert: hidden ? '' : undefined }}
     >
       {children}
     </TagName>
