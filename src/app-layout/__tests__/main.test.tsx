@@ -3,7 +3,7 @@
 /* eslint simple-import-sort/imports: 0 */
 import * as React from 'react';
 import { waitFor } from '@testing-library/react';
-import { describeEachAppLayout, isDrawerClosed, renderComponent, testDrawer } from './utils';
+import { describeEachAppLayout, renderComponent, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
@@ -38,7 +38,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       {
         propName: 'navigationOpen',
         handlerName: 'onNavigationChange',
-        findElement: (wrapper: AppLayoutWrapper) => wrapper.findNavigation(),
+        findOpenElement: (wrapper: AppLayoutWrapper) => wrapper.findOpenNavigationPanel(),
         findToggle: (wrapper: AppLayoutWrapper) => wrapper.findNavigationToggle(),
         findClose: (wrapper: AppLayoutWrapper) => wrapper.findNavigationClose(),
       },
@@ -48,31 +48,31 @@ describeEachAppLayout({ themes: ['classic', 'refresh-toolbar'], sizes: ['desktop
       {
         propName: 'toolsOpen',
         handlerName: 'onToolsChange',
-        findElement: (wrapper: AppLayoutWrapper) => wrapper.findTools(),
+        findOpenElement: (wrapper: AppLayoutWrapper) => wrapper.findOpenToolsPanel(),
         findToggle: (wrapper: AppLayoutWrapper) => wrapper.findToolsToggle(),
         findClose: (wrapper: AppLayoutWrapper) => wrapper.findToolsClose(),
       },
     ],
-  ] as const)('%s', (name, { propName, handlerName, findToggle, findElement, findClose }) => {
+  ] as const)('%s', (name, { propName, handlerName, findToggle, findOpenElement, findClose }) => {
     // TODO: enable after fixing 'tools controlled property'
     (theme === 'refresh-toolbar' && name === 'tools' ? test.skip : test)('property is controlled', () => {
       const onChange = jest.fn();
       const { wrapper, rerender } = renderComponent(<AppLayout {...{ [propName]: false, [handlerName]: onChange }} />);
       findToggle(wrapper).click();
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: true } }));
-      expect(isDrawerClosed(findElement(wrapper))).toBe(true);
+      expect(findOpenElement(wrapper)).toBeFalsy();
 
       rerender(<AppLayout {...{ [propName]: true, [handlerName]: onChange }} />);
       findClose(wrapper).click();
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { open: false } }));
-      expect(isDrawerClosed(findElement(wrapper))).toBe(false);
+      expect(findOpenElement(wrapper)).toBeTruthy();
     });
 
     (size === 'mobile' ? test : test.skip)('when property is not set, toggles the visibility without handler', () => {
       const { wrapper } = renderComponent(<AppLayout />);
-      expect(isDrawerClosed(findElement(wrapper))).toBe(true);
+      expect(findOpenElement(wrapper)).toBeFalsy();
       findToggle(wrapper).click();
-      expect(isDrawerClosed(findElement(wrapper))).toBe(false);
+      expect(findOpenElement(wrapper)).toBeTruthy();
     });
   });
 

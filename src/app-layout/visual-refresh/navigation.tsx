@@ -62,7 +62,6 @@ export default function Navigation() {
           className={clsx(styles['navigation-container'], {
             [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
-            [testutilStyles['drawer-closed']]: !navigationOpen,
           })}
           style={{ [customCssProps.navigationWidth]: `${navigationWidth}px` }}
         >
@@ -90,14 +89,11 @@ export default function Navigation() {
 
           <nav
             aria-label={ariaLabels?.navigation ?? undefined}
-            className={clsx(
-              styles.navigation,
-              {
-                [styles.animating]: state === 'entering',
-                [styles['is-navigation-open']]: navigationOpen,
-              },
-              testutilStyles.navigation
-            )}
+            className={clsx(styles.navigation, testutilStyles.navigation, {
+              [testutilStyles['drawer-closed']]: !navigationOpen,
+              [styles.animating]: state === 'entering',
+              [styles['is-navigation-open']]: navigationOpen,
+            })}
             ref={state !== 'exiting' ? transitionEventsRef : undefined}
             aria-hidden={!navigationOpen}
             onClick={event => {

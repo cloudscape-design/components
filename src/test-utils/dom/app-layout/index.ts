@@ -15,6 +15,14 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles.navigation)!;
   }
 
+  findOpenNavigationPanel(): ElementWrapper | null {
+    const navigation = this.findNavigation();
+    if (!navigation) {
+      throw new Error('App Layout does not have navigation content');
+    }
+    return navigation.matches(`:not(.${testutilStyles['drawer-closed']})`);
+  }
+
   findNavigationToggle(): ElementWrapper<HTMLButtonElement> {
     return this.findByClassName<HTMLButtonElement>(testutilStyles['navigation-toggle'])!;
   }
@@ -37,6 +45,14 @@ export default class AppLayoutWrapper extends ComponentWrapper {
 
   findTools(): ElementWrapper {
     return this.findByClassName(testutilStyles.tools)!;
+  }
+
+  findOpenToolsPanel(): ElementWrapper | null {
+    const tools = this.findTools();
+    if (!tools) {
+      throw new Error('App Layout does not have tools content');
+    }
+    return tools.matches(`:not(.${testutilStyles['drawer-closed']})`);
   }
 
   findToolsClose(): ElementWrapper<HTMLButtonElement> {
@@ -69,6 +85,14 @@ export default class AppLayoutWrapper extends ComponentWrapper {
 
   findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
     return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
+  }
+
+  findDrawerTriggerWithBadgeById(id: string): ElementWrapper | null {
+    const trigger = this.findDrawerTriggerById(id);
+    if (!trigger) {
+      throw new Error(`Drawer trigger "${id}" does not exist`);
+    }
+    return trigger.matches(`.${testutilStyles['drawers-trigger-with-badge']}`);
   }
 
   findDrawersOverflowTrigger(): ButtonDropdownWrapper | null {

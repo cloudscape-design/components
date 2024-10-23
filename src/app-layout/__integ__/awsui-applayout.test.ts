@@ -51,7 +51,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         await expect(page.isDisplayed(wrapper.findToolsToggle().toSelector())).resolves.toBe(true);
       }
       await expect(page.isDisplayed(wrapper.findNavigationClose().toSelector())).resolves.toBe(true);
+      await expect(page.isExisting(wrapper.findOpenNavigationPanel().toSelector())).resolves.toBe(true);
       await expect(page.isDisplayed(wrapper.findToolsClose().toSelector())).resolves.toBe(false);
+      await expect(page.isExisting(wrapper.findOpenToolsPanel().toSelector())).resolves.toBe(false);
       await expect(page.isDisplayed(wrapper.findSplitPanel().toSelector())).resolves.toBe(false);
     })
   );

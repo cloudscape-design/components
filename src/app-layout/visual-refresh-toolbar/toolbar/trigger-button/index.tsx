@@ -218,6 +218,7 @@ function TriggerButton(
           {
             [styles.selected]: selected,
             [styles.badge]: badge,
+            [testutilStyles['drawers-trigger-with-badge']]: badge,
           },
           className
         )}
