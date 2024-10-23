@@ -49,26 +49,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     );
 
     test(
-      'should show sticky elements on scroll in drawer',
-      setupTest(async page => {
-        await page.setWindowSize(viewports.desktop);
-        await page.click(createWrapper().findToggle('[data-testid="use-drawers-toggle"]').toSelector());
-        await page.waitForVisible(wrapper.findDrawerTriggerById('pro-help').toSelector(), true);
-
-        await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
-        await page.click(wrapper.findDrawerTriggerById('pro-help').toSelector());
-        await expect(page.isDisplayedInViewport('[data-testid="drawer-sticky-footer"]')).resolves.toBe(true);
-
-        const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
-        const scrollBefore = await getScrollPosition();
-
-        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
-        await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
-        await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
-      })
-    );
-
-    test(
       'renders according to defaultSize property',
       setupTest(async page => {
         await page.setWindowSize(viewports.desktop);
@@ -91,6 +71,28 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
         await page.dragAndDrop(wrapper.findActiveDrawerResizeHandle().toSelector(), -200);
         await expect(page.getText('[data-testid="current-size"]')).resolves.toEqual('resized: true');
+      })
+    );
+
+    test(
+      'should show sticky elements on scroll in drawer',
+      setupTest(async page => {
+        await page.setWindowSize(viewports.desktop);
+        await page.click(
+          createWrapper().findToggle('[data-testid="use-drawers-toggle"]').findNativeInput().toSelector()
+        );
+        await page.waitForVisible(wrapper.findDrawerTriggerById('pro-help').toSelector(), true);
+
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
+        await page.click(wrapper.findDrawerTriggerById('pro-help').toSelector());
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(true);
+
+        const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
+        const scrollBefore = await getScrollPosition();
+
+        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+        await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
       })
     );
   });
@@ -239,6 +241,25 @@ describe('Visual refresh toolbar only', () => {
       await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
       await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
       await expect(page.hasHorizontalScroll()).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'should show sticky elements on scroll in global drawer',
+    setupTest(async page => {
+      await page.setWindowSize(viewports.desktop);
+      await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
+
+      await page.click(createWrapper().findButton('[data-testid="open-drawer-button"]').toSelector());
+      await page.waitForVisible(findDrawerById(wrapper, 'circle4-global')!.toSelector(), true);
+      await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(true);
+
+      const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
+      const scrollBefore = await getScrollPosition();
+
+      await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+      await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
+      await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
     })
   );
 });
