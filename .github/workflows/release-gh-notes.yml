@@ -17,7 +17,7 @@ permissions:
 
 jobs:
   release:
-    uses: cloudscape-design/actions/.github/workflows/release-gh-notes.yml@main
+    uses: cloudscape-design/actions/.github/workflows/release-gh-notes.yml@node20
     secrets: inherit
     with:
       version: ${{ github.event.inputs.version }}
