@@ -8,6 +8,7 @@ import ScreenreaderOnly from '../../internal/components/screenreader-only';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
+import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
@@ -245,29 +246,33 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeGlobalDrawersSizes,
     });
 
-    const { registered, toolbarProps } = useMultiAppLayout({
-      forceDeduplicationType,
-      ariaLabels: ariaLabelsWithDrawers,
-      navigation: resolvedNavigation,
-      navigationOpen,
-      onNavigationToggle,
-      navigationFocusRef: navigationFocusControl.refs.toggle,
-      breadcrumbs,
-      activeDrawerId: activeDrawer?.id ?? null,
-      // only pass it down if there are non-empty drawers or tools
-      drawers: drawers?.length || !toolsHide ? drawers : undefined,
-      onActiveDrawerChange: onActiveDrawerChangeHandler,
-      drawersFocusRef: drawersFocusControl.refs.toggle,
-      splitPanel,
-      splitPanelToggleProps: {
-        ...splitPanelToggleConfig,
-        active: splitPanelOpen,
-        controlId: splitPanelControlId,
-        position: splitPanelPosition,
+    const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
+    const { registered, toolbarProps } = useMultiAppLayout(
+      {
+        forceDeduplicationType,
+        ariaLabels: ariaLabelsWithDrawers,
+        navigation: resolvedNavigation,
+        navigationOpen,
+        onNavigationToggle,
+        navigationFocusRef: navigationFocusControl.refs.toggle,
+        breadcrumbs,
+        activeDrawerId: activeDrawer?.id ?? null,
+        // only pass it down if there are non-empty drawers or tools
+        drawers: drawers?.length || !toolsHide ? drawers : undefined,
+        onActiveDrawerChange: onActiveDrawerChangeHandler,
+        drawersFocusRef: drawersFocusControl.refs.toggle,
+        splitPanel,
+        splitPanelToggleProps: {
+          ...splitPanelToggleConfig,
+          active: splitPanelOpen,
+          controlId: splitPanelControlId,
+          position: splitPanelPosition,
+        },
+        splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
+        onSplitPanelToggle: onSplitPanelToggleHandler,
       },
-      splitPanelFocusRef: splitPanelFocusControl.refs.toggle,
-      onSplitPanelToggle: onSplitPanelToggleHandler,
-    });
+      isIntersecting
+    );
 
     const hasToolbar = !embeddedViewMode && !!toolbarProps;
     const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
@@ -416,6 +421,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
+          ref={intersectionObserverRef}
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,

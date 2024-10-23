@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { Link } from '~components';
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
+import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 
 import { IframeWrapper } from '../utils/iframe-wrapper';
@@ -17,6 +17,7 @@ import * as toolsContent from './utils/tools-content';
 function InnerApp() {
   return (
     <AppLayout
+      {...{ __disableRuntimeDrawers: true }}
       data-testid="secondary-layout"
       ariaLabels={labels}
       breadcrumbs={<Breadcrumbs />}
