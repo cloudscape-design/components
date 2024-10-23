@@ -2,6 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useState } from 'react';
 
+/**
+ * A utility to determine whether or not a file is being currently dragged into the window.
+ *
+ * @returns True if a file is being dragged over the current window, false otherwise.
+ */
 export function useFileDragging() {
   const [isFileDragging, setFileDragging] = useState(false);
 
