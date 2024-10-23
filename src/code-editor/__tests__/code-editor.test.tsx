@@ -22,7 +22,7 @@ import {
 
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
 import styles from '../../../lib/components/code-editor/styles.css.js';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

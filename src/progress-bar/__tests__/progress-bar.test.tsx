@@ -7,7 +7,7 @@ import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
 
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
 import styles from '../../../lib/components/progress-bar/styles.css.js';
 
 const standaloneAndKeyvalueVariants: Array<ProgressBarProps.Variant> = ['standalone', 'key-value'];

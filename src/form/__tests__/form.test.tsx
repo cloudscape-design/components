@@ -7,7 +7,7 @@ import Form, { FormProps } from '../../../lib/components/form';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import alertStyles from '../../../lib/components/alert/styles.selectors.js';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.selectors.js';
+import liveRegionStyles from '../../../lib/components/live-region/styles.selectors.js';
 
 function renderForm(props: FormProps = {}) {
   const { container } = render(<Form {...props} errorIconAriaLabel="Error icon" />);

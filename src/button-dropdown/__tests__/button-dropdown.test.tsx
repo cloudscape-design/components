@@ -11,7 +11,7 @@ import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
 
 import iconStyles from '../../../lib/components/icon/styles.css.js';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

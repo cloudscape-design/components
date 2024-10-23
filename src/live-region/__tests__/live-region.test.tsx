@@ -5,7 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 
 import InternalLiveRegion, { InternalLiveRegionRef } from '../../../lib/components/live-region/internal.js';
 
-import styles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import styles from '../../../lib/components/live-region/styles.css.js';
 
 const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);

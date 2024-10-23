@@ -10,7 +10,7 @@ import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/cards/styles.css.js';
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn(),
