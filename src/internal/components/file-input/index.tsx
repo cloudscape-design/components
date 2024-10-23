@@ -72,7 +72,7 @@ const InternalFileInput = React.forwardRef(
 
     // Synchronizing component's value with the native file input state.
     useEffect(() => {
-      // The DataTransfer is not available in jsdom.
+      /* istanbul ignore next: The DataTransfer is not available in jsdom. */
       if (window.DataTransfer) {
         const dataTransfer = new DataTransfer();
         for (const file of value) {
