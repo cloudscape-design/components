@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import styles from '../../../live-region/styles.selectors.js';
+import testUtilStyles from '../../../live-region/test-classes/styles.selectors.js';
 
 export default class LiveRegionWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = testUtilStyles.root;
 }

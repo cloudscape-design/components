@@ -8,7 +8,7 @@ import Modal from '../../../lib/components/modal';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 interface Item {
   id: number;

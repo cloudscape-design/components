@@ -11,6 +11,7 @@ import { LiveRegionController } from './controller';
 import { LiveRegionProps } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export interface InternalLiveRegionProps extends InternalBaseComponentProps, LiveRegionProps {
   /**
@@ -104,7 +105,14 @@ export default React.forwardRef(function InternalLiveRegion(
   }));
 
   return (
-    <TagName ref={mergedRef} {...baseProps} className={clsx(styles.root, className)} hidden={hidden}>
+    <TagName
+      ref={mergedRef}
+      {...baseProps}
+      className={clsx(styles.root, testUtilStyles.root, className)}
+      hidden={hidden}
+      // https://github.com/facebook/react/issues/17157#issuecomment-2127180687
+      {...{ inert: hidden ? '' : undefined }}
+    >
       {children}
     </TagName>
   );

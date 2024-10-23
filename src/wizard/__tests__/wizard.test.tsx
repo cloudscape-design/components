@@ -10,7 +10,7 @@ import WizardWrapper from '../../../lib/components/test-utils/dom/wizard';
 import Wizard, { WizardProps } from '../../../lib/components/wizard';
 import { DEFAULT_I18N_SETS, DEFAULT_STEPS } from './common';
 
-import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/wizard/styles.selectors.js';
 
 declare global {

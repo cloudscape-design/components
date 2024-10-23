@@ -6,7 +6,7 @@ import { render } from '@testing-library/react';
 import FormField, { FormFieldProps } from '../../../lib/components/form-field';
 import createWrapper, { FormFieldWrapper } from '../../../lib/components/test-utils/dom';
 
-import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 function renderFormField(props: FormFieldProps = {}) {
   const renderResult = render(<FormField {...props} />);

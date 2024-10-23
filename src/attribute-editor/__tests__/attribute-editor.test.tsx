@@ -9,7 +9,7 @@ import Input from '../../../lib/components/input';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
-import liveRegionStyles from '../../../lib/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 interface Item {
   key: string;
