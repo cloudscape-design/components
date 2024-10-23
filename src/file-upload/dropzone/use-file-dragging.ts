@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useState } from 'react';
 
-export function useDropzoneVisible(multiple: boolean) {
-  const [isDropzoneVisible, setDropzoneVisible] = useState(false);
+export function useFileDragging() {
+  const [isFileDragging, setFileDragging] = useState(false);
 
   // Registering global drag events listeners.
   useEffect(() => {
@@ -21,8 +21,8 @@ export function useDropzoneVisible(multiple: boolean) {
         }
       }
 
-      if (files > 0 && (multiple || files === 1)) {
-        setDropzoneVisible(true);
+      if (files > 0) {
+        setFileDragging(true);
         dragTimer && clearTimeout(dragTimer);
       }
     };
@@ -31,14 +31,14 @@ export function useDropzoneVisible(multiple: boolean) {
     const onDocumentDragLeave = (event: DragEvent) => {
       event.preventDefault();
 
-      dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
+      dragTimer = setTimeout(() => setFileDragging(false), 25);
     };
 
     // If the files were dropped the state must be reset.
     const onDocumentDrop = (event: DragEvent) => {
       event.preventDefault();
 
-      dragTimer = setTimeout(() => setDropzoneVisible(false), 25);
+      dragTimer = setTimeout(() => setFileDragging(false), 25);
     };
 
     document.addEventListener('dragover', onDocumentDragOver, false);
@@ -51,7 +51,7 @@ export function useDropzoneVisible(multiple: boolean) {
       document.removeEventListener('dragleave', onDocumentDragLeave);
       document.removeEventListener('drop', onDocumentDrop);
     };
-  }, [multiple]);
+  }, []);
 
-  return isDropzoneVisible;
+  return isFileDragging;
 }

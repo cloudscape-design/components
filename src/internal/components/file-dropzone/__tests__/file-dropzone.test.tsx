@@ -3,8 +3,9 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import { useDropzoneVisible } from '../../../../../lib/components/file-upload/dropzone';
+import { useFileDragging } from '../../../../../lib/components/file-upload/dropzone/use-file-dragging';
 import InternalFileDropzone from '../../../../../lib/components/internal/components/file-dropzone';
+import FileDropzoneWrapper from '../../../../../lib/components/test-utils/dom/internal/file-dropzone';
 
 import selectors from '../../../../../lib/components/internal/components/file-dropzone/styles.selectors.js';
 
@@ -17,6 +18,8 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
   lastModified: 1590962400000,
 });
 
+const onChange = jest.fn();
+
 function createDragEvent(type: string, files = [file1, file2]) {
   const event = new CustomEvent(type, { bubbles: true });
   (event as any).dataTransfer = {
@@ -27,9 +30,9 @@ function createDragEvent(type: string, files = [file1, file2]) {
   return event;
 }
 
-function TestDropzoneVisible({ multiple = false }) {
-  const isDropzoneVisible = useDropzoneVisible(multiple);
-  return <div>{isDropzoneVisible ? 'visible' : 'hidden'}</div>;
+function TestDropzoneVisible() {
+  const isFileDragging = useFileDragging();
+  return <div>{isFileDragging ? 'visible' : 'hidden'}</div>;
 }
 
 describe('File upload dropzone', () => {
@@ -42,7 +45,7 @@ describe('File upload dropzone', () => {
     expect(screen.getByText('visible')).toBeDefined();
   });
 
-  test('Dropzone shows if multiple files dragged into non-multiple zone', () => {
+  test('Dropzone shows if multiple files dragged into zone', () => {
     render(<TestDropzoneVisible />);
     expect(screen.getByText('hidden')).toBeDefined();
 
@@ -51,17 +54,8 @@ describe('File upload dropzone', () => {
     expect(screen.getByText('visible')).toBeDefined();
   });
 
-  test('Dropzone shows if multiple files dragged into multiple zone', () => {
-    render(<TestDropzoneVisible multiple={true} />);
-    expect(screen.getByText('hidden')).toBeDefined();
-
-    fireEvent(document, createDragEvent('dragover', [file1, file2]));
-
-    expect(screen.getByText('visible')).toBeDefined();
-  });
-
   test('Dropzone hides after a delay once global dragleave event is received', async () => {
-    render(<TestDropzoneVisible multiple={true} />);
+    render(<TestDropzoneVisible />);
 
     fireEvent(document, createDragEvent('dragover'));
 
@@ -75,7 +69,7 @@ describe('File upload dropzone', () => {
   });
 
   test('Dropzone hides after a delay once global drop event is received', async () => {
-    render(<TestDropzoneVisible multiple={true} />);
+    render(<TestDropzoneVisible />);
 
     fireEvent(document, createDragEvent('dragover'));
 
@@ -94,24 +88,23 @@ describe('File upload dropzone', () => {
   });
 
   test('dropzone is hovered on dragover and un-hovered on dragleave', () => {
-    const { container } = render(<InternalFileDropzone onChange={jest.fn()}>Drop files here</InternalFileDropzone>);
-    const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
+    const { container } = render(<InternalFileDropzone onChange={onChange}>Drop files here</InternalFileDropzone>);
+    const dropzone = container.querySelector(`.${FileDropzoneWrapper.rootSelector}`)!;
 
-    expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
+    expect(dropzone).not.toHaveClass(selectors.hovered);
 
     fireEvent(dropzone, createDragEvent('dragover'));
 
-    expect(dropzone).toHaveClass(selectors['dropzone-hovered']);
+    expect(dropzone).toHaveClass(selectors.hovered);
 
     fireEvent(dropzone, createDragEvent('dragleave'));
 
-    expect(dropzone).not.toHaveClass(selectors['dropzone-hovered']);
+    expect(dropzone).not.toHaveClass(selectors.hovered);
   });
 
   test('dropzone fires onChange on drop', () => {
-    const onChange = jest.fn();
     const { container } = render(<InternalFileDropzone onChange={onChange}>Drop files here</InternalFileDropzone>);
-    const dropzone = container.querySelector(`.${selectors.dropzone}`)!;
+    const dropzone = container.querySelector(`.${FileDropzoneWrapper.rootSelector}`)!;
 
     fireEvent(dropzone, createDragEvent('drop'));
 
