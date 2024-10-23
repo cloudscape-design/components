@@ -52,9 +52,8 @@ export function mergeProps(
       toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
+    //there is never a case where navigation will exist and a toggle will not
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
-      // there is never a case where navigation will exist and a toggle will not so toolbar
-      // can use the hasNavigation here to conditionally render the navigationToggle button
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;
