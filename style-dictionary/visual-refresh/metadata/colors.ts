@@ -264,12 +264,12 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBackgroundChatBubbleOutgoing: {
     description: 'The background color of `outgoing` chat bubble.',
-    themeable: false,
+    themeable: true,
     public: true,
   },
   colorBackgroundChatBubbleIncoming: {
     description: 'The background color of `incoming` chat bubble.',
-    themeable: false,
+    themeable: true,
     public: true,
   },
   colorTextChatBubbleOutgoing: {
