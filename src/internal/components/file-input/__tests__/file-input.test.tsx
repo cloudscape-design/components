@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../../../__a11y__/to-validate-a11y';
 import InternalFileInput, { FileInputProps } from '../../../../../lib/components/internal/components/file-input';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+import FileInputWrapper from '../../../../../lib/components/test-utils/dom/internal/file-input';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -46,7 +46,8 @@ function render(props: Partial<FileInputProps>) {
       <div id="test-label">Test label</div>
     </div>
   );
-  return createWrapper(renderResult.container).findFileInput()!;
+  const element = renderResult.container.querySelector<HTMLElement>(`.${FileInputWrapper.rootSelector}`)!;
+  return new FileInputWrapper(element)!;
 }
 
 describe('FileInput input', () => {
