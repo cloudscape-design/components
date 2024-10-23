@@ -3,8 +3,7 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import { useFileDragging } from '../../../../../lib/components/file-upload/dropzone/use-file-dragging';
-import InternalFileDropzone from '../../../../../lib/components/internal/components/file-dropzone';
+import InternalFileDropzone, { useFileDragging } from '../../../../../lib/components/internal/components/file-dropzone';
 import FileDropzoneWrapper from '../../../../../lib/components/test-utils/dom/internal/file-dropzone';
 
 import selectors from '../../../../../lib/components/internal/components/file-dropzone/styles.selectors.js';
