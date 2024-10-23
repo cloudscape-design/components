@@ -22,7 +22,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { Token } from '../token-group/token';
-import { useDropzoneVisible } from './dropzone/use-dropzone-visible';
+import { useFileDragging } from './dropzone/use-file-dragging';
 import FileInput from './file-input';
 import { FileOption } from './file-option';
 import { FileUploadProps } from './interfaces';
@@ -96,7 +96,7 @@ function InternalFileUpload(
     setNextFocusIndex(removeFileIndex);
   };
 
-  const isDropzoneVisible = useDropzoneVisible(multiple);
+  const isFileDragging = useFileDragging();
 
   const showWarning = warningText && !errorText;
 
@@ -124,7 +124,7 @@ function InternalFileUpload(
       ref={tokenListRef}
     >
       <InternalBox>
-        {isDropzoneVisible ? (
+        {isFileDragging ? (
           <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
             {i18nStrings.dropzoneText(multiple)}
           </InternalFileDropzone>

@@ -9,6 +9,8 @@ import { FileDropzoneProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 
+export { FileDropzoneProps };
+
 export default function InternalFileDropzone({ onChange, children }: FileDropzoneProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
 
@@ -38,7 +40,7 @@ export default function InternalFileDropzone({ onChange, children }: FileDropzon
 
   return (
     <div
-      className={clsx(styles.dropzone, isDropzoneHovered && styles['dropzone-hovered'])}
+      className={clsx(styles.root, isDropzoneHovered && styles.hovered)}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}

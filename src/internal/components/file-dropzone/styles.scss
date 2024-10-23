@@ -6,7 +6,7 @@
 @use '../../styles/tokens' as awsui;
 @use '../../styles' as styles;
 
-.dropzone {
+.root {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -21,7 +21,8 @@
   color: awsui.$color-dropzone-text-active;
   background-color: awsui.$color-dropzone-background-active;
   font-weight: styles.$font-weight-bold;
-  &-hovered {
+
+  &.hovered {
     color: awsui.$color-dropzone-text-hover;
     background-color: awsui.$color-dropzone-background-hover;
   }
