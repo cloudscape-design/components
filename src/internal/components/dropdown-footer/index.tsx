@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import InternalLiveRegion from '../../../live-region/internal.js';
 import DropdownStatus from '../dropdown-status/index.js';
-import InternalLiveRegion from '../live-region/internal';
 
 import styles from './styles.css.js';
 

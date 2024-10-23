@@ -4,11 +4,11 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import Icon from '../../icon/internal';
-import InternalLiveRegion from '../../internal/components/live-region/internal';
 import Portal from '../../internal/components/portal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
+import InternalLiveRegion from '../../live-region/internal';
 import Arrow from '../../popover/arrow';
 import PopoverBody from '../../popover/body';
 import PopoverContainer from '../../popover/container';

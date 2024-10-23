@@ -13,7 +13,6 @@ import { InputProps } from '../input/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import FocusLock from '../internal/components/focus-lock';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -25,6 +24,7 @@ import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
 import { parseDate } from '../internal/utils/date-time';
 import { normalizeLocale } from '../internal/utils/locale';
+import InternalLiveRegion from '../live-region/internal';
 import { DatePickerProps } from './interfaces';
 import { getBaseDateLabel, getSelectedDateLabel, isValidFullDate } from './utils';
 

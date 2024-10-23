@@ -7,9 +7,9 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
+import InternalLiveRegion from '../live-region/internal.js';
 import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';

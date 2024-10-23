@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import { LiveRegionController } from '../../../lib/components/internal/components/live-region/controller.js';
+import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import { TableBodyCell, TableBodyCellProps } from '../../../lib/components/table/body-cell';
 import { useStickyColumns } from '../../../lib/components/table/sticky-columns';
 import wrapper from '../../../lib/components/test-utils/dom';

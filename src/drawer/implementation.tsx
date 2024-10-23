@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { createWidgetizedComponent } from '../internal/widgets';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { DrawerProps } from './interfaces';
 

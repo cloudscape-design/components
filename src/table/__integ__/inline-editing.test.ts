@@ -6,7 +6,6 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import LiveRegionWrapper from '../../../lib/components/test-utils/selectors/internal/live-region';
 
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
@@ -35,7 +34,7 @@ const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
 const disabledCell = tableWrapper.findBodyCell(4, 4);
 const disabledCell$ = disabledCell.toSelector();
-const disabledCellLiveRegion$ = new LiveRegionWrapper(`.${LiveRegionWrapper.rootSelector}`).toSelector();
+const disabledCellLiveRegion$ = createWrapper().findLiveRegion().toSelector();
 
 interface TestOptions {
   enableKeyboardNavigation?: boolean;

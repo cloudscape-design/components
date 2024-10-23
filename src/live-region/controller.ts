@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 /**
  * The controller that manages a single live region container. It has a timer
@@ -30,10 +31,9 @@ export class LiveRegionController {
     public readonly delay = LiveRegionController.defaultDelay
   ) {
     this._element = document.createElement('div');
-    this._element.className = styles.announcer;
+    this._element.className = `${styles.announcer} ${testUtilStyles.announcer}`;
     this._element.setAttribute('aria-live', this.politeness);
     this._element.setAttribute('aria-atomic', 'true');
-    this._element.setAttribute('data-awsui-live-announcer', 'true');
     document.body.appendChild(this._element);
   }
 
