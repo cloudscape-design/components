@@ -20,7 +20,9 @@ function useSetGlobalBreadcrumbsImplementation({
     if (isInToolbar || __disableGlobalization) {
       return;
     }
-    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, () => setRegistered(true));
+    const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered =>
+      setRegistered(isRegistered ?? true)
+    );
     registrationRef.current = registration;
 
     return () => {
