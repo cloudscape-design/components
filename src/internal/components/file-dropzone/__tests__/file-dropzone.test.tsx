@@ -3,7 +3,11 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import InternalFileDropzone, { useFileDragging } from '../../../../../lib/components/internal/components/file-dropzone';
+import Button from '../../../../../lib/components/button';
+import InternalFileDropzone, {
+  FileDropzoneProps,
+  useFileDragging,
+} from '../../../../../lib/components/internal/components/file-dropzone';
 import FileDropzoneWrapper from '../../../../../lib/components/test-utils/dom/internal/file-dropzone';
 
 import selectors from '../../../../../lib/components/internal/components/file-dropzone/styles.selectors.js';
@@ -18,6 +22,12 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
 });
 
 const onChange = jest.fn();
+
+function renderFileDropzone(props: Partial<FileDropzoneProps>) {
+  const renderResult = render(<InternalFileDropzone onChange={onChange}>{props.children}</InternalFileDropzone>);
+  const element = renderResult.container.querySelector<HTMLElement>(`.${FileDropzoneWrapper.rootSelector}`)!;
+  return new FileDropzoneWrapper(element);
+}
 
 function createDragEvent(type: string, files = [file1, file2]) {
   const event = new CustomEvent(type, { bubbles: true });
@@ -82,13 +92,23 @@ describe('File upload dropzone', () => {
   });
 
   test('dropzone renders provided children', () => {
-    render(<InternalFileDropzone onChange={jest.fn()}>Drop files here</InternalFileDropzone>);
+    renderFileDropzone({ children: 'Drop files here' });
     expect(screen.findByText('Drop files here')).toBeDefined();
   });
 
+  test('dropzone correctly renders buttons as children', () => {
+    const buttonOnClick = jest.fn();
+    const wrapper = renderFileDropzone({ children: <Button onClick={buttonOnClick}>test</Button> });
+    const button = wrapper.findContent().findButton()!.getElement();
+
+    button.click();
+
+    expect(button).toHaveTextContent('test');
+    expect(buttonOnClick).toHaveBeenCalledTimes(1);
+  });
+
   test('dropzone is hovered on dragover and un-hovered on dragleave', () => {
-    const { container } = render(<InternalFileDropzone onChange={onChange}>Drop files here</InternalFileDropzone>);
-    const dropzone = container.querySelector(`.${FileDropzoneWrapper.rootSelector}`)!;
+    const dropzone = renderFileDropzone({ children: 'Drop files here' }).getElement();
 
     expect(dropzone).not.toHaveClass(selectors.hovered);
 
@@ -102,8 +122,7 @@ describe('File upload dropzone', () => {
   });
 
   test('dropzone fires onChange on drop', () => {
-    const { container } = render(<InternalFileDropzone onChange={onChange}>Drop files here</InternalFileDropzone>);
-    const dropzone = container.querySelector(`.${FileDropzoneWrapper.rootSelector}`)!;
+    const dropzone = renderFileDropzone({ children: 'Drop files here' }).getElement();
 
     fireEvent(dropzone, createDragEvent('drop'));
 
