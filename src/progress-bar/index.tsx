@@ -6,13 +6,13 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { getBaseProps } from '../internal/base-component';
-import InternalLiveRegion from '../internal/components/live-region/internal';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { joinStrings } from '../internal/utils/strings';
 import { throttle } from '../internal/utils/throttle';
+import InternalLiveRegion from '../live-region/internal';
 import { ProgressBarProps } from './interfaces';
 import { Progress, ResultState, SmallText } from './internal';
 

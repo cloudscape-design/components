@@ -4,10 +4,10 @@ import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react'
 import clsx from 'clsx';
 
 import { useInternalI18n } from '../../../i18n/context';
+import InternalLiveRegion from '../../../live-region/internal';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { KeyCode } from '../../keycode';
 import { Offset } from '../interfaces';
-import InternalLiveRegion from '../live-region/internal';
 import ApplicationController, { ApplicationRef } from './application-controller';
 import FocusOutline from './focus-outline';
 

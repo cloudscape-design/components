@@ -4,13 +4,14 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../../base-component';
-import { InternalBaseComponentProps } from '../../hooks/use-base-component';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
+import { getBaseProps } from '../internal/base-component';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { LiveRegionController } from './controller';
 import { LiveRegionProps } from './interfaces';
 
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 export interface InternalLiveRegionProps extends InternalBaseComponentProps, LiveRegionProps {
   /**
@@ -47,7 +48,6 @@ export default React.forwardRef(function InternalLiveRegion(
     tagName: TagName = 'div',
     delay,
     sources,
-    message,
     children,
     __internalRootRef,
     className,
@@ -84,13 +84,12 @@ export default React.forwardRef(function InternalLiveRegion(
   }, [assertive]);
 
   const getContent = () => {
-    return sources
-      ? getSourceContent(sources)
-      : message
-        ? message
-        : childrenRef.current
-          ? extractTextContent(childrenRef.current)
-          : undefined;
+    if (sources) {
+      return getSourceContent(sources);
+    }
+    if (childrenRef.current) {
+      return extractTextContent(childrenRef.current);
+    }
   };
 
   // Call the controller on every render. The controller will deduplicate the
@@ -106,7 +105,12 @@ export default React.forwardRef(function InternalLiveRegion(
   }));
 
   return (
-    <TagName ref={mergedRef} {...baseProps} className={clsx(styles.root, className)} hidden={hidden}>
+    <TagName
+      ref={mergedRef}
+      {...baseProps}
+      className={clsx(styles.root, testUtilStyles.root, className)}
+      hidden={hidden}
+    >
       {children}
     </TagName>
   );

@@ -7,7 +7,7 @@ import { disableMotion } from '@cloudscape-design/global-styles';
 
 import Button from '../../../lib/components/button';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import { LiveRegionController } from '../../../lib/components/internal/components/live-region/controller.js';
+import { LiveRegionController } from '../../../lib/components/live-region/controller.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { mockInnerText } from '../../internal/analytics/__tests__/mocks';
 import { createFlashbarWrapper, findList, testFlashDismissal } from './common';

@@ -10,7 +10,7 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
-import InternalLiveRegion from '../internal/components/live-region/internal';
+import InternalLiveRegion from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
 import { DateRangePickerProps } from './interfaces';

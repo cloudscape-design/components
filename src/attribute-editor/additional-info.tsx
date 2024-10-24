@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalLiveRegion from '../internal/components/live-region/internal';
+import InternalLiveRegion from '../live-region/internal';
 
 import styles from './styles.css.js';
 

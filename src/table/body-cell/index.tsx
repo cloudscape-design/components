@@ -5,9 +5,9 @@ import clsx from 'clsx';
 
 import { useInternalI18n } from '../../i18n/context';
 import Icon from '../../icon/internal';
-import InternalLiveRegion from '../../internal/components/live-region/internal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
 import { usePrevious } from '../../internal/hooks/use-previous';
+import InternalLiveRegion from '../../live-region/internal';
 import { TableProps } from '../interfaces';
 import { DisabledInlineEditor } from './disabled-inline-editor';
 import { InlineEditor } from './inline-editor';
@@ -130,10 +130,9 @@ function TableCellEditable<ItemType>({
               >
                 <Icon name="status-positive" variant="success" />
               </span>
-              <InternalLiveRegion
-                tagName="span"
-                message={i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
-              />
+              <InternalLiveRegion tagName="span" hidden={true}>
+                {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}
+              </InternalLiveRegion>
             </>
           )}
 

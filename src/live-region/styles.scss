@@ -3,7 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles' as styles;
+@use '../internal/styles' as styles;
 
 .root {
   display: contents;
