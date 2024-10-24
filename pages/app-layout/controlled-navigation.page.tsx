@@ -18,8 +18,9 @@ type ControlledNavigationDemoContext = React.Context<
   AppContextType<{
     navigationOpen: AppLayoutProps['navigationOpen'];
     navigationHide: AppLayoutProps['navigationHide'];
-    navOpenOverrideValue?: boolean | null;
-    applyNavOpenOverride: boolean;
+    navOpenOverrideValue?: boolean;
+    navHideOverrideValue?: boolean;
+    applyNavOverrides: boolean;
   }>
 >;
 
@@ -28,20 +29,22 @@ export default function () {
     urlParams: {
       navigationOpen = true,
       navigationHide = false,
-      navOpenOverrideValue = null,
-      applyNavOpenOverride = false,
+      navOpenOverrideValue = false,
+      navHideOverrideValue = false,
+      applyNavOverrides = false,
     },
     setUrlParams,
   } = useContext(AppContext as ControlledNavigationDemoContext);
   const [resetNeeded, setResetNeeded] = useState(false);
   const [navigationEmpty, setNavigationEmpty] = useState(false);
-  const [resolvedNavOpen, setResolvedNavOpen] = useState(navigationOpen);
+  const resolvedNavOpen = applyNavOverrides ? navOpenOverrideValue : navigationOpen;
+  const resolvedNavHide = applyNavOverrides ? navHideOverrideValue : navigationHide;
 
   const Content = (
     <>
       <div style={{ marginBottom: '1rem' }}>
         <Header variant="h1" description="Basic demo with split panel">
-          AppLayout where NavigationHide is {navigationHide.toString()}
+          AppLayout where NavigationHide resolves to {resolvedNavHide.toString()}
         </Header>
       </div>
 
@@ -70,30 +73,36 @@ export default function () {
           </Toggle>
         </SpaceBetween>
         <SpaceBetween size="s" direction="horizontal">
-          <Checkbox
-            onChange={e => setUrlParams({ applyNavOpenOverride: e.detail.checked })}
-            checked={applyNavOpenOverride}
-          >
+          <Checkbox onChange={e => setUrlParams({ applyNavOverrides: e.detail.checked })} checked={applyNavOverrides}>
             Apply override
           </Checkbox>
           <Toggle
             id="override-nav-open"
             checked={!!navOpenOverrideValue}
-            disabled={!applyNavOpenOverride}
+            disabled={!applyNavOverrides}
             onChange={e => setUrlParams({ navOpenOverrideValue: e.detail.checked })}
           >
-            override Navigation Open
+            Navigation Open Override
           </Toggle>
-          <Button
-            id="reset-button"
-            onClick={() => setResetNeeded(true)}
-            disabled={resetNeeded}
-            loading={resetNeeded}
-            data-testid="reset-app-layout"
+          <Toggle
+            id="override-nav-open"
+            checked={!!navHideOverrideValue}
+            disabled={!applyNavOverrides}
+            onChange={e => setUrlParams({ navHideOverrideValue: e.detail.checked })}
           >
-            Reset - Force rerender
-          </Button>
+            Navigation Hide Override
+          </Toggle>
         </SpaceBetween>
+        <Button
+          id="reset-button"
+          onClick={() => setResetNeeded(true)}
+          disabled={resetNeeded}
+          loading={resetNeeded}
+          data-testid="reset-app-layout"
+        >
+          Reset - Force rerender
+        </Button>
+
         <Containers />
       </SpaceBetween>
     </>
@@ -101,18 +110,12 @@ export default function () {
 
   useEffect(() => {
     if (resetNeeded) {
-      setUrlParams({ applyNavOpenOverride: false, navOpenOverrideValue: null });
+      setUrlParams({ applyNavOverrides: false, navOpenOverrideValue: false, navHideOverrideValue: false });
       setTimeout(() => {
         setResetNeeded(false);
       }, 200);
     }
   }, [resetNeeded, setUrlParams]);
-
-  useEffect(() => {
-    if (applyNavOpenOverride && navOpenOverrideValue !== null) {
-      setResolvedNavOpen(navOpenOverrideValue);
-    }
-  }, [applyNavOpenOverride, navOpenOverrideValue]);
 
   return (
     <ScreenshotArea gutters={false}>
@@ -122,7 +125,7 @@ export default function () {
         <AppLayout
           data-testid="main-layout"
           ariaLabels={labels}
-          navigationHide={navigationHide}
+          navigationHide={resolvedNavHide}
           navigation={navigationEmpty ? <></> : <Navigation />}
           navigationOpen={resolvedNavOpen}
           onNavigationChange={e => setUrlParams({ navigationOpen: e.detail.open })}
