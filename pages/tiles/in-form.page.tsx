@@ -2,7 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Button, Checkbox, Container, Form, FormField, Header, Link, SpaceBetween, Tiles } from '~components';
+import {
+  Button,
+  Container,
+  Form,
+  FormField,
+  Header,
+  Link,
+  RadioGroup,
+  RadioGroupProps,
+  SpaceBetween,
+  Tiles,
+} from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -29,6 +40,20 @@ const TILE_OPTIONS = [
   },
 ];
 
+const items: RadioGroupProps.RadioButtonDefinition[] = [
+  { value: 'none', label: 'None' },
+  {
+    value: 'top-margin',
+    label: 'Add spacing to top',
+    description: 'Keep tile spacing as is, add more space to the top of the columns',
+  },
+  {
+    value: 'tile-padding',
+    label: 'Shrink tile spacing',
+    description: 'Move tiles closer together, while still adding some spacing to the top of the column',
+  },
+];
+
 function FormPanel({
   selectedTile,
   onTileSelect,
@@ -36,21 +61,13 @@ function FormPanel({
   selectedTile: string;
   onTileSelect: (newSelectedTile: string) => void;
 }) {
-  const [topMargin, setTopMargin] = useState<boolean>(false);
-  const [toAllTiles, setToAllTiles] = useState<boolean>(false);
+  const [appliedFix, setAppliedFix] = useState('none');
 
   return (
     <Container header={<Header>Selectable tiles in form example</Header>}>
       <SpaceBetween size="l">
-        <FormField label="Column top">
-          <Checkbox checked={topMargin} onChange={({ detail: { checked } }) => setTopMargin(checked)}>
-            Set container top margin to 20px
-          </Checkbox>
-        </FormField>
-        <FormField label="All tiles">
-          <Checkbox checked={toAllTiles} onChange={({ detail: { checked } }) => setToAllTiles(checked)}>
-            Set custom styling to all tiles
-          </Checkbox>
+        <FormField label="Potential solution">
+          <RadioGroup value={appliedFix} items={items} onChange={({ detail }) => setAppliedFix(detail.value)} />
         </FormField>
         <FormField
           label="Available tiles"
@@ -62,8 +79,8 @@ function FormPanel({
           stretch={true}
         >
           <Tiles
-            toAllTiles={toAllTiles}
-            toTopOfColumn={topMargin}
+            toAllTiles={appliedFix === 'tile-padding'}
+            toTopOfColumn={appliedFix === 'top-margin'}
             value={selectedTile}
             onChange={({ detail }) => onTileSelect(detail.value)}
             items={TILE_OPTIONS}
