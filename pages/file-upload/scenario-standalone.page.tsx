@@ -45,6 +45,7 @@ export default function FileUploadScenarioStandalone() {
           description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
         >
           <FileUpload
+            fileTokenAlignment="horizontal"
             ref={contractsRef}
             multiple={acceptMultiple}
             tokenLimit={3}
