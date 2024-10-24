@@ -50,25 +50,13 @@ export default function () {
 
       <SpaceBetween size="l">
         <SpaceBetween size="s" direction="horizontal">
-          <Toggle
-            id="control-navigation-open"
-            checked={navigationOpen}
-            onChange={e => setUrlParams({ navigationOpen: e.detail.checked })}
-          >
+          <Toggle checked={navigationOpen} onChange={e => setUrlParams({ navigationOpen: e.detail.checked })}>
             Navigation Open
           </Toggle>
-          <Toggle
-            id="control-navigation-hide"
-            checked={navigationHide}
-            onChange={e => setUrlParams({ navigationHide: e.detail.checked })}
-          >
+          <Toggle checked={navigationHide} onChange={e => setUrlParams({ navigationHide: e.detail.checked })}>
             Navigation Hide
           </Toggle>
-          <Toggle
-            id="control-navigation-empty"
-            checked={navigationEmpty}
-            onChange={e => setNavigationEmpty(e.detail.checked)}
-          >
+          <Toggle checked={navigationEmpty} onChange={e => setNavigationEmpty(e.detail.checked)}>
             Navigation Empty
           </Toggle>
         </SpaceBetween>
@@ -77,7 +65,6 @@ export default function () {
             Apply override
           </Checkbox>
           <Toggle
-            id="override-nav-open"
             checked={!!navOpenOverrideValue}
             disabled={!applyNavOverrides}
             onChange={e => setUrlParams({ navOpenOverrideValue: e.detail.checked })}
@@ -85,7 +72,6 @@ export default function () {
             Navigation Open Override
           </Toggle>
           <Toggle
-            id="override-nav-open"
             checked={!!navHideOverrideValue}
             disabled={!applyNavOverrides}
             onChange={e => setUrlParams({ navHideOverrideValue: e.detail.checked })}
@@ -94,7 +80,6 @@ export default function () {
           </Toggle>
         </SpaceBetween>
         <Button
-          id="reset-button"
           onClick={() => setResetNeeded(true)}
           disabled={resetNeeded}
           loading={resetNeeded}
