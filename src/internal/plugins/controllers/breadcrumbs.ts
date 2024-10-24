@@ -3,6 +3,7 @@
 import debounce from '../../debounce';
 
 type ChangeCallback<T> = (props: T | null) => void;
+type RegistrationCallback = (isRegistered: boolean) => void;
 
 export interface BreadcrumbsGlobalRegistration<T> {
   update(props: T): void;
@@ -11,18 +12,18 @@ export interface BreadcrumbsGlobalRegistration<T> {
 
 export interface BreadcrumbsApiInternal<T> {
   registerAppLayout: (changeCallback: ChangeCallback<T>) => (() => void) | void;
-  registerBreadcrumbs: (props: T, onRegistered: () => void) => BreadcrumbsGlobalRegistration<T>;
+  registerBreadcrumbs: (props: T, onRegistered: RegistrationCallback) => BreadcrumbsGlobalRegistration<T>;
   getStateForTesting: () => {
     appLayoutUpdateCallback: ChangeCallback<T> | null;
     breadcrumbInstances: Array<{ props: T }>;
-    breadcrumbRegistrations: Array<() => void>;
+    breadcrumbRegistrations: Array<RegistrationCallback>;
   };
 }
 
 export class BreadcrumbsController<T> {
   #appLayoutUpdateCallback: ChangeCallback<T> | null = null;
   #breadcrumbInstances: Array<{ props: T }> = [];
-  #breadcrumbRegistrations: Array<() => void> = [];
+  #breadcrumbRegistrations: Array<RegistrationCallback> = [];
 
   #notifyAppLayout = debounce(() => {
     if (!this.#appLayoutUpdateCallback) {
@@ -33,10 +34,7 @@ export class BreadcrumbsController<T> {
   }, 0);
 
   #notifyBreadcrumbs = debounce(() => {
-    if (!this.#appLayoutUpdateCallback) {
-      return;
-    }
-    this.#breadcrumbRegistrations.forEach(listener => listener());
+    this.#breadcrumbRegistrations.forEach(listener => listener(!!this.#appLayoutUpdateCallback));
   }, 0);
 
   registerAppLayout = (changeCallback: ChangeCallback<T>) => {
@@ -47,10 +45,11 @@ export class BreadcrumbsController<T> {
     this.#notifyBreadcrumbs();
     return () => {
       this.#appLayoutUpdateCallback = null;
+      this.#notifyBreadcrumbs();
     };
   };
 
-  registerBreadcrumbs = (props: T, onRegistered: () => void): BreadcrumbsGlobalRegistration<T> => {
+  registerBreadcrumbs = (props: T, onRegistered: RegistrationCallback): BreadcrumbsGlobalRegistration<T> => {
     const instance = { props: props };
     this.#breadcrumbInstances.push(instance);
     this.#breadcrumbRegistrations.push(onRegistered);
