@@ -8,6 +8,7 @@ import { FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import DismissButton from './dismiss-button';
+import { TokenGroupProps } from './interfaces';
 
 import styles from './styles.css.js';
 
@@ -22,6 +23,8 @@ interface TokenProps {
   errorIconAriaLabel?: string;
   warningText?: React.ReactNode;
   warningIconAriaLabel?: string;
+  alignment?: TokenGroupProps.Alignment;
+  groupContainsImage?: boolean;
   className?: string;
 }
 
@@ -36,6 +39,8 @@ export function Token({
   warningText,
   errorIconAriaLabel,
   warningIconAriaLabel,
+  alignment,
+  groupContainsImage,
   ...restProps
 }: TokenProps) {
   const errorId = useUniqueId('error');
@@ -47,7 +52,9 @@ export function Token({
   return (
     <div
       {...baseProps}
-      className={clsx(styles.token, baseProps.className)}
+      className={clsx(styles.token, baseProps.className, {
+        [styles['token-contains-image']]: groupContainsImage,
+      })}
       role="group"
       aria-label={ariaLabel}
       aria-describedby={errorText ? errorId : warningText ? warningId : undefined}
@@ -59,7 +66,8 @@ export function Token({
           disabled && styles['token-box-disabled'],
           readOnly && styles['token-box-readonly'],
           errorText && styles['token-box-error'],
-          showWarning && styles['token-box-warning']
+          showWarning && styles['token-box-warning'],
+          alignment === 'horizontal' && styles.horizontal
         )}
       >
         {children}
