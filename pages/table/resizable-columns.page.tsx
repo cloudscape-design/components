@@ -31,12 +31,17 @@ interface Item {
   state: string;
 }
 
-const columnsConfig: TableProps.ColumnDefinition<Item>[] = [
+interface ColumnDefinition extends TableProps.ColumnDefinition<Item> {
+  percentageWidth?: string;
+}
+
+const columnsConfig: ColumnDefinition[] = [
   {
     id: 'name',
     header: 'Name',
     cell: item => <Link href={`#${item.id}`}>{item.text}</Link>,
     width: 200,
+    percentageWidth: '20%',
   },
   {
     id: 'region',
@@ -50,6 +55,7 @@ const columnsConfig: TableProps.ColumnDefinition<Item>[] = [
     id: 'description',
     header: 'Description',
     minWidth: 100,
+    percentageWidth: '30%',
     cell: item => item.description,
   },
   {
@@ -102,6 +108,8 @@ type PageContext = React.Context<
     withColumnIds?: boolean;
     withSelection?: boolean;
     enableKeyboardNavigation?: boolean;
+    percentageWidths?: boolean;
+    columnDisplay?: string;
   }>
 >;
 
@@ -115,17 +123,16 @@ export default function App() {
     withColumnIds = true,
     withSelection = false,
     enableKeyboardNavigation = false,
+    percentageWidths = false,
+    columnDisplay: columnDisplayStr = 'name,region,description,state',
   } = urlParams;
 
   const [renderKey, setRenderKey] = useState(0);
   const [columns, setColumns] = useState(columnsConfig);
-  const [columnDisplay, setColumnDisplay] = useState([
-    { id: 'name', visible: true },
-    { id: 'region', visible: true },
-    { id: 'description', visible: true },
-    { id: 'state', visible: true },
-    { id: 'extra', visible: false },
-  ]);
+  const columnDisplay = ['name', 'region', 'description', 'state', 'extra'].map(id => ({
+    id,
+    visible: columnDisplayStr.split(',').includes(id),
+  }));
 
   const [sorting, setSorting] = useState<TableProps.SortingState<any>>();
 
@@ -186,6 +193,12 @@ export default function App() {
             >
               Keyboard navigation
             </Checkbox>
+            <Checkbox
+              checked={percentageWidths}
+              onChange={event => setUrlParams({ percentageWidths: event.detail.checked })}
+            >
+              Percentage widths
+            </Checkbox>
           </div>
           <div>
             {columnsConfig.map(column => (
@@ -193,11 +206,12 @@ export default function App() {
                 key={column.id}
                 id={`toggle-${column.id}`}
                 checked={!!columnDisplay.find(({ id }) => id === column.id)?.visible}
-                onChange={event =>
-                  setColumnDisplay(visible =>
-                    visible.map(item => (item.id === column.id ? { ...item, visible: event.detail.checked } : item))
-                  )
-                }
+                onChange={event => {
+                  const newColumnDisplay = columnDisplay
+                    .filter(({ id, visible }) => (id === column.id ? event.detail.checked : visible))
+                    .map(({ id }) => id);
+                  setUrlParams({ columnDisplay: newColumnDisplay.join(',') });
+                }}
               >
                 {column.header}
               </Checkbox>
@@ -215,7 +229,9 @@ export default function App() {
           key={renderKey}
           header={<Header>Simple table</Header>}
           stickyHeader={stickyHeader}
-          columnDefinitions={columns.map(col => (withColumnIds ? col : { ...col, id: undefined }))}
+          columnDefinitions={columns
+            .map(col => (withColumnIds ? col : { ...col, id: undefined }))
+            .map(col => ({ ...col, width: percentageWidths ? col.percentageWidth ?? col.width : col.width }))}
           resizableColumns={resizableColumns}
           columnDisplay={withColumnIds ? columnDisplay : undefined}
           selectionType={withSelection ? 'single' : undefined}
