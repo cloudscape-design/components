@@ -37,7 +37,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusTabsFocusRing: '20px',
   borderRadiusTiles: '{borderRadiusInput}',
   borderRadiusToken: '{borderRadiusInput}',
-  borderRadiusChatBubble: '2px',
+  borderRadiusChatBubble: '8px',
   borderRadiusTutorialPanelItem: '{borderRadiusInput}',
   borderTableStickyWidth: '1px',
   borderLinkFocusRingOutline: '0',
