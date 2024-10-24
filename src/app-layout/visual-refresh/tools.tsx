@@ -77,7 +77,6 @@ export default function Tools({ children }: ToolsProps) {
           className={clsx(styles['tools-container'], {
             [styles['disable-body-scroll']]: disableBodyScroll,
             [styles.unfocusable]: isUnfocusable,
-            [testutilStyles['drawer-closed']]: !isToolsOpen,
           })}
           style={{
             [customCssProps.toolsAnimationStartingOpacity]: `${hasSplitPanel && isSplitPanelOpen ? 1 : 0}`,
@@ -102,6 +101,7 @@ export default function Tools({ children }: ToolsProps) {
                   [styles.animating]: state === 'entering',
                   [styles['has-tools-form-persistence']]: hasToolsFormPersistence,
                   [styles['is-tools-open']]: isToolsOpen,
+                  [testutilStyles['drawer-closed']]: !isToolsOpen,
                 },
                 testutilStyles.tools
               )}

@@ -6,7 +6,7 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import { describeEachAppLayout, isDrawerClosed, testDrawer } from './utils';
+import { describeEachAppLayout, testDrawer } from './utils';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
@@ -68,11 +68,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         }
       />
     );
-    expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(true);
+    expect(firstLayout.findOpenNavigationPanel()).toBeFalsy();
     expect(secondLayout.findNavigation()).toBeFalsy();
 
     firstLayout.findNavigationToggle().click();
-    expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(false);
+    expect(firstLayout.findOpenNavigationPanel()).toBeTruthy();
   });
 
   test('merges tools from two instances', async () => {
@@ -84,12 +84,12 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         content={<AppLayout data-testid="second" navigationHide={true} tools="testing tools" />}
       />
     );
-    expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
-    expect(isDrawerClosed(secondLayout.findTools())).toEqual(true);
+    expect(firstLayout.findOpenToolsPanel()).toBeFalsy();
+    expect(secondLayout.findOpenToolsPanel()).toBeFalsy();
     expect(createWrapper().findAllByClassName(testUtilStyles.tools)).toHaveLength(1);
 
     firstLayout.findToolsToggle().click();
-    expect(isDrawerClosed(secondLayout.findTools())).toEqual(false);
+    expect(secondLayout.findOpenToolsPanel()).toBeTruthy();
   });
 
   test('cleans and restores the toolbar buttons when inner app layout is unmounted and mounted again', async () => {
@@ -333,11 +333,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(console.warn).toHaveBeenCalledWith(
         expect.stringContaining('Another app layout instance on this page already defines navigation property')
       );
-      expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(true);
-      expect(isDrawerClosed(secondLayout.findNavigation())).toEqual(true);
+      expect(firstLayout.findOpenNavigationPanel()).toBeFalsy();
+      expect(secondLayout.findOpenNavigationPanel()).toBeFalsy();
       firstLayout.findNavigationToggle().click();
-      expect(isDrawerClosed(firstLayout.findNavigation())).toEqual(false);
-      expect(isDrawerClosed(secondLayout.findNavigation())).toEqual(true);
+      expect(firstLayout.findOpenNavigationPanel()).toBeTruthy();
+      expect(secondLayout.findOpenNavigationPanel()).toBeFalsy();
     });
 
     test('deduplicates tools and drawers in a single entity', async () => {
@@ -353,10 +353,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         expect.stringContaining('Another app layout instance on this page already defines tools or drawers property')
       );
       expect(firstLayout.findDrawersTriggers()).toHaveLength(0);
-      expect(isDrawerClosed(firstLayout.findTools())).toEqual(true);
+      expect(firstLayout.findOpenToolsPanel()).toBeFalsy();
 
       firstLayout.findToolsToggle().click();
-      expect(isDrawerClosed(firstLayout.findTools())).toEqual(false);
+      expect(firstLayout.findOpenToolsPanel()).toBeTruthy();
     });
   });
 });

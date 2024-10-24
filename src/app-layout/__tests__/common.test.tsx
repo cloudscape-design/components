@@ -3,7 +3,7 @@
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, isDrawerClosed, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
+import { describeEachAppLayout, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
@@ -46,6 +46,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
       expectedCallsOnMobileToggle: 2,
       findLandmarks: (wrapper: AppLayoutWrapper) => wrapper.findAll('nav'),
       findElement: (wrapper: AppLayoutWrapper) => wrapper.findNavigation(),
+      findOpenElement: (wrapper: AppLayoutWrapper) => wrapper.findOpenNavigationPanel(),
       findToggle: (wrapper: AppLayoutWrapper) => wrapper.findNavigationToggle(),
       findClose: (wrapper: AppLayoutWrapper) => wrapper.findNavigationClose(),
     },
@@ -56,6 +57,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
       expectedCallsOnMobileToggle: 1,
       findLandmarks: (wrapper: AppLayoutWrapper) => wrapper.findAll('aside'),
       findElement: (wrapper: AppLayoutWrapper) => wrapper.findTools(),
+      findOpenElement: (wrapper: AppLayoutWrapper) => wrapper.findOpenToolsPanel(),
       findToggle: (wrapper: AppLayoutWrapper) => wrapper.findToolsToggle(),
       findClose: (wrapper: AppLayoutWrapper) => wrapper.findToolsClose(),
     },
@@ -66,6 +68,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
       handler,
       expectedCallsOnMobileToggle,
       findElement,
+      findOpenElement,
       findLandmarks,
       findToggle,
       findClose,
@@ -220,13 +223,13 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
         test('Opens and closes drawer in uncontrolled mode', () => {
           // use content type with initial closed state for all drawers
           const { wrapper } = renderComponent(<AppLayout contentType="form" />);
-          expect(isDrawerClosed(findElement(wrapper))).toBe(true);
+          expect(findOpenElement(wrapper)).toBeFalsy();
 
           findToggle(wrapper).click();
-          expect(isDrawerClosed(findElement(wrapper))).toBe(false);
+          expect(findOpenElement(wrapper)).toBeTruthy();
 
           findClose(wrapper).click();
-          expect(isDrawerClosed(findElement(wrapper))).toBe(true);
+          expect(findOpenElement(wrapper)).toBeFalsy();
         });
 
         test('Moves focus between open and close buttons', () => {
@@ -244,6 +247,7 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
           const props = { [hideProp]: true };
           const { wrapper } = renderComponent(<AppLayout {...props} />);
           expect(findElement(wrapper)).toBeFalsy();
+          expect(() => findOpenElement(wrapper)).toThrow(/App Layout does not have .* content/);
           expect(findLandmarks(wrapper)).toHaveLength(0);
         });
       });

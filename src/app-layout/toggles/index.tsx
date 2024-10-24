@@ -9,6 +9,7 @@ import InternalIcon from '../../icon/internal';
 import { AppLayoutProps } from '../interfaces';
 import { AppLayoutButtonProps } from './interfaces';
 
+import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export const togglesConfig = {
@@ -51,7 +52,9 @@ export const ToggleButton = React.forwardRef(
     return (
       <button
         ref={ref as React.Ref<HTMLButtonElement>}
-        className={clsx(className, styles['toggle-button'])}
+        className={clsx(className, styles['toggle-button'], {
+          [testutilStyles['drawers-trigger-with-badge']]: badge,
+        })}
         aria-label={ariaLabel}
         type="button"
         onClick={onClick}

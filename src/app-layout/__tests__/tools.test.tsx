@@ -3,22 +3,22 @@
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { act, waitFor } from '@testing-library/react';
-import { describeEachAppLayout, renderComponent, isDrawerClosed } from './utils';
+import { describeEachAppLayout, renderComponent } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 
 describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, () => {
   test('opens tools drawer', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-    expect(isDrawerClosed(wrapper.findTools())).toBe(true);
+    expect(wrapper.findOpenToolsPanel()).toBeFalsy();
     act(() => ref!.openTools());
-    expect(isDrawerClosed(wrapper.findTools())).toBe(false);
+    expect(wrapper.findOpenToolsPanel()).toBeTruthy();
   });
 
   test('focuses tools close button', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} toolsOpen={true} />);
-    expect(isDrawerClosed(wrapper.findTools())).toBe(false);
+    expect(wrapper.findOpenToolsPanel()).toBeTruthy();
     act(() => ref!.focusToolsClose());
     expect(wrapper.findToolsClose().getElement()).toHaveFocus();
   });
