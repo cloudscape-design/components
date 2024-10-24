@@ -67,6 +67,9 @@ export interface TilesProps extends BaseComponentProps, FormFieldControlProps {
    * being included in a form submission. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  toTopOfColumn?: boolean;
+  toAllTiles?: boolean;
 }
 
 export namespace TilesProps {

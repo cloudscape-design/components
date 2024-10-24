@@ -36,6 +36,9 @@ const InternalTiles = React.forwardRef(
       onChange,
       readOnly,
       __internalRootRef = null,
+      //toto remove these and their application
+      toAllTiles,
+      toTopOfColumn,
       ...rest
     }: InternalTilesProps,
     ref: React.Ref<TilesProps.Ref>
@@ -63,13 +66,19 @@ const InternalTiles = React.forwardRef(
         className={clsx(baseProps.className, styles.root)}
         ref={mergedRef}
       >
-        <div className={clsx(styles.columns, styles[`column-${columnCount}`])}>
+        <div
+          className={clsx(styles.columns, styles[`column-${columnCount}`], {
+            [styles['apply-column-fix']]: toTopOfColumn,
+            [styles['apply-tile-fix']]: toAllTiles,
+          })}
+        >
           {items &&
             items.map((item, index) => (
               <Tile
                 ref={index === tileRefIndex ? tileRef : undefined}
                 key={item.value}
                 item={item}
+                hasFix={toAllTiles}
                 selected={item.value === value}
                 name={name || generatedName}
                 breakpoint={breakpoint}
