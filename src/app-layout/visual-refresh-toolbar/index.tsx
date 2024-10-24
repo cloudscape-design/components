@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useMemo, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -226,16 +226,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
     //navigation must be null if hidden so toolbar knows to hide the toggle button
-    const resolvedNavigation = useMemo(() => {
-      if (navigationHide) {
-        return null;
-      }
-      if (navigation) {
-        return navigation;
-      }
-      return <></>;
-    }, [navigationHide, navigation]);
-
+    const resolvedNavigation = navigationHide ? null : navigation || <></>;
     //navigation must not be open if navigationHide is true
     const resolvedNavigationOpen = !!resolvedNavigation && navigationOpen;
     const {
@@ -407,11 +398,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         return;
       }
 
-      const activeNavigationWidth = resolvedNavigationOpen ? navigationWidth : 0;
+      const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
       const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
       const hasHorizontalScroll = scrollWidth > placement.inlineSize;
       if (hasHorizontalScroll) {
-        if (resolvedNavigationOpen) {
+        if (!navigationHide && navigationOpen) {
           onNavigationToggle(false);
           return;
         }
@@ -422,8 +413,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       totalActiveDrawersMinSize,
       closeFirstDrawer,
       isMobile,
-      resolvedNavigation,
-      resolvedNavigationOpen,
+      navigationHide,
+      navigationOpen,
       navigationWidth,
       onNavigationToggle,
       placement.inlineSize,
