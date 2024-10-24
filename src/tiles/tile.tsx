@@ -22,11 +22,23 @@ interface TileProps {
   breakpoint: ReturnType<typeof useContainerBreakpoints>[0];
   onChange: TilesProps['onChange'];
   readOnly?: boolean;
+  //todo remove
+  hasFix?: boolean;
 }
 
 export const Tile = React.forwardRef(
   (
-    { item, selected, name, breakpoint, onChange, readOnly, ...rest }: TileProps,
+    {
+      item,
+      selected,
+      name,
+      breakpoint,
+      onChange,
+      readOnly,
+      //todo remove line below
+      hasFix,
+      ...rest
+    }: TileProps,
     forwardedRef: React.Ref<HTMLInputElement>
   ) => {
     const internalRef = useRef<HTMLInputElement>(null);
@@ -43,6 +55,7 @@ export const Tile = React.forwardRef(
           { [styles.disabled]: !!item.disabled },
           { [styles.readonly]: readOnly },
           { [styles.refresh]: isVisualRefresh },
+          { [styles['apply-tile-fix']]: hasFix },
           styles[`breakpoint-${breakpoint}`]
         )}
         data-value={item.value}

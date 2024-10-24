@@ -16769,6 +16769,16 @@ being included in a form submission. A read-only control is still focusable.",
       "type": "boolean",
     },
     {
+      "name": "toAllTiles",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "name": "toTopOfColumn",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Specifies the value of the selected tile.
 If you want to clear the selection, use \`null\`.",
       "name": "value",
