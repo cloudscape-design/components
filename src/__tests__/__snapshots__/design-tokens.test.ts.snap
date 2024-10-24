@@ -23,7 +23,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "8px",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -2462,7 +2462,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "8px",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -4901,7 +4901,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "8px",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -7340,7 +7340,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "8px",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -9779,7 +9779,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "8px",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -12218,7 +12218,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "border-radius-chat-bubble": {
           "$description": "The border radius of chat bubbles.",
-          "$value": "8px",
+          "$value": "2px",
         },
         "border-radius-container": {
           "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
@@ -14657,7 +14657,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     },
     "border-radius-chat-bubble": {
       "$description": "The border radius of chat bubbles.",
-      "$value": "8px",
+      "$value": "2px",
     },
     "border-radius-container": {
       "$description": "The border radius of containers. Also used in container-based components like table, cards, expandable section, and modal.",
