@@ -79,6 +79,15 @@ $gutter: awsui.$space-grid-gutter;
   flex-wrap: wrap;
   margin-block: calc(#{$gutter} / -2);
   margin-inline: calc(#{$gutter} / -2);
+
+  // &.apply-column-fix {
+  //   padding-block-start: awsui.$space-scaled-s;
+  // }
+
+  // &.apply-tile-fix {
+  //   padding-block-start: calc(#{$gutter} / 2);
+  // }
+
   @each $i, $columns-setting in mixins.$column-breakpoint-spans {
     &.column-#{$i} {
       & > .tile-container {
@@ -92,6 +101,10 @@ $gutter: awsui.$space-grid-gutter;
         &.breakpoint-xxs {
           @include make-column(map.get($columns-setting, 'xxs'));
         }
+        // &.apply-tile-fix {
+        //   margin-block: calc(#{$gutter} / 4);
+        //   margin-inline: calc(#{$gutter} / 4);
+        // }
       }
     }
   }

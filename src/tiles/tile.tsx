@@ -22,6 +22,8 @@ interface TileProps {
   breakpoint: ReturnType<typeof useContainerBreakpoints>[0];
   onChange: TilesProps['onChange'];
   readOnly?: boolean;
+  //todo remove
+  hasFix?: boolean;
 }
 
 export const Tile = React.forwardRef(
