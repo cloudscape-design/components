@@ -11,7 +11,7 @@ import { Focusable } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
 interface SharedProps {
-  forceDeduplicationType?: 'primary' | 'secondary';
+  forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
   navigationOpen: boolean;
@@ -74,7 +74,11 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
   const { forceDeduplicationType } = props;
 
   useLayoutEffect(() => {
-    if (!isEnabled) {
+    if (!isEnabled || forceDeduplicationType === 'suspended') {
+      return;
+    }
+    if (forceDeduplicationType === 'off') {
+      setRegistration({ type: 'primary', discoveredProps: [] });
       return;
     }
     return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>

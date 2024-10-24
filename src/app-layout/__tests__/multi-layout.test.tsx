@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 /* eslint-disable simple-import-sort/imports */
-import React from 'react';
+import React, { useState } from 'react';
 import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
@@ -94,7 +94,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
 
   test('cleans and restores the toolbar buttons when inner app layout is unmounted and mounted again', async () => {
     function ConditionalLayoutsDemo() {
-      const [show, setShow] = React.useState(true);
+      const [show, setShow] = useState(true);
       return (
         <AppLayout
           {...defaultAppLayoutProps}
@@ -233,6 +233,82 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findAllToolbars()).toHaveLength(1);
     expect(firstLayout.findNavigationToggle()).toBeTruthy();
     expect(secondLayout.findNavigationToggle()).toBeFalsy();
+  });
+
+  test('allows conditional suspended state', async () => {
+    function ConditionalLayout() {
+      const [suspended, setSuspended] = useState(false);
+
+      return (
+        <>
+          <button data-testid="toggle-suspended" onClick={() => setSuspended(!suspended)}>
+            Toggle suspended
+          </button>
+          <AppLayout
+            {...defaultAppLayoutProps}
+            {...{ __forceDeduplicationType: suspended ? 'suspended' : undefined }}
+            data-testid="second"
+            tools="tools for test"
+          />
+        </>
+      );
+    }
+    const { firstLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        navigationHide={true}
+        toolsHide={true}
+        content={<ConditionalLayout />}
+      />
+    );
+
+    expect(firstLayout.findToolsToggle()).toBeTruthy();
+    expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'false');
+
+    firstLayout.findToolsToggle().click();
+    await waitFor(() => expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'true'));
+
+    createWrapper().find('[data-testid="toggle-suspended"]')!.click();
+    await waitFor(() => expect(firstLayout.findToolsToggle()).toBeFalsy());
+
+    createWrapper().find('[data-testid="toggle-suspended"]')!.click();
+    await waitFor(() => expect(firstLayout.findToolsToggle()).toBeTruthy());
+    expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'true');
+  });
+
+  test('should ignore layout with deduplication disabled', async () => {
+    render(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        navigationHide={true}
+        toolsHide={true}
+        content={
+          <>
+            <AppLayout {...defaultAppLayoutProps} data-testid="second" navigation="deduplicated nav" />
+            <AppLayout
+              {...{ __forceDeduplicationType: 'off' }}
+              {...defaultAppLayoutProps}
+              data-testid="third"
+              navigation="other nav"
+            />
+          </>
+        }
+      />
+    );
+    await delay();
+
+    const firstLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
+    const secondLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
+    const thirdLayout = createWrapper().find('[data-testid="third"]')!.findAppLayout()!;
+    expect(findToolbar(firstLayout)).toBeTruthy();
+    expect(findToolbar(secondLayout)).toBeFalsy();
+    expect(findToolbar(thirdLayout)).toBeTruthy();
+    expect(findAllToolbars()).toHaveLength(2);
+    expect(firstLayout.findNavigationToggle()).toBeTruthy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
+    expect(thirdLayout.findNavigationToggle()).toBeTruthy();
   });
 
   describe('warnings', () => {
