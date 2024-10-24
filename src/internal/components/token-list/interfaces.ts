@@ -13,6 +13,7 @@ export interface TokenListProps<Item> {
   onExpandedClick?: (isExpanded: boolean) => void;
   limitShowFewerAriaLabel?: string;
   limitShowMoreAriaLabel?: string;
+  isGrid?: boolean;
 }
 
 export interface I18nStrings {
