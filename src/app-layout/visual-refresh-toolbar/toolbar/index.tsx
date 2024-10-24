@@ -195,14 +195,16 @@ export function AppLayoutToolbarImplementation({
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
-              {breadcrumbs ||
-                (discoveredBreadcrumbs && (
+              <div className={styles['breadcrumbs-own']}>{breadcrumbs}</div>
+              {discoveredBreadcrumbs && (
+                <div className={styles['breadcrumbs-discovered']}>
                   <BreadcrumbGroupImplementation
                     {...discoveredBreadcrumbs}
                     data-awsui-discovered-breadcrumbs={true}
                     __injectAnalyticsComponentMetadata={true}
                   />
-                ))}
+                </div>
+              )}
             </BreadcrumbsSlotContext.Provider>
           </div>
         )}

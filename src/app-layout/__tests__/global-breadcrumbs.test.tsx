@@ -258,6 +258,37 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     });
   });
 
+  test('renders breadcrumbs locally again after app layout de-registers', async () => {
+    function DestructibleLayout() {
+      const [mounted, setMounted] = useState(true);
+      return mounted ? (
+        <AppLayout
+          content={
+            <button data-testid="unmount" onClick={() => setMounted(false)}>
+              Unmount
+            </button>
+          }
+        />
+      ) : null;
+    }
+
+    await renderAsync(
+      <>
+        <div data-testid="local-breadcrumbs">
+          <BreadcrumbGroup items={defaultBreadcrumbs} />
+        </div>
+
+        <DestructibleLayout />
+      </>
+    );
+    expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.getElement()).toBeEmptyDOMElement();
+
+    wrapper.find('[data-testid="unmount"]')!.click();
+    await waitFor(() => {
+      expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.getElement()).not.toBeEmptyDOMElement();
+    });
+  });
+
   test('allows opt-out from this behavior', async () => {
     render(
       <AppLayout
