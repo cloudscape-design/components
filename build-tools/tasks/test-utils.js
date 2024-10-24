@@ -18,12 +18,54 @@ const configs = {
   dom: {
     defaultExport: `export default function wrapper(root: Element = document.body) { if (document && document.body && !document.body.contains(root)) { console.warn('[AwsUi] [test-utils] provided element is not part of the document body, interactions may work incorrectly')}; return new ElementWrapper(root); }`,
     buildFinderInterface: ({ componentName }) =>
-      `find${componentName}(selector?: string): ${toWrapper(componentName)} | null;`,
+      `
+      /**
+        * Returns the wrapper for the first ${componentName} matching the specific CSS selector.
+        * Returns the first ${componentName} if no CSS selector is specified.
+        *
+        * @param {string} [selector] CSS Selector.
+        * @returns {${toWrapper(componentName)}} of the matching component. Returns \`null\` if no matching component is found.
+        */
+       find${componentName}(selector?: string): ${toWrapper(componentName)} | null;
+       /**
+        * Returns an array of wrappers for all ${componentName} components found inside the current wrapper.
+        *
+        * @returns {Array<${toWrapper(componentName)}>} of the matching components. Returns an empty array if no ${componentName} is found.
+        */
+       findAll${componentName}(): Array<${toWrapper(componentName)}>;
+       /**
+        * Returns the first ${componentName} matching the specified test id.
+        *
+        * @param {string} testId: Test id assigned via data-testid attribute.
+        * @returns ${toWrapper(componentName)} of the matching ${componentName}. Returns \`null\` if no ${componentName} is found.
+        */
+       find${componentName}ByTestId(testId: string): ${toWrapper(componentName)} | null;
+    `,
   },
   selectors: {
     defaultExport: `export default function wrapper(root: string = 'body') { return new ElementWrapper(root); }`,
     buildFinderInterface: ({ componentName }) =>
-      `find${componentName}(selector?: string): ${toWrapper(componentName)};`,
+      `/**
+        * Returns the wrapper for matching ${componentName} with specified CSS selector.
+        *
+        * @param {string} [selector] CSS Selector.
+        * @returns {${toWrapper(componentName)}} of the matching component. Returns \`null\` if no matching component is found.
+        */
+       find${componentName}(selector?: string): ${toWrapper(componentName)};
+       /**
+        * Returns all of the ${componentName} components in the current wrapper.
+        *
+        * @returns {MultiElementWrapper<${toWrapper(componentName)}>} of the matching components.
+        */
+       findAll${componentName}(): MultiElementWrapper<${toWrapper(componentName)}>;
+       /**
+        * Returns the first ${componentName} matching the specified test id.
+        *
+        * @param {string} testId: Test id assigned via data-testid attribute.
+        * @returns ${toWrapper(componentName)} of the matching ${componentName}.
+        */
+       find${componentName}ByTestId(testId: string): ${toWrapper(componentName)};
+    `,
   },
 };
 
@@ -57,12 +99,23 @@ function generateIndexFileContent(testUtilType, testUtilMetaData) {
     ...testUtilMetaData.map(({ componentName }) => {
       const wrapperName = toWrapper(componentName);
       // language=TypeScript
-      return `ElementWrapper.prototype.find${componentName} = function(selector) {
-          const rootSelector = \`.$\{${wrapperName}.rootSelector}\`;
-          // casting to 'any' is needed to avoid this issue with generics
-          // https://github.com/microsoft/TypeScript/issues/29132
-          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ${wrapperName});
-      };`;
+      return `
+          ElementWrapper.prototype.find${componentName} = function(selector) {
+            const rootSelector = \`.$\{${wrapperName}.rootSelector}\`;
+            // casting to 'any' is needed to avoid this issue with generics
+            // https://github.com/microsoft/TypeScript/issues/29132
+            return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ${wrapperName});
+          };
+
+          ElementWrapper.prototype.findAll${componentName} = function() {
+            return (this as any).findAllComponents(${wrapperName});
+          };
+
+          ElementWrapper.prototype.find${componentName}ByTestId = function(testId) {
+            const selector = \`.${wrapperName}.rootSelector[data-testid="\${testId}"\`;
+            return (this as any).findComponent(selector, ${wrapperName});
+          };
+      `;
     }),
     defaultExport,
   ].join('\n');
