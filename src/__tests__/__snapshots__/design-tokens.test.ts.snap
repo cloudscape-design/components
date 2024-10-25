@@ -1813,14 +1813,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -4252,14 +4252,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -6691,14 +6691,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#d5dbdb",
-            "light": "#545b64",
+            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -9129,15 +9129,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-counter": {
@@ -11568,15 +11568,15 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#d5dbdb",
-            "light": "#545b64",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-text-counter": {
@@ -16447,14 +16447,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#d5dbdb",
-        "light": "#545b64",
+        "light": "#16191f",
       },
     },
     "color-text-chat-bubble-outgoing": {
       "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "#d5dbdb",
-        "light": "#545b64",
+        "light": "#16191f",
       },
     },
     "color-text-counter": {
@@ -18891,14 +18891,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#424650",
+            "light": "#0f141a",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#424650",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": {
@@ -23769,14 +23769,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#424650",
+            "light": "#0f141a",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
             "dark": "#c6c6cd",
-            "light": "#424650",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": {
@@ -26207,15 +26207,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
           },
         },
         "color-text-counter": {
@@ -28646,15 +28646,15 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-chat-bubble-incoming": {
           "$description": "Text color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-chat-bubble-outgoing": {
           "$description": "Text color of \`outgoing\` chat bubble.",
           "$value": {
-            "dark": "#c6c6cd",
-            "light": "#424650",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-counter": {
@@ -35964,14 +35964,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "Text color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#c6c6cd",
-        "light": "#424650",
+        "light": "#0f141a",
       },
     },
     "color-text-chat-bubble-outgoing": {
       "$description": "Text color of \`outgoing\` chat bubble.",
       "$value": {
         "dark": "#c6c6cd",
-        "light": "#424650",
+        "light": "#0f141a",
       },
     },
     "color-text-counter": {
