@@ -233,18 +233,14 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
-    expect(wrapper.findDrawerTriggerById(manyDrawers[0].id)).toBeTruthy();
-    expect(wrapper.findDrawerTriggerWithBadgeById(manyDrawers[0].id)).toBeTruthy();
-    expect(wrapper.findDrawerTriggerById(manyDrawers[1].id)).toBeTruthy();
-    expect(wrapper.findDrawerTriggerWithBadgeById(manyDrawers[1].id)).toBeFalsy();
+    expect(wrapper.findDrawerTriggerById(manyDrawers[0].id, { hasBadge: true })).toBeTruthy();
+    expect(wrapper.findDrawerTriggerById(manyDrawers[1].id, { hasBadge: false })).toBeTruthy();
   });
 
-  test('show throw an error when searching for a badge on non-existing drawer', () => {
+  test('should return null when finding a non-existing drawer with hasBadge condition', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
-    expect(() => wrapper.findDrawerTriggerWithBadgeById('non-existing')).toThrow(
-      /Drawer trigger "non-existing" does not exist/
-    );
+    expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: true })).toBeNull();
   });
 
   test('should have width equal to the size declaration', () => {

@@ -222,8 +222,8 @@ describeEachAppLayout(({ theme, size }) => {
       badge: true,
     });
     const { wrapper } = await renderComponent(<AppLayout />);
-    expect(wrapper.findDrawerTriggerWithBadgeById(TOOLS_DRAWER_ID)).toBeFalsy();
-    expect(wrapper.findDrawerTriggerWithBadgeById(drawerDefaults.id)).toBeTruthy();
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID, { hasBadge: false })).toBeTruthy();
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id, { hasBadge: true })).toBeTruthy();
   });
 
   // always full-screen on mobile

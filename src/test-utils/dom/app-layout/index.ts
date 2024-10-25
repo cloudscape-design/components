@@ -83,16 +83,22 @@ export default class AppLayoutWrapper extends ComponentWrapper {
     return this.findAllByClassName<HTMLButtonElement>(testutilStyles['drawers-trigger']);
   }
 
-  findDrawerTriggerById(id: string): ElementWrapper<HTMLButtonElement> | null {
-    return this.find(`.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`);
-  }
-
-  findDrawerTriggerWithBadgeById(id: string): ElementWrapper | null {
-    const trigger = this.findDrawerTriggerById(id);
-    if (!trigger) {
-      throw new Error(`Drawer trigger "${id}" does not exist`);
+  /**
+   * Finds a drawer trigger by the given id.
+   *
+   * @param id id of the trigger to find
+   * @param options
+   * * hasBadge (boolean) - If provided, only finds drawers with the badge or without badge respectively
+   */
+  findDrawerTriggerById(id: string, options: { hasBadge?: boolean } = {}): ElementWrapper<HTMLButtonElement> | null {
+    const trigger = this.find<HTMLButtonElement>(
+      `.${testutilStyles['drawers-trigger']}[data-testid="awsui-app-layout-trigger-${id}"]`
+    );
+    if (!trigger || options.hasBadge === undefined) {
+      return trigger;
     }
-    return trigger.matches(`.${testutilStyles['drawers-trigger-with-badge']}`);
+    const badgeSelector = `.${testutilStyles['drawers-trigger-with-badge']}`;
+    return trigger.matches(options.hasBadge ? badgeSelector : `:not(${badgeSelector})`);
   }
 
   findDrawersOverflowTrigger(): ButtonDropdownWrapper | null {
