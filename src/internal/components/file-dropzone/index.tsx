@@ -46,7 +46,7 @@ export default function InternalFileDropzone({ onChange, children }: FileDropzon
       onDragLeave={onDragLeave}
       onDrop={onDrop}
     >
-      {children}
+      <div className={styles.content}>{children}</div>
     </div>
   );
 }

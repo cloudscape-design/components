@@ -8,6 +8,6 @@ export default class FileDropzoneWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
   findContent(): ElementWrapper {
-    return this.findByClassName(styles.root)!;
+    return this.findByClassName(styles.content)!;
   }
 }

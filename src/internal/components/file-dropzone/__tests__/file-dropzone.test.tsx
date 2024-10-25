@@ -40,7 +40,7 @@ function createDragEvent(type: string, files = [file1, file2]) {
 }
 
 function TestDropzoneVisible() {
-  const isFileDragging = useFileDragging();
+  const { isFileDragging } = useFileDragging();
   return <div>{isFileDragging ? 'visible' : 'hidden'}</div>;
 }
 
@@ -99,6 +99,7 @@ describe('File upload dropzone', () => {
   test('dropzone correctly renders buttons as children', () => {
     const buttonOnClick = jest.fn();
     const wrapper = renderFileDropzone({ children: <Button onClick={buttonOnClick}>test</Button> });
+
     const button = wrapper.findContent().findButton()!.getElement();
 
     button.click();

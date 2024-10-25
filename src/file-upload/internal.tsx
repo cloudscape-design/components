@@ -95,7 +95,7 @@ function InternalFileUpload(
     setNextFocusIndex(removeFileIndex);
   };
 
-  const isFileDragging = useFileDragging();
+  const { isFileDragging } = useFileDragging();
 
   const showWarning = warningText && !errorText;
 
