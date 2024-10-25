@@ -241,6 +241,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
     expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: true })).toBeNull();
+    expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: false })).toBeNull();
   });
 
   test('should have width equal to the size declaration', () => {
