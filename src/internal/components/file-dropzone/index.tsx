@@ -6,11 +6,11 @@ import clsx from 'clsx';
 
 import { fireNonCancelableEvent } from '../../events';
 import { FileDropzoneProps } from './interfaces';
-import { useFileDragging } from './use-file-dragging';
+import { useFilesDragging } from './use-files-dragging';
 
 import styles from './styles.css.js';
 
-export { FileDropzoneProps, useFileDragging };
+export { FileDropzoneProps, useFilesDragging };
 
 export default function InternalFileDropzone({ onChange, children }: FileDropzoneProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);

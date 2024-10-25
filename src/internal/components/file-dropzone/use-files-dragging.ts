@@ -6,10 +6,10 @@ import { useEffect, useState } from 'react';
  * A utility to determine whether or not a file is being currently dragged into the window.
  *
  * @returns An object with the following arguments:
- * `isFileDragging`: True if a file is being dragged over the current window, false otherwise.
+ * `areFilesDragging`: True if a file is being dragged over the current window, false otherwise.
  */
-export function useFileDragging() {
-  const [isFileDragging, setFileDragging] = useState(false);
+export function useFilesDragging() {
+  const [areFilesDragging, setFilesDragging] = useState(false);
 
   // Registering global drag events listeners.
   useEffect(() => {
@@ -28,7 +28,7 @@ export function useFileDragging() {
       }
 
       if (files > 0) {
-        setFileDragging(true);
+        setFilesDragging(true);
         dragTimer && clearTimeout(dragTimer);
       }
     };
@@ -37,14 +37,14 @@ export function useFileDragging() {
     const onDocumentDragLeave = (event: DragEvent) => {
       event.preventDefault();
 
-      dragTimer = setTimeout(() => setFileDragging(false), 25);
+      dragTimer = setTimeout(() => setFilesDragging(false), 25);
     };
 
     // If the files were dropped the state must be reset.
     const onDocumentDrop = (event: DragEvent) => {
       event.preventDefault();
 
-      dragTimer = setTimeout(() => setFileDragging(false), 25);
+      dragTimer = setTimeout(() => setFilesDragging(false), 25);
     };
 
     document.addEventListener('dragover', onDocumentDragOver, false);
@@ -59,5 +59,5 @@ export function useFileDragging() {
     };
   }, []);
 
-  return { isFileDragging };
+  return { areFilesDragging };
 }

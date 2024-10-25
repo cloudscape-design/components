@@ -6,7 +6,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import Button from '../../../../../lib/components/button';
 import InternalFileDropzone, {
   FileDropzoneProps,
-  useFileDragging,
+  useFilesDragging,
 } from '../../../../../lib/components/internal/components/file-dropzone';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 import FileDropzoneWrapper from '../../../../../lib/components/test-utils/dom/internal/file-dropzone';
@@ -41,8 +41,8 @@ function createDragEvent(type: string, files = [file1, file2]) {
 }
 
 function TestDropzoneVisible() {
-  const { isFileDragging } = useFileDragging();
-  return <div>{isFileDragging ? 'visible' : 'hidden'}</div>;
+  const { areFilesDragging } = useFilesDragging();
+  return <div>{areFilesDragging ? 'visible' : 'hidden'}</div>;
 }
 
 describe('File upload dropzone', () => {

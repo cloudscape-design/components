@@ -11,7 +11,7 @@ import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
-import InternalFileDropzone, { useFileDragging } from '../internal/components/file-dropzone';
+import InternalFileDropzone, { useFilesDragging } from '../internal/components/file-dropzone';
 import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -95,7 +95,7 @@ function InternalFileUpload(
     setNextFocusIndex(removeFileIndex);
   };
 
-  const { isFileDragging } = useFileDragging();
+  const { areFilesDragging } = useFilesDragging();
 
   const showWarning = warningText && !errorText;
 
@@ -123,7 +123,7 @@ function InternalFileUpload(
       ref={tokenListRef}
     >
       <InternalBox>
-        {isFileDragging ? (
+        {areFilesDragging ? (
           <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
             {i18nStrings.dropzoneText(multiple)}
           </InternalFileDropzone>
