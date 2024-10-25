@@ -97,11 +97,7 @@ export default function WithDrawers() {
                   Use Tools
                 </Toggle>
 
-                <Toggle
-                  checked={hasDrawers}
-                  onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}
-                  data-testid="use-drawers-toggle"
-                >
+                <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
                   Use Drawers
                 </Toggle>
 
