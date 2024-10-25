@@ -8,6 +8,7 @@ import InternalFileDropzone, {
   FileDropzoneProps,
   useFileDragging,
 } from '../../../../../lib/components/internal/components/file-dropzone';
+import createWrapper from '../../../../../lib/components/test-utils/dom';
 import FileDropzoneWrapper from '../../../../../lib/components/test-utils/dom/internal/file-dropzone';
 
 import selectors from '../../../../../lib/components/internal/components/file-dropzone/styles.selectors.js';
@@ -24,8 +25,8 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
 const onChange = jest.fn();
 
 function renderFileDropzone(props: Partial<FileDropzoneProps>) {
-  const renderResult = render(<InternalFileDropzone onChange={onChange}>{props.children}</InternalFileDropzone>);
-  const element = renderResult.container.querySelector<HTMLElement>(`.${FileDropzoneWrapper.rootSelector}`)!;
+  render(<InternalFileDropzone onChange={onChange}>{props.children}</InternalFileDropzone>);
+  const element = createWrapper().findByClassName(FileDropzoneWrapper.rootSelector)!.getElement();
   return new FileDropzoneWrapper(element);
 }
 
