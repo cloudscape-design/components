@@ -83,7 +83,6 @@ export const Drawer = React.forwardRef(
         className={clsx(styles.drawer, {
           [styles.hide]: isHidden,
           [styles['drawer-closed']]: !isOpen,
-          [testutilStyles['drawer-closed']]: !isOpen,
           [styles['drawer-mobile']]: isMobile,
         })}
         style={{ width: drawerContentWidth }}
@@ -114,7 +113,9 @@ export const Drawer = React.forwardRef(
         <div
           id={id}
           style={{ width: drawerContentWidth, top: topOffset, bottom: bottomOffset }}
-          className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName)}
+          className={clsx(styles['drawer-content'], styles['drawer-content-clickable'], contentClassName, {
+            [testutilStyles['drawer-closed']]: !isOpen,
+          })}
         >
           {!isMobile && !hideOpenButton && regularOpenButton}
           <TagName

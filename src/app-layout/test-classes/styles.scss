@@ -3,72 +3,28 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-.root {
-  /* used in test-utils */
-}
-.navigation {
-  /* used in test-utils */
-}
-.navigation-toggle {
-  /* used in test-utils */
-}
-.navigation-close {
-  /* used in test-utils */
-}
-.content {
-  /* used in test-utils */
-}
-.notifications {
-  /* used in test-utils */
-}
-.breadcrumbs {
-  /* used in test-utils */
-}
-.tools {
-  /* used in test-utils */
-}
-.tools-close {
-  /* used in test-utils */
-}
-.tools-toggle {
-  /* used in test-utils */
-}
-.drawer-closed {
-  /* used in test-utils */
-}
-.mobile-bar {
-  /* used in tests */
-}
-.disable-body-scroll-root {
-  /* used in tests */
-}
-.drawers-trigger {
-  /* used in tests */
-}
-.drawers-trigger-global {
-  /* used in tests */
-}
-.active-drawer {
-  /* used in tests */
-}
-.active-drawer-close-button {
-  /* used in tests */
-}
-.overflow-menu {
-  /* used in test-utils */
-}
-
-.drawers-slider {
-  /* used in tests */
-}
-.toolbar {
-  /* used in tests */
-}
-
-.trigger-wrapper-tooltip-visible {
-  /* used in tests */
-}
-
+.root,
+.navigation,
+.navigation-toggle,
+.navigation-close,
+.content,
+.notifications,
+.breadcrumbs,
+.tools,
+.tools-close,
+.tools-toggle,
+.drawer-closed,
+.mobile-bar,
+.disable-body-scroll-root,
+.drawers-trigger,
+.drawers-trigger-global,
+.drawers-trigger-with-badge,
+.active-drawer,
+.active-drawer-close-button,
+.overflow-menu,
+.drawers-slider,
+.toolbar,
+.trigger-wrapper-tooltip-visible,
 .trigger-tooltip {
-  /* used in tests */
+  /* used in test-utils */
 }
