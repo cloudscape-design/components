@@ -237,7 +237,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
     expect(wrapper.findDrawerTriggerById(manyDrawers[1].id, { hasBadge: false })).toBeTruthy();
   });
 
-  test('should return null when finding a non-existing drawer with hasBadge condition', () => {
+  test('should return null when searching for a non-existing drawer with hasBadge condition', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
     expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: true })).toBeNull();
