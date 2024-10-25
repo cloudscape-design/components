@@ -36,6 +36,7 @@ export default function TilesInFormPage() {
 
   return (
     <article>
+      <h1>Selectable tiles in form example</h1>
       <ScreenshotArea>
         <Form
           actions={
@@ -45,7 +46,7 @@ export default function TilesInFormPage() {
           }
         >
           <SpaceBetween size="l">
-            <Container header={<Header>Selectable tiles in form example</Header>}>
+            <Container header={<Header variant="h2">Selectable tiles in form example</Header>}>
               <SpaceBetween size="l">
                 <FormField label="Potential solution">
                   <Input
