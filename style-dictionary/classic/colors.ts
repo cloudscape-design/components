@@ -46,7 +46,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundTilesDisabled: { dark: '{colorGrey700}' },
   colorBackgroundToggleCheckedDisabled: { dark: '{colorBlue700}' },
-  colorBackgroundChatBubbleIncoming: { light: '{colorGrey150}', dark: '{colorGrey650}' },
+  colorBackgroundChatBubbleIncoming: { light: '{colorGrey150}', dark: '{colorGrey650} ' },
   colorBorderButtonNormalActive: '{colorBorderButtonNormalDefault}',
   colorBorderButtonNormalDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorGrey600}', dark: '{colorGrey500}' },
