@@ -98,7 +98,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Starts and ends substep when navigating between containers',
     setupTest(async page => {
-      await page.click('[data-testid=field1]');
+      await page.click(wrapper.findInputByTestId('field1').toSelector());
       await page.keys('Tab'); // From Input -> S3 Resource selector Info
       await page.keys('Tab'); // S3 Resource selector Info -> S3 Resource Selector Input
       await page.keys('Tab'); // S3 Resource selector Input -> S3 Resource selector Browse button
@@ -210,7 +210,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form submission',
     setupTest(async page => {
-      await page.click('[data-testid=submit]');
+      await page.click(wrapper.findButtonByTestId('submit').toSelector());
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual([
         'funnelStart',
@@ -249,7 +249,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form cancelled',
     setupTest(async page => {
-      await page.click('[data-testid=cancel]');
+      await page.click(wrapper.findButtonByTestId('cancel').toSelector());
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'funnelCancelled']);
 
@@ -264,7 +264,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form abandoned',
     setupTest(async page => {
-      await page.click('[data-testid=unmount]');
+      await page.click(wrapper.findButtonByTestId('unmount').toSelector());
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'funnelCancelled']);
 
@@ -279,8 +279,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form inline error',
     setupTest(async page => {
-      await page.click('[data-testid=field1]');
-      await page.setValue(wrapper.findInput('[data-testid=field1]').findNativeInput().toSelector(), 'error');
+      await page.setValue(wrapper.findInputByTestId('field1').findNativeInput().toSelector(), 'error');
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'funnelSubStepStart', 'funnelSubStepError']); // FIXME: Missing funnelStepError?
 
@@ -316,9 +315,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form error',
     setupTest(async page => {
-      await page.click('[data-testid=field1]');
-      await page.setValue(wrapper.findInput('[data-testid=field1]').findNativeInput().toSelector(), 'error');
-      await page.click('[data-testid=submit]');
+      await page.setValue(wrapper.findInputByTestId('field1').findNativeInput().toSelector(), 'error');
+      await page.click(wrapper.findButtonByTestId('submit').toSelector());
 
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual([
@@ -342,7 +340,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form external link',
     setupTest(async page => {
-      await page.click('[data-testid=external-link]');
+      await page.click(wrapper.findLinkByTestId('external-link').toSelector());
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'externalLinkInteracted', 'funnelSubStepStart']);
 
@@ -374,7 +372,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Form help panel link',
     setupTest(async page => {
-      await page.click('[data-testid=info-link]');
+      await page.click(wrapper.findLinkByTestId('info-link').toSelector());
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'helpPanelInteracted', 'funnelSubStepStart']);
 

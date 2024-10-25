@@ -318,8 +318,9 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Field error',
     setupTest(async page => {
-      await page.click('[data-testid=field1]');
-      await page.setValue(wrapper.findInput('[data-testid=field1]').findNativeInput().toSelector(), 'error');
+      const inputSelector = wrapper.findInputByTestId('field1').findNativeInput().toSelector();
+      await page.click(inputSelector);
+      await page.setValue(inputSelector, 'error');
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'funnelSubStepStart', 'funnelSubStepError']);
 
@@ -373,7 +374,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   test(
     'Correct substep number when the step is unmounted before blurring the substep',
     setupTest(async page => {
-      await page.click(wrapper.findInput('[data-testid=field4]').findNativeInput().toSelector());
+      await page.click(wrapper.findInputByTestId('field4').findNativeInput().toSelector());
       await page.click(wrapper.findWizard().findPrimaryButton().toSelector());
 
       const funnelSubStepCompleteEvent = await page.getFunnelLogItem(6);

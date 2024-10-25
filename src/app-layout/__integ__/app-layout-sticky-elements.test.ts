@@ -85,7 +85,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         url: `#/light/app-layout/with-full-page-table-and-split-panel?${getUrlParams(theme)}&splitPanelPosition=side`,
       },
       async page => {
-        const popover = createWrapper().findPopover('[data-testid="split-panel"]');
+        const popover = createWrapper().findPopoverByTestId('split-panel');
         await page.click(popover.findTrigger().toSelector());
         await page.click(popover.findContent().findButton().toSelector());
         await expect(page.getAlertTextAndDismiss()).resolves.toEqual('It worked');
@@ -105,7 +105,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         // open help panel
         await page.click(wrapper.findToolsToggle().toSelector());
         // do the test
-        const popover = createWrapper().findPopover('[data-testid="help-panel"]');
+        const popover = createWrapper().findPopoverByTestId('help-panel');
         await page.click(popover.findTrigger().toSelector());
         await page.click(popover.findContent().findButton().toSelector());
         await expect(page.getAlertTextAndDismiss()).resolves.toEqual('It worked');

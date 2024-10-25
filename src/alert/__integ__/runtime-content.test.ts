@@ -7,7 +7,7 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 class RuntimeContentPage extends BasePageObject {
   async rerenderAlerts() {
-    await this.click(createWrapper().findCheckbox('[data-testid="unmount-all"]').findNativeInput().toSelector());
+    await this.click(createWrapper().findCheckboxByTestId('unmount-all').findNativeInput().toSelector());
     await this.keys(['Space']);
   }
 }

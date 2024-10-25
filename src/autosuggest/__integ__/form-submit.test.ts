@@ -26,7 +26,7 @@ function setupTest(testFn: (page: FormSubmitPageObject) => Promise<void>) {
 test(
   'Should submit form on double enter key',
   setupTest(async page => {
-    const autosuggestNoKeydown = createWrapper().findAutosuggest('[data-testid="autosuggest-no-keydown"]');
+    const autosuggestNoKeydown = createWrapper().findAutosuggestByTestId('autosuggest-no-keydown');
     await page.click(autosuggestNoKeydown.findNativeInput().toSelector());
     await expect(page.isDropdownOpen(autosuggestNoKeydown)).resolves.toBe(true);
     await page.keys('Enter');
@@ -43,7 +43,7 @@ test(
 test(
   'Should allow preventing form submission',
   setupTest(async page => {
-    const autosuggestWithKeydown = createWrapper().findAutosuggest('[data-testid="autosuggest-with-keydown"]');
+    const autosuggestWithKeydown = createWrapper().findAutosuggestByTestId('autosuggest-with-keydown');
     await page.click(autosuggestWithKeydown.findNativeInput().toSelector());
     await expect(page.isDropdownOpen(autosuggestWithKeydown)).resolves.toBe(true);
     await page.keys('Enter');

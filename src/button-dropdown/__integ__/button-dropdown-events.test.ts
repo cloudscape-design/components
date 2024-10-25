@@ -81,7 +81,7 @@ describe('clicking on a ButtonDropdown item', () => {
   test(
     'main action can be pressed with Enter',
     useBrowser(async browser => {
-      const focusBefore = createWrapper().findButton('[data-testid="focus-before"]');
+      const focusBefore = createWrapper().findButtonByTestId('focus-before');
 
       const page = new BasePageObject(browser);
       await browser.url('#/light/button-dropdown/main-action');

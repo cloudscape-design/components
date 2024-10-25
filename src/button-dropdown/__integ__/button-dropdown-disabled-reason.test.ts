@@ -9,7 +9,7 @@ const wrapper = createWrapper();
 
 class ButtonDropdownDisabledReasonPage extends BasePageObject {
   findButtonDropdown() {
-    return wrapper.findButtonDropdown('[data-testid="buttonDropdown"]');
+    return wrapper.findButtonDropdownByTestId('buttonDropdown');
   }
   findDisabledReason() {
     return this.findButtonDropdown().findDisabledReason();
