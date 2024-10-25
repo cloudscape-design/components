@@ -110,10 +110,15 @@ export function computeVerticalLayout({
   return { toolbar, notifications, header, drawers };
 }
 
-export function getDrawerTopOffset(
+export function getDrawerStyles(
   verticalOffsets: VerticalLayoutOutput,
   isMobile: boolean,
   placement: AppLayoutPropsWithDefaults['placement']
-) {
-  return isMobile ? verticalOffsets.toolbar : verticalOffsets.drawers ?? placement.insetBlockStart;
+): {
+  drawerTopOffset: number;
+  drawerHeight: string;
+} {
+  const drawerTopOffset = isMobile ? verticalOffsets.toolbar : verticalOffsets.drawers ?? placement.insetBlockStart;
+  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
+  return { drawerTopOffset, drawerHeight };
 }
