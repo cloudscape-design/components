@@ -17,7 +17,7 @@ export interface FileInputProps extends BaseComponentProps, FormFieldCommonValid
   ariaLabel?: string;
 
   /**
-   * Text of label (default property) - used as aria label for button variant.
+   * Text displayed in the file input component. Used as the aria label for the button variant.
    * @displayname text
    */
   children?: string;

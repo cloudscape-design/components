@@ -7,7 +7,7 @@ import ButtonWrapper from '../button';
 import selectors from '../../../internal/components/file-input/styles.selectors.js';
 
 export default class FileInputWrapper extends ComponentWrapper<HTMLElement> {
-  static rootSelector: string = selectors['file-input-container'];
+  static rootSelector: string = selectors.root;
 
   findTrigger(): ButtonWrapper {
     return this.findComponent(`.${selectors['file-input-button']}`, ButtonWrapper)!;

@@ -6,13 +6,13 @@
 @use '../../styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
+.root {
+  position: relative;
+}
+
 .file-input {
   position: absolute;
   clip: rect(0, 0, 0, 0);
-
-  &-container {
-    position: relative;
-  }
 
   &-button {
     @include focus-visible.when-visible-unfocused {

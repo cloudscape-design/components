@@ -86,7 +86,7 @@ const InternalFileInput = React.forwardRef(
     }, [value]);
 
     return (
-      <div className={clsx(styles['file-input-container'])}>
+      <div className={clsx(styles.root)}>
         {/* This is the actual interactive and accessible file-upload element. */}
         {/* It is visually hidden to achieve the desired UX design. */}
         <input

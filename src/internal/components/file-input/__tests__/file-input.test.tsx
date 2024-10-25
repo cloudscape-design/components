@@ -53,7 +53,6 @@ function render(props: Partial<FileInputProps>) {
 describe('FileInput input', () => {
   test('`multiple` property is assigned', () => {
     render({ multiple: false });
-    screen.debug();
     expect(render({ multiple: false }).findNativeInput().getElement()).not.toHaveAttribute('multiple');
     expect(render({ multiple: true }).findNativeInput().getElement()).toHaveAttribute('multiple');
   });
