@@ -353,7 +353,7 @@ describe('File upload dropzone', () => {
   test('dropzone is rendered in component', () => {
     const wrapper = render({ multiple: true });
     fireEvent(document, createDragEvent('dragover'));
-    expect(wrapper.findByClassName(`.${FileDropzoneWrapper.rootSelector}`)).toBeInTheDocument();
+    expect(wrapper.findByClassName(FileDropzoneWrapper.rootSelector)!.getElement()).toBeInTheDocument();
   });
 });
 
