@@ -710,7 +710,7 @@ exports[`CSS Custom Properties match previous snapshot for mode "dark" 1`] = `
   "color-background-button-primary-hover": "#00a1c9",
   "color-background-calendar-current-date": "#16191f",
   "color-background-cell-shaded": "#16191f",
-  "color-background-chat-bubble-incoming": "#414750",
+  "color-background-chat-bubble-incoming": "#16191f",
   "color-background-chat-bubble-outgoing": "transparent",
   "color-background-code-editor-gutter-active-line-default": "#879596",
   "color-background-code-editor-gutter-active-line-error": "#ff5d64",

@@ -153,7 +153,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-chat-bubble-incoming": {
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#414750",
+            "dark": "#16191f",
             "light": "#f2f3f3",
           },
         },
@@ -2592,7 +2592,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-chat-bubble-incoming": {
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#414750",
+            "dark": "#16191f",
             "light": "#f2f3f3",
           },
         },
@@ -5031,7 +5031,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-chat-bubble-incoming": {
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#414750",
+            "dark": "#16191f",
             "light": "#f2f3f3",
           },
         },
@@ -7470,7 +7470,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-chat-bubble-incoming": {
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#414750",
+            "dark": "#16191f",
             "light": "#f2f3f3",
           },
         },
@@ -9909,7 +9909,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-chat-bubble-incoming": {
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#414750",
+            "dark": "#16191f",
             "light": "#f2f3f3",
           },
         },
@@ -12348,8 +12348,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-chat-bubble-incoming": {
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
-            "dark": "#414750",
-            "light": "#414750",
+            "dark": "#16191f",
+            "light": "#16191f",
           },
         },
         "color-background-chat-bubble-outgoing": {
@@ -14787,7 +14787,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-background-chat-bubble-incoming": {
       "$description": "The background color of \`incoming\` chat bubble.",
       "$value": {
-        "dark": "#414750",
+        "dark": "#16191f",
         "light": "#f2f3f3",
       },
     },
