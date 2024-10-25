@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React from 'react';
+import React, { createRef } from 'react';
 import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
+import { TextFilterProps } from '../../../lib/components';
 import PropertyFilter from '../../../lib/components/property-filter';
 import {
   FilteringOption,
@@ -417,6 +418,27 @@ describe('count text', () => {
       query: { operation: 'or', tokens: [], tokenGroups: [{ propertyKey: 'string', value: 'first', operator: ':' }] },
     });
     expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
+  });
+
+  test('re-announces countText when calling reannounceCountText', () => {
+    jest.useFakeTimers();
+    const ref = createRef<TextFilterProps.Ref>();
+    renderComponent({
+      countText: '5 matches',
+      query: { tokens: [{ propertyKey: 'string', value: 'first', operator: ':' }], operation: 'or' },
+      ref: ref,
+    });
+
+    act(() => void jest.runAllTimers());
+    act(() => void jest.runAllTimers());
+    const liveRegionText = document.querySelector('[aria-live=polite]')!;
+    expect(liveRegionText.textContent).toBe('5 matches');
+
+    ref.current!.reannounceCountText();
+    act(() => void jest.runAllTimers());
+    // Expected suffixed dot which is attached when re-announcing the same count text.
+    expect(liveRegionText.textContent).toBe('5 matches.');
+    jest.useRealTimers();
   });
 });
 

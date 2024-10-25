@@ -17,6 +17,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
+import { InternalLiveRegionRef } from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces';
@@ -108,11 +109,21 @@ const PropertyFilterInternal = React.forwardRef(
 
     const mergedRef = useMergeRefs(tokenListRef, __internalRootRef);
     const inputRef = useRef<AutosuggestInputRef>(null);
+    const searchResultsRef = useRef<InternalLiveRegionRef>(null);
     const baseProps = getBaseProps(rest);
 
     const i18nStrings = usePropertyFilterI18n(rest.i18nStrings);
 
-    useImperativeHandle(ref, () => ({ focus: () => inputRef.current?.focus() }), []);
+    useImperativeHandle(
+      ref,
+      () => ({
+        focus: () => inputRef.current?.focus(),
+        reannounceCountText: () => {
+          searchResultsRef.current?.reannounce();
+        },
+      }),
+      []
+    );
     const [filteringText, setFilteringText] = useState<string>('');
 
     const { internalProperties, internalOptions, internalQuery, internalFreeText } = (() => {
@@ -391,7 +402,9 @@ const PropertyFilterInternal = React.forwardRef(
             />
             {showResults ? (
               <div className={styles.results}>
-                <SearchResults id={searchResultsId}>{countText}</SearchResults>
+                <SearchResults id={searchResultsId} ref={searchResultsRef}>
+                  {countText}
+                </SearchResults>
               </div>
             ) : null}
           </div>
