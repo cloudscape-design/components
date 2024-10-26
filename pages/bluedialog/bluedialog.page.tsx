@@ -19,7 +19,6 @@ import {
 import styles from './styles.scss';
 
 export default function Bluedialogbox() {
-  const [showDialog, setShowDialog] = React.useState(true);
   // Inputs
   const [dateValue, setDateValue] = React.useState('');
   const [amountValue, setAmountValue] = React.useState('0');
@@ -30,16 +29,22 @@ export default function Bluedialogbox() {
     console.log({ dateValue, amountValue, descriptionValue, selectedService });
   }
   function skipDialog() {
-    setShowDialog(false);
+    console.log('skip dialog');
   }
 
-  return showDialog ? (
-    <div className={styles['blue-dialog-box']}>
+  return (
+    <div
+      className={styles['blue-dialog-box']}
+      role={'dialog'}
+      aria-labelledby="dialog-box"
+      aria-modal="true"
+      tabIndex={-1}
+    >
       <Form
         header={
-          <div className={styles['blue-dialog-box__header']}>
+          <div className={styles['blue-dialog-box__header']} id={'dialog-title'}>
             <Header variant="h1">Dialog header</Header>
-            <Button iconName="close" variant="icon" onClick={skipDialog} />
+            <Button iconName="close" variant="icon" onClick={skipDialog} aria-label="Close dialog" />
           </div>
         }
       >
@@ -53,10 +58,15 @@ export default function Bluedialogbox() {
                   'Choose certificate expiry date' + (selectedDate ? `, selected date is ${selectedDate}` : '')
                 }
                 placeholder="YYYY/MM/DD"
+                ariaLabel="Select date of increase"
               />
             </FormField>
             <FormField constraintText="Enter a dollar amount in USD" label="What is the increase amount?">
-              <Input value={amountValue} onChange={({ detail }) => setAmountValue(detail.value)} />
+              <Input
+                value={amountValue}
+                onChange={({ detail }) => setAmountValue(detail.value)}
+                ariaLabel="Enter increase amount in USD"
+              />
             </FormField>
 
             <ExpandableSection
@@ -66,6 +76,7 @@ export default function Bluedialogbox() {
                   Provide more details to enhance troubleshooting
                 </Box>
               }
+              aria-expanded={true}
             >
               <SpaceBetween size={'l'}>
                 <FormField label="Which service is this related to ? - optional">
@@ -78,6 +89,7 @@ export default function Bluedialogbox() {
                       { label: 'Route 53', value: 'Route 53' },
                       { label: 'S3', value: 'S3' },
                     ]}
+                    ariaLabel="Select related service"
                   />
                 </FormField>
                 <FormField label="Describe the issue in few words. - optional">
@@ -88,11 +100,11 @@ export default function Bluedialogbox() {
           </SpaceBetween>
         </div>
         <div className={styles['blue-dialog-box__footer']}>
-          <Button onClick={submitData}>Submit</Button>
+          <Button onClick={submitData} ariaLabel="Submit form">
+            Submit
+          </Button>
         </div>
       </Form>
     </div>
-  ) : (
-    <></>
   );
 }
