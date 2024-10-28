@@ -77,11 +77,17 @@ function AppLayoutGlobalDrawerImplementation({
             id={activeDrawerId}
             aria-hidden={!show}
             aria-label={computedAriaLabels.content}
-            className={clsx(styles.drawer, styles['drawer-global'], styles[state], sharedStyles['with-motion'], {
-              [styles['drawer-hidden']]: !show,
-              [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
-              [testutilStyles['active-drawer']]: show,
-            })}
+            className={clsx(
+              styles.drawer,
+              styles['drawer-global'],
+              styles[state],
+              sharedStyles['with-motion-horizontal'],
+              {
+                [styles['drawer-hidden']]: !show,
+                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+                [testutilStyles['active-drawer']]: show,
+              }
+            )}
             ref={drawerRef}
             onBlur={e => {
               // Drawers with trigger buttons follow this restore focus logic:
@@ -119,7 +125,7 @@ function AppLayoutGlobalDrawerImplementation({
                 />
               </div>
             )}
-            <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
+            <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}

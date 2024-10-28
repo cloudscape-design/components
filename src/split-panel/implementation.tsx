@@ -78,7 +78,6 @@ export function SplitPanelImplementation({
     panelRef: splitPanelRefObject,
     handleRef: refs.slider,
     onResize,
-    hasTransitions: true,
   };
   const onSliderPointerDown = usePointerEvents(sizeControlProps);
   const onKeyDown = useKeyboardEvents(sizeControlProps);
