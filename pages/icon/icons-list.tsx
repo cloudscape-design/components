@@ -31,7 +31,6 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
           <Icon name={'transcript' as IconProps['name']} size="normal" />
           <Icon name={'mini-player' as IconProps['name']} size="normal" />
           <Icon name={'play' as IconProps['name']} size="normal" />
-          <Icon name={'play' as IconProps['name']} size="normal" />
           <Icon name={'pause' as IconProps['name']} size="normal" />
           <Icon name={'full-screen' as IconProps['name']} size="normal" />
           <Icon name={'exit-full-screen' as IconProps['name']} size="normal" />
