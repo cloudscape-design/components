@@ -6,19 +6,17 @@ import { act, render } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import ChartPlot, { ChartPlotRef } from '../../../../../lib/components/internal/components/chart-plot';
-import { ElementWrapper } from '../../../../../lib/components/test-utils/dom';
+import createWrapper, { ElementWrapper } from '../../../../../lib/components/test-utils/dom';
 import createBBoxMock from './bbox-mock';
 
 import styles from '../../../../../lib/components/internal/components/chart-plot/styles.css.js';
-import liveRegionStyles from '../../../../../lib/components/internal/components/live-region/styles.css.js';
 
 function renderPlot(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const elementWrapper = new ElementWrapper(container);
   const plotWrapper = elementWrapper.findByClassName(styles.root)!;
   const applicationWrapper = plotWrapper.findByClassName(styles.application)!;
-  const liveRegionWrapper = elementWrapper.findByClassName(liveRegionStyles.root)!;
-  return { rerender, plotWrapper, applicationWrapper, liveRegionWrapper };
+  return { rerender, plotWrapper, applicationWrapper };
 }
 
 describe('initial state', () => {
@@ -98,14 +96,14 @@ describe('initial state', () => {
   });
 
   test('custom aria-attributes are assigned to plot', () => {
-    const { plotWrapper, liveRegionWrapper } = renderPlot(
+    const { plotWrapper } = renderPlot(
       <ChartPlot width={0} height={0} ariaDescription="description" ariaLiveRegion="live">
         <text>Test</text>
       </ChartPlot>
     );
     const plot = plotWrapper.getElement();
     const desc = plotWrapper.find('desc')!.getElement();
-    const liveRegion = liveRegionWrapper.getElement();
+    const liveRegion = createWrapper().findLiveRegion()!.getElement();
 
     expect(plot.getAttribute('aria-describedby')).toBe(desc.id);
     expect(desc.textContent).toBe('description');

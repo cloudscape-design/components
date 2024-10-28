@@ -34,7 +34,7 @@ const bodyCellError = bodyCell.findFormField().findError().toSelector();
 
 const disabledCell = tableWrapper.findBodyCell(4, 4);
 const disabledCell$ = disabledCell.toSelector();
-const disabledCellLiveRegion$ = createWrapper().find('[aria-live]').toSelector();
+const disabledCellLiveRegion$ = createWrapper().findLiveRegion().toSelector();
 
 interface TestOptions {
   enableKeyboardNavigation?: boolean;

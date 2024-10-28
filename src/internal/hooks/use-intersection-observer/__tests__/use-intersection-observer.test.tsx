@@ -11,8 +11,8 @@ declare global {
   }
 }
 
-function TestComponent() {
-  const { ref, isIntersecting } = useIntersectionObserver();
+function TestComponent({ initialState }: { initialState?: boolean }) {
+  const { ref, isIntersecting } = useIntersectionObserver({ initialState });
   return <div ref={ref} data-testid="test" data-value={isIntersecting} />;
 }
 
@@ -41,5 +41,12 @@ describe('useIntersectionObserver', () => {
     const target = await findByTestId('test');
 
     expect(target.dataset.value).toBe('false');
+  });
+
+  it('allows overriding the default value', async () => {
+    const { findByTestId } = render(<TestComponent initialState={true} />);
+    const target = await findByTestId('test');
+
+    expect(target.dataset.value).toBe('true');
   });
 });

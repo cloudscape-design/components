@@ -7,9 +7,9 @@ import { InternalButton } from '../../button/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import { InputProps } from '../../input/interfaces';
-import LiveRegion from '../../internal/components/live-region';
 import { NonCancelableCustomEvent } from '../../internal/events';
 import useForwardFocus from '../../internal/hooks/forward-focus';
+import InternalLiveRegion from '../../live-region/internal';
 import InternalSelect from '../../select/internal';
 import InternalStatusIndicator from '../../status-indicator/internal';
 import { S3ResourceSelectorProps } from '../interfaces';
@@ -147,17 +147,15 @@ export const S3InContext = React.forwardRef(
           </div>
         </div>
 
-        <div role="alert" aria-live="assertive" aria-atomic="true">
+        <InternalLiveRegion assertive={true}>
           {loading && (
             <InternalBox margin={{ top: 's' }}>
               <InternalStatusIndicator type="loading">
-                <LiveRegion visible={true}>
-                  {i18n('i18nStrings.inContextLoadingText', i18nStrings?.inContextLoadingText)}
-                </LiveRegion>
+                {i18n('i18nStrings.inContextLoadingText', i18nStrings?.inContextLoadingText)}
               </InternalStatusIndicator>
             </InternalBox>
           )}
-        </div>
+        </InternalLiveRegion>
       </div>
     );
   }

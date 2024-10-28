@@ -13,10 +13,10 @@ import { FormFieldError } from '../form-field/internal';
 import { useInternalI18n } from '../i18n/context';
 import { InputProps } from '../input/interfaces';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
 import { fireNonCancelableEvent, NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { TagEditorProps } from './interfaces';
 import { TagControl, UndoButton } from './internal';
@@ -284,7 +284,7 @@ const TagEditor = React.forwardRef(
       return (
         <div className={styles.root} ref={baseComponentProps.__internalRootRef}>
           <InternalStatusIndicator className={styles.loading} type="loading">
-            <LiveRegion visible={true}>{i18n('i18nStrings.loading', i18nStrings?.loading)}</LiveRegion>
+            <InternalLiveRegion tagName="span">{i18n('i18nStrings.loading', i18nStrings?.loading)}</InternalLiveRegion>
           </InternalStatusIndicator>
         </div>
       );

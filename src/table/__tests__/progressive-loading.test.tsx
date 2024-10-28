@@ -9,7 +9,7 @@ import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom.js';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -92,7 +92,7 @@ function findParentRow(element: HTMLElement): HTMLTableRowElement {
 
 const getTextContent = (w: ComponentWrapper) => w.getElement().textContent?.trim();
 const getAriaLevel = (w: ComponentWrapper) => findParentRow(w.getElement()).getAttribute('aria-level');
-const getAriaLive = (w: ComponentWrapper) => w.findByClassName(liveRegionStyles.source)!.getElement().textContent;
+const getAriaLive = (w: ComponentWrapper) => w.findByClassName(liveRegionStyles.root)!.getElement().textContent;
 
 describe('Progressive loading', () => {
   test('renders loaders in correct order for normal table', () => {

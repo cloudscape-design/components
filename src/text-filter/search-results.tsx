@@ -3,7 +3,7 @@
 
 import React from 'react';
 
-import LiveRegion from '../internal/components/live-region';
+import InternalLiveRegion from '../live-region/internal';
 
 import styles from './styles.css.js';
 
@@ -18,9 +18,9 @@ interface SearchResultsProps {
 export function SearchResults({ id, children }: SearchResultsProps) {
   return (
     <span className={styles.results}>
-      <LiveRegion delay={LIVE_REGION_DELAY} visible={true}>
+      <InternalLiveRegion delay={LIVE_REGION_DELAY} tagName="span">
         <span id={id}>{children}</span>
-      </LiveRegion>
+      </InternalLiveRegion>
     </span>
   );
 }

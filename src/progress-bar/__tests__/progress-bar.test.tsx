@@ -7,7 +7,7 @@ import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-
 import createWrapper from '../../../lib/components/test-utils/dom';
 import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
 
-import liveRegionStyles from '../../../lib/components/internal/components/live-region/styles.css.js';
+import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/progress-bar/styles.css.js';
 
 const standaloneAndKeyvalueVariants: Array<ProgressBarProps.Variant> = ['standalone', 'key-value'];
@@ -81,8 +81,8 @@ allVariants.forEach(variant => {
 
     describe('ARIA live region', () => {
       test('is present in the DOM while in-progress', () => {
-        const wrapper = renderProgressBar({ variant, value: 0 });
-        expect(wrapper.find('[aria-live]')).not.toBeNull();
+        renderProgressBar({ variant, value: 0 });
+        expect(createWrapper().find('[aria-live]')).not.toBeNull();
       });
 
       test('contains result text', () => {

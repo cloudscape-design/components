@@ -9,7 +9,6 @@ import { InternalContainerAsSubstep } from '../container/internal';
 import { useInternalI18n } from '../i18n/context';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import useBaseComponent from '../internal/hooks/use-base-component';
@@ -18,6 +17,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import {
   focusMarkers,
@@ -132,7 +132,7 @@ const Cards = React.forwardRef(function <T = any>(
     status = (
       <div className={styles.loading}>
         <InternalStatusIndicator type="loading">
-          <LiveRegion visible={true}>{loadingText}</LiveRegion>
+          <InternalLiveRegion tagName="span">{loadingText}</InternalLiveRegion>
         </InternalStatusIndicator>
       </div>
     );
@@ -178,11 +178,11 @@ const Cards = React.forwardRef(function <T = any>(
               )}
             >
               {!!renderAriaLive && !!firstIndex && (
-                <LiveRegion>
+                <InternalLiveRegion hidden={true} tagName="span">
                   <span>
                     {renderAriaLive({ totalItemsCount, firstIndex, lastIndex: firstIndex + items.length - 1 })}
                   </span>
-                </LiveRegion>
+                </InternalLiveRegion>
               )}
               {status ?? (
                 <CardsList

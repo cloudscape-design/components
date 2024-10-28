@@ -6,10 +6,10 @@ import clsx from 'clsx';
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { createWidgetizedComponent } from '../internal/widgets';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { HelpPanelProps } from './interfaces';
 
@@ -36,7 +36,7 @@ export function HelpPanelImplementation({
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
       <InternalStatusIndicator type="loading">
-        <LiveRegion visible={true}>{i18n('loadingText', loadingText)}</LiveRegion>
+        <InternalLiveRegion tagName="span">{i18n('loadingText', loadingText)}</InternalLiveRegion>
       </InternalStatusIndicator>
     </div>
   ) : (

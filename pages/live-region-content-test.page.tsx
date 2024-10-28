@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 
 import { Box, SpaceBetween } from '~components';
-import LiveRegion from '~components/internal/components/live-region';
+import LiveRegion from '~components/live-region';
 
 export default function LiveRegionContentTestPage() {
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function LiveRegionContentTestPage() {
           <strong>Live region</strong>
 
           <div style={{ padding: 8, border: '1px solid black' }}>
-            <LiveRegion visible={true}>
+            <LiveRegion>
               <article>
                 <div>Before list</div>
                 <ul>

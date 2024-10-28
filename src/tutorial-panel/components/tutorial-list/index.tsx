@@ -9,12 +9,12 @@ import { HotspotContext } from '../../../annotation-context/context.js';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
 import InternalIcon from '../../../icon/internal';
-import LiveRegion from '../../../internal/components/live-region/index.js';
 import { fireNonCancelableEvent } from '../../../internal/events/index.js';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
 import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
 import InternalLink from '../../../link/internal';
+import InternalLiveRegion from '../../../live-region/internal';
 import InternalSpaceBetween from '../../../space-between/internal';
 import InternalStatusIndicator from '../../../status-indicator/internal';
 import { TutorialPanelProps } from '../../interfaces';
@@ -68,7 +68,7 @@ export default function TutorialList({
           )}
           {loading ? (
             <InternalStatusIndicator type="loading">
-              <LiveRegion visible={true}>{i18nStrings.loadingText}</LiveRegion>
+              <InternalLiveRegion tagName="span">{i18nStrings.loadingText}</InternalLiveRegion>
             </InternalStatusIndicator>
           ) : (
             <ul className={styles['tutorial-list']} role="list">

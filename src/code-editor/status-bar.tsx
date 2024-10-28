@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context.js';
-import LiveRegion from '../internal/components/live-region/index';
+import InternalLiveRegion from '../live-region/internal';
 import { CodeEditorProps } from './interfaces';
 import { TabButton } from './tab-button';
 import { getStatusButtonId, PaneStatus } from './util';
@@ -107,10 +107,10 @@ export function StatusBar({
             isRefresh={isRefresh}
           />
         </div>
-        <LiveRegion assertive={true}>
+        <InternalLiveRegion assertive={true} hidden={true} tagName="span">
           <span>{errorText} </span>
           <span>{warningText}</span>
-        </LiveRegion>
+        </InternalLiveRegion>
       </div>
 
       <div className={styles['status-bar__right']}>

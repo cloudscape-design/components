@@ -6,9 +6,9 @@ import clsx from 'clsx';
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { createWidgetizedComponent } from '../internal/widgets';
+import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
 import { DrawerProps } from './interfaces';
 
@@ -34,7 +34,9 @@ export function DrawerImplementation({
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
       <InternalStatusIndicator type="loading">
-        <LiveRegion visible={true}>{i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}</LiveRegion>
+        <InternalLiveRegion tagName="span">
+          {i18n('i18nStrings.loadingText', i18nStrings?.loadingText)}
+        </InternalLiveRegion>
       </InternalStatusIndicator>
     </div>
   ) : (

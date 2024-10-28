@@ -4,6 +4,7 @@ import React, { useMemo } from 'react';
 
 import { useInternalI18n } from '../../../i18n/context';
 import InternalLink from '../../../link/internal';
+import InternalLiveRegion from '../../../live-region/internal';
 import InternalStatusIndicator from '../../../status-indicator/internal';
 import { BaseComponentProps } from '../../base-component';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
@@ -90,8 +91,8 @@ export default function ChartStatusContainer({
   }, [i18n, statusType, onRecoveryClick, isEmpty, isNoMatch, recoveryText, loadingText, errorText, empty, noMatch]);
 
   return (
-    <div className={styles.root} aria-live="polite" aria-atomic="true">
-      {!showChart && statusContainer}
+    <div className={styles.root}>
+      <InternalLiveRegion>{!showChart && statusContainer}</InternalLiveRegion>
     </div>
   );
 }

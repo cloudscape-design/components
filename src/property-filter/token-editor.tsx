@@ -205,7 +205,10 @@ export function TokenEditor({
             mainAction={{
               text: i18nStrings.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => {
-                onChangeTempGroup([...tempGroup, { property: null, operator: ':', value: null }]);
+                const lastTokenInGroup = tempGroup[tempGroup.length - 1];
+                const property = lastTokenInGroup ? lastTokenInGroup.property : null;
+                const operator = property?.defaultOperator ?? ':';
+                onChangeTempGroup([...tempGroup, { property, operator, value: null }]);
                 setNextFocusIndex(groups.length);
               },
             }}

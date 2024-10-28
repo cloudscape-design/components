@@ -6,11 +6,9 @@ import { act, fireEvent, screen, within } from '@testing-library/react';
 
 import {
   describeEachAppLayout,
-  isDrawerClosed,
   renderComponent,
   testDrawer,
   manyDrawers,
-  isDrawerTriggerWithBadge,
   getActiveDrawerWidth,
   testDrawerWithoutLabels,
 } from './utils';
@@ -123,9 +121,9 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   test('does not close navigation via ref', () => {
     let ref: AppLayoutProps.Ref | null = null;
     const { wrapper } = renderComponent(<AppLayout ref={newRef => (ref = newRef)} />);
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+    expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
     act(() => ref!.closeNavigationIfNecessary());
-    expect(isDrawerClosed(wrapper.findNavigation())).toBe(false);
+    expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
   });
 
   test('Allows notifications to be sticky', () => {
@@ -235,8 +233,15 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   test('should render badge when defined', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
 
-    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers[0].id)).toEqual(true);
-    expect(isDrawerTriggerWithBadge(wrapper, manyDrawers[1].id)).toEqual(false);
+    expect(wrapper.findDrawerTriggerById(manyDrawers[0].id, { hasBadge: true })).toBeTruthy();
+    expect(wrapper.findDrawerTriggerById(manyDrawers[1].id, { hasBadge: false })).toBeTruthy();
+  });
+
+  test('should return null when searching for a non-existing drawer with hasBadge condition', () => {
+    const { wrapper } = renderComponent(<AppLayout drawers={manyDrawers} />);
+
+    expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: true })).toBeNull();
+    expect(wrapper.findDrawerTriggerById('non-existing', { hasBadge: false })).toBeNull();
   });
 
   test('should have width equal to the size declaration', () => {

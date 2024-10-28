@@ -7,13 +7,13 @@ import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
-import LiveRegion from '../internal/components/live-region';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { SomeRequired } from '../internal/types';
+import InternalLiveRegion from '../live-region/internal';
 import { AdditionalInfo } from './additional-info';
 import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
 import { Row } from './row';
@@ -110,9 +110,15 @@ const InternalAttributeEditor = React.forwardRef(
         >
           {addButtonText}
         </InternalButton>
-        <LiveRegion data-testid="removal-announcement" delay={5} key={items.length}>
+        <InternalLiveRegion
+          data-testid="removal-announcement"
+          tagName="span"
+          hidden={true}
+          delay={5}
+          key={items.length}
+        >
           {removalAnnouncement}
-        </LiveRegion>
+        </InternalLiveRegion>
         {!!additionalInfo && <AdditionalInfo id={infoAriaDescribedBy}>{additionalInfo}</AdditionalInfo>}
       </div>
     );

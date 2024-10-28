@@ -60,6 +60,17 @@ describe('Button Component', () => {
     expect(document.activeElement).toBe(wrapper.findButton()!.getElement());
   });
 
+  describe.each([true, false])('loadingText property, with href: %s', withHref => {
+    test('renders loadingText in a LiveRegion', () => {
+      renderButton({ children: 'Button', loading: true, loadingText: 'Loading', href: withHref ? '#' : undefined });
+      expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Loading');
+    });
+    test('does not render loadingText if loading is false', () => {
+      renderButton({ children: 'Button', loading: false, loadingText: 'Loading', href: withHref ? '#' : undefined });
+      expect(createWrapper().findLiveRegion()).toBeNull();
+    });
+  });
+
   describe('disabled property', () => {
     test('renders button with normal styling by default', () => {
       const wrapper = renderButton();

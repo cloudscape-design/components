@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import InternalLiveRegion from '../../../live-region/internal.js';
 import DropdownStatus from '../dropdown-status/index.js';
-import LiveRegion from '../live-region/index.js';
 
 import styles from './styles.css.js';
 
@@ -16,9 +16,7 @@ interface DropdownFooter {
 
 const DropdownFooter: React.FC<DropdownFooter> = ({ content, id, hasItems = true }: DropdownFooter) => (
   <div className={clsx(styles.root, { [styles.hidden]: content === null, [styles['no-items']]: !hasItems })}>
-    <LiveRegion visible={true} tagName="div" id={id}>
-      {content && <DropdownStatus>{content}</DropdownStatus>}
-    </LiveRegion>
+    <InternalLiveRegion id={id}>{content && <DropdownStatus>{content}</DropdownStatus>}</InternalLiveRegion>
   </div>
 );
 

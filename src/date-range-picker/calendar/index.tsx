@@ -9,11 +9,11 @@ import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
-import LiveRegion from '../../internal/components/live-region';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { formatDateTime, parseDate, splitDateTime } from '../../internal/utils/date-time';
 import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/locale';
+import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
@@ -271,7 +271,10 @@ export default function DateRangePickerCalendar({
           {customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
         </SpaceBetween>
       </div>
-      <LiveRegion className={styles['calendar-aria-live']}>{announcement}</LiveRegion>
+      {/* Can't use message here because the contents are checked in tests */}
+      <InternalLiveRegion className={styles['calendar-aria-live']} hidden={true} tagName="span">
+        {announcement}
+      </InternalLiveRegion>
     </>
   );
 }

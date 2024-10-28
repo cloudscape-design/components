@@ -33,6 +33,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderRadiusItem: '0px',
   borderRadiusInput: '2px',
   borderRadiusTabsFocusRing: '0px',
+  borderRadiusChatBubble: '2px',
   borderTableStickyWidth: '0px',
   borderLinkFocusRingOutline: '5px auto Highlight',
   borderLinkFocusRingShadowSpread: '0px',

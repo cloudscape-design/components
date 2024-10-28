@@ -5,7 +5,7 @@ import { add } from 'date-fns';
 
 import { renderMonthAndYear } from '../../../calendar/utils/intl';
 import { useInternalI18n } from '../../../i18n/context.js';
-import LiveRegion from '../../../internal/components/live-region';
+import InternalLiveRegion from '../../../live-region/internal';
 import { NextMonthButton, PrevMonthButton } from './header-button';
 
 import styles from '../../styles.css.js';
@@ -57,7 +57,9 @@ export default function CalendarHeader({
           onChangeMonth={onChangeMonth}
         />
       </div>
-      <LiveRegion>{isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}</LiveRegion>
+      <InternalLiveRegion hidden={true}>
+        {isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}
+      </InternalLiveRegion>
     </>
   );
 }

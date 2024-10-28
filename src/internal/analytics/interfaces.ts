@@ -180,14 +180,45 @@ export type TaskCompletionDataMethod = (props: TaskCompletionDataProps) => void;
 export interface IPerformanceMetrics {
   tableInteraction: TableInteractionMethod;
   taskCompletionData: TaskCompletionDataMethod;
+  modalPerformanceData: ModalPerformanceDataMethod;
+}
+
+type JSONValue = string | number | boolean | null | undefined;
+export interface JSONObject {
+  [key: string]: JSONObject | JSONValue;
 }
 
 export interface ComponentMountedProps {
   componentName: string;
   taskInteractionId?: string;
-  details: Record<string, string | boolean | number | undefined>;
+  componentConfiguration: JSONObject;
 }
+
+export interface ComponentUpdatedProps extends ComponentMountedProps {
+  taskInteractionId: string;
+  actionType: string;
+}
+
 export type ComponentMountedMethod = (props: ComponentMountedProps) => string;
+export type ComponentUpdatedMethod = (props: ComponentUpdatedProps) => void;
 export interface IComponentMetrics {
   componentMounted: ComponentMountedMethod;
+  componentUpdated: ComponentUpdatedMethod;
 }
+
+// Interface for modal metrics
+export interface ModalPerformanceDataProps {
+  // Time span from when the modal begins loading to when the primary button or modal has finished loading.
+  // in milliseconds
+  timeToContentReadyInModal: number;
+  // Unique instance identifier for the component.
+  // Default: ''
+  instanceIdentifier?: string;
+  // Component identifier like modal header which can be used to identify the modal
+  // Default: ''
+  componentIdentifier?: string;
+  // Additional metadata related to modal
+  modalMetadata?: string;
+}
+
+export type ModalPerformanceDataMethod = (props: ModalPerformanceDataProps) => void;

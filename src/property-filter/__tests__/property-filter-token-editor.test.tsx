@@ -454,29 +454,41 @@ describe('token editor with groups', () => {
     return reactRender(<StatefulPropertyFilter {...defaultProps} {...props} enableTokenGroups={true} />);
   }
 
-  test('changes filter property', () => {
-    const onChange = jest.fn();
-    render({
-      query: { operation: 'and', tokens: [tokenJohn] },
-      onChange,
-    });
-    const editor = openEditor(0, { expandToViewport: false });
+  test.each([{ disableFreeTextFiltering: false }, { disableFreeTextFiltering: true }])(
+    'changes filter property, disableFreeTextFiltering=$disableFreeTextFiltering',
+    ({ disableFreeTextFiltering }) => {
+      const onChange = jest.fn();
+      render({
+        disableFreeTextFiltering,
+        query: { operation: 'and', tokens: [tokenJohn] },
+        onChange,
+      });
+      const editor = openEditor(0, { expandToViewport: false });
 
-    editor.propertySelect().openDropdown();
-    editor.propertySelect().selectOptionByValue('other-string');
-    editor.submitButton.click();
+      editor.propertySelect().openDropdown();
+      const options = editor
+        .propertySelect()
+        .findDropdown()
+        .findOptions()
+        .map(w => w.getElement().textContent);
+      const expectedOptions = ['All properties', 'string', 'string-other', 'default', 'string!=', 'range'];
+      expect(options).toEqual(disableFreeTextFiltering ? expectedOptions.slice(1) : expectedOptions);
 
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: {
-          operation: 'and',
-          tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: null }],
-          tokens: [],
-        },
-      })
-    );
-  });
+      editor.propertySelect().selectOptionByValue('other-string');
+      editor.submitButton.click();
+
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            operation: 'and',
+            tokenGroups: [{ propertyKey: 'other-string', operator: '=', value: null }],
+            tokens: [],
+          },
+        })
+      );
+    }
+  );
 
   test('changes filter operator', () => {
     const onChange = jest.fn();
@@ -584,28 +596,37 @@ describe('token editor with groups', () => {
     );
   });
 
-  test('adds new filter', () => {
-    const onChange = jest.fn();
-    render({
-      query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
-      onChange,
-    });
-    const editor = openEditor(0, { expandToViewport: false });
+  test.each([{ disableFreeTextFiltering: false }, { disableFreeTextFiltering: true }])(
+    'adds new filter, disableFreeTextFiltering=$disableFreeTextFiltering',
+    ({ disableFreeTextFiltering }) => {
+      const onChange = jest.fn();
+      render({
+        disableFreeTextFiltering,
+        query: { operation: 'and', tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane] }], tokens: [] },
+        onChange,
+      });
+      const editor = openEditor(0, { expandToViewport: false });
 
-    editor.addActions.findMainAction()!.click();
-    editor.submitButton.click();
+      editor.addActions.findMainAction()!.click();
+      editor.submitButton.click();
 
-    expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toHaveBeenCalledWith(
-      expect.objectContaining({
-        detail: {
-          operation: 'and',
-          tokenGroups: [{ operation: 'or', tokens: [tokenJohn, tokenJane, { operator: ':', value: null }] }],
-          tokens: [],
-        },
-      })
-    );
-  });
+      expect(onChange).toHaveBeenCalledTimes(1);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({
+          detail: {
+            operation: 'and',
+            tokenGroups: [
+              {
+                operation: 'or',
+                tokens: [tokenJohn, tokenJane, { propertyKey: 'string', operator: '=', value: null }],
+              },
+            ],
+            tokens: [],
+          },
+        })
+      );
+    }
+  );
 
   test('adds new filter from standalone', () => {
     const onChange = jest.fn();
@@ -775,7 +796,12 @@ describe('token editor with groups', () => {
         expect.objectContaining({
           detail: {
             operation,
-            tokenGroups: [{ operation: expectedGroupOperation, tokens: [tokenJohn, { operator: ':', value: null }] }],
+            tokenGroups: [
+              {
+                operation: expectedGroupOperation,
+                tokens: [tokenJohn, { propertyKey: 'string', operator: '=', value: null }],
+              },
+            ],
             tokens: [],
           },
         })

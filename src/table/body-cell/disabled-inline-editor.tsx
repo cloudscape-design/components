@@ -8,6 +8,7 @@ import Portal from '../../internal/components/portal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
+import InternalLiveRegion from '../../live-region/internal';
 import Arrow from '../../popover/arrow';
 import PopoverBody from '../../popover/body';
 import PopoverContainer from '../../popover/container';
@@ -126,7 +127,7 @@ export function DisabledInlineEditor<ItemType>({
                   onDismiss={() => {}}
                   overflowVisible="both"
                 >
-                  <span aria-live="polite">{editDisabledReason}</span>
+                  <InternalLiveRegion tagName="span">{editDisabledReason}</InternalLiveRegion>
                 </PopoverBody>
               </PopoverContainer>
             </span>

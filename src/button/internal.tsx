@@ -16,7 +16,6 @@ import {
   getSubStepAllSelector,
   getTextFromSelector,
 } from '../internal/analytics/selectors';
-import LiveRegion from '../internal/components/live-region';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
@@ -25,9 +24,11 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useModalContextLoadingButtonComponent } from '../internal/hooks/use-modal-component-analytics';
 import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataButtonFragment } from './analytics-metadata/interfaces';
 import { ButtonIconProps, LeftIcon, RightIcon } from './icon-helper';
 import { ButtonProps } from './interfaces';
@@ -121,6 +122,7 @@ export const InternalButton = React.forwardRef(
       }),
       [loading, disabled]
     );
+    useModalContextLoadingButtonComponent(variant === 'primary', loading);
 
     const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
 
@@ -250,7 +252,11 @@ export const InternalButton = React.forwardRef(
           >
             {buttonContent}
           </a>
-          {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+          {loading && loadingText && (
+            <InternalLiveRegion tagName="span" hidden={true}>
+              {loadingText}
+            </InternalLiveRegion>
+          )}
         </>
       );
     }
@@ -282,7 +288,11 @@ export const InternalButton = React.forwardRef(
             </>
           )}
         </button>
-        {loading && loadingText && <LiveRegion>{loadingText}</LiveRegion>}
+        {loading && loadingText && (
+          <InternalLiveRegion tagName="span" hidden={true}>
+            {loadingText}
+          </InternalLiveRegion>
+        )}
       </>
     );
   }
