@@ -6,7 +6,7 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import { describeEachAppLayout, isDrawerClosed, testDrawer } from './utils';
+import { describeEachAppLayout, testDrawer } from './utils';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
@@ -110,7 +110,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     firstLayout.findToolsToggle().click();
     expect(secondLayout.findNavigation()).toBeFalsy();
     expect(secondLayout.findNavigationToggle()).toBeFalsy();
-    expect(isDrawerClosed(secondLayout.findTools())).toEqual(false);
+    expect(secondLayout.findOpenToolsPanel).toBeTruthy();
   });
 
   test('cleans and restores the toolbar buttons when inner app layout is unmounted and mounted again', async () => {

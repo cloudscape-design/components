@@ -3,7 +3,6 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
@@ -89,15 +88,6 @@ export function describeEachAppLayout(
       });
     }
   }
-}
-
-export function isDrawerClosed(drawer: ElementWrapper) {
-  // The visibility class name we are attaching to the wrapping element,
-  // however the test-util points to the inner element, which has the scrollbar
-  return (
-    drawer === null ||
-    !!findUpUntil(drawer.getElement(), element => element.classList.contains(testutilStyles['drawer-closed']))
-  );
 }
 
 export function findActiveDrawerLandmark(wrapper: AppLayoutWrapper) {
