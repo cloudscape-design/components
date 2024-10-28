@@ -6,7 +6,7 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import { describeEachAppLayout, testDrawer } from './utils';
+import { describeEachAppLayout, isDrawerClosed, testDrawer } from './utils';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';

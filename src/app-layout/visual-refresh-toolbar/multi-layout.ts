@@ -10,7 +10,7 @@ import { AppLayoutProps } from '../interfaces';
 import { Focusable } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
-interface SharedProps {
+export interface SharedProps {
   forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
@@ -99,7 +99,6 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
 
   return {
     registered: !!registration?.type,
-    toolbarProps:
-      registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
+    toolbarProps: registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
   };
 }
