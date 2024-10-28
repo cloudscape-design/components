@@ -1,6 +1,6 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<circle cx="8" cy="8" r="7"/>
-<path d="M9 7H7V9H9V7Z" class="filled no-stroke"/>
-<path d="M6 7H4V9H6V7Z" class="filled no-stroke"/>
-<path d="M12 7H10V9H12V7Z" class="filled no-stroke"/>
+<circle cx="8" cy="8" r="7" />
+<path d="M8 8.01H8.01V8H8V8.01Z" class="filled"/>
+<path d="M5 8.01H5.01V8H5V8.01Z" class="filled"/>
+<path d="M11 8.01H11.01V8H11V8.01Z" class="filled"/>
 </svg>

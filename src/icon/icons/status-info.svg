@@ -1,5 +1,5 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<circle cx="8" cy="8" r="7"/>
-<path  d="M8 12V7" />
-<path d="M8 6V4" />
+<circle cx="8" cy="8" r="7" />
+<path d="M8 12V7" />
+<path d="M8 5.01H8.01V5H8V5.01Z" class="filled"/>
 </svg>
