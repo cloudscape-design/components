@@ -250,11 +250,10 @@ function DesktopTriggers() {
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaExpanded={item.id === activeDrawerId}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
-              className={clsx(
-                styles['drawers-trigger'],
-                testutilStyles['drawers-trigger'],
-                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-              )}
+              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], {
+                [testutilStyles['drawers-trigger-with-badge']]: item.badge,
+                [testutilStyles['tools-toggle']]: item.id === TOOLS_DRAWER_ID,
+              })}
               iconName={item?.trigger?.iconName}
               iconSvg={item?.trigger?.iconSvg}
               key={item.id}
@@ -356,12 +355,10 @@ export function MobileTriggers() {
               ariaExpanded={item.id === activeDrawerId}
               ariaLabel={item.ariaLabels?.triggerButton}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
-              className={clsx(
-                `awsui-app-layout-trigger-${item.id}`,
-                styles['drawers-trigger'],
-                testutilStyles['drawers-trigger'],
-                item.id === TOOLS_DRAWER_ID && testutilStyles['tools-toggle']
-              )}
+              className={clsx(styles['drawers-trigger'], testutilStyles['drawers-trigger'], {
+                [testutilStyles['drawers-trigger-with-badge']]: item.badge,
+                [testutilStyles['tools-toggle']]: item.id === TOOLS_DRAWER_ID,
+              })}
               disabled={hasDrawerViewportOverlay}
               ref={isForPreviousActiveDrawer ? drawersRefs.toggle : undefined}
               iconName={item?.trigger?.iconName}
