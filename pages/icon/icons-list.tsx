@@ -52,7 +52,7 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
               <Icon name={'face-sad' as IconProps['name']} size="medium" />
               <Icon name={'face-sad-filled' as IconProps['name']} size="medium" />
               <Icon name={'face-average' as IconProps['name']} size="medium" />
-              <Icon name={'face-average-filled' as IconProps['name']} size="normal" />
+              <Icon name={'face-average-filled' as IconProps['name']} size="medium" />
               <Icon name={'face-happy' as IconProps['name']} size="medium" />
               <Icon name={'face-happy-filled' as IconProps['name']} size="medium" />
               <Icon name={'backward-10-seconds' as IconProps['name']} size="medium" />
