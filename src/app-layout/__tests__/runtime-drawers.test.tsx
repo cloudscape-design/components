@@ -8,7 +8,6 @@ import {
   findActiveDrawerLandmark,
   getActiveDrawerWidth,
   getGlobalDrawersTestUtils,
-  isDrawerTriggerWithBadge,
   testDrawer,
 } from './utils';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
@@ -223,8 +222,8 @@ describeEachAppLayout(({ theme, size }) => {
       badge: true,
     });
     const { wrapper } = await renderComponent(<AppLayout />);
-    expect(isDrawerTriggerWithBadge(wrapper, TOOLS_DRAWER_ID)).toEqual(false);
-    expect(isDrawerTriggerWithBadge(wrapper, drawerDefaults.id)).toEqual(true);
+    expect(wrapper.findDrawerTriggerById(TOOLS_DRAWER_ID, { hasBadge: false })).toBeTruthy();
+    expect(wrapper.findDrawerTriggerById(drawerDefaults.id, { hasBadge: true })).toBeTruthy();
   });
 
   // always full-screen on mobile
