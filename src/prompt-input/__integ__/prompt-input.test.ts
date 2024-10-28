@@ -5,11 +5,11 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 
-const promptInputWrapper = createWrapper().findPromptInput();
+const getPromptInputWrapper = (testid = 'prompt-input') => createWrapper().findPromptInput(`[data-testid="${testid}"]`);
 
 class PromptInputPage extends BasePageObject {
-  async getPromptInputHeight() {
-    const { height } = await this.getBoundingBox(promptInputWrapper.toSelector());
+  async getPromptInputHeight(testid = 'prompt-input') {
+    const { height } = await this.getBoundingBox(getPromptInputWrapper(testid).toSelector());
     return height;
   }
 }
@@ -18,7 +18,7 @@ const setupTest = (testFn: (page: PromptInputPage) => Promise<void>) => {
   return useBrowser(async browser => {
     const page = new PromptInputPage(browser);
     await browser.url(`#/light/prompt-input/simple/?isReadOnly=true`);
-    await page.waitForVisible(promptInputWrapper.toSelector());
+    await page.waitForVisible(getPromptInputWrapper().toSelector());
     await testFn(page);
   });
 };
@@ -37,7 +37,15 @@ describe('Prompt input', () => {
     setupTest(async page => {
       await page.click('#focus-button');
       await page.keys('Tab');
-      await expect(page.isFocused(promptInputWrapper.find('button').toSelector())).resolves.toBe(true);
+      await expect(page.isFocused(getPromptInputWrapper().find('button').toSelector())).resolves.toBe(true);
+    })
+  );
+
+  test(
+    'Should has one row height in Split Panel',
+    setupTest(async page => {
+      await page.click(createWrapper().findAppLayout().findSplitPanelOpenButton().toSelector());
+      await expect(page.getPromptInputHeight('Prompt-input-in-split-panel')).resolves.toEqual(32);
     })
   );
 });
