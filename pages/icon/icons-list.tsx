@@ -23,8 +23,8 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
             <SpaceBetween size="xxs" direction="horizontal">
               <Icon name={'face-sad' as IconProps['name']} size="normal" />
               <Icon name={'face-sad-filled' as IconProps['name']} size="normal" />
-              <Icon name={'face-average' as IconProps['name']} size="normal" />
-              <Icon name={'face-average-filled' as IconProps['name']} size="normal" />
+              <Icon name={'face-neutral' as IconProps['name']} size="normal" />
+              <Icon name={'face-neutral-filled' as IconProps['name']} size="normal" />
               <Icon name={'face-happy' as IconProps['name']} size="normal" />
               <Icon name={'face-happy-filled' as IconProps['name']} size="normal" />
               <Icon name={'backward-10-seconds' as IconProps['name']} size="normal" />
@@ -45,14 +45,17 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
               <Icon name={'cloud-shell' as IconProps['name']} size="normal" />
               <Icon name={'list-view' as IconProps['name']} size="normal" />
               <Icon name={'help' as IconProps['name']} size="normal" />
+              <Icon name={'video-camera-on' as IconProps['name']} size="normal" />
+              <Icon name={'video-camera-off' as IconProps['name']} size="normal" />
+              <Icon name={'video-camera-unavailable' as IconProps['name']} size="normal" />
             </SpaceBetween>
           </>
           <>
             <SpaceBetween size="xxs" direction="horizontal">
               <Icon name={'face-sad' as IconProps['name']} size="medium" />
               <Icon name={'face-sad-filled' as IconProps['name']} size="medium" />
-              <Icon name={'face-average' as IconProps['name']} size="medium" />
-              <Icon name={'face-average-filled' as IconProps['name']} size="medium" />
+              <Icon name={'face-neutral' as IconProps['name']} size="medium" />
+              <Icon name={'face-neutral-filled' as IconProps['name']} size="medium" />
               <Icon name={'face-happy' as IconProps['name']} size="medium" />
               <Icon name={'face-happy-filled' as IconProps['name']} size="medium" />
               <Icon name={'backward-10-seconds' as IconProps['name']} size="medium" />
@@ -73,14 +76,17 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
               <Icon name={'cloud-shell' as IconProps['name']} size="medium" />
               <Icon name={'list-view' as IconProps['name']} size="medium" />
               <Icon name={'help' as IconProps['name']} size="medium" />
+              <Icon name={'video-camera-on' as IconProps['name']} size="medium" />
+              <Icon name={'video-camera-off' as IconProps['name']} size="medium" />
+              <Icon name={'video-camera-unavailable' as IconProps['name']} size="medium" />
             </SpaceBetween>
           </>
           <>
             <SpaceBetween size="xxs" direction="horizontal">
               <Icon name={'face-sad' as IconProps['name']} size="big" />
               <Icon name={'face-sad-filled' as IconProps['name']} size="big" />
-              <Icon name={'face-average' as IconProps['name']} size="big" />
-              <Icon name={'face-average-filled' as IconProps['name']} size="big" />
+              <Icon name={'face-neutral' as IconProps['name']} size="big" />
+              <Icon name={'face-neutral-filled' as IconProps['name']} size="big" />
               <Icon name={'face-happy' as IconProps['name']} size="big" />
               <Icon name={'face-happy-filled' as IconProps['name']} size="big" />
               <Icon name={'backward-10-seconds' as IconProps['name']} size="big" />
@@ -101,14 +107,17 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
               <Icon name={'cloud-shell' as IconProps['name']} size="big" />
               <Icon name={'list-view' as IconProps['name']} size="big" />
               <Icon name={'help' as IconProps['name']} size="big" />
+              <Icon name={'video-camera-on' as IconProps['name']} size="big" />
+              <Icon name={'video-camera-off' as IconProps['name']} size="big" />
+              <Icon name={'video-camera-unavailable' as IconProps['name']} size="big" />
             </SpaceBetween>
           </>
           <>
             <SpaceBetween size="xxs" direction="horizontal">
               <Icon name={'face-sad' as IconProps['name']} size="large" />
               <Icon name={'face-sad-filled' as IconProps['name']} size="large" />
-              <Icon name={'face-average' as IconProps['name']} size="large" />
-              <Icon name={'face-average-filled' as IconProps['name']} size="large" />
+              <Icon name={'face-neutral' as IconProps['name']} size="large" />
+              <Icon name={'face-neutral-filled' as IconProps['name']} size="large" />
               <Icon name={'face-happy' as IconProps['name']} size="large" />
               <Icon name={'face-happy-filled' as IconProps['name']} size="large" />
               <Icon name={'backward-10-seconds' as IconProps['name']} size="large" />
@@ -129,6 +138,9 @@ export default function IconsList({ variant }: { variant: IconProps['variant'] }
               <Icon name={'cloud-shell' as IconProps['name']} size="large" />
               <Icon name={'list-view' as IconProps['name']} size="large" />
               <Icon name={'help' as IconProps['name']} size="large" />
+              <Icon name={'video-camera-on' as IconProps['name']} size="large" />
+              <Icon name={'video-camera-off' as IconProps['name']} size="large" />
+              <Icon name={'video-camera-unavailable' as IconProps['name']} size="large" />
             </SpaceBetween>
           </>
         </SpaceBetween>
