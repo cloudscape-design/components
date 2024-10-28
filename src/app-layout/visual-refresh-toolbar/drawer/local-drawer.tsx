@@ -10,7 +10,7 @@ import customCssProps from '../../../internal/generated/custom-css-properties';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
 import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
-import { getDrawerStyles } from '../compute-layout';
+import { getDrawerTopOffset } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -46,7 +46,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     content: activeDrawer ? activeDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const isToolsDrawer = activeDrawer?.id === TOOLS_DRAWER_ID || toolsOnlyMode;
   const toolsContent = drawers?.find(drawer => drawer.id === TOOLS_DRAWER_ID)?.content;
@@ -85,8 +85,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
             }
           }}
           style={{
-            blockSize: drawerHeight,
-            insetBlockStart: drawerTopOffset,
+            blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+            insetBlockStart: drawersTopOffset,
             ...(!isMobile &&
               !isLegacyDrawer && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
@@ -131,9 +131,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
               {toolsContent}
             </div>
             {activeDrawerId !== TOOLS_DRAWER_ID && (
-              <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                {activeDrawer?.content}
-              </div>
+              <div className={styles['drawer-content']}>{activeDrawer?.content}</div>
             )}
           </div>
         </aside>

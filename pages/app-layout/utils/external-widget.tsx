@@ -6,8 +6,6 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
-import { CustomDrawerContent } from './content-blocks';
-
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
 const Content = React.forwardRef((props, ref) => {
@@ -235,7 +233,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<CustomDrawerContent />, container);
+    ReactDOM.render(<div>global widget content circle 3 (without trigger button)</div>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

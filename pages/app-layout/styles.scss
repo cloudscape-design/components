@@ -80,29 +80,3 @@
     margin-block-start: 4rem;
   }
 }
-
-.custom-drawer-wrapper {
-  display: flex;
-  flex-direction: column;
-  block-size: 100%;
-  overflow-y: hidden;
-}
-
-.drawer-sticky-header,
-.drawer-scrollable-content,
-.drawer-sticky-footer {
-  padding-inline: 24px;
-}
-
-.drawer-sticky-header {
-  border-block-end: 2px solid grey;
-}
-.drawer-scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-  padding-block: 8px;
-}
-.drawer-sticky-footer {
-  border-block-start: 2px solid grey;
-  padding-block: 16px;
-}
