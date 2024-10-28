@@ -7,7 +7,7 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { getDrawerStyles } from '../compute-layout';
+import { getDrawerTopOffset } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -30,7 +30,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
-  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -58,8 +58,8 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       aria-hidden={!navigationOpen}
       onClick={onNavigationClick}
       style={{
-        blockSize: drawerHeight,
-        insetBlockStart: drawerTopOffset,
+        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
+        insetBlockStart: drawersTopOffset,
       }}
     >
       <div className={clsx(styles['animated-content'])}>

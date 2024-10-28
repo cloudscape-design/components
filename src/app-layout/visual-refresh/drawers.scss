@@ -142,7 +142,6 @@
 
     > .drawer-content {
       grid-column: 1 / span 4;
-      block-size: var(#{custom-props.$contentHeight});
       &.drawer-content-hidden {
         display: none;
       }
