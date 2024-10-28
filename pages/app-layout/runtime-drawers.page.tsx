@@ -6,6 +6,7 @@ import {
   AppLayout,
   Button,
   ContentLayout,
+  Drawer,
   Header,
   HelpPanel,
   Link,
@@ -18,7 +19,7 @@ import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
-import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
+import { Breadcrumbs, Containers } from './utils/content-blocks';
 import appLayoutLabels from './utils/labels';
 
 type DemoContext = React.Context<
@@ -101,10 +102,7 @@ export default function WithDrawers() {
                   Use Drawers
                 </Toggle>
 
-                <Button
-                  onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
-                  data-testid="open-drawer-button"
-                >
+                <Button onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}>
                   Open a drawer without a trigger
                 </Button>
                 <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
@@ -175,5 +173,5 @@ function Info({ helpPathSlug }: { helpPathSlug: string }) {
 }
 
 function ProHelp() {
-  return <CustomDrawerContent />;
+  return <Drawer header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</Drawer>;
 }
