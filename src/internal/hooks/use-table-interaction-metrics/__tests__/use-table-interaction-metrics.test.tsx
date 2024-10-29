@@ -9,12 +9,13 @@ import {
   PerformanceMetrics,
   setComponentMetrics,
 } from '../../../../../lib/components/internal/analytics';
+import { AnalyticsFunnel } from '../../../../../lib/components/internal/analytics/components/analytics-funnel';
 import {
   useTableInteractionMetrics,
   UseTableInteractionMetricsProps,
 } from '../../../../../lib/components/internal/hooks/use-table-interaction-metrics';
-import { renderHook } from '../../../../__tests__/render-hook';
-import { mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
+import { renderHook, RenderHookOptions } from '../../../../__tests__/render-hook';
+import { mockFunnelMetrics, mockPerformanceMetrics } from '../../../analytics/__tests__/mocks';
 
 type RenderProps = Partial<UseTableInteractionMetricsProps>;
 
@@ -27,11 +28,12 @@ const defaultProps = {
   interactionMetadata: () => '',
 } satisfies RenderProps;
 
-function renderUseTableInteractionMetricsHook(props: RenderProps) {
+function renderUseTableInteractionMetricsHook(props: RenderProps, wrapper?: RenderHookOptions<RenderProps>['wrapper']) {
   const elementRef = createRef<HTMLElement>();
 
   const { result, rerender, unmount } = renderHook(useTableInteractionMetrics, {
     initialProps: { elementRef, ...defaultProps, ...props },
+    wrapper,
   });
 
   return {
@@ -48,6 +50,14 @@ function TestComponent(props: RenderProps) {
   return <div {...tableInteractionAttributes} ref={elementRef} data-testid="element" />;
 }
 
+function FunnelWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
+      {children}
+    </AnalyticsFunnel>
+  );
+}
+
 const componentMounted = jest.fn();
 const componentUpdated = jest.fn();
 
@@ -59,6 +69,7 @@ setComponentMetrics({
 beforeEach(() => {
   jest.resetAllMocks();
   mockPerformanceMetrics();
+  mockFunnelMetrics();
 });
 
 jest.useFakeTimers();
@@ -73,6 +84,17 @@ describe('useTableInteractionMetrics', () => {
       componentName: 'table',
       componentConfiguration: {},
     });
+  });
+
+  test('should not emit componentMount event when inside a funnel', () => {
+    render(
+      <FunnelWrapper>
+        <TestComponent />
+      </FunnelWrapper>
+    );
+    jest.runAllTimers();
+
+    expect(componentMounted).toHaveBeenCalledTimes(0);
   });
 
   test('data attribute should be present after the first render', () => {
@@ -127,6 +149,17 @@ describe('useTableInteractionMetrics', () => {
         actionType: 'filter',
         componentConfiguration: {},
       });
+    });
+
+    test('componentUpdated should not be called when in a funnel', () => {
+      const { setLastUserAction, rerender } = renderUseTableInteractionMetricsHook({}, FunnelWrapper);
+
+      setLastUserAction('filter');
+      rerender({ loading: true });
+
+      jest.advanceTimersByTime(3456);
+      rerender({ loading: false });
+      expect(ComponentMetrics.componentUpdated).toHaveBeenCalledTimes(0);
     });
 
     test('user actions should not be recorded if they happened a longer time ago', () => {
