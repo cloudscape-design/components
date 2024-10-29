@@ -159,15 +159,17 @@ export const InternalButton = React.forwardRef(
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
       [styles.disabled]: isNotInteractive,
+      [styles['disabled-with-reason']]: isDisabledWithReason,
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
+      [styles.link]: isAnchor,
     });
 
     const explicitTabIndex =
       __nativeAttributes && 'tabIndex' in __nativeAttributes ? __nativeAttributes.tabIndex : undefined;
     const { tabIndex } = useSingleTabStopNavigation(buttonRef, {
-      tabIndex: isAnchor && isNotInteractive ? -1 : explicitTabIndex,
+      tabIndex: isAnchor && isNotInteractive && !isDisabledWithReason ? -1 : explicitTabIndex,
     });
 
     const analyticsMetadata: GeneratedAnalyticsMetadataButtonFragment = disabled

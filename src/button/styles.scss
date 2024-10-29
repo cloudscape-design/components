@@ -164,3 +164,7 @@
     inset-inline: 0;
   }
 }
+
+.link.disabled:not(.disabled-with-reason) {
+  pointer-events: none;
+}
