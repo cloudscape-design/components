@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+/* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { waitFor } from '@testing-library/react';
-
-import AppLayout from '../../../lib/components/app-layout';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import { describeEachAppLayout, renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout';
 
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(true),
+  useMobile: jest.fn().mockReturnValue(false),
 }));
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
@@ -33,6 +33,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['main-landmark'])).not.toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)).not.toBeNull();
+    expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
 
     (useMobile as jest.Mock).mockReturnValue(true);
     await waitFor(() => {
@@ -42,6 +43,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(wrapper.findByClassName(visualRefreshToolbarStyles['main-landmark'])).not.toBeNull();
       expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
       expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)).not.toBeNull();
+      expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
     });
   });
 });
