@@ -162,7 +162,6 @@ export const InternalButton = React.forwardRef(
       [styles['button-no-wrap']]: !wrapText,
       [styles['button-no-text']]: !shouldHaveContent,
       [styles['full-width']]: shouldHaveContent && fullWidth,
-      [styles.link]: isAnchor,
     });
 
     const explicitTabIndex =
