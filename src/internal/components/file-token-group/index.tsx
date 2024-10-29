@@ -17,6 +17,8 @@ import tokenListStyles from '../token-list/styles.css.js';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
+export { FileTokenGroupProps };
+
 type InternalFileTokenGroupProps = FileTokenGroupProps & InternalBaseComponentProps;
 
 function InternalFileTokenGroup({
