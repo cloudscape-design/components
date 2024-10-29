@@ -236,6 +236,22 @@ export const InternalButton = React.forwardRef(
       }
     }, [loading, loadingButtonCount]);
 
+    const disabledReasonProps = {
+      onFocus: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
+      onBlur: isDisabledWithReason ? () => setShowTooltip(false) : undefined,
+      onMouseEnter: isDisabledWithReason ? () => setShowTooltip(true) : undefined,
+      onMouseLeave: isDisabledWithReason ? () => setShowTooltip(false) : undefined,
+      ...(isDisabledWithReason ? targetProps : {}),
+    };
+    const disabledReasonContent = (
+      <>
+        {descriptionEl}
+        {showTooltip && (
+          <Tooltip className={testUtilStyles['disabled-reason-tooltip']} trackRef={buttonRef} value={disabledReason!} />
+        )}
+      </>
+    );
+
     if (isAnchor) {
       return (
         // https://github.com/yannickcr/eslint-plugin-react/issues/2962
@@ -249,8 +265,10 @@ export const InternalButton = React.forwardRef(
             rel={rel ?? (target === '_blank' ? 'noopener noreferrer' : undefined)}
             aria-disabled={isNotInteractive ? true : undefined}
             download={download}
+            {...disabledReasonProps}
           >
             {buttonContent}
+            {isDisabledWithReason && disabledReasonContent}
           </a>
           {loading && loadingText && (
             <InternalLiveRegion tagName="span" hidden={true}>
@@ -268,25 +286,10 @@ export const InternalButton = React.forwardRef(
           type={formAction === 'none' ? 'button' : 'submit'}
           disabled={disabled && !__focusable && !isDisabledWithReason}
           aria-disabled={hasAriaDisabled ? true : undefined}
-          onFocus={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
-          onBlur={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
-          onMouseEnter={isDisabledWithReason ? () => setShowTooltip(true) : undefined}
-          onMouseLeave={isDisabledWithReason ? () => setShowTooltip(false) : undefined}
-          {...(isDisabledWithReason ? targetProps : {})}
+          {...disabledReasonProps}
         >
           {buttonContent}
-          {isDisabledWithReason && (
-            <>
-              {descriptionEl}
-              {showTooltip && (
-                <Tooltip
-                  className={testUtilStyles['disabled-reason-tooltip']}
-                  trackRef={buttonRef}
-                  value={disabledReason!}
-                />
-              )}
-            </>
-          )}
+          {isDisabledWithReason && disabledReasonContent}
         </button>
         {loading && loadingText && (
           <InternalLiveRegion tagName="span" hidden={true}>
