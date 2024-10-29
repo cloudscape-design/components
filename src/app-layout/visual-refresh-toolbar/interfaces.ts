@@ -52,4 +52,5 @@ export interface AppLayoutInternals {
   onActiveDrawerChange: (newDrawerId: string | null) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   onActiveGlobalDrawersChange: (newDrawerId: string) => void;
+  disableBodyScroll?: AppLayoutPropsWithDefaults['disableBodyScroll'];
 }

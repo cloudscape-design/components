@@ -24,6 +24,7 @@ interface SkeletonLayoutProps
     | 'contentType'
     | 'maxContentWidth'
     | 'disableContentPaddings'
+    | 'disableBodyScroll'
     | 'navigation'
     | 'navigationOpen'
     | 'navigationWidth'
@@ -64,6 +65,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       contentType,
       maxContentWidth,
       disableContentPaddings,
+      disableBodyScroll,
       globalToolsOpen,
     },
     ref
@@ -98,7 +100,13 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             {navigation}
           </div>
         )}
-        <main className={clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile'])}>
+        <main
+          className={clsx(styles['main-landmark'], {
+            [styles['unfocusable-mobile']]: isMobile && anyPanelOpen,
+            [styles['disable-body-scroll']]: disableBodyScroll,
+            [testutilStyles['disable-body-scroll-root']]: disableBodyScroll,
+          })}
+        >
           {notifications && (
             <div
               className={clsx(
