@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import {
   Box,
@@ -19,26 +19,43 @@ import {
 import styles from './styles.scss';
 
 export default function Bluedialogbox() {
-  // Inputs
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLElement | null>(null);
+  // Inputs (these following can be clubbed into one state object)
   const [dateValue, setDateValue] = React.useState('');
   const [amountValue, setAmountValue] = React.useState('0');
   const [descriptionValue, setDescriptionValue] = React.useState('');
   const [selectedService, setSelectedService] = React.useState({ label: 'Cloudwatch', value: 'Cloudwatch' });
 
+  useEffect(() => {
+    // Store the element that had focus before dialog opened
+    triggerRef.current = document.activeElement as HTMLElement;
+
+    // Focus the dialog container when it opens
+    if (dialogRef.current) {
+      dialogRef.current.focus();
+    }
+    // Cleanup: Return focus to the trigger element when dialog closes
+    return () => {
+      if (triggerRef.current) {
+        triggerRef.current.focus();
+      }
+    };
+  }, []);
   function submitData() {
-    console.log({ dateValue, amountValue, descriptionValue, selectedService });
+    console.log({ dateValue, amountValue, descriptionValue, selectedService }); // submit the form with these values to determine next action
   }
   function skipDialog() {
-    console.log('skip dialog');
+    console.log('skip dialog'); // can be used by the parent component to dismiss/ hide this dialog box
   }
 
   return (
     <div
       className={styles['blue-dialog-box']}
       role={'dialog'}
-      aria-labelledby="dialog-box"
-      aria-modal="true"
-      tabIndex={-1}
+      aria-labelledby="dialog-title"
+      aria-modal="false" // Maintains natural focus flow since it's an inline dialog
+      tabIndex={-1} // This allows the dialog to receive focus
     >
       <Form
         header={
