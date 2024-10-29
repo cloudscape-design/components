@@ -180,6 +180,7 @@ describe('File upload tokens', () => {
         { file: file2, errorText: 'Error 2' },
       ],
     });
+    expect(wrapper.findFileToken(1)!.findFileError().getElement()).toHaveTextContent('Error 1');
     expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Error 1');
     expect(wrapper.findFileToken(2)!.getElement()).toHaveAccessibleDescription('Error 2');
   });
@@ -191,6 +192,7 @@ describe('File upload tokens', () => {
         { file: file2, warningText: 'Warning 2' },
       ],
     });
+    expect(wrapper.findFileToken(1)!.findFileWarning().getElement()).toHaveTextContent('Warning 1');
     expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Warning 1');
     expect(wrapper.findFileToken(2)!.getElement()).toHaveAccessibleDescription('Warning 2');
   });
@@ -218,13 +220,6 @@ describe('Focusing behavior', () => {
 
     expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
   });
-
-  //   test('Focus is dispatched to the file input when the last token is removed, multiple=%s', () => {
-  //       const wrapper = renderStateful({ items: [{ file: file1 }] });
-  //       wrapper.findFileToken(1)!.findRemoveButton().click();
-
-  //       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
-  // });
 });
 
 describe('a11y', () => {

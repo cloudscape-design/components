@@ -77,14 +77,6 @@ function InternalFileToken({
       onFocus={() => setShowTooltip(true)}
       onBlur={() => setShowTooltip(false)}
     >
-      {loading && (
-        <>
-          <div className={styles['file-loading-overlay']} />
-          <div className={styles['file-loading-overlay-spinner']}>
-            <InternalSpinner variant="disabled" size="normal" />
-          </div>
-        </>
-      )}
       <Token
         ariaLabel={file.name}
         dismissLabel={i18nStrings.removeFileAriaLabel(index)}
@@ -98,6 +90,14 @@ function InternalFileToken({
         groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal' && !imageError}
         data-index={index}
       >
+        {loading && (
+          <>
+            <div className={styles['file-loading-overlay']} />
+            <div className={styles['file-loading-overlay-spinner']}>
+              <InternalSpinner variant="disabled" size="normal" />
+            </div>
+          </>
+        )}
         <InternalBox className={styles['file-option']}>
           {showFileThumbnail && isImage && <FileOptionThumbnail file={file} setHasError={setImageError} />}
 
