@@ -3,8 +3,8 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
+import { FileTokenWrapper } from '../internal/file-token-group';
 
-import fileUploadOptionSelectors from '../../../file-upload/file-option/styles.selectors.js';
 import fileUploadSelectors from '../../../file-upload/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
 import fileUploadInputSelectors from '../../../internal/components/file-input/styles.selectors.js';
@@ -54,35 +54,5 @@ export default class FileUploadWrapper extends ComponentWrapper<HTMLElement> {
 
   findWarning(): null | ElementWrapper {
     return this.find(`.${fileUploadSelectors.hints} .${formFieldStyles.warning} .${formFieldStyles.warning__message}`);
-  }
-}
-
-class FileTokenWrapper extends ComponentWrapper {
-  findFileName(): ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-name'])!;
-  }
-
-  findFileSize(): null | ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-size']);
-  }
-
-  findFileLastModified(): null | ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-last-modified']);
-  }
-
-  findFileThumbnail(): null | ElementWrapper {
-    return this.findByClassName(fileUploadOptionSelectors['file-option-thumbnail-image']);
-  }
-
-  findFileError(): null | ElementWrapper {
-    return this.find(`.${formFieldStyles.error} .${formFieldStyles.error__message}`);
-  }
-
-  findFileWarning(): null | ElementWrapper {
-    return this.find(`.${formFieldStyles.warning} .${formFieldStyles.warning__message}`);
-  }
-
-  findRemoveButton(): ElementWrapper {
-    return this.findByClassName(tokenGroupSelectors['dismiss-button'])!;
   }
 }
