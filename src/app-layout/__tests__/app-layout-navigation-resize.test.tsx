@@ -32,7 +32,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(wrapper.findNavigationToggle()).toBeFalsy();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['main-landmark'])).not.toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
-    expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)).not.toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
 
     (useMobile as jest.Mock).mockReturnValue(true);
@@ -42,7 +41,6 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       expect(wrapper.findNavigationToggle()).toBeFalsy();
       expect(wrapper.findByClassName(visualRefreshToolbarStyles['main-landmark'])).not.toBeNull();
       expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
-      expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)).not.toBeNull();
       expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
     });
   });
