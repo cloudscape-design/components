@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalBox from '../../../box/internal.js';
@@ -66,17 +66,24 @@ function InternalFileToken({
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
 
-  const containerRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const fileNameRef = useRef<HTMLSpanElement>(null);
+  const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [imageError, setImageError] = useState(false);
 
+  function isEllipsisActive() {
+    const span = fileNameRef.current;
+    const container = fileNameContainerRef.current;
+
+    if (span && container) {
+      return span.offsetWidth >= container.offsetWidth;
+    }
+    return false;
+  }
+
   return (
-    <div
-      ref={containerRef}
-      className={clsx(styles['file-token'])}
-      onFocus={() => setShowTooltip(true)}
-      onBlur={() => setShowTooltip(false)}
-    >
+    <div ref={containerRef} className={clsx(styles['file-token'])}>
       <Token
         ariaLabel={file.name}
         dismissLabel={i18nStrings.removeFileAriaLabel(index)}
@@ -107,12 +114,16 @@ function InternalFileToken({
             })}
           >
             <InternalSpaceBetween direction="vertical" size="xxxs">
-              <div onMouseOver={() => setShowTooltip(true)} onMouseOut={() => setShowTooltip(false)}>
+              <div
+                onMouseOver={() => setShowTooltip(true)}
+                onMouseOut={() => setShowTooltip(false)}
+                ref={fileNameContainerRef}
+              >
                 <InternalBox
                   fontWeight="normal"
                   className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'])}
                 >
-                  {file.name}
+                  <span ref={fileNameRef}>{file.name}</span>
                 </InternalBox>
               </div>
 
@@ -139,7 +150,7 @@ function InternalFileToken({
           </div>
         </InternalBox>
       </Token>
-      {alignment === 'horizontal' && showTooltip && (
+      {alignment === 'horizontal' && showTooltip && isEllipsisActive() && (
         <Tooltip
           trackRef={containerRef}
           trackKey={file.name}
