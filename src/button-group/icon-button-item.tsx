@@ -8,7 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { ButtonProps } from '../button/interfaces.js';
 import { InternalButton } from '../button/internal.js';
 import Tooltip from '../internal/components/tooltip/index.js';
-import { CancelableEventHandler, ClickDetail } from '../internal/events/index.js';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
 import InternalLiveRegion from '../live-region/internal.js';
 import { ButtonGroupProps } from './interfaces.js';
 
@@ -25,7 +25,7 @@ const IconButtonItem = forwardRef(
       item: ButtonGroupProps.IconButton;
       showTooltip: boolean;
       showFeedback: boolean;
-      onItemClick?: CancelableEventHandler<ClickDetail>;
+      onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
     },
     ref: React.Ref<ButtonProps.Ref>
   ) => {
@@ -36,6 +36,8 @@ const IconButtonItem = forwardRef(
       warnOnce('ButtonGroup', `Missing icon for item with id: ${item.id}`);
     }
 
+    const canShowTooltip = Boolean(showTooltip && !item.disabled && !item.loading);
+    const canShowFeedback = Boolean(showTooltip && showFeedback && item.popoverFeedback);
     return (
       <div ref={containerRef}>
         <InternalButton
@@ -43,11 +45,13 @@ const IconButtonItem = forwardRef(
           loading={item.loading}
           loadingText={item.loadingText}
           disabled={item.disabled}
+          __focusable={canShowFeedback}
           iconName={hasIcon ? item.iconName : 'close'}
-          iconAlt={item.text}
+          iconUrl={item.iconUrl}
           iconSvg={item.iconSvg}
+          iconAlt={item.text}
           ariaLabel={item.text}
-          onClick={onItemClick}
+          onClick={event => fireCancelableEvent(onItemClick, { id: item.id }, event)}
           ref={ref}
           data-testid={item.id}
           data-itemid={item.id}
@@ -56,7 +60,7 @@ const IconButtonItem = forwardRef(
         >
           {item.text}
         </InternalButton>
-        {showTooltip && !item.disabled && !item.loading && (!showFeedback || item.popoverFeedback) && (
+        {(canShowTooltip || canShowFeedback) && (
           <Tooltip
             trackRef={containerRef}
             trackKey={item.id}

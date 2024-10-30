@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { range } from 'lodash';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -7,7 +9,6 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const buttonGroup = createWrapper().findButtonGroup();
 const likeButton = buttonGroup.findButtonById('like');
-const dislikeButton = buttonGroup.findButtonById('dislike');
 const copyButton = buttonGroup.findButtonById('copy');
 const sendButton = buttonGroup.findButtonById('send');
 const actionsMenu = buttonGroup.findMenuById('more-actions');
@@ -26,10 +27,10 @@ function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: B
 test(
   'shows popover after clicking on inline button',
   setup({}, async page => {
-    await page.click(likeButton.toSelector());
+    await page.click(copyButton.toSelector());
     await page.waitForVisible(buttonGroup.findTooltip().toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
-    await expect(page.getText('#last-clicked')).resolves.toBe('like');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copied');
+    await expect(page.getText('#log')).resolves.toBe('copy');
   })
 );
 
@@ -38,7 +39,7 @@ test(
   setup({}, async page => {
     await page.click(actionsMenu.toSelector());
     await page.click(actionsMenu.findItemById('edit').toSelector());
-    await expect(page.getText('#last-clicked')).resolves.toBe('edit');
+    await expect(page.getText('#log')).resolves.toBe('edit');
   })
 );
 
@@ -51,7 +52,7 @@ test.each([false, true])(
       await page.keys(['Tab']);
       await expect(page.isFocused(likeButton.toSelector())).resolves.toBe(true);
 
-      await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
+      await page.keys(range(8).map(() => 'ArrowRight'));
       await expect(page.isFocused(actionsMenu.find('button').toSelector())).resolves.toBe(true);
 
       await page.keys(['Enter']);
@@ -76,7 +77,7 @@ test(
   'shows tooltip when a button is focused',
   setup({}, async page => {
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
 
     await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
@@ -91,14 +92,14 @@ test(
   'hides popover after clicking outside',
   setup({}, async page => {
     await page.click(likeButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Liked');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
 
-    await page.click(createWrapper().find('#last-clicked').toSelector());
+    await page.click(createWrapper().find('#log').toSelector());
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
 
     await page.click(actionsMenu.toSelector());
     await page.click(actionsMenu.findItemById('cut').toSelector());
-    await page.click(createWrapper().find('#last-clicked').toSelector());
+    await page.click(createWrapper().find('#log').toSelector());
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
   })
 );
@@ -106,8 +107,8 @@ test(
 test(
   'keeps focus in button group when action gets removed',
   setup({}, async page => {
-    await page.click(dislikeButton.toSelector());
-    await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
+    await page.click(sendButton.toSelector());
+    await expect(page.isFocused(likeButton.toSelector())).resolves.toBe(true);
   })
 );
 
@@ -119,7 +120,7 @@ test(
     await page.keys(['Tab']);
     await expect(page.isFocused(likeButton.toSelector())).resolves.toBe(true);
 
-    await page.keys(['ArrowRight', 'ArrowRight']);
+    await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
     await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
@@ -130,7 +131,7 @@ test(
 
     await page.keys(['ArrowRight']);
     await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Send');
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Add');
 
     await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight']);
     await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
@@ -141,11 +142,11 @@ test(
 test(
   'keeps showing tooltip after clicking on a button with no popover feedback',
   setup({}, async page => {
-    await page.hoverElement(sendButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Send');
+    await page.hoverElement(likeButton.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
 
-    await page.click(sendButton.toSelector());
-    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Send');
+    await page.click(likeButton.toSelector());
+    await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
   })
 );
 

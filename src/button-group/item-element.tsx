@@ -3,7 +3,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { ButtonProps } from '../button/interfaces.js';
-import { ClickDetail, fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
+import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import IconButtonItem from './icon-button-item';
 import { ButtonGroupProps } from './interfaces';
@@ -79,14 +79,14 @@ const ItemElement = forwardRef(
       setTooltip(show ? { item: item.id, feedback: false } : null);
     };
 
-    const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails | ClickDetail>) => {
+    const onClickHandler = (event: CustomEvent<ButtonGroupProps.ItemClickDetails>) => {
       const hasPopoverFeedback = 'popoverFeedback' in item && item.popoverFeedback;
 
       if (hasPopoverFeedback) {
         setTooltip({ item: item.id, feedback: true });
       }
 
-      fireCancelableEvent(onItemClick, { id: 'id' in event.detail ? event.detail.id : item.id }, event);
+      fireCancelableEvent(onItemClick, event.detail, event);
     };
 
     return (
