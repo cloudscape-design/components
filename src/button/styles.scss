@@ -165,6 +165,6 @@
   }
 }
 
-.link.disabled {
+.link.disabled:not(.disabled-with-reason) {
   pointer-events: none;
 }

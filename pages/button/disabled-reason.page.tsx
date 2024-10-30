@@ -19,6 +19,14 @@ export default function ButtonsScenario() {
         <Button disabled={true} disabledReason="disabled reason">
           Default
         </Button>
+        <Button
+          disabled={true}
+          disabledReason="disabled reason"
+          href="https://smth.com"
+          data-testid="normal-button-with-href"
+        >
+          Button with href
+        </Button>
       </ScreenshotArea>
     </article>
   );
