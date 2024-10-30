@@ -2,13 +2,18 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
-import { AppLayout, Box, SplitPanel, TokenGroup } from '~components';
-import ButtonGroup from '~components/button-group';
-import Checkbox from '~components/checkbox';
-import ColumnLayout from '~components/column-layout';
-import FormField from '~components/form-field';
-import PromptInput from '~components/prompt-input';
-import SpaceBetween from '~components/space-between';
+import {
+  Alert,
+  AppLayout,
+  Box,
+  ButtonGroup,
+  Checkbox,
+  ColumnLayout,
+  FormField,
+  PromptInput,
+  SpaceBetween,
+  SplitPanel,
+} from '~components';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
@@ -188,13 +193,10 @@ export default function PromptInputPage() {
                   }
                   secondaryContent={
                     hasSecondaryContent ? (
-                      <TokenGroup
-                        onDismiss={({ detail: { itemIndex } }) => {
-                          setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
-                        }}
-                        items={items}
-                        readOnly={isReadOnly}
-                      />
+                      <Alert statusIconAriaLabel="Info" header="Known issues/limitations">
+                        Review the documentation to learn about potential compatibility issues with specific database
+                        versions.
+                      </Alert>
                     ) : undefined
                   }
                 />

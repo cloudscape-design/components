@@ -161,10 +161,10 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
   @include styles.control-border-radius-full();
 
   &.with-paddings {
-    padding-block-start: styles.$control-padding-vertical;
+    padding-block-start: awsui.$space-scaled-s;
     padding-block-end: awsui.$space-scaled-s;
     padding-inline-start: styles.$control-padding-horizontal;
-    padding-inline-end: calc(styles.$control-padding-horizontal / 2);
+    padding-inline-end: styles.$control-padding-horizontal;
 
     &.invalid,
     &.warning {
