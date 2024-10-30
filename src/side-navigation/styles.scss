@@ -55,10 +55,9 @@
 
 .list-container {
   margin-block-start: awsui.$space-panel-content-top;
-}
-
-.with-toolbar > .list-container:not(.items-control + .list-container) {
-  margin-block-start: 0;
+  .with-toolbar > .divider + & {
+    margin-block-start: 0;
+  }
 }
 
 .list {
