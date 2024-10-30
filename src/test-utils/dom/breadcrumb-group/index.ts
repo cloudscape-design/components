@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import ButtonDropdownWrapper from '../button-dropdown';
 
@@ -34,6 +35,19 @@ export default class BreadcrumbGroupWrapper extends ComponentWrapper {
       index++;
     }
     return this.find(`.${styles.item}:nth-child(${index}) .${itemStyles.anchor}`);
+  }
+
+  /**
+   * Returns the wrapper of the first breadcrumb link that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `items` prop.
+   * If no matching breadcrumb link is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {ElementWrapper | null}
+   */
+  findBreadcrumbLinkByTestId(testId: string): ElementWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.find(`.${itemStyles.breadcrumb}[data-testid="${escapedTestId}"] .${itemStyles.anchor}`);
   }
 
   findDropdown(): ButtonDropdownWrapper | null {
