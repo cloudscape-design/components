@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useState } from 'react';
 
-import { Box, TokenGroup } from '~components';
+import { AppLayout, Box, SplitPanel, TokenGroup } from '~components';
 import ButtonGroup from '~components/button-group';
 import Checkbox from '~components/checkbox';
 import ColumnLayout from '~components/column-layout';
@@ -11,6 +11,7 @@ import PromptInput from '~components/prompt-input';
 import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import labels from '../app-layout/utils/labels';
 
 const MAX_CHARS = 2000;
 
@@ -31,6 +32,7 @@ const placeholderText =
 
 export default function PromptInputPage() {
   const [textareaValue, setTextareaValue] = useState('');
+  const [valueInSplitPanel, setValueInSplitPanel] = useState('');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText, hasSecondaryActions, hasSecondaryContent } =
@@ -74,128 +76,157 @@ export default function PromptInputPage() {
   const ref = React.createRef<HTMLTextAreaElement>();
 
   return (
-    <div style={{ padding: 10 }}>
-      <h1>PromptInput demo</h1>
-      <SpaceBetween size="xl">
-        <FormField label="Settings">
-          <Checkbox checked={isDisabled} onChange={() => setUrlParams({ isDisabled: !isDisabled })}>
-            Disabled
-          </Checkbox>
-          <Checkbox checked={isReadOnly} onChange={() => setUrlParams({ isReadOnly: !isReadOnly })}>
-            Read-only
-          </Checkbox>
-          <Checkbox checked={isInvalid} onChange={() => setUrlParams({ isInvalid: !isInvalid })}>
-            Invalid
-          </Checkbox>
-          <Checkbox checked={hasWarning} onChange={() => setUrlParams({ hasWarning: !hasWarning })}>
-            Warning
-          </Checkbox>
-          <Checkbox
-            checked={hasSecondaryContent}
-            onChange={() =>
-              setUrlParams({
-                hasSecondaryContent: !hasSecondaryContent,
-              })
-            }
-          >
-            Secondary content
-          </Checkbox>
-          <Checkbox
-            checked={hasSecondaryActions}
-            onChange={() =>
-              setUrlParams({
-                hasSecondaryActions: !hasSecondaryActions,
-              })
-            }
-          >
-            Secondary actions
-          </Checkbox>
-        </FormField>
-        <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
-          Fill with placeholder text
-        </button>
+    <AppLayout
+      ariaLabels={labels}
+      content={
+        <div style={{ padding: 10 }}>
+          <h1>PromptInput demo</h1>
+          <SpaceBetween size="xl">
+            <FormField label="Settings">
+              <Checkbox checked={isDisabled} onChange={() => setUrlParams({ isDisabled: !isDisabled })}>
+                Disabled
+              </Checkbox>
+              <Checkbox checked={isReadOnly} onChange={() => setUrlParams({ isReadOnly: !isReadOnly })}>
+                Read-only
+              </Checkbox>
+              <Checkbox checked={isInvalid} onChange={() => setUrlParams({ isInvalid: !isInvalid })}>
+                Invalid
+              </Checkbox>
+              <Checkbox checked={hasWarning} onChange={() => setUrlParams({ hasWarning: !hasWarning })}>
+                Warning
+              </Checkbox>
+              <Checkbox
+                checked={hasSecondaryContent}
+                onChange={() =>
+                  setUrlParams({
+                    hasSecondaryContent: !hasSecondaryContent,
+                  })
+                }
+              >
+                Secondary content
+              </Checkbox>
+              <Checkbox
+                checked={hasSecondaryActions}
+                onChange={() =>
+                  setUrlParams({
+                    hasSecondaryActions: !hasSecondaryActions,
+                  })
+                }
+              >
+                Secondary actions
+              </Checkbox>
+            </FormField>
+            <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
+              Fill with placeholder text
+            </button>
 
-        <button id="focus-button" onClick={() => ref.current?.focus()}>
-          Focus component
-        </button>
-        <button onClick={() => ref.current?.select()}>Select all text</button>
+            <button id="focus-button" onClick={() => ref.current?.focus()}>
+              Focus component
+            </button>
+            <button onClick={() => ref.current?.select()}>Select all text</button>
 
-        <ColumnLayout columns={2}>
-          <FormField
-            errorText={(textareaValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
-            warningText={hasWarning && 'This input has a warning'}
-            constraintText={
-              <>
-                This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
-              </>
-            }
-            label={<span>User prompt</span>}
-            i18nStrings={{ errorIconAriaLabel: 'Error' }}
-          >
-            <PromptInput
-              ariaLabel="Chat input"
-              actionButtonIconName="send"
-              actionButtonAriaLabel="Submit prompt"
-              value={textareaValue}
-              onChange={(event: any) => setTextareaValue(event.detail.value)}
-              onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-              placeholder="Ask a question"
-              maxRows={4}
-              disabled={isDisabled}
-              readOnly={isReadOnly}
-              invalid={isInvalid || textareaValue.length > MAX_CHARS}
-              warning={hasWarning}
-              ref={ref}
-              disableSecondaryActionsPaddings={true}
-              secondaryActions={
-                hasSecondaryActions ? (
-                  <Box padding={{ left: 'xxs', top: 'xs' }}>
-                    <ButtonGroup
-                      ariaLabel="Chat actions"
-                      items={[
-                        {
-                          type: 'icon-button',
-                          id: 'copy',
-                          iconName: 'upload',
-                          text: 'Upload files',
-                          disabled: isDisabled || isReadOnly,
-                        },
-                        {
-                          type: 'icon-button',
-                          id: 'expand',
-                          iconName: 'expand',
-                          text: 'Go full page',
-                          disabled: isDisabled || isReadOnly,
-                        },
-                        {
-                          type: 'icon-button',
-                          id: 'remove',
-                          iconName: 'remove',
-                          text: 'Remove',
-                          disabled: isDisabled || isReadOnly,
-                        },
-                      ]}
-                      variant="icon"
-                    />
-                  </Box>
-                ) : undefined
-              }
-              secondaryContent={
-                hasSecondaryContent ? (
-                  <TokenGroup
-                    onDismiss={({ detail: { itemIndex } }) => {
-                      setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
-                    }}
-                    items={items}
-                    readOnly={isReadOnly}
-                  />
-                ) : undefined
-              }
-            />
-          </FormField>
-          <div />
-        </ColumnLayout>
-      </SpaceBetween>
-    </div>
+            <ColumnLayout columns={2}>
+              <FormField
+                errorText={(textareaValue.length > MAX_CHARS || isInvalid) && 'The query has too many characters.'}
+                warningText={hasWarning && 'This input has a warning'}
+                constraintText={
+                  <>
+                    This service is subject to some policy. Character count: {textareaValue.length}/{MAX_CHARS}
+                  </>
+                }
+                label={<span>User prompt</span>}
+                i18nStrings={{ errorIconAriaLabel: 'Error' }}
+              >
+                <PromptInput
+                  data-testid="prompt-input"
+                  ariaLabel="Chat input"
+                  actionButtonIconName="send"
+                  actionButtonAriaLabel="Submit prompt"
+                  value={textareaValue}
+                  onChange={(event: any) => setTextareaValue(event.detail.value)}
+                  onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+                  placeholder="Ask a question"
+                  maxRows={4}
+                  disabled={isDisabled}
+                  readOnly={isReadOnly}
+                  invalid={isInvalid || textareaValue.length > MAX_CHARS}
+                  warning={hasWarning}
+                  ref={ref}
+                  disableSecondaryActionsPaddings={true}
+                  secondaryActions={
+                    hasSecondaryActions ? (
+                      <Box padding={{ left: 'xxs', top: 'xs' }}>
+                        <ButtonGroup
+                          ariaLabel="Chat actions"
+                          items={[
+                            {
+                              type: 'icon-button',
+                              id: 'copy',
+                              iconName: 'upload',
+                              text: 'Upload files',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'expand',
+                              iconName: 'expand',
+                              text: 'Go full page',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'remove',
+                              iconName: 'remove',
+                              text: 'Remove',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                          ]}
+                          variant="icon"
+                        />
+                      </Box>
+                    ) : undefined
+                  }
+                  secondaryContent={
+                    hasSecondaryContent ? (
+                      <TokenGroup
+                        onDismiss={({ detail: { itemIndex } }) => {
+                          setItems([...items.slice(0, itemIndex), ...items.slice(itemIndex + 1)]);
+                        }}
+                        items={items}
+                        readOnly={isReadOnly}
+                      />
+                    ) : undefined
+                  }
+                />
+              </FormField>
+              <div />
+            </ColumnLayout>
+          </SpaceBetween>
+        </div>
+      }
+      splitPanel={
+        <SplitPanel
+          header="Split panel header"
+          i18nStrings={{
+            preferencesTitle: 'Preferences',
+            preferencesPositionLabel: 'Split panel position',
+            preferencesPositionDescription: 'Choose the default split panel position for the service.',
+            preferencesPositionSide: 'Side',
+            preferencesPositionBottom: 'Bottom',
+            preferencesConfirm: 'Confirm',
+            preferencesCancel: 'Cancel',
+            closeButtonAriaLabel: 'Close panel',
+            openButtonAriaLabel: 'Open panel',
+            resizeHandleAriaLabel: 'Slider',
+          }}
+        >
+          <PromptInput
+            data-testid="Prompt-input-in-split-panel"
+            value={valueInSplitPanel}
+            onChange={event => setValueInSplitPanel(event.detail.value)}
+          />
+        </SplitPanel>
+      }
+    />
   );
 }
