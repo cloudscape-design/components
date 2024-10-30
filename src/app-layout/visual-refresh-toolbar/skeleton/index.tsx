@@ -92,7 +92,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               styles.navigation,
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
-              sharedStyles['with-motion']
+              sharedStyles['with-motion-horizontal']
             )}
           >
             {navigation}
@@ -130,7 +130,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           className={clsx(
             styles.tools,
             !toolsOpen && styles['panel-hidden'],
-            sharedStyles['with-motion'],
+            sharedStyles['with-motion-horizontal'],
             navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
             toolsOpen && styles['tools-open']
           )}

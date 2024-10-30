@@ -70,7 +70,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           id={activeDrawerId}
           aria-hidden={!activeDrawer}
           aria-label={computedAriaLabels.content}
-          className={clsx(styles.drawer, sharedStyles['with-motion'], {
+          className={clsx(styles.drawer, sharedStyles['with-motion-horizontal'], {
             [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
             [styles.legacy]: isLegacyDrawer,
             [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,
@@ -107,7 +107,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
               />
             </div>
           )}
-          <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion'])}>
+          <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
             <div className={clsx(styles['drawer-close-button'])}>
               <InternalButton
                 ariaLabel={computedAriaLabels.closeButton}

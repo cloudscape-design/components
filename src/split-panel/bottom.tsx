@@ -59,7 +59,7 @@ export function SplitPanelContentBottom({
         styles.drawer,
         styles['position-bottom'],
         testUtilStyles.root,
-        sharedStyles['with-motion'],
+        sharedStyles['with-motion-vertical'],
         {
           [testUtilStyles['open-position-bottom']]: isOpen,
           [styles['drawer-closed']]: !isOpen,

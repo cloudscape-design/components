@@ -12,20 +12,12 @@ import { SizeControlProps } from './interfaces';
 
 import styles from '../resize/styles.css.js';
 
-export const usePointerEvents = ({
-  position,
-  panelRef,
-  handleRef,
-  onResize,
-  hasTransitions = false,
-}: SizeControlProps) => {
+export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: SizeControlProps) => {
   const onDocumentPointerMove = useCallback(
     (event: PointerEvent) => {
       if (!panelRef || !panelRef.current || !handleRef || !handleRef.current) {
         return;
       }
-
-      panelRef.current.classList.remove(styles['with-motion']);
 
       if (position === 'side') {
         const mouseClientX = getLogicalClientX(event, getIsRtl(panelRef.current)) || 0;
@@ -53,14 +45,11 @@ export const usePointerEvents = ({
       return;
     }
 
-    if (hasTransitions) {
-      panelRef.current.classList.add(styles['with-motion']);
-    }
     document.body.classList.remove(styles['resize-active']);
     document.body.classList.remove(styles[`resize-${position}`]);
     document.removeEventListener('pointerup', onDocumentPointerUp);
     document.removeEventListener('pointermove', onDocumentPointerMove);
-  }, [panelRef, onDocumentPointerMove, position, hasTransitions]);
+  }, [panelRef, onDocumentPointerMove, position]);
 
   const onSliderPointerDown = useCallback(() => {
     document.body.classList.add(styles['resize-active']);

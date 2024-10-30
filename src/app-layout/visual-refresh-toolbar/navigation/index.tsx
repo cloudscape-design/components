@@ -53,7 +53,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
           [testutilStyles['drawer-closed']]: !navigationOpen,
         },
         testutilStyles.navigation,
-        sharedStyles['with-motion']
+        sharedStyles['with-motion-horizontal']
       )}
       aria-hidden={!navigationOpen}
       onClick={onNavigationClick}

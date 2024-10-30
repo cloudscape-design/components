@@ -44,7 +44,7 @@ export function SplitPanelContentSide({
         styles.drawer,
         styles['position-side'],
         testUtilStyles.root,
-        sharedStyles['with-motion'],
+        sharedStyles['with-motion-horizontal'],
         {
           [testUtilStyles['open-position-side']]: isOpen,
           [styles['drawer-closed']]: !isOpen,
