@@ -8,8 +8,8 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 
-$file-token-height: 70px;
-$compact-token-width: 220px;
+$file-token-height: 68.5px;
+$compact-token-width: 230px;
 
 .root {
   @include styles.styles-reset;
