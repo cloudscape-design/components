@@ -25,7 +25,6 @@ const unevenOptions = [
 
 interface PermutationProps extends TableProps.EditConfig<unknown> {
   isEditing: boolean;
-  interactiveCell: boolean;
   successfulEdit?: boolean;
   disabledReason?: () => string;
 }
@@ -49,7 +48,6 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined, 'This requirement needs to be met.'],
     validation: [undefined, () => 'There was an error!'],
     isEditing: [true],
-    interactiveCell: [false],
   },
   {
     ariaLabel: ['Editable column'],
@@ -59,7 +57,6 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined],
     validation: [undefined],
     isEditing: [false],
-    interactiveCell: [false, true],
     successfulEdit: [false, true],
   },
   {
@@ -70,7 +67,6 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined],
     validation: [undefined],
     isEditing: [false],
-    interactiveCell: [false, true],
     disabledReason: [() => 'Disabled reason popover content'],
   },
   // Select overflow permutation
@@ -92,7 +88,6 @@ const editPermutations = createPermutations<PermutationProps>([
     constraintText: [undefined],
     validation: [undefined],
     isEditing: [true],
-    interactiveCell: [false],
   },
 ]);
 
