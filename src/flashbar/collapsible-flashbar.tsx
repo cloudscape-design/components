@@ -250,6 +250,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
             {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
               <li
                 aria-hidden={!showInnerContent(item)}
+                data-testid={item.testId}
                 className={
                   showInnerContent(item)
                     ? clsx(

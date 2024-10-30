@@ -196,6 +196,67 @@ describe('Flashbar component', () => {
       }
     });
 
+    test('assigns data-testid to flash items', () => {
+      const { container } = reactRender(
+        <Flashbar
+          items={[
+            {
+              testId: 'flash-item-1',
+              content: 'first flash item',
+            },
+            {
+              testId: 'flash-item-2',
+              content: 'second flash item',
+            },
+          ]}
+        />
+      );
+      const wrapper = createWrapper(container);
+      const flashbarItemsTestIds = wrapper
+        .findFlashbar()!
+        .findItems()
+        .map(flashbar => flashbar.getElement()!.getAttribute('data-testid'));
+
+      expect(flashbarItemsTestIds).toEqual(['flash-item-1', 'flash-item-2']);
+    });
+
+    test('findItemByTestId', () => {
+      const { container } = reactRender(
+        <Flashbar
+          items={[
+            {
+              testId: 'flash-item-1',
+              content: 'first flash item',
+            },
+            {
+              testId: 'flash-item-2',
+              content: 'second flash item',
+            },
+          ]}
+        />
+      );
+      const wrapper = createWrapper(container);
+      const secondFlashItemFromTestId = wrapper.findFlashbar()!.findItemByTestId('flash-item-2')!.getElement();
+      expect(secondFlashItemFromTestId).toHaveTextContent('second flash item');
+    });
+
+    test('findItemByTestId returns the item even if the test ID contains double quotes', () => {
+      const { container } = reactRender(
+        <Flashbar
+          items={[
+            {
+              testId: '"flash-item-test-id"',
+              content: 'flash item',
+            },
+          ]}
+        />
+      );
+      const wrapper = createWrapper(container);
+      const flashItem = wrapper.findFlashbar()?.findItemByTestId('"flash-item-test-id"')!.getElement();
+
+      expect(flashItem).toHaveTextContent('flash item');
+    });
+
     test('findItemsByType', () => {
       const wrapper = createFlashbarWrapper(
         <Flashbar

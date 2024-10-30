@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils.js';
 
 import testUtilStyles from '../../../anchor-navigation/test-classes/styles.selectors.js';
 
@@ -42,10 +43,8 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
    * @returns {AnchorItemWrapper | null}
    */
   findAnchorByTestId(testId: string): AnchorItemWrapper | null {
-    return this.findComponent(
-      `.${testUtilStyles['anchor-item']}[data-testid="${CSS.escape(testId)}"]`,
-      AnchorItemWrapper
-    );
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(`.${testUtilStyles['anchor-item']}[data-testid="${escapedTestId}"]`, AnchorItemWrapper);
   }
 }
 
