@@ -20,14 +20,17 @@ setComponentMetrics({
 
 export default function () {
   return (
-    <Table
-      items={[]}
-      columnDefinitions={[]}
-      header={
-        <Header info={<Link variant="info">Info</Link>} counter="(10)">
-          Table title
-        </Header>
-      }
-    />
+    <>
+      <h1>Table analytics</h1>
+      <Table
+        items={[]}
+        columnDefinitions={[]}
+        header={
+          <Header info={<Link variant="info">Info</Link>} counter="(10)">
+            Table title
+          </Header>
+        }
+      />
+    </>
   );
 }
