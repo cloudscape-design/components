@@ -39,7 +39,6 @@ export interface FileTokenProps extends BaseComponentProps {
   loading?: boolean;
   loadingText?: string;
   i18nStrings: FileTokenProps.I18nStrings;
-  disabled?: boolean;
   dismissLabel?: string;
   alignment?: TokenGroupProps.Alignment;
   groupContainsImage?: boolean;
@@ -55,7 +54,6 @@ function InternalFileToken({
   onDismiss,
   errorText,
   warningText,
-  disabled,
   loading,
   loadingText,
   alignment,
@@ -92,7 +90,6 @@ function InternalFileToken({
         warningText={warningText}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
         warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-        disabled={disabled}
         loading={loading}
         alignment={alignment}
         groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal' && !imageError}
