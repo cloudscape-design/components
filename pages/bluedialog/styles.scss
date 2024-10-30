@@ -5,8 +5,6 @@
 @use '~design-tokens' as awsui;
 
 .blue-dialog-box {
-  margin-block: 20px;
-  margin-inline: 20px;
   border-block: 1px solid awsui.$color-border-status-info;
   border-inline: 1px solid awsui.$color-border-status-info;
   background-color: awsui.$color-background-status-info;
