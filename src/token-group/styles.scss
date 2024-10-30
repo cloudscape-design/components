@@ -128,3 +128,8 @@ $compact-token-width: 220px;
     }
   }
 }
+
+.token-box-loading {
+  border-color: awsui.$color-border-control-disabled;
+  background-color: awsui.$color-background-container-content;
+}

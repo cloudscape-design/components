@@ -7,7 +7,6 @@
 @use '../../styles' as styles;
 
 $image-size: 48px;
-$icon-offset: awsui.$size-icon-normal / 2;
 
 .root {
   @include styles.styles-reset();
@@ -20,20 +19,8 @@ $icon-offset: awsui.$size-icon-normal / 2;
 
 .file-loading-overlay {
   position: absolute;
-  inset: 0;
-  background: awsui.$color-background-container-content;
-  opacity: 75%;
-
-  border-start-start-radius: awsui.$border-radius-token;
-  border-start-end-radius: awsui.$border-radius-token;
-  border-end-start-radius: awsui.$border-radius-token;
-  border-end-end-radius: awsui.$border-radius-token;
-
-  &-spinner {
-    position: absolute;
-    inset-inline-start: calc(50% - $icon-offset);
-    inset-block-end: calc(50% - $icon-offset);
-  }
+  inset-inline-end: awsui.$space-static-xs;
+  inset-block-end: awsui.$space-static-xxs;
 }
 
 .file-option-name,

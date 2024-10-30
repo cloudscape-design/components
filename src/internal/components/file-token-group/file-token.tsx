@@ -86,14 +86,14 @@ function InternalFileToken({
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
         warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
         disabled={disabled}
+        loading={loading}
         alignment={alignment}
         groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal' && !imageError}
         data-index={index}
       >
         {loading && (
           <>
-            <div className={styles['file-loading-overlay']} />
-            <div className={styles['file-loading-overlay-spinner']}>
+            <div className={styles['file-loading-overlay']}>
               <InternalSpinner variant="disabled" size="normal" />
             </div>
           </>
@@ -119,7 +119,7 @@ function InternalFileToken({
               {showFileSize && file.size ? (
                 <InternalBox
                   fontSize="body-s"
-                  color="text-body-secondary"
+                  color={'text-body-secondary'}
                   className={clsx(styles['file-option-size'], testUtilStyles['file-option-size'])}
                 >
                   {formatFileSize(file.size)}
@@ -129,7 +129,7 @@ function InternalFileToken({
               {showFileLastModified && file.lastModified ? (
                 <InternalBox
                   fontSize="body-s"
-                  color="text-body-secondary"
+                  color={'text-body-secondary'}
                   className={clsx(styles['file-option-last-modified'], testUtilStyles['file-option-last-modified'])}
                 >
                   {formatFileLastModified(new Date(file.lastModified))}
