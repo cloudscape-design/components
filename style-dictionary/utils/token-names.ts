@@ -682,6 +682,7 @@ export type SpacingTokenName =
   | 'spaceTableHeaderToolsBottom'
   | 'spaceTableHeaderToolsFullPageBottom'
   | 'spaceTableHorizontal'
+  | 'spaceTileGutter'
   | 'spaceL'
   | 'spaceM'
   | 'spaceNone'
