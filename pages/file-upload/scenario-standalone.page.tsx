@@ -12,6 +12,7 @@ import { validateContractFiles } from './validations';
 export default function FileUploadScenarioStandalone() {
   const contractsRef = useRef<FileUploadProps.Ref>(null);
   const [acceptMultiple, setAcceptMultiple] = useState(true);
+  const [verticalAlignment, setVerticalAlignment] = useState(true);
   const formState = useContractFilesForm();
 
   const contractsValidationErrors = validateContractFiles(formState.files);
@@ -40,12 +41,16 @@ export default function FileUploadScenarioStandalone() {
           Accept multiple files
         </Checkbox>
 
+        <Checkbox checked={verticalAlignment} onChange={event => setVerticalAlignment(event.detail.checked)}>
+          Vertical alignment
+        </Checkbox>
+
         <FormField
           label={acceptMultiple ? 'Contracts' : 'Contract'}
           description={acceptMultiple ? 'Upload your contract with all amendments' : 'Upload your contract'}
         >
           <FileUpload
-            fileTokenAlignment="horizontal"
+            fileTokenAlignment={verticalAlignment ? 'vertical' : 'horizontal'}
             ref={contractsRef}
             multiple={acceptMultiple}
             tokenLimit={3}
