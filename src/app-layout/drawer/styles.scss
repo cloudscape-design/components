@@ -53,10 +53,12 @@
   & > [aria-hidden='true'] {
     display: none;
   }
-  > .drawer-resize-content {
-    overflow: auto;
+  > .drawer-content-wrapper {
     block-size: 100%;
     position: relative;
+  }
+  > .drawer-resize-wrapper {
+    overflow: auto;
   }
 }
 

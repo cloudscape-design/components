@@ -119,12 +119,9 @@ export const Drawer = React.forwardRef(
         >
           {!isMobile && !hideOpenButton && regularOpenButton}
           <TagName
-            className={clsx(resizeHandle && styles['drawer-resize-content'])}
+            className={clsx(resizeHandle && styles['drawer-resize-wrapper'], styles['drawer-content-wrapper'])}
             aria-label={mainLabel}
             aria-hidden={!isOpen}
-            style={{
-              ['blockSize']: `calc(100vh - ${(topOffset || 0) + (bottomOffset || 0)}px)`,
-            }}
           >
             {!isMobile && isOpen && <div className={styles['resize-handle-wrapper']}>{resizeHandle}</div>}
             <CloseButton
