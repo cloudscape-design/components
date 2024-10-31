@@ -25,8 +25,7 @@ export default function () {
           splitPanelOpen={true}
           splitPanel={
             <SplitPanel
-              header="Aplit panel from a different app layout"
-              closeBehavior="hide"
+              header="Split panel from a different app layout"
               hidePreferencesButton={true}
               i18nStrings={discreetSplitPanelI18nStrings}
             >
@@ -53,7 +52,7 @@ export default function () {
         splitPanelOpen={true}
         splitPanel={
           <SplitPanel
-            header="Aplit panel from main layout"
+            header="Split panel from main layout"
             closeBehavior="hide"
             hidePreferencesButton={true}
             i18nStrings={discreetSplitPanelI18nStrings}
