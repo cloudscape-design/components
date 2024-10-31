@@ -49,6 +49,18 @@ export default function () {
             </Header>
           </SpaceBetween>
         }
+        splitPanelPreferences={{ position: `side` }}
+        splitPanelOpen={true}
+        splitPanel={
+          <SplitPanel
+            header="Aplit panel from main layout"
+            closeBehavior="hide"
+            hidePreferencesButton={true}
+            i18nStrings={discreetSplitPanelI18nStrings}
+          >
+            Hello!
+          </SplitPanel>
+        }
       />
     </ScreenshotArea>
   );
