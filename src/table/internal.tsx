@@ -410,6 +410,7 @@ const InternalTable = React.forwardRef(
           >
             <InternalContainer
               {...baseProps}
+              {...tableInteractionAttributes}
               __internalRootRef={__internalRootRef}
               className={clsx(baseProps.className, styles.root)}
               __funnelSubStepProps={__funnelSubStepProps}
@@ -502,7 +503,6 @@ const InternalTable = React.forwardRef(
                 >
                   <table
                     {...performanceMarkAttributes}
-                    {...tableInteractionAttributes}
                     ref={tableRef}
                     className={clsx(
                       styles.table,
