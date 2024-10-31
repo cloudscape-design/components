@@ -15,7 +15,6 @@ import InternalFileDropzone from '../file-dropzone/internal';
 import { useFilesDragging } from '../file-dropzone/use-files-dragging';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import InternalFileTokenGroup from '../internal/components/file-token-group';
-import * as defaultFormatters from '../internal/components/file-token-group/default-formatters';
 import InternalFileToken from '../internal/components/file-token-group/file-token';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -79,9 +78,6 @@ function InternalFileUpload(
 
   const fileInputRef = useRef<ButtonProps.Ref>(null);
   const ref = useMergeRefs(fileInputRef, externalRef);
-
-  const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
-  const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
 
   checkControlled('FileUpload', 'value', value, 'onChange', onChange);
 
@@ -179,13 +175,7 @@ function InternalFileUpload(
           errorText={fileErrors?.[0]}
           warningText={fileWarnings?.[0]}
           onDismiss={() => onFileRemove(0)}
-          i18nStrings={{
-            removeFileAriaLabel: () => i18nStrings.removeFileAriaLabel(0),
-            errorIconAriaLabel: i18nStrings.errorIconAriaLabel,
-            warningIconAriaLabel: i18nStrings.warningIconAriaLabel,
-            formatFileLastModified: date => formatFileLastModified(date),
-            formatFileSize: size => formatFileSize(size),
-          }}
+          i18nStrings={i18nStrings}
           index={0}
         />
       ) : null}
@@ -202,15 +192,7 @@ function InternalFileUpload(
           showFileLastModified={metadata.showFileLastModified}
           showFileSize={metadata.showFileSize}
           showFileThumbnail={metadata.showFileThumbnail}
-          i18nStrings={{
-            removeFileAriaLabel: index => i18nStrings.removeFileAriaLabel(index),
-            errorIconAriaLabel: i18nStrings.errorIconAriaLabel,
-            warningIconAriaLabel: i18nStrings.warningIconAriaLabel,
-            formatFileLastModified: date => formatFileLastModified(date),
-            formatFileSize: size => formatFileSize(size),
-            limitShowMore: i18nStrings.limitShowMore,
-            limitShowFewer: i18nStrings.limitShowFewer,
-          }}
+          i18nStrings={i18nStrings}
           onDismiss={event => onFileRemove(event.detail.fileIndex)}
         />
       ) : null}

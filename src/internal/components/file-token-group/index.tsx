@@ -70,7 +70,6 @@ function InternalFileTokenGroup({
             errorText={file.errorText}
             warningText={file.warningText}
             i18nStrings={i18nStrings}
-            disabled={file.disabled}
             loading={file.loading}
             loadingText={file.loadingText}
             alignment={alignment}
