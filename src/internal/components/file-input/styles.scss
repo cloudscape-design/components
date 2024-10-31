@@ -1,0 +1,24 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../styles/tokens' as awsui;
+@use '../../styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  position: relative;
+}
+
+.file-input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+
+  &-button {
+    @include focus-visible.when-visible-unfocused {
+      &.force-focus-outline {
+        @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+      }
+    }
+  }
+}
