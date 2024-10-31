@@ -20,9 +20,6 @@
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-  .with-toolbar > & {
-    padding-block: awsui.$space-static-m;
-  }
 }
 
 .header-link {
@@ -53,14 +50,13 @@
 }
 
 .items-control {
-  margin-block-start: awsui.$space-panel-content-top;
   padding-inline: awsui.$space-l;
 }
 
 .list-container {
   margin-block-start: awsui.$space-panel-content-top;
-  .with-toolbar > & {
-    margin-block-start: 0px;
+  .with-toolbar > .divider + & {
+    margin-block-start: 0;
   }
 }
 
@@ -94,6 +90,20 @@
   padding-block: 0;
   padding-inline: 0;
   list-style: none;
+
+  @supports selector(:has(*)) {
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    &:has(> .section:not(.refresh)) {
+      margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+    }
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    &:has(> .section.refresh) {
+      margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+    }
+  }
+  .list-variant-root > &:first-child {
+    margin-block-start: 0px;
+  }
 }
 
 .section,
@@ -106,11 +116,12 @@
 }
 
 .section {
-  margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
-  &.refresh {
-    margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+  @supports not selector(:has(*)) {
+    margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+    &.refresh {
+      margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+    }
   }
-
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
   > div {
@@ -193,8 +204,10 @@
 
 .divider-header {
   margin-block-start: 0;
+  margin-block-end: awsui.$space-panel-content-top;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
   .with-toolbar > & {
     border-color: transparent;
+    margin-block-end: 0;
   }
 }

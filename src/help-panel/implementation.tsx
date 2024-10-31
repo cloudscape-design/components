@@ -31,7 +31,12 @@ export function HelpPanelImplementation({
   const i18n = useInternalI18n('help-panel');
   const containerProps = {
     ...baseProps,
-    className: clsx(baseProps.className, styles['help-panel'], isToolbar && styles['with-toolbar']),
+    className: clsx(
+      baseProps.className,
+      styles['help-panel'],
+      isToolbar && styles['with-toolbar'],
+      loading && styles.loading
+    ),
   };
   return loading ? (
     <div {...containerProps} ref={__internalRootRef}>
@@ -45,7 +50,12 @@ export function HelpPanelImplementation({
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
         <div className={styles.content}>{children}</div>
       </LinkDefaultVariantContext.Provider>
-      {footer && <div className={styles.footer}>{footer}</div>}
+      {footer && (
+        <div className={styles.footer}>
+          <hr role="presentation" />
+          {footer}
+        </div>
+      )}
     </div>
   );
 }
