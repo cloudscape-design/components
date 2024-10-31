@@ -65,5 +65,11 @@ export namespace GridProps {
      * The number of grid elements to push the column to the right by.
      */
     push?: number | GridProps.BreakpointMapping;
+
+    /**
+     * Test ID of the grid column.
+     * Assigns this value to the `data-testid` attribute of the column's root element.
+     */
+    testId?: string;
   }
 }

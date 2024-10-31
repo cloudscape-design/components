@@ -89,6 +89,7 @@ const InternalGrid = React.forwardRef(
           return (
             <div
               key={key ? String(key) : undefined}
+              data-testid={gridDefinition[i]?.testId}
               className={clsx(
                 styles['grid-column'],
                 getColumnClassNames('colspan', gridDefinition[i]?.colspan, defaultBreakpoint),
