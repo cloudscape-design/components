@@ -77,7 +77,8 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<>Nothing to see here</>, container);
+    // Option 2 to make tests pass
+    ReactDOM.render(<div>Nothing to see here</div>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
