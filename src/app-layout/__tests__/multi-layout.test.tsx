@@ -110,7 +110,7 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     firstLayout.findToolsToggle().click();
     expect(secondLayout.findNavigation()).toBeFalsy();
     expect(secondLayout.findNavigationToggle()).toBeFalsy();
-    expect(secondLayout.findOpenToolsPanel).toBeTruthy();
+    expect(secondLayout.findOpenToolsPanel()).toBeTruthy();
   });
 
   test('cleans and restores the toolbar buttons when inner app layout is unmounted and mounted again', async () => {
