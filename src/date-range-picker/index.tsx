@@ -112,7 +112,7 @@ const DateRangePicker = React.forwardRef(
       locale = '',
       startOfWeek,
       isDateEnabled = () => true,
-      dateDisabledReason = () => '',
+      dateDisabledReason,
       value,
       placeholder,
       readOnly = false,
@@ -149,6 +149,7 @@ const DateRangePicker = React.forwardRef(
         timeInputFormat,
         hideTimeOffset,
       },
+      metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 

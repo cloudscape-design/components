@@ -39,6 +39,7 @@ function isAppLayoutPage(pageId?: string) {
     'expandable-rows-test',
     'container/sticky-permutations',
     'copy-to-clipboard/scenario-split-panel',
+    'prompt-input/simple',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }

@@ -7,5 +7,4 @@ export interface SizeControlProps {
   panelRef?: React.RefObject<HTMLDivElement>;
   handleRef?: React.RefObject<HTMLDivElement>;
   onResize: (newSize: number) => void;
-  hasTransitions?: boolean;
 }

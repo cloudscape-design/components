@@ -10,7 +10,7 @@ import { AppLayoutProps } from '../interfaces';
 import { Focusable } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
-interface SharedProps {
+export interface SharedProps {
   forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
@@ -39,7 +39,10 @@ function checkAlreadyExists(value: boolean, propName: string) {
   return false;
 }
 
-function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partial<SharedProps>>): ToolbarProps | null {
+export function mergeProps(
+  ownProps: SharedProps,
+  additionalProps: ReadonlyArray<Partial<SharedProps>>
+): ToolbarProps | null {
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
@@ -50,6 +53,8 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
+      // there is never a case where navigation will exist and a toggle will not so toolbar
+      // can use the hasNavigation here to conditionally render the navigationToggle button
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;

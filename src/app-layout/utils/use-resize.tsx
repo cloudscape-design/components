@@ -63,7 +63,6 @@ function useResize(
     panelRef: drawerRefObject,
     handleRef: drawersRefs.slider,
     onResize: setSidePanelWidth,
-    hasTransitions: true,
   };
 
   const onSliderPointerDown = usePointerEvents(sizeControlProps);

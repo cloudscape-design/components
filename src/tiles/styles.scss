@@ -10,7 +10,7 @@
 @use '../internal/styles' as styles;
 @use '../column-layout/styles.scss' as mixins;
 
-$gutter: awsui.$space-grid-gutter;
+$gutter: awsui.$space-tile-gutter;
 
 .root {
   @include styles.styles-reset;
@@ -21,8 +21,8 @@ $gutter: awsui.$space-grid-gutter;
 @mixin make-column($nColumns) {
   $nColumns: math.div(12, $nColumns);
   $p: math.percentage(math.div(1, $nColumns));
-  flex: 0 0 calc(#{$p} - #{$gutter});
-  max-inline-size: calc(#{$p} - #{$gutter});
+  flex: 0 0 calc(#{$p} - #{$gutter / 2});
+  max-inline-size: calc(#{$p} - #{$gutter / 2});
 }
 
 .tile-container {
@@ -77,13 +77,15 @@ $gutter: awsui.$space-grid-gutter;
 .columns {
   display: flex;
   flex-wrap: wrap;
-  margin-block: calc(#{$gutter} / -2);
-  margin-inline: calc(#{$gutter} / -2);
+  margin-block: calc(#{$gutter} / -4);
+  margin-inline-start: calc(#{$gutter} / -4);
+  margin-inline-end: calc(#{$gutter} / -4);
+
   @each $i, $columns-setting in mixins.$column-breakpoint-spans {
     &.column-#{$i} {
       & > .tile-container {
-        margin-block: calc(#{$gutter} / 2);
-        margin-inline: calc(#{$gutter} / 2);
+        margin-block: calc((#{$gutter} / 4));
+        margin-inline: calc((#{$gutter} / 4));
         box-sizing: border-box;
         @include make-column(12);
         &.breakpoint-xs {

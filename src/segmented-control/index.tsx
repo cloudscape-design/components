@@ -10,7 +10,12 @@ import InternalSegmentedControl from './internal';
 export { SegmentedControlProps };
 
 export default function SegmentedControl(props: SegmentedControlProps) {
-  const baseComponentProps = useBaseComponent('SegmentedControl');
+  const baseComponentProps = useBaseComponent('SegmentedControl', {
+    props: {},
+    metadata: {
+      hasDisabledReasons: (props.options ?? []).some(option => Boolean(option.disabledReason)),
+    },
+  });
   return <InternalSegmentedControl {...props} {...baseComponentProps} />;
 }
 

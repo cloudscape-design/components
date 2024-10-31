@@ -33,9 +33,6 @@ const MenuDropdownItem = React.forwardRef(
       <ButtonDropdown
         ref={ref}
         variant="icon"
-        loading={item.loading}
-        loadingText={item.loadingText}
-        disabled={item.disabled}
         items={item.items}
         onItemClick={onClickHandler}
         expandToViewport={expandToViewport}
@@ -60,6 +57,9 @@ const MenuDropdownItem = React.forwardRef(
               ariaExpanded={ariaExpanded}
               className={clsx(testUtilStyles.item, testUtilsClass)}
               iconName="ellipsis"
+              loading={item.loading}
+              loadingText={item.loadingText}
+              disabled={item.disabled}
               onClick={onClick}
               __title=""
             />

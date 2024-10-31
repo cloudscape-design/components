@@ -104,110 +104,116 @@ describe('Button Component', () => {
     });
   });
 
-  describe('disabled with reason', () => {
-    test('renders button as normal when disabledReason is set and button is not disabled', () => {
-      const wrapper = renderButton({ disabled: false, disabledReason: 'reason' });
+  describe.each(['primary', 'normal'] as const)('disabled with reason %s variant', variant => {
+    describe.each([true, false] as const)('with href %s', withHref => {
+      const defaultProps = {
+        variant,
+        href: withHref ? 'https://smth.com' : undefined,
+      };
+      test('renders button as normal when disabledReason is set and button is not disabled', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: false, disabledReason: 'reason' });
 
-      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
-      expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
-    });
+        expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+        expect(wrapper.getElement()).not.toHaveAttribute('aria-disabled');
+      });
 
-    test('does not add disabled attribute when disabled with reason', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('does not add disabled attribute when disabled with reason', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      expect(wrapper.getElement()).not.toHaveAttribute('disabled');
-      expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
-    });
+        expect(wrapper.getElement()).not.toHaveAttribute('disabled');
+        expect(wrapper.getElement()).toHaveAttribute('aria-disabled');
+      });
 
-    test('has no tooltip open by default', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('has no tooltip open by default', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      expect(wrapper.findDisabledReason()).toBe(null);
-    });
+        expect(wrapper.findDisabledReason()).toBe(null);
+      });
 
-    test('has no tooltip without disabledReason', () => {
-      const wrapper = renderButton({ disabled: true });
+      test('has no tooltip without disabledReason', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true });
 
-      wrapper.getElement()!.focus();
+        wrapper.getElement()!.focus();
 
-      expect(wrapper.findDisabledReason()).toBeNull();
-    });
+        expect(wrapper.findDisabledReason()).toBeNull();
+      });
 
-    test('open tooltip on focus', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('open tooltip on focus', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      wrapper.getElement()!.focus();
+        wrapper.getElement()!.focus();
 
-      expect(wrapper.findDisabledReason()).not.toBeNull();
-      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
-    });
+        expect(wrapper.findDisabledReason()).not.toBeNull();
+        expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+      });
 
-    test('closes tooltip on blur', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('closes tooltip on blur', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      wrapper.getElement()!.focus();
+        wrapper.getElement()!.focus();
 
-      expect(wrapper.findDisabledReason()).not.toBeNull();
-      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+        expect(wrapper.findDisabledReason()).not.toBeNull();
+        expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
 
-      wrapper.getElement()!.blur();
+        wrapper.getElement()!.blur();
 
-      expect(wrapper.findDisabledReason()).toBeNull();
-    });
+        expect(wrapper.findDisabledReason()).toBeNull();
+      });
 
-    test('open tooltip on mouseenter', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('open tooltip on mouseenter', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      fireEvent.mouseEnter(wrapper.getElement());
+        fireEvent.mouseEnter(wrapper.getElement());
 
-      expect(wrapper.findDisabledReason()).not.toBeNull();
-      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
-    });
+        expect(wrapper.findDisabledReason()).not.toBeNull();
+        expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+      });
 
-    test('close tooltip on mouseleave', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('close tooltip on mouseleave', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      fireEvent.mouseEnter(wrapper.getElement());
+        fireEvent.mouseEnter(wrapper.getElement());
 
-      expect(wrapper.findDisabledReason()).not.toBeNull();
-      expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+        expect(wrapper.findDisabledReason()).not.toBeNull();
+        expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
 
-      fireEvent.mouseLeave(wrapper.getElement());
+        fireEvent.mouseLeave(wrapper.getElement());
 
-      expect(wrapper.findDisabledReason()).toBeNull();
-    });
+        expect(wrapper.findDisabledReason()).toBeNull();
+      });
 
-    test('has no aria-describedby by default', () => {
-      const wrapper = renderButton({});
+      test('has no aria-describedby by default', () => {
+        const wrapper = renderButton({ ...defaultProps });
 
-      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
-    });
+        expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+      });
 
-    test('has no aria-describedby without disabledReason', () => {
-      const wrapper = renderButton({ disabled: true });
+      test('has no aria-describedby without disabledReason', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true });
 
-      expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
-    });
+        expect(wrapper.getElement()).not.toHaveAttribute('aria-describedby');
+      });
 
-    test('has aria-describedby with disabledReason', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('has aria-describedby with disabledReason', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      expect(wrapper.getElement()).toHaveAttribute('aria-describedby');
-    });
+        expect(wrapper.getElement()).toHaveAttribute('aria-describedby');
+      });
 
-    test('has hidden element (linked to aria-describedby) with disabledReason', () => {
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason' });
+      test('has hidden element (linked to aria-describedby) with disabledReason', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
 
-      expect(wrapper.find('span[hidden]')!.getElement()).toHaveTextContent('reason');
-    });
+        expect(wrapper.find('span[hidden]')!.getElement()).toHaveTextContent('reason');
+      });
 
-    test('does not trigger onClick handler when disabled with reason', () => {
-      const onClick = jest.fn();
-      const wrapper = renderButton({ disabled: true, disabledReason: 'reason', onClick });
+      test('does not trigger onClick handler when disabled with reason', () => {
+        const onClick = jest.fn();
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason', onClick });
 
-      wrapper.click();
+        wrapper.click();
 
-      expect(onClick).not.toHaveBeenCalled();
+        expect(onClick).not.toHaveBeenCalled();
+      });
     });
   });
 
