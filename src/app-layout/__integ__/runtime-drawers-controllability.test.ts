@@ -7,22 +7,12 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const wrapper = createWrapper().findAppLayout();
 
-class AppLayoutDrawerControllabilityPage extends BasePageObject {
-  // Option 3 to make tests pass
-  getActiveDrawerText() {
-    const drawerSelector = wrapper.findActiveDrawer().toSelector();
-    return this.browser.execute(drawerSelector => {
-      return document.querySelector(drawerSelector)!.textContent;
-    }, drawerSelector);
-  }
-}
-
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   for (const pageName of ['runtime-drawers', 'runtime-drawers-imperative']) {
     describe(`page=${pageName}`, () => {
-      function setupTest(testFn: (page: AppLayoutDrawerControllabilityPage) => Promise<void>) {
+      function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
         return useBrowser(async browser => {
-          const page = new AppLayoutDrawerControllabilityPage(browser);
+          const page = new BasePageObject(browser);
 
           await browser.url(
             `#/light/app-layout/${pageName}?${new URLSearchParams({
@@ -65,7 +55,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           );
           await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
           await expect(page.isDisplayed(wrapper.findToolsClose().toSelector())).resolves.toBeFalsy();
-          await expect(page.getActiveDrawerText()).resolves.toContain('Nothing to see here');
+          await expect(page.getText(wrapper.findActiveDrawer().getElement())).resolves.toContain('Nothing to see here');
         })
       );
 
