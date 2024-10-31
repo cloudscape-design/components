@@ -35,7 +35,7 @@ export function HelpPanelImplementation({
       baseProps.className,
       styles['help-panel'],
       isToolbar && styles['with-toolbar'],
-      loading && styles.content
+      loading && styles.loading
     ),
   };
   return loading ? (

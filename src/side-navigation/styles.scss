@@ -93,11 +93,11 @@
 
   @supports selector(:has(*)) {
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-    &:has(.section:not(.refresh)) {
+    &:has(> .section:not(.refresh)) {
       margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
     }
     /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-    &:has(.section.refresh) {
+    &:has(> .section.refresh) {
       margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
     }
   }

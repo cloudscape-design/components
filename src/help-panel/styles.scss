@@ -115,6 +115,11 @@
   /* stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type */
 }
 
+.loading {
+  padding-inline-start: awsui.$space-panel-side-left;
+  padding-inline-end: awsui.$space-panel-side-right;
+}
+
 .header {
   @include styles.font-panel-header;
   color: awsui.$color-text-heading-default;
