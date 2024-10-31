@@ -99,7 +99,7 @@ const InternalFileInput = React.forwardRef(
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
-          className={styles['file-input']}
+          className={clsx(styles['file-input'], styles.hidden)}
           {...nativeAttributes}
         />
 

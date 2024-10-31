@@ -6,19 +6,19 @@
 @use '../../styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-.root {
-  position: relative;
+.root,
+.file-input {
+  /* used in test-utils */
 }
 
-.file-input {
-  position: absolute;
-  clip: rect(0, 0, 0, 0);
+.hidden {
+  @include styles.awsui-util-hide;
+}
 
-  &-button {
-    @include focus-visible.when-visible-unfocused {
-      &.force-focus-outline {
-        @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-      }
+.file-input-button {
+  @include focus-visible.when-visible-unfocused {
+    &.force-focus-outline {
+      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
     }
   }
 }
