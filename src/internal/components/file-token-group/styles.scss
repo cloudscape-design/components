@@ -43,9 +43,22 @@ $image-size: 48px;
 }
 
 .file-option-thumbnail-image {
+  @include styles.font-body-s;
+
   inline-size: $image-size;
   block-size: $image-size;
   object-fit: cover;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  // firefox displays fallback text differently from chrome and safari,
+  // so clamp happens at 3 instead of 2
+  @-moz-document url-prefix() {
+    -webkit-line-clamp: 3;
+  }
 }
 
 .file-option-metadata {
