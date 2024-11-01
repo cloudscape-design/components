@@ -8,9 +8,6 @@
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
 
-$file-token-height: 68.5px;
-$compact-token-width: 230px;
-
 .root {
   @include styles.styles-reset;
 
@@ -53,7 +50,7 @@ $compact-token-width: 230px;
   gap: awsui.$space-xxs;
 
   &-contains-image {
-    grid-template-rows: $file-token-height auto;
+    grid-template-rows: constants.$file-token-height auto;
   }
 }
 
@@ -77,7 +74,11 @@ $compact-token-width: 230px;
   box-sizing: border-box;
 
   &.horizontal {
-    max-inline-size: $compact-token-width;
+    max-inline-size: constants.$compact-token-width;
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      max-inline-size: 100%;
+    }
   }
 }
 @mixin token-box-validation {
