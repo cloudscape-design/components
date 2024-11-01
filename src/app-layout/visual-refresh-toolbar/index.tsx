@@ -262,6 +262,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         activeDrawerId: activeDrawer?.id ?? null,
         // only pass it down if there are non-empty drawers or tools
         drawers: drawers?.length || !toolsHide ? drawers : undefined,
+        globalDrawersFocusControl,
+        globalDrawers,
+        activeGlobalDrawersIds,
+        onActiveGlobalDrawersChange,
         onActiveDrawerChange: onActiveDrawerChangeHandler,
         drawersFocusRef: drawersFocusControl.refs.toggle,
         splitPanel,
