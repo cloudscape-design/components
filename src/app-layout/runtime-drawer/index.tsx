@@ -8,6 +8,8 @@ import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
+import styles from './styles.css.js';
+
 export interface DrawersLayout {
   global: Array<AppLayoutProps.Drawer>;
   localBefore: Array<AppLayoutProps.Drawer>;
@@ -46,7 +48,7 @@ function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeConte
     visibilityChangeCallback.current?.(isVisible);
   }, [isVisible]);
 
-  return <div ref={ref}></div>;
+  return <div ref={ref} className={styles['runtime-content-wrapper']}></div>;
 }
 
 const mapRuntimeConfigToDrawer = (
