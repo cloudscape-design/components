@@ -5,7 +5,8 @@ import React from 'react';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
-import { testIf } from '../__integ__/utils';
+
+const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
