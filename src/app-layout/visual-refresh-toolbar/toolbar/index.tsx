@@ -5,13 +5,13 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { BreadcrumbsSlotContext } from '../contexts';
 import { AppLayoutInternals } from '../interfaces';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
+import { BreadcrumbsSlot } from './breadcrumbs';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
 
@@ -195,16 +195,7 @@ export function AppLayoutToolbarImplementation({
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
             <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
-              <div className={styles['breadcrumbs-own']}>{breadcrumbs}</div>
-              {discoveredBreadcrumbs && (
-                <div className={styles['breadcrumbs-discovered']}>
-                  <BreadcrumbGroupImplementation
-                    {...discoveredBreadcrumbs}
-                    data-awsui-discovered-breadcrumbs={true}
-                    __injectAnalyticsComponentMetadata={true}
-                  />
-                </div>
-              )}
+              <BreadcrumbsSlot ownBreadcrumbs={breadcrumbs} discoveredBreadcrumbs={discoveredBreadcrumbs} />
             </BreadcrumbsSlotContext.Provider>
           </div>
         )}
