@@ -3,15 +3,11 @@
 import React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import Button from '../../../../../lib/components/button';
-import InternalFileDropzone, {
-  FileDropzoneProps,
-  useFilesDragging,
-} from '../../../../../lib/components/internal/components/file-dropzone';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import FileDropzoneWrapper from '../../../../../lib/components/test-utils/dom/internal/file-dropzone';
+import Button from '../../../lib/components/button';
+import FileDropzone, { FileDropzoneProps, useFilesDragging } from '../../../lib/components/file-dropzone';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
-import selectors from '../../../../../lib/components/internal/components/file-dropzone/styles.selectors.js';
+import selectors from '../../../lib/components/file-dropzone/styles.selectors.js';
 
 const file1 = new File([new Blob(['Test content 1'], { type: 'text/plain' })], 'test-file-1.txt', {
   type: 'text/plain',
@@ -25,9 +21,8 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
 const onChange = jest.fn();
 
 function renderFileDropzone(props: Partial<FileDropzoneProps>) {
-  render(<InternalFileDropzone onChange={onChange}>{props.children}</InternalFileDropzone>);
-  const element = createWrapper().findByClassName(FileDropzoneWrapper.rootSelector)!.getElement();
-  return new FileDropzoneWrapper(element);
+  const { container } = render(<FileDropzone onChange={onChange}>{props.children}</FileDropzone>);
+  return createWrapper(container).findFileDropzone()!;
 }
 
 function createDragEvent(type: string, files = [file1, file2]) {
