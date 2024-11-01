@@ -68,7 +68,6 @@ function InternalFileToken({
   const fileNameRef = useRef<HTMLSpanElement>(null);
   const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
-  const [imageError, setImageError] = useState(false);
 
   function isEllipsisActive() {
     const span = fileNameRef.current;
@@ -92,7 +91,7 @@ function InternalFileToken({
         warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
         loading={loading}
         alignment={alignment}
-        groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal' && !imageError}
+        groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal'}
         data-index={index}
       >
         {loading && (
@@ -103,7 +102,7 @@ function InternalFileToken({
           </>
         )}
         <InternalBox className={styles['file-option']}>
-          {showFileThumbnail && isImage && <FileOptionThumbnail file={file} setHasError={setImageError} />}
+          {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
 
           <div
             className={clsx(styles['file-option-metadata'], {

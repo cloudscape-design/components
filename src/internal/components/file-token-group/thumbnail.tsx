@@ -7,10 +7,9 @@ import styles from './styles.css.js';
 
 interface FileOptionThumbnailProps {
   file: File;
-  setHasError: (hasError: boolean) => void;
 }
 
-export function FileOptionThumbnail({ file, setHasError }: FileOptionThumbnailProps) {
+export function FileOptionThumbnail({ file }: FileOptionThumbnailProps) {
   const [imageSrc, setImageSrc] = useState('');
 
   useEffect(() => {
@@ -27,15 +26,7 @@ export function FileOptionThumbnail({ file, setHasError }: FileOptionThumbnailPr
 
   return (
     <div className={styles['file-option-thumbnail']} aria-hidden={true}>
-      <img
-        className={styles['file-option-thumbnail-image']}
-        alt={file.name}
-        src={imageSrc}
-        onError={({ currentTarget }) => {
-          setHasError(true);
-          currentTarget.onerror = null; // prevents looping
-        }}
-      />
+      <img className={styles['file-option-thumbnail-image']} alt={file.name} src={imageSrc} />
     </div>
   );
 }
