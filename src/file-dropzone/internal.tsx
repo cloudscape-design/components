@@ -4,13 +4,10 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { fireNonCancelableEvent } from '../../events';
+import { fireNonCancelableEvent } from '../internal/events';
 import { FileDropzoneProps } from './interfaces';
-import { useFilesDragging } from './use-files-dragging';
 
 import styles from './styles.css.js';
-
-export { FileDropzoneProps, useFilesDragging };
 
 export default function InternalFileDropzone({ onChange, children }: FileDropzoneProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
