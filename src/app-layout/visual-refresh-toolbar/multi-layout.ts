@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
-import { Focusable } from '../utils/use-focus-control';
+import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
 export interface SharedProps {
@@ -22,6 +22,10 @@ export interface SharedProps {
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
+  globalDrawersFocusControl?: FocusControlMultipleStates | undefined;
+  globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalDrawersIds?: Array<string> | undefined;
+  onActiveGlobalDrawersChange?: ((newDrawerId: string) => void) | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
@@ -51,6 +55,12 @@ export function mergeProps(
       toolbar.activeDrawerId = props.activeDrawerId;
       toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
+    }
+    if (props.globalDrawers && !checkAlreadyExists(!!toolbar.globalDrawers, 'globalDrawers')) {
+      toolbar.globalDrawersFocusControl = props.globalDrawersFocusControl;
+      toolbar.globalDrawers = props.globalDrawers;
+      toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
+      toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       // there is never a case where navigation will exist and a toggle will not so toolbar
