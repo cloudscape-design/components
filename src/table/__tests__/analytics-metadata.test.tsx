@@ -10,6 +10,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
+import ButtonDropdown from '../../../lib/components/button-dropdown';
 import Header from '../../../lib/components/header';
 import Table, { TableProps } from '../../../lib/components/table';
 import InternalTable from '../../../lib/components/table/internal';
@@ -46,6 +47,20 @@ const columnDefinitions: TableProps['columnDefinitions'] = [
     cell: item => item.description,
     sortingComparator,
   },
+  {
+    id: 'actions',
+    header: 'Actions',
+    cell: () => (
+      <ButtonDropdown
+        items={[
+          { text: 'Delete', id: 'rm', disabled: false },
+          { text: 'Move', id: 'mv', disabled: false },
+        ]}
+        variant="inline-icon"
+        ariaLabel="Control instance"
+      />
+    ),
+  },
 ];
 
 const isItemDisabled = (item: TableItem) => item.value === 'second';
@@ -60,9 +75,13 @@ function renderTable(props: Partial<TableProps>) {
       columnDefinitions={columnDefinitions}
       trackBy="value"
       header={
-        <Header variant="h2" counter="2" info="Info">
-          {componentLabel}
-        </Header>
+        typeof props.header !== 'undefined' ? (
+          props.header
+        ) : (
+          <Header variant="h2" counter="2" info="Info">
+            {componentLabel}
+          </Header>
+        )
       }
       isItemDisabled={isItemDisabled}
     />
@@ -249,6 +268,46 @@ describe('Table renders correct analytics metadata', () => {
           variant: 'container',
         })
       );
+    });
+  });
+  describe('table without header', () => {
+    test('parses table label as an empty string', () => {
+      const wrapper = renderTable({ header: null });
+      const actionButton = wrapper.findBodyCell(1, 3)!.findButtonDropdown()!.getElement();
+      expect(getGeneratedAnalyticsMetadata(actionButton)).toEqual({
+        contexts: [
+          {
+            type: 'component',
+            detail: {
+              label: 'Control instance',
+              name: 'awsui.ButtonDropdown',
+              properties: {
+                disabled: 'false',
+                variant: 'inline-icon',
+              },
+            },
+          },
+          {
+            type: 'component',
+            detail: {
+              innerContext: {
+                columnId: 'actions',
+                columnLabel: 'Actions',
+                item: 'first',
+                position: '1,3',
+              },
+              name: 'awsui.Table',
+              label: '',
+              properties: {
+                itemsCount: '3',
+                selectedItemsCount: '0',
+                selectionType: 'none',
+                variant: 'container',
+              },
+            },
+          },
+        ],
+      });
     });
   });
 });

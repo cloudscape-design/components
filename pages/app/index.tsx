@@ -40,6 +40,8 @@ function isAppLayoutPage(pageId?: string) {
     'container/sticky-permutations',
     'copy-to-clipboard/scenario-split-panel',
     'prompt-input/simple',
+    'funnel-analytics/static-single-page-flow',
+    'funnel-analytics/static-multi-page-flow',
   ];
   return pageId !== undefined && appLayoutPages.some(match => pageId.includes(match));
 }

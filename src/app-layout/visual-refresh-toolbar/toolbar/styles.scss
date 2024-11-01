@@ -84,6 +84,7 @@
   flex-direction: row;
   gap: awsui.$space-xs;
   justify-content: flex-end;
+  padding-inline-start: awsui.$space-xs;
 }
 
 .group-divider {

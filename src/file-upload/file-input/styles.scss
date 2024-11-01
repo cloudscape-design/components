@@ -1,0 +1,30 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.upload-button,
+.upload-input {
+  /* used in test-utils */
+}
+
+.file-input-container {
+  position: relative;
+}
+
+.upload-input {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+.upload-button {
+  @include focus-visible.when-visible-unfocused {
+    &.force-focus-outline {
+      @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    }
+  }
+}

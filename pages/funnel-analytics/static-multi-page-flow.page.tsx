@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import {
+  AppLayout,
   BreadcrumbGroup,
   Container,
   FormField,
@@ -15,6 +16,7 @@ import {
 } from '~components';
 import { setFunnelMetrics } from '~components/internal/analytics';
 
+import labels from '../app-layout/utils/labels';
 import { i18nStrings } from '../wizard/common';
 import { MockedFunnelMetrics } from './mock-funnel';
 
@@ -131,46 +133,54 @@ export default function MultiPageCreate() {
   ];
 
   return (
-    <>
-      <BreadcrumbGroup
-        items={[
-          { text: 'System', href: '#' },
-          { text: 'Components', href: '#components' },
-          {
-            text: 'Create Resource',
-            href: '#components/breadcrumb-group',
-          },
-        ]}
-        ariaLabel="Breadcrumbs"
-      />
-      <button data-testid="unmount" onClick={() => setMounted(false)}>
-        Unmount
-      </button>
-      {mounted && (
-        <Wizard
-          analyticsMetadata={{
-            instanceIdentifier: 'multi-page-demo',
-            flowType: 'create',
-          }}
-          i18nStrings={i18nStrings}
-          steps={steps}
-          activeStepIndex={activeStepIndex}
-          onNavigate={e => {
-            if (value === 'error') {
-              setErrorText('There is an error');
-            } else {
-              setErrorText('');
-              setActiveStepIndex(e.detail.requestedStepIndex);
-            }
-          }}
-          onCancel={() => {
-            setMounted(false);
-          }}
-          onSubmit={() => {
-            setMounted(false);
-          }}
+    <AppLayout
+      ariaLabels={labels}
+      contentType="wizard"
+      breadcrumbs={
+        <BreadcrumbGroup
+          items={[
+            { text: 'System', href: '#' },
+            { text: 'Components', href: '#components' },
+            {
+              text: 'Create Resource',
+              href: '#components/breadcrumb-group',
+            },
+          ]}
+          ariaLabel="Breadcrumbs"
         />
-      )}
-    </>
+      }
+      content={
+        <>
+          <button data-testid="unmount" onClick={() => setMounted(false)}>
+            Unmount
+          </button>
+          {mounted && (
+            <Wizard
+              analyticsMetadata={{
+                instanceIdentifier: 'multi-page-demo',
+                flowType: 'create',
+              }}
+              i18nStrings={i18nStrings}
+              steps={steps}
+              activeStepIndex={activeStepIndex}
+              onNavigate={e => {
+                if (value === 'error') {
+                  setErrorText('There is an error');
+                } else {
+                  setErrorText('');
+                  setActiveStepIndex(e.detail.requestedStepIndex);
+                }
+              }}
+              onCancel={() => {
+                setMounted(false);
+              }}
+              onSubmit={() => {
+                setMounted(false);
+              }}
+            />
+          )}
+        </>
+      }
+    />
   );
 }

@@ -3,17 +3,38 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { ActionButtonsController, ActionConfig, ActionContext } from '../controllers/action-buttons';
-import { RuntimeContentWrapper } from './runtime-content-wrapper';
+
+interface RuntimeActionWrapperProps {
+  context: ActionContext;
+  mountContent: ActionConfig['mountContent'];
+  unmountContent: ActionConfig['unmountContent'];
+}
+
+function RuntimeActionWrapper({ mountContent, unmountContent, context }: RuntimeActionWrapperProps) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const container = ref.current!;
+    mountContent(container, context);
+    return () => {
+      unmountContent(container);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return <div ref={ref}></div>;
+}
 
 function convertRuntimeAction(action: ActionConfig | null, context: ActionContext) {
   if (!action) {
     return null;
   }
   return (
-    <RuntimeContentWrapper
+    <RuntimeActionWrapper
       key={action.id + '-' + context.type}
-      mountContent={container => action.mountContent(container, context)}
-      unmountContent={container => action.unmountContent(container)}
+      context={context}
+      mountContent={action.mountContent}
+      unmountContent={action.unmountContent}
     />
   );
 }

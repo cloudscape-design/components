@@ -9,7 +9,7 @@ import { useControllable } from '../../internal/hooks/use-controllable';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { AppLayoutProps } from '../interfaces';
-import { convertRuntimeDrawers, DrawersLayout } from '../runtime-api';
+import { convertRuntimeDrawers, DrawersLayout } from '../runtime-drawer';
 import { togglesConfig } from '../toggles';
 
 export const TOOLS_DRAWER_ID = 'awsui-internal-tools';

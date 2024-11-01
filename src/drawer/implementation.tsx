@@ -42,7 +42,7 @@ export function DrawerImplementation({
   ) : (
     <div {...containerProps} ref={__internalRootRef}>
       {header && <div className={styles.header}>{header}</div>}
-      <div className={styles['test-utils-drawer-content']}>{children}</div>
+      <div className={clsx(styles['test-utils-drawer-content'], styles.content)}>{children}</div>
     </div>
   );
 }

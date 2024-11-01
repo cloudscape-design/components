@@ -75,7 +75,26 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(firstLayout.findOpenNavigationPanel()).toBeTruthy();
   });
 
-  test('merges tools from two instances', async () => {
+  test('navigationHide in primary is respected when navigation is defined when merging from two instances', async () => {
+    const { firstLayout, secondLayout } = await renderAsync(
+      <AppLayout
+        {...defaultAppLayoutProps}
+        data-testid="first"
+        navigation="testing nav"
+        navigationHide={true}
+        toolsHide={true}
+        content={
+          <AppLayout {...defaultAppLayoutProps} data-testid="second" navigationHide={true} tools="testing tools" />
+        }
+      />
+    );
+    expect(firstLayout.findNavigation()).toBeFalsy();
+    expect(firstLayout.findNavigationToggle()).toBeFalsy();
+    expect(secondLayout.findNavigation()).toBeFalsy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
+  });
+
+  test('merges tools from two instances with where navigationHide is true in secondary', async () => {
     const { firstLayout, secondLayout } = await renderAsync(
       <AppLayout
         {...defaultAppLayoutProps}
@@ -89,6 +108,8 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(createWrapper().findAllByClassName(testUtilStyles.tools)).toHaveLength(1);
 
     firstLayout.findToolsToggle().click();
+    expect(secondLayout.findNavigation()).toBeFalsy();
+    expect(secondLayout.findNavigationToggle()).toBeFalsy();
     expect(secondLayout.findOpenToolsPanel()).toBeTruthy();
   });
 
