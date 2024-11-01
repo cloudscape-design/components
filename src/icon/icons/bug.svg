@@ -1,10 +1,10 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M12 5.70996C12 3.50082 10.2091 1.70996 8 1.70996C5.79086 1.70996 4 3.50082 4 5.70996V9.70996C4 11.9191 5.79086 13.71 8 13.71C10.2091 13.71 12 11.9191 12 9.70996V5.70996Z" />
-<path d="M15 8.70996H12" />
-<path d="M4 8.70996H1" />
-<path d="M12 6L4 6" />
-<path d="M15 3.63L12 5.71" />
-<path d="M15 13.78L12 11.71" />
-<path d="M1 3.63L4 5.71" />
-<path d="M1 13.78L4 11.71" />
+<path d="M12.01 6.00977C12.01 3.80063 10.2191 2.00977 8.01001 2.00977C5.80087 2.00977 4.01001 3.80063 4.01001 6.00977V10.0098C4.01001 12.2189 5.80087 14.0098 8.01001 14.0098C10.2191 14.0098 12.01 12.2189 12.01 10.0098V6.00977Z" class="stroke-linejoin-round"/>
+<path d="M15 9H12" class="stroke-linejoin-round"/>
+<path d="M4 9H1" class="stroke-linejoin-round"/>
+<path d="M12 6L4 6" class="stroke-linejoin-round"/>
+<path d="M15 3.93018L12.01 6.00018" class="stroke-linejoin-round"/>
+<path d="M15 14.0802L11.5 11.5" class="stroke-linejoin-round"/>
+<path d="M1 3.93018L4 6.00018" class="stroke-linejoin-round"/>
+<path d="M1.01001 14.08L4.5 11.5" class="stroke-linejoin-round"/>
 </svg>

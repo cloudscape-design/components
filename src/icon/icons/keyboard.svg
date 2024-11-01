@@ -1,10 +1,12 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
-<path d="M15 2H1V14H15V2Z" stroke-linejoin="round"/>
-<path d="M4 11H12" />
-<path d="M4 8H6" />
-<path d="M4 5H6" />
-<path d="M7 8H9" />
-<path d="M7 5H9" />
-<path d="M10 8H12" />
-<path d="M10 5H12" />
+<g>
+<path d="M14.9951 2H0.995117V14H14.9951V2Z" class="stroke-linejoin-round"/>
+<path d="M3.99512 11H11.9951" class="stroke-linejoin-round"/>
+<path d="M5.49512 4H3.99512V5.5H5.49512V4Z" class="filled no-stroke"/>
+<path d="M8.74512 4H7.24512V5.5H8.74512V4Z" class="filled no-stroke"/>
+<path d="M10.4951 4H11.9951V5.5H10.4951V4Z" class="filled no-stroke"/>
+<path d="M5.49512 7H3.99512V8.5H5.49512V7Z" class="filled no-stroke"/>
+<path d="M8.74512 7H7.24512V8.5H8.74512V7Z" class="filled no-stroke"/>
+<path d="M10.4951 7H11.9951V8.5H10.4951V7Z" class="filled no-stroke"/>
+</g>
 </svg>
