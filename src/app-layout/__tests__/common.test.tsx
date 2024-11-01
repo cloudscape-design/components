@@ -5,6 +5,7 @@ import React from 'react';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 import { describeEachAppLayout, renderComponent, testDrawer, testDrawerWithoutLabels } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
+import { testIf } from '../__integ__/utils';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -26,6 +27,16 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
     expect(wrapper.findBreadcrumbs()).toBeFalsy();
     expect(wrapper.findDrawersTriggers()).toHaveLength(0);
     expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
+  testIf(theme === 'refresh-toolbar')('animation is disabled until the first user interaction', () => {
+    const { wrapper } = renderComponent(<AppLayout />);
+
+    expect(wrapper.getElement()).toHaveClass('awsui-motion-disabled');
+
+    wrapper.click();
+
+    expect(wrapper.getElement()).not.toHaveClass('awsui-motion-disabled');
   });
 
   test('should render notifications', () => {
