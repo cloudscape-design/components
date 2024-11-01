@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
-import { act, fireEvent, render } from '@testing-library/react';
+import { act, fireEvent, render, waitFor } from '@testing-library/react';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -288,6 +288,37 @@ describeEachAppLayout(({ theme, size }) => {
 
     wrapper.findToolsClose().click();
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+
+  test('respect controlled toolsOpen with runtime drawers after clicking on tools drawer', async () => {
+    function AppLayoutWithControlledTools() {
+      const [showTools, setShowTools] = useState(false);
+      return (
+        <AppLayout
+          tools="Tools content"
+          toolsOpen={showTools}
+          onToolsChange={event => setShowTools(event.detail.open)}
+          content={
+            <div>
+              <button data-testid="toggle-tools-drawer" onClick={() => setShowTools(!showTools)}>
+                Toggle tools
+              </button>
+            </div>
+          }
+        />
+      );
+    }
+
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayoutWithControlledTools />);
+    expect(wrapper.findTools()).toBeFalsy();
+    wrapper.findToolsToggle().click();
+
+    await waitFor(() => expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content'));
+
+    createWrapper().find('[data-testid="toggle-tools-drawer"]')!.click();
+
+    await waitFor(() => expect(wrapper.findTools()).toBeFalsy());
   });
 
   test('opens tools drawer via ref', async () => {
