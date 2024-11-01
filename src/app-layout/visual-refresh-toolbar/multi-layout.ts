@@ -20,12 +20,12 @@ export interface SharedProps {
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
-  globalDrawersFocusControl: FocusControlMultipleStates;
-  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  activeGlobalDrawersIds: Array<string>;
-  onActiveGlobalDrawersChange: (newDrawerId: string) => void;
   onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
+  globalDrawersFocusControl?: FocusControlMultipleStates | undefined;
+  globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalDrawersIds?: Array<string> | undefined;
+  onActiveGlobalDrawersChange?: ((newDrawerId: string) => void) | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;

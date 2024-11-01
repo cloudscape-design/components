@@ -263,7 +263,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         // only pass it down if there are non-empty drawers or tools
         drawers: drawers?.length || !toolsHide ? drawers : undefined,
         globalDrawersFocusControl,
-        globalDrawers,
+        globalDrawers: globalDrawers?.length ? globalDrawers : undefined,
         activeGlobalDrawersIds,
         onActiveGlobalDrawersChange,
         onActiveDrawerChange: onActiveDrawerChangeHandler,

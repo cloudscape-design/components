@@ -2,10 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import {
-  mergeProps,
-  SharedProps,
-} from '../../../lib/components/app-layout/visual-refresh-toolbar/multi-layout';
+import { mergeProps, SharedProps } from '../../../lib/components/app-layout/visual-refresh-toolbar/multi-layout';
 
 describe('mergeMultiAppLayoutProps', () => {
   const mockParentNavigationToggle = jest.fn();
