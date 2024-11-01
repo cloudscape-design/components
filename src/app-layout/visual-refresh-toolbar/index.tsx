@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -9,6 +9,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
@@ -76,6 +77,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const rootRef = useRef<HTMLDivElement>(null);
+    const disabledAnimationsGlobalClass = 'awsui-motion-disabled';
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -424,12 +427,31 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement.inlineSize,
     ]);
 
+    useEffect(() => {
+      // The disabledMotionGlobalClass class is initially applied to the root element.
+      // It disables all animations until the first user interaction,
+      // which prevents dynamic elements intended as "progressive enhancement"
+      // from animating prematurely. This approach ensures animations
+      // are triggered only by user interactions.
+      function enableAnimations() {
+        rootRef.current?.classList.remove(disabledAnimationsGlobalClass);
+        document.removeEventListener('click', enableAnimations);
+      }
+
+      document.addEventListener('click', enableAnimations);
+
+      return () => {
+        document.removeEventListener('click', enableAnimations);
+      };
+    }, []);
+
     return (
       <>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
-          ref={intersectionObserverRef}
+          className={disabledAnimationsGlobalClass}
+          ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
             [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,

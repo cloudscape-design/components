@@ -39,6 +39,7 @@ interface SkeletonLayoutProps
   bottomSplitPanel?: React.ReactNode;
   globalTools?: React.ReactNode;
   globalToolsOpen?: boolean;
+  className?: string;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -65,6 +66,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       maxContentWidth,
       disableContentPaddings,
       globalToolsOpen,
+      className,
     },
     ref
   ) => {
@@ -74,7 +76,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
     return (
       <div
         ref={ref}
-        className={clsx(styles.root, testutilStyles.root, {
+        className={clsx(styles.root, testutilStyles.root, className, {
           [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
           [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
         })}
