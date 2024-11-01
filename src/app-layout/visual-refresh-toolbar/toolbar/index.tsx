@@ -95,7 +95,6 @@ export function AppLayoutToolbarImplementation({
     toolbarState,
     setToolbarState,
     setToolbarHeight,
-    globalDrawersFocusControl,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -103,6 +102,7 @@ export function AppLayoutToolbarImplementation({
     drawers,
     drawersFocusRef,
     onActiveDrawerChange,
+    globalDrawersFocusControl,
     globalDrawers,
     activeGlobalDrawersIds,
     onActiveGlobalDrawersChange,
