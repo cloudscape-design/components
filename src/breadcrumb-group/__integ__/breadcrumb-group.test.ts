@@ -74,26 +74,12 @@ const setupTest = (
 };
 describe('BreadcrumbGroup', () => {
   test(
-    'Has proper number of items in the dropdown',
+    'Has proper number of items in the mobile dropdown',
     setupTest(async page => {
       await page.setWindowSize({ width: 645, height: 800 });
       await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(1);
+      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(6);
       await page.closeDropdown();
-
-      await page.setWindowSize({ width: 570, height: 800 });
-      await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(2);
-      await page.closeDropdown();
-
-      await page.setWindowSize({ width: 500, height: 800 });
-      await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(3);
-      await page.closeDropdown();
-
-      await page.setWindowSize({ width: 400, height: 800 });
-      await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(4);
     })
   );
   test(
@@ -135,8 +121,12 @@ describe('BreadcrumbGroup', () => {
       await expect(page.getText('#onFollowMessage')).resolves.toEqual('');
       await expect(page.getText('#onClickMessage')).resolves.toEqual('');
       await page.clickItem(1);
-      await expect(page.getText('#onFollowMessage')).resolves.toEqual('OnFollow: Second item was selected');
-      await expect(page.getText('#onClickMessage')).resolves.toEqual('OnClick: Second item was selected');
+      await expect(page.getText('#onFollowMessage')).resolves.toEqual(
+        'OnFollow: First that is very very very very very very long long long text item was selected'
+      );
+      await expect(page.getText('#onClickMessage')).resolves.toEqual(
+        'OnClick: First that is very very very very very very long long long text item was selected'
+      );
     })
   );
 
@@ -151,7 +141,7 @@ describe('BreadcrumbGroup', () => {
           await page.keys('Tab');
           await expect(page.isTooltipDisplayed()).resolves.toBe(false);
         },
-        { width: 100, height: 800 }
+        { width: 700, height: 800 }
       )
     );
 
@@ -185,7 +175,7 @@ describe('BreadcrumbGroup', () => {
       'should be displayed for truncated items after collapsing items into dropdown',
       setupTest(
         async page => {
-          await page.setMobileViewport();
+          await page.setWindowSize({ width: 700, height: 800 });
           await page.click('#focus-target-long-text');
           await page.keys('Tab');
           await expect(page.isTooltipDisplayed()).resolves.toBe(true);
@@ -213,7 +203,7 @@ describe('BreadcrumbGroup', () => {
     test(
       'Item popover should close after pressing Escape',
       setupTest(async page => {
-        await page.setMobileViewport();
+        await page.setWindowSize({ width: 700, height: 800 });
         await page.click('#focus-target-long-text');
         await page.keys('Tab');
         await expect(page.isTooltipDisplayed()).resolves.toBe(true);
@@ -226,7 +216,7 @@ describe('BreadcrumbGroup', () => {
   test(
     'Attaches funnel name attribute to last breadcrumb item',
     setupTest(async (page, browser) => {
-      await page.setMobileViewport();
+      await page.setWindowSize({ width: 700, height: 800 });
       const funnelName = await browser.$('[data-analytics-funnel-key="funnel-name"]').getText();
       expect(funnelName).toBe('Sixth that is very very very very very very long long long text');
     })
@@ -252,8 +242,11 @@ describe('BreadcrumbGroup', () => {
   test(
     'Last item is focusable when truncated',
     setupTest(async page => {
-      await page.setMobileViewport();
+      await page.setWindowSize({ width: 700, height: 800 });
       await page.click('#focus-target-long-text');
+      await page.keys('Tab');
+      await page.keys('Tab');
+      await page.keys('Tab');
       await page.keys('Tab');
       await page.keys('Tab');
       await page.keys('Tab');
@@ -267,7 +260,7 @@ describe('BreadcrumbGroup', () => {
   test(
     'Displays only one tooltip at the time',
     setupTest(async page => {
-      await page.setMobileViewport();
+      await page.setWindowSize({ width: 700, height: 800 });
       await page.click('#focus-target-long-text');
       await page.keys('Tab');
       await expect(page.countTooltips()).resolves.toBe(1);

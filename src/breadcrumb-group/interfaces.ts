@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { LinkItem } from '../button-dropdown/interfaces';
+import { ButtonDropdownProps, LinkItem } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -76,4 +76,11 @@ export interface EllipsisDropdownProps {
   onDropdownItemClick: CancelableEventHandler<{ id: string }>;
   onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
   visible?: boolean;
+}
+
+export interface MobileDropdownProps {
+  ariaLabel?: BreadcrumbGroupProps['expandAriaLabel'];
+  dropdownItems: ReadonlyArray<ButtonDropdownProps.Item & { href?: string }>;
+  onDropdownItemClick: CancelableEventHandler<{ id: string }>;
+  onDropdownItemFollow: CancelableEventHandler<{ id: string }>;
 }
