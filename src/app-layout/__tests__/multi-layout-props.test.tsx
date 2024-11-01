@@ -7,6 +7,7 @@ import { mergeProps, SharedProps } from '../../../lib/components/app-layout/visu
 describe('mergeMultiAppLayoutProps', () => {
   const mockParentNavigationToggle = jest.fn();
   const mockParentActiveDrawerChange = jest.fn();
+  const mockParentActiveGlobalDrawerChange = jest.fn();
   const mockParentSplitPanelToggle = jest.fn();
   const ownProps: SharedProps = {
     forceDeduplicationType: 'primary',
@@ -54,6 +55,15 @@ describe('mergeMultiAppLayoutProps', () => {
         },
       ],
       activeDrawerId: 'drawer2',
+      activeGlobalDrawersIds: ['drawer-global'],
+      globalDrawers: [
+        {
+          id: 'drawer-global',
+          ariaLabels: { drawerName: 'Global Drawer' },
+          content: <div>Global Drawer Content</div>,
+        },
+      ],
+      onActiveGlobalDrawersChange: mockParentActiveGlobalDrawerChange,
     },
     {
       splitPanelToggleProps: {
@@ -95,6 +105,15 @@ describe('mergeMultiAppLayoutProps', () => {
       drawers: ownProps.drawers,
       drawersFocusRef: ownProps.drawersFocusRef,
       onActiveDrawerChange: mockParentActiveDrawerChange,
+      activeGlobalDrawersIds: ['drawer-global'],
+      globalDrawers: [
+        {
+          id: 'drawer-global',
+          ariaLabels: { drawerName: 'Global Drawer' },
+          content: <div>Global Drawer Content</div>,
+        },
+      ],
+      onActiveGlobalDrawersChange: mockParentActiveGlobalDrawerChange,
     });
   });
 
