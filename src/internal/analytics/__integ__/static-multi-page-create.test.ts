@@ -4,6 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
+import { getUrlParams, Theme } from '../../../app-layout/__integ__/utils';
 
 interface ExtendedWindow extends Window {
   __awsuiFunnelMetrics__: Array<any>;
@@ -16,11 +17,17 @@ const FUNNEL_INTERACTION_ID = 'mocked-funnel-id';
 const FUNNEL_IDENTIFIER = 'multi-page-demo';
 
 class MultiPageCreate extends BasePageObject {
+  async visit(url: string) {
+    await this.browser.url(url);
+    await this.waitForVisible(wrapper.findAppLayout().findContentRegion().toSelector());
+  }
+
   async getFunnelLog() {
     const funnelLog = await this.browser.execute(() => window.__awsuiFunnelMetrics__);
     const actions = funnelLog.map(item => item.action);
     return { funnelLog, actions };
   }
+
   async getFunnelLogItem(index: number) {
     const item = await this.browser.execute(index => window.__awsuiFunnelMetrics__[index], index);
     if (!item) {
@@ -30,16 +37,16 @@ class MultiPageCreate extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: MultiPageCreate) => Promise<void>) => {
-  return useBrowser(async browser => {
-    const page = new MultiPageCreate(browser);
-    await browser.url('#/light/funnel-analytics/static-multi-page-flow');
-    await new Promise(r => setTimeout(r, 10));
-    await testFn(page);
-  });
-};
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest(testFn: (page: MultiPageCreate) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new MultiPageCreate(browser);
+      await browser.url(`#/light/funnel-analytics/static-multi-page-flow?${getUrlParams(theme, {})}`);
+      await new Promise(r => setTimeout(r, 10));
+      await testFn(page);
+    });
+  }
 
-describe('Multi-page create', () => {
   test(
     'Starts funnel and funnel step and page is loaded',
     setupTest(async page => {

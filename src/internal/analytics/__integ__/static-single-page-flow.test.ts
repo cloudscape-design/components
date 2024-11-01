@@ -4,6 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
+import { getUrlParams, Theme } from '../../../app-layout/__integ__/utils';
 
 interface ExtendedWindow extends Window {
   __awsuiFunnelMetrics__: Array<any>;
@@ -16,6 +17,11 @@ const FUNNEL_IDENTIFIER = 'single-page-demo';
 const STEP_IDENTIFIER = FUNNEL_IDENTIFIER;
 
 class SinglePageCreate extends BasePageObject {
+  async visit(url: string) {
+    await this.browser.url(url);
+    await this.waitForVisible(wrapper.findAppLayout().findContentRegion().toSelector());
+  }
+
   getFormAttribute(attribute: string) {
     return this.getElementAttribute(wrapper.findForm().toSelector(), attribute);
   }
@@ -27,16 +33,16 @@ class SinglePageCreate extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: SinglePageCreate) => Promise<void>) => {
-  return useBrowser(async browser => {
-    const page = new SinglePageCreate(browser);
-    await browser.url('#/light/funnel-analytics/static-single-page-flow');
-    await new Promise(r => setTimeout(r, 10));
-    await testFn(page);
-  });
-};
+describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest(testFn: (page: SinglePageCreate) => Promise<void>) {
+    return useBrowser(async browser => {
+      const page = new SinglePageCreate(browser);
+      await page.visit(`#/light/funnel-analytics/static-single-page-flow?${getUrlParams(theme, {})}`);
+      await new Promise(r => setTimeout(r, 10));
+      await testFn(page);
+    });
+  }
 
-describe('Single-page create', () => {
   test(
     'Starts funnel and funnel step as page is loaded',
     setupTest(async page => {
@@ -409,9 +415,7 @@ describe('Single-page create', () => {
       expect(actions).toEqual(['funnelStart', 'funnelStepStart', 'funnelSubStepStart']);
     })
   );
-});
 
-describe('Embedded Form', () => {
   test.skip(
     'Forms embedded in Modal unrelated to the main Form',
     setupTest(async page => {

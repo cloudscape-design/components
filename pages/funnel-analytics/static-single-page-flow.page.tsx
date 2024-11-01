@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 
 import {
-  Box,
+  AppLayout,
   BreadcrumbGroup,
   Button,
   Container,
@@ -20,6 +20,7 @@ import {
 } from '~components';
 import { setFunnelMetrics } from '~components/internal/analytics';
 
+import labels from '../app-layout/utils/labels';
 import { i18nStrings } from '../s3-resource-selector/data/i18n-strings';
 import { fetchBuckets, fetchObjects, fetchVersions } from '../s3-resource-selector/data/request';
 import { SelfDismissibleAlert, uriToConsoleUrl } from '../s3-resource-selector/shared';
@@ -69,122 +70,128 @@ export default function StaticSinglePageCreatePage() {
   };
 
   return (
-    <Box>
-      <BreadcrumbGroup
-        items={[
-          { text: 'System', href: '#' },
-          { text: 'Components', href: '#components' },
-          {
-            text: 'Create Resource',
-            href: '#components/breadcrumb-group',
-          },
-        ]}
-        ariaLabel="Breadcrumbs"
-      />
-      {mounted && (
-        <Form
-          analyticsMetadata={{
-            instanceIdentifier: 'single-page-demo',
-            flowType: 'create',
-          }}
-          errorText={errorText}
-          actions={
-            <SpaceBetween size="xs" direction="horizontal">
-              <Button data-testid="unmount" onClick={() => setUnmounted(false)}>
-                Unmount component
-              </Button>
-              <Button data-testid="embedded-form-modal" onClick={() => setModalVisible(true)}>
-                Open Modal
-              </Button>
-              {modalVisible && (
-                <Modal header="Modal title" visible={modalVisible}>
-                  <Form>I am a form</Form>
-                </Modal>
-              )}
-              <Button data-testid="cancel" onClick={() => setUnmounted(false)}>
-                Cancel
-              </Button>
-              <Button
-                data-testid="submit"
-                variant="primary"
-                onClick={() => {
-                  if (value === 'error') {
-                    setErrorText('There is an error');
-                  } else {
-                    setErrorText('');
-                    setUnmounted(false);
-                  }
+    <AppLayout
+      ariaLabels={labels}
+      contentType="form"
+      breadcrumbs={
+        <BreadcrumbGroup
+          items={[
+            { text: 'System', href: '#' },
+            { text: 'Components', href: '#components' },
+            {
+              text: 'Create Resource',
+              href: '#components/breadcrumb-group',
+            },
+          ]}
+          ariaLabel="Breadcrumbs"
+        />
+      }
+      content={
+        mounted && (
+          <Form
+            analyticsMetadata={{
+              instanceIdentifier: 'single-page-demo',
+              flowType: 'create',
+            }}
+            errorText={errorText}
+            actions={
+              <SpaceBetween size="xs" direction="horizontal">
+                <Button data-testid="unmount" onClick={() => setUnmounted(false)}>
+                  Unmount component
+                </Button>
+                <Button data-testid="embedded-form-modal" onClick={() => setModalVisible(true)}>
+                  Open Modal
+                </Button>
+                {modalVisible && (
+                  <Modal header="Modal title" visible={modalVisible}>
+                    <Form>I am a form</Form>
+                  </Modal>
+                )}
+                <Button data-testid="cancel" onClick={() => setUnmounted(false)}>
+                  Cancel
+                </Button>
+                <Button
+                  data-testid="submit"
+                  variant="primary"
+                  onClick={() => {
+                    if (value === 'error') {
+                      setErrorText('There is an error');
+                    } else {
+                      setErrorText('');
+                      setUnmounted(false);
+                    }
+                  }}
+                >
+                  Submit
+                </Button>
+              </SpaceBetween>
+            }
+            header={
+              <Header variant="h1" info={<Link>Info</Link>} description="Form header description">
+                Form Header
+              </Header>
+            }
+          >
+            <SpaceBetween size="m">
+              <Container
+                header={
+                  <Header variant="h2" description="Container 1 - description">
+                    Container 1 - header
+                  </Header>
+                }
+                analyticsMetadata={{
+                  instanceIdentifier: 'container-1',
                 }}
               >
-                Submit
-              </Button>
-            </SpaceBetween>
-          }
-          header={
-            <Header variant="h1" info={<Link>Info</Link>} description="Form header description">
-              Form Header
-            </Header>
-          }
-        >
-          <SpaceBetween size="m">
-            <Container
-              header={
-                <Header variant="h2" description="Container 1 - description">
-                  Container 1 - header
-                </Header>
-              }
-              analyticsMetadata={{
-                instanceIdentifier: 'container-1',
-              }}
-            >
-              <SpaceBetween size="s">
+                <SpaceBetween size="s">
+                  <FormField
+                    info={
+                      <Link data-testid="external-link" external={true} href="#">
+                        Learn more
+                      </Link>
+                    }
+                    errorText={value === 'error' ? 'Trigger error' : ''}
+                    label="This is an ordinary text field"
+                  >
+                    <Input
+                      data-testid="field1"
+                      value={value}
+                      onChange={event => {
+                        setValue(event.detail.value);
+                      }}
+                    />
+                  </FormField>
+                </SpaceBetween>
+              </Container>
+              <Container
+                header={
+                  <Header variant="h2" description="Container 2 - description">
+                    Container 2 - header
+                  </Header>
+                }
+                analyticsMetadata={{
+                  instanceIdentifier: 'container-2',
+                }}
+              >
                 <FormField
                   info={
-                    <Link data-testid="external-link" external={true} href="#">
-                      Learn more
+                    <Link data-testid="info-link" variant="info">
+                      Info
                     </Link>
                   }
-                  errorText={value === 'error' ? 'Trigger error' : ''}
-                  label="This is an ordinary text field"
+                  label="Read audio files from S3"
+                  description="Choose an audio file in Amazon S3. Amazon S3 is object storage built to store and retrieve data."
+                  constraintText="Format: s3://bucket/prefix/object. For objects in a bucket with versioning enabled, you can choose the most recent or a previous version of the object."
+                  errorText={validationError}
+                  stretch={true}
                 >
-                  <Input
-                    data-testid="field1"
-                    value={value}
-                    onChange={event => {
-                      setValue(event.detail.value);
-                    }}
-                  />
+                  <S3ResourceSelector {...s3ResourceSelectorProps} />
                 </FormField>
-              </SpaceBetween>
-            </Container>
-            <Container
-              header={
-                <Header variant="h2" description="Container 2 - description">
-                  Container 2 - header
-                </Header>
-              }
-              analyticsMetadata={{
-                instanceIdentifier: 'container-2',
-              }}
-            >
-              <FormField
-                info={
-                  <Link data-testid="info-link" variant="info">
-                    Info
-                  </Link>
-                }
-                label="Read audio files from S3"
-                description="Choose an audio file in Amazon S3. Amazon S3 is object storage built to store and retrieve data."
-                constraintText="Format: s3://bucket/prefix/object. For objects in a bucket with versioning enabled, you can choose the most recent or a previous version of the object."
-                errorText={validationError}
-                stretch={true}
-              >
-                <S3ResourceSelector {...s3ResourceSelectorProps} />
-              </FormField>
-            </Container>
-          </SpaceBetween>
-        </Form>
-      )}
-    </Box>
+              </Container>
+            </SpaceBetween>
+          </Form>
+        )
+      }
+    />
   );
 }
