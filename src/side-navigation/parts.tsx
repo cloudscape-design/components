@@ -120,7 +120,7 @@ export function NavigationItemsList({
         const dividerIndex = lists.length;
         lists[dividerIndex] = {
           element: (
-            <div data-itemid={`item-${itemid}`}>
+            <div data-itemid={`item-${itemid}`} data-testid={item.testId}>
               <Divider variant="default" />
             </div>
           ),
@@ -135,7 +135,7 @@ export function NavigationItemsList({
       case 'link': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li key={index} data-itemid={`item-${itemid}`} data-testid={item.testId} className={styles['list-item']}>
               <Link
                 definition={item}
                 activeHref={activeHref}
@@ -151,7 +151,7 @@ export function NavigationItemsList({
       case 'section': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li key={index} data-itemid={`item-${itemid}`} data-testid={item.testId} className={styles['list-item']}>
               <Section
                 definition={item}
                 activeHref={activeHref}
@@ -168,7 +168,7 @@ export function NavigationItemsList({
       case 'section-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li key={index} data-itemid={`item-${itemid}`} data-testid={item.testId} className={styles['list-item']}>
               <SectionGroup
                 definition={item}
                 activeHref={activeHref}
@@ -184,7 +184,7 @@ export function NavigationItemsList({
       case 'link-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li key={index} data-itemid={`item-${itemid}`} data-testid={item.testId} className={styles['list-item']}>
               <LinkGroup
                 definition={item}
                 activeHref={activeHref}
@@ -200,7 +200,7 @@ export function NavigationItemsList({
       case 'expandable-link-group': {
         lists[currentListIndex].items?.push({
           element: (
-            <li key={index} data-itemid={`item-${itemid}`} className={styles['list-item']}>
+            <li key={index} data-itemid={`item-${itemid}`} data-testid={item.testId} className={styles['list-item']}>
               <ExpandableLinkGroup
                 definition={item}
                 activeHref={activeHref}

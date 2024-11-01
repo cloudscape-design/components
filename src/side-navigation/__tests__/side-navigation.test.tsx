@@ -40,14 +40,6 @@ describe('SideNavigation', () => {
     expect(wrapper.findItemByIndex(2)?.findLink()?.getElement()).toHaveTextContent('Page 2');
   });
 
-  it('renders dividers', () => {
-    const wrapper = renderSideNavigation({
-      items: [{ type: 'divider' }],
-    });
-
-    expect(wrapper.findItemByIndex(1)?.findDivider()).toBeTruthy();
-  });
-
   it('re-renders different section types correctly', () => {
     const { wrapper, rerender } = renderUpdatableSideNavigation({
       items: [
@@ -191,6 +183,31 @@ describe('SideNavigation', () => {
     });
   });
 
+  describe('Divider', () => {
+    it('renders dividers', () => {
+      const wrapper = renderSideNavigation({
+        items: [{ type: 'divider' }],
+      });
+
+      expect(wrapper.findItemByIndex(1)?.findDivider()).toBeTruthy();
+    });
+
+    it('assigns test ids to the dividers', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          { type: 'divider', testId: 'divider-1-test-id' },
+          { type: 'divider', testId: 'divider-2-test-id' },
+        ],
+      });
+
+      const firstDivider = wrapper.findItemByIndex(1)!.getElement();
+      const secondDivider = wrapper.findItemByIndex(2)!.getElement();
+
+      expect(firstDivider).toHaveAttribute('data-testid', 'divider-1-test-id');
+      expect(secondDivider).toHaveAttribute('data-testid', 'divider-2-test-id');
+    });
+  });
+
   describe('Section Group', () => {
     it('has specified title', () => {
       const wrapper = renderSideNavigation({ items: [{ type: 'section-group', title: 'Section Group', items: [] }] });
@@ -201,6 +218,21 @@ describe('SideNavigation', () => {
       const wrapper = renderSideNavigation({ items: [{ type: 'section-group', title: 'Section Group', items: [] }] });
       expect(wrapper.findItemByIndex(1)?.findSectionGroup()!.getElement()!.children[0]!.tagName).toBe('H3');
       expect(wrapper.find('h3')!.getElement()).toHaveTextContent('Section Group');
+    });
+
+    it('assigns test ids to the section groups', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          { type: 'section-group', title: 'Section Group', testId: 'section-group-1-test-id', items: [] },
+          { type: 'section-group', title: 'Section Group', testId: 'section-group-2-test-id', items: [] },
+        ],
+      });
+
+      const firstGroup = wrapper.findItemByIndex(1)!.getElement();
+      const secondGroup = wrapper.findItemByIndex(2)!.getElement();
+
+      expect(firstGroup).toHaveAttribute('data-testid', 'section-group-1-test-id');
+      expect(secondGroup).toHaveAttribute('data-testid', 'section-group-2-test-id');
     });
   });
 
@@ -292,6 +324,21 @@ describe('SideNavigation', () => {
       });
 
       expect(wrapper.findItemByIndex(1)?.findLink()?.getElement()).toHaveTextContent('Page 1');
+    });
+
+    it('assigns test ids to the links', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          { type: 'link', href: 'http://link/1', text: 'Page 1', testId: 'link-1-test-id' },
+          { type: 'link', href: 'http://link/2', text: 'Page 2', testId: 'link-2-test-id' },
+        ],
+      });
+
+      const firstLink = wrapper.findItemByIndex(1)!.getElement();
+      const secondLink = wrapper.findItemByIndex(2)!.getElement();
+
+      expect(firstLink).toHaveAttribute('data-testid', 'link-1-test-id');
+      expect(secondLink).toHaveAttribute('data-testid', 'link-2-test-id');
     });
   });
 
@@ -602,6 +649,21 @@ describe('SideNavigation', () => {
         expect(onChange).toHaveBeenCalledTimes(2);
       });
     });
+
+    it('assigns test ids to the sections', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          { type: 'section', text: 'Page 1', testId: 'link-1-test-id', items: [] },
+          { type: 'section', text: 'Page 2', testId: 'link-2-test-id', items: [] },
+        ],
+      });
+
+      const firstSection = wrapper.findItemByIndex(1)!.getElement();
+      const secondSection = wrapper.findItemByIndex(2)!.getElement();
+
+      expect(firstSection).toHaveAttribute('data-testid', 'link-1-test-id');
+      expect(secondSection).toHaveAttribute('data-testid', 'link-2-test-id');
+    });
   });
 
   describe('LinkGroup', () => {
@@ -669,6 +731,21 @@ describe('SideNavigation', () => {
       expect(wrapper.findItemByIndex(1)?.find('[data-testid="info"]')?.getElement()).toHaveTextContent(
         'Additional info'
       );
+    });
+
+    it('assigns test ids to the link group', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          { type: 'link-group', text: 'Page 1', href: 'http://link/1', testId: 'link-1-test-id', items: [] },
+          { type: 'link-group', text: 'Page 2', href: 'http://link/2', testId: 'link-2-test-id', items: [] },
+        ],
+      });
+
+      const firstLinkGroup = wrapper.findItemByIndex(1)!.getElement();
+      const secondLinkGroup = wrapper.findItemByIndex(2)!.getElement();
+
+      expect(firstLinkGroup).toHaveAttribute('data-testid', 'link-1-test-id');
+      expect(secondLinkGroup).toHaveAttribute('data-testid', 'link-2-test-id');
     });
   });
 
@@ -988,6 +1065,21 @@ describe('SideNavigation', () => {
       expect(wrapper.findItemByIndex(1)?.findLink()?.getElement()).toHaveAttribute('aria-expanded', 'true');
 
       expect(wrapper.findItemByIndex(2)?.findLink()?.getElement()).toHaveAttribute('aria-expanded', 'false');
+    });
+
+    it('assigns test ids to the expandable links', () => {
+      const wrapper = renderSideNavigation({
+        items: [
+          { type: 'expandable-link-group', href: 'http://link/1', text: 'Page 1', testId: 'link-1-test-id', items: [] },
+          { type: 'expandable-link-group', href: 'http://link/2', text: 'Page 2', testId: 'link-2-test-id', items: [] },
+        ],
+      });
+
+      const firstLink = wrapper.findItemByIndex(1)!.getElement();
+      const secondLink = wrapper.findItemByIndex(2)!.getElement();
+
+      expect(firstLink).toHaveAttribute('data-testid', 'link-1-test-id');
+      expect(secondLink).toHaveAttribute('data-testid', 'link-2-test-id');
     });
 
     describe('when clicking on the title link', () => {
