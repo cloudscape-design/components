@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Funnel } from './funnel';
 import { FunnelBase } from './funnel-base';
-import { dispatchFunnelEvent } from './funnel-logger';
+import { dispatchFunnelEvent, FunnelLogEventDetail, Metadata } from './funnel-logger';
 import { FunnelSubstep } from './funnel-substep';
 import { CallbackFunction, ErrorDetails, FunnelStepProps, FunnelStepStatus } from './types';
 
@@ -50,14 +50,42 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
     }
   }
 
+  private getDetails(metadata?: Metadata): FunnelLogEventDetail['details'] {
+    return {
+      fullContext: this.getFullContext(),
+      context: this.name,
+      metadata: {
+        name: this.name,
+        stepIndex: this.index,
+        optional: this.optional,
+        ...metadata,
+      },
+    };
+  }
+
+  setContext(funnel: Funnel | null) {
+    this.context = funnel;
+    this.notifyObservers();
+  }
+
+  getFullContext() {
+    const combinedContext: string[] = [this.name || ''];
+
+    let parentContext: Funnel | null | undefined = this.context;
+    while (parentContext) {
+      combinedContext.push(parentContext.name || '');
+      parentContext = parentContext.context;
+    }
+
+    return combinedContext.filter(Boolean).reverse();
+  }
+
   start() {
     super.start(() => {
       dispatchFunnelEvent({
         header: `Funnel step started`,
         status: 'success',
-        details: {
-          context: this.name,
-        },
+        details: this.getDetails(),
       });
     });
   }
@@ -67,9 +95,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
       dispatchFunnelEvent({
         header: `Funnel step completed`,
         status: 'success',
-        details: {
-          context: this.name,
-        },
+        details: this.getDetails(),
       });
 
       callback?.();
@@ -86,7 +112,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
         dispatchFunnelEvent({
           header: 'Funnel step validating',
           status: 'in-progress',
-          details: { context: this.name },
+          details: this.getDetails(),
         });
       });
     }
@@ -97,12 +123,9 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
       super.error(details, () => {
         dispatchFunnelEvent({
           header: 'Step error',
-          details: {
-            context: this.name,
-            metadata: {
-              errorText: details.errorText,
-            },
-          },
+          details: this.getDetails({
+            errorText: details.errorText,
+          }),
           status: 'error',
         });
       });
@@ -110,9 +133,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
       this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Step error cleared',
-        details: {
-          context: this.name,
-        },
+        details: this.getDetails(),
         status: 'info',
       });
     }

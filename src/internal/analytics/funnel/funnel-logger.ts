@@ -2,13 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 const eventBuffer: FunnelLogEventDetail[] = [];
 
-interface FunnelLogEventDetail {
+export type Metadata = Record<string, string | number | boolean | undefined>;
+export interface FunnelLogEventDetail {
   status: Status;
   header: string;
   details?: {
+    fullContext?: string[];
     context?: string;
     message?: string;
-    metadata?: Record<string, string | number | boolean | undefined>;
+    metadata?: Metadata;
   };
 }
 export type Status = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';

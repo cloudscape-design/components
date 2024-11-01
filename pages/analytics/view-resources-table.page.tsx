@@ -2,12 +2,28 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayout, BreadcrumbGroup } from '~components';
+import { AppLayout, BreadcrumbGroup, Header, Link, Table } from '~components';
+
+function Content() {
+  return (
+    <>
+      <Table
+        items={[]}
+        columnDefinitions={[]}
+        header={
+          <Header info={<Link variant="info">Info</Link>} counter="(10)">
+            Table title
+          </Header>
+        }
+      />
+    </>
+  );
+}
 
 function App() {
   return (
     <AppLayout
-      contentType="wizard"
+      contentType="table"
       breadcrumbs={
         <BreadcrumbGroup
           items={[
@@ -18,7 +34,7 @@ function App() {
           ariaLabel="Breadcrumbs"
         />
       }
-      content={<>Hello</>}
+      content={<Content />}
     />
   );
 }

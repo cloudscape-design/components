@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Funnel } from './funnel';
 import { FunnelBase } from './funnel-base';
-import { dispatchFunnelEvent } from './funnel-logger';
+import { dispatchFunnelEvent, FunnelLogEventDetail, Metadata } from './funnel-logger';
 import { FunnelStep } from './funnel-step';
 import { ErrorDetails, InteractionScope } from './types';
 
@@ -27,6 +27,18 @@ export class FunnelSubstep extends FunnelBase {
     };
   }
 
+  private getDetails(metadata?: Metadata): FunnelLogEventDetail['details'] {
+    return {
+      fullContext: this.getFullContext(),
+      context: this.name,
+      metadata: {
+        name: this.name,
+        subStepIndex: this.index,
+        ...metadata,
+      },
+    };
+  }
+
   setIndex(index: number) {
     this.index = index;
     this.notifyObservers();
@@ -42,6 +54,18 @@ export class FunnelSubstep extends FunnelBase {
     this.notifyObservers();
   }
 
+  getFullContext() {
+    const combinedContext: string[] = [this.name || ''];
+
+    let parentContext: Funnel | FunnelStep | null | undefined = this.context;
+    while (parentContext) {
+      combinedContext.push(parentContext.name || '');
+      parentContext = parentContext.context;
+    }
+
+    return combinedContext.filter(Boolean).reverse();
+  }
+
   private debounce(callback: () => void) {
     if (this.debounceTimeout) {
       clearTimeout(this.debounceTimeout);
@@ -53,7 +77,11 @@ export class FunnelSubstep extends FunnelBase {
   start() {
     this.debounce(() => {
       super.start(() => {
-        dispatchFunnelEvent({ header: 'Funnel substep started', status: 'success', details: { message: this.name } });
+        dispatchFunnelEvent({
+          header: 'Funnel substep started',
+          status: 'success',
+          details: this.getDetails(),
+        });
       });
     });
   }
@@ -65,7 +93,11 @@ export class FunnelSubstep extends FunnelBase {
 
     this.debounce(() => {
       super.complete(() => {
-        dispatchFunnelEvent({ header: 'Funnel substep completed', status: 'success', details: { message: this.name } });
+        dispatchFunnelEvent({
+          header: 'Funnel substep completed',
+          status: 'success',
+          details: this.getDetails(),
+        });
       });
     });
   }
@@ -76,12 +108,10 @@ export class FunnelSubstep extends FunnelBase {
         dispatchFunnelEvent({
           header: 'Field error',
           status: 'error',
-          details: {
-            context: [details.scope.label, ...this.getFullContext()].join('/'),
-            metadata: {
-              errorText: details.errorText,
-            },
-          },
+          details: this.getDetails({
+            fieldLabel: details.scope.label,
+            fieldError: details.errorText,
+          }),
         });
       });
     } else if (this.getStatus() === 'error') {
@@ -89,33 +119,18 @@ export class FunnelSubstep extends FunnelBase {
       dispatchFunnelEvent({
         header: 'Field error cleared',
         status: 'info',
-        details: {
-          context: [details.scope.label, ...this.getFullContext()].join('/'),
-        },
+        details: this.getDetails({
+          fieldLabel: details.scope.label,
+        }),
       });
     }
-  }
-
-  getFullContext() {
-    const combinedContext = [this.name];
-
-    let parentContext: Funnel | FunnelStep | null | undefined = this.context;
-    while (parentContext) {
-      combinedContext.push(parentContext.name);
-      parentContext = parentContext.context;
-    }
-
-    return combinedContext.filter(Boolean);
   }
 
   logInteractation(scope: InteractionScope): void {
     dispatchFunnelEvent({
       header: 'Funnel Substep interaction',
       status: 'info',
-      details: {
-        context: this.getFullContext().join('/'),
-        metadata: scope.metadata,
-      },
+      details: this.getDetails(scope.metadata),
     });
   }
 }
