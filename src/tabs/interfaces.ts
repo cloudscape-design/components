@@ -74,9 +74,11 @@ export interface TabsProps extends BaseComponentProps {
    */
   i18nStrings?: TabsProps.I18nStrings;
   /**
-   * Enabling this property makes the tab content fit to the available height.
-   * If the tab content is too short, it will stretch. If the tab content is too long, a vertical scrollbar will be shown.
+   * Preserve tabs in DOM tree when they're not active
+   * Might be useful to keep the state of individual tabs between openings
+   * By default, inactive tabs are removed from the DOM
    */
+  preserveInactiveTabs?: boolean;
   fitHeight?: boolean;
 }
 export namespace TabsProps {
