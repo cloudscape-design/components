@@ -4,6 +4,8 @@ import React from 'react';
 
 import { AppLayout, BreadcrumbGroup, Header, Link, Table } from '~components';
 
+import { withFunnelTestingApi } from './components/funnel-testing-page';
+
 function Content() {
   return (
     <>
@@ -39,4 +41,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFunnelTestingApi(App);

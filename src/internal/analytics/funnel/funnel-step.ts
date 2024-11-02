@@ -37,6 +37,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
     if (this.getStatus() !== 'initial' && this.getStatus() !== 'validating' && this.getStatus() !== 'completed') {
       dispatchFunnelEvent({
         header: 'Funnel step configuration changed',
+        action: 'funnel-step-configuration-changed',
         details: {
           context: this.name,
           metadata: {
@@ -84,6 +85,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
     super.start(() => {
       dispatchFunnelEvent({
         header: `Funnel step started`,
+        action: 'funnel-step-started',
         status: 'success',
         details: this.getDetails(),
       });
@@ -94,6 +96,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
     super.complete(() => {
       dispatchFunnelEvent({
         header: `Funnel step completed`,
+        action: 'funnel-step-completed',
         status: 'success',
         details: this.getDetails(),
       });
@@ -111,6 +114,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
       this.setStatus('validating', () => {
         dispatchFunnelEvent({
           header: 'Funnel step validating',
+          action: 'funnel-step-validating',
           status: 'in-progress',
           details: this.getDetails(),
         });
@@ -123,6 +127,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
       super.error(details, () => {
         dispatchFunnelEvent({
           header: 'Step error',
+          action: 'funnel-step-error',
           details: this.getDetails({
             errorText: details.errorText,
           }),
@@ -133,6 +138,7 @@ export class FunnelStep extends FunnelBase<FunnelStepStatus> {
       this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Step error cleared',
+        action: 'funnel-step-error-cleared',
         details: this.getDetails(),
         status: 'info',
       });

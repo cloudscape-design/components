@@ -36,6 +36,10 @@ export const useWizardFunnel = ({ isLoadingNextStep, ...props }: UseWizardFunnel
   }, []);
 
   useEffectOnUpdate(() => {
+    console.log('activeStepIndex', props.activeStepIndex);
+  }, [props.activeStepIndex]);
+
+  useEffectOnUpdate(() => {
     if (!funnelContext || !funnelContext.controller) {
       return;
     }

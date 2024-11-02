@@ -39,7 +39,21 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     }
 
     super.start(() => {
-      dispatchFunnelEvent({ header: 'Funnel started', status: 'success', details: { context: this.name } });
+      dispatchFunnelEvent({
+        header: 'Funnel started',
+        action: 'funnel-started',
+        status: 'success',
+        details: {
+          context: this.name,
+          metadata: {
+            funnelName: this.name,
+            funnelType: this.type,
+            funnelInteractionId: this.id,
+            totalFunnelSteps: this.steps.length,
+            ...this.metadata,
+          },
+        },
+      });
 
       this.currentStep?.start();
     });
@@ -54,7 +68,17 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     this.result = 'submitted';
     this.setStatus('submitted', () => {
-      dispatchFunnelEvent({ header: 'Funnel submitted', status: 'success', details: { context: this.name } });
+      dispatchFunnelEvent({
+        header: 'Funnel submitted',
+        action: 'funnel-submitted',
+        status: 'success',
+        details: {
+          context: this.name,
+          metadata: {
+            funnelInteractionId: this.id,
+          },
+        },
+      });
     });
   }
 
@@ -65,11 +89,21 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     if (value) {
       this.setStatus('validating', () => {
-        dispatchFunnelEvent({ header: 'Funnel validating', status: 'in-progress', details: { context: this.name } });
+        dispatchFunnelEvent({
+          header: 'Funnel validating',
+          action: 'funnel-validating',
+          status: 'in-progress',
+          details: { context: this.name },
+        });
       });
     } else if (this.getStatus() === 'validating') {
       this.setStatus('validated', () => {
-        dispatchFunnelEvent({ header: 'Funnel validated', status: 'success', details: { context: this.name } });
+        dispatchFunnelEvent({
+          header: 'Funnel validated',
+          action: 'funnel-validated',
+          status: 'success',
+          details: { context: this.name },
+        });
       });
     }
   }
@@ -87,6 +121,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   navigate(reason: string, requestedStepIndex: number) {
     dispatchFunnelEvent({
       header: 'Funnel step navigation',
+      action: 'funnel-step-navigation',
       status: 'success',
       details: {
         context: this.name,
@@ -108,8 +143,15 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
       dispatchFunnelEvent({
         header: `Funnel completed with result ${this.result}`,
+        action: 'funnel-completed',
         status: this.result === 'cancelled' ? 'error' : 'success',
-        details: { context: this.name },
+        details: {
+          context: this.name,
+          metadata: {
+            funnelInteractionId: this.id,
+            funnelResult: this.result,
+          },
+        },
       });
 
       this.notifyObservers();
@@ -173,6 +215,7 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     dispatchFunnelEvent({
       header: 'Funnel configuration changed',
+      action: 'funnel-configuration-changed',
       details: {
         context: this.name,
         metadata: {

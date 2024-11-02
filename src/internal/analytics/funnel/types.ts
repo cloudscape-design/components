@@ -3,6 +3,7 @@
 
 import { AnalyticsMetadata } from '../interfaces';
 
+export type FunnelType = 'single-page' | 'multi-page' | 'modal';
 export interface FunnelStepConfig {
   index?: number;
   optional?: boolean;

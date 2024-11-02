@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 
 import { AppLayout, BreadcrumbGroup, Button, Container, ContentLayout, Header, SpaceBetween } from '~components';
 
+import { withFunnelTestingApi } from './components/funnel-testing-page';
 import {
   DeleteWithAdditionalConfirmationModal,
   DeleteWithSimpleConfirmationModal,
@@ -96,4 +97,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFunnelTestingApi(App);

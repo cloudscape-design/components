@@ -30,6 +30,7 @@ export const useFormFunnel = ({ rootRef, analyticsMetadata, errorText }: UseForm
     const funnelName = getFunnelName(rootRef, pageContext);
     const resourceType = analyticsMetadata.resourceType ?? (pageContext.getResourceType() || '');
 
+    funnelContext?.controller?.setFunnelType('single-page');
     funnelContext?.controller?.setMetadata({ ...analyticsMetadata, resourceType });
     funnelContext?.controller?.setName(funnelName);
     funnelContext?.controller?.currentStep.setName(funnelName);

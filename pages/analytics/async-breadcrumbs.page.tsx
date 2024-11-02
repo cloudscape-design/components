@@ -4,6 +4,8 @@ import React, { useEffect, useState } from 'react';
 
 import { AppLayout, BreadcrumbGroup, StatusIndicator, Wizard } from '~components';
 
+import { withFunnelTestingApi } from './components/funnel-testing-page';
+
 function DelayedBreadcrumbs() {
   const [loading, setLoading] = useState(true);
 
@@ -56,4 +58,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFunnelTestingApi(App);

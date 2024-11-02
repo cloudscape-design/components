@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AnalyticsMetadata } from '../interfaces';
-import { CallbackFunction, ErrorDetails, FunnelBaseStatus, Observer } from './types';
+import { CallbackFunction, ErrorDetails, FunnelBaseStatus, FunnelType, Observer } from './types';
 import { getUuid } from './utils';
 
 export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
@@ -10,6 +10,7 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
   protected observers: Observer[] = [];
 
   public id: string;
+  public type?: FunnelType;
   public name?: string;
   public metadata?: AnalyticsMetadata;
 
@@ -29,6 +30,11 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
 
   setName(name: string): void {
     this.name = name;
+    this.notifyObservers();
+  }
+
+  setFunnelType(type: FunnelType): void {
+    this.type = type;
     this.notifyObservers();
   }
 
@@ -79,7 +85,6 @@ export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
       return;
     }
 
-    console.log('error', details);
     this.setStatus('error' as TStatus);
     callback?.();
   }

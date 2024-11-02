@@ -32,7 +32,7 @@ export class FunnelSubstep extends FunnelBase {
       fullContext: this.getFullContext(),
       context: this.name,
       metadata: {
-        name: this.name,
+        subStepName: this.name,
         subStepIndex: this.index,
         ...metadata,
       },
@@ -79,6 +79,7 @@ export class FunnelSubstep extends FunnelBase {
       super.start(() => {
         dispatchFunnelEvent({
           header: 'Funnel substep started',
+          action: 'funnel-substep-started',
           status: 'success',
           details: this.getDetails(),
         });
@@ -95,6 +96,7 @@ export class FunnelSubstep extends FunnelBase {
       super.complete(() => {
         dispatchFunnelEvent({
           header: 'Funnel substep completed',
+          action: 'funnel-substep-completed',
           status: 'success',
           details: this.getDetails(),
         });
@@ -107,6 +109,7 @@ export class FunnelSubstep extends FunnelBase {
       super.error(details, () => {
         dispatchFunnelEvent({
           header: 'Field error',
+          action: 'funnel-substep-error',
           status: 'error',
           details: this.getDetails({
             fieldLabel: details.scope.label,
@@ -118,6 +121,7 @@ export class FunnelSubstep extends FunnelBase {
       this.setStatus(this.getPreviousStatus());
       dispatchFunnelEvent({
         header: 'Field error cleared',
+        action: 'funnel-substep-error-cleared',
         status: 'info',
         details: this.getDetails({
           fieldLabel: details.scope.label,
@@ -129,6 +133,7 @@ export class FunnelSubstep extends FunnelBase {
   logInteractation(scope: InteractionScope): void {
     dispatchFunnelEvent({
       header: 'Funnel Substep interaction',
+      action: 'funnel-interaction',
       status: 'info',
       details: this.getDetails(scope.metadata),
     });

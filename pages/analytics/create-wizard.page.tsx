@@ -16,6 +16,8 @@ import {
   Wizard,
 } from '~components';
 
+import { withFunnelTestingApi } from './components/funnel-testing-page';
+
 function Content() {
   const history = useHistory();
   const [activeStepIndex, setActiveStepIndex] = useState(0);
@@ -178,4 +180,4 @@ function App() {
   );
 }
 
-export default App;
+export default withFunnelTestingApi(App);
