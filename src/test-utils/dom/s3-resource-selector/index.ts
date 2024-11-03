@@ -50,7 +50,7 @@ export default class S3ResourceSelectorWrapper extends ComponentWrapper {
   }
 
   findModal(): S3ModalWrapper | null {
-    const modal = createWrapper().findModal();
+    const modal = createWrapper().findModal(`.${modalStyles['modal-root']}`);
     return modal && new S3ModalWrapper(modal.getElement());
   }
 

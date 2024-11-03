@@ -46,7 +46,11 @@ export const useFormFunnel = ({ rootRef, analyticsMetadata, errorText }: UseForm
   }, [funnelContext?.controller]);
 
   useEffect(() => {
-    const errorTextValue = rootRef.current.querySelector<HTMLElement>(analyticsSelectors.error)?.innerText || '';
+    if (!errorText) {
+      return;
+    }
+
+    const errorTextValue = rootRef.current.querySelector<HTMLElement>(`.${analyticsSelectors.error}`)?.innerText || '';
     funnelContext?.controller?.error({ errorText: errorTextValue, scope: { type: 'funnel' } });
   }, [funnelContext, rootRef, errorText]);
 

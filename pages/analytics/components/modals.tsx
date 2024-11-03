@@ -154,10 +154,10 @@ export const FeedbackModal = (props: ModalProps & { onCancel: () => void; onConf
       footer={
         <Box float="right">
           <SpaceBetween direction="horizontal" size="xs">
-            <Button variant="link" onClick={props.onCancel}>
+            <Button data-testid="feedback-cancel-button" variant="link" onClick={props.onCancel}>
               Cancel
             </Button>
-            <Button variant="primary" onClick={props.onConfirm}>
+            <Button data-testid="feedback-submit-button" variant="primary" onClick={props.onConfirm}>
               Submit
             </Button>
           </SpaceBetween>
@@ -185,7 +185,7 @@ export const FeedbackModal = (props: ModalProps & { onCancel: () => void; onConf
               label="Enter your message below"
               constraintText="1000 character(s) available. Do not disclose any personal, commercially sensitive, or confidential information."
             >
-              <Textarea value="" />
+              <Textarea value="" onChange={() => {}} />
             </FormField>
             <FormField label="Are you satisfied with your experience?">
               <RadioGroup
@@ -206,7 +206,7 @@ export const FeedbackModal = (props: ModalProps & { onCancel: () => void; onConf
               }
               constraintText="Personal information you provide to us will be handled in accordance with the AWS Privacy Notice (https://aws.amazon.com/privacy/)."
             >
-              <Input value="" />
+              <Input value="" onChange={() => {}} />
             </FormField>
             <FormField label="File attachment">
               <FileUpload

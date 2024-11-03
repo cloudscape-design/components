@@ -39,6 +39,7 @@ export const useModalFunnel = ({ contentRef, visible }: UseModalFunnel) => {
     }
 
     const funnelName = getFunnelName(modalId);
+    funnelContext?.controller?.setFunnelType('modal');
     funnelContext?.controller?.setName(funnelName);
     funnelContext?.controller?.currentStep.setName(funnelName);
     funnelContext?.controller?.currentStep.registerSubstep(funnelSubstep);

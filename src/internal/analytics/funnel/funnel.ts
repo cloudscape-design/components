@@ -108,9 +108,30 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     }
   }
 
-  async error(details: ErrorDetails): Promise<void> {
-    await super.error(details);
-    this.notifyObservers();
+  error(details: ErrorDetails) {
+    if (details.errorText) {
+      super.error(details, () => {
+        dispatchFunnelEvent({
+          header: 'Funnel error',
+          action: 'funnel-error',
+          details: {
+            metadata: {
+              funnelInteractionId: this.id,
+              funnelError: details.errorText,
+            },
+          },
+          status: 'error',
+        });
+      });
+    } else if (this.getStatus() === 'error') {
+      this.setStatus(this.getPreviousStatus());
+      dispatchFunnelEvent({
+        header: 'Funnel error cleared',
+        action: 'funnel-error-cleared',
+        details: {},
+        status: 'info',
+      });
+    }
   }
 
   cancel() {

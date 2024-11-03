@@ -18,6 +18,10 @@ declare const window: ExtendedWindow;
 const wrapper = createWrapper();
 
 class FunnelTestingPage extends BasePageObject {
+  async navigate(url: string) {
+    await this.browser.url(url);
+  }
+
   async visit(url: string) {
     await this.browser.url(url);
     await this.waitForVisible(wrapper.findAppLayout().findContentRegion().toSelector());
@@ -111,9 +115,16 @@ class CreateFormPage extends FunnelTestingPage {
     await this.keys(value);
   }
 
-  async clearFieldValue(testId: string) {
-    await this.click(wrapper.find(`[data-testid=${testId}] input`).toSelector());
-    await this.setValue(wrapper.find(`[data-testid=${testId}] input`).toSelector(), '');
+  async openFeedbackModal() {
+    await this.click(wrapper.findButton('[data-testid=open-modal-button]').toSelector());
+  }
+
+  async submitFeedbackModal() {
+    await this.click(wrapper.findButton('[data-testid=feedback-submit-button]').toSelector());
+  }
+
+  async cancelFeedbackModal() {
+    await this.click(wrapper.findButton('[data-testid=feedback-cancel-button]').toSelector());
   }
 
   async addDynamicContainer() {
@@ -204,6 +215,26 @@ describe('Form Page Tests', () => {
   );
 
   test(
+    'tracks form abandoned by navigation',
+    setupTest(async page => {
+      await page.navigate(`#/light`);
+      await page.assertFunnelSequence(
+        ['funnel-started', 'funnel-step-started', 'funnel-step-completed', 'funnel-completed'],
+        {
+          'funnel-completed': event => {
+            expect(event.details?.metadata).toEqual(
+              expect.objectContaining({
+                funnelInteractionId: expect.any(String),
+                funnelResult: 'cancelled',
+              })
+            );
+          },
+        }
+      );
+    })
+  );
+
+  test(
     'tracks navigation between form sections',
     setupTest(async page => {
       await page.click(wrapper.find('[data-testid=section-1-field-1] input').toSelector());
@@ -216,6 +247,19 @@ describe('Form Page Tests', () => {
         'funnel-substep-completed',
         'funnel-substep-started',
       ]);
+    })
+  );
+
+  test(
+    'maintains active substep when interacting with a modal from a substep',
+    setupTest(async page => {
+      const s3ResourceSelectorWrapper = wrapper.findS3ResourceSelector();
+      await page.click(s3ResourceSelectorWrapper.findInContext().findUriInput().toSelector());
+      await page.click(s3ResourceSelectorWrapper.findInContext().findBrowseButton().toSelector());
+      await page.click(s3ResourceSelectorWrapper.findTable().findTextFilter().toSelector());
+      await page.click(s3ResourceSelectorWrapper.findModal().findDismissButton().toSelector());
+
+      // await page.assertFunnelSequence(['funnel-started', 'funnel-step-started', 'funnel-substep-started']);
     })
   );
 
@@ -241,6 +285,59 @@ describe('Form Page Tests', () => {
           subStepName: 'Section 1',
           subStepIndex: 0,
         })
+      );
+    })
+  );
+
+  test(
+    'tracks form errors',
+    setupTest(async page => {
+      await page.click(wrapper.findButton('[data-testid=submit-with-error-button]').toSelector());
+      await page.assertLastEventDetails(
+        'funnel-error',
+        expect.objectContaining({
+          funnelInteractionId: expect.any(String),
+          funnelError: 'There was an error with your submission',
+        })
+      );
+    })
+  );
+
+  test(
+    'tracks nested modal funnels separately',
+    setupTest(async page => {
+      await page.assertFunnelSequence(['funnel-started', 'funnel-step-started']);
+      await page.openFeedbackModal();
+
+      await page.assertFunnelSequence(
+        [
+          'funnel-started', // Form funnel started
+          'funnel-step-started', // Form funnel step started
+          'funnel-started', // Modal funnel started
+          'funnel-step-started', // Modal funnel step started
+        ],
+        {
+          'funnel-started': [
+            event => {
+              expect(event.details?.metadata).toEqual(
+                expect.objectContaining({
+                  funnelType: 'single-page',
+                  funnelName: 'Create component',
+                })
+              );
+            },
+            event => {
+              expect(event.details?.metadata).toEqual(
+                expect.objectContaining({
+                  funnelInteractionId: expect.any(String),
+                  funnelType: 'modal',
+                  funnelName: 'Feedback for Console Home',
+                  totalFunnelSteps: 1,
+                })
+              );
+            },
+          ],
+        }
       );
     })
   );

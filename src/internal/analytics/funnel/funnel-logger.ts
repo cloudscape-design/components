@@ -9,6 +9,8 @@ export type Action =
   | 'funnel-completed'
   | 'funnel-validating'
   | 'funnel-validated'
+  | 'funnel-error'
+  | 'funnel-error-cleared'
   | 'funnel-interaction'
   | 'funnel-configuration-changed'
   | 'funnel-step-navigation'

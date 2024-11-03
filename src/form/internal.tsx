@@ -57,7 +57,7 @@ export default function InternalForm({
       {errorText && (
         <InternalBox margin={{ top: 'l' }}>
           <InternalAlert type="error" statusIconAriaLabel={errorIconAriaLabel}>
-            <div className={styles.error}>{errorText}</div>
+            <div className={clsx(styles.error, analyticsSelectors.error)}>{errorText}</div>
           </InternalAlert>
         </InternalBox>
       )}

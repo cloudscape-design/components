@@ -127,6 +127,7 @@ export function S3Modal({
   return (
     <div>
       <InternalModal
+        className={styles['modal-root']}
         referrerId={referrerId}
         visible={true}
         size="max"

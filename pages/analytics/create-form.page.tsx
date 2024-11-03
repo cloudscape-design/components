@@ -24,12 +24,14 @@ import SpaceBetween from '~components/space-between';
 
 import { InputControl } from './components/controls';
 import { withFunnelTestingApi } from './components/funnel-testing-page';
+import { FeedbackModal } from './components/modals';
 import { UncontrolledS3ResourceSelector } from './components/s3-resource-selector';
 import { TableContainerVariant } from './components/table';
 
 function Content() {
   const history = useHistory();
-  const [errorText] = useState<string>('');
+  const [errorText, setErrorText] = useState<string>('');
+  const [feedbackModalVisible, setFeedbackModalVisible] = useState(false);
   const [loading, setLoading] = useState(false);
   const [dateValue, setDateValue] = useState<string>('');
   const [filesValue, setFilesValue] = useState<FileUploadProps['value']>([]);
@@ -40,17 +42,25 @@ function Content() {
   });
   const [containerCount, setContainerCount] = useState(0);
 
-  const handleSubmit = () => {
+  const handleSubmit = (showError?: boolean) => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      history.push('/');
-      // setErrorText("There was an error with your submission");
+      if (showError) {
+        setErrorText('There was an error with your submission');
+        return;
+      } else {
+        history.push('/');
+      }
     }, 0);
   };
 
   const handleCancel = () => {
     history.push('/');
+  };
+
+  const handleFeedbackModalClose = () => {
+    setFeedbackModalVisible(false);
   };
 
   const hideContainer = (index: number) => {
@@ -72,14 +82,26 @@ function Content() {
       errorText={errorText}
       actions={
         <SpaceBetween direction="horizontal" size="xs">
+          <Button data-testid="open-modal-button" onClick={() => setFeedbackModalVisible(true)}>
+            Open Feedback Modal
+          </Button>
           <Button data-testid="cancel-button" disabled={loading} onClick={handleCancel}>
             Cancel
+          </Button>
+          <Button
+            data-testid="submit-with-error-button"
+            disabled={loading}
+            loading={loading}
+            onClick={() => handleSubmit(true)}
+            variant="primary"
+          >
+            Submit with error
           </Button>
           <Button
             data-testid="submit-button"
             disabled={loading}
             loading={loading}
-            onClick={handleSubmit}
+            onClick={() => handleSubmit(false)}
             variant="primary"
           >
             Submit
@@ -92,6 +114,12 @@ function Content() {
         </Header>
       }
     >
+      <FeedbackModal
+        visible={feedbackModalVisible}
+        onCancel={handleFeedbackModalClose}
+        onConfirm={handleFeedbackModalClose}
+        onDismiss={handleFeedbackModalClose}
+      />
       <SpaceBetween size="s">
         {containersVisible[0] && (
           <Container
