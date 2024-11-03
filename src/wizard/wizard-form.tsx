@@ -7,8 +7,8 @@ import { useComponentMetadata } from '@cloudscape-design/component-toolkit/inter
 
 import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
-import { useFunnelContext } from '../internal/analytics/hooks/use-funnel';
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
+import { useFunnelContext } from '../internal/analytics/funnel/hooks/use-funnel';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/funnel/utils/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';

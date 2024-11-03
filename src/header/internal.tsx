@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { StickyHeaderContext } from '../container/use-sticky-header';
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_SUBSTEP_NAME } from '../internal/analytics/funnel/utils/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { useContainerHeader } from '../internal/context/container-header';

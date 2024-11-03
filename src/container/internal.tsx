@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useFunnelSubstep } from '../internal/analytics/hooks/use-funnel-substep';
+import { useFunnelSubstep } from '../internal/analytics/funnel/hooks/use-funnel-substep';
 import { AnalyticsMetadata } from '../internal/analytics/interfaces';
 import { getBaseProps } from '../internal/base-component';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';

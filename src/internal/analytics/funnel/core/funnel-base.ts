@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { AnalyticsMetadata } from '../interfaces';
-import { CallbackFunction, ErrorDetails, FunnelBaseStatus, FunnelType, Observer } from './types';
-import { getUuid } from './utils';
+import { AnalyticsMetadata } from '../../interfaces';
+import { CallbackFunction, ErrorDetails, FunnelBaseStatus, FunnelType, Observer } from '../types';
+import { getUuid } from '../utils';
 
 export abstract class FunnelBase<TStatus extends string = FunnelBaseStatus> {
   protected status: TStatus[] = [];

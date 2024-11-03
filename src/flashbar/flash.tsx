@@ -10,7 +10,7 @@ import { ActionsWrapper } from '../alert/actions-wrapper';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/funnel/utils/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';

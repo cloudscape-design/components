@@ -3,12 +3,19 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { Action } from '../../../../../lib/components/internal/analytics/funnel/funnel-logger';
-import { FunnelTestAPI, FunnelTestEvent } from '../../../../../lib/components/internal/analytics/funnel/test-api';
+import {
+  FunnelEvent,
+  FunnelEventDetails,
+  FunnelEventName,
+  FunnelMetadata,
+  StepMetadata,
+  SubstepMetadata,
+} from '../../../../../lib/components/internal/analytics/funnel/types';
+import { FunnelTestAPI } from '../../../../../lib/components/internal/analytics/funnel/types/test-api';
 import createWrapper from '../../../../../lib/components/test-utils/selectors';
 
-type EventAssertion = (event: FunnelTestEvent, index: number) => void;
-type EventAssertions = Partial<Record<Action, EventAssertion | EventAssertion[]>>;
+type EventAssertion = (event: FunnelEvent, index: number) => void;
+type EventAssertions = Partial<Record<FunnelEventName, EventAssertion | EventAssertion[]>>;
 interface ExtendedWindow extends Window {
   __funnelTestAPI?: FunnelTestAPI;
 }
@@ -43,47 +50,46 @@ class FunnelTestingPage extends BasePageObject {
     return lastFunnelEvent;
   }
 
-  async getFunnelEventsByAction(action: string) {
-    const funnelEventsByAction = await this.browser.execute(
-      actionArg => window.__funnelTestAPI?.getEventsByAction(actionArg),
-      action
+  async getEventsByName(name: string) {
+    const funnelEventsByName = await this.browser.execute(
+      nameArg => window.__funnelTestAPI?.getEventsByName(nameArg),
+      name
     );
-    return funnelEventsByAction || [];
+    return funnelEventsByName || [];
   }
 
-  async waitForFunnelEvent(action: string, timeout = 5000) {
+  async waitForFunnelEvent(name: string, timeout = 5000) {
     await this.browser.waitUntil(
       async () => {
-        const events = await this.getFunnelEventsByAction(action);
+        const events = await this.getEventsByName(name);
         return events.length > 0;
       },
       {
         timeout,
-        timeoutMsg: `Expected funnel event ${action} was not emitted within ${timeout}ms`,
+        timeoutMsg: `Expected funnel event ${name} was not emitted within ${timeout}ms`,
       }
     );
   }
 
   // Helper methods for common test scenarios
-  async getFunnelEventByAction(action: string) {
-    const events = await this.getFunnelEventsByAction(action);
+  async getFunnelEventByAction(name: string) {
+    const events = await this.getEventsByName(name);
     return events[events.length - 1];
   }
 
-  async assertFunnelSequence(expectedActions: Action[], eventAssertions: EventAssertions = {}) {
+  async assertFunnelSequence(expectedEvents: FunnelEventName[], eventAssertions: EventAssertions = {}) {
     const events = await this.getFunnelEvents();
-    const actualActions = events.map(e => e.action);
-    expect(actualActions).toEqual(expectedActions);
+    const actualEvents = events.map(e => e.name);
+    expect(actualEvents).toEqual(expectedEvents);
 
-    const actionOccurrences: Partial<Record<Action, number>> = {};
+    const eventOccurances: Partial<Record<FunnelEventName, number>> = {};
     for (let i = 0; i < events.length; i++) {
       const event = events[i];
-      const action = event.action as Action;
-      const assertion = eventAssertions[action];
+      const assertion = eventAssertions[event.name];
 
       if (assertion) {
-        actionOccurrences[action] = (actionOccurrences[action] || 0) + 1;
-        const occurrenceIndex = actionOccurrences[action]! - 1;
+        eventOccurances[event.name] = (eventOccurances[event.name] || 0) + 1;
+        const occurrenceIndex = eventOccurances[event.name]! - 1;
 
         if (Array.isArray(assertion)) {
           assertion[occurrenceIndex]?.(event, occurrenceIndex);
@@ -94,10 +100,17 @@ class FunnelTestingPage extends BasePageObject {
     }
   }
 
-  async assertLastEventDetails(expectedAction: string, expected: Partial<FunnelTestEvent>) {
+  async assertLastEvent(
+    expectedName: FunnelEventName,
+    expectedMetadata: Partial<FunnelEvent['metadata']>,
+    expectedDetails?: Partial<FunnelEvent['details']>
+  ) {
     const lastEvent = await this.getLastFunnelEvent();
-    expect(lastEvent?.action).toEqual(expectedAction);
-    expect(lastEvent?.details?.metadata).toMatchObject(expected);
+    expect(lastEvent?.name).toEqual(expectedName);
+    expect(lastEvent?.metadata).toMatchObject(expectedMetadata);
+    if (expectedDetails) {
+      expect(lastEvent?.details).toMatchObject(expectedDetails);
+    }
   }
 }
 
@@ -152,40 +165,44 @@ describe('Form Page Tests', () => {
 
       await page.assertFunnelSequence(
         [
-          'funnel-started',
-          'funnel-step-started',
-          'funnel-step-completed',
-          'funnel-submitted',
-          'funnel-validating',
-          'funnel-validated',
-          'funnel-completed',
+          'funnel:start',
+          'funnel:step:start',
+          'funnel:step:complete',
+          'funnel:submitted',
+          'funnel:validating',
+          'funnel:validated',
+          'funnel:complete',
         ],
         {
-          'funnel-started': event => {
-            expect(event.details?.metadata).toEqual(
+          'funnel:start': event => {
+            expect(event.metadata).toEqual(
               expect.objectContaining({
-                funnelInteractionId: expect.any(String),
-                flowType: 'create',
+                funnelId: expect.any(String),
                 funnelType: 'single-page',
                 funnelName: 'Create component',
-                totalFunnelSteps: 1,
-                resourceType: '', // FIXME: This should come from the breadcrumb
-              })
+                totalSteps: 1,
+                optionalStepNumbers: [],
+                stepConfiguration: [{ isOptional: false, name: 'Create component', number: 1 }],
+                // User provided metadata
+                flowType: 'create',
+                resourceType: '',
+                instanceIdentifier: 'my-custom-creation',
+              } satisfies FunnelMetadata)
             );
           },
-          'funnel-submitted': event => {
-            expect(event.details?.metadata).toEqual(
+          'funnel:submitted': event => {
+            expect(event.metadata).toEqual(
               expect.objectContaining({
-                funnelInteractionId: expect.any(String),
-              })
+                funnelId: expect.any(String),
+              } satisfies Partial<FunnelMetadata>)
             );
           },
-          'funnel-completed': event => {
-            expect(event.details?.metadata).toEqual(
+          'funnel:complete': event => {
+            expect(event.metadata).toEqual(
               expect.objectContaining({
-                funnelInteractionId: expect.any(String),
+                funnelId: expect.any(String),
                 funnelResult: 'submitted',
-              })
+              } satisfies FunnelMetadata)
             );
           },
         }
@@ -199,14 +216,14 @@ describe('Form Page Tests', () => {
       await page.clickCancelButton();
 
       await page.assertFunnelSequence(
-        ['funnel-started', 'funnel-step-started', 'funnel-step-completed', 'funnel-completed'],
+        ['funnel:start', 'funnel:step:start', 'funnel:step:complete', 'funnel:complete'],
         {
-          'funnel-completed': event => {
-            expect(event.details?.metadata).toEqual(
+          'funnel:complete': event => {
+            expect(event.metadata).toEqual(
               expect.objectContaining({
-                funnelInteractionId: expect.any(String),
+                funnelId: expect.any(String),
                 funnelResult: 'cancelled',
-              })
+              } satisfies FunnelMetadata)
             );
           },
         }
@@ -219,14 +236,14 @@ describe('Form Page Tests', () => {
     setupTest(async page => {
       await page.navigate(`#/light`);
       await page.assertFunnelSequence(
-        ['funnel-started', 'funnel-step-started', 'funnel-step-completed', 'funnel-completed'],
+        ['funnel:start', 'funnel:step:start', 'funnel:step:complete', 'funnel:complete'],
         {
-          'funnel-completed': event => {
-            expect(event.details?.metadata).toEqual(
+          'funnel:complete': event => {
+            expect(event.metadata).toEqual(
               expect.objectContaining({
-                funnelInteractionId: expect.any(String),
+                funnelId: expect.any(String),
                 funnelResult: 'cancelled',
-              })
+              } satisfies FunnelMetadata)
             );
           },
         }
@@ -241,11 +258,11 @@ describe('Form Page Tests', () => {
       await page.click(wrapper.find('[data-testid=section-2-field-1] input').toSelector());
 
       await page.assertFunnelSequence([
-        'funnel-started',
-        'funnel-step-started',
-        'funnel-substep-started',
-        'funnel-substep-completed',
-        'funnel-substep-started',
+        'funnel:start',
+        'funnel:step:start',
+        'funnel:substep:start',
+        'funnel:substep:complete',
+        'funnel:substep:start',
       ]);
     })
   );
@@ -259,7 +276,7 @@ describe('Form Page Tests', () => {
       await page.click(s3ResourceSelectorWrapper.findTable().findTextFilter().toSelector());
       await page.click(s3ResourceSelectorWrapper.findModal().findDismissButton().toSelector());
 
-      // await page.assertFunnelSequence(['funnel-started', 'funnel-step-started', 'funnel-substep-started']);
+      await page.assertFunnelSequence(['funnel:start', 'funnel:step:start', 'funnel:substep:start']);
     })
   );
 
@@ -267,23 +284,27 @@ describe('Form Page Tests', () => {
     'tracks form field validation',
     setupTest(async page => {
       await page.enterFieldValue('section-1-field-1', 'error');
-      await page.assertLastEventDetails(
-        'funnel-substep-error',
+      await page.assertLastEvent(
+        'funnel:substep:error',
         expect.objectContaining({
-          fieldError: 'This is an error message',
-          fieldLabel: 'Field 1',
-          subStepName: 'Section 1',
-          subStepIndex: 0,
-        })
+          name: 'Section 1',
+          index: 0,
+        } satisfies SubstepMetadata),
+        expect.objectContaining({
+          error: {
+            message: 'This is an error message',
+            label: 'Field 1',
+            source: 'form-field',
+          },
+        } satisfies FunnelEventDetails)
       );
 
       await page.enterFieldValue('section-1-field-1', '-cleared');
-      await page.assertLastEventDetails(
-        'funnel-substep-error-cleared',
+      await page.assertLastEvent(
+        'funnel:substep:error-cleared',
         expect.objectContaining({
-          fieldLabel: 'Field 1',
-          subStepName: 'Section 1',
-          subStepIndex: 0,
+          name: 'Section 1',
+          index: 0,
         })
       );
     })
@@ -293,33 +314,85 @@ describe('Form Page Tests', () => {
     'tracks form errors',
     setupTest(async page => {
       await page.click(wrapper.findButton('[data-testid=submit-with-error-button]').toSelector());
-      await page.assertLastEventDetails(
-        'funnel-error',
+      await page.assertLastEvent(
+        'funnel:error',
         expect.objectContaining({
-          funnelInteractionId: expect.any(String),
-          funnelError: 'There was an error with your submission',
+          funnelId: expect.any(String),
+        } satisfies FunnelMetadata),
+        expect.objectContaining({
+          error: {
+            source: 'form',
+            message: 'There was an error with your submission',
+          },
+        } satisfies FunnelEventDetails)
+      );
+    })
+  );
+
+  test.only(
+    'tracks when contextual alert errors in steps',
+    setupTest(async page => {
+      await page.click(wrapper.findButton('[data-testid=toggle-step-error-button]').toSelector());
+      await page.assertLastEvent(
+        'funnel:step:error',
+        expect.objectContaining({
+          index: 0,
+          name: 'Create component',
+          isOptional: false,
+          totalSubsteps: 5,
+          // Custom analytics metadata
+          instanceIdentifier: 'my-custom-creation',
+        } satisfies StepMetadata),
+        expect.objectContaining({
+          error: {
+            message: 'This is a step error',
+            source: 'alert',
+          },
+        } satisfies FunnelEventDetails)
+      );
+    })
+  );
+
+  test(
+    'tracks when contextual alert errors in substeps',
+    setupTest(async page => {
+      await page.click(wrapper.find('[data-testid=section-1-field-1] input').toSelector());
+      await page.click(wrapper.findButton('[data-testid=toggle-substep-error-button]').toSelector());
+      console.log(await page.getFunnelEvents());
+      await page.assertLastEvent(
+        'funnel:substep:error',
+        expect.objectContaining({
+          scope: 'funnel-substep',
+          errorText: 'This is a substep error',
+          subStepIndex: 0,
+          subStepName: 'Section 1',
         })
       );
     })
   );
 
   test(
+    'tracks when  an error is displayed via a flashbar',
+    setupTest(async () => {})
+  );
+
+  test(
     'tracks nested modal funnels separately',
     setupTest(async page => {
-      await page.assertFunnelSequence(['funnel-started', 'funnel-step-started']);
+      await page.assertFunnelSequence(['funnel:start', 'funnel:step:start']);
       await page.openFeedbackModal();
 
       await page.assertFunnelSequence(
         [
-          'funnel-started', // Form funnel started
-          'funnel-step-started', // Form funnel step started
-          'funnel-started', // Modal funnel started
-          'funnel-step-started', // Modal funnel step started
+          'funnel:start', // Form funnel started
+          'funnel:step:start', // Form funnel step started
+          'funnel:start', // Modal funnel started
+          'funnel:step:start', // Modal funnel step started
         ],
         {
-          'funnel-started': [
+          'funnel:start': [
             event => {
-              expect(event.details?.metadata).toEqual(
+              expect(event.metadata).toEqual(
                 expect.objectContaining({
                   funnelType: 'single-page',
                   funnelName: 'Create component',
@@ -327,7 +400,7 @@ describe('Form Page Tests', () => {
               );
             },
             event => {
-              expect(event.details?.metadata).toEqual(
+              expect(event.metadata).toEqual(
                 expect.objectContaining({
                   funnelInteractionId: expect.any(String),
                   funnelType: 'modal',
@@ -340,5 +413,25 @@ describe('Form Page Tests', () => {
         }
       );
     })
+  );
+
+  test(
+    'tracks interactions with info links in headers',
+    setupTest(async () => {})
+  );
+
+  test(
+    'tracks interactions with info links in form fields',
+    setupTest(async () => {})
+  );
+
+  test(
+    'tracks interactions with external links',
+    setupTest(async () => {})
+  );
+
+  test(
+    'tracks funnel configuration changes when substeps are added and removed',
+    setupTest(async () => {})
   );
 });

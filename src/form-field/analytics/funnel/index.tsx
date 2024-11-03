@@ -3,7 +3,7 @@
 
 import { useEffect } from 'react';
 
-import { useFunnelContext } from '../../../internal/analytics/hooks/use-funnel';
+import { useFunnelContext } from '../../../internal/analytics/funnel/hooks/use-funnel';
 import { FormFieldProps } from '../../interfaces';
 
 interface UseFormFieldFunnel {
@@ -24,7 +24,10 @@ export const useFormFieldFunnel = ({ rootRef, errorText, getLabelText, getErrorT
     const substepId = parentSubstepElement?.getAttribute('data-funnel-substep-id');
     funnelContext?.controller?.currentStep?.substeps.forEach(substep => {
       if (substep.id === substepId) {
-        substep.error({ errorText: fieldError, scope: { type: 'field', label: fieldLabel } });
+        substep.error({
+          errorText: fieldError,
+          scope: { context: 'funnel-substep', source: 'form-field', label: fieldLabel },
+        });
       }
     });
 

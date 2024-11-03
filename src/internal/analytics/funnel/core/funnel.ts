@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { ErrorDetails, FunnelMetadata, FunnelResult, FunnelStatus, FunnelStepConfig, FunnelStepProps } from '../types';
+import { funnelAnalytics } from './';
 import { FunnelBase } from './funnel-base';
-import { dispatchFunnelEvent } from './funnel-logger';
 import { FunnelStep } from './funnel-step';
-import { ErrorDetails, FunnelResult, FunnelStatus, FunnelStepConfig, FunnelStepProps, Observer } from './types';
 
 interface FunnelProps {
   name?: string;
@@ -12,7 +12,7 @@ interface FunnelProps {
 
 export class Funnel extends FunnelBase<FunnelStatus> {
   protected result: FunnelResult;
-  protected steps: FunnelStep[] = [];
+  public steps: FunnelStep[] = [];
 
   public currentStep: FunnelStep;
   public context?: Funnel | null = null;
@@ -33,28 +33,55 @@ export class Funnel extends FunnelBase<FunnelStatus> {
     return { 'data-funnel-id': this.id, id: this.id };
   }
 
+  private getPath() {
+    const path = [this.name || ''];
+    let currentContext = this.context;
+
+    while (currentContext) {
+      if (currentContext.name) {
+        path.push(currentContext.name);
+      }
+      currentContext = currentContext.context;
+    }
+
+    return path.filter(Boolean).reverse();
+  }
+
+  getMetadata(): FunnelMetadata {
+    return {
+      funnelId: this.id,
+      funnelName: this.name || '',
+      funnelResult: this.result,
+      flowType: this.metadata?.flowType,
+      resourceType: this.metadata?.resourceType,
+      instanceIdentifier: this.metadata?.instanceIdentifier,
+      funnelType: this.type,
+      totalSteps: this.steps.length,
+      optionalStepNumbers: this.steps.filter(step => step.optional).map(step => step.index),
+    };
+  }
+
   start() {
     if (this.getStatus() !== 'initial') {
       return;
     }
 
     super.start(() => {
-      dispatchFunnelEvent({
-        header: 'Funnel started',
-        action: 'funnel-started',
-        status: 'success',
-        details: {
-          context: this.name,
-          metadata: {
-            funnelName: this.name,
-            funnelType: this.type,
-            funnelInteractionId: this.id,
-            totalFunnelSteps: this.steps.length,
-            ...this.metadata,
-          },
+      funnelAnalytics.track(
+        'funnel:start',
+        {
+          ...this.getMetadata(),
+          totalSteps: this.steps.length,
+          stepConfiguration: this.steps.map(step => ({
+            name: step.name || '',
+            number: step.index + 1,
+            isOptional: step.optional,
+          })),
         },
-      });
-
+        {
+          path: this.getPath(),
+        }
+      );
       this.currentStep?.start();
     });
   }
@@ -68,16 +95,8 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     this.result = 'submitted';
     this.setStatus('submitted', () => {
-      dispatchFunnelEvent({
-        header: 'Funnel submitted',
-        action: 'funnel-submitted',
-        status: 'success',
-        details: {
-          context: this.name,
-          metadata: {
-            funnelInteractionId: this.id,
-          },
-        },
+      funnelAnalytics.track('funnel:submitted', this.getMetadata(), {
+        path: this.getPath(),
       });
     });
   }
@@ -89,20 +108,14 @@ export class Funnel extends FunnelBase<FunnelStatus> {
 
     if (value) {
       this.setStatus('validating', () => {
-        dispatchFunnelEvent({
-          header: 'Funnel validating',
-          action: 'funnel-validating',
-          status: 'in-progress',
-          details: { context: this.name },
+        funnelAnalytics.track('funnel:validating', this.getMetadata(), {
+          path: this.getPath(),
         });
       });
     } else if (this.getStatus() === 'validating') {
       this.setStatus('validated', () => {
-        dispatchFunnelEvent({
-          header: 'Funnel validated',
-          action: 'funnel-validated',
-          status: 'success',
-          details: { context: this.name },
+        funnelAnalytics.track('funnel:validated', this.getMetadata(), {
+          path: this.getPath(),
         });
       });
     }
@@ -111,25 +124,24 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   error(details: ErrorDetails) {
     if (details.errorText) {
       super.error(details, () => {
-        dispatchFunnelEvent({
-          header: 'Funnel error',
-          action: 'funnel-error',
-          details: {
-            metadata: {
-              funnelInteractionId: this.id,
-              funnelError: details.errorText,
-            },
+        funnelAnalytics.track(
+          'funnel:error',
+          this.getMetadata(),
+          {
+            path: this.getPath(),
           },
-          status: 'error',
-        });
+          {
+            error: {
+              message: details.errorText || '',
+              source: details.scope.source,
+            },
+          }
+        );
       });
     } else if (this.getStatus() === 'error') {
       this.setStatus(this.getPreviousStatus());
-      dispatchFunnelEvent({
-        header: 'Funnel error cleared',
-        action: 'funnel-error-cleared',
-        details: {},
-        status: 'info',
+      funnelAnalytics.track('funnel:error-cleared', this.getMetadata(), {
+        path: this.getPath(),
       });
     }
   }
@@ -140,18 +152,28 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 
   navigate(reason: string, requestedStepIndex: number) {
-    dispatchFunnelEvent({
-      header: 'Funnel step navigation',
-      action: 'funnel-step-navigation',
-      status: 'success',
-      details: {
-        context: this.name,
-        metadata: {
-          reason,
-          requestedStepIndex,
+    const currentStepIndex = this.currentStep?.index ?? 0;
+
+    funnelAnalytics.track(
+      'funnel:navigation',
+      this.getMetadata(),
+      {
+        path: this.getPath(),
+        step: {
+          index: currentStepIndex,
+          name: this.currentStep?.name ?? '',
+          isOptional: this.currentStep?.optional ?? false,
         },
       },
-    });
+      {
+        navigation: {
+          from: this.steps[currentStepIndex]?.name ?? '',
+          to: this.steps[requestedStepIndex]?.name ?? '',
+          reason,
+        },
+      }
+    );
+
     this.currentStep.validate(true);
   }
 
@@ -162,17 +184,8 @@ export class Funnel extends FunnelBase<FunnelStatus> {
         this.cancel();
       }
 
-      dispatchFunnelEvent({
-        header: `Funnel completed with result ${this.result}`,
-        action: 'funnel-completed',
-        status: this.result === 'cancelled' ? 'error' : 'success',
-        details: {
-          context: this.name,
-          metadata: {
-            funnelInteractionId: this.id,
-            funnelResult: this.result,
-          },
-        },
+      funnelAnalytics.track('funnel:complete', this.getMetadata(), {
+        path: this.getPath(),
       });
 
       this.notifyObservers();
@@ -234,17 +247,23 @@ export class Funnel extends FunnelBase<FunnelStatus> {
       return funnelStep;
     });
 
-    dispatchFunnelEvent({
-      header: 'Funnel configuration changed',
-      action: 'funnel-configuration-changed',
-      details: {
-        context: this.name,
-        metadata: {
-          steps: [...this.steps].map(step => step.name).join(','),
-        },
+    funnelAnalytics.track(
+      'funnel:configuration-changed',
+      this.getMetadata(),
+      {
+        path: this.getPath(),
       },
-      status: 'info',
-    });
+      {
+        configuration: {
+          steps: this.steps.map(step => ({
+            name: step.name,
+            index: step.index,
+            isOptional: step.optional,
+          })),
+        },
+      }
+    );
+
     this.notifyObservers();
     return this.steps;
   }
@@ -261,16 +280,10 @@ export class Funnel extends FunnelBase<FunnelStatus> {
   }
 }
 
-class FunnelConsoleLogger implements Observer {
-  update(subject: any) {
-    console.debug(`Funnel Logger - Subject ID: ${subject.id}, Status: ${subject.getStatus()}`);
-  }
-}
-
+// TODO: Move to global Analytics plugin
 export class FunnelFactory {
   static create(config?: FunnelProps): Funnel {
     const funnel = new Funnel(config);
-    funnel.addObserver(new FunnelConsoleLogger());
 
     if (!(window as any).__awsuiAnalytics__) {
       (window as any).__awsuiAnalytics__ = {

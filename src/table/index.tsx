@@ -4,7 +4,7 @@ import React from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useFunnelSubstep } from '../internal/analytics/hooks/use-funnel-substep';
+import { useFunnelSubstep } from '../internal/analytics/funnel/hooks/use-funnel-substep';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { CollectionPreferencesMetadata } from '../internal/context/collection-preferences-metadata-context';
 import useBaseComponent from '../internal/hooks/use-base-component';

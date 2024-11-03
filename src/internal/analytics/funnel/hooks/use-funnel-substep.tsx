@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject, useEffect, useMemo, useState } from 'react';
 
-import { useFocusTracker } from '../../hooks/use-focus-tracker';
-import { FunnelSubstep } from '../funnel';
-import { AnalyticsMetadata } from '../interfaces';
+import { useFocusTracker } from '../../../hooks/use-focus-tracker';
+import { AnalyticsMetadata } from '../../interfaces';
+import { FunnelSubstep } from '../core/funnel-substep';
 import { useFunnelContext } from './use-funnel';
 
-import headerAnalyticsSelectors from '../../../header/analytics-metadata/styles.css.js';
+import headerAnalyticsSelectors from '../../../../header/analytics-metadata/styles.css.js';
 
 const getSubstepName = (rootRef: MutableRefObject<HTMLElement | null>): string => {
   return (

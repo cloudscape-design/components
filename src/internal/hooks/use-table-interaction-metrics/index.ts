@@ -4,7 +4,7 @@
 import { useEffect, useRef } from 'react';
 
 import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
-import { useFunnel } from '../../analytics/hooks/use-funnel';
+import { useFunnel } from '../../analytics/funnel/hooks/use-funnel';
 import { JSONObject } from '../../analytics/interfaces';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';

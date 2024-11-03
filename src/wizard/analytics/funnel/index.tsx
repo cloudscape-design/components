@@ -3,7 +3,7 @@
 
 import { useEffect, useLayoutEffect } from 'react';
 
-import { useFunnel } from '../../../internal/analytics/hooks/use-funnel';
+import { useFunnel } from '../../../internal/analytics/funnel/hooks/use-funnel';
 import { useEffectOnUpdate } from '../../../internal/hooks/use-effect-on-update';
 import { WizardProps } from '../../interfaces';
 

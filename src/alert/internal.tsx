@@ -9,7 +9,7 @@ import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
+import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/funnel/utils/selectors';
 import { getBaseProps } from '../internal/base-component';
 import VisualContext from '../internal/components/visual-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';

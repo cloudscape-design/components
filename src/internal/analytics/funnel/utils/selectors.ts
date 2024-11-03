@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import breadcrumbGroupItemStyles from '../../breadcrumb-group/item/styles.css.js';
-import breadcrumbGroupStyles from '../../breadcrumb-group/styles.css.js';
+import breadcrumbGroupItemStyles from '../../../../breadcrumb-group/item/styles.css.js';
+import breadcrumbGroupStyles from '../../../../breadcrumb-group/styles.css.js';
 
 export const getBreadcrumbLinkSelector = (index: number) =>
   `.${breadcrumbGroupStyles['breadcrumb-group']} .${breadcrumbGroupStyles.item}:nth-child(${index}) .${breadcrumbGroupItemStyles.anchor}`;

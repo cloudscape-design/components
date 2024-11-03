@@ -8,7 +8,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { DATA_ATTR_FUNNEL_VALUE } from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_VALUE } from '../internal/analytics/funnel/utils/selectors';
 import Tooltip from '../internal/components/tooltip/index.js';
 import { useButtonContext } from '../internal/context/button-context';
 import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';

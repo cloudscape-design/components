@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { DATA_ATTR_FUNNEL_VALUE } from '../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_VALUE } from '../internal/analytics/funnel/utils/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';

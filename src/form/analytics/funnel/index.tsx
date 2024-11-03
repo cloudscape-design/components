@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { MutableRefObject, useEffect } from 'react';
 
-import { PageContext, useFunnel } from '../../../internal/analytics/hooks/use-funnel';
+import { PageContext, useFunnel } from '../../../internal/analytics/funnel/hooks/use-funnel';
 import { AnalyticsMetadata } from '../../../internal/analytics/interfaces';
 import { ButtonContextProps } from '../../../internal/context/button-context';
 import { FormProps } from '../../interfaces';
@@ -51,7 +51,7 @@ export const useFormFunnel = ({ rootRef, analyticsMetadata, errorText }: UseForm
     }
 
     const errorTextValue = rootRef.current.querySelector<HTMLElement>(`.${analyticsSelectors.error}`)?.innerText || '';
-    funnelContext?.controller?.error({ errorText: errorTextValue, scope: { type: 'funnel' } });
+    funnelContext?.controller?.error({ errorText: errorTextValue, scope: { context: 'funnel', source: 'form' } });
   }, [funnelContext, rootRef, errorText]);
 
   const buttonContextProps: ButtonContextProps = {

@@ -9,7 +9,11 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import InternalGrid from '../grid/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
-import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL, getFieldSlotSeletor } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FIELD_ERROR,
+  DATA_ATTR_FIELD_LABEL,
+  getFieldSlotSeletor,
+} from '../internal/analytics/funnel/utils/selectors';
 import { getBaseProps } from '../internal/base-component';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';

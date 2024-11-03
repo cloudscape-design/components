@@ -3,7 +3,14 @@
 import React, { ReactNode, useContext, useMemo } from 'react';
 import { createContext } from 'react';
 
-import { Funnel, FunnelFactory } from '../funnel';
+import { initializeFunnelAnalytics } from '../funnel/core';
+import { Funnel, FunnelFactory } from '../funnel/core/funnel';
+import { DOMEventPlugin } from '../funnel/plugins/dom-events';
+import { AnalyticsPlugin } from '../funnel/types';
+
+const defaultPlugins: AnalyticsPlugin[] = [new DOMEventPlugin()];
+
+initializeFunnelAnalytics(defaultPlugins);
 
 export interface FunnelContextProps {
   name?: string;

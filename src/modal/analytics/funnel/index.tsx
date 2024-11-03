@@ -3,8 +3,8 @@
 
 import { MutableRefObject, useEffect } from 'react';
 
-import { useFunnel } from '../../../internal/analytics/hooks/use-funnel';
-import { useFunnelSubstep } from '../../../internal/analytics/hooks/use-funnel-substep';
+import { useFunnel } from '../../../internal/analytics/funnel/hooks/use-funnel';
+import { useFunnelSubstep } from '../../../internal/analytics/funnel/hooks/use-funnel-substep';
 import { ButtonContextProps } from '../../../internal/context/button-context';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id';
 import { ModalProps } from '../../interfaces';

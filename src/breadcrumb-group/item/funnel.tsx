@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/selectors';
+import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../internal/analytics/funnel/utils/selectors';
 
 import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
