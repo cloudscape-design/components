@@ -63,8 +63,9 @@ export type InternalBreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = B
 
 export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   item: T;
+  itemIndex: number;
+  totalCount: number;
   isTruncated?: boolean;
-  isLast?: boolean;
   isGhost?: boolean;
   onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
   onFollow?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;

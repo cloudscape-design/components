@@ -23,6 +23,7 @@ import {
 } from './analytics-metadata/interfaces';
 import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
 import { BreadcrumbItem } from './item/item';
+import { BreadcrumbGroupSkeleton } from './skeleton';
 import { getEventDetail, getItemsDisplayProperties } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -191,21 +192,19 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           item={item}
           onClick={onClick}
           onFollow={onFollow}
-          isLast={isLast}
+          itemIndex={index}
+          totalCount={items.length}
           isTruncated={itemsWidths.ghost[index] - itemsWidths.real[index] > 0}
         />
       </li>
     );
   });
 
-  const hiddenBreadcrumbItems = items.map((item, index) => {
-    const isLast = index === items.length - 1;
-    return (
-      <li className={styles['ghost-item']} key={index} ref={node => setBreadcrumb('ghost', `${index}`, node)}>
-        <BreadcrumbItem item={item} isLast={isLast} isGhost={true} />
-      </li>
-    );
-  });
+  const hiddenBreadcrumbItems = items.map((item, index) => (
+    <li className={styles['ghost-item']} key={index} ref={node => setBreadcrumb('ghost', `${index}`, node)}>
+      <BreadcrumbItem item={item} itemIndex={index} totalCount={items.length} isGhost={true} />
+    </li>
+  ));
 
   const getEventItem = (e: CustomEvent<{ id: string }>) => {
     const { id } = e.detail;
@@ -263,4 +262,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
   );
 }
 
-export const createWidgetizedBreadcrumbGroup = createWidgetizedComponent(BreadcrumbGroupImplementation);
+export const createWidgetizedBreadcrumbGroup = createWidgetizedComponent(
+  BreadcrumbGroupImplementation,
+  BreadcrumbGroupSkeleton
+);
