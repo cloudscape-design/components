@@ -86,3 +86,15 @@ export function Footer({ legacyConsoleNav }: { legacyConsoleNav: boolean }) {
     </>
   );
 }
+
+export function Counter({ id }: { id: string }) {
+  const [count, setCount] = useState(0);
+  return (
+    <div>
+      <span id={`${id}-text`}>Clicked: {count}</span>
+      <button id={`${id}-button`} onClick={() => setCount(count + 1)}>
+        Click me
+      </button>
+    </div>
+  );
+}
