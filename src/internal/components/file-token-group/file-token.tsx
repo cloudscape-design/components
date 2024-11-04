@@ -117,7 +117,9 @@ function InternalFileToken({
               >
                 <InternalBox
                   fontWeight="normal"
-                  className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'])}
+                  className={clsx(styles['file-option-name'], testUtilStyles['file-option-name'], {
+                    [testUtilStyles['ellipsis-active']]: isEllipsisActive(),
+                  })}
                 >
                   <span ref={fileNameRef}>{file.name}</span>
                 </InternalBox>
