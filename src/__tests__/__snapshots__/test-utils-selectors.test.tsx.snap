@@ -482,6 +482,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_browse-button_1vtzr",
     "awsui_layout-uri_1vtzr",
     "awsui_layout-version_1vtzr",
+    "awsui_modal-root_rkh1e",
     "awsui_root_1u0yw",
     "awsui_root_1vtzr",
     "awsui_submit-button_12hyz",

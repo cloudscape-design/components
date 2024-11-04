@@ -12,6 +12,7 @@ import TableWrapper from '../table';
 import inContextStyles from '../../../s3-resource-selector/s3-in-context/styles.selectors.js';
 import modalStyles from '../../../s3-resource-selector/s3-modal/styles.selectors.js';
 import styles from '../../../s3-resource-selector/styles.selectors.js';
+import testUtilStyles from '../../../s3-resource-selector/test-classes/styles.selectors.js';
 
 class S3ModalWrapper extends ModalWrapper {
   findSubmitButton(): ButtonWrapper {
@@ -50,7 +51,7 @@ export default class S3ResourceSelectorWrapper extends ComponentWrapper {
   }
 
   findModal(): S3ModalWrapper | null {
-    const modal = createWrapper().findModal();
+    const modal = createWrapper().findModal(`.${testUtilStyles['modal-root']}`);
     return modal && new S3ModalWrapper(modal.getElement());
   }
 
