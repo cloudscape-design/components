@@ -438,7 +438,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         document.removeEventListener('click', enableAnimations);
       }
 
-      document.addEventListener('click', enableAnimations);
+      document.addEventListener('click', enableAnimations, true);
 
       return () => {
         document.removeEventListener('click', enableAnimations);
