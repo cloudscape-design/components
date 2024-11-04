@@ -8,7 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import '../../__a11y__/to-validate-a11y';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/internal/file-dropzone';
+import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/file-dropzone';
 
 import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
 
