@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import CollectionPreferencesWrapper from '../collection-preferences';
 import ContainerWrapper from '../container';
@@ -30,6 +31,19 @@ export class CardWrapper extends ComponentWrapper {
     return this.findAllByClassName(styles.section).map(c => new CardSectionWrapper(c.getElement()));
   }
 
+  /**
+   * Returns the wrapper of the first card section that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `sections.testId` prop.
+   * If no matching card section is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {CardSectionWrapper | null}
+   */
+  findSectionByTestId(testId: string): CardSectionWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(`.${styles.section}[data-testid="${escapedTestId}"]`, CardSectionWrapper);
+  }
+
   findCardHeader(): ElementWrapper | null {
     return this.findByClassName(styles['card-header-inner']);
   }
@@ -46,6 +60,19 @@ export default class CardsWrapper extends ComponentWrapper {
 
   findItems(): Array<CardWrapper> {
     return this.findAllByClassName(styles.card).map(c => new CardWrapper(c.getElement()));
+  }
+
+  /**
+   * Returns the wrapper of the first card that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `cardDefinition.testId` prop.
+   * If no matching card is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {CardWrapper | null}
+   */
+  findItemByTestId(testId: string): CardWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(`.${styles.card}[data-testid="${escapedTestId}"]`, CardWrapper);
   }
 
   findSelectedItems(): Array<CardWrapper> {

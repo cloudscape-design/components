@@ -27,6 +27,7 @@ function findFooterPagination(wrapper: CardsWrapper): PaginationWrapper | null {
 
 const cardDefinition: CardsProps.CardDefinition<Item> = {
   header: item => `Header ${item.name}`,
+  testId: item => `card-${item.id}`,
   sections: [
     {
       id: 'description',
@@ -59,13 +60,18 @@ describe('Cards', () => {
   // index is 0-based
   const getCard = (index: number) => wrapper.findItems()[index];
 
-  const getCardHeader = (index: number) => getCard(index)?.findCardHeader()?.getElement();
+  const getCardByTestId = (testId: string) => wrapper.findItemByTestId(testId)!;
+
+  const getCardHeader = (index: number) => wrapper.findItems()[index]?.findCardHeader()?.getElement();
 
   // index is 0-based
-  const getCardsSections = (index: number) => getCard(index).findSections();
+  const getCardsSections = (index: number) => wrapper.findItems()[index].findSections();
 
   // cardIndex and sectionIndex are 0-based
   const getCardSection = (cardIndex: number, sectionIndex: number) => getCardsSections(cardIndex)[sectionIndex];
+
+  const getCardSectionByTestId = (cardIndex: number, sectionTestId: string) =>
+    getCard(cardIndex)!.findSectionByTestId(sectionTestId)!;
 
   const getCardSectionHeader = (cardIndex: number, sectionIndex: number) =>
     getCardSection(cardIndex, sectionIndex)?.findSectionHeader()?.getElement();
@@ -85,8 +91,7 @@ describe('Cards', () => {
       wrapper = renderCards(
         <Cards<Item> cardDefinition={cardDefinition} items={defaultItems} selectionType="single" />
       ).wrapper;
-
-      const cardsOrderedList = getCard(0).getElement().parentElement;
+      const cardsOrderedList = getCardByTestId('card-1').getElement().parentElement;
       expect(cardsOrderedList).toHaveAttribute('role', 'group');
     });
 
@@ -142,6 +147,7 @@ describe('Cards', () => {
             sections: [
               {
                 content: item => item.name,
+                testId: item => `card-${item.id}-content-section`,
               },
             ],
           }}
@@ -151,7 +157,8 @@ describe('Cards', () => {
       defaultItems.forEach((item, idx) => {
         expect(getCardsSections(idx)).toHaveLength(1);
 
-        expect(getCardSection(idx, 0).findSectionHeader()).toBe(null);
+        const sectionTestId = `card-${idx + 1}-content-section`;
+        expect(getCardSectionByTestId(idx, sectionTestId).findSectionHeader()).toBe(null);
         expect(getCardSectionContent(idx, 0)).toHaveTextContent(item.name);
       });
     });
@@ -175,6 +182,36 @@ describe('Cards', () => {
         expect(getCardSectionHeader(idx, 0)).toHaveTextContent('id');
         expect(getCardSection(idx, 0)?.findContent()).toBe(null);
       });
+    });
+
+    it('assigns test id attributes to the cards and sections', () => {
+      const { wrapper } = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            testId: item => `${item.name}-${item.id}`,
+            sections: [
+              {
+                testId: item => `${item.name}-${item.id}-id-section`,
+                header: 'id',
+              },
+              {
+                testId: item => `${item.name}-${item.id}-name-section`,
+                header: 'name',
+              },
+            ],
+          }}
+          items={defaultItems}
+        />
+      );
+
+      const itemTestIds = wrapper.findItems().map(item => item.getElement()!.getAttribute('data-testid'));
+      expect(itemTestIds).toEqual(['Apples-1', 'Oranges-2', 'Bananas-3']);
+
+      const secondItemSectionTestIds = wrapper
+        .findItems()[1]
+        .findSections()
+        .map(section => section.getElement()!.getAttribute('data-testid'));
+      expect(secondItemSectionTestIds).toEqual(['Oranges-2-id-section', 'Oranges-2-name-section']);
     });
   });
 
@@ -308,10 +345,85 @@ describe('Cards', () => {
           <Cards<Item> cardDefinition={cardDefinition} selectionType="multi" items={defaultItems} />
         </TestI18nProvider>
       ));
-      expect(getCard(0).findSelectionArea()!.getElement()).toHaveAttribute(
+      expect(getCardByTestId('card-1').findSelectionArea()!.getElement()).toHaveAttribute(
         'aria-label',
         expect.stringContaining('Custom label')
       );
+    });
+  });
+
+  describe('test utils', () => {
+    it('findItemByTestId returns the card by test id', () => {
+      const { wrapper } = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            testId: item => `card-${item.id}`,
+            sections: [
+              {
+                content: item => item.name,
+              },
+            ],
+          }}
+          items={defaultItems}
+        />
+      );
+
+      expect(wrapper.findItemByTestId('card-2')!.getElement()).toHaveTextContent('Orange');
+    });
+
+    it('findItemByTestId returns the card even if test id contains quotes', () => {
+      const { wrapper } = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            testId: item => `card-"${item.id}"`,
+          }}
+          items={defaultItems}
+        />
+      );
+
+      expect(wrapper.findItemByTestId('card-"2"')).toBeTruthy();
+    });
+
+    it('findSectionByTestId returns the section by test id', () => {
+      const { wrapper } = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            sections: [
+              {
+                content: item => `Item ID: ${item.id}`,
+                testId: item => `card-${item.id}-id`,
+              },
+              {
+                content: item => `Item Name: ${item.name}`,
+                testId: item => `card-${item.id}-name`,
+              },
+            ],
+          }}
+          items={defaultItems}
+        />
+      );
+
+      const firstItem = wrapper.findItems()[0]!;
+      expect(firstItem.findSectionByTestId('card-1-id')!.getElement()).toHaveTextContent('Item ID: 1');
+      expect(firstItem.findSectionByTestId('card-1-name')!.getElement()).toHaveTextContent('Item Name: Apples');
+    });
+
+    it('findSectionByTestId returns the section even if test id contains quotes', () => {
+      const { wrapper } = renderCards(
+        <Cards<Item>
+          cardDefinition={{
+            sections: [
+              {
+                testId: item => `card-section-"${item.id}"`,
+              },
+            ],
+          }}
+          items={defaultItems}
+        />
+      );
+
+      const firstItem = wrapper.findItems()[0]!;
+      expect(firstItem.findSectionByTestId('card-section-"1"')).toBeTruthy();
     });
   });
 });

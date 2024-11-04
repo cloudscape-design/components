@@ -271,6 +271,7 @@ const CardsList = <T,>({
             [styles['card-selected']]: selectable && isItemSelected(item),
           })}
           key={getItemKey(trackBy, item, index)}
+          data-testid={cardDefinition.testId?.(item)}
           onFocus={onFocus}
           {...(focusMarkers && focusMarkers.item)}
           role={listItemRole}
@@ -301,8 +302,13 @@ const CardsList = <T,>({
                 </div>
               )}
             </div>
-            {visibleSectionsDefinition.map(({ width = 100, header, content, id }, index) => (
-              <div key={id || index} className={styles.section} style={{ width: `${width}%` }}>
+            {visibleSectionsDefinition.map(({ width = 100, header, content, id, testId }, index) => (
+              <div
+                key={id || index}
+                className={styles.section}
+                style={{ width: `${width}%` }}
+                data-testid={testId?.(item)}
+              >
                 {header ? <div className={styles['section-header']}>{header}</div> : ''}
                 {content ? <div className={styles['section-content']}>{content(item)}</div> : ''}
               </div>
