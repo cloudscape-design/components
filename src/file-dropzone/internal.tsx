@@ -6,11 +6,17 @@ import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { FileDropzoneProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export default function InternalFileDropzone({ onChange, children, ...restProps }: FileDropzoneProps) {
+export default function InternalFileDropzone({
+  onChange,
+  children,
+  __internalRootRef = null,
+  ...restProps
+}: FileDropzoneProps & InternalBaseComponentProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
   const baseProps = getBaseProps(restProps);
 
@@ -41,6 +47,7 @@ export default function InternalFileDropzone({ onChange, children, ...restProps 
   return (
     <div
       {...baseProps}
+      ref={__internalRootRef}
       className={clsx(baseProps.className, styles.root, {
         [styles.hovered]: isDropzoneHovered,
       })}
