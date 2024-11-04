@@ -54,8 +54,14 @@
 }
 
 .list-container {
+  margin-block-end: awsui.$space-panel-content-bottom;
+}
+
+.items-control,
+.list-container {
   margin-block-start: awsui.$space-panel-content-top;
-  .with-toolbar > .divider + & {
+  // Toolbar removes margin for whichever one comes first after the header
+  .with-toolbar > .divider-header + & {
     margin-block-start: 0;
   }
 }
@@ -75,8 +81,8 @@
   padding-inline-start: awsui.$space-panel-nav-left;
   padding-inline-end: awsui.$space-panel-side-right;
 
-  &--last {
-    margin-block-end: awsui.$space-panel-content-bottom;
+  &--first {
+    margin-block-start: 0;
   }
 }
 
@@ -91,17 +97,8 @@
   padding-inline: 0;
   list-style: none;
 
-  @supports selector(:has(*)) {
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-    &:has(> .section:not(.refresh)) {
-      margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
-    }
-    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-    &:has(> .section.refresh) {
-      margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
-    }
-  }
-  .list-variant-root > &:first-child {
+  // Remove margin from first item in side nav, outer block margins are covered by list-container
+  .list-variant-root--first > &:first-child {
     margin-block-start: 0px;
   }
 }
@@ -116,11 +113,13 @@
 }
 
 .section {
-  @supports not selector(:has(*)) {
-    margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
-    &.refresh {
-      margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
-    }
+  margin-block: calc(#{awsui.$space-scaled-2x-l} - #{awsui.$border-divider-section-width});
+  &.refresh {
+    margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
+  }
+  // Remove margin from section if it is the first item in side nav to prevent double margin stacking
+  .list-variant-root--first > .list-item:first-child > & {
+    margin-block-start: 0px;
   }
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
@@ -203,11 +202,9 @@
 }
 
 .divider-header {
-  margin-block-start: 0;
-  margin-block-end: awsui.$space-panel-content-top;
+  margin-block: 0;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
   .with-toolbar > & {
     border-color: transparent;
-    margin-block-end: 0;
   }
 }
