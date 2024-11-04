@@ -9,10 +9,10 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
+import InternalFileInput from '../file-input/internal';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
 import { getBaseProps } from '../internal/base-component';
 import InternalFileDropzone, { useFilesDragging } from '../internal/components/file-dropzone';
-import InternalFileInput from '../internal/components/file-input';
 import InternalFileTokenGroup from '../internal/components/file-token-group';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -24,7 +24,7 @@ import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
 import { FileUploadProps } from './interfaces';
 
-import fileInputStyles from '../internal/components/file-input/styles.css.js';
+import fileInputStyles from '../file-input/styles.css.js';
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 

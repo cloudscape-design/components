@@ -6,19 +6,17 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalButton from '../../../button/internal';
-import { useFormFieldContext } from '../../../contexts/form-field';
-import ScreenreaderOnly from '../../components/screenreader-only';
-import { fireNonCancelableEvent } from '../../events';
-import checkControlled from '../../hooks/check-controlled';
-import useForwardFocus from '../../hooks/forward-focus';
-import { useUniqueId } from '../../hooks/use-unique-id';
-import { joinStrings } from '../../utils/strings';
+import InternalButton from '../button/internal';
+import { useFormFieldContext } from '../contexts/form-field';
+import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { fireNonCancelableEvent } from '../internal/events';
+import checkControlled from '../internal/hooks/check-controlled';
+import useForwardFocus from '../internal/hooks/forward-focus';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { joinStrings } from '../internal/utils/strings';
 import { FileInputProps } from './interfaces';
 
 import styles from './styles.css.js';
-
-export { FileInputProps };
 
 const InternalFileInput = React.forwardRef(
   (
