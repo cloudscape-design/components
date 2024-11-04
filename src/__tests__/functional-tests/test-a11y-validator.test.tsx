@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import '../__a11y__/to-validate-a11y';
+import '../../__a11y__/to-validate-a11y';
 
 describe('a11y validator', () => {
   test('valid', async () => {

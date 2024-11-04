@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getRequiredPropsForComponent } from './required-props-for-components';
-import { getAllComponents, requireComponent, supportsDOMProperties } from './utils';
+import { getRequiredPropsForComponent } from '../required-props-for-components';
+import { getAllComponents, requireComponent, supportsDOMProperties } from '../utils';
 
 describe('Base props support', () => {
   const componentRoot = document.createElement('div');

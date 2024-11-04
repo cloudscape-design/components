@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getRequiredPropsForComponent } from './required-props-for-components';
-import { getAllComponents, requireComponent } from './utils';
+import { getRequiredPropsForComponent } from '../required-props-for-components';
+import { getAllComponents, requireComponent } from '../utils';
 
 declare global {
   interface Window {
@@ -25,7 +25,7 @@ describe('useTelemetry hook is used in all public components', () => {
 
   window.AWSC = {
     Clog: {
-      log: () => {},
+      log: () => { },
     },
   };
 

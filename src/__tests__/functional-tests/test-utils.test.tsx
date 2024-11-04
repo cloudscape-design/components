@@ -8,8 +8,8 @@ import React from 'react';
 import { render } from 'react-dom';
 import { render as renderTestingLibrary } from '@testing-library/react';
 
-import Button from '../../lib/components/button';
-import createWrapper from '../../lib/components/test-utils/dom';
+import Button from '../../../lib/components/button';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
 describe('createWrapper', () => {
   let spy: jest.SpyInstance;
