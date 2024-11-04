@@ -77,7 +77,7 @@ formFieldControlComponents.forEach(({ componentName, findNativeElement }) => {
     const requiredProps = getRequiredPropsForComponent(componentName) ?? {};
     const renderResult = render(
       <FormField {...formFieldProps}>
-        <Component {...requiredProps} {...controlComponentProps} value="" onChange={() => { }} />
+        <Component {...requiredProps} {...controlComponentProps} value="" onChange={() => {}} />
       </FormField>
     );
     const formFieldWrapper = createWrapper(renderResult.container).findFormField()!;

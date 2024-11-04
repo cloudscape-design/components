@@ -25,7 +25,7 @@ describe('useTelemetry hook is used in all public components', () => {
 
   window.AWSC = {
     Clog: {
-      log: () => { },
+      log: () => {},
     },
   };
 
