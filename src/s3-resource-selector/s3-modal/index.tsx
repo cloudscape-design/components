@@ -16,6 +16,7 @@ import { BucketsTable } from './buckets-table';
 import { ObjectsTable } from './objects-table';
 import { VersionsTable } from './versions-table';
 
+import testUtilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 export interface S3ModalProps {
@@ -125,7 +126,7 @@ export function S3Modal({
   return (
     <div>
       <InternalModal
-        className={styles['modal-root']}
+        className={testUtilStyles['modal-root']}
         visible={true}
         size="max"
         getModalRoot={getModalRoot}

@@ -5,10 +5,6 @@
 @use '../../internal/styles/tokens.scss' as awsui;
 @use '../../internal/styles' as styles;
 
-.modal-root {
-  /* used in test-utils */
-}
-
 .modal-actions {
   justify-content: flex-end;
 }
