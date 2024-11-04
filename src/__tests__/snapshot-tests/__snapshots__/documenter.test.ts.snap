@@ -7605,6 +7605,20 @@ is provided by its parent form field component.
       "type": "ReadonlyArray<null | string>",
     },
     {
+      "description": "Alignment of the file tokens. Defaults to "vertical".",
+      "inlineType": {
+        "name": "FileUploadProps.FileTokenAlignment",
+        "type": "union",
+        "values": [
+          "vertical",
+          "horizontal",
+        ],
+      },
+      "name": "fileTokenAlignment",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "An array of file warnings corresponding to the files in the \`value\`.",
       "name": "fileWarnings",
       "optional": true,
