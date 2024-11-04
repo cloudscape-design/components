@@ -34,6 +34,7 @@ export default React.forwardRef(function RadioButton(
     onChange,
     readOnly,
     className,
+    testId,
     ...rest
   }: RadioButtonProps,
   ref: React.Ref<HTMLInputElement>
@@ -54,6 +55,7 @@ export default React.forwardRef(function RadioButton(
       disabled={disabled}
       readOnly={readOnly}
       controlId={controlId}
+      data-testid={testId}
       {...copyAnalyticsMetadataAttribute(rest)}
       nativeControl={nativeControlProps => (
         <input
