@@ -8,10 +8,12 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
+import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { FileInputProps } from './interfaces';
@@ -29,10 +31,12 @@ const InternalFileInput = React.forwardRef(
       onChange,
       variant = 'button',
       children,
+      __internalRootRef = null,
       ...restProps
-    }: FileInputProps,
+    }: FileInputProps & InternalBaseComponentProps,
     ref: Ref<FileInputProps.Ref>
   ) => {
+    const baseProps = getBaseProps(restProps);
     const uploadInputRef = useRef<HTMLInputElement>(null);
     const uploadButtonLabelId = useUniqueId('upload-button-label');
     const formFieldContext = useFormFieldContext(restProps);
@@ -84,7 +88,7 @@ const InternalFileInput = React.forwardRef(
     }, [value]);
 
     return (
-      <div className={clsx(styles.root)}>
+      <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
         {/* This is the actual interactive and accessible file-upload element. */}
         {/* It is visually hidden to achieve the desired UX design. */}
         <input
