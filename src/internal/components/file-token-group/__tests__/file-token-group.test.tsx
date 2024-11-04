@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render as testingLibraryRender } from '@testing-library/react';
+import { act, fireEvent, render as testingLibraryRender } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -11,6 +11,9 @@ import FileTokenGroup, {
 } from '../../../../../lib/components/internal/components/file-token-group';
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 import FileTokenGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/file-token-group';
+
+import styles from '../../../../../lib/components/internal/components/file-token-group/test-classes/styles.css.js';
+import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -48,6 +51,14 @@ const file2 = new File([new Blob(['Test content 2'], { type: 'text/plain' })], '
   type: 'image/png',
   lastModified: 1590962400000,
 });
+const file3 = new File(
+  [new Blob(['Test content 3'], { type: 'text/plain' })],
+  'test-file-3-with-a-really-long-name.txt',
+  {
+    type: 'image/png',
+    lastModified: 1590962400000,
+  }
+);
 
 function render(props: Partial<FileTokenGroupProps>) {
   testingLibraryRender(
@@ -203,6 +214,43 @@ describe('File upload tokens', () => {
     });
     expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Error 1');
     expect(wrapper.findFileToken(1)!.getElement()).not.toHaveAccessibleDescription('Warning 1');
+  });
+});
+
+describe('Tooltip', () => {
+  test('Should show ellipsis on long file names', () => {
+    const wrapper = render({ items: [{ file: file3 }] });
+    act(() => {
+      fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
+    });
+
+    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveClass(styles['ellipsis-active']);
+  });
+
+  test('Should show tooltip on mouse enter', () => {
+    const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
+
+    act(() => {
+      fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
+    });
+
+    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+
+    act(() => {
+      fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
+    });
+
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
+  });
+
+  test('Should not show tooltip with vertical alignment', () => {
+    const wrapper = render({ items: [{ file: file3 }] });
+
+    act(() => {
+      fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
+    });
+
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
   });
 });
 
