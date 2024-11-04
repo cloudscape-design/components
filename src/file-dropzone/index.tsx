@@ -10,10 +10,9 @@ import { useFilesDragging } from './use-files-dragging';
 
 export { FileDropzoneProps, useFilesDragging };
 
-const FileDropzone = ({ ...props }: FileDropzoneProps) => {
+export default function FileDropzone(props: FileDropzoneProps) {
   const baseComponentProps = useBaseComponent('FileDropzone');
-  return <InternalFileDropzone {...props} {...baseComponentProps} />;
-};
+  return <InternalFileDropzone {...baseComponentProps} {...props} />;
+}
 
 applyDisplayName(FileDropzone, 'FileDropzone');
-export default FileDropzone;
