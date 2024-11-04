@@ -249,6 +249,10 @@ exports[`test-utils selectors 1`] = `
     "awsui_icon-container_gwq0h",
     "awsui_root_gwq0h",
   ],
+  "file-dropzone": [
+    "awsui_content_ptw8i",
+    "awsui_root_ptw8i",
+  ],
   "file-upload": [
     "awsui_hints_1ubbm",
     "awsui_root_1ubbm",
@@ -327,7 +331,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_button-trigger_18eso",
     "awsui_button_m5h9f",
     "awsui_chart-filter_1px7g",
-    "awsui_content_1tk3k",
     "awsui_control_1wepg",
     "awsui_description_1p2cx",
     "awsui_description_1wepg",
@@ -364,8 +367,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1kjc7",
     "awsui_root_1qprf",
     "awsui_root_1t44z",
-    "awsui_root_1tk3k",
-    "awsui_root_9f1dn",
     "awsui_root_qwoo0",
     "awsui_root_vrgzu",
     "awsui_selectable-item_15o6u",

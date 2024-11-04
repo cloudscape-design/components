@@ -4,13 +4,15 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import { FileDropzoneProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export default function InternalFileDropzone({ onChange, children }: FileDropzoneProps) {
+export default function InternalFileDropzone({ onChange, children, ...restProps }: FileDropzoneProps) {
   const [isDropzoneHovered, setDropzoneHovered] = useState(false);
+  const baseProps = getBaseProps(restProps);
 
   const onDragOver = (event: React.DragEvent) => {
     event.preventDefault();
@@ -38,7 +40,10 @@ export default function InternalFileDropzone({ onChange, children }: FileDropzon
 
   return (
     <div
-      className={clsx(styles.root, isDropzoneHovered && styles.hovered)}
+      {...baseProps}
+      className={clsx(baseProps.className, styles.root, {
+        [styles.hovered]: isDropzoneHovered,
+      })}
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onDrop}

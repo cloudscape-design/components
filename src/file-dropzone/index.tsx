@@ -11,9 +11,7 @@ import { useFilesDragging } from './use-files-dragging';
 export { FileDropzoneProps, useFilesDragging };
 
 const FileDropzone = ({ ...props }: FileDropzoneProps) => {
-  const baseComponentProps = useBaseComponent('FileDropzone', {
-    props: {},
-  });
+  const baseComponentProps = useBaseComponent('FileDropzone');
   return <InternalFileDropzone {...props} {...baseComponentProps} />;
 };
 

@@ -7361,6 +7361,59 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 }
 `;
 
+exports[`Documenter definition for file-dropzone matches the snapshot: file-dropzone 1`] = `
+{
+  "events": [
+    {
+      "cancelable": false,
+      "description": "Called when the user selects new file(s), or removes a file.
+The event \`detail\` contains the current value of the component.",
+      "detailInlineType": {
+        "name": "FileDropzoneProps.ChangeDetail",
+        "properties": [
+          {
+            "name": "value",
+            "optional": false,
+            "type": "Array<File>",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "FileDropzoneProps.ChangeDetail",
+      "name": "onChange",
+    },
+  ],
+  "functions": [],
+  "name": "FileDropzone",
+  "properties": [
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [
+    {
+      "description": "Children of the Dropzone.",
+      "isDefault": true,
+      "name": "children",
+    },
+  ],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for file-upload matches the snapshot: file-upload 1`] = `
 {
   "events": [
