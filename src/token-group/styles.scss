@@ -45,9 +45,14 @@
 
 .token {
   block-size: 100%;
-  display: grid;
-  grid-template-rows: max-content auto;
+  display: flex;
+  flex-direction: column;
   gap: awsui.$space-xxs;
+
+  &-grid {
+    display: grid;
+    grid-template-rows: max-content auto;
+  }
 
   &-contains-image {
     grid-template-rows: constants.$file-token-height auto;
