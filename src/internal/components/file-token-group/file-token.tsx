@@ -82,6 +82,7 @@ function InternalFileToken({
   return (
     <div ref={containerRef} className={clsx(styles['file-token'])}>
       <Token
+        type="file"
         ariaLabel={file.name}
         dismissLabel={i18nStrings.removeFileAriaLabel(index)}
         onDismiss={onDismiss}

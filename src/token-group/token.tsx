@@ -26,6 +26,7 @@ interface TokenProps {
   warningIconAriaLabel?: string;
   alignment?: TokenGroupProps.Alignment;
   groupContainsImage?: boolean;
+  type?: 'default' | 'file';
   className?: string;
 }
 
@@ -43,6 +44,7 @@ export function Token({
   warningIconAriaLabel,
   alignment,
   groupContainsImage,
+  type = 'default',
   ...restProps
 }: TokenProps) {
   const errorId = useUniqueId('error');
@@ -55,6 +57,7 @@ export function Token({
     <div
       {...baseProps}
       className={clsx(styles.token, baseProps.className, {
+        [styles['token-grid']]: type === 'file',
         [styles['token-contains-image']]: groupContainsImage,
       })}
       role="group"
