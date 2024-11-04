@@ -72,6 +72,19 @@ describe('update drawer', () => {
     expect(onDrawersRegistered).toHaveBeenLastCalledWith([updatedDrawer, drawerB]);
   });
 
+  test('does not update an unknown property', async () => {
+    const onDrawersRegistered = jest.fn();
+    const drawers = new DrawersController();
+    drawers.onDrawersRegistered(onDrawersRegistered);
+    drawers.registerDrawer(drawerA);
+    await delay();
+    expect(onDrawersRegistered).toHaveBeenCalledWith([drawerA]);
+    const updatedDrawer = { ...drawerA, type: 'global' };
+    drawers.updateDrawer(updatedDrawer);
+    await delay();
+    expect(onDrawersRegistered).toHaveBeenLastCalledWith([drawerA]);
+  });
+
   test('throw error if the update drawer is not registered', () => {
     const drawers = new DrawersController();
     expect(() => drawers.updateDrawer({ id: 'test-drawer' } as UpdateDrawerConfig)).toThrowError(
