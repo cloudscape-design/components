@@ -135,7 +135,8 @@ function InternalFileUpload(
             multiple={multiple}
             onChange={event => handleFilesChange(event.detail.value)}
             value={value}
-            {...restProps}
+            ariaLabelledby={restProps.ariaLabelledby}
+            controlId={restProps.controlId}
             ariaDescribedby={ariaDescribedBy}
             invalid={invalid}
           >
