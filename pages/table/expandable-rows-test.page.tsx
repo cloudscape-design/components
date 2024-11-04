@@ -62,7 +62,7 @@ type PageContext = React.Context<
 export default () => {
   const settings = usePageSettings();
   const [toolsOpen, setToolsOpen] = useState(true);
-  const [terminationReasons, setTerminationReasons] = useState(new Map<string, string>());
+  const [terminationReasons, setTerminationReasons] = useState(() => new Map<string, string>());
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     wrapLines: true,
     stickyColumns: { first: 0, last: 0 },
