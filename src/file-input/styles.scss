@@ -2,8 +2,8 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-@use '../../styles/tokens' as awsui;
-@use '../../styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root,

@@ -5,16 +5,16 @@ import { fireEvent, render as testingLibraryRender, screen } from '@testing-libr
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import '../../../../__a11y__/to-validate-a11y';
-import InternalFileInput, { FileInputProps } from '../../../../../lib/components/internal/components/file-input';
-import FileInputWrapper from '../../../../../lib/components/test-utils/dom/internal/file-input';
+import '../../__a11y__/to-validate-a11y';
+import InternalFileInput, { FileInputProps } from '../../../lib/components/file-input';
+import FileInputWrapper from '../../../lib/components/test-utils/dom/file-input';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
-jest.mock('../../../../../lib/components/internal/utils/date-time', () => ({
+jest.mock('../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',
 }));
 
