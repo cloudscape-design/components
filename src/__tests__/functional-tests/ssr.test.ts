@@ -7,8 +7,8 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { getRequiredPropsForComponent } from './required-props-for-components';
-import { getAllComponents, requireComponent } from './utils';
+import { getRequiredPropsForComponent } from '../required-props-for-components';
+import { getAllComponents, requireComponent } from '../utils';
 
 const skipComponents = [
   'modal', // it uses portal API which does not work on server
