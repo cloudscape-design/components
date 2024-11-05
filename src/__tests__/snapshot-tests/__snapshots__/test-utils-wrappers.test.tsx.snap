@@ -117,6 +117,18 @@ export { ElementWrapper };
         export { ExpandableSectionWrapper };
       
 
+        import FileDropzoneWrapper from './file-dropzone';
+        export { FileDropzoneWrapper };
+      
+
+        import FileInputWrapper from './file-input';
+        export { FileInputWrapper };
+      
+
+        import FileTokenGroupWrapper from './file-token-group';
+        export { FileTokenGroupWrapper };
+      
+
         import FileUploadWrapper from './file-upload';
         export { FileUploadWrapper };
       
@@ -338,6 +350,9 @@ findDatePicker(selector?: string): DatePickerWrapper | null;
 findDateRangePicker(selector?: string): DateRangePickerWrapper | null;
 findDrawer(selector?: string): DrawerWrapper | null;
 findExpandableSection(selector?: string): ExpandableSectionWrapper | null;
+findFileDropzone(selector?: string): FileDropzoneWrapper | null;
+findFileInput(selector?: string): FileInputWrapper | null;
+findFileTokenGroup(selector?: string): FileTokenGroupWrapper | null;
 findFileUpload(selector?: string): FileUploadWrapper | null;
 findFlashbar(selector?: string): FlashbarWrapper | null;
 findForm(selector?: string): FormWrapper | null;
@@ -555,6 +570,24 @@ ElementWrapper.prototype.findExpandableSection = function(selector) {
           // casting to 'any' is needed to avoid this issue with generics
           // https://github.com/microsoft/TypeScript/issues/29132
           return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
+      };
+ElementWrapper.prototype.findFileDropzone = function(selector) {
+          const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
+          // casting to 'any' is needed to avoid this issue with generics
+          // https://github.com/microsoft/TypeScript/issues/29132
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
+      };
+ElementWrapper.prototype.findFileInput = function(selector) {
+          const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+          // casting to 'any' is needed to avoid this issue with generics
+          // https://github.com/microsoft/TypeScript/issues/29132
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+      };
+ElementWrapper.prototype.findFileTokenGroup = function(selector) {
+          const rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
+          // casting to 'any' is needed to avoid this issue with generics
+          // https://github.com/microsoft/TypeScript/issues/29132
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
       };
 ElementWrapper.prototype.findFileUpload = function(selector) {
           const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
@@ -964,6 +997,18 @@ export { ElementWrapper };
         export { ExpandableSectionWrapper };
       
 
+        import FileDropzoneWrapper from './file-dropzone';
+        export { FileDropzoneWrapper };
+      
+
+        import FileInputWrapper from './file-input';
+        export { FileInputWrapper };
+      
+
+        import FileTokenGroupWrapper from './file-token-group';
+        export { FileTokenGroupWrapper };
+      
+
         import FileUploadWrapper from './file-upload';
         export { FileUploadWrapper };
       
@@ -1185,6 +1230,9 @@ findDatePicker(selector?: string): DatePickerWrapper;
 findDateRangePicker(selector?: string): DateRangePickerWrapper;
 findDrawer(selector?: string): DrawerWrapper;
 findExpandableSection(selector?: string): ExpandableSectionWrapper;
+findFileDropzone(selector?: string): FileDropzoneWrapper;
+findFileInput(selector?: string): FileInputWrapper;
+findFileTokenGroup(selector?: string): FileTokenGroupWrapper;
 findFileUpload(selector?: string): FileUploadWrapper;
 findFlashbar(selector?: string): FlashbarWrapper;
 findForm(selector?: string): FormWrapper;
@@ -1402,6 +1450,24 @@ ElementWrapper.prototype.findExpandableSection = function(selector) {
           // casting to 'any' is needed to avoid this issue with generics
           // https://github.com/microsoft/TypeScript/issues/29132
           return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
+      };
+ElementWrapper.prototype.findFileDropzone = function(selector) {
+          const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
+          // casting to 'any' is needed to avoid this issue with generics
+          // https://github.com/microsoft/TypeScript/issues/29132
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
+      };
+ElementWrapper.prototype.findFileInput = function(selector) {
+          const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+          // casting to 'any' is needed to avoid this issue with generics
+          // https://github.com/microsoft/TypeScript/issues/29132
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+      };
+ElementWrapper.prototype.findFileTokenGroup = function(selector) {
+          const rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
+          // casting to 'any' is needed to avoid this issue with generics
+          // https://github.com/microsoft/TypeScript/issues/29132
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
       };
 ElementWrapper.prototype.findFileUpload = function(selector) {
           const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
