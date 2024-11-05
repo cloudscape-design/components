@@ -249,6 +249,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_icon-container_gwq0h",
     "awsui_root_gwq0h",
   ],
+  "file-input": [
+    "awsui_file-input-button_1wp4s",
+    "awsui_file-input_1wp4s",
+    "awsui_root_1wp4s",
+  ],
   "file-upload": [
     "awsui_hints_1ubbm",
     "awsui_root_1ubbm",
@@ -359,7 +364,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_placeholder_18eso",
     "awsui_recovery_vrgzu",
     "awsui_root_11n0s",
-    "awsui_root_181f9",
     "awsui_root_1fcus",
     "awsui_root_1kjc7",
     "awsui_root_1qprf",
