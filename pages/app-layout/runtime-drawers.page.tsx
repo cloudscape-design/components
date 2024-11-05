@@ -6,7 +6,6 @@ import {
   AppLayout,
   Button,
   ContentLayout,
-  Drawer,
   Header,
   HelpPanel,
   Link,
@@ -19,7 +18,7 @@ import awsuiPlugins from '~components/internal/plugins';
 
 import './utils/external-widget';
 import AppContext, { AppContextType } from '../app/app-context';
-import { Breadcrumbs, Containers } from './utils/content-blocks';
+import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
 import appLayoutLabels from './utils/labels';
 
 type DemoContext = React.Context<
@@ -51,7 +50,7 @@ export default function WithDrawers() {
               triggerButton: 'ProHelp trigger button',
               resizeHandle: 'ProHelp resize handle',
             },
-            content: <ProHelp />,
+            content: <CustomDrawerContent />,
             id: 'pro-help',
             trigger: {
               iconName: 'contact',
@@ -102,7 +101,10 @@ export default function WithDrawers() {
                   Use Drawers
                 </Toggle>
 
-                <Button onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}>
+                <Button
+                  onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
+                  data-testid="open-drawer-button"
+                >
                   Open a drawer without a trigger
                 </Button>
                 <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
@@ -170,8 +172,4 @@ export default function WithDrawers() {
 
 function Info({ helpPathSlug }: { helpPathSlug: string }) {
   return <HelpPanel header={<h2>Info</h2>}>Here is some info for you: {helpPathSlug}</HelpPanel>;
-}
-
-function ProHelp() {
-  return <Drawer header={<h2>Pro Help</h2>}>Need some Pro Help? We got you.</Drawer>;
 }
