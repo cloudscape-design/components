@@ -5,22 +5,20 @@ import { act, fireEvent, render as testingLibraryRender } from '@testing-library
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import '../../../../__a11y__/to-validate-a11y';
-import FileTokenGroup, {
-  FileTokenGroupProps,
-} from '../../../../../lib/components/internal/components/file-token-group';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import FileTokenGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/file-token-group';
+import '../../__a11y__/to-validate-a11y';
+import FileTokenGroup, { FileTokenGroupProps } from '../../../lib/components/file-token-group';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import FileTokenGroupWrapper from '../../../lib/components/test-utils/dom/file-token-group';
 
-import styles from '../../../../../lib/components/internal/components/file-token-group/test-classes/styles.css.js';
-import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import styles from '../../../lib/components/file-token-group/test-classes/styles.css.js';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
 
-jest.mock('../../../../../lib/components/internal/utils/date-time', () => ({
+jest.mock('../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',
 }));
 

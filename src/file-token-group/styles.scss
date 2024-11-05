@@ -3,8 +3,8 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles/tokens' as awsui;
-@use '../../styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
 
 $image-size: 48px;
 

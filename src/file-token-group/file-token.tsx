@@ -4,14 +4,14 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../../../box/internal.js';
-import InternalLiveRegion from '../../../live-region/internal';
-import InternalSpaceBetween from '../../../space-between/internal.js';
-import InternalSpinner from '../../../spinner/internal.js';
-import { TokenGroupProps } from '../../../token-group/interfaces.js';
-import { Token } from '../../../token-group/token.js';
-import { BaseComponentProps } from '../../base-component/index.js';
-import Tooltip from '../tooltip/index';
+import InternalBox from '../box/internal.js';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import Tooltip from '../internal/components/tooltip/index';
+import InternalLiveRegion from '../live-region/internal';
+import InternalSpaceBetween from '../space-between/internal.js';
+import InternalSpinner from '../spinner/internal.js';
+import { TokenGroupProps } from '../token-group/interfaces.js';
+import { Token } from '../token-group/token.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
 

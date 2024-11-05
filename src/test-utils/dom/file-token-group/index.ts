@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
+import selectors from '../../../file-token-group/styles.selectors.js';
+import testSelectors from '../../../file-token-group/test-classes/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
-import selectors from '../../../internal/components/file-token-group/styles.selectors.js';
-import testSelectors from '../../../internal/components/file-token-group/test-classes/styles.selectors.js';
 import tokenGroupSelectors from '../../../token-group/styles.selectors.js';
 
 export default class FileTokenGroupWrapper extends ComponentWrapper {

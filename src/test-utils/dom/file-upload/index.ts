@@ -3,7 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
-import { FileTokenWrapper } from '../internal/file-token-group';
+import { FileTokenWrapper } from '../file-token-group';
 
 import fileUploadInputSelectors from '../../../file-input/styles.selectors.js';
 import fileUploadSelectors from '../../../file-upload/styles.selectors.js';
