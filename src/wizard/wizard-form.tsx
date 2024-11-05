@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { MutableRefObject, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata } from '@cloudscape-design/component-toolkit/internal';
@@ -14,6 +14,7 @@ import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytic
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
@@ -42,6 +43,13 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
     props.steps[props.activeStepIndex] as BasePropsWithAnalyticsMetadata
   );
   const __internalRootRef = useComponentMetadata('WizardForm', PACKAGE_VERSION, { ...analyticsMetadata });
+  const stepHeaderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffectOnUpdate(() => {
+    if (stepHeaderRef && stepHeaderRef.current) {
+      stepHeaderRef.current?.focus();
+    }
+  }, [props.activeStepIndex]);
 
   return (
     <AnalyticsFunnelStep
@@ -50,13 +58,14 @@ export default function WizardFormWithAnalytics(props: WizardFormProps) {
       stepNameSelector={STEP_NAME_SELECTOR}
       stepNumber={props.activeStepIndex + 1}
     >
-      <WizardForm __internalRootRef={__internalRootRef} {...props} />
+      <WizardForm stepHeaderRef={stepHeaderRef} __internalRootRef={__internalRootRef} {...props} />
     </AnalyticsFunnelStep>
   );
 }
 
 export function WizardForm({
   __internalRootRef,
+  stepHeaderRef,
   steps,
   activeStepIndex,
   showCollapsedSteps,
@@ -69,19 +78,13 @@ export function WizardForm({
   onPreviousClick,
   onPrimaryClick,
   onSkipToClick,
-}: WizardFormProps) {
+}: WizardFormProps & { stepHeaderRef: MutableRefObject<HTMLDivElement | null> }) {
   const { title, info, description, content, errorText, isOptional } = steps[activeStepIndex] || {};
   const isLastStep = activeStepIndex >= steps.length - 1;
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
-  const stepHeaderRef = useRef<HTMLDivElement | null>(null);
+
   const { funnelInteractionId, funnelIdentifier } = useFunnel();
   const { funnelStepProps, stepErrorContext } = useFunnelStep();
-
-  useEffect(() => {
-    if (stepHeaderRef && stepHeaderRef.current) {
-      stepHeaderRef.current?.focus();
-    }
-  }, [activeStepIndex]);
 
   const showSkipTo = allowSkipTo && skipToTargetIndex !== -1;
   const skipToButtonText =

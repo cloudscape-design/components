@@ -35,6 +35,8 @@ describe('Wizard keyboard navigation', () => {
   test(
     'navigate to the first step from menu navigation link using the Enter key',
     setupTest(async page => {
+      // Initial render should not focus the header
+      await expect(page.getFocusedElementText()).resolves.not.toBe('Step 1');
       await page.clickPrimaryButton();
       await page.resetFocus();
       await page.keys(['Tab', 'Enter']);
