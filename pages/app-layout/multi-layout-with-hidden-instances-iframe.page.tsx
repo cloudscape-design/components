@@ -23,6 +23,7 @@ function createView(name: string) {
       awsuiPlugins.appLayout.registerDrawer({
         id: drawerId,
         type: 'global',
+        preserveInactiveContent: true,
         defaultActive: true,
         resizable: true,
         defaultSize: 320,
