@@ -16,6 +16,7 @@ import {
   SpaceBetween,
 } from '~components';
 import awsuiPlugins from '~components/internal/plugins';
+import { AlertFlashContentContext } from '~components/internal/plugins/controllers/alert-flash-content';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -23,6 +24,11 @@ import ScreenshotArea from '../utils/screenshot-area';
 type PageContext = React.Context<
   AppContextType<{ loading: boolean; hidden: boolean; type: AlertProps.Type; autofocus: boolean }>
 >;
+
+const globalStore = ((window as any)[Symbol.for('alert-pending-store')] = new Map<
+  HTMLElement,
+  AlertFlashContentContext
+>());
 
 awsuiPlugins.alertContent.registerContentReplacer({
   id: 'awsui/alert-test-action',
@@ -36,15 +42,7 @@ awsuiPlugins.alertContent.registerContentReplacer({
         replacer.hideHeader();
         replacer.replaceContent(container => {
           console.log('render replacement content');
-          render(
-            <SpaceBetween size="s">
-              <Box>---REPLACEMENT--- Access denied message! ---REPLACEMENT---</Box>
-              <ExpandableSection headerText="Original message">
-                {context.contentRef.current?.textContent}
-              </ExpandableSection>
-            </SpaceBetween>,
-            container
-          );
+          globalStore.set(container, context);
         });
       }
     };
@@ -58,6 +56,7 @@ awsuiPlugins.alertContent.registerContentReplacer({
       },
       unmount({ replacementContentContainer }) {
         console.log('unmount');
+        globalStore.delete(replacementContentContainer);
         unmountComponentAtNode(replacementContentContainer);
       },
     };
@@ -74,6 +73,18 @@ awsuiPlugins.alertContent.registerContentReplacer({
     );
   },
 });
+
+(window as any).runTheActualReplacementSometimeLater = () => {
+  for (const [container, context] of globalStore.entries()) {
+    render(
+      <SpaceBetween size="s">
+        <Box>---REPLACEMENT--- Access denied message! ---REPLACEMENT---</Box>
+        <ExpandableSection headerText="Original message">{context.contentRef.current?.textContent}</ExpandableSection>
+      </SpaceBetween>,
+      container
+    );
+  }
+};
 
 const alertTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
 
