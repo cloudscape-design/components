@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { act, fireEvent, render } from '@testing-library/react';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -314,11 +314,21 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findTools()).toBeFalsy();
     wrapper.findToolsToggle().click();
 
-    await waitFor(() => expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content'));
+    expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
 
     createWrapper().find('[data-testid="toggle-tools-drawer"]')!.click();
 
-    await waitFor(() => expect(wrapper.findTools()).toBeFalsy());
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
+  test('does not open tools panel on toggle click for partially controllable tools', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout tools="Tools content" toolsOpen={false} />);
+    expect(wrapper.findTools()).toBeFalsy();
+
+    wrapper.findToolsToggle().click();
+    expect(wrapper.findTools()).toBeFalsy();
   });
 
   test('opens tools drawer via ref', async () => {
