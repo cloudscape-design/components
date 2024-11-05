@@ -138,6 +138,13 @@ const defaultProps: Record<string, Record<string, any>> = {
   flashbar: {
     items: [],
   },
+  'file-token-group': {
+    items: [],
+    i18nStrings: {
+      limitShowFewer: '',
+      limitShowMore: '',
+    },
+  },
   'file-upload': {
     value: [],
     i18nStrings: {
