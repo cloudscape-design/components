@@ -29,12 +29,13 @@ export function AppLayoutGlobalDrawersImplementation({
             (drawer.preserveInactiveContent && openDrawersHistory.current.has(drawer.id))
         )
         .map(drawer => {
-          openDrawersHistory.current.add(drawer.id);
+          setTimeout(() => openDrawersHistory.current.add(drawer.id), 0);
           return (
             <AppLayoutGlobalDrawer
               key={drawer.id}
               show={activeGlobalDrawersIds.includes(drawer.id)}
               activeGlobalDrawer={drawer}
+              firstRender={!openDrawersHistory.current.has(drawer.id)}
               appLayoutInternals={appLayoutInternals}
             />
           );

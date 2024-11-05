@@ -306,6 +306,7 @@ export namespace AppLayoutProps {
     badge?: boolean;
     resizable?: boolean;
     defaultSize?: number;
+    defaultActive?: boolean;
     onResize?: NonCancelableEventHandler<{ size: number }>;
     preserveInactiveContent?: boolean;
   }

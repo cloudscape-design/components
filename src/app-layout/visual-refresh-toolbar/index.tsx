@@ -77,8 +77,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const [navigationAnimationEnabled, setNavigationAnimationEnabled] = useState(false);
     const rootRef = useRef<HTMLDivElement>(null);
-    const disabledAnimationsGlobalClass = 'awsui-motion-disabled';
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -215,6 +215,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
+      // enable animation only after first user interaction
+      setNavigationAnimationEnabled(true);
       navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
@@ -427,30 +429,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement.inlineSize,
     ]);
 
-    useEffect(() => {
-      // The disabledMotionGlobalClass class is initially applied to the root element.
-      // It disables all animations until the first user interaction,
-      // which prevents dynamic elements intended as "progressive enhancement"
-      // from animating prematurely. This approach ensures animations
-      // are triggered only by user interactions.
-      function enableAnimations() {
-        rootRef.current?.classList.remove(disabledAnimationsGlobalClass);
-        document.removeEventListener('click', enableAnimations);
-      }
-
-      document.addEventListener('click', enableAnimations, true);
-
-      return () => {
-        document.removeEventListener('click', enableAnimations);
-      };
-    }, []);
-
     return (
       <>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
-          className={disabledAnimationsGlobalClass}
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
             [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
@@ -473,6 +456,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={resolvedNavigationOpen}
           navigationWidth={navigationWidth}
+          navigationAnimationEnabled={navigationAnimationEnabled}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>

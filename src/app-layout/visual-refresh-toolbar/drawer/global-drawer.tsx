@@ -24,12 +24,14 @@ interface AppLayoutGlobalDrawerImplementationProps {
   activeGlobalDrawer:
     | (AppLayoutProps.Drawer & { onShow?: NonCancelableEventHandler; onHide?: NonCancelableEventHandler })
     | undefined;
+  firstRender: boolean;
 }
 
 function AppLayoutGlobalDrawerImplementation({
   appLayoutInternals,
   show,
   activeGlobalDrawer,
+  firstRender = false,
 }: AppLayoutGlobalDrawerImplementationProps) {
   const {
     ariaLabels,
@@ -68,6 +70,7 @@ function AppLayoutGlobalDrawerImplementation({
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
+  const animationDisabled = firstRender && activeGlobalDrawer?.defaultActive;
 
   return (
     <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
@@ -81,7 +84,7 @@ function AppLayoutGlobalDrawerImplementation({
               styles.drawer,
               styles['drawer-global'],
               styles[state],
-              sharedStyles['with-motion-horizontal'],
+              !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
