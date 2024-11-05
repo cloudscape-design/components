@@ -66,7 +66,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       maxContentWidth,
       disableContentPaddings,
       globalToolsOpen,
-      navigationAnimationEnabled = true,
+      navigationAnimationEnabled,
     },
     ref
   ) => {

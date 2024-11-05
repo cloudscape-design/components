@@ -31,7 +31,7 @@ function AppLayoutGlobalDrawerImplementation({
   appLayoutInternals,
   show,
   activeGlobalDrawer,
-  firstRender = false,
+  firstRender,
 }: AppLayoutGlobalDrawerImplementationProps) {
   const {
     ariaLabels,
