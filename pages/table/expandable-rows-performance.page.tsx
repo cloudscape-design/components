@@ -22,7 +22,7 @@ type PageContext = React.Context<
   }>
 >;
 
-const columnDefinitions = createColumns();
+const columnDefinitions = createColumns({ terminationReasons: new Map() });
 
 export default function App() {
   const { urlParams, setUrlParams } = useContext(AppContext as PageContext);
