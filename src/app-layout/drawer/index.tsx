@@ -123,7 +123,7 @@ export const Drawer = React.forwardRef(
             aria-label={mainLabel}
             aria-hidden={!isOpen}
             style={{
-              ['blockSize']: `calc(100vh - ${(topOffset || 0) + (bottomOffset || 0)}px)`,
+              blockSize: `calc(100vh - ${(topOffset || 0) + (bottomOffset || 0)}px)`,
             }}
           >
             {!isMobile && isOpen && <div className={styles['resize-handle-wrapper']}>{resizeHandle}</div>}

@@ -189,7 +189,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
     })
   );
 
-  test.only(
+  test(
     'Side nav does not display a scrollbar when there is no header',
     setupTest({ pageName: 'with-drawers-scrollable' }, async page => {
       const navBefore = await page.getNavPosition();
