@@ -76,8 +76,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
-    const [navigationAnimationEnabled, setNavigationAnimationEnabled] = useState(false);
-    const [splitPanelAnimationEnabled, setSplitPanelAnimationEnabled] = useState(false);
+    const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
+    const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -167,7 +167,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const onSplitPanelToggleHandler = () => {
-      setSplitPanelAnimationEnabled(true);
+      setSplitPanelAnimationDisabled(false);
       setSplitPanelOpen(!splitPanelOpen);
       splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
@@ -215,8 +215,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
-      // enable animation only after first user interaction
-      setNavigationAnimationEnabled(true);
+      setNavigationAnimationDisabled(false);
       navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
@@ -456,7 +455,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={resolvedNavigationOpen}
           navigationWidth={navigationWidth}
-          navigationAnimationEnabled={navigationAnimationEnabled}
+          navigationAnimationDisabled={navigationAnimationDisabled}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
@@ -471,7 +470,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}
-                animationDisabled={!splitPanelAnimationEnabled}
+                animationDisabled={splitPanelAnimationDisabled}
               >
                 {splitPanel}
               </AppLayoutSplitPanelSide>
@@ -482,7 +481,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutSplitPanelBottom
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}
-                animationDisabled={!splitPanelAnimationEnabled}
+                animationDisabled={splitPanelAnimationDisabled}
               >
                 {splitPanel}
               </AppLayoutSplitPanelBottom>
