@@ -5,6 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
+import { getUrlParams, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 const findDrawerById = (wrapper: AppLayoutWrapper, id: string) => {
@@ -14,19 +15,17 @@ const findDrawerContentById = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-content-${id}"]`);
 };
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
-  function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
+describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
+  function setupTest({ hasDrawers = 'false' }, testFn: (page: BasePageObject) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new BasePageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/runtime-drawers?${new URLSearchParams({
-          hasDrawers: 'false',
+        `#/light/app-layout/runtime-drawers?${getUrlParams(theme, {
+          hasDrawers: hasDrawers,
           hasTools: 'true',
           splitPanelPosition: 'side',
-          visualRefresh: `${theme !== 'classic'}`,
-          appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
-        }).toString()}`
+        })}`
       );
       await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
       await testFn(page);
@@ -37,7 +36,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   describe('desktop', () => {
     test(
       'should resize equally with tools or drawers',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1800 });
         await page.click(wrapper.findToolsToggle().toSelector());
         await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
@@ -53,7 +52,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
     test(
       'renders according to defaultSize property',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.setWindowSize(viewports.desktop);
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
         // using `clientWidth` to neglect possible border width set on this element
@@ -64,7 +63,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
     test(
       'should call resize handler',
-      setupTest(async page => {
+      setupTest({}, async page => {
         await page.setWindowSize(viewports.desktop);
         // close navigation panel to give drawer more room to resize
         await page.click(wrapper.findNavigationClose().toSelector());
@@ -74,6 +73,25 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
         await page.dragAndDrop(wrapper.findActiveDrawerResizeHandle().toSelector(), -200);
         await expect(page.getText('[data-testid="current-size"]')).resolves.toEqual('resized: true');
+      })
+    );
+
+    test(
+      'should show sticky elements on scroll in drawer',
+      setupTest({ hasDrawers: 'true' }, async page => {
+        await page.setWindowSize(viewports.desktop);
+        await page.waitForVisible(wrapper.findDrawerTriggerById('pro-help').toSelector(), true);
+
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
+        await page.click(wrapper.findDrawerTriggerById('pro-help').toSelector());
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(true);
+
+        const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
+        const scrollBefore = await getScrollPosition();
+
+        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+        await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
+        await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
       })
     );
   });
@@ -90,13 +108,11 @@ describe('Visual refresh toolbar only', () => {
       const page = new PageObject(browser);
 
       await browser.url(
-        `#/light/app-layout/runtime-drawers?${new URLSearchParams({
+        `#/light/app-layout/runtime-drawers?${getUrlParams('refresh-toolbar', {
           hasDrawers: 'false',
           hasTools: 'true',
           splitPanelPosition: 'side',
-          visualRefresh: 'true',
-          appLayoutToolbar: 'true',
-        }).toString()}`
+        })}`
       );
       await page.waitForVisible(wrapper.findDrawerTriggerById('security').toSelector(), true);
       await testFn(page);
@@ -243,4 +259,23 @@ describe('Visual refresh toolbar only', () => {
       })
     );
   }
+
+  test(
+    'should show sticky elements on scroll in custom global drawer',
+    setupTest(async page => {
+      await page.setWindowSize(viewports.desktop);
+      await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
+
+      await page.click(createWrapper().findButton('[data-testid="open-drawer-button"]').toSelector());
+      await page.waitForVisible(findDrawerById(wrapper, 'circle4-global')!.toSelector(), true);
+      await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(true);
+
+      const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
+      const scrollBefore = await getScrollPosition();
+
+      await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+      await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
+      await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
+    })
+  );
 });

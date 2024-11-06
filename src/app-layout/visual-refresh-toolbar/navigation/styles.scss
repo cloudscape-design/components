@@ -28,6 +28,10 @@
     display: none;
   }
 
+  &.is-navigation-open > .content-container {
+    display: contents;
+  }
+
   /*
   A non-semantic node is added with a fixed width equal to the final Navigation
   width. This will create the visual appearance of horizontal movement and

@@ -58,6 +58,9 @@
     block-size: 100%;
     position: relative;
   }
+  > .drawer-content-wrapper[aria-hidden='false'] {
+    display: contents;
+  }
 }
 
 .drawer-triggers-wrapper {
