@@ -29,14 +29,15 @@ export function AppLayoutGlobalDrawersImplementation({
             (drawer.preserveInactiveContent && openDrawersHistory.current.has(drawer.id))
         )
         .map(drawer => {
-          setTimeout(() => openDrawersHistory.current.add(drawer.id), 0);
+          const animationDisabled = drawer.defaultActive && !openDrawersHistory.current.has(drawer.id);
           return (
             <AppLayoutGlobalDrawer
               key={drawer.id}
               show={activeGlobalDrawersIds.includes(drawer.id)}
               activeGlobalDrawer={drawer}
-              firstRender={!openDrawersHistory.current.has(drawer.id)}
               appLayoutInternals={appLayoutInternals}
+              animationDisabled={animationDisabled}
+              onMount={() => openDrawersHistory.current.add(drawer.id)}
             />
           );
         })}

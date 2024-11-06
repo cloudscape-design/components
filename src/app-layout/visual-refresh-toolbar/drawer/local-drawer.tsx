@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -20,9 +20,13 @@ import styles from './styles.css.js';
 
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
+  animationDisabled?: boolean;
 }
 
-export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutDrawerImplementationProps) {
+export function AppLayoutDrawerImplementation({
+  appLayoutInternals,
+  animationDisabled,
+}: AppLayoutDrawerImplementationProps) {
   const {
     activeDrawer,
     minDrawerSize,
@@ -40,7 +44,6 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeDrawer?.id;
-  const [firstRender, setFirstRender] = useState(true);
 
   const computedAriaLabels = {
     closeButton: activeDrawer ? activeDrawer.ariaLabels?.closeButton : ariaLabels?.toolsClose,
@@ -63,15 +66,6 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const isLegacyDrawer = drawersOpenQueue === undefined;
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
-  const animationDisabled = firstRender && activeDrawer?.defaultActive;
-
-  useEffect(() => {
-    if (activeDrawer) {
-      setTimeout(() => {
-        setFirstRender(false);
-      }, 0);
-    }
-  }, [activeDrawer, firstRender]);
 
   return (
     <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
