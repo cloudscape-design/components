@@ -52,7 +52,7 @@
       display: none;
 
       &.last-opened {
-        display: block;
+        display: grid;
       }
     }
   }

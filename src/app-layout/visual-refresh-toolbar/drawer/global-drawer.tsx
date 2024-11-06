@@ -125,7 +125,10 @@ function AppLayoutGlobalDrawerImplementation({
                 />
               </div>
             )}
-            <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
+            <div
+              className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+              data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
+            >
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}
