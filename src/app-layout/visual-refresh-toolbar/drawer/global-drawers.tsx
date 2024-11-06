@@ -13,7 +13,7 @@ interface AppLayoutGlobalDrawersImplementationProps {
 export function AppLayoutGlobalDrawersImplementation({
   appLayoutInternals,
 }: AppLayoutGlobalDrawersImplementationProps) {
-  const { globalDrawers, activeGlobalDrawersIds, drawersOpenQueue } = appLayoutInternals;
+  const { globalDrawers, activeGlobalDrawersIds } = appLayoutInternals;
   const openDrawersHistory = useRef<Set<string>>(new Set());
 
   if (!globalDrawers.length) {
@@ -30,14 +30,12 @@ export function AppLayoutGlobalDrawersImplementation({
         )
         .map(drawer => {
           openDrawersHistory.current.add(drawer.id);
-          const animationDisabled = drawer.defaultActive && !drawersOpenQueue.includes(drawer.id);
           return (
             <AppLayoutGlobalDrawer
               key={drawer.id}
               show={activeGlobalDrawersIds.includes(drawer.id)}
               activeGlobalDrawer={drawer}
               appLayoutInternals={appLayoutInternals}
-              animationDisabled={animationDisabled}
             />
           );
         })}

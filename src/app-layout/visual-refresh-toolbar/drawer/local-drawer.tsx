@@ -20,13 +20,9 @@ import styles from './styles.css.js';
 
 interface AppLayoutDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
-  animationDisabled?: boolean;
 }
 
-export function AppLayoutDrawerImplementation({
-  appLayoutInternals,
-  animationDisabled,
-}: AppLayoutDrawerImplementationProps) {
+export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutDrawerImplementationProps) {
   const {
     activeDrawer,
     minDrawerSize,
@@ -66,6 +62,7 @@ export function AppLayoutDrawerImplementation({
   const isLegacyDrawer = drawersOpenQueue === undefined;
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
+  const animationDisabled = activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id);
 
   return (
     <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>

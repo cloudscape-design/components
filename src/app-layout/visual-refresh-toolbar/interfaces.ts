@@ -10,6 +10,8 @@ import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focu
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
 
+export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean };
+
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
 // Treat thsese structures as an API and do not make incompatible changes.
 export interface AppLayoutInternals {
@@ -25,18 +27,18 @@ export interface AppLayoutInternals {
   splitPanelFocusControl: SplitPanelFocusControlState;
   splitPanelToggleConfig: SplitPanelSideToggleProps;
   isMobile: boolean;
-  activeDrawer: AppLayoutProps.Drawer | undefined;
+  activeDrawer: InternalDrawer | undefined;
   activeDrawerSize: number;
   minDrawerSize: number;
   maxDrawerSize: number;
   minGlobalDrawersSizes: Record<string, number>;
   maxGlobalDrawersSizes: Record<string, number>;
-  drawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  drawers: ReadonlyArray<InternalDrawer>;
   drawersFocusControl: FocusControlState;
   globalDrawersFocusControl: FocusControlMultipleStates;
   activeGlobalDrawersIds: ReadonlyArray<string>;
-  activeGlobalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  activeGlobalDrawers: ReadonlyArray<InternalDrawer>;
+  globalDrawers: ReadonlyArray<InternalDrawer>;
   activeGlobalDrawersSizes: Record<string, number>;
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
