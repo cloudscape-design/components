@@ -157,6 +157,10 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(
       <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
         global widget content circle 1
+        {new Array(100).fill(null).map((_, index) => (
+          <div key={index}>{index}</div>
+        ))}
+        <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
       </AutoIncrementCounter>,
       container
     );

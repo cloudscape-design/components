@@ -10,6 +10,9 @@ const wrapper = createWrapper().findAppLayout();
 const findDrawerById = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
 };
+const findDrawerContentById = (wrapper: AppLayoutWrapper, id: string) => {
+  return wrapper.find(`[data-testid="awsui-app-layout-drawer-content-${id}"]`);
+};
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   function setupTest(testFn: (page: BasePageObject) => Promise<void>) {
@@ -219,6 +222,27 @@ describe('Visual refresh toolbar only', () => {
       await expect(page.isClickable(findDrawerById(wrapper, 'circle2-global')!.toSelector())).resolves.toBe(true);
       await expect(page.isClickable(findDrawerById(wrapper, 'circle3-global')!.toSelector())).resolves.toBe(true);
       await expect(page.hasHorizontalScroll()).resolves.toBe(false);
+    })
+  );
+
+  test(
+    'the content inside drawers should be scrollable',
+    setupTest(async page => {
+      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+      await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
+      await expect(
+        page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
+      ).resolves.toBe(false);
+      await page.elementScrollTo(findDrawerContentById(wrapper, 'circle-global').toSelector(), { top: 2000 });
+      await expect(
+        page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
+      ).resolves.toBe(true);
+
+      await page.setWindowSize(viewports.mobile);
+
+      await expect(
+        page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
+      ).resolves.toBe(true);
     })
   );
 });

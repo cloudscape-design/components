@@ -49,10 +49,8 @@
 
   &.drawer-global {
     @include mobile-only {
-      display: none;
-
-      &.last-opened {
-        display: block;
+      &:not(.last-opened) {
+        display: none;
       }
     }
   }
