@@ -20,16 +20,13 @@
   overscroll-behavior-y: contain;
   word-wrap: break-word;
   pointer-events: auto;
+  display: flex;
 
   // All content is hidden by the overflow-x property
   &:not(.is-navigation-open) {
     inline-size: 0px;
     // We need to hide the closed panel to make containing focusable elements not focusable anymore.
     display: none;
-  }
-
-  &.is-navigation-open > .content-container {
-    display: contents;
   }
 
   /*

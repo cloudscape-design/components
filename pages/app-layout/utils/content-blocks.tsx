@@ -182,7 +182,9 @@ export function CustomDrawerContent() {
   return (
     <div className={styles['custom-drawer-wrapper']}>
       <div className={styles['drawer-sticky-header']} data-testid="drawer-sticky-header">
-        <h2>Header</h2>
+        <Box variant="h3" tagOverride="h2" padding="n">
+          Sticky header
+        </Box>
       </div>
       <div className={styles['drawer-scrollable-content']}>
         <ScrollableDrawerContent />

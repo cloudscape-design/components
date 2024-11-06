@@ -19,6 +19,7 @@ import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 import {
   Breadcrumbs,
   Containers,
@@ -45,9 +46,9 @@ const getAriaLabels = (title: string) => {
 };
 
 awsuiPlugins.appLayout.registerDrawer({
-  id: 'circle',
+  id: 'circle1-global',
   type: 'global',
-  ariaLabels: getAriaLabels('global drawer'),
+  ariaLabels: getAriaLabels('global drawer 1'),
   defaultActive: true,
   resizable: true,
   defaultSize: 320,
@@ -59,6 +60,25 @@ awsuiPlugins.appLayout.registerDrawer({
   },
   mountContent: container => {
     ReactDOM.render(<CustomDrawerContent />, container);
+  },
+  unmountContent: container => unmountComponentAtNode(container),
+});
+awsuiPlugins.appLayout.registerDrawer({
+  id: 'circle2-global',
+  type: 'global',
+  defaultActive: false,
+  resizable: true,
+  defaultSize: 320,
+
+  ariaLabels: getAriaLabels('global drawer 2'),
+
+  mountContent: container => {
+    ReactDOM.render(
+      <Drawer header="Global drawer">
+        <ScrollableDrawerContent contentType="text" />
+      </Drawer>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
@@ -162,65 +182,74 @@ export default function WithDrawersScrollable() {
   };
 
   return (
-    <AppLayout
-      ariaLabels={appLayoutLabels}
-      breadcrumbs={<Breadcrumbs />}
-      navigation={sideNavContents}
-      ref={appLayoutRef}
-      content={
-        <ContentLayout
-          disableOverlap={true}
-          header={
-            <SpaceBetween size="m">
-              <Header variant="h1" description="Many drawers with scrollable content">
-                Testing Scrollable Drawers
-              </Header>
+    <ScreenshotArea gutters={false}>
+      <AppLayout
+        ariaLabels={appLayoutLabels}
+        breadcrumbs={<Breadcrumbs />}
+        navigation={sideNavContents}
+        ref={appLayoutRef}
+        content={
+          <ContentLayout
+            disableOverlap={true}
+            header={
+              <SpaceBetween size="m">
+                <Header variant="h1" description="Many drawers with scrollable content">
+                  Testing Scrollable Drawers
+                </Header>
 
-              <SpaceBetween size="xs">
-                <Toggle checked={sideNavFill} onChange={({ detail }) => setUrlParams({ sideNavFill: detail.checked })}>
-                  Fill side nav content area
-                </Toggle>
+                <SpaceBetween size="xs">
+                  <Toggle
+                    checked={sideNavFill}
+                    onChange={({ detail }) => setUrlParams({ sideNavFill: detail.checked })}
+                    data-testid="toggle-side-nav-content"
+                  >
+                    Fill side nav content area
+                  </Toggle>
 
-                <Button onClick={() => awsuiPlugins.appLayout.openDrawer('circle1-global')}>
-                  Open a drawer without a trigger
-                </Button>
+                  <Button
+                    onClick={() => awsuiPlugins.appLayout.openDrawer('circle2-global')}
+                    data-testid="open-global-drawer-button"
+                  >
+                    Open a drawer without a trigger
+                  </Button>
+                </SpaceBetween>
               </SpaceBetween>
+            }
+          >
+            <Containers />
+          </ContentLayout>
+        }
+        splitPanel={
+          <SplitPanel
+            header="Split panel header"
+            i18nStrings={{
+              preferencesTitle: 'Preferences',
+              preferencesPositionLabel: 'Split panel position',
+              preferencesPositionDescription: 'Choose the default split panel position for the service.',
+              preferencesPositionSide: 'Side',
+              preferencesPositionBottom: 'Bottom',
+              preferencesConfirm: 'Confirm',
+              preferencesCancel: 'Cancel',
+              closeButtonAriaLabel: 'Close panel',
+              openButtonAriaLabel: 'Open panel',
+              resizeHandleAriaLabel: 'Slider',
+            }}
+          >
+            <SpaceBetween size="l">
+              <ScrollableDrawerContent />
+              <ScrollableDrawerContent contentType="image" />
             </SpaceBetween>
-          }
-        >
-          <Containers />
-        </ContentLayout>
-      }
-      splitPanel={
-        <SplitPanel
-          header="Split panel header"
-          i18nStrings={{
-            preferencesTitle: 'Preferences',
-            preferencesPositionLabel: 'Split panel position',
-            preferencesPositionDescription: 'Choose the default split panel position for the service.',
-            preferencesPositionSide: 'Side',
-            preferencesPositionBottom: 'Bottom',
-            preferencesConfirm: 'Confirm',
-            preferencesCancel: 'Cancel',
-            closeButtonAriaLabel: 'Close panel',
-            openButtonAriaLabel: 'Open panel',
-            resizeHandleAriaLabel: 'Slider',
-          }}
-        >
-          <SpaceBetween size="l">
-            <ScrollableDrawerContent />
-            <ScrollableDrawerContent contentType="image" />
-          </SpaceBetween>
-        </SplitPanel>
-      }
-      splitPanelPreferences={{
-        position: urlParams.splitPanelPosition,
-      }}
-      onSplitPanelPreferencesChange={event => {
-        const { position } = event.detail;
-        setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
-      }}
-      {...drawersProps}
-    />
+          </SplitPanel>
+        }
+        splitPanelPreferences={{
+          position: urlParams.splitPanelPosition,
+        }}
+        onSplitPanelPreferencesChange={event => {
+          const { position } = event.detail;
+          setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
+        }}
+        {...drawersProps}
+      />
+    </ScreenshotArea>
   );
 }

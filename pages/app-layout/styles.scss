@@ -97,14 +97,15 @@
 .drawer-sticky-header {
   background-color: peachpuff;
   border-block-end: 2px solid grey;
+  padding-block: awsui.$space-scaled-l;
 }
 .drawer-scrollable-content {
   flex: 1;
   overflow-y: auto;
-  padding-block: 8px;
+  padding-block: awsui.$space-scaled-s;
 }
 .drawer-sticky-footer {
   background-color: lightpink;
   border-block-start: 2px solid grey;
-  padding-block: 12px;
+  padding-block: awsui.$space-scaled-s;
 }

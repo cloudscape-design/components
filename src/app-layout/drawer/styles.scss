@@ -36,6 +36,8 @@
   position: fixed;
   overflow: auto;
   background-color: awsui.$color-background-layout-panel-content;
+  display: flex;
+  flex-direction: column;
   .drawer-mobile > & {
     z-index: constants.$drawer-z-index-mobile;
     inset: 0;
@@ -58,8 +60,8 @@
     block-size: 100%;
     position: relative;
   }
-  > .drawer-content-wrapper[aria-hidden='false'] {
-    display: contents;
+  > .drawer-content-wrapper {
+    flex: 1;
   }
 }
 

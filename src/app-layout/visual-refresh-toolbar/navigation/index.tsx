@@ -62,7 +62,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
         insetBlockStart: drawerTopOffset,
       }}
     >
-      <div className={clsx(styles['content-container'], styles['animated-content'])}>
+      <div className={styles['animated-content']}>
         <div className={clsx(styles['hide-navigation'])}>
           <InternalButton
             ariaLabel={ariaLabels?.navigationClose ?? undefined}
