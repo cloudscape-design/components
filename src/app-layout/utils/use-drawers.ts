@@ -256,7 +256,12 @@ export function useDrawers(
     ? [...localBefore, ...drawers, ...localAfter]
     : applyToolsDrawer(toolsProps, runtimeDrawers);
   // support toolsOpen in runtime-drawers-only mode
-  let activeDrawerIdResolved = toolsProps?.toolsOpen && !hasOwnDrawers ? TOOLS_DRAWER_ID : activeDrawerId;
+  let activeDrawerIdResolved =
+    toolsProps?.toolsOpen && !hasOwnDrawers
+      ? TOOLS_DRAWER_ID
+      : activeDrawerId !== TOOLS_DRAWER_ID
+        ? activeDrawerId
+        : null;
   const activeDrawer = combinedLocalDrawers?.find(drawer => drawer.id === activeDrawerIdResolved);
   // ensure that id is only defined when the drawer exists
   activeDrawerIdResolved = activeDrawer?.id ?? null;

@@ -290,6 +290,47 @@ describeEachAppLayout(({ theme, size }) => {
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
   });
 
+  test('respect controlled toolsOpen with runtime drawers after clicking on tools drawer', async () => {
+    function AppLayoutWithControlledTools() {
+      const [showTools, setShowTools] = useState(false);
+      return (
+        <AppLayout
+          tools="Tools content"
+          toolsOpen={showTools}
+          onToolsChange={event => setShowTools(event.detail.open)}
+          content={
+            <div>
+              <button data-testid="toggle-tools-drawer" onClick={() => setShowTools(!showTools)}>
+                Toggle tools
+              </button>
+            </div>
+          }
+        />
+      );
+    }
+
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayoutWithControlledTools />);
+    expect(wrapper.findTools()).toBeFalsy();
+    wrapper.findToolsToggle().click();
+
+    expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
+
+    createWrapper().find('[data-testid="toggle-tools-drawer"]')!.click();
+
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
+  test('does not open tools panel on toggle click for partially controllable tools', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout tools="Tools content" toolsOpen={false} />);
+    expect(wrapper.findTools()).toBeFalsy();
+
+    wrapper.findToolsToggle().click();
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
   test('opens tools drawer via ref', async () => {
     let ref: AppLayoutProps.Ref | null = null;
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
