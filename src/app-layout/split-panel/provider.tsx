@@ -11,6 +11,7 @@ export interface SplitPanelProviderProps extends SplitPanelContextBaseProps {
   reportSize: (size: number) => void;
   getMaxHeight: () => number;
   children?: React.ReactNode;
+  animationDisabled?: boolean;
 }
 
 export function SplitPanelProvider({

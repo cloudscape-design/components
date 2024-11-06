@@ -77,6 +77,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const [navigationAnimationEnabled, setNavigationAnimationEnabled] = useState(false);
+    const [splitPanelAnimationEnabled, setSplitPanelAnimationEnabled] = useState(false);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -166,6 +167,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const onSplitPanelToggleHandler = () => {
+      setSplitPanelAnimationEnabled(true);
       setSplitPanelOpen(!splitPanelOpen);
       splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
@@ -477,6 +479,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}
+                animationDisabled={!splitPanelAnimationEnabled}
               >
                 {splitPanel}
               </AppLayoutSplitPanelSide>
@@ -487,6 +490,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutSplitPanelBottom
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}
+                animationDisabled={!splitPanelAnimationEnabled}
               >
                 {splitPanel}
               </AppLayoutSplitPanelBottom>

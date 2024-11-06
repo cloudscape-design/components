@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Transition } from 'react-transition-group';
 import clsx from 'clsx';
 
@@ -25,7 +25,6 @@ interface AppLayoutGlobalDrawerImplementationProps {
     | (AppLayoutProps.Drawer & { onShow?: NonCancelableEventHandler; onHide?: NonCancelableEventHandler })
     | undefined;
   animationDisabled?: boolean;
-  onMount?: () => void;
 }
 
 function AppLayoutGlobalDrawerImplementation({
@@ -33,7 +32,6 @@ function AppLayoutGlobalDrawerImplementation({
   show,
   activeGlobalDrawer,
   animationDisabled,
-  onMount,
 }: AppLayoutGlobalDrawerImplementationProps) {
   const {
     ariaLabels,
@@ -72,11 +70,6 @@ function AppLayoutGlobalDrawerImplementation({
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
-
-  useEffect(() => {
-    onMount?.();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>

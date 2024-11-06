@@ -12,17 +12,19 @@ interface AppLayoutSplitPanelDrawerSideImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;
+  animationDisabled?: boolean;
 }
 
 export function AppLayoutSplitPanelDrawerSideImplementation({
   children,
   appLayoutInternals,
   splitPanelInternals,
+  animationDisabled,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
   const { splitPanelControlId, placement, verticalOffsets } = appLayoutInternals;
   const drawerTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
   return (
-    <SplitPanelProvider {...splitPanelInternals}>
+    <SplitPanelProvider {...splitPanelInternals} animationDisabled={animationDisabled}>
       <section
         id={splitPanelControlId}
         className={styles['split-panel-side']}
@@ -41,13 +43,19 @@ export interface AppLayoutSplitPanelDrawerBottomImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;
+  animationDisabled?: boolean;
 }
 
 export function AppLayoutSplitPanelDrawerBottomImplementation({
   children,
   splitPanelInternals,
+  animationDisabled,
 }: AppLayoutSplitPanelDrawerBottomImplementationProps) {
-  return <SplitPanelProvider {...splitPanelInternals}>{children}</SplitPanelProvider>;
+  return (
+    <SplitPanelProvider {...splitPanelInternals} animationDisabled={animationDisabled}>
+      {children}
+    </SplitPanelProvider>
+  );
 }
 
 export const createWidgetizedAppLayoutSplitPanelDrawerSide = createWidgetizedComponent(
