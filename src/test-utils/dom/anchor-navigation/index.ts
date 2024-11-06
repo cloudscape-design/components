@@ -32,6 +32,21 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
   findAnchorLinkByHref(href: string): ElementWrapper<HTMLAnchorElement> | null {
     return this.find(`.${testUtilStyles['anchor-link']}[href="${href}"]`);
   }
+
+  /**
+   * Returns the wrapper of the first anchor item that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `anchors` prop.
+   * If no matching anchor is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {AnchorItemWrapper | null}
+   */
+  findAnchorByTestId(testId: string): AnchorItemWrapper | null {
+    return this.findComponent(
+      `.${testUtilStyles['anchor-item']}[data-testid="${CSS.escape(testId)}"]`,
+      AnchorItemWrapper
+    );
+  }
 }
 
 export class AnchorItemWrapper extends ElementWrapper {
