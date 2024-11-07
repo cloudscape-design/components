@@ -14,7 +14,6 @@ import { getBaseProps } from '../internal/base-component';
 import InternalFileDropzone, { useFilesDragging } from '../internal/components/file-dropzone';
 import InternalFileInput from '../internal/components/file-input';
 import InternalFileTokenGroup from '../internal/components/file-token-group';
-import InternalFileToken from '../internal/components/file-token-group/file-token';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -164,21 +163,7 @@ function InternalFileUpload(
         )}
       </InternalBox>
 
-      {!multiple && value.length > 0 ? (
-        <InternalFileToken
-          file={value[0]}
-          showFileLastModified={metadata.showFileLastModified}
-          showFileSize={metadata.showFileSize}
-          showFileThumbnail={metadata.showFileThumbnail}
-          errorText={fileErrors?.[0]}
-          warningText={fileWarnings?.[0]}
-          onDismiss={() => onFileRemove(0)}
-          i18nStrings={i18nStrings}
-          index={0}
-        />
-      ) : null}
-
-      {multiple && value.length > 0 ? (
+      {value.length > 0 ? (
         <InternalFileTokenGroup
           limit={tokenLimit}
           alignment={fileTokenAlignment}

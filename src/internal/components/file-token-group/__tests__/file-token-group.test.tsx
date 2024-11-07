@@ -271,7 +271,7 @@ describe('Focusing behavior', () => {
 });
 
 describe('a11y', () => {
-  test('multiple empty', async () => {
+  test('empty', async () => {
     const wrapper = render({ items: [] });
     await expect(wrapper.getElement()).toValidateA11y();
   });
@@ -305,7 +305,7 @@ describe('a11y', () => {
     await expect(wrapper.getElement()).toValidateA11y();
   });
 
-  test('multiple w/o errors nor warnings', async () => {
+  test('multiple', async () => {
     const wrapper = render({
       items: [{ file: file1 }, { file: file2 }],
       showFileSize: true,
