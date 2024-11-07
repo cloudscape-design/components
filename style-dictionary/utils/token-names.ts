@@ -645,6 +645,7 @@ export type SpacingTokenName =
   | 'spaceContainerHorizontal'
   | 'spaceContentHeaderPaddingBottom'
   | 'spaceDarkHeaderOverlapDistance'
+  | 'spaceDropdownItemVertical'
   | 'spaceExpandableSectionIconOffsetTop'
   | 'spaceFieldHorizontal'
   | 'spaceFieldIconOffset'

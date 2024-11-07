@@ -126,7 +126,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBorderDividerSecondary: { light: '{colorGrey200}', dark: '{colorGrey700}' },
   colorBorderDropdownContainer: { light: '{colorGrey400}', dark: '{colorGrey550}' },
   colorBorderDropdownGroup: '{colorBorderDropdownItemDefault}',
-  colorBorderDropdownItemDefault: '{colorBorderDividerDefault}',
+  colorBorderDropdownItemDefault: 'transparent',
   colorBorderDropdownItemHover: { light: '{colorGrey500}', dark: '{colorGrey550}' },
   colorBorderDropdownItemDimmedHover: '{colorGrey500}',
   colorBorderDropdownItemSelected: '{colorBorderItemSelected}',

@@ -9,7 +9,13 @@ const metadata: StyleDictionary.MetadataIndex = {
     description:
       'The default system divider width - used for dividers between sections of content such as key/value pairs and tabs, for both full width and inset dividers.',
   },
+  borderFieldWidth: {
+    description: 'The border width for form elements. For example: button, input, and autosuggest.',
+    public: true,
+    themeable: true,
+  },
   borderInvalidWidth: { description: 'Used for invalid input left border width.' },
+  borderItemWidth: { description: 'The border width for selectable elements.', public: true, themeable: true },
   borderPanelHeaderWidth: { description: 'The split panel header bottom divider width.' },
   borderPanelTopWidth: { description: 'The split panel top border width.' },
   borderRadiusAlert: {
