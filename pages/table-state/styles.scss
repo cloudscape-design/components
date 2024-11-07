@@ -1,0 +1,67 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as tokens;
+
+.custom-table {
+  &-table {
+    box-sizing: border-box;
+    border-spacing: 0;
+    table-layout: fixed;
+    margin: 16px;
+
+    border: 2px solid black;
+
+    th {
+      border-bottom: 2px solid black;
+    }
+  }
+
+  &-cell {
+    box-sizing: border-box;
+    position: relative;
+    border-inline-start: 1px solid tokens.$color-border-divider-default;
+    border-block-end: 1px solid tokens.$color-border-divider-default;
+    padding-block: 8px;
+    padding-inline: 16px;
+    block-size: 20px;
+    inline-size: 150px;
+    max-inline-size: 150px;
+
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    background-color: tokens.$color-background-container-content;
+
+    &:focus {
+      outline-offset: -2px;
+    }
+  }
+
+  &-sorting-header {
+    padding-block: 0;
+    padding-inline: 0;
+    margin-block: 0;
+    margin-inline: 0;
+    background: none;
+    border-block: none;
+    border-inline: none;
+    font-weight: bold;
+    margin-inline-start: 2px;
+  }
+}
+
+.status-trigger-button {
+  background-color: initial;
+  border-block: 0;
+  border-inline: 0;
+  border-block-end: 1px dashed;
+  cursor: pointer;
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+}
