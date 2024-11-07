@@ -7,6 +7,7 @@
 @use '../../styles' as styles;
 
 $image-size: 48px;
+$spinner-size: 16px;
 
 .root {
   @include styles.styles-reset();
@@ -21,6 +22,10 @@ $image-size: 48px;
   position: absolute;
   inset-inline-end: awsui.$space-static-xs;
   inset-block-end: awsui.$space-static-xxs;
+
+  &-single-row {
+    inset-inline-end: awsui.$space-static-xxl;
+  }
 }
 
 .file-option-name,
@@ -66,5 +71,9 @@ $image-size: 48px;
 
   &.with-image {
     inline-size: calc(100% - $image-size);
+  }
+
+  &.single-row-loading {
+    inline-size: calc(100% - $spinner-size);
   }
 }

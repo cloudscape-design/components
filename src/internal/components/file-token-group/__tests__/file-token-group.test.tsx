@@ -3,8 +3,6 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render as testingLibraryRender } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
-
 import '../../../../__a11y__/to-validate-a11y';
 import FileTokenGroup, {
   FileTokenGroupProps,
@@ -14,22 +12,13 @@ import FileTokenGroupWrapper from '../../../../../lib/components/test-utils/dom/
 
 import styles from '../../../../../lib/components/internal/components/file-token-group/test-classes/styles.css.js';
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  warnOnce: jest.fn(),
-}));
+import spinnerStyles from '../../../../../lib/components/spinner/styles.selectors.js';
 
 jest.mock('../../../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',
 }));
 
 const onDismiss = jest.fn();
-
-afterEach(() => {
-  (warnOnce as jest.Mock).mockReset();
-  onDismiss.mockReset();
-});
 
 const defaultProps: FileTokenGroupProps = {
   items: [],
@@ -214,6 +203,14 @@ describe('File upload tokens', () => {
     });
     expect(wrapper.findFileToken(1)!.getElement()).toHaveAccessibleDescription('Error 1');
     expect(wrapper.findFileToken(1)!.getElement()).not.toHaveAccessibleDescription('Warning 1');
+  });
+});
+
+describe('File loading', () => {
+  test('Spinner added when loading', () => {
+    render({ items: [{ file: file1, loading: true }] });
+
+    expect(document.querySelector(`.${spinnerStyles.root}`)).not.toBeNull();
   });
 });
 

@@ -71,7 +71,6 @@ function InternalFileTokenGroup({
             warningText={file.warningText}
             i18nStrings={i18nStrings}
             loading={file.loading}
-            loadingText={file.loadingText}
             alignment={alignment}
             groupContainsImage={groupContainsImage}
             index={fileIndex}

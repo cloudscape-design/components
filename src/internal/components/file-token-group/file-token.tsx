@@ -5,7 +5,6 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalBox from '../../../box/internal.js';
-import InternalLiveRegion from '../../../live-region/internal';
 import InternalSpaceBetween from '../../../space-between/internal.js';
 import InternalSpinner from '../../../spinner/internal.js';
 import { TokenGroupProps } from '../../../token-group/interfaces.js';
@@ -37,7 +36,6 @@ export interface FileTokenProps extends BaseComponentProps {
   errorText?: React.ReactNode;
   warningText?: React.ReactNode;
   loading?: boolean;
-  loadingText?: string;
   i18nStrings: FileTokenProps.I18nStrings;
   dismissLabel?: string;
   alignment?: TokenGroupProps.Alignment;
@@ -55,7 +53,6 @@ function InternalFileToken({
   errorText,
   warningText,
   loading,
-  loadingText,
   alignment,
   groupContainsImage,
   index,
@@ -79,6 +76,9 @@ function InternalFileToken({
     return false;
   }
 
+  const fileIsSingleRow =
+    !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
+
   return (
     <div ref={containerRef} className={clsx(styles['file-token'])}>
       <Token
@@ -96,11 +96,13 @@ function InternalFileToken({
         data-index={index}
       >
         {loading && (
-          <>
-            <div className={styles['file-loading-overlay']}>
-              <InternalSpinner variant="disabled" size="normal" />
-            </div>
-          </>
+          <div
+            className={clsx(styles['file-loading-overlay'], {
+              [styles['file-loading-overlay-single-row']]: loading && fileIsSingleRow,
+            })}
+          >
+            <InternalSpinner variant="disabled" size="normal" />
+          </div>
         )}
         <InternalBox className={styles['file-option']}>
           {showFileThumbnail && isImage && <FileOptionThumbnail file={file} />}
@@ -108,6 +110,7 @@ function InternalFileToken({
           <div
             className={clsx(styles['file-option-metadata'], {
               [styles['with-image']]: showFileThumbnail && isImage,
+              [styles['single-row-loading']]: loading && fileIsSingleRow,
             })}
           >
             <InternalSpaceBetween direction="vertical" size="xxxs">
@@ -156,7 +159,6 @@ function InternalFileToken({
           value={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
         />
       )}
-      {loading && loadingText && <InternalLiveRegion>{loadingText}</InternalLiveRegion>}
     </div>
   );
 }
