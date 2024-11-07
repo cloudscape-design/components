@@ -11,7 +11,7 @@ export default class FileTokenGroupWrapper extends ComponentWrapper {
   static rootSelector: string = testSelectors.root;
 
   findFileTokens(): Array<FileTokenWrapper> {
-    return this.findAllByClassName(tokenGroupSelectors.token).map(
+    return this.findAllByClassName(selectors.token).map(
       tokenElement => new FileTokenWrapper(tokenElement.getElement())
     );
   }
@@ -22,12 +22,12 @@ export default class FileTokenGroupWrapper extends ComponentWrapper {
    * @param tokenIndex 1-based index of the file token to return.
    */
   findFileToken(fileTokenIndex: number): null | FileTokenWrapper {
-    return this.findComponent(`.${tokenGroupSelectors.token}[data-index="${fileTokenIndex - 1}"]`, FileTokenWrapper);
+    return this.findComponent(`.${selectors.token}[data-index="${fileTokenIndex - 1}"]`, FileTokenWrapper);
   }
 }
 
 export class FileTokenWrapper extends ComponentWrapper {
-  static rootSelector: string = selectors['file-token'];
+  static rootSelector: string = selectors.token;
 
   findFileName(): ElementWrapper {
     return this.findByClassName(selectors['file-option-name'])!;

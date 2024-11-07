@@ -46,7 +46,7 @@
   &.grid {
     display: grid;
     gap: awsui.$space-xs;
-    grid-template-columns: repeat(auto-fill, constants.$compact-token-width);
+    grid-template-columns: repeat(auto-fill, 230px);
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       display: flex;

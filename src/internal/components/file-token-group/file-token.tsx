@@ -5,11 +5,13 @@ import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalBox from '../../../box/internal.js';
+import { FormFieldError, FormFieldWarning } from '../../../form-field/internal';
 import InternalSpaceBetween from '../../../space-between/internal.js';
 import InternalSpinner from '../../../spinner/internal.js';
+import DismissButton from '../../../token-group/dismiss-button';
 import { TokenGroupProps } from '../../../token-group/interfaces.js';
-import { Token } from '../../../token-group/token.js';
 import { BaseComponentProps } from '../../base-component/index.js';
+import { useUniqueId } from '../../hooks/use-unique-id';
 import Tooltip from '../tooltip/index';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
@@ -36,6 +38,7 @@ export interface FileTokenProps extends BaseComponentProps {
   errorText?: React.ReactNode;
   warningText?: React.ReactNode;
   loading?: boolean;
+  readOnly?: boolean;
   i18nStrings: FileTokenProps.I18nStrings;
   dismissLabel?: string;
   alignment?: TokenGroupProps.Alignment;
@@ -53,6 +56,7 @@ function InternalFileToken({
   onDismiss,
   errorText,
   warningText,
+  readOnly,
   loading,
   alignment,
   groupContainsImage,
@@ -62,6 +66,10 @@ function InternalFileToken({
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
 
+  const errorId = useUniqueId('error');
+  const warningId = useUniqueId('warning');
+
+  const showWarning = warningText && !errorText;
   const containerRef = useRef<HTMLDivElement>(null);
   const fileNameRef = useRef<HTMLSpanElement>(null);
   const fileNameContainerRef = useRef<HTMLDivElement>(null);
@@ -81,20 +89,24 @@ function InternalFileToken({
     !showFileLastModified && !showFileSize && (!groupContainsImage || (groupContainsImage && !showFileThumbnail));
 
   return (
-    <div ref={containerRef} className={clsx(styles['file-token'])}>
-      <Token
-        type="file"
-        ariaLabel={file.name}
-        dismissLabel={i18nStrings.removeFileAriaLabel(index)}
-        onDismiss={onDismiss}
-        errorText={errorText}
-        warningText={warningText}
-        errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-        warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-        loading={loading}
-        alignment={alignment}
-        groupContainsImage={groupContainsImage && showFileThumbnail && alignment === 'horizontal'}
-        data-index={index}
+    <div
+      ref={containerRef}
+      className={clsx(styles.token, styles['token-grid'], {
+        [styles['token-contains-image']]: groupContainsImage,
+      })}
+      role="group"
+      aria-label={file.name}
+      aria-describedby={errorText ? errorId : warningText ? warningId : undefined}
+      data-index={index}
+    >
+      <div
+        className={clsx(styles['token-box'], {
+          [styles.loading]: loading,
+          [styles.error]: errorText,
+          [styles.warning]: showWarning,
+          [styles.horizontal]: alignment === 'horizontal',
+          [styles['read-only']]: readOnly,
+        })}
       >
         {loading && (
           <div
@@ -152,7 +164,20 @@ function InternalFileToken({
             </InternalSpaceBetween>
           </div>
         </InternalBox>
-      </Token>
+        {onDismiss && !readOnly && (
+          <DismissButton dismissLabel={i18nStrings.removeFileAriaLabel(index)} onDismiss={onDismiss} />
+        )}
+      </div>
+      {errorText && (
+        <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings.errorIconAriaLabel}>
+          {errorText}
+        </FormFieldError>
+      )}
+      {showWarning && (
+        <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings.warningIconAriaLabel}>
+          {warningText}
+        </FormFieldWarning>
+      )}
       {alignment === 'horizontal' && showTooltip && isEllipsisActive() && (
         <Tooltip
           trackRef={containerRef}

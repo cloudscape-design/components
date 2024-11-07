@@ -29,6 +29,7 @@ function InternalFileTokenGroup({
   i18nStrings,
   onDismiss,
   limit,
+  readOnly,
   alignment = 'vertical',
   __internalRootRef,
   ...restProps
@@ -70,6 +71,7 @@ function InternalFileTokenGroup({
             warningText={file.warningText}
             i18nStrings={i18nStrings}
             loading={file.loading}
+            readOnly={readOnly}
             alignment={alignment}
             groupContainsImage={groupContainsImage}
             isImage={isImage(file.file)}

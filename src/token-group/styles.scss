@@ -7,6 +7,7 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use './constants' as constants;
+@use './mixins.scss' as mixins;
 
 .root {
   @include styles.styles-reset;
@@ -48,62 +49,12 @@
   display: flex;
   flex-direction: column;
   gap: awsui.$space-xxs;
-
-  &-grid {
-    display: grid;
-    grid-template-rows: max-content auto;
-  }
-
-  &-contains-image {
-    grid-template-rows: constants.$file-token-height auto;
-  }
 }
 
 .token-box {
-  position: relative;
-  block-size: 100%;
-  border-block: awsui.$border-field-width solid constants.$token-border-color;
-  border-inline: awsui.$border-field-width solid constants.$token-border-color;
-  padding-block-start: styles.$control-padding-vertical;
-  padding-block-end: styles.$control-padding-vertical;
-  padding-inline-start: styles.$control-padding-horizontal;
-  padding-inline-end: awsui.$space-xxs;
-  display: flex;
-  align-items: flex-start;
-  background: constants.$token-background;
-  border-start-start-radius: awsui.$border-radius-token;
-  border-start-end-radius: awsui.$border-radius-token;
-  border-end-start-radius: awsui.$border-radius-token;
-  border-end-end-radius: awsui.$border-radius-token;
-  color: awsui.$color-text-body-default;
-  box-sizing: border-box;
+  @include mixins.token-box-styles();
+}
 
-  &.horizontal {
-    max-inline-size: constants.$compact-token-width;
-
-    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
-      max-inline-size: 100%;
-    }
-  }
-}
-@mixin token-box-validation {
-  border-inline-start-width: awsui.$border-invalid-width;
-
-  > .dismiss-button {
-    color: awsui.$color-text-interactive-default;
-    &:hover {
-      color: awsui.$color-text-interactive-hover;
-    }
-  }
-}
-.token-box-error {
-  border-color: awsui.$color-border-status-error;
-  @include token-box-validation;
-}
-.token-box-warning {
-  border-color: awsui.$color-border-status-warning;
-  @include token-box-validation;
-}
 .token-box-readonly {
   border-color: awsui.$color-border-input-disabled;
   background-color: awsui.$color-background-container-content;
@@ -133,9 +84,4 @@
       color: awsui.$color-text-button-inline-icon-disabled;
     }
   }
-}
-
-.token-box-loading {
-  border-color: awsui.$color-border-control-disabled;
-  background-color: awsui.$color-background-container-content;
 }
