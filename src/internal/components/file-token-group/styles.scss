@@ -5,16 +5,9 @@
 
 @use '../../styles/tokens' as awsui;
 @use '../../styles' as styles;
+@use './constants' as constants;
 @use '../../../token-group/mixins.scss' as mixins;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
-
-$image-size: 48px;
-$spinner-size: 16px;
-$file-token-height: 68px;
-$compact-token-width: 230px;
-
-$token-background: awsui.$color-background-item-selected;
-$token-border-color: awsui.$color-border-item-selected;
 
 @mixin token-box-validation {
   border-inline-start-width: awsui.$border-invalid-width;
@@ -63,8 +56,8 @@ $token-border-color: awsui.$color-border-item-selected;
 .file-option-thumbnail-image {
   @include styles.font-body-s;
 
-  inline-size: $image-size;
-  block-size: $image-size;
+  inline-size: constants.$image-size;
+  block-size: constants.$image-size;
   object-fit: cover;
 
   display: -webkit-box;
@@ -83,11 +76,11 @@ $token-border-color: awsui.$color-border-item-selected;
   inline-size: 100%;
 
   &.with-image {
-    inline-size: calc(100% - $image-size);
+    inline-size: calc(100% - constants.$image-size);
   }
 
   &.single-row-loading {
-    inline-size: calc(100% - $spinner-size);
+    inline-size: calc(100% - constants.$spinner-size);
   }
 }
 
@@ -104,7 +97,7 @@ $token-border-color: awsui.$color-border-item-selected;
   }
 
   &-contains-image {
-    grid-template-rows: $file-token-height auto;
+    grid-template-rows: constants.$file-token-height auto;
   }
 }
 
@@ -112,7 +105,7 @@ $token-border-color: awsui.$color-border-item-selected;
   @include mixins.token-box-styles();
 
   &.horizontal {
-    max-inline-size: $compact-token-width;
+    max-inline-size: constants.$compact-token-width;
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       max-inline-size: 100%;

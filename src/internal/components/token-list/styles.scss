@@ -5,7 +5,7 @@
 
 @use '../../styles/tokens' as awsui;
 @use '../../styles' as styles;
-@use '../../../token-group/constants' as constants;
+@use '../../../internal/components/file-token-group/constants' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
@@ -46,7 +46,7 @@
   &.grid {
     display: grid;
     gap: awsui.$space-xs;
-    grid-template-columns: repeat(auto-fill, 230px);
+    grid-template-columns: repeat(auto-fill, constants.$compact-token-width);
 
     @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
       display: flex;

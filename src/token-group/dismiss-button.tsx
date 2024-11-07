@@ -38,6 +38,7 @@ function DismissButton(
         if (disabled || readOnly || !onDismiss) {
           return;
         }
+
         onDismiss();
       }}
       aria-label={dismissLabel}
