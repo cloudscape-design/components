@@ -169,7 +169,6 @@ function InternalFileUpload(
           alignment={fileTokenAlignment}
           items={value.map((file, fileIndex) => ({
             file,
-            loading: true,
             errorText: fileErrors?.[fileIndex],
             warningText: fileWarnings?.[fileIndex],
           }))}

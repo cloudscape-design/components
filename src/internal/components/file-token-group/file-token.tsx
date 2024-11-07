@@ -40,6 +40,7 @@ export interface FileTokenProps extends BaseComponentProps {
   dismissLabel?: string;
   alignment?: TokenGroupProps.Alignment;
   groupContainsImage?: boolean;
+  isImage: boolean;
   index: number;
 }
 
@@ -55,9 +56,9 @@ function InternalFileToken({
   loading,
   alignment,
   groupContainsImage,
+  isImage,
   index,
 }: FileTokenProps) {
-  const isImage = file.type.startsWith('image/');
   const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
   const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
 

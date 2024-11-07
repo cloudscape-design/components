@@ -21,7 +21,6 @@ export default function TokenList<Item>({
   i18nStrings,
   limitShowFewerAriaLabel,
   limitShowMoreAriaLabel,
-  isGrid = false,
   onExpandedClick = () => undefined,
 }: TokenListProps<Item>) {
   const controlId = useUniqueId();
@@ -82,8 +81,8 @@ export default function TokenList<Item>({
           id={controlId}
           className={clsx(styles.list, {
             [styles.vertical]: alignment === 'vertical',
-            [styles.horizontal]: alignment === 'horizontal' && !isGrid,
-            [styles.grid]: alignment === 'horizontal' && isGrid,
+            [styles.horizontal]: alignment === 'horizontal',
+            [styles.grid]: alignment === 'horizontal-grid',
           })}
         >
           {visibleItems.map((item, itemIndex) => (

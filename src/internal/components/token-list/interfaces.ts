@@ -4,7 +4,7 @@
 import React from 'react';
 
 export interface TokenListProps<Item> {
-  alignment: 'vertical' | 'horizontal' | 'inline';
+  alignment: 'vertical' | 'horizontal' | 'inline' | 'horizontal-grid';
   items: readonly Item[];
   limit?: number;
   after?: React.ReactNode;
@@ -13,7 +13,6 @@ export interface TokenListProps<Item> {
   onExpandedClick?: (isExpanded: boolean) => void;
   limitShowFewerAriaLabel?: string;
   limitShowMoreAriaLabel?: string;
-  isGrid?: boolean;
 }
 
 export interface I18nStrings {

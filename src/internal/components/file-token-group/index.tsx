@@ -54,8 +54,7 @@ function InternalFileTokenGroup({
   return (
     <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       <TokenList
-        isGrid={true}
-        alignment={alignment}
+        alignment={alignment === 'horizontal' ? 'horizontal-grid' : alignment}
         items={items}
         renderItem={(file, fileIndex) => (
           <InternalFileToken
@@ -73,6 +72,7 @@ function InternalFileTokenGroup({
             loading={file.loading}
             alignment={alignment}
             groupContainsImage={groupContainsImage}
+            isImage={isImage(file.file)}
             index={fileIndex}
           />
         )}
