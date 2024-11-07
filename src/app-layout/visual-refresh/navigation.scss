@@ -94,6 +94,7 @@ nav.navigation {
   pointer-events: auto;
   border-inline-end: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
   display: flex;
+  flex-direction: column;
 
   // Animation for the Navigation opacity and width when it is added to the DOM
   @keyframes openNavigation {
@@ -131,6 +132,10 @@ nav.navigation {
   */
   > .animated-content {
     inline-size: var(#{custom-props.$navigationWidth});
+  }
+
+  & > .content-container {
+    flex-grow: 1;
   }
 
   // The Navigation drawer will take up the entire viewport on mobile
