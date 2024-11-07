@@ -225,24 +225,22 @@ describe('Visual refresh toolbar only', () => {
     })
   );
 
-  test(
-    'the content inside drawers should be scrollable',
-    setupTest(async page => {
-      await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
-      await expect(page.isClickable(findDrawerById(wrapper, 'circle-global')!.toSelector())).resolves.toBe(true);
-      await expect(
-        page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
-      ).resolves.toBe(false);
-      await page.elementScrollTo(findDrawerContentById(wrapper, 'circle-global').toSelector(), { top: 2000 });
-      await expect(
-        page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
-      ).resolves.toBe(true);
-
-      await page.setWindowSize(viewports.mobile);
-
-      await expect(
-        page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
-      ).resolves.toBe(true);
-    })
-  );
+  for (const viewport of ['mobile', 'desktop']) {
+    test(
+      `the content inside drawers should be scrollable on ${viewport} view`,
+      setupTest(async page => {
+        await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
+        if (viewport === 'mobile') {
+          await page.setWindowSize(viewports.mobile);
+        }
+        await expect(
+          page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
+        ).resolves.toBe(false);
+        await page.elementScrollTo(findDrawerContentById(wrapper, 'circle-global').toSelector(), { top: 2000 });
+        await expect(
+          page.isDisplayedInViewport(wrapper.find('[data-testid="circle-global-bottom-content"]')!.toSelector())
+        ).resolves.toBe(true);
+      })
+    );
+  }
 });
