@@ -62,7 +62,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
             in={true}
           >
             {(state: string, transitionRootElement: React.Ref<HTMLDivElement> | undefined) => (
-              <li className={styles['flash-list-item']}>
+              <li className={styles['flash-list-item']} data-testid={item.testId}>
                 {renderItem(item, item.id ?? index, transitionRootElement, state)}
               </li>
             )}
@@ -91,6 +91,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
           <li
             key={item.id ?? index}
             className={styles['flash-list-item']}
+            data-testid={item.testId}
             {...getAnalyticsMetadataAttribute(getItemAnalyticsMetadata(index + 1, item.type || 'info', item.id))}
           >
             {renderItem(item, item.id ?? index)}

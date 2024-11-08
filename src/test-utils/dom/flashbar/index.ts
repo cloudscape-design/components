@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import FlashWrapper from './flash';
 
@@ -29,6 +30,21 @@ export default class FlashbarWrapper extends ComponentWrapper {
     return this.findAll(`.${styles['flash-list-item']} .${styles[`flash-type-${type}`]}`).map(
       item => new FlashWrapper(item.getElement())
     );
+  }
+
+  /**
+   * Returns the wrapper of the first flash list item that matches the specified test ID.
+   * If the items are stacked, the hidden items will not be returned.
+   *
+   * Looks for the `data-testid` attribute that is assigned via `items` prop.
+   * If no matching flash list item is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {FlashbarWrapper | null}
+   */
+  findItemByTestId(testId: string): FlashWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(`.${styles['flash-list-item']}[data-testid="${escapedTestId}"]`, FlashWrapper);
   }
 
   /**

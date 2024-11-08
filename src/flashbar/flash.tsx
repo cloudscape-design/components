@@ -72,7 +72,7 @@ export const focusFlashById = throttle(
   { trailing: false }
 );
 
-export interface FlashProps extends FlashbarProps.MessageDefinition {
+export interface FlashProps extends Omit<FlashbarProps.MessageDefinition, 'testId'> {
   className: string;
   transitionState?: string;
   i18nStrings?: FlashbarProps.I18nStrings;

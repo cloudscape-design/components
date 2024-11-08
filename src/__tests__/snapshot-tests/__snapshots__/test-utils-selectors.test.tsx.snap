@@ -13,6 +13,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "anchor-navigation": [
     "awsui_anchor-item--active_17oho",
+    "awsui_anchor-item_17oho",
     "awsui_anchor-link-info_17oho",
     "awsui_anchor-link-text_17oho",
     "awsui_anchor-link_17oho",

@@ -20,6 +20,13 @@ export namespace FlashbarProps {
     buttonText?: ButtonProps['children'];
     onButtonClick?: ButtonProps['onClick'];
     onDismiss?: ButtonProps['onClick'];
+
+    /**
+     * Test ID of the flash list item.
+     * Assigns this value to the `data-testid` attribute of the flash list item.
+     * Flash component is the direct child of the flash list item.
+     */
+    testId?: string;
   }
 
   export interface I18nStrings {

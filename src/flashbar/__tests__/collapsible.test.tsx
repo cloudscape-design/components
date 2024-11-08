@@ -151,6 +151,85 @@ describe('Collapsible Flashbar', () => {
       });
     });
 
+    test('assigns data-testid to flash items', () => {
+      const wrapper = renderFlashbar({
+        items: [
+          {
+            testId: 'flash-item-1',
+            content: 'first flash item',
+          },
+          {
+            testId: 'flash-item-2',
+            content: 'second flash item',
+          },
+        ],
+      });
+      findNotificationBar(wrapper)!.click();
+      const flashbarItemsTestIds = wrapper
+        .findItems()
+        .map(flashbar => flashbar.getElement()!.getAttribute('data-testid'));
+
+      expect(flashbarItemsTestIds).toEqual(['flash-item-1', 'flash-item-2']);
+    });
+
+    test('findItemByTestId', () => {
+      const wrapper = renderFlashbar({
+        items: [
+          {
+            testId: 'flash-item-1',
+            content: 'first flash item',
+          },
+          {
+            testId: 'flash-item-2',
+            content: 'second flash item',
+          },
+        ],
+      });
+      findNotificationBar(wrapper)!.click();
+      const secondFlashItemFromTestId = wrapper.findItemByTestId('flash-item-2')!.getElement();
+
+      expect(secondFlashItemFromTestId).toHaveTextContent('second flash item');
+    });
+
+    test('findItemByTestId returns the item even if the test ID contains double quotes', () => {
+      const wrapper = renderFlashbar({
+        items: [
+          {
+            testId: '"flash-item-1"',
+            content: 'first flash item',
+          },
+          {
+            testId: '"flash-item-2"',
+            content: 'second flash item',
+          },
+        ],
+      });
+      findNotificationBar(wrapper)!.click();
+      const flashItem = wrapper.findItemByTestId('"flash-item-1"')!.getElement();
+
+      expect(flashItem).toHaveTextContent('first flash item');
+    });
+
+    test('findItemByTestId doesn not return the next items if the collapsible is not expanded', () => {
+      const wrapper = renderFlashbar({
+        items: [
+          {
+            testId: 'flash-item-1',
+            content: 'first flash item',
+          },
+          {
+            testId: 'flash-item-2',
+            content: 'second flash item',
+          },
+        ],
+      });
+      const fistFlashItem = wrapper.findItemByTestId('flash-item-1');
+      const secondFlashItem = wrapper.findItemByTestId('flash-item-2');
+
+      expect(fistFlashItem).toBeTruthy();
+      expect(secondFlashItem).not.toBeTruthy();
+    });
+
     test('findItemsByType', () => {
       {
         const wrapper = createFlashbarWrapper(
