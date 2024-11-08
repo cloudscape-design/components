@@ -4,6 +4,9 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import range from 'lodash/range';
 
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
+
+import { Box } from '~components';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Button from '~components/button';
 import Container from '~components/container';
@@ -12,6 +15,7 @@ import Header from '~components/header';
 import HelpPanel from '~components/help-panel';
 import SideNavigation from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
+import TextContent from '~components/text-content';
 
 import styles from '../styles.scss';
 
@@ -84,5 +88,110 @@ export function Footer({ legacyConsoleNav }: { legacyConsoleNav: boolean }) {
         © 2008 - 2020, Amazon Web Services, Inc. or its affiliates. All rights reserved
       </footer>
     </>
+  );
+}
+
+export function ScrollableDrawerContent({ contentType = 'text' }: { contentType?: 'text' | 'image' }) {
+  return contentType === 'image' ? (
+    <SpaceBetween size="l">
+      <div className={styles.contentPlaceholder} />
+      <div className={styles.contentPlaceholder} />
+      <div className={styles.contentPlaceholder} />
+    </SpaceBetween>
+  ) : (
+    <TextContent>
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
+        magna aliqua. Augue neque gravida in fermentum. Suspendisse sed nisi lacus sed viverra tellus in hac. Nec
+        sagittis aliquam malesuada bibendum arcu vitae elementum. Lectus proin nibh nisl condimentum id venenatis.
+        Penatibus et magnis dis parturient montes nascetur ridiculus mus mauris. Nisi porta lorem mollis aliquam ut
+        porttitor leo a. Facilisi morbi tempus iaculis urna. Odio tempor orci dapibus ultrices in iaculis nunc.
+      </p>
+      <div data-testid="scroll-me">The end</div>
+      <p>
+        Ut diam quam nulla porttitor massa id neque. Duis at tellus at urna condimentum mattis pellentesque id nibh.
+        Metus vulputate eu scelerisque felis imperdiet proin fermentum.
+      </p>
+      <h3>Another h3</h3>
+      <p>
+        Orci porta non pulvinar neque laoreet suspendisse interdum consectetur libero. Varius quam quisque id diam vel.
+        Risus viverra adipiscing at in. Orci sagittis eu volutpat odio facilisis mauris. Mauris vitae ultricies leo
+        integer malesuada nunc. Sem et tortor consequat id porta nibh. Semper auctor neque vitae tempus quam
+        pellentesque.
+      </p>
+      <p>Ante in nibh mauris cursus mattis molestie.</p>
+      <p>
+        Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Porttitor
+        eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris nunc congue nisi
+        vitae suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat in. Arcu felis bibendum
+        ut tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In hac habitasse
+        platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi ipsum. Ornare aenean euismod elementum
+        nisi quis. Elementum curabitur vitae nunc sed velit dignissim sodales. Amet tellus cras adipiscing enim eu. Id
+        interdum velit laoreet id donec ultrices tincidunt. Ullamcorper eget nulla facilisi etiam. Sodales neque sodales
+        ut etiam sit amet nisl purus. Auctor urna nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis
+        pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
+        Pharetra pharetra massa massa ultricies mi.
+      </p>
+    </TextContent>
+  );
+}
+
+export function ContentFill() {
+  return (
+    <div style={{ minBlockSize: '100%', position: 'relative' }}>
+      <div
+        style={{
+          position: 'absolute',
+          insetBlockStart: '50%',
+          insetInlineStart: '50%',
+          transform: getIsRtl(document.body) ? 'translate(50%, -50%)' : 'translate(-50%, -50%)',
+        }}
+      >
+        <Box fontSize="heading-m">
+          In Visual Refresh, there should be a cross exactly in each corner of <br />
+          the content area, without any scrollbars.
+        </Box>
+      </div>
+      <CornerMarker insetBlockStart={0} insetInlineStart={0} />
+      <CornerMarker insetBlockEnd={0} insetInlineStart={0} />
+      <CornerMarker insetBlockStart={0} insetInlineEnd={0} />
+      <CornerMarker insetBlockEnd={0} insetInlineEnd={0} />
+    </div>
+  );
+}
+
+function CornerMarker(props: {
+  insetBlockStart?: number;
+  insetInlineEnd?: number;
+  insetInlineStart?: number;
+  insetBlockEnd?: number;
+}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 10 10"
+      style={{ inlineSize: '50px', blockSize: '50px', position: 'absolute', ...props }}
+    >
+      <line x1="0" y1="0" x2="10" y2="10" stroke="currentColor" strokeWidth="1" />
+      <line x1="0" y1="10" x2="10" y2="0" stroke="currentColor" strokeWidth="1" />
+    </svg>
+  );
+}
+
+export function CustomDrawerContent() {
+  return (
+    <div className={styles['custom-drawer-wrapper']}>
+      <div className={styles['drawer-sticky-header']} data-testid="drawer-sticky-header">
+        <Box variant="h3" tagOverride="h2" padding="n">
+          Sticky header
+        </Box>
+      </div>
+      <div className={styles['drawer-scrollable-content']}>
+        <ScrollableDrawerContent />
+      </div>
+      <div className={styles['drawer-sticky-footer']} data-testid="drawer-sticky-footer">
+        <p>This is a sticky footer, it should always be visisble when the panel is open.</p>
+      </div>
+    </div>
   );
 }

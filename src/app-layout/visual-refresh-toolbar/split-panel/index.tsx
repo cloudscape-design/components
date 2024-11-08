@@ -4,6 +4,7 @@ import React from 'react';
 
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { SplitPanelProvider, SplitPanelProviderProps } from '../../split-panel';
+import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
 
 import styles from './styles.css.js';
@@ -21,15 +22,16 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   splitPanelInternals,
   animationDisabled,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
-  const { splitPanelControlId, placement, verticalOffsets } = appLayoutInternals;
-  const drawerTopOffset = verticalOffsets.drawers ?? placement.insetBlockStart;
+  const { splitPanelControlId, placement, verticalOffsets, isMobile } = appLayoutInternals;
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
+
   return (
     <SplitPanelProvider {...splitPanelInternals} animationDisabled={animationDisabled}>
       <section
         id={splitPanelControlId}
         className={styles['split-panel-side']}
         style={{
-          blockSize: `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`,
+          blockSize: drawerHeight,
           insetBlockStart: drawerTopOffset,
         }}
       >

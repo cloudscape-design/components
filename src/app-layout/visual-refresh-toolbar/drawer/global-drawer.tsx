@@ -8,7 +8,7 @@ import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-import { getDrawerTopOffset } from '../compute-layout';
+import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { useResize } from './use-resize';
 
@@ -48,7 +48,7 @@ function AppLayoutGlobalDrawerImplementation({
     content: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
   const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
@@ -101,8 +101,8 @@ function AppLayoutGlobalDrawerImplementation({
               }
             }}
             style={{
-              blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-              insetBlockStart: drawersTopOffset,
+              blockSize: drawerHeight,
+              insetBlockStart: drawerTopOffset,
               ...(!isMobile && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
@@ -122,7 +122,10 @@ function AppLayoutGlobalDrawerImplementation({
                 />
               </div>
             )}
-            <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
+            <div
+              className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+              data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
+            >
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}
@@ -136,7 +139,9 @@ function AppLayoutGlobalDrawerImplementation({
                   variant="icon"
                 />
               </div>
-              <div className={styles['drawer-content']}>{activeGlobalDrawer?.content}</div>
+              <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+                {activeGlobalDrawer?.content}
+              </div>
             </div>
           </aside>
         );
