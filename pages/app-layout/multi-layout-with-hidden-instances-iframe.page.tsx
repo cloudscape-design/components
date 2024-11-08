@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
+import React, { useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
-import awsuiPlugins from '~components/internal/plugins';
 import Link from '~components/link';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
@@ -18,37 +16,6 @@ import labels from './utils/labels';
 
 function createView(name: string) {
   return function View() {
-    const drawerId = `circle-global-${name}`;
-    useEffect(() => {
-      awsuiPlugins.appLayout.registerDrawer({
-        id: drawerId,
-        type: 'global',
-        preserveInactiveContent: true,
-        defaultActive: true,
-        resizable: true,
-        defaultSize: 320,
-
-        ariaLabels: {
-          closeButton: 'Close button',
-          content: 'Content',
-          triggerButton: 'Trigger button',
-          resizeHandle: 'Resize handle',
-        },
-
-        trigger: {
-          iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
-      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
-      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
-    </svg>`,
-        },
-
-        mountContent: container => {
-          ReactDOM.render(<div>global widget content circle {name}</div>, container);
-        },
-        unmountContent: container => unmountComponentAtNode(container),
-      });
-    }, [drawerId]);
-
     return (
       <AppLayout
         {...{ __disableRuntimeDrawers: true }}
@@ -67,9 +34,6 @@ function createView(name: string) {
             </Link>
 
             <div>Page content: {name}</div>
-
-            <button onClick={() => awsuiPlugins.appLayout.openDrawer(drawerId)}>open drawer</button>
-            <button onClick={() => awsuiPlugins.appLayout.closeDrawer(drawerId)}>close drawer</button>
           </SpaceBetween>
         }
         tools={<Tools>Tools content: {name}</Tools>}
