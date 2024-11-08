@@ -21,6 +21,7 @@ export interface AnchorNavigationProps extends BaseComponentProps {
    * For example: `"#section1.1"`
    * * `level` (number) - Level of nesting of the anchor.
    * * `info` (string | undefined) - Additional information to display next to the link, for example: "New" or "Updated".
+   * * `testId` (string | undefined) - Test id for the anchor item. Adds data-testid to the anchor item.
    *
    * Note: The list of anchors should be sorted in the order they appear on the page.
    */
@@ -75,5 +76,11 @@ export namespace AnchorNavigationProps {
      * Additional information to display next to the link, for example: "New" or "Updated".
      */
     info?: string;
+
+    /**
+     * Test ID of the anchor item.
+     * Assigns this value to the `data-testid` attribute of the anchor's root element.
+     */
+    testId?: string;
   }
 }

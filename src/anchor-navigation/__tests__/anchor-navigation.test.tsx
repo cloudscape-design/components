@@ -60,6 +60,23 @@ describe('AnchorNavigation', () => {
     expect(wrapper.findAnchorByIndex(1)!.findInfo()!.getElement()).toHaveTextContent('New');
   });
 
+  it('finds anchor by test id', () => {
+    const wrapper = renderAnchorNavigation({
+      anchors: [
+        { text: 'Section 1', href: '#section1', level: 1, testId: 'section-1' },
+        { text: 'Section 2', href: '#section2', level: 1, testId: 'section-2' },
+      ],
+    });
+    expect(wrapper.findAnchorByTestId('section-1')!.getElement()).toHaveTextContent('Section 1');
+  });
+
+  it('returns the matching anchor by test id even if the test id contains double quotes', () => {
+    const wrapper = renderAnchorNavigation({
+      anchors: [{ text: 'Section 1', href: '#section1', level: 1, testId: '"section-test-id"' }],
+    });
+    expect(wrapper.findAnchorByTestId('"section-test-id"')!.getElement()).toHaveTextContent('Section 1');
+  });
+
   it('applies aria-labelledby correctly', () => {
     const wrapper = renderAnchorNavigation({
       anchors: [],
@@ -97,6 +114,19 @@ describe('AnchorNavigation', () => {
     expect(wrapper.findActiveAnchor()!.findText()?.getElement()).toHaveTextContent('Section 2');
     expect(wrapper.findAnchorByIndex(1)!.isActive()).toBe(false);
     expect(wrapper.findAnchorByIndex(2)!.isActive()).toBe(true);
+  });
+
+  it('sets data-testid attribute to anchor when testId prop is specified', () => {
+    const wrapper = renderAnchorNavigation({
+      anchors: [
+        { text: 'Section 1', href: '#section1', level: 1, testId: 'section-1' },
+        { text: 'Section 2', href: '#section2', level: 1, testId: 'section-2' },
+      ],
+      activeHref: '#section2',
+    });
+
+    const anchorTestIds = wrapper.findAnchors().map(anchor => anchor.getElement().getAttribute('data-testid'));
+    expect(anchorTestIds).toEqual(['section-1', 'section-2']);
   });
 
   it('calls onActiveHrefChange when a new anchor is active', () => {
