@@ -336,6 +336,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onNavigationToggle,
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
+      splitPanelAnimationDisabled,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
@@ -470,7 +471,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutSplitPanelSide
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}
-                animationDisabled={splitPanelAnimationDisabled}
               >
                 {splitPanel}
               </AppLayoutSplitPanelSide>
@@ -481,7 +481,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               <AppLayoutSplitPanelBottom
                 appLayoutInternals={appLayoutInternals}
                 splitPanelInternals={splitPanelInternals}
-                animationDisabled={splitPanelAnimationDisabled}
               >
                 {splitPanel}
               </AppLayoutSplitPanelBottom>
