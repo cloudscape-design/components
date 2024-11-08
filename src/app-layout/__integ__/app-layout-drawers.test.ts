@@ -72,7 +72,9 @@ class AppLayoutDrawersPage extends BasePageObject {
   }
 
   async getMainContentWidth() {
-    const { width } = await this.getBoundingBox(wrapper.find('[data-test-id="content"]').toSelector());
+    const { width } = await this.getBoundingBox(
+      wrapper.findContentRegion().findContentLayoutByTestId('content').toSelector()
+    );
     return width;
   }
 

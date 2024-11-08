@@ -130,7 +130,7 @@ describe('Form Analytics', () => {
     const { container, unmount } = render(<Form actions={<Button data-testid="cancel">Cancel</Button>} />);
     act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
-    const cancelButton = formWrapper!.findActions()!.findButton('[data-testid="cancel"]');
+    const cancelButton = formWrapper!.findActions()!.findButtonByTestId('cancel');
 
     act(() => cancelButton!.click());
     unmount();
@@ -160,7 +160,7 @@ describe('Form Analytics', () => {
       </Form>
     );
     act(() => void jest.runAllTimers());
-    const submitButton = createWrapper(container.ownerDocument.body).findButton('[data-testid="submit"]');
+    const submitButton = createWrapper(container.ownerDocument.body).findButtonByTestId('submit');
 
     act(() => submitButton!.click());
 
@@ -180,7 +180,7 @@ describe('Form Analytics', () => {
     );
     act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
-    const submitButton = formWrapper!.findContent()!.findButton('[data-testid="submit"]');
+    const submitButton = formWrapper!.findContent()!.findButtonByTestId('submit');
 
     act(() => submitButton!.click());
     unmount();
@@ -222,7 +222,7 @@ describe('Form Analytics', () => {
     );
     act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
-    const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
+    const submitButton = formWrapper!.findActions()!.findButtonByTestId('submit');
 
     act(() => submitButton!.click());
     unmount();
@@ -264,7 +264,7 @@ describe('Form Analytics', () => {
     );
     act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
-    const submitButton = formWrapper!.findActions()!.findButton('[data-testid="submit"]');
+    const submitButton = formWrapper!.findActions()!.findButtonByTestId('submit');
 
     expect(getByTestId('submission-attempt').textContent).toBe('0');
 

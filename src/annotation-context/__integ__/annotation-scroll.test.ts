@@ -20,7 +20,7 @@ test(
     await page.waitForVisible(nextButtonSelector);
 
     const hotspotOneBox = await page.getBoundingBox(
-      wrapper.findHotspot('[data-testid="hotspot-2"]').findTrigger().toSelector()
+      wrapper.findHotspotByTestId('hotspot-2').findTrigger().toSelector()
     );
     const footerBox = await page.getBoundingBox('[data-testid="footer"]');
 
@@ -29,7 +29,7 @@ test(
     await page.click(annotationWrapper.findPreviousButton().toSelector());
 
     const hotspotOneTwoBox = await page.getBoundingBox(
-      wrapper.findHotspot('[data-testid="hotspot-1"]').findTrigger().toSelector()
+      wrapper.findHotspotByTestId('hotspot-1').findTrigger().toSelector()
     );
     const headerBox = await page.getBoundingBox('[data-testid="header"]');
 

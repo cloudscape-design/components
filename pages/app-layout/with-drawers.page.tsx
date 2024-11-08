@@ -41,7 +41,7 @@ export default function WithDrawers() {
         breadcrumbs={<Breadcrumbs />}
         content={
           <ContentLayout
-            data-test-id="content"
+            data-testid="content"
             header={
               <SpaceBetween size="m">
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">

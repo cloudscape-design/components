@@ -201,7 +201,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'moves focus to close button when panel is opened from info link',
           setupTest(
             async page => {
-              await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-1"]').toSelector());
+              await page.click(wrapper.findContentRegion().findLinkByTestId('info-link-1').toSelector());
               await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
             },
             { pageName: 'with-fixed-header-footer', theme, mobile }
@@ -212,8 +212,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'moves focus to close button when panel content is changed using second info link',
           setupTest(
             async page => {
-              await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-1"]').toSelector());
-              await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-2"]').toSelector());
+              await page.click(wrapper.findContentRegion().findLinkByTestId('info-link-1').toSelector());
+              await page.click(wrapper.findContentRegion().findLinkByTestId('info-link-2').toSelector());
               await expect(page.isFocused(wrapper.findToolsClose().toSelector())).resolves.toBe(true);
             },
             { pageName: 'with-fixed-header-footer', theme, mobile }
@@ -224,8 +224,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'moves focus back to last opened info link when panel is closed',
           setupTest(
             async page => {
-              await page.click(wrapper.findContentRegion().findLink('[data-testid="info-link-1"]').toSelector());
-              const infoLink = wrapper.findContentRegion().findLink('[data-testid="info-link-2"]').toSelector();
+              await page.click(wrapper.findContentRegion().findLinkByTestId('info-link-1').toSelector());
+              const infoLink = wrapper.findContentRegion().findLinkByTestId('info-link-2').toSelector();
               await page.click(infoLink);
               await page.click(wrapper.findToolsClose().toSelector());
               await expect(page.isFocused(infoLink)).resolves.toBe(true);
@@ -238,7 +238,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'does not move focus back to last opened info link when panel has lost focus - instead focuses tools toggle',
           setupTest(
             async page => {
-              const infoLink = wrapper.findContentRegion().findLink('[data-testid="info-link-2"]').toSelector();
+              const infoLink = wrapper.findContentRegion().findLinkByTestId('info-link-2').toSelector();
               await page.click(infoLink);
               await page.click(wrapper.findContentRegion().findContainer().toSelector());
               await page.click(wrapper.findToolsClose().toSelector());
@@ -255,15 +255,11 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'moves focus to close button when panel is opened from button',
           setupTest(
             async page => {
-              await page.click(
-                wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-              );
+              await page.click(wrapper.findContentRegion().findButtonByTestId('open-drawer-button-2').toSelector());
               await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
               await page.keys('Enter');
               await expect(
-                page.isFocused(
-                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-                )
+                page.isFocused(wrapper.findContentRegion().findButtonByTestId('open-drawer-button-2').toSelector())
               ).resolves.toBe(true);
             },
             { pageName: 'with-drawers', theme, mobile }
@@ -275,12 +271,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'moves focus to close button when panel content is changed using second button',
           setupTest(
             async page => {
-              await page.click(
-                wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
-              );
-              await page.click(
-                wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-              );
+              await page.click(wrapper.findContentRegion().findButtonByTestId('open-drawer-button').toSelector());
+              await page.click(wrapper.findContentRegion().findButtonByTestId('open-drawer-button-2').toSelector());
               await page.keys('Tab');
               await expect(page.isFocused(wrapper.findActiveDrawerCloseButton().toSelector())).resolves.toBe(true);
             },
@@ -293,19 +285,13 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           setupTest(
             async page => {
               if (!mobile) {
-                await page.click(
-                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button"]').toSelector()
-                );
+                await page.click(wrapper.findContentRegion().findButtonByTestId('open-drawer-button').toSelector());
               }
-              await page.click(
-                wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-              );
+              await page.click(wrapper.findContentRegion().findButtonByTestId('open-drawer-button-2').toSelector());
 
               await page.click(wrapper.findActiveDrawerCloseButton().toSelector());
               await expect(
-                page.isFocused(
-                  wrapper.findContentRegion().findButton('[data-testid="open-drawer-button-2"]').toSelector()
-                )
+                page.isFocused(wrapper.findContentRegion().findButtonByTestId('open-drawer-button-2').toSelector())
               ).resolves.toBe(true);
             },
             { pageName: 'with-drawers', theme, mobile }
@@ -317,10 +303,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           'does not move focus back to last opened button when panel has lost focus - instead focuses drawer trigger',
           setupTest(
             async page => {
-              const infoLink = wrapper
-                .findContentRegion()
-                .findButton('[data-testid="open-drawer-button-2"]')
-                .toSelector();
+              const infoLink = wrapper.findContentRegion().findButtonByTestId('open-drawer-button-2').toSelector();
               await page.click(infoLink);
               await page.click(wrapper.findContentRegion().findContainer().toSelector());
               await page.click(wrapper.findActiveDrawerCloseButton().toSelector());

@@ -32,11 +32,11 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         maxContentWidth={maxContentWidth}
         content={
-          <div className={styles.highlightBorder} data-test-id="content">
+          <div className={styles.highlightBorder} data-testid="content">
             <Box variant="h1">Demo page for layout types in visual refresh</Box>
             <SpaceBetween size={'l'}>
               <Button
-                data-test-id="button_width-400"
+                data-testid="button_width-400"
                 onClick={() => {
                   setMaxContentWidth(400);
                 }}
@@ -44,7 +44,7 @@ export default function () {
                 Set content width to 400
               </Button>
               <Button
-                data-test-id="button_width-number-max_value"
+                data-testid="button_width-number-max_value"
                 onClick={() => {
                   setMaxContentWidth(Number.MAX_VALUE);
                 }}
@@ -52,7 +52,7 @@ export default function () {
                 Set content width to Number.MAX_VALUE
               </Button>
               <Button
-                data-test-id="button_width-undef"
+                data-testid="button_width-undef"
                 onClick={() => {
                   setMaxContentWidth(undefined);
                 }}
@@ -60,7 +60,7 @@ export default function () {
                 Set content width to undef
               </Button>
               <Button
-                data-test-id="button_type-default"
+                data-testid="button_type-default"
                 onClick={() => {
                   setContentType('default');
                 }}
@@ -68,7 +68,7 @@ export default function () {
                 Set content type to default
               </Button>
               <Button
-                data-test-id="button_type-cards"
+                data-testid="button_type-cards"
                 onClick={() => {
                   setContentType('cards');
                 }}
@@ -76,7 +76,7 @@ export default function () {
                 Set content type to cards
               </Button>
               <Button
-                data-test-id="button_type-table"
+                data-testid="button_type-table"
                 onClick={() => {
                   setContentType('table');
                 }}
@@ -84,7 +84,7 @@ export default function () {
                 Set content type to table
               </Button>
               <Button
-                data-test-id="button_type-form"
+                data-testid="button_type-form"
                 onClick={() => {
                   setContentType('form');
                 }}
@@ -92,7 +92,7 @@ export default function () {
                 Set content type to form
               </Button>
               <Button
-                data-test-id="button_type-wizard"
+                data-testid="button_type-wizard"
                 onClick={() => {
                   setContentType('wizard');
                 }}
@@ -100,7 +100,7 @@ export default function () {
                 Set content type to wizard
               </Button>
               <Button
-                data-test-id="button_set-drawers-open"
+                data-testid="button_set-drawers-open"
                 onClick={() => {
                   setDrawersOpen(true);
                 }}

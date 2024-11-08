@@ -7,7 +7,7 @@ import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/
 
 import styles from '../../../lib/components/table/styles.selectors.js';
 
-const tableWithDropdownActions = createWrapper().findTable('[data-testid="table-with-dropdown-actions"]')!;
+const tableWithDropdownActions = createWrapper().findTableByTestId('table-with-dropdown-actions')!;
 
 function getTableContainerSelector(tableWrapper: TableWrapper) {
   return tableWrapper.findByClassName(styles.wrapper);

@@ -384,8 +384,8 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       });
       await browser.url(`#/light/app-layout/with-split-panel?${params.toString()}`);
       await page.waitForVisible(content.toSelector());
-      await page.click(content.findContainer('[data-testid="container-1"]').findHeader().findButton().toSelector());
-      await page.click(content.findContainer('[data-testid="container-1"]').findHeader().findButton().toSelector());
+      await page.click(content.findContainerByTestId('container-1').findHeader().findButton().toSelector());
+      await page.click(content.findContainerByTestId('container-1').findHeader().findButton().toSelector());
 
       // Open split panel and ensure it is forced to the bottom.
       await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());

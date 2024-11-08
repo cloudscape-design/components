@@ -23,7 +23,7 @@ export default function WithDrawers() {
         navigationHide={true}
         content={
           <ContentLayout
-            data-test-id="content"
+            data-testid="content"
             header={
               <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
                 One drawer opened

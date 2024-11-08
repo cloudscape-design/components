@@ -10,7 +10,7 @@ import styles from '../../../lib/components/table/styles.selectors.js';
 test(
   'allows to scroll overflowing table by focusing the wrapper',
   useBrowser({ width: 375, height: 871 }, async browser => {
-    const tableWrapper = createWrapper().findTable('[data-testid="items-table"]');
+    const tableWrapper = createWrapper().findTableByTestId('items-table');
     const wrapperSelector = tableWrapper.findAllByClassName(styles.wrapper).toSelector();
     await browser.url('#/light/table/keyboard-scroll');
     const page = new BasePageObject(browser);

@@ -11,19 +11,19 @@ const wrapper = createWrapper().findAppLayout();
 
 class AppLayoutRefreshNotoficationsPage extends BasePageObject {
   async setDrawersOpen() {
-    await this.click(createWrapper().findButton('[data-test-id="button_set-drawers-open"]').toSelector());
+    await this.click(createWrapper().findButtonByTestId('button_set-drawers-open').toSelector());
   }
   async setContentType(contentType: string) {
-    await this.click(createWrapper().findButton(`[data-test-id="button_type-${contentType}"]`).toSelector());
+    await this.click(createWrapper().findButtonByTestId(`button_type-${contentType}`).toSelector());
   }
   async setContentWidthTo400() {
-    await this.click(createWrapper().findButton('[data-test-id="button_width-400"]').toSelector());
+    await this.click(createWrapper().findButtonByTestId('button_width-400').toSelector());
   }
   async setContentWidthToMaxValue() {
-    await this.click(createWrapper().findButton('[data-test-id="button_width-number-max_value"]').toSelector());
+    await this.click(createWrapper().findButtonByTestId('button_width-number-max_value').toSelector());
   }
   async getContentWidth() {
-    const box = await this.getBoundingBox(wrapper.find('[data-test-id="content"]').toSelector());
+    const box = await this.getBoundingBox(wrapper.find('[data-testid="content"]').toSelector());
     return box.width;
   }
   async getNavigationWidth() {

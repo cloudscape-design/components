@@ -123,7 +123,7 @@ describe('Modal Analytics', () => {
     );
 
     const wrapper = createWrapper(container);
-    wrapper.findModal()!.findFooter()!.findButton('[data-testid="submit"]')?.click();
+    wrapper.findModal()!.findFooter()!.findButtonByTestId('submit')!.click();
     act(() => void jest.runAllTimers());
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledWith(
@@ -154,7 +154,7 @@ describe('Modal Analytics', () => {
     act(() => void jest.runAllTimers());
 
     const wrapper = createWrapper(container);
-    wrapper.findModal()!.findFooter()!.findButton('[data-testid="submit"]')?.click();
+    wrapper.findModal()!.findFooter()!.findButtonByTestId('submit')!.click();
     rerender(
       <Modal
         header="Modal title"

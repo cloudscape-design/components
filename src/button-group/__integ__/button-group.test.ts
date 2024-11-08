@@ -47,7 +47,7 @@ test.each([false, true])(
   'can navigate to menu and back with keyboard, dropdownExpandToViewport=%s',
   async dropdownExpandToViewport => {
     await setup({ dropdownExpandToViewport }, async page => {
-      await page.click(createWrapper().find('[data-testid="focus-before"]').toSelector());
+      await page.click(createWrapper().findButtonByTestId('focus-before').toSelector());
 
       await page.keys(['Tab']);
       await expect(page.isFocused(likeButton.toSelector())).resolves.toBe(true);
@@ -79,7 +79,7 @@ test(
     await page.click(likeButton.toSelector());
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Like');
 
-    await page.click(createWrapper().find('[data-testid="focus-on-copy"]').toSelector());
+    await page.click(createWrapper().findButtonByTestId('focus-on-copy').toSelector());
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
 
     await page.keys(['Tab', 'Enter']);
@@ -115,7 +115,7 @@ test(
 test(
   'shows one tooltip at a time',
   setup({}, async page => {
-    await page.click(createWrapper().find('[data-testid="focus-before"]').toSelector());
+    await page.click(createWrapper().findButtonByTestId('focus-before').toSelector());
 
     await page.keys(['Tab']);
     await expect(page.isFocused(likeButton.toSelector())).resolves.toBe(true);
