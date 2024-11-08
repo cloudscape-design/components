@@ -88,6 +88,10 @@
   &-grid {
     display: grid;
     grid-template-rows: max-content auto;
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      display: flex;
+    }
   }
 
   &-contains-image {
