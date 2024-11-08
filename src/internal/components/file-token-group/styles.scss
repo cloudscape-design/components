@@ -61,15 +61,9 @@
   object-fit: cover;
 
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
-
-  // firefox displays fallback text differently from chrome and safari,
-  // so clamp happens at 3 instead of 2
-  @-moz-document url-prefix() {
-    -webkit-line-clamp: 3;
-  }
 }
 
 .file-option-metadata {

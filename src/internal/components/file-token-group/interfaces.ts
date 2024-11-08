@@ -38,7 +38,6 @@ export interface FileTokenGroupProps extends BaseComponentProps {
    * An array of objects representing token items. Each token has the following properties:
    *
    * - `file` (string) - File value.
-   * - `disabled` [boolean] - (Optional) Determines whether the token is disabled.
    * - `loading` (boolean) - (Optional) Determine whether the token is loading.
    * - `errorText` (string) - (Optional) Text that displays as a validation error message.
    * - `warningText` (string) - (Optional) - Text that displays as a validation warning message.
@@ -90,7 +89,6 @@ export namespace FileTokenGroupProps {
 
   export interface Item {
     file: File;
-    disabled?: boolean;
     loading?: boolean;
     errorText?: null | string;
     warningText?: null | string;

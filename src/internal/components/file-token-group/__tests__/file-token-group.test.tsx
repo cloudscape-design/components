@@ -10,9 +10,9 @@ import FileTokenGroup, {
 import createWrapper from '../../../../../lib/components/test-utils/dom';
 import FileTokenGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/file-token-group';
 
-import styles from '../../../../../lib/components/internal/components/file-token-group/test-classes/styles.css.js';
+import styles from '../../../../../lib/components/internal/components/file-token-group/styles.css.js';
+import testStyles from '../../../../../lib/components/internal/components/file-token-group/test-classes/styles.css.js';
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
-import spinnerStyles from '../../../../../lib/components/spinner/styles.selectors.js';
 
 jest.mock('../../../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',
@@ -207,10 +207,18 @@ describe('File upload tokens', () => {
 });
 
 describe('File loading', () => {
-  test('Spinner added when loading', () => {
-    render({ items: [{ file: file1, loading: true }] });
+  test('Aria-disabled added when loading', () => {
+    const wrapper = render({ items: [{ file: file1, loading: true }, { file: file2 }] });
 
-    expect(document.querySelector(`.${spinnerStyles.root}`)).not.toBeNull();
+    expect(wrapper.findFileToken(1)?.getElement()).toHaveAttribute('aria-disabled');
+    expect(wrapper.findFileToken(2)?.getElement()).not.toHaveAttribute('aria-disabled');
+  });
+
+  test('Spinner added when loading', () => {
+    const wrapper = render({ items: [{ file: file1, loading: true }, { file: file2 }] });
+
+    expect(wrapper.findFileToken(1)?.getElement().firstChild).toHaveClass(styles.loading);
+    expect(wrapper.findFileToken(2)?.getElement().firstChild).not.toHaveClass(styles.loading);
   });
 });
 
@@ -221,7 +229,7 @@ describe('Tooltip', () => {
       fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
     });
 
-    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveClass(styles['ellipsis-active']);
+    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveClass(testStyles['ellipsis-active']);
   });
 
   test('Should show tooltip on mouse enter', () => {
@@ -235,16 +243,6 @@ describe('Tooltip', () => {
 
     act(() => {
       fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
-    });
-
-    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
-  });
-
-  test('Should not show tooltip with vertical alignment', () => {
-    const wrapper = render({ items: [{ file: file3 }] });
-
-    act(() => {
-      fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
     });
 
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
@@ -331,6 +329,13 @@ describe('a11y', () => {
       ],
       showFileSize: true,
       showFileLastModified: true,
+    });
+    await expect(wrapper.getElement()).toValidateA11y();
+  });
+
+  test('loading', async () => {
+    const wrapper = render({
+      items: [{ file: file1, loading: true }],
     });
     await expect(wrapper.getElement()).toValidateA11y();
   });

@@ -91,12 +91,14 @@ function InternalFileToken({
   return (
     <div
       ref={containerRef}
-      className={clsx(styles.token, styles['token-grid'], {
+      className={clsx(styles.token, {
+        [styles['token-grid']]: alignment === 'horizontal',
         [styles['token-contains-image']]: groupContainsImage,
       })}
       role="group"
       aria-label={file.name}
       aria-describedby={errorText ? errorId : warningText ? warningId : undefined}
+      aria-disabled={loading}
       data-index={index}
     >
       <div
@@ -178,7 +180,7 @@ function InternalFileToken({
           {warningText}
         </FormFieldWarning>
       )}
-      {alignment === 'horizontal' && showTooltip && isEllipsisActive() && (
+      {showTooltip && isEllipsisActive() && (
         <Tooltip
           trackRef={containerRef}
           trackKey={file.name}
