@@ -727,8 +727,8 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('global-drawer')!.click();
 
-      expect(wrapper!.find('[class*="awsui_drawer-close-button"]')).toBeTruthy();
-      expect(wrapper!.find('[class*="awsui_drawer-global"][class*="awsui_last-opened"]')).toBeTruthy();
+      expect(wrapper!.find('[class*="awsui_drawer-close-button_12i0j"]')).toBeTruthy();
+      expect(wrapper!.find('[class*="awsui_drawer-global_12i0j"][class*="awsui_last-opened_12i0j"]')).toBeTruthy();
     });
 
     test('registerDrawer registers local drawers if type is not specified', async () => {
