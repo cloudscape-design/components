@@ -338,8 +338,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_description_1wepg",
     "awsui_disabled_15o6u",
     "awsui_dropdown_qwoo0",
-    "awsui_file-input-button_181f9",
-    "awsui_file-input_181f9",
     "awsui_file-option-last-modified_ofwwb",
     "awsui_file-option-name_ofwwb",
     "awsui_file-option-size_ofwwb",
