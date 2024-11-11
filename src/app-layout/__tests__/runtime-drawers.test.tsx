@@ -713,6 +713,24 @@ describeEachAppLayout(({ theme, size }) => {
 
 describe('toolbar mode only features', () => {
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+    test('should contain overridden in AWS-UI-Widget-Global-Navigation css classes for drawers', async () => {
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+
+      await delay();
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+
+      expect(wrapper!.find('[class*="awsui_drawer-close-button_12i0j"]')).toBeTruthy();
+      expect(wrapper!.find('[class*="awsui_drawer-global_12i0j"][class*="awsui_last-opened_12i0j"]')).toBeTruthy();
+    });
+
     test('registerDrawer registers local drawers if type is not specified', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
