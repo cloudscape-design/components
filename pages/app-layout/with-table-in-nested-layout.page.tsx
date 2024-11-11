@@ -10,20 +10,25 @@ import Table from '~components/table';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
+import { Breadcrumbs, Footer, Navigation } from './utils/content-blocks';
 import labels from './utils/labels';
 
 const items = generateItems(100);
 
-function App() {
+export default function () {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        data-testid="main-layout"
         ariaLabels={labels}
+        navigation={<Navigation />}
         toolsHide={true}
         disableContentPaddings={true}
         content={
           <AppLayout
+            data-testid="secondary-layout"
             ariaLabels={labels}
+            breadcrumbs={<Breadcrumbs />}
             navigationHide={true}
             content={
               <Table<Instance>
@@ -45,8 +50,7 @@ function App() {
           />
         }
       />
+      <Footer legacyConsoleNav={false} />
     </ScreenshotArea>
   );
 }
-
-export default App;
