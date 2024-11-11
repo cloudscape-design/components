@@ -7361,6 +7361,175 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 }
 `;
 
+exports[`Documenter definition for file-token-group matches the snapshot: file-token-group 1`] = `
+{
+  "events": [
+    {
+      "cancelable": false,
+      "description": " Called when the user clicks on the dismiss button. The token won't be automatically removed.
+ Make sure that you add a listener to this event to update your application state.",
+      "detailInlineType": {
+        "name": "FileTokenGroupProps.DismissDetail",
+        "properties": [
+          {
+            "name": "fileIndex",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "FileTokenGroupProps.DismissDetail",
+      "name": "onDismiss",
+    },
+  ],
+  "functions": [],
+  "name": "FileTokenGroup",
+  "properties": [
+    {
+      "description": "Specifies the direction in which tokens are aligned (\`horizontal | vertical\`).",
+      "inlineType": {
+        "name": "FileTokenGroupProps.Alignment",
+        "type": "union",
+        "values": [
+          "horizontal",
+          "vertical",
+        ],
+      },
+      "name": "alignment",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An object containing all the localized strings required by the component:
+* \`removeFileAriaLabel\` (function): A function to render the ARIA label for file token remove button.
+* \`errorIconAriaLabel\` (string): The ARIA label to be shown on the error file icon.
+* \`warningIconAriaLabel\` (string): The ARIA label to be shown on the warning file icon.
+* \`formatFileSize\` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
+* \`formatFileLastModified\` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.",
+      "inlineType": {
+        "name": "FileTokenGroupProps.I18nStrings",
+        "properties": [
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "formatFileLastModified",
+            "optional": true,
+            "type": "(date: Date) => string",
+          },
+          {
+            "name": "formatFileSize",
+            "optional": true,
+            "type": "(sizeInBytes: number) => string",
+          },
+          {
+            "name": "limitShowFewer",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "limitShowMore",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "removeFileAriaLabel",
+            "optional": false,
+            "type": "(fileIndex: number) => string",
+          },
+          {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": false,
+      "type": "FileTokenGroupProps.I18nStrings",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "An array of objects representing token items. Each token has the following properties:
+- \`file\` (string) - File value.
+- \`loading\` (boolean) - (Optional) Determine whether the token is loading.
+- \`errorText\` (string) - (Optional) Text that displays as a validation error message.
+- \`warningText\` (string) - (Optional) - Text that displays as a validation warning message.
+",
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<FileTokenGroupProps.Item>",
+    },
+    {
+      "description": "Specifies the maximum number of displayed tokens. If the property isn't set, all of the tokens are displayed.",
+      "name": "limit",
+      "optional": true,
+      "type": "number",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the "Show fewer" button.
+Use to assign unique labels when there are multiple file token groups with the same \`limitShowFewer\` label on one page.",
+      "name": "limitShowFewerAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Adds an \`aria-label\` to the "Show more" button.
+Use to assign unique labels when there are multiple file token groups with the same \`limitShowMore\` label on one page.",
+      "name": "limitShowMoreAriaLabel",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies if the control is read-only, which prevents the
+user from modifying the value. A read-only control is still focusable.",
+      "name": "readOnly",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Show file last modified timestamp in the token. Use \`i18nStrings.formatFileLastModified\` to customize it.",
+      "name": "showFileLastModified",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Show file size in the token. Use \`i18nStrings.formatFileSize\` to customize it.",
+      "name": "showFileSize",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "Show file thumbnail in the token. Only supported for images.",
+      "name": "showFileThumbnail",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for file-upload matches the snapshot: file-upload 1`] = `
 {
   "events": [
