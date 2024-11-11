@@ -16,14 +16,12 @@ const permutations = createPermutations<Omit<FileTokenGroupProps, 'onDismiss' | 
     items: [[{ file: file1 }]],
     showFileLastModified: [true, false],
     showFileSize: [true, false],
-    showFileThumbnail: [true, false],
     alignment: ['horizontal', 'vertical'],
   },
   {
     items: [[{ file: file1 }, { file: file2, loading: true }]],
     showFileLastModified: [true, false],
     showFileSize: [true, false],
-    showFileThumbnail: [true, false],
     alignment: ['horizontal', 'vertical'],
   },
   {
@@ -35,7 +33,6 @@ const permutations = createPermutations<Omit<FileTokenGroupProps, 'onDismiss' | 
     ],
     showFileLastModified: [true, false],
     showFileSize: [true, false],
-    showFileThumbnail: [true, false],
     alignment: ['horizontal', 'vertical'],
   },
 ]);
