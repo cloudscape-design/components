@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { formatDateTime } from '../internal/utils/date-time';
+import { formatDateTime } from '../../utils/date-time';
 
 const KB = 1000;
 const MB = 1000 ** 2;

@@ -77,7 +77,14 @@ export default function TokenList<Item>({
   return (
     <div className={clsx(styles.root, styles.vertical)}>
       {hasVisibleItems && (
-        <ul id={controlId} className={clsx(styles.list, styles[alignment])}>
+        <ul
+          id={controlId}
+          className={clsx(styles.list, {
+            [styles.vertical]: alignment === 'vertical',
+            [styles.horizontal]: alignment === 'horizontal',
+            [styles.grid]: alignment === 'horizontal-grid',
+          })}
+        >
           {visibleItems.map((item, itemIndex) => (
             <li
               key={itemIndex}

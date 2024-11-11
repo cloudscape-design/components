@@ -5,18 +5,20 @@
 
 @use '../../styles/tokens' as awsui;
 @use '../../styles' as styles;
+@use '../../../internal/components/file-token-group/constants' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {
-  display: flex;
   gap: awsui.$space-scaled-xs;
 
   &.horizontal {
+    display: flex;
     gap: awsui.$space-xs;
     flex-direction: row;
     flex-wrap: wrap;
   }
   &.vertical {
+    display: flex;
     flex-direction: column;
   }
 }
@@ -40,6 +42,16 @@
   }
   &.vertical {
     flex-direction: column;
+  }
+  &.grid {
+    display: grid;
+    gap: awsui.$space-xs;
+    grid-template-columns: repeat(auto-fill, constants.$compact-token-width);
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 
