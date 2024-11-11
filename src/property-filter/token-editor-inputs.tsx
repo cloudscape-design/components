@@ -171,7 +171,7 @@ function ValueInputAuto({
   return (
     <InternalAutosuggest
       enteredTextLabel={i18nStrings.enteredTextLabel}
-      value={matchedOption?.label ?? value ?? ''}
+      value={matchedOption?.label ?? (value ?? '') + ''}
       clearAriaLabel={i18nStrings.clearAriaLabel}
       onChange={e => onChangeValue(e.detail.value)}
       disabled={!operator}

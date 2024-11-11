@@ -883,3 +883,11 @@ describe('token editor with groups', () => {
     );
   });
 });
+
+test.each([0, 1.11])('tolerates numeric token values, value=%s', value => {
+  renderComponent({
+    query: { tokens: [{ propertyKey: 'string', operator: '=', value }], operation: 'or' },
+  });
+  const editor = openEditor(0, { expandToViewport: false });
+  expect(editor.valueAutosuggest().findNativeInput().getElement()).toHaveAttribute('value', value + '');
+});
