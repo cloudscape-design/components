@@ -200,7 +200,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
 
   testIf(theme === 'refresh-toolbar')(
     'should keep header visible and in position while scrolling',
-    setupTest({ pageName: 'with-table-in-nested-layout' }, async page => {
+    setupTest({ pageName: 'multi-layout-with-table-sticky-header' }, async page => {
       const tableWrapper = createWrapper().findTable();
       const { top: headerOldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
       await page.windowScrollTo({ top: 200 });
