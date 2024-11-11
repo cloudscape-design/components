@@ -11,6 +11,7 @@ function App() {
   return (
     <AppLayout
       toolsHide={true}
+      disableContentPaddings={true}
       content={
         <AppLayout
           navigationHide={true}
@@ -20,14 +21,12 @@ function App() {
                 <Header
                   variant="awsui-h1-sticky"
                   description="Demo page with footer"
-                  actions={<Button variant="primary"> Button </Button>}
+                  actions={<Button variant="primary">Button</Button>}
                 >
                   Sticky Scrollbar Example
                 </Header>
               }
               stickyHeader={true}
-              // manually set vertical offset to test this feature
-              // stickyHeaderVerticalOffset={99}
               variant="full-page"
               columnDefinitions={[
                 {
@@ -49,50 +48,13 @@ function App() {
                   cell: item => item.description || '-',
                 },
               ]}
-              items={[
-                {
-                  name: 'Item 1',
-                  alt: 'First',
-                  description: 'This is the first item',
-                  type: '1A',
-                  size: 'Small',
-                },
-                {
-                  name: 'Item 2',
-                  alt: 'Second',
-                  description: 'This is the second item',
-                  type: '1B',
-                  size: 'Large',
-                },
-                {
-                  name: 'Item 3',
-                  alt: 'Third',
-                  description: '-',
-                  type: '1A',
-                  size: 'Large',
-                },
-                {
-                  name: 'Item 4',
-                  alt: 'Fourth',
-                  description: 'This is the fourth item',
-                  type: '2A',
-                  size: 'Small',
-                },
-                {
-                  name: 'Item 5',
-                  alt: '-',
-                  description: 'This is the fifth item with a longer description',
-                  type: '2A',
-                  size: 'Large',
-                },
-                {
-                  name: 'Item 6',
-                  alt: 'Sixth',
-                  description: 'This is the sixth item',
-                  type: '1A',
-                  size: 'Small',
-                },
-              ]}
+              items={new Array(100).fill(null).map((_, index) => ({
+                name: `Item ${index}`,
+                alt: index,
+                description: `This is the ${index} item`,
+                type: '1A',
+                size: 'Small',
+              }))}
             />
           }
         />
