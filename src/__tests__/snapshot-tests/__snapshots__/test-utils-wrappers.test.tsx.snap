@@ -117,8 +117,8 @@ export { ElementWrapper };
         export { ExpandableSectionWrapper };
       
 
-        import FileInputWrapper from './file-input';
-        export { FileInputWrapper };
+        import FileDropzoneWrapper from './file-dropzone';
+        export { FileDropzoneWrapper };
       
 
         import FileUploadWrapper from './file-upload';
@@ -342,7 +342,7 @@ findDatePicker(selector?: string): DatePickerWrapper | null;
 findDateRangePicker(selector?: string): DateRangePickerWrapper | null;
 findDrawer(selector?: string): DrawerWrapper | null;
 findExpandableSection(selector?: string): ExpandableSectionWrapper | null;
-findFileInput(selector?: string): FileInputWrapper | null;
+findFileDropzone(selector?: string): FileDropzoneWrapper | null;
 findFileUpload(selector?: string): FileUploadWrapper | null;
 findFlashbar(selector?: string): FlashbarWrapper | null;
 findForm(selector?: string): FormWrapper | null;
@@ -561,11 +561,11 @@ ElementWrapper.prototype.findExpandableSection = function(selector) {
           // https://github.com/microsoft/TypeScript/issues/29132
           return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
       };
-ElementWrapper.prototype.findFileInput = function(selector) {
-          const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+ElementWrapper.prototype.findFileDropzone = function(selector) {
+          const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
           // casting to 'any' is needed to avoid this issue with generics
           // https://github.com/microsoft/TypeScript/issues/29132
-          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
       };
 ElementWrapper.prototype.findFileUpload = function(selector) {
           const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
@@ -975,8 +975,8 @@ export { ElementWrapper };
         export { ExpandableSectionWrapper };
       
 
-        import FileInputWrapper from './file-input';
-        export { FileInputWrapper };
+        import FileDropzoneWrapper from './file-dropzone';
+        export { FileDropzoneWrapper };
       
 
         import FileUploadWrapper from './file-upload';
@@ -1200,7 +1200,7 @@ findDatePicker(selector?: string): DatePickerWrapper;
 findDateRangePicker(selector?: string): DateRangePickerWrapper;
 findDrawer(selector?: string): DrawerWrapper;
 findExpandableSection(selector?: string): ExpandableSectionWrapper;
-findFileInput(selector?: string): FileInputWrapper;
+findFileDropzone(selector?: string): FileDropzoneWrapper;
 findFileUpload(selector?: string): FileUploadWrapper;
 findFlashbar(selector?: string): FlashbarWrapper;
 findForm(selector?: string): FormWrapper;
@@ -1419,11 +1419,11 @@ ElementWrapper.prototype.findExpandableSection = function(selector) {
           // https://github.com/microsoft/TypeScript/issues/29132
           return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
       };
-ElementWrapper.prototype.findFileInput = function(selector) {
-          const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+ElementWrapper.prototype.findFileDropzone = function(selector) {
+          const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
           // casting to 'any' is needed to avoid this issue with generics
           // https://github.com/microsoft/TypeScript/issues/29132
-          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
       };
 ElementWrapper.prototype.findFileUpload = function(selector) {
           const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
