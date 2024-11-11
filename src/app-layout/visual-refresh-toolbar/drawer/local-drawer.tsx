@@ -62,6 +62,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
   const isLegacyDrawer = drawersOpenQueue === undefined;
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue?.length ? drawersOpenQueue[0] : activeDrawerId;
+  const animationDisabled = activeDrawer?.defaultActive && !drawersOpenQueue.includes(activeDrawer.id);
 
   return (
     <Transition nodeRef={drawerRef} in={!!activeDrawer} appear={true} timeout={0}>
@@ -70,7 +71,8 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
           id={activeDrawerId}
           aria-hidden={!activeDrawer}
           aria-label={computedAriaLabels.content}
-          className={clsx(styles.drawer, sharedStyles['with-motion-horizontal'], {
+          className={clsx(styles.drawer, {
+            [sharedStyles['with-motion-horizontal']]: !animationDisabled,
             [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
             [styles.legacy]: isLegacyDrawer,
             [testutilStyles['active-drawer']]: !toolsOnlyMode && activeDrawerId,

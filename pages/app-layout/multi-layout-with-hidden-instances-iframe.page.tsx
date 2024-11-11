@@ -45,7 +45,7 @@ function createView(name: string) {
 const ROUTES: Array<{ navLink: SideNavigationProps.Link; View: React.ComponentType }> = [
   { navLink: { type: 'link', text: 'Page 1', href: 'page1' }, View: createView('page1') },
   { navLink: { type: 'link', text: 'Page 2', href: 'page2' }, View: createView('page2') },
-  { navLink: { type: 'link', text: 'Page 3', href: 'page3' }, View: createView('page2') },
+  { navLink: { type: 'link', text: 'Page 3', href: 'page3' }, View: createView('page3') },
 ];
 
 export default function () {

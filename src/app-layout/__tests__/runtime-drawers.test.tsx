@@ -980,6 +980,8 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
+      await delay();
+
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 

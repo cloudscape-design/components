@@ -20,11 +20,11 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   appLayoutInternals,
   splitPanelInternals,
 }: AppLayoutSplitPanelDrawerSideImplementationProps) {
-  const { splitPanelControlId, placement, verticalOffsets, isMobile } = appLayoutInternals;
+  const { splitPanelControlId, placement, verticalOffsets, isMobile, splitPanelAnimationDisabled } = appLayoutInternals;
   const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
 
   return (
-    <SplitPanelProvider {...splitPanelInternals}>
+    <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>
       <section
         id={splitPanelControlId}
         className={styles['split-panel-side']}
@@ -48,8 +48,13 @@ export interface AppLayoutSplitPanelDrawerBottomImplementationProps {
 export function AppLayoutSplitPanelDrawerBottomImplementation({
   children,
   splitPanelInternals,
+  appLayoutInternals,
 }: AppLayoutSplitPanelDrawerBottomImplementationProps) {
-  return <SplitPanelProvider {...splitPanelInternals}>{children}</SplitPanelProvider>;
+  return (
+    <SplitPanelProvider {...splitPanelInternals} animationDisabled={appLayoutInternals.splitPanelAnimationDisabled}>
+      {children}
+    </SplitPanelProvider>
+  );
 }
 
 export const createWidgetizedAppLayoutSplitPanelDrawerSide = createWidgetizedComponent(

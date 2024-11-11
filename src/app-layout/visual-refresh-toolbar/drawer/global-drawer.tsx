@@ -6,12 +6,10 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
-import { NonCancelableEventHandler } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-import { AppLayoutProps } from '../../interfaces';
 import { getDrawerStyles } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
+import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { useResize } from './use-resize';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -21,9 +19,7 @@ import styles from './styles.css.js';
 interface AppLayoutGlobalDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   show: boolean;
-  activeGlobalDrawer:
-    | (AppLayoutProps.Drawer & { onShow?: NonCancelableEventHandler; onHide?: NonCancelableEventHandler })
-    | undefined;
+  activeGlobalDrawer: InternalDrawer | undefined;
 }
 
 function AppLayoutGlobalDrawerImplementation({
@@ -68,6 +64,7 @@ function AppLayoutGlobalDrawerImplementation({
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
+  const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
 
   return (
     <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
@@ -81,7 +78,7 @@ function AppLayoutGlobalDrawerImplementation({
               styles.drawer,
               styles['drawer-global'],
               styles[state],
-              sharedStyles['with-motion-horizontal'],
+              !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
