@@ -10,7 +10,14 @@ import InternalKeyValuePairs from './internal';
 
 export { KeyValuePairsProps };
 
-export default function KeyValuePairs({ columns = 1, items, ariaLabel, ariaLabelledby, ...rest }: KeyValuePairsProps) {
+export default function KeyValuePairs({
+  columns = 1,
+  items,
+  ariaLabel,
+  ariaLabelledby,
+  variant = 'default',
+  ...rest
+}: KeyValuePairsProps) {
   const { __internalRootRef } = useBaseComponent('KeyValuePairs', {
     props: { columns },
   });
@@ -22,6 +29,7 @@ export default function KeyValuePairs({ columns = 1, items, ariaLabel, ariaLabel
       items={items}
       ariaLabel={ariaLabel}
       ariaLabelledby={ariaLabelledby}
+      variant={variant}
       {...baseProps}
       ref={__internalRootRef}
     />
