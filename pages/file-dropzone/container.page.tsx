@@ -55,16 +55,16 @@ export default function FileDropzoneContainer() {
           }
         >
           <SpaceBetween size="l">
-            {!onlyVisibleOnDrag && (
+            {/* {!onlyVisibleOnDrag && (
               <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
-                <Box fontWeight="bold" color="text-body-secondary">
+                <Box fontWeight="bold" color="inherit">
                   Drop files here
                 </Box>
               </FileDropzone>
-            )}
+            )} */}
             {areFilesDragging && onlyVisibleOnDrag ? (
               <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
-                <Box fontWeight="bold" color="text-body-secondary">
+                <Box fontWeight="bold" color="inherit">
                   Drop files here
                 </Box>
               </FileDropzone>
@@ -97,6 +97,12 @@ export default function FileDropzoneContainer() {
                   },
                 ]}
                 enableKeyboardNavigation={true}
+                ariaLabels={{
+                  selectionGroupLabel: 'group label',
+                  allItemsSelectionLabel: ({ selectedItems }) => `${selectedItems.length} item selected`,
+                  itemSelectionLabel: ({ selectedItems }, item) =>
+                    `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
+                }}
                 items={files.map(file => ({
                   name: file.name,
                   type: file.type,
