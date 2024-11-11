@@ -5,7 +5,7 @@
 
 @use '../../styles/tokens' as awsui;
 @use '../../styles' as styles;
-@use '../../../internal/components/file-token-group/constants' as constants;
+@use '../../../file-token-group/constants' as constants;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .root {

@@ -3,10 +3,10 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use '../../styles/tokens' as awsui;
-@use '../../styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
 @use './constants' as constants;
-@use '../../../token-group/mixins.scss' as mixins;
+@use '../token-group/mixins.scss' as mixins;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 @mixin token-box-validation {
