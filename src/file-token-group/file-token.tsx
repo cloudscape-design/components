@@ -4,15 +4,15 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../../../box/internal.js';
-import { FormFieldError, FormFieldWarning } from '../../../form-field/internal';
-import InternalSpaceBetween from '../../../space-between/internal.js';
-import InternalSpinner from '../../../spinner/internal.js';
-import DismissButton from '../../../token-group/dismiss-button';
-import { TokenGroupProps } from '../../../token-group/interfaces.js';
-import { BaseComponentProps } from '../../base-component/index.js';
-import { useUniqueId } from '../../hooks/use-unique-id';
-import Tooltip from '../tooltip/index';
+import InternalBox from '../box/internal.js';
+import { FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import Tooltip from '../internal/components/tooltip/index';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
+import InternalSpaceBetween from '../space-between/internal.js';
+import InternalSpinner from '../spinner/internal.js';
+import DismissButton from '../token-group/dismiss-button';
+import { TokenGroupProps } from '../token-group/interfaces.js';
 import * as defaultFormatters from './default-formatters.js';
 import { FileOptionThumbnail } from './thumbnail.js';
 

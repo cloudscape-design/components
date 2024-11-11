@@ -3,10 +3,10 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import ButtonWrapper from '../button';
-import { FileTokenWrapper } from '../internal/file-token-group';
+import { FileTokenWrapper } from '../file-token-group';
 
-import tokenGroupSelectors from '../../../internal/components/file-token-group/styles.selectors.js';
 import fileUploadInputSelectors from '../../../file-input/styles.selectors.js';
+import tokenGroupSelectors from '../../../file-token-group/styles.selectors.js';
 import fileUploadSelectors from '../../../file-upload/styles.selectors.js';
 import formFieldStyles from '../../../form-field/styles.selectors.js';
 import tokenListSelectors from '../../../internal/components/token-list/styles.selectors.js';
