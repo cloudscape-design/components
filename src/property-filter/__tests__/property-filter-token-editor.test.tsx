@@ -61,6 +61,7 @@ const filteringOptions: readonly FilteringOption[] = [
   { propertyKey: 'string', value: 'value1' },
   { propertyKey: 'other-string', value: 'value1' },
   { propertyKey: 'string', value: 'value2' },
+  { propertyKey: 'string', value: '3', label: 'value3' },
   { propertyKey: 'range', value: '1' },
   { propertyKey: 'range', value: '2' },
   { propertyKey: 'other-string', value: 'value2' },
@@ -170,7 +171,7 @@ describe.each([false, true])('token editor, expandToViewport=%s', expandToViewpo
           .findDropdown()
           .findOptions()!
           .map(optionWrapper => optionWrapper.getElement().textContent)
-      ).toEqual(['value1', 'value2']);
+      ).toEqual(['value1', 'value2', 'value3']);
     });
 
     test('with free text disabled', () => {
@@ -884,10 +885,11 @@ describe('token editor with groups', () => {
   });
 });
 
-test.each([0, 1.11])('tolerates numeric token values, value=%s', value => {
+test.each([0, 1.11, 3])('tolerates numeric token values, value=%s', value => {
+  const expectedValue = value === 3 ? 'value3' : value + '';
   renderComponent({
     query: { tokens: [{ propertyKey: 'string', operator: '=', value }], operation: 'or' },
   });
   const editor = openEditor(0, { expandToViewport: false });
-  expect(editor.valueAutosuggest().findNativeInput().getElement()).toHaveAttribute('value', value + '');
+  expect(editor.valueAutosuggest().findNativeInput().getElement()).toHaveAttribute('value', expectedValue);
 });
