@@ -107,6 +107,7 @@ function evaluateSelectors(selectors: string[], defaultSelector: string) {
 }
 
 const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
+  const ref = useRef<HTMLDivElement>(null);
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
   const isVisualRefresh = useVisualRefresh();
@@ -139,6 +140,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
     */
     let funnelInteractionId: string;
     const handle = setTimeout(() => {
+      const currentDocument = ref.current!.ownerDocument;
       funnelNameSelector.current = evaluateSelectors(props.funnelNameSelectors || [], getFunnelNameSelector());
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
@@ -146,7 +148,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
 
       // Reset the state, in case the component was re-mounted.
       funnelState.current = 'default';
-      const funnelName = getTextFromSelector(funnelNameSelector.current) ?? '';
+      const funnelName = getTextFromSelector(currentDocument, funnelNameSelector.current) ?? '';
 
       const singleStepFlowStepConfiguration = [
         {
@@ -169,7 +171,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         componentTheme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
-        resourceType: props.funnelResourceType || getTextFromSelector(getBreadcrumbLinkSelector(3)),
+        resourceType: props.funnelResourceType || getTextFromSelector(document, getBreadcrumbLinkSelector(3)),
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -279,7 +281,11 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
     wizardCount,
   };
 
-  return <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>;
+  return (
+    <div ref={ref}>
+      <FunnelContext.Provider value={funnelContextValue}>{children}</FunnelContext.Provider>
+    </div>
+  );
 };
 
 interface AnalyticsFunnelStepProps {
@@ -344,7 +350,7 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
     };
   }, [stepNumber]);
 
-  /* We debounce this handler, so that multiple containers can change at once without causing 
+  /* We debounce this handler, so that multiple containers can change at once without causing
   too many events. */
   const stepChangeCallback = useDebounceCallback(() => {
     // We don't want to emit the event after the component has been unmounted.
@@ -404,7 +410,7 @@ const InnerAnalyticsFunnelStep = ({
       return;
     }
 
-    const stepName = getTextFromSelector(stepNameSelector);
+    const stepName = getTextFromSelector(document, stepNameSelector);
     const handler = setTimeout(() => {
       if (funnelState.current !== 'cancelled') {
         FunnelMetrics.funnelStepComplete({
@@ -455,7 +461,7 @@ const InnerAnalyticsFunnelStep = ({
       return;
     }
 
-    const stepName = getTextFromSelector(stepNameSelector);
+    const stepName = getTextFromSelector(document, stepNameSelector);
 
     if (funnelState.current === 'default') {
       FunnelMetrics.funnelStepStart({
@@ -597,7 +603,7 @@ export const AnalyticsFunnelSubStep = ({
         Some mouse events result in an element being focused. However,
         this happens only _after_ the onMouseUp event. We yield the
         event loop here, so that `document.activeElement` has the
-        correct new value.      
+        correct new value.
       */
       await new Promise(r => setTimeout(r, 1));
 
