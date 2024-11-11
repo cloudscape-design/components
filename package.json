@@ -161,6 +161,17 @@
     {
       "path": "lib/components/internal/plugins/index.js",
       "limit": "2.5 kB"
+    },
+    {
+      "path": [
+        "lib/components/app-layout/visual-refresh-toolbar/exports.js",
+        "lib/components/split-panel/implementation.js",
+        "lib/components/breadcrumb-group/implementation.js",
+        "lib/components/drawer/implementation.js",
+        "lib/components/side-navigation/implementation.js",
+        "lib/components/help-panel/implementation.js"
+      ],
+      "limit": "140 kB"
     }
   ],
   "browserslist": [
