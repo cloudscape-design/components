@@ -10,8 +10,10 @@ import Table from '~components/table';
 import { generateItems, Instance } from '../table/generate-data';
 import { columnsConfig } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Footer, Navigation } from './utils/content-blocks';
+import { Breadcrumbs, Navigation } from './utils/content-blocks';
+import { Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import * as toolsContent from './utils/tools-content';
 
 const items = generateItems(100);
 
@@ -26,6 +28,7 @@ export default function () {
         disableContentPaddings={true}
         content={
           <AppLayout
+            {...{ __disableRuntimeDrawers: true }}
             data-testid="secondary-layout"
             ariaLabels={labels}
             breadcrumbs={<Breadcrumbs />}
@@ -47,10 +50,10 @@ export default function () {
                 items={items}
               />
             }
+            tools={<Tools>{toolsContent.long}</Tools>}
           />
         }
       />
-      <Footer legacyConsoleNav={false} />
     </ScreenshotArea>
   );
 }
