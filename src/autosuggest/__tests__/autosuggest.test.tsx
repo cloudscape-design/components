@@ -9,14 +9,15 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import OptionWrapper from '../../../lib/components/test-utils/dom/internal/option';
 
 import styles from '../../../lib/components/autosuggest/styles.css.js';
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
 import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const defaultOptions: AutosuggestProps.Options = [
-  { value: '1', label: 'One' },
-  { value: '2', lang: 'fr' },
+  { value: '1', label: 'One', testId: 'option-1-test-id' },
+  { value: '2', lang: 'fr', testId: 'option-2-test-id' },
 ];
 const groupOptions: AutosuggestProps.Options = [
   { label: 'Group 1', options: [{ value: '1' }, { value: '2' }] },
@@ -138,6 +139,22 @@ test('should not close dropdown when no realted target in blur', () => {
 
   createWrapper(container).find('#focus-target')!.focus();
   expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+});
+
+test('assigns test-id to the option inside each item', () => {
+  const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+  wrapper.findNativeInput().focus();
+  const optionTestIds = wrapper
+    .findDropdown()
+    .findOptions()
+    .map(option => {
+      // findOption in autosuggest doesn't return the actual option,
+      // rather the selectable item around the option.
+      const optionWrapper = option.find(`.${OptionWrapper.rootSelector}`);
+      return optionWrapper!.getElement().getAttribute('data-testid');
+    });
+
+  expect(optionTestIds).toEqual(['option-1-test-id', 'option-2-test-id']);
 });
 
 describe('onSelect', () => {
@@ -517,11 +534,29 @@ describe('Ref', () => {
   });
 });
 
-test('findOptionInGroup', () => {
-  const { container } = render(
-    <Autosuggest value="" onChange={() => {}} enteredTextLabel={() => 'Use value'} options={groupOptions} />
-  );
-  const wrapper = createWrapper(container).findAutosuggest()!;
-  wrapper.findNativeInput().focus();
-  expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
+describe('test utils', () => {
+  test('findOptionInGroup', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} options={groupOptions} />);
+    wrapper.findNativeInput().focus();
+
+    expect(wrapper.findDropdown().findOptionInGroup(1, 2)).toBeTruthy();
+  });
+
+  test('findOptionByTestId returns the option by test id', () => {
+    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} />);
+    wrapper.findNativeInput().focus();
+    const option = wrapper.findDropdown()!.findOptionByTestId('option-2-test-id')!.getElement();
+
+    expect(option).toHaveTextContent('2');
+  });
+
+  test('findOptionByTestId returns the option by test id even if test id contains double quotes', () => {
+    const { wrapper } = renderAutosuggest(
+      <Autosuggest {...defaultProps} options={[{ value: '1', label: 'Test Option', testId: '"option-test-id"' }]} />
+    );
+    wrapper.findNativeInput().focus();
+    const option = wrapper.findDropdown()!.findOptionByTestId('"option-test-id"')!.getElement();
+
+    expect(option).toHaveTextContent('Test Option');
+  });
 });

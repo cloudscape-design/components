@@ -97,6 +97,17 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
     );
   });
 
+  test('assigns test-id to the options', () => {
+    const { wrapper } = renderSelect();
+    wrapper.openDropdown();
+    const optionTestIds = wrapper
+      .findDropdown({ expandToViewport })
+      .findOptions()
+      .map(option => option.getElement().getAttribute('data-testid'));
+
+    expect(optionTestIds).toEqual(['option-1-test-id', 'option-2-test-id', 'option-3-test-id', 'option-4-test-id']);
+  });
+
   test('throws an error when attempting to select an option with closed dropdown', () => {
     const { wrapper } = renderSelect();
     expect(() => wrapper.selectOption(1, { expandToViewport })).toThrow(

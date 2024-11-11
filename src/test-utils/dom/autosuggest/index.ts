@@ -36,6 +36,22 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * Returns the wrapper of the first option that matches the specified test ID.
+   * Looks for the `data-testid` attribute on the option element.
+   * If no matching option is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {OptionWrapper | null}
+   */
+  findOptionByTestId(testId: string): OptionWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']} .${OptionWrapper.rootSelector}[data-testid="${escapedTestId}"]`,
+      OptionWrapper
+    );
+  }
+
+  /**
    * Returns an option from the autosuggest by it's value
    *
    * @param value The 'value' of the option.

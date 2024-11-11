@@ -166,6 +166,22 @@ export class DropdownContentWrapper extends ComponentWrapper {
     );
   }
 
+  /**
+   * Returns the wrapper of the option that matches the specified test ID.
+   * Looks for the `data-testid` attribute on the option element.
+   * If no matching option is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {OptionWrapper | null}
+   */
+  findOptionByTestId(testId: string): OptionWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(
+      `.${selectableStyles['selectable-item']}[data-test-index] .${OptionWrapper.rootSelector}[data-testid="${escapedTestId}"]`,
+      OptionWrapper
+    );
+  }
+
   findOptionByValue(value: string): OptionWrapper | null {
     const toReplace = escapeSelector(value);
     return this.findComponent(`.${OptionWrapper.rootSelector}[data-value="${toReplace}"]`, OptionWrapper);
@@ -210,6 +226,21 @@ export class DropdownContentWrapper extends ComponentWrapper {
    */
   findGroup(index: number): ElementWrapper | null {
     return this.find(`.${selectableStyles['selectable-item']}[data-group-index="${index}"]`);
+  }
+
+  /**
+   * Returns the wrapper of the group option that matches the specified test ID.
+   * Looks for the `data-testid` attribute on the group option element.
+   * If no matching group option is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {ElementWrapper | null}
+   */
+  findGroupByTestId(testId: string): ElementWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.find(
+      `.${selectableStyles['selectable-item']}[data-group-index]:not([data-test-index]) [data-testid=${escapedTestId}]`
+    );
   }
 
   /**

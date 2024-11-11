@@ -79,7 +79,14 @@ const Option = ({
     : undefined;
 
   return (
-    <span data-value={option.value} className={className} lang={option.lang} {...genericGroupProps} {...baseProps}>
+    <span
+      data-testid={option.testId}
+      data-value={option.value}
+      className={className}
+      lang={option.lang}
+      {...genericGroupProps}
+      {...baseProps}
+    >
       {icon}
       <span className={styles.content}>
         <span className={styles['label-content']}>

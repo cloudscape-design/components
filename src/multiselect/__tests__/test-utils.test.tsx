@@ -9,15 +9,22 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';
 
 const options: MultiselectProps.Options = [
-  { label: 'First option', value: '1' },
+  {
+    label: 'First option',
+    value: '1',
+    testId: 'option-1-test-id',
+  },
   {
     label: 'First group',
+    testId: 'group-test-id',
     options: [
       {
+        testId: 'option-2-test-id',
         label: 'Second option',
         value: '2',
       },
       {
+        testId: 'option-3-test-id',
         label: 'Third option',
         value: '3',
       },
@@ -54,6 +61,7 @@ describe('test utils', () => {
     expect(groups[0].getElement()).toHaveTextContent('First group');
     expect(groups[1].getElement()).toHaveTextContent('Second group');
   });
+
   describe('findGroup', () => {
     test('returns a group by 1-based index', () => {
       const { wrapper } = renderMultiselect();
@@ -61,6 +69,45 @@ describe('test utils', () => {
       const dropdown = wrapper.findDropdown()!;
       expect(dropdown.findGroup(1)!.getElement()).toHaveTextContent('First group');
       expect(dropdown.findGroup(2)!.getElement()).toHaveTextContent('Second group');
+    });
+  });
+
+  describe('findGroupByTestId', () => {
+    test('returns the group by test id', () => {
+      const { wrapper } = renderMultiselect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findGroupByTestId('group-test-id')!.getElement()).toHaveTextContent('First group');
+    });
+
+    test('does not return non-group options even if test id matches', () => {
+      const { wrapper } = renderMultiselect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findGroupByTestId('option-2-test-id')).toBeNull();
+    });
+  });
+
+  describe('findOptionByTestId', () => {
+    test('returns the option by test id', () => {
+      const { wrapper } = renderMultiselect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+      const topLevelOption = dropdown.findOptionByTestId('option-1-test-id')!.getElement();
+      const subLevelOption = dropdown.findOptionByTestId('option-2-test-id')!.getElement();
+
+      expect(topLevelOption).toHaveTextContent('First option');
+      expect(subLevelOption).toHaveTextContent('Second option');
+    });
+
+    test('does not return the group even if the test id matches', () => {
+      const { wrapper } = renderMultiselect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findOptionByTestId('group-test-id')).not.toBeTruthy();
     });
   });
 });

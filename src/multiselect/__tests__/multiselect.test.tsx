@@ -816,3 +816,22 @@ test('group options can have description, label tag, tags, disabled reason', () 
   expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
   expect(groupOption.findDisabledReason()!.getElement().textContent).toBe('Disabled reason');
 });
+
+test('assigns test-id to the options', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect
+      selectedOptions={defaultOptions.slice(0, 2)}
+      options={[
+        { label: 'First', value: '1', testId: 'option-1-test-id' },
+        { label: 'Second', value: '2', testId: 'option-2-test-id' },
+      ]}
+    />
+  );
+  wrapper.openDropdown();
+  const optionTestIds = wrapper
+    .findDropdown()
+    .findOptions()
+    .map(option => option.getElement().getAttribute('data-testid'));
+
+  expect(optionTestIds).toEqual(['option-1-test-id', 'option-2-test-id']);
+});
