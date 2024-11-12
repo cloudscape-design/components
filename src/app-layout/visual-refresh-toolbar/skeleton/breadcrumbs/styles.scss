@@ -1,0 +1,9 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+// backward compatibility before this commit: 7a4b7b3e3b1d50830383805a8f4ab6cd93c9701f
+.breadcrumbs-own:not(:empty) + .breadcrumbs-discovered {
+  display: none;
+}

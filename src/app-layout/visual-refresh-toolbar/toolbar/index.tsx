@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
-import { BreadcrumbsSlotContext } from '../contexts';
 import { AppLayoutInternals } from '../interfaces';
+import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
+import { ToolbarSkeleton } from '../skeleton/slot-skeletons';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
@@ -48,7 +48,7 @@ export interface ToolbarProps {
   onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
 }
 
-interface AppLayoutToolbarImplementationProps {
+export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
 }
@@ -194,18 +194,10 @@ export function AppLayoutToolbarImplementation({
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
-            <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
-              <div className={styles['breadcrumbs-own']}>{breadcrumbs}</div>
-              {discoveredBreadcrumbs && (
-                <div className={styles['breadcrumbs-discovered']}>
-                  <BreadcrumbGroupImplementation
-                    {...discoveredBreadcrumbs}
-                    data-awsui-discovered-breadcrumbs={true}
-                    __injectAnalyticsComponentMetadata={true}
-                  />
-                </div>
-              )}
-            </BreadcrumbsSlotContext.Provider>
+            <BreadcrumbsSlot
+              ownBreadcrumbs={appLayoutInternals.breadcrumbs}
+              discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+            />
           </div>
         )}
         {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
@@ -232,4 +224,7 @@ export function AppLayoutToolbarImplementation({
   );
 }
 
-export const createWidgetizedAppLayoutToolbar = createWidgetizedComponent(AppLayoutToolbarImplementation);
+export const createWidgetizedAppLayoutToolbar = createWidgetizedComponent(
+  AppLayoutToolbarImplementation,
+  ToolbarSkeleton
+);

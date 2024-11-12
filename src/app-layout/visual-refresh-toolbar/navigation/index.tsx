@@ -9,6 +9,7 @@ import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
+import { NotificationsSlot } from '../skeleton/slot-wrappers';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -80,4 +81,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
   );
 }
 
-export const createWidgetizedAppLayoutNavigation = createWidgetizedComponent(AppLayoutNavigationImplementation);
+export const createWidgetizedAppLayoutNavigation = createWidgetizedComponent(
+  AppLayoutNavigationImplementation,
+  NotificationsSlot
+);

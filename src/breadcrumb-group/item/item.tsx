@@ -17,12 +17,14 @@ interface BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> {
   item: T;
   isLast: boolean;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
+  children: React.ReactNode;
 }
 
 const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   item,
   isLast,
   anchorAttributes,
+  children,
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const [showPopover, setShowPopover] = useState(false);
   const textRef = useRef<HTMLElement>(null);
@@ -39,6 +41,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   return (
     <>
       <Item
+        ref={textRef}
         isLast={isLast}
         onFocus={() => {
           setShowPopover(true);
@@ -51,7 +54,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         anchorAttributes={anchorAttributes}
         {...(isLast ? { tabIndex: 0 } : {})}
       >
-        <FunnelBreadcrumbItem ref={textRef} text={item.text} last={isLast} />
+        {children}
       </Item>
       {showPopover && popoverContent}
     </>
@@ -62,25 +65,29 @@ type ItemProps = React.HTMLAttributes<HTMLElement> & {
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
   isLast: boolean;
 };
-const Item = ({ anchorAttributes, children, isLast, ...itemAttributes }: ItemProps) =>
-  isLast ? (
-    <span className={styles.anchor} {...itemAttributes}>
-      {children}
-    </span>
-  ) : (
-    <a className={styles.anchor} {...itemAttributes} {...anchorAttributes}>
-      {children}
-    </a>
-  );
+const Item = React.forwardRef<HTMLElement, ItemProps>(
+  ({ anchorAttributes, children, isLast, ...itemAttributes }, ref) =>
+    isLast ? (
+      <span ref={ref} className={styles.anchor} {...itemAttributes}>
+        {children}
+      </span>
+    ) : (
+      <a ref={ref as React.Ref<HTMLAnchorElement>} className={styles.anchor} {...itemAttributes} {...anchorAttributes}>
+        {children}
+      </a>
+    )
+);
 
 export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   item,
+  itemIndex,
+  totalCount,
   onClick,
   onFollow,
-  isLast = false,
   isGhost = false,
   isTruncated = false,
 }: BreadcrumbItemProps<T>) {
+  const isLast = itemIndex === totalCount - 1;
   const preventDefault = (event: React.MouseEvent) => event.preventDefault();
   const onClickHandler = (event: React.MouseEvent) => {
     if (isPlainLeftClick(event)) {
@@ -97,13 +104,25 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     anchorAttributes.tabIndex = -1;
   }
 
+  const breadcrumbItem = (
+    <FunnelBreadcrumbItem
+      className={styles.text}
+      itemIndex={itemIndex}
+      totalCount={totalCount}
+      text={item.text}
+      disableAnalytics={isGhost}
+    />
+  );
+
   return (
     <div className={clsx(!isGhost && styles.breadcrumb, isGhost && styles['ghost-breadcrumb'], isLast && styles.last)}>
       {isTruncated && !isGhost ? (
-        <BreadcrumbItemWithPopover item={item} isLast={isLast} anchorAttributes={anchorAttributes} />
+        <BreadcrumbItemWithPopover item={item} isLast={isLast} anchorAttributes={anchorAttributes}>
+          {breadcrumbItem}
+        </BreadcrumbItemWithPopover>
       ) : (
         <Item isLast={isLast} anchorAttributes={anchorAttributes}>
-          <FunnelBreadcrumbItem text={item.text} last={isLast} ghost={isGhost} />
+          {breadcrumbItem}
         </Item>
       )}
       {!isLast ? (
