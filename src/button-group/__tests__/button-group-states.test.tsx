@@ -19,7 +19,6 @@ const likeButton: ButtonGroupProps.IconToggleButton = {
   id: 'like',
   pressed: false,
   text: 'Like',
-  pressedText: 'Liked',
   iconName: 'thumbs-up',
   pressedIconName: 'thumbs-up-filled',
   popoverFeedback: 'No longer liking',
@@ -57,7 +56,7 @@ test('toggle button has correct pressed label', () => {
   rerender({ items: [{ ...likeButton, pressed: true }] });
 
   expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveAttribute('aria-pressed', 'true');
-  expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveAccessibleName('Liked');
+  expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveAccessibleName('Like');
 });
 
 test('all item types can be disabled', () => {

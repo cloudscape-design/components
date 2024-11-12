@@ -40,7 +40,6 @@ const IconToggleButtonItem = forwardRef(
       warnOnce('ButtonGroup', `Missing pressed icon for item with id: ${item.id}`);
     }
 
-    const tooltipContent = item.pressed ? item.pressedText : item.text;
     const feedbackContent = item.pressed ? item.pressedPopoverFeedback ?? item.popoverFeedback : item.popoverFeedback;
     const canShowTooltip = showTooltip && !item.disabled && !item.loading;
     const canShowFeedback = showTooltip && showFeedback && feedbackContent;
@@ -58,7 +57,7 @@ const IconToggleButtonItem = forwardRef(
           pressedIconName={hasIcon ? item.pressedIconName : 'close'}
           pressedIconUrl={item.pressedIconUrl}
           pressedIconSvg={item.pressedIconUrl}
-          ariaLabel={tooltipContent}
+          ariaLabel={item.text}
           onChange={event => fireCancelableEvent(onItemClick, { id: item.id, pressed: event.detail.pressed })}
           ref={ref}
           data-testid={item.id}
@@ -66,15 +65,14 @@ const IconToggleButtonItem = forwardRef(
           className={clsx(testUtilStyles.item, testUtilStyles['button-group-item'])}
           __title=""
         >
-          {tooltipContent}
+          {item.text}
         </InternalToggleButton>
         {(canShowTooltip || canShowFeedback) && (
           <Tooltip
             trackRef={containerRef}
             trackKey={item.id}
             value={
-              (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) ||
-              tooltipContent
+              (showFeedback && <InternalLiveRegion tagName="span">{feedbackContent}</InternalLiveRegion>) || item.text
             }
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
           />

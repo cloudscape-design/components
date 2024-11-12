@@ -19,7 +19,6 @@ const likeButton: ButtonGroupProps.IconToggleButton = {
   id: 'like',
   pressed: false,
   text: 'Like',
-  pressedText: 'Liked',
   iconName: 'thumbs-up',
   pressedIconName: 'thumbs-up-filled',
   popoverFeedback: 'No longer liking',

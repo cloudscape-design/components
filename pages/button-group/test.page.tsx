@@ -32,6 +32,12 @@ export default function ButtonGroupPage() {
   const [canSend, setCanSend] = useState(true);
   const [canRedo, setCanRedo] = useState(true);
 
+  const toggleTexts = {
+    like: ['Like', 'Liked'],
+    dislike: ['Dislike', 'Disliked'],
+    favorite: ['Add to favorites', 'Added to favorites'],
+  };
+
   const feedbackGroup: ButtonGroupProps.Group = {
     type: 'group',
     text: 'Vote',
@@ -41,8 +47,7 @@ export default function ButtonGroupPage() {
         id: 'like',
         iconName: 'thumbs-up',
         pressedIconName: 'thumbs-up-filled',
-        text: 'Like',
-        pressedText: 'Liked',
+        text: feedback === 'like' ? toggleTexts.like[1] : toggleTexts.like[0],
         pressed: feedback === 'like',
       },
       {
@@ -50,8 +55,7 @@ export default function ButtonGroupPage() {
         id: 'dislike',
         iconName: 'thumbs-down',
         pressedIconName: 'thumbs-down-filled',
-        text: 'Dislike',
-        pressedText: 'Disliked',
+        text: feedback === 'dislike' ? toggleTexts.dislike[1] : toggleTexts.dislike[0],
         pressed: feedback === 'dislike',
       },
     ],
@@ -66,8 +70,7 @@ export default function ButtonGroupPage() {
         id: 'favorite',
         iconName: 'star',
         pressedIconName: 'star-filled',
-        text: 'Add to favorites',
-        pressedText: 'Added to favorites',
+        text: isFavorite ? toggleTexts.favorite[1] : toggleTexts.favorite[0],
         loading: loadingId === 'favorite',
         pressed: isFavorite,
       },

@@ -19,7 +19,6 @@ const feedbackGroup: ButtonGroupProps.Group = {
       iconName: 'thumbs-up',
       pressedIconName: 'thumbs-up-filled',
       text: 'Like',
-      pressedText: 'Like',
       pressed: true,
     },
     {
@@ -28,7 +27,6 @@ const feedbackGroup: ButtonGroupProps.Group = {
       iconName: 'thumbs-down',
       pressedIconName: 'thumbs-down-filled',
       text: 'Dislike',
-      pressedText: 'Dislike',
       pressed: false,
     },
   ],

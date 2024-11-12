@@ -37,7 +37,7 @@ test.each([{ pressed: false }, { pressed: true }])(
   'warns and renders some icon when no icon specified for icon toggle button, pressed=$pressed',
   ({ pressed }) => {
     const { wrapper } = renderButtonGroup({
-      items: [{ type: 'icon-toggle-button', id: 'like', pressed, text: 'Like', pressedText: 'Liked' }],
+      items: [{ type: 'icon-toggle-button', id: 'like', pressed, text: 'Like' }],
     });
 
     expect(warnOnce).toHaveBeenCalledTimes(2);
@@ -62,7 +62,6 @@ test('uses non-pressed popover feedback if pressed is not provided', () => {
         id: 'like',
         pressed: true,
         text: 'Like',
-        pressedText: 'Liked',
         popoverFeedback: 'You like it!',
       },
     ],
@@ -93,14 +92,12 @@ test('handles toggle item click', () => {
         id: 'like',
         pressed: false,
         text: 'Like',
-        pressedText: 'Liked',
       },
       {
         type: 'icon-toggle-button',
         id: 'dislike',
         pressed: true,
         text: 'Dislike',
-        pressedText: 'Disliked',
       },
     ],
     onItemClick,

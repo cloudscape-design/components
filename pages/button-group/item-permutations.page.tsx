@@ -49,7 +49,6 @@ const itemPermutations = createPermutations<ButtonGroupProps.Item>([
     iconName: ['star'],
     pressedIconName: ['star-filled'],
     text: ['Add to favorites'],
-    pressedText: ['Added to favorites'],
     pressed: [false, true],
   },
 ]);

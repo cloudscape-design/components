@@ -53,7 +53,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
    * * `pressed` (boolean) - The toggle button pressed state.
    * * `text` (string) - The name shown as a tooltip for this button.
-   * * `pressedText` (string) - The name shown as a tooltip for this button in pressed state.
    * * `disabled` (optional, boolean) - The disabled state indication for this button.
    * * `loading` (optional, boolean) - The loading state indication for this button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
@@ -114,7 +113,6 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     pressed: boolean;
-    pressedText: string;
     disabled?: boolean;
     loading?: boolean;
     loadingText?: string;
