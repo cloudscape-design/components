@@ -44,25 +44,27 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
   };
 
   return (
-    <nav
-      aria-label={ariaLabels?.navigation ?? undefined}
-      className={clsx(
-        styles.navigation,
-        {
-          [styles['is-navigation-open']]: navigationOpen,
-          [testutilStyles['drawer-closed']]: !navigationOpen,
-        },
-        testutilStyles.navigation,
-        sharedStyles['with-motion-horizontal']
-      )}
-      aria-hidden={!navigationOpen}
-      onClick={onNavigationClick}
+    <div
+      className={clsx(styles['navigation-container'], sharedStyles['with-motion-horizontal'], {
+        [styles['is-navigation-open']]: navigationOpen,
+      })}
       style={{
         blockSize: drawerHeight,
         insetBlockStart: drawerTopOffset,
       }}
     >
-      <div className={clsx(styles['content-container'], styles['animated-content'])}>
+      <nav
+        aria-label={ariaLabels?.navigation ?? undefined}
+        className={clsx(
+          styles.navigation,
+          {
+            [testutilStyles['drawer-closed']]: !navigationOpen,
+          },
+          testutilStyles.navigation
+        )}
+        aria-hidden={!navigationOpen}
+        onClick={onNavigationClick}
+      >
         <div className={clsx(styles['hide-navigation'])}>
           <InternalButton
             ariaLabel={ariaLabels?.navigationClose ?? undefined}
@@ -75,8 +77,8 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
           />
         </div>
         {navigation}
-      </div>
-    </nav>
+      </nav>
+    </div>
   );
 }
 
