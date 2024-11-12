@@ -98,7 +98,10 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   }
 
   return (
-    <div className={clsx(!isGhost && styles.breadcrumb, isGhost && styles['ghost-breadcrumb'], isLast && styles.last)}>
+    <div
+      className={clsx(!isGhost && styles.breadcrumb, isGhost && styles['ghost-breadcrumb'], isLast && styles.last)}
+      data-testid={isGhost ? undefined : item.testId}
+    >
       {isTruncated && !isGhost ? (
         <BreadcrumbItemWithPopover item={item} isLast={isLast} anchorAttributes={anchorAttributes} />
       ) : (

@@ -45,6 +45,12 @@ export namespace BreadcrumbGroupProps {
   export interface Item {
     text: string;
     href: string;
+
+    /**
+     * Test ID of the breadcrumb item.
+     * Assigns this value to the `data-testid` attribute of the breadcrumb item.
+     */
+    testId?: string;
   }
 
   export interface ClickDetail<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>

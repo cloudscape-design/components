@@ -39,14 +39,17 @@ describe('BreadcrumbGroup Component', () => {
         {
           text: 'Item 1',
           href: '/#1',
+          testId: 'breadcrumb-item-1',
         },
         {
           text: 'Item 2',
           href: '/#3',
+          testId: 'breadcrumb-item-2',
         },
         {
           text: 'Item 3',
           href: '/#3',
+          testId: 'breadcrumb-item-3',
         },
       ];
       wrapper = renderBreadcrumbGroup({ items });
@@ -107,6 +110,48 @@ describe('BreadcrumbGroup Component', () => {
 
       expect(breadcrumbs.findBreadcrumbLink(1)?.getElement()).toHaveTextContent(items[0].text);
       expect(breadcrumbs.findBreadcrumbLink(2)?.getElement()).toHaveTextContent(items[1].text);
+    });
+
+    test('test-utils findBreadcrumbLinkByTestId finds the item with test id', () => {
+      const { container } = render(<BreadcrumbGroup items={items} />);
+      const breadcrumbItem = createWrapper(container)
+        .findBreadcrumbGroup()!
+        .findBreadcrumbLinkByTestId('breadcrumb-item-2')!
+        .getElement()!;
+
+      expect(breadcrumbItem).toHaveTextContent('Item 2');
+    });
+
+    test('test-utils findBreadcrumbLinkByTestId finds the item with test id, even if test id contains quotes', () => {
+      const { container } = render(
+        <BreadcrumbGroup
+          items={[
+            {
+              text: 'Breadcrumb item',
+              href: '/#1',
+              testId: '"breadcrumb-item-test-id"',
+            },
+          ]}
+        />
+      );
+      const breadcrumbItem = createWrapper(container)
+        .findBreadcrumbGroup()!
+        .findBreadcrumbLinkByTestId('"breadcrumb-item-test-id"')!
+        .getElement()!;
+
+      expect(breadcrumbItem).toHaveTextContent('Breadcrumb item');
+    });
+
+    test('assigns data-test id to the breadcrumb items', () => {
+      const { container } = render(<BreadcrumbGroup items={items} />);
+      const [firstItem, secondItem] = createWrapper(container)
+        .findAll(`.${itemStyles.breadcrumb}`)
+        .map(item => item.getElement());
+
+      expect(firstItem).toHaveAttribute('data-testid', 'breadcrumb-item-1');
+      expect(firstItem).toHaveTextContent('Item 1');
+      expect(secondItem).toHaveAttribute('data-testid', 'breadcrumb-item-2');
+      expect(secondItem).toHaveTextContent('Item 2');
     });
 
     // Test for AWSUI-6738
@@ -229,6 +274,24 @@ describe('BreadcrumbGroup Component', () => {
       anchors.forEach(anchor => {
         expect(anchor).toHaveAttribute('tabindex', '-1');
       });
+    });
+
+    test('breadcrumb items do not receive data-testid', () => {
+      const breadCrumbGroup = renderBreadcrumbGroup({
+        items: [
+          {
+            text: 'Item 1',
+            href: '/#1',
+            testId: 'breadcrumb-item-test-id',
+          },
+        ],
+      });
+
+      const actualBreadcrumb = breadCrumbGroup.find(`.${itemStyles.breadcrumb}`)!.getElement();
+      const ghostBreadcrumb = breadCrumbGroup.find(`.${itemStyles['ghost-breadcrumb']}`)!.getElement();
+
+      expect(actualBreadcrumb).toHaveAttribute('data-testid', 'breadcrumb-item-test-id');
+      expect(ghostBreadcrumb).not.toHaveAttribute('data-testid', 'breadcrumb-item-test-id');
     });
   });
 });
