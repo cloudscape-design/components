@@ -50,4 +50,61 @@ describe('Grid component', () => {
     });
     expect(wrapper.getElement().childElementCount).toBe(2);
   });
+
+  test('assigns data-testid to the columns', () => {
+    const wrapper = renderGrid({
+      gridDefinition: [{ testId: 'column-1' }, { testId: 'column-2' }],
+      children: (
+        <>
+          <div>Column 1</div>
+          <div>Column 2</div>
+        </>
+      ),
+    });
+    const [firstColumn, secondColumn] = wrapper
+      .findAll(`.${styles['grid-column']}`)
+      .map(columnWrapper => columnWrapper.getElement()!);
+
+    expect(firstColumn).toHaveAttribute('data-testid', 'column-1');
+    expect(secondColumn).toHaveAttribute('data-testid', 'column-2');
+  });
+
+  test('findColumn returns the correct column', () => {
+    const wrapper = renderGrid({
+      children: (
+        <>
+          <div>Column 1</div>
+          <div>Column 2</div>
+        </>
+      ),
+    });
+
+    const column = wrapper.findColumn(2)!.getElement();
+    expect(column).toHaveTextContent('Column 2');
+  });
+
+  test('findColumnByTestId returns the column with test id', () => {
+    const wrapper = renderGrid({
+      gridDefinition: [{ testId: 'column-1' }, { testId: 'column-2' }],
+      children: (
+        <>
+          <div>Column 1</div>
+          <div>Column 2</div>
+        </>
+      ),
+    });
+
+    const column = wrapper.findColumnByTestId('column-2')!.getElement();
+    expect(column).toHaveTextContent('Column 2');
+  });
+
+  test('findColumnByTestId returns the column with test id, even if test id contains a quote character', () => {
+    const wrapper = renderGrid({
+      gridDefinition: [{ testId: '"column-test-id"' }],
+      children: <div>Test column</div>,
+    });
+
+    const column = wrapper.findColumnByTestId('"column-test-id"')!.getElement();
+    expect(column).toHaveTextContent('Test column');
+  });
 });
