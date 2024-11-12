@@ -147,12 +147,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBoardPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
   colorDragPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
   colorDragPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
-  colorDropzoneBackgroundDefault: { light: '{colorWhite}', dark: '{colorGrey800}' },
-  colorDropzoneBackgroundHover: { light: '{colorBlue100}', dark: '{colorBlue900}' },
-  colorDropzoneTextDefault: { light: '{colorGrey600}', dark: '{colorGrey350}' },
-  colorDropzoneTextHover: { light: '{colorGrey600}', dark: '{colorGrey350}' },
-  colorDropzoneBorderDefault: { light: '{colorGrey500}', dark: '{colorGrey550}' },
-  colorDropzoneBorderHover: { light: '{colorBlue800}', dark: '{colorBlue400}' },
   colorBackgroundDropdownItemHover: { light: '{colorGrey150}', dark: '{colorGrey650}' },
   colorTextSeverityMedium: { light: '{colorBlack}', dark: '{colorGrey900}' },
 };
