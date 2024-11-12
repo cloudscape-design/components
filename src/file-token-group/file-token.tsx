@@ -93,7 +93,7 @@ function InternalFileToken({
       ref={containerRef}
       className={clsx(styles.token, {
         [styles['token-grid']]: alignment === 'horizontal',
-        [styles['token-contains-image']]: groupContainsImage,
+        [styles['token-contains-image']]: groupContainsImage && showFileThumbnail,
       })}
       role="group"
       aria-label={file.name}
