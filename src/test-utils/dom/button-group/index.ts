@@ -5,6 +5,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import ButtonWrapper from '../button/index.js';
 import ButtonDropdownWrapper from '../button-dropdown/index.js';
 import createWrapper from '../index.js';
+import ToggleButtonWrapper from '../toggle-button/index.js';
 
 import testUtilStyles from '../../../button-group/test-classes/styles.selectors.js';
 
@@ -25,6 +26,15 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
     const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${id}"]`;
     const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
     return wrapper && new ButtonWrapper(wrapper.getElement());
+  }
+
+  /**
+   * Finds a toggle button item by its id.
+   */
+  findToggleButtonById(id: string): null | ToggleButtonWrapper {
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${id}"]`;
+    const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
+    return wrapper && new ToggleButtonWrapper(wrapper.getElement());
   }
 
   /**
