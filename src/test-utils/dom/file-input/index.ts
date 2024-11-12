@@ -4,7 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button';
 
-import selectors from '../../../internal/components/file-input/styles.selectors.js';
+import selectors from '../../../file-input/styles.selectors.js';
 
 export default class FileInputWrapper extends ComponentWrapper<HTMLElement> {
   static rootSelector: string = selectors.root;

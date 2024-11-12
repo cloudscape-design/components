@@ -4,20 +4,18 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../../base-component/index.js';
-import { fireNonCancelableEvent } from '../../events/index.js';
-import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
-import { useListFocusController } from '../../hooks/use-list-focus-controller.js';
-import { useMergeRefs } from '../../hooks/use-merge-refs/index.js';
-import TokenList from '../token-list/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import TokenList from '../internal/components/token-list/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
 import InternalFileToken from './file-token.js';
 import { FileTokenGroupProps } from './interfaces.js';
 
-import tokenListStyles from '../token-list/styles.css.js';
+import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
-
-export { FileTokenGroupProps };
 
 type InternalFileTokenGroupProps = FileTokenGroupProps & InternalBaseComponentProps;
 

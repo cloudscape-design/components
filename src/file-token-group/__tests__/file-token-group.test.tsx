@@ -3,18 +3,15 @@
 import React, { useState } from 'react';
 import { act, fireEvent, render as testingLibraryRender } from '@testing-library/react';
 
-import '../../../../__a11y__/to-validate-a11y';
-import FileTokenGroup, {
-  FileTokenGroupProps,
-} from '../../../../../lib/components/internal/components/file-token-group';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
-import FileTokenGroupWrapper from '../../../../../lib/components/test-utils/dom/internal/file-token-group';
+import '../../__a11y__/to-validate-a11y';
+import FileTokenGroup, { FileTokenGroupProps } from '../../../lib/components/file-token-group';
+import createWrapper from '../../../lib/components/test-utils/dom';
 
-import styles from '../../../../../lib/components/internal/components/file-token-group/styles.css.js';
-import testStyles from '../../../../../lib/components/internal/components/file-token-group/test-classes/styles.css.js';
-import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.selectors.js';
+import styles from '../../../lib/components/file-token-group/styles.css.js';
+import testStyles from '../../../lib/components/file-token-group/test-classes/styles.css.js';
+import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';
 
-jest.mock('../../../../../lib/components/internal/utils/date-time', () => ({
+jest.mock('../../../lib/components/internal/utils/date-time', () => ({
   formatDateTime: () => '2020-06-01T00:00:00',
 }));
 
@@ -50,20 +47,18 @@ const file3 = new File(
 );
 
 function render(props: Partial<FileTokenGroupProps>) {
-  testingLibraryRender(
+  const { container } = testingLibraryRender(
     <div>
       <FileTokenGroup {...{ ...defaultProps, ...props }} />
       <div id="test-label">Test label</div>
     </div>
   );
-  const element = createWrapper().findByClassName(FileTokenGroupWrapper.rootSelector)!.getElement();
-  return new FileTokenGroupWrapper(element);
+  return createWrapper(container).findFileTokenGroup()!;
 }
 
 function renderStateful(props: Partial<FileTokenGroupProps> = {}) {
-  testingLibraryRender(<StatefulFileTokenGroup {...props} />);
-  const element = createWrapper().findByClassName(FileTokenGroupWrapper.rootSelector)!.getElement();
-  return new FileTokenGroupWrapper(element);
+  const { container } = testingLibraryRender(<StatefulFileTokenGroup {...props} />);
+  return createWrapper(container).findFileTokenGroup()!;
 }
 
 function StatefulFileTokenGroup({ items: initialItems = [], ...rest }: Partial<FileTokenGroupProps>) {
