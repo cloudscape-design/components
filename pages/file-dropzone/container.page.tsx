@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { Box, Button, Checkbox, Container, Header, SpaceBetween, Table } from '~components';
+import { Box, Button, Checkbox, Container, FileInput, Header, SpaceBetween, Table } from '~components';
 import FileDropzone, { useFilesDragging } from '~components/file-dropzone';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -55,18 +55,20 @@ export default function FileDropzoneContainer() {
           }
         >
           <SpaceBetween size="l">
-            {/* {!onlyVisibleOnDrag && (
+            {!onlyVisibleOnDrag && (
               <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
-                <Box fontWeight="bold" color="inherit">
-                  Drop files here
-                </Box>
+                <Box color="inherit">Drop files here or select from below</Box>
+                <FileInput value={files} onChange={(event: any) => handleFilesChange(event.detail.value)}>
+                  Choose files
+                </FileInput>
               </FileDropzone>
-            )} */}
+            )}
             {areFilesDragging && onlyVisibleOnDrag ? (
               <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
-                <Box fontWeight="bold" color="inherit">
-                  Drop files here
-                </Box>
+                <Box color="inherit">Drop files here or select from below</Box>
+                <FileInput value={files} onChange={(event: any) => handleFilesChange(event.detail.value)}>
+                  Choose files
+                </FileInput>
               </FileDropzone>
             ) : (
               <Table
