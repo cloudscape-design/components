@@ -156,6 +156,7 @@ function PortaledModal({
       PerformanceMetrics.modalPerformanceData({
         timeToContentReadyInModal,
         instanceIdentifier: instanceUniqueId,
+        componentIdentifier: headerRef.current?.innerHTML,
       });
       performanceMetricLogged.current = true;
     }
@@ -215,6 +216,7 @@ function PortaledModal({
   // Add extra scroll padding to account for the height of the sticky footer,
   // to prevent it from covering focused elements.
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
+  const headerRef = useRef<HTMLDivElement>(null);
   const { subStepRef } = useFunnelSubStep();
 
   return (
@@ -279,7 +281,7 @@ function PortaledModal({
                         </div>
                       }
                     >
-                      <span id={headerId} className={styles['header--text']}>
+                      <span ref={headerRef} id={headerId} className={styles['header--text']}>
                         {header}
                       </span>
                     </InternalHeader>
