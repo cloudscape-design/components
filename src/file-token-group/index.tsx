@@ -9,12 +9,21 @@ import InternalFileTokenGroup from './internal';
 
 export { FileTokenGroupProps };
 
-const FileTokenGroup = ({ showFileLastModified, showFileSize, showFileThumbnail, ...props }: FileTokenGroupProps) => {
+const FileTokenGroup = ({
+  showFileLastModified,
+  showFileSize,
+  showFileThumbnail,
+  alignment,
+  limit,
+  ...props
+}: FileTokenGroupProps) => {
   const baseComponentProps = useBaseComponent('FileTokenGroup', {
     props: {
       showFileLastModified,
       showFileSize,
       showFileThumbnail,
+      alignment,
+      limit,
     },
   });
   return (
@@ -22,6 +31,8 @@ const FileTokenGroup = ({ showFileLastModified, showFileSize, showFileThumbnail,
       showFileLastModified={showFileLastModified}
       showFileSize={showFileSize}
       showFileThumbnail={showFileThumbnail}
+      alignment={alignment}
+      limit={limit}
       {...props}
       {...baseComponentProps}
     />

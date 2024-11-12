@@ -6,6 +6,7 @@ import { Box, Button, Checkbox, Container, FileInput, Header, SpaceBetween, Tabl
 import FileDropzone, { useFilesDragging } from '~components/file-dropzone';
 
 import AppContext, { AppContextType } from '../app/app-context';
+import ScreenshotArea from '../utils/screenshot-area';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -26,7 +27,7 @@ export default function FileDropzoneContainer() {
   };
 
   const removeFiles = () => {
-    const newValue = files.filter(file => !selectedItems.map((item: any) => item.name).includes(file.name));
+    const newValue = files.filter(file => !selectedItems.includes(file));
     setFiles(newValue);
 
     setSelectedItems([]);
@@ -35,7 +36,7 @@ export default function FileDropzoneContainer() {
   const { areFilesDragging } = useFilesDragging();
 
   return (
-    <Box margin="xl">
+    <ScreenshotArea>
       <SpaceBetween size="xl">
         <Header variant="h1">File dropzone: in container</Header>
         <Checkbox checked={onlyVisibleOnDrag} onChange={() => setUrlParams({ onlyVisibleOnDrag: !onlyVisibleOnDrag })}>
@@ -58,7 +59,11 @@ export default function FileDropzoneContainer() {
             {!onlyVisibleOnDrag && (
               <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
                 <Box color="inherit">Drop files here or select from below</Box>
-                <FileInput value={files} onChange={(event: any) => handleFilesChange(event.detail.value)}>
+                <FileInput
+                  multiple={true}
+                  value={files}
+                  onChange={(event: any) => handleFilesChange(event.detail.value)}
+                >
                   Choose files
                 </FileInput>
               </FileDropzone>
@@ -66,7 +71,11 @@ export default function FileDropzoneContainer() {
             {areFilesDragging && onlyVisibleOnDrag ? (
               <FileDropzone onChange={(event: any) => handleFilesChange(event.detail.value)}>
                 <Box color="inherit">Drop files here or select from below</Box>
-                <FileInput value={files} onChange={(event: any) => handleFilesChange(event.detail.value)}>
+                <FileInput
+                  multiple={true}
+                  value={files}
+                  onChange={(event: any) => handleFilesChange(event.detail.value)}
+                >
                   Choose files
                 </FileInput>
               </FileDropzone>
@@ -105,11 +114,7 @@ export default function FileDropzoneContainer() {
                   itemSelectionLabel: ({ selectedItems }, item) =>
                     `${item.name} is ${selectedItems.indexOf(item) < 0 ? 'not ' : ''}selected`,
                 }}
-                items={files.map(file => ({
-                  name: file.name,
-                  type: file.type,
-                  size: file.size,
-                }))}
+                items={files}
                 loadingText="Loading resources"
                 sortingDisabled={true}
               />
@@ -117,6 +122,6 @@ export default function FileDropzoneContainer() {
           </SpaceBetween>
         </Container>
       </SpaceBetween>
-    </Box>
+    </ScreenshotArea>
   );
 }

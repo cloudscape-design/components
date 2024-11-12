@@ -16,13 +16,14 @@
   color: awsui.$color-dropzone-text-default;
   background-color: awsui.$color-dropzone-background-default;
   border-color: awsui.$color-dropzone-border-default;
-  border-block: 1px dashed;
-  border-inline: 1px dashed;
+  border-block: 1px dashed awsui.$color-dropzone-border-default;
+  border-inline: 1px dashed awsui.$color-dropzone-border-default;
 
   &.hovered {
     color: awsui.$color-dropzone-text-hover;
     background-color: awsui.$color-dropzone-background-hover;
-    border-color: awsui.$color-dropzone-border-hover;
+    border-block: 1px dashed awsui.$color-dropzone-border-hover;
+    border-inline: 1px dashed awsui.$color-dropzone-border-hover;
   }
 }
 
