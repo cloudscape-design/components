@@ -200,7 +200,7 @@ export function AppLayoutToolbarImplementation({
             />
           </div>
         )}
-        {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
+        {(drawers?.length || globalDrawers?.length || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
           <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
