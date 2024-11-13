@@ -7,6 +7,7 @@ import { AppLayout } from '~components';
 import awsuiPlugins from '~components/internal/plugins';
 
 import ScreenshotArea from '../utils/screenshot-area';
+import labels from './utils/labels';
 
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle-global',
@@ -43,7 +44,15 @@ awsuiPlugins.appLayout.registerDrawer({
 export default function WithDrawersGlobalOnly() {
   return (
     <ScreenshotArea gutters={false}>
-      <AppLayout toolsHide={true} />
+      <AppLayout
+        ariaLabels={labels}
+        toolsHide={true}
+        content={
+          <div>
+            <h1>Content title</h1>
+          </div>
+        }
+      />
     </ScreenshotArea>
   );
 }
