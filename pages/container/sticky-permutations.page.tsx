@@ -49,7 +49,6 @@ export default function () {
         ariaLabels={labels}
         breadcrumbs={urlParams.hasBreadcrumbs && <Breadcrumbs />}
         navigationHide={true}
-        toolsHide={true}
         contentType="table"
         headerVariant={urlParams.highContrast ? 'high-contrast' : undefined}
         notifications={urlParams.hasNotifications && <Notifications />}
