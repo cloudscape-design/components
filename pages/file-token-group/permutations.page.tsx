@@ -34,6 +34,7 @@ const permutations = createPermutations<Omit<FileTokenGroupProps, 'onDismiss' | 
     showFileLastModified: [true, false],
     showFileSize: [true, false],
     alignment: ['horizontal', 'vertical'],
+    limit: [undefined, 0],
   },
 ]);
 
@@ -47,13 +48,13 @@ export default function FileTokenGroupPermutations() {
           render={permutation => (
             <FileTokenGroup
               i18nStrings={{
-                errorIconAriaLabel: 'Error',
-                warningIconAriaLabel: 'Warning',
-                removeFileAriaLabel: (fileIndex: number) => `Remove file ${fileIndex + 1}`,
+                // errorIconAriaLabel: 'Error',
+                // warningIconAriaLabel: 'Warning',
+                // removeFileAriaLabel: (fileIndex: number) => `Remove file ${fileIndex + 1}`,
                 formatFileSize: () => `1.01 MB`,
                 formatFileLastModified: () => '2020-01-01T00:00:00',
-                limitShowFewer: 'Show fewer',
-                limitShowMore: 'Show more',
+                // limitShowFewer: 'Show fewer',
+                // limitShowMore: 'Show more',
               }}
               onDismiss={() => {
                 /*empty handler to suppress react controlled property warning*/

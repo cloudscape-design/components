@@ -4,6 +4,7 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component/index.js';
 import TokenList from '../internal/components/token-list/index.js';
 import { fireNonCancelableEvent } from '../internal/events/index.js';
@@ -50,6 +51,8 @@ function InternalFileTokenGroup({
   const isImage = (file: File) => file.type.startsWith('image/');
   const groupContainsImage = items.filter(item => isImage(item.file)).length > 0;
 
+  const i18n = useInternalI18n('file-token-group');
+
   return (
     <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root, testStyles.root)}>
       <TokenList
@@ -67,7 +70,17 @@ function InternalFileTokenGroup({
             }}
             errorText={file.errorText}
             warningText={file.warningText}
-            i18nStrings={i18nStrings}
+            i18nStrings={{
+              removeFileAriaLabel: i18n(
+                'i18nStrings.removeFileAriaLabel',
+                i18nStrings?.removeFileAriaLabel?.(fileIndex),
+                format => format({ fileIndex })
+              ),
+              errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+              warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+              formatFileSize: i18nStrings?.formatFileSize,
+              formatFileLastModified: i18nStrings?.formatFileLastModified,
+            }}
             loading={file.loading}
             readOnly={readOnly}
             alignment={alignment}
@@ -78,8 +91,8 @@ function InternalFileTokenGroup({
         )}
         limit={limit}
         i18nStrings={{
-          limitShowFewer: i18nStrings.limitShowFewer,
-          limitShowMore: i18nStrings.limitShowMore,
+          limitShowFewer: i18n('i18nStrings.limitShowFewer', i18nStrings?.limitShowFewer),
+          limitShowMore: i18n('i18nStrings.limitShowMore', i18nStrings?.limitShowMore),
         }}
       />
     </div>

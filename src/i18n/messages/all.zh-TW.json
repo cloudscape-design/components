@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "載入內容"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "顯示較少",
+    "i18nStrings.limitShowMore": "顯示更多",
+    "i18nStrings.removeFileAriaLabel": "移除檔案 {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "錯誤",
+    "i18nStrings.warningIconAriaLabel": "警告"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "顯示較少",
+    "i18nStrings.limitShowMore": "顯示更多",
+    "i18nStrings.removeFileAriaLabel": "移除檔案 {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "錯誤",
+    "i18nStrings.warningIconAriaLabel": "警告",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {選擇檔案} false {選擇檔案} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {拖曳檔案以上傳} false {拖曳檔案以上傳} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "通知",
     "i18nStrings.errorIconAriaLabel": "錯誤",

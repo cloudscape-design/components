@@ -66,7 +66,7 @@ export interface FileTokenGroupProps extends BaseComponentProps {
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
    * * `formatFileLastModified` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.
    */
-  i18nStrings: FileTokenGroupProps.I18nStrings;
+  i18nStrings?: FileTokenGroupProps.I18nStrings;
 }
 
 export namespace FileTokenGroupProps {
@@ -78,7 +78,7 @@ export namespace FileTokenGroupProps {
     limitShowFewer?: string;
     limitShowMore?: string;
 
-    removeFileAriaLabel: (fileIndex: number) => string;
+    removeFileAriaLabel?: (fileIndex: number) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;

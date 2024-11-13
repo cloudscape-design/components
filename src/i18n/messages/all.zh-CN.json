@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "正在加载内容"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "显示更少",
+    "i18nStrings.limitShowMore": "显示更多",
+    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.warningIconAriaLabel": "警告"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "显示更少",
+    "i18nStrings.limitShowMore": "显示更多",
+    "i18nStrings.removeFileAriaLabel": "移除文件 {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.warningIconAriaLabel": "警告",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {选择文件} false {选择文件} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {删除要上传的文件} false {删除要上传的文件} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "通知",
     "i18nStrings.errorIconAriaLabel": "错误",

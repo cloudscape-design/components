@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "İçerik yükleniyor"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "Daha az göster",
+    "i18nStrings.limitShowMore": "Daha fazla göster",
+    "i18nStrings.removeFileAriaLabel": "Dosyayı kaldır {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.warningIconAriaLabel": "Uyarı"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "Daha az göster",
+    "i18nStrings.limitShowMore": "Daha fazla göster",
+    "i18nStrings.removeFileAriaLabel": "Dosyayı kaldır {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.warningIconAriaLabel": "Uyarı",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {Dosyaları seç} false {Dosya seç} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {Yüklenecek dosyaları buraya bırakın} false {Yüklenecek dosyayı buraya bırakın} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Bildirimler",
     "i18nStrings.errorIconAriaLabel": "Hata",

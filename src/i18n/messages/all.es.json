@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "Cargando contenido"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "Mostrar menos",
+    "i18nStrings.limitShowMore": "Mostrar más",
+    "i18nStrings.removeFileAriaLabel": "Eliminar archivo {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Aviso"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "Mostrar menos",
+    "i18nStrings.limitShowMore": "Mostrar más",
+    "i18nStrings.removeFileAriaLabel": "Eliminar archivo{fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Aviso",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {Elegir archivos} false {Elegir archivo} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {Arrastrar los archivos para cargarlos} false {Arrastrar el archivo para cargarlo} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notificaciones",
     "i18nStrings.errorIconAriaLabel": "Error",

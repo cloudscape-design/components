@@ -187,6 +187,30 @@ export interface I18nFormatArgTypes {
   "drawer": {
     "i18nStrings.loadingText": never;
   }
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": never;
+    "i18nStrings.limitShowMore": never;
+    "i18nStrings.removeFileAriaLabel": {
+      "fileIndex": string | number;
+    }
+    "i18nStrings.errorIconAriaLabel": never;
+    "i18nStrings.warningIconAriaLabel": never;
+  }
+  "file-upload": {
+    "i18nStrings.limitShowFewer": never;
+    "i18nStrings.limitShowMore": never;
+    "i18nStrings.removeFileAriaLabel": {
+      "fileIndex": string | number;
+    }
+    "i18nStrings.errorIconAriaLabel": never;
+    "i18nStrings.warningIconAriaLabel": never;
+    "i18nStrings.uploadButtonText": {
+      "multiple": string;
+    }
+    "i18nStrings.dropzoneText": {
+      "multiple": string;
+    }
+  }
   "flashbar": {
     "i18nStrings.ariaLabel": never;
     "i18nStrings.errorIconAriaLabel": never;

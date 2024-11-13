@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, fireEvent, render as testingLibraryRender } from '@testing-library/react';
+import { act, fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import FileTokenGroup, { FileTokenGroupProps } from '../../../lib/components/file-token-group';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/file-token-group/styles.css.js';
@@ -137,7 +138,6 @@ describe('File upload tokens', () => {
       items: [{ file: file1 }],
       showFileSize: true,
       i18nStrings: {
-        ...defaultProps.i18nStrings,
         formatFileSize: sizeInBytes => `${sizeInBytes} bytes`,
       },
     });
@@ -257,6 +257,39 @@ describe('Focusing behavior', () => {
     wrapper.findFileToken(2)!.findRemoveButton().click();
 
     expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
+  });
+});
+
+describe('i18n', () => {
+  test('has default i18n strings', () => {
+    const { container } = testingLibraryRender(
+      <FileTokenGroup items={[{ file: file1 }]} limit={0} onDismiss={onDismiss} />
+    );
+
+    screen.debug();
+
+    const wrapper = createWrapper(container).findFileTokenGroup()!;
+    expect(wrapper.getElement()).toHaveTextContent('Show more');
+  });
+
+  test('supports providing custom i18n strings', () => {
+    const { container } = testingLibraryRender(
+      <TestI18nProvider
+        messages={{
+          'file-token-group': {
+            'i18nStrings.limitShowFewer': 'Custom show fewer',
+            'i18nStrings.limitShowMore': 'Custom show more',
+          },
+        }}
+      >
+        <FileTokenGroup items={[{ file: file1 }]} limit={0} onDismiss={onDismiss} />
+      </TestI18nProvider>
+    );
+
+    screen.debug();
+
+    const wrapper = createWrapper(container).findFileTokenGroup()!;
+    expect(wrapper.getElement()).toHaveTextContent('Custom show more');
   });
 });
 
