@@ -1259,4 +1259,43 @@ describe('Tabs', () => {
       verifyTabContentLabelledBy(secondTabId);
     });
   });
+
+  describe('test utils', () => {
+    test('findTabLinkByTestId returns the tab link with the specified test id', () => {
+      const { wrapper } = renderTabs(
+        <Tabs
+          tabs={[
+            {
+              id: 'first',
+              label: 'First tab',
+              linkTestId: 'first-tab-test-id',
+            },
+            {
+              id: 'second',
+              label: 'Second tab',
+              linkTestId: 'second-tab-test-id',
+            },
+          ]}
+        />
+      );
+
+      expect(wrapper.findTabLinkByTestId('second-tab-test-id')!.getElement()).toHaveTextContent('Second tab');
+    });
+
+    test('findTabLinkByTestId returns the tab link even if the specified test id contains quotes', () => {
+      const { wrapper } = renderTabs(
+        <Tabs
+          tabs={[
+            {
+              id: 'first',
+              label: 'First tab',
+              linkTestId: 'first-"tab"',
+            },
+          ]}
+        />
+      );
+
+      expect(wrapper.findTabLinkByTestId('first-"tab"')!.getElement()).toHaveTextContent('First tab');
+    });
+  });
 });

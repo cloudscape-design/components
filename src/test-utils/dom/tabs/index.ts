@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, createWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import ButtonWrapper from '../button';
 
@@ -48,6 +49,19 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
    */
   findTabLinkById(id: string): TabWrapper | null {
     return this.findComponent(`.${styles['tabs-tab-link']}[data-testid="${id}"]`, TabWrapper);
+  }
+
+  /**
+   * Returns the wrapper of the first tab link that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `tabs` prop.
+   * If no matching tab link is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {TabWrapper | null}
+   */
+  findTabLinkByTestId(testId: string): ElementWrapper<HTMLAnchorElement | HTMLButtonElement> | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.find(`.${styles['tabs-tab-link']}[data-testid="${escapedTestId}"]`);
   }
 
   /**
