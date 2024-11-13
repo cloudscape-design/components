@@ -41,7 +41,7 @@ export default function FileTokenGroupPermutations() {
   return (
     <>
       <h1>FileTokenGroup permutations</h1>
-      <ScreenshotArea>
+      <ScreenshotArea disableAnimations={true}>
         <PermutationsView
           permutations={permutations}
           render={permutation => (
