@@ -68,6 +68,7 @@ const Cards = React.forwardRef(function <T = any>(
 ) {
   const { __internalRootRef } = useBaseComponent('Cards', {
     props: { entireCardClickable, selectionType, stickyHeader, variant },
+    metadata: { usesVisibleSections: !!visibleSections },
   });
   const baseProps = getBaseProps(rest);
   const isRefresh = useVisualRefresh();
