@@ -134,6 +134,14 @@ export namespace TabsProps {
      * using the `activeTabHref` property of the `change` event's detail.
      */
     href?: string;
+    /**
+     * Test ID of the tab link.
+     * Assigns this value to the `data-testid` attribute of the tab's root element.
+     *
+     * When not specified, `id` is used by default as `data-testid` for the tab link.
+     *
+     */
+    linkTestId?: string;
   }
 
   export interface ChangeDetail {

@@ -1181,6 +1181,36 @@ describe('Tabs', () => {
         expect(wrapper.findFocusedTab()!.getElement()).toHaveTextContent('Second tab');
       });
     });
+
+    describe('test id', () => {
+      test('assigns data-testid to links when specified', () => {
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map((item, idx) => ({
+              ...item,
+              linkTestId: `tab-${idx + 1}-link-test-id`,
+            }))}
+          />
+        );
+
+        const tabLinkTestIds = wrapper.findTabLinks().map(tabLink => tabLink!.getElement().getAttribute('data-testid'));
+
+        expect(tabLinkTestIds).toEqual([
+          'tab-1-link-test-id',
+          'tab-2-link-test-id',
+          'tab-3-link-test-id',
+          'tab-4-link-test-id',
+        ]);
+      });
+
+      test('uses the id value as data-testid when test id is not specified', () => {
+        const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} />);
+
+        const tabLinkTestIds = wrapper.findTabLinks().map(tabLink => tabLink!.getElement().getAttribute('data-testid'));
+
+        expect(tabLinkTestIds).toEqual(['first', 'second', 'third', 'fourth']);
+      });
+    });
   });
 
   describe('Tab content', () => {

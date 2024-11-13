@@ -403,7 +403,7 @@ export function TabHeaderBar({
     const commonProps: (JSX.IntrinsicElements['a'] | JSX.IntrinsicElements['button']) & { 'data-testid': string } = {
       className: classes,
       'aria-controls': `${idNamespace}-${tab.id}-panel`,
-      'data-testid': tab.id,
+      'data-testid': tab.linkTestId ?? tab.id,
       id: getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       onClick: clickTab,
     };
