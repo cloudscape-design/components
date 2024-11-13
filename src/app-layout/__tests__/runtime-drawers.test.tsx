@@ -1103,6 +1103,20 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
     });
 
+    test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
+      const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global1',
+        type: 'global',
+      });
+
+      await delay();
+
+      expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
+    });
+
     describe('dynamically registered drawers with defaultActive: true', () => {
       test('should open if there are already open local drawer on the page', async () => {
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
