@@ -268,16 +268,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneTextHover: { light: '{colorGrey600}', dark: '{colorGrey350}' },
   colorDropzoneBorderDefault: { light: '{colorGrey500}', dark: '{colorGrey550}' },
   colorDropzoneBorderHover: { light: '{colorBlue800}', dark: '{colorBlue400}' },
-  colorBackgroundSeverityCritical: '{colorChartsStatusCritical}',
-  colorTextSeverityCritical: { light: '{colorGrey100}', dark: '{colorBlack}' },
-  colorBackgroundSeverityHigh: '{colorChartsStatusHigh}',
-  colorTextSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey900}' },
-  colorBackgroundSeverityMedium: '{colorChartsStatusMedium}',
-  colorTextSeverityMedium: '{colorGrey900}',
-  colorBackgroundSeverityLow: '{colorChartsStatusLow}',
-  colorTextSeverityLow: '{colorGrey900}',
-  colorBackgroundSeverityNeutral: { light: '{colorGrey600}', dark: '{colorGrey550}' },
-  colorTextSeverityNeutral: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
