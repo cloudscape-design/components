@@ -436,9 +436,13 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         <SkeletonLayout
           ref={intersectionObserverRef}
           style={{
-            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
-            [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
+            ...(hasToolbar
+              ? {
+                  [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
+                  [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
+                }
+              : {}),
             ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),
           }}
           toolbar={
