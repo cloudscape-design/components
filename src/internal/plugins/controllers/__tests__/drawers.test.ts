@@ -66,7 +66,7 @@ describe('update drawer', () => {
     expect(onDrawersRegistered).not.toHaveBeenCalled();
     await delay();
     expect(onDrawersRegistered).toHaveBeenCalledWith([drawerA, drawerB]);
-    const updatedDrawer = { ...drawerA, badge: true };
+    const updatedDrawer = { ...drawerA, badge: true, defaultActive: true };
     drawers.updateDrawer(updatedDrawer);
     await delay();
     expect(onDrawersRegistered).toHaveBeenLastCalledWith([updatedDrawer, drawerB]);
