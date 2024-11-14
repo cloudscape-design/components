@@ -290,6 +290,47 @@ describeEachAppLayout(({ theme, size }) => {
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
   });
 
+  test('respect controlled toolsOpen with runtime drawers after clicking on tools drawer', async () => {
+    function AppLayoutWithControlledTools() {
+      const [showTools, setShowTools] = useState(false);
+      return (
+        <AppLayout
+          tools="Tools content"
+          toolsOpen={showTools}
+          onToolsChange={event => setShowTools(event.detail.open)}
+          content={
+            <div>
+              <button data-testid="toggle-tools-drawer" onClick={() => setShowTools(!showTools)}>
+                Toggle tools
+              </button>
+            </div>
+          }
+        />
+      );
+    }
+
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayoutWithControlledTools />);
+    expect(wrapper.findTools()).toBeFalsy();
+    wrapper.findToolsToggle().click();
+
+    expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
+
+    createWrapper().find('[data-testid="toggle-tools-drawer"]')!.click();
+
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
+  test('does not open tools panel on toggle click for partially controllable tools', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout tools="Tools content" toolsOpen={false} />);
+    expect(wrapper.findTools()).toBeFalsy();
+
+    wrapper.findToolsToggle().click();
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
   test('opens tools drawer via ref', async () => {
     let ref: AppLayoutProps.Ref | null = null;
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
@@ -672,6 +713,24 @@ describeEachAppLayout(({ theme, size }) => {
 
 describe('toolbar mode only features', () => {
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+    test('should contain overridden in AWS-UI-Widget-Global-Navigation css classes for drawers', async () => {
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+
+      await delay();
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+
+      expect(wrapper!.find('[class*="awsui_drawer-close-button_12i0j"]')).toBeTruthy();
+      expect(wrapper!.find('[class*="awsui_drawer-global_12i0j"][class*="awsui_last-opened_12i0j"]')).toBeTruthy();
+    });
+
     test('registerDrawer registers local drawers if type is not specified', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -939,6 +998,8 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
+      await delay();
+
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
@@ -1040,6 +1101,20 @@ describe('toolbar mode only features', () => {
       await delay();
 
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+    });
+
+    test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
+      const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global1',
+        type: 'global',
+      });
+
+      await delay();
+
+      expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
     });
 
     describe('dynamically registered drawers with defaultActive: true', () => {

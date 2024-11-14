@@ -178,7 +178,9 @@ export function DrawerTriggers({
             />
           );
         })}
-        {visibleItems.length > globalDrawersStartIndex && <div className={styles['group-divider']}></div>}
+        {globalDrawersStartIndex > 0 && visibleItems.length > globalDrawersStartIndex && (
+          <div className={styles['group-divider']}></div>
+        )}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
           return (

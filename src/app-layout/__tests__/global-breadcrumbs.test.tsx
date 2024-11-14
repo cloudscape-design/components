@@ -281,11 +281,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         <DestructibleLayout />
       </>
     );
-    expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.getElement()).toBeEmptyDOMElement();
+    expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.findBreadcrumbGroup()).toBeFalsy();
 
     wrapper.find('[data-testid="unmount"]')!.click();
     await waitFor(() => {
-      expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.getElement()).not.toBeEmptyDOMElement();
+      expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.findBreadcrumbGroup()).toBeTruthy();
     });
   });
 

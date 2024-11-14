@@ -19,7 +19,9 @@ import { contentDisplayPreferenceI18nStrings } from '../../common/i18n-strings';
 import { columnLabel } from '../shared-configs';
 import { Instance } from './common';
 
-export function createColumns(): TableProps.ColumnDefinition<Instance>[] {
+export function createColumns(props: {
+  terminationReasons: Map<string, string>;
+}): TableProps.ColumnDefinition<Instance>[] {
   return [
     {
       id: 'name',
@@ -105,7 +107,7 @@ export function createColumns(): TableProps.ColumnDefinition<Instance>[] {
     {
       id: 'termination-reason',
       header: 'Termination reason',
-      cell: item => item.terminationReason || '-',
+      cell: item => props.terminationReasons.get(item.name) ?? (item.terminationReason || '-'),
       editConfig: {
         ariaLabel: 'Edit termination reason',
         editIconAriaLabel: 'editable',
@@ -113,12 +115,14 @@ export function createColumns(): TableProps.ColumnDefinition<Instance>[] {
         editingCell: (item, { currentValue, setValue }) => (
           <Input
             autoFocus={true}
-            value={currentValue ?? item.terminationReason}
+            value={currentValue ?? props.terminationReasons.get(item.name) ?? item.terminationReason}
             onChange={event => setValue(event.detail.value)}
           />
         ),
         disabledReason: item =>
-          item.terminationReason?.includes('automatically') ? 'Cannot edit automatically added description' : '',
+          !props.terminationReasons.has(item.name) && item.terminationReason?.includes('automatically')
+            ? 'Cannot edit automatically added description'
+            : '',
       },
       minWidth: 250,
     },

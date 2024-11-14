@@ -6,12 +6,10 @@ import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
 import PanelResizeHandle from '../../../internal/components/panel-resize-handle';
-import { NonCancelableEventHandler } from '../../../internal/events';
 import customCssProps from '../../../internal/generated/custom-css-properties';
 import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-import { AppLayoutProps } from '../../interfaces';
-import { getDrawerTopOffset } from '../compute-layout';
-import { AppLayoutInternals } from '../interfaces';
+import { getDrawerStyles } from '../compute-layout';
+import { AppLayoutInternals, InternalDrawer } from '../interfaces';
 import { useResize } from './use-resize';
 
 import sharedStyles from '../../resize/styles.css.js';
@@ -21,9 +19,7 @@ import styles from './styles.css.js';
 interface AppLayoutGlobalDrawerImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   show: boolean;
-  activeGlobalDrawer:
-    | (AppLayoutProps.Drawer & { onShow?: NonCancelableEventHandler; onHide?: NonCancelableEventHandler })
-    | undefined;
+  activeGlobalDrawer: InternalDrawer | undefined;
 }
 
 function AppLayoutGlobalDrawerImplementation({
@@ -52,7 +48,7 @@ function AppLayoutGlobalDrawerImplementation({
     content: activeGlobalDrawer ? activeGlobalDrawer.ariaLabels?.drawerName : ariaLabels?.tools,
   };
 
-  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
   const activeDrawerSize = (activeDrawerId ? activeGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const minDrawerSize = (activeDrawerId ? minGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
   const maxDrawerSize = (activeDrawerId ? maxGlobalDrawersSizes[activeDrawerId] : 0) ?? 0;
@@ -68,6 +64,7 @@ function AppLayoutGlobalDrawerImplementation({
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
+  const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
 
   return (
     <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
@@ -81,7 +78,7 @@ function AppLayoutGlobalDrawerImplementation({
               styles.drawer,
               styles['drawer-global'],
               styles[state],
-              sharedStyles['with-motion-horizontal'],
+              !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
@@ -104,8 +101,8 @@ function AppLayoutGlobalDrawerImplementation({
               }
             }}
             style={{
-              blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-              insetBlockStart: drawersTopOffset,
+              blockSize: drawerHeight,
+              insetBlockStart: drawerTopOffset,
               ...(!isMobile && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
@@ -125,7 +122,10 @@ function AppLayoutGlobalDrawerImplementation({
                 />
               </div>
             )}
-            <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
+            <div
+              className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
+              data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
+            >
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}
@@ -139,7 +139,9 @@ function AppLayoutGlobalDrawerImplementation({
                   variant="icon"
                 />
               </div>
-              <div className={styles['drawer-content']}>{activeGlobalDrawer?.content}</div>
+              <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
+                {activeGlobalDrawer?.content}
+              </div>
             </div>
           </aside>
         );

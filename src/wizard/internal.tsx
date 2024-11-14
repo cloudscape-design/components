@@ -11,6 +11,7 @@ import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
 import {
   DATA_ATTR_FUNNEL_KEY,
+  FUNNEL_KEY_FUNNEL_NAME,
   FUNNEL_KEY_STEP_NAME,
   getSubStepAllSelector,
   getTextFromSelector,
@@ -156,7 +157,7 @@ export default function InternalWizard({
     name: 'awsui.Wizard',
     label: {
       root: 'body',
-      selector: '[data-analytics-funnel-key="funnel-name"]',
+      selector: `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_FUNNEL_NAME}"]`,
     },
     properties: {
       stepsCount: `${(steps || []).length}`,

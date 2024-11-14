@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { BreadcrumbGroupProps, InternalBreadcrumbGroupProps } from './interfaces';
+import { InternalBreadcrumbGroupProps } from './interfaces';
 import { FunnelBreadcrumbItem } from './item/funnel';
 
-export function BreadcrumbGroupSkeleton<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
-  items,
-}: InternalBreadcrumbGroupProps<T>) {
-  const lastItem = items[items.length - 1];
-  if (!lastItem) {
-    return <></>;
-  }
-  return <FunnelBreadcrumbItem hidden={true} last={true} text={lastItem.text} />;
-}
+import styles from './styles.css.js';
+
+export const BreadcrumbGroupSkeleton = React.forwardRef<HTMLElement, InternalBreadcrumbGroupProps>(({ items }, ref) => (
+  <div ref={ref as React.Ref<HTMLDivElement>} className={styles['breadcrumbs-skeleton']}>
+    {items.map((item, index) => (
+      <FunnelBreadcrumbItem itemIndex={index} totalCount={items.length} text={item.text} key={index} />
+    ))}
+  </div>
+));

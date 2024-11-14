@@ -76,6 +76,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
+    const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -165,6 +167,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const onSplitPanelToggleHandler = () => {
+      setSplitPanelAnimationDisabled(false);
       setSplitPanelOpen(!splitPanelOpen);
       splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
@@ -212,6 +215,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
+      setNavigationAnimationDisabled(false);
       navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
@@ -332,6 +336,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onNavigationToggle,
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
+      splitPanelAnimationDisabled,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
@@ -451,6 +456,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
           navigationOpen={resolvedNavigationOpen}
           navigationWidth={navigationWidth}
+          navigationAnimationDisabled={navigationAnimationDisabled}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>

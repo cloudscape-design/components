@@ -34,6 +34,7 @@ export interface SplitPanelContextBaseProps {
 
 export interface SplitPanelContextProps extends SplitPanelContextBaseProps {
   relativeSize: number;
+  animationDisabled?: boolean;
 }
 
 const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);

@@ -65,6 +65,10 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldCommonVali
    */
   fileWarnings?: ReadonlyArray<null | string>;
   /**
+   * Alignment of the file tokens. Defaults to "vertical".
+   */
+  fileTokenAlignment?: FileUploadProps.FileTokenAlignment;
+  /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
    * * `dropzoneText` (function): A function to render the text shown in the dropzone. It takes `multiple` attribute to define plurality.
@@ -88,6 +92,8 @@ export namespace FileUploadProps {
     index: number;
     file: File;
   }
+
+  export type FileTokenAlignment = 'vertical' | 'horizontal';
 
   export interface I18nStrings {
     uploadButtonText: (multiple: boolean) => string;

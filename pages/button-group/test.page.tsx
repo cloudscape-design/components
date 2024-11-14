@@ -27,25 +27,36 @@ export default function ButtonGroupPage() {
   const ref = React.useRef<ButtonGroupProps.Ref>(null);
   const [feedback, setFeedback] = useState<'none' | 'like' | 'dislike'>('none');
   const [isFavorite, setFavorite] = useState(false);
+  const [useExperimentalFeatures, setUseExperimentalFeatures] = useState(false);
   const [loadingId, setLoading] = useState<null | string>(null);
   const [canSend, setCanSend] = useState(true);
   const [canRedo, setCanRedo] = useState(true);
+
+  const toggleTexts = {
+    like: ['Like', 'Liked'],
+    dislike: ['Dislike', 'Disliked'],
+    favorite: ['Add to favorites', 'Added to favorites'],
+  };
 
   const feedbackGroup: ButtonGroupProps.Group = {
     type: 'group',
     text: 'Vote',
     items: [
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'like',
-        iconName: feedback === 'like' ? 'thumbs-up-filled' : 'thumbs-up',
-        text: 'Like',
+        iconName: 'thumbs-up',
+        pressedIconName: 'thumbs-up-filled',
+        text: feedback === 'like' ? toggleTexts.like[1] : toggleTexts.like[0],
+        pressed: feedback === 'like',
       },
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'dislike',
-        iconName: feedback === 'dislike' ? 'thumbs-down-filled' : 'thumbs-down',
-        text: 'Dislike',
+        iconName: 'thumbs-down',
+        pressedIconName: 'thumbs-down-filled',
+        text: feedback === 'dislike' ? toggleTexts.dislike[1] : toggleTexts.dislike[0],
+        pressed: feedback === 'dislike',
       },
     ],
   };
@@ -55,12 +66,13 @@ export default function ButtonGroupPage() {
     text: 'Favorite',
     items: [
       {
-        type: 'icon-button',
+        type: 'icon-toggle-button',
         id: 'favorite',
-        iconName: isFavorite ? 'star-filled' : 'star',
-        text: 'Add to favorites',
+        iconName: 'star',
+        pressedIconName: 'star-filled',
+        text: isFavorite ? toggleTexts.favorite[1] : toggleTexts.favorite[0],
         loading: loadingId === 'favorite',
-        popoverFeedback: loadingId === 'favorite' ? '...' : isFavorite ? 'Set as favorite' : 'Removed',
+        pressed: isFavorite,
       },
     ],
   };
@@ -142,6 +154,18 @@ export default function ButtonGroupPage() {
           { id: 'search', iconName: 'search', text: 'Search' },
         ],
       },
+      {
+        text: 'Settings',
+        items: [
+          {
+            id: 'experimental-features',
+            itemType: 'checkbox',
+            iconName: 'bug',
+            text: 'Experimental features',
+            checked: useExperimentalFeatures,
+          },
+        ],
+      },
     ],
   };
 
@@ -191,9 +215,9 @@ export default function ButtonGroupPage() {
     switch (detail.id) {
       case 'like':
       case 'dislike':
-        return syncAction(() => setFeedback(prev => (prev !== detail.id ? (detail.id as 'like' | 'dislike') : 'none')));
+        return syncAction(() => setFeedback(detail.pressed ? (detail.id as 'like' | 'dislike') : 'none'));
       case 'favorite':
-        return asyncAction(() => setFavorite(prev => !prev));
+        return asyncAction(() => setFavorite(!!detail.pressed));
       case 'send':
         return syncAction(() => setCanSend(false));
       case 'redo':
@@ -202,6 +226,8 @@ export default function ButtonGroupPage() {
       case 'remove':
       case 'open':
         return asyncAction();
+      case 'experimental-features':
+        return syncAction(() => setUseExperimentalFeatures(!!detail.pressed));
       default:
         return syncAction();
     }

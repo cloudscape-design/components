@@ -8,9 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import '../../__a11y__/to-validate-a11y';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/internal/file-dropzone';
-
-import tokenListSelectors from '../../../lib/components/internal/components/token-list/styles.selectors.js';
+import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/file-dropzone';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -214,11 +212,6 @@ describe('FileUpload input', () => {
 });
 
 describe('File upload tokens', () => {
-  test('token list is not rendered when `multiple=false`', () => {
-    const wrapper = render({ multiple: false, value: [file1] });
-    expect(wrapper.find(tokenListSelectors.root)).toBeNull();
-  });
-
   test(`when multiple=true all file tokens are shown`, () => {
     const wrapper = render({ multiple: true, value: [file1, file2] });
 
@@ -229,100 +222,6 @@ describe('File upload tokens', () => {
 
     expect(wrapper.findFileTokens()[1].getElement()).toHaveTextContent('test-file-2.txt');
     expect(wrapper.findFileToken(2)!.getElement()).toHaveTextContent('test-file-2.txt');
-  });
-
-  test('dev warning is issued when using multiple files with a singular file upload', () => {
-    render({ value: [file1, file2] });
-
-    expect(warnOnce).toHaveBeenCalledTimes(1);
-    expect(warnOnce).toHaveBeenCalledWith('FileUpload', 'Value must be an array of size 0 or 1 when `multiple=false`.');
-  });
-
-  test('file token remove button has ARIA label set', () => {
-    const wrapper = render({ value: [file1] });
-    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Remove file 1');
-  });
-
-  test('selected file can be removed', () => {
-    const wrapperSingular = render({ value: [file1] });
-    wrapperSingular.findFileToken(1)!.findRemoveButton()!.click();
-
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [] } }));
-
-    const wrapperMultiple = render({ multiple: true, value: [file1, file2] });
-    wrapperMultiple.findFileToken(1)!.findRemoveButton()!.click();
-
-    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: [file2] } }));
-  });
-
-  test('file token only shows name by default', () => {
-    const wrapper = render({ value: [file1] });
-
-    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('test-file-1.txt');
-    expect(wrapper.findFileToken(1)!.findFileSize()).toBe(null);
-    expect(wrapper.findFileToken(1)!.findFileLastModified()).toBe(null);
-    expect(wrapper.findFileToken(1)!.findFileThumbnail()).toBe(null);
-  });
-
-  test('file token metadata can be opt-in', () => {
-    const wrapper = render({
-      value: [file1],
-      showFileSize: true,
-      showFileLastModified: true,
-    });
-    expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveTextContent('test-file-1.txt');
-    expect(wrapper.findFileToken(1)!.findFileSize()!.getElement()).toHaveTextContent('0.01 KB');
-    expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020-06-01T00:00:00');
-  });
-
-  test('thumbnail is only shown  when file type starts with "image"', () => {
-    expect(
-      render({ value: [file1], showFileThumbnail: true })
-        .findFileToken(1)!
-        .findFileThumbnail()
-    ).toBe(null);
-
-    expect(
-      render({ value: [file2], showFileThumbnail: true })
-        .findFileToken(1)!
-        .findFileThumbnail()
-    ).not.toBe(null);
-  });
-
-  test('selected file size can be customized', () => {
-    const wrapper = render({
-      value: [file1],
-      showFileSize: true,
-      i18nStrings: {
-        ...defaultProps.i18nStrings,
-        formatFileSize: sizeInBytes => `${sizeInBytes} bytes`,
-      },
-    });
-    expect(wrapper.findFileToken(1)!.findFileSize()!.getElement()).toHaveTextContent('14 bytes');
-  });
-
-  test('selected file last update timestamp can be customized', () => {
-    const wrapper = render({
-      value: [file1],
-      showFileLastModified: true,
-      i18nStrings: {
-        ...defaultProps.i18nStrings,
-        formatFileLastModified: date => `${date.getFullYear()} year`,
-      },
-    });
-    expect(wrapper.findFileToken(1)!.findFileLastModified()!.getElement()).toHaveTextContent('2020 year');
-  });
-
-  test('the `tokenLimit` property controls the number of tokens shown by default', () => {
-    const wrapper = render({ multiple: true, value: [file1, file2], tokenLimit: 1 });
-    expect(wrapper.findFileTokens()).toHaveLength(1);
-    expect(wrapper.getElement().textContent).toContain('Show more files');
-  });
-
-  test('file tokens have aria labels set to file names', () => {
-    const wrapper = render({ multiple: true, value: [file1, file2] });
-    expect(wrapper.findFileToken(1)!.getElement()).toHaveAttribute('aria-label', file1.name);
-    expect(wrapper.findFileToken(2)!.getElement()).toHaveAttribute('aria-label', file2.name);
   });
 
   test('file errors are associated to file tokens', () => {
@@ -358,23 +257,6 @@ describe('File upload dropzone', () => {
 });
 
 describe('Focusing behavior', () => {
-  test.each([1, 2])(
-    `Focus is dispatched to the next token when the token before it is removed, tokenLimit=%s`,
-    tokenLimit => {
-      const wrapper = renderStateful({ multiple: true, value: [file1, file2], tokenLimit });
-      wrapper.findFileToken(1)!.findRemoveButton().click();
-
-      expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
-    }
-  );
-
-  test('Focus is dispatched to the previous token when removing the token at the end', () => {
-    const wrapper = renderStateful({ multiple: true, value: [file1, file2] });
-    wrapper.findFileToken(2)!.findRemoveButton().click();
-
-    expect(wrapper.findFileToken(1)!.findRemoveButton().getElement()).toHaveFocus();
-  });
-
   test.each([false, true])(
     'Focus is dispatched to the file input when the last token is removed, multiple=%s',
     multiple => {

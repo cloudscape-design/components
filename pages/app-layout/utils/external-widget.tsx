@@ -6,7 +6,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
-import { Counter } from './content-blocks';
+import { Counter, CustomDrawerContent } from './content-blocks';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
@@ -147,6 +147,10 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(
       <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
         global widget content circle 1
+        {new Array(100).fill(null).map((_, index) => (
+          <div key={index}>{index}</div>
+        ))}
+        <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
       </AutoIncrementCounter>,
       container
     );
@@ -235,7 +239,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<div>global widget content circle 3 (without trigger button)</div>, container);
+    ReactDOM.render(<CustomDrawerContent />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

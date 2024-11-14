@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { isValid, parseISO } from 'date-fns';
 
 import { formatTimeOffsetLocalized } from './format-time-offset';
 
@@ -16,7 +17,11 @@ export default function formatDateLocalized({
   timeOffset?: number;
   locale?: string;
 }) {
-  const date = new Date(isoDate);
+  let date = parseISO(isoDate);
+  // if the date is not ISO formatted, fallback to built-in date parsing
+  if (!isValid(date)) {
+    date = new Date(isoDate);
+  }
 
   const formattedDate = new Intl.DateTimeFormat(locale, {
     day: 'numeric',

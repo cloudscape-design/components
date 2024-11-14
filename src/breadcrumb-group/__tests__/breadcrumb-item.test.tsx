@@ -7,7 +7,6 @@ import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { BreadcrumbItem } from '../../../lib/components/breadcrumb-group/item/item';
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_FUNNEL_NAME } from '../../../lib/components/internal/analytics/selectors';
 import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
 
 import breadcrumbItemStyles from '../../../lib/components/breadcrumb-group/item/styles.selectors.js';
@@ -128,17 +127,16 @@ describe('BreadcrumbGroup Item', () => {
       lastLink.click();
       expect(onFollowSpy).not.toHaveBeenCalled();
     });
-
-    test('should add a data-analytics attribute for the funnel name to the last item', () => {
-      const expectedFunnelName = items[items.length - 1].text;
-      const element = wrapper.find(`[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_FUNNEL_NAME}"]`)!.getElement();
-      expect(element.innerHTML).toBe(expectedFunnelName);
-    });
   });
 
   test('displays tooltip', () => {
     const { container } = render(
-      <BreadcrumbItem item={{ text: 'Long Breadcrumb text', href: '#' }} isTruncated={true} />
+      <BreadcrumbItem
+        itemIndex={0}
+        totalCount={1}
+        item={{ text: 'Long Breadcrumb text', href: '#' }}
+        isTruncated={true}
+      />
     );
     const elementAnchor = createWrapper(container).find(`.${breadcrumbItemStyles.anchor}`)!.getElement();
     elementAnchor.focus();

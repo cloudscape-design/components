@@ -7,8 +7,9 @@ import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
 import { InternalButton } from '../../../button/internal';
 import { createWidgetizedComponent } from '../../../internal/widgets';
-import { getDrawerTopOffset } from '../compute-layout';
+import { getDrawerStyles } from '../compute-layout';
 import { AppLayoutInternals } from '../interfaces';
+import { NotificationsSlot } from '../skeleton/slot-wrappers';
 
 import sharedStyles from '../../resize/styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';
@@ -30,7 +31,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
     verticalOffsets,
   } = appLayoutInternals;
 
-  const drawersTopOffset = getDrawerTopOffset(verticalOffsets, isMobile, placement);
+  const { drawerTopOffset, drawerHeight } = getDrawerStyles(verticalOffsets, isMobile, placement);
 
   // Close the Navigation drawer on mobile when a user clicks a link inside.
   const onNavigationClick = (event: React.MouseEvent) => {
@@ -58,11 +59,11 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
       aria-hidden={!navigationOpen}
       onClick={onNavigationClick}
       style={{
-        blockSize: `calc(100vh - ${drawersTopOffset}px - ${placement.insetBlockEnd}px)`,
-        insetBlockStart: drawersTopOffset,
+        blockSize: drawerHeight,
+        insetBlockStart: drawerTopOffset,
       }}
     >
-      <div className={clsx(styles['animated-content'])}>
+      <div className={clsx(styles['content-container'], styles['animated-content'])}>
         <div className={clsx(styles['hide-navigation'])}>
           <InternalButton
             ariaLabel={ariaLabels?.navigationClose ?? undefined}
@@ -80,4 +81,7 @@ export function AppLayoutNavigationImplementation({ appLayoutInternals }: AppLay
   );
 }
 
-export const createWidgetizedAppLayoutNavigation = createWidgetizedComponent(AppLayoutNavigationImplementation);
+export const createWidgetizedAppLayoutNavigation = createWidgetizedComponent(
+  AppLayoutNavigationImplementation,
+  NotificationsSlot
+);
