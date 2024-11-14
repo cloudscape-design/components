@@ -11,13 +11,10 @@ import { pascalCase } from 'change-case';
 
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
-import * as dom from '../../../lib/components/test-utils/dom';
-import * as selectors from '../../../lib/components/test-utils/selectors';
+import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
-
-const createWrapperDom = dom.default;
-const createWrapperSelectors = selectors.default;
 
 const componentsWithNoExtraFinders = ['top-navigation', 'app-layout'];
 const componentsWithExceptions = ['annotation-context', ...componentsWithNoExtraFinders];
@@ -70,7 +67,7 @@ function getComponentSelectors(componentName: string) {
 
   // The same set of selector functions are present in both dom and selectors.
   // For this reason, looking into DOM is representative of both groups.
-  const wrapperPropsList = Object.keys(dom.ElementWrapper.prototype);
+  const wrapperPropsList = Object.keys(DomElementWrapper.prototype);
 
   // Every component has the same set of selector functions.
   // For this reason, casting the function names into the Alert component.

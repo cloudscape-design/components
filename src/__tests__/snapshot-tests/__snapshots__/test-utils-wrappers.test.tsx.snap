@@ -322,7 +322,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAlert(selector?: string): AlertWrapper | null;
 
        /**
-        * Returns the wrappers of all Alerts that match the specified CSS selector.
+        * Returns an array of Alert wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Alerts inside the current wrapper.
         * If no matching Alert is found, returns an empty array.
         *
@@ -351,7 +351,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAnchorNavigation(selector?: string): AnchorNavigationWrapper | null;
 
        /**
-        * Returns the wrappers of all AnchorNavigations that match the specified CSS selector.
+        * Returns an array of AnchorNavigation wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the AnchorNavigations inside the current wrapper.
         * If no matching AnchorNavigation is found, returns an empty array.
         *
@@ -380,7 +380,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAnnotation(selector?: string): AnnotationWrapper | null;
 
        /**
-        * Returns the wrappers of all Annotations that match the specified CSS selector.
+        * Returns an array of Annotation wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Annotations inside the current wrapper.
         * If no matching Annotation is found, returns an empty array.
         *
@@ -419,7 +419,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAreaChart(selector?: string): AreaChartWrapper | null;
 
        /**
-        * Returns the wrappers of all AreaCharts that match the specified CSS selector.
+        * Returns an array of AreaChart wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the AreaCharts inside the current wrapper.
         * If no matching AreaChart is found, returns an empty array.
         *
@@ -448,7 +448,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAttributeEditor(selector?: string): AttributeEditorWrapper | null;
 
        /**
-        * Returns the wrappers of all AttributeEditors that match the specified CSS selector.
+        * Returns an array of AttributeEditor wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the AttributeEditors inside the current wrapper.
         * If no matching AttributeEditor is found, returns an empty array.
         *
@@ -477,7 +477,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAutosuggest(selector?: string): AutosuggestWrapper | null;
 
        /**
-        * Returns the wrappers of all Autosuggests that match the specified CSS selector.
+        * Returns an array of Autosuggest wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Autosuggests inside the current wrapper.
         * If no matching Autosuggest is found, returns an empty array.
         *
@@ -506,7 +506,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findBadge(selector?: string): BadgeWrapper | null;
 
        /**
-        * Returns the wrappers of all Badges that match the specified CSS selector.
+        * Returns an array of Badge wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Badges inside the current wrapper.
         * If no matching Badge is found, returns an empty array.
         *
@@ -535,7 +535,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findBarChart(selector?: string): BarChartWrapper | null;
 
        /**
-        * Returns the wrappers of all BarCharts that match the specified CSS selector.
+        * Returns an array of BarChart wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the BarCharts inside the current wrapper.
         * If no matching BarChart is found, returns an empty array.
         *
@@ -564,7 +564,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findBox(selector?: string): BoxWrapper | null;
 
        /**
-        * Returns the wrappers of all Boxes that match the specified CSS selector.
+        * Returns an array of Box wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Boxes inside the current wrapper.
         * If no matching Box is found, returns an empty array.
         *
@@ -593,7 +593,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findBreadcrumbGroup(selector?: string): BreadcrumbGroupWrapper | null;
 
        /**
-        * Returns the wrappers of all BreadcrumbGroups that match the specified CSS selector.
+        * Returns an array of BreadcrumbGroup wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the BreadcrumbGroups inside the current wrapper.
         * If no matching BreadcrumbGroup is found, returns an empty array.
         *
@@ -622,7 +622,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findButton(selector?: string): ButtonWrapper | null;
 
        /**
-        * Returns the wrappers of all Buttons that match the specified CSS selector.
+        * Returns an array of Button wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Buttons inside the current wrapper.
         * If no matching Button is found, returns an empty array.
         *
@@ -651,7 +651,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findButtonDropdown(selector?: string): ButtonDropdownWrapper | null;
 
        /**
-        * Returns the wrappers of all ButtonDropdowns that match the specified CSS selector.
+        * Returns an array of ButtonDropdown wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ButtonDropdowns inside the current wrapper.
         * If no matching ButtonDropdown is found, returns an empty array.
         *
@@ -680,7 +680,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findButtonGroup(selector?: string): ButtonGroupWrapper | null;
 
        /**
-        * Returns the wrappers of all ButtonGroups that match the specified CSS selector.
+        * Returns an array of ButtonGroup wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ButtonGroups inside the current wrapper.
         * If no matching ButtonGroup is found, returns an empty array.
         *
@@ -709,7 +709,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findCalendar(selector?: string): CalendarWrapper | null;
 
        /**
-        * Returns the wrappers of all Calendars that match the specified CSS selector.
+        * Returns an array of Calendar wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Calendars inside the current wrapper.
         * If no matching Calendar is found, returns an empty array.
         *
@@ -738,7 +738,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findCards(selector?: string): CardsWrapper | null;
 
        /**
-        * Returns the wrappers of all Cards that match the specified CSS selector.
+        * Returns an array of Cards wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Cards inside the current wrapper.
         * If no matching Cards is found, returns an empty array.
         *
@@ -767,7 +767,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findCheckbox(selector?: string): CheckboxWrapper | null;
 
        /**
-        * Returns the wrappers of all Checkboxes that match the specified CSS selector.
+        * Returns an array of Checkbox wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Checkboxes inside the current wrapper.
         * If no matching Checkbox is found, returns an empty array.
         *
@@ -796,7 +796,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findCodeEditor(selector?: string): CodeEditorWrapper | null;
 
        /**
-        * Returns the wrappers of all CodeEditors that match the specified CSS selector.
+        * Returns an array of CodeEditor wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the CodeEditors inside the current wrapper.
         * If no matching CodeEditor is found, returns an empty array.
         *
@@ -825,7 +825,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findCollectionPreferences(selector?: string): CollectionPreferencesWrapper | null;
 
        /**
-        * Returns the wrappers of all CollectionPreferences that match the specified CSS selector.
+        * Returns an array of CollectionPreferences wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the CollectionPreferences inside the current wrapper.
         * If no matching CollectionPreferences is found, returns an empty array.
         *
@@ -854,7 +854,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findColumnLayout(selector?: string): ColumnLayoutWrapper | null;
 
        /**
-        * Returns the wrappers of all ColumnLayouts that match the specified CSS selector.
+        * Returns an array of ColumnLayout wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ColumnLayouts inside the current wrapper.
         * If no matching ColumnLayout is found, returns an empty array.
         *
@@ -883,7 +883,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findContainer(selector?: string): ContainerWrapper | null;
 
        /**
-        * Returns the wrappers of all Containers that match the specified CSS selector.
+        * Returns an array of Container wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Containers inside the current wrapper.
         * If no matching Container is found, returns an empty array.
         *
@@ -912,7 +912,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findContentLayout(selector?: string): ContentLayoutWrapper | null;
 
        /**
-        * Returns the wrappers of all ContentLayouts that match the specified CSS selector.
+        * Returns an array of ContentLayout wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ContentLayouts inside the current wrapper.
         * If no matching ContentLayout is found, returns an empty array.
         *
@@ -941,7 +941,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findCopyToClipboard(selector?: string): CopyToClipboardWrapper | null;
 
        /**
-        * Returns the wrappers of all CopyToClipboards that match the specified CSS selector.
+        * Returns an array of CopyToClipboard wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the CopyToClipboards inside the current wrapper.
         * If no matching CopyToClipboard is found, returns an empty array.
         *
@@ -970,7 +970,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findDateInput(selector?: string): DateInputWrapper | null;
 
        /**
-        * Returns the wrappers of all DateInputs that match the specified CSS selector.
+        * Returns an array of DateInput wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the DateInputs inside the current wrapper.
         * If no matching DateInput is found, returns an empty array.
         *
@@ -999,7 +999,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findDatePicker(selector?: string): DatePickerWrapper | null;
 
        /**
-        * Returns the wrappers of all DatePickers that match the specified CSS selector.
+        * Returns an array of DatePicker wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the DatePickers inside the current wrapper.
         * If no matching DatePicker is found, returns an empty array.
         *
@@ -1028,7 +1028,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findDateRangePicker(selector?: string): DateRangePickerWrapper | null;
 
        /**
-        * Returns the wrappers of all DateRangePickers that match the specified CSS selector.
+        * Returns an array of DateRangePicker wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the DateRangePickers inside the current wrapper.
         * If no matching DateRangePicker is found, returns an empty array.
         *
@@ -1057,7 +1057,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findDrawer(selector?: string): DrawerWrapper | null;
 
        /**
-        * Returns the wrappers of all Drawers that match the specified CSS selector.
+        * Returns an array of Drawer wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Drawers inside the current wrapper.
         * If no matching Drawer is found, returns an empty array.
         *
@@ -1086,7 +1086,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findExpandableSection(selector?: string): ExpandableSectionWrapper | null;
 
        /**
-        * Returns the wrappers of all ExpandableSections that match the specified CSS selector.
+        * Returns an array of ExpandableSection wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ExpandableSections inside the current wrapper.
         * If no matching ExpandableSection is found, returns an empty array.
         *
@@ -1115,7 +1115,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findFileUpload(selector?: string): FileUploadWrapper | null;
 
        /**
-        * Returns the wrappers of all FileUploads that match the specified CSS selector.
+        * Returns an array of FileUpload wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the FileUploads inside the current wrapper.
         * If no matching FileUpload is found, returns an empty array.
         *
@@ -1144,7 +1144,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findFlashbar(selector?: string): FlashbarWrapper | null;
 
        /**
-        * Returns the wrappers of all Flashbars that match the specified CSS selector.
+        * Returns an array of Flashbar wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Flashbars inside the current wrapper.
         * If no matching Flashbar is found, returns an empty array.
         *
@@ -1173,7 +1173,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findForm(selector?: string): FormWrapper | null;
 
        /**
-        * Returns the wrappers of all Forms that match the specified CSS selector.
+        * Returns an array of Form wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Forms inside the current wrapper.
         * If no matching Form is found, returns an empty array.
         *
@@ -1202,7 +1202,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findFormField(selector?: string): FormFieldWrapper | null;
 
        /**
-        * Returns the wrappers of all FormFields that match the specified CSS selector.
+        * Returns an array of FormField wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the FormFields inside the current wrapper.
         * If no matching FormField is found, returns an empty array.
         *
@@ -1231,7 +1231,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findGrid(selector?: string): GridWrapper | null;
 
        /**
-        * Returns the wrappers of all Grids that match the specified CSS selector.
+        * Returns an array of Grid wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Grids inside the current wrapper.
         * If no matching Grid is found, returns an empty array.
         *
@@ -1260,7 +1260,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findHeader(selector?: string): HeaderWrapper | null;
 
        /**
-        * Returns the wrappers of all Headers that match the specified CSS selector.
+        * Returns an array of Header wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Headers inside the current wrapper.
         * If no matching Header is found, returns an empty array.
         *
@@ -1289,7 +1289,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findHelpPanel(selector?: string): HelpPanelWrapper | null;
 
        /**
-        * Returns the wrappers of all HelpPanels that match the specified CSS selector.
+        * Returns an array of HelpPanel wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the HelpPanels inside the current wrapper.
         * If no matching HelpPanel is found, returns an empty array.
         *
@@ -1318,7 +1318,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findHotspot(selector?: string): HotspotWrapper | null;
 
        /**
-        * Returns the wrappers of all Hotspots that match the specified CSS selector.
+        * Returns an array of Hotspot wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Hotspots inside the current wrapper.
         * If no matching Hotspot is found, returns an empty array.
         *
@@ -1347,7 +1347,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findIcon(selector?: string): IconWrapper | null;
 
        /**
-        * Returns the wrappers of all Icons that match the specified CSS selector.
+        * Returns an array of Icon wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Icons inside the current wrapper.
         * If no matching Icon is found, returns an empty array.
         *
@@ -1376,7 +1376,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findInput(selector?: string): InputWrapper | null;
 
        /**
-        * Returns the wrappers of all Inputs that match the specified CSS selector.
+        * Returns an array of Input wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Inputs inside the current wrapper.
         * If no matching Input is found, returns an empty array.
         *
@@ -1405,7 +1405,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findKeyValuePairs(selector?: string): KeyValuePairsWrapper | null;
 
        /**
-        * Returns the wrappers of all KeyValuePairs that match the specified CSS selector.
+        * Returns an array of KeyValuePairs wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the KeyValuePairs inside the current wrapper.
         * If no matching KeyValuePairs is found, returns an empty array.
         *
@@ -1434,7 +1434,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findLineChart(selector?: string): LineChartWrapper | null;
 
        /**
-        * Returns the wrappers of all LineCharts that match the specified CSS selector.
+        * Returns an array of LineChart wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the LineCharts inside the current wrapper.
         * If no matching LineChart is found, returns an empty array.
         *
@@ -1463,7 +1463,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findLink(selector?: string): LinkWrapper | null;
 
        /**
-        * Returns the wrappers of all Links that match the specified CSS selector.
+        * Returns an array of Link wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Links inside the current wrapper.
         * If no matching Link is found, returns an empty array.
         *
@@ -1492,7 +1492,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findLiveRegion(selector?: string): LiveRegionWrapper | null;
 
        /**
-        * Returns the wrappers of all LiveRegions that match the specified CSS selector.
+        * Returns an array of LiveRegion wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the LiveRegions inside the current wrapper.
         * If no matching LiveRegion is found, returns an empty array.
         *
@@ -1521,7 +1521,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findMixedLineBarChart(selector?: string): MixedLineBarChartWrapper | null;
 
        /**
-        * Returns the wrappers of all MixedLineBarCharts that match the specified CSS selector.
+        * Returns an array of MixedLineBarChart wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the MixedLineBarCharts inside the current wrapper.
         * If no matching MixedLineBarChart is found, returns an empty array.
         *
@@ -1550,7 +1550,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findModal(selector?: string): ModalWrapper | null;
 
        /**
-        * Returns the wrappers of all Modals that match the specified CSS selector.
+        * Returns an array of Modal wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Modals inside the current wrapper.
         * If no matching Modal is found, returns an empty array.
         *
@@ -1579,7 +1579,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findMultiselect(selector?: string): MultiselectWrapper | null;
 
        /**
-        * Returns the wrappers of all Multiselects that match the specified CSS selector.
+        * Returns an array of Multiselect wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Multiselects inside the current wrapper.
         * If no matching Multiselect is found, returns an empty array.
         *
@@ -1608,7 +1608,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findPagination(selector?: string): PaginationWrapper | null;
 
        /**
-        * Returns the wrappers of all Paginations that match the specified CSS selector.
+        * Returns an array of Pagination wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Paginations inside the current wrapper.
         * If no matching Pagination is found, returns an empty array.
         *
@@ -1637,7 +1637,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findPieChart(selector?: string): PieChartWrapper | null;
 
        /**
-        * Returns the wrappers of all PieCharts that match the specified CSS selector.
+        * Returns an array of PieChart wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the PieCharts inside the current wrapper.
         * If no matching PieChart is found, returns an empty array.
         *
@@ -1666,7 +1666,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findPopover(selector?: string): PopoverWrapper | null;
 
        /**
-        * Returns the wrappers of all Popovers that match the specified CSS selector.
+        * Returns an array of Popover wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Popovers inside the current wrapper.
         * If no matching Popover is found, returns an empty array.
         *
@@ -1695,7 +1695,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findProgressBar(selector?: string): ProgressBarWrapper | null;
 
        /**
-        * Returns the wrappers of all ProgressBars that match the specified CSS selector.
+        * Returns an array of ProgressBar wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ProgressBars inside the current wrapper.
         * If no matching ProgressBar is found, returns an empty array.
         *
@@ -1724,7 +1724,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findPromptInput(selector?: string): PromptInputWrapper | null;
 
        /**
-        * Returns the wrappers of all PromptInputs that match the specified CSS selector.
+        * Returns an array of PromptInput wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the PromptInputs inside the current wrapper.
         * If no matching PromptInput is found, returns an empty array.
         *
@@ -1753,7 +1753,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findPropertyFilter(selector?: string): PropertyFilterWrapper | null;
 
        /**
-        * Returns the wrappers of all PropertyFilters that match the specified CSS selector.
+        * Returns an array of PropertyFilter wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the PropertyFilters inside the current wrapper.
         * If no matching PropertyFilter is found, returns an empty array.
         *
@@ -1782,7 +1782,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findRadioGroup(selector?: string): RadioGroupWrapper | null;
 
        /**
-        * Returns the wrappers of all RadioGroups that match the specified CSS selector.
+        * Returns an array of RadioGroup wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the RadioGroups inside the current wrapper.
         * If no matching RadioGroup is found, returns an empty array.
         *
@@ -1811,7 +1811,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findS3ResourceSelector(selector?: string): S3ResourceSelectorWrapper | null;
 
        /**
-        * Returns the wrappers of all S3ResourceSelectors that match the specified CSS selector.
+        * Returns an array of S3ResourceSelector wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the S3ResourceSelectors inside the current wrapper.
         * If no matching S3ResourceSelector is found, returns an empty array.
         *
@@ -1840,7 +1840,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSegmentedControl(selector?: string): SegmentedControlWrapper | null;
 
        /**
-        * Returns the wrappers of all SegmentedControls that match the specified CSS selector.
+        * Returns an array of SegmentedControl wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the SegmentedControls inside the current wrapper.
         * If no matching SegmentedControl is found, returns an empty array.
         *
@@ -1869,7 +1869,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSelect(selector?: string): SelectWrapper | null;
 
        /**
-        * Returns the wrappers of all Selects that match the specified CSS selector.
+        * Returns an array of Select wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Selects inside the current wrapper.
         * If no matching Select is found, returns an empty array.
         *
@@ -1898,7 +1898,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSideNavigation(selector?: string): SideNavigationWrapper | null;
 
        /**
-        * Returns the wrappers of all SideNavigations that match the specified CSS selector.
+        * Returns an array of SideNavigation wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the SideNavigations inside the current wrapper.
         * If no matching SideNavigation is found, returns an empty array.
         *
@@ -1927,7 +1927,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSlider(selector?: string): SliderWrapper | null;
 
        /**
-        * Returns the wrappers of all Sliders that match the specified CSS selector.
+        * Returns an array of Slider wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Sliders inside the current wrapper.
         * If no matching Slider is found, returns an empty array.
         *
@@ -1956,7 +1956,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSpaceBetween(selector?: string): SpaceBetweenWrapper | null;
 
        /**
-        * Returns the wrappers of all SpaceBetweens that match the specified CSS selector.
+        * Returns an array of SpaceBetween wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the SpaceBetweens inside the current wrapper.
         * If no matching SpaceBetween is found, returns an empty array.
         *
@@ -1985,7 +1985,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSpinner(selector?: string): SpinnerWrapper | null;
 
        /**
-        * Returns the wrappers of all Spinners that match the specified CSS selector.
+        * Returns an array of Spinner wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Spinners inside the current wrapper.
         * If no matching Spinner is found, returns an empty array.
         *
@@ -2014,7 +2014,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSplitPanel(selector?: string): SplitPanelWrapper | null;
 
        /**
-        * Returns the wrappers of all SplitPanels that match the specified CSS selector.
+        * Returns an array of SplitPanel wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the SplitPanels inside the current wrapper.
         * If no matching SplitPanel is found, returns an empty array.
         *
@@ -2043,7 +2043,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findStatusIndicator(selector?: string): StatusIndicatorWrapper | null;
 
        /**
-        * Returns the wrappers of all StatusIndicators that match the specified CSS selector.
+        * Returns an array of StatusIndicator wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the StatusIndicators inside the current wrapper.
         * If no matching StatusIndicator is found, returns an empty array.
         *
@@ -2072,7 +2072,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findSteps(selector?: string): StepsWrapper | null;
 
        /**
-        * Returns the wrappers of all Steps that match the specified CSS selector.
+        * Returns an array of Steps wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Steps inside the current wrapper.
         * If no matching Steps is found, returns an empty array.
         *
@@ -2101,7 +2101,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTable(selector?: string): TableWrapper | null;
 
        /**
-        * Returns the wrappers of all Tables that match the specified CSS selector.
+        * Returns an array of Table wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Tables inside the current wrapper.
         * If no matching Table is found, returns an empty array.
         *
@@ -2130,7 +2130,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTabs(selector?: string): TabsWrapper | null;
 
        /**
-        * Returns the wrappers of all Tabs that match the specified CSS selector.
+        * Returns an array of Tabs wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Tabs inside the current wrapper.
         * If no matching Tabs is found, returns an empty array.
         *
@@ -2159,7 +2159,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTagEditor(selector?: string): TagEditorWrapper | null;
 
        /**
-        * Returns the wrappers of all TagEditors that match the specified CSS selector.
+        * Returns an array of TagEditor wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the TagEditors inside the current wrapper.
         * If no matching TagEditor is found, returns an empty array.
         *
@@ -2188,7 +2188,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTextContent(selector?: string): TextContentWrapper | null;
 
        /**
-        * Returns the wrappers of all TextContents that match the specified CSS selector.
+        * Returns an array of TextContent wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the TextContents inside the current wrapper.
         * If no matching TextContent is found, returns an empty array.
         *
@@ -2217,7 +2217,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTextFilter(selector?: string): TextFilterWrapper | null;
 
        /**
-        * Returns the wrappers of all TextFilters that match the specified CSS selector.
+        * Returns an array of TextFilter wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the TextFilters inside the current wrapper.
         * If no matching TextFilter is found, returns an empty array.
         *
@@ -2246,7 +2246,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTextarea(selector?: string): TextareaWrapper | null;
 
        /**
-        * Returns the wrappers of all Textareas that match the specified CSS selector.
+        * Returns an array of Textarea wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Textareas inside the current wrapper.
         * If no matching Textarea is found, returns an empty array.
         *
@@ -2275,7 +2275,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTiles(selector?: string): TilesWrapper | null;
 
        /**
-        * Returns the wrappers of all Tiles that match the specified CSS selector.
+        * Returns an array of Tiles wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Tiles inside the current wrapper.
         * If no matching Tiles is found, returns an empty array.
         *
@@ -2304,7 +2304,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTimeInput(selector?: string): TimeInputWrapper | null;
 
        /**
-        * Returns the wrappers of all TimeInputs that match the specified CSS selector.
+        * Returns an array of TimeInput wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the TimeInputs inside the current wrapper.
         * If no matching TimeInput is found, returns an empty array.
         *
@@ -2333,7 +2333,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findToggle(selector?: string): ToggleWrapper | null;
 
        /**
-        * Returns the wrappers of all Toggles that match the specified CSS selector.
+        * Returns an array of Toggle wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Toggles inside the current wrapper.
         * If no matching Toggle is found, returns an empty array.
         *
@@ -2362,7 +2362,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findToggleButton(selector?: string): ToggleButtonWrapper | null;
 
        /**
-        * Returns the wrappers of all ToggleButtons that match the specified CSS selector.
+        * Returns an array of ToggleButton wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ToggleButtons inside the current wrapper.
         * If no matching ToggleButton is found, returns an empty array.
         *
@@ -2391,7 +2391,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTokenGroup(selector?: string): TokenGroupWrapper | null;
 
        /**
-        * Returns the wrappers of all TokenGroups that match the specified CSS selector.
+        * Returns an array of TokenGroup wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the TokenGroups inside the current wrapper.
         * If no matching TokenGroup is found, returns an empty array.
         *
@@ -2430,7 +2430,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTutorialPanel(selector?: string): TutorialPanelWrapper | null;
 
        /**
-        * Returns the wrappers of all TutorialPanels that match the specified CSS selector.
+        * Returns an array of TutorialPanel wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the TutorialPanels inside the current wrapper.
         * If no matching TutorialPanel is found, returns an empty array.
         *
@@ -2459,7 +2459,7 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findWizard(selector?: string): WizardWrapper | null;
 
        /**
-        * Returns the wrappers of all Wizards that match the specified CSS selector.
+        * Returns an array of Wizard wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the Wizards inside the current wrapper.
         * If no matching Wizard is found, returns an empty array.
         *

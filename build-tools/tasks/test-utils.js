@@ -51,7 +51,7 @@ const configs = {
        find${componentName}(selector?: string): ${toWrapper(componentName)} | null;`,
     buildExtraFinderInterfaces: ({ componentName, componentNamePlural }) => `
        /**
-        * Returns the wrappers of all ${componentNamePlural} that match the specified CSS selector.
+        * Returns an array of ${componentName} wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ${componentNamePlural} inside the current wrapper.
         * If no matching ${componentName} is found, returns an empty array.
         *
