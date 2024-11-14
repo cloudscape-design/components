@@ -153,10 +153,11 @@ function PortaledModal({
       !performanceMetricLogged.current
     ) {
       const timeToContentReadyInModal = loadCompleteTime - loadStartTime.current;
+      console.log('componentIdentifier', headerRef.current?.textContent);
       PerformanceMetrics.modalPerformanceData({
         timeToContentReadyInModal,
         instanceIdentifier: instanceUniqueId,
-        componentIdentifier: headerRef.current?.innerHTML,
+        componentIdentifier: headerRef.current?.textContent || '',
       });
       performanceMetricLogged.current = true;
     }
