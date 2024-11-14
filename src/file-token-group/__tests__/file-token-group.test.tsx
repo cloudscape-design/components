@@ -267,17 +267,26 @@ describe('i18n', () => {
         messages={{
           'file-token-group': {
             'i18nStrings.limitShowMore': 'Custom show more',
+            'i18nStrings.removeFileAriaLabel': `Custom remove file {fileIndex}`,
+            'i18nStrings.errorIconAriaLabel': 'Custom error',
+            'i18nStrings.warningIconAriaLabel': 'Custom warning',
           },
         }}
       >
-        <FileTokenGroup items={[{ file: file1 }]} limit={0} onDismiss={onDismiss} />
+        <FileTokenGroup
+          items={[{ file: file1, errorText: 'Error' }, { file: file2, warningText: 'Warning' }, { file: file2 }]}
+          limit={2}
+          onDismiss={onDismiss}
+        />
       </TestI18nProvider>
     );
 
-    screen.debug();
-
     const wrapper = createWrapper(container).findFileTokenGroup()!;
+
     expect(wrapper.getElement()).toHaveTextContent('Custom show more');
+    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Custom remove file 1');
+    expect(screen.getByLabelText('Custom error')).not.toBeNull();
+    expect(screen.getByLabelText('Custom warning')).not.toBeNull();
   });
 });
 

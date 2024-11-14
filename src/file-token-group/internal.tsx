@@ -74,7 +74,7 @@ function InternalFileTokenGroup({
               removeFileAriaLabel: i18n(
                 'i18nStrings.removeFileAriaLabel',
                 i18nStrings?.removeFileAriaLabel?.(fileIndex),
-                format => format({ fileIndex })
+                format => format({ fileIndex: fileIndex + 1 })
               ),
               errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
               warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
