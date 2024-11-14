@@ -7,7 +7,6 @@ import {
   ColorChartsTokenName,
   ColorPaletteTokenName,
   ColorScopeTokenName,
-  ColorSeverityTokenName,
   ColorsTokenName,
   DensityScopeTokenName,
   GlobalScopeTokenName,
@@ -48,7 +47,6 @@ export namespace StyleDictionary {
   export type TypographyDictionary = Partial<TokenCategory<TypographyTokenName, GlobalEntry>>;
   export type BordersDictionary = Partial<TokenCategory<BordersTokenName, GlobalEntry>>;
   export type ColorChartsDictionary = Partial<TokenCategory<ColorChartsTokenName, ColorModeEntry>>;
-  export type ColorSeverityDictionary = Partial<TokenCategory<ColorSeverityTokenName, ColorModeEntry>>;
   export type ColorsDictionary = Partial<TokenCategory<ColorsTokenName, ColorModeEntry>>;
   export type ShadowsDictionary = Partial<TokenCategory<ShadowsTokenName, ColorModeEntry>>;
 
