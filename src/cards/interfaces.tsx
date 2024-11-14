@@ -223,6 +223,15 @@ export namespace CardsProps {
   export interface CardDefinition<T> {
     header?(item: T): React.ReactNode;
     sections?: ReadonlyArray<SectionDefinition<T>>;
+
+    /**
+     * Returns the test ID for each card item.
+     * Returned value is assigned to the `data-testid` attribute of the card's root element.
+     *
+     * @param {T} item Single item from the specified `items` array.
+     * @returns {string} Test id to be assigned to the corresponding card.
+     */
+    testId?(item: T): string;
   }
 
   export interface SectionDefinition<T> {
@@ -230,6 +239,15 @@ export namespace CardsProps {
     header?: React.ReactNode;
     content?(item: T): React.ReactNode;
     width?: number;
+
+    /**
+     * Returns the test ID for each section item.
+     * Returned value is assigned to the `data-testid` attribute of the section's root element.
+     *
+     * @param {T} item Single item from the specified `items` array.
+     * @returns {string} Test id to be assigned to the corresponding section.
+     */
+    testId?(item: T): string;
   }
 
   export interface CardsLayout {
