@@ -72,6 +72,12 @@ export namespace RadioGroupProps {
     description?: React.ReactNode;
     disabled?: boolean;
     controlId?: string;
+
+    /**
+     * Test ID of the radio button.
+     * Assigns this value to the `data-testid` attribute of the radio button's root element.
+     */
+    testId?: string;
   }
 
   export interface ChangeDetail {

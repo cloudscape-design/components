@@ -104,10 +104,14 @@ describe('items', () => {
   test('does not trigger change handler if disabled', () => {
     const onChange = jest.fn();
     const { wrapper } = renderRadioGroup(
-      <RadioGroup value={null} items={[defaultItems[0], { ...defaultItems[1], disabled: true }]} onChange={onChange} />
+      <RadioGroup
+        value={null}
+        items={[defaultItems[0], { ...defaultItems[1], disabled: true, testId: 'disabled-button' }]}
+        onChange={onChange}
+      />
     );
 
-    act(() => wrapper.findButtons()[1].findLabel().click());
+    act(() => wrapper.findButtonByTestId('disabled-button')!.findLabel().click());
     expect(onChange).not.toHaveBeenCalled();
   });
 
@@ -159,29 +163,53 @@ describe('items', () => {
   });
 
   test('displays the proper label', () => {
-    const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: 'Please select' }]} />);
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={[{ value: '1', label: 'Please select', testId: 'test-button' }]} />
+    );
 
-    expect(wrapper.findButtons()[0].findLabel().getElement()).toHaveTextContent('Please select');
+    expect(wrapper.findButtonByTestId('test-button')!.findLabel().getElement()).toHaveTextContent('Please select');
   });
 
   test('displays no label text when label is empty', () => {
-    const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: '' }]} />);
-    expect(wrapper.findButtons()[0].findLabel().getElement()).toHaveTextContent('');
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={[{ value: '1', label: '', testId: 'test-button' }]} />
+    );
+    expect(wrapper.findButtonByTestId('test-button')!.findLabel().getElement()).toHaveTextContent('');
   });
 
   test('displays the description', () => {
     const { wrapper } = renderRadioGroup(
       <RadioGroup
         value={null}
-        items={[{ value: '1', label: 'Please select', description: 'Radio description test' }]}
+        items={[{ value: '1', label: 'Please select', description: 'Radio description test', testId: 'test-button' }]}
       />
     );
-    expect(wrapper.findButtons()[0].findDescription()!.getElement()).toHaveTextContent('Radio description test');
+    expect(wrapper.findButtonByTestId('test-button')!.findDescription()!.getElement()).toHaveTextContent(
+      'Radio description test'
+    );
   });
 
   test('does not display description when it is not defined', () => {
-    const { wrapper } = renderRadioGroup(<RadioGroup value={null} items={[{ value: '1', label: 'Please select' }]} />);
-    expect(wrapper.findButtons()[0].findDescription()).toBeNull();
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={[{ value: '1', label: 'Please select', testId: 'test-button' }]} />
+    );
+    expect(wrapper.findButtonByTestId('test-button')!.findDescription()).toBeNull();
+  });
+
+  test('adds test id to items when specified', () => {
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup
+        value={null}
+        items={[
+          { value: '1', label: 'Item 1', testId: 'item-1' },
+          { value: '2', label: 'Item 2', testId: 'item-2' },
+          { value: '3', label: 'Item 3', testId: 'item-3' },
+        ]}
+      />
+    );
+
+    const buttonTestIds = wrapper.findButtons().map(button => button.getElement()!.getAttribute('data-testid'));
+    expect(buttonTestIds).toEqual(['item-1', 'item-2', 'item-3']);
   });
 });
 
@@ -289,14 +317,14 @@ describe('value', () => {
         <RadioGroup
           value="val2"
           items={[
-            { value: 'val1', label: 'Option one', controlId: 'control-id-1' },
-            { value: 'val2', label: 'Option two', controlId: 'control-id-2' },
+            { value: 'val1', label: 'Option one', controlId: 'control-id-1', testId: 'radio-button-1' },
+            { value: 'val2', label: 'Option two', controlId: 'control-id-2', testId: 'radio-button-2' },
           ]}
         />
       );
 
-      check(wrapper.findButtons()[0], 'control-id-1');
-      check(wrapper.findButtons()[1], 'control-id-2');
+      check(wrapper.findButtonByTestId('radio-button-1')!, 'control-id-1');
+      check(wrapper.findButtonByTestId('radio-button-2')!, 'control-id-2');
     });
 
     test('generates a own unique ids for setting up label relations when controlId is not set', () => {
@@ -320,16 +348,16 @@ describe('value', () => {
         <RadioGroup
           value="val2"
           items={[
-            { value: 'val1', label: 'Option one', controlId: id1 },
-            { value: 'val2', label: 'Option two' },
+            { value: 'val1', label: 'Option one', controlId: id1, testId: 'option-1' },
+            { value: 'val2', label: 'Option two', testId: 'option-2' },
           ]}
         />
       );
 
-      const button2 = wrapper.findButtons()[1];
+      const button2 = wrapper.findButtonByTestId('option-2')!;
       const id2 = button2.findNativeInput().getElement().id;
 
-      check(wrapper.findButtons()[0], id1);
+      check(wrapper.findButtonByTestId('option-1')!, id1);
       check(button2, id2);
       expect(id1).not.toBe(id2);
     });
@@ -380,5 +408,29 @@ describe('table grid navigation support', () => {
     setCurrentTarget(getRadioInput('#radio1'));
     expect(getRadioInput('#radio1')).toHaveAttribute('tabIndex', '0');
     expect(getRadioInput('#radio2')).toHaveAttribute('tabIndex', '-1');
+  });
+});
+
+describe('test utils', () => {
+  test('findButtonByTestId selects the button with the specified test id', () => {
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup
+        value={null}
+        items={[
+          { value: '1', label: 'one', testId: 'button-1' },
+          { value: '2', label: 'two', testId: 'button-2' },
+        ]}
+      />
+    );
+
+    expect(wrapper.findButtonByTestId('button-2')!.getElement()).toHaveTextContent('two');
+  });
+
+  test('findButtonByTestId selects the button even if test id contains quote character', () => {
+    const { wrapper } = renderRadioGroup(
+      <RadioGroup value={null} items={[{ value: '1', label: 'Test button', testId: 'test-"button"' }]} />
+    );
+
+    expect(wrapper.findButtonByTestId('test-"button"')!.getElement()).toHaveTextContent('Test button');
   });
 });

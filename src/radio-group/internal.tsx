@@ -67,6 +67,7 @@ const InternalRadioGroup = React.forwardRef(
               onChange={onChange}
               controlId={item.controlId}
               readOnly={readOnly}
+              testId={item.testId}
               {...getAnalyticsMetadataAttribute(
                 !item.disabled && !readOnly
                   ? {
