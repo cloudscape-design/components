@@ -17722,7 +17722,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#f3f3f7",
+            "light": "#f6f6f9",
           },
         },
         "color-background-chat-bubble-outgoing": {
@@ -22740,7 +22740,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#f3f3f7",
+            "light": "#f6f6f9",
           },
         },
         "color-background-chat-bubble-outgoing": {
@@ -25249,7 +25249,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#f3f3f7",
+            "light": "#f6f6f9",
           },
         },
         "color-background-chat-bubble-outgoing": {
@@ -27758,7 +27758,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The background color of \`incoming\` chat bubble.",
           "$value": {
             "dark": "#0f141a",
-            "light": "#f3f3f7",
+            "light": "#f6f6f9",
           },
         },
         "color-background-chat-bubble-outgoing": {
@@ -35285,7 +35285,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$description": "The background color of \`incoming\` chat bubble.",
       "$value": {
         "dark": "#0f141a",
-        "light": "#f3f3f7",
+        "light": "#f6f6f9",
       },
     },
     "color-background-chat-bubble-outgoing": {
