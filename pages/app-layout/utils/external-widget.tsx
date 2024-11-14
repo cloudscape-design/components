@@ -6,7 +6,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
-import { CustomDrawerContent } from './content-blocks';
+import { Counter, CustomDrawerContent } from './content-blocks';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
@@ -83,18 +83,6 @@ awsuiPlugins.appLayout.registerDrawer({
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
-
-const Counter: React.FC = ({ children }) => {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <span data-testid="count">{count}</span>
-      <button onClick={() => setCount(count + 1)}>+</button>
-      {children}
-    </div>
-  );
-};
 
 const AutoIncrementCounter: React.FC<{
   onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
@@ -192,7 +180,13 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<Counter>global widget content circle 2</Counter>, container);
+    ReactDOM.render(
+      <>
+        <Counter id="circle2-global" />
+        global widget content circle 2
+      </>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
@@ -219,7 +213,13 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<Counter>global widget content circle 3</Counter>, container);
+    ReactDOM.render(
+      <>
+        <Counter id="circle3-global" />
+        global widget content circle 3
+      </>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

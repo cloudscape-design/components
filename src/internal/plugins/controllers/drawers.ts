@@ -32,7 +32,18 @@ export interface DrawerConfig {
   preserveInactiveContent?: boolean;
 }
 
-export type UpdateDrawerConfig = Pick<DrawerConfig, 'id' | 'badge' | 'resizable' | 'defaultSize'>;
+const updatableProperties = [
+  'badge',
+  'resizable',
+  'defaultSize',
+  'orderPriority',
+  'defaultActive',
+  'onResize',
+] as const;
+
+export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & Partial<
+  Pick<DrawerConfig, (typeof updatableProperties)[number]>
+>;
 
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
@@ -67,29 +78,22 @@ export class DrawersController {
     this.scheduleUpdate();
   };
 
-  updateDrawer = (config: UpdateDrawerConfig) => {
-    const { id: drawerId, resizable, badge, defaultSize } = config;
+  updateDrawer = ({ id: drawerId, ...rest }: UpdateDrawerConfig) => {
     const drawerIndex = this.drawers.findIndex(({ id }) => id === drawerId);
     const oldDrawerConfig = this.drawers?.[drawerIndex];
-    if (drawerIndex >= 0 && oldDrawerConfig) {
-      const drawers = this.drawers.slice();
-      const drawerConfig = { ...oldDrawerConfig };
-      if (typeof resizable === 'boolean') {
-        drawerConfig.resizable = resizable;
-      }
-      if (typeof badge === 'boolean') {
-        drawerConfig.badge = badge;
-      }
-      if (typeof defaultSize === 'number') {
-        drawerConfig.defaultSize = defaultSize;
-      }
-
-      drawers[drawerIndex] = drawerConfig;
-      this.drawers = drawers;
-      this.scheduleUpdate();
-    } else {
+    if (!oldDrawerConfig) {
       throw new Error(`[AwsUi] [runtime drawers] drawer with id ${drawerId} not found`);
     }
+    const drawers = this.drawers.slice();
+    const updatedDrawer = { ...oldDrawerConfig };
+    for (const key of updatableProperties) {
+      if (key in rest) {
+        updatedDrawer[key] = (rest as any)[key];
+      }
+    }
+    drawers[drawerIndex] = updatedDrawer;
+    this.drawers = drawers;
+    this.scheduleUpdate();
   };
 
   onDrawersRegistered = (listener: DrawersRegistrationListener) => {
