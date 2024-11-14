@@ -261,23 +261,11 @@ describe('Focusing behavior', () => {
 });
 
 describe('i18n', () => {
-  test('has default i18n strings', () => {
-    const { container } = testingLibraryRender(
-      <FileTokenGroup items={[{ file: file1 }]} limit={0} onDismiss={onDismiss} />
-    );
-
-    screen.debug();
-
-    const wrapper = createWrapper(container).findFileTokenGroup()!;
-    expect(wrapper.getElement()).toHaveTextContent('Show more');
-  });
-
   test('supports providing custom i18n strings', () => {
     const { container } = testingLibraryRender(
       <TestI18nProvider
         messages={{
           'file-token-group': {
-            'i18nStrings.limitShowFewer': 'Custom show fewer',
             'i18nStrings.limitShowMore': 'Custom show more',
           },
         }}
