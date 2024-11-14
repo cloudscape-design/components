@@ -210,22 +210,6 @@ export type ColorChartsTokenName =
   | 'colorChartsPaletteCategorical48'
   | 'colorChartsPaletteCategorical49'
   | 'colorChartsPaletteCategorical50';
-export type ColorSeverityTokenName =
-  | 'colorSeverityDarkRed'
-  | 'colorSeverityRed'
-  | 'colorSeverityOrange'
-  | 'colorSeverityYellow'
-  | 'colorSeverityGrey'
-  | 'colorBackgroundNotificationSeverityCritical'
-  | 'colorBackgroundNotificationSeverityHigh'
-  | 'colorBackgroundNotificationSeverityMedium'
-  | 'colorBackgroundNotificationSeverityLow'
-  | 'colorBackgroundNotificationSeverityNeutral'
-  | 'colorTextNotificationSeverityCritical'
-  | 'colorTextNotificationSeverityHigh'
-  | 'colorTextNotificationSeverityMedium'
-  | 'colorTextNotificationSeverityLow'
-  | 'colorTextNotificationSeverityNeutral';
 export type ColorsTokenName =
   | 'colorGreyOpaque10'
   | 'colorGreyOpaque25'
@@ -488,7 +472,17 @@ export type ColorsTokenName =
   | 'colorDropzoneTextDefault'
   | 'colorDropzoneTextHover'
   | 'colorDropzoneBorderDefault'
-  | 'colorDropzoneBorderHover';
+  | 'colorDropzoneBorderHover'
+  | 'colorBackgroundSeverityCritical'
+  | 'colorTextSeverityCritical'
+  | 'colorBackgroundSeverityHigh'
+  | 'colorTextSeverityHigh'
+  | 'colorBackgroundSeverityMedium'
+  | 'colorTextSeverityMedium'
+  | 'colorBackgroundSeverityLow'
+  | 'colorTextSeverityLow'
+  | 'colorBackgroundSeverityNeutral'
+  | 'colorTextSeverityNeutral';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
@@ -750,7 +744,7 @@ export type ShadowsTokenName =
   | 'shadowStickyColumnLast';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
-export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName | ColorSeverityTokenName;
+export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName;
 export type MotionScopeTokenName = MotionTokenName;
 export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
 
