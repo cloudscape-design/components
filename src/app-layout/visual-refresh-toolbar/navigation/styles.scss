@@ -8,16 +8,13 @@
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
 @use '../../constants.scss' as constants;
 
-.navigation {
+// This wrapper clips the actual navigation content during the enter animation.
+.navigation-container {
   position: sticky;
   z-index: constants.$drawer-z-index;
   background-color: awsui.$color-background-container-content;
   inset-block-end: 0;
-  block-size: 100%;
   overflow-x: hidden;
-  overflow-y: auto;
-  /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
-  overscroll-behavior-y: contain;
   word-wrap: break-word;
   pointer-events: auto;
   display: flex;
@@ -30,17 +27,16 @@
     display: none;
   }
 
-  & > .content-container {
+  & > .navigation {
     flex-grow: 1;
-  }
-
-  /*
-  A non-semantic node is added with a fixed width equal to the final Navigation
-  width. This will create the visual appearance of horizontal movement and
-  prevent unwanted text wrapping.
-  */
-  > .animated-content {
+    block-size: 100%;
+    overflow-y: auto;
+    /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+    overscroll-behavior-y: contain;
+    // Needs to have a fixed width during the enter animation, in which it will be cropped by its parent.
     inline-size: var(#{custom-props.$navigationWidth});
+    // Necessary for the hide-navigation button to be positioned correctly when a scrollbar is present.
+    position: relative;
   }
 
   // The Navigation drawer will take up the entire viewport on mobile
