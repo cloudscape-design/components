@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -9,6 +9,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
@@ -33,6 +34,8 @@ import {
 } from './internal';
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
+
+import styles from './skeleton/styles.css.js';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
   (
@@ -78,6 +81,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
     const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
+    const [isNested, setIsNested] = useState(false);
+    const rootRef = useRef<HTMLDivElement>(null);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -432,15 +437,36 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement.inlineSize,
     ]);
 
+    const getIsNestedInAppLayout = (element: HTMLElement | null, rootClassName: string): boolean => {
+      if (!element) {
+        return false;
+      }
+
+      let currentElement: Element | null = element.parentElement;
+
+      while (currentElement) {
+        if (currentElement.classList.contains(rootClassName)) {
+          return true;
+        }
+        currentElement = currentElement.parentElement;
+      }
+
+      return false;
+    };
+
+    useEffect(() => {
+      setIsNested(getIsNestedInAppLayout(rootRef.current, styles.root));
+    }, []);
+
     return (
       <>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
-          ref={intersectionObserverRef}
+          ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
-            ...(hasToolbar
+            ...(!isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
                   [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
