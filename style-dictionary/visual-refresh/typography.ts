@@ -13,7 +13,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontHeaderH2DescriptionLineHeight: '{lineHeightBodyM}',
   fontHeaderH2DescriptionSize: '{fontSizeBodyM}',
   fontLinkButtonLetterSpacing: '{fontButtonLetterSpacing}',
-  fontLinkButtonWeight: '{fontButtonWeight}',
+  fontLinkButtonWeight: '{fontWeightButton}',
   fontPanelHeaderLineHeight: '{lineHeightHeadingM}',
   fontPanelHeaderSize: '{fontSizeHeadingM}',
   fontSizeBodyM: '14px',
