@@ -73,6 +73,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "1px",
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -2219,6 +2227,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-size-heading-xs": {
           "$description": "The default font size for h5s.",
           "$value": "16px",
+        },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
         },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
@@ -2582,6 +2594,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "1px",
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -4728,6 +4748,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-size-heading-xs": {
           "$description": "The default font size for h5s.",
           "$value": "16px",
+        },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
         },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
@@ -5091,6 +5115,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "1px",
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -7237,6 +7269,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-size-heading-xs": {
           "$description": "The default font size for h5s.",
           "$value": "16px",
+        },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
         },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
@@ -7600,6 +7636,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "1px",
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -9746,6 +9790,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "font-size-heading-xs": {
           "$description": "The default font size for h5s.",
           "$value": "16px",
+        },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
         },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
@@ -10109,6 +10157,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
         },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "1px",
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -12256,6 +12312,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -12617,6 +12677,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "2px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "1px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "1px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -14765,6 +14833,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$description": "The default font size for h5s.",
           "$value": "16px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -15126,6 +15198,14 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "border-radius-tutorial-panel-item": {
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "2px",
+    },
+    "border-width-alert": {
+      "$description": "The border width of alerts.",
+      "$value": "1px",
+    },
+    "border-width-field": {
+      "$description": "The border width of fields.",
+      "$value": "1px",
     },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
@@ -17274,6 +17354,10 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$description": "The default font size for h5s.",
       "$value": "16px",
     },
+    "font-weight-button": {
+      "$description": "The default font weight for button text.",
+      "$value": "700",
+    },
     "font-weight-heading-l": {
       "$description": "The default font weight for h2s.",
       "$value": "700",
@@ -17640,6 +17724,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -19788,6 +19880,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -20149,6 +20245,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -22297,6 +22401,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -22658,6 +22766,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -24806,6 +24922,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -25167,6 +25287,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -27315,6 +27443,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -27676,6 +27808,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -29824,6 +29964,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -30185,6 +30329,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "border-radius-tutorial-panel-item": {
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
+        },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
         },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
@@ -32332,6 +32484,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "font-size-heading-xs": {
           "$description": "The default font size for h5s.",
           "$value": "14px",
+        },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
         },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
@@ -32695,6 +32851,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The border radius of tutorials inside a tutorial panel.",
           "$value": "8px",
         },
+        "border-width-alert": {
+          "$description": "The border width of alerts.",
+          "$value": "2px",
+        },
+        "border-width-field": {
+          "$description": "The border width of fields.",
+          "$value": "2px",
+        },
         "color-background-avatar-default": {
           "$description": "The default background color of avatars.",
           "$value": {
@@ -34842,6 +35006,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$description": "The default font size for h5s.",
           "$value": "14px",
         },
+        "font-weight-button": {
+          "$description": "The default font weight for button text.",
+          "$value": "700",
+        },
         "font-weight-heading-l": {
           "$description": "The default font weight for h2s.",
           "$value": "700",
@@ -35203,6 +35371,14 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "border-radius-tutorial-panel-item": {
       "$description": "The border radius of tutorials inside a tutorial panel.",
       "$value": "8px",
+    },
+    "border-width-alert": {
+      "$description": "The border width of alerts.",
+      "$value": "2px",
+    },
+    "border-width-field": {
+      "$description": "The border width of fields.",
+      "$value": "2px",
     },
     "color-background-avatar-default": {
       "$description": "The default background color of avatars.",
@@ -37350,6 +37526,10 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "font-size-heading-xs": {
       "$description": "The default font size for h5s.",
       "$value": "14px",
+    },
+    "font-weight-button": {
+      "$description": "The default font weight for button text.",
+      "$value": "700",
     },
     "font-weight-heading-l": {
       "$description": "The default font weight for h2s.",
