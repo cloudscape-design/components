@@ -32,7 +32,10 @@ export interface TableHeaderCellProps<ItemType> {
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
   wrapLines?: boolean;
+  stuck?: boolean;
+  sticky?: boolean;
   hidden?: boolean;
+  stripedRows?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
@@ -47,6 +50,7 @@ export interface TableHeaderCellProps<ItemType> {
   resizerRoleDescription?: string;
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
+  variant: TableProps.Variant;
 }
 
 export function TableHeaderCell<ItemType>({
@@ -59,7 +63,10 @@ export function TableHeaderCell<ItemType>({
   sortingDisabled,
   wrapLines,
   focusedComponent,
+  stuck,
+  sticky,
   hidden,
+  stripedRows,
   onClick,
   colIndex,
   updateColumn,
@@ -73,6 +80,7 @@ export function TableHeaderCell<ItemType>({
   resizerRoleDescription,
   isExpandable,
   hasDynamicContent,
+  variant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -120,11 +128,15 @@ export function TableHeaderCell<ItemType>({
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
       focusedComponent={focusedComponent}
+      stuck={stuck}
+      sticky={sticky}
       hidden={hidden}
+      stripedRows={stripedRows}
       colIndex={colIndex}
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}
+      variant={variant}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

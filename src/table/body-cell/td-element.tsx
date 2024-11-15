@@ -7,6 +7,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -40,7 +41,6 @@ export interface TableTdElementProps {
   columnId: PropertyKey;
   colIndex: number;
   stickyState: StickyColumnsModel;
-  isVisualRefresh?: boolean;
   tableRole: TableRole;
   level?: number;
   isExpandable?: boolean;
@@ -70,7 +70,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       onMouseLeave,
       isEvenRow,
       stripedRows,
-      isVisualRefresh,
       hasSelection,
       hasFooter,
       columnId,
@@ -89,6 +88,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     ref
   ) => {
     const Element = isRowHeader ? 'th' : 'td';
+    const isVisualRefresh = useVisualRefresh();
 
     nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
 

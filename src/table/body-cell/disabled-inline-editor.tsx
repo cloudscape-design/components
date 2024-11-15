@@ -8,6 +8,7 @@ import Portal from '../../internal/components/portal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import InternalLiveRegion from '../../live-region/internal';
 import Arrow from '../../popover/arrow';
 import PopoverBody from '../../popover/body';
@@ -31,10 +32,10 @@ export function DisabledInlineEditor<ItemType>({
   onEditStart,
   onEditEnd,
   editDisabledReason,
-  isVisualRefresh,
   resizableColumns = false,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
+  const isVisualRefresh = useVisualRefresh();
   const clickAwayRef = useClickAway(() => {
     if (isEditing) {
       onEditEnd(true);
