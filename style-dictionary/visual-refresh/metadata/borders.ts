@@ -109,6 +109,16 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthAlert: {
+    description: 'The border width of alerts.',
+    public: true,
+    themeable: true,
+  },
+  borderWidthField: {
+    description: 'The border width of fields.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
