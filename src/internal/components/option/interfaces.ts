@@ -19,6 +19,14 @@ export interface BaseOption {
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconSvg?: React.ReactNode;
+
+  /**
+   * Test ID of the option item.
+   * Assigns this value to the `data-testid` attribute of the option's root element.
+   *
+   * Note: In autosuggest component, test id is not applied to the option groups.
+   */
+  testId?: string;
 }
 
 export interface OptionDefinition extends BaseOption {

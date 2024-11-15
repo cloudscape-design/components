@@ -9,21 +9,31 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { SelectProps } from '../interfaces';
 
 const options: SelectProps.Options = [
-  { label: 'First option', value: '1' },
+  {
+    label: 'First option',
+    value: '1',
+    testId: 'option-1-test-id',
+  },
   {
     label: 'First group',
+    testId: 'option-2-test-id',
     options: [
       {
+        testId: 'option-3-test-id',
         label: 'Second option',
         value: '2',
       },
       {
+        testId: 'option-4-test-id',
         label: 'Third option',
         value: '3',
       },
     ],
   },
-  { label: 'Fourth option', value: '4' },
+  {
+    label: 'Fourth option',
+    value: '4',
+  },
   {
     label: 'Second group',
     options: [
@@ -39,8 +49,10 @@ const options: SelectProps.Options = [
   },
 ];
 
-function renderSelect() {
-  const { container } = render(<Select options={options} selectedOption={null} onChange={() => null} />);
+function renderSelect(customOptions?: SelectProps.Options) {
+  const { container } = render(
+    <Select options={customOptions ?? options} selectedOption={null} onChange={() => null} />
+  );
   const wrapper = createWrapper(container).findSelect()!;
   return { container, wrapper };
 }
@@ -54,6 +66,7 @@ describe('test utils', () => {
     expect(groups[0].getElement()).toHaveTextContent('First group');
     expect(groups[1].getElement()).toHaveTextContent('Second group');
   });
+
   describe('findGroup', () => {
     test('returns a group by 1-based index', () => {
       const { wrapper } = renderSelect();
@@ -61,6 +74,76 @@ describe('test utils', () => {
       const dropdown = wrapper.findDropdown()!;
       expect(dropdown.findGroup(1)!.getElement()).toHaveTextContent('First group');
       expect(dropdown.findGroup(2)!.getElement()).toHaveTextContent('Second group');
+    });
+  });
+
+  describe('findGroupByTestId', () => {
+    test('returns the group by test id', () => {
+      const { wrapper } = renderSelect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+      expect(dropdown.findGroupByTestId('option-2-test-id')!.getElement()).toHaveTextContent('First group');
+    });
+
+    test('returns the group by test id even if test id contains double quotes', () => {
+      const { wrapper } = renderSelect([
+        {
+          label: 'Test Group',
+          value: '1',
+          testId: '"group-test-id"',
+          options: [],
+        },
+      ]);
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+      expect(dropdown.findGroupByTestId('"group-test-id"')!.getElement()).toHaveTextContent('Test Group');
+    });
+
+    test('does not return non-group options even if test id matches', () => {
+      const { wrapper } = renderSelect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+      expect(dropdown.findGroupByTestId('option-3-test-id')).toBeNull();
+    });
+  });
+
+  describe('findOptionByTestId', () => {
+    test('returns the option by test id', () => {
+      const { wrapper } = renderSelect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+      const topLevelOption = dropdown.findOptionByTestId('option-1-test-id')!.getElement();
+      const subLevelOption = dropdown.findOptionByTestId('option-3-test-id')!.getElement();
+
+      expect(topLevelOption).toHaveTextContent('First option');
+      expect(subLevelOption).toHaveTextContent('Second option');
+    });
+
+    test('returns the group by test id even if test id contains double quotes', () => {
+      const { wrapper } = renderSelect([
+        {
+          label: 'Test Option',
+          value: '1',
+          testId: '"option-test-id"',
+        },
+      ]);
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+
+      expect(dropdown.findOptionByTestId('"option-test-id"')!.getElement()).toHaveTextContent('Test Option');
+    });
+
+    test('does not return the group item even if the test if matches', () => {
+      const { wrapper } = renderSelect();
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown()!;
+      const topLevelOption = dropdown.findOptionByTestId('option-1-test-id');
+      const groupOption = dropdown.findOptionByTestId('group-test-id');
+      const childOption = dropdown.findOptionByTestId('option-3-test-id');
+
+      expect(topLevelOption).toBeTruthy();
+      expect(groupOption).toBeFalsy();
+      expect(childOption).toBeTruthy();
     });
   });
 });
