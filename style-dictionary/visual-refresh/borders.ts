@@ -12,7 +12,6 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderDividerListWidth: '1px',
   borderDividerSectionWidth: '1px',
   borderDropdownVirtualOffsetWidth: '2px',
-  borderFieldWidth: '2px',
   borderInvalidWidth: '8px',
   borderItemWidth: '2px',
   borderLineChartDashArray: '3 5',
@@ -42,6 +41,6 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderTableStickyWidth: '1px',
   borderLinkFocusRingOutline: '0',
   borderLinkFocusRingShadowSpread: '2px',
-  borderWidthAlert: '1px',
-  borderWidthField: '1px',
+  borderWidthAlert: '2px',
+  borderWidthField: '2px',
 };
