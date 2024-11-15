@@ -5,7 +5,6 @@ import { StyleDictionary } from '../utils/interfaces';
 export const tokens: StyleDictionary.TypographyDictionary = {
   fontBoxValueLargeWeight: '700',
   fontButtonLetterSpacing: '0.005em',
-  fontButtonWeight: '700',
   fontChartDetailSize: '{fontSizeBodyS}',
   fontDisplayLabelWeight: '700',
   fontExpandableHeadingSize: '{fontSizeHeadingS}',
@@ -31,6 +30,7 @@ export const tokens: StyleDictionary.TypographyDictionary = {
   fontTabsLineHeight: '{lineHeightHeadingS}',
   fontTabsSize: '{fontSizeHeadingS}',
   fontWayfindingLinkActiveWeight: '700',
+  fontWeightButton: '700',
   fontWeightHeadingXl: '700',
   fontWeightHeadingL: '700',
   fontWeightHeadingM: '700',

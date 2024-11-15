@@ -6,9 +6,6 @@ const metadata: StyleDictionary.MetadataIndex = {
   fontButtonLetterSpacing: {
     description: 'The default letter spacing for button text.',
   },
-  fontButtonWeight: {
-    description: 'The default font weight for button text.',
-  },
   fontChartDetailSize: {
     description: 'Used for secondary chart text, e.g. mixed chart axes and pie chart label descriptions.',
   },
@@ -64,6 +61,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   fontSizeHeadingXs: {
     description: 'The default font size for h5s.',
+    themeable: true,
+    public: true,
+  },
+  fontWeightButton: {
+    description: 'The default font weight for button text.',
     themeable: true,
     public: true,
   },

@@ -42,4 +42,6 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderTableStickyWidth: '1px',
   borderLinkFocusRingOutline: '0',
   borderLinkFocusRingShadowSpread: '2px',
+  borderWidthAlert: '1px',
+  borderWidthField: '1px',
 };

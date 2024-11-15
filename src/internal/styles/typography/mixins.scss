@@ -94,7 +94,7 @@
 }
 
 @mixin font-button {
-  font-weight: awsui.$font-button-weight;
+  font-weight: awsui.$font-weight-button;
   @include font-smoothing;
 }
 
