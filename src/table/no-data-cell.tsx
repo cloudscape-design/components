@@ -10,7 +10,7 @@ import InternalStatusIndicator from '../status-indicator/internal';
 
 import styles from './styles.css.js';
 
-export interface NoDataCellProps {
+interface NoDataCellProps {
   totalColumnsCount: number;
   hasFooter: boolean;
   loading?: boolean;

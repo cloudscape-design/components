@@ -25,7 +25,10 @@ interface Instance {
   children?: Instance[];
 }
 
-const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [{ header: 'name', cell: item => item.name }];
+const columnDefinitions: TableProps.ColumnDefinition<Instance>[] = [
+  { header: 'name', cell: item => item.name },
+  { header: 'version', cell: () => 'v0' },
+];
 
 const nestedItems: Instance[] = [
   {
@@ -98,7 +101,7 @@ describe('Progressive loading', () => {
   test('renders loaders in correct order for normal table', () => {
     const { table } = renderTable({ getLoadingStatus: () => 'pending' });
 
-    expect(table.findRows().map(getTextContent)).toEqual(['Root-1', 'Root-2', '[pending] Loader for TABLE ROOT']);
+    expect(table.findRows().map(getTextContent)).toEqual(['Root-1v0', 'Root-2v0', '[pending] Loader for TABLE ROOT']);
   });
 
   test('renders loaders in correct order for expandable table', () => {
@@ -117,21 +120,21 @@ describe('Progressive loading', () => {
     });
 
     expect(table.findRows().map(getTextContent)).toEqual([
-      'Root-1',
-      'Nested-1.1',
-      'Nested-1.2',
-      'Nested-1.2.1',
-      'Nested-1.2.2',
+      'Root-1v0',
+      'Nested-1.1v0',
+      'Nested-1.2v0',
+      'Nested-1.2.1v0',
+      'Nested-1.2.2v0',
       '[pending] Loader for Nested-1.2',
       '[pending] Loader for Root-1',
-      'Root-2',
-      'Nested-2.1',
-      'Nested-2.1.1',
-      'Nested-2.1.2',
+      'Root-2v0',
+      'Nested-2.1v0',
+      'Nested-2.1.1v0',
+      'Nested-2.1.2v0',
       '[pending] Loader for Nested-2.1',
-      'Nested-2.2',
-      'Nested-2.2.1',
-      'Nested-2.2.2',
+      'Nested-2.2v0',
+      'Nested-2.2.1v0',
+      'Nested-2.2.2v0',
       '[pending] Loader for Nested-2.2',
       '[pending] Loader for Root-2',
       '[pending] Loader for TABLE ROOT',
@@ -220,25 +223,28 @@ describe('Progressive loading', () => {
     }
   );
 
-  test.each(['single', 'multi'] as const)('selection control is not rendered for loader rows', selectionType => {
-    const { table } = renderTable({
-      expandableRows: {
-        ...defaultExpandableRows,
-        expandedItems: [{ name: 'Root-1' }],
-      },
-      getLoadingStatus: () => 'pending',
-      selectionType,
-    });
+  test.each(['single', 'multi'] as const)(
+    'selection control is not rendered for loader rows, selectionType=%s',
+    selectionType => {
+      const { table } = renderTable({
+        expandableRows: {
+          ...defaultExpandableRows,
+          expandedItems: [{ name: 'Root-1' }],
+        },
+        getLoadingStatus: () => 'pending',
+        selectionType,
+      });
 
-    expect(table.findRows().map(w => [!!w.find('input'), getTextContent(w)])).toEqual([
-      [true, 'Root-1'],
-      [true, 'Nested-1.1'],
-      [true, 'Nested-1.2'],
-      [false, '[pending] Loader for Root-1'],
-      [true, 'Root-2'],
-      [false, '[pending] Loader for TABLE ROOT'],
-    ]);
-  });
+      expect(table.findRows().map(w => [!!w.find('input'), getTextContent(w)])).toEqual([
+        [true, 'Root-1v0'],
+        [true, 'Nested-1.1v0'],
+        [true, 'Nested-1.2v0'],
+        [false, '[pending] Loader for Root-1'],
+        [true, 'Root-2v0'],
+        [false, '[pending] Loader for TABLE ROOT'],
+      ]);
+    }
+  );
 
   test.each(['loading', 'error'] as const)('loader row with status="%s" is added after empty expanded item', status => {
     const { table } = renderTable({
