@@ -548,7 +548,6 @@ export type BordersTokenName =
   | 'borderDividerListWidth'
   | 'borderDividerSectionWidth'
   | 'borderDropdownVirtualOffsetWidth'
-  | 'borderFieldWidth'
   | 'borderInvalidWidth'
   | 'borderItemWidth'
   | 'borderLineChartDashArray'
