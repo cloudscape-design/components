@@ -174,10 +174,13 @@ function applyToolsDrawer(toolsProps: ToolsProps, runtimeDrawers: DrawersLayout)
 
 export const MIN_DRAWER_SIZE = 290;
 
+type VisibilityCallback = (isVisible: boolean) => void;
+
 type UseDrawersProps = Pick<AppLayoutProps, 'drawers' | 'activeDrawerId' | 'onDrawerChange'> & {
   __disableRuntimeDrawers?: boolean;
   onGlobalDrawerFocus?: (drawerId: string, open: boolean) => void;
   onAddNewActiveDrawer?: (drawerId: string) => void;
+  visibilityCallbackMap?: Record<string, VisibilityCallback | null>;
 };
 
 export function useDrawers(
@@ -188,6 +191,7 @@ export function useDrawers(
     onGlobalDrawerFocus,
     onAddNewActiveDrawer,
     __disableRuntimeDrawers: disableRuntimeDrawers,
+    visibilityCallbackMap,
   }: UseDrawersProps,
   ariaLabels: AppLayoutProps['ariaLabels'],
   toolsProps: ToolsProps
@@ -234,11 +238,17 @@ export function useDrawers(
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
+      if (visibilityCallbackMap) {
+        visibilityCallbackMap[drawerId]?.(false);
+      }
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus?.(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
+      if (visibilityCallbackMap) {
+        visibilityCallbackMap[drawerId]?.(true);
+      }
     }
   }
 

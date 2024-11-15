@@ -1,5 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createContext } from 'react';
+import React, { createContext } from 'react';
 
-export const ActiveDrawersContext = createContext<ReadonlyArray<string>>([]);
+type VisibilityCallback = (isVisible: boolean) => void;
+
+export const ActiveDrawersContext = createContext<React.MutableRefObject<
+  Record<string, VisibilityCallback | null>
+> | null>({ current: {} });

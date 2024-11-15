@@ -21,6 +21,7 @@ awsuiPlugins.appLayout.registerDrawer({
       <rect fill="currentColor" x="5" y="5" width="6" height="6" />
     </svg>`,
   },
+  // preserveInactiveContent: true,
 
   ariaLabels: {
     closeButton: 'Close button',
@@ -32,6 +33,7 @@ awsuiPlugins.appLayout.registerDrawer({
   mountContent: (container, { onVisibilityChange }) => {
     awsuiPlugins.appLayout.updateDrawer({ id: 'runtime-drawer-persist-open-state', defaultActive: true });
     onVisibilityChange(isVisible => {
+      console.log('onVisibilityChange: ', isVisible);
       awsuiPlugins.appLayout.updateDrawer({ id: 'runtime-drawer-persist-open-state', defaultActive: isVisible });
     });
     render(<Counter id="runtime-drawer-persist-open-state" />, container);

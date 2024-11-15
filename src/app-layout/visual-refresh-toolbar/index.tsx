@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -33,6 +33,8 @@ import {
 } from './internal';
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
+
+type VisibilityCallback = (isVisible: boolean) => void;
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
   (
@@ -78,6 +80,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
     const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
+    const drawersVisibilityCallbackMap = useRef<Record<string, VisibilityCallback | null>>({});
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -141,14 +144,23 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveDrawerChange,
       onActiveDrawerResize,
       onActiveGlobalDrawersChange,
-    } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
+    } = useDrawers(
+      {
+        ...rest,
+        onGlobalDrawerFocus,
+        onAddNewActiveDrawer,
+        visibilityCallbackMap: drawersVisibilityCallbackMap.current,
+      },
       ariaLabels,
-      toolsHide,
-      toolsOpen,
-      tools,
-      toolsWidth,
-      onToolsToggle,
-    });
+      {
+        ariaLabels,
+        toolsHide,
+        toolsOpen,
+        tools,
+        toolsWidth,
+        onToolsToggle,
+      }
+    );
 
     const onActiveDrawerChangeHandler = (drawerId: string | null) => {
       onActiveDrawerChange(drawerId);
@@ -459,7 +471,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           navigationAnimationDisabled={navigationAnimationDisabled}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
-            <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>
+            <ActiveDrawersContext.Provider value={drawersVisibilityCallbackMap}>
               <AppLayoutGlobalDrawers appLayoutInternals={appLayoutInternals} />
             </ActiveDrawersContext.Provider>
           }

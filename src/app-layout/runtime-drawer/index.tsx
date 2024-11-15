@@ -16,8 +16,6 @@ export interface DrawersLayout {
   localAfter: Array<AppLayoutProps.Drawer>;
 }
 
-type VisibilityCallback = (isVisible: boolean) => void;
-
 interface RuntimeContentWrapperProps {
   id?: string;
   mountContent: RuntimeDrawerConfig['mountContent'];
@@ -26,27 +24,22 @@ interface RuntimeContentWrapperProps {
 
 function RuntimeDrawerWrapper({ mountContent, unmountContent, id }: RuntimeContentWrapperProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const visibilityChangeCallback = useRef<VisibilityCallback | null>(null);
-  const activeDrawersIds = useContext(ActiveDrawersContext);
-  const isVisible = !!id && activeDrawersIds.includes(id);
+  const drawersVisibilityCallbackMap = useContext(ActiveDrawersContext);
 
   useEffect(() => {
     const container = ref.current!;
     mountContent(container, {
       onVisibilityChange: cb => {
-        visibilityChangeCallback.current = cb;
+        if (drawersVisibilityCallbackMap?.current && id) {
+          drawersVisibilityCallbackMap.current[id!] = cb;
+        }
       },
     });
     return () => {
       unmountContent(container);
-      visibilityChangeCallback.current = null;
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    visibilityChangeCallback.current?.(isVisible);
-  }, [isVisible]);
 
   return <div ref={ref} className={styles['runtime-content-wrapper']}></div>;
 }
