@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { escapeSelector } from '@cloudscape-design/test-utils-core/utils';
 
 import ExpandableSectionWrapper from '../expandable-section';
 
@@ -32,6 +33,22 @@ export default class SideNavigationWrapper extends ComponentWrapper {
   findItemByIndex(index: number): SideNavigationItemWrapper | null {
     return this.findComponent(
       `.${styles['list-variant-root']} > [data-itemid="item-${index}"]`,
+      SideNavigationItemWrapper
+    );
+  }
+
+  /**
+   * Returns the wrapper of the first item that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `items` prop.
+   * If no matching item is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {SideNavigationItemWrapper | null}
+   */
+  findItemByTestId(testId: string): SideNavigationItemWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(
+      `.${styles['list-variant-root']} [data-testid="${escapedTestId}"]`,
       SideNavigationItemWrapper
     );
   }
@@ -68,6 +85,19 @@ export class SideNavigationItemWrapper extends ElementWrapper {
 
   findItemByIndex(index: number): SideNavigationItemWrapper | null {
     return this.findComponent(`[data-itemid="item-${index}"]`, SideNavigationItemWrapper);
+  }
+
+  /**
+   * Returns the wrapper of the first item that matches the specified test ID.
+   * Looks for the `data-testid` attribute that is assigned via `items` prop.
+   * If no matching item is found, returns `null`.
+   *
+   * @param {string} testId
+   * @returns {SideNavigationItemWrapper | null}
+   */
+  findItemByTestId(testId: string): SideNavigationItemWrapper | null {
+    const escapedTestId = escapeSelector(testId);
+    return this.findComponent(`[data-testid="${escapedTestId}"]`, SideNavigationItemWrapper);
   }
 
   findItems(): Array<SideNavigationItemWrapper> {

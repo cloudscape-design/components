@@ -139,6 +139,12 @@ export namespace SideNavigationProps {
 
   export interface Divider {
     type: 'divider';
+
+    /**
+     * Test ID of the divider.
+     * Assigns this value to the `data-testid` attribute of the divider's root element.
+     */
+    testId?: string;
   }
 
   export interface Link {
@@ -148,6 +154,12 @@ export namespace SideNavigationProps {
     external?: boolean;
     externalIconAriaLabel?: string;
     info?: React.ReactNode;
+
+    /**
+     * Test ID of the link.
+     * Assigns this value to the `data-testid` attribute of the link's root element.
+     */
+    testId?: string;
   }
 
   export interface Section {
@@ -155,12 +167,24 @@ export namespace SideNavigationProps {
     text: string;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
+
+    /**
+     * Test ID of the section item.
+     * Assigns this value to the `data-testid` attribute of the section's root element.
+     */
+    testId?: string;
   }
 
   export interface SectionGroup {
     type: 'section-group';
     title: string;
     items: ReadonlyArray<Section | Link | LinkGroup | ExpandableLinkGroup>;
+
+    /**
+     * Test ID of the section group.
+     * Assigns this value to the `data-testid` attribute of the section group's root element.
+     */
+    testId?: string;
   }
   export interface LinkGroup {
     type: 'link-group';
@@ -168,6 +192,12 @@ export namespace SideNavigationProps {
     href: string;
     info?: React.ReactNode;
     items: ReadonlyArray<Item>;
+
+    /**
+     * Test ID of the link group item.
+     * Assigns this value to the `data-testid` attribute of the link group's root element.
+     */
+    testId?: string;
   }
 
   export interface ExpandableLinkGroup {
@@ -176,6 +206,12 @@ export namespace SideNavigationProps {
     href: string;
     items: ReadonlyArray<Item>;
     defaultExpanded?: boolean;
+
+    /**
+     * Test ID of the expandable link group item.
+     * Assigns this value to the `data-testid` attribute of the expandable link group's root element.
+     */
+    testId?: string;
   }
 
   export type Item = Divider | Link | Section | LinkGroup | ExpandableLinkGroup | SectionGroup;
