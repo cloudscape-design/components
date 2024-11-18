@@ -278,8 +278,8 @@ describe('i18n', () => {
             'i18nStrings.removeFileAriaLabel': `Custom remove file {fileIndex}`,
             'i18nStrings.errorIconAriaLabel': 'Custom error',
             'i18nStrings.warningIconAriaLabel': 'Custom warning',
-            'i18nStrings.uploadButtonText': `Custom {multiple}`,
-            'i18nStrings.dropzoneText': `Custom {multiple}`,
+            'i18nStrings.uploadButtonText':
+              '{multiple, select, true {Custom choose files} false {Custom choose file} other {}}',
           },
         }}
       >
@@ -297,7 +297,7 @@ describe('i18n', () => {
     expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Custom remove file 1');
     expect(screen.getByLabelText('Custom error')).not.toBeNull();
     expect(screen.getByLabelText('Custom warning')).not.toBeNull();
-    expect(wrapper.findUploadButton().getElement()).toHaveTextContent('Custom false');
+    expect(wrapper.findUploadButton().getElement()).toHaveTextContent('Custom choose file');
   });
 });
 

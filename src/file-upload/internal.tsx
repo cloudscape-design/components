@@ -127,7 +127,6 @@ function InternalFileUpload(
       <InternalBox>
         {areFilesDragging ? (
           <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
-            {/* {i18nStrings.dropzoneText(multiple)} */}
             {i18n('i18nStrings.dropzoneText', i18nStrings?.dropzoneText?.(multiple), format =>
               format({ multiple: `${multiple}` })
             )}
@@ -145,7 +144,6 @@ function InternalFileUpload(
             ariaDescribedby={ariaDescribedBy}
             invalid={invalid}
           >
-            {/* {i18nStrings.uploadButtonText(multiple)} */}
             {i18n('i18nStrings.uploadButtonText', i18nStrings?.uploadButtonText?.(multiple), format =>
               format({ multiple: `${multiple}` })
             )}
