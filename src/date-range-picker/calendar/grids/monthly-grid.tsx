@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, TdHTMLAttributes, useMemo, useRef, useState } from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import {
   addDays,
@@ -17,12 +17,9 @@ import { getCalendarMonth } from 'mnth';
 
 import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
-import Tooltip from '../../../internal/components/tooltip';
-import useHiddenDescription from '../../../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
-import { applyDisplayName } from '../../../internal/utils/apply-display-name';
 import { formatDate } from '../../../internal/utils/date-time';
 import { DateRangePickerProps, DayIndex } from '../../interfaces';
+import { GridCell } from './grid-cell';
 
 import styles from './styles.css.js';
 
@@ -67,75 +64,7 @@ export interface GridProps {
   className?: string;
 }
 
-interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
-  disabledReason?: string;
-}
-
-const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
-  const { disabledReason, ...rest } = props;
-  const isDisabledWithReason = !!disabledReason;
-  const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
-  const ref = useRef<HTMLTableCellElement>(null);
-  const [showTooltip, setShowTooltip] = useState(false);
-
-  return (
-    <td
-      ref={useMergeRefs(focusedDateRef, ref)}
-      {...rest}
-      {...(isDisabledWithReason ? targetProps : {})}
-      onFocus={event => {
-        if (rest.onFocus) {
-          rest.onFocus(event);
-        }
-
-        if (isDisabledWithReason) {
-          setShowTooltip(true);
-        }
-      }}
-      onBlur={event => {
-        if (rest.onBlur) {
-          rest.onBlur(event);
-        }
-
-        if (isDisabledWithReason) {
-          setShowTooltip(false);
-        }
-      }}
-      onMouseEnter={event => {
-        if (rest.onMouseEnter) {
-          rest.onMouseEnter(event);
-        }
-
-        if (isDisabledWithReason) {
-          setShowTooltip(true);
-        }
-      }}
-      onMouseLeave={event => {
-        if (rest.onMouseLeave) {
-          rest.onMouseLeave(event);
-        }
-
-        if (isDisabledWithReason) {
-          setShowTooltip(false);
-        }
-      }}
-    >
-      {props.children}
-      {isDisabledWithReason && (
-        <>
-          {descriptionEl}
-          {showTooltip && (
-            <Tooltip className={styles['disabled-reason-tooltip']} trackRef={ref} value={disabledReason!} />
-          )}
-        </>
-      )}
-    </td>
-  );
-});
-
-applyDisplayName(GridCell, 'GridCell');
-
-export function Grid({
+export function MonthlyGrid({
   baseDate,
   selectedStartDate,
   selectedEndDate,
