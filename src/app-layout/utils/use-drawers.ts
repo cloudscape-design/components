@@ -235,13 +235,13 @@ export function useDrawers(
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
-      drawer?.onStateChange?.({ event: 'close', initiatedByUserAction });
+      fireNonCancelableEvent(drawer?.onStateChange, { event: 'close', initiatedByUserAction });
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus?.(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
-      drawer?.onStateChange?.({ event: 'open', initiatedByUserAction });
+      fireNonCancelableEvent(drawer?.onStateChange, { event: 'open', initiatedByUserAction });
     }
   }
 

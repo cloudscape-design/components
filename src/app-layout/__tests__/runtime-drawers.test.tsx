@@ -1117,6 +1117,22 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
     });
 
+    test('calls onStateChange handler', async () => {
+      const onStateChange = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        onStateChange: event => onStateChange(event.detail),
+      });
+      const { wrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(onStateChange).toHaveBeenCalledWith({ event: 'open', initiatedByUserAction: true });
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(onStateChange).toHaveBeenCalledWith({ event: 'close', initiatedByUserAction: true });
+    });
+
     describe('dynamically registered drawers with defaultActive: true', () => {
       test('should open if there are already open local drawer on the page', async () => {
         const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);

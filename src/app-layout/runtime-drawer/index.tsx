@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { fireNonCancelableEvent } from '../../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
@@ -14,7 +14,7 @@ import { ActiveDrawersContext } from '../utils/visibility-context';
 import styles from './styles.css.js';
 
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
-  onStateChange?: (params: DrawerStateChangeParams) => void;
+  onStateChange?: NonCancelableEventHandler<DrawerStateChangeParams>;
 }
 
 export interface DrawersLayout {
@@ -62,7 +62,7 @@ const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
   orderPriority?: number;
-  onStateChange?: (params: DrawerStateChangeParams) => void;
+  onStateChange?: NonCancelableEventHandler<DrawerStateChangeParams>;
 } => {
   const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
 
