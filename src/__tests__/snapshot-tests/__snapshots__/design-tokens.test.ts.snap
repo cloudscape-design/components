@@ -332,6 +332,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d13212",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -2028,6 +2063,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -2771,6 +2841,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d13212",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -4467,6 +4572,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -5210,6 +5350,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d13212",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -6906,6 +7081,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -7649,6 +7859,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d13212",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -9345,6 +9590,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#fafafa",
             "light": "#fafafa",
@@ -10088,6 +10368,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#d13212",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -11789,6 +12104,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#16191f",
           },
         },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -12525,6 +12875,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#d13212",
             "light": "#d13212",
+          },
+        },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#687078",
+            "light": "#687078",
           },
         },
         "color-background-notification-yellow": {
@@ -14228,6 +14613,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#fafafa",
           },
         },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#fafafa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#16191f",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#16191f",
+            "light": "#000000",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#fafafa",
+            "light": "#fafafa",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -14964,6 +15384,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#d13212",
         "light": "#d13212",
+      },
+    },
+    "color-background-notification-severity-critical": {
+      "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+      "$value": {
+        "dark": "#d63f38",
+        "light": "#870303",
+      },
+    },
+    "color-background-notification-severity-high": {
+      "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+      "$value": {
+        "dark": "#fe6e73",
+        "light": "#ce3311",
+      },
+    },
+    "color-background-notification-severity-low": {
+      "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+      "$value": {
+        "dark": "#f2cd54",
+        "light": "#f2cd54",
+      },
+    },
+    "color-background-notification-severity-medium": {
+      "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+      "$value": {
+        "dark": "#f89256",
+        "light": "#f89256",
+      },
+    },
+    "color-background-notification-severity-neutral": {
+      "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+      "$value": {
+        "dark": "#687078",
+        "light": "#687078",
       },
     },
     "color-background-notification-yellow": {
@@ -16667,6 +17122,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#fafafa",
       },
     },
+    "color-text-notification-severity-critical": {
+      "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+      "$value": {
+        "dark": "#000000",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-notification-severity-high": {
+      "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#fafafa",
+      },
+    },
+    "color-text-notification-severity-low": {
+      "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#16191f",
+      },
+    },
+    "color-text-notification-severity-medium": {
+      "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+      "$value": {
+        "dark": "#16191f",
+        "light": "#000000",
+      },
+    },
+    "color-text-notification-severity-neutral": {
+      "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+      "$value": {
+        "dark": "#fafafa",
+        "light": "#fafafa",
+      },
+    },
     "color-text-segment-active": {
       "$description": "The text color of the active segment in a segmented control.",
       "$value": {
@@ -17410,6 +17900,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#db0000",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -19106,6 +19631,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -19849,6 +20409,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#db0000",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -21545,6 +22140,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -22288,6 +22918,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#db0000",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -23984,6 +24649,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -24727,6 +25427,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#db0000",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -26423,6 +27158,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -27166,6 +27936,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#db0000",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -28867,6 +29672,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#0f141a",
           },
         },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -29603,6 +30443,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#db0000",
             "light": "#db0000",
+          },
+        },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
           },
         },
         "color-background-notification-yellow": {
@@ -31301,6 +32176,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "color-text-notification-default": {
           "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
           "$value": {
             "dark": "#f9f9fa",
             "light": "#f9f9fa",
@@ -32044,6 +32954,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#db0000",
           },
         },
+        "color-background-notification-severity-critical": {
+          "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#d63f38",
+            "light": "#870303",
+          },
+        },
+        "color-background-notification-severity-high": {
+          "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#fe6e73",
+            "light": "#ce3311",
+          },
+        },
+        "color-background-notification-severity-low": {
+          "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#f2cd54",
+            "light": "#f2cd54",
+          },
+        },
+        "color-background-notification-severity-medium": {
+          "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#f89256",
+            "light": "#f89256",
+          },
+        },
+        "color-background-notification-severity-neutral": {
+          "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-background-notification-yellow": {
           "$description": "Background color for yellow notifications. For example: yellow badges and warning flash messages.",
           "$value": {
@@ -33745,6 +34690,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f9f9fa",
           },
         },
+        "color-text-notification-severity-critical": {
+          "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+          "$value": {
+            "dark": "#000000",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-high": {
+          "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#f9f9fa",
+          },
+        },
+        "color-text-notification-severity-low": {
+          "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-medium": {
+          "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+          "$value": {
+            "dark": "#0f141a",
+            "light": "#0f141a",
+          },
+        },
+        "color-text-notification-severity-neutral": {
+          "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+          "$value": {
+            "dark": "#f9f9fa",
+            "light": "#f9f9fa",
+          },
+        },
         "color-text-segment-active": {
           "$description": "The text color of the active segment in a segmented control.",
           "$value": {
@@ -34481,6 +35461,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#db0000",
         "light": "#db0000",
+      },
+    },
+    "color-background-notification-severity-critical": {
+      "$description": "Background color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+      "$value": {
+        "dark": "#d63f38",
+        "light": "#870303",
+      },
+    },
+    "color-background-notification-severity-high": {
+      "$description": "Background color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+      "$value": {
+        "dark": "#fe6e73",
+        "light": "#ce3311",
+      },
+    },
+    "color-background-notification-severity-low": {
+      "$description": "Background color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+      "$value": {
+        "dark": "#f2cd54",
+        "light": "#f2cd54",
+      },
+    },
+    "color-background-notification-severity-medium": {
+      "$description": "Background color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+      "$value": {
+        "dark": "#f89256",
+        "light": "#f89256",
+      },
+    },
+    "color-background-notification-severity-neutral": {
+      "$description": "Background color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
+      "$value": {
+        "dark": "#656871",
+        "light": "#656871",
       },
     },
     "color-background-notification-yellow": {
@@ -36179,6 +37194,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "color-text-notification-default": {
       "$description": "Default text color for notifications. For example: the text on badges and flashes.",
+      "$value": {
+        "dark": "#f9f9fa",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-notification-severity-critical": {
+      "$description": "Text color in a notification to represent a critical error or a critically high-level of severity. For example: "Sev-1"",
+      "$value": {
+        "dark": "#000000",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-notification-severity-high": {
+      "$description": "Text color in a notification to represent an error status or a high-level of severity. For example: "Failed" or "Sev-2"",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#f9f9fa",
+      },
+    },
+    "color-text-notification-severity-low": {
+      "$description": "Text color in a notification to represent a warning or a low-level of severity. For example: "Warning" or "Sev-4"",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#0f141a",
+      },
+    },
+    "color-text-notification-severity-medium": {
+      "$description": "Text color in a notification to represent a medium-level of severity. For example: "Sev-3"",
+      "$value": {
+        "dark": "#0f141a",
+        "light": "#0f141a",
+      },
+    },
+    "color-text-notification-severity-neutral": {
+      "$description": "Text color in a notification to represent a neutral status, a severity level of no impact, or the lowest-level of severity. For example: "Pending" or "Sev-5"",
       "$value": {
         "dark": "#f9f9fa",
         "light": "#f9f9fa",

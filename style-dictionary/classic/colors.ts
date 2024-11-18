@@ -149,7 +149,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDragPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
   colorDragPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
   colorBackgroundDropdownItemHover: { light: '{colorGrey150}', dark: '{colorGrey650}' },
-  colorTextSeverityMedium: { light: '{colorBlack}', dark: '{colorGrey900}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
