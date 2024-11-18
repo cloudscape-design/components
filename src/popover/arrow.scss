@@ -71,7 +71,7 @@
   }
 
   &-inner {
-    inset-block-start: calc(awsui.$border-width-field + 1px);
+    inset-block-start: calc(awsui.$border-width-popover + 1px);
 
     &::after {
       border-start-start-radius: 1px;

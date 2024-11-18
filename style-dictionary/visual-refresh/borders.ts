@@ -43,4 +43,5 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderLinkFocusRingShadowSpread: '2px',
   borderWidthAlert: '2px',
   borderWidthField: '2px',
+  borderWidthPopover: '2px',
 };

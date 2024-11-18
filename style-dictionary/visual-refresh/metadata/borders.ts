@@ -119,6 +119,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  borderWidthPopover: {
+    description: 'The border width of popovers.',
+    public: true,
+    themeable: true,
+  },
 };
 
 export default metadata;
