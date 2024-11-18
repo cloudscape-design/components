@@ -131,6 +131,8 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     value: File[];
+    accept?: string;
+    multiple?: boolean;
     popoverFeedback?: React.ReactNode;
   }
 
