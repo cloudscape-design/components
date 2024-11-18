@@ -325,7 +325,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
     const handleDrawersClick = (id: string | null, skipFocusControl?: boolean) => {
       const newActiveDrawerId = id !== activeDrawerId ? id : null;
 
-      onActiveDrawerChange(newActiveDrawerId, true);
+      onActiveDrawerChange(newActiveDrawerId, { initiatedByUserAction: true });
 
       !skipFocusControl && focusDrawersButtons();
     };

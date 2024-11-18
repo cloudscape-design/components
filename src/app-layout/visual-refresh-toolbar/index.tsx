@@ -16,7 +16,7 @@ import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
-import { MIN_DRAWER_SIZE, useDrawers } from '../utils/use-drawers';
+import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
@@ -150,8 +150,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToolsToggle,
     });
 
-    const onActiveDrawerChangeHandler = (drawerId: string | null, initiatedByUserAction?: boolean) => {
-      onActiveDrawerChange(drawerId, initiatedByUserAction);
+    const onActiveDrawerChangeHandler = (drawerId: string | null, params: OnChangeParams) => {
+      onActiveDrawerChange(drawerId, { initiatedByUserAction: params.initiatedByUserAction });
       drawersFocusControl.setFocus();
     };
 
@@ -369,9 +369,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const closeFirstDrawer = useStableCallback(() => {
       const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
       if (activeDrawer && activeDrawer?.id === drawerToClose) {
-        onActiveDrawerChange(null, true);
+        onActiveDrawerChange(null, { initiatedByUserAction: true });
       } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
-        onActiveGlobalDrawersChange(drawerToClose, true);
+        onActiveGlobalDrawersChange(drawerToClose, { initiatedByUserAction: true });
       }
     });
 

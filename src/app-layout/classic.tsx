@@ -408,7 +408,7 @@ const ClassicAppLayout = React.forwardRef(
             drawers={drawers}
             activeDrawerId={activeDrawerId}
             onDrawerChange={newDrawerId => {
-              onActiveDrawerChange(newDrawerId, true);
+              onActiveDrawerChange(newDrawerId, { initiatedByUserAction: true });
               if (newDrawerId !== activeDrawerId) {
                 focusToolsButtons();
                 focusDrawersButtons();
@@ -544,7 +544,7 @@ const ClassicAppLayout = React.forwardRef(
                 if (!isOpen) {
                   focusToolsButtons();
                   focusDrawersButtons();
-                  onActiveDrawerChange(null, true);
+                  onActiveDrawerChange(null, { initiatedByUserAction: true });
                 }
               }}
               isOpen={true}
@@ -593,7 +593,7 @@ const ClassicAppLayout = React.forwardRef(
                   focusToolsButtons();
                   focusDrawersButtons();
                 }
-                onActiveDrawerChange(newDrawerId, true);
+                onActiveDrawerChange(newDrawerId, { initiatedByUserAction: true });
               }}
               ariaLabels={ariaLabels}
             />
