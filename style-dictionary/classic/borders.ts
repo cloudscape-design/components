@@ -38,6 +38,7 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderLinkFocusRingShadowSpread: '0px',
   borderWidthAlert: '1px',
   borderWidthField: '1px',
+  borderWidthPopover: '1px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);
