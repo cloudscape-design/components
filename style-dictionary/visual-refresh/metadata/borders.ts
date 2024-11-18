@@ -115,7 +115,7 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
   },
   borderWidthField: {
-    description: 'The border width of fields.',
+    description: 'The border width of form fields.',
     public: true,
     themeable: true,
   },
