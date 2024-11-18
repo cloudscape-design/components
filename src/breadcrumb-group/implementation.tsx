@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Ref, useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -34,7 +34,7 @@ import styles from './styles.css.js';
  */
 const DEFAULT_EXPAND_ARIA_LABEL = 'Show path';
 
-const getDropdownTrigger = ({
+const getEllipsisDropdownTrigger = ({
   ariaLabel,
   triggerRef,
   disabled,
@@ -62,6 +62,32 @@ const getDropdownTrigger = ({
   );
 };
 
+const getFullDropdownTrigger =
+  (currentPage: string) =>
+  ({ ariaLabel, triggerRef, disabled, testUtilsClass, isOpen, onClick }: CustomTriggerProps) => {
+    return (
+      <button
+        ref={triggerRef as Ref<HTMLButtonElement>}
+        className={clsx(styles['collapsed-button'], testUtilsClass)}
+        disabled={disabled}
+        onClick={event => {
+          event.preventDefault();
+          onClick();
+        }}
+        aria-expanded={isOpen}
+        aria-haspopup={true}
+        aria-label={ariaLabel}
+        formAction="none"
+      >
+        <InternalIcon
+          name="caret-down-filled"
+          className={isOpen ? styles['button-icon-open'] : styles['button-icon-closed']}
+        />
+        <span>{currentPage}</span>
+      </button>
+    );
+  };
+
 const EllipsisDropdown = ({
   ariaLabel,
   dropdownItems,
@@ -78,7 +104,7 @@ const EllipsisDropdown = ({
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
-        customTriggerBuilder={getDropdownTrigger}
+        customTriggerBuilder={getEllipsisDropdownTrigger}
         linkStyle={true}
         analyticsMetadataTransformer={metadata => {
           if (metadata.detail?.id) {
@@ -166,7 +192,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     }
   }, [items, navWidth]);
 
-  const { shrinkFactors, minWidths, collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
+  const { collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
 
   let breadcrumbItems = items.map((item, index) => {
     const isLast = index === items.length - 1;
@@ -185,7 +211,6 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         className={clsx(styles.item, !isDisplayed && styles.hide)}
         key={index}
         {...(isLast ? {} : getAnalyticsMetadataAttribute(clickAnalyticsMetadata))}
-        style={{ flexShrink: shrinkFactors[index], minWidth: `${minWidths[index]}px` }}
         ref={node => setBreadcrumb('real', `${index}`, node)}
       >
         <BreadcrumbItem
@@ -254,7 +279,25 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+      {collapsed === breadcrumbItems.length - 2 ? (
+        <InternalButtonDropdown
+          items={items.map((item, index) => {
+            const isCurrentPage = index === items.length - 1;
+            return {
+              id: item.href,
+              text: item.text,
+              href: isCurrentPage ? undefined : item.href,
+              disabled: isCurrentPage,
+              isCurrentPage,
+            };
+          })}
+          customTriggerBuilder={getFullDropdownTrigger(items[items.length - 1].text)}
+          linkStyle={true}
+          className={styles['collapsed-button-dropdown']}
+        />
+      ) : (
+        <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+      )}
       <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
         {hiddenBreadcrumbItems}
       </ol>

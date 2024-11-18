@@ -8,18 +8,15 @@ export const getEventDetail = <T extends BreadcrumbGroupProps.Item>(item: T) => 
   href: item.href,
 });
 
-const defaultMinBreadcrumbWidth = 150;
-const ellipsisWidth = 50;
+const MIN_BREADCRUMB_WIDTH = 70;
+const ELLIPSIS_WIDTH = 50;
 
 export const getItemsDisplayProperties = (itemsWidths: Array<number>, navWidth: number | null) => {
-  const minBreadcrumbWidth = optimizeMinWidth(itemsWidths, navWidth);
-  const shrinkFactors = itemsWidths.map(width => (width <= minBreadcrumbWidth ? 0 : Math.round(width)));
-  const minWidths = itemsWidths.map(width => (width <= minBreadcrumbWidth ? 0 : minBreadcrumbWidth));
-  const collapsedWidths = itemsWidths.map(width => Math.min(width, minBreadcrumbWidth));
+  const collapsedWidths = itemsWidths.map((width, index) =>
+    index === itemsWidths.length - 1 ? Math.min(width, MIN_BREADCRUMB_WIDTH) : width
+  );
 
   return {
-    shrinkFactors,
-    minWidths,
     collapsed: computeNumberOfCollapsedItems(collapsedWidths, navWidth),
   };
 };
@@ -30,9 +27,9 @@ const computeNumberOfCollapsedItems = (collapsedWidths: Array<number>, navWidth:
   }
   let collapsed = 0;
   const itemsCount = collapsedWidths.length;
-  if (itemsCount > 2) {
-    collapsed = itemsCount - 2;
-    let remainingWidth = navWidth - collapsedWidths[0] - collapsedWidths[itemsCount - 1] - ellipsisWidth;
+  if (itemsCount > 1) {
+    collapsed = itemsCount - 1;
+    let remainingWidth = navWidth - collapsedWidths[0] - collapsedWidths[itemsCount - 1] - ELLIPSIS_WIDTH;
     let j = 1;
     while (remainingWidth > 0 && j < itemsCount - 1) {
       remainingWidth -= collapsedWidths[itemsCount - 1 - j];
@@ -43,28 +40,4 @@ const computeNumberOfCollapsedItems = (collapsedWidths: Array<number>, navWidth:
     }
   }
   return collapsed;
-};
-
-const optimizeMinWidth = (itemsWidths: Array<number>, navWidth: number | null): number => {
-  const collapsedWidths = itemsWidths.map(width => Math.min(width, defaultMinBreadcrumbWidth));
-  if (!navWidth) {
-    return defaultMinBreadcrumbWidth;
-  }
-  const itemsCount = collapsedWidths.length;
-  if (itemsCount > 2) {
-    const minCollapsedWidth = collapsedWidths[0] + ellipsisWidth + collapsedWidths[collapsedWidths.length - 1];
-    if (minCollapsedWidth > navWidth) {
-      return (navWidth - ellipsisWidth) / 2;
-    }
-  }
-  if (itemsCount === 2) {
-    const minCollapsedWidth = collapsedWidths[0] + collapsedWidths[1];
-    if (minCollapsedWidth > navWidth) {
-      return navWidth / 2;
-    }
-  }
-  if (itemsCount === 1) {
-    return Math.min(navWidth, collapsedWidths[0]);
-  }
-  return defaultMinBreadcrumbWidth;
 };

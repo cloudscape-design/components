@@ -258,6 +258,7 @@ export interface ItemProps {
 
 export interface InternalItem extends ButtonDropdownProps.Item {
   badge?: boolean;
+  isCurrentPage?: boolean;
 }
 
 export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {

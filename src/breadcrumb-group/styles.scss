@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .breadcrumb-group {
   @include styles.styles-reset;
@@ -40,6 +41,11 @@
       margin-inline: 0;
     }
 
+    > .item:last-child {
+      flex-shrink: 1;
+      min-inline-size: 0;
+    }
+
     > .item.hide {
       display: none;
     }
@@ -63,4 +69,46 @@
 
 .breadcrumbs-skeleton {
   display: none;
+}
+
+.collapsed-button-dropdown {
+  max-inline-size: 100%;
+}
+
+.collapsed-button {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  @include styles.font-button;
+  letter-spacing: awsui.$font-button-letter-spacing;
+  padding-block: styles.$control-padding-vertical;
+  color: awsui.$color-text-breadcrumb-current;
+  cursor: pointer;
+  border-inline-width: 0;
+  border-block-width: 0;
+  background: none;
+  display: flex;
+  gap: awsui.$space-xxs;
+  max-inline-size: 100%;
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+  > :last-child {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.button-icon-open {
+  transform: rotate(-180deg);
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+}
+
+.button-icon-closed {
+  transform: rotate(0deg);
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
 }
