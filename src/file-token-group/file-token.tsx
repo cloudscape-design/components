@@ -21,7 +21,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 export namespace FileTokenProps {
   export interface I18nStrings {
-    removeFileAriaLabel?: string;
+    removeFileAriaLabel?: (fileIndex: number) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
@@ -74,6 +74,10 @@ function InternalFileToken({
   const fileNameRef = useRef<HTMLSpanElement>(null);
   const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const getDismissLabel = (fileIndex: number) => {
+    return i18nStrings?.removeFileAriaLabel?.(fileIndex);
+  };
 
   function isEllipsisActive() {
     const span = fileNameRef.current;
@@ -166,9 +170,7 @@ function InternalFileToken({
             </InternalSpaceBetween>
           </div>
         </InternalBox>
-        {onDismiss && !readOnly && (
-          <DismissButton dismissLabel={i18nStrings?.removeFileAriaLabel} onDismiss={onDismiss} />
-        )}
+        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onDismiss={onDismiss} />}
       </div>
       {errorText && (
         <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>

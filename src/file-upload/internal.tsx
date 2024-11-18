@@ -201,6 +201,8 @@ function InternalFileUpload(
             limitShowMore: i18n('i18nStrings.limitShowMore', i18nStrings?.limitShowMore),
             formatFileSize: i18nStrings?.formatFileSize,
             formatFileLastModified: i18nStrings?.formatFileLastModified,
+            errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+            warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
           }}
           onDismiss={event => onFileRemove(event.detail.fileIndex)}
         />
