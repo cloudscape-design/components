@@ -78,7 +78,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -2599,7 +2599,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -5120,7 +5120,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -7641,7 +7641,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -10162,7 +10162,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -12683,7 +12683,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": "1px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "1px",
         },
         "color-background-avatar-default": {
@@ -15204,7 +15204,7 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": "1px",
     },
     "border-width-field": {
-      "$description": "The border width of fields.",
+      "$description": "The border width of form fields.",
       "$value": "1px",
     },
     "color-background-avatar-default": {
@@ -17730,7 +17730,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -20251,7 +20251,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -22772,7 +22772,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -25293,7 +25293,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -27814,7 +27814,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -30335,7 +30335,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -32856,7 +32856,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": "2px",
         },
         "border-width-field": {
-          "$description": "The border width of fields.",
+          "$description": "The border width of form fields.",
           "$value": "2px",
         },
         "color-background-avatar-default": {
@@ -35377,7 +35377,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": "2px",
     },
     "border-width-field": {
-      "$description": "The border width of fields.",
+      "$description": "The border width of form fields.",
       "$value": "2px",
     },
     "color-background-avatar-default": {
