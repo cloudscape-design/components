@@ -7675,7 +7675,7 @@ exports[`Documenter definition for file-token-group matches the snapshot: file-t
           },
           {
             "name": "removeFileAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "(fileIndex: number) => string",
           },
           {
@@ -7687,7 +7687,7 @@ exports[`Documenter definition for file-token-group matches the snapshot: file-t
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "FileTokenGroupProps.I18nStrings",
     },
     {
@@ -7889,7 +7889,7 @@ is provided by its parent form field component.
         "properties": [
           {
             "name": "dropzoneText",
-            "optional": false,
+            "optional": true,
             "type": "(multiple: boolean) => string",
           },
           {
@@ -7909,22 +7909,22 @@ is provided by its parent form field component.
           },
           {
             "name": "limitShowFewer",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "limitShowMore",
-            "optional": false,
+            "optional": true,
             "type": "string",
           },
           {
             "name": "removeFileAriaLabel",
-            "optional": false,
+            "optional": true,
             "type": "(fileIndex: number) => string",
           },
           {
             "name": "uploadButtonText",
-            "optional": false,
+            "optional": true,
             "type": "(multiple: boolean) => string",
           },
           {
@@ -7936,7 +7936,7 @@ is provided by its parent form field component.
         "type": "object",
       },
       "name": "i18nStrings",
-      "optional": false,
+      "optional": true,
       "type": "FileUploadProps.I18nStrings",
     },
     {

@@ -280,6 +280,8 @@ describe('i18n', () => {
             'i18nStrings.warningIconAriaLabel': 'Custom warning',
             'i18nStrings.uploadButtonText':
               '{multiple, select, true {Custom choose files} false {Custom choose file} other {}}',
+            'i18nStrings.dropzoneText':
+              '{multiple, select, true {Custom drop files} false {Custom drop file} other {}}',
           },
         }}
       >
@@ -298,6 +300,9 @@ describe('i18n', () => {
     expect(screen.getByLabelText('Custom error')).not.toBeNull();
     expect(screen.getByLabelText('Custom warning')).not.toBeNull();
     expect(wrapper.findUploadButton().getElement()).toHaveTextContent('Custom choose file');
+
+    fireEvent(document, createDragEvent('dragover'));
+    expect(wrapper.getElement()).toHaveTextContent('Custom drop file');
   });
 });
 
