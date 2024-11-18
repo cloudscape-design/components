@@ -243,7 +243,9 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
-  onToggle: event => console.log(event.detail),
+  onToggle: event => {
+    console.log('circle4-global drawer on toggle', event.detail);
+  },
 
   mountContent: container => {
     ReactDOM.render(<CustomDrawerContent />, container);
