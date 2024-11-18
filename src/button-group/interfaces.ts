@@ -92,7 +92,7 @@ export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | IconToggleButton | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | FileInput | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
@@ -126,6 +126,14 @@ export namespace ButtonGroupProps {
     pressedPopoverFeedback?: React.ReactNode;
   }
 
+  export interface FileInput {
+    type: 'file-input';
+    id: string;
+    text: string;
+    value: File[];
+    popoverFeedback?: React.ReactNode;
+  }
+
   export interface MenuDropdown {
     type: 'menu-dropdown';
     id: string;
@@ -146,6 +154,7 @@ export namespace ButtonGroupProps {
     id: string;
     pressed?: boolean;
     checked?: boolean;
+    files?: File[];
   }
 
   export interface Ref {

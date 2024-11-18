@@ -5,6 +5,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react
 import { ButtonProps } from '../button/interfaces.js';
 import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import FileInputItem from './file-input-item';
 import IconButtonItem from './icon-button-item';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
 import { ButtonGroupProps } from './interfaces';
@@ -118,6 +119,15 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-toggle-button' && (
           <IconToggleButtonItem
+            ref={buttonRef}
+            item={item}
+            onItemClick={onClickHandler}
+            showTooltip={tooltip?.item === item.id}
+            showFeedback={!!tooltip?.feedback}
+          />
+        )}
+        {item.type === 'file-input' && (
+          <FileInputItem
             ref={buttonRef}
             item={item}
             onItemClick={onClickHandler}
