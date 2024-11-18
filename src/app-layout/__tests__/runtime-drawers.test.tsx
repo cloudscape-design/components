@@ -1131,7 +1131,7 @@ describe('toolbar mode only features', () => {
       expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
     });
 
-    test('calls onStateChange handler by clicking on drawers trigger button', async () => {
+    test('calls onStateChange handler by clicking on drawers trigger button (global runtime drawers)', async () => {
       const onStateChange = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -1147,7 +1147,7 @@ describe('toolbar mode only features', () => {
       expect(onStateChange).toHaveBeenCalledWith({ event: 'close', initiatedByUserAction: true });
     });
 
-    test('calls onStateChange handler by calling openDrawer and closeDrawer plugin api', async () => {
+    test('calls onStateChange handler by calling openDrawer and closeDrawer plugin api (global runtime drawers)', async () => {
       const onStateChange = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
