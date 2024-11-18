@@ -1147,21 +1147,24 @@ describe('toolbar mode only features', () => {
       expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
     });
 
-    test('calls onToggle handler by calling openDrawer and closeDrawer plugin api (global runtime drawers)', async () => {
-      const onToggle = jest.fn();
-      awsuiPlugins.appLayout.registerDrawer({
-        ...drawerDefaults,
-        id: 'global-drawer',
-        type: 'global',
-        onToggle: event => onToggle(event.detail),
-      });
-      await renderComponent(<AppLayout />);
+    test.each([true, false] as const)(
+      'calls onToggle handler by calling openDrawer and closeDrawer plugin api (global runtime drawers) initiatedByUserAction = %s',
+      async initiatedByUserAction => {
+        const onToggle = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global-drawer',
+          type: 'global',
+          onToggle: event => onToggle(event.detail),
+        });
+        await renderComponent(<AppLayout />);
 
-      awsuiPlugins.appLayout.openDrawer('global-drawer');
-      expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
-      awsuiPlugins.appLayout.closeDrawer('global-drawer');
-      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
-    });
+        awsuiPlugins.appLayout.openDrawer('global-drawer', { initiatedByUserAction });
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction });
+        awsuiPlugins.appLayout.closeDrawer('global-drawer', { initiatedByUserAction });
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction });
+      }
+    );
 
     describe('dynamically registered drawers with defaultActive: true', () => {
       test('should open if there are already open local drawer on the page', async () => {

@@ -51,6 +51,8 @@ function getToolsDrawerItem(props: ToolsProps): AppLayoutProps.Drawer | null {
 
 const DRAWERS_LIMIT = 2;
 
+const DEFAULT_ON_CHANGE_PARAMS = { initiatedByUserAction: true };
+
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
   activeDrawerId: string | null,
@@ -109,16 +111,16 @@ function useRuntimeDrawers(
   }, [disableRuntimeDrawers, onGlobalDrawersChangeStable, onLocalDrawerChangeStable]);
 
   useEffect(() => {
-    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened(drawerId => {
+    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerOpened((drawerId, params = DEFAULT_ON_CHANGE_PARAMS) => {
       const localDrawer = [...runtimeDrawers.localBefore, ...drawers, ...runtimeDrawers.localAfter]?.find(
         drawer => drawer.id === drawerId
       );
       const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId !== drawerId) {
-        onActiveDrawerChange(drawerId, { initiatedByUserAction: true });
+        onActiveDrawerChange(drawerId, params);
       }
       if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
-        onActiveGlobalDrawersChange(drawerId, { initiatedByUserAction: true });
+        onActiveGlobalDrawersChange(drawerId, params);
       }
     });
 
@@ -135,16 +137,16 @@ function useRuntimeDrawers(
   ]);
 
   useEffect(() => {
-    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerClosed(drawerId => {
+    const unsubscribe = awsuiPluginsInternal.appLayout.onDrawerClosed((drawerId, params = DEFAULT_ON_CHANGE_PARAMS) => {
       const localDrawer = [...runtimeDrawers.localBefore, ...drawers, ...runtimeDrawers.localAfter]?.find(
         drawer => drawer.id === drawerId
       );
       const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId === drawerId) {
-        onActiveDrawerChange(null, { initiatedByUserAction: true });
+        onActiveDrawerChange(null, params);
       }
       if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
-        onActiveGlobalDrawersChange(drawerId, { initiatedByUserAction: true });
+        onActiveGlobalDrawersChange(drawerId, params);
       }
     });
 
@@ -215,7 +217,7 @@ export function useDrawers(
 
   function onActiveDrawerChange(
     newDrawerId: string | null,
-    { initiatedByUserAction }: OnChangeParams = { initiatedByUserAction: true }
+    { initiatedByUserAction }: OnChangeParams = DEFAULT_ON_CHANGE_PARAMS
   ) {
     setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
@@ -246,7 +248,7 @@ export function useDrawers(
 
   function onActiveGlobalDrawersChange(
     drawerId: string,
-    { initiatedByUserAction }: Partial<OnChangeParams> = { initiatedByUserAction: true }
+    { initiatedByUserAction }: Partial<OnChangeParams> = DEFAULT_ON_CHANGE_PARAMS
   ) {
     const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === drawerId);
     if (activeGlobalDrawersIds.includes(drawerId)) {

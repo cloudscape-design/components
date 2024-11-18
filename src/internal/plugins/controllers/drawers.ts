@@ -53,13 +53,17 @@ export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & Partial<
 
 export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
-export type DrawersToggledListener = (drawerId: string) => void;
+export type DrawersToggledListener = (drawerId: string, params?: OpenCloseDrawerParams) => void;
+
+export interface OpenCloseDrawerParams {
+  initiatedByUserAction: boolean;
+}
 
 export interface DrawersApiPublic {
   registerDrawer(config: DrawerConfig): void;
   updateDrawer(config: UpdateDrawerConfig): void;
-  openDrawer(drawerId: string): void;
-  closeDrawer(drawerId: string): void;
+  openDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
+  closeDrawer(drawerId: string, params?: OpenCloseDrawerParams): void;
 }
 
 export interface DrawersApiInternal {
@@ -141,12 +145,12 @@ export class DrawersController {
     };
   };
 
-  openDrawer = (drawerId: string) => {
-    this.drawerOpenedListener?.(drawerId);
+  openDrawer = (drawerId: string, params?: OpenCloseDrawerParams) => {
+    this.drawerOpenedListener?.(drawerId, params);
   };
 
-  closeDrawer = (drawerId: string) => {
-    this.drawerClosedListener?.(drawerId);
+  closeDrawer = (drawerId: string, params?: OpenCloseDrawerParams) => {
+    this.drawerClosedListener?.(drawerId, params);
   };
 
   installPublic(api: Partial<DrawersApiPublic> = {}): DrawersApiPublic {
