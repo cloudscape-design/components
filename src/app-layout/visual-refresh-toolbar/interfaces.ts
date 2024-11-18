@@ -53,6 +53,6 @@ export interface AppLayoutInternals {
   onNavigationToggle: (open: boolean) => void;
   onActiveDrawerChange: (newDrawerId: string | null) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
-  onActiveGlobalDrawersChange: (newDrawerId: string) => void;
+  onActiveGlobalDrawersChange: (newDrawerId: string, initiatedByUserAction?: boolean) => void;
   splitPanelAnimationDisabled?: boolean;
 }

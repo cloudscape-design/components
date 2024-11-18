@@ -9,6 +9,11 @@ export interface MountContentContext {
   onVisibilityChange: DrawerVisibilityChange;
 }
 
+export interface DrawerStateChangeParams {
+  event: 'open' | 'close';
+  initiatedByUserAction?: boolean;
+}
+
 export interface DrawerConfig {
   id: string;
   type?: 'local' | 'global';
@@ -30,6 +35,7 @@ export interface DrawerConfig {
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
+  onStateChange?: (params: DrawerStateChangeParams) => void;
 }
 
 const updatableProperties = [

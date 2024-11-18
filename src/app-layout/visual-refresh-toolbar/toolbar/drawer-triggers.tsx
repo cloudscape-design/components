@@ -36,7 +36,7 @@ interface DrawerTriggersProps {
   activeGlobalDrawersIds: ReadonlyArray<string>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
+  onActiveGlobalDrawersChange?: (newDrawerId: string, initiatedByUserAction?: boolean) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -197,7 +197,7 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);
+                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id, true);
               }}
               ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
               selected={activeGlobalDrawersIds.includes(item.id)}

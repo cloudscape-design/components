@@ -52,7 +52,7 @@ function useRuntimeDrawers(
   activeDrawerId: string | null,
   onActiveDrawerChange: (newDrawerId: string | null) => void,
   activeGlobalDrawersIds: Array<string>,
-  onActiveGlobalDrawersChange: (newDrawerId: string) => void,
+  onActiveGlobalDrawersChange: (newDrawerId: string, initiatedByUserAction?: boolean) => void,
   drawers: AppLayoutProps.Drawer[]
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({
@@ -114,7 +114,7 @@ function useRuntimeDrawers(
         onActiveDrawerChange(drawerId);
       }
       if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
-        onActiveGlobalDrawersChange(drawerId);
+        onActiveGlobalDrawersChange(drawerId, true);
       }
     });
 
@@ -140,7 +140,7 @@ function useRuntimeDrawers(
         onActiveDrawerChange(null);
       }
       if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
-        onActiveGlobalDrawersChange(drawerId);
+        onActiveGlobalDrawersChange(drawerId, true);
       }
     });
 
@@ -229,16 +229,19 @@ export function useDrawers(
     }
   }
 
-  function onActiveGlobalDrawersChange(drawerId: string) {
+  function onActiveGlobalDrawersChange(drawerId: string, initiatedByUserAction = false) {
+    const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === drawerId);
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
+      drawer?.onStateChange?.({ event: 'close', initiatedByUserAction });
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus?.(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
+      drawer?.onStateChange?.({ event: 'open', initiatedByUserAction });
     }
   }
 

@@ -131,6 +131,7 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
+  onStateChange: console.log,
 
   trigger: {
     iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
