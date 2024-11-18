@@ -215,7 +215,7 @@ export function useDrawers(
 
   function onActiveDrawerChange(
     newDrawerId: string | null,
-    { initiatedByUserAction }: OnChangeParams = { initiatedByUserAction: false }
+    { initiatedByUserAction }: OnChangeParams = { initiatedByUserAction: true }
   ) {
     setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
@@ -246,7 +246,7 @@ export function useDrawers(
 
   function onActiveGlobalDrawersChange(
     drawerId: string,
-    { initiatedByUserAction }: Partial<OnChangeParams> = { initiatedByUserAction: false }
+    { initiatedByUserAction }: Partial<OnChangeParams> = { initiatedByUserAction: true }
   ) {
     const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === drawerId);
     if (activeGlobalDrawersIds.includes(drawerId)) {

@@ -152,7 +152,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const onActiveDrawerChangeHandler = (
       drawerId: string | null,
-      params: OnChangeParams = { initiatedByUserAction: false }
+      params: OnChangeParams = { initiatedByUserAction: true }
     ) => {
       onActiveDrawerChange(drawerId, { initiatedByUserAction: params.initiatedByUserAction });
       drawersFocusControl.setFocus();
