@@ -7,6 +7,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
+import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import { AppLayoutInternals } from '../interfaces';
 import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
@@ -42,10 +43,10 @@ export interface ToolbarProps {
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
-  onActiveDrawerChange?: (drawerId: string | null) => void;
+  onActiveDrawerChange?: (drawerId: string | null, params: OnChangeParams) => void;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
-  onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
+  onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
 }
 
 export interface AppLayoutToolbarImplementationProps {

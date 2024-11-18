@@ -46,6 +46,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   defaultActive: !!searchParams.get('force-default-active'),
+  onToggle: event => {
+    console.log('security drawer on toggle', event.detail);
+  },
 
   resizable: true,
   defaultSize: 320,
@@ -130,6 +133,9 @@ awsuiPlugins.appLayout.registerDrawer({
     content: 'Content',
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
+  },
+  onToggle: event => {
+    console.log('circle-global drawer on toggle', event.detail);
   },
 
   trigger: {
@@ -236,6 +242,9 @@ awsuiPlugins.appLayout.registerDrawer({
     content: 'Content',
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
+  },
+  onToggle: event => {
+    console.log('circle4-global drawer on toggle', event.detail);
   },
 
   mountContent: container => {

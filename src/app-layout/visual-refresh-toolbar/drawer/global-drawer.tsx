@@ -134,7 +134,7 @@ function AppLayoutGlobalDrawerImplementation({
                   })}
                   formAction="none"
                   iconName={isMobile ? 'close' : 'angle-right'}
-                  onClick={() => onActiveGlobalDrawersChange(activeDrawerId)}
+                  onClick={() => onActiveGlobalDrawersChange(activeDrawerId, { initiatedByUserAction: true })}
                   ref={refs?.close}
                   variant="icon"
                 />

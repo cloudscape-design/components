@@ -216,6 +216,20 @@ describeEachAppLayout(({ theme, size }) => {
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
   });
 
+  test('calls onToggle handler (local runtime drawer)', async () => {
+    const onToggle = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      onToggle: event => onToggle(event.detail),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+    wrapper.findActiveDrawerCloseButton()!.click();
+    expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+  });
+
   test('supports badge property', async () => {
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
@@ -1116,6 +1130,41 @@ describe('toolbar mode only features', () => {
 
       expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
     });
+
+    test('calls onToggle handler by clicking on drawers trigger button (global runtime drawers)', async () => {
+      const onToggle = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        onToggle: event => onToggle(event.detail),
+      });
+      const { wrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+    });
+
+    test.each([true, false] as const)(
+      'calls onToggle handler by calling openDrawer and closeDrawer plugin api (global runtime drawers) initiatedByUserAction = %s',
+      async initiatedByUserAction => {
+        const onToggle = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global-drawer',
+          type: 'global',
+          onToggle: event => onToggle(event.detail),
+        });
+        await renderComponent(<AppLayout />);
+
+        awsuiPlugins.appLayout.openDrawer('global-drawer', { initiatedByUserAction });
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction });
+        awsuiPlugins.appLayout.closeDrawer('global-drawer', { initiatedByUserAction });
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction });
+      }
+    );
 
     describe('dynamically registered drawers with defaultActive: true', () => {
       test('should open if there are already open local drawer on the page', async () => {

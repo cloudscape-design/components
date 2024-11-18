@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
+import { OnChangeParams } from '../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
@@ -20,12 +21,12 @@ export interface SharedProps {
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
-  onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
+  onActiveDrawerChange: ((drawerId: string | null, params: OnChangeParams) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
   globalDrawersFocusControl?: FocusControlMultipleStates | undefined;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: Array<string> | undefined;
-  onActiveGlobalDrawersChange?: ((newDrawerId: string) => void) | undefined;
+  onActiveGlobalDrawersChange?: ((newDrawerId: string, params: OnChangeParams) => void) | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
