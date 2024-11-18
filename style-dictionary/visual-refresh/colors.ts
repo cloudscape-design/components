@@ -97,7 +97,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundLoadingBarGenAi:
     'linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)',
   colorBackgroundChatBubbleOutgoing: 'transparent',
-  colorBackgroundChatBubbleIncoming: { light: '{colorGrey150}', dark: '{colorGrey900}' },
+  colorBackgroundChatBubbleIncoming: { light: '{colorGrey125}', dark: '{colorGrey900}' },
   colorTextChatBubbleOutgoing: '{colorTextBodyDefault}',
   colorTextChatBubbleIncoming: '{colorTextBodyDefault}',
   colorBorderButtonNormalActive: { light: '{colorBlue800}', dark: '{colorBlue400}' },
@@ -268,16 +268,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneTextHover: { light: '{colorGrey600}', dark: '{colorGrey350}' },
   colorDropzoneBorderDefault: { light: '{colorGrey500}', dark: '{colorGrey550}' },
   colorDropzoneBorderHover: { light: '{colorBlue800}', dark: '{colorBlue400}' },
-  colorBackgroundSeverityCritical: '{colorChartsStatusCritical}',
-  colorTextSeverityCritical: { light: '{colorGrey100}', dark: '{colorBlack}' },
-  colorBackgroundSeverityHigh: '{colorChartsStatusHigh}',
-  colorTextSeverityHigh: { light: '{colorGrey100}', dark: '{colorGrey900}' },
-  colorBackgroundSeverityMedium: '{colorChartsStatusMedium}',
-  colorTextSeverityMedium: '{colorGrey900}',
-  colorBackgroundSeverityLow: '{colorChartsStatusLow}',
-  colorTextSeverityLow: '{colorGrey900}',
-  colorBackgroundSeverityNeutral: { light: '{colorGrey600}', dark: '{colorGrey550}' },
-  colorTextSeverityNeutral: '{colorGrey100}',
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);

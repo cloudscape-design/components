@@ -46,6 +46,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundTilesDisabled: { dark: '{colorGrey700}' },
   colorBackgroundToggleCheckedDisabled: { dark: '{colorBlue700}' },
+  colorBackgroundChatBubbleIncoming: { light: '{colorGrey150}', dark: '{colorGrey900}' },
   colorBorderButtonNormalActive: '{colorBorderButtonNormalDefault}',
   colorBorderButtonNormalDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBorderToggleButtonNormalPressed: { light: '{colorGrey600}', dark: '{colorGrey500}' },
@@ -148,7 +149,6 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDragPlaceholderActive: { light: '{colorGrey300}', dark: '{colorGrey550}' },
   colorDragPlaceholderHover: { light: '{colorBlue300}', dark: '{colorBlue600}' },
   colorBackgroundDropdownItemHover: { light: '{colorGrey150}', dark: '{colorGrey650}' },
-  colorTextSeverityMedium: { light: '{colorBlack}', dark: '{colorGrey900}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = merge(
