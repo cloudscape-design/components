@@ -238,6 +238,7 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
+  onStateChange: event => console.log(event.detail),
 
   mountContent: container => {
     ReactDOM.render(<CustomDrawerContent />, container);
