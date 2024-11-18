@@ -50,7 +50,7 @@ const DRAWERS_LIMIT = 2;
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
   activeDrawerId: string | null,
-  onActiveDrawerChange: (newDrawerId: string | null) => void,
+  onActiveDrawerChange: (newDrawerId: string | null, initiatedByUserAction?: boolean) => void,
   activeGlobalDrawersIds: Array<string>,
   onActiveGlobalDrawersChange: (newDrawerId: string, initiatedByUserAction?: boolean) => void,
   drawers: AppLayoutProps.Drawer[]
@@ -111,7 +111,7 @@ function useRuntimeDrawers(
       );
       const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId !== drawerId) {
-        onActiveDrawerChange(drawerId);
+        onActiveDrawerChange(drawerId, true);
       }
       if (globalDrawer && !activeGlobalDrawersIds.includes(drawerId)) {
         onActiveGlobalDrawersChange(drawerId, true);
@@ -137,7 +137,7 @@ function useRuntimeDrawers(
       );
       const globalDrawer = runtimeDrawers.global?.find(drawer => drawer.id === drawerId);
       if (localDrawer && activeDrawerId === drawerId) {
-        onActiveDrawerChange(null);
+        onActiveDrawerChange(null, true);
       }
       if (globalDrawer && activeGlobalDrawersIds.includes(drawerId)) {
         onActiveGlobalDrawersChange(drawerId, true);
@@ -209,7 +209,7 @@ export function useDrawers(
     fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
   }
 
-  function onActiveDrawerChange(newDrawerId: string | null) {
+  function onActiveDrawerChange(newDrawerId: string | null, initiatedByUserAction = false) {
     setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
       onAddNewActiveDrawer?.(newDrawerId);
@@ -222,10 +222,18 @@ export function useDrawers(
 
     if (newDrawerId) {
       drawersOpenQueue.current = [newDrawerId, ...drawersOpenQueue.current];
+      const newDrawer = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter]?.find(
+        drawer => drawer.id === newDrawerId
+      );
+      fireNonCancelableEvent(newDrawer?.onStateChange, { event: 'open', initiatedByUserAction });
     }
 
     if (activeDrawerId) {
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== activeDrawerId);
+      const activeDrawer = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter]?.find(
+        drawer => drawer.id === activeDrawerId
+      );
+      fireNonCancelableEvent(activeDrawer?.onStateChange, { event: 'close', initiatedByUserAction });
     }
   }
 

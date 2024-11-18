@@ -51,7 +51,7 @@ export interface AppLayoutInternals {
   setToolbarHeight: (height: number) => void;
   onSplitPanelToggle: () => void;
   onNavigationToggle: (open: boolean) => void;
-  onActiveDrawerChange: (newDrawerId: string | null) => void;
+  onActiveDrawerChange: (newDrawerId: string | null, initiatedByUserAction?: boolean) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
   onActiveGlobalDrawersChange: (newDrawerId: string, initiatedByUserAction?: boolean) => void;
   splitPanelAnimationDisabled?: boolean;

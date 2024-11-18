@@ -216,6 +216,20 @@ describeEachAppLayout(({ theme, size }) => {
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
   });
 
+  test('calls onStateChange handler (local runtime drawer)', async () => {
+    const onStateChange = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      onStateChange: event => onStateChange(event.detail),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(onStateChange).toHaveBeenCalledWith({ event: 'open', initiatedByUserAction: true });
+    wrapper.findActiveDrawerCloseButton()!.click();
+    expect(onStateChange).toHaveBeenCalledWith({ event: 'close', initiatedByUserAction: true });
+  });
+
   test('supports badge property', async () => {
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,

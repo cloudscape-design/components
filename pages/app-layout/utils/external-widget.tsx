@@ -46,6 +46,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   defaultActive: !!searchParams.get('force-default-active'),
+  onStateChange: event => {
+    console.log('security drawer state change', event.detail);
+  },
 
   resizable: true,
   defaultSize: 320,

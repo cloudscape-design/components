@@ -119,7 +119,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 })}
                 formAction="none"
                 iconName={isMobile ? 'close' : 'angle-right'}
-                onClick={() => onActiveDrawerChange(null)}
+                onClick={() => onActiveDrawerChange(null, true)}
                 ref={drawersFocusControl.refs.close}
                 variant="icon"
               />

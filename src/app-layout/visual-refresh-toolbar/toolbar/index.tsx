@@ -42,10 +42,10 @@ export interface ToolbarProps {
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
-  onActiveDrawerChange?: (drawerId: string | null) => void;
+  onActiveDrawerChange?: (drawerId: string | null, initiatedByUserAction?: boolean) => void;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
-  onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
+  onActiveGlobalDrawersChange?: ((drawerId: string, initiatedByUserAction?: boolean) => void) | undefined;
 }
 
 export interface AppLayoutToolbarImplementationProps {

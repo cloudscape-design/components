@@ -150,8 +150,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToolsToggle,
     });
 
-    const onActiveDrawerChangeHandler = (drawerId: string | null) => {
-      onActiveDrawerChange(drawerId);
+    const onActiveDrawerChangeHandler = (drawerId: string | null, initiatedByUserAction?: boolean) => {
+      onActiveDrawerChange(drawerId, initiatedByUserAction);
       drawersFocusControl.setFocus();
     };
 

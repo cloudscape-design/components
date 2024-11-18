@@ -31,7 +31,7 @@ interface DrawerTriggersProps {
   activeDrawerId: string | null;
   drawersFocusRef: React.Ref<Focusable> | undefined;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
+  onActiveDrawerChange: ((drawerId: string | null, initiatedByUserAction?: boolean) => void) | undefined;
 
   activeGlobalDrawersIds: ReadonlyArray<string>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
@@ -164,7 +164,7 @@ export function DrawerTriggers({
               iconName={item.trigger!.iconName}
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
-              onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
+              onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, true)}
               ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
