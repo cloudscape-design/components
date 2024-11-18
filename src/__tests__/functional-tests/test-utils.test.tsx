@@ -118,7 +118,7 @@ describe('createWrapper', () => {
 });
 
 describe.each(components)('ElementWrapper selectors for %s component', componentName => {
-  const { findName, findAllName, findByTestIdName } = getComponentSelectors(componentName);
+  const { findName, findAllName } = getComponentSelectors(componentName);
 
   describe('dom wrapper', () => {
     test(`${findName} returns the first ${componentName}`, () => {
@@ -151,21 +151,6 @@ describe.each(components)('ElementWrapper selectors for %s component', component
       );
 
       expect(elementNameAttributes).toEqual(['second item', 'third item']);
-    });
-
-    test(`${findByTestIdName} returns the ${componentName} with matching test id`, () => {
-      const { container } = renderComponents(componentName);
-      const wrapper = createWrapperDom(container);
-      const element = wrapper[findByTestIdName]('second-item')!.getElement();
-
-      expect(element).toHaveAttribute('data-name', 'second item');
-    });
-
-    test(`${findByTestIdName} returns the correct ${componentName}, even when test id contains double quotes`, () => {
-      const { container } = renderComponents(componentName, [{ 'data-testid': '"test-id-with-quotes"' }]);
-      const wrapper = createWrapperDom(container);
-
-      expect(wrapper[findByTestIdName]('"test-id-with-quotes"')).toBeTruthy();
     });
   });
 
@@ -200,29 +185,11 @@ describe.each(components)('ElementWrapper selectors for %s component', component
       expect(firstElement).toBeFalsy();
       expect(secondElement).toBeTruthy();
     });
-
-    test(`${findByTestIdName} returns selector matching the ${componentName} with test id`, () => {
-      const { container } = renderComponents(componentName);
-      const wrapper = createWrapperSelectors();
-      const selector = wrapper[findByTestIdName]('second-item').toSelector();
-      const element = container.querySelector(selector);
-
-      expect(element).toHaveAttribute('data-name', 'second item');
-    });
-
-    test(`${findByTestIdName} returns selector matching the ${componentName}, even when test id contains double quotes`, () => {
-      const { container } = renderComponents(componentName, [{ 'data-testid': '"test-id-with-quotes"' }]);
-      const wrapper = createWrapperSelectors();
-      const selector = wrapper[findByTestIdName]('"test-id-with-quotes"').toSelector();
-      const element = container.querySelector(selector);
-
-      expect(element).toBeTruthy();
-    });
   });
 });
 
 describe.each(componentsWithNoExtraFinders)('ElementWrapper selectors for %s component', componentName => {
-  const { findName, findAllName, findByTestIdName } = getComponentSelectors(componentName);
+  const { findName, findAllName } = getComponentSelectors(componentName);
   const renderOnlyOneInstance = () => renderComponents(componentName, [{}]);
 
   describe('dom wrapper', () => {
@@ -234,11 +201,10 @@ describe.each(componentsWithNoExtraFinders)('ElementWrapper selectors for %s com
       expect(element).toBeTruthy();
     });
 
-    test('it does not have findAll or findByTestId finders', () => {
-      const wrapper = createWrapperDom();
+    test('it does not have findAll finder', () => {
+      createWrapperDom();
 
       expect(findAllName).toBeUndefined();
-      expect(wrapper[findByTestIdName]).toBeFalsy();
     });
   });
 
@@ -252,11 +218,10 @@ describe.each(componentsWithNoExtraFinders)('ElementWrapper selectors for %s com
       expect(element).toBeTruthy();
     });
 
-    test('it does not have findAll or findByTestId finders', () => {
-      const wrapper = createWrapperDom();
+    test('it does not have findAll finders', () => {
+      createWrapperDom();
 
       expect(findAllName).toBeUndefined();
-      expect(wrapper[findByTestIdName]).toBeFalsy();
     });
   });
 });

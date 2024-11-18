@@ -30,11 +30,6 @@ const configs = {
     buildExtraFinders: ({ componentName, componentNamePlural }) => `
       ElementWrapper.prototype.findAll${componentNamePlural} = function(selector) {
         return this.findAllComponents(${toWrapper(componentName)}, selector);
-      };
-
-      ElementWrapper.prototype.find${componentName}ByTestId = function(testId) {
-        const selector = \`.\${${toWrapper(componentName)}.rootSelector}[data-testid="\${CSS.escape(testId)}"]\`;
-        return this.findComponent(selector, ${toWrapper(componentName)});
       };`,
   },
   dom: {
@@ -58,16 +53,7 @@ const configs = {
         * @param {string} [selector] CSS Selector
         * @returns {Array<${toWrapper(componentName)}>}
         */
-       findAll${componentNamePlural}(selector?: string): Array<${toWrapper(componentName)}>;
-       /**
-        * Returns the first ${componentName} that matches the specified test ID.
-        * Looks for the \`data-testid\` attribute assigned to the component.
-        * If no matching ${componentName} is found, returns \`null\`.
-        *
-        * @param {string} testId
-        * @returns {${toWrapper(componentName)} | null}
-        */
-       find${componentName}ByTestId(testId: string): ${toWrapper(componentName)} | null;`,
+       findAll${componentNamePlural}(selector?: string): Array<${toWrapper(componentName)}>;`,
   },
   selectors: {
     defaultExport: `export default function wrapper(root: string = 'body') { return new ElementWrapper(root); }`,
@@ -88,15 +74,7 @@ const configs = {
         * @param {string} [selector] CSS Selector
         * @returns {MultiElementWrapper<${toWrapper(componentName)}>}
         */
-       findAll${componentNamePlural}(selector?: string): MultiElementWrapper<${toWrapper(componentName)}>;
-       /**
-        * Returns a wrapper that matches the first ${componentName} with the specified test ID.
-        * Looks for the \`data-testid\` attribute assigned to the component.
-        *
-        * @param {string} testId
-        * @returns {${toWrapper(componentName)}}
-        */
-       find${componentName}ByTestId(testId: string): ${toWrapper(componentName)};`,
+       findAll${componentNamePlural}(selector?: string): MultiElementWrapper<${toWrapper(componentName)}>;`,
   },
 };
 
