@@ -36,7 +36,9 @@ const FileInputItem = forwardRef(
         <InternalFileInput
           variant="icon"
           ariaLabel={item.text}
-          value={[]}
+          accept={item.accept}
+          multiple={item.multiple}
+          value={item.value}
           onChange={event => fireCancelableEvent(onItemClick, { id: item.id, files: event.detail.value })}
           ref={ref}
           data-testid={item.id}

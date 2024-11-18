@@ -73,6 +73,7 @@ export default function ButtonGroupPage() {
         id: 'file-input',
         text: 'Choose files',
         value: files,
+        multiple: true,
       },
     ],
   };
@@ -259,8 +260,6 @@ export default function ButtonGroupPage() {
     setFiles(newItems);
   };
 
-  console.log(files);
-
   return (
     <ScreenshotArea disableAnimations={true}>
       <SpaceBetween size="m">
@@ -293,6 +292,7 @@ export default function ButtonGroupPage() {
           }))}
           onDismiss={onDismiss}
           i18nStrings={i18nStrings}
+          alignment="horizontal"
         />
 
         <Box>
