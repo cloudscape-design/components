@@ -73,9 +73,8 @@ function getComponentSelectors(componentName: string) {
   // For this reason, casting the function names into the Alert component.
   const findName = `find${componentNamePascalCase}` as 'findAlert';
   const findAllName = wrapperPropsList.find(selector => findAllRegex.test(selector)) as 'findAllAlerts';
-  const findByTestIdName = `find${componentNamePascalCase}ByTestId` as 'findAlertByTestId';
 
-  return { findName, findAllName, findByTestIdName };
+  return { findName, findAllName };
 }
 
 describe('createWrapper', () => {

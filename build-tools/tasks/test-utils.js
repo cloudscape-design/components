@@ -18,7 +18,7 @@ const testUtilsSrcDir = path.resolve('src/test-utils');
 const configs = {
   common: {
     // These components are not meant to be present in multiple instances in a single app.
-    // For this reason no findAll and findByTestId finders will be generated for them.
+    // For this reason no findAll finders will be generated for them.
     noExtraFinders: ['AppLayout', 'TopNavigation'],
     buildFinder: ({ componentName }) => `
        ElementWrapper.prototype.find${componentName} = function(selector) {
