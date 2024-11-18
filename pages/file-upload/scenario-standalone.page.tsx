@@ -3,12 +3,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { Alert, Box, Checkbox, FileUpload, FileUploadProps, FormField, Header } from '~components';
-import SpaceBetween from '~components/space-between';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
+import SpaceBetween from '~components/space-between';
 
 import { PageNotifications, useContractFilesForm } from './page-helpers';
-import { i18nStrings } from './shared';
 import { validateContractFiles } from './validations';
 
 export default function FileUploadScenarioStandalone() {
@@ -66,7 +65,6 @@ export default function FileUploadScenarioStandalone() {
               showFileSize={true}
               showFileLastModified={true}
               showFileThumbnail={true}
-              //i18nStrings={i18nStrings}
               {...contractsErrors}
               constraintText="File size must not exceed 250 KB. Combined file size must not exceed 750 KB"
             />

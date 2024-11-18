@@ -6,8 +6,6 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
-
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
@@ -16,6 +14,7 @@ import { useFilesDragging } from '../file-dropzone/use-files-dragging';
 import InternalFileInput from '../file-input/internal';
 import InternalFileTokenGroup from '../file-token-group/internal';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -129,7 +128,9 @@ function InternalFileUpload(
         {areFilesDragging ? (
           <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
             {/* {i18nStrings.dropzoneText(multiple)} */}
-            {i18n('i18nStrings.dropzoneText', i18nStrings?.dropzoneText?.(multiple), format => format({ multiple }))}
+            {i18n('i18nStrings.dropzoneText', i18nStrings?.dropzoneText?.(multiple), format =>
+              format({ multiple: `${multiple}` })
+            )}
           </InternalFileDropzone>
         ) : (
           <InternalFileInput
@@ -146,7 +147,7 @@ function InternalFileUpload(
           >
             {/* {i18nStrings.uploadButtonText(multiple)} */}
             {i18n('i18nStrings.uploadButtonText', i18nStrings?.uploadButtonText?.(multiple), format =>
-              format({ multiple })
+              format({ multiple: `${multiple}` })
             )}
           </InternalFileInput>
         )}
@@ -191,10 +192,11 @@ function InternalFileUpload(
           showFileSize={metadata.showFileSize}
           showFileThumbnail={metadata.showFileThumbnail}
           i18nStrings={{
-            removeFileAriaLabel: (fileIndex: number) =>
-              i18n('i18nStrings.removeFileAriaLabel', i18nStrings?.removeFileAriaLabel?.(fileIndex), format =>
-                format({ fileIndex: fileIndex + 1 })
-              ),
+            removeFileAriaLabel: i18n(
+              'i18nStrings.removeFileAriaLabel',
+              i18nStrings?.removeFileAriaLabel,
+              format => fileIndex => format({ fileIndex: fileIndex + 1 })
+            ),
             limitShowFewer: i18n('i18nStrings.limitShowFewer', i18nStrings?.limitShowFewer),
             limitShowMore: i18n('i18nStrings.limitShowMore', i18nStrings?.limitShowMore),
             formatFileSize: i18nStrings?.formatFileSize,
