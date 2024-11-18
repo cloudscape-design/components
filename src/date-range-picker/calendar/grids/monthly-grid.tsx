@@ -38,7 +38,7 @@ import styles from './styles.css.js';
  * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
  */
 
-export interface GridProps {
+export interface MonthlyGridProps {
   baseDate: Date;
   selectedStartDate: Date | null;
   selectedEndDate: Date | null;
@@ -87,7 +87,7 @@ export function MonthlyGrid({
   ariaLabelledby,
 
   className,
-}: GridProps) {
+}: MonthlyGridProps) {
   const baseDateTime = baseDate?.getTime();
   // `baseDateTime` is used as a more stable replacement for baseDate
   const weeks = useMemo<Date[][]>(
