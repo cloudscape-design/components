@@ -12,7 +12,7 @@ let counter = 0;
 
 export default function ResponsiveBreadcrumbsPage() {
   return (
-    <ScreenshotArea disableAnimations={true}>
+    <ScreenshotArea disableAnimations={false}>
       <article>
         <Box padding="xl">
           <SpaceBetween size="xxl">
@@ -20,7 +20,7 @@ export default function ResponsiveBreadcrumbsPage() {
             <ResponsiveBreadcrumbs
               widths={[900, 800, 700, 600, 500, 400, 300, 200]}
               items={[
-                'A',
+                'Amazon service name',
                 'Longer breadrcumb',
                 'ABC',
                 'Another even longer breadcrumb',

@@ -91,6 +91,7 @@ const ItemElement = ({
 
 type InternalItemProps = ButtonDropdownProps.Item & {
   badge?: boolean;
+  isCurrentPage?: boolean;
 };
 
 type InternalCheckboxItemProps = ButtonDropdownProps.CheckboxItem & {
@@ -107,6 +108,7 @@ interface MenuItemProps {
 function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
+  const isCurrentPage = !isCheckbox && item.isCurrentPage;
 
   useEffect(() => {
     if (highlighted && menuItemRef.current) {
@@ -118,7 +120,13 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     'aria-label': item.ariaLabel,
-    className: clsx(styles['menu-item'], analyticsLabels['menu-item'], linkStyle && styles['link-style']),
+    className: clsx(
+      styles['menu-item'],
+      analyticsLabels['menu-item'],
+      linkStyle && styles['link-style'],
+      isCurrentPage && styles['current-page']
+    ),
+    'aria-current': isCurrentPage,
     lang: item.lang,
     ref: menuItemRef,
     // We are using the roving tabindex technique to manage the focus state of the dropdown.

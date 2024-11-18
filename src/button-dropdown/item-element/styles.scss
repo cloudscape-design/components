@@ -63,7 +63,13 @@
 
   &.link-style {
     padding-block-end: calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs});
-    @include styles.link-inline('body-m');
+    &:not(.disabled > &) {
+      @include styles.link-inline('body-m');
+    }
+    &.current-page {
+      @include styles.font-button;
+      color: awsui.$color-text-breadcrumb-current;
+    }
   }
 
   &:focus {
