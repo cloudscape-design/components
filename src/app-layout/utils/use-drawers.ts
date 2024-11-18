@@ -213,7 +213,10 @@ export function useDrawers(
     fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
   }
 
-  function onActiveDrawerChange(newDrawerId: string | null, { initiatedByUserAction }: Partial<OnChangeParams> = {}) {
+  function onActiveDrawerChange(
+    newDrawerId: string | null,
+    { initiatedByUserAction }: OnChangeParams = { initiatedByUserAction: false }
+  ) {
     setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
       onAddNewActiveDrawer?.(newDrawerId);
@@ -241,7 +244,10 @@ export function useDrawers(
     }
   }
 
-  function onActiveGlobalDrawersChange(drawerId: string, { initiatedByUserAction }: Partial<OnChangeParams> = {}) {
+  function onActiveGlobalDrawersChange(
+    drawerId: string,
+    { initiatedByUserAction }: Partial<OnChangeParams> = { initiatedByUserAction: false }
+  ) {
     const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === drawerId);
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
