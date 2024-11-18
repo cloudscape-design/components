@@ -14,7 +14,7 @@ import { ActiveDrawersContext } from '../utils/visibility-context';
 import styles from './styles.css.js';
 
 export interface RuntimeDrawer extends AppLayoutProps.Drawer {
-  onStateChange?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
 }
 
 export interface DrawersLayout {
@@ -62,7 +62,7 @@ const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
   orderPriority?: number;
-  onStateChange?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
 } => {
   const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
 

@@ -46,7 +46,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   defaultActive: !!searchParams.get('force-default-active'),
-  onStateChange: event => {
+  onToggle: event => {
     console.log('security drawer state change', event.detail);
   },
 
@@ -134,7 +134,7 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
-  onStateChange: console.log,
+  onToggle: console.log,
 
   trigger: {
     iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
@@ -241,7 +241,7 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
-  onStateChange: event => console.log(event.detail),
+  onToggle: event => console.log(event.detail),
 
   mountContent: container => {
     ReactDOM.render(<CustomDrawerContent />, container);

@@ -225,7 +225,7 @@ export function useDrawers(
       const newDrawer = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter]?.find(
         drawer => drawer.id === newDrawerId
       );
-      fireNonCancelableEvent(newDrawer?.onStateChange, { event: 'open', initiatedByUserAction });
+      fireNonCancelableEvent(newDrawer?.onToggle, { isOpen: true, initiatedByUserAction });
     }
 
     if (activeDrawerId) {
@@ -233,7 +233,7 @@ export function useDrawers(
       const activeDrawer = [...runtimeDrawers.localBefore, ...runtimeDrawers.localAfter]?.find(
         drawer => drawer.id === activeDrawerId
       );
-      fireNonCancelableEvent(activeDrawer?.onStateChange, { event: 'close', initiatedByUserAction });
+      fireNonCancelableEvent(activeDrawer?.onToggle, { isOpen: false, initiatedByUserAction });
     }
   }
 
@@ -243,13 +243,13 @@ export function useDrawers(
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
       onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
-      fireNonCancelableEvent(drawer?.onStateChange, { event: 'close', initiatedByUserAction });
+      fireNonCancelableEvent(drawer?.onToggle, { isOpen: false, initiatedByUserAction });
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
       onGlobalDrawerFocus?.(drawerId, true);
       drawersOpenQueue.current = [drawerId, ...drawersOpenQueue.current];
-      fireNonCancelableEvent(drawer?.onStateChange, { event: 'open', initiatedByUserAction });
+      fireNonCancelableEvent(drawer?.onToggle, { isOpen: true, initiatedByUserAction });
     }
   }
 

@@ -10,7 +10,7 @@ export interface MountContentContext {
 }
 
 export interface DrawerStateChangeParams {
-  event: 'open' | 'close';
+  isOpen: boolean;
   initiatedByUserAction?: boolean;
 }
 
@@ -35,7 +35,7 @@ export interface DrawerConfig {
   mountContent: (container: HTMLElement, mountContext: MountContentContext) => void;
   unmountContent: (container: HTMLElement) => void;
   preserveInactiveContent?: boolean;
-  onStateChange?: NonCancelableEventHandler<DrawerStateChangeParams>;
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
 }
 
 const updatableProperties = [
