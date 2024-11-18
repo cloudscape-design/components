@@ -8,7 +8,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import InternalButtonDropdown from '../../../lib/components/button-dropdown/internal';
 import { KeyCode } from '../../../lib/components/internal/keycode';
-import createWrapper, { ButtonWrapper, IconWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
@@ -166,7 +166,7 @@ const items: ButtonDropdownProps.Items = [
     describe('"icon" variant', () => {
       it('renders one icon inside the button trigger', () => {
         const wrapper = renderButtonDropdown({ expandToViewport, items, variant: 'icon' });
-        expect(wrapper.findNativeButton().findAllByClassName(IconWrapper.rootSelector)).toHaveLength(1);
+        expect(wrapper.findNativeButton().findAllIcons()).toHaveLength(1);
       });
 
       it('ignores text label', () => {

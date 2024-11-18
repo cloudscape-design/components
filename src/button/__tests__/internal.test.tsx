@@ -81,16 +81,19 @@ describe('Analytics', () => {
   });
 
   test('does not send an externalLinkInteracted metric when the button is not a link', () => {
+    const onClick = jest.fn();
     const { container } = render(
       <AnalyticsFunnel funnelType="single-page" optionalStepNumbers={[]} totalFunnelSteps={1}>
-        <Button iconName="external" data-testid="1" />
-        <Button target="_blank" data-testid="2" />
+        <Button iconName="external" onClick={onClick} />
+        <Button target="_blank" onClick={onClick} />
       </AnalyticsFunnel>
     );
     act(() => void jest.runAllTimers());
-    createWrapper(container).findButton('[data-testid="1"]')!.click();
-    createWrapper(container).findButton('[data-testid="2"]')!.click();
+    createWrapper(container)
+      .findAllButtons()
+      .forEach(wrapper => wrapper.click());
 
+    expect(onClick).toHaveBeenCalledTimes(2);
     expect(FunnelMetrics.externalLinkInteracted).not.toHaveBeenCalled();
   });
 

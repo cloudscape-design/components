@@ -7,7 +7,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
 import { InternalButtonDropdownProps } from '../../../lib/components/button-dropdown/interfaces';
-import createWrapper, { IconWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { isItemGroup, isLinkItem } from '../utils/utils';
 
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
@@ -424,7 +424,7 @@ const items: ButtonDropdownProps.Items = [
         const wrapper = renderButtonDropdown({ ...props, items: items });
 
         wrapper.openDropdown();
-        expect(wrapper.findItemById('i1')!.findAllByClassName(IconWrapper.rootSelector)).toHaveLength(2);
+        expect(wrapper.findItemById('i1')!.findAllIcons()).toHaveLength(2);
       });
     });
   });

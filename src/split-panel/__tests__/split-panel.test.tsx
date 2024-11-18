@@ -185,7 +185,7 @@ describe('Split panel', () => {
       wrapper.findPreferencesButton()!.click();
       const modalWrapper = createWrapper().findModal()!;
 
-      modalWrapper.findFooter()!.findAll('button')[0].getElement().click();
+      modalWrapper.findFooter()!.findAllButtons()[0].getElement().click();
 
       expect(defaultSplitPanelContextProps.onPreferencesChange).not.toHaveBeenCalled();
       expect(createWrapper().findModal()).toBeNull();
@@ -196,7 +196,7 @@ describe('Split panel', () => {
       wrapper.findPreferencesButton()!.click();
       const modalWrapper = createWrapper().findModal()!;
 
-      modalWrapper.findFooter()!.findAll('button')[1].getElement().click();
+      modalWrapper.findFooter()!.findAllButtons()[1].getElement().click();
 
       expect(defaultSplitPanelContextProps.onPreferencesChange).toHaveBeenCalledTimes(1);
       expect(defaultSplitPanelContextProps.onPreferencesChange).toHaveBeenCalledWith({
