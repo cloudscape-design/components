@@ -54,9 +54,9 @@ const DRAWERS_LIMIT = 2;
 function useRuntimeDrawers(
   disableRuntimeDrawers: boolean | undefined,
   activeDrawerId: string | null,
-  onActiveDrawerChange: (newDrawerId: string | null, { initiatedByUserAction = false }: OnChangeParams) => void,
+  onActiveDrawerChange: (newDrawerId: string | null, { initiatedByUserAction }: OnChangeParams) => void,
   activeGlobalDrawersIds: Array<string>,
-  onActiveGlobalDrawersChange: (newDrawerId: string, { initiatedByUserAction = false }: OnChangeParams) => void,
+  onActiveGlobalDrawersChange: (newDrawerId: string, { initiatedByUserAction }: OnChangeParams) => void,
   drawers: AppLayoutProps.Drawer[]
 ) {
   const [runtimeDrawers, setRuntimeDrawers] = useState<DrawersLayout>({
@@ -213,7 +213,7 @@ export function useDrawers(
     fireNonCancelableEvent(activeGlobalDrawer?.onResize, { id, size });
   }
 
-  function onActiveDrawerChange(newDrawerId: string | null, { initiatedByUserAction = false }: OnChangeParams) {
+  function onActiveDrawerChange(newDrawerId: string | null, { initiatedByUserAction }: Partial<OnChangeParams> = {}) {
     setActiveDrawerId(newDrawerId);
     if (newDrawerId) {
       onAddNewActiveDrawer?.(newDrawerId);
@@ -241,7 +241,7 @@ export function useDrawers(
     }
   }
 
-  function onActiveGlobalDrawersChange(drawerId: string, { initiatedByUserAction = false }: OnChangeParams) {
+  function onActiveGlobalDrawersChange(drawerId: string, { initiatedByUserAction }: Partial<OnChangeParams> = {}) {
     const drawer = runtimeGlobalDrawers.find(drawer => drawer.id === drawerId);
     if (activeGlobalDrawersIds.includes(drawerId)) {
       setActiveGlobalDrawersIds(currentState => currentState.filter(id => id !== drawerId));
