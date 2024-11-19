@@ -438,11 +438,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     ]);
 
     const getIsNestedInAppLayout = (element: HTMLElement | null, rootClassName: string): boolean => {
-      if (!element) {
-        return false;
-      }
-
-      let currentElement: Element | null = element.parentElement;
+      let currentElement: Element | null = element?.parentElement ?? null;
 
       while (currentElement) {
         if (currentElement.classList.contains(rootClassName)) {
