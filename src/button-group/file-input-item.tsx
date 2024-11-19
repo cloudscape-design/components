@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { FileInputProps } from '../file-input/interfaces.js';
@@ -24,6 +24,7 @@ const FileInputItem = forwardRef(
     },
     ref: React.Ref<FileInputProps.Ref>
   ) => {
+    const [files, setFiles] = useState<File[]>([]);
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     const canShowTooltip = Boolean(showTooltip);
@@ -34,8 +35,11 @@ const FileInputItem = forwardRef(
           ariaLabel={item.text}
           accept={item.accept}
           multiple={item.multiple}
-          value={item.value}
-          onChange={event => fireCancelableEvent(onItemClick, { id: item.id, files: event.detail.value })}
+          value={files}
+          onChange={event => {
+            fireCancelableEvent(onItemClick, { id: item.id, files: event.detail.value });
+            setFiles(event.detail.value);
+          }}
           ref={ref}
           data-testid={item.id}
           dataItemId={item.id}

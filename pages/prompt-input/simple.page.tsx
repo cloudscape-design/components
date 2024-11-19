@@ -179,7 +179,6 @@ export default function PromptInputPage() {
                               type: 'file-input',
                               id: 'files',
                               text: 'Upload files',
-                              value: files,
                               multiple: true,
                             },
                             {
