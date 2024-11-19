@@ -21,7 +21,7 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 export namespace FileTokenProps {
   export interface I18nStrings {
-    removeFileAriaLabel: (fileIndex: number) => string;
+    removeFileAriaLabel?: (fileIndex: number) => string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;
@@ -39,7 +39,7 @@ export interface FileTokenProps extends BaseComponentProps {
   warningText?: React.ReactNode;
   loading?: boolean;
   readOnly?: boolean;
-  i18nStrings: FileTokenProps.I18nStrings;
+  i18nStrings?: FileTokenProps.I18nStrings;
   dismissLabel?: string;
   alignment?: TokenGroupProps.Alignment;
   groupContainsImage?: boolean;
@@ -63,8 +63,8 @@ function InternalFileToken({
   isImage,
   index,
 }: FileTokenProps) {
-  const formatFileSize = i18nStrings.formatFileSize ?? defaultFormatters.formatFileSize;
-  const formatFileLastModified = i18nStrings.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
+  const formatFileSize = i18nStrings?.formatFileSize ?? defaultFormatters.formatFileSize;
+  const formatFileLastModified = i18nStrings?.formatFileLastModified ?? defaultFormatters.formatFileLastModified;
 
   const errorId = useUniqueId('error');
   const warningId = useUniqueId('warning');
@@ -74,6 +74,10 @@ function InternalFileToken({
   const fileNameRef = useRef<HTMLSpanElement>(null);
   const fileNameContainerRef = useRef<HTMLDivElement>(null);
   const [showTooltip, setShowTooltip] = useState(false);
+
+  const getDismissLabel = (fileIndex: number) => {
+    return i18nStrings?.removeFileAriaLabel?.(fileIndex);
+  };
 
   function isEllipsisActive() {
     const span = fileNameRef.current;
@@ -166,17 +170,15 @@ function InternalFileToken({
             </InternalSpaceBetween>
           </div>
         </InternalBox>
-        {onDismiss && !readOnly && (
-          <DismissButton dismissLabel={i18nStrings.removeFileAriaLabel(index)} onDismiss={onDismiss} />
-        )}
+        {onDismiss && !readOnly && <DismissButton dismissLabel={getDismissLabel(index)} onDismiss={onDismiss} />}
       </div>
       {errorText && (
-        <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings.errorIconAriaLabel}>
+        <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
           {errorText}
         </FormFieldError>
       )}
       {showWarning && (
-        <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings.warningIconAriaLabel}>
+        <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
           {warningText}
         </FormFieldWarning>
       )}

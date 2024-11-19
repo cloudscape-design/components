@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "コンテンツのロード中"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "少なく表示",
+    "i18nStrings.limitShowMore": "さらに表示",
+    "i18nStrings.removeFileAriaLabel": "ファイル {fileIndex} を削除",
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.warningIconAriaLabel": "警告"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "少なく表示",
+    "i18nStrings.limitShowMore": "さらに表示",
+    "i18nStrings.removeFileAriaLabel": "ファイル {fileIndex} を削除",
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.warningIconAriaLabel": "警告",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {ファイルを選択} false {ファイルを選択} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {ファイルをドロップしてアップロード} false {ファイルをドロップしてアップロード} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "通知",
     "i18nStrings.errorIconAriaLabel": "エラー",

@@ -14,6 +14,7 @@ import { useFilesDragging } from '../file-dropzone/use-files-dragging';
 import InternalFileInput from '../file-input/internal';
 import InternalFileTokenGroup from '../file-token-group/internal';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
@@ -68,6 +69,7 @@ function InternalFileUpload(
     fallbackSelector: `.${fileInputStyles['file-input']}`,
   });
 
+  const i18n = useInternalI18n('file-upload');
   const baseProps = getBaseProps(restProps);
   const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
 
@@ -125,7 +127,9 @@ function InternalFileUpload(
       <InternalBox>
         {areFilesDragging ? (
           <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
-            {i18nStrings.dropzoneText(multiple)}
+            {i18n('i18nStrings.dropzoneText', i18nStrings?.dropzoneText?.(multiple), format =>
+              format({ multiple: `${multiple}` })
+            )}
           </InternalFileDropzone>
         ) : (
           <InternalFileInput
@@ -140,19 +144,27 @@ function InternalFileUpload(
             ariaDescribedby={ariaDescribedBy}
             invalid={invalid}
           >
-            {i18nStrings.uploadButtonText(multiple)}
+            {i18n('i18nStrings.uploadButtonText', i18nStrings?.uploadButtonText?.(multiple), format =>
+              format({ multiple: `${multiple}` })
+            )}
           </InternalFileInput>
         )}
 
         {(constraintText || errorText || warningText) && (
           <div className={styles.hints}>
             {errorText && (
-              <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+              <FormFieldError
+                id={errorId}
+                errorIconAriaLabel={i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
+              >
                 {errorText}
               </FormFieldError>
             )}
             {showWarning && (
-              <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
+              <FormFieldWarning
+                id={warningId}
+                warningIconAriaLabel={i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel)}
+              >
                 {warningText}
               </FormFieldWarning>
             )}
@@ -177,7 +189,19 @@ function InternalFileUpload(
           showFileLastModified={metadata.showFileLastModified}
           showFileSize={metadata.showFileSize}
           showFileThumbnail={metadata.showFileThumbnail}
-          i18nStrings={i18nStrings}
+          i18nStrings={{
+            removeFileAriaLabel: i18n(
+              'i18nStrings.removeFileAriaLabel',
+              i18nStrings?.removeFileAriaLabel,
+              format => fileIndex => format({ fileIndex: fileIndex + 1 })
+            ),
+            limitShowFewer: i18n('i18nStrings.limitShowFewer', i18nStrings?.limitShowFewer),
+            limitShowMore: i18n('i18nStrings.limitShowMore', i18nStrings?.limitShowMore),
+            formatFileSize: i18nStrings?.formatFileSize,
+            formatFileLastModified: i18nStrings?.formatFileLastModified,
+            errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+            warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+          }}
           onDismiss={event => onFileRemove(event.detail.fileIndex)}
         />
       ) : null}

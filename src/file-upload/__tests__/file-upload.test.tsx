@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
 import FileUpload, { FileUploadProps } from '../../../lib/components/file-upload';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import FileDropzoneWrapper from '../../../lib/components/test-utils/dom/file-dropzone';
 
@@ -266,6 +267,43 @@ describe('Focusing behavior', () => {
       expect(wrapper.findNativeInput().getElement()).toHaveFocus();
     }
   );
+});
+
+describe('i18n', () => {
+  test('supports providing custom i18n strings', () => {
+    const { container } = testingLibraryRender(
+      <TestI18nProvider
+        messages={{
+          'file-upload': {
+            'i18nStrings.removeFileAriaLabel': `Custom remove file {fileIndex}`,
+            'i18nStrings.errorIconAriaLabel': 'Custom error',
+            'i18nStrings.warningIconAriaLabel': 'Custom warning',
+            'i18nStrings.uploadButtonText':
+              '{multiple, select, true {Custom choose files} false {Custom choose file} other {}}',
+            'i18nStrings.dropzoneText':
+              '{multiple, select, true {Custom drop files} false {Custom drop file} other {}}',
+          },
+        }}
+      >
+        <FileUpload
+          value={[file1, file2]}
+          fileErrors={['File 1 error']}
+          fileWarnings={['', 'File 2 warning']}
+          onChange={onChange}
+        />
+      </TestI18nProvider>
+    );
+
+    const wrapper = createWrapper(container).findFileUpload()!;
+
+    expect(wrapper.findFileToken(1)!.findRemoveButton()!.getElement()).toHaveAccessibleName('Custom remove file 1');
+    expect(screen.getByLabelText('Custom error')).not.toBeNull();
+    expect(screen.getByLabelText('Custom warning')).not.toBeNull();
+    expect(wrapper.findUploadButton().getElement()).toHaveTextContent('Custom choose file');
+
+    fireEvent(document, createDragEvent('dragover'));
+    expect(wrapper.getElement()).toHaveTextContent('Custom drop file');
+  });
 });
 
 describe('a11y', () => {

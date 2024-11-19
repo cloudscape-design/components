@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "Memuat konten"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
+    "i18nStrings.limitShowMore": "Tampilkan selengkapnya",
+    "i18nStrings.removeFileAriaLabel": "Hapus file {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.warningIconAriaLabel": "Peringatan"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "Tampilkan lebih sedikit",
+    "i18nStrings.limitShowMore": "Tampilkan selengkapnya",
+    "i18nStrings.removeFileAriaLabel": "Hapus file {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.warningIconAriaLabel": "Peringatan",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {Pilih file} false {Pilih file} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {Letakkan file untuk diunggah} false {Letakkan file untuk diunggah} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notifikasi",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",

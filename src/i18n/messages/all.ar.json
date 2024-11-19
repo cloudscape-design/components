@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "جار تحميل المحتوى"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
+    "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية",
+    "i18nStrings.removeFileAriaLabel": "إزالة الملف {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.warningIconAriaLabel": "تحذير"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "إظهار عدد أقل من عوامل التصفية",
+    "i18nStrings.limitShowMore": "عرض المزيد من عوامل التصفية",
+    "i18nStrings.removeFileAriaLabel": "إزالة الملف {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.warningIconAriaLabel": "تحذير",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {اختيار الملفات} false {اختيار ملف} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {إفلات الملفات لتحميلها} false {إفلات الملف لتحميله} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "الإشعارات",
     "i18nStrings.errorIconAriaLabel": "خطأ",
