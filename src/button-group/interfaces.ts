@@ -138,7 +138,6 @@ export namespace ButtonGroupProps {
     type: 'file-input';
     id: string;
     text: string;
-    value: File[];
     accept?: string;
     multiple?: boolean;
   }

@@ -72,7 +72,6 @@ export default function ButtonGroupPage() {
         type: 'file-input',
         id: 'file-input',
         text: 'Choose files',
-        value: files,
         multiple: true,
       },
     ],
