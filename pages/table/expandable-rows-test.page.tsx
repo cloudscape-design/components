@@ -163,16 +163,21 @@ export default () => {
               />
             }
             getLoadingStatus={tableData.getLoadingStatus}
-            renderLoaderPending={({ item }) => (
-              <Button
-                variant="inline-link"
-                iconName="add-plus"
-                onClick={() => tableData.actions.loadItems(item?.name ?? 'ROOT')}
-                ariaLabel={item ? `Load more items for ${item.name}` : 'Load more items'}
-              >
-                Load more items
-              </Button>
-            )}
+            renderLoaderPending={({ item }) => {
+              if (item?.children === 0) {
+                return <Box>No instances found</Box>;
+              }
+              return (
+                <Button
+                  variant="inline-link"
+                  iconName="add-plus"
+                  onClick={() => tableData.actions.loadItems(item?.name ?? 'ROOT')}
+                  ariaLabel={item ? `Load more items for ${item.name}` : 'Load more items'}
+                >
+                  Load more items
+                </Button>
+              );
+            }}
             renderLoaderLoading={() => <StatusIndicator type="loading">Loading items</StatusIndicator>}
             renderLoaderError={({ item }) => (
               <Box color="text-status-error">
@@ -320,6 +325,8 @@ function useTableData() {
       const pages = loadingState.get(item.name)?.pages ?? 0;
       return children.slice(0, pages * NESTED_PAGE_SIZE);
     };
+    // Decorate isItemExpandable to allow expandable items with empty children.
+    collectionResult.collectionProps.expandableRows.isItemExpandable = item => item.type !== 'instance';
     // Decorate onExpandableItemToggle to trigger loading when expanded.
     collectionResult.collectionProps.expandableRows.onExpandableItemToggle = event => {
       onExpandableItemToggle!(event);
@@ -343,6 +350,9 @@ function useTableData() {
         const state = loadingState.get(id);
         if (settings.useServerMock && state && (state.status === 'loading' || state.status === 'error')) {
           return state.status;
+        }
+        if (item && item.type !== 'instance' && item.children === 0) {
+          return 'pending';
         }
         const pages = state?.pages ?? 0;
         const pageSize = item ? NESTED_PAGE_SIZE : ROOT_PAGE_SIZE;
