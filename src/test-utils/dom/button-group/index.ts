@@ -4,6 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button/index.js';
 import ButtonDropdownWrapper from '../button-dropdown/index.js';
+import FileInputWrapper from '../file-input/index.js';
 import createWrapper from '../index.js';
 import ToggleButtonWrapper from '../toggle-button/index.js';
 
@@ -35,6 +36,15 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
     const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${id}"]`;
     const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
     return wrapper && new ToggleButtonWrapper(wrapper.getElement());
+  }
+
+  /**
+   * Finds a file input item by its id.
+   */
+  findFileInputById(id: string): null | FileInputWrapper {
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${id}"]`;
+    const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLDivElement>;
+    return wrapper && new FileInputWrapper(wrapper.getElement());
   }
 
   /**

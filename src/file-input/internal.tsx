@@ -10,6 +10,7 @@ import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
 import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
@@ -19,6 +20,11 @@ import { joinStrings } from '../internal/utils/strings';
 import { FileInputProps } from './interfaces';
 
 import styles from './styles.css.js';
+
+interface InternalFileInputProps {
+  inputClassName?: string;
+  dataItemId?: string;
+}
 
 const InternalFileInput = React.forwardRef(
   (
@@ -32,8 +38,10 @@ const InternalFileInput = React.forwardRef(
       variant = 'button',
       children,
       __internalRootRef = null,
+      inputClassName,
+      dataItemId,
       ...restProps
-    }: FileInputProps & InternalBaseComponentProps,
+    }: FileInputProps & InternalBaseComponentProps & InternalFileInputProps,
     ref: Ref<FileInputProps.Ref>
   ) => {
     const baseProps = getBaseProps(restProps);
@@ -87,6 +95,8 @@ const InternalFileInput = React.forwardRef(
       }
     }, [value]);
 
+    const { tabIndex } = useSingleTabStopNavigation(uploadInputRef);
+
     return (
       <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
         {/* This is the actual interactive and accessible file-upload element. */}
@@ -101,7 +111,9 @@ const InternalFileInput = React.forwardRef(
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
-          className={clsx(styles['file-input'], styles.hidden)}
+          className={clsx(styles['file-input'], styles.hidden, inputClassName)}
+          tabIndex={tabIndex}
+          data-itemid={dataItemId}
           {...nativeAttributes}
         />
 

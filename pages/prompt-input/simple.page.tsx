@@ -3,12 +3,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 
 import {
-  Alert,
   AppLayout,
   Box,
   ButtonGroup,
   Checkbox,
   ColumnLayout,
+  FileTokenGroup,
   FormField,
   PromptInput,
   SpaceBetween,
@@ -17,6 +17,7 @@ import {
 
 import AppContext, { AppContextType } from '../app/app-context';
 import labels from '../app-layout/utils/labels';
+import { i18nStrings } from '../file-upload/shared';
 
 const MAX_CHARS = 2000;
 
@@ -38,6 +39,7 @@ const placeholderText =
 export default function PromptInputPage() {
   const [textareaValue, setTextareaValue] = useState('');
   const [valueInSplitPanel, setValueInSplitPanel] = useState('');
+  const [files, setFiles] = useState<File[]>([]);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
   const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText, hasSecondaryActions, hasSecondaryContent } =
@@ -79,6 +81,12 @@ export default function PromptInputPage() {
   }, [isDisabled]);
 
   const ref = React.createRef<HTMLTextAreaElement>();
+
+  const onDismiss = (event: { detail: { fileIndex: number } }) => {
+    const newItems = [...files];
+    newItems.splice(event.detail.fileIndex, 1);
+    setFiles(newItems);
+  };
 
   return (
     <AppLayout
@@ -163,13 +171,16 @@ export default function PromptInputPage() {
                       <Box padding={{ left: 'xxs', top: 'xs' }}>
                         <ButtonGroup
                           ariaLabel="Chat actions"
+                          onItemClick={({ detail }) =>
+                            detail.id.includes('files') && setFiles(detail.files ? detail.files : [])
+                          }
                           items={[
                             {
-                              type: 'icon-button',
-                              id: 'copy',
-                              iconName: 'upload',
+                              type: 'file-input',
+                              id: 'files',
                               text: 'Upload files',
-                              disabled: isDisabled || isReadOnly,
+                              value: files,
+                              multiple: true,
                             },
                             {
                               type: 'icon-button',
@@ -192,11 +203,16 @@ export default function PromptInputPage() {
                     ) : undefined
                   }
                   secondaryContent={
-                    hasSecondaryContent ? (
-                      <Alert statusIconAriaLabel="Info" header="Known issues/limitations">
-                        Review the documentation to learn about potential compatibility issues with specific database
-                        versions.
-                      </Alert>
+                    hasSecondaryContent && files.length > 0 ? (
+                      <FileTokenGroup
+                        items={files.map(file => ({
+                          file,
+                        }))}
+                        showFileThumbnail={true}
+                        onDismiss={onDismiss}
+                        i18nStrings={i18nStrings}
+                        alignment="horizontal"
+                      />
                     ) : undefined
                   }
                 />

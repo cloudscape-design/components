@@ -132,7 +132,6 @@ const ItemElement = forwardRef(
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
-            showFeedback={!!tooltip?.feedback}
           />
         )}
         {item.type === 'menu-dropdown' && (
