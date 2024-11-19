@@ -25,6 +25,13 @@ const likeButton: ButtonGroupProps.IconToggleButton = {
   pressedPopoverFeedback: 'You like it',
 };
 
+const fileButton: ButtonGroupProps.FileInput = {
+  type: 'file-input',
+  id: 'file',
+  text: 'Choose files',
+  value: [],
+};
+
 const menuButton: ButtonGroupProps.MenuDropdown = {
   type: 'menu-dropdown',
   id: 'menu',
@@ -39,10 +46,11 @@ const feedbackGroup: ButtonGroupProps.Group = {
 };
 
 test('all item types have ARIA labels', () => {
-  const { wrapper } = renderButtonGroup({ items: [feedbackGroup, copyButton, menuButton] });
+  const { wrapper } = renderButtonGroup({ items: [feedbackGroup, copyButton, menuButton, fileButton] });
 
   expect(wrapper.find('[role="group"]')!.getElement()).toHaveAccessibleName('Feedback');
   expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveAccessibleName('Like');
+  expect(wrapper.findFileInputById('file')!.findNativeInput().getElement()).toHaveAccessibleName('Choose files');
   expect(wrapper.findButtonById('copy')!.getElement()).toHaveAccessibleName('Copy');
   expect(wrapper.findMenuById('menu')!.findTriggerButton()!.getElement()).toHaveAccessibleName('More actions');
 });
@@ -59,7 +67,7 @@ test('toggle button has correct pressed label', () => {
   expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveAccessibleName('Like');
 });
 
-test('all item types can be disabled', () => {
+test('all item types except file input can be disabled', () => {
   const { wrapper } = renderButtonGroup({
     items: [likeButton, copyButton, menuButton].map(item => ({ ...item, disabled: true })),
   });
@@ -69,7 +77,7 @@ test('all item types can be disabled', () => {
   expect(wrapper.findMenuById('menu')!.findTriggerButton()!.getElement()).toBeDisabled();
 });
 
-test('all item types can be loading', async () => {
+test('all item types except file input can be loading', async () => {
   const { wrapper } = renderButtonGroup({
     items: [likeButton, copyButton, menuButton].map(item => ({
       ...item,

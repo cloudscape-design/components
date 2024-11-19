@@ -65,6 +65,14 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `popoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
    * * `pressedPopoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button in pressed state. Defaults to `popoverFeedback`.
    *
+   * * ### file-input
+   *
+   * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
+   * * `text` (string) - The name of the menu button shown as a tooltip.
+   * * `value` (File[]) - The file value of the input.
+   * * `accept` (optional, string) - Specifies the native file input `accept` attribute to describe the allow-list of file types.
+   * * `multiple` (optional, string) - Specifies the native file input `multiple` attribute to allow users entering more than one file.
+   *
    * ### menu-dropdown
    *
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
@@ -133,7 +141,6 @@ export namespace ButtonGroupProps {
     value: File[];
     accept?: string;
     multiple?: boolean;
-    popoverFeedback?: React.ReactNode;
   }
 
   export interface MenuDropdown {

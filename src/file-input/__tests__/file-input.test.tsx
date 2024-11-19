@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import '../../__a11y__/to-validate-a11y';
 import InternalFileInput, { FileInputProps } from '../../../lib/components/file-input';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import FileInputWrapper from '../../../lib/components/test-utils/dom/file-input';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
@@ -131,6 +132,22 @@ describe('FileInput input', () => {
     // additional equality check, because `expect.objectContaining` above thinks file1 === file2
     expect((onChange as jest.Mock).mock.lastCall[0].detail.value[0]).toBe(file1);
     expect((onChange as jest.Mock).mock.lastCall[0].detail.value[1]).toBe(file2);
+  });
+});
+
+describe('ref', () => {
+  test('can be used to focus the component', () => {
+    const ref = React.createRef<FileInputProps.Ref>();
+    const { container } = testingLibraryRender(
+      <InternalFileInput {...defaultProps} ref={ref}>
+        Choose files
+      </InternalFileInput>
+    );
+
+    const wrapper = createWrapper(container).findFileInput()!;
+    expect(document.activeElement).not.toBe(wrapper.findNativeInput().getElement());
+    ref.current?.focus();
+    expect(document.activeElement).toBe(wrapper.findNativeInput().getElement());
   });
 });
 
