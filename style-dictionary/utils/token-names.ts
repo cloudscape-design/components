@@ -492,7 +492,6 @@ export type ColorsTokenName =
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
-  | 'fontButtonWeight'
   | 'fontChartDetailSize'
   | 'fontDisplayLabelWeight'
   | 'fontExpandableHeadingSize'
@@ -518,6 +517,7 @@ export type TypographyTokenName =
   | 'fontTabsLineHeight'
   | 'fontTabsSize'
   | 'fontWayfindingLinkActiveWeight'
+  | 'fontWeightButton'
   | 'fontWeightHeadingXl'
   | 'fontWeightHeadingL'
   | 'fontWeightHeadingM'
@@ -548,7 +548,6 @@ export type BordersTokenName =
   | 'borderDividerListWidth'
   | 'borderDividerSectionWidth'
   | 'borderDropdownVirtualOffsetWidth'
-  | 'borderFieldWidth'
   | 'borderInvalidWidth'
   | 'borderItemWidth'
   | 'borderLineChartDashArray'
@@ -577,7 +576,10 @@ export type BordersTokenName =
   | 'borderRadiusTutorialPanelItem'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
-  | 'borderLinkFocusRingShadowSpread';
+  | 'borderLinkFocusRingShadowSpread'
+  | 'borderWidthAlert'
+  | 'borderWidthField'
+  | 'borderWidthPopover';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'

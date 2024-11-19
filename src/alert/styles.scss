@@ -25,8 +25,8 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  border-block: awsui.$border-field-width solid;
-  border-inline: awsui.$border-field-width solid;
+  border-block: awsui.$border-width-alert solid;
+  border-inline: awsui.$border-width-alert solid;
   border-start-start-radius: awsui.$border-radius-alert;
   border-start-end-radius: awsui.$border-radius-alert;
   border-end-start-radius: awsui.$border-radius-alert;
@@ -90,7 +90,7 @@
 .text {
   min-inline-size: 0;
   // To account for vertical misalignment due to button borders
-  padding-block: awsui.$border-field-width;
+  padding-block: awsui.$border-width-alert;
   padding-inline: 0;
   margin-block: awsui.$space-scaled-xxs;
   margin-inline: awsui.$space-xxs;
