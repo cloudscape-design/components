@@ -153,7 +153,6 @@ function PortaledModal({
       !performanceMetricLogged.current
     ) {
       const timeToContentReadyInModal = loadCompleteTime - loadStartTime.current;
-      console.log('componentIdentifier', headerRef.current?.textContent);
       PerformanceMetrics.modalPerformanceData({
         timeToContentReadyInModal,
         instanceIdentifier: instanceUniqueId,
