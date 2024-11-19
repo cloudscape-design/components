@@ -15809,6 +15809,7 @@ table with \`item=null\` and then for each expanded item. The function result is
 * \`pending\` - Indicates that no request in progress, but more options may be loaded.
 * \`loading\` - Indicates that data fetching is in progress.
 * \`finished\` - Indicates that loading has finished and no more requests are expected.
+* \`empty\` - Indicates that the loading has successfully finished but no items were returned.
 * \`error\` - Indicates that an error occurred during fetch.",
       "inlineType": {
         "name": "TableProps.GetLoadingStatus",
@@ -15882,6 +15883,12 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "name": "renderAriaLive",
       "optional": true,
       "type": "(data: TableProps.LiveAnnouncement) => string",
+    },
+    {
+      "description": "Defines loader properties for empty state.",
+      "name": "renderLoaderEmpty",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
       "description": "Defines loader properties for error state.",

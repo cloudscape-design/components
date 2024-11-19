@@ -363,6 +363,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `pending` - Indicates that no request in progress, but more options may be loaded.
    * * `loading` - Indicates that data fetching is in progress.
    * * `finished` - Indicates that loading has finished and no more requests are expected.
+   * * `empty` - Indicates that the loading has successfully finished but no items were returned.
    * * `error` - Indicates that an error occurred during fetch.
    **/
   getLoadingStatus?: TableProps.GetLoadingStatus<T>;
@@ -378,6 +379,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * Defines loader properties for error state.
    */
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Defines loader properties for empty state.
+   */
+  renderLoaderEmpty?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
 }
 
 export namespace TableProps {
@@ -552,7 +557,7 @@ export namespace TableProps {
 
   export type GetLoadingStatus<T> = (item: null | T) => TableProps.LoadingStatus;
 
-  export type LoadingStatus = 'pending' | 'loading' | 'error' | 'finished';
+  export type LoadingStatus = 'pending' | 'loading' | 'error' | 'empty' | 'finished';
 
   export interface RenderLoaderDetail<T> {
     item: null | T;

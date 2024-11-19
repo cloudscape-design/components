@@ -31,10 +31,10 @@ export function useProgressiveLoadingProps<T>({
     // Insert empty expandable item loader
     if (isItemExpanded(items[i]) && getItemChildren(items[i]).length === 0) {
       const status = getLoadingStatus?.(items[i]);
-      if (status && (status === 'loading' || status === 'error')) {
+      if (status && status !== 'finished') {
         allRows.push({ type: 'loader', item: items[i], level: getItemLevel(items[i]), status, from: 0 });
       } else {
-        warnOnce('Table', 'Expanded items without children must have "loading" or "error" loading status.');
+        warnOnce('Table', 'Expanded items without children must not have "finished" loading status.');
       }
     }
 
