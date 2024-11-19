@@ -1,17 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 
 import ScreenreaderOnly from '../../internal/components/screenreader-only';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { TableThElement, TableThElementProps } from '../header-cell/th-element';
 import { Divider } from '../resizer';
 import { SelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
 
-import headerCellStyles from '../header-cell/styles.css.js';
 import styles from '../styles.css.js';
 
 interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'children' | 'colIndex'> {
@@ -21,7 +18,8 @@ interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'child
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
 }
 
-interface TableBodySelectionCellProps extends Omit<TableTdElementProps, 'children' | 'colIndex' | 'wrapLines'> {
+interface TableBodySelectionCellProps
+  extends Omit<TableTdElementProps, 'children' | 'colIndex' | 'wrapLines' | 'isEditable' | 'isEditing'> {
   selectionControlProps?: SelectionControlProps;
 }
 
@@ -32,16 +30,11 @@ export function TableHeaderSelectionCell({
   onFocusMove,
   ...props
 }: TableHeaderSelectionCellProps) {
-  const isVisualRefresh = useVisualRefresh();
-  const selectionCellClass = clsx(
-    styles['selection-control'],
-    styles['selection-control-header'],
-    isVisualRefresh && styles['is-visual-refresh']
-  );
   return (
     <TableThElement
       {...props}
-      className={clsx(selectionCellClass, props.hidden && headerCellStyles['header-cell-hidden'])}
+      hidden={props.hidden}
+      isSelection={true}
       colIndex={0}
       focusedComponent={focusedComponent}
     >
@@ -64,7 +57,7 @@ export function TableHeaderSelectionCell({
 
 export function TableBodySelectionCell({ selectionControlProps, ...props }: TableBodySelectionCellProps) {
   return (
-    <TableTdElement {...props} className={styles['selection-control']} wrapLines={false} colIndex={0}>
+    <TableTdElement {...props} isSelection={true} wrapLines={false} isEditable={false} isEditing={false} colIndex={0}>
       {selectionControlProps ? <SelectionControl {...selectionControlProps} /> : null}
     </TableTdElement>
   );

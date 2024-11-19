@@ -8,7 +8,6 @@ import Portal from '../../internal/components/portal';
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { usePortalModeClasses } from '../../internal/hooks/use-portal-mode-classes';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import InternalLiveRegion from '../../live-region/internal';
 import Arrow from '../../popover/arrow';
 import PopoverBody from '../../popover/body';
@@ -24,7 +23,6 @@ interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemTyp
 }
 
 export function DisabledInlineEditor<ItemType>({
-  className,
   item,
   column,
   ariaLabels,
@@ -32,10 +30,8 @@ export function DisabledInlineEditor<ItemType>({
   onEditStart,
   onEditEnd,
   editDisabledReason,
-  resizableColumns = false,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
-  const isVisualRefresh = useVisualRefresh();
   const clickAwayRef = useClickAway(() => {
     if (isEditing) {
       onEditEnd(true);
@@ -73,13 +69,8 @@ export function DisabledInlineEditor<ItemType>({
       nativeAttributes={
         { 'data-inline-editing-active': isEditing.toString() } as TableTdElementProps['nativeAttributes']
       }
-      className={clsx(
-        className,
-        styles['body-cell-editable'],
-        resizableColumns && styles['resizable-columns'],
-        isEditing && styles['body-cell-edit-disabled-popover'],
-        isVisualRefresh && styles['is-visual-refresh']
-      )}
+      isEditing={isEditing}
+      isEditingDisabled={true}
       onClick={!isEditing ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}

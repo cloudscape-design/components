@@ -14,10 +14,10 @@ import { getTableColHeaderRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
 import { SortingStatus } from './utils';
 
+import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableThElementProps {
-  className?: string;
   style?: React.CSSProperties;
   sortingStatus?: SortingStatus;
   sortingDisabled?: boolean;
@@ -26,6 +26,7 @@ export interface TableThElementProps {
   sticky?: boolean;
   hidden?: boolean;
   stripedRows?: boolean;
+  isSelection?: boolean;
   colIndex: number;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
@@ -36,7 +37,6 @@ export interface TableThElementProps {
 }
 
 export function TableThElement({
-  className,
   style,
   sortingStatus,
   sortingDisabled,
@@ -45,6 +45,7 @@ export function TableThElement({
   sticky,
   hidden,
   stripedRows,
+  isSelection,
   colIndex,
   columnId,
   stickyState,
@@ -76,7 +77,7 @@ export function TableThElement({
         stuck && styles['header-cell-stuck'],
         stripedRows && styles['has-striped-rows'],
         isVisualRefresh && styles['is-visual-refresh'],
-        className,
+        isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,

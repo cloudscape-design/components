@@ -6,7 +6,9 @@ import React from 'react';
 import { TableTdElement, TableTdElementProps } from '../body-cell/td-element';
 import { ItemsLoader, ItemsLoaderProps } from './items-loader';
 
-export interface TableLoaderCellProps<ItemType> extends TableTdElementProps, ItemsLoaderProps<ItemType> {}
+export interface TableLoaderCellProps<ItemType>
+  extends Omit<TableTdElementProps, 'isEditable' | 'isEditing'>,
+    ItemsLoaderProps<ItemType> {}
 
 export function TableLoaderCell<ItemType>({
   item,
@@ -18,7 +20,7 @@ export function TableLoaderCell<ItemType>({
   ...props
 }: TableLoaderCellProps<ItemType>) {
   return (
-    <TableTdElement {...props}>
+    <TableTdElement {...props} isEditable={false} isEditing={false}>
       {props.isRowHeader ? (
         <ItemsLoader
           item={item}

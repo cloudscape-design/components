@@ -24,7 +24,6 @@ import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableHeaderCellProps<ItemType> {
-  className?: string;
   style?: React.CSSProperties;
   tabIndex: number;
   column: TableProps.ColumnDefinition<ItemType>;
@@ -54,7 +53,6 @@ export interface TableHeaderCellProps<ItemType> {
 }
 
 export function TableHeaderCell<ItemType>({
-  className,
   style,
   tabIndex,
   column,
@@ -122,7 +120,6 @@ export function TableHeaderCell<ItemType>({
 
   return (
     <TableThElement
-      className={className}
       style={style}
       cellRef={cellRefCombined}
       sortingStatus={sortingStatus}
