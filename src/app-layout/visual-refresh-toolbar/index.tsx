@@ -437,6 +437,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement.inlineSize,
     ]);
 
+    /**
+     * Returns true if the AppLayout is nested
+     * Does not apply to iframe
+     */
     const getIsNestedInAppLayout = (element: HTMLElement | null, rootClassName: string): boolean => {
       let currentElement: Element | null = element?.parentElement ?? null;
 
