@@ -117,7 +117,7 @@ $guide-line-offset: -2px; // Negative to expand 2px beyond the element
   margin-inline-start: awsui.$space-xs;
   @include styles.font-body-s;
   @include styles.font-smoothing;
-  font-weight: awsui.$font-weight-button;
+  font-weight: styles.$font-weight-bold;
   letter-spacing: typography.$letter-spacing-bold-link;
   color: awsui.$color-text-link-default;
 }
