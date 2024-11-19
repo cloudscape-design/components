@@ -72,6 +72,7 @@
 }
 
 .collapsed-button-dropdown {
+  display: block;
   max-inline-size: 100%;
 }
 
@@ -80,11 +81,12 @@
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
-  padding-block: styles.$control-padding-vertical;
   color: awsui.$color-text-breadcrumb-current;
   cursor: pointer;
-  border-inline-width: 0;
-  border-block-width: 0;
+  padding-block: 0;
+  padding-inline: 0;
+  border-inline: none;
+  border-block: none;
   background: none;
   display: flex;
   gap: awsui.$space-xxs;
