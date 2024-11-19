@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 import {
   addDays,
   addWeeks,
   getDaysInMonth,
+  // getYear,
   isAfter,
   isBefore,
   isLastDayOfMonth,
@@ -13,12 +14,14 @@ import {
   isSameMonth,
   isToday,
 } from 'date-fns';
-import { getCalendarMonth } from 'mnth';
 
-import { getDateLabel, renderDayName } from '../../../calendar/utils/intl';
+import useCalendarGridRows from '../../../calendar/grid/use-calendar-grid-rows';
+// import { getCalendarMonth } from 'mnth';
+import { getDateLabel } from '../../../calendar/utils/intl';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only/index.js';
 import { formatDate } from '../../../internal/utils/date-time';
-import { DateRangePickerProps, DayIndex } from '../../interfaces';
+import { normalizeLocale } from '../../../internal/utils/locale';
+import { DateRangePickerProps } from '../../interfaces';
 import { GridCell } from './grid-cell';
 
 import styles from './styles.css.js';
@@ -38,68 +41,71 @@ import styles from './styles.css.js';
  * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
  */
 
-export interface MonthlyGridProps {
+export interface MonthlyGridBaseProps {
   baseDate: Date;
-  selectedStartDate: Date | null;
-  selectedEndDate: Date | null;
+  selectedStartMonth: Date | null;
+  selectedEndMonth: Date | null;
+  focusedMonth: Date | null;
 
-  rangeStartDate: Date | null;
-  rangeEndDate: Date | null;
+  onFocusedMonthChange: React.Dispatch<React.SetStateAction<Date | null>>;
+  isMonthEnabled: DateRangePickerProps.IsDateEnabledFunction;
+  monthDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
 
-  focusedDate: Date | null;
-  focusedDateRef: React.RefObject<HTMLTableCellElement>;
+  locale?: string;
+  currentMonthAriaLabel?: string;
+}
 
-  onSelectDate: (date: Date) => void;
+export interface MonthlyGridProps extends MonthlyGridBaseProps {
+  rangeStartMonth: Date | null;
+  rangeEndMonth: Date | null;
+  focusedMonthRef: React.RefObject<HTMLTableCellElement>;
+
+  onSelectMonth: (date: Date) => void;
   onGridKeyDownHandler: (e: React.KeyboardEvent<HTMLElement>) => void;
-  onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
 
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
-  dateDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
-
-  locale: string;
-  startOfWeek: DayIndex;
-  todayAriaLabel?: string;
   ariaLabelledby: string;
-
   className?: string;
 }
 
 export function MonthlyGrid({
   baseDate,
-  selectedStartDate,
-  selectedEndDate,
-  rangeStartDate,
-  rangeEndDate,
-  focusedDate,
+  selectedStartMonth,
+  selectedEndMonth,
+  rangeStartMonth,
+  rangeEndMonth,
+  focusedMonth,
 
-  focusedDateRef,
+  focusedMonthRef,
 
-  onSelectDate,
+  onSelectMonth,
   onGridKeyDownHandler,
-  onFocusedDateChange,
+  onFocusedMonthChange,
 
-  isDateEnabled,
-  dateDisabledReason,
+  isMonthEnabled,
+  monthDisabledReason,
 
   locale,
-  startOfWeek,
-  todayAriaLabel,
+  currentMonthAriaLabel,
   ariaLabelledby,
 
   className,
 }: MonthlyGridProps) {
-  const baseDateTime = baseDate?.getTime();
+  // const baseDateTime = baseDate?.getTime();
   // `baseDateTime` is used as a more stable replacement for baseDate
-  const weeks = useMemo<Date[][]>(
-    () => getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [baseDateTime, startOfWeek]
-  );
-  const weekdays = weeks[0].map(date => date.getDay());
+  // const weeks = useMemo<Date[][]>(
+  //   () => getCalendarMonth(baseDate),
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  //   [baseDateTime]
+  // );
+  // const weekdays = weeks[0].map(date => date.getDay());
+  const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? null);
+  const rows = useCalendarGridRows({ baseDate, granularity: 'month', locale: normalizedLocale });
+
+  //todo remove once value passed down
 
   return (
     <table role="grid" aria-labelledby={ariaLabelledby} className={clsx(styles.grid, className)}>
-      <thead>
+      {/* <thead>
         <tr>
           {weekdays.map(dayIndex => (
             <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
@@ -108,60 +114,64 @@ export function MonthlyGrid({
             </th>
           ))}
         </tr>
-      </thead>
+      </thead> */}
       <tbody onKeyDown={onGridKeyDownHandler}>
-        {weeks.map((week, weekIndex) => {
+        {rows.map((quarter, quarterIndex) => {
           return (
-            <tr key={weekIndex} className={styles.week}>
-              {week.map((date, dateIndex) => {
-                const isStartDate = !!selectedStartDate && isSameDay(date, selectedStartDate);
-                const isEndDate = !!selectedEndDate && isSameDay(date, selectedEndDate);
-                const isSelected = isStartDate || isEndDate;
-                const isRangeStartDate = !!rangeStartDate && isSameDay(date, rangeStartDate);
-                const isRangeEndDate = !!rangeEndDate && isSameDay(date, rangeEndDate);
+            <tr key={quarterIndex} className={styles.quarter}>
+              {quarter.map((monthOptionDate, monthInQuarterIndex) => {
+                const monthKey = `Month ${quarterIndex * 3 + monthInQuarterIndex + 1}`;
+                const isStartMonth = !!selectedStartMonth && isSameDay(monthOptionDate, selectedStartMonth);
+                const isEndMonth = !!selectedEndMonth && isSameDay(monthOptionDate, selectedEndMonth);
+                const isSelected = isStartMonth || isEndMonth;
+                const isRangeStartMonth = !!rangeStartMonth && isSameDay(monthOptionDate, rangeStartMonth);
+                const isRangeEndMonth = !!rangeEndMonth && isSameDay(monthOptionDate, rangeEndMonth);
 
-                const isFocused = !!focusedDate && isSameDay(date, focusedDate) && isSameMonth(date, baseDate);
+                const isFocused =
+                  !!focusedMonth && isSameDay(monthOptionDate, focusedMonth) && isSameMonth(monthOptionDate, baseDate);
 
-                const dateIsInRange = isStartDate || isEndDate || isInRange(date, rangeStartDate, rangeEndDate);
-                const inRangeStartWeek =
-                  rangeStartDate && isInRange(date, rangeStartDate, addDays(addWeeks(rangeStartDate, 1), -1));
-                const inRangeEndWeek =
-                  rangeEndDate && isInRange(date, rangeEndDate, addDays(addWeeks(rangeEndDate, -1), 1));
+                const dateIsInRange =
+                  isStartMonth || isEndMonth || isInRange(monthOptionDate, rangeStartMonth, rangeEndMonth);
+                const inRangeStartMonth =
+                  rangeStartMonth &&
+                  isInRange(monthOptionDate, rangeStartMonth, addDays(addWeeks(rangeStartMonth, 1), -1));
+                const inRangeEndMonth =
+                  rangeEndMonth && isInRange(monthOptionDate, rangeEndMonth, addDays(addWeeks(rangeEndMonth, -1), 1));
                 const onlyOneSelected =
-                  !!rangeStartDate && !!rangeEndDate
-                    ? isSameDay(rangeStartDate, rangeEndDate)
-                    : !selectedStartDate || !selectedEndDate;
+                  !!rangeStartMonth && !!rangeEndMonth
+                    ? isSameDay(rangeStartMonth, rangeEndMonth)
+                    : !selectedStartMonth || !selectedEndMonth;
 
-                const isEnabled = !isDateEnabled || isDateEnabled(date);
-                const disabledReason = dateDisabledReason(date);
+                const isEnabled = !isMonthEnabled || isMonthEnabled(monthOptionDate);
+                const disabledReason = monthDisabledReason(monthOptionDate);
                 const isDisabledWithReason = !isEnabled && !!disabledReason;
                 const isFocusable = isFocused && (isEnabled || isDisabledWithReason);
 
                 const baseClasses = {
                   [styles.day]: true,
                   [styles['grid-cell']]: true,
-                  [styles['in-first-row']]: weekIndex === 0,
-                  [styles['in-first-column']]: dateIndex === 0,
+                  [styles['in-first-row']]: quarterIndex === 0,
+                  [styles['in-first-column']]: monthInQuarterIndex === 0,
                 };
 
-                if (!isSameMonth(date, baseDate)) {
+                if (!isSameMonth(monthOptionDate, baseDate)) {
                   return (
                     <td
-                      key={`${weekIndex}:${dateIndex}`}
-                      ref={isFocused ? focusedDateRef : undefined}
+                      key={monthKey}
+                      ref={isFocused ? focusedMonthRef : undefined}
                       className={clsx(baseClasses, {
-                        [styles['in-previous-month']]: isBefore(date, baseDate),
-                        [styles['last-day-of-month']]: isLastDayOfMonth(date),
-                        [styles['in-next-month']]: isAfter(date, baseDate),
+                        [styles['in-previous-month']]: isBefore(monthOptionDate, baseDate),
+                        [styles['last-day-of-month']]: isLastDayOfMonth(monthOptionDate),
+                        [styles['in-next-month']]: isAfter(monthOptionDate, baseDate),
                       })}
-                    ></td>
+                    />
                   );
                 }
 
                 const handlers: React.HTMLAttributes<HTMLDivElement> = {};
                 if (isEnabled) {
-                  handlers.onClick = () => onSelectDate(date);
-                  handlers.onFocus = () => onFocusedDateChange(date);
+                  handlers.onClick = () => onSelectMonth(monthOptionDate);
+                  handlers.onFocus = () => onFocusedMonthChange(monthOptionDate);
                 }
 
                 // Can't be focused.
@@ -175,46 +185,54 @@ export function MonthlyGrid({
                 }
 
                 // Screen-reader announcement for the focused day.
-                let dayAnnouncement = getDateLabel(locale, date, 'short');
-                if (isToday(date)) {
-                  dayAnnouncement += '. ' + todayAriaLabel;
+                let monthAnnouncement = getDateLabel(normalizedLocale, monthOptionDate, 'short');
+                if (isToday(monthOptionDate)) {
+                  monthAnnouncement += '. ' + currentMonthAriaLabel;
                 }
 
                 return (
                   <GridCell
-                    ref={isFocused ? focusedDateRef : undefined}
-                    key={`${weekIndex}:${dateIndex}`}
+                    ref={isFocused ? focusedMonthRef : undefined}
+                    key={monthKey}
                     className={clsx(baseClasses, {
-                      [styles['in-current-month']]: isSameMonth(date, baseDate),
+                      [styles['in-current-month']]: isSameMonth(monthOptionDate, baseDate),
                       [styles.enabled]: isEnabled,
                       [styles.selected]: isSelected,
-                      [styles['start-date']]: isStartDate,
-                      [styles['end-date']]: isEndDate,
-                      [styles['range-start-date']]: isRangeStartDate,
-                      [styles['range-end-date']]: isRangeEndDate,
+                      [styles['start-date']]: isStartMonth,
+                      [styles['end-date']]: isEndMonth,
+                      [styles['range-start-date']]: isRangeStartMonth,
+                      [styles['range-end-date']]: isRangeEndMonth,
                       [styles['no-range']]: isSelected && onlyOneSelected,
                       [styles['in-range']]: dateIsInRange,
-                      [styles['in-range-border-block-start']]: !!inRangeStartWeek || date.getDate() <= 7,
+
+                      //topStyle
+                      [styles['in-range-border-block-start']]: !!inRangeStartMonth || monthOptionDate.getDate() <= 7,
+                      //bottom sty;e
                       [styles['in-range-border-block-end']]:
-                        !!inRangeEndWeek || date.getDate() > getDaysInMonth(date) - 7,
+                        !!inRangeEndMonth || monthOptionDate.getDate() > getDaysInMonth(monthOptionDate) - 7,
                       [styles['in-range-border-inline-start']]:
-                        dateIndex === 0 || date.getDate() === 1 || isRangeStartDate,
+                        //left style
+                        monthInQuarterIndex === 0 || isRangeStartMonth, //monthOptionDate.getDate() === 1
+                      //right style
                       [styles['in-range-border-inline-end']]:
-                        dateIndex === week.length - 1 || isLastDayOfMonth(date) || isRangeEndDate,
-                      [styles.today]: isToday(date),
+                        monthInQuarterIndex === quarter.length - 1 || isRangeEndMonth, //isLastDayOfMonth(monthOptionDate)
+
+                      //needs special style for current month
+                      [styles.today]: isToday(monthOptionDate),
                     })}
                     aria-selected={isEnabled ? isSelected || dateIsInRange : undefined}
-                    aria-current={isToday(date) ? 'date' : undefined}
-                    data-date={formatDate(date)}
+                    aria-current={isToday(monthOptionDate) ? 'date' : undefined}
+                    data-date={formatDate(monthOptionDate)}
                     aria-disabled={!isEnabled}
                     tabIndex={tabIndex}
                     disabledReason={isDisabledWithReason ? disabledReason : undefined}
                     {...handlers}
                   >
+                    s
                     <span className={styles['day-inner']} aria-hidden="true">
-                      {date.getDate()}
+                      {monthOptionDate.getDate()}
                     </span>
-                    <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
+                    <ScreenreaderOnly>{monthAnnouncement}</ScreenreaderOnly>
                   </GridCell>
                 );
               })}

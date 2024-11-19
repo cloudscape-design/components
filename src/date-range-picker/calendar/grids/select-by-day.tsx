@@ -15,9 +15,9 @@ import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';
 import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
-import { DateRangePickerProps, DayIndex } from '../../interfaces';
+import { DayIndex } from '../../interfaces';
 import { findDateToFocus } from '../utils';
-import { MonthlyGrid } from './monthly-grid';
+import { DailyGrid, DailyGridBaseProps } from './daily-grid';
 
 import styles from '../../styles.css.js';
 
@@ -31,28 +31,16 @@ function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   return isSameMonth(date, previousMonth) || isSameMonth(date, baseDate);
 }
 
-export interface GridProps {
-  baseDate: Date;
-  selectedStartDate: Date | null;
-  selectedEndDate: Date | null;
-
-  focusedDate: Date | null;
-  onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
-
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
-  dateDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
+export interface SelectByDayGridsProps extends DailyGridBaseProps {
   isSingleGrid: boolean;
+  startOfWeek: DayIndex;
+  headingIdPrefix: string;
 
   onSelectDate: (date: Date) => void;
   onChangeMonth: (date: Date) => void;
-
-  locale: string;
-  startOfWeek: DayIndex;
-  todayAriaLabel?: string;
-  headingIdPrefix: string;
 }
 
-export const Grids = ({
+export const SelectByDayGrids = ({
   baseDate,
   selectedStartDate,
   selectedEndDate,
@@ -71,7 +59,7 @@ export const Grids = ({
   startOfWeek,
   todayAriaLabel,
   headingIdPrefix,
-}: GridProps) => {
+}: SelectByDayGridsProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
 
@@ -174,7 +162,7 @@ export const Grids = ({
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
       <InternalSpaceBetween size="xs" direction="horizontal">
         {!isSingleGrid && (
-          <MonthlyGrid
+          <DailyGrid
             className={styles['first-grid']}
             baseDate={addMonths(baseDate, -1)}
             selectedEndDate={selectedEndDate}
@@ -194,7 +182,7 @@ export const Grids = ({
             ariaLabelledby={`${headingIdPrefix}-prevmonth`}
           />
         )}
-        <MonthlyGrid
+        <DailyGrid
           className={styles['second-grid']}
           baseDate={baseDate}
           selectedEndDate={selectedEndDate}

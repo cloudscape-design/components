@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../../box/internal';
+import { CalendarProps } from '../../calendar/interfaces';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import InternalInput from '../../input/internal';
@@ -25,6 +26,7 @@ export interface RelativeRangePickerProps {
   i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
   customUnits?: DateRangePickerProps.TimeUnit[];
+  granularity?: CalendarProps.Granularity;
 }
 
 interface UnitSelectOption {
@@ -32,7 +34,8 @@ interface UnitSelectOption {
   label: string;
 }
 
-const dayUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['day', 'week', 'month', 'year'];
+const monthUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['month', 'year'];
+const dayUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['day', 'week', ...monthUnits];
 const units: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['second', 'minute', 'hour', ...dayUnits];
 
 const CUSTOM_OPTION_SELECT_KEY = 'awsui-internal-custom-duration-key';
@@ -45,6 +48,7 @@ export default function RelativeRangePicker({
   i18nStrings,
   isSingleGrid,
   customUnits,
+  granularity = 'day',
 }: RelativeRangePickerProps) {
   const i18n = useInternalI18n('date-range-picker');
   const formatRelativeRange = i18n(
@@ -88,7 +92,7 @@ export default function RelativeRangePicker({
     return NaN;
   });
 
-  let finalUnits = dateOnly ? dayUnits : units;
+  let finalUnits = granularity === 'month' ? monthUnits : dateOnly ? dayUnits : units;
   if (customUnits) {
     finalUnits = customUnits.filter(unit => {
       if (units.includes(unit)) {

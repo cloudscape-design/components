@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import clsx from 'clsx';
 import { addMonths, endOfDay, isAfter, isBefore, isSameMonth, startOfDay, startOfMonth } from 'date-fns';
 
+import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
 import { useInternalI18n } from '../../i18n/context.js';
@@ -17,7 +18,7 @@ import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
-import { Grids } from './grids';
+import { SelectByDayGrids } from './grids/select-by-day';
 import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay } from './utils';
@@ -35,6 +36,7 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
+  granularity?: CalendarProps.Granularity;
 }
 
 export default function DateRangePickerCalendar({
@@ -48,6 +50,7 @@ export default function DateRangePickerCalendar({
   dateOnly = false,
   timeInputFormat = 'hh:mm:ss',
   customAbsoluteRangeControl,
+  granularity = 'day',
 }: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
@@ -211,6 +214,18 @@ export default function DateRangePickerCalendar({
     });
   };
 
+  //todo confirm
+  // const sharedCalendarProps = {
+  //   granularity,
+  //   i18nStrings,
+  //   locale,
+
+  //     //ariaLabel,
+  // //ariaLabelledBy
+  // //ariaDescribedBy
+  // //todayAriaLabel
+  // };
+
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
   return (
     <>
@@ -225,32 +240,42 @@ export default function DateRangePickerCalendar({
               [styles['one-grid']]: isSingleGrid,
             })}
           >
-            <CalendarHeader
-              baseDate={currentMonth}
-              locale={normalizedLocale}
-              onChangeMonth={onHeaderChangeMonthHandler}
-              previousMonthLabel={i18nStrings?.previousMonthAriaLabel}
-              nextMonthLabel={i18nStrings?.nextMonthAriaLabel}
-              isSingleGrid={isSingleGrid}
-              headingIdPrefix={headingIdPrefix}
-            />
+            {/* todo confirm */}
+            {granularity !== 'month' && (
+              <CalendarHeader
+                baseDate={currentMonth}
+                locale={normalizedLocale}
+                onChangeMonth={onHeaderChangeMonthHandler}
+                previousMonthLabel={i18nStrings?.previousMonthAriaLabel}
+                nextMonthLabel={i18nStrings?.nextMonthAriaLabel}
+                isSingleGrid={isSingleGrid}
+                headingIdPrefix={headingIdPrefix}
+              />
+            )}
 
-            <Grids
-              isSingleGrid={isSingleGrid}
-              locale={normalizedLocale}
-              baseDate={currentMonth}
-              focusedDate={focusedDate}
-              onFocusedDateChange={setFocusedDate}
-              isDateEnabled={isDateEnabled}
-              dateDisabledReason={dateDisabledReason}
-              onSelectDate={onSelectDateHandler}
-              onChangeMonth={setCurrentMonth}
-              startOfWeek={normalizedStartOfWeek}
-              todayAriaLabel={i18nStrings?.todayAriaLabel}
-              selectedStartDate={parseDate(value.start.date, true)}
-              selectedEndDate={parseDate(value.end.date, true)}
-              headingIdPrefix={headingIdPrefix}
-            />
+            {granularity === 'month' ? (
+              <>
+                Month
+                {/* todo - add custom grid here */}
+              </>
+            ) : (
+              <SelectByDayGrids
+                isSingleGrid={isSingleGrid}
+                locale={normalizedLocale}
+                baseDate={currentMonth}
+                focusedDate={focusedDate}
+                onFocusedDateChange={setFocusedDate}
+                isDateEnabled={isDateEnabled}
+                dateDisabledReason={dateDisabledReason}
+                onSelectDate={onSelectDateHandler}
+                onChangeMonth={setCurrentMonth}
+                startOfWeek={normalizedStartOfWeek}
+                todayAriaLabel={i18nStrings?.todayAriaLabel}
+                selectedStartDate={parseDate(value.start.date, true)}
+                selectedEndDate={parseDate(value.end.date, true)}
+                headingIdPrefix={headingIdPrefix}
+              />
+            )}
           </div>
 
           <RangeInputs

@@ -121,6 +121,7 @@ const DateRangePicker = React.forwardRef(
       absoluteFormat = 'iso',
       hideTimeOffset,
       customRelativeRangeUnits,
+      granularity = 'day',
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -135,6 +136,7 @@ const DateRangePicker = React.forwardRef(
         showClearButton,
         timeInputFormat,
         hideTimeOffset,
+        granularity,
       },
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
@@ -343,6 +345,7 @@ const DateRangePicker = React.forwardRef(
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
                 customRelativeRangeUnits={customRelativeRangeUnits}
+                granularity={granularity}
               />
             )}
           </ResetContextsForModal>
