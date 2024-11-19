@@ -16,8 +16,8 @@ import createWrapperSelectors from '../../../lib/components/test-utils/selectors
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-const componentsWithNoExtraFinders = ['top-navigation', 'app-layout'];
-const componentsWithExceptions = ['annotation-context', ...componentsWithNoExtraFinders];
+const componentWithMultipleRootElements = ['top-navigation', 'app-layout'];
+const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));
 
 const RENDER_COMPONENTS_DEFAULT_PROPS: Record<string, unknown>[] = [
@@ -187,40 +187,46 @@ describe.each(components)('ElementWrapper selectors for %s component', component
   });
 });
 
-describe.each(componentsWithNoExtraFinders)('ElementWrapper selectors for %s component', componentName => {
+describe.each(componentWithMultipleRootElements)('ElementWrapper selectors for %s component', componentName => {
   const { findName, findAllName } = getComponentSelectors(componentName);
-  const renderOnlyOneInstance = () => renderComponents(componentName, [{}]);
 
   describe('dom wrapper', () => {
     test(`${findName} returns the first ${componentName}`, () => {
-      const { container } = renderOnlyOneInstance();
+      const { container } = renderComponents(componentName);
       const wrapper = createWrapperDom(container);
       const element = wrapper[findName]()!.getElement();
 
-      expect(element).toBeTruthy();
+      expect(element.closest('[data-name]')).toHaveAttribute('data-name', 'first item');
     });
 
-    test('it does not have findAll finder', () => {
-      createWrapperDom();
+    test(`${findAllName} returns all of the ${componentName} components`, () => {
+      const { container } = renderComponents(componentName);
+      const wrapper = createWrapperDom(container);
+      const elementNameAttributes = wrapper[findAllName]().map(component =>
+        component!.getElement()!.closest('[data-name]')!.getAttribute('data-name')
+      );
 
-      expect(findAllName).toBeUndefined();
+      expect(elementNameAttributes).toEqual(['first item', 'second item']);
     });
   });
 
   describe('selectors wrapper', () => {
     test(`${findName} returns a selector that matches the ${componentName}`, () => {
-      const { container } = renderOnlyOneInstance();
+      const { container } = renderComponents(componentName);
       const wrapper = createWrapperSelectors();
       const selector = wrapper[findName]().toSelector();
       const element = container.querySelector(selector);
 
-      expect(element).toBeTruthy();
+      expect(element!.closest('[data-name]')).toHaveAttribute('data-name', 'first item');
     });
 
-    test('it does not have findAll finders', () => {
-      createWrapperDom();
+    test(`${findAllName} returns a selector that matches the ${componentName}`, () => {
+      const { container } = renderComponents(componentName);
+      const wrapper = createWrapperSelectors();
+      const selector = wrapper[findAllName]().toSelector();
+      const element = container.querySelector(selector);
 
-      expect(findAllName).toBeUndefined();
+      expect(element!.closest('[data-name]')).toHaveAttribute('data-name', 'first item');
     });
   });
 });

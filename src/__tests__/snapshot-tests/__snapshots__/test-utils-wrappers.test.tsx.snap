@@ -394,6 +394,16 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAppLayout(selector?: string): AppLayoutWrapper | null;
 
        /**
+        * Returns an array of AppLayout wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the AppLayouts inside the current wrapper.
+        * If no matching AppLayout is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<AppLayoutWrapper>}
+        */
+       findAllAppLayouts(selector?: string): Array<AppLayoutWrapper>;
+
+       /**
         * Returns the wrapper of the first AreaChart that matches the specified CSS selector.
         * If no CSS selector is specified, returns the wrapper of the first AreaChart.
         * If no matching AreaChart is found, returns \`null\`.
@@ -1844,6 +1854,16 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findTopNavigation(selector?: string): TopNavigationWrapper | null;
 
        /**
+        * Returns an array of TopNavigation wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the TopNavigations inside the current wrapper.
+        * If no matching TopNavigation is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<TopNavigationWrapper>}
+        */
+       findAllTopNavigations(selector?: string): Array<TopNavigationWrapper>;
+
+       /**
         * Returns the wrapper of the first TutorialPanel that matches the specified CSS selector.
         * If no CSS selector is specified, returns the wrapper of the first TutorialPanel.
         * If no matching TutorialPanel is found, returns \`null\`.
@@ -1885,862 +1905,870 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
       }
   }
 
-       ElementWrapper.prototype.findAlert = function(selector) {
-         const rootSelector = \`.\${AlertWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AlertWrapper);
-       };
+      ElementWrapper.prototype.findAlert = function(selector) {
+        const rootSelector = \`.\${AlertWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AlertWrapper);
+      };
 
       ElementWrapper.prototype.findAllAlerts = function(selector) {
         return this.findAllComponents(AlertWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAnchorNavigation = function(selector) {
-         const rootSelector = \`.\${AnchorNavigationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnchorNavigationWrapper);
-       };
+      ElementWrapper.prototype.findAnchorNavigation = function(selector) {
+        const rootSelector = \`.\${AnchorNavigationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnchorNavigationWrapper);
+      };
 
       ElementWrapper.prototype.findAllAnchorNavigations = function(selector) {
         return this.findAllComponents(AnchorNavigationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAnnotation = function(selector) {
-         const rootSelector = \`.\${AnnotationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnnotationWrapper);
-       };
+      ElementWrapper.prototype.findAnnotation = function(selector) {
+        const rootSelector = \`.\${AnnotationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnnotationWrapper);
+      };
 
       ElementWrapper.prototype.findAllAnnotations = function(selector) {
         return this.findAllComponents(AnnotationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAppLayout = function(selector) {
-         const rootSelector = \`.\${AppLayoutWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AppLayoutWrapper);
-       };
+      ElementWrapper.prototype.findAppLayout = function(selector) {
+        const rootSelector = \`.\${AppLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AppLayoutWrapper);
+      };
 
-       ElementWrapper.prototype.findAreaChart = function(selector) {
-         const rootSelector = \`.\${AreaChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AreaChartWrapper);
-       };
+      ElementWrapper.prototype.findAllAppLayouts = function(selector) {
+        return this.findAllComponents(AppLayoutWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findAreaChart = function(selector) {
+        const rootSelector = \`.\${AreaChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AreaChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllAreaCharts = function(selector) {
         return this.findAllComponents(AreaChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAttributeEditor = function(selector) {
-         const rootSelector = \`.\${AttributeEditorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AttributeEditorWrapper);
-       };
+      ElementWrapper.prototype.findAttributeEditor = function(selector) {
+        const rootSelector = \`.\${AttributeEditorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AttributeEditorWrapper);
+      };
 
       ElementWrapper.prototype.findAllAttributeEditors = function(selector) {
         return this.findAllComponents(AttributeEditorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAutosuggest = function(selector) {
-         const rootSelector = \`.\${AutosuggestWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AutosuggestWrapper);
-       };
+      ElementWrapper.prototype.findAutosuggest = function(selector) {
+        const rootSelector = \`.\${AutosuggestWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AutosuggestWrapper);
+      };
 
       ElementWrapper.prototype.findAllAutosuggests = function(selector) {
         return this.findAllComponents(AutosuggestWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBadge = function(selector) {
-         const rootSelector = \`.\${BadgeWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BadgeWrapper);
-       };
+      ElementWrapper.prototype.findBadge = function(selector) {
+        const rootSelector = \`.\${BadgeWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BadgeWrapper);
+      };
 
       ElementWrapper.prototype.findAllBadges = function(selector) {
         return this.findAllComponents(BadgeWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBarChart = function(selector) {
-         const rootSelector = \`.\${BarChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BarChartWrapper);
-       };
+      ElementWrapper.prototype.findBarChart = function(selector) {
+        const rootSelector = \`.\${BarChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BarChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllBarCharts = function(selector) {
         return this.findAllComponents(BarChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBox = function(selector) {
-         const rootSelector = \`.\${BoxWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BoxWrapper);
-       };
+      ElementWrapper.prototype.findBox = function(selector) {
+        const rootSelector = \`.\${BoxWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BoxWrapper);
+      };
 
       ElementWrapper.prototype.findAllBoxes = function(selector) {
         return this.findAllComponents(BoxWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBreadcrumbGroup = function(selector) {
-         const rootSelector = \`.\${BreadcrumbGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BreadcrumbGroupWrapper);
-       };
+      ElementWrapper.prototype.findBreadcrumbGroup = function(selector) {
+        const rootSelector = \`.\${BreadcrumbGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BreadcrumbGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllBreadcrumbGroups = function(selector) {
         return this.findAllComponents(BreadcrumbGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findButton = function(selector) {
-         const rootSelector = \`.\${ButtonWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonWrapper);
-       };
+      ElementWrapper.prototype.findButton = function(selector) {
+        const rootSelector = \`.\${ButtonWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonWrapper);
+      };
 
       ElementWrapper.prototype.findAllButtons = function(selector) {
         return this.findAllComponents(ButtonWrapper, selector);
       };
 
-       ElementWrapper.prototype.findButtonDropdown = function(selector) {
-         const rootSelector = \`.\${ButtonDropdownWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonDropdownWrapper);
-       };
+      ElementWrapper.prototype.findButtonDropdown = function(selector) {
+        const rootSelector = \`.\${ButtonDropdownWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonDropdownWrapper);
+      };
 
       ElementWrapper.prototype.findAllButtonDropdowns = function(selector) {
         return this.findAllComponents(ButtonDropdownWrapper, selector);
       };
 
-       ElementWrapper.prototype.findButtonGroup = function(selector) {
-         const rootSelector = \`.\${ButtonGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonGroupWrapper);
-       };
+      ElementWrapper.prototype.findButtonGroup = function(selector) {
+        const rootSelector = \`.\${ButtonGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllButtonGroups = function(selector) {
         return this.findAllComponents(ButtonGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCalendar = function(selector) {
-         const rootSelector = \`.\${CalendarWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CalendarWrapper);
-       };
+      ElementWrapper.prototype.findCalendar = function(selector) {
+        const rootSelector = \`.\${CalendarWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CalendarWrapper);
+      };
 
       ElementWrapper.prototype.findAllCalendars = function(selector) {
         return this.findAllComponents(CalendarWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCards = function(selector) {
-         const rootSelector = \`.\${CardsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CardsWrapper);
-       };
+      ElementWrapper.prototype.findCards = function(selector) {
+        const rootSelector = \`.\${CardsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CardsWrapper);
+      };
 
       ElementWrapper.prototype.findAllCards = function(selector) {
         return this.findAllComponents(CardsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCheckbox = function(selector) {
-         const rootSelector = \`.\${CheckboxWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CheckboxWrapper);
-       };
+      ElementWrapper.prototype.findCheckbox = function(selector) {
+        const rootSelector = \`.\${CheckboxWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CheckboxWrapper);
+      };
 
       ElementWrapper.prototype.findAllCheckboxes = function(selector) {
         return this.findAllComponents(CheckboxWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCodeEditor = function(selector) {
-         const rootSelector = \`.\${CodeEditorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CodeEditorWrapper);
-       };
+      ElementWrapper.prototype.findCodeEditor = function(selector) {
+        const rootSelector = \`.\${CodeEditorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CodeEditorWrapper);
+      };
 
       ElementWrapper.prototype.findAllCodeEditors = function(selector) {
         return this.findAllComponents(CodeEditorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCollectionPreferences = function(selector) {
-         const rootSelector = \`.\${CollectionPreferencesWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CollectionPreferencesWrapper);
-       };
+      ElementWrapper.prototype.findCollectionPreferences = function(selector) {
+        const rootSelector = \`.\${CollectionPreferencesWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CollectionPreferencesWrapper);
+      };
 
       ElementWrapper.prototype.findAllCollectionPreferences = function(selector) {
         return this.findAllComponents(CollectionPreferencesWrapper, selector);
       };
 
-       ElementWrapper.prototype.findColumnLayout = function(selector) {
-         const rootSelector = \`.\${ColumnLayoutWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ColumnLayoutWrapper);
-       };
+      ElementWrapper.prototype.findColumnLayout = function(selector) {
+        const rootSelector = \`.\${ColumnLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ColumnLayoutWrapper);
+      };
 
       ElementWrapper.prototype.findAllColumnLayouts = function(selector) {
         return this.findAllComponents(ColumnLayoutWrapper, selector);
       };
 
-       ElementWrapper.prototype.findContainer = function(selector) {
-         const rootSelector = \`.\${ContainerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContainerWrapper);
-       };
+      ElementWrapper.prototype.findContainer = function(selector) {
+        const rootSelector = \`.\${ContainerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContainerWrapper);
+      };
 
       ElementWrapper.prototype.findAllContainers = function(selector) {
         return this.findAllComponents(ContainerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findContentLayout = function(selector) {
-         const rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentLayoutWrapper);
-       };
+      ElementWrapper.prototype.findContentLayout = function(selector) {
+        const rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentLayoutWrapper);
+      };
 
       ElementWrapper.prototype.findAllContentLayouts = function(selector) {
         return this.findAllComponents(ContentLayoutWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCopyToClipboard = function(selector) {
-         const rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CopyToClipboardWrapper);
-       };
+      ElementWrapper.prototype.findCopyToClipboard = function(selector) {
+        const rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CopyToClipboardWrapper);
+      };
 
       ElementWrapper.prototype.findAllCopyToClipboards = function(selector) {
         return this.findAllComponents(CopyToClipboardWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDateInput = function(selector) {
-         const rootSelector = \`.\${DateInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateInputWrapper);
-       };
+      ElementWrapper.prototype.findDateInput = function(selector) {
+        const rootSelector = \`.\${DateInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllDateInputs = function(selector) {
         return this.findAllComponents(DateInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDatePicker = function(selector) {
-         const rootSelector = \`.\${DatePickerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DatePickerWrapper);
-       };
+      ElementWrapper.prototype.findDatePicker = function(selector) {
+        const rootSelector = \`.\${DatePickerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DatePickerWrapper);
+      };
 
       ElementWrapper.prototype.findAllDatePickers = function(selector) {
         return this.findAllComponents(DatePickerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDateRangePicker = function(selector) {
-         const rootSelector = \`.\${DateRangePickerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerWrapper);
-       };
+      ElementWrapper.prototype.findDateRangePicker = function(selector) {
+        const rootSelector = \`.\${DateRangePickerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerWrapper);
+      };
 
       ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
         return this.findAllComponents(DateRangePickerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDrawer = function(selector) {
-         const rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DrawerWrapper);
-       };
+      ElementWrapper.prototype.findDrawer = function(selector) {
+        const rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DrawerWrapper);
+      };
 
       ElementWrapper.prototype.findAllDrawers = function(selector) {
         return this.findAllComponents(DrawerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findExpandableSection = function(selector) {
-         const rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
-       };
+      ElementWrapper.prototype.findExpandableSection = function(selector) {
+        const rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
+      };
 
       ElementWrapper.prototype.findAllExpandableSections = function(selector) {
         return this.findAllComponents(ExpandableSectionWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileDropzone = function(selector) {
-         const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
-       };
+      ElementWrapper.prototype.findFileDropzone = function(selector) {
+        const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileDropzones = function(selector) {
         return this.findAllComponents(FileDropzoneWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileInput = function(selector) {
-         const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
-       };
+      ElementWrapper.prototype.findFileInput = function(selector) {
+        const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileInputs = function(selector) {
         return this.findAllComponents(FileInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileTokenGroup = function(selector) {
-         const rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
-       };
+      ElementWrapper.prototype.findFileTokenGroup = function(selector) {
+        const rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileTokenGroups = function(selector) {
         return this.findAllComponents(FileTokenGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileUpload = function(selector) {
-         const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileUploadWrapper);
-       };
+      ElementWrapper.prototype.findFileUpload = function(selector) {
+        const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileUploadWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileUploads = function(selector) {
         return this.findAllComponents(FileUploadWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFlashbar = function(selector) {
-         const rootSelector = \`.\${FlashbarWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FlashbarWrapper);
-       };
+      ElementWrapper.prototype.findFlashbar = function(selector) {
+        const rootSelector = \`.\${FlashbarWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FlashbarWrapper);
+      };
 
       ElementWrapper.prototype.findAllFlashbars = function(selector) {
         return this.findAllComponents(FlashbarWrapper, selector);
       };
 
-       ElementWrapper.prototype.findForm = function(selector) {
-         const rootSelector = \`.\${FormWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormWrapper);
-       };
+      ElementWrapper.prototype.findForm = function(selector) {
+        const rootSelector = \`.\${FormWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormWrapper);
+      };
 
       ElementWrapper.prototype.findAllForms = function(selector) {
         return this.findAllComponents(FormWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFormField = function(selector) {
-         const rootSelector = \`.\${FormFieldWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormFieldWrapper);
-       };
+      ElementWrapper.prototype.findFormField = function(selector) {
+        const rootSelector = \`.\${FormFieldWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormFieldWrapper);
+      };
 
       ElementWrapper.prototype.findAllFormFields = function(selector) {
         return this.findAllComponents(FormFieldWrapper, selector);
       };
 
-       ElementWrapper.prototype.findGrid = function(selector) {
-         const rootSelector = \`.\${GridWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, GridWrapper);
-       };
+      ElementWrapper.prototype.findGrid = function(selector) {
+        const rootSelector = \`.\${GridWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, GridWrapper);
+      };
 
       ElementWrapper.prototype.findAllGrids = function(selector) {
         return this.findAllComponents(GridWrapper, selector);
       };
 
-       ElementWrapper.prototype.findHeader = function(selector) {
-         const rootSelector = \`.\${HeaderWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HeaderWrapper);
-       };
+      ElementWrapper.prototype.findHeader = function(selector) {
+        const rootSelector = \`.\${HeaderWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HeaderWrapper);
+      };
 
       ElementWrapper.prototype.findAllHeaders = function(selector) {
         return this.findAllComponents(HeaderWrapper, selector);
       };
 
-       ElementWrapper.prototype.findHelpPanel = function(selector) {
-         const rootSelector = \`.\${HelpPanelWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HelpPanelWrapper);
-       };
+      ElementWrapper.prototype.findHelpPanel = function(selector) {
+        const rootSelector = \`.\${HelpPanelWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HelpPanelWrapper);
+      };
 
       ElementWrapper.prototype.findAllHelpPanels = function(selector) {
         return this.findAllComponents(HelpPanelWrapper, selector);
       };
 
-       ElementWrapper.prototype.findHotspot = function(selector) {
-         const rootSelector = \`.\${HotspotWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HotspotWrapper);
-       };
+      ElementWrapper.prototype.findHotspot = function(selector) {
+        const rootSelector = \`.\${HotspotWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HotspotWrapper);
+      };
 
       ElementWrapper.prototype.findAllHotspots = function(selector) {
         return this.findAllComponents(HotspotWrapper, selector);
       };
 
-       ElementWrapper.prototype.findIcon = function(selector) {
-         const rootSelector = \`.\${IconWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, IconWrapper);
-       };
+      ElementWrapper.prototype.findIcon = function(selector) {
+        const rootSelector = \`.\${IconWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, IconWrapper);
+      };
 
       ElementWrapper.prototype.findAllIcons = function(selector) {
         return this.findAllComponents(IconWrapper, selector);
       };
 
-       ElementWrapper.prototype.findInput = function(selector) {
-         const rootSelector = \`.\${InputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, InputWrapper);
-       };
+      ElementWrapper.prototype.findInput = function(selector) {
+        const rootSelector = \`.\${InputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, InputWrapper);
+      };
 
       ElementWrapper.prototype.findAllInputs = function(selector) {
         return this.findAllComponents(InputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findKeyValuePairs = function(selector) {
-         const rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, KeyValuePairsWrapper);
-       };
+      ElementWrapper.prototype.findKeyValuePairs = function(selector) {
+        const rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, KeyValuePairsWrapper);
+      };
 
       ElementWrapper.prototype.findAllKeyValuePairs = function(selector) {
         return this.findAllComponents(KeyValuePairsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findLineChart = function(selector) {
-         const rootSelector = \`.\${LineChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LineChartWrapper);
-       };
+      ElementWrapper.prototype.findLineChart = function(selector) {
+        const rootSelector = \`.\${LineChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LineChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllLineCharts = function(selector) {
         return this.findAllComponents(LineChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findLink = function(selector) {
-         const rootSelector = \`.\${LinkWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LinkWrapper);
-       };
+      ElementWrapper.prototype.findLink = function(selector) {
+        const rootSelector = \`.\${LinkWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LinkWrapper);
+      };
 
       ElementWrapper.prototype.findAllLinks = function(selector) {
         return this.findAllComponents(LinkWrapper, selector);
       };
 
-       ElementWrapper.prototype.findLiveRegion = function(selector) {
-         const rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LiveRegionWrapper);
-       };
+      ElementWrapper.prototype.findLiveRegion = function(selector) {
+        const rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LiveRegionWrapper);
+      };
 
       ElementWrapper.prototype.findAllLiveRegions = function(selector) {
         return this.findAllComponents(LiveRegionWrapper, selector);
       };
 
-       ElementWrapper.prototype.findMixedLineBarChart = function(selector) {
-         const rootSelector = \`.\${MixedLineBarChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MixedLineBarChartWrapper);
-       };
+      ElementWrapper.prototype.findMixedLineBarChart = function(selector) {
+        const rootSelector = \`.\${MixedLineBarChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MixedLineBarChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllMixedLineBarCharts = function(selector) {
         return this.findAllComponents(MixedLineBarChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findModal = function(selector) {
-         const rootSelector = \`.\${ModalWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ModalWrapper);
-       };
+      ElementWrapper.prototype.findModal = function(selector) {
+        const rootSelector = \`.\${ModalWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ModalWrapper);
+      };
 
       ElementWrapper.prototype.findAllModals = function(selector) {
         return this.findAllComponents(ModalWrapper, selector);
       };
 
-       ElementWrapper.prototype.findMultiselect = function(selector) {
-         const rootSelector = \`.\${MultiselectWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MultiselectWrapper);
-       };
+      ElementWrapper.prototype.findMultiselect = function(selector) {
+        const rootSelector = \`.\${MultiselectWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MultiselectWrapper);
+      };
 
       ElementWrapper.prototype.findAllMultiselects = function(selector) {
         return this.findAllComponents(MultiselectWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPagination = function(selector) {
-         const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PaginationWrapper);
-       };
+      ElementWrapper.prototype.findPagination = function(selector) {
+        const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PaginationWrapper);
+      };
 
       ElementWrapper.prototype.findAllPaginations = function(selector) {
         return this.findAllComponents(PaginationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPieChart = function(selector) {
-         const rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PieChartWrapper);
-       };
+      ElementWrapper.prototype.findPieChart = function(selector) {
+        const rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PieChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllPieCharts = function(selector) {
         return this.findAllComponents(PieChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPopover = function(selector) {
-         const rootSelector = \`.\${PopoverWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PopoverWrapper);
-       };
+      ElementWrapper.prototype.findPopover = function(selector) {
+        const rootSelector = \`.\${PopoverWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PopoverWrapper);
+      };
 
       ElementWrapper.prototype.findAllPopovers = function(selector) {
         return this.findAllComponents(PopoverWrapper, selector);
       };
 
-       ElementWrapper.prototype.findProgressBar = function(selector) {
-         const rootSelector = \`.\${ProgressBarWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ProgressBarWrapper);
-       };
+      ElementWrapper.prototype.findProgressBar = function(selector) {
+        const rootSelector = \`.\${ProgressBarWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ProgressBarWrapper);
+      };
 
       ElementWrapper.prototype.findAllProgressBars = function(selector) {
         return this.findAllComponents(ProgressBarWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPromptInput = function(selector) {
-         const rootSelector = \`.\${PromptInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PromptInputWrapper);
-       };
+      ElementWrapper.prototype.findPromptInput = function(selector) {
+        const rootSelector = \`.\${PromptInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PromptInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllPromptInputs = function(selector) {
         return this.findAllComponents(PromptInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPropertyFilter = function(selector) {
-         const rootSelector = \`.\${PropertyFilterWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PropertyFilterWrapper);
-       };
+      ElementWrapper.prototype.findPropertyFilter = function(selector) {
+        const rootSelector = \`.\${PropertyFilterWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PropertyFilterWrapper);
+      };
 
       ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
         return this.findAllComponents(PropertyFilterWrapper, selector);
       };
 
-       ElementWrapper.prototype.findRadioGroup = function(selector) {
-         const rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioGroupWrapper);
-       };
+      ElementWrapper.prototype.findRadioGroup = function(selector) {
+        const rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllRadioGroups = function(selector) {
         return this.findAllComponents(RadioGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
-         const rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, S3ResourceSelectorWrapper);
-       };
+      ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
+        const rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, S3ResourceSelectorWrapper);
+      };
 
       ElementWrapper.prototype.findAllS3ResourceSelectors = function(selector) {
         return this.findAllComponents(S3ResourceSelectorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSegmentedControl = function(selector) {
-         const rootSelector = \`.\${SegmentedControlWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SegmentedControlWrapper);
-       };
+      ElementWrapper.prototype.findSegmentedControl = function(selector) {
+        const rootSelector = \`.\${SegmentedControlWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SegmentedControlWrapper);
+      };
 
       ElementWrapper.prototype.findAllSegmentedControls = function(selector) {
         return this.findAllComponents(SegmentedControlWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSelect = function(selector) {
-         const rootSelector = \`.\${SelectWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SelectWrapper);
-       };
+      ElementWrapper.prototype.findSelect = function(selector) {
+        const rootSelector = \`.\${SelectWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SelectWrapper);
+      };
 
       ElementWrapper.prototype.findAllSelects = function(selector) {
         return this.findAllComponents(SelectWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSideNavigation = function(selector) {
-         const rootSelector = \`.\${SideNavigationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SideNavigationWrapper);
-       };
+      ElementWrapper.prototype.findSideNavigation = function(selector) {
+        const rootSelector = \`.\${SideNavigationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SideNavigationWrapper);
+      };
 
       ElementWrapper.prototype.findAllSideNavigations = function(selector) {
         return this.findAllComponents(SideNavigationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSlider = function(selector) {
-         const rootSelector = \`.\${SliderWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SliderWrapper);
-       };
+      ElementWrapper.prototype.findSlider = function(selector) {
+        const rootSelector = \`.\${SliderWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SliderWrapper);
+      };
 
       ElementWrapper.prototype.findAllSliders = function(selector) {
         return this.findAllComponents(SliderWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSpaceBetween = function(selector) {
-         const rootSelector = \`.\${SpaceBetweenWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpaceBetweenWrapper);
-       };
+      ElementWrapper.prototype.findSpaceBetween = function(selector) {
+        const rootSelector = \`.\${SpaceBetweenWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpaceBetweenWrapper);
+      };
 
       ElementWrapper.prototype.findAllSpaceBetweens = function(selector) {
         return this.findAllComponents(SpaceBetweenWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSpinner = function(selector) {
-         const rootSelector = \`.\${SpinnerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpinnerWrapper);
-       };
+      ElementWrapper.prototype.findSpinner = function(selector) {
+        const rootSelector = \`.\${SpinnerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpinnerWrapper);
+      };
 
       ElementWrapper.prototype.findAllSpinners = function(selector) {
         return this.findAllComponents(SpinnerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSplitPanel = function(selector) {
-         const rootSelector = \`.\${SplitPanelWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitPanelWrapper);
-       };
+      ElementWrapper.prototype.findSplitPanel = function(selector) {
+        const rootSelector = \`.\${SplitPanelWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitPanelWrapper);
+      };
 
       ElementWrapper.prototype.findAllSplitPanels = function(selector) {
         return this.findAllComponents(SplitPanelWrapper, selector);
       };
 
-       ElementWrapper.prototype.findStatusIndicator = function(selector) {
-         const rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StatusIndicatorWrapper);
-       };
+      ElementWrapper.prototype.findStatusIndicator = function(selector) {
+        const rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StatusIndicatorWrapper);
+      };
 
       ElementWrapper.prototype.findAllStatusIndicators = function(selector) {
         return this.findAllComponents(StatusIndicatorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSteps = function(selector) {
-         const rootSelector = \`.\${StepsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StepsWrapper);
-       };
+      ElementWrapper.prototype.findSteps = function(selector) {
+        const rootSelector = \`.\${StepsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StepsWrapper);
+      };
 
       ElementWrapper.prototype.findAllSteps = function(selector) {
         return this.findAllComponents(StepsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTable = function(selector) {
-         const rootSelector = \`.\${TableWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableWrapper);
-       };
+      ElementWrapper.prototype.findTable = function(selector) {
+        const rootSelector = \`.\${TableWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableWrapper);
+      };
 
       ElementWrapper.prototype.findAllTables = function(selector) {
         return this.findAllComponents(TableWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTabs = function(selector) {
-         const rootSelector = \`.\${TabsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TabsWrapper);
-       };
+      ElementWrapper.prototype.findTabs = function(selector) {
+        const rootSelector = \`.\${TabsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TabsWrapper);
+      };
 
       ElementWrapper.prototype.findAllTabs = function(selector) {
         return this.findAllComponents(TabsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTagEditor = function(selector) {
-         const rootSelector = \`.\${TagEditorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TagEditorWrapper);
-       };
+      ElementWrapper.prototype.findTagEditor = function(selector) {
+        const rootSelector = \`.\${TagEditorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TagEditorWrapper);
+      };
 
       ElementWrapper.prototype.findAllTagEditors = function(selector) {
         return this.findAllComponents(TagEditorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTextContent = function(selector) {
-         const rootSelector = \`.\${TextContentWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextContentWrapper);
-       };
+      ElementWrapper.prototype.findTextContent = function(selector) {
+        const rootSelector = \`.\${TextContentWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextContentWrapper);
+      };
 
       ElementWrapper.prototype.findAllTextContents = function(selector) {
         return this.findAllComponents(TextContentWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTextFilter = function(selector) {
-         const rootSelector = \`.\${TextFilterWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextFilterWrapper);
-       };
+      ElementWrapper.prototype.findTextFilter = function(selector) {
+        const rootSelector = \`.\${TextFilterWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextFilterWrapper);
+      };
 
       ElementWrapper.prototype.findAllTextFilters = function(selector) {
         return this.findAllComponents(TextFilterWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTextarea = function(selector) {
-         const rootSelector = \`.\${TextareaWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextareaWrapper);
-       };
+      ElementWrapper.prototype.findTextarea = function(selector) {
+        const rootSelector = \`.\${TextareaWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextareaWrapper);
+      };
 
       ElementWrapper.prototype.findAllTextareas = function(selector) {
         return this.findAllComponents(TextareaWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTiles = function(selector) {
-         const rootSelector = \`.\${TilesWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TilesWrapper);
-       };
+      ElementWrapper.prototype.findTiles = function(selector) {
+        const rootSelector = \`.\${TilesWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TilesWrapper);
+      };
 
       ElementWrapper.prototype.findAllTiles = function(selector) {
         return this.findAllComponents(TilesWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTimeInput = function(selector) {
-         const rootSelector = \`.\${TimeInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TimeInputWrapper);
-       };
+      ElementWrapper.prototype.findTimeInput = function(selector) {
+        const rootSelector = \`.\${TimeInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TimeInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllTimeInputs = function(selector) {
         return this.findAllComponents(TimeInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findToggle = function(selector) {
-         const rootSelector = \`.\${ToggleWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleWrapper);
-       };
+      ElementWrapper.prototype.findToggle = function(selector) {
+        const rootSelector = \`.\${ToggleWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleWrapper);
+      };
 
       ElementWrapper.prototype.findAllToggles = function(selector) {
         return this.findAllComponents(ToggleWrapper, selector);
       };
 
-       ElementWrapper.prototype.findToggleButton = function(selector) {
-         const rootSelector = \`.\${ToggleButtonWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleButtonWrapper);
-       };
+      ElementWrapper.prototype.findToggleButton = function(selector) {
+        const rootSelector = \`.\${ToggleButtonWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleButtonWrapper);
+      };
 
       ElementWrapper.prototype.findAllToggleButtons = function(selector) {
         return this.findAllComponents(ToggleButtonWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTokenGroup = function(selector) {
-         const rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenGroupWrapper);
-       };
+      ElementWrapper.prototype.findTokenGroup = function(selector) {
+        const rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllTokenGroups = function(selector) {
         return this.findAllComponents(TokenGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTopNavigation = function(selector) {
-         const rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TopNavigationWrapper);
-       };
+      ElementWrapper.prototype.findTopNavigation = function(selector) {
+        const rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TopNavigationWrapper);
+      };
 
-       ElementWrapper.prototype.findTutorialPanel = function(selector) {
-         const rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TutorialPanelWrapper);
-       };
+      ElementWrapper.prototype.findAllTopNavigations = function(selector) {
+        return this.findAllComponents(TopNavigationWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findTutorialPanel = function(selector) {
+        const rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TutorialPanelWrapper);
+      };
 
       ElementWrapper.prototype.findAllTutorialPanels = function(selector) {
         return this.findAllComponents(TutorialPanelWrapper, selector);
       };
 
-       ElementWrapper.prototype.findWizard = function(selector) {
-         const rootSelector = \`.\${WizardWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, WizardWrapper);
-       };
+      ElementWrapper.prototype.findWizard = function(selector) {
+        const rootSelector = \`.\${WizardWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, WizardWrapper);
+      };
 
       ElementWrapper.prototype.findAllWizards = function(selector) {
         return this.findAllComponents(WizardWrapper, selector);
@@ -3133,6 +3161,15 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
         * @returns {AppLayoutWrapper}
         */
        findAppLayout(selector?: string): AppLayoutWrapper;
+
+       /**
+        * Returns a multi-element wrapper that matches AppLayouts with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches AppLayouts.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<AppLayoutWrapper>}
+        */
+       findAllAppLayouts(selector?: string): MultiElementWrapper<AppLayoutWrapper>;
 
        /**
         * Returns a wrapper that matches the AreaCharts with the specified CSS selector.
@@ -4440,6 +4477,15 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
        findTopNavigation(selector?: string): TopNavigationWrapper;
 
        /**
+        * Returns a multi-element wrapper that matches TopNavigations with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches TopNavigations.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<TopNavigationWrapper>}
+        */
+       findAllTopNavigations(selector?: string): MultiElementWrapper<TopNavigationWrapper>;
+
+       /**
         * Returns a wrapper that matches the TutorialPanels with the specified CSS selector.
         * If no CSS selector is specified, returns a wrapper that matches TutorialPanels.
         *
@@ -4477,862 +4523,870 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
       }
   }
 
-       ElementWrapper.prototype.findAlert = function(selector) {
-         const rootSelector = \`.\${AlertWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AlertWrapper);
-       };
+      ElementWrapper.prototype.findAlert = function(selector) {
+        const rootSelector = \`.\${AlertWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AlertWrapper);
+      };
 
       ElementWrapper.prototype.findAllAlerts = function(selector) {
         return this.findAllComponents(AlertWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAnchorNavigation = function(selector) {
-         const rootSelector = \`.\${AnchorNavigationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnchorNavigationWrapper);
-       };
+      ElementWrapper.prototype.findAnchorNavigation = function(selector) {
+        const rootSelector = \`.\${AnchorNavigationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnchorNavigationWrapper);
+      };
 
       ElementWrapper.prototype.findAllAnchorNavigations = function(selector) {
         return this.findAllComponents(AnchorNavigationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAnnotation = function(selector) {
-         const rootSelector = \`.\${AnnotationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnnotationWrapper);
-       };
+      ElementWrapper.prototype.findAnnotation = function(selector) {
+        const rootSelector = \`.\${AnnotationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AnnotationWrapper);
+      };
 
       ElementWrapper.prototype.findAllAnnotations = function(selector) {
         return this.findAllComponents(AnnotationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAppLayout = function(selector) {
-         const rootSelector = \`.\${AppLayoutWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AppLayoutWrapper);
-       };
+      ElementWrapper.prototype.findAppLayout = function(selector) {
+        const rootSelector = \`.\${AppLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AppLayoutWrapper);
+      };
 
-       ElementWrapper.prototype.findAreaChart = function(selector) {
-         const rootSelector = \`.\${AreaChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AreaChartWrapper);
-       };
+      ElementWrapper.prototype.findAllAppLayouts = function(selector) {
+        return this.findAllComponents(AppLayoutWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findAreaChart = function(selector) {
+        const rootSelector = \`.\${AreaChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AreaChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllAreaCharts = function(selector) {
         return this.findAllComponents(AreaChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAttributeEditor = function(selector) {
-         const rootSelector = \`.\${AttributeEditorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AttributeEditorWrapper);
-       };
+      ElementWrapper.prototype.findAttributeEditor = function(selector) {
+        const rootSelector = \`.\${AttributeEditorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AttributeEditorWrapper);
+      };
 
       ElementWrapper.prototype.findAllAttributeEditors = function(selector) {
         return this.findAllComponents(AttributeEditorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findAutosuggest = function(selector) {
-         const rootSelector = \`.\${AutosuggestWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AutosuggestWrapper);
-       };
+      ElementWrapper.prototype.findAutosuggest = function(selector) {
+        const rootSelector = \`.\${AutosuggestWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, AutosuggestWrapper);
+      };
 
       ElementWrapper.prototype.findAllAutosuggests = function(selector) {
         return this.findAllComponents(AutosuggestWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBadge = function(selector) {
-         const rootSelector = \`.\${BadgeWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BadgeWrapper);
-       };
+      ElementWrapper.prototype.findBadge = function(selector) {
+        const rootSelector = \`.\${BadgeWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BadgeWrapper);
+      };
 
       ElementWrapper.prototype.findAllBadges = function(selector) {
         return this.findAllComponents(BadgeWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBarChart = function(selector) {
-         const rootSelector = \`.\${BarChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BarChartWrapper);
-       };
+      ElementWrapper.prototype.findBarChart = function(selector) {
+        const rootSelector = \`.\${BarChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BarChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllBarCharts = function(selector) {
         return this.findAllComponents(BarChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBox = function(selector) {
-         const rootSelector = \`.\${BoxWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BoxWrapper);
-       };
+      ElementWrapper.prototype.findBox = function(selector) {
+        const rootSelector = \`.\${BoxWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BoxWrapper);
+      };
 
       ElementWrapper.prototype.findAllBoxes = function(selector) {
         return this.findAllComponents(BoxWrapper, selector);
       };
 
-       ElementWrapper.prototype.findBreadcrumbGroup = function(selector) {
-         const rootSelector = \`.\${BreadcrumbGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BreadcrumbGroupWrapper);
-       };
+      ElementWrapper.prototype.findBreadcrumbGroup = function(selector) {
+        const rootSelector = \`.\${BreadcrumbGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, BreadcrumbGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllBreadcrumbGroups = function(selector) {
         return this.findAllComponents(BreadcrumbGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findButton = function(selector) {
-         const rootSelector = \`.\${ButtonWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonWrapper);
-       };
+      ElementWrapper.prototype.findButton = function(selector) {
+        const rootSelector = \`.\${ButtonWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonWrapper);
+      };
 
       ElementWrapper.prototype.findAllButtons = function(selector) {
         return this.findAllComponents(ButtonWrapper, selector);
       };
 
-       ElementWrapper.prototype.findButtonDropdown = function(selector) {
-         const rootSelector = \`.\${ButtonDropdownWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonDropdownWrapper);
-       };
+      ElementWrapper.prototype.findButtonDropdown = function(selector) {
+        const rootSelector = \`.\${ButtonDropdownWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonDropdownWrapper);
+      };
 
       ElementWrapper.prototype.findAllButtonDropdowns = function(selector) {
         return this.findAllComponents(ButtonDropdownWrapper, selector);
       };
 
-       ElementWrapper.prototype.findButtonGroup = function(selector) {
-         const rootSelector = \`.\${ButtonGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonGroupWrapper);
-       };
+      ElementWrapper.prototype.findButtonGroup = function(selector) {
+        const rootSelector = \`.\${ButtonGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ButtonGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllButtonGroups = function(selector) {
         return this.findAllComponents(ButtonGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCalendar = function(selector) {
-         const rootSelector = \`.\${CalendarWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CalendarWrapper);
-       };
+      ElementWrapper.prototype.findCalendar = function(selector) {
+        const rootSelector = \`.\${CalendarWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CalendarWrapper);
+      };
 
       ElementWrapper.prototype.findAllCalendars = function(selector) {
         return this.findAllComponents(CalendarWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCards = function(selector) {
-         const rootSelector = \`.\${CardsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CardsWrapper);
-       };
+      ElementWrapper.prototype.findCards = function(selector) {
+        const rootSelector = \`.\${CardsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CardsWrapper);
+      };
 
       ElementWrapper.prototype.findAllCards = function(selector) {
         return this.findAllComponents(CardsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCheckbox = function(selector) {
-         const rootSelector = \`.\${CheckboxWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CheckboxWrapper);
-       };
+      ElementWrapper.prototype.findCheckbox = function(selector) {
+        const rootSelector = \`.\${CheckboxWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CheckboxWrapper);
+      };
 
       ElementWrapper.prototype.findAllCheckboxes = function(selector) {
         return this.findAllComponents(CheckboxWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCodeEditor = function(selector) {
-         const rootSelector = \`.\${CodeEditorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CodeEditorWrapper);
-       };
+      ElementWrapper.prototype.findCodeEditor = function(selector) {
+        const rootSelector = \`.\${CodeEditorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CodeEditorWrapper);
+      };
 
       ElementWrapper.prototype.findAllCodeEditors = function(selector) {
         return this.findAllComponents(CodeEditorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCollectionPreferences = function(selector) {
-         const rootSelector = \`.\${CollectionPreferencesWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CollectionPreferencesWrapper);
-       };
+      ElementWrapper.prototype.findCollectionPreferences = function(selector) {
+        const rootSelector = \`.\${CollectionPreferencesWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CollectionPreferencesWrapper);
+      };
 
       ElementWrapper.prototype.findAllCollectionPreferences = function(selector) {
         return this.findAllComponents(CollectionPreferencesWrapper, selector);
       };
 
-       ElementWrapper.prototype.findColumnLayout = function(selector) {
-         const rootSelector = \`.\${ColumnLayoutWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ColumnLayoutWrapper);
-       };
+      ElementWrapper.prototype.findColumnLayout = function(selector) {
+        const rootSelector = \`.\${ColumnLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ColumnLayoutWrapper);
+      };
 
       ElementWrapper.prototype.findAllColumnLayouts = function(selector) {
         return this.findAllComponents(ColumnLayoutWrapper, selector);
       };
 
-       ElementWrapper.prototype.findContainer = function(selector) {
-         const rootSelector = \`.\${ContainerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContainerWrapper);
-       };
+      ElementWrapper.prototype.findContainer = function(selector) {
+        const rootSelector = \`.\${ContainerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContainerWrapper);
+      };
 
       ElementWrapper.prototype.findAllContainers = function(selector) {
         return this.findAllComponents(ContainerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findContentLayout = function(selector) {
-         const rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentLayoutWrapper);
-       };
+      ElementWrapper.prototype.findContentLayout = function(selector) {
+        const rootSelector = \`.\${ContentLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ContentLayoutWrapper);
+      };
 
       ElementWrapper.prototype.findAllContentLayouts = function(selector) {
         return this.findAllComponents(ContentLayoutWrapper, selector);
       };
 
-       ElementWrapper.prototype.findCopyToClipboard = function(selector) {
-         const rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CopyToClipboardWrapper);
-       };
+      ElementWrapper.prototype.findCopyToClipboard = function(selector) {
+        const rootSelector = \`.\${CopyToClipboardWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CopyToClipboardWrapper);
+      };
 
       ElementWrapper.prototype.findAllCopyToClipboards = function(selector) {
         return this.findAllComponents(CopyToClipboardWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDateInput = function(selector) {
-         const rootSelector = \`.\${DateInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateInputWrapper);
-       };
+      ElementWrapper.prototype.findDateInput = function(selector) {
+        const rootSelector = \`.\${DateInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllDateInputs = function(selector) {
         return this.findAllComponents(DateInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDatePicker = function(selector) {
-         const rootSelector = \`.\${DatePickerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DatePickerWrapper);
-       };
+      ElementWrapper.prototype.findDatePicker = function(selector) {
+        const rootSelector = \`.\${DatePickerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DatePickerWrapper);
+      };
 
       ElementWrapper.prototype.findAllDatePickers = function(selector) {
         return this.findAllComponents(DatePickerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDateRangePicker = function(selector) {
-         const rootSelector = \`.\${DateRangePickerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerWrapper);
-       };
+      ElementWrapper.prototype.findDateRangePicker = function(selector) {
+        const rootSelector = \`.\${DateRangePickerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DateRangePickerWrapper);
+      };
 
       ElementWrapper.prototype.findAllDateRangePickers = function(selector) {
         return this.findAllComponents(DateRangePickerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findDrawer = function(selector) {
-         const rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DrawerWrapper);
-       };
+      ElementWrapper.prototype.findDrawer = function(selector) {
+        const rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DrawerWrapper);
+      };
 
       ElementWrapper.prototype.findAllDrawers = function(selector) {
         return this.findAllComponents(DrawerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findExpandableSection = function(selector) {
-         const rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
-       };
+      ElementWrapper.prototype.findExpandableSection = function(selector) {
+        const rootSelector = \`.\${ExpandableSectionWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ExpandableSectionWrapper);
+      };
 
       ElementWrapper.prototype.findAllExpandableSections = function(selector) {
         return this.findAllComponents(ExpandableSectionWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileDropzone = function(selector) {
-         const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
-       };
+      ElementWrapper.prototype.findFileDropzone = function(selector) {
+        const rootSelector = \`.\${FileDropzoneWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileDropzoneWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileDropzones = function(selector) {
         return this.findAllComponents(FileDropzoneWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileInput = function(selector) {
-         const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
-       };
+      ElementWrapper.prototype.findFileInput = function(selector) {
+        const rootSelector = \`.\${FileInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileInputs = function(selector) {
         return this.findAllComponents(FileInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileTokenGroup = function(selector) {
-         const rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
-       };
+      ElementWrapper.prototype.findFileTokenGroup = function(selector) {
+        const rootSelector = \`.\${FileTokenGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileTokenGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileTokenGroups = function(selector) {
         return this.findAllComponents(FileTokenGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFileUpload = function(selector) {
-         const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileUploadWrapper);
-       };
+      ElementWrapper.prototype.findFileUpload = function(selector) {
+        const rootSelector = \`.\${FileUploadWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FileUploadWrapper);
+      };
 
       ElementWrapper.prototype.findAllFileUploads = function(selector) {
         return this.findAllComponents(FileUploadWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFlashbar = function(selector) {
-         const rootSelector = \`.\${FlashbarWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FlashbarWrapper);
-       };
+      ElementWrapper.prototype.findFlashbar = function(selector) {
+        const rootSelector = \`.\${FlashbarWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FlashbarWrapper);
+      };
 
       ElementWrapper.prototype.findAllFlashbars = function(selector) {
         return this.findAllComponents(FlashbarWrapper, selector);
       };
 
-       ElementWrapper.prototype.findForm = function(selector) {
-         const rootSelector = \`.\${FormWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormWrapper);
-       };
+      ElementWrapper.prototype.findForm = function(selector) {
+        const rootSelector = \`.\${FormWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormWrapper);
+      };
 
       ElementWrapper.prototype.findAllForms = function(selector) {
         return this.findAllComponents(FormWrapper, selector);
       };
 
-       ElementWrapper.prototype.findFormField = function(selector) {
-         const rootSelector = \`.\${FormFieldWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormFieldWrapper);
-       };
+      ElementWrapper.prototype.findFormField = function(selector) {
+        const rootSelector = \`.\${FormFieldWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, FormFieldWrapper);
+      };
 
       ElementWrapper.prototype.findAllFormFields = function(selector) {
         return this.findAllComponents(FormFieldWrapper, selector);
       };
 
-       ElementWrapper.prototype.findGrid = function(selector) {
-         const rootSelector = \`.\${GridWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, GridWrapper);
-       };
+      ElementWrapper.prototype.findGrid = function(selector) {
+        const rootSelector = \`.\${GridWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, GridWrapper);
+      };
 
       ElementWrapper.prototype.findAllGrids = function(selector) {
         return this.findAllComponents(GridWrapper, selector);
       };
 
-       ElementWrapper.prototype.findHeader = function(selector) {
-         const rootSelector = \`.\${HeaderWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HeaderWrapper);
-       };
+      ElementWrapper.prototype.findHeader = function(selector) {
+        const rootSelector = \`.\${HeaderWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HeaderWrapper);
+      };
 
       ElementWrapper.prototype.findAllHeaders = function(selector) {
         return this.findAllComponents(HeaderWrapper, selector);
       };
 
-       ElementWrapper.prototype.findHelpPanel = function(selector) {
-         const rootSelector = \`.\${HelpPanelWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HelpPanelWrapper);
-       };
+      ElementWrapper.prototype.findHelpPanel = function(selector) {
+        const rootSelector = \`.\${HelpPanelWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HelpPanelWrapper);
+      };
 
       ElementWrapper.prototype.findAllHelpPanels = function(selector) {
         return this.findAllComponents(HelpPanelWrapper, selector);
       };
 
-       ElementWrapper.prototype.findHotspot = function(selector) {
-         const rootSelector = \`.\${HotspotWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HotspotWrapper);
-       };
+      ElementWrapper.prototype.findHotspot = function(selector) {
+        const rootSelector = \`.\${HotspotWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, HotspotWrapper);
+      };
 
       ElementWrapper.prototype.findAllHotspots = function(selector) {
         return this.findAllComponents(HotspotWrapper, selector);
       };
 
-       ElementWrapper.prototype.findIcon = function(selector) {
-         const rootSelector = \`.\${IconWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, IconWrapper);
-       };
+      ElementWrapper.prototype.findIcon = function(selector) {
+        const rootSelector = \`.\${IconWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, IconWrapper);
+      };
 
       ElementWrapper.prototype.findAllIcons = function(selector) {
         return this.findAllComponents(IconWrapper, selector);
       };
 
-       ElementWrapper.prototype.findInput = function(selector) {
-         const rootSelector = \`.\${InputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, InputWrapper);
-       };
+      ElementWrapper.prototype.findInput = function(selector) {
+        const rootSelector = \`.\${InputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, InputWrapper);
+      };
 
       ElementWrapper.prototype.findAllInputs = function(selector) {
         return this.findAllComponents(InputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findKeyValuePairs = function(selector) {
-         const rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, KeyValuePairsWrapper);
-       };
+      ElementWrapper.prototype.findKeyValuePairs = function(selector) {
+        const rootSelector = \`.\${KeyValuePairsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, KeyValuePairsWrapper);
+      };
 
       ElementWrapper.prototype.findAllKeyValuePairs = function(selector) {
         return this.findAllComponents(KeyValuePairsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findLineChart = function(selector) {
-         const rootSelector = \`.\${LineChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LineChartWrapper);
-       };
+      ElementWrapper.prototype.findLineChart = function(selector) {
+        const rootSelector = \`.\${LineChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LineChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllLineCharts = function(selector) {
         return this.findAllComponents(LineChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findLink = function(selector) {
-         const rootSelector = \`.\${LinkWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LinkWrapper);
-       };
+      ElementWrapper.prototype.findLink = function(selector) {
+        const rootSelector = \`.\${LinkWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LinkWrapper);
+      };
 
       ElementWrapper.prototype.findAllLinks = function(selector) {
         return this.findAllComponents(LinkWrapper, selector);
       };
 
-       ElementWrapper.prototype.findLiveRegion = function(selector) {
-         const rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LiveRegionWrapper);
-       };
+      ElementWrapper.prototype.findLiveRegion = function(selector) {
+        const rootSelector = \`.\${LiveRegionWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, LiveRegionWrapper);
+      };
 
       ElementWrapper.prototype.findAllLiveRegions = function(selector) {
         return this.findAllComponents(LiveRegionWrapper, selector);
       };
 
-       ElementWrapper.prototype.findMixedLineBarChart = function(selector) {
-         const rootSelector = \`.\${MixedLineBarChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MixedLineBarChartWrapper);
-       };
+      ElementWrapper.prototype.findMixedLineBarChart = function(selector) {
+        const rootSelector = \`.\${MixedLineBarChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MixedLineBarChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllMixedLineBarCharts = function(selector) {
         return this.findAllComponents(MixedLineBarChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findModal = function(selector) {
-         const rootSelector = \`.\${ModalWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ModalWrapper);
-       };
+      ElementWrapper.prototype.findModal = function(selector) {
+        const rootSelector = \`.\${ModalWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ModalWrapper);
+      };
 
       ElementWrapper.prototype.findAllModals = function(selector) {
         return this.findAllComponents(ModalWrapper, selector);
       };
 
-       ElementWrapper.prototype.findMultiselect = function(selector) {
-         const rootSelector = \`.\${MultiselectWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MultiselectWrapper);
-       };
+      ElementWrapper.prototype.findMultiselect = function(selector) {
+        const rootSelector = \`.\${MultiselectWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, MultiselectWrapper);
+      };
 
       ElementWrapper.prototype.findAllMultiselects = function(selector) {
         return this.findAllComponents(MultiselectWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPagination = function(selector) {
-         const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PaginationWrapper);
-       };
+      ElementWrapper.prototype.findPagination = function(selector) {
+        const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PaginationWrapper);
+      };
 
       ElementWrapper.prototype.findAllPaginations = function(selector) {
         return this.findAllComponents(PaginationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPieChart = function(selector) {
-         const rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PieChartWrapper);
-       };
+      ElementWrapper.prototype.findPieChart = function(selector) {
+        const rootSelector = \`.\${PieChartWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PieChartWrapper);
+      };
 
       ElementWrapper.prototype.findAllPieCharts = function(selector) {
         return this.findAllComponents(PieChartWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPopover = function(selector) {
-         const rootSelector = \`.\${PopoverWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PopoverWrapper);
-       };
+      ElementWrapper.prototype.findPopover = function(selector) {
+        const rootSelector = \`.\${PopoverWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PopoverWrapper);
+      };
 
       ElementWrapper.prototype.findAllPopovers = function(selector) {
         return this.findAllComponents(PopoverWrapper, selector);
       };
 
-       ElementWrapper.prototype.findProgressBar = function(selector) {
-         const rootSelector = \`.\${ProgressBarWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ProgressBarWrapper);
-       };
+      ElementWrapper.prototype.findProgressBar = function(selector) {
+        const rootSelector = \`.\${ProgressBarWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ProgressBarWrapper);
+      };
 
       ElementWrapper.prototype.findAllProgressBars = function(selector) {
         return this.findAllComponents(ProgressBarWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPromptInput = function(selector) {
-         const rootSelector = \`.\${PromptInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PromptInputWrapper);
-       };
+      ElementWrapper.prototype.findPromptInput = function(selector) {
+        const rootSelector = \`.\${PromptInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PromptInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllPromptInputs = function(selector) {
         return this.findAllComponents(PromptInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findPropertyFilter = function(selector) {
-         const rootSelector = \`.\${PropertyFilterWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PropertyFilterWrapper);
-       };
+      ElementWrapper.prototype.findPropertyFilter = function(selector) {
+        const rootSelector = \`.\${PropertyFilterWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PropertyFilterWrapper);
+      };
 
       ElementWrapper.prototype.findAllPropertyFilters = function(selector) {
         return this.findAllComponents(PropertyFilterWrapper, selector);
       };
 
-       ElementWrapper.prototype.findRadioGroup = function(selector) {
-         const rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioGroupWrapper);
-       };
+      ElementWrapper.prototype.findRadioGroup = function(selector) {
+        const rootSelector = \`.\${RadioGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, RadioGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllRadioGroups = function(selector) {
         return this.findAllComponents(RadioGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
-         const rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, S3ResourceSelectorWrapper);
-       };
+      ElementWrapper.prototype.findS3ResourceSelector = function(selector) {
+        const rootSelector = \`.\${S3ResourceSelectorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, S3ResourceSelectorWrapper);
+      };
 
       ElementWrapper.prototype.findAllS3ResourceSelectors = function(selector) {
         return this.findAllComponents(S3ResourceSelectorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSegmentedControl = function(selector) {
-         const rootSelector = \`.\${SegmentedControlWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SegmentedControlWrapper);
-       };
+      ElementWrapper.prototype.findSegmentedControl = function(selector) {
+        const rootSelector = \`.\${SegmentedControlWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SegmentedControlWrapper);
+      };
 
       ElementWrapper.prototype.findAllSegmentedControls = function(selector) {
         return this.findAllComponents(SegmentedControlWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSelect = function(selector) {
-         const rootSelector = \`.\${SelectWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SelectWrapper);
-       };
+      ElementWrapper.prototype.findSelect = function(selector) {
+        const rootSelector = \`.\${SelectWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SelectWrapper);
+      };
 
       ElementWrapper.prototype.findAllSelects = function(selector) {
         return this.findAllComponents(SelectWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSideNavigation = function(selector) {
-         const rootSelector = \`.\${SideNavigationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SideNavigationWrapper);
-       };
+      ElementWrapper.prototype.findSideNavigation = function(selector) {
+        const rootSelector = \`.\${SideNavigationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SideNavigationWrapper);
+      };
 
       ElementWrapper.prototype.findAllSideNavigations = function(selector) {
         return this.findAllComponents(SideNavigationWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSlider = function(selector) {
-         const rootSelector = \`.\${SliderWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SliderWrapper);
-       };
+      ElementWrapper.prototype.findSlider = function(selector) {
+        const rootSelector = \`.\${SliderWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SliderWrapper);
+      };
 
       ElementWrapper.prototype.findAllSliders = function(selector) {
         return this.findAllComponents(SliderWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSpaceBetween = function(selector) {
-         const rootSelector = \`.\${SpaceBetweenWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpaceBetweenWrapper);
-       };
+      ElementWrapper.prototype.findSpaceBetween = function(selector) {
+        const rootSelector = \`.\${SpaceBetweenWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpaceBetweenWrapper);
+      };
 
       ElementWrapper.prototype.findAllSpaceBetweens = function(selector) {
         return this.findAllComponents(SpaceBetweenWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSpinner = function(selector) {
-         const rootSelector = \`.\${SpinnerWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpinnerWrapper);
-       };
+      ElementWrapper.prototype.findSpinner = function(selector) {
+        const rootSelector = \`.\${SpinnerWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SpinnerWrapper);
+      };
 
       ElementWrapper.prototype.findAllSpinners = function(selector) {
         return this.findAllComponents(SpinnerWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSplitPanel = function(selector) {
-         const rootSelector = \`.\${SplitPanelWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitPanelWrapper);
-       };
+      ElementWrapper.prototype.findSplitPanel = function(selector) {
+        const rootSelector = \`.\${SplitPanelWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SplitPanelWrapper);
+      };
 
       ElementWrapper.prototype.findAllSplitPanels = function(selector) {
         return this.findAllComponents(SplitPanelWrapper, selector);
       };
 
-       ElementWrapper.prototype.findStatusIndicator = function(selector) {
-         const rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StatusIndicatorWrapper);
-       };
+      ElementWrapper.prototype.findStatusIndicator = function(selector) {
+        const rootSelector = \`.\${StatusIndicatorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StatusIndicatorWrapper);
+      };
 
       ElementWrapper.prototype.findAllStatusIndicators = function(selector) {
         return this.findAllComponents(StatusIndicatorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findSteps = function(selector) {
-         const rootSelector = \`.\${StepsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StepsWrapper);
-       };
+      ElementWrapper.prototype.findSteps = function(selector) {
+        const rootSelector = \`.\${StepsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, StepsWrapper);
+      };
 
       ElementWrapper.prototype.findAllSteps = function(selector) {
         return this.findAllComponents(StepsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTable = function(selector) {
-         const rootSelector = \`.\${TableWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableWrapper);
-       };
+      ElementWrapper.prototype.findTable = function(selector) {
+        const rootSelector = \`.\${TableWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TableWrapper);
+      };
 
       ElementWrapper.prototype.findAllTables = function(selector) {
         return this.findAllComponents(TableWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTabs = function(selector) {
-         const rootSelector = \`.\${TabsWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TabsWrapper);
-       };
+      ElementWrapper.prototype.findTabs = function(selector) {
+        const rootSelector = \`.\${TabsWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TabsWrapper);
+      };
 
       ElementWrapper.prototype.findAllTabs = function(selector) {
         return this.findAllComponents(TabsWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTagEditor = function(selector) {
-         const rootSelector = \`.\${TagEditorWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TagEditorWrapper);
-       };
+      ElementWrapper.prototype.findTagEditor = function(selector) {
+        const rootSelector = \`.\${TagEditorWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TagEditorWrapper);
+      };
 
       ElementWrapper.prototype.findAllTagEditors = function(selector) {
         return this.findAllComponents(TagEditorWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTextContent = function(selector) {
-         const rootSelector = \`.\${TextContentWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextContentWrapper);
-       };
+      ElementWrapper.prototype.findTextContent = function(selector) {
+        const rootSelector = \`.\${TextContentWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextContentWrapper);
+      };
 
       ElementWrapper.prototype.findAllTextContents = function(selector) {
         return this.findAllComponents(TextContentWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTextFilter = function(selector) {
-         const rootSelector = \`.\${TextFilterWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextFilterWrapper);
-       };
+      ElementWrapper.prototype.findTextFilter = function(selector) {
+        const rootSelector = \`.\${TextFilterWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextFilterWrapper);
+      };
 
       ElementWrapper.prototype.findAllTextFilters = function(selector) {
         return this.findAllComponents(TextFilterWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTextarea = function(selector) {
-         const rootSelector = \`.\${TextareaWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextareaWrapper);
-       };
+      ElementWrapper.prototype.findTextarea = function(selector) {
+        const rootSelector = \`.\${TextareaWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TextareaWrapper);
+      };
 
       ElementWrapper.prototype.findAllTextareas = function(selector) {
         return this.findAllComponents(TextareaWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTiles = function(selector) {
-         const rootSelector = \`.\${TilesWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TilesWrapper);
-       };
+      ElementWrapper.prototype.findTiles = function(selector) {
+        const rootSelector = \`.\${TilesWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TilesWrapper);
+      };
 
       ElementWrapper.prototype.findAllTiles = function(selector) {
         return this.findAllComponents(TilesWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTimeInput = function(selector) {
-         const rootSelector = \`.\${TimeInputWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TimeInputWrapper);
-       };
+      ElementWrapper.prototype.findTimeInput = function(selector) {
+        const rootSelector = \`.\${TimeInputWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TimeInputWrapper);
+      };
 
       ElementWrapper.prototype.findAllTimeInputs = function(selector) {
         return this.findAllComponents(TimeInputWrapper, selector);
       };
 
-       ElementWrapper.prototype.findToggle = function(selector) {
-         const rootSelector = \`.\${ToggleWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleWrapper);
-       };
+      ElementWrapper.prototype.findToggle = function(selector) {
+        const rootSelector = \`.\${ToggleWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleWrapper);
+      };
 
       ElementWrapper.prototype.findAllToggles = function(selector) {
         return this.findAllComponents(ToggleWrapper, selector);
       };
 
-       ElementWrapper.prototype.findToggleButton = function(selector) {
-         const rootSelector = \`.\${ToggleButtonWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleButtonWrapper);
-       };
+      ElementWrapper.prototype.findToggleButton = function(selector) {
+        const rootSelector = \`.\${ToggleButtonWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ToggleButtonWrapper);
+      };
 
       ElementWrapper.prototype.findAllToggleButtons = function(selector) {
         return this.findAllComponents(ToggleButtonWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTokenGroup = function(selector) {
-         const rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenGroupWrapper);
-       };
+      ElementWrapper.prototype.findTokenGroup = function(selector) {
+        const rootSelector = \`.\${TokenGroupWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TokenGroupWrapper);
+      };
 
       ElementWrapper.prototype.findAllTokenGroups = function(selector) {
         return this.findAllComponents(TokenGroupWrapper, selector);
       };
 
-       ElementWrapper.prototype.findTopNavigation = function(selector) {
-         const rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TopNavigationWrapper);
-       };
+      ElementWrapper.prototype.findTopNavigation = function(selector) {
+        const rootSelector = \`.\${TopNavigationWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TopNavigationWrapper);
+      };
 
-       ElementWrapper.prototype.findTutorialPanel = function(selector) {
-         const rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TutorialPanelWrapper);
-       };
+      ElementWrapper.prototype.findAllTopNavigations = function(selector) {
+        return this.findAllComponents(TopNavigationWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findTutorialPanel = function(selector) {
+        const rootSelector = \`.\${TutorialPanelWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, TutorialPanelWrapper);
+      };
 
       ElementWrapper.prototype.findAllTutorialPanels = function(selector) {
         return this.findAllComponents(TutorialPanelWrapper, selector);
       };
 
-       ElementWrapper.prototype.findWizard = function(selector) {
-         const rootSelector = \`.\${WizardWrapper.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, WizardWrapper);
-       };
+      ElementWrapper.prototype.findWizard = function(selector) {
+        const rootSelector = \`.\${WizardWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, WizardWrapper);
+      };
 
       ElementWrapper.prototype.findAllWizards = function(selector) {
         return this.findAllComponents(WizardWrapper, selector);

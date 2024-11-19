@@ -17,24 +17,21 @@ function toWrapper(componentClass) {
 const testUtilsSrcDir = path.resolve('src/test-utils');
 const configs = {
   common: {
-    // These components are not meant to be present in multiple instances in a single app.
-    // For this reason no findAll finders will be generated for them.
-    noExtraFinders: ['AppLayout', 'TopNavigation'],
-    buildFinder: ({ componentName }) => `
-       ElementWrapper.prototype.find${componentName} = function(selector) {
-         const rootSelector = \`.$\{${toWrapper(componentName)}.rootSelector}\`;
-         // casting to 'any' is needed to avoid this issue with generics
-         // https://github.com/microsoft/TypeScript/issues/29132
-         return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ${toWrapper(componentName)});
-       };`,
-    buildExtraFinders: ({ componentName, componentNamePlural }) => `
+    buildFinder: ({ componentName, componentNamePlural }) => `
+      ElementWrapper.prototype.find${componentName} = function(selector) {
+        const rootSelector = \`.$\{${toWrapper(componentName)}.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ${toWrapper(componentName)});
+      };
+
       ElementWrapper.prototype.findAll${componentNamePlural} = function(selector) {
         return this.findAllComponents(${toWrapper(componentName)}, selector);
       };`,
   },
   dom: {
     defaultExport: `export default function wrapper(root: Element = document.body) { if (document && document.body && !document.body.contains(root)) { console.warn('[AwsUi] [test-utils] provided element is not part of the document body, interactions may work incorrectly')}; return new ElementWrapper(root); }`,
-    buildFinderInterface: ({ componentName }) => `
+    buildFinderInterface: ({ componentName, componentNamePlural }) => `
        /**
         * Returns the wrapper of the first ${componentName} that matches the specified CSS selector.
         * If no CSS selector is specified, returns the wrapper of the first ${componentName}.
@@ -43,8 +40,8 @@ const configs = {
         * @param {string} [selector] CSS Selector
         * @returns {${toWrapper(componentName)} | null}
         */
-       find${componentName}(selector?: string): ${toWrapper(componentName)} | null;`,
-    buildExtraFinderInterfaces: ({ componentName, componentNamePlural }) => `
+       find${componentName}(selector?: string): ${toWrapper(componentName)} | null;
+
        /**
         * Returns an array of ${componentName} wrapper that matches the specified CSS selector.
         * If no CSS selector is specified, returns all of the ${componentNamePlural} inside the current wrapper.
@@ -65,8 +62,8 @@ const configs = {
         * @param {string} [selector] CSS Selector
         * @returns {${toWrapper(componentName)}}
         */
-       find${componentName}(selector?: string): ${toWrapper(componentName)};`,
-    buildExtraFinderInterfaces: ({ componentName, componentNamePlural }) => `
+       find${componentName}(selector?: string): ${toWrapper(componentName)};
+
        /**
         * Returns a multi-element wrapper that matches ${componentNamePlural} with the specified CSS selector.
         * If no CSS selector is specified, returns a multi-element wrapper that matches ${componentNamePlural}.
@@ -79,16 +76,8 @@ const configs = {
 };
 
 function generateFindersInterfaces({ testUtilMetaData, testUtilType, configs }) {
-  const { buildFinderInterface, buildExtraFinderInterfaces } = configs[testUtilType];
-  const { noExtraFinders } = configs.common;
-
-  const findersInterfaces = testUtilMetaData.map(metadata => {
-    if (noExtraFinders.includes(metadata.componentName)) {
-      return buildFinderInterface(metadata);
-    }
-
-    return [buildFinderInterface(metadata), buildExtraFinderInterfaces(metadata)].join('\n');
-  });
+  const { buildFinderInterface } = configs[testUtilType];
+  const findersInterfaces = testUtilMetaData.map(buildFinderInterface);
 
   // we need to redeclare the interface in its original definition, extending a re-export will not work
   // https://github.com/microsoft/TypeScript/issues/12607
@@ -102,15 +91,8 @@ function generateFindersInterfaces({ testUtilMetaData, testUtilType, configs }) 
 }
 
 function generateFindersImplementations({ testUtilMetaData, configs }) {
-  const { noExtraFinders, buildFinder, buildExtraFinders } = configs.common;
-
-  const findersImplementations = testUtilMetaData.map(metadata => {
-    if (noExtraFinders.includes(metadata.componentName)) {
-      return buildFinder(metadata);
-    }
-
-    return [buildFinder(metadata), buildExtraFinders(metadata)].join('\n');
-  });
+  const { buildFinder } = configs.common;
+  const findersImplementations = testUtilMetaData.map(buildFinder);
 
   return findersImplementations.join('\n');
 }
