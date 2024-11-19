@@ -28,7 +28,6 @@ export default function () {
         disableContentPaddings={true}
         content={
           <AppLayout
-            {...{ __disableRuntimeDrawers: true }}
             data-testid="secondary-layout"
             ariaLabels={labels}
             breadcrumbs={<Breadcrumbs />}
