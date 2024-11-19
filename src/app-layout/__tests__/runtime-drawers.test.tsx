@@ -31,7 +31,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender, getByTestId } = render(jsx);
+  const { container, rerender, getByTestId, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
   const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
   await delay();
@@ -40,6 +40,7 @@ async function renderComponent(jsx: React.ReactElement) {
     globalDrawersWrapper,
     rerender,
     getByTestId,
+    ...rest,
   };
 }
 
@@ -1270,6 +1271,44 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
+    });
+  });
+
+  describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
+    test('calls onToggle handler by clicking on overflown drawers trigger button (global runtime drawers)', async () => {
+      const onToggle = jest.fn();
+      const drawerIdWithToggle = 'global-drawer4';
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer1',
+        type: 'global',
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer2',
+        type: 'global',
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer3',
+        type: 'global',
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: drawerIdWithToggle,
+        type: 'global',
+        onToggle: event => onToggle(event.detail),
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+      expect(globalDrawersWrapper.findDrawerById(drawerIdWithToggle)).toBeFalsy();
+      buttonDropdown!.openDropdown();
+      buttonDropdown!.findItemById(drawerIdWithToggle)!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerIdWithToggle)!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
     });
   });
 });
