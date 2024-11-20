@@ -24,7 +24,6 @@ import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableHeaderCellProps<ItemType> {
-  className?: string;
   style?: React.CSSProperties;
   tabIndex: number;
   column: TableProps.ColumnDefinition<ItemType>;
@@ -32,7 +31,10 @@ export interface TableHeaderCellProps<ItemType> {
   sortingDescending?: boolean;
   sortingDisabled?: boolean;
   wrapLines?: boolean;
+  stuck?: boolean;
+  sticky?: boolean;
   hidden?: boolean;
+  stripedRows?: boolean;
   onClick(detail: TableProps.SortingState<any>): void;
   onResizeFinish: () => void;
   colIndex: number;
@@ -47,10 +49,10 @@ export interface TableHeaderCellProps<ItemType> {
   resizerRoleDescription?: string;
   isExpandable?: boolean;
   hasDynamicContent?: boolean;
+  variant: TableProps.Variant;
 }
 
 export function TableHeaderCell<ItemType>({
-  className,
   style,
   tabIndex,
   column,
@@ -59,7 +61,10 @@ export function TableHeaderCell<ItemType>({
   sortingDisabled,
   wrapLines,
   focusedComponent,
+  stuck,
+  sticky,
   hidden,
+  stripedRows,
   onClick,
   colIndex,
   updateColumn,
@@ -73,6 +78,7 @@ export function TableHeaderCell<ItemType>({
   resizerRoleDescription,
   isExpandable,
   hasDynamicContent,
+  variant,
 }: TableHeaderCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
   const sortable = !!column.sortingComparator || !!column.sortingField;
@@ -114,17 +120,20 @@ export function TableHeaderCell<ItemType>({
 
   return (
     <TableThElement
-      className={className}
       style={style}
       cellRef={cellRefCombined}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}
       focusedComponent={focusedComponent}
+      stuck={stuck}
+      sticky={sticky}
       hidden={hidden}
+      stripedRows={stripedRows}
       colIndex={colIndex}
       columnId={columnId}
       stickyState={stickyState}
       tableRole={tableRole}
+      variant={variant}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({

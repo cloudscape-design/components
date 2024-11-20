@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 
 import AppLayout from '~components/app-layout';
 import Box from '~components/box';
@@ -17,7 +16,7 @@ export default function () {
       <AppLayout
         ariaLabels={labels}
         disableContentPaddings={true}
-        breadcrumbs={<div className={clsx(styles.highlightBorder, styles.textContent)}>Breadcrumbs</div>}
+        breadcrumbs={<div className={styles.highlightBorder}>Breadcrumbs</div>}
         notifications={
           <div className={styles.highlightBorder}>
             <Box variant="h2">Notifications</Box>

@@ -33,8 +33,15 @@ export function SplitPanelContentBottom({
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarEnabled();
-  const { bottomOffset, leftOffset, rightOffset, disableContentPaddings, contentWrapperPaddings, reportHeaderHeight } =
-    useSplitPanelContext();
+  const {
+    bottomOffset,
+    leftOffset,
+    rightOffset,
+    disableContentPaddings,
+    contentWrapperPaddings,
+    reportHeaderHeight,
+    animationDisabled,
+  } = useSplitPanelContext();
   const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
@@ -54,21 +61,15 @@ export function SplitPanelContentBottom({
   return (
     <div
       {...baseProps}
-      className={clsx(
-        baseProps.className,
-        styles.drawer,
-        styles['position-bottom'],
-        testUtilStyles.root,
-        sharedStyles['with-motion'],
-        {
-          [testUtilStyles['open-position-bottom']]: isOpen,
-          [styles['drawer-closed']]: !isOpen,
-          [styles['drawer-mobile']]: isMobile,
-          [styles['drawer-disable-content-paddings']]: disableContentPaddings,
-          [styles.refresh]: isRefresh,
-          [styles['with-toolbar']]: isToolbar,
-        }
-      )}
+      className={clsx(baseProps.className, styles.drawer, styles['position-bottom'], testUtilStyles.root, {
+        [sharedStyles['with-motion-vertical']]: !animationDisabled,
+        [testUtilStyles['open-position-bottom']]: isOpen,
+        [styles['drawer-closed']]: !isOpen,
+        [styles['drawer-mobile']]: isMobile,
+        [styles['drawer-disable-content-paddings']]: disableContentPaddings,
+        [styles.refresh]: isRefresh,
+        [styles['with-toolbar']]: isToolbar,
+      })}
       onClick={() => !isOpen && onToggle()}
       style={{
         insetBlockEnd: bottomOffset,

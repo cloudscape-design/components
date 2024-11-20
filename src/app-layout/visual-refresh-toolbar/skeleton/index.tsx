@@ -39,6 +39,7 @@ interface SkeletonLayoutProps
   bottomSplitPanel?: React.ReactNode;
   globalTools?: React.ReactNode;
   globalToolsOpen?: boolean;
+  navigationAnimationDisabled?: boolean;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -65,6 +66,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       maxContentWidth,
       disableContentPaddings,
       globalToolsOpen,
+      navigationAnimationDisabled,
     },
     ref
   ) => {
@@ -92,7 +94,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               styles.navigation,
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
-              sharedStyles['with-motion']
+              !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
             )}
           >
             {navigation}
@@ -130,7 +132,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           className={clsx(
             styles.tools,
             !toolsOpen && styles['panel-hidden'],
-            sharedStyles['with-motion'],
+            sharedStyles['with-motion-horizontal'],
             navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
             toolsOpen && styles['tools-open']
           )}

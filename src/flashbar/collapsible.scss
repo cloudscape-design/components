@@ -85,7 +85,7 @@ the grid layout will be:
      */
     min-block-size: calc(
       #{awsui.$line-height-body-m} + (
-          #{awsui.$space-scaled-xs} + #{awsui.$border-field-width} + #{awsui.$space-scaled-xxs}
+          #{awsui.$space-scaled-xs} + #{awsui.$border-width-field} + #{awsui.$space-scaled-xxs}
         ) * 2
     );
   }
@@ -241,7 +241,7 @@ the grid layout will be:
     row-gap: 0;
 
     > .header {
-      font-weight: awsui.$font-button-weight;
+      font-weight: awsui.$font-weight-button;
       display: inline-block;
     }
 

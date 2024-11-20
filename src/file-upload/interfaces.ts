@@ -65,6 +65,10 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldCommonVali
    */
   fileWarnings?: ReadonlyArray<null | string>;
   /**
+   * Alignment of the file tokens. Defaults to "vertical".
+   */
+  fileTokenAlignment?: FileUploadProps.FileTokenAlignment;
+  /**
    * An object containing all the localized strings required by the component:
    * * `uploadButtonText` (function): A function to render the text of the file upload button. It takes `multiple` attribute to define plurality.
    * * `dropzoneText` (function): A function to render the text shown in the dropzone. It takes `multiple` attribute to define plurality.
@@ -76,7 +80,7 @@ export interface FileUploadProps extends BaseComponentProps, FormFieldCommonVali
    * * `formatFileSize` (function): (Optional) A function that takes file size in bytes, and produces a formatted string.
    * * `formatFileLastModified` (function): (Optional) A function that takes the files last modified date, and produces a formatted string.
    */
-  i18nStrings: FileUploadProps.I18nStrings;
+  i18nStrings?: FileUploadProps.I18nStrings;
 }
 
 export namespace FileUploadProps {
@@ -89,12 +93,14 @@ export namespace FileUploadProps {
     file: File;
   }
 
+  export type FileTokenAlignment = 'vertical' | 'horizontal';
+
   export interface I18nStrings {
-    uploadButtonText: (multiple: boolean) => string;
-    dropzoneText: (multiple: boolean) => string;
-    removeFileAriaLabel: (fileIndex: number) => string;
-    limitShowFewer: string;
-    limitShowMore: string;
+    uploadButtonText?: (multiple: boolean) => string;
+    dropzoneText?: (multiple: boolean) => string;
+    removeFileAriaLabel?: (fileIndex: number) => string;
+    limitShowFewer?: string;
+    limitShowMore?: string;
     errorIconAriaLabel?: string;
     warningIconAriaLabel?: string;
     formatFileSize?: (sizeInBytes: number) => string;

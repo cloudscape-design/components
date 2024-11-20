@@ -7,10 +7,11 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
-import { Focusable } from '../utils/use-focus-control';
+import { OnChangeParams } from '../utils/use-drawers';
+import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
 
-interface SharedProps {
+export interface SharedProps {
   forceDeduplicationType?: 'primary' | 'secondary' | 'suspended' | 'off';
   ariaLabels: AppLayoutProps.Labels | undefined;
   navigation: React.ReactNode;
@@ -20,8 +21,12 @@ interface SharedProps {
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
-  onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
+  onActiveDrawerChange: ((drawerId: string | null, params: OnChangeParams) => void) | undefined;
   drawersFocusRef: React.Ref<Focusable> | undefined;
+  globalDrawersFocusControl?: FocusControlMultipleStates | undefined;
+  globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
+  activeGlobalDrawersIds?: Array<string> | undefined;
+  onActiveGlobalDrawersChange?: ((newDrawerId: string, params: OnChangeParams) => void) | undefined;
   splitPanel: React.ReactNode;
   splitPanelToggleProps: SplitPanelToggleProps;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
@@ -39,7 +44,10 @@ function checkAlreadyExists(value: boolean, propName: string) {
   return false;
 }
 
-function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partial<SharedProps>>): ToolbarProps | null {
+export function mergeProps(
+  ownProps: SharedProps,
+  additionalProps: ReadonlyArray<Partial<SharedProps>>
+): ToolbarProps | null {
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
@@ -49,7 +57,15 @@ function mergeProps(ownProps: SharedProps, additionalProps: ReadonlyArray<Partia
       toolbar.drawersFocusRef = props.drawersFocusRef;
       toolbar.onActiveDrawerChange = props.onActiveDrawerChange;
     }
+    if (props.globalDrawers && !checkAlreadyExists(!!toolbar.globalDrawers, 'globalDrawers')) {
+      toolbar.globalDrawersFocusControl = props.globalDrawersFocusControl;
+      toolbar.globalDrawers = props.globalDrawers;
+      toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
+      toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
+    }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
+      // there is never a case where navigation will exist and a toggle will not so toolbar
+      // can use the hasNavigation here to conditionally render the navigationToggle button
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;

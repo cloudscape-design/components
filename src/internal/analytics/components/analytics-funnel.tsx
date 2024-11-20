@@ -28,7 +28,7 @@ import {
 } from '../interfaces';
 import {
   DATA_ATTR_FUNNEL_STEP,
-  getBreadcrumbLinkSelector,
+  DATA_ATTR_RESOURCE_TYPE,
   getFunnelNameSelector,
   getSubStepAllSelector,
   getSubStepNameSelector,
@@ -169,7 +169,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         componentTheme: isVisualRefresh ? 'vr' : 'classic',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
-        resourceType: props.funnelResourceType || getTextFromSelector(getBreadcrumbLinkSelector(3)),
+        resourceType: props.funnelResourceType || getTextFromSelector(`[${DATA_ATTR_RESOURCE_TYPE}]`),
       });
 
       setFunnelInteractionId(funnelInteractionId);
@@ -344,7 +344,7 @@ function useStepChangeListener(stepNumber: number, handler: (stepConfiguration: 
     };
   }, [stepNumber]);
 
-  /* We debounce this handler, so that multiple containers can change at once without causing 
+  /* We debounce this handler, so that multiple containers can change at once without causing
   too many events. */
   const stepChangeCallback = useDebounceCallback(() => {
     // We don't want to emit the event after the component has been unmounted.
@@ -597,7 +597,7 @@ export const AnalyticsFunnelSubStep = ({
         Some mouse events result in an element being focused. However,
         this happens only _after_ the onMouseUp event. We yield the
         event loop here, so that `document.activeElement` has the
-        correct new value.      
+        correct new value.
       */
       await new Promise(r => setTimeout(r, 1));
 

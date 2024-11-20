@@ -1,0 +1,27 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use './constants' as constants;
+
+@mixin token-box-styles {
+  position: relative;
+  block-size: 100%;
+  border-block: awsui.$border-width-field solid constants.$token-border-color;
+  border-inline: awsui.$border-width-field solid constants.$token-border-color;
+  padding-block-start: styles.$control-padding-vertical;
+  padding-block-end: styles.$control-padding-vertical;
+  padding-inline-start: styles.$control-padding-horizontal;
+  padding-inline-end: awsui.$space-xxs;
+  display: flex;
+  align-items: flex-start;
+  background: constants.$token-background;
+  border-start-start-radius: awsui.$border-radius-token;
+  border-start-end-radius: awsui.$border-radius-token;
+  border-end-start-radius: awsui.$border-radius-token;
+  border-end-end-radius: awsui.$border-radius-token;
+  color: awsui.$color-text-body-default;
+  box-sizing: border-box;
+}

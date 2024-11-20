@@ -63,6 +63,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spaceTableHeaderToolsBottom: '0px',
   spaceTableHeaderToolsFullPageBottom: '4px',
   spaceTableHorizontal: '{spaceContainerHorizontal}',
+  spaceTileGutter: { comfortable: '{spaceXl}', compact: '{spaceM}' },
 
   spaceScaled2xNone: '{spaceNone}',
   spaceScaled2xXxxs: { comfortable: '{spaceXxxs}', compact: '{spaceNone}' },

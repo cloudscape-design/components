@@ -33,25 +33,19 @@ export function SplitPanelContentSide({
   panelHeaderId,
   onToggle,
 }: SplitPanelContentSideProps) {
-  const { topOffset, bottomOffset } = useSplitPanelContext();
+  const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarEnabled();
   return (
     <div
       {...baseProps}
-      className={clsx(
-        baseProps.className,
-        styles.drawer,
-        styles['position-side'],
-        testUtilStyles.root,
-        sharedStyles['with-motion'],
-        {
-          [testUtilStyles['open-position-side']]: isOpen,
-          [styles['drawer-closed']]: !isOpen,
-          [styles['with-toolbar']]: isToolbar,
-          [styles.refresh]: isRefresh,
-        }
-      )}
+      className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
+        [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+        [testUtilStyles['open-position-side']]: isOpen,
+        [styles['drawer-closed']]: !isOpen,
+        [styles['with-toolbar']]: isToolbar,
+        [styles.refresh]: isRefresh,
+      })}
       style={{
         width: isOpen ? cappedSize : isRefresh ? '0px' : undefined,
         maxWidth: isRefresh ? '100%' : undefined,

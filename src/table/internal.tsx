@@ -32,15 +32,15 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
-import { TableTdElement } from './body-cell/td-element';
 import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { NoDataCell } from './no-data-cell';
-import { ItemsLoader } from './progressive-loading/items-loader';
+import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
-import { focusMarkers, SelectionControl, useSelection, useSelectionFocusMove } from './selection';
+import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
+import { TableBodySelectionCell } from './selection/selection-cell';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -410,6 +410,7 @@ const InternalTable = React.forwardRef(
           >
             <InternalContainer
               {...baseProps}
+              {...tableInteractionAttributes}
               __internalRootRef={__internalRootRef}
               className={clsx(baseProps.className, styles.root)}
               __funnelSubStepProps={__funnelSubStepProps}
@@ -502,7 +503,6 @@ const InternalTable = React.forwardRef(
                 >
                   <table
                     {...performanceMarkAttributes}
-                    {...tableInteractionAttributes}
                     ref={tableRef}
                     className={clsx(
                       styles.table,
@@ -550,7 +550,6 @@ const InternalTable = React.forwardRef(
                           });
                           const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                           const sharedCellProps = {
-                            isVisualRefresh,
                             isFirstRow,
                             isLastRow,
                             isSelected: hasSelection && isRowSelected(row),
@@ -584,21 +583,17 @@ const InternalTable = React.forwardRef(
                                 {...rowRoleProps}
                               >
                                 {getItemSelectionProps && (
-                                  <TableTdElement
+                                  <TableBodySelectionCell
                                     {...sharedCellProps}
-                                    className={styles['selection-control']}
-                                    wrapLines={false}
                                     columnId={selectionColumnId}
-                                    colIndex={0}
-                                  >
-                                    <SelectionControl
-                                      onFocusDown={moveFocusDown}
-                                      onFocusUp={moveFocusUp}
-                                      {...getItemSelectionProps(row.item)}
-                                      rowIndex={rowIndex}
-                                      itemKey={`${getTableItemKey(row.item)}`}
-                                    />
-                                  </TableTdElement>
+                                    selectionControlProps={{
+                                      ...getItemSelectionProps(row.item),
+                                      onFocusDown: moveFocusDown,
+                                      onFocusUp: moveFocusUp,
+                                      rowIndex,
+                                      itemKey: `${getTableItemKey(row.item)}`,
+                                    }}
+                                  />
                                 )}
 
                                 {visibleColumnDefinitions.map((column, colIndex) => {
@@ -667,18 +662,10 @@ const InternalTable = React.forwardRef(
                               {...rowRoleProps}
                             >
                               {getItemSelectionProps && (
-                                <TableTdElement
-                                  {...sharedCellProps}
-                                  className={styles['selection-control']}
-                                  wrapLines={false}
-                                  columnId={selectionColumnId}
-                                  colIndex={0}
-                                >
-                                  {null}
-                                </TableTdElement>
+                                <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
                               )}
                               {visibleColumnDefinitions.map((column, colIndex) => (
-                                <TableTdElement
+                                <TableLoaderCell
                                   key={getColumnKey(column, colIndex)}
                                   {...sharedCellProps}
                                   wrapLines={false}
@@ -686,18 +673,13 @@ const InternalTable = React.forwardRef(
                                   colIndex={colIndex + colIndexOffset}
                                   isRowHeader={colIndex === 0}
                                   level={row.level}
-                                >
-                                  {colIndex === 0 ? (
-                                    <ItemsLoader
-                                      item={row.item}
-                                      loadingStatus={row.status}
-                                      renderLoaderPending={renderLoaderPending}
-                                      renderLoaderLoading={renderLoaderLoading}
-                                      renderLoaderError={renderLoaderError}
-                                      trackBy={trackBy}
-                                    />
-                                  ) : null}
-                                </TableTdElement>
+                                  item={row.item}
+                                  loadingStatus={row.status}
+                                  renderLoaderPending={renderLoaderPending}
+                                  renderLoaderLoading={renderLoaderLoading}
+                                  renderLoaderError={renderLoaderError}
+                                  trackBy={trackBy}
+                                />
                               ))}
                             </tr>
                           );

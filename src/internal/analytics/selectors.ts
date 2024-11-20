@@ -1,17 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import breadcrumbGroupItemStyles from '../../breadcrumb-group/item/styles.css.js';
-import breadcrumbGroupStyles from '../../breadcrumb-group/styles.css.js';
-
-export const getBreadcrumbLinkSelector = (index: number) =>
-  `.${breadcrumbGroupStyles['breadcrumb-group']} .${breadcrumbGroupStyles.item}:nth-child(${index}) .${breadcrumbGroupItemStyles.anchor}`;
-
 export const DATA_ATTR_FUNNEL = 'data-analytics-funnel';
 export const DATA_ATTR_FUNNEL_INTERACTION_ID = `${DATA_ATTR_FUNNEL}-interaction-id`;
 export const DATA_ATTR_FUNNEL_KEY = `${DATA_ATTR_FUNNEL}-key`;
 export const DATA_ATTR_FUNNEL_VALUE = `${DATA_ATTR_FUNNEL}-value`;
 export const DATA_ATTR_FUNNEL_STEP = `${DATA_ATTR_FUNNEL}-step`;
 export const DATA_ATTR_FUNNEL_SUBSTEP = `${DATA_ATTR_FUNNEL}-substep`;
+export const DATA_ATTR_RESOURCE_TYPE = `${DATA_ATTR_FUNNEL}-resource-type`;
 
 export const DATA_ATTR_FIELD_LABEL = 'data-analytics-field-label';
 export const DATA_ATTR_FIELD_ERROR = 'data-analytics-field-error';
@@ -35,4 +30,4 @@ export const getSubStepNameSelector = (subStepId?: string) =>
 export const getFieldSlotSeletor = (id: string | undefined) => (id ? `[id="${id}"]` : undefined);
 
 export const getTextFromSelector = (selector: string | undefined): string | undefined =>
-  selector ? document.querySelector<HTMLElement>(selector)?.innerText?.trim() : undefined;
+  selector ? document.querySelector<HTMLElement>(selector)?.textContent?.trim() : undefined;

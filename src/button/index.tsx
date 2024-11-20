@@ -44,6 +44,7 @@ const Button = React.forwardRef(
   ) => {
     const baseComponentProps = useBaseComponent('Button', {
       props: { formAction, fullWidth, iconAlign, iconName, rel, target, variant, wrapText },
+      metadata: { hasDisabledReason: Boolean(disabledReason) },
     });
     const baseProps = getBaseProps(props);
     return (

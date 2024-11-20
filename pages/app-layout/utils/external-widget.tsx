@@ -6,6 +6,8 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
+import { Counter, CustomDrawerContent } from './content-blocks';
+
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
 const Content = React.forwardRef((props, ref) => {
@@ -44,6 +46,9 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   defaultActive: !!searchParams.get('force-default-active'),
+  onToggle: event => {
+    console.log('security drawer on toggle', event.detail);
+  },
 
   resizable: true,
   defaultSize: 320,
@@ -77,22 +82,10 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<>Nothing to see here</>, container);
+    ReactDOM.render(<div>Nothing to see here</div>, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
-
-const Counter: React.FC = ({ children }) => {
-  const [count, setCount] = useState(0);
-
-  return (
-    <div>
-      <span data-testid="count">{count}</span>
-      <button onClick={() => setCount(count + 1)}>+</button>
-      {children}
-    </div>
-  );
-};
 
 const AutoIncrementCounter: React.FC<{
   onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
@@ -141,6 +134,9 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
+  onToggle: event => {
+    console.log('circle-global drawer on toggle', event.detail);
+  },
 
   trigger: {
     iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
@@ -157,6 +153,10 @@ awsuiPlugins.appLayout.registerDrawer({
     ReactDOM.render(
       <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
         global widget content circle 1
+        {new Array(100).fill(null).map((_, index) => (
+          <div key={index}>{index}</div>
+        ))}
+        <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
       </AutoIncrementCounter>,
       container
     );
@@ -186,7 +186,13 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<Counter>global widget content circle 2</Counter>, container);
+    ReactDOM.render(
+      <>
+        <Counter id="circle2-global" />
+        global widget content circle 2
+      </>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
@@ -213,7 +219,13 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(<Counter>global widget content circle 3</Counter>, container);
+    ReactDOM.render(
+      <>
+        <Counter id="circle3-global" />
+        global widget content circle 3
+      </>,
+      container
+    );
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
@@ -231,9 +243,12 @@ awsuiPlugins.appLayout.registerDrawer({
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
+  onToggle: event => {
+    console.log('circle4-global drawer on toggle', event.detail);
+  },
 
   mountContent: container => {
-    ReactDOM.render(<div>global widget content circle 3 (without trigger button)</div>, container);
+    ReactDOM.render(<CustomDrawerContent />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });

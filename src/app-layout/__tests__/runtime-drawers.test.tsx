@@ -31,7 +31,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 }));
 
 async function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender, getByTestId } = render(jsx);
+  const { container, rerender, getByTestId, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
   const globalDrawersWrapper = getGlobalDrawersTestUtils(wrapper);
   await delay();
@@ -40,6 +40,7 @@ async function renderComponent(jsx: React.ReactElement) {
     globalDrawersWrapper,
     rerender,
     getByTestId,
+    ...rest,
   };
 }
 
@@ -216,6 +217,20 @@ describeEachAppLayout(({ theme, size }) => {
     expect(onResize).toHaveBeenCalledWith({ size: expect.any(Number), id: drawerDefaults.id });
   });
 
+  test('calls onToggle handler (local runtime drawer)', async () => {
+    const onToggle = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      onToggle: event => onToggle(event.detail),
+    });
+    const { wrapper } = await renderComponent(<AppLayout />);
+
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+    wrapper.findActiveDrawerCloseButton()!.click();
+    expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+  });
+
   test('supports badge property', async () => {
     awsuiPlugins.appLayout.registerDrawer({
       ...drawerDefaults,
@@ -288,6 +303,47 @@ describeEachAppLayout(({ theme, size }) => {
 
     wrapper.findToolsClose().click();
     expect(onToolsChange).toHaveBeenCalledWith({ open: false });
+  });
+
+  test('respect controlled toolsOpen with runtime drawers after clicking on tools drawer', async () => {
+    function AppLayoutWithControlledTools() {
+      const [showTools, setShowTools] = useState(false);
+      return (
+        <AppLayout
+          tools="Tools content"
+          toolsOpen={showTools}
+          onToolsChange={event => setShowTools(event.detail.open)}
+          content={
+            <div>
+              <button data-testid="toggle-tools-drawer" onClick={() => setShowTools(!showTools)}>
+                Toggle tools
+              </button>
+            </div>
+          }
+        />
+      );
+    }
+
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayoutWithControlledTools />);
+    expect(wrapper.findTools()).toBeFalsy();
+    wrapper.findToolsToggle().click();
+
+    expect(wrapper.findTools().getElement()).toHaveTextContent('Tools content');
+
+    createWrapper().find('[data-testid="toggle-tools-drawer"]')!.click();
+
+    expect(wrapper.findTools()).toBeFalsy();
+  });
+
+  test('does not open tools panel on toggle click for partially controllable tools', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(<AppLayout tools="Tools content" toolsOpen={false} />);
+    expect(wrapper.findTools()).toBeFalsy();
+
+    wrapper.findToolsToggle().click();
+    expect(wrapper.findTools()).toBeFalsy();
   });
 
   test('opens tools drawer via ref', async () => {
@@ -672,6 +728,24 @@ describeEachAppLayout(({ theme, size }) => {
 
 describe('toolbar mode only features', () => {
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
+    test('should contain overridden in AWS-UI-Widget-Global-Navigation css classes for drawers', async () => {
+      const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        mountContent: container => (container.textContent = 'global drawer content 1'),
+      });
+
+      await delay();
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+
+      expect(wrapper!.find('[class*="awsui_drawer-close-button_12i0j"]')).toBeTruthy();
+      expect(wrapper!.find('[class*="awsui_drawer-global_12i0j"][class*="awsui_last-opened_12i0j"]')).toBeTruthy();
+    });
+
     test('registerDrawer registers local drawers if type is not specified', async () => {
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
@@ -939,6 +1013,8 @@ describe('toolbar mode only features', () => {
 
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
+      await delay();
+
       expect(globalDrawersWrapper.findDrawerById('global-drawer-1')!.isActive()).toBe(true);
       wrapper.findDrawerTriggerById('global-drawer-1')!.click();
 
@@ -1041,6 +1117,55 @@ describe('toolbar mode only features', () => {
 
       expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
     });
+
+    test('should render trigger buttons for global drawers even if local drawers are not present', async () => {
+      const { wrapper } = await renderComponent(<AppLayout toolsHide={true} />);
+
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global1',
+        type: 'global',
+      });
+
+      await delay();
+
+      expect(wrapper.findDrawerTriggerById('global1')!.getElement()).toBeInTheDocument();
+    });
+
+    test('calls onToggle handler by clicking on drawers trigger button (global runtime drawers)', async () => {
+      const onToggle = jest.fn();
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer',
+        type: 'global',
+        onToggle: event => onToggle(event.detail),
+      });
+      const { wrapper } = await renderComponent(<AppLayout />);
+
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+      wrapper.findDrawerTriggerById('global-drawer')!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
+    });
+
+    test.each([true, false] as const)(
+      'calls onToggle handler by calling openDrawer and closeDrawer plugin api (global runtime drawers) initiatedByUserAction = %s',
+      async initiatedByUserAction => {
+        const onToggle = jest.fn();
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: 'global-drawer',
+          type: 'global',
+          onToggle: event => onToggle(event.detail),
+        });
+        await renderComponent(<AppLayout />);
+
+        awsuiPlugins.appLayout.openDrawer('global-drawer', { initiatedByUserAction });
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction });
+        awsuiPlugins.appLayout.closeDrawer('global-drawer', { initiatedByUserAction });
+        expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction });
+      }
+    );
 
     describe('dynamically registered drawers with defaultActive: true', () => {
       test('should open if there are already open local drawer on the page', async () => {
@@ -1146,6 +1271,44 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global2')!.isActive()).toBe(true);
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
+    });
+  });
+
+  describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {
+    test('calls onToggle handler by clicking on overflown drawers trigger button (global runtime drawers)', async () => {
+      const onToggle = jest.fn();
+      const drawerIdWithToggle = 'global-drawer4';
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer1',
+        type: 'global',
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer2',
+        type: 'global',
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: 'global-drawer3',
+        type: 'global',
+      });
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: drawerIdWithToggle,
+        type: 'global',
+        onToggle: event => onToggle(event.detail),
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+      const buttonDropdown = wrapper.findDrawersOverflowTrigger();
+
+      expect(globalDrawersWrapper.findDrawerById(drawerIdWithToggle)).toBeFalsy();
+      buttonDropdown!.openDropdown();
+      buttonDropdown!.findItemById(drawerIdWithToggle)!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: true, initiatedByUserAction: true });
+      globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerIdWithToggle)!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
     });
   });
 });

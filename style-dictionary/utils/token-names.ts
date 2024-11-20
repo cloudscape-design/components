@@ -210,6 +210,22 @@ export type ColorChartsTokenName =
   | 'colorChartsPaletteCategorical48'
   | 'colorChartsPaletteCategorical49'
   | 'colorChartsPaletteCategorical50';
+export type ColorSeverityTokenName =
+  | 'colorSeverityDarkRed'
+  | 'colorSeverityRed'
+  | 'colorSeverityOrange'
+  | 'colorSeverityYellow'
+  | 'colorSeverityGrey'
+  | 'colorBackgroundNotificationSeverityCritical'
+  | 'colorBackgroundNotificationSeverityHigh'
+  | 'colorBackgroundNotificationSeverityMedium'
+  | 'colorBackgroundNotificationSeverityLow'
+  | 'colorBackgroundNotificationSeverityNeutral'
+  | 'colorTextNotificationSeverityCritical'
+  | 'colorTextNotificationSeverityHigh'
+  | 'colorTextNotificationSeverityMedium'
+  | 'colorTextNotificationSeverityLow'
+  | 'colorTextNotificationSeverityNeutral';
 export type ColorsTokenName =
   | 'colorGreyOpaque10'
   | 'colorGreyOpaque25'
@@ -467,24 +483,15 @@ export type ColorsTokenName =
   | 'colorBoardPlaceholderHover'
   | 'colorDragPlaceholderActive'
   | 'colorDragPlaceholderHover'
-  | 'colorDropzoneBackgroundActive'
+  | 'colorDropzoneBackgroundDefault'
   | 'colorDropzoneBackgroundHover'
-  | 'colorDropzoneTextActive'
+  | 'colorDropzoneTextDefault'
   | 'colorDropzoneTextHover'
-  | 'colorBackgroundSeverityCritical'
-  | 'colorTextSeverityCritical'
-  | 'colorBackgroundSeverityHigh'
-  | 'colorTextSeverityHigh'
-  | 'colorBackgroundSeverityMedium'
-  | 'colorTextSeverityMedium'
-  | 'colorBackgroundSeverityLow'
-  | 'colorTextSeverityLow'
-  | 'colorBackgroundSeverityNeutral'
-  | 'colorTextSeverityNeutral';
+  | 'colorDropzoneBorderDefault'
+  | 'colorDropzoneBorderHover';
 export type TypographyTokenName =
   | 'fontBoxValueLargeWeight'
   | 'fontButtonLetterSpacing'
-  | 'fontButtonWeight'
   | 'fontChartDetailSize'
   | 'fontDisplayLabelWeight'
   | 'fontExpandableHeadingSize'
@@ -510,6 +517,7 @@ export type TypographyTokenName =
   | 'fontTabsLineHeight'
   | 'fontTabsSize'
   | 'fontWayfindingLinkActiveWeight'
+  | 'fontWeightButton'
   | 'fontWeightHeadingXl'
   | 'fontWeightHeadingL'
   | 'fontWeightHeadingM'
@@ -540,7 +548,6 @@ export type BordersTokenName =
   | 'borderDividerListWidth'
   | 'borderDividerSectionWidth'
   | 'borderDropdownVirtualOffsetWidth'
-  | 'borderFieldWidth'
   | 'borderInvalidWidth'
   | 'borderItemWidth'
   | 'borderLineChartDashArray'
@@ -569,7 +576,10 @@ export type BordersTokenName =
   | 'borderRadiusTutorialPanelItem'
   | 'borderTableStickyWidth'
   | 'borderLinkFocusRingOutline'
-  | 'borderLinkFocusRingShadowSpread';
+  | 'borderLinkFocusRingShadowSpread'
+  | 'borderWidthAlert'
+  | 'borderWidthField'
+  | 'borderWidthPopover';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'
@@ -682,6 +692,7 @@ export type SpacingTokenName =
   | 'spaceTableHeaderToolsBottom'
   | 'spaceTableHeaderToolsFullPageBottom'
   | 'spaceTableHorizontal'
+  | 'spaceTileGutter'
   | 'spaceL'
   | 'spaceM'
   | 'spaceNone'
@@ -741,7 +752,7 @@ export type ShadowsTokenName =
   | 'shadowStickyColumnLast';
 
 export type GlobalScopeTokenName = ColorPaletteTokenName | TypographyTokenName | BordersTokenName;
-export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName;
+export type ColorScopeTokenName = ColorChartsTokenName | ColorsTokenName | ShadowsTokenName | ColorSeverityTokenName;
 export type MotionScopeTokenName = MotionTokenName;
 export type DensityScopeTokenName = SizesTokenName | SpacingTokenName;
 

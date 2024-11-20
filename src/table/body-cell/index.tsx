@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
-import clsx from 'clsx';
 
 import { useInternalI18n } from '../../i18n/context';
 import Icon from '../../icon/internal';
@@ -22,18 +21,14 @@ const submitHandlerFallback = () => {
 export interface TableBodyCellProps<ItemType> extends TableTdElementProps {
   column: TableProps.ColumnDefinition<ItemType>;
   item: ItemType;
-  isEditing: boolean;
-  resizableColumns?: boolean;
   successfulEdit?: boolean;
   onEditStart: () => void;
   onEditEnd: (cancelled: boolean) => void;
   submitEdit?: TableProps.SubmitEditFunction<ItemType>;
   ariaLabels: TableProps['ariaLabels'];
-  interactiveCell?: boolean;
 }
 
 function TableCellEditable<ItemType>({
-  className,
   item,
   column,
   isEditing,
@@ -41,10 +36,7 @@ function TableCellEditable<ItemType>({
   onEditEnd,
   submitEdit,
   ariaLabels,
-  isVisualRefresh,
-  resizableColumns = false,
   successfulEdit = false,
-  interactiveCell = true,
   ...rest
 }: TableBodyCellProps<ItemType>) {
   const i18n = useInternalI18n('table');
@@ -64,7 +56,7 @@ function TableCellEditable<ItemType>({
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   // When a cell is both expandable and editable the icon is always shown.
-  const showIcon = hasHover || hasFocus || !interactiveCell;
+  const showIcon = hasHover || hasFocus;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
@@ -87,16 +79,9 @@ function TableCellEditable<ItemType>({
     <TableTdElement
       {...rest}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
-      className={clsx(
-        className,
-        styles['body-cell-editable'],
-        interactiveCell && styles['body-cell-interactive'],
-        resizableColumns && styles['resizable-columns'],
-        isEditing && styles['body-cell-edit-active'],
-        showSuccessIcon && showIcon && styles['body-cell-has-success'],
-        isVisualRefresh && styles['is-visual-refresh']
-      )}
-      onClick={interactiveCell && !isEditing ? onEditStart : undefined}
+      isEditing={isEditing}
+      hasSuccessIcon={showSuccessIcon && showIcon}
+      onClick={!isEditing ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
@@ -141,7 +126,6 @@ function TableCellEditable<ItemType>({
               className={styles['body-cell-editor']}
               aria-label={ariaLabels?.activateEditLabel?.(column, item)}
               ref={editActivateRef}
-              onClick={!interactiveCell && !isEditing ? onEditStart : undefined}
               onFocus={() => setHasFocus(true)}
               onBlur={() => setHasFocus(false)}
               tabIndex={editActivateTabIndex}
@@ -155,22 +139,19 @@ function TableCellEditable<ItemType>({
   );
 }
 
-export function TableBodyCell<ItemType>({
-  isEditable,
-  ...rest
-}: TableBodyCellProps<ItemType> & { isEditable: boolean }) {
-  const isExpandableColumnCell = rest.level !== undefined;
-  const editDisabledReason = rest.column.editConfig?.disabledReason?.(rest.item);
+export function TableBodyCell<ItemType>(props: TableBodyCellProps<ItemType>) {
+  const isExpandableColumnCell = props.level !== undefined;
+  const editDisabledReason = props.column.editConfig?.disabledReason?.(props.item);
 
   // Inline editing is deactivated for expandable column because editable cells are interactive
   // and cannot include interactive content such as expand toggles.
   if (editDisabledReason && !isExpandableColumnCell) {
-    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...rest} />;
+    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...props} />;
   }
-  if ((isEditable || rest.isEditing) && !isExpandableColumnCell) {
-    return <TableCellEditable {...rest} />;
+  if ((props.isEditable || props.isEditing) && !isExpandableColumnCell) {
+    return <TableCellEditable {...props} />;
   }
 
-  const { column, item } = rest;
-  return <TableTdElement {...rest}>{column.cell(item)}</TableTdElement>;
+  const { column, item } = props;
+  return <TableTdElement {...props}>{column.cell(item)}</TableTdElement>;
 }

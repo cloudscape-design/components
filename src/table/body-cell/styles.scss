@@ -119,8 +119,8 @@ $cell-negative-space-vertical: 2px;
 .body-cell {
   box-sizing: border-box;
   border-block-start: awsui.$border-divider-list-width solid transparent;
-  word-wrap: break-word;
   border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+  word-wrap: break-word;
   font-weight: inherit;
   text-align: start;
 
@@ -147,7 +147,7 @@ $cell-negative-space-vertical: 2px;
   &.is-visual-refresh:first-child {
     &:not(.has-striped-rows) {
       @include cell-padding-inline-start(awsui.$space-xxxs);
-      &:not(.body-cell-edit-active).body-cell-interactive.body-cell-editable:hover {
+      &:not(.body-cell-edit-active).body-cell-editable:hover {
         @include cell-padding-inline-start(calc(#{awsui.$space-xxxs} + #{awsui.$border-divider-list-width}));
       }
     }
@@ -431,19 +431,14 @@ $cell-negative-space-vertical: 2px;
       > .body-cell-content {
         overflow: visible;
       }
-      &.sticky-cell {
-        position: sticky;
-      }
     }
 
     &:not(.body-cell-edit-active) {
-      &.body-cell-interactive {
-        cursor: pointer;
+      cursor: pointer;
 
-        // Include interactive padding even when a cell is not hovered to prevent jittering when resizableColumns=false.
-        &:not(.resizable-columns) {
-          @include cell-padding-inline-end($interactive-column-padding-inline-end);
-        }
+      // Include interactive padding even when a cell is not hovered to prevent jittering when resizableColumns=false.
+      &:not(.resizable-columns) {
+        @include cell-padding-inline-end($interactive-column-padding-inline-end);
       }
 
       @mixin focused-editor-styles {
@@ -466,18 +461,10 @@ $cell-negative-space-vertical: 2px;
       // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
       // It's therefore important to display the focus outline, even when a keyboard use wasn't detected.
       // For example, when an edit button is selected from the VoiceOver rotor menu.
-      &.body-cell-interactive:focus-within {
+      &:focus-within {
         @include cell-focus-outline;
       }
-      // When a cell is not interactive the focus outline must be present for the editor button.
-      &:not(.body-cell-interactive) > .body-cell-editor-wrapper > .body-cell-editor,
-      &:not(.body-cell-interactive) > .expandable-cell-content > .body-cell-editor-wrapper > .body-cell-editor {
-        @include focus-visible.when-visible {
-          @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
-        }
-      }
 
-      &:not(.body-cell-interactive),
       &:focus-within:focus-within,
       &.body-cell-edit-disabled-popover {
         &.body-cell-has-success {
@@ -492,15 +479,25 @@ $cell-negative-space-vertical: 2px;
         }
       }
 
-      &.body-cell-interactive:hover {
+      &:hover:hover {
+        position: relative;
+
         background-color: awsui.$color-background-dropdown-item-hover;
         border-block: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         border-inline: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
         inset-inline: calc(-1 * #{awsui.$border-divider-list-width});
-        position: relative;
+        &.sticky-cell {
+          position: sticky;
+        }
 
         &:first-child {
           inset-inline: 0;
+          border-start-start-radius: awsui.$border-radius-item;
+          border-end-start-radius: awsui.$border-radius-item;
+        }
+        &:last-child {
+          border-start-end-radius: awsui.$border-radius-item;
+          border-end-end-radius: awsui.$border-radius-item;
         }
 
         & > .body-cell-editor-wrapper,
@@ -527,26 +524,8 @@ $cell-negative-space-vertical: 2px;
         &.body-cell-first-row:not(.body-cell-selected) {
           @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width})));
         }
-        &.sticky-cell {
-          position: sticky;
-        }
         @include focused-editor-styles;
       }
-    }
-  }
-  &-editable.is-visual-refresh:not(.body-cell-edit-active).body-cell-interactive:hover {
-    &:first-child {
-      border-start-start-radius: awsui.$border-radius-item;
-      border-end-start-radius: awsui.$border-radius-item;
-    }
-    &:last-child {
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-end-radius: awsui.$border-radius-item;
-    }
-    &.body-cell-first-row > .body-cell-success,
-    &.body-cell-first-row > .body-cell-editor-wrapper,
-    &.body-cell-first-row > .expandable-cell-content > .body-cell-editor-wrapper {
-      @include cell-padding-block-start(awsui.$border-divider-list-width);
     }
   }
 

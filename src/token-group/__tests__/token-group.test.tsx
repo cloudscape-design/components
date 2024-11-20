@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { IconWrapper, TokenGroupWrapper } from '../../../lib/components/test-utils/dom';
 import TokenGroup, { TokenGroupProps } from '../../../lib/components/token-group';
-import { Token } from '../../../lib/components/token-group/token';
 import { getIconHTML } from '../../icon/__tests__/utils';
 
 import optionSelectors from '../../../lib/components/internal/components/option/styles.selectors.js';
@@ -312,20 +311,6 @@ describe('TokenGroup', () => {
 
       expect(wrapper.findToken(4)!.findDismiss().getElement()).toHaveFocus();
     });
-  });
-});
-
-describe('Token', () => {
-  test('Renders token error and associates it with the token', () => {
-    const { container } = render(
-      <Token errorText="Error text" errorIconAriaLabel="Error icon">
-        Content
-      </Token>
-    );
-    const tokenElement = createWrapper(container).findByClassName(selectors.token)!.getElement();
-    expect(screen.getByLabelText('Error icon')).toBeDefined();
-    expect(screen.getByText('Error text')).toBeDefined();
-    expect(tokenElement).toHaveAccessibleDescription('Error text');
   });
 });
 

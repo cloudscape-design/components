@@ -9,9 +9,13 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { useFormFieldContext } from '../contexts/form-field';
+import InternalFileDropzone from '../file-dropzone/internal';
+import { useFilesDragging } from '../file-dropzone/use-files-dragging';
+import InternalFileInput from '../file-input/internal';
+import InternalFileTokenGroup from '../file-token-group/internal';
 import { ConstraintText, FormFieldError, FormFieldWarning } from '../form-field/internal';
+import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import TokenList from '../internal/components/token-list';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -20,14 +24,10 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import InternalSpaceBetween from '../space-between/internal';
-import { Token } from '../token-group/token';
-import { Dropzone, useDropzoneVisible } from './dropzone';
-import FileInput from './file-input';
-import { FileOption } from './file-option';
 import { FileUploadProps } from './interfaces';
 
+import fileInputStyles from '../file-input/styles.css.js';
 import tokenListStyles from '../internal/components/token-list/styles.css.js';
-import fileInputStyles from './file-input/styles.css.js';
 import styles from './styles.css.js';
 
 type InternalFileUploadProps = FileUploadProps & InternalBaseComponentProps;
@@ -52,6 +52,7 @@ function InternalFileUpload(
     warningText,
     fileErrors,
     fileWarnings,
+    fileTokenAlignment = 'vertical',
     ...restProps
   }: InternalFileUploadProps,
   externalRef: ForwardedRef<ButtonProps.Ref>
@@ -65,9 +66,10 @@ function InternalFileUpload(
     },
     listItemSelector: `.${tokenListStyles['list-item']}`,
     showMoreSelector: `.${tokenListStyles.toggle}`,
-    fallbackSelector: `.${fileInputStyles['upload-input']}`,
+    fallbackSelector: `.${fileInputStyles['file-input']}`,
   });
 
+  const i18n = useInternalI18n('file-upload');
   const baseProps = getBaseProps(restProps);
   const metadata = { showFileSize, showFileLastModified, showFileThumbnail };
 
@@ -95,7 +97,7 @@ function InternalFileUpload(
     setNextFocusIndex(removeFileIndex);
   };
 
-  const isDropzoneVisible = useDropzoneVisible(multiple);
+  const { areFilesDragging } = useFilesDragging();
 
   const showWarning = warningText && !errorText;
 
@@ -123,33 +125,46 @@ function InternalFileUpload(
       ref={tokenListRef}
     >
       <InternalBox>
-        {isDropzoneVisible ? (
-          <Dropzone onChange={handleFilesChange}>{i18nStrings.dropzoneText(multiple)}</Dropzone>
+        {areFilesDragging ? (
+          <InternalFileDropzone onChange={event => handleFilesChange(event.detail.value)}>
+            {i18n('i18nStrings.dropzoneText', i18nStrings?.dropzoneText?.(multiple), format =>
+              format({ multiple: `${multiple}` })
+            )}
+          </InternalFileDropzone>
         ) : (
-          <FileInput
+          <InternalFileInput
             ref={ref}
             accept={accept}
             ariaRequired={ariaRequired}
             multiple={multiple}
-            onChange={handleFilesChange}
+            onChange={event => handleFilesChange(event.detail.value)}
             value={value}
-            {...restProps}
+            ariaLabelledby={restProps.ariaLabelledby}
+            controlId={restProps.controlId}
             ariaDescribedby={ariaDescribedBy}
             invalid={invalid}
           >
-            {i18nStrings.uploadButtonText(multiple)}
-          </FileInput>
+            {i18n('i18nStrings.uploadButtonText', i18nStrings?.uploadButtonText?.(multiple), format =>
+              format({ multiple: `${multiple}` })
+            )}
+          </InternalFileInput>
         )}
 
         {(constraintText || errorText || warningText) && (
           <div className={styles.hints}>
             {errorText && (
-              <FormFieldError id={errorId} errorIconAriaLabel={i18nStrings?.errorIconAriaLabel}>
+              <FormFieldError
+                id={errorId}
+                errorIconAriaLabel={i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
+              >
                 {errorText}
               </FormFieldError>
             )}
             {showWarning && (
-              <FormFieldWarning id={warningId} warningIconAriaLabel={i18nStrings?.warningIconAriaLabel}>
+              <FormFieldWarning
+                id={warningId}
+                warningIconAriaLabel={i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel)}
+              >
                 {warningText}
               </FormFieldWarning>
             )}
@@ -162,49 +177,33 @@ function InternalFileUpload(
         )}
       </InternalBox>
 
-      {!multiple && value.length > 0 ? (
-        <InternalBox>
-          <Token
-            ariaLabel={value[0].name}
-            dismissLabel={i18nStrings.removeFileAriaLabel(0)}
-            onDismiss={() => onFileRemove(0)}
-            errorText={fileErrors?.[0]}
-            warningText={fileWarnings?.[0]}
-            errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-            warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-            data-index={0}
-          >
-            <FileOption file={value[0]} metadata={metadata} i18nStrings={i18nStrings} />
-          </Token>
-        </InternalBox>
-      ) : null}
-
-      {multiple && value.length > 0 ? (
-        <InternalBox>
-          <TokenList
-            alignment="vertical"
-            items={value}
-            renderItem={(file, fileIndex) => (
-              <Token
-                ariaLabel={file.name}
-                dismissLabel={i18nStrings.removeFileAriaLabel(fileIndex)}
-                onDismiss={() => onFileRemove(fileIndex)}
-                errorText={fileErrors?.[fileIndex]}
-                warningText={fileWarnings?.[fileIndex]}
-                errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-                warningIconAriaLabel={i18nStrings.warningIconAriaLabel}
-                data-index={fileIndex}
-              >
-                <FileOption file={file} metadata={metadata} i18nStrings={i18nStrings} />
-              </Token>
-            )}
-            limit={tokenLimit}
-            i18nStrings={{
-              limitShowFewer: i18nStrings.limitShowFewer,
-              limitShowMore: i18nStrings.limitShowMore,
-            }}
-          />
-        </InternalBox>
+      {value.length > 0 ? (
+        <InternalFileTokenGroup
+          limit={tokenLimit}
+          alignment={fileTokenAlignment}
+          items={value.map((file, fileIndex) => ({
+            file,
+            errorText: fileErrors?.[fileIndex],
+            warningText: fileWarnings?.[fileIndex],
+          }))}
+          showFileLastModified={metadata.showFileLastModified}
+          showFileSize={metadata.showFileSize}
+          showFileThumbnail={metadata.showFileThumbnail}
+          i18nStrings={{
+            removeFileAriaLabel: i18n(
+              'i18nStrings.removeFileAriaLabel',
+              i18nStrings?.removeFileAriaLabel,
+              format => fileIndex => format({ fileIndex: fileIndex + 1 })
+            ),
+            limitShowFewer: i18n('i18nStrings.limitShowFewer', i18nStrings?.limitShowFewer),
+            limitShowMore: i18n('i18nStrings.limitShowMore', i18nStrings?.limitShowMore),
+            formatFileSize: i18nStrings?.formatFileSize,
+            formatFileLastModified: i18nStrings?.formatFileLastModified,
+            errorIconAriaLabel: i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel),
+            warningIconAriaLabel: i18n('i18nStrings.warningIconAriaLabel', i18nStrings?.warningIconAriaLabel),
+          }}
+          onDismiss={event => onFileRemove(event.detail.fileIndex)}
+        />
       ) : null}
     </InternalSpaceBetween>
   );

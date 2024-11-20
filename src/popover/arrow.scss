@@ -71,11 +71,7 @@
   }
 
   &-inner {
-    inset-block-start: 2px;
-
-    &.refresh {
-      inset-block-start: 3px;
-    }
+    inset-block-start: calc(awsui.$border-width-popover + 1px);
 
     &::after {
       border-start-start-radius: 1px;

@@ -37,6 +37,7 @@ const Select = React.forwardRef(
       },
       metadata: {
         hasInlineLabel: Boolean(restProps.inlineLabelText),
+        hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
       },
     });
     const externalProps = getExternalProps(restProps);

@@ -5,7 +5,8 @@ import { act, render } from '@testing-library/react';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
+import { DATA_ATTR_RESOURCE_TYPE, getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
+import createWrapper, { BreadcrumbGroupWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
@@ -229,6 +230,51 @@ describe('BreadcrumbGroup Component', () => {
       anchors.forEach(anchor => {
         expect(anchor).toHaveAttribute('tabindex', '-1');
       });
+    });
+  });
+
+  describe('funnel attributes', () => {
+    function getElementsText(elements: Array<ElementWrapper>) {
+      return Array.from(elements).map(element => element.getElement().textContent);
+    }
+
+    function getFunnelNameElements(wrapper: BreadcrumbGroupWrapper) {
+      return wrapper.findAll(getFunnelNameSelector());
+    }
+
+    function getResourceTypeElements(wrapper: BreadcrumbGroupWrapper) {
+      return wrapper.findAll(`[${DATA_ATTR_RESOURCE_TYPE}]`);
+    }
+
+    test('should add funnel name and resource type attributes', () => {
+      const wrapper = renderBreadcrumbGroup({
+        items: [
+          { text: 'Home', href: '/home' },
+          { text: 'Resource', href: '/resource' },
+          { text: 'Name', href: '/resource/name' },
+        ],
+      });
+      expect(getElementsText(getResourceTypeElements(wrapper))).toEqual(['Resource']);
+      expect(getElementsText(getFunnelNameElements(wrapper))).toEqual(['Name']);
+    });
+
+    test('allows funnel name and resource type to be the same item', () => {
+      const wrapper = renderBreadcrumbGroup({
+        items: [
+          { text: 'Home', href: '/home' },
+          { text: 'Page', href: '/page' },
+        ],
+      });
+      expect(getElementsText(getResourceTypeElements(wrapper))).toEqual(['Page']);
+      expect(getElementsText(getFunnelNameElements(wrapper))).toEqual(['Page']);
+    });
+
+    test('only adds funnel name if there is only one item', () => {
+      const wrapper = renderBreadcrumbGroup({
+        items: [{ text: 'Home', href: '/home' }],
+      });
+      expect(getElementsText(getResourceTypeElements(wrapper))).toEqual([]);
+      expect(getElementsText(getFunnelNameElements(wrapper))).toEqual(['Home']);
     });
   });
 });

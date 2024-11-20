@@ -139,6 +139,7 @@ test(
 
     metrics = await getModalPerformanceMetrics();
     expect(metrics[0].instanceIdentifier).not.toBeNull();
+    expect(metrics[0].componentIdentifier).not.toBeNull();
     expect(metrics[0].timeToContentReadyInModal).not.toBeNull();
   })
 );
@@ -166,6 +167,7 @@ test(
 
     const metrics = await getModalPerformanceMetrics();
     expect(metrics[0].instanceIdentifier).not.toBeNull();
+    expect(metrics[0].componentIdentifier).not.toBeNull();
     expect(metrics[0].timeToContentReadyInModal).toBe(0);
   })
 );
@@ -189,6 +191,7 @@ test(
     let metrics = await getModalPerformanceMetrics();
     expect(metrics[0].instanceIdentifier).not.toBeNull();
     expect(metrics[0].timeToContentReadyInModal).not.toBeNull();
+    expect(metrics[0].componentIdentifier).not.toBeNull();
 
     //reload the components
     await page.click(buttonLoadingCheckBox);

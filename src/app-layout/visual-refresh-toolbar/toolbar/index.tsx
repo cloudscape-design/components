@@ -5,12 +5,13 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { BreadcrumbGroupImplementation } from '../../../breadcrumb-group/implementation';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutProps } from '../../interfaces';
+import { OnChangeParams } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
-import { BreadcrumbsSlotContext } from '../contexts';
 import { AppLayoutInternals } from '../interfaces';
+import { BreadcrumbsSlot } from '../skeleton/breadcrumbs';
+import { ToolbarSkeleton } from '../skeleton/slot-skeletons';
 import { ToolbarSlot } from '../skeleton/slot-wrappers';
 import { DrawerTriggers, SplitPanelToggleProps } from './drawer-triggers';
 import TriggerButton from './trigger-button';
@@ -42,13 +43,13 @@ export interface ToolbarProps {
   drawers?: ReadonlyArray<AppLayoutProps.Drawer>;
   drawersFocusRef?: React.Ref<Focusable>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
-  onActiveDrawerChange?: (drawerId: string | null) => void;
+  onActiveDrawerChange?: (drawerId: string | null, params: OnChangeParams) => void;
   globalDrawers?: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
   activeGlobalDrawersIds?: ReadonlyArray<string>;
-  onActiveGlobalDrawersChange?: ((drawerId: string) => void) | undefined;
+  onActiveGlobalDrawersChange?: ((drawerId: string, params: OnChangeParams) => void) | undefined;
 }
 
-interface AppLayoutToolbarImplementationProps {
+export interface AppLayoutToolbarImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   toolbarProps: ToolbarProps;
 }
@@ -95,7 +96,6 @@ export function AppLayoutToolbarImplementation({
     toolbarState,
     setToolbarState,
     setToolbarHeight,
-    globalDrawersFocusControl,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -103,6 +103,7 @@ export function AppLayoutToolbarImplementation({
     drawers,
     drawersFocusRef,
     onActiveDrawerChange,
+    globalDrawersFocusControl,
     globalDrawers,
     activeGlobalDrawersIds,
     onActiveGlobalDrawersChange,
@@ -194,21 +195,13 @@ export function AppLayoutToolbarImplementation({
         )}
         {(breadcrumbs || discoveredBreadcrumbs) && (
           <div className={clsx(styles['universal-toolbar-breadcrumbs'], testutilStyles.breadcrumbs)}>
-            <BreadcrumbsSlotContext.Provider value={{ isInToolbar: true }}>
-              <div className={styles['breadcrumbs-own']}>{breadcrumbs}</div>
-              {discoveredBreadcrumbs && (
-                <div className={styles['breadcrumbs-discovered']}>
-                  <BreadcrumbGroupImplementation
-                    {...discoveredBreadcrumbs}
-                    data-awsui-discovered-breadcrumbs={true}
-                    __injectAnalyticsComponentMetadata={true}
-                  />
-                </div>
-              )}
-            </BreadcrumbsSlotContext.Provider>
+            <BreadcrumbsSlot
+              ownBreadcrumbs={appLayoutInternals.breadcrumbs}
+              discoveredBreadcrumbs={appLayoutInternals.discoveredBreadcrumbs}
+            />
           </div>
         )}
-        {((drawers && drawers.length > 0) || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
+        {(drawers?.length || globalDrawers?.length || (hasSplitPanel && splitPanelToggleProps?.displayed)) && (
           <div className={clsx(styles['universal-toolbar-drawers'])}>
             <DrawerTriggers
               ariaLabels={ariaLabels}
@@ -232,4 +225,7 @@ export function AppLayoutToolbarImplementation({
   );
 }
 
-export const createWidgetizedAppLayoutToolbar = createWidgetizedComponent(AppLayoutToolbarImplementation);
+export const createWidgetizedAppLayoutToolbar = createWidgetizedComponent(
+  AppLayoutToolbarImplementation,
+  ToolbarSkeleton
+);

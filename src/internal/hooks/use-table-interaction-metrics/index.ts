@@ -4,6 +4,7 @@
 import { useEffect, useRef } from 'react';
 
 import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
+import { useFunnel } from '../../analytics/hooks/use-funnel';
 import { JSONObject } from '../../analytics/interfaces';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
@@ -40,6 +41,7 @@ export function useTableInteractionMetrics({
     'data-analytics-task-interaction-id',
     taskInteractionId
   );
+  const { isInFunnel } = useFunnel();
   const lastUserAction = useRef<{ name: string; time: number } | null>(null);
   const capturedUserAction = useRef<string | null>(null);
   const loadingStartTime = useRef<number | null>(null);
@@ -48,12 +50,16 @@ export function useTableInteractionMetrics({
   metadata.current = { itemCount, getComponentIdentifier, getComponentConfiguration, interactionMetadata };
 
   useEffect(() => {
+    if (isInFunnel) {
+      return;
+    }
+
     ComponentMetrics.componentMounted({
       taskInteractionId,
       componentName: 'table',
       componentConfiguration: metadata.current.getComponentConfiguration(),
     });
-  }, [taskInteractionId]);
+  }, [taskInteractionId, isInFunnel]);
 
   useEffect(() => {
     if (loading) {
@@ -81,14 +87,16 @@ export function useTableInteractionMetrics({
         noOfResourcesInTable: metadata.current.itemCount,
       });
 
-      ComponentMetrics.componentUpdated({
-        taskInteractionId,
-        componentName: 'table',
-        actionType: capturedUserAction.current ?? '',
-        componentConfiguration: metadata.current.getComponentConfiguration(),
-      });
+      if (!isInFunnel) {
+        ComponentMetrics.componentUpdated({
+          taskInteractionId,
+          componentName: 'table',
+          actionType: capturedUserAction.current ?? '',
+          componentConfiguration: metadata.current.getComponentConfiguration(),
+        });
+      }
     }
-  }, [instanceIdentifier, loading, taskInteractionId]);
+  }, [instanceIdentifier, loading, taskInteractionId, isInFunnel]);
 
   return {
     tableInteractionAttributes,

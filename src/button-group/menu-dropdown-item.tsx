@@ -26,16 +26,13 @@ const MenuDropdownItem = React.forwardRef(
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
-      fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
+      fireCancelableEvent(onItemClick, { id: event.detail.id, checked: event.detail.checked }, event);
     };
 
     return (
       <ButtonDropdown
         ref={ref}
         variant="icon"
-        loading={item.loading}
-        loadingText={item.loadingText}
-        disabled={item.disabled}
         items={item.items}
         onItemClick={onClickHandler}
         expandToViewport={expandToViewport}
@@ -60,6 +57,9 @@ const MenuDropdownItem = React.forwardRef(
               ariaExpanded={ariaExpanded}
               className={clsx(testUtilStyles.item, testUtilsClass)}
               iconName="ellipsis"
+              loading={item.loading}
+              loadingText={item.loadingText}
+              disabled={item.disabled}
               onClick={onClick}
               __title=""
             />

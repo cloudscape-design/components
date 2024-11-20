@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "Loading content"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "Show fewer",
+    "i18nStrings.limitShowMore": "Show more",
+    "i18nStrings.removeFileAriaLabel": "Remove file {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Warning"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "Show fewer",
+    "i18nStrings.limitShowMore": "Show more",
+    "i18nStrings.removeFileAriaLabel": "Remove file {fileIndex}",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Warning",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {Choose files} false {Choose file} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {Drop files to upload} false {Drop file to upload} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "Notifications",
     "i18nStrings.errorIconAriaLabel": "Error",

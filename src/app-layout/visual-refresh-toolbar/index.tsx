@@ -16,7 +16,7 @@ import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
-import { MIN_DRAWER_SIZE, useDrawers } from '../utils/use-drawers';
+import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
@@ -76,6 +76,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [toolbarState, setToolbarState] = useState<'show' | 'hide'>('show');
     const [toolbarHeight, setToolbarHeight] = useState(0);
     const [notificationsHeight, setNotificationsHeight] = useState(0);
+    const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
+    const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -148,8 +150,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToolsToggle,
     });
 
-    const onActiveDrawerChangeHandler = (drawerId: string | null) => {
-      onActiveDrawerChange(drawerId);
+    const onActiveDrawerChangeHandler = (
+      drawerId: string | null,
+      params: OnChangeParams = { initiatedByUserAction: true }
+    ) => {
+      onActiveDrawerChange(drawerId, params);
       drawersFocusControl.setFocus();
     };
 
@@ -165,6 +170,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const onSplitPanelToggleHandler = () => {
+      setSplitPanelAnimationDisabled(false);
       setSplitPanelOpen(!splitPanelOpen);
       splitPanelFocusControl.setLastInteraction({ type: splitPanelOpen ? 'close' : 'open' });
       fireNonCancelableEvent(onSplitPanelToggle, { open: !splitPanelOpen });
@@ -212,6 +218,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
+      setNavigationAnimationDisabled(false);
       navigationFocusControl.setFocus();
       fireNonCancelableEvent(onNavigationChange, { open });
     });
@@ -224,8 +231,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
     }));
 
-    const resolvedNavigation = navigationHide ? null : navigation ?? <></>;
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
+    //navigation must be null if hidden so toolbar knows to hide the toggle button
+    const resolvedNavigation = navigationHide ? null : navigation || <></>;
+    //navigation must not be open if navigationHide is true
+    const resolvedNavigationOpen = !!resolvedNavigation && navigationOpen;
     const {
       maxDrawerSize,
       maxSplitPanelSize,
@@ -237,7 +247,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
       minContentWidth,
-      navigationOpen: !!resolvedNavigation && navigationOpen,
+      navigationOpen: resolvedNavigationOpen,
       navigationWidth,
       placement,
       splitPanelOpen,
@@ -252,13 +262,17 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         forceDeduplicationType,
         ariaLabels: ariaLabelsWithDrawers,
         navigation: resolvedNavigation,
-        navigationOpen,
+        navigationOpen: resolvedNavigationOpen,
         onNavigationToggle,
         navigationFocusRef: navigationFocusControl.refs.toggle,
         breadcrumbs,
         activeDrawerId: activeDrawer?.id ?? null,
         // only pass it down if there are non-empty drawers or tools
         drawers: drawers?.length || !toolsHide ? drawers : undefined,
+        globalDrawersFocusControl,
+        globalDrawers: globalDrawers?.length ? globalDrawers : undefined,
+        activeGlobalDrawersIds,
+        onActiveGlobalDrawersChange,
         onActiveDrawerChange: onActiveDrawerChangeHandler,
         drawersFocusRef: drawersFocusControl.refs.toggle,
         splitPanel,
@@ -292,7 +306,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       breadcrumbs,
       discoveredBreadcrumbs,
       stickyNotifications: resolvedStickyNotifications,
-      navigationOpen,
+      navigationOpen: resolvedNavigationOpen,
       navigation: resolvedNavigation,
       navigationFocusControl,
       activeDrawer,
@@ -325,6 +339,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onNavigationToggle,
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
+      splitPanelAnimationDisabled,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
@@ -357,9 +372,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const closeFirstDrawer = useStableCallback(() => {
       const drawerToClose = drawersOpenQueue[drawersOpenQueue.length - 1];
       if (activeDrawer && activeDrawer?.id === drawerToClose) {
-        onActiveDrawerChange(null);
+        onActiveDrawerChange(null, { initiatedByUserAction: true });
       } else if (activeGlobalDrawersIds.includes(drawerToClose)) {
-        onActiveGlobalDrawersChange(drawerToClose);
+        onActiveGlobalDrawersChange(drawerToClose, { initiatedByUserAction: true });
       }
     });
 
@@ -395,11 +410,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         return;
       }
 
-      const activeNavigationWidth = navigationOpen ? navigationWidth : 0;
+      const activeNavigationWidth = !navigationHide && navigationOpen ? navigationWidth : 0;
       const scrollWidth = activeNavigationWidth + CONTENT_PADDING + totalActiveDrawersMinSize;
       const hasHorizontalScroll = scrollWidth > placement.inlineSize;
       if (hasHorizontalScroll) {
-        if (navigationOpen) {
+        if (!navigationHide && navigationOpen) {
           onNavigationToggle(false);
           return;
         }
@@ -410,6 +425,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       totalActiveDrawersMinSize,
       closeFirstDrawer,
       isMobile,
+      navigationHide,
       navigationOpen,
       navigationWidth,
       onNavigationToggle,
@@ -441,8 +457,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           // delay rendering the content until registration of this instance is complete
           content={registered ? content : null}
           navigation={resolvedNavigation && <AppLayoutNavigation appLayoutInternals={appLayoutInternals} />}
-          navigationOpen={navigationOpen}
+          navigationOpen={resolvedNavigationOpen}
           navigationWidth={navigationWidth}
+          navigationAnimationDisabled={navigationAnimationDisabled}
           tools={drawers && drawers.length > 0 && <AppLayoutDrawer appLayoutInternals={appLayoutInternals} />}
           globalTools={
             <ActiveDrawersContext.Provider value={activeGlobalDrawersIds}>

@@ -142,10 +142,12 @@ describe('toolbar mode only features', () => {
         totalActiveGlobalDrawersSize: 0,
         resizableSpaceAvailable: 792,
       });
+      const onToggle = jest.fn();
       awsuiPlugins.appLayout.registerDrawer({
         ...drawerDefaults,
         id: 'local-drawer',
         defaultActive: true,
+        onToggle: event => onToggle(event.detail),
         mountContent: container => (container.textContent = 'local-drawer content'),
       });
       awsuiPlugins.appLayout.registerDrawer({
@@ -175,6 +177,7 @@ describe('toolbar mode only features', () => {
       expect(globalDrawersWrapper.findActiveDrawers()[1].getElement()).toHaveTextContent('global drawer content 1');
 
       wrapper.findDrawerTriggerById('global-drawer-2')!.click();
+      expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
 
       await delay();
 

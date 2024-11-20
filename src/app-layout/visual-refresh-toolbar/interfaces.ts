@@ -6,9 +6,12 @@ import React from 'react';
 import { BreadcrumbGroupProps } from '../../breadcrumb-group/interfaces';
 import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-context';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { OnChangeParams } from '../utils/use-drawers';
 import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focus-control';
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
+
+export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
 // Treat thsese structures as an API and do not make incompatible changes.
@@ -25,18 +28,18 @@ export interface AppLayoutInternals {
   splitPanelFocusControl: SplitPanelFocusControlState;
   splitPanelToggleConfig: SplitPanelSideToggleProps;
   isMobile: boolean;
-  activeDrawer: AppLayoutProps.Drawer | undefined;
+  activeDrawer: InternalDrawer | undefined;
   activeDrawerSize: number;
   minDrawerSize: number;
   maxDrawerSize: number;
   minGlobalDrawersSizes: Record<string, number>;
   maxGlobalDrawersSizes: Record<string, number>;
-  drawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  drawers: ReadonlyArray<InternalDrawer>;
   drawersFocusControl: FocusControlState;
   globalDrawersFocusControl: FocusControlMultipleStates;
   activeGlobalDrawersIds: ReadonlyArray<string>;
-  activeGlobalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
+  activeGlobalDrawers: ReadonlyArray<InternalDrawer>;
+  globalDrawers: ReadonlyArray<InternalDrawer>;
   activeGlobalDrawersSizes: Record<string, number>;
   stickyNotifications: AppLayoutPropsWithDefaults['stickyNotifications'];
   breadcrumbs: React.ReactNode;
@@ -49,7 +52,8 @@ export interface AppLayoutInternals {
   setToolbarHeight: (height: number) => void;
   onSplitPanelToggle: () => void;
   onNavigationToggle: (open: boolean) => void;
-  onActiveDrawerChange: (newDrawerId: string | null) => void;
+  onActiveDrawerChange: (newDrawerId: string | null, params: OnChangeParams) => void;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
-  onActiveGlobalDrawersChange: (newDrawerId: string) => void;
+  onActiveGlobalDrawersChange: (newDrawerId: string, params: OnChangeParams) => void;
+  splitPanelAnimationDisabled?: boolean;
 }

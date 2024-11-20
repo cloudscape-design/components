@@ -20,9 +20,6 @@
   padding-inline-start: awsui.$space-panel-nav-left;
   // Additional xl space to prevent text from overlapping the close button.
   padding-inline-end: calc(#{awsui.$space-scaled-xxl} + #{awsui.$space-xl});
-  .with-toolbar > & {
-    padding-block: awsui.$space-static-m;
-  }
 }
 
 .header-link {
@@ -53,14 +50,19 @@
 }
 
 .items-control {
-  margin-block-start: awsui.$space-panel-content-top;
   padding-inline: awsui.$space-l;
 }
 
 .list-container {
+  margin-block-end: awsui.$space-panel-content-bottom;
+}
+
+.items-control,
+.list-container {
   margin-block-start: awsui.$space-panel-content-top;
-  .with-toolbar > & {
-    margin-block-start: 0px;
+  // Toolbar removes margin for whichever one comes first after the header
+  .with-toolbar > .divider-header + & {
+    margin-block-start: 0;
   }
 }
 
@@ -79,8 +81,8 @@
   padding-inline-start: awsui.$space-panel-nav-left;
   padding-inline-end: awsui.$space-panel-side-right;
 
-  &--last {
-    margin-block-end: awsui.$space-panel-content-bottom;
+  &--first {
+    margin-block-start: 0;
   }
 }
 
@@ -94,6 +96,11 @@
   padding-block: 0;
   padding-inline: 0;
   list-style: none;
+
+  // Remove margin from first item in side nav, outer block margins are covered by list-container
+  .list-variant-root--first > &:first-child {
+    margin-block-start: 0px;
+  }
 }
 
 .section,
@@ -110,7 +117,10 @@
   &.refresh {
     margin-block: calc(#{awsui.$space-scaled-2x-m} - #{awsui.$border-divider-section-width});
   }
-
+  // Remove margin from section if it is the first item in side nav to prevent double margin stacking
+  .list-variant-root--first > .list-item:first-child > & {
+    margin-block-start: 0px;
+  }
   // HACK: Remove padding from section header and content to rely on margin collapsing rules.
   /* stylelint-disable-next-line selector-max-type */
   > div {
@@ -192,7 +202,7 @@
 }
 
 .divider-header {
-  margin-block-start: 0;
+  margin-block: 0;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-panel-header;
   .with-toolbar > & {
     border-color: transparent;

@@ -217,8 +217,6 @@ export function NavigationItemsList({
     }
   });
 
-  const lastListIndex = lists.length - 1;
-
   return (
     <>
       {lists.map((list, index) => {
@@ -227,7 +225,7 @@ export function NavigationItemsList({
             <div
               key={`hr-${index}`}
               className={clsx(styles.list, styles[`list-variant-${variant}`], {
-                [styles['list-variant-root--last']]: list.listVariant === 'root' && index === lastListIndex,
+                [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
               })}
             >
               {list.element}
@@ -238,7 +236,7 @@ export function NavigationItemsList({
             <ul
               key={`list-${index}`}
               className={clsx(styles.list, styles[`list-variant-${list.listVariant}`], {
-                [styles['list-variant-root--last']]: list.listVariant === 'root' && index === lastListIndex,
+                [styles['list-variant-root--first']]: list.listVariant === 'root' && index === 0,
               })}
             >
               {list.items.map(item => item.element)}

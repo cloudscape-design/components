@@ -247,6 +247,16 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       })
     );
 
+    test(
+      'close button does not overlap drawer content',
+      setupTest({ theme }, async page => {
+        await page.openFirstDrawer();
+        await expect(
+          page.isClickable(wrapper.findActiveDrawer().find('[data-testid=drawer-button]').toSelector())
+        ).resolves.toBe(true);
+      })
+    );
+
     testIf(theme === 'classic')(
       'pushes content over with disableContentPaddings',
       setupTest({ disableContentPaddings: 'true', theme }, async page => {

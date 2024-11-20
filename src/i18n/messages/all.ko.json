@@ -142,6 +142,22 @@
   "drawer": {
     "i18nStrings.loadingText": "콘텐츠 로드 중"
   },
+  "file-token-group": {
+    "i18nStrings.limitShowFewer": "간단히 표시",
+    "i18nStrings.limitShowMore": "자세히 표시",
+    "i18nStrings.removeFileAriaLabel": "파일 {fileIndex} 제거",
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.warningIconAriaLabel": "경고"
+  },
+  "file-upload": {
+    "i18nStrings.limitShowFewer": "간단히 표시",
+    "i18nStrings.limitShowMore": "자세히 표시",
+    "i18nStrings.removeFileAriaLabel": "파일 {fileIndex} 제거",
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.warningIconAriaLabel": "경고",
+    "i18nStrings.uploadButtonText": "{multiple, select, true {파일 선택} false {파일 선택} other {}}",
+    "i18nStrings.dropzoneText": "{multiple, select, true {업로드할 파일 가져다 놓기} false {업로드할 파일 가져다 놓기} other {}}"
+  },
   "flashbar": {
     "i18nStrings.ariaLabel": "알림",
     "i18nStrings.errorIconAriaLabel": "오류",

@@ -19,7 +19,7 @@ class AppLayoutPage extends BasePageObject {
   }
 
   getNavPosition() {
-    return this.getBoundingBox(wrapper.findNavigation().findSideNavigation().findHeaderLink().toSelector());
+    return this.getBoundingBox(wrapper.findNavigation().findSideNavigation().findItemByIndex(1).toSelector());
   }
 
   getContentPosition() {
@@ -186,6 +186,15 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       ).resolves.toBe(0);
       const { top: contentTop } = await page.getBoundingBox('[data-testid="content-root"]');
       expect(contentTop).toEqual(expectedOffset);
+    })
+  );
+
+  test(
+    'Side nav does not display a scrollbar when there is no header',
+    setupTest({ pageName: 'with-drawers-scrollable' }, async page => {
+      const navBefore = await page.getNavPosition();
+      await page.elementScrollTo(wrapper.findNavigation().toSelector(), { top: 100 });
+      await expect(page.getNavPosition()).resolves.toEqual(navBefore);
     })
   );
 });
