@@ -23,7 +23,6 @@ interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemTyp
 }
 
 export function DisabledInlineEditor<ItemType>({
-  className,
   item,
   column,
   ariaLabels,
@@ -31,8 +30,6 @@ export function DisabledInlineEditor<ItemType>({
   onEditStart,
   onEditEnd,
   editDisabledReason,
-  isVisualRefresh,
-  resizableColumns = false,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
   const clickAwayRef = useClickAway(() => {
@@ -72,13 +69,8 @@ export function DisabledInlineEditor<ItemType>({
       nativeAttributes={
         { 'data-inline-editing-active': isEditing.toString() } as TableTdElementProps['nativeAttributes']
       }
-      className={clsx(
-        className,
-        styles['body-cell-editable'],
-        resizableColumns && styles['resizable-columns'],
-        isEditing && styles['body-cell-edit-disabled-popover'],
-        isVisualRefresh && styles['is-visual-refresh']
-      )}
+      isEditing={isEditing}
+      isEditingDisabled={true}
       onClick={!isEditing ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
