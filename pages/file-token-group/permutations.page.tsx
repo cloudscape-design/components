@@ -52,6 +52,9 @@ export default function FileTokenGroupPermutations() {
               onDismiss={() => {
                 /*empty handler to suppress react controlled property warning*/
               }}
+              i18nStrings={{
+                formatFileLastModified: () => '2020-01-01T00:00:00',
+              }}
               {...permutation}
             />
           )}
