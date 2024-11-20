@@ -10,7 +10,7 @@ import { applyTrackBy } from '../utils';
 
 import styles from './styles.css.js';
 
-export interface ItemsLoaderProps<T> {
+interface ItemsLoaderProps<T> {
   item: null | T;
   loadingStatus: TableProps.LoadingStatus;
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
