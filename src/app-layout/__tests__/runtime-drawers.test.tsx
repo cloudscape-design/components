@@ -707,10 +707,54 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
   });
 
+  test('opens a drawer when openDrawer is called (parent AppLayout is disabled)', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(
+      <AppLayout
+        {...{ __disableRuntimeDrawers: true }}
+        drawers={[testDrawer]}
+        content={<AppLayout drawers={[testDrawer]} />}
+      />
+    );
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+
+    awsuiPlugins.appLayout.openDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+  });
+
   test('closes a drawer when closeDrawer is called (local drawer)', async () => {
     awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
 
     const { wrapper } = await renderComponent(<AppLayout drawers={[testDrawer]} />);
+
+    awsuiPlugins.appLayout.openDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('runtime drawer content');
+
+    awsuiPlugins.appLayout.closeDrawer('test');
+
+    await delay();
+
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
+  test('closes a drawer when closeDrawer is called (local drawer) (parent AppLayout is disabled)', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+
+    const { wrapper } = await renderComponent(
+      <AppLayout
+        {...{ __disableRuntimeDrawers: true }}
+        drawers={[testDrawer]}
+        content={<AppLayout drawers={[testDrawer]} />}
+      />
+    );
 
     awsuiPlugins.appLayout.openDrawer('test');
 
