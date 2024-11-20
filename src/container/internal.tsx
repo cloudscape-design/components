@@ -19,6 +19,7 @@ import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import testStyles from './test-classes/styles.css.js';
 
 export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>, InternalBaseComponentProps {
   __stickyHeader?: boolean;
@@ -167,7 +168,7 @@ export default function InternalContainer({
         )}
         <div className={clsx(styles.content, fitHeight && styles['content-fit-height'])}>
           <div
-            className={clsx(styles['content-inner'], {
+            className={clsx(styles['content-inner'], testStyles['content-inner'], {
               [styles['with-paddings']]: !disableContentPaddings,
               [styles['with-header']]: !!header,
             })}
