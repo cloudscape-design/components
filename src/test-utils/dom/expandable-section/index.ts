@@ -3,6 +3,7 @@
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import containerStyles from '../../../container/styles.selectors.js';
+import containerTestStyles from '../../../container/test-classes/styles.selectors.js';
 import styles from '../../../expandable-section/styles.selectors.js';
 import headerStyles from '../../../header/styles.selectors.js';
 
@@ -26,7 +27,7 @@ export default class ExpandableSectionWrapper extends ComponentWrapper {
 
   findExpandedContent(): ElementWrapper | null {
     return this.find(
-      `:scope > .${styles['content-expanded']}, :scope > .${containerStyles['content-wrapper']} > .${containerStyles.content} > .${styles['content-expanded']}`
+      `:scope > .${styles['content-expanded']}, :scope > .${containerStyles['content-wrapper']} > .${containerStyles.content} > .${containerTestStyles['content-inner']} > .${styles['content-expanded']}`
     );
   }
 
