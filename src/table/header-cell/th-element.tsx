@@ -7,56 +7,43 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { TableProps } from '../interfaces';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableColHeaderRoleProps, TableRole } from '../table-role';
 import { getStickyClassNames } from '../utils';
 import { SortingStatus } from './utils';
 
-import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
-export interface TableThElementProps {
+interface TableThElementProps {
+  className?: string;
   style?: React.CSSProperties;
   sortingStatus?: SortingStatus;
   sortingDisabled?: boolean;
   focusedComponent?: null | string;
-  stuck?: boolean;
-  sticky?: boolean;
   hidden?: boolean;
-  stripedRows?: boolean;
-  isSelection?: boolean;
   colIndex: number;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
   cellRef?: React.RefCallback<HTMLElement> | null;
   tableRole: TableRole;
   children: React.ReactNode;
-  variant: TableProps.Variant;
 }
 
 export function TableThElement({
+  className,
   style,
   sortingStatus,
   sortingDisabled,
   focusedComponent,
-  stuck,
-  sticky,
   hidden,
-  stripedRows,
-  isSelection,
   colIndex,
   columnId,
   stickyState,
   cellRef,
   tableRole,
   children,
-  variant,
   ...props
 }: TableThElementProps) {
-  const isVisualRefresh = useVisualRefresh();
-
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
     columnId,
@@ -71,13 +58,7 @@ export function TableThElement({
     <th
       data-focus-id={`header-${String(columnId)}`}
       className={clsx(
-        styles['header-cell'],
-        styles[`header-cell-variant-${variant}`],
-        sticky && styles['header-cell-sticky'],
-        stuck && styles['header-cell-stuck'],
-        stripedRows && styles['has-striped-rows'],
-        isVisualRefresh && styles['is-visual-refresh'],
-        isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
+        className,
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,
           [styles['header-cell-sortable']]: sortingStatus,
