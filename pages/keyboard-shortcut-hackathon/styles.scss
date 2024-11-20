@@ -11,7 +11,7 @@
   padding-block: awsui.$space-scaled-s;
 
   &:not(:last-child) {
-    border-block-end: 1px solid awsui.$color-border-control-default;
+    border-block-end: 1px solid awsui.$color-border-divider-default;
   }
 }
 

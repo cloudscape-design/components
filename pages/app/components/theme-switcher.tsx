@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
@@ -27,6 +27,78 @@ export default function ThemeSwitcher() {
       window.location.reload();
     };
   }
+
+  useEffect(() => {
+    let keyPressed: any = {};
+
+    const handleKeyDown = (e: any) => {
+      keyPressed[e.key + e.location] = true;
+
+      if (keyPressed.Control1 === true && keyPressed.d0 === true) {
+        // Left shift+CONTROL pressed!
+        if (mode === 'dark') {
+          setMode(Mode.Light);
+          keyPressed = {}; // reset key map
+        } else if (mode === 'light') {
+          setMode(Mode.Dark);
+          keyPressed = {}; // reset key map
+        }
+      }
+
+      if (keyPressed.Control1 === true && keyPressed.c0 === true) {
+        e.preventDefault();
+        if (urlParams.density === 'comfortable') {
+          setUrlParams({ density: Density.Compact });
+        } else if (urlParams.density === 'compact') {
+          setUrlParams({ density: Density.Comfortable });
+        }
+        keyPressed = {}; // reset key map
+      }
+
+      if (keyPressed.Control1 === true && keyPressed.m0 === true) {
+        e.preventDefault();
+        setUrlParams({ motionDisabled: !urlParams.motionDisabled });
+        keyPressed = {}; // reset key map
+      }
+
+      if (keyPressed.Control1 === true && keyPressed.r0 === true) {
+        e.preventDefault();
+        document.documentElement.setAttribute('dir', 'rtl');
+        keyPressed = {}; // reset key map
+      }
+
+      if (keyPressed.Control1 === true && keyPressed.l0 === true) {
+        e.preventDefault();
+        document.documentElement.setAttribute('dir', 'ltr');
+        keyPressed = {}; // reset key map
+      }
+
+      if (keyPressed.Control1 === true && keyPressed.v0 === true) {
+        e.preventDefault();
+        if (ALWAYS_VISUAL_REFRESH) {
+          setUrlParams({ visualRefresh: true });
+        } else {
+          setUrlParams({ visualRefresh: !urlParams.visualRefresh });
+          window.location.reload();
+        }
+        keyPressed = {}; // reset key map
+      }
+    };
+
+    const handleKeyUp = (e: any) => {
+      keyPressed[e.key + e.location] = false;
+
+      keyPressed = {};
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [mode, urlParams.density, urlParams.motionDisabled, urlParams.visualRefresh, setMode, setUrlParams]);
 
   return (
     <SpaceBetween direction="horizontal" size="xs">

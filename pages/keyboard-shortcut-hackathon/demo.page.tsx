@@ -133,7 +133,9 @@ export default function WithDrawers() {
         }}
         disableContentPaddings={disableContentPaddings}
         splitPanelOpen={splitPanelOpen}
+        onSplitPanelToggle={event => setSplitPanelOpen(event.detail.open)}
         navigationOpen={navigationOpen}
+        onNavigationChange={event => setNavigationOpen(event.detail.open)}
         splitPanel={
           <SplitPanel
             header="Split panel header"
@@ -193,15 +195,27 @@ function DrawerContent() {
         items={[
           {
             key: 'Toggle dark mode',
-            value: 'Shift + D',
+            value: '^ + D',
           },
           {
             key: 'Toggle compact mode',
-            value: 'Shift + C',
+            value: '^ + C',
           },
           {
             key: 'Toggle visual refresh',
-            value: 'Shift + V + R',
+            value: '^ + V',
+          },
+          {
+            key: 'Toggle motion disabled',
+            value: '^ + M',
+          },
+          {
+            key: 'RTL direction',
+            value: '^ + R',
+          },
+          {
+            key: 'LTR direction',
+            value: '^ + L',
           },
         ]}
       />
