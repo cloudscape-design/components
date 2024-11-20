@@ -7,6 +7,7 @@ const { pascalCase } = require('change-case');
 const { default: convertToSelectorUtil } = require('@cloudscape-design/test-utils-converter');
 const { through, task } = require('../utils/gulp-utils');
 const { writeFile, listPublicItems } = require('../utils/files');
+const { pluralizeComponentName } = require('../utils/pluralize');
 const themes = require('../utils/themes');
 
 function toWrapper(componentClass) {
@@ -15,24 +16,92 @@ function toWrapper(componentClass) {
 
 const testUtilsSrcDir = path.resolve('src/test-utils');
 const configs = {
+  common: {
+    buildFinder: ({ componentName, componentNamePlural }) => `
+      ElementWrapper.prototype.find${componentName} = function(selector) {
+        const rootSelector = \`.$\{${toWrapper(componentName)}.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ${toWrapper(componentName)});
+      };
+
+      ElementWrapper.prototype.findAll${componentNamePlural} = function(selector) {
+        return this.findAllComponents(${toWrapper(componentName)}, selector);
+      };`,
+  },
   dom: {
     defaultExport: `export default function wrapper(root: Element = document.body) { if (document && document.body && !document.body.contains(root)) { console.warn('[AwsUi] [test-utils] provided element is not part of the document body, interactions may work incorrectly')}; return new ElementWrapper(root); }`,
-    buildFinderInterface: ({ componentName }) =>
-      `find${componentName}(selector?: string): ${toWrapper(componentName)} | null;`,
+    buildFinderInterface: ({ componentName, componentNamePlural }) => `
+       /**
+        * Returns the wrapper of the first ${componentName} that matches the specified CSS selector.
+        * If no CSS selector is specified, returns the wrapper of the first ${componentName}.
+        * If no matching ${componentName} is found, returns \`null\`.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {${toWrapper(componentName)} | null}
+        */
+       find${componentName}(selector?: string): ${toWrapper(componentName)} | null;
+
+       /**
+        * Returns an array of ${componentName} wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the ${componentNamePlural} inside the current wrapper.
+        * If no matching ${componentName} is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<${toWrapper(componentName)}>}
+        */
+       findAll${componentNamePlural}(selector?: string): Array<${toWrapper(componentName)}>;`,
   },
   selectors: {
     defaultExport: `export default function wrapper(root: string = 'body') { return new ElementWrapper(root); }`,
-    buildFinderInterface: ({ componentName }) =>
-      `find${componentName}(selector?: string): ${toWrapper(componentName)};`,
+    buildFinderInterface: ({ componentName, componentNamePlural }) => `
+       /**
+        * Returns a wrapper that matches the ${componentNamePlural} with the specified CSS selector.
+        * If no CSS selector is specified, returns a wrapper that matches ${componentNamePlural}.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {${toWrapper(componentName)}}
+        */
+       find${componentName}(selector?: string): ${toWrapper(componentName)};
+
+       /**
+        * Returns a multi-element wrapper that matches ${componentNamePlural} with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches ${componentNamePlural}.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<${toWrapper(componentName)}>}
+        */
+       findAll${componentNamePlural}(selector?: string): MultiElementWrapper<${toWrapper(componentName)}>;`,
   },
 };
+
+function generateFindersInterfaces({ testUtilMetaData, testUtilType, configs }) {
+  const { buildFinderInterface } = configs[testUtilType];
+  const findersInterfaces = testUtilMetaData.map(buildFinderInterface);
+
+  // we need to redeclare the interface in its original definition, extending a re-export will not work
+  // https://github.com/microsoft/TypeScript/issues/12607
+  const interfaces = `declare module '@cloudscape-design/test-utils-core/dist/${testUtilType}' {
+      interface ElementWrapper {
+        ${findersInterfaces.join('\n')}
+      }
+  }`;
+
+  return interfaces;
+}
+
+function generateFindersImplementations({ testUtilMetaData, configs }) {
+  const { buildFinder } = configs.common;
+  const findersImplementations = testUtilMetaData.map(buildFinder);
+
+  return findersImplementations.join('\n');
+}
 
 function generateIndexFileContent(testUtilType, testUtilMetaData) {
   const config = configs[testUtilType];
   if (config === undefined) {
     throw new Error('Unknown test util type');
   }
-  const { defaultExport, buildFinderInterface } = config;
 
   return [
     // language=TypeScript
@@ -47,24 +116,9 @@ function generateIndexFileContent(testUtilType, testUtilMetaData) {
         export { ${componentName}Wrapper };
       `;
     }),
-    // we need to redeclare the interface in its original definition, extending a re-export will not work
-    // https://github.com/microsoft/TypeScript/issues/12607
-    `declare module '@cloudscape-design/test-utils-core/dist/${testUtilType}' {
-      interface ElementWrapper {
-        ${testUtilMetaData.map(metaData => buildFinderInterface(metaData)).join('\n')}
-      }
-    }`,
-    ...testUtilMetaData.map(({ componentName }) => {
-      const wrapperName = toWrapper(componentName);
-      // language=TypeScript
-      return `ElementWrapper.prototype.find${componentName} = function(selector) {
-          const rootSelector = \`.$\{${wrapperName}.rootSelector}\`;
-          // casting to 'any' is needed to avoid this issue with generics
-          // https://github.com/microsoft/TypeScript/issues/29132
-          return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, ${wrapperName});
-      };`;
-    }),
-    defaultExport,
+    generateFindersInterfaces({ testUtilMetaData, testUtilType, configs }),
+    generateFindersImplementations({ testUtilMetaData, configs }),
+    config.defaultExport,
   ].join('\n');
 }
 
@@ -77,9 +131,11 @@ function generateTestUtilMetaData(testUtilType) {
 
     const componentNameKebab = componentFolderName;
     const componentName = pascalCase(componentNameKebab);
+    const componentNamePlural = pluralizeComponentName(componentName);
 
     const componentMetaData = {
       componentName,
+      componentNamePlural,
       relPathtestUtilFile,
     };
 
