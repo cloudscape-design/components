@@ -118,9 +118,9 @@ function useDrawerRuntimeOpenClose(
   localDrawers: AppLayoutProps.Drawer[] | null,
   globalDrawers: AppLayoutProps.Drawer[],
   activeDrawerId: string | null,
-  onActiveDrawerChange: (newDrawerId: string | null) => void,
+  onActiveDrawerChange: (newDrawerId: string | null, { initiatedByUserAction }: OnChangeParams) => void,
   activeGlobalDrawersIds: Array<string>,
-  onActiveGlobalDrawersChange: (newDrawerId: string) => void
+  onActiveGlobalDrawersChange: (newDrawerId: string, { initiatedByUserAction }: OnChangeParams) => void
 ) {
   const onDrawerOpened: DrawersToggledListener = useStableCallback((drawerId, params = DEFAULT_ON_CHANGE_PARAMS) => {
     const localDrawer = localDrawers?.find(drawer => drawer.id === drawerId);
