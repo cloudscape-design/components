@@ -223,7 +223,6 @@ test(
     await page.setWindowSize({ width: 500, height: 1000 });
     await page.click('#add-tab');
     await page.click(page.paginationButton('right', true));
-    await page.click(page.paginationButton('right', true));
     await page.click(wrapper.findTabLinkByIndex(7).toSelector());
     await page.waitForAssertion(async () =>
       expect(await page.isExisting(page.paginationButton('right', true))).toBe(false)
