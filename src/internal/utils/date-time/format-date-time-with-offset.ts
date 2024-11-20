@@ -6,58 +6,20 @@ import formatDateIso from './format-date-iso';
 import formatDateLocalized from './format-date-localized';
 import { isIsoDateOnly } from './is-iso-date-only';
 
-export function formatDateRange({
-  startDate,
-  endDate,
-  timeOffset,
-  hideTimeOffset,
-  format,
-  locale,
-}: {
-  startDate: string;
-  endDate: string;
-  hideTimeOffset?: boolean;
-  timeOffset: { startDate?: number; endDate?: number };
-  format: DateRangePickerProps.AbsoluteFormat;
-  locale?: string;
-}): string {
-  const isDateOnly = isIsoDateOnly(startDate) && isIsoDateOnly(endDate);
-  return (
-    formatDate({
-      date: startDate,
-      format,
-      hideTimeOffset,
-      isDateOnly,
-      timeOffset: timeOffset.startDate,
-      locale,
-    }) +
-    ' — ' +
-    formatDate({
-      date: endDate,
-      format,
-      hideTimeOffset,
-      isDateOnly,
-      timeOffset: timeOffset.endDate,
-      locale,
-    })
-  );
-}
-
-function formatDate({
+export function formatDateTimeWithOffset({
   date,
   format,
   hideTimeOffset,
-  isDateOnly,
   timeOffset,
   locale,
 }: {
   date: string;
   format: DateRangePickerProps.AbsoluteFormat;
   hideTimeOffset?: boolean;
-  isDateOnly: boolean;
   timeOffset?: number;
   locale?: string;
 }) {
+  const isDateOnly = isIsoDateOnly(date);
   switch (format) {
     case 'long-localized': {
       return formatDateLocalized({ date, hideTimeOffset, isDateOnly, locale, timeOffset });

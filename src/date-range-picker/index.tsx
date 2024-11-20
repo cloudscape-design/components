@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalBox from '../box/internal';
 import { useInternalI18n } from '../i18n/context';
 import InternalIcon from '../icon/internal';
 import { getBaseProps } from '../internal/base-component';
@@ -25,7 +24,8 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development.js';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { formatDateRange, isIsoDateOnly } from '../internal/utils/date-time';
+import { isIsoDateOnly } from '../internal/utils/date-time';
+import { formatDateTimeWithOffset } from '../internal/utils/date-time/format-date-time-with-offset';
 import { normalizeLocale } from '../internal/utils/locale';
 import { joinStrings } from '../internal/utils/strings/join-strings';
 import { DateRangePickerDropdown } from './dropdown';
@@ -54,48 +54,35 @@ function renderDateRange({
   hideTimeOffset?: boolean;
   timeOffset: { startDate?: number; endDate?: number };
 }) {
-  if (!range) {
-    return (
-      <span className={styles['label-text']} aria-disabled={true}>
-        {placeholder}
-      </span>
-    );
-  }
-
-  const formatted =
-    range.type === 'relative' ? (
-      formatRelativeRange?.(range) ?? ''
-    ) : (
-      <BreakSpaces
-        text={formatDateRange({
-          startDate: range.startDate,
-          endDate: range.endDate,
-          timeOffset,
+  const firstPart = range
+    ? range.type === 'relative'
+      ? formatRelativeRange?.(range) ?? ''
+      : formatDateTimeWithOffset({
+          date: range.startDate,
+          timeOffset: timeOffset.startDate,
           hideTimeOffset,
           format: absoluteFormat,
           locale,
-        })}
-      />
-    );
+        })
+    : placeholder;
+
+  const secondPart =
+    range?.type === 'absolute'
+      ? formatDateTimeWithOffset({
+          date: range.endDate,
+          timeOffset: timeOffset.endDate,
+          hideTimeOffset,
+          format: absoluteFormat,
+          locale,
+        })
+      : '';
 
   return (
-    <InternalBox fontWeight="normal" display="inline" color="inherit" variant="span">
-      {formatted}
-    </InternalBox>
-  );
-}
-
-function BreakSpaces({ text }: { text: string }) {
-  const tokens = text.split(/( )/);
-  return (
-    <>
-      {tokens.map((token, index) => (
-        <React.Fragment key={index}>
-          {token.length > 1 ? <span className={styles['label-token-nowrap']}>{token}</span> : token}
-          {token === ' ' && <wbr />}
-        </React.Fragment>
-      ))}
-    </>
+    <span className={(!range && styles['label-text']) || undefined} aria-disabled={!range}>
+      <span className={range?.type === 'absolute' ? styles['label-token-nowrap'] : undefined}>{firstPart}</span>
+      <span>{secondPart && ' — '}</span>
+      <span className={styles['label-token-nowrap']}>{secondPart}</span>
+    </span>
   );
 }
 
