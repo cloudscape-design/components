@@ -1,0 +1,23 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '~design-tokens' as awsui;
+
+.kvp {
+  display: flex;
+  justify-content: space-between;
+  padding-block: awsui.$space-scaled-s;
+
+  &:not(:last-child) {
+    border-block-end: 1px solid awsui.$color-border-control-default;
+  }
+}
+
+.shortcut {
+  background: awsui.$color-background-input-disabled;
+  padding-block: 2px;
+  padding-inline: 4px;
+  font-family: monospace;
+}
