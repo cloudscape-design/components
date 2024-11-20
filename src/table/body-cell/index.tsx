@@ -146,16 +146,12 @@ export function TableBodyCell<ItemType>(props: TableBodyCellProps<ItemType>) {
   // Inline editing is deactivated for expandable column because editable cells are interactive
   // and cannot include interactive content such as expand toggles.
   if (editDisabledReason && !isExpandableColumnCell) {
-    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...props} isEditable={true} />;
+    return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...props} />;
   }
   if ((props.isEditable || props.isEditing) && !isExpandableColumnCell) {
-    return <TableCellEditable {...props} isEditable={true} />;
+    return <TableCellEditable {...props} />;
   }
 
   const { column, item } = props;
-  return (
-    <TableTdElement {...props} isEditable={false}>
-      {column.cell(item)}
-    </TableTdElement>
-  );
+  return <TableTdElement {...props}>{column.cell(item)}</TableTdElement>;
 }

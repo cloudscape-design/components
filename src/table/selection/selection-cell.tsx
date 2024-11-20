@@ -31,13 +31,7 @@ export function TableHeaderSelectionCell({
   ...props
 }: TableHeaderSelectionCellProps) {
   return (
-    <TableThElement
-      {...props}
-      hidden={props.hidden}
-      isSelection={true}
-      colIndex={0}
-      focusedComponent={focusedComponent}
-    >
+    <TableThElement {...props} isSelection={true} colIndex={0} focusedComponent={focusedComponent}>
       {getSelectAllProps ? (
         <SelectionControl
           onFocusDown={event => {
