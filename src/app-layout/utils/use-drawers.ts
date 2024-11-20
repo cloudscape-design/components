@@ -261,7 +261,6 @@ export function useDrawers(
 
   const hasOwnDrawers = !!drawers;
   // support toolsOpen in runtime-drawers-only mode
-  // support toolsOpen in runtime-drawers-only mode
   let activeDrawerIdResolved =
     toolsProps?.toolsOpen && !hasOwnDrawers
       ? TOOLS_DRAWER_ID
