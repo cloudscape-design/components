@@ -19,7 +19,8 @@ export interface InternalCarouselProps extends CarouselProps, InternalBaseCompon
 export const InternalCarousel = ({
   __internalRootRef,
   items,
-  //   variant,
+  variant,
+  //   visibleItemNumber,
   height,
   ariaLabel,
   ariaLabelNext,
@@ -72,7 +73,7 @@ export const InternalCarousel = ({
     <div {...props} className={clsx(styles.root, props.className)} ref={mergedRef} aria-label={ariaLabel}>
       <ul
         ref={carouselWrapperRef}
-        className={styles['carousel-wrapper']}
+        className={clsx(styles['carousel-wrapper'], styles[`${variant}`])}
         style={{ height: height ? `${height}px` : '300px' }}
       >
         {items.map(({ content, backgroundStyle }, index) => {

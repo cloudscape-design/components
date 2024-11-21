@@ -9,6 +9,9 @@ export interface CarouselProps extends BaseComponentProps {
 
   height?: number;
 
+  // Only applicable with multiple variant
+  visibleItemNumber?: number;
+
   ariaLabel: string;
   ariaLabelNext: string;
   ariaLabelPrevious: string;

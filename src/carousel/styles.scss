@@ -12,9 +12,9 @@
 }
 
 .hide {
-  opacity: 0;
-  visibility: none;
-  display: none;
+  //   opacity: 0;
+  //   visibility: none;
+  //   display: none;
 }
 
 .content-wrapper {
@@ -32,12 +32,14 @@
 .carousel-wrapper {
   list-style-type: none;
   padding-inline-start: 0;
+
+  &.multiple {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
 }
 
 .carousel-item {
-  block-size: 100%;
-  margin-inline: 20px;
-
   border-start-start-radius: 16px;
   border-start-end-radius: 16px;
   border-end-start-radius: 16px;
