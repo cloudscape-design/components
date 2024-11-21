@@ -332,8 +332,12 @@ const PropertyFilterInternal = React.forwardRef(
         query={internalQuery}
         isSecondary={isSecondary}
         tokenIndex={tokenIndex}
-        onUpdateToken={(token, releasedTokens) => {
-          (isSecondary ? updateSecondaryToken : updateToken)(tokenIndex, token, releasedTokens);
+        onUpdateToken={(token, releasedTokens, addToMyFilters) => {
+          if (isSecondary) {
+            updateSecondaryToken(tokenIndex, token, addToMyFilters);
+          } else {
+            updateToken(tokenIndex, token, releasedTokens);
+          }
         }}
         onUpdateOperation={updateOperation}
         onRemoveToken={() => {

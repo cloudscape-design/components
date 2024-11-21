@@ -9,6 +9,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import InternalButton from '../button/internal.js';
 import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import InternalButtonDropdown from '../button-dropdown/internal.js';
+import InternalCheckbox from '../checkbox/internal.js';
 import InternalFormField from '../form-field/internal.js';
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
 import { FormFieldContext } from '../internal/context/form-field-context.js';
@@ -16,6 +17,7 @@ import { NonCancelableEventHandler } from '../internal/events/index.js';
 import { useListFocusController } from '../internal/hooks/use-list-focus-controller.js';
 import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import InternalSpaceBetween from '../space-between/internal.js';
 import {
   GeneratedAnalyticsMetadataPropertyEditCancel,
   GeneratedAnalyticsMetadataPropertyEditConfirm,
@@ -37,6 +39,7 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export interface TokenEditorProps {
+  isSecondary?: boolean;
   supportsGroups: boolean;
   asyncProperties?: boolean;
   asyncProps: DropdownStatusProps;
@@ -46,7 +49,7 @@ export interface TokenEditorProps {
   filteringOptions: readonly InternalFilteringOption[];
   i18nStrings: I18nStringsInternal;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
-  onSubmit: () => void;
+  onSubmit: (addToMyFilters: boolean) => void;
   onDismiss: () => void;
   tokensToCapture: InternalToken[];
   onTokenCapture: (token: InternalToken) => void;
@@ -56,6 +59,7 @@ export interface TokenEditorProps {
 }
 
 export function TokenEditor({
+  isSecondary = false,
   supportsGroups,
   asyncProperties,
   asyncProps,
@@ -73,6 +77,7 @@ export function TokenEditor({
   tempGroup,
   onChangeTempGroup,
 }: TokenEditorProps) {
+  const [addToMyFilters, setAddToMyFilters] = useState(false);
   const [nextFocusIndex, setNextFocusIndex] = useState<null | number>(null);
   const tokenListRef = useListFocusController({
     nextFocusIndex,
@@ -128,6 +133,7 @@ export function TokenEditor({
   return (
     <div className={styles['token-editor']} ref={tokenListRef}>
       <TokenEditorFields
+        isSecondary={isSecondary}
         supportsGroups={supportsGroups}
         tokens={groups.map(group => group.token)}
         onRemove={index => {
@@ -142,9 +148,10 @@ export function TokenEditor({
           onTokenRelease(releasedToken);
           setNextFocusIndex(index);
         }}
-        onSubmit={onSubmit}
+        onSubmit={() => onSubmit(addToMyFilters)}
         renderProperty={index => (
           <PropertyInput
+            readOnly={isSecondary}
             property={groups[index].property}
             onChangePropertyKey={groups[index].onChangePropertyKey}
             asyncProps={asyncProperties ? asyncProps : null}
@@ -201,7 +208,7 @@ export function TokenEditor({
               }
             }}
             disabled={tokensToCapture.length === 0}
-            showMainActionOnly={tokensToCapture.length === 0}
+            showMainActionOnly={tokensToCapture.length === 0 || isSecondary}
             mainAction={{
               text: i18nStrings.tokenEditorAddNewTokenLabel ?? '',
               onClick: () => {
@@ -217,39 +224,51 @@ export function TokenEditor({
       )}
 
       <div className={styles['token-editor-actions']}>
-        <span
-          {...getAnalyticsMetadataAttribute({
-            action: 'editCancel',
-          } as Partial<GeneratedAnalyticsMetadataPropertyEditCancel>)}
-        >
-          <InternalButton
-            formAction="none"
-            variant="link"
-            className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
-            onClick={onDismiss}
+        {isSecondary ? (
+          <div>
+            <InternalCheckbox checked={addToMyFilters} onChange={({ detail }) => setAddToMyFilters(detail.checked)}>
+              Add to my filters
+            </InternalCheckbox>
+          </div>
+        ) : (
+          <div />
+        )}
+        <InternalSpaceBetween size="xxs" direction="horizontal">
+          <div
+            {...getAnalyticsMetadataAttribute({
+              action: 'editCancel',
+            } as Partial<GeneratedAnalyticsMetadataPropertyEditCancel>)}
           >
-            {i18nStrings.cancelActionText}
-          </InternalButton>
-        </span>
-        <span
-          {...getAnalyticsMetadataAttribute({
-            action: 'editConfirm',
-          } as Partial<GeneratedAnalyticsMetadataPropertyEditConfirm>)}
-        >
-          <InternalButton
-            className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
-            formAction="none"
-            onClick={onSubmit}
+            <InternalButton
+              formAction="none"
+              variant="link"
+              className={clsx(styles['token-editor-cancel'], testUtilStyles['token-editor-cancel'])}
+              onClick={onDismiss}
+            >
+              {i18nStrings.cancelActionText}
+            </InternalButton>
+          </div>
+          <div
+            {...getAnalyticsMetadataAttribute({
+              action: 'editConfirm',
+            } as Partial<GeneratedAnalyticsMetadataPropertyEditConfirm>)}
           >
-            {i18nStrings.applyActionText}
-          </InternalButton>
-        </span>
+            <InternalButton
+              className={clsx(styles['token-editor-submit'], testUtilStyles['token-editor-submit'])}
+              formAction="none"
+              onClick={() => onSubmit(addToMyFilters)}
+            >
+              {i18nStrings.applyActionText}
+            </InternalButton>
+          </div>
+        </InternalSpaceBetween>
       </div>
     </div>
   );
 }
 
 interface TokenEditorLayout {
+  isSecondary: boolean;
   tokens: InternalToken[];
   supportsGroups: boolean;
   onRemove: (index: number) => void;
@@ -262,6 +281,7 @@ interface TokenEditorLayout {
 }
 
 function TokenEditorFields({
+  isSecondary,
   tokens,
   supportsGroups,
   onRemove,
@@ -365,7 +385,7 @@ function TokenEditorFields({
                       disabled: token.standaloneIndex !== undefined,
                     },
                     { id: 'remove-from-group', text: i18nStrings.tokenEditorTokenRemoveFromGroupLabel ?? '' },
-                  ]}
+                  ].filter(item => !isSecondary || item.id !== 'remove-from-group')}
                   onItemClick={itemId => {
                     switch (itemId) {
                       case 'remove':

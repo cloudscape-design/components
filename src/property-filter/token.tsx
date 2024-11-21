@@ -32,7 +32,11 @@ interface TokenProps {
   query: InternalQuery;
   isSecondary: boolean;
   tokenIndex: number;
-  onUpdateToken: (updatedToken: InternalToken | InternalTokenGroup, releasedTokens: InternalToken[]) => void;
+  onUpdateToken: (
+    updatedToken: InternalToken | InternalTokenGroup,
+    releasedTokens: InternalToken[],
+    addToMyFilters: boolean
+  ) => void;
   onUpdateOperation: (updatedOperation: JoinOperation) => void;
   onRemoveToken: () => void;
   asyncProperties?: boolean;
@@ -118,12 +122,13 @@ export const TokenButton = ({
         } else {
           const newTokens = tokens.filter((_, index) => index !== removeIndex);
           const updatedToken = newTokens.length === 1 ? newTokens[0] : { operation: groupOperation, tokens: newTokens };
-          onUpdateToken(updatedToken, []);
+          onUpdateToken(updatedToken, [], false);
         }
       }}
       disabled={disabled}
       editorContent={
         <TokenEditor
+          isSecondary={isSecondary}
           supportsGroups={enableTokenGroups}
           filteringProperties={filteringProperties}
           filteringOptions={filteringOptions}
@@ -145,10 +150,10 @@ export const TokenButton = ({
           onDismiss={() => {
             tokenRef.current?.closeEditor();
           }}
-          onSubmit={() => {
+          onSubmit={addToMyFilters => {
             const updatedToken =
               tempTokens.length === 1 ? tempTokens[0] : { operation: groupOperation, tokens: tempTokens };
-            onUpdateToken(updatedToken, tempReleasedTokens);
+            onUpdateToken(updatedToken, tempReleasedTokens, addToMyFilters);
             tokenRef.current?.closeEditor();
           }}
         />
@@ -161,7 +166,7 @@ export const TokenButton = ({
         setTempReleasedTokens([]);
       }}
       groupOperation={groupOperation}
-      onChangeGroupOperation={operation => onUpdateToken({ operation, tokens }, [])}
+      onChangeGroupOperation={operation => onUpdateToken({ operation, tokens }, [], false)}
       groupAriaLabel={i18nStrings.groupAriaLabel({ operation: groupOperation, tokens })}
       groupEditAriaLabel={i18nStrings.groupEditAriaLabel({ operation: groupOperation, tokens })}
       hasGroups={hasGroups}

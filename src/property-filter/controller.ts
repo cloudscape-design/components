@@ -91,17 +91,23 @@ export const getQueryActions = ({
   const updateSecondaryToken = (
     updateIndex: number,
     updatedToken: InternalToken | InternalTokenGroup,
-    releasedTokens: InternalToken[]
+    addToMyFilters: boolean
   ) => {
-    const secondaryTokens = [...query.secondaryTokens];
-    secondaryTokens.splice(updateIndex, 1);
-
-    const nestedTokens = tokenGroupToTokens<InternalToken>([updatedToken]);
-    const capturedTokenIndices = nestedTokens.map(token => token.standaloneIndex).filter(index => index !== undefined);
-    const tokens = query.tokens.filter((_, index) => index === updateIndex || !capturedTokenIndices.includes(index));
-    tokens.push(updatedToken);
-    tokens.push(...releasedTokens);
-    setQuery({ ...query, secondaryTokens, tokens });
+    if (addToMyFilters) {
+      const secondaryTokens = [...query.secondaryTokens];
+      secondaryTokens.splice(updateIndex, 1);
+      const nestedTokens = tokenGroupToTokens<InternalToken>([updatedToken]);
+      const capturedTokenIndices = nestedTokens
+        .map(token => token.standaloneIndex)
+        .filter(index => index !== undefined);
+      const tokens = query.tokens.filter((_, index) => index === updateIndex || !capturedTokenIndices.includes(index));
+      tokens.push(updatedToken);
+      setQuery({ ...query, secondaryTokens, tokens });
+    } else {
+      const secondaryTokens = [...query.secondaryTokens];
+      secondaryTokens.splice(updateIndex, 1, updatedToken);
+      setQuery({ ...query, secondaryTokens });
+    }
   };
 
   const removeToken = (removeIndex: number) => {
