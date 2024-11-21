@@ -72,6 +72,7 @@ function TestComponent(props: Partial<TableHeaderCellProps<typeof testItem>>) {
       columnId="id"
       cellRef={() => {}}
       tableRole={tableRole}
+      variant="container"
       {...props}
     />
   );
