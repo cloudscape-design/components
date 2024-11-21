@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 import { format, startOfDay, startOfWeek, subWeeks } from 'date-fns';
+import { isEqual } from 'lodash';
 
 import { useCollection } from '@cloudscape-design/collection-hooks';
 
@@ -144,7 +145,7 @@ export default function () {
     onAdd: (
       prev: any,
       next: PropertyFilterProps.Token | PropertyFilterProps.TokenGroup
-    ) => PropertyFilterProps.Token | PropertyFilterProps.TokenGroup
+    ) => null | PropertyFilterProps.Token | PropertyFilterProps.TokenGroup
   ) => {
     const query = propertyFilterProps.query;
     const matchToken = (
@@ -161,7 +162,11 @@ export default function () {
     const secondaryTokens = [...(query.secondaryTokens ?? [])];
     const matchedIndex = matched ? secondaryTokens.indexOf(matched) : secondaryTokens.length;
     const tokenToAdd = matched ? onAdd(matched, token) : token;
-    secondaryTokens.splice(matchedIndex, 1, tokenToAdd);
+    if (tokenToAdd) {
+      secondaryTokens.splice(matchedIndex, 1, tokenToAdd);
+    } else {
+      secondaryTokens.splice(matchedIndex, 1);
+    }
     actions.setPropertyFiltering({ ...query, secondaryTokens });
   };
 
@@ -171,7 +176,7 @@ export default function () {
         ? prev.value.filter((v: string) => v !== value)
         : [...prev.value, value];
       nextValue = 'operator' in next && prev.operator === next.operator ? nextValue : [value];
-      return { ...next, value: nextValue.length === 0 ? [value] : nextValue };
+      return nextValue.length === 0 ? null : { ...next, value: nextValue };
     });
   };
 
@@ -181,11 +186,12 @@ export default function () {
         ? prev.value.filter((v: string) => v !== value)
         : [...prev.value, value];
       nextValue = 'operator' in next && prev.operator === next.operator ? nextValue : [value];
-      return { ...next, value: nextValue.length === 0 ? [value] : nextValue };
+      return nextValue.length === 0 ? null : { ...next, value: nextValue };
     });
   };
 
   const onAddLastOccurrenceQuickFilter = (value: string) => {
+    const onAddNext = (prev: any, next: any): any => (isEqual(prev, next) ? null : next);
     switch (value) {
       case 'TODAY':
         return onAddQuickFilter(
@@ -194,7 +200,7 @@ export default function () {
             operator: '>=',
             value: format(startOfDay(new Date()), 'yyyy-MM-dd'),
           },
-          (prev, next) => next
+          onAddNext
         );
       case 'THIS_WEEK':
         return onAddQuickFilter(
@@ -203,7 +209,7 @@ export default function () {
             operator: '>=',
             value: format(startOfWeek(new Date()), 'yyyy-MM-dd'),
           },
-          (prev, next) => next
+          onAddNext
         );
       case 'LAST_WEEK':
         return onAddQuickFilter(
@@ -218,7 +224,7 @@ export default function () {
               { propertyKey: 'lasteventat', operator: '<', value: format(startOfWeek(new Date()), 'yyyy-MM-dd') },
             ],
           },
-          (prev, next) => next
+          onAddNext
         );
       default:
         throw new Error('Invariant violation: unsupported filter.');
@@ -309,7 +315,7 @@ export default function () {
                     </FormField>
 
                     <FormField label="Average latency, ms">
-                      <SpaceBetween size="s" direction="horizontal">
+                      <SpaceBetween size="s" direction="horizontal" alignItems="center">
                         <FormField description="min">
                           <div style={{ minWidth: 150 }}>
                             <Slider
@@ -348,6 +354,24 @@ export default function () {
                             />
                           </div>
                         </FormField>
+                        <Button
+                          variant="link"
+                          onClick={() => {
+                            setLatencyFilter({ min: 0, max: 0 });
+                            onAddQuickFilter(
+                              {
+                                operation: 'and',
+                                tokens: [
+                                  { propertyKey: 'averagelatency', operator: '>=', value: 0 },
+                                  { propertyKey: 'averagelatency', operator: '<=', value: 0 },
+                                ],
+                              },
+                              () => null
+                            );
+                          }}
+                        >
+                          reset
+                        </Button>
                       </SpaceBetween>
                     </FormField>
                   </SpaceBetween>

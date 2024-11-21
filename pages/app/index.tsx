@@ -35,6 +35,7 @@ function isAppLayoutPage(pageId?: string) {
   const appLayoutPages = [
     'app-layout',
     'content-layout',
+    'quick-filters',
     'grid-navigation-custom',
     'expandable-rows-test',
     'container/sticky-permutations',
