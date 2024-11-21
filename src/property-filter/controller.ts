@@ -31,7 +31,7 @@ import {
 } from './utils';
 
 type I18nStringsController = I18nStringsOperators &
-  Pick<I18nStrings, 'operatorsText' | 'groupPropertiesText' | 'groupValuesText'>;
+  Pick<I18nStrings, 'operatorsText' | 'groupPropertiesText' | 'groupValuesText' | 'recentOptionsLabel'>;
 
 export const getQueryActions = ({
   query,
@@ -215,13 +215,30 @@ export function getPropertySuggestions<T>(
   filteringProperties: readonly InternalFilteringProperty[],
   customGroupsText: readonly GroupText[],
   i18nStrings: I18nStringsController,
-  filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T
+  filteringPropertyToOption: (filteringProperty: InternalFilteringProperty) => T,
+  recentOptions: readonly Token[]
 ) {
   const defaultGroup: OptionGroup<T> = {
     label: i18nStrings.groupPropertiesText ?? '',
     options: [],
   };
   const customGroups: { [K in string]: OptionGroup<T> } = {};
+
+  const recentOptionsArray = recentOptions.length
+    ? [
+        {
+          label: i18nStrings.recentOptionsLabel,
+          options: recentOptions.map(({ value, operator, propertyKey }) => {
+            const property = filteringProperties.find(p => p.propertyKey === propertyKey)?.propertyLabel || propertyKey;
+            return {
+              value: property + ' ' + operator + ' ' + value,
+              label: value,
+              __labelPrefix: property + ' ' + operator,
+            };
+          }),
+        },
+      ]
+    : [];
 
   filteringProperties.forEach(filteringProperty => {
     const { propertyGroup } = filteringProperty;
@@ -240,7 +257,7 @@ export function getPropertySuggestions<T>(
   });
   const defaultGroupArray = defaultGroup.options.length ? [defaultGroup] : [];
   const customGroupsArray = Object.keys(customGroups).map(groupKey => customGroups[groupKey]);
-  return [...defaultGroupArray, ...customGroupsArray];
+  return [...recentOptionsArray, ...defaultGroupArray, ...customGroupsArray];
 }
 
 export const getAutosuggestOptions = (
@@ -248,7 +265,8 @@ export const getAutosuggestOptions = (
   filteringProperties: readonly InternalFilteringProperty[],
   filteringOptions: readonly InternalFilteringOption[],
   customGroupsText: readonly GroupText[],
-  i18nStrings: I18nStringsController
+  i18nStrings: I18nStringsController,
+  recentOptions: readonly Token[]
 ) => {
   switch (parsedText.step) {
     case 'property': {
@@ -276,7 +294,8 @@ export const getAutosuggestOptions = (
             filteringProperties,
             customGroupsText,
             i18nStrings,
-            filteringPropertyToAutosuggestOption
+            filteringPropertyToAutosuggestOption,
+            recentOptions
           ),
           {
             options: getAllowedOperators(parsedText.property).map(value => ({
@@ -301,7 +320,8 @@ export const getAutosuggestOptions = (
                 filteringProperties,
                 customGroupsText,
                 i18nStrings,
-                filteringPropertyToAutosuggestOption
+                filteringPropertyToAutosuggestOption,
+                recentOptions
               )
             : []),
           ...(needsValueSuggestions

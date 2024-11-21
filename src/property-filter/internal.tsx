@@ -85,6 +85,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups,
+      recentOptions,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -188,7 +189,8 @@ const PropertyFilterInternal = React.forwardRef(
       internalProperties,
       internalOptions,
       customGroupsText,
-      i18nStrings
+      i18nStrings,
+      recentOptions || []
     );
 
     const createToken = (currentText: string) => {

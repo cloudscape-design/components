@@ -109,6 +109,12 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * ```
    */
   filteringOptions?: ReadonlyArray<PropertyFilterProps.FilteringOption>;
+
+  /**
+   * An array of filtering options to show as "recently used" in the filtering dropdown.
+   */
+  recentOptions?: ReadonlyArray<PropertyFilterProps.Token>;
+
   /**
    * An array of objects that contain localized, human-readable strings for the labels of custom groups within the filtering dropdown. Use group property to associate the strings with your custom group of options. Define the following values for each group:
    *
@@ -301,6 +307,8 @@ export namespace PropertyFilterProps {
     tokenEditorAddTokenActionsAriaLabel?: string;
     tokenEditorAddExistingTokenAriaLabel?: (token: FormattedToken) => string;
     tokenEditorAddExistingTokenLabel?: (token: FormattedToken) => string;
+
+    recentOptionsLabel?: string;
   }
 
   export interface FormattedToken {
