@@ -54,7 +54,8 @@ export function PropertyInput({
       value: propertyKey,
       label: propertyLabel,
       dontCloseOnSelect: true,
-    })
+    }),
+    []
   );
 
   const allPropertiesOption = {
