@@ -52,7 +52,12 @@
   /* used for identifying element */
 }
 
-.day {
+.quarter {
+  /* used for identifying element */
+}
+
+.day,
+.month {
   border-block-end: calendar.$grid-border;
   border-inline-end: calendar.$grid-border;
   padding-block: awsui.$space-xxs;
@@ -83,28 +88,33 @@
     );
   }
 
-  > .day-inner {
+  > .day-inner,
+  > .month-inner {
     position: relative;
     z-index: 1;
   }
 }
 
-.in-first-row:not(.in-previous-month) {
+.in-first-row:not(.in-previous-month),
+.in-first-row:not(.in-previous-year) {
   border-block-start: calendar.$grid-border;
 }
 
-.in-previous-month:not(.last-day-of-month) {
+.in-previous-month:not(.last-day-of-month),
+.in-previous-year:not(.last-month-of-year) {
   border-inline-end-color: transparent;
 }
 
-.in-next-month {
+.in-next-month,
+.in-next-year {
   border-color: transparent;
 }
 
 .in-first-column {
   border-inline-start: 1px solid transparent;
 
-  &.in-current-month {
+  &.in-current-month,
+  &.in-current-year {
     border-inline-start: calendar.$grid-border;
   }
 }
@@ -112,7 +122,8 @@
 .enabled {
   cursor: pointer;
 
-  &.in-current-month {
+  &.in-current-month,
+  &.in-current-year {
     color: calendar.$grid-date-color;
     &:not(.in-range),
     &.end-date.start-date,
@@ -138,7 +149,8 @@
   }
 }
 
-.today:not(.in-range) {
+.today:not(.in-range),
+.this-month:not(.in-range) {
   background-color: calendar.$grid-current-date-background-color;
   border-start-start-radius: awsui.$border-radius-item;
   border-start-end-radius: awsui.$border-radius-item;
@@ -186,7 +198,8 @@
     }
   }
 
-  > .day-inner {
+  > .day-inner,
+  > .month-inner {
     color: calendar.$grid-selected-text-color;
     position: relative;
     z-index: 2;

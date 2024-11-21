@@ -106,7 +106,8 @@ export default function RelativeRangePicker({
     });
   }
 
-  let initialCustomTimeUnit: DateRangePickerProps.TimeUnit = dateOnly ? 'day' : 'minute';
+  let initialCustomTimeUnit: DateRangePickerProps.TimeUnit =
+    granularity === 'month' ? 'month' : dateOnly ? 'day' : 'minute';
   if (!finalUnits.includes(initialCustomTimeUnit)) {
     initialCustomTimeUnit = finalUnits[0];
   }

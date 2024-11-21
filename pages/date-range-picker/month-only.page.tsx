@@ -4,21 +4,17 @@ import React, { useState } from 'react';
 
 import {
   Box,
-  // Checkbox,
-  // DateRangePicker,
-  // DateRangePickerProps,
-  // FormField,
+  Checkbox,
+  DateRangePicker,
+  DateRangePickerProps,
+  FormField,
   Link,
-  // SegmentedControl,
+  SegmentedControl,
   SpaceBetween,
 } from '~components';
 import RangeCalendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 
-import {
-  i18nStrings,
-  i18nStringsDateOnly,
-  //  isValid, relativeOptions
-} from './common';
+import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
 
 function RangeCalendarScenario() {
   const [value, setValue] = useState<DateRangePickerCalendarProps['value']>({
@@ -29,6 +25,8 @@ function RangeCalendarScenario() {
     dateOnly,
     // setDateOnly
   ] = useState(false);
+
+  // const testDisableMonthFunction = (date: Date) => ![2,4,6].includes(date.getMonth());
 
   return (
     <Box padding="s">
@@ -42,9 +40,9 @@ function RangeCalendarScenario() {
           setValue={setValue}
           locale="en-GB"
           i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
-          dateOnly={dateOnly}
+          // dateOnly={dateOnly}
           timeInputFormat="hh:mm"
-          isDateEnabled={date => date.getDate() !== 15}
+          // isDateEnabled={date => ![2,4,6].includes(date.getMonth())}
           customAbsoluteRangeControl={undefined}
           granularity="month"
         />
@@ -56,16 +54,16 @@ function RangeCalendarScenario() {
 }
 
 export default function DatePickerScenario() {
-  // const [showRelativeOptions, setShowRelativeOptions] = useState(true);
-  // const [dateOnly, setDateOnly] = useState(false);
-  // const [invalid, setInvalid] = useState(false);
-  // const [warning, setWarning] = useState(false);
-  // const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
-  // const [value, setValue] = useState<DateRangePickerProps['value']>(null);
+  const [showRelativeOptions, setShowRelativeOptions] = useState(true);
+  const [dateOnly, setDateOnly] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const [warning, setWarning] = useState(false);
+  const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
+  const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
   return (
     <Box padding="s">
-      {/* <SpaceBetween direction="vertical" size="m">
+      <SpaceBetween direction="vertical" size="m">
         <h1>Date range picker simple version</h1>
         <SegmentedControl
           selectedId={rangeSelectorMode}
@@ -96,18 +94,19 @@ export default function DatePickerScenario() {
             value={value}
             locale="en-GB"
             i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
-            placeholder={'Filter by a date and time range'}
+            placeholder={'Filter by a month range'}
             onChange={e => setValue(e.detail.value)}
             relativeOptions={showRelativeOptions ? relativeOptions : []}
             isValidRange={isValid}
-            dateOnly={dateOnly}
-            timeInputFormat="hh:mm"
+            // dateOnly={dateOnly}
+            // timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
-            isDateEnabled={date => date.getDate() !== 14 && date.getDate() !== 15}
-            dateDisabledReason={date => (date.getDate() === 14 || date.getDate() === 15 ? 'Disabled reason' : '')}
+            isDateEnabled={() => true}
+            // isDateEnabled={date => date.getDate() !== 14 && date.getDate() !== 15}
+            // dateDisabledReason={date => (date.getDate() === 14 || date.getDate() === 15 ? 'Disabled reason' : '')}
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
-            invalid={invalid}
-            warning={warning}
+            // invalid={invalid}
+            // warning={warning}
             granularity="month"
           />
         </FormField>
@@ -117,7 +116,7 @@ export default function DatePickerScenario() {
       </SpaceBetween>
       <br />
       <br />
-      <br /> */}
+      <br />
       <RangeCalendarScenario />
     </Box>
   );

@@ -9,6 +9,8 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 
+export type Granularity = CalendarProps.Granularity; //'day' | 'month';
+
 export interface DateRangePickerBaseProps {
   /**
    * The current date range value. Can be either an absolute time range
@@ -122,7 +124,7 @@ export interface DateRangePickerBaseProps {
    * Specifies the granularity at which users will be able to select a date range.
    * Defaults to `day`.
    **/
-  granularity?: CalendarProps.Granularity;
+  granularity?: Granularity;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -396,6 +398,16 @@ export namespace DateRangePickerProps {
     previousMonthAriaLabel?: string;
 
     /**
+     * An aria label for the 'next year' button.
+     */
+    nextYearAriaLabel?: string;
+
+    /**
+     * An aria label for the 'previous year' button.
+     */
+    previousYearAriaLabel?: string;
+
+    /**
      * Visible label for the Start Date input for the
      * absolute range.
      */
@@ -445,6 +457,8 @@ export type RangeCalendarI18nStrings = Pick<
   | 'todayAriaLabel'
   | 'nextMonthAriaLabel'
   | 'previousMonthAriaLabel'
+  | 'nextYearAriaLabel'
+  | 'previousYearAriaLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
   | 'endDateLabel'

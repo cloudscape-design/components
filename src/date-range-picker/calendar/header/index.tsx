@@ -3,62 +3,73 @@
 import React from 'react';
 import { add } from 'date-fns';
 
-import { renderMonthAndYear } from '../../../calendar/utils/intl';
+import { CalendarProps } from '../../../calendar/interfaces';
+import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl';
 import { useInternalI18n } from '../../../i18n/context.js';
 import InternalLiveRegion from '../../../live-region/internal';
-import { NextMonthButton, PrevMonthButton } from './header-button';
+import { NextPageButton, PrevPageButton } from './header-button';
 
 import styles from '../../styles.css.js';
 
 interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
-  onChangeMonth: (date: Date) => void;
-  previousMonthLabel?: string;
-  nextMonthLabel?: string;
+  onChangePage: (date: Date) => void;
+  previousPageLabel?: string;
+  nextPageLabel?: string;
   isSingleGrid: boolean;
   headingIdPrefix: string;
+  granularity?: CalendarProps.Granularity;
 }
 
 export default function CalendarHeader({
   baseDate,
   locale,
-  onChangeMonth,
-  previousMonthLabel,
-  nextMonthLabel,
+  onChangePage,
+  previousPageLabel,
+  nextPageLabel,
   isSingleGrid,
   headingIdPrefix,
+  granularity = 'day',
 }: CalendarHeaderProps) {
   const i18n = useInternalI18n('calendar');
-  const prevMonthLabel = renderMonthAndYear(locale, add(baseDate, { months: -1 }));
-  const currentMonthLabel = renderMonthAndYear(locale, baseDate);
+  const renderLabel = granularity === 'day' ? renderMonthAndYear : renderYear;
+  const prevPageLabel = renderLabel(locale, add(baseDate, granularity === 'day' ? { months: -1 } : { years: -1 }));
+  const currentPageLabel = renderLabel(locale, baseDate);
+  const pageUnit = granularity === 'day' ? 'month' : 'year';
 
   return (
     <>
       <div className={styles['calendar-header']}>
-        <PrevMonthButton
-          ariaLabel={i18n('previousMonthAriaLabel', previousMonthLabel)}
+        <PrevPageButton
+          ariaLabel={i18n(
+            granularity === 'day' ? 'previousMonthAriaLabel' : 'i18nStrings.previousYearAriaLabel',
+            previousPageLabel
+          )}
           baseDate={baseDate}
-          onChangeMonth={onChangeMonth}
+          onChangePage={onChangePage}
         />
         <h2 className={styles['calendar-header-months-wrapper']}>
           {!isSingleGrid && (
-            <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-prevmonth`}>
-              {prevMonthLabel}
+            <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-prev${pageUnit}`}>
+              {prevPageLabel}
             </span>
           )}
-          <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-currentmonth`}>
-            {currentMonthLabel}
+          <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-current${pageUnit}`}>
+            {currentPageLabel}
           </span>
         </h2>
-        <NextMonthButton
-          ariaLabel={i18n('nextMonthAriaLabel', nextMonthLabel)}
+        <NextPageButton
+          ariaLabel={i18n(
+            granularity === 'day' ? 'nextMonthAriaLabel' : 'i18nStrings.nextYearAriaLabel',
+            nextPageLabel
+          )}
           baseDate={baseDate}
-          onChangeMonth={onChangeMonth}
+          onChangePage={onChangePage}
         />
       </div>
       <InternalLiveRegion hidden={true}>
-        {isSingleGrid ? currentMonthLabel : `${prevMonthLabel}, ${currentMonthLabel}`}
+        {isSingleGrid ? currentPageLabel : `${prevPageLabel}, ${currentPageLabel}`}
       </InternalLiveRegion>
     </>
   );

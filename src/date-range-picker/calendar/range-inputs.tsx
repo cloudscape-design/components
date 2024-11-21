@@ -3,6 +3,7 @@
 
 import React from 'react';
 
+import { CalendarProps } from '../../calendar/interfaces';
 import InternalDateInput from '../../date-input/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context.js';
@@ -30,6 +31,7 @@ export interface RangeInputsProps extends BaseComponentProps {
   i18nStrings?: I18nStrings;
   dateOnly: boolean;
   timeInputFormat: TimeInputProps.Format;
+  granularity?: CalendarProps.Granularity;
 }
 
 export default function RangeInputs({
@@ -44,8 +46,11 @@ export default function RangeInputs({
   i18nStrings,
   dateOnly,
   timeInputFormat,
+  granularity = 'day',
 }: RangeInputsProps) {
   const i18n = useInternalI18n('date-range-picker');
+  const dateInputPlaceholder = granularity === 'month' ? 'YYYY/MM' : 'YYYY/MM/DD';
+  const showTimeInput = !dateOnly && granularity !== 'month';
 
   return (
     <InternalFormField constraintText={i18n('i18nStrings.dateTimeConstraintText', i18nStrings?.dateTimeConstraintText)}>
@@ -56,10 +61,11 @@ export default function RangeInputs({
               value={startDate}
               className={styles['start-date-input']}
               onChange={event => onChangeStartDate(event.detail.value)}
-              placeholder="YYYY/MM/DD"
+              placeholder={dateInputPlaceholder}
+              granularity={granularity}
             />
           </InternalFormField>
-          {!dateOnly && (
+          {showTimeInput && (
             <InternalFormField label={i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel)} stretch={true}>
               <InternalTimeInput
                 value={startTime}
@@ -78,10 +84,11 @@ export default function RangeInputs({
               value={endDate}
               className={styles['end-date-input']}
               onChange={event => onChangeEndDate(event.detail.value)}
-              placeholder="YYYY/MM/DD"
+              placeholder={dateInputPlaceholder}
+              granularity={granularity}
             />
           </InternalFormField>
-          {!dateOnly && (
+          {showTimeInput && (
             <InternalFormField label={i18n('i18nStrings.endTimeLabel', i18nStrings?.endTimeLabel)} stretch={true}>
               <InternalTimeInput
                 value={endTime}

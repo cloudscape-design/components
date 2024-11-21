@@ -3,7 +3,18 @@
 
 import React, { useState } from 'react';
 import clsx from 'clsx';
-import { addMonths, endOfDay, isAfter, isBefore, isSameMonth, startOfDay, startOfMonth } from 'date-fns';
+import {
+  addMonths,
+  addYears,
+  endOfDay,
+  isAfter,
+  isBefore,
+  isSameMonth,
+  isSameYear,
+  startOfDay,
+  startOfMonth,
+  startOfYear,
+} from 'date-fns';
 
 import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
@@ -18,10 +29,10 @@ import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
 import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
-import { SelectByDayGrids } from './grids/select-by-day';
+import { Grids } from './grids';
 import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
-import { findDateToFocus, findMonthToDisplay } from './utils';
+import { findDateToFocus, findMonthToDisplay, findYearToDisplay } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -58,24 +69,29 @@ export default function DateRangePickerCalendar({
   const i18n = useInternalI18n('date-range-picker');
 
   const [announcement, setAnnouncement] = useState('');
-  const [currentMonth, setCurrentMonth] = useState(() => findMonthToDisplay(value, isSingleGrid));
+  const findPageToDisplay = granularity === 'month' ? findYearToDisplay : findMonthToDisplay;
+  const isSamePage = granularity === 'month' ? isSameYear : isSameMonth;
+  const addPage = granularity === 'month' ? addYears : addMonths;
+  const startOfPage = granularity === 'month' ? startOfYear : startOfMonth;
+  const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid));
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
     if (value.start.date) {
       const startDate = parseDate(value.start.date);
-      if (isSameMonth(startDate, currentMonth)) {
+      if (isSamePage(startDate, currentPage)) {
         return startDate;
       }
-      if (!isSingleGrid && isSameMonth(startDate, addMonths(currentMonth, -1))) {
+      if (!isSingleGrid && isSamePage(startDate, addPage(currentPage, -1))) {
         return startDate;
       }
     }
-    return findDateToFocus(parseDate(value.start.date), currentMonth, isDateEnabled);
+    return findDateToFocus(parseDate(value.start.date), currentPage, isDateEnabled);
   });
 
-  const updateCurrentMonth = (startDate: string) => {
+  const updateCurrentPage = (startDate: string) => {
     if (startDate.length >= 8) {
-      const newCurrentMonth = startOfMonth(parseDate(startDate));
-      setCurrentMonth(isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, 1));
+      //todo see how condition above plays
+      const newCurrentPage = startOfPage(parseDate(startDate));
+      setCurrentPage(isSingleGrid ? newCurrentPage : addPage(newCurrentPage, 1));
     }
   };
 
@@ -190,11 +206,11 @@ export default function DateRangePickerCalendar({
     setAnnouncement(announcement);
   };
 
-  const onHeaderChangeMonthHandler = (newCurrentMonth: Date) => {
-    setCurrentMonth(newCurrentMonth);
+  const onHeaderChangePageHandler = (newCurrentPage: Date) => {
+    setCurrentPage(newCurrentPage);
 
-    const newBaseDateMonth = isSingleGrid ? newCurrentMonth : addMonths(newCurrentMonth, -1);
-    const newBaseDate = getBaseDay(newBaseDateMonth, isDateEnabled);
+    const newBaseDatePage = isSingleGrid ? newCurrentPage : addPage(newCurrentPage, -1);
+    const newBaseDate = getBaseDay(newBaseDatePage, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 
@@ -203,30 +219,19 @@ export default function DateRangePickerCalendar({
       ...oldValue,
       start: { ...oldValue.start, date: value },
     }));
-    updateCurrentMonth(value);
+    updateCurrentPage(value);
   };
 
   const interceptedSetValue: DateRangePickerCalendarProps['setValue'] = newValue => {
     setValue(oldValue => {
       const updated = typeof newValue === 'function' ? newValue(oldValue) : newValue;
-      updateCurrentMonth(updated.start.date);
+      updateCurrentPage(updated.start.date);
       return updated;
     });
   };
 
-  //todo confirm
-  // const sharedCalendarProps = {
-  //   granularity,
-  //   i18nStrings,
-  //   locale,
-
-  //     //ariaLabel,
-  // //ariaLabelledBy
-  // //ariaDescribedBy
-  // //todayAriaLabel
-  // };
-
   const headingIdPrefix = useUniqueId('date-range-picker-calendar-heading');
+
   return (
     <>
       <div
@@ -240,42 +245,36 @@ export default function DateRangePickerCalendar({
               [styles['one-grid']]: isSingleGrid,
             })}
           >
-            {/* todo confirm */}
-            {granularity !== 'month' && (
-              <CalendarHeader
-                baseDate={currentMonth}
-                locale={normalizedLocale}
-                onChangeMonth={onHeaderChangeMonthHandler}
-                previousMonthLabel={i18nStrings?.previousMonthAriaLabel}
-                nextMonthLabel={i18nStrings?.nextMonthAriaLabel}
-                isSingleGrid={isSingleGrid}
-                headingIdPrefix={headingIdPrefix}
-              />
-            )}
+            <CalendarHeader
+              granularity={granularity}
+              baseDate={currentPage}
+              locale={normalizedLocale}
+              onChangePage={onHeaderChangePageHandler}
+              previousPageLabel={
+                granularity === 'day' ? i18nStrings?.previousMonthAriaLabel : i18nStrings?.previousYearAriaLabel
+              }
+              nextPageLabel={granularity === 'day' ? i18nStrings?.nextMonthAriaLabel : i18nStrings?.nextYearAriaLabel}
+              isSingleGrid={isSingleGrid}
+              headingIdPrefix={headingIdPrefix}
+            />
 
-            {granularity === 'month' ? (
-              <>
-                Month
-                {/* todo - add custom grid here */}
-              </>
-            ) : (
-              <SelectByDayGrids
-                isSingleGrid={isSingleGrid}
-                locale={normalizedLocale}
-                baseDate={currentMonth}
-                focusedDate={focusedDate}
-                onFocusedDateChange={setFocusedDate}
-                isDateEnabled={isDateEnabled}
-                dateDisabledReason={dateDisabledReason}
-                onSelectDate={onSelectDateHandler}
-                onChangeMonth={setCurrentMonth}
-                startOfWeek={normalizedStartOfWeek}
-                todayAriaLabel={i18nStrings?.todayAriaLabel}
-                selectedStartDate={parseDate(value.start.date, true)}
-                selectedEndDate={parseDate(value.end.date, true)}
-                headingIdPrefix={headingIdPrefix}
-              />
-            )}
+            <Grids
+              granularity={granularity}
+              isSingleGrid={isSingleGrid}
+              locale={normalizedLocale}
+              baseDate={currentPage}
+              focusedDate={focusedDate}
+              onFocusedDateChange={setFocusedDate}
+              isDateEnabled={isDateEnabled}
+              dateDisabledReason={dateDisabledReason}
+              onSelectDate={onSelectDateHandler}
+              onPageChange={setCurrentPage}
+              startOfWeek={normalizedStartOfWeek}
+              todayAriaLabel={i18nStrings?.todayAriaLabel}
+              selectedStartDate={parseDate(value.start.date, true)}
+              selectedEndDate={parseDate(value.end.date, true)}
+              headingIdPrefix={headingIdPrefix}
+            />
           </div>
 
           <RangeInputs
@@ -292,6 +291,7 @@ export default function DateRangePickerCalendar({
             i18nStrings={i18nStrings}
             dateOnly={dateOnly}
             timeInputFormat={timeInputFormat}
+            granularity={granularity}
           />
           {customAbsoluteRangeControl && <div>{customAbsoluteRangeControl(value, interceptedSetValue)}</div>}
         </SpaceBetween>

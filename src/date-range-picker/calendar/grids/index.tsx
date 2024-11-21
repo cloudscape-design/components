@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { addMonths, isAfter, isBefore, isSameMonth, max, min } from 'date-fns';
+import { addMonths, addYears, isAfter, isBefore, isSameMonth, isSameYear, max, min } from 'date-fns';
 
 import {
   getBaseDay,
@@ -10,18 +10,34 @@ import {
   movePrevDay,
   movePrevWeek,
 } from '../../../calendar/utils/navigation-day';
+import {
+  moveMonthDown,
+  moveMonthUp,
+  moveNextMonth,
+  movePrevMonth,
+} from '../../../calendar/utils/navigation-month';
+import { CalendarProps } from '../../../calendar/interfaces';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';
 import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
-import { DayIndex } from '../../interfaces';
 import { findDateToFocus } from '../utils';
-import { DailyGrid, DailyGridBaseProps } from './daily-grid';
+import { Grid } from './grid';
+import { SelectGridProps } from './interfaces';
 
 import styles from '../../styles.css.js';
 
-function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
+function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: CalendarProps.Granularity) {
+  if (granularity === 'month') {
+    if (isSingleGrid) {
+      return isSameYear(date, baseDate);
+    }
+
+    const previousYear = addYears(baseDate, -1);
+
+    return isSameYear(date, previousYear) || isSameYear(date, baseDate);
+  }
   if (isSingleGrid) {
     return isSameMonth(date, baseDate);
   }
@@ -31,16 +47,7 @@ function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   return isSameMonth(date, previousMonth) || isSameMonth(date, baseDate);
 }
 
-export interface SelectByDayGridsProps extends DailyGridBaseProps {
-  isSingleGrid: boolean;
-  startOfWeek: DayIndex;
-  headingIdPrefix: string;
-
-  onSelectDate: (date: Date) => void;
-  onChangeMonth: (date: Date) => void;
-}
-
-export const SelectByDayGrids = ({
+export const Grids = ({
   baseDate,
   selectedStartDate,
   selectedEndDate,
@@ -53,17 +60,20 @@ export const SelectByDayGrids = ({
   isSingleGrid,
 
   onSelectDate,
-  onChangeMonth,
+  onPageChange,
 
   locale,
-  startOfWeek,
   todayAriaLabel,
   headingIdPrefix,
-}: SelectByDayGridsProps) => {
+  startOfWeek = 0,
+  granularity = 'day',
+}: SelectGridProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
 
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
+
+  const addPages = granularity === 'day' ? addMonths : addYears;
 
   const dateCache = useDateCache();
   baseDate = dateCache(baseDate);
@@ -77,20 +87,26 @@ export const SelectByDayGrids = ({
   );
 
   useEffect(() => {
-    if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
+    if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid, granularity)) {
       const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
-      const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDay(newMonth, isDateFocusable);
+      const newPage = !isSingleGrid && direction === -1 ? addPages(baseDate, -1) : baseDate;
+      const nearestBaseDate = getBaseDay(newPage, isDateFocusable);
 
       const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateFocusable);
 
       onFocusedDateChange(newFocusedDate);
     }
-  }, [baseDate, focusedDate, isSingleGrid, isDateFocusable, onFocusedDateChange]);
+  }, [baseDate, focusedDate, isSingleGrid, granularity, addPages, isDateFocusable, onFocusedDateChange]);
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent<HTMLElement>) => {
     let updatedFocusDate;
+    const isMonthPicker = granularity === 'month';
+
+    const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
+    const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
+    const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
+    const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
 
     const keys = [KeyCode.up, KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
 
@@ -108,22 +124,21 @@ export const SelectByDayGrids = ({
 
         onSelectDate(focusedDate);
       },
-      onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateFocusable)),
-      onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateFocusable)),
-      onInlineEnd: () => focusedDate && (updatedFocusDate = moveNextDay(focusedDate, isDateFocusable)),
-      onInlineStart: () => focusedDate && (updatedFocusDate = movePrevDay(focusedDate, isDateFocusable)),
+      onBlockEnd: () => focusedDate && (updatedFocusDate = moveDown(focusedDate, isDateFocusable)),
+      onBlockStart: () => focusedDate && (updatedFocusDate = moveUp(focusedDate, isDateFocusable)),
+      onInlineEnd: () => focusedDate && (updatedFocusDate = moveLeft(focusedDate, isDateFocusable)),
+      onInlineStart: () => focusedDate && (updatedFocusDate = moveRight(focusedDate, isDateFocusable)),
     });
 
     if (!updatedFocusDate) {
       return;
     }
 
-    const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid);
+    const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid, granularity);
 
     if (!updatedDateIsVisible) {
-      const newMonthIsOnLeftSide = !isSingleGrid && isBefore(updatedFocusDate, baseDate);
-
-      onChangeMonth(newMonthIsOnLeftSide ? addMonths(updatedFocusDate, 1) : updatedFocusDate);
+      const newPageIsOnLeftSide = !isSingleGrid && isBefore(updatedFocusDate, baseDate);
+      onPageChange(newPageIsOnLeftSide ? addPages(updatedFocusDate, 1) : updatedFocusDate);
     }
     onFocusedDateChange(updatedFocusDate);
   };
@@ -157,49 +172,42 @@ export const SelectByDayGrids = ({
 
   const rangeStartDate = min(rangeEnds);
   const rangeEndDate = max(rangeEnds);
+  const pageUnit = granularity === 'day' ? 'month' : 'year';
+
+  const sharedGridProps = {
+    selectedEndDate,
+    selectedStartDate,
+    focusedDate,
+    focusedDateRef,
+    rangeStartDate: isRangeVisible ? rangeStartDate : null,
+    rangeEndDate: isRangeVisible ? rangeEndDate : null,
+    isDateEnabled,
+    dateDisabledReason,
+    onSelectDate,
+    onGridKeyDownHandler,
+    onFocusedDateChange,
+    locale,
+    startOfWeek,
+    todayAriaLabel,
+    granularity,
+  };
 
   return (
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
       <InternalSpaceBetween size="xs" direction="horizontal">
         {!isSingleGrid && (
-          <DailyGrid
+          <Grid
+            {...sharedGridProps}
             className={styles['first-grid']}
-            baseDate={addMonths(baseDate, -1)}
-            selectedEndDate={selectedEndDate}
-            selectedStartDate={selectedStartDate}
-            rangeStartDate={isRangeVisible ? rangeStartDate : null}
-            rangeEndDate={isRangeVisible ? rangeEndDate : null}
-            focusedDate={focusedDate}
-            focusedDateRef={focusedDateRef}
-            isDateEnabled={isDateEnabled}
-            dateDisabledReason={dateDisabledReason}
-            onSelectDate={onSelectDate}
-            onGridKeyDownHandler={onGridKeyDownHandler}
-            onFocusedDateChange={onFocusedDateChange}
-            locale={locale}
-            startOfWeek={startOfWeek}
-            todayAriaLabel={todayAriaLabel}
-            ariaLabelledby={`${headingIdPrefix}-prevmonth`}
+            baseDate={addPages(baseDate, -1)}
+            ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
           />
         )}
-        <DailyGrid
+        <Grid
+          {...sharedGridProps}
           className={styles['second-grid']}
           baseDate={baseDate}
-          selectedEndDate={selectedEndDate}
-          selectedStartDate={selectedStartDate}
-          rangeStartDate={isRangeVisible ? rangeStartDate : null}
-          rangeEndDate={isRangeVisible ? rangeEndDate : null}
-          focusedDate={focusedDate}
-          focusedDateRef={focusedDateRef}
-          isDateEnabled={isDateEnabled}
-          dateDisabledReason={dateDisabledReason}
-          onSelectDate={onSelectDate}
-          onGridKeyDownHandler={onGridKeyDownHandler}
-          onFocusedDateChange={onFocusedDateChange}
-          locale={locale}
-          startOfWeek={startOfWeek}
-          todayAriaLabel={todayAriaLabel}
-          ariaLabelledby={`${headingIdPrefix}-currentmonth`}
+          ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
         />
       </InternalSpaceBetween>
     </div>
