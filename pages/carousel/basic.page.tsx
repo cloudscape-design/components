@@ -12,10 +12,11 @@ export default function () {
       <h1>Basic Carousel</h1>
 
       <Carousel
+        size="medium"
         ariaLabel="Test carousel"
         ariaLabelNext="Next item"
         ariaLabelPrevious="Previous item"
-        variant="multiple"
+        variant="single"
         visibleItemNumber={3}
         items={[
           {

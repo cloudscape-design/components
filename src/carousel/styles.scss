@@ -12,9 +12,9 @@
 }
 
 .hide {
-  //   opacity: 0;
-  //   visibility: none;
-  //   display: none;
+  opacity: 0;
+  display: none;
+  visibility: none;
 }
 
 .content-wrapper {
@@ -44,6 +44,7 @@
   border-start-end-radius: 16px;
   border-end-start-radius: 16px;
   border-end-end-radius: 16px;
+  block-size: 100%;
 
   &:focus {
     outline: none;

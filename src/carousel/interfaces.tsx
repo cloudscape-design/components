@@ -8,7 +8,12 @@ export interface CarouselProps extends BaseComponentProps {
   items: ReadonlyArray<CarouselProps.Item>;
 
   height?: number;
-
+  /**
+   * size
+   * default to a predefined sizes of the carousel. User can also control the carousel height by using a number
+   * that represents pixels.
+   */
+  size?: 'small' | 'medium' | 'large' | number;
   // Only applicable with multiple variant
   visibleItemNumber?: number;
 

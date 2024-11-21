@@ -11,12 +11,12 @@ import InternalCarousel from './internal';
 
 export { CarouselProps };
 
-const Carousel = ({ variant = 'single', ...props }: CarouselProps) => {
+const Carousel = ({ variant = 'single', size = 'large', ...props }: CarouselProps) => {
   const baseProps = getBaseProps(props);
   const baseComponentProps = useBaseComponent('Steps');
   const externalProps = getExternalProps(props);
 
-  return <InternalCarousel {...baseProps} {...baseComponentProps} {...externalProps} variant={variant} />;
+  return <InternalCarousel {...baseProps} {...baseComponentProps} {...externalProps} variant={variant} size={size} />;
 };
 
 applyDisplayName(Carousel, 'Carousel');

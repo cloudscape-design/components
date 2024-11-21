@@ -10,6 +10,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
 import SpaceBetween from '../space-between/internal';
+import { CAROUSEL_HEIGHT } from './config';
 import { CarouselProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -21,12 +22,14 @@ export const InternalCarousel = ({
   items,
   variant,
   //   visibleItemNumber,
-  height,
+  size,
   ariaLabel,
   ariaLabelNext,
   ariaLabelPrevious,
   ...props
 }: InternalCarouselProps) => {
+  const height =
+    typeof size === 'number' ? size : typeof size === 'string' ? CAROUSEL_HEIGHT[size] : CAROUSEL_HEIGHT.medium;
   const carouselWrapperRef = useRef<HTMLUListElement>(null);
   const [activeItem, setActiveItem] = useState<number>(0);
   const mainRef = useRef<HTMLDivElement>(null);
@@ -74,7 +77,7 @@ export const InternalCarousel = ({
       <ul
         ref={carouselWrapperRef}
         className={clsx(styles['carousel-wrapper'], styles[`${variant}`])}
-        style={{ height: height ? `${height}px` : '300px' }}
+        style={{ height: `${height}px` }}
       >
         {items.map(({ content, backgroundStyle }, index) => {
           const isActiveItem = activeItem === index;
