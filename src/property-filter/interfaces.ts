@@ -226,13 +226,6 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
-
-  // New APIs
-
-  /**
-   * Adds secondary filtering properties that can be used for secondary query tokens.
-   */
-  secondaryFilteringProperties?: ReadonlyArray<PropertyFilterProps.FilteringProperty>;
 }
 
 export namespace PropertyFilterProps {
