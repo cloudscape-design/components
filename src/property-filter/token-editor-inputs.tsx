@@ -32,6 +32,7 @@ interface PropertyInputProps {
   onChangePropertyKey: (propertyKey: undefined | string) => void;
   onLoadItems?: NonCancelableEventHandler<LoadItemsDetail>;
   property: null | InternalFilteringProperty;
+  readOnly?: boolean;
 }
 
 export function PropertyInput({
@@ -43,6 +44,7 @@ export function PropertyInput({
   customGroupsText,
   i18nStrings,
   freeTextFiltering,
+  readOnly,
 }: PropertyInputProps) {
   const propertySelectHandlers = useLoadItems(onLoadItems);
   const asyncPropertySelectProps = asyncProps ? { ...asyncProps, ...propertySelectHandlers } : {};
@@ -67,6 +69,7 @@ export function PropertyInput({
   }
   return (
     <InternalSelect
+      readOnly={readOnly}
       options={propertyOptions}
       selectedOption={
         property

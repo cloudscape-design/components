@@ -6,9 +6,12 @@ import React from 'react';
 export interface TokenListProps<Item> {
   alignment: 'vertical' | 'horizontal' | 'inline' | 'horizontal-grid';
   items: readonly Item[];
+  secondaryItems?: readonly Item[];
   limit?: number;
   after?: React.ReactNode;
+  beforeSecondary?: React.ReactNode;
   renderItem: (item: Item, itemIndex: number) => React.ReactNode;
+  renderSecondary?: (item: Item, itemIndex: number) => React.ReactNode;
   i18nStrings?: I18nStrings;
   onExpandedClick?: (isExpanded: boolean) => void;
   limitShowFewerAriaLabel?: string;

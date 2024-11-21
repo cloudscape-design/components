@@ -14,8 +14,11 @@ export { TokenListProps };
 
 export default function TokenList<Item>({
   items,
+  secondaryItems = [],
   alignment,
   renderItem,
+  renderSecondary,
+  beforeSecondary = null,
   limit,
   after,
   i18nStrings,
@@ -27,9 +30,13 @@ export default function TokenList<Item>({
 
   const [expanded, setExpanded] = useState(false);
   const hasItems = items.length > 0;
-  const hasHiddenItems = hasItems && limit !== undefined && items.length > limit;
-  const visibleItems = hasHiddenItems && !expanded ? items.slice(0, limit) : items;
-  const hasVisibleItems = visibleItems.length > 0;
+  const hasSecondaryItems = secondaryItems.length > 0;
+  const allItems = [...items, ...secondaryItems];
+  const hasHiddenItems = (hasItems || hasSecondaryItems) && limit !== undefined && allItems.length > limit;
+  const allVisibleItems = hasHiddenItems && !expanded ? allItems.slice(0, limit) : allItems;
+  const visibleItems = items.filter(item => allVisibleItems.includes(item));
+  const visibleSecondaryItems = secondaryItems.filter(item => allVisibleItems.includes(item));
+  const hasVisibleItems = allVisibleItems.length > 0;
 
   const toggle = hasHiddenItems ? (
     <div className={styles[`toggle-container-${alignment}`]}>
@@ -37,7 +44,7 @@ export default function TokenList<Item>({
         controlId={hasVisibleItems ? controlId : undefined}
         allHidden={limit === 0}
         expanded={expanded}
-        numberOfHiddenOptions={items.length - visibleItems.length}
+        numberOfHiddenOptions={allItems.length - allVisibleItems.length}
         i18nStrings={i18nStrings}
         limitShowFewerAriaLabel={limitShowFewerAriaLabel}
         limitShowMoreAriaLabel={limitShowMoreAriaLabel}
@@ -66,6 +73,28 @@ export default function TokenList<Item>({
               </li>
             ))}
           </ul>
+        )}
+        {visibleSecondaryItems.length > 0 && (
+          <>
+            {hasItems && <div className={styles.separator} />}
+            {beforeSecondary && (
+              <div style={{ marginInlineStart: hasItems ? -16 : 0, display: 'flex', alignItems: 'center' }}>
+                {beforeSecondary}
+              </div>
+            )}
+            <ul id={controlId} className={styles.list}>
+              {visibleSecondaryItems.map((item, itemIndex) => (
+                <li
+                  key={itemIndex}
+                  className={styles['list-item']}
+                  aria-setsize={items.length}
+                  aria-posinset={itemIndex + 1}
+                >
+                  {(renderSecondary || renderItem)(item, itemIndex)}
+                </li>
+              ))}
+            </ul>
+          </>
         )}
         {toggle}
         {after && <div className={styles.separator} />}

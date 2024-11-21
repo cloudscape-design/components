@@ -52,11 +52,21 @@ export const getQueryActions = ({
       return { ...token, tokens: token.tokens.map(transformToken) };
     }
     const tokens = query.tokens.map(transformToken);
+    const secondaryTokens = (query.secondaryTokens ?? []).map(transformToken);
 
     if (enableTokenGroups) {
-      fireNonCancelableEvent(onChange, { tokens: [], operation: query.operation, tokenGroups: tokens });
+      fireNonCancelableEvent(onChange, {
+        operation: query.operation,
+        tokens: [],
+        tokenGroups: tokens,
+        secondaryTokens,
+      });
     } else {
-      fireNonCancelableEvent(onChange, { tokens: tokenGroupToTokens<Token>(tokens), operation: query.operation });
+      fireNonCancelableEvent(onChange, {
+        operation: query.operation,
+        tokens: tokenGroupToTokens<Token>(tokens),
+        secondaryTokens,
+      });
     }
   };
 
@@ -78,8 +88,28 @@ export const getQueryActions = ({
     setQuery({ ...query, tokens });
   };
 
+  const updateSecondaryToken = (
+    updateIndex: number,
+    updatedToken: InternalToken | InternalTokenGroup,
+    releasedTokens: InternalToken[]
+  ) => {
+    const secondaryTokens = [...query.secondaryTokens];
+    secondaryTokens.splice(updateIndex, 1);
+
+    const nestedTokens = tokenGroupToTokens<InternalToken>([updatedToken]);
+    const capturedTokenIndices = nestedTokens.map(token => token.standaloneIndex).filter(index => index !== undefined);
+    const tokens = query.tokens.filter((_, index) => index === updateIndex || !capturedTokenIndices.includes(index));
+    tokens.push(updatedToken);
+    tokens.push(...releasedTokens);
+    setQuery({ ...query, secondaryTokens, tokens });
+  };
+
   const removeToken = (removeIndex: number) => {
     setQuery({ ...query, tokens: query.tokens.filter((_, index) => index !== removeIndex) });
+  };
+
+  const removeSecondaryToken = (removeIndex: number) => {
+    setQuery({ ...query, secondaryTokens: query.secondaryTokens.filter((_, index) => index !== removeIndex) });
   };
 
   const removeAllTokens = () => {
@@ -90,7 +120,15 @@ export const getQueryActions = ({
     setQuery({ ...query, operation });
   };
 
-  return { addToken, updateToken, updateOperation, removeToken, removeAllTokens };
+  return {
+    addToken,
+    updateToken,
+    updateSecondaryToken,
+    updateOperation,
+    removeToken,
+    removeSecondaryToken,
+    removeAllTokens,
+  };
 };
 
 export const getAllowedOperators = (property: InternalFilteringProperty): ComparisonOperator[] => {

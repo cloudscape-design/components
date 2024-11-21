@@ -174,8 +174,12 @@ export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<
   );
 }
 
+// export function formatDateTime(isoDate: string): string {
+//   return isoDate ? isoDate + formatTimezoneOffset(isoDate) : '';
+// }
+
 export function formatDateTime(isoDate: string): string {
-  return isoDate ? isoDate + formatTimezoneOffset(isoDate) : '';
+  return isoDate ? isoDate : '';
 }
 
 function parseDateTimeFilter(filter: string): { dateValue: string; timeValue: string } {
@@ -201,16 +205,16 @@ function parseValue(value: null | string, defaultTime = ''): { dateValue: string
   return { dateValue: datePart, timeValue: timePart || defaultTime };
 }
 
-function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
-  // Using default browser offset if not explicitly specified.
-  offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
+// function formatTimezoneOffset(isoDate: string, offsetInMinutes?: number) {
+//   // Using default browser offset if not explicitly specified.
+//   offsetInMinutes = offsetInMinutes ?? 0 - new Date(isoDate).getTimezoneOffset();
 
-  const sign = offsetInMinutes < 0 ? '-' : '+';
-  const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60)
-    .toFixed(0)
-    .padStart(2, '0');
-  const minuteOffset = Math.abs(offsetInMinutes % 60)
-    .toFixed(0)
-    .padStart(2, '0');
-  return `${sign}${hoursOffset}:${minuteOffset}`;
-}
+//   const sign = offsetInMinutes < 0 ? '-' : '+';
+//   const hoursOffset = Math.floor(Math.abs(offsetInMinutes) / 60)
+//     .toFixed(0)
+//     .padStart(2, '0');
+//   const minuteOffset = Math.abs(offsetInMinutes % 60)
+//     .toFixed(0)
+//     .padStart(2, '0');
+//   return `${sign}${hoursOffset}:${minuteOffset}`;
+// }

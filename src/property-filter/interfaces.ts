@@ -226,6 +226,13 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
+
+  // New APIs
+
+  /**
+   * Adds secondary filtering properties that can be used for secondary query tokens.
+   */
+  secondaryFilteringProperties?: ReadonlyArray<PropertyFilterProps.FilteringProperty>;
 }
 
 export namespace PropertyFilterProps {
@@ -405,7 +412,7 @@ export interface InternalTokenGroup<TokenValue = any> {
   tokens: readonly (InternalToken<TokenValue> | InternalTokenGroup<TokenValue>)[];
 }
 
-export type InternalQuery = InternalTokenGroup;
+export type InternalQuery = InternalTokenGroup & { secondaryTokens: readonly (InternalToken | InternalTokenGroup)[] };
 
 export type ParsedText =
   | { step: 'property'; property: InternalFilteringProperty; operator: ComparisonOperator; value: string }

@@ -17,7 +17,6 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
-import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
 import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
@@ -165,6 +164,10 @@ const PropertyFilterInternal = React.forwardRef(
       const internalQuery: InternalQuery = {
         operation: query.operation,
         tokens: (enableTokenGroups && query.tokenGroups ? query.tokenGroups : query.tokens).map(transformToken),
+        secondaryTokens: (query.secondaryTokens ?? []).map(token => ({
+          ...transformToken(token),
+          standaloneIndex: undefined,
+        })),
       };
 
       const internalFreeText: InternalFreeTextFiltering = {
@@ -176,7 +179,15 @@ const PropertyFilterInternal = React.forwardRef(
       return { internalProperties: [...propertyByKey.values()], internalOptions, internalQuery, internalFreeText };
     })();
 
-    const { addToken, updateToken, updateOperation, removeToken, removeAllTokens } = getQueryActions({
+    const {
+      addToken,
+      updateToken,
+      updateSecondaryToken,
+      updateOperation,
+      removeToken,
+      removeSecondaryToken,
+      removeAllTokens,
+    } = getQueryActions({
       query: internalQuery,
       filteringOptions: internalOptions,
       onChange,
@@ -316,6 +327,34 @@ const PropertyFilterInternal = React.forwardRef(
 
     const showResults = !!internalQuery.tokens?.length && !disabled && !!countText;
 
+    const renderToken = (isSecondary: boolean, tokenIndex: number) => (
+      <TokenButton
+        query={internalQuery}
+        isSecondary={isSecondary}
+        tokenIndex={tokenIndex}
+        onUpdateToken={(token, releasedTokens) => {
+          (isSecondary ? updateSecondaryToken : updateToken)(tokenIndex, token, releasedTokens);
+        }}
+        onUpdateOperation={updateOperation}
+        onRemoveToken={() => {
+          (isSecondary ? removeSecondaryToken : removeToken)(tokenIndex);
+          setNextFocusIndex(tokenIndex);
+        }}
+        filteringProperties={internalProperties}
+        filteringOptions={internalOptions}
+        asyncProps={asyncProps}
+        onLoadItems={onLoadItems}
+        i18nStrings={i18nStrings}
+        asyncProperties={asyncProperties}
+        hideOperations={hideOperations}
+        customGroupsText={customGroupsText}
+        freeTextFiltering={internalFreeText}
+        disabled={disabled}
+        expandToViewport={expandToViewport}
+        enableTokenGroups={enableTokenGroups}
+      />
+    );
+
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={mergedRef}>
         <div className={clsx(styles['search-field'], analyticsSelectors['search-field'])}>
@@ -403,70 +442,46 @@ const PropertyFilterInternal = React.forwardRef(
             {filteringConstraintText}
           </div>
         )}
-        {internalQuery.tokens && internalQuery.tokens.length > 0 && (
+        {internalQuery.tokens.length + internalQuery.secondaryTokens.length > 0 && (
           <div className={styles.tokens}>
-            <InternalSpaceBetween size="xs" direction="horizontal">
-              <TokenList
-                alignment="inline"
-                limit={tokenLimit}
-                items={internalQuery.tokens}
-                limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
-                limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
-                renderItem={(_, tokenIndex) => (
-                  <TokenButton
-                    query={internalQuery}
-                    tokenIndex={tokenIndex}
-                    onUpdateToken={(token, releasedTokens) => {
-                      updateToken(tokenIndex, token, releasedTokens);
-                    }}
-                    onUpdateOperation={updateOperation}
-                    onRemoveToken={() => {
-                      removeToken(tokenIndex);
-                      setNextFocusIndex(tokenIndex);
-                    }}
-                    filteringProperties={internalProperties}
-                    filteringOptions={internalOptions}
-                    asyncProps={asyncProps}
-                    onLoadItems={onLoadItems}
-                    i18nStrings={i18nStrings}
-                    asyncProperties={asyncProperties}
-                    hideOperations={hideOperations}
-                    customGroupsText={customGroupsText}
-                    freeTextFiltering={internalFreeText}
-                    disabled={disabled}
-                    expandToViewport={expandToViewport}
-                    enableTokenGroups={enableTokenGroups}
-                  />
-                )}
-                i18nStrings={{
-                  limitShowFewer: i18nStrings.tokenLimitShowFewer,
-                  limitShowMore: i18nStrings.tokenLimitShowMore,
-                }}
-                after={
-                  customFilterActions ? (
-                    <div className={styles['custom-filter-actions']}>{customFilterActions}</div>
-                  ) : (
-                    <span
-                      {...getAnalyticsMetadataAttribute({
-                        action: 'clearFilters',
-                      } as Partial<GeneratedAnalyticsMetadataPropertyFilterClearFilters>)}
+            <TokenList
+              alignment="inline"
+              limit={tokenLimit}
+              items={internalQuery.tokens}
+              secondaryItems={internalQuery.secondaryTokens}
+              limitShowFewerAriaLabel={tokenLimitShowFewerAriaLabel}
+              limitShowMoreAriaLabel={tokenLimitShowMoreAriaLabel}
+              renderItem={(_, tokenIndex) => renderToken(false, tokenIndex)}
+              renderSecondary={(_, tokenIndex) => renderToken(true, tokenIndex)}
+              beforeSecondary={<div className={styles['secondary-prefix']}>quick filters:</div>}
+              i18nStrings={{
+                limitShowFewer: i18nStrings.tokenLimitShowFewer,
+                limitShowMore: i18nStrings.tokenLimitShowMore,
+              }}
+              after={
+                customFilterActions ? (
+                  <div className={styles['custom-filter-actions']}>{customFilterActions}</div>
+                ) : (
+                  <span
+                    {...getAnalyticsMetadataAttribute({
+                      action: 'clearFilters',
+                    } as Partial<GeneratedAnalyticsMetadataPropertyFilterClearFilters>)}
+                  >
+                    <InternalButton
+                      formAction="none"
+                      onClick={() => {
+                        removeAllTokens();
+                        inputRef.current?.focus({ preventDropdown: true });
+                      }}
+                      className={styles['remove-all']}
+                      disabled={disabled}
                     >
-                      <InternalButton
-                        formAction="none"
-                        onClick={() => {
-                          removeAllTokens();
-                          inputRef.current?.focus({ preventDropdown: true });
-                        }}
-                        className={styles['remove-all']}
-                        disabled={disabled}
-                      >
-                        {i18nStrings.clearFiltersText}
-                      </InternalButton>
-                    </span>
-                  )
-                }
-              />
-            </InternalSpaceBetween>
+                      {i18nStrings.clearFiltersText}
+                    </InternalButton>
+                  </span>
+                )
+              }
+            />
           </div>
         )}
       </div>

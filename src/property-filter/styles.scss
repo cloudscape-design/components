@@ -19,6 +19,11 @@ $operator-field-width: 120px;
   gap: awsui.$space-xs awsui.$space-s;
 }
 
+.secondary-prefix {
+  font-size: awsui.$font-size-body-s;
+  color: awsui.$color-text-body-secondary;
+}
+
 .input-wrapper {
   flex-grow: 1;
   display: flex;

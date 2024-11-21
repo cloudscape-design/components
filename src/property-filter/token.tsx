@@ -30,6 +30,7 @@ import styles from './styles.css.js';
 
 interface TokenProps {
   query: InternalQuery;
+  isSecondary: boolean;
   tokenIndex: number;
   onUpdateToken: (updatedToken: InternalToken | InternalTokenGroup, releasedTokens: InternalToken[]) => void;
   onUpdateOperation: (updatedOperation: JoinOperation) => void;
@@ -50,6 +51,7 @@ interface TokenProps {
 
 export const TokenButton = ({
   query,
+  isSecondary,
   onUpdateToken,
   onUpdateOperation,
   onRemoveToken,
@@ -72,9 +74,9 @@ export const TokenButton = ({
   const hasGroups = query.tokens.some(tokenOrGroup => 'operation' in tokenOrGroup);
   const first = tokenIndex === 0;
 
-  const tokenOrGroup = query.tokens[tokenIndex];
+  const tokenOrGroup = isSecondary ? query.secondaryTokens[tokenIndex] : query.tokens[tokenIndex];
   const tokens = tokenGroupToTokens<InternalToken>([tokenOrGroup]).map(t => ({ ...t, standaloneIndex: undefined }));
-  const operation = query.operation;
+  const operation = isSecondary ? 'and' : query.operation;
   const groupOperation = 'operation' in tokenOrGroup ? tokenOrGroup.operation : operation === 'and' ? 'or' : 'and';
 
   const [tempTokens, setTempTokens] = useState<InternalToken[]>(tokens);
@@ -104,7 +106,7 @@ export const TokenButton = ({
           dismissAriaLabel: i18nStrings.removeTokenButtonAriaLabel(token),
         };
       })}
-      showOperation={!first && !hideOperations}
+      showOperation={!first && !hideOperations && !isSecondary}
       operation={operation}
       andText={i18nStrings.operationAndText ?? ''}
       orText={i18nStrings.operationOrText ?? ''}
