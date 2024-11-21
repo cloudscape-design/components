@@ -274,9 +274,11 @@ export function getPropertySuggestions<T>(
           label: i18nStrings.recentOptionsLabel,
           options: recentOptions.map(({ value, operator, propertyKey }) => {
             const property = filteringProperties.find(p => p.propertyKey === propertyKey)?.propertyLabel || propertyKey;
+            const formattedValue =
+              typeof value === 'string' ? value : Array.isArray(value) ? value.join(', ') : JSON.stringify(value);
             return {
-              value: property + ' ' + operator + ' ' + value,
-              label: value,
+              value: property + ' ' + operator + ' ' + formattedValue,
+              label: formattedValue,
               __labelPrefix: property + ' ' + operator,
             };
           }),
