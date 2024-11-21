@@ -56,7 +56,6 @@ export default function CollectionPreferences({
   stripedRowsPreference,
   contentDensityPreference,
   stickyColumnsPreference,
-
   preferences,
   customPreference,
   getModalRoot,
@@ -73,6 +72,7 @@ export default function CollectionPreferences({
       hasContentDisplayPreference: !!contentDisplayPreference,
       hasContentDensityPreference: !!contentDensityPreference,
       hasStickyColumnsPreference: !!stickyColumnsPreference,
+      visibleContentOptionsCount: visibleContentPreference?.options?.length,
     },
   });
   checkControlled('CollectionPreferences', 'preferences', preferences, 'onConfirm', onConfirm);

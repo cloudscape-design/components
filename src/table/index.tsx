@@ -58,6 +58,8 @@ const Table = React.forwardRef(
           hasPaginationSlot: !!props.pagination,
           itemsCount: items.length,
           hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
+          usesVisibleColumns: !!props.visibleColumns,
+          usesColumnDisplay: !!props.columnDisplay,
         },
       },
       analyticsMetadata
