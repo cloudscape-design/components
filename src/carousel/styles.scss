@@ -1,0 +1,52 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+}
+
+.hide {
+  opacity: 0;
+  visibility: none;
+  display: none;
+}
+
+.content-wrapper {
+  padding-block: 30px;
+  padding-inline: 30px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.carousel-wrapper {
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+.carousel-item {
+  block-size: 100%;
+  margin-inline: 20px;
+
+  border-start-start-radius: 16px;
+  border-start-end-radius: 16px;
+  border-end-start-radius: 16px;
+  border-end-end-radius: 16px;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+}
