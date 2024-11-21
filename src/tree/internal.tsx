@@ -13,17 +13,20 @@ const INDENT_STEP = 24;
 
 function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeNode>) {
   const Icon = node.isInternal ? (
-    <InternalIcon className={clsx(styles.icon)} name={node.isOpen ? 'caret-down-filled' : 'caret-right-filled'} />
+    <InternalIcon
+      className={clsx(styles.icon)}
+      variant="subtle"
+      name={node.isOpen ? 'treeview-collapse' : 'treeview-expand'}
+    />
   ) : (
-    <InternalIcon className={clsx(styles.icon)} name={node.data.iconName ?? 'file'} />
+    <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
   );
   const indentSize = Number.parseFloat(`${style.paddingLeft || 0}`);
-
   return (
     <div
       ref={dragHandle}
       style={style}
-      className={clsx(styles.node, node.state, node.isSelected && styles.selected)}
+      className={clsx(styles.node, node.state, node.isSelected && styles.selected, node.isFocused && styles.focused)}
       onClick={() => node.isInternal && node.toggle()}
     >
       <div className={styles.indentLines}>
@@ -31,8 +34,11 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
           return <div key={index}></div>;
         })}
       </div>
-      {Icon}
-      <span className={styles.text}>{node.data.name}</span>
+      <div className={styles.selectedMarker} />
+      <div style={{ position: 'relative' }}>
+        {Icon}
+        <div className={styles.text}>{node.data.name}</div>
+      </div>
     </div>
   );
 }
@@ -42,15 +48,16 @@ const InternalTree = React.forwardRef<HTMLDivElement, TreeProps>(
     return (
       <div className={clsx(className)} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} ref={ref}>
         <Tree
+          className={styles.tree}
           initialData={items}
           openByDefault={true}
-          width={600}
-          height={1000}
+          //width={600}
+          //height={1000}
           indent={24}
           rowHeight={36}
-          paddingTop={30}
-          paddingBottom={10}
-          padding={25 /* sets both */}
+          //paddingTop={30}
+          //paddingBottom={10}
+          //padding={25 /* sets both */}
           disableEdit={true}
         >
           {TreeNode}

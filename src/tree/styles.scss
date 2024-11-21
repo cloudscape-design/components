@@ -6,10 +6,54 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$border-radius: 6px;
+// This is the indent configured on the <Tree /> element. It is used to align the start of an item's text with the icon of its children.
+$indent: 24px;
+
+.tree {
+  [role='treeitem']:focus {
+    outline: none;
+    // This is handled by the .focused class instead.
+  }
+}
+.node {
+  @include styles.styles-reset;
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+  padding: 5px 0;
+}
+
 .selected {
-  background: red;
+  background: awsui.$color-background-item-selected;
+  // border-color: awsui.$color-border-dropdown-item-selected;
+  .selectedMarker {
+    display: block;
+  }
+}
+.focused {
+  background-color: awsui.$color-background-dropdown-item-hover;
+  border-color: awsui.$color-border-dropdown-item-hover;
 }
 
 .text {
-  padding-block-start: awsui.$space-scaled-m;
+  position: absolute;
+  // This aligns the text with the icon of the item's children.
+  inset-inline-start: $indent;
+  top: 0;
+}
+
+.selectedMarker {
+  position: absolute;
+
+  // This makes the marker overlap the border
+  top: -1px;
+  bottom: -1px;
+  inset-inline-start: -1px;
+
+  background: awsui.$color-border-item-selected;
+  width: 5px;
+  border-start-start-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  display: none;
 }
