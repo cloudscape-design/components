@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { AppLayout, ContentLayout, Drawer, Header, SpaceBetween, SplitPanel } from '~components';
+import { AppLayout, ContentLayout, Drawer, Header, SpaceBetween, SplitPanel, Toggle, TopNavigation } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -28,6 +28,7 @@ export default function WithDrawers() {
 
   const [splitPanelOpen, setSplitPanelOpen] = useState(true);
   const [navigationOpen, setNavigationOpen] = useState(true);
+  const [hideHeader, setHideHeader] = useState(false);
 
   const disableContentPaddings = urlParams.disableContentPaddings ?? false;
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
@@ -53,8 +54,12 @@ export default function WithDrawers() {
   }, [activeDrawerId]);
 
   useEffect(() => {
+    let keyPressed: any = {};
+
     const handleKeyDown = (event: any) => {
-      if (event.key === 'h') {
+      keyPressed[event.key + event.location] = true;
+
+      if (keyPressed.Control1 === true && keyPressed['/0'] === true) {
         // Check for spacebar press
         event.preventDefault(); // Prevent default spacebar behavior
         if (activeDrawerId !== null) {
@@ -62,7 +67,10 @@ export default function WithDrawers() {
         } else if (activeDrawerId === null) {
           setActiveDrawerId('keyboard-shortcuts');
         }
+
+        keyPressed = {};
       }
+      console.log(keyPressed);
     };
 
     document.addEventListener('keydown', handleKeyDown);
@@ -106,6 +114,72 @@ export default function WithDrawers() {
 
   return (
     <ScreenshotArea gutters={false}>
+      <TopNavigation
+        identity={{
+          href: '#',
+          title: 'Super fancy service',
+        }}
+        utilities={[
+          {
+            type: 'button',
+            iconName: 'notification',
+            title: 'Notifications',
+            ariaLabel: 'Notifications (unread)',
+            badge: true,
+            disableUtilityCollapse: false,
+          },
+          {
+            type: 'menu-dropdown',
+            iconName: 'settings',
+            ariaLabel: 'Settings',
+            title: 'Settings',
+            onItemClick: event => {
+              if (event.detail.id === 'keyboard-shortcuts') {
+                setActiveDrawerId('keyboard-shortcuts');
+              }
+            },
+            items: [
+              {
+                id: 'keyboard-shortcuts',
+                text: 'Keyboard shortcuts',
+              },
+            ],
+          },
+          {
+            type: 'menu-dropdown',
+            text: 'Customer Name',
+            description: 'email@example.com',
+            iconName: 'user-profile',
+            items: [
+              { id: 'profile', text: 'Profile' },
+              { id: 'preferences', text: 'Preferences' },
+              { id: 'security', text: 'Security' },
+              {
+                id: 'support-group',
+                text: 'Support',
+                items: [
+                  {
+                    id: 'documentation',
+                    text: 'Documentation',
+                    href: '#',
+                    external: true,
+                    externalIconAriaLabel: ' (opens in new tab)',
+                  },
+                  { id: 'support', text: 'Support' },
+                  {
+                    id: 'feedback',
+                    text: 'Feedback',
+                    href: '#',
+                    external: true,
+                    externalIconAriaLabel: ' (opens in new tab)',
+                  },
+                ],
+              },
+              { id: 'signout', text: 'Sign out' },
+            ],
+          },
+        ]}
+      />
       <AppLayout
         ref={appLayoutRef}
         ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
@@ -118,6 +192,16 @@ export default function WithDrawers() {
                 <Header variant="h1" description="Sometimes you need custom drawers to get the job done.">
                   Testing Keyboard shortcuts
                 </Header>
+
+                <Toggle
+                  onChange={() => {
+                    document.body.setAttribute('data-hide-header', `${!hideHeader}`);
+                    setHideHeader(!hideHeader);
+                  }}
+                  checked={hideHeader}
+                >
+                  Hide header
+                </Toggle>
               </SpaceBetween>
             }
           >
@@ -223,8 +307,8 @@ function DrawerContent() {
         header="Panels"
         items={[
           {
-            key: 'Toggle help panel',
-            value: 'h',
+            key: 'Toggle keyboard shortcuts',
+            value: '^ + /',
           },
           {
             key: 'Toggle split panel',

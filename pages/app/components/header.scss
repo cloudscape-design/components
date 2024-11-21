@@ -27,3 +27,9 @@
     color: #eee;
   }
 }
+
+/* stylelint-disable */
+body[data-hide-header='true'] .header {
+  display: none;
+}
+/* stylelint-enable */
