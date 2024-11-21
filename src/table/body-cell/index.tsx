@@ -153,5 +153,9 @@ export function TableBodyCell<ItemType>(props: TableBodyCellProps<ItemType>) {
   }
 
   const { column, item } = props;
-  return <TableTdElement {...props}>{column.cell(item)}</TableTdElement>;
+  return (
+    <TableTdElement {...props} isEditable={false}>
+      {column.cell(item)}
+    </TableTdElement>
+  );
 }
