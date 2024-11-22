@@ -4522,6 +4522,68 @@ The order of \`id\`s doesn't influence the order of display of sections, which i
 }
 `;
 
+exports[`Documenter definition for carousel matches the snapshot: carousel 1`] = `
+{
+  "events": [],
+  "functions": [],
+  "name": "Carousel",
+  "properties": [
+    {
+      "name": "ariaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    {
+      "name": "ariaLabelNext",
+      "optional": false,
+      "type": "string",
+    },
+    {
+      "name": "ariaLabelPrevious",
+      "optional": false,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "items",
+      "optional": false,
+      "type": "ReadonlyArray<CarouselProps.Item>",
+    },
+    {
+      "defaultValue": ""large"",
+      "description": "size
+default to a predefined sizes of the carousel. User can also control the carousel height by using a number
+that represents pixels.",
+      "name": "size",
+      "optional": true,
+      "type": ""large" | "medium" | "small" | number",
+    },
+    {
+      "name": "visibleItemNumber",
+      "optional": true,
+      "type": "number",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for checkbox matches the snapshot: checkbox 1`] = `
 {
   "events": [

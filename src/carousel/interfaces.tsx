@@ -5,7 +5,6 @@ import { BaseComponentProps } from '../internal/base-component';
 export interface CarouselProps extends BaseComponentProps {
   items: ReadonlyArray<CarouselProps.Item>;
 
-  height?: number;
   /**
    * size
    * default to a predefined sizes of the carousel. User can also control the carousel height by using a number

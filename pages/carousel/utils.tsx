@@ -16,7 +16,7 @@ export function generateCarousels() {
     color: 'white',
     display: 'grid',
     gridTemplateColumns: '50% 50%',
-    height: 'calc(100% - 30px)',
+    height: 'calc(100% - 60px)',
     alignItems: 'end',
     padding: '30px',
   };
@@ -155,7 +155,7 @@ export function generateCardCarousels() {
     {
       content: (
         <ProductCard
-          title="Cloud Data Operating System"
+          title="1. Cloud Data Operating System"
           vendor="Cloud Data"
           logo={cardLogo}
           category="Professional services"
@@ -167,7 +167,7 @@ export function generateCardCarousels() {
     {
       content: (
         <ProductCard
-          title="Cloud Data Deep Security"
+          title="2. Cloud Data Deep Security"
           vendor="Cloud Data"
           logo={cardLogo}
           category="AMI | v20.0.833"
@@ -179,7 +179,7 @@ export function generateCardCarousels() {
     {
       content: (
         <ProductCard
-          title="Cloud Data Deep Security"
+          title="3. Cloud Data Deep Security"
           vendor="Cloud Data"
           logo={cardLogo}
           category="AMI | v20.0.833"
@@ -191,7 +191,7 @@ export function generateCardCarousels() {
     {
       content: (
         <ProductCard
-          title="Cloud Data Deep Security"
+          title="4. Cloud Data Deep Security"
           vendor="Cloud Data"
           logo={cardLogo}
           category="AMI | v20.0.833"
@@ -203,7 +203,7 @@ export function generateCardCarousels() {
     {
       content: (
         <ProductCard
-          title="Cloud Data Deep Security"
+          title="5. Cloud Data Deep Security"
           vendor="Cloud Data"
           logo={cardLogo}
           category="AMI | v20.0.833"

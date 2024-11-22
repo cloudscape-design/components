@@ -69,6 +69,10 @@ export { ElementWrapper };
         export { CardsWrapper };
       
 
+        import CarouselWrapper from './carousel';
+        export { CarouselWrapper };
+      
+
         import CheckboxWrapper from './checkbox';
         export { CheckboxWrapper };
       
@@ -642,6 +646,26 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         * @returns {Array<CardsWrapper>}
         */
        findAllCards(selector?: string): Array<CardsWrapper>;
+
+       /**
+        * Returns the wrapper of the first Carousel that matches the specified CSS selector.
+        * If no CSS selector is specified, returns the wrapper of the first Carousel.
+        * If no matching Carousel is found, returns \`null\`.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {CarouselWrapper | null}
+        */
+       findCarousel(selector?: string): CarouselWrapper | null;
+
+       /**
+        * Returns an array of Carousel wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the Carousels inside the current wrapper.
+        * If no matching Carousel is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<CarouselWrapper>}
+        */
+       findAllCarousels(selector?: string): Array<CarouselWrapper>;
 
        /**
         * Returns the wrapper of the first Checkbox that matches the specified CSS selector.
@@ -2081,6 +2105,17 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         return this.findAllComponents(CardsWrapper, selector);
       };
 
+      ElementWrapper.prototype.findCarousel = function(selector) {
+        const rootSelector = \`.\${CarouselWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CarouselWrapper);
+      };
+
+      ElementWrapper.prototype.findAllCarousels = function(selector) {
+        return this.findAllComponents(CarouselWrapper, selector);
+      };
+
       ElementWrapper.prototype.findCheckbox = function(selector) {
         const rootSelector = \`.\${CheckboxWrapper.rootSelector}\`;
         // casting to 'any' is needed to avoid this issue with generics
@@ -2845,6 +2880,10 @@ export { ElementWrapper };
         export { CardsWrapper };
       
 
+        import CarouselWrapper from './carousel';
+        export { CarouselWrapper };
+      
+
         import CheckboxWrapper from './checkbox';
         export { CheckboxWrapper };
       
@@ -3386,6 +3425,24 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
         * @returns {MultiElementWrapper<CardsWrapper>}
         */
        findAllCards(selector?: string): MultiElementWrapper<CardsWrapper>;
+
+       /**
+        * Returns a wrapper that matches the Carousels with the specified CSS selector.
+        * If no CSS selector is specified, returns a wrapper that matches Carousels.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {CarouselWrapper}
+        */
+       findCarousel(selector?: string): CarouselWrapper;
+
+       /**
+        * Returns a multi-element wrapper that matches Carousels with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches Carousels.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<CarouselWrapper>}
+        */
+       findAllCarousels(selector?: string): MultiElementWrapper<CarouselWrapper>;
 
        /**
         * Returns a wrapper that matches the Checkboxes with the specified CSS selector.
@@ -4697,6 +4754,17 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
 
       ElementWrapper.prototype.findAllCards = function(selector) {
         return this.findAllComponents(CardsWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findCarousel = function(selector) {
+        const rootSelector = \`.\${CarouselWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, CarouselWrapper);
+      };
+
+      ElementWrapper.prototype.findAllCarousels = function(selector) {
+        return this.findAllComponents(CarouselWrapper, selector);
       };
 
       ElementWrapper.prototype.findCheckbox = function(selector) {
