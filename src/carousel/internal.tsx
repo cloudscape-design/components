@@ -41,13 +41,12 @@ export const InternalCarousel = ({
   const mainRef = useRef<HTMLDivElement>(null);
   const mode = useCurrentMode(mainRef);
   const mergedRef = useMergeRefs(mainRef, __internalRootRef);
+  const [isMeasured, setIsMeasured] = useState(false);
 
   const transformX = useMemo(() => {
     const itemWidth = carouselWrapperRef.current?.querySelector('li')?.clientWidth ?? 0;
-    return itemWidth * activeItem + CAROUSEL_ITEM_MARGIN * activeItem;
-  }, [activeItem]);
-
-  const [isMeasured, setIsMeasured] = useState(false);
+    return itemWidth * (activeItem + 1) + CAROUSEL_ITEM_MARGIN * (activeItem + 1);
+  }, [activeItem, isMeasured]);
 
   const itemWidth = useMemo(() => {
     if (!carouselWrapperRef.current || !isMeasured) {
@@ -75,9 +74,14 @@ export const InternalCarousel = ({
     } else {
       setActiveItem((activeItem - 1) % items.length);
     }
+    setCurrentPlus(currentPlus + 1);
   };
 
-  const goNext = () => setActiveItem((activeItem + 1) % items.length);
+  const goNext = () => {
+    setActiveItem((activeItem + 1) % items.length);
+
+    setCurrentPlus((currentPlus + 1) % items.length);
+  };
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (!carouselWrapperRef.current) {
@@ -100,6 +104,54 @@ export const InternalCarousel = ({
     });
   };
 
+  function getPreviousListItem() {
+    let item;
+    if (activeItem === 0) {
+      item = items[items.length - 1];
+    } else {
+      item = items[activeItem - 1];
+    }
+
+    return (
+      <li
+        tabIndex={-1}
+        aria-hidden={true}
+        aria-label={`List item ${activeItem + 1} of ${items.length} items`}
+        className={clsx(styles['carousel-item'], 'rendered')}
+        style={{
+          background: typeof item.backgroundStyle === 'function' ? item.backgroundStyle(mode) : item.backgroundStyle,
+          width: `${itemWidth}%`,
+        }}
+      >
+        <div className={styles['content-wrapper']}></div>
+      </li>
+    );
+  }
+  function getNextItemsShadow() {
+    const item = items[(activeItemIndexEnd + 1) % items.length];
+
+    return (
+      <li
+        tabIndex={-1}
+        aria-hidden={true}
+        aria-label={`List item ${activeItem + 1} of ${items.length} items`}
+        className={clsx(styles['carousel-item'], 'rendered')}
+        style={{
+          background: typeof item.backgroundStyle === 'function' ? item.backgroundStyle(mode) : item.backgroundStyle,
+          width: `${itemWidth}%`,
+        }}
+      >
+        <div className={styles['content-wrapper']}></div>
+      </li>
+    );
+  }
+
+  const [currentPlus, setCurrentPlus] = useState(0);
+  function getCurrentItemsShadow() {
+    console.log(activeItem, activeItemIndexEnd);
+    return items.slice(activeItem, activeItemIndexEnd + 1 + currentPlus);
+  }
+
   return (
     <div {...props} className={clsx(styles.root, props.className)} ref={mergedRef} aria-label={ariaLabel}>
       <ul
@@ -107,28 +159,23 @@ export const InternalCarousel = ({
         className={clsx(styles['carousel-wrapper'], styles[`${variant}`])}
         style={{ height: `${height}px`, transform: `translateX(-${transformX}px)` }}
       >
-        {items.map(({ content, backgroundStyle }, index) => {
-          const isActiveItem = index >= activeItem && index <= activeItemIndexEnd;
-
-          return (
-            <li
-              tabIndex={isActiveItem ? 0 : -1}
-              onKeyDown={event => {
-                isActiveItem && onKeyDown(event);
-              }}
-              key={index}
-              aria-hidden={!isActiveItem}
-              aria-label={`List item ${index + 1} of ${items.length} items`}
-              className={clsx(styles['carousel-item'])}
-              style={{
-                background: typeof backgroundStyle === 'function' ? backgroundStyle(mode) : backgroundStyle,
-                width: `${itemWidth}%`,
-              }}
-            >
-              <div className={styles['content-wrapper']}>{isActiveItem ? content : null}</div>
-            </li>
-          );
-        })}
+        {getPreviousListItem()}
+        {getCurrentItemsShadow().map((item, index) => (
+          <li
+            key={index}
+            onKeyDown={onKeyDown}
+            tabIndex={0}
+            className={clsx(styles['carousel-item'])}
+            style={{
+              background:
+                typeof item.backgroundStyle === 'function' ? item.backgroundStyle(mode) : item.backgroundStyle,
+              width: `${itemWidth}%`,
+            }}
+          >
+            <div className={styles['content-wrapper']}>{item.content}</div>
+          </li>
+        ))}
+        {getNextItemsShadow()}
       </ul>
 
       <div className={styles.pagination}>
