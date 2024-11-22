@@ -166,7 +166,7 @@ export const InternalCarousel = ({
       </div>
 
       <InternalLiveRegion assertive={true} tagName="span" hidden={true}>
-        List item {activeItem + 1} of {Math.ceil(items.length / visibleItemNumber)} items
+        List item {activeItem + 1} of {items.length} items in {Math.ceil(items.length / visibleItemNumber)} pages
       </InternalLiveRegion>
     </div>
   );
