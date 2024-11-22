@@ -4,6 +4,8 @@ import React from 'react';
 
 import Badge from '~components/badge';
 import Box from '~components/box';
+import SpaceBetween from '~components/space-between';
+import StatusIndicator from '~components/status-indicator/internal';
 import Tree from '~components/tree';
 
 const iconInstance = (
@@ -44,61 +46,78 @@ export default function TreeSimpleScenario() {
           items={[
             {
               id: 'ec2',
-              name: 'EC2 (230)',
+              name: (
+                <>
+                  EC2 <Box variant="small">(3 instances)</Box>
+                </>
+              ),
               iconName: 'folder',
               badges: (
-                <div>
+                <SpaceBetween size="xxs" direction="horizontal">
                   <Badge color="severity-high">1</Badge>
                   <Badge color="severity-medium">3</Badge>
                   <Badge color="green">35</Badge>
-                </div>
+                </SpaceBetween>
               ),
-              children: ['i-0419dc89ea0215fe8', 'i-a0215fe80419dc89e', 'i-fe80419da089e215c'].map(name => ({
-                id: name,
-                name,
-                iconSvg: iconInstance,
-                dropdownItems: [
-                  { id: 'start', text: 'Start' },
-                  { id: 'stop', text: 'Stop' },
-                  { id: 'restart', text: 'Restart' },
-                  { id: 'terminate', text: 'Terminate' },
-                ],
-                children: [
-                  {
-                    id: name + '-EBSvolumes',
-                    name: 'EBS volumes',
-                    iconName: 'folder',
-                    children: new Array(5).fill(null).map((_, index) => ({
-                      id: name + `vol1${index}`,
-                      name: `Volume ${index + 1}`,
-                      dropdownItems: [
-                        { id: 'modify', text: 'Modify' },
-                        { id: 'snapshot', text: 'Create snapshot' },
-                        { id: 'snapshotpolicy', text: 'Create snapshot lifecycle policy' },
-                        { id: 'delete', text: 'Delete' },
-                        { id: 'attach', text: 'Attach' },
-                      ],
-                      iconSvg: iconVolume,
-                    })),
-                  },
-                  {
-                    id: name + '-securitygroups',
-                    name: 'Security groups',
-                    iconName: 'folder',
-                    children: new Array(2).fill(null).map((_, index) => ({
-                      id: name + `sg${index}`,
-                      name: `Security group ${index + 1}`,
-                      iconName: 'security',
-                      dropdownItems: [
-                        { id: 'modify', text: 'Edit inbound rules' },
-                        { id: 'snapshot', text: 'Edit outbound rules' },
-                        { id: 'snapshotpolicy', text: 'Create snapshot lifecycle policy' },
-                        { id: 'delete', text: 'Delete' },
-                      ],
-                    })),
-                  },
-                ],
-              })),
+              children: ['i-0419dc89ea0215fe8', 'i-a0215fe80419dc89e', 'i-fe80419da089e215c'].map(
+                (name, instanceIndex) => ({
+                  id: name,
+                  name,
+                  iconSvg: iconInstance,
+                  badges: instanceIndex === 1 ? <StatusIndicator type="warning" /> : undefined,
+                  dropdownItems: [
+                    { id: 'start', text: 'Start' },
+                    { id: 'stop', text: 'Stop' },
+                    { id: 'restart', text: 'Restart' },
+                    { id: 'terminate', text: 'Terminate' },
+                  ],
+                  children: [
+                    {
+                      id: name + '-EBSvolumes',
+                      name: (
+                        <>
+                          EBS volumes <Box variant="small">(5)</Box>
+                        </>
+                      ),
+                      iconName: 'folder',
+                      badges: instanceIndex === 1 ? <StatusIndicator type="warning" /> : undefined,
+                      children: new Array(5).fill(null).map((_, index) => ({
+                        id: name + `vol1${index}`,
+                        name: `Volume ${index + 1}`,
+                        dropdownItems: [
+                          { id: 'modify', text: 'Modify' },
+                          { id: 'snapshot', text: 'Create snapshot' },
+                          { id: 'snapshotpolicy', text: 'Create snapshot lifecycle policy' },
+                          { id: 'delete', text: 'Delete' },
+                          { id: 'attach', text: 'Attach' },
+                        ],
+                        iconSvg: iconVolume,
+                        badges: instanceIndex === 1 && index === 3 ? <StatusIndicator type="warning" /> : undefined,
+                      })),
+                    },
+                    {
+                      id: name + '-securitygroups',
+                      name: (
+                        <>
+                          Security groups <Box variant="small">(2)</Box>
+                        </>
+                      ),
+                      iconName: 'folder',
+                      children: new Array(2).fill(null).map((_, index) => ({
+                        id: name + `sg${index}`,
+                        name: `Security group ${index + 1}`,
+                        iconName: 'security',
+                        dropdownItems: [
+                          { id: 'modify', text: 'Edit inbound rules' },
+                          { id: 'snapshot', text: 'Edit outbound rules' },
+                          { id: 'snapshotpolicy', text: 'Create snapshot lifecycle policy' },
+                          { id: 'delete', text: 'Delete' },
+                        ],
+                      })),
+                    },
+                  ],
+                })
+              ),
             },
           ]}
         />
