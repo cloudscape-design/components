@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ButtonDropdownProps } from '../button-dropdown';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
@@ -24,6 +25,8 @@ export interface TreeProps extends BaseComponentProps {
    * Indicates the current value.
    */
   value?: TreeProps.Value;
+
+  initialOpenIds?: string[];
   /**
    * Called when the user selects an item.
    * The event `detail` contains the current value.
@@ -62,6 +65,8 @@ export namespace TreeProps {
     name: React.ReactNode;
     children?: ReadonlyArray<TreeNode>;
     badges?: React.ReactNode;
+
+    dropdownItems?: ButtonDropdownProps['items'];
 
     iconName?: IconProps.Name;
     iconAlt?: string;

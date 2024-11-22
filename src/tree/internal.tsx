@@ -56,16 +56,11 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
       </div>
       <div className={clsx(styles.right)}>
         <div className={clsx(styles.controls)}>
-          <ButtonDropdown
-            variant={'icon'}
-            items={[
-              { id: 'start', text: 'start' },
-              { id: 'stop', text: 'stop' },
-              { id: 'restart', text: 'restart' },
-              { id: 'terminate', text: 'terminate' },
-              { id: 'delete', text: 'delete' },
-            ]}
-          />
+          {node.data.dropdownItems ? (
+            <ButtonDropdown variant={'icon'} items={node.data.dropdownItems} />
+          ) : (
+            <div style={{ height: 32 }} />
+          )}
         </div>
       </div>
       <div className={styles.selectedMarker}></div>
@@ -74,15 +69,16 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
 }
 
 const InternalTree = React.forwardRef<HTMLDivElement, TreeProps>(
-  ({ className, ariaLabel, ariaLabelledby, items }, ref) => {
+  ({ className, ariaLabel, ariaLabelledby, items, initialOpenIds }, ref) => {
     return (
       <div className={clsx(className)} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} ref={ref}>
         <Tree
           className={styles.tree}
           initialData={items}
-          openByDefault={true}
+          openByDefault={false}
+          initialOpenState={Object.fromEntries((initialOpenIds ?? []).map(id => [id, true]))}
           //width={600}
-          //height={1000}
+          height={1500}
           indent={INDENT_STEP}
           rowHeight={36}
           //paddingTop={30}
