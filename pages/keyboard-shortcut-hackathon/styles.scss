@@ -16,7 +16,14 @@
 }
 
 .shortcut {
-  background: awsui.$color-background-input-disabled;
+  //background: awsui.$color-background-input-disabled;
+  color: awsui.$color-text-body-secondary;
+  border-block: 1px solid awsui.$color-border-divider-default;
+  border-inline: 1px solid awsui.$color-border-divider-default;
+  border-start-start-radius: awsui.$border-radius-badge;
+  border-start-end-radius: awsui.$border-radius-badge;
+  border-end-start-radius: awsui.$border-radius-badge;
+  border-end-end-radius: awsui.$border-radius-badge;
   padding-block: 2px;
   padding-inline: 4px;
   font-family: monospace;

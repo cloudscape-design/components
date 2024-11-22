@@ -2,17 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { AppLayout, ContentLayout, Drawer, Input, SpaceBetween, SplitPanel, TopNavigation } from '~components';
+import { AppLayout, ContentLayout, Drawer, Input, SplitPanel, TopNavigation } from '~components';
 import { AppLayoutProps } from '~components/app-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { drawerLabels } from '../app-layout/utils/drawers';
 import appLayoutLabels from '../app-layout/utils/labels';
 import ScreenshotArea from '../utils/screenshot-area';
+import AddNewShortcut from './add-new-shortcut';
 import AWSLogo from './aws-logo.svg';
-import KeyValuePairTable from './kvp-table';
-
-import styles from '../app-layout/styles.scss';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -22,11 +20,18 @@ type DemoContext = React.Context<
   }>
 >;
 
-export default function CustomAppLayout({ header, children }: any) {
+export default function CustomAppLayout({
+  header,
+  children,
+  splitPanelOpen,
+  setSplitPanelOpen,
+  customItems,
+  setCustomItems,
+}: any) {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
 
-  const [splitPanelOpen, setSplitPanelOpen] = useState(false);
+  //const [splitPanelOpen, setSplitPanelOpen] = useState(false);
   const [navigationOpen, setNavigationOpen] = useState(false);
 
   const disableContentPaddings = urlParams.disableContentPaddings ?? false;
@@ -38,49 +43,58 @@ export default function CustomAppLayout({ header, children }: any) {
     const handleKeyDown = (event: any) => {
       keyPressed[event.key + event.location] = true;
 
-      if (keyPressed.Control1 === true && keyPressed['/0'] === true) {
+      if (keyPressed.Control1 === true && keyPressed.h0 === true) {
         // Check for spacebar press
         event.preventDefault(); // Prevent default spacebar behavior
         if (activeDrawerId !== null) {
           setActiveDrawerId(null);
         } else if (activeDrawerId === null) {
-          setActiveDrawerId('keyboard-shortcuts');
+          setActiveDrawerId('help-panel');
         }
 
         keyPressed = {};
       }
-      console.log(keyPressed);
-    };
 
-    document.addEventListener('keydown', handleKeyDown);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [activeDrawerId]);
-
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event.key === 's') {
+      if (keyPressed.Control1 === true && keyPressed.s0 === true) {
         // Check for spacebar press
         event.preventDefault(); // Prevent default spacebar behavior
         setSplitPanelOpen(!splitPanelOpen);
+
+        keyPressed = {};
       }
-    };
 
-    document.addEventListener('keydown', handleKeyDown);
+      if (keyPressed.Control1 === true && (keyPressed.q0 || keyPressed.x0f) === true) {
+        // Check for spacebar press
+        event.preventDefault(); // Prevent default spacebar behavior
+        if (activeDrawerId !== null) {
+          setActiveDrawerId(null);
+        } else if (activeDrawerId === null) {
+          setActiveDrawerId('amazon-q');
+        }
 
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [splitPanelOpen]);
+        keyPressed = {};
+      }
 
-  useEffect(() => {
-    const handleKeyDown = (event: any) => {
-      if (event.key === 'n') {
+      if (keyPressed.Control1 === true && keyPressed.n0 === true) {
         // Check for spacebar press
         event.preventDefault(); // Prevent default spacebar behavior
         setNavigationOpen(!navigationOpen);
+
+        keyPressed = {};
+      }
+
+      if (keyPressed.Control1 === true && keyPressed.e0 === true) {
+        // Check for spacebar press
+        event.preventDefault(); // Prevent default spacebar behavior
+        setNavigationOpen(!navigationOpen);
+        if (activeDrawerId !== null) {
+          setActiveDrawerId(null);
+        } else if (activeDrawerId === null) {
+          setActiveDrawerId('help-panel');
+        }
+        setSplitPanelOpen(!splitPanelOpen);
+
+        keyPressed = {};
       }
     };
 
@@ -89,7 +103,7 @@ export default function CustomAppLayout({ header, children }: any) {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [navigationOpen]);
+  }, [activeDrawerId, splitPanelOpen, navigationOpen, setSplitPanelOpen]);
 
   return (
     <ScreenshotArea gutters={false}>
@@ -174,7 +188,7 @@ export default function CustomAppLayout({ header, children }: any) {
           </ContentLayout>
         }
         splitPanelPreferences={{
-          position: urlParams.splitPanelPosition,
+          position: 'side',
         }}
         onSplitPanelPreferencesChange={event => {
           const { position } = event.detail;
@@ -187,7 +201,9 @@ export default function CustomAppLayout({ header, children }: any) {
         onNavigationChange={event => setNavigationOpen(event.detail.open)}
         splitPanel={
           <SplitPanel
-            header="Split panel header"
+            closeBehavior="hide"
+            header="Add new shortcut"
+            hidePreferencesButton={true}
             i18nStrings={{
               preferencesTitle: 'Preferences',
               preferencesPositionLabel: 'Split panel position',
@@ -201,11 +217,7 @@ export default function CustomAppLayout({ header, children }: any) {
               resizeHandleAriaLabel: 'Slider',
             }}
           >
-            <SpaceBetween size="l">
-              <div className={styles.contentPlaceholder} />
-              <div className={styles.contentPlaceholder} />
-              <div className={styles.contentPlaceholder} />
-            </SpaceBetween>
+            <AddNewShortcut customItems={customItems} setCustomItems={setCustomItems} />
           </SplitPanel>
         }
         drawers={[
@@ -214,16 +226,27 @@ export default function CustomAppLayout({ header, children }: any) {
               closeButton: `Close button`,
               drawerName: `Keyboard shortcuts`,
               triggerButton: `Trigger button`,
-              resizeHandle: `$Resize handle`,
+              resizeHandle: `Resize handle`,
             },
             resizable: true,
-            defaultSize: 500,
-            content: (
-              <Drawer header={<h2>Keyboard shortcuts</h2>}>
-                <DrawerContent />
-              </Drawer>
-            ),
-            id: 'keyboard-shortcuts',
+
+            content: <Drawer header={<h2>Help panel</h2>}>Keyboard shortcuts help you become superpowered.</Drawer>,
+            id: 'help-panel',
+            trigger: {
+              iconName: 'status-info',
+            },
+          },
+          {
+            ariaLabels: {
+              closeButton: `Close button`,
+              drawerName: `Keyboard shortcuts`,
+              triggerButton: `Trigger button`,
+              resizeHandle: `Resize handle`,
+            },
+            resizable: true,
+
+            content: <Drawer header={<h2>Amazon Q</h2>}>This is Amazon Q</Drawer>,
+            id: 'amazon-q',
             trigger: {
               iconName: 'settings',
             },
@@ -233,58 +256,5 @@ export default function CustomAppLayout({ header, children }: any) {
         activeDrawerId={activeDrawerId}
       />
     </ScreenshotArea>
-  );
-}
-
-function DrawerContent() {
-  return (
-    <SpaceBetween size="l">
-      <KeyValuePairTable
-        header="Settings"
-        items={[
-          {
-            key: 'Toggle dark mode',
-            value: '^ + D',
-          },
-          {
-            key: 'Toggle compact mode',
-            value: '^ + C',
-          },
-          {
-            key: 'Toggle visual refresh',
-            value: '^ + V',
-          },
-          {
-            key: 'Toggle motion disabled',
-            value: '^ + M',
-          },
-          {
-            key: 'RTL direction',
-            value: '^ + R',
-          },
-          {
-            key: 'LTR direction',
-            value: '^ + L',
-          },
-        ]}
-      />
-      <KeyValuePairTable
-        header="Panels"
-        items={[
-          {
-            key: 'Toggle keyboard shortcuts',
-            value: '^ + /',
-          },
-          {
-            key: 'Toggle split panel',
-            value: 's',
-          },
-          {
-            key: 'Toggle side navigation',
-            value: 'n',
-          },
-        ]}
-      />
-    </SpaceBetween>
   );
 }

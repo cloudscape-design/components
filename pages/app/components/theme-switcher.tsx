@@ -34,7 +34,7 @@ export default function ThemeSwitcher() {
     const handleKeyDown = (e: any) => {
       keyPressed[e.key + e.location] = true;
 
-      if (keyPressed.Control1 === true && keyPressed.d0 === true) {
+      if (keyPressed.Control1 === true && (keyPressed.d0 || keyPressed.x0) === true) {
         // Left shift+CONTROL pressed!
         if (mode === 'dark') {
           setMode(Mode.Light);
