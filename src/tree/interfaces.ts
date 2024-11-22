@@ -61,6 +61,7 @@ export namespace TreeProps {
     id: Value;
     name: React.ReactNode;
     children?: ReadonlyArray<TreeNode>;
+    badges?: React.ReactNode;
 
     iconName?: IconProps.Name;
     iconAlt?: string;

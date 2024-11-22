@@ -49,9 +49,7 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
           <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
         </div>
         <div className={clsx(styles.label)}>{node.data.name}</div>
-        <div className={clsx(styles.badges)}>
-          <Badge>{3}</Badge>
-        </div>
+        <div className={clsx(styles.badges)}>{node.data.badges}</div>
         <div className={clsx(styles.annotations)}>ANNOTATIONS</div>
       </div>
       <div className={clsx(styles.right)}>

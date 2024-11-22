@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import Badge from '~components/badge';
 import Box from '~components/box';
 import Tree from '~components/tree';
 
@@ -21,6 +22,7 @@ export default function TreeSimpleScenario() {
                 {
                   id: 'components',
                   name: 'components',
+                  badges: <Badge>{3}</Badge>,
                   children: [
                     {
                       id: 'button',
