@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
@@ -25,6 +25,7 @@ export const InternalCarousel = ({
   ariaLabel,
   ariaLabelNext,
   ariaLabelPrevious,
+  visibleItemNumber = 1,
   ...props
 }: InternalCarouselProps) => {
   const height =
@@ -39,6 +40,28 @@ export const InternalCarousel = ({
     const itemWidth = carouselWrapperRef.current?.querySelector('li')?.clientWidth ?? 0;
     return itemWidth * activeItem + CAROUSEL_ITEM_MARGIN * activeItem;
   }, [activeItem]);
+
+  const [isMeasured, setIsMeasured] = useState(false);
+
+  const itemWidth = useMemo(() => {
+    if (!carouselWrapperRef.current || !isMeasured) {
+      return 100 / visibleItemNumber;
+    }
+
+    const totalMarginSpace = (visibleItemNumber - 1) * CAROUSEL_ITEM_MARGIN;
+    const wrapperWidth = carouselWrapperRef.current.clientWidth;
+
+    const marginPercentage = (totalMarginSpace / wrapperWidth) * 100;
+    const itemWidth = (100 - marginPercentage) / visibleItemNumber;
+
+    return itemWidth;
+  }, [visibleItemNumber, isMeasured]);
+
+  useEffect(() => {
+    if (carouselWrapperRef.current) {
+      setIsMeasured(true);
+    }
+  }, []);
 
   const goPrev = () => {
     if (activeItem === 0) {
@@ -81,7 +104,7 @@ export const InternalCarousel = ({
               className={clsx(styles['carousel-item'])}
               style={{
                 background: typeof backgroundStyle === 'function' ? backgroundStyle(mode) : backgroundStyle,
-                width: '100%',
+                width: `${itemWidth}%`,
               }}
             >
               <div className={styles['content-wrapper']}>{content}</div>
