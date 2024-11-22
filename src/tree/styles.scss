@@ -88,6 +88,8 @@ $indent: 0px;
 
   .itemIcon {
     grid-area: itemIcon;
+    display: flex;
+    align-items: center;
   }
 
   .label {

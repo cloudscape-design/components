@@ -46,7 +46,9 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
       <div className={clsx(styles.left)}>
         <div className={clsx(styles.expander)}>{expanderIcon}</div>
         <div className={clsx(styles.itemIcon)}>
-          <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
+          {node.data.iconSvg ?? (
+            <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
+          )}
         </div>
         <div className={clsx(styles.label)}>{node.data.name}</div>
         <div className={clsx(styles.badges)}>{node.data.badges}</div>
@@ -57,8 +59,11 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
           <ButtonDropdown
             variant={'icon'}
             items={[
-              { id: 'foo', text: 'Foo' },
-              { id: 'bar', text: 'Bar' },
+              { id: 'start', text: 'start' },
+              { id: 'stop', text: 'stop' },
+              { id: 'restart', text: 'restart' },
+              { id: 'terminate', text: 'terminate' },
+              { id: 'delete', text: 'delete' },
             ]}
           />
         </div>
