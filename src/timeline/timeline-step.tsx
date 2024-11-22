@@ -55,11 +55,5 @@ export function TimelineStepVisualRefresh({ step, className = '', variant }: Tim
   );
 }
 
-export function TimelineStepClassic() {
-  // {
-  // i18nStrings,
-  // step
-  // }: TimelineStepProps
-  //todo  classic version
-  return <li className={styles['timeline-step-item']}>Test</li>;
-}
+//todo  create custom fof classic
+export const TimelineStepClassic = TimelineStepVisualRefresh;
