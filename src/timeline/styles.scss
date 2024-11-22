@@ -192,6 +192,109 @@ $_color-overrides: (
   grid-row: 1;
   grid-column: 1 / span 2;
   // padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
+  grid-template-columns: 1fr;
+
+  > ul.refresh {
+    background: awsui.$color-background-container-content;
+    position: relative;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: 0;
+    padding-inline: 0;
+    /* find width expectations */
+    // inline-size: 360px;
+    box-sizing: border-box;
+    display: grid;
+    grid-auto-flow: column;
+    width: 100%;
+
+    > li.timeline-step-item {
+      display: grid;
+      column-gap: awsui.$space-xs;
+      grid-template-rows: awsui.$space-l 1fr;
+      grid-template-columns: repeat(2, auto);
+      padding-block: 0;
+      padding-inline: 0;
+
+      > hr {
+        background-color: awsui.$color-border-divider-default;
+        border-block: 0;
+        border-inline: 0;
+        grid-row: 1;
+        block-size: 100%;
+        inline-size: awsui.$space-xxxs;
+
+        &.completed {
+          background-color: awsui.$color-border-divider-active;
+        }
+      }
+
+      > .timeline-step-item-inner {
+        align-items: start;
+        column-gap: awsui.$space-xs;
+        display: grid;
+        font-size: awsui.$font-size-body-m;
+        grid-row: 1 / span 2;
+        grid-column: 2;
+        grid-template-rows: awsui.$space-l 1fr;
+        // margin-block-end: awsui.$space-scaled-s;
+
+        > .circle {
+          background-color: awsui.$color-border-divider-default;
+          border-start-start-radius: 100%;
+          border-start-end-radius: 100%;
+          border-end-start-radius: 100%;
+          border-end-end-radius: 100%;
+          grid-column: 1;
+          block-size: 10px;
+          justify-self: center;
+          margin-block-start: 6px;
+          inline-size: 10px;
+
+          &.completed {
+            background-color: awsui.$color-border-divider-active;
+          }
+        }
+
+        > .step-container {
+          display: flex;
+          flex-direction: row;
+
+          > .step-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            > .title {
+              @include styles.text-wrapping;
+            }
+          }
+
+          > .step-actions-wrapper {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+
+    > li:first-child > hr {
+      grid-column: 2 / span 2;
+    }
+
+    > li:last-child > hr {
+      grid-column: 1;
+    }
+
+    > li:only-of-type > hr {
+      display: none;
+    }
+
+    > li:not(:first-child):not(:last-child) > hr {
+      grid-column: 1 / span 3;
+    }
+  }
 }
 /* stylelint-enable selector-max-type */
 
