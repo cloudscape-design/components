@@ -153,7 +153,8 @@ export const getAllowedOperators = (property: InternalFilteringProperty): Compar
 export const parseText = (
   filteringText: string,
   filteringProperties: readonly InternalFilteringProperty[],
-  freeTextFiltering: InternalFreeTextFiltering
+  freeTextFiltering: InternalFreeTextFiltering,
+  recentOptions: readonly Token[]
 ): ParsedText => {
   const property = matchFilteringProperty(filteringProperties, filteringText);
   if (!property) {
@@ -184,11 +185,26 @@ export const parseText = (
   const textWithoutProperty = filteringText.substring(property.propertyLabel.length);
   const operator = matchOperator(allowedOps, trimStart(textWithoutProperty));
   if (operator) {
+    const textWithoutOperator = removeOperator(textWithoutProperty, operator);
+    const recentOption = recentOptions.find(
+      o =>
+        o.propertyKey === property.propertyKey &&
+        o.operator === operator &&
+        (property.getValueFormatter(operator)?.(o.value) ?? o.value) === textWithoutOperator
+    );
+    if (recentOption) {
+      return {
+        step: 'property',
+        property,
+        operator,
+        value: recentOption.value,
+      };
+    }
     return {
       step: 'property',
       property,
       operator,
-      value: removeOperator(textWithoutProperty, operator),
+      value: textWithoutOperator,
     };
   }
 
@@ -273,13 +289,15 @@ export function getPropertySuggestions<T>(
         {
           label: i18nStrings.recentOptionsLabel,
           options: recentOptions.map(({ value, operator, propertyKey }) => {
-            const property = filteringProperties.find(p => p.propertyKey === propertyKey)?.propertyLabel || propertyKey;
-            const formattedValue =
-              typeof value === 'string' ? value : Array.isArray(value) ? value.join(', ') : JSON.stringify(value);
+            const property = filteringProperties.find(p => p.propertyKey === propertyKey);
+            if (!property) {
+              return {};
+            }
+            const formatted = property.getValueFormatter(operator)?.(value) ?? value;
             return {
-              value: property + ' ' + operator + ' ' + formattedValue,
-              label: formattedValue,
-              __labelPrefix: property + ' ' + operator,
+              value: property.propertyLabel + ' ' + operator + ' ' + formatted,
+              label: formatted,
+              __labelPrefix: property.propertyLabel + ' ' + operator,
             };
           }),
         },

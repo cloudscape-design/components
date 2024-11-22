@@ -90,7 +90,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups,
-      recentOptions,
+      recentOptions = [],
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -200,18 +200,18 @@ const PropertyFilterInternal = React.forwardRef(
       enableTokenGroups,
     });
 
-    const parsedText = parseText(filteringText, internalProperties, internalFreeText);
+    const parsedText = parseText(filteringText, internalProperties, internalFreeText, recentOptions);
     const autosuggestOptions = getAutosuggestOptions(
       parsedText,
       internalProperties,
       internalOptions,
       customGroupsText,
       i18nStrings,
-      recentOptions || []
+      recentOptions
     );
 
     const createToken = (currentText: string) => {
-      const parsedText = parseText(currentText, internalProperties, internalFreeText);
+      const parsedText = parseText(currentText, internalProperties, internalFreeText, recentOptions);
       let newToken: InternalToken;
       switch (parsedText.step) {
         case 'property': {
@@ -300,7 +300,7 @@ const PropertyFilterInternal = React.forwardRef(
       // stop dropdown from closing
       event.preventDefault();
 
-      const parsedText = parseText(value, internalProperties, internalFreeText);
+      const parsedText = parseText(value, internalProperties, internalFreeText, recentOptions);
       const loadMoreDetail = getLoadMoreDetail(parsedText, value);
 
       // Insert operator automatically if only one operator is defined for the given property.
