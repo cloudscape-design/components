@@ -21,13 +21,15 @@ interface TimelineContainerProps extends BaseComponentProps, InternalBaseCompone
   //   onStepClick: (stepIndex: number) => void;
   //   onSkipToClick: (stepIndex: number) => void;
   steps: ReadonlyArray<TimelineProps.Step>;
+  direction?: string;
   variant?: string;
 }
 
 function Timeline({
   hidden = false,
   i18nStrings,
-  variant = 'vertical',
+  direction = 'vertical',
+  variant = 'not-nested',
   steps,
   className = '',
   __internalRootRef,
@@ -41,27 +43,35 @@ function Timeline({
   useEffect(() => {
     let newSteps: FlattenedTimelineStep[] = [];
     for (const step of steps) {
-      const { items, ...restOfStep } = step;
+      const { items, iconName, iconColor, status, iconSvg, ...restOfStep } = step;
       newSteps = [
         ...newSteps,
         {
           ...restOfStep,
-          isNested: false,
-          variant,
+          isNested: variant !== 'nested', //to make small dots
+          direction,
+          ...(variant === 'nested'
+            ? {
+                iconName,
+                iconColor,
+                iconSvg,
+                status,
+              }
+            : {}),
         },
-        ...(!!items && items.length
+        ...(variant === 'nested' && !!items && items.length
           ? [
               ...items.map(nestedItem => ({
                 ...nestedItem,
                 isNested: true,
-                variant,
+                direction,
               })),
             ]
           : []),
       ];
     }
     setFlattenedSteps(newSteps);
-  }, [steps, variant]);
+  }, [steps, direction, variant]);
 
   return (
     <div ref={ref} className={clsx(styles.root, className)}>
@@ -69,8 +79,8 @@ function Timeline({
         className={clsx(styles.timeline, {
           [styles.hidden]: hidden,
           [styles.refresh]: isVisualRefresh,
-          [styles.vertical]: variant === 'vertical',
-          [styles.horizontal]: variant === 'horizontal',
+          [styles.vertical]: direction === 'vertical',
+          [styles.horizontal]: direction === 'horizontal',
           [styles['small-container']]: smallContainer,
         })}
       >

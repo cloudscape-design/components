@@ -131,10 +131,15 @@ $_color-overrides: (
           border-end-start-radius: 100%;
           border-end-end-radius: 100%;
           grid-column: 1;
-          block-size: 10px;
+          block-size: 20px;
           justify-self: center;
           margin-block-start: 6px;
-          inline-size: 10px;
+          inline-size: 20px;
+
+          &.is-nested {
+            inline-size: 10px;
+            block-size: 10px;
+          }
 
           &.completed {
             background-color: awsui.$color-border-divider-active;
@@ -208,13 +213,13 @@ $_color-overrides: (
     box-sizing: border-box;
     display: grid;
     grid-auto-flow: column;
-    width: 100%;
+    inline-size: 100%;
 
     > li.timeline-step-item {
       display: grid;
       column-gap: awsui.$space-xs;
       grid-template-rows: awsui.$space-l 1fr;
-      grid-template-columns: repeat(2, auto);
+      grid-template-columns: repeat(4, auto);
       padding-block: 0;
       padding-inline: 0;
 
@@ -255,6 +260,7 @@ $_color-overrides: (
           justify-self: center;
           margin-block-start: 6px;
           inline-size: 10px;
+          z-index: 2;
 
           &.completed {
             background-color: awsui.$color-border-divider-active;
@@ -290,7 +296,7 @@ $_color-overrides: (
 
     > li:last-child > hr {
       grid-column: 1;
-      transform: translateX(80px);
+      // transform: translateX(80px);
     }
 
     > li:only-of-type > hr {
@@ -298,7 +304,7 @@ $_color-overrides: (
     }
 
     > li:not(:first-child):not(:last-child) > hr {
-      grid-column: 1 / span 3;
+      grid-column: 1 / span 4;
     }
     > li:last-child {
       justify-self: center;

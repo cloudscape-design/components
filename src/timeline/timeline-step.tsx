@@ -3,6 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import InternalHeader from '../header/internal';
 import InternalIcon from '../icon/internal';
 import InternalPopover from '../popover/internal';
 import { TimelineProps } from './interfaces';
@@ -18,7 +19,7 @@ export interface TimelineStepBaseProps {
 
 export interface FlattenedTimelineStep extends TimelineProps.Step {
   isNested?: boolean;
-  variant: string;
+  direction: string;
 }
 
 export interface TimelineStepProps extends TimelineStepBaseProps {
@@ -26,7 +27,7 @@ export interface TimelineStepProps extends TimelineStepBaseProps {
 }
 
 const renderStepContent = (step: FlattenedTimelineStep) => {
-  if (step.variant === 'horizontal') {
+  if (step.direction === 'horizontal') {
     return (
       <div className={styles['step-container']}>
         <div className={clsx(styles['step-info'])}>
@@ -50,7 +51,13 @@ const renderStepContent = (step: FlattenedTimelineStep) => {
             [styles[`color-override-${step.iconColor}`]]: !!step.iconColor,
           })}
         >
-          {step.title}
+          {step.isNested ? (
+            step.title
+          ) : (
+            <InternalHeader variant="h3" headingTagOverride="h4">
+              {step.title}
+            </InternalHeader>
+          )}
         </div>
         {step.content}
         {step.statusSlot}

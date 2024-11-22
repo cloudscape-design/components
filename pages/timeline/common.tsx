@@ -17,7 +17,7 @@ const dateFormat = 'MMM do yyyy HH:mm:ss';
 const steps: TimelineProps.Step[] = [
   {
     title: 'ECO requested',
-    completed: false,
+    completed: true,
     content: (
       <div className={styles['step-content']}>
         <div className={styles['content-text']}>Content 1</div>
