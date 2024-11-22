@@ -2,12 +2,31 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
+@use 'sass:map';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../internal/generated/custom-css-properties/index.scss' as custom-props;
 /* stylelint-disable no-descending-specificity */
+
+$_status-colors: (
+  'error': awsui.$color-text-status-error,
+  'warning': awsui.$color-text-status-warning,
+  'success': awsui.$color-text-status-success,
+  'info': awsui.$color-text-status-info,
+  'stopped': awsui.$color-text-status-inactive,
+  'pending': awsui.$color-text-status-inactive,
+  'in-progress': awsui.$color-text-status-inactive,
+  'loading': awsui.$color-text-status-inactive,
+);
+
+$_color-overrides: (
+  'red': awsui.$color-text-status-error,
+  'grey': awsui.$color-text-status-inactive,
+  'blue': awsui.$color-text-status-info,
+  'green': awsui.$color-text-status-success,
+  'yellow': awsui.$color-text-status-warning,
+);
 
 .root {
   @include styles.styles-reset;
@@ -75,6 +94,35 @@
         grid-template-columns: awsui.$space-l 1fr;
         margin-block-end: awsui.$space-scaled-s;
 
+        > .icon-container {
+          background: awsui.$color-background-container-content;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          align-items: center;
+          color: awsui.$color-border-divider-default;
+
+          &.is-nested {
+            padding-block: 2px;
+            padding-inline: 2px;
+          }
+
+          &.completed {
+            color: awsui.$color-border-divider-active;
+          }
+
+          @each $status in map.keys($_status-colors) {
+            &.status-#{$status} {
+              color: #{map.get($_status-colors, $status)};
+            }
+          }
+          @each $color in map.keys($_color-overrides) {
+            &.color-override-#{$color} {
+              color: #{map.get($_color-overrides, $color)};
+            }
+          }
+        }
+
         > .circle {
           background-color: awsui.$color-border-divider-default;
           border-start-start-radius: 100%;
@@ -90,15 +138,25 @@
           &.completed {
             background-color: awsui.$color-border-divider-active;
           }
+
+          @each $status in map.keys($_status-colors) {
+            &.status-#{$status} {
+              color: #{map.get($_status-colors, $status)};
+            }
+          }
+          @each $color in map.keys($_color-overrides) {
+            &.color-override-#{$color} {
+              color: #{map.get($_color-overrides, $color)};
+            }
+          }
         }
 
         > .step-container {
           display: flex;
           flex-direction: row;
+          justify-content: space-between;
 
           > .step-info {
-            display: block;
-
             > .title {
               @include styles.text-wrapping;
             }
@@ -198,6 +256,7 @@
         > .step-container {
           display: flex;
           flex-direction: row;
+          justify-content: center;
 
           > .step-info {
             display: flex;

@@ -1,28 +1,35 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ReactNode } from 'react';
+import React from 'react';
 import clsx from 'clsx';
 
+import InternalIcon from '../icon/internal';
 import InternalPopover from '../popover/internal';
 import { TimelineProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface TimelineStepProps {
+export interface TimelineStepBaseProps {
   i18nStrings: TimelineProps.I18nStrings;
   index: number;
-  step: TimelineProps.Step;
-  actions?: ReactNode;
   className?: string;
   titleClassName?: string;
+}
+
+export interface FlattenedTimelineStep extends TimelineProps.Step {
+  isNested?: boolean;
   variant: string;
 }
 
-const renderStepContent = (step: TimelineProps.Step, direction: string) => {
-  if (direction === 'horizontal') {
+export interface TimelineStepProps extends TimelineStepBaseProps {
+  step: FlattenedTimelineStep;
+}
+
+const renderStepContent = (step: FlattenedTimelineStep) => {
+  if (step.variant === 'horizontal') {
     return (
       <div className={styles['step-container']}>
-        <div className={clsx(styles['step-info'], !!step.action && styles['with-action'])}>
+        <div className={clsx(styles['step-info'])}>
           <InternalPopover size="content" content={step.content}>
             <div className={styles.title}>{step.title}</div>
           </InternalPopover>
@@ -34,8 +41,17 @@ const renderStepContent = (step: TimelineProps.Step, direction: string) => {
   }
   return (
     <div className={styles['step-container']}>
-      <div className={clsx(styles['step-info'], !!step.action && styles['with-action'])}>
-        <div className={styles.title}>{step.title}</div>
+      <div className={clsx(styles['step-info'])}>
+        <div
+          className={clsx(styles.title, {
+            [styles.completed]: step.completed,
+            [styles['is-nested']]: step.isNested,
+            [styles[`status-${step.status}`]]: step.status,
+            [styles[`color-override-${step.iconColor}`]]: !!step.iconColor,
+          })}
+        >
+          {step.title}
+        </div>
         {step.content}
         {step.statusSlot}
       </div>
@@ -43,13 +59,40 @@ const renderStepContent = (step: TimelineProps.Step, direction: string) => {
     </div>
   );
 };
-export function TimelineStepVisualRefresh({ step, className = '', variant }: TimelineStepProps) {
+export function TimelineStepVisualRefresh({ step, className = '' }: TimelineStepProps) {
+  const hasIcon = !!step.iconName || !!step.iconSvg;
+  console.log(step);
   return (
     <li className={clsx(styles['timeline-step-item'], className)}>
       <hr className={step.completed ? styles.completed : ''} />
       <div className={styles['timeline-step-item-inner']}>
-        <span className={clsx(styles.circle, step.completed && styles.completed)} />
-        {renderStepContent(step, variant)}
+        {hasIcon ? (
+          <span
+            className={clsx(styles['icon-container'], {
+              [styles.completed]: step.completed,
+              [styles['is-nested']]: step.isNested,
+              [styles[`status-${step.status}`]]: !!step.status,
+              [styles[`color-override-${step.iconColor}`]]: !!step.iconColor,
+            })}
+          >
+            <InternalIcon
+              size={step.isNested ? 'small' : 'medium'}
+              name={step.iconName}
+              alt={step.iconAlt}
+              svg={step.iconSvg}
+            />
+          </span>
+        ) : (
+          <span
+            className={clsx(styles.circle, {
+              [styles.completed]: step.completed,
+              [styles['is-nested']]: step.isNested,
+              [styles[`status-${step.status}`]]: !!step.status,
+              [styles[`color-override-${step.iconColor}`]]: !!step.iconColor,
+            })}
+          />
+        )}
+        {renderStepContent(step)}
       </div>
     </li>
   );

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps } from '../internal/base-component';
@@ -10,7 +10,7 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { TimelineProps } from './interfaces';
-import { TimelineStepClassic, TimelineStepVisualRefresh } from './timeline-step';
+import { FlattenedTimelineStep, TimelineStepClassic, TimelineStepVisualRefresh } from './timeline-step';
 
 import styles from './styles.css.js';
 
@@ -34,8 +34,34 @@ function Timeline({
 }: TimelineContainerProps) {
   const isVisualRefresh = useVisualRefresh();
   const [breakpoint, breakpointsRef] = useContainerBreakpoints(['xs']);
+  const [flattenedSteps, setFlattenedSteps] = useState<FlattenedTimelineStep[]>([]);
   const ref = useMergeRefs(breakpointsRef, __internalRootRef);
   const smallContainer = breakpoint === 'default';
+
+  useEffect(() => {
+    let newSteps: FlattenedTimelineStep[] = [];
+    for (const step of steps) {
+      const { items, ...restOfStep } = step;
+      newSteps = [
+        ...newSteps,
+        {
+          ...restOfStep,
+          isNested: false,
+          variant,
+        },
+        ...(!!items && items.length
+          ? [
+              ...items.map(nestedItem => ({
+                ...nestedItem,
+                isNested: true,
+                variant,
+              })),
+            ]
+          : []),
+      ];
+    }
+    setFlattenedSteps(newSteps);
+  }, [steps, variant]);
 
   return (
     <div ref={ref} className={clsx(styles.root, className)}>
@@ -49,22 +75,20 @@ function Timeline({
         })}
       >
         <ul className={clsx(isVisualRefresh && styles.refresh)}>
-          {steps.map((step, index: number) =>
+          {flattenedSteps.map((flattenedStep, index: number) =>
             isVisualRefresh ? (
               <TimelineStepVisualRefresh
                 i18nStrings={i18nStrings}
                 index={index}
                 key={`timeline-step-${index}`}
-                step={step}
-                variant={variant}
+                step={flattenedStep}
               />
             ) : (
               <TimelineStepClassic
                 i18nStrings={i18nStrings}
                 index={index}
                 key={`timeline-step-${index}`}
-                step={step}
-                variant={variant}
+                step={flattenedStep}
               />
             )
           )}

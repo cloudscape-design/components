@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { IconProps } from '../icon/interfaces';
 import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 
@@ -40,22 +41,36 @@ export interface TimelineProps extends BaseComponentProps {
   i18nStrings?: TimelineProps.I18nStrings;
 }
 
+// Why not enums? Explained there
+// https://stackoverflow.com/questions/52393730/typescript-string-literal-union-type-from-enum
+export type Status = 'error' | 'warning' | 'success' | 'info' | 'stopped' | 'pending' | 'in-progress' | 'loading';
+export type IconColor = 'blue' | 'grey' | 'green' | 'red' | 'yellow';
+
+interface NestedStep {
+  title: string;
+  /**
+   * time should be shown here
+   */
+  content?: React.ReactNode;
+  action?: React.ReactNode;
+  statusSlot?: React.ReactNode;
+  /**
+   * if timeline item is completed or not
+   */
+  completed: boolean;
+  iconName?: IconProps.Name;
+  iconAlt?: string;
+  iconSvg?: React.ReactNode;
+  status?: Status | string;
+  iconColor?: IconColor | string;
+}
+
 export namespace TimelineProps {
   export interface StepAnalyticsMetadata {
     instanceIdentifier?: string;
   }
-  export interface Step {
-    title: string;
-    /**
-     * time should be shown here
-     */
-    content?: React.ReactNode;
-    action?: React.ReactNode;
-    statusSlot?: React.ReactNode;
-    /**
-     * if timeline item is completed or not
-     */
-    completed: boolean;
+  export interface Step extends NestedStep {
+    items?: ReadonlyArray<Step>;
   }
 
   export interface I18nStrings {
