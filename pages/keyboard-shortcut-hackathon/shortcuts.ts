@@ -3,52 +3,52 @@
 export const shortcuts = [
   {
     name: 'Toggle navigation',
-    shortcut: 'N',
+    shortcut: 'Control + N',
     status: 'Enabled',
   },
   {
     name: 'Toggle split panel',
-    shortcut: 'S',
+    shortcut: 'Control + S',
     status: 'Enabled',
   },
   {
     name: 'Toggle help panel',
-    shortcut: 'H',
+    shortcut: 'Control + H',
     status: 'Enabled',
   },
   {
     name: 'Toggle Amazon Q',
-    shortcut: 'Q',
+    shortcut: 'Control + Q',
     status: 'Enabled',
   },
   {
     name: 'Toggle dark mode',
-    shortcut: '^ + D',
+    shortcut: 'Control + D',
     status: 'Enabled',
   },
   {
     name: 'Toggle compact mode',
-    shortcut: '^ + C',
+    shortcut: 'Control + C',
     status: 'Enabled',
   },
   {
     name: 'Toggle visual refresh',
-    shortcut: '^ + V',
+    shortcut: 'Control + V',
     status: 'Enabled',
   },
   {
     name: 'Toggle motion disabled',
-    shortcut: '^ + M',
+    shortcut: 'Control + M',
     status: 'Enabled',
   },
   {
     name: 'RTL direction',
-    shortcut: '^ + R',
+    shortcut: 'Control + R',
     status: 'Enabled',
   },
   {
     name: 'LTR direction',
-    shortcut: '^ + L',
+    shortcut: 'Control + L',
     status: 'Enabled',
   },
 ];

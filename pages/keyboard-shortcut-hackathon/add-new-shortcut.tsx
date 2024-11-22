@@ -52,6 +52,7 @@ function AddNewShortcut({ customItems, setCustomItems }: any) {
               { label: 'D', value: '4' },
               { label: 'E', value: '5' },
               { label: 'F', value: '6' },
+              { label: 'X', value: '7' },
             ]}
           />
         </SpaceBetween>
@@ -73,7 +74,7 @@ function AddNewShortcut({ customItems, setCustomItems }: any) {
                 ...customItems,
                 {
                   name: shortcutName || `${actions[0].label} + ${actions[1]?.label} + ${actions[2]?.label}`,
-                  shortcut: `${keyCombo.key1.label} ${keyCombo.key2.label}`,
+                  shortcut: `${keyCombo.key1.label} + ${keyCombo.key2.label}`,
                   actions: actions,
                   status: 'Enabled',
                 },

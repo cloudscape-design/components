@@ -41,7 +41,17 @@ export default function ShortcutPage() {
     <CustomAppLayout
       setSplitPanelOpen={setSplitPanelOpen}
       splitPanelOpen={splitPanelOpen}
-      header={<Header actions={<Button variant="primary">Save</Button>}>Keyboard shortcuts</Header>}
+      header={
+        <Header
+          actions={
+            <Button variant="primary" href="#/light/keyboard-shortcut-hackathon/demo">
+              Save
+            </Button>
+          }
+        >
+          Keyboard shortcuts
+        </Header>
+      }
       customItems={customItems}
       setCustomItems={setCustomItems}
     >
