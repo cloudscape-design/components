@@ -9,19 +9,19 @@ import Link from '~components/link';
 export default function () {
   return (
     <>
-      <h1>Basic Carousel</h1>
+      <h1>Basic Carousel with custom height</h1>
       <div
         style={{
           padding: 20,
         }}
       >
         <Carousel
-          size="large"
+          size={600}
           ariaLabel="Test carousel"
           ariaLabelNext="Next item"
           ariaLabelPrevious="Previous item"
           variant="single"
-          visibleItemNumber={1}
+          visibleItemNumber={2}
           items={[
             {
               content: (
