@@ -32,7 +32,7 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
       ref={dragHandle}
       style={style}
       className={clsx(styles.node, node.state, node.isSelected && styles.selected, node.isFocused && styles.focused)}
-      onClick={() => node.isInternal && node.toggle()}
+      onClick={() => node.isInternal && node.open()}
     >
       <div className={styles.indentLines}>
         {new Array(indentSize / INDENT_STEP).fill(0).map((_, index) => {
@@ -44,7 +44,15 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
         })}
       </div>
       <div className={clsx(styles.left)}>
-        <div className={clsx(styles.expander)}>{expanderIcon}</div>
+        <div
+          className={clsx(styles.expander)}
+          onClick={e => {
+            e.stopPropagation();
+            node.toggle();
+          }}
+        >
+          {expanderIcon}
+        </div>
         <div className={clsx(styles.itemIcon)}>
           {node.data.iconSvg ?? (
             <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
