@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
@@ -10,7 +10,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
 import SpaceBetween from '../space-between/internal';
-import { CAROUSEL_HEIGHT } from './config';
+import { CAROUSEL_HEIGHT, CAROUSEL_ITEM_MARGIN } from './config';
 import { CarouselProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -21,7 +21,6 @@ export const InternalCarousel = ({
   __internalRootRef,
   items,
   variant,
-  //   visibleItemNumber,
   size,
   ariaLabel,
   ariaLabelNext,
@@ -35,6 +34,11 @@ export const InternalCarousel = ({
   const mainRef = useRef<HTMLDivElement>(null);
   const mode = useCurrentMode(mainRef);
   const mergedRef = useMergeRefs(mainRef, __internalRootRef);
+
+  const transformX = useMemo(() => {
+    const itemWidth = carouselWrapperRef.current?.querySelector('li')?.clientWidth ?? 0;
+    return itemWidth * activeItem + CAROUSEL_ITEM_MARGIN * activeItem;
+  }, [activeItem]);
 
   const goPrev = () => {
     if (activeItem === 0) {
@@ -51,25 +55,11 @@ export const InternalCarousel = ({
       return;
     }
 
-    const allItems = Array.from(carouselWrapperRef.current.querySelectorAll('li'));
-
-    let newActiveItem: HTMLLIElement | null = null;
-
     if (event.keyCode === KeyCode.left) {
-      if (activeItem === 0) {
-        newActiveItem = allItems[items.length - 1];
-      } else {
-        newActiveItem = allItems[activeItem - 1];
-      }
       goPrev();
     } else if (event.keyCode === KeyCode.right) {
-      newActiveItem = allItems[(activeItem + 1) % items.length];
       goNext();
     }
-
-    requestAnimationFrame(() => {
-      newActiveItem?.focus();
-    });
   };
 
   return (
@@ -77,20 +67,21 @@ export const InternalCarousel = ({
       <ul
         ref={carouselWrapperRef}
         className={clsx(styles['carousel-wrapper'], styles[`${variant}`])}
-        style={{ height: `${height}px` }}
+        style={{ height: `${height}px`, transform: `translateX(-${transformX}px)` }}
       >
         {items.map(({ content, backgroundStyle }, index) => {
           const isActiveItem = activeItem === index;
 
           return (
             <li
-              tabIndex={isActiveItem ? 0 : -1}
+              tabIndex={-1}
               onKeyDown={onKeyDown}
               key={index}
               aria-hidden={!isActiveItem}
-              className={clsx(styles['carousel-item'], !isActiveItem && styles.hide)}
+              className={clsx(styles['carousel-item'])}
               style={{
                 background: typeof backgroundStyle === 'function' ? backgroundStyle(mode) : backgroundStyle,
+                width: '100%',
               }}
             >
               <div className={styles['content-wrapper']}>{content}</div>

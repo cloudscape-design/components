@@ -9,12 +9,8 @@
 
 .root {
   @include styles.styles-reset;
-}
-
-.hide {
-  opacity: 0;
-  display: none;
-  visibility: none;
+  overflow: hidden;
+  position: relative;
 }
 
 .content-wrapper {
@@ -32,10 +28,15 @@
 .carousel-wrapper {
   list-style-type: none;
   padding-inline-start: 0;
-
-  &.multiple {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+  flex-direction: row;
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 1;
+  display: flex;
+  box-sizing: content-box;
+  @include styles.with-motion {
+    transition: transform 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
 }
 
@@ -44,7 +45,11 @@
   border-start-end-radius: 16px;
   border-end-start-radius: 16px;
   border-end-end-radius: 16px;
+  flex-shrink: 0;
   block-size: 100%;
+  margin-inline-end: 30px;
+  position: relative;
+  display: block;
 
   &:focus {
     outline: none;

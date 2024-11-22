@@ -6,4 +6,5 @@ const CAROUSEL_HEIGHT = {
   large: 600,
 };
 
-export { CAROUSEL_HEIGHT };
+const CAROUSEL_ITEM_MARGIN = 30;
+export { CAROUSEL_HEIGHT, CAROUSEL_ITEM_MARGIN };
