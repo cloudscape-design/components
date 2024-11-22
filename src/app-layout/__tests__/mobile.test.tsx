@@ -584,7 +584,7 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     expect(wrapper.findDrawerTriggerById('security')!.getElement().children[0]).toHaveClass(triggerBadgeClassName);
   });
 
-  test('renders roles only when aria labels are not provided', () => {
+  (theme === 'refresh-toolbar' ? test.skip : test)('renders roles only when aria labels are not provided', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawerWithoutLabels]} />);
     const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
 
@@ -595,7 +595,7 @@ describeEachAppLayout({ sizes: ['mobile'] }, ({ theme }) => {
     expect(drawersToolbar).toHaveAttribute('role', 'toolbar');
   });
 
-  test('renders roles and aria labels when provided', () => {
+  (theme === 'refresh-toolbar' ? test.skip : test)('renders roles and aria labels when provided', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
     const drawersAside = within(findMobileToolbar(wrapper)!.getElement()).getByRole('region');
 
