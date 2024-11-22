@@ -4,23 +4,28 @@ import React from 'react';
 import { NodeRendererProps, Tree } from 'react-arborist';
 import clsx from 'clsx';
 
+import Badge from '../badge';
+import ButtonDropdown from '../button-dropdown';
 import InternalIcon from '../icon/internal';
 import { TreeProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-const INDENT_STEP = 24;
+const INDENT_STEP = 15;
 
 function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeNode>) {
-  const Icon = node.isInternal ? (
+  const expanderIcon = node.isInternal ? (
     <InternalIcon
       className={clsx(styles.icon)}
       variant="subtle"
       name={node.isOpen ? 'treeview-collapse' : 'treeview-expand'}
     />
   ) : (
-    <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
+    <div style={{ visibility: 'hidden' }}>
+      <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
+    </div>
   );
+
   const indentSize = Number.parseFloat(`${style.paddingLeft || 0}`);
   return (
     <div
@@ -31,14 +36,36 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
     >
       <div className={styles.indentLines}>
         {new Array(indentSize / INDENT_STEP).fill(0).map((_, index) => {
-          return <div key={index}></div>;
+          return (
+            <div key={index} className={styles.indentLine}>
+              <div />
+            </div>
+          );
         })}
       </div>
-      <div className={styles.selectedMarker} />
-      <div style={{ position: 'relative' }}>
-        {Icon}
-        <div className={styles.text}>{node.data.name}</div>
+      <div className={clsx(styles.left)}>
+        <div className={clsx(styles.expander)}>{expanderIcon}</div>
+        <div className={clsx(styles.itemIcon)}>
+          <InternalIcon className={clsx(styles.icon)} variant="subtle" name={node.data.iconName ?? 'file'} />
+        </div>
+        <div className={clsx(styles.label)}>{node.data.name}</div>
+        <div className={clsx(styles.badges)}>
+          <Badge>{3}</Badge>
+        </div>
+        <div className={clsx(styles.annotations)}>ANNOTATIONS</div>
       </div>
+      <div className={clsx(styles.right)}>
+        <div className={clsx(styles.controls)}>
+          <ButtonDropdown
+            variant={'icon'}
+            items={[
+              { id: 'foo', text: 'Foo' },
+              { id: 'bar', text: 'Bar' },
+            ]}
+          />
+        </div>
+      </div>
+      <div className={styles.selectedMarker}></div>
     </div>
   );
 }
@@ -53,10 +80,10 @@ const InternalTree = React.forwardRef<HTMLDivElement, TreeProps>(
           openByDefault={true}
           //width={600}
           //height={1000}
-          indent={24}
+          indent={INDENT_STEP}
           rowHeight={36}
           //paddingTop={30}
-          //paddingBottom={10}
+          // paddingBottom={10}
           //padding={25 /* sets both */}
           disableEdit={true}
         >

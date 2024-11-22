@@ -8,7 +8,8 @@
 
 $border-radius: 6px;
 // This is the indent configured on the <Tree /> element. It is used to align the start of an item's text with the icon of its children.
-$indent: 24px;
+$indent: 0px;
+
 
 .tree {
   [role='treeitem']:focus {
@@ -16,13 +17,115 @@ $indent: 24px;
     // This is handled by the .focused class instead.
   }
 }
+
+.indentLines {
+  --indent-size: 15px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.indentLine {
+  display: flex;
+  justify-content: center;
+  width: 15px;
+  height: 36px;
+}
+
+.indentLine > div {
+  width: 1px;
+  height: 100%;
+  background: #ebebf0;
+}
+
 .node {
+  --indent-step: 15px;
   @include styles.styles-reset;
   position: relative;
+  align-items: center;
   border: 1px solid transparent;
   border-radius: $border-radius;
-  padding: 5px 0;
+
+  display: grid;
+  grid-template:
+    'left right' auto / 1fr auto;
+  gap: 0 10px;
+
+  cursor: pointer;
+
+  .annotation {
+    color: green;
+  }
+
+  .expander {
+    cursor: pointer;
+    //position: absolute;
+    //left: -10px;
+  }
+
+  .icon {
+
+  }
+
+.left {
+  grid-area: left;
+  display: grid;
+  grid-template:
+    'expander itemIcon label badges' auto / auto auto auto auto;
+    //'expander itemIcon label badges' auto
+    //'none annotations annotations annotations' 0px / auto auto auto auto;
+  gap: 8px;
+  justify-content: start;
+
+  .expander {
+    grid-area: expander;
+  }
+
+  .itemIcon {
+    grid-area: itemIcon;
+  }
+
+  .label {
+    grid-area: label;
+  }
+
+  .badges {
+    grid-area: badges;
+  }
+
+    .annotations {
+      grid-area: annotations;
+      display: none;
+    }
+  }
+
+  .right {
+    grid-area: right;
+    .controls {
+      visibility: hidden;
+    }
+  }
+
+  &:hover {
+    .right {
+      .controls {
+        visibility: visible;
+      }
+    }
+  }
+
+  .description {
+    grid-area: description;
+  }
 }
+
+
+
 
 .selected {
   background: awsui.$color-background-item-selected;
