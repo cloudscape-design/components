@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import { NodeApi } from 'react-arborist';
 
 import { ButtonDropdownProps } from '../button-dropdown';
 import { IconProps } from '../icon/interfaces';
@@ -56,6 +57,8 @@ export interface TreeProps extends BaseComponentProps {
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabelledby?: string;
+
+  onSelect?: (node: TreeProps.ArboristNode) => void;
 }
 
 export namespace TreeProps {
@@ -73,6 +76,8 @@ export namespace TreeProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
   }
+
+  export type ArboristNode = NodeApi<TreeNode>;
 
   export type ExpandedItems = Record<Value, boolean>;
 }

@@ -69,7 +69,7 @@ function TreeNode({ node, style, dragHandle }: NodeRendererProps<TreeProps.TreeN
 }
 
 const InternalTree = React.forwardRef<HTMLDivElement, TreeProps>(
-  ({ className, ariaLabel, ariaLabelledby, items, initialOpenIds }, ref) => {
+  ({ className, ariaLabel, ariaLabelledby, items, initialOpenIds, onSelect }, ref) => {
     return (
       <div className={clsx(className)} aria-label={ariaLabel} aria-labelledby={ariaLabelledby} ref={ref}>
         <Tree
@@ -81,10 +81,12 @@ const InternalTree = React.forwardRef<HTMLDivElement, TreeProps>(
           height={1500}
           indent={INDENT_STEP}
           rowHeight={36}
+          onSelect={node => onSelect?.(node[0])}
           //paddingTop={30}
           // paddingBottom={10}
           //padding={25 /* sets both */}
           disableEdit={true}
+          selectionFollowsFocus={false}
         >
           {TreeNode}
         </Tree>
