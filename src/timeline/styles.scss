@@ -124,6 +124,7 @@ $_color-overrides: (
         }
 
         > .circle {
+          //background-color: awsui.$color-border-divider-default;
           background-color: awsui.$color-border-divider-default;
           border-start-start-radius: 100%;
           border-start-end-radius: 100%;
@@ -222,8 +223,10 @@ $_color-overrides: (
         border-block: 0;
         border-inline: 0;
         grid-row: 1;
-        block-size: 100%;
-        inline-size: awsui.$space-xxxs;
+        inline-size: 100%;
+        block-size: awsui.$space-xxxs;
+        margin-block-start: 10px;
+        transform: translateX(50%);
 
         &.completed {
           background-color: awsui.$color-border-divider-active;
@@ -238,6 +241,7 @@ $_color-overrides: (
         grid-row: 1 / span 2;
         grid-column: 2;
         grid-template-rows: awsui.$space-l 1fr;
+        justify-content: center;
         // margin-block-end: awsui.$space-scaled-s;
 
         > .circle {
@@ -265,6 +269,7 @@ $_color-overrides: (
             display: flex;
             flex-direction: column;
             align-items: center;
+            row-gap: awsui.$space-xs;
 
             > .title {
               @include styles.text-wrapping;
@@ -280,11 +285,12 @@ $_color-overrides: (
     }
 
     > li:first-child > hr {
-      grid-column: 2 / span 2;
+      grid-column: 1 / span 3;
     }
 
     > li:last-child > hr {
       grid-column: 1;
+      transform: translateX(80px);
     }
 
     > li:only-of-type > hr {
@@ -293,6 +299,9 @@ $_color-overrides: (
 
     > li:not(:first-child):not(:last-child) > hr {
       grid-column: 1 / span 3;
+    }
+    > li:last-child {
+      justify-self: center;
     }
   }
 }
