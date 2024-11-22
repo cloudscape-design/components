@@ -1,0 +1,250 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+@use '../internal/generated/custom-css-properties/index.scss' as custom-props;
+/* stylelint-disable no-descending-specificity */
+
+.root {
+  @include styles.styles-reset;
+}
+
+.timeline.refresh {
+  column-gap: awsui.$space-xl;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: auto 1fr;
+  row-gap: awsui.$space-scaled-xxs;
+
+  &.small-container {
+    grid-template-columns: minmax(0, 1fr) 0;
+    row-gap: awsui.$space-scaled-l;
+  }
+}
+
+/* stylelint-disable selector-max-type */
+.timeline.refresh.vertical {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
+
+  > ul.refresh {
+    background: awsui.$color-background-container-content;
+    position: relative;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: 0;
+    padding-inline: 0;
+    /* find width expectations */
+    inline-size: 360px;
+    box-sizing: border-box;
+
+    > li.timeline-step-item {
+      display: grid;
+      column-gap: awsui.$space-xs;
+      grid-template-columns: awsui.$space-l 1fr;
+      grid-template-rows: repeat(2, auto);
+      padding-block: 0;
+      padding-inline: 0;
+
+      > hr {
+        background-color: awsui.$color-border-divider-default;
+        border-block: 0;
+        border-inline: 0;
+        grid-column: 1;
+        block-size: 100%;
+        inline-size: awsui.$space-xxxs;
+
+        &.completed {
+          background-color: awsui.$color-border-divider-active;
+        }
+      }
+
+      > .timeline-step-item-inner {
+        align-items: start;
+        column-gap: awsui.$space-xs;
+        display: grid;
+        font-size: awsui.$font-size-body-m;
+        grid-column: 1 / span 2;
+        grid-row: 2;
+        grid-template-columns: awsui.$space-l 1fr;
+        margin-block-end: awsui.$space-scaled-s;
+
+        > .circle {
+          background-color: awsui.$color-border-divider-default;
+          border-start-start-radius: 100%;
+          border-start-end-radius: 100%;
+          border-end-start-radius: 100%;
+          border-end-end-radius: 100%;
+          grid-column: 1;
+          block-size: 10px;
+          justify-self: center;
+          margin-block-start: 6px;
+          inline-size: 10px;
+
+          &.completed {
+            background-color: awsui.$color-border-divider-active;
+          }
+        }
+
+        > .step-container {
+          display: flex;
+          flex-direction: row;
+
+          > .step-info {
+            display: block;
+
+            > .title {
+              @include styles.text-wrapping;
+            }
+          }
+
+          > .step-actions-wrapper {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+
+    > li:first-child > hr {
+      grid-row: 2 / span 2;
+    }
+
+    > li:last-child > hr {
+      grid-row: 1;
+    }
+
+    > li:only-of-type > hr {
+      display: none;
+    }
+
+    > li:not(:first-child):not(:last-child) > hr {
+      grid-row: 1 / span 3;
+    }
+  }
+}
+
+.timeline.refresh.horizontal {
+  grid-row: 1;
+  grid-column: 1 / span 2;
+  // padding-block-start: calc(awsui.$space-xs + awsui.$space-scaled-xxs);
+
+  > ul.refresh {
+    background: awsui.$color-background-container-content;
+    position: relative;
+    margin-block: 0;
+    margin-inline: 0;
+    padding-block-start: awsui.$space-scaled-xxs;
+    padding-block-end: 0;
+    padding-inline: 0;
+    /* find width expectations */
+    // inline-size: 360px;
+    box-sizing: border-box;
+
+    > li.timeline-step-item {
+      display: grid;
+      column-gap: awsui.$space-xs;
+      grid-template-rows: awsui.$space-l 1fr;
+      grid-template-columns: repeat(2, auto);
+      padding-block: 0;
+      padding-inline: 0;
+
+      > hr {
+        background-color: awsui.$color-border-divider-default;
+        border-block: 0;
+        border-inline: 0;
+        grid-row: 1;
+        block-size: 100%;
+        inline-size: awsui.$space-xxxs;
+
+        &.completed {
+          background-color: awsui.$color-border-divider-active;
+        }
+      }
+
+      > .timeline-step-item-inner {
+        align-items: start;
+        column-gap: awsui.$space-xs;
+        display: grid;
+        font-size: awsui.$font-size-body-m;
+        grid-row: 1 / span 2;
+        grid-column: 2;
+        grid-template-rows: awsui.$space-l 1fr;
+        // margin-block-end: awsui.$space-scaled-s;
+
+        > .circle {
+          background-color: awsui.$color-border-divider-default;
+          border-start-start-radius: 100%;
+          border-start-end-radius: 100%;
+          border-end-start-radius: 100%;
+          border-end-end-radius: 100%;
+          grid-column: 1;
+          block-size: 10px;
+          justify-self: center;
+          margin-block-start: 6px;
+          inline-size: 10px;
+
+          &.completed {
+            background-color: awsui.$color-border-divider-active;
+          }
+        }
+
+        > .step-container {
+          display: flex;
+          flex-direction: row;
+
+          > .step-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            > .title {
+              @include styles.text-wrapping;
+            }
+          }
+
+          > .step-actions-wrapper {
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+
+    > li:first-child > hr {
+      grid-column: 2 / span 2;
+    }
+
+    > li:last-child > hr {
+      grid-column: 1;
+    }
+
+    > li:only-of-type > hr {
+      display: none;
+    }
+
+    > li:not(:first-child):not(:last-child) > hr {
+      grid-column: 1 / span 3;
+    }
+  }
+}
+/* stylelint-enable selector-max-type */
+
+.timeline:not(.refresh) {
+  /* used in test-utils */
+}
+
+.timeline.hidden {
+  display: none;
+}
+
+.action-buttons {
+  display: flex;
+  justify-content: flex-end;
+}
