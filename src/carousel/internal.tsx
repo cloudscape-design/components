@@ -9,6 +9,7 @@ import Button from '../button/internal';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { KeyCode } from '../internal/keycode';
+import InternalLiveRegion from '../live-region/internal';
 import SpaceBetween from '../space-between/internal';
 import { CAROUSEL_HEIGHT, CAROUSEL_ITEM_MARGIN } from './config';
 import { CarouselProps } from './interfaces';
@@ -117,6 +118,7 @@ export const InternalCarousel = ({
               }}
               key={index}
               aria-hidden={!isActiveItem}
+              aria-label={`List item ${index + 1} of ${items.length} items`}
               className={clsx(styles['carousel-item'])}
               style={{
                 background: typeof backgroundStyle === 'function' ? backgroundStyle(mode) : backgroundStyle,
@@ -133,13 +135,17 @@ export const InternalCarousel = ({
         <SpaceBetween size="s" direction="horizontal" alignItems="center">
           <Button variant="icon" iconName="angle-left" ariaLabel={ariaLabelPrevious} onClick={goPrev} />
 
-          <span>
+          <span aria-label={`List item ${activeItem + 1} of ${items.length} items`}>
             {activeItem + 1} / {items.length}
           </span>
 
           <Button variant="icon" iconName="angle-right" ariaLabel={ariaLabelNext} onClick={goNext} />
         </SpaceBetween>
       </div>
+
+      <InternalLiveRegion assertive={true} tagName="span" hidden={true}>
+        List item {activeItem + 1} of {items.length} items
+      </InternalLiveRegion>
     </div>
   );
 };
