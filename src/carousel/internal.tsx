@@ -33,18 +33,14 @@ export const InternalCarousel = ({
   const carouselWrapperRef = useRef<HTMLUListElement>(null);
   const [activeItem, setActiveItem] = useState<number>(0);
 
-  const activeItemIndexEnd = useMemo(() => {
-    return activeItem + visibleItemNumber - 1;
-  }, [activeItem, visibleItemNumber]);
-
   const mainRef = useRef<HTMLDivElement>(null);
   const mode = useCurrentMode(mainRef);
   const mergedRef = useMergeRefs(mainRef, __internalRootRef);
 
   const transformX = useMemo(() => {
     const itemWidth = carouselWrapperRef.current?.querySelector('li')?.clientWidth ?? 0;
-    return itemWidth * activeItem + CAROUSEL_ITEM_MARGIN * activeItem;
-  }, [activeItem]);
+    return (itemWidth * activeItem + CAROUSEL_ITEM_MARGIN * activeItem) * visibleItemNumber;
+  }, [activeItem, visibleItemNumber]);
 
   const [isMeasured, setIsMeasured] = useState(false);
 
@@ -70,33 +66,57 @@ export const InternalCarousel = ({
 
   const goPrev = () => {
     if (activeItem === 0) {
-      setActiveItem(items.length - 1);
+      setActiveItem(Math.ceil(items.length / visibleItemNumber - 1));
     } else {
-      setActiveItem((activeItem - 1) % items.length);
+      setActiveItem(activeItem - 1);
     }
   };
 
-  const goNext = () => setActiveItem((activeItem + 1) % items.length);
+  const goNext = () => setActiveItem((activeItem + 1) % Math.ceil(items.length / visibleItemNumber));
 
   const onKeyDown = (event: React.KeyboardEvent) => {
     if (!carouselWrapperRef.current) {
       return;
     }
-    // focus the correct li based on the direction.
-    const target = event.target as HTMLElement;
-    let newFocusTarget: HTMLLIElement;
-    if (event.keyCode === KeyCode.left) {
-      newFocusTarget = target.previousSibling as HTMLLIElement;
 
-      goPrev();
-    } else if (event.keyCode === KeyCode.right) {
-      goNext();
-      newFocusTarget = target.nextSibling as HTMLLIElement;
+    if (event.keyCode !== KeyCode.left && event.keyCode !== KeyCode.right) {
+      return;
     }
 
-    requestAnimationFrame(() => {
-      newFocusTarget?.focus();
-    });
+    event.preventDefault();
+    const items = carouselWrapperRef.current.querySelectorAll('li');
+    const currentIndex = Array.from(items).findIndex(item => item === event.target);
+
+    if (currentIndex === -1) {
+      return;
+    }
+
+    if (event.keyCode === KeyCode.left) {
+      const newIndex = currentIndex === 0 ? items.length - 1 : currentIndex - 1;
+      if (newIndex !== 0 && newIndex % Math.ceil(items.length / visibleItemNumber) === 0) {
+        goPrev();
+      }
+      requestAnimationFrame(() => {
+        const newTarget = items[newIndex] as HTMLElement;
+        if (newTarget) {
+          newTarget.focus();
+        }
+      });
+    } else if (event.keyCode === KeyCode.right) {
+      const newIndex = currentIndex === items.length - 1 ? 0 : currentIndex + 1;
+
+      if (newIndex % Math.ceil(items.length / visibleItemNumber + 1) === 0) {
+        goNext();
+      }
+      setTimeout(() => {
+        requestAnimationFrame(() => {
+          const newTarget = items[newIndex] as HTMLElement;
+          if (newTarget) {
+            newTarget.focus();
+          }
+        });
+      }, 0);
+    }
   };
 
   return (
@@ -107,7 +127,10 @@ export const InternalCarousel = ({
         style={{ height: `${height}px`, transform: `translateX(-${transformX}px)` }}
       >
         {items.map(({ content, backgroundStyle }, index) => {
-          const isActiveItem = index >= activeItem && index <= activeItemIndexEnd;
+          // Calculate start and end indices for current page
+          const start = activeItem * visibleItemNumber;
+          const end = Math.min(start + visibleItemNumber - 1, items.length - 1);
+          const isActiveItem = index >= start && index <= end;
 
           return (
             <li
@@ -135,7 +158,7 @@ export const InternalCarousel = ({
           <Button variant="icon" iconName="angle-left" ariaLabel={ariaLabelPrevious} onClick={goPrev} />
 
           <span aria-label={`List item ${activeItem + 1} of ${items.length} items`}>
-            {activeItem + 1} / {items.length}
+            {activeItem + 1} / {Math.ceil(items.length / visibleItemNumber)}
           </span>
 
           <Button variant="icon" iconName="angle-right" ariaLabel={ariaLabelNext} onClick={goNext} />
@@ -143,7 +166,7 @@ export const InternalCarousel = ({
       </div>
 
       <InternalLiveRegion assertive={true} tagName="span" hidden={true}>
-        List item {activeItem + 1} of {items.length} items
+        List item {activeItem + 1} of {Math.ceil(items.length / visibleItemNumber)} items
       </InternalLiveRegion>
     </div>
   );
