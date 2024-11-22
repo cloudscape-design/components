@@ -37,7 +37,7 @@ export function generateCarousels() {
           </SpaceBetween>
         </div>
       ),
-      backgroundStyle: `url(${logo1})`,
+      backgroundStyle: `center / cover url(${logo1})`,
     },
     {
       content: (
@@ -54,7 +54,7 @@ export function generateCarousels() {
           </SpaceBetween>
         </div>
       ),
-      backgroundStyle: `url(${logo2})`,
+      backgroundStyle: `center / cover url(${logo2})`,
     },
     {
       content: (
@@ -71,7 +71,7 @@ export function generateCarousels() {
           </SpaceBetween>
         </div>
       ),
-      backgroundStyle: `url(${logo3})`,
+      backgroundStyle: `center / cover url(${logo3})`,
     },
     {
       content: (
@@ -88,7 +88,7 @@ export function generateCarousels() {
           </SpaceBetween>
         </div>
       ),
-      backgroundStyle: `url(${logo4})`,
+      backgroundStyle: `center / cover url(${logo4})`,
     },
     {
       content: (
@@ -105,7 +105,7 @@ export function generateCarousels() {
           </SpaceBetween>
         </div>
       ),
-      backgroundStyle: `url(${logo5})`,
+      backgroundStyle: `center / cover url(${logo5})`,
     },
   ];
 }
