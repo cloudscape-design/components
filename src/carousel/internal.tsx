@@ -20,7 +20,7 @@ export interface InternalCarouselProps extends CarouselProps, InternalBaseCompon
 
 export const InternalCarousel = ({
   __internalRootRef,
-  items,
+  items = [],
   size,
   ariaLabel,
   ariaLabelNext,
