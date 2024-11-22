@@ -11,11 +11,11 @@
   @include styles.styles-reset;
   overflow: hidden;
   position: relative;
+  padding-inline: 7px;
 }
 
 .content-wrapper {
-  padding-block: 30px;
-  padding-inline: 30px;
+  block-size: 100%;
 }
 
 .pagination {
@@ -35,6 +35,7 @@
   z-index: 1;
   display: flex;
   box-sizing: content-box;
+
   @include styles.with-motion {
     transition: transform 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
@@ -55,6 +56,6 @@
     outline: none;
   }
   @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+    @include styles.focus-highlight('4px');
   }
 }

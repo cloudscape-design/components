@@ -20,7 +20,6 @@ export default function () {
           ariaLabel="Test carousel"
           ariaLabelNext="Next item"
           ariaLabelPrevious="Previous item"
-          variant="single"
           visibleItemNumber={3}
           items={generateCarousels()}
         />

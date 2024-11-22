@@ -5,13 +5,13 @@ import React from 'react';
 import Box from '~components/box/index';
 import Carousel from '~components/carousel/index';
 
-import { generateCarousels } from './utils';
+import { generateCardCarousels } from './utils';
 
 export default function () {
   return (
     <>
       <Box padding={'m'} variant="h1">
-        Image Carousel
+        Cards Carousel
       </Box>
       <div
         style={{
@@ -19,12 +19,12 @@ export default function () {
         }}
       >
         <Carousel
-          size="large"
+          size={350}
           ariaLabel="Test carousel"
           ariaLabelNext="Next item"
           ariaLabelPrevious="Previous item"
-          visibleItemNumber={1}
-          items={generateCarousels()}
+          visibleItemNumber={3}
+          items={generateCardCarousels()}
         />
       </div>
     </>
