@@ -32,6 +32,11 @@ export const InternalCarousel = ({
     typeof size === 'number' ? size : typeof size === 'string' ? CAROUSEL_HEIGHT[size] : CAROUSEL_HEIGHT.medium;
   const carouselWrapperRef = useRef<HTMLUListElement>(null);
   const [activeItem, setActiveItem] = useState<number>(0);
+
+  const activeItemIndexEnd = useMemo(() => {
+    return activeItem + visibleItemNumber - 1;
+  }, [activeItem, visibleItemNumber]);
+
   const mainRef = useRef<HTMLDivElement>(null);
   const mode = useCurrentMode(mainRef);
   const mergedRef = useMergeRefs(mainRef, __internalRootRef);
@@ -77,12 +82,21 @@ export const InternalCarousel = ({
     if (!carouselWrapperRef.current) {
       return;
     }
-
+    // focus the correct li based on the direction.
+    const target = event.target as HTMLElement;
+    let newFocusTarget: HTMLLIElement;
     if (event.keyCode === KeyCode.left) {
+      newFocusTarget = target.previousSibling as HTMLLIElement;
+
       goPrev();
     } else if (event.keyCode === KeyCode.right) {
       goNext();
+      newFocusTarget = target.nextSibling as HTMLLIElement;
     }
+
+    requestAnimationFrame(() => {
+      newFocusTarget?.focus();
+    });
   };
 
   return (
@@ -93,12 +107,14 @@ export const InternalCarousel = ({
         style={{ height: `${height}px`, transform: `translateX(-${transformX}px)` }}
       >
         {items.map(({ content, backgroundStyle }, index) => {
-          const isActiveItem = activeItem === index;
+          const isActiveItem = index >= activeItem && index <= activeItemIndexEnd;
 
           return (
             <li
-              tabIndex={-1}
-              onKeyDown={onKeyDown}
+              tabIndex={isActiveItem ? 0 : -1}
+              onKeyDown={event => {
+                isActiveItem && onKeyDown(event);
+              }}
               key={index}
               aria-hidden={!isActiveItem}
               className={clsx(styles['carousel-item'])}
@@ -107,7 +123,7 @@ export const InternalCarousel = ({
                 width: `${itemWidth}%`,
               }}
             >
-              <div className={styles['content-wrapper']}>{content}</div>
+              <div className={styles['content-wrapper']}>{isActiveItem ? content : null}</div>
             </li>
           );
         })}
