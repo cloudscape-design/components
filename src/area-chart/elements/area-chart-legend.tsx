@@ -3,7 +3,7 @@
 import React, { memo, useMemo } from 'react';
 
 import ChartLegend from '../../internal/components/chart-legend';
-import { useSelector } from '../async-store';
+import { useSelector } from '../../internal/utils/async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 

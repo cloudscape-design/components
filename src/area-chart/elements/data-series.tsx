@@ -4,7 +4,7 @@ import React, { memo } from 'react';
 import clsx from 'clsx';
 
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { useSelector } from '../async-store';
+import { useSelector } from '../../internal/utils/async-store';
 import { AreaChartProps } from '../interfaces';
 import { ChartModel } from '../model';
 import AreaSeries from './area-series';

@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
-import AsyncStore, { ReadonlyAsyncStore } from '../../area-chart/async-store';
+import AsyncStore, { ReadonlyAsyncStore } from '../../internal/utils/async-store';
 import {
   CellOffsets,
   StickyColumnsCellState,
@@ -94,9 +94,7 @@ export function useStickyColumns({
       }
     };
 
-    const unsubscribe = store.subscribe(selector, (newState, prevState) =>
-      updateWrapperStyles(selector(newState), selector(prevState))
-    );
+    const unsubscribe = store.subscribe(selector, (newState, prevState) => updateWrapperStyles(newState, prevState));
     return unsubscribe;
   }, [store, hasStickyColumns]);
 
@@ -196,7 +194,7 @@ export function useStickyCellStyles({
       // set up a new subscription to the store's updates
       if (cellElement) {
         unsubscribeRef.current = stickyColumns.store.subscribe(selector, (newState, prevState) => {
-          updateCellStyles(selector(newState), selector(prevState));
+          updateCellStyles(newState, prevState);
         });
       }
     },
