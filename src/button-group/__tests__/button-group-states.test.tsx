@@ -29,7 +29,6 @@ const fileButton: ButtonGroupProps.FileInput = {
   type: 'file-input',
   id: 'file',
   text: 'Choose files',
-  value: [],
 };
 
 const menuButton: ButtonGroupProps.MenuDropdown = {
