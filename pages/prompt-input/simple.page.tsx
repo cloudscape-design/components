@@ -171,9 +171,7 @@ export default function PromptInputPage() {
                       <Box padding={{ left: 'xxs', top: 'xs' }}>
                         <ButtonGroup
                           ariaLabel="Chat actions"
-                          onFilesChange={({ detail }) =>
-                            detail.id.includes('files') && setFiles(detail.files ? detail.files : [])
-                          }
+                          onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
                           items={[
                             {
                               type: 'file-input',
