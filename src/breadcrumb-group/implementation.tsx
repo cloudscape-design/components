@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { Ref, useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
@@ -21,6 +21,7 @@ import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
 } from './analytics-metadata/interfaces';
+import { FullDropdown } from './full-dropdown';
 import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupSkeleton } from './skeleton';
@@ -61,32 +62,6 @@ const getEllipsisDropdownTrigger = ({
     </InternalButton>
   );
 };
-
-const getFullDropdownTrigger =
-  (currentPage: string) =>
-  ({ ariaLabel, triggerRef, disabled, testUtilsClass, isOpen, onClick }: CustomTriggerProps) => {
-    return (
-      <button
-        ref={triggerRef as Ref<HTMLButtonElement>}
-        className={clsx(styles['collapsed-button'], testUtilsClass)}
-        disabled={disabled}
-        onClick={event => {
-          event.preventDefault();
-          onClick();
-        }}
-        aria-expanded={isOpen}
-        aria-haspopup={true}
-        aria-label={ariaLabel}
-        formAction="none"
-      >
-        <InternalIcon
-          name="caret-down-filled"
-          className={isOpen ? styles['button-icon-open'] : styles['button-icon-closed']}
-        />
-        <span>{currentPage}</span>
-      </button>
-    );
-  };
 
 const EllipsisDropdown = ({
   ariaLabel,
@@ -280,20 +255,10 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         : {})}
     >
       {collapsed === breadcrumbItems.length - 2 ? (
-        <InternalButtonDropdown
-          items={items.map((item, index) => {
-            const isCurrentPage = index === items.length - 1;
-            return {
-              id: item.href,
-              text: item.text,
-              href: isCurrentPage ? undefined : item.href,
-              disabled: isCurrentPage,
-              isCurrentPage,
-            };
-          })}
-          customTriggerBuilder={getFullDropdownTrigger(items[items.length - 1].text)}
-          linkStyle={true}
-          className={styles['collapsed-button-dropdown']}
+        <FullDropdown
+          items={items}
+          onClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
+          onFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
         />
       ) : (
         <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>

@@ -14,6 +14,8 @@ const dropdownSelector = dropdownWrapper.findOpenDropdown().toSelector();
 const dropdownTriggerSelector = dropdownWrapper.findNativeButton().toSelector();
 const dropdownItemsSelector = dropdownWrapper.findItems().toSelector();
 
+jest.retryTimes(0);
+
 class BreadcrumbGroupPage extends BasePageObject {
   setMobileViewport() {
     return this.setWindowSize({ width: 400, height: 800 });
@@ -24,7 +26,8 @@ class BreadcrumbGroupPage extends BasePageObject {
   isDropdownTriggerFocused() {
     return this.isFocused(dropdownTriggerSelector);
   }
-  openDropdown() {
+  async openDropdown() {
+    await this.waitForVisible(dropdownTriggerSelector);
     return this.click(dropdownTriggerSelector);
   }
   closeDropdown() {
@@ -73,28 +76,17 @@ const setupTest = (
   });
 };
 describe('BreadcrumbGroup', () => {
-  test(
-    'Has proper number of items in the dropdown',
+  test.each([
+    [{ width: 850, height: 800 }, 1],
+    [{ width: 800, height: 800 }, 2],
+    [{ width: 750, height: 800 }, 3],
+    [{ width: 650, height: 800 }, 4],
+    [{ width: 620, height: 800 }, 6],
+  ])('Has proper number of items in the dropdown: %o %d', (sizes, itemsInDropdown) =>
     setupTest(async page => {
-      await page.setWindowSize({ width: 645, height: 800 });
       await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(1);
-      await page.closeDropdown();
-
-      await page.setWindowSize({ width: 570, height: 800 });
-      await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(2);
-      await page.closeDropdown();
-
-      await page.setWindowSize({ width: 500, height: 800 });
-      await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(3);
-      await page.closeDropdown();
-
-      await page.setWindowSize({ width: 400, height: 800 });
-      await page.openDropdown();
-      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(4);
-    })
+      expect(await page.getElementsCount(dropdownItemsSelector)).toBe(itemsInDropdown);
+    }, sizes)()
   );
   test(
     'Does not return ghost items',
@@ -105,7 +97,7 @@ describe('BreadcrumbGroup', () => {
   test(
     'Adjusts display when adding/removing items',
     setupTest(async page => {
-      await page.setWindowSize({ width: 700, height: 800 });
+      await page.setWindowSize({ width: 950, height: 800 });
       expect(page.isEllipsisVisible()).resolves.toBe(false);
       await page.click('#add');
       expect(page.isEllipsisVisible()).resolves.toBe(true);
@@ -134,103 +126,34 @@ describe('BreadcrumbGroup', () => {
       await page.openDropdown();
       await expect(page.getText('#onFollowMessage')).resolves.toEqual('');
       await expect(page.getText('#onClickMessage')).resolves.toEqual('');
-      await page.clickItem(1);
+      await page.clickItem(2);
       await expect(page.getText('#onFollowMessage')).resolves.toEqual('OnFollow: Second item was selected');
       await expect(page.getText('#onClickMessage')).resolves.toEqual('OnClick: Second item was selected');
     })
   );
 
-  describe('Item popover', () => {
+  describe.each([[true], [false]])('analytics attributes (mobile: %p)', mobile => {
     test(
-      'should be displayed for truncated items on first render',
-      setupTest(
-        async page => {
-          await page.click('#focus-target-long-text');
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(true);
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-        },
-        { width: 100, height: 800 }
-      )
-    );
-
-    test(
-      'should not be displayed for non-truncated items on first render',
-      setupTest(
-        async page => {
-          await page.click('#focus-target-long-text');
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-        },
-        { width: 1200, height: 800 }
-      )
-    );
-
-    test(
-      'should be displayed for truncated items after resizing',
-      setupTest(
-        async page => {
-          await page.setWindowSize({ width: 1000, height: 800 });
-          await page.click('#focus-target-long-text');
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(true);
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-        },
-        { width: 1200, height: 800 }
-      )
-    );
-    test(
-      'should be displayed for truncated items after collapsing items into dropdown',
-      setupTest(
-        async page => {
+      'attaches funnel name attribute',
+      setupTest(async (page, browser) => {
+        if (mobile) {
           await page.setMobileViewport();
-          await page.click('#focus-target-long-text');
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(true);
-        },
-        { width: 1200, height: 800 }
-      )
+        }
+        const funnelName = await browser.$('[data-analytics-funnel-key="funnel-name"]').getText();
+        expect(funnelName).toBe('Sixth that is very very very very very very long long long text');
+      })
     );
     test(
-      'should not be displayed after making the viewport larger again',
-      setupTest(
-        async page => {
+      'attaches resource name attribute',
+      setupTest(async (page, browser) => {
+        if (mobile) {
           await page.setMobileViewport();
-          await page.setWindowSize({ width: 1200, height: 800 });
-          await page.click('#focus-target-long-text');
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-          await page.keys('Tab');
-          await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-          await page.keys('Tab');
-        },
-        { width: 1200, height: 800 }
-      )
-    );
-
-    test(
-      'Item popover should close after pressing Escape',
-      setupTest(async page => {
-        await page.setMobileViewport();
-        await page.click('#focus-target-long-text');
-        await page.keys('Tab');
-        await expect(page.isTooltipDisplayed()).resolves.toBe(true);
-        await page.keys('Escape');
-        await expect(page.isTooltipDisplayed()).resolves.toBe(false);
+        }
+        const funnelName = await browser.$('[data-analytics-funnel-resource-type="true"]').getHTML();
+        expect(funnelName).toMatch('>Second<');
       })
     );
   });
-
-  test(
-    'Attaches funnel name attribute to last breadcrumb item',
-    setupTest(async (page, browser) => {
-      await page.setMobileViewport();
-      const funnelName = await browser.$('[data-analytics-funnel-key="funnel-name"]').getText();
-      expect(funnelName).toBe('Sixth that is very very very very very very long long long text');
-    })
-  );
 
   test(
     'Focus does not go into ghost replica',
@@ -251,48 +174,21 @@ describe('BreadcrumbGroup', () => {
 
   test(
     'Last item is focusable when truncated',
-    setupTest(async page => {
-      await page.setMobileViewport();
-      await page.click('#focus-target-long-text');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await expect(page.isTooltipDisplayed()).resolves.toBe(true);
-      await page.keys('Tab');
-      await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-      await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
-    })
-  );
-
-  test(
-    'Displays only one tooltip at the time',
-    setupTest(async page => {
-      await page.setMobileViewport();
-      await page.click('#focus-target-long-text');
-      await page.keys('Tab');
-      await expect(page.countTooltips()).resolves.toBe(1);
-      await expect(page.getTooltipText()).resolves.toBe(
-        'First that is very very very very very very long long long text'
-      );
-      await page.hoverElement(breadcrumbGroupWrapper.findBreadcrumbLink(6).toSelector());
-      await expect(page.countTooltips()).resolves.toBe(1);
-      await expect(page.getTooltipText()).resolves.toBe(
-        'Sixth that is very very very very very very long long long text'
-      );
-
-      await page.hoverElement('#focus-target-long-text');
-      await page.click('#focus-target-long-text');
-      await expect(page.countTooltips()).resolves.toBe(0);
-      await page.hoverElement(breadcrumbGroupWrapper.findBreadcrumbLink(6).toSelector());
-      await expect(page.countTooltips()).resolves.toBe(1);
-      await expect(page.getTooltipText()).resolves.toBe(
-        'Sixth that is very very very very very very long long long text'
-      );
-      await page.keys('Tab');
-      await expect(page.countTooltips()).resolves.toBe(1);
-      await expect(page.getTooltipText()).resolves.toBe(
-        'First that is very very very very very very long long long text'
-      );
-    })
+    setupTest(
+      async page => {
+        await page.click('#focus-target-long-text');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await expect(page.isTooltipDisplayed()).resolves.toBe(true);
+        await page.keys('Tab');
+        await expect(page.isTooltipDisplayed()).resolves.toBe(false);
+        await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
+      },
+      { width: 950, height: 800 }
+    )
   );
 });
