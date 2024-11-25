@@ -16,11 +16,11 @@ const FileInputItem = forwardRef(
     {
       item,
       showTooltip,
-      onItemClick,
+      onFilesChange,
     }: {
       item: ButtonGroupProps.FileInput;
       showTooltip: boolean;
-      onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+      onFilesChange?: CancelableEventHandler<ButtonGroupProps.FileChangeDetails>;
     },
     ref: React.Ref<FileInputProps.Ref>
   ) => {
@@ -37,7 +37,7 @@ const FileInputItem = forwardRef(
           multiple={item.multiple}
           value={files}
           onChange={event => {
-            fireCancelableEvent(onItemClick, { id: item.id, files: event.detail.value });
+            fireCancelableEvent(onFilesChange, { id: item.id, files: event.detail.value });
             setFiles(event.detail.value);
           }}
           ref={ref}

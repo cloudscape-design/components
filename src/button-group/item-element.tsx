@@ -19,11 +19,12 @@ interface ItemElementProps {
   tooltip: null | { item: string; feedback: boolean };
   setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FileChangeDetails> | undefined;
 }
 
 const ItemElement = forwardRef(
   (
-    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick }: ItemElementProps,
+    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick, onFilesChange }: ItemElementProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -91,6 +92,10 @@ const ItemElement = forwardRef(
       fireCancelableEvent(onItemClick, event.detail, event);
     };
 
+    const onFilesChangeHandler = (event: CustomEvent<ButtonGroupProps.FileChangeDetails>) => {
+      fireCancelableEvent(onFilesChange, event.detail, event);
+    };
+
     return (
       <div
         key={item.id}
@@ -130,7 +135,7 @@ const ItemElement = forwardRef(
           <FileInputItem
             ref={buttonRef}
             item={item}
-            onItemClick={onClickHandler}
+            onFilesChange={onFilesChangeHandler}
             showTooltip={tooltip?.item === item.id}
           />
         )}
