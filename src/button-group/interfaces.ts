@@ -69,7 +69,6 @@ export interface ButtonGroupProps extends BaseComponentProps {
    *
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
    * * `text` (string) - The name of the menu button shown as a tooltip.
-   * * `value` (File[]) - The file value of the input.
    * * `accept` (optional, string) - Specifies the native file input `accept` attribute to describe the allow-list of file types.
    * * `multiple` (optional, string) - Specifies the native file input `multiple` attribute to allow users entering more than one file.
    *

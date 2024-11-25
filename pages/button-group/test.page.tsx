@@ -204,7 +204,6 @@ export default function ButtonGroupPage() {
   ].filter(canRenderItem);
 
   const onItemClick: ButtonGroupProps['onItemClick'] = ({ detail }) => {
-    console.log(detail);
     function addLog(text: string) {
       const entry = document.createElement('div');
       entry.textContent = text;
@@ -253,7 +252,7 @@ export default function ButtonGroupPage() {
   };
 
   const onFilesChange: ButtonGroupProps['onFilesChange'] = ({ detail }) => {
-    return setFiles(detail.files ? detail.files : []);
+    return setFiles(detail.files);
   };
 
   const onDismiss = (event: { detail: { fileIndex: number } }) => {
