@@ -84,6 +84,20 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
+  test('should find tools slot as findActiveDrawer when local runtime drawers are present', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayout toolsOpen={true} tools="test content" />);
+    expect(wrapper.findActiveDrawer()!.getElement()).toEqual(wrapper.findTools()!.getElement());
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('test content');
+  });
+
+  test('should not find tools slot as findActiveDrawer when only global runtime drawers are present', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
+    const { wrapper } = await renderComponent(<AppLayout toolsOpen={true} tools="test content" />);
+    expect(wrapper.findTools().getElement()).toHaveTextContent('test content');
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
   test('update rendered drawers via runtime config', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true });
     const { wrapper } = await renderComponent(<AppLayout />);
