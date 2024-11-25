@@ -64,7 +64,7 @@ awsuiPlugins.appLayout.registerDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 });
 awsuiPlugins.appLayout.registerDrawer({
-  id: 'circle2-global',
+  id: 'global-with-stored-state',
   type: 'global',
   defaultActive: false,
   resizable: true,
