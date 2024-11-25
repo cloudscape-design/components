@@ -70,11 +70,11 @@ export default function InternalCopyToClipboard({
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
+      __onOpen={onClick}
     >
       <InternalButton
         ariaLabel={copyButtonAriaLabel ?? copyButtonText}
         iconName="copy"
-        onClick={onClick}
         variant={triggerVariant}
         wrapText={false}
         formAction="none"
