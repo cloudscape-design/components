@@ -3,7 +3,7 @@
 import React from 'react';
 import { NodeApi } from 'react-arborist';
 
-import { ButtonDropdownProps } from '../button-dropdown';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
