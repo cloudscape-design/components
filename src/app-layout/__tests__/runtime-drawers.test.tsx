@@ -623,6 +623,23 @@ describeEachAppLayout(({ theme, size }) => {
     expect(unmountContent).toHaveBeenCalledTimes(1);
   });
 
+  test('calls unmountContent when the whole app layout unmounts', async () => {
+    const mountContent = jest.fn();
+    const unmountContent = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      mountContent,
+      unmountContent,
+    });
+    const { wrapper, rerender } = await renderComponent(<AppLayout />);
+    expect(mountContent).toHaveBeenCalledTimes(0);
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(mountContent).toHaveBeenCalledTimes(1);
+    expect(unmountContent).toHaveBeenCalledTimes(0);
+    rerender(<></>);
+    expect(unmountContent).toHaveBeenCalledTimes(1);
+  });
+
   // skip these tests on mobile mode, because triggers will overflow
   (size === 'desktop' ? describe : describe.skip)('ordering', () => {
     test('renders multiple drawers in alphabetical order by default', async () => {
