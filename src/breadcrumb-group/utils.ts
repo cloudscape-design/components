@@ -30,8 +30,8 @@ const computeNumberOfCollapsedItems = (collapsedWidths: Array<number>, navWidth:
   if (itemsCount > 1) {
     collapsed = itemsCount - 1;
     let remainingWidth = navWidth - collapsedWidths[0] - collapsedWidths[itemsCount - 1] - ELLIPSIS_WIDTH;
-    let j = 1;
-    while (remainingWidth > 0 && j <= itemsCount - 1) {
+    let j = 0;
+    while (collapsed > 0 && remainingWidth > 0 && j <= itemsCount - 1) {
       remainingWidth -= collapsedWidths[itemsCount - 1 - j];
       j++;
       if (remainingWidth >= 0) {

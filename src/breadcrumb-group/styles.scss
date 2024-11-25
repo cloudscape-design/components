@@ -81,7 +81,7 @@
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
-  color: awsui.$color-text-breadcrumb-current;
+  color: awsui.$color-text-interactive-default;
   cursor: pointer;
   padding-block: 0;
   padding-inline: 0;
@@ -94,10 +94,17 @@
   @include focus-visible.when-visible {
     @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
   }
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
   > :last-child {
+    color: awsui.$color-text-breadcrumb-current;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    &:hover {
+      color: awsui.$color-text-interactive-hover;
+    }
   }
 }
 
@@ -113,4 +120,8 @@
   @include styles.with-motion {
     transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
   }
+}
+
+.hidden {
+  display: none;
 }
