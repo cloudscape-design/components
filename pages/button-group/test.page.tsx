@@ -247,10 +247,13 @@ export default function ButtonGroupPage() {
       case 'experimental-features':
         return syncAction(() => setUseExperimentalFeatures(!!detail.pressed));
       case 'file-input':
-        return syncAction(() => setFiles(detail.files ? detail.files : []));
       default:
         return syncAction();
     }
+  };
+
+  const onFilesChange: ButtonGroupProps['onFilesChange'] = ({ detail }) => {
+    return setFiles(detail.files ? detail.files : []);
   };
 
   const onDismiss = (event: { detail: { fileIndex: number } }) => {
@@ -273,6 +276,7 @@ export default function ButtonGroupPage() {
             variant="icon"
             items={items}
             onItemClick={onItemClick}
+            onFilesChange={onFilesChange}
             dropdownExpandToViewport={dropdownExpandToViewport}
           />
         </Box>

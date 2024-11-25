@@ -92,6 +92,10 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  /**
+   * Called when the user uploads files. The event detail object contains the id and files from the file input item.
+   */
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FileChangeDetails>;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
@@ -162,7 +166,11 @@ export namespace ButtonGroupProps {
     id: string;
     pressed?: boolean;
     checked?: boolean;
-    files?: File[];
+  }
+
+  export interface FileChangeDetails {
+    id: string;
+    files: File[];
   }
 
   export interface Ref {
