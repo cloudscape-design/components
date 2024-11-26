@@ -48,6 +48,7 @@ awsuiPlugins.appLayout.registerDrawer({
   defaultActive: !!searchParams.get('force-default-active'),
   onToggle: event => {
     console.log('security drawer on toggle', event.detail);
+    awsuiPlugins.appLayout.updateDrawer({ id: 'security', defaultActive: event.detail.isOpen });
   },
 
   resizable: true,
@@ -56,6 +57,7 @@ awsuiPlugins.appLayout.registerDrawer({
   onResize: event => {
     setSizeRef.current?.(true);
     console.log('resize', event.detail);
+    awsuiPlugins.appLayout.updateDrawer({ id: 'security', defaultSize: event.detail.size });
   },
 
   mountContent: container => {
@@ -165,7 +167,7 @@ awsuiPlugins.appLayout.registerDrawer({
 });
 
 awsuiPlugins.appLayout.registerDrawer({
-  id: 'circle2-global',
+  id: 'global-with-stored-state',
   type: 'global',
   defaultActive: false,
   resizable: true,
@@ -173,7 +175,7 @@ awsuiPlugins.appLayout.registerDrawer({
 
   ariaLabels: {
     closeButton: 'Close button',
-    content: 'Content',
+    content: 'Drawer with counter',
     triggerButton: 'Trigger button',
     resizeHandle: 'Resize handle',
   },
@@ -185,10 +187,14 @@ awsuiPlugins.appLayout.registerDrawer({
     </svg>`,
   },
 
+  onToggle(event) {
+    awsuiPlugins.appLayout.updateDrawer({ id: 'global-with-stored-state', defaultActive: event.detail.isOpen });
+  },
+
   mountContent: container => {
     ReactDOM.render(
       <>
-        <Counter id="circle2-global" />
+        <Counter id="global-with-stored-state" />
         global widget content circle 2
       </>,
       container

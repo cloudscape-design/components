@@ -9,6 +9,7 @@ import Link from '~components/link';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
+import './utils/external-widget';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Tools } from './utils/content-blocks';
@@ -18,7 +19,6 @@ function createView(name: string) {
   return function View() {
     return (
       <AppLayout
-        {...{ __disableRuntimeDrawers: true }}
         data-testid="secondary-layout"
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
@@ -55,6 +55,7 @@ export default function () {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        {...{ __disableRuntimeDrawers: true }}
         data-testid="main-layout"
         ariaLabels={labels}
         navigation={

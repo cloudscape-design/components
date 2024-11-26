@@ -41,22 +41,31 @@ export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: Si
   );
 
   const onDocumentPointerUp = useCallback(() => {
-    if (!panelRef || !panelRef.current) {
+    const panelElement = panelRef?.current;
+    /* istanbul ignore if  */
+    if (!panelElement) {
       return;
     }
+    const currentDocument = panelElement.ownerDocument;
 
-    document.body.classList.remove(styles['resize-active']);
-    document.body.classList.remove(styles[`resize-${position}`]);
-    document.removeEventListener('pointerup', onDocumentPointerUp);
-    document.removeEventListener('pointermove', onDocumentPointerMove);
+    currentDocument.body.classList.remove(styles['resize-active']);
+    currentDocument.body.classList.remove(styles[`resize-${position}`]);
+    currentDocument.removeEventListener('pointerup', onDocumentPointerUp);
+    currentDocument.removeEventListener('pointermove', onDocumentPointerMove);
   }, [panelRef, onDocumentPointerMove, position]);
 
   const onSliderPointerDown = useCallback(() => {
-    document.body.classList.add(styles['resize-active']);
-    document.body.classList.add(styles[`resize-${position}`]);
-    document.addEventListener('pointerup', onDocumentPointerUp);
-    document.addEventListener('pointermove', onDocumentPointerMove);
-  }, [onDocumentPointerMove, onDocumentPointerUp, position]);
+    const panelElement = panelRef?.current;
+    /* istanbul ignore if  */
+    if (!panelElement) {
+      return;
+    }
+    const currentDocument = panelElement.ownerDocument;
+    currentDocument.body.classList.add(styles['resize-active']);
+    currentDocument.body.classList.add(styles[`resize-${position}`]);
+    currentDocument.addEventListener('pointerup', onDocumentPointerUp);
+    currentDocument.addEventListener('pointermove', onDocumentPointerMove);
+  }, [panelRef, onDocumentPointerMove, onDocumentPointerUp, position]);
 
   return onSliderPointerDown;
 };

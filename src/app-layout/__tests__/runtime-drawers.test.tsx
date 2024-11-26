@@ -84,6 +84,20 @@ describeEachAppLayout(({ theme, size }) => {
     expect(wrapper.findDrawersTriggers()).toHaveLength(2);
   });
 
+  test('should find tools slot as findActiveDrawer when local runtime drawers are present', async () => {
+    awsuiPlugins.appLayout.registerDrawer(drawerDefaults);
+    const { wrapper } = await renderComponent(<AppLayout toolsOpen={true} tools="test content" />);
+    expect(wrapper.findActiveDrawer()!.getElement()).toEqual(wrapper.findTools()!.getElement());
+    expect(wrapper.findActiveDrawer()!.getElement()).toHaveTextContent('test content');
+  });
+
+  test('should not find tools slot as findActiveDrawer when only global runtime drawers are present', async () => {
+    awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, type: 'global' });
+    const { wrapper } = await renderComponent(<AppLayout toolsOpen={true} tools="test content" />);
+    expect(wrapper.findTools().getElement()).toHaveTextContent('test content');
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
+  });
+
   test('update rendered drawers via runtime config', async () => {
     awsuiPlugins.appLayout.registerDrawer({ ...drawerDefaults, resizable: true });
     const { wrapper } = await renderComponent(<AppLayout />);
@@ -606,6 +620,23 @@ describeEachAppLayout(({ theme, size }) => {
     expect(unmountContent).toHaveBeenCalledTimes(0);
     wrapper.findActiveDrawerCloseButton()!.click();
     expect(mountContent).toHaveBeenCalledTimes(1);
+    expect(unmountContent).toHaveBeenCalledTimes(1);
+  });
+
+  test('calls unmountContent when the whole app layout unmounts', async () => {
+    const mountContent = jest.fn();
+    const unmountContent = jest.fn();
+    awsuiPlugins.appLayout.registerDrawer({
+      ...drawerDefaults,
+      mountContent,
+      unmountContent,
+    });
+    const { wrapper, rerender } = await renderComponent(<AppLayout />);
+    expect(mountContent).toHaveBeenCalledTimes(0);
+    wrapper.findDrawerTriggerById(drawerDefaults.id)!.click();
+    expect(mountContent).toHaveBeenCalledTimes(1);
+    expect(unmountContent).toHaveBeenCalledTimes(0);
+    rerender(<></>);
     expect(unmountContent).toHaveBeenCalledTimes(1);
   });
 
