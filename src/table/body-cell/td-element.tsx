@@ -102,7 +102,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const Element = isRowHeader ? 'th' : 'td';
     const isVisualRefresh = useVisualRefresh();
 
-    resizableStyle = resizableColumns ? resizableStyle : {};
+    resizableStyle = resizableColumns ? {} : resizableStyle;
 
     nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
 
@@ -139,7 +139,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSuccessIcon && styles['body-cell-has-success'],
           level !== undefined && styles['body-cell-expandable'],
           level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
-          verticalAlign === 'top' && styles['body-cell-align-top'],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -161,7 +160,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>{children}</div>
+        <div
+          className={clsx(
+            styles['body-cell-content'],
+            verticalAlign === 'top' && styles['body-cell-align-top'],
+            wrapLines && styles['body-cell-wrap']
+          )}
+        >
+          {children}
+        </div>
       </Element>
     );
   }
