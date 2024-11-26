@@ -5,11 +5,11 @@ import { createRef } from 'react';
 import { act, renderHook } from '../../__tests__/render-hook';
 import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { createCustomEvent } from '../../internal/events';
+import { BaseKeyDetail, createCustomEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 import { useSelect } from '../utils/use-select';
 
-const createTestEvent = (keyCode: KeyCode) =>
+const createTestEvent = (keyCode: KeyCode): CustomEvent<BaseKeyDetail> =>
   createCustomEvent({
     cancelable: true,
     detail: {
@@ -19,6 +19,7 @@ const createTestEvent = (keyCode: KeyCode) =>
       shiftKey: false,
       altKey: false,
       metaKey: false,
+      isComposing: false,
     },
   });
 
