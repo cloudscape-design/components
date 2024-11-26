@@ -621,15 +621,11 @@ const InternalTable = React.forwardRef(
                                     <TableBodyCell
                                       key={getColumnKey(column, colIndex)}
                                       {...sharedCellProps}
-                                      style={
-                                        resizableColumns
-                                          ? {}
-                                          : {
-                                              width: column.width,
-                                              minWidth: column.minWidth,
-                                              maxWidth: column.maxWidth,
-                                            }
-                                      }
+                                      resizableStyle={{
+                                        width: column.width,
+                                        minWidth: column.minWidth,
+                                        maxWidth: column.maxWidth,
+                                      }}
                                       ariaLabels={ariaLabels}
                                       column={column}
                                       item={row.item}
