@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { testIf } from './utils';
 
@@ -87,6 +87,7 @@ interface SetupTestOptions {
   screenSize?: (typeof viewports)['desktop' | 'mobile'];
   disableContentPaddings?: string;
   theme: string;
+  isMobile?: boolean;
 }
 
 const setupTest = (
@@ -95,10 +96,11 @@ const setupTest = (
     screenSize = viewports.desktop,
     disableContentPaddings = 'false',
     theme,
+    isMobile,
   }: SetupTestOptions,
   testFn: (page: AppLayoutDrawersPage) => Promise<void>
 ) =>
-  useBrowser(screenSize, async browser => {
+  useBrowser({ ...screenSize, isMobile }, async browser => {
     const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
       splitPanelPosition,
@@ -155,9 +157,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffsets[theme]);
         await page.dragResizerTo({ x: 0, y: 0 });
         const expectedWidths = {
-          ['classic']: 520,
-          ['refresh']: 447,
-          ['refresh-toolbar']: 593,
+          ['classic']: 505,
+          ['refresh']: 432,
+          ['refresh-toolbar']: 578,
         };
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidths[theme]);
       })
@@ -212,7 +214,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     test(
       'updates side split panel position when using different width drawers',
       setupTest(
-        { theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } },
+        { theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1465 } },
         async page => {
           await page.openFirstDrawer();
           await page.openSplitPanel();
@@ -271,7 +273,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   describe('mobile', () => {
     test(
       'hides the resize handle on drawer open',
-      setupTest({ theme, screenSize: viewports.mobile }, async page => {
+      setupTest({ theme, screenSize: viewports.mobile, isMobile: true }, async page => {
         await page.openFirstDrawer();
         await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(false);
       })
@@ -286,6 +288,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           disableContentPaddings: 'true',
           theme,
           screenSize: size === 'desktop' ? viewports.desktop : viewports.mobile,
+          isMobile: size === 'mobile',
         },
         async page => {
           const width = await page.getMainContentWidth();

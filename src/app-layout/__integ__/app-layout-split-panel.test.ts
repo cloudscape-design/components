@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { AppLayoutSplitViewPage } from './utils';
 
@@ -31,6 +30,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   test(
     'slider is accessible by keyboard in side position',
     setupTest(async page => {
+      await page.click(wrapper.findNavigationClose().toSelector());
       await page.openPanel();
       await page.switchPosition('side');
       await page.keys(['Shift', 'Tab', 'Shift']);
@@ -174,11 +174,14 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         expect((await page.getSplitPanelSize()).width).toEqual(280);
 
         await page.dragResizerTo({ x: 0, y: 0 });
+
+        const arePaddingsEnabled = name === 'paddings enabled';
+
         // different design allows for different split panel max width
         const expectedWidth = {
-          classic: 520,
-          refresh: name === 'paddings enabled' ? 445 : 469,
-          'refresh-toolbar': 592,
+          classic: arePaddingsEnabled ? 505 : 520,
+          refresh: arePaddingsEnabled ? 415 : 454,
+          'refresh-toolbar': arePaddingsEnabled ? 577 : 592,
         };
         expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
       }, url)
