@@ -58,6 +58,13 @@
   display: flex;
 }
 
+.trigger-type-button {
+  border-start-start-radius: awsui.$border-radius-button;
+  border-start-end-radius: awsui.$border-radius-button;
+  border-end-start-radius: awsui.$border-radius-button;
+  border-end-end-radius: awsui.$border-radius-button;
+}
+
 .popover-inline-content {
   display: inline;
 }
