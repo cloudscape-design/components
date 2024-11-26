@@ -73,6 +73,7 @@ export default function ButtonGroupPage() {
         id: 'file-input',
         text: 'Choose files',
         multiple: true,
+        accept: 'image/png, image/jpeg',
       },
     ],
   };

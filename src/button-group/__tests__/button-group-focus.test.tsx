@@ -32,7 +32,7 @@ const menuButton: ButtonGroupProps.MenuDropdown = {
   items: [{ id: 'search', text: 'Search' }],
 };
 
-const fileInputButton: ButtonGroupProps.FileInput = {
+const fileInput: ButtonGroupProps.FileInput = {
   type: 'file-input',
   id: 'file',
   text: 'Choose files',
@@ -40,7 +40,7 @@ const fileInputButton: ButtonGroupProps.FileInput = {
 
 test('focuses on all item types', () => {
   const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
-  const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInputButton] }, ref);
+  const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInput] }, ref);
 
   ref.current!.focus('copy');
   expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
