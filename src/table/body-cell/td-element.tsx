@@ -118,7 +118,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
         style={{ ...style, ...stickyStyles.style }}
         className={clsx(
           styles['body-cell'],
-          wrapLines && styles['body-cell-wrap'],
           isFirstRow && styles['body-cell-first-row'],
           isLastRow && styles['body-cell-last-row'],
           isSelected && styles['body-cell-selected'],
@@ -159,7 +158,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div className={styles['body-cell-content']}>{children}</div>
+        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>{children}</div>
       </Element>
     );
   }

@@ -131,11 +131,12 @@ $cell-negative-space-vertical: 2px;
 
   &-content {
     box-sizing: border-box;
-  }
-  &:not(.body-cell-wrap) > .body-cell-content {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+
+    &:not(.body-cell-wrap) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   &:first-child {
     border-inline-start: $border-placeholder;
