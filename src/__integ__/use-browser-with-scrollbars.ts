@@ -61,10 +61,12 @@ const flags = [
   '--headless=new',
 ];
 
+// Based on browser-test-tools:
+// https://github.com/cloudscape-design/browser-test-tools/blob/4aaed9e410b13e05a7d5dbace17231776d250b97/src/use-browser.ts#L35-L65
+// These changes will be integrated in browser-test-tools and removed from here.
 function useBrowserWithScrollbars(optionsOverride: Options, testFn: TestFunction): () => Promise<void>;
 function useBrowserWithScrollbars(testFn: TestFunction): () => Promise<void>;
 function useBrowserWithScrollbars(...args: [Options, TestFunction] | [TestFunction]) {
-  // How to do type-safe function overloads: https://stackoverflow.com/questions/55852612/typescript-overloads-optional-arguments-and-type-inference
   const optionsOverride = args.length === 1 ? {} : args[0];
   const { width, height } = optionsOverride;
   const testFn = args.length === 1 ? args[0] : args[1];
