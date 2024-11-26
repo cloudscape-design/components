@@ -32,22 +32,22 @@ const menuButton: ButtonGroupProps.MenuDropdown = {
   items: [{ id: 'search', text: 'Search' }],
 };
 
-const fileInputButton: ButtonGroupProps.FileInput = {
+const fileInput: ButtonGroupProps.FileInput = {
   type: 'file-input',
   id: 'file',
   text: 'Choose files',
 };
 
 test('tooltip not shown by default', () => {
-  const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInputButton] });
+  const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInput] });
 
   expect(wrapper.findTooltip()).toBeNull();
 });
 
-test.each([copyButton, likeButton, menuButton, fileInputButton])(
+test.each([copyButton, likeButton, menuButton, fileInput])(
   'shows the tooltip on pointer enter and hides on pointer leave, item id=$id',
   item => {
-    const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInputButton] });
+    const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInput] });
     const button = item.id === 'file' ? wrapper.findFileInputById(item.id)! : wrapper.findButtonById(item.id)!;
 
     fireEvent.pointerEnter(button.getElement());

@@ -12,7 +12,7 @@ const likeButton = buttonGroup.findButtonById('like');
 const copyButton = buttonGroup.findButtonById('copy');
 const sendButton = buttonGroup.findButtonById('send');
 const actionsMenu = buttonGroup.findMenuById('more-actions');
-const fileInputButton = buttonGroup.findFileInputById('file-input').findNativeInput();
+const fileInput = buttonGroup.findFileInputById('file-input').findNativeInput();
 
 function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
@@ -51,7 +51,7 @@ test.each([false, true])(
       await page.click(createWrapper().find('[data-testid="focus-before"]').toSelector());
 
       await page.keys(['Tab']);
-      await expect(page.isFocused(fileInputButton.toSelector())).resolves.toBe(true);
+      await expect(page.isFocused(fileInput.toSelector())).resolves.toBe(true);
 
       await page.keys(range(9).map(() => 'ArrowRight'));
       await expect(page.isFocused(actionsMenu.find('button').toSelector())).resolves.toBe(true);
@@ -109,7 +109,7 @@ test(
   'keeps focus in button group when action gets removed',
   setup({}, async page => {
     await page.click(sendButton.toSelector());
-    await expect(page.isFocused(fileInputButton.toSelector())).resolves.toBe(true);
+    await expect(page.isFocused(fileInput.toSelector())).resolves.toBe(true);
   })
 );
 
@@ -119,7 +119,7 @@ test(
     await page.click(createWrapper().find('[data-testid="focus-before"]').toSelector());
 
     await page.keys(['Tab']);
-    await expect(page.isFocused(fileInputButton.toSelector())).resolves.toBe(true);
+    await expect(page.isFocused(fileInput.toSelector())).resolves.toBe(true);
 
     await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
