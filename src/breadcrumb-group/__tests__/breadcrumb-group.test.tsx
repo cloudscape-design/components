@@ -11,6 +11,19 @@ import createWrapper, { BreadcrumbGroupWrapper, ElementWrapper } from '../../../
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 
+let mockMobileViewport = false;
+jest.mock('@cloudscape-design/component-toolkit', () => {
+  const actualUseContainerQuery = jest.requireActual('@cloudscape-design/component-toolkit');
+  return {
+    ...actualUseContainerQuery,
+    useContainerQuery: (arg: any) =>
+      mockMobileViewport ? [10, () => {}] : actualUseContainerQuery.useContainerQuery(arg),
+  };
+});
+afterEach(() => {
+  mockMobileViewport = false;
+});
+
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);
   return createWrapper(renderResult.container).findBreadcrumbGroup()!;
@@ -123,7 +136,8 @@ describe('BreadcrumbGroup Component', () => {
     });
   });
 
-  test('supports extended items object', () => {
+  test.each([[true], [false]])('supports extended items object (mobile: %p)', mobile => {
+    mockMobileViewport = mobile;
     interface ExtendedItem extends BreadcrumbGroupProps.Item {
       metadata: number;
     }
@@ -143,7 +157,13 @@ describe('BreadcrumbGroup Component', () => {
       />
     );
     const wrapper = createWrapper(container).findBreadcrumbGroup()!;
-    wrapper.findBreadcrumbLink(2)!.click();
+    if (mobile) {
+      const dropdown = wrapper.findDropdown()!;
+      dropdown.openDropdown();
+      dropdown.findItems()[1].click();
+    } else {
+      wrapper.findBreadcrumbLink(2)!.click();
+    }
     expect(onClick).toHaveBeenCalledWith(items[1]);
   });
 
@@ -233,7 +253,10 @@ describe('BreadcrumbGroup Component', () => {
     });
   });
 
-  describe('funnel attributes', () => {
+  describe.each([[true], [false]])('funnel attributes (mobile: %p)', mobile => {
+    beforeEach(() => {
+      mockMobileViewport = mobile;
+    });
     function getElementsText(elements: Array<ElementWrapper>) {
       return Array.from(elements).map(element => element.getElement().textContent);
     }
