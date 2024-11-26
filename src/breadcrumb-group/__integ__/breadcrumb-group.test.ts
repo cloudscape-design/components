@@ -14,8 +14,6 @@ const dropdownSelector = dropdownWrapper.findOpenDropdown().toSelector();
 const dropdownTriggerSelector = dropdownWrapper.findNativeButton().toSelector();
 const dropdownItemsSelector = dropdownWrapper.findItems().toSelector();
 
-jest.retryTimes(0);
-
 class BreadcrumbGroupPage extends BasePageObject {
   setMobileViewport() {
     return this.setWindowSize({ width: 400, height: 800 });
@@ -26,8 +24,7 @@ class BreadcrumbGroupPage extends BasePageObject {
   isDropdownTriggerFocused() {
     return this.isFocused(dropdownTriggerSelector);
   }
-  async openDropdown() {
-    await this.waitForVisible(dropdownTriggerSelector);
+  openDropdown() {
     return this.click(dropdownTriggerSelector);
   }
   closeDropdown() {
