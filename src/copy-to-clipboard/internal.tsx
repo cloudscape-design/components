@@ -66,7 +66,7 @@ export default function InternalCopyToClipboard({
       className={clsx(isInline && styles['inline-trigger'])}
       size="medium"
       position="top"
-      triggerType="custom"
+      triggerType="button"
       dismissButton={false}
       renderWithPortal={popoverRenderWithPortal}
       content={<InternalStatusIndicator type={status}>{statusText}</InternalStatusIndicator>}
