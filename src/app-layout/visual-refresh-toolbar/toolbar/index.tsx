@@ -180,7 +180,11 @@ export function AppLayoutToolbarImplementation({
     >
       <div className={styles['toolbar-container']}>
         {hasNavigation && (
-          <nav className={clsx(styles['universal-toolbar-nav'])}>
+          <nav
+            className={clsx(styles['universal-toolbar-nav'])}
+            role={navigationOpen ? 'presentation' : 'navigation'}
+            aria-label={ariaLabels?.navigation}
+          >
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={false}
