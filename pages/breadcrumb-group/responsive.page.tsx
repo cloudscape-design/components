@@ -12,7 +12,7 @@ let counter = 0;
 
 export default function ResponsiveBreadcrumbsPage() {
   return (
-    <ScreenshotArea disableAnimations={false}>
+    <ScreenshotArea disableAnimations={true}>
       <article>
         <Box padding="xl">
           <SpaceBetween size="xxl">
