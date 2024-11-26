@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { getUrlParams, Theme } from './utils';
 
@@ -227,9 +227,10 @@ describe('Visual refresh toolbar only', () => {
     );
 
     test(
-      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1330px)',
+      'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1345px)',
       setupTest(async page => {
-        await page.setWindowSize({ ...viewports.desktop, width: 1330 });
+        // Toolbar drawer triggers were being ellipsized
+        await page.setWindowSize({ ...viewports.desktop, width: 1345 });
         await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
         await page.click(wrapper.findDrawerTriggerById('security').toSelector());
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());

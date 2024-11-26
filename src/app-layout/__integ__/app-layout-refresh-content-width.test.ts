@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { getUrlParams, Theme } from './utils';
 
@@ -47,8 +47,12 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     });
   }
 
-  const drawerBorderOffset = 1;
-  const navigationBorderOffset = theme === 'refresh' ? 1 : 0;
+  const borderThickness = 1;
+  const scrollbarWidth = 15;
+
+  // In Visual Refresh without new toolbar, the width of the scrollbar, if present, is added to the navigation and tools slots' width.
+  const navigationBorderOffset = theme === 'refresh' ? borderThickness + scrollbarWidth : 0;
+  const drawerBorderOffset = theme === 'refresh' ? borderThickness + scrollbarWidth : borderThickness;
 
   describe('Default width per contentType', () => {
     const testCases = [
