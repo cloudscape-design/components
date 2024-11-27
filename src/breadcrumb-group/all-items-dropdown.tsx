@@ -14,32 +14,32 @@ import styles from './styles.css.js';
 
 interface FullCollapsedDropdownProps {
   items: ReadonlyArray<BreadcrumbGroupProps.Item>;
-  onClick: CancelableEventHandler<{ id: string }>;
-  onFollow: CancelableEventHandler<{ id: string }>;
+  onItemClick: CancelableEventHandler<{ id: string }>;
+  onItemFollow: CancelableEventHandler<{ id: string }>;
 }
 
 const metadataTypeAttribute = {
   [DATA_ATTR_RESOURCE_TYPE]: 'true',
 };
 
-export const FullDropdown = ({ items, onClick, onFollow }: FullCollapsedDropdownProps) => (
+export const AllItemsDropdown = ({ items, onItemClick, onItemFollow }: FullCollapsedDropdownProps) => (
   <>
     <InternalButtonDropdown
       items={items.map((item, index) => {
-        const isCurrentPage = index === items.length - 1;
+        const isCurrentBreadcrumb = index === items.length - 1;
         return {
           id: index.toString(),
           text: item.text,
-          href: isCurrentPage ? undefined : item.href,
-          disabled: isCurrentPage,
-          isCurrentPage,
+          href: isCurrentBreadcrumb ? undefined : item.href,
+          disabled: isCurrentBreadcrumb,
+          isCurrentBreadcrumb,
         };
       })}
-      className={styles['collapsed-button-dropdown']}
-      customTriggerBuilder={getFullDropdownTrigger(items[items.length - 1].text)}
+      className={styles['all-items-dropdown']}
+      customTriggerBuilder={getDropdownTrigger(items[items.length - 1].text)}
       linkStyle={true}
-      onItemClick={onClick}
-      onItemFollow={onFollow}
+      onItemClick={onItemClick}
+      onItemFollow={onItemFollow}
       analyticsMetadataTransformer={metadata => {
         if (metadata.detail?.id) {
           delete metadata.detail.id;
@@ -50,6 +50,7 @@ export const FullDropdown = ({ items, onClick, onFollow }: FullCollapsedDropdown
         return metadata;
       }}
     />
+    {/* Second breadcrumb item is tagged as "resource type" */}
     {items.length >= 1 && (
       <span className={styles.hidden} {...metadataTypeAttribute}>
         {items[1].text}
@@ -57,9 +58,9 @@ export const FullDropdown = ({ items, onClick, onFollow }: FullCollapsedDropdown
     )}
   </>
 );
-const getFullDropdownTrigger =
+const getDropdownTrigger =
   (currentPage: string) =>
-  ({ ariaLabel, triggerRef, disabled, testUtilsClass, isOpen, onClick }: CustomTriggerProps) => {
+  ({ ariaLabel, triggerRef, testUtilsClass, isOpen, onClick }: CustomTriggerProps) => {
     const metadataAttributes = {
       [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_FUNNEL_NAME,
     };
@@ -68,7 +69,6 @@ const getFullDropdownTrigger =
         ref={triggerRef as Ref<HTMLButtonElement>}
         {...metadataAttributes}
         className={clsx(styles['collapsed-button'], testUtilsClass)}
-        disabled={disabled}
         onClick={event => {
           event.preventDefault();
           onClick();

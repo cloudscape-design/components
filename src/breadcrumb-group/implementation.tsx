@@ -17,11 +17,11 @@ import { fireCancelableEvent } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { createWidgetizedComponent } from '../internal/widgets';
+import { AllItemsDropdown } from './all-items-dropdown';
 import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
 } from './analytics-metadata/interfaces';
-import { FullDropdown } from './full-dropdown';
 import { BreadcrumbGroupProps, EllipsisDropdownProps, InternalBreadcrumbGroupProps } from './interfaces';
 import { BreadcrumbItem } from './item/item';
 import { BreadcrumbGroupSkeleton } from './skeleton';
@@ -35,19 +35,11 @@ import styles from './styles.css.js';
  */
 const DEFAULT_EXPAND_ARIA_LABEL = 'Show path';
 
-const getEllipsisDropdownTrigger = ({
-  ariaLabel,
-  triggerRef,
-  disabled,
-  testUtilsClass,
-  isOpen,
-  onClick,
-}: CustomTriggerProps) => {
+const getEllipsisDropdownTrigger = ({ ariaLabel, triggerRef, testUtilsClass, isOpen, onClick }: CustomTriggerProps) => {
   return (
     <InternalButton
       ref={triggerRef}
       className={testUtilsClass}
-      disabled={disabled}
       onClick={event => {
         event.preventDefault();
         onClick();
@@ -255,10 +247,10 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         : {})}
     >
       {collapsed === breadcrumbItems.length - 2 ? (
-        <FullDropdown
+        <AllItemsDropdown
           items={items}
-          onClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
-          onFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
+          onItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
+          onItemFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
         />
       ) : (
         <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>

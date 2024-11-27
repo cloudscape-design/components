@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { FullDropdown } from '../../../lib/components/breadcrumb-group/full-dropdown.js';
+import { AllItemsDropdown } from '../../../lib/components/breadcrumb-group/all-items-dropdown';
 import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
 
 const items = [
@@ -20,10 +20,10 @@ const items = [
     href: '#',
   },
 ];
-describe('FullDropdown', () => {
+describe('AllItemsDropdown', () => {
   let wrapper: ButtonDropdownWrapper;
   beforeEach(() => {
-    const { container } = render(<FullDropdown items={items} onClick={jest.fn()} onFollow={jest.fn()} />);
+    const { container } = render(<AllItemsDropdown items={items} onItemClick={jest.fn()} onItemFollow={jest.fn()} />);
     wrapper = createWrapper(container).findButtonDropdown()!;
   });
 

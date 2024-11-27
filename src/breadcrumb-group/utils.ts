@@ -12,32 +12,32 @@ const MIN_BREADCRUMB_WIDTH = 70;
 const ELLIPSIS_WIDTH = 50;
 
 export const getItemsDisplayProperties = (itemsWidths: Array<number>, navWidth: number | null) => {
-  const collapsedWidths = itemsWidths.map((width, index) =>
-    index === itemsWidths.length - 1 ? Math.min(width, MIN_BREADCRUMB_WIDTH) : width
+  const widthsWithFinalCollapsed = [...itemsWidths];
+  widthsWithFinalCollapsed[itemsWidths.length - 1] = Math.min(
+    itemsWidths[itemsWidths.length - 1],
+    MIN_BREADCRUMB_WIDTH
   );
 
   return {
-    collapsed: computeNumberOfCollapsedItems(collapsedWidths, navWidth),
+    collapsed: computeNumberOfCollapsedItems(widthsWithFinalCollapsed, navWidth),
   };
 };
 
-const computeNumberOfCollapsedItems = (collapsedWidths: Array<number>, navWidth: number | null): number => {
+const computeNumberOfCollapsedItems = (itemWidths: Array<number>, navWidth: number | null): number => {
   if (!navWidth) {
     return 0;
   }
-  let collapsed = 0;
-  const itemsCount = collapsedWidths.length;
-  if (itemsCount > 1) {
-    collapsed = itemsCount - 1;
-    let remainingWidth = navWidth - collapsedWidths[0] - collapsedWidths[itemsCount - 1] - ELLIPSIS_WIDTH;
-    let j = 0;
-    while (collapsed > 0 && remainingWidth > 0 && j <= itemsCount - 1) {
-      remainingWidth -= collapsedWidths[itemsCount - 1 - j];
-      j++;
-      if (remainingWidth >= 0) {
-        collapsed--;
-      }
+  let usedWidth = itemWidths.reduce((acc, width) => acc + width, 0);
+  let collapsedItems = 0;
+  while (collapsedItems < itemWidths.length - 1) {
+    if (usedWidth <= navWidth) {
+      break;
+    }
+    collapsedItems += 1;
+    usedWidth = usedWidth - itemWidths[collapsedItems];
+    if (collapsedItems === 1) {
+      usedWidth += ELLIPSIS_WIDTH;
     }
   }
-  return collapsed;
+  return collapsedItems;
 };
