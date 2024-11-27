@@ -24,7 +24,7 @@ import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { MobileToolbar } from './mobile-toolbar';
 import { Notifications } from './notifications';
 import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel';
-import { checkSplitPanelForcedPosition } from './split-panel/split-panel-utils';
+import { useSplitPanelForcedPosition } from './split-panel/split-panel-utils';
 import { togglesConfig } from './toggles';
 import { getStickyOffsetVars } from './utils/sticky-offsets';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
@@ -295,7 +295,7 @@ const ClassicAppLayout = React.forwardRef(
 
     const effectiveToolsWidth = getEffectiveToolsWidth();
     const splitPanelMaxWidth = resizableSpaceAvailable - effectiveToolsWidth;
-    const isSplitPanelForcedPosition = checkSplitPanelForcedPosition({ isMobile, splitPanelMaxWidth });
+    const isSplitPanelForcedPosition = useSplitPanelForcedPosition({ isMobile, splitPanelMaxWidth });
     const finalSplitPanePosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
 
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';

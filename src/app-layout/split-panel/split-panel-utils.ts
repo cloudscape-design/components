@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { useRef } from 'react';
+
 import { SPLIT_PANEL_MIN_WIDTH, SPLIT_PANEL_SCROLLBAR_MARGIN } from './constants';
 
 /**
@@ -10,17 +12,23 @@ import { SPLIT_PANEL_MIN_WIDTH, SPLIT_PANEL_SCROLLBAR_MARGIN } from './constants
  * minimum width exceeds this value then there is not enough horizontal space and we must
  * force it to the bottom position.
  */
-export function checkSplitPanelForcedPosition({
+export function useSplitPanelForcedPosition({
   isMobile,
   splitPanelMaxWidth,
 }: {
   isMobile: boolean;
   splitPanelMaxWidth: number;
 }) {
+  const isForcedRef = useRef<boolean>(false);
   if (isMobile) {
     return true;
   }
-  return splitPanelMaxWidth < getSplitPanelMinWidth();
+  // If a scrollbar is present on the body, allow the split panel to stay on the side even if there is a bit less space than there should be,
+  // but only if already on the side, not if it is currently at the bottom.
+  const minWidth = isForcedRef.current ? SPLIT_PANEL_MIN_WIDTH : getSplitPanelMinWidth();
+  const isForced = splitPanelMaxWidth < minWidth;
+  isForcedRef.current = isForced;
+  return isForced;
 }
 
 // Returns split panel min width with a margin for document scrollbar.
