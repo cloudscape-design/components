@@ -2,21 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { useCollection } from '@cloudscape-design/collection-hooks';
-
 import AppLayout from '~components/app-layout';
-import Header from '~components/header';
 import SplitPanel from '~components/split-panel';
-import Table from '~components/table';
 
-import { generateItems, Instance } from '../table/generate-data';
-import { columnsConfig } from '../table/shared-configs';
 import { Breadcrumbs, Footer, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 import * as toolsContent from './utils/tools-content';
-
-const allItems = generateItems();
-const PAGE_SIZE = 12;
 
 const DEMO_CONTENT = (
   <div>
@@ -40,13 +31,7 @@ const DEMO_CONTENT = (
 );
 
 export default function () {
-  const { items } = useCollection(allItems, {
-    pagination: { pageSize: PAGE_SIZE },
-    sorting: {},
-  });
-
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
-  const [selectedItems, setSelectedItems] = useState<Instance[]>([]);
 
   return (
     <>
@@ -80,31 +65,7 @@ export default function () {
             {DEMO_CONTENT}
           </SplitPanel>
         }
-        content={
-          <>
-            <Table<Instance>
-              resizableColumns={true}
-              header={
-                <Header headingTagOverride="h1" counter={`(${allItems.length})`}>
-                  Sticky Scrollbar Example
-                </Header>
-              }
-              columnDefinitions={columnsConfig}
-              items={items}
-              selectionType="single"
-              selectedItems={selectedItems}
-              ariaLabels={{
-                itemSelectionLabel(data, row) {
-                  return `Select item ${row.id}`;
-                },
-              }}
-              onSelectionChange={e => {
-                setSelectedItems(e.detail.selectedItems);
-                setSplitPanelOpen(e.detail.selectedItems.length > 0);
-              }}
-            />
-          </>
-        }
+        content={<div style={{ backgroundColor: 'pink', height: 500 }}></div>}
       />
       <Footer legacyConsoleNav={false} />
     </>
