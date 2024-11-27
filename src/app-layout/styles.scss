@@ -35,6 +35,8 @@
   min-inline-size: 0;
   background-color: awsui.$color-background-layout-main;
   position: relative;
+  // always show vertical scrollbar to avoid an issue described in AWSUI-59954
+  min-block-size: 100vh;
   &-scrollable {
     overflow: auto;
   }

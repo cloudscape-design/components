@@ -10,6 +10,8 @@
 .container {
   grid-area: main;
   padding-block-end: awsui.$space-layout-content-bottom;
+  // always show vertical scrollbar to avoid an issue described in AWSUI-59954
+  min-block-size: 100vh;
 
   /*
   If the split panel is in the bottom position additional padding will need to be

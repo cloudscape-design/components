@@ -396,7 +396,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       const { height: screenHeight } = await page.getViewportSize();
       await page.dragResizerTo({ x: 0, y: screenHeight });
       await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
-      await expect(page.hasPageScrollbar()).resolves.toBe(false);
+      await expect(page.hasPageScrollbar()).resolves.toBe(true);
 
       // Split panel transitions to the side when enough horizontal space.
       await page.setWindowSize({ ...dimensions, width: dimensions.width + 25 });
@@ -406,7 +406,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       // Split panel transitions to the bottom when not enough horizontal space.
       await page.setWindowSize(dimensions);
       await expect(page.verifySplitPanelPosition('bottom')).resolves.toBe(true);
-      await expect(page.hasPageScrollbar()).resolves.toBe(false);
+      await expect(page.hasPageScrollbar()).resolves.toBe(true);
     })
   );
 });
