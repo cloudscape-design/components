@@ -74,11 +74,11 @@ const setupTest = (
 };
 describe('BreadcrumbGroup', () => {
   test.each([
-    [{ width: 850, height: 800 }, 1],
-    [{ width: 800, height: 800 }, 2],
-    [{ width: 750, height: 800 }, 3],
-    [{ width: 650, height: 800 }, 4],
-    [{ width: 620, height: 800 }, 6],
+    [{ width: 780, height: 800 }, 1],
+    [{ width: 750, height: 800 }, 2],
+    [{ width: 690, height: 800 }, 3],
+    [{ width: 610, height: 800 }, 4],
+    [{ width: 550, height: 800 }, 6],
   ])('Has proper number of items in the dropdown: %o %d', (sizes, itemsInDropdown) =>
     setupTest(async page => {
       await page.openDropdown();
