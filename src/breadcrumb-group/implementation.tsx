@@ -246,7 +246,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      {collapsed === items.length - 1 ? (
+      {collapsed > 0 && collapsed === items.length - 1 ? (
         <AllItemsDropdown
           items={items}
           onItemClick={e =>
