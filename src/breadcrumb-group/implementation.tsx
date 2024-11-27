@@ -246,7 +246,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      {collapsed === breadcrumbItems.length - 2 ? (
+      {collapsed > 0 && collapsed >= breadcrumbItems.length - 2 ? (
         <AllItemsDropdown
           items={items}
           onItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}

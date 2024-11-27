@@ -36,7 +36,7 @@ export const AllItemsDropdown = ({ items, onItemClick, onItemFollow }: FullColla
         };
       })}
       className={styles['all-items-dropdown']}
-      customTriggerBuilder={getDropdownTrigger(items[items.length - 1].text)}
+      customTriggerBuilder={getDropdownTrigger(items[items.length - 1]?.text)}
       linkStyle={true}
       onItemClick={onItemClick}
       onItemFollow={onItemFollow}
@@ -51,7 +51,7 @@ export const AllItemsDropdown = ({ items, onItemClick, onItemFollow }: FullColla
       }}
     />
     {/* Second breadcrumb item is tagged as "resource type" */}
-    {items.length >= 1 && (
+    {items.length > 1 && (
       <span className={styles.hidden} {...metadataTypeAttribute}>
         {items[1].text}
       </span>

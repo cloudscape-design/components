@@ -24,7 +24,7 @@ export const getItemsDisplayProperties = (itemsWidths: Array<number>, navWidth: 
 };
 
 const computeNumberOfCollapsedItems = (itemWidths: Array<number>, navWidth: number | null): number => {
-  if (!navWidth) {
+  if (typeof navWidth !== 'number') {
     return 0;
   }
   let usedWidth = itemWidths.reduce((acc, width) => acc + width, 0);
