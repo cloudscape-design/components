@@ -16,10 +16,15 @@ jest.mock('@cloudscape-design/component-toolkit', () => {
   const actualUseContainerQuery = jest.requireActual('@cloudscape-design/component-toolkit');
   return {
     ...actualUseContainerQuery,
+    getLogicalBoundingClientRect: () => {},
     useContainerQuery: (arg: any) =>
       mockMobileViewport ? [10, () => {}] : actualUseContainerQuery.useContainerQuery(arg),
   };
 });
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  getLogicalBoundingClientRect: () => ({ inlineSize: 50 }),
+}));
 afterEach(() => {
   mockMobileViewport = false;
 });
