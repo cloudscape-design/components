@@ -124,7 +124,10 @@ const InternalFileInput = React.forwardRef(
           variant={variant === 'icon' ? 'icon' : undefined}
           formAction="none"
           onClick={onUploadButtonClick}
-          className={clsx(styles['file-input-button'], isFocused && styles['force-focus-outline'])}
+          className={clsx(styles['file-input-button'], {
+            [styles['force-focus-outline-button']]: isFocused && variant === 'button',
+            [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
+          })}
           __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
         >
           {variant === 'button' && children}
