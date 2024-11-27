@@ -88,6 +88,27 @@ describe('BreadcrumbGroup Component', () => {
       });
     });
 
+    test('renders with items (mobile)', () => {
+      mockMobileViewport = true;
+      wrapper = renderBreadcrumbGroup({ items });
+      expect(wrapper.getElement().nodeName).toBe('NAV');
+
+      const dropdown = wrapper.findDropdown()!;
+      dropdown.openDropdown();
+      const links = dropdown.findItems();
+      expect(links).toHaveLength(3);
+
+      links.forEach((link, i) => {
+        expect(link.getElement()).toHaveTextContent(items[i].text);
+        if (i === links.length - 1) {
+          // last item should not have an href
+          expect(link.getElement().querySelector('a')).toBeFalsy();
+        } else {
+          expect(link.getElement().querySelector('a')).toHaveAttribute('href', items[i].href);
+        }
+      });
+    });
+
     test('has ellipsis', () => {
       expect(wrapper.findDropdown()!.findNativeButton()).not.toBe(null);
       expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toBeInTheDocument();
