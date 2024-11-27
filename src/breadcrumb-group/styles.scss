@@ -99,6 +99,7 @@
   }
   > :last-child {
     color: awsui.$color-text-breadcrumb-current;
+    font-weight: styles.$font-weight-bold;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
