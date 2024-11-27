@@ -24,7 +24,7 @@ export function PrevPageButton({ ariaLabel, baseDate, granularity, onChangePage 
       variant={'icon'}
       onClick={() => onChangePage(addPage(baseDate, -1))}
       formAction="none"
-      className={styles['calendar-prev-month-btn']}
+      className={styles[`calendar-prev-${granularity === 'day' ? 'month' : 'year'}-btn`]}
     />
   );
 }
@@ -38,7 +38,7 @@ export function NextPageButton({ ariaLabel, baseDate, granularity, onChangePage 
       variant={'icon'}
       onClick={() => onChangePage(addPage(baseDate, 1))}
       formAction="none"
-      className={styles['calendar-next-month-btn']}
+      className={styles[`calendar-next-${granularity === 'day' ? 'month' : 'year'}-btn`]}
     />
   );
 }

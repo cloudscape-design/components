@@ -22,7 +22,7 @@ import screenreaderOnlyStyles from '../../../../lib/components/internal/componen
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));
 afterEach(() => Mockdate.reset());
 
-describe('Date range picker calendar', () => {
+describe('Date range picker calendar with day granularity', () => {
   const outsideId = 'outside';
   const defaultProps: DateRangePickerProps & Pick<Required<DateRangePickerProps>, 'i18nStrings'> = {
     i18nStrings,

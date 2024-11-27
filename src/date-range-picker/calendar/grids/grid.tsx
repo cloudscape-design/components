@@ -208,7 +208,16 @@ export function Grid({
                   itemIndex: number,
                   rowLength: number,
                   isLastItemInRange: boolean
-                ): boolean => itemIndex === rowLength - 1 || isLastItemInRange || isLastItem(granularity, date);
+                ): boolean => {
+                  console.log({
+                    date,
+                    rowLength,
+                    itemIndex,
+                    isLastItemInRange,
+                    isLastItemInPage2: isLastItemInPage(granularity, date),
+                  });
+                  return itemIndex === rowLength - 1 || isLastItemInRange || isLastItemInPage(granularity, date);
+                };
 
                 return (
                   <GridCell
@@ -286,7 +295,7 @@ const isFirstItem = (granularity: DateRangePickerProps['granularity'], date: Dat
   return date.getDate() === 1;
 };
 
-const isLastItem = (granularity: DateRangePickerProps['granularity'], date: Date): boolean => {
+const isLastItemInPage = (granularity: DateRangePickerProps['granularity'], date: Date): boolean => {
   if (granularity === 'month') {
     return date.getMonth() === 12;
   }

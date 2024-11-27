@@ -388,19 +388,25 @@ export namespace DateRangePickerProps {
     todayAriaLabel?: string;
 
     /**
+     * Used as part of the aria label for this month's button in the calendar
+     * with a 'month' granularity
+     */
+    currentMonthAriaLabel?: string;
+
+    /**
      * An aria label for the 'next month' button.
      */
     nextMonthAriaLabel?: string;
 
     /**
-     * An aria label for the 'previous month' button.
-     */
-    previousMonthAriaLabel?: string;
-
-    /**
      * An aria label for the 'next year' button.
      */
     nextYearAriaLabel?: string;
+
+    /**
+     * An aria label for the 'previous month' button.
+     */
+    previousMonthAriaLabel?: string;
 
     /**
      * An aria label for the 'previous year' button.

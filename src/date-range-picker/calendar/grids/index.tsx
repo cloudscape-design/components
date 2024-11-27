@@ -152,6 +152,8 @@ export const Grids = ({
     }
   }, [focusedDate, gridHasFocus]);
 
+  console.log(gridHasFocus);
+
   const onGridBlur = (event: React.FocusEvent) => {
     const newFocusTarget = event.relatedTarget || document.activeElement;
     const newFocusTargetIsInGrid = containerRef.current?.contains(newFocusTarget as Node);
