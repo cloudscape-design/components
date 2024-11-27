@@ -94,7 +94,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
   /**
    * Called when the user uploads files. The event detail object contains the id and files from the file input item.
    */
-  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FileChangeDetails>;
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
@@ -103,7 +103,7 @@ export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | IconToggleButton | FileInput | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
@@ -137,7 +137,7 @@ export namespace ButtonGroupProps {
     pressedPopoverFeedback?: React.ReactNode;
   }
 
-  export interface FileInput {
+  export interface IconFileInput {
     type: 'file-input';
     id: string;
     text: string;
@@ -167,7 +167,7 @@ export namespace ButtonGroupProps {
     checked?: boolean;
   }
 
-  export interface FileChangeDetails {
+  export interface FilesChangeDetails {
     id: string;
     files: File[];
   }

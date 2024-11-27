@@ -18,9 +18,9 @@ const FileInputItem = forwardRef(
       showTooltip,
       onFilesChange,
     }: {
-      item: ButtonGroupProps.FileInput;
+      item: ButtonGroupProps.IconFileInput;
       showTooltip: boolean;
-      onFilesChange?: CancelableEventHandler<ButtonGroupProps.FileChangeDetails>;
+      onFilesChange?: CancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
     },
     ref: React.Ref<FileInputProps.Ref>
   ) => {
