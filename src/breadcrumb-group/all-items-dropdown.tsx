@@ -31,7 +31,6 @@ export const AllItemsDropdown = ({ items, onItemClick, onItemFollow }: FullColla
           id: index.toString(),
           text: item.text,
           href: isCurrentBreadcrumb ? undefined : item.href,
-          disabled: isCurrentBreadcrumb,
           isCurrentBreadcrumb,
         };
       })}

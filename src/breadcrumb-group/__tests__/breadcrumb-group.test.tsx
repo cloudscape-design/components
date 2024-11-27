@@ -157,6 +157,21 @@ describe('BreadcrumbGroup Component', () => {
       rerender(<BreadcrumbGroup items={items.slice()} />);
       expect(getIcons()).toHaveLength(2);
     });
+
+    test('clicking current page in mobile dropdown should close dropdown without events', () => {
+      mockMobileViewport = true;
+      const onClick = jest.fn();
+      const onFollow = jest.fn();
+      const { container } = render(<BreadcrumbGroup items={items} onClick={onClick} onFollow={onFollow} />);
+      const wrapper = createWrapper(container).findBreadcrumbGroup()!;
+      const dropdown = wrapper.findDropdown()!;
+      dropdown.openDropdown();
+      expect(dropdown.findItems().length).toBe(3);
+      dropdown.findItems()[2].click();
+      expect(dropdown.findOpenDropdown()).toBeFalsy();
+      expect(onClick).not.toHaveBeenCalled();
+      expect(onFollow).not.toHaveBeenCalled();
+    });
   });
 
   test.each([[true], [false]])('supports extended items object (mobile: %p)', mobile => {

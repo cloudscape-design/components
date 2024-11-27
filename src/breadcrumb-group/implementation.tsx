@@ -246,11 +246,17 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      {collapsed > 0 && collapsed >= breadcrumbItems.length - 2 ? (
+      {collapsed === items.length - 1 ? (
         <AllItemsDropdown
           items={items}
-          onItemClick={e => fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)}
-          onItemFollow={e => fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)}
+          onItemClick={e =>
+            e.detail.id !== (items.length - 1).toString() &&
+            fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)
+          }
+          onItemFollow={e =>
+            e.detail.id !== (items.length - 1).toString() &&
+            fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)
+          }
         />
       ) : (
         <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
