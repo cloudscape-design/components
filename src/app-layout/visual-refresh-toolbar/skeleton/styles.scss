@@ -179,6 +179,8 @@
   grid-area: main;
   margin-block-start: awsui.$space-scaled-s;
   margin-block-end: awsui.$space-layout-content-bottom;
+  // always show vertical scrollbar to avoid an issue described in AWSUI-59954
+  min-block-size: 100vh;
   &-disable-paddings {
     margin-block: 0;
     @include grid-column-full-content-width;
