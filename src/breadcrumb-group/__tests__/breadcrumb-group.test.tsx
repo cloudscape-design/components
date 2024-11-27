@@ -13,12 +13,9 @@ import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
 
 let mockMobileViewport = false;
 jest.mock('@cloudscape-design/component-toolkit', () => {
-  const actualUseContainerQuery = jest.requireActual('@cloudscape-design/component-toolkit');
   return {
-    ...actualUseContainerQuery,
-    getLogicalBoundingClientRect: () => {},
-    useContainerQuery: (arg: any) =>
-      mockMobileViewport ? [10, () => {}] : actualUseContainerQuery.useContainerQuery(arg),
+    ...jest.requireActual('@cloudscape-design/component-toolkit'),
+    useContainerQuery: () => (mockMobileViewport ? [10, () => {}] : [9999, () => {}]),
   };
 });
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
