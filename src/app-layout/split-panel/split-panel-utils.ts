@@ -20,17 +20,12 @@ export function checkSplitPanelForcedPosition({
   if (isMobile) {
     return true;
   }
-  return splitPanelMaxWidth < getSplitPanelMinWidth();
-}
 
-// Returns split panel min width with a margin for document scrollbar.
-// The margin prevents a possible infinite bouncing between bottom and side positions
-// caused by the presence of page's vertical scrollbar when on side position only.
-function getSplitPanelMinWidth() {
-  if (typeof document === 'undefined') {
-    return SPLIT_PANEL_MIN_WIDTH;
-  }
   const margin = SPLIT_PANEL_SCROLLBAR_MARGIN / 2;
   const hasScrollbar = window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight;
-  return hasScrollbar ? SPLIT_PANEL_MIN_WIDTH - margin : SPLIT_PANEL_MIN_WIDTH + margin;
+  const scrollBarWidth = hasScrollbar ? margin : 0;
+  const splitPanelMinWidth = SPLIT_PANEL_MIN_WIDTH + scrollBarWidth;
+  splitPanelMaxWidth = splitPanelMaxWidth + scrollBarWidth;
+
+  return splitPanelMaxWidth < splitPanelMinWidth;
 }
