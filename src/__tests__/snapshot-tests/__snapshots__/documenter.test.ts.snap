@@ -3824,7 +3824,7 @@ exports[`Documenter definition for button-group matches the snapshot: button-gro
       "cancelable": false,
       "description": "Called when the user uploads files. The event detail object contains the id and files from the file input item.",
       "detailInlineType": {
-        "name": "InternalButtonGroupProps.FileChangeDetails",
+        "name": "InternalButtonGroupProps.FilesChangeDetails",
         "properties": [
           {
             "name": "files",
@@ -3839,7 +3839,7 @@ exports[`Documenter definition for button-group matches the snapshot: button-gro
         ],
         "type": "object",
       },
-      "detailType": "InternalButtonGroupProps.FileChangeDetails",
+      "detailType": "InternalButtonGroupProps.FilesChangeDetails",
       "name": "onFilesChange",
     },
     {

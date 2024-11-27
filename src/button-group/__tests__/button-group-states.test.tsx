@@ -25,7 +25,7 @@ const likeButton: ButtonGroupProps.IconToggleButton = {
   pressedPopoverFeedback: 'You like it',
 };
 
-const fileButton: ButtonGroupProps.FileInput = {
+const fileButton: ButtonGroupProps.IconFileInput = {
   type: 'file-input',
   id: 'file',
   text: 'Choose files',

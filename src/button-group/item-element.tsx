@@ -19,7 +19,7 @@ interface ItemElementProps {
   tooltip: null | { item: string; feedback: boolean };
   setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
-  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FileChangeDetails> | undefined;
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails> | undefined;
 }
 
 const ItemElement = forwardRef(
@@ -92,7 +92,7 @@ const ItemElement = forwardRef(
       fireCancelableEvent(onItemClick, event.detail, event);
     };
 
-    const onFilesChangeHandler = (event: CustomEvent<ButtonGroupProps.FileChangeDetails>) => {
+    const onFilesChangeHandler = (event: CustomEvent<ButtonGroupProps.FilesChangeDetails>) => {
       fireCancelableEvent(onFilesChange, event.detail, event);
     };
 

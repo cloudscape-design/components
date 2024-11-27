@@ -32,7 +32,7 @@ const menuButton: ButtonGroupProps.MenuDropdown = {
   items: [{ id: 'search', text: 'Search' }],
 };
 
-const fileInput: ButtonGroupProps.FileInput = {
+const fileInput: ButtonGroupProps.IconFileInput = {
   type: 'file-input',
   id: 'file',
   text: 'Choose files',
