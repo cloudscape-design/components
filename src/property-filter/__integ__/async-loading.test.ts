@@ -58,9 +58,20 @@ class AsyncPropertyFilterPage extends BasePageObject {
     await this.openValueEdit();
     await this.keys(value);
   };
-  clearFilteringInput = async () => {
-    await this.click(wrapper.findClearButton().toSelector());
-  };
+
+  setCursorPosition(startPosition: number, endPosition: number) {
+    return this.browser.execute(
+      (defaultSelector, startPosition, endPosition) => {
+        return (document.querySelector(defaultSelector) as HTMLInputElement).setSelectionRange(
+          startPosition,
+          endPosition
+        );
+      },
+      inputSelector,
+      startPosition,
+      endPosition
+    );
+  }
 }
 
 function setupTest(
@@ -211,22 +222,26 @@ test.each<TestCase>(testCases)('%p', (_, asyncProperties, token, scenario) =>
 );
 
 test(
-  'calls onLoadItems with an empty string if Clear button is clicked',
+  'calls onLoadItems after clearing input with backspace and asyncProperties=true',
   setupTest(true, 'property', async page => {
-    await page.typeInFilteringInput('1');
+    await page.openFilteringInput();
+    await page.typeInFilteringInput('label');
+
+    await expect(page.getValue(inputSelector)).resolves.toBe('label');
+
     await page.expectLoadItemsEvents([
       { firstPage: true, samePage: false, filteringText: '' },
-      { filteringText: '1', firstPage: true, samePage: false },
+      { firstPage: true, samePage: false, filteringText: 'label' },
     ]);
 
-    await page.click('#focus-target');
-    await page.clearFilteringInput();
-    await page.waitForJsTimers(500);
+    await page.setCursorPosition(0, 5);
+    await page.keys(['Backspace']);
+    await expect(page.getValue(inputSelector)).resolves.toBe('');
+
     await page.expectLoadItemsEvents([
       { firstPage: true, samePage: false, filteringText: '' },
-      { filteringText: '1', firstPage: true, samePage: false },
-      { filteringText: '1', firstPage: true, samePage: false },
-      { filteringText: '', firstPage: true, samePage: false },
+      { firstPage: true, samePage: false, filteringText: 'label' },
+      { firstPage: true, samePage: false, filteringText: '' },
     ]);
   })
 );
