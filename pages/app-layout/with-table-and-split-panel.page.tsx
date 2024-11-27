@@ -36,30 +36,6 @@ const DEMO_CONTENT = (
       Risus viverra adipiscing at in. Orci sagittis eu volutpat odio facilisis mauris. Mauris vitae ultricies leo
       integer malesuada nunc. Sem et tortor consequat id porta nibh. Semper auctor neque vitae tempus quam pellentesque.
     </p>
-    <p>Ante in nibh mauris cursus mattis molestie.</p>
-    <p>
-      Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Porttitor
-      eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris nunc congue nisi vitae
-      suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat in. Arcu felis bibendum ut
-      tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In hac habitasse
-      platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi ipsum. Ornare aenean euismod elementum
-      nisi quis. Elementum curabitur vitae nunc sed velit dignissim sodales. Amet tellus cras adipiscing enim eu. Id
-      interdum velit laoreet id donec ultrices tincidunt. Ullamcorper eget nulla facilisi etiam. Sodales neque sodales
-      ut etiam sit amet nisl purus. Auctor urna nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis
-      pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
-      Pharetra pharetra massa massa ultricies mi.
-    </p>
-    <Table<Instance>
-      resizableColumns={true}
-      header={
-        <Header headingTagOverride="h1" counter="10">
-          Table Example In Split panel
-        </Header>
-      }
-      columnDefinitions={columnsConfig}
-      items={generateItems(10)}
-    />
-    <div style={{ blockSize: '20px' }}></div>
   </div>
 );
 
@@ -82,6 +58,9 @@ export default function () {
         disableContentPaddings={true}
         splitPanelOpen={splitPanelOpen}
         onSplitPanelToggle={e => setSplitPanelOpen(e.detail.open)}
+        splitPanelPreferences={{
+          position: 'side',
+        }}
         splitPanel={
           <SplitPanel
             header="Split panel header"
