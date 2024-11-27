@@ -74,9 +74,9 @@ const setupTest = (
 };
 describe('BreadcrumbGroup', () => {
   test.each([
-    [{ width: 780, height: 800 }, 1],
-    [{ width: 750, height: 800 }, 2],
-    [{ width: 690, height: 800 }, 3],
+    [{ width: 770, height: 800 }, 1],
+    [{ width: 740, height: 800 }, 2],
+    [{ width: 680, height: 800 }, 3],
     [{ width: 610, height: 800 }, 4],
     [{ width: 550, height: 800 }, 6],
   ])('Has proper number of items in the dropdown: %o %d', (sizes, itemsInDropdown) =>
