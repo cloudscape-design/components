@@ -66,7 +66,7 @@
     &:not(.disabled > &) {
       @include styles.link-inline('body-m');
     }
-    &.current-page {
+    &.current-breadcrumb {
       @include styles.font-button;
       color: awsui.$color-text-breadcrumb-current;
     }
