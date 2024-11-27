@@ -18,12 +18,18 @@
 .file-input-button {
   @include focus-visible.when-visible-unfocused {
     &.force-focus-outline {
-      @include styles.focus-highlight(
-        (
-          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
-          'horizontal': awsui.$space-button-focus-outline-gutter,
-        )
-      );
+      &-icon {
+        @include styles.focus-highlight(
+          (
+            'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
+            'horizontal': awsui.$space-button-focus-outline-gutter,
+          )
+        );
+      }
+
+      &-button {
+        @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+      }
     }
   }
 }
