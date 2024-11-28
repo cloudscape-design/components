@@ -8,6 +8,7 @@ import { isLinkItem } from '../../../button-dropdown/utils/utils';
 import InternalIcon from '../../../icon/internal';
 import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id';
+import { spinWhenOpen } from '../../../internal/styles/motion/utils';
 import { LinkProps } from '../../../link/interfaces';
 import { TopNavigationProps } from '../../interfaces';
 import { useNavigate } from './router';
@@ -140,7 +141,7 @@ const ExpandableItem: React.FC<
       >
         <ListItem
           endIcon={
-            <span className={clsx(styles.icon, expanded && styles.expanded)}>
+            <span className={spinWhenOpen(styles, 'icon', expanded)}>
               <InternalIcon name="caret-up-filled" />
             </span>
           }
