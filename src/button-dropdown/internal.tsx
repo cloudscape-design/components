@@ -53,6 +53,7 @@ const InternalButtonDropdown = React.forwardRef(
       __internalRootRef,
       analyticsMetadataTransformer,
       linkStyle,
+      fullWidth,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -307,7 +308,12 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
         onMouseMove={handleMouseEvent}
-        className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
+        className={clsx(
+          styles['button-dropdown'],
+          styles[`variant-${variant}`],
+          fullWidth && styles['full-width'],
+          baseProps.className
+        )}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
       >

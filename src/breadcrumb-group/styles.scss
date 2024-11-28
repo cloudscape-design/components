@@ -71,11 +71,6 @@
   display: none;
 }
 
-.all-items-dropdown {
-  display: block;
-  max-inline-size: 100%;
-}
-
 .collapsed-button {
   @include styles.styles-reset;
   @include styles.text-wrapping;
