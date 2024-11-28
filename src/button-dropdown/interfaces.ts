@@ -304,6 +304,8 @@ export interface InternalButtonDropdownProps
    */
   linkStyle?: boolean;
 
+  fullWidth?: boolean;
+
   analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
 }
 

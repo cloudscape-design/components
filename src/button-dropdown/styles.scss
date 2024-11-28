@@ -10,6 +10,10 @@ $dropdown-trigger-icon-offset: 2px;
 
 .button-dropdown {
   display: inline-block;
+  &.full-width {
+    display: block;
+    max-inline-size: 100%;
+  }
 }
 
 .items-list-container {

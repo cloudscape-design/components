@@ -35,9 +35,9 @@ export const AllItemsDropdown = ({ items, onItemClick, onItemFollow }: FullColla
           isCurrentBreadcrumb,
         };
       })}
-      className={styles['all-items-dropdown']}
       customTriggerBuilder={getDropdownTrigger(items[items.length - 1]?.text)}
       linkStyle={true}
+      fullWidth={true}
       onItemClick={onItemClick}
       onItemFollow={onItemFollow}
       analyticsMetadataTransformer={metadata => {
