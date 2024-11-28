@@ -9,6 +9,8 @@ import { viewports } from './constants';
 import { testIf } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
+import vrDrawerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import vrToolbarDrawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.selectors.js';
 
 class AppLayoutDrawersPage extends BasePageObject {
   async openFirstDrawer() {
@@ -242,7 +244,14 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       setupTest({ theme }, async page => {
         await page.openFirstDrawer();
         const resizeHandleBefore = await page.getResizeHandlePosition();
-        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+        const scrollableContainer =
+          theme === 'classic'
+            ? wrapper.findActiveDrawer().toSelector()
+            : theme === 'refresh'
+              ? `.${vrDrawerStyles['drawer-content-container']}`
+              : `.${vrToolbarDrawerStyles['drawer-content-container']}`;
+
+        await page.elementScrollTo(scrollableContainer, { top: 100 });
         const resizeHandleAfter = await page.getResizeHandlePosition();
         await expect(resizeHandleAfter).toEqual(resizeHandleBefore);
       })
