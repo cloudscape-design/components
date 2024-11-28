@@ -50,9 +50,10 @@ export function AppLayoutSplitPanelDrawerBottomImplementation({
   splitPanelInternals,
   appLayoutInternals,
 }: AppLayoutSplitPanelDrawerBottomImplementationProps) {
+  const { splitPanelControlId, splitPanelAnimationDisabled } = appLayoutInternals;
   return (
-    <SplitPanelProvider {...splitPanelInternals} animationDisabled={appLayoutInternals.splitPanelAnimationDisabled}>
-      {children}
+    <SplitPanelProvider {...splitPanelInternals} animationDisabled={splitPanelAnimationDisabled}>
+      <section id={splitPanelControlId}>{children}</section>
     </SplitPanelProvider>
   );
 }

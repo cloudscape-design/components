@@ -183,7 +183,7 @@ export function AppLayoutToolbarImplementation({
           <nav
             className={clsx(styles['universal-toolbar-nav'])}
             role={navigationOpen ? 'presentation' : 'navigation'}
-            aria-label={ariaLabels?.navigation}
+            aria-label={navigationOpen ? undefined : ariaLabels?.navigation}
           >
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
