@@ -12,6 +12,7 @@ import {
   FormField,
   Header,
   Input,
+  Link,
   Slider,
   SpaceBetween,
   StatusIndicator,
@@ -192,15 +193,37 @@ function TableCellsDemo() {
 
   const columnDefinitions: TableProps.ColumnDefinition<number>[] = columns.map(index => {
     const columnId = index.toString();
-    const cellContent = (item: number) =>
-      editedValues[`${columnId}:${item}`] ??
-      `Body cell content ${item}:${index}${index === 1 ? ` (L=${itemLevels[item]})` : ''}${index === 8 ? ' with longer text' : ''}`;
+    const cellRenderer = (() => {
+      const getText = (item: number) =>
+        editedValues[`${columnId}:${item}`] ??
+        `Body cell content ${item}:${index}${index === 1 ? ` (L=${itemLevels[item]})` : ''}${index === 8 ? ' with longer text' : ''}`;
+      switch (index) {
+        case 1:
+          return { type: 'link', getText, render: (item: number) => <Link>{getText(item)}</Link> };
+        case 3:
+          return {
+            type: 'status',
+            getText,
+            render: (item: number) => <StatusIndicator>{getText(item)}</StatusIndicator>,
+          };
+        case 4:
+          return { type: 'right-align', getText, render: () => <Box textAlign="right">{index}</Box> };
+        case 10:
+          return {
+            type: 'actions',
+            getText,
+            render: () => <Button variant="icon" iconName="ellipsis" ariaLabel="Actions" />,
+          };
+        default:
+          return { type: 'text', getText, render: getText };
+      }
+    })();
     return {
       id: columnId,
       header: `Header cell content ${index}${index === 8 ? ' with longer text' : ''}`,
       sortingField: index === 2 ? 'field-1' : index === 3 ? 'field-2' : undefined,
       activeSorting: index === 3,
-      cell: cellContent,
+      cell: item => cellRenderer.render(item),
       verticalAlign: settings.verticalAlign,
       editConfig: settings.isEditable
         ? {
@@ -216,7 +239,7 @@ function TableCellsDemo() {
               return (
                 <Input
                   autoFocus={true}
-                  value={currentValue ?? cellContent(item)}
+                  value={currentValue ?? cellRenderer.getText(item)}
                   onChange={event => setValue(event.detail.value)}
                 />
               );
