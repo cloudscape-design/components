@@ -48,7 +48,7 @@ export function getBaseMonth(date: Date, isDateFocusable: CalendarProps.IsDateEn
   return getBaseDate({ date, isDateFocusable, granularity: 'month' });
 }
 
-function getBaseDate({
+export function getBaseDate({
   date,
   granularity,
   isDateFocusable,
@@ -72,17 +72,17 @@ function getBaseDate({
 
 // Iterates days forwards or backwards until the next active day is found.
 // If there is no active day in a year range, the start day is returned.
-function moveDay(startDate: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction, step: number): Date {
+export function moveDay(startDate: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction, step: number): Date {
   return moveDate({ startDate, granularity: 'day', isDateFocusable, step });
 }
 
 // Iterates months forwards or backwards until the next active month is found.
 // If there is no active month in a 10 year range, the start month is returned.
-function moveMonth(startDate: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction, step: number): Date {
+export function moveMonth(startDate: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction, step: number): Date {
   return moveDate({ startDate, granularity: 'month', isDateFocusable, step });
 }
 
-function moveDate({
+export function moveDate({
   startDate,
   granularity,
   isDateFocusable,
