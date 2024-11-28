@@ -7,6 +7,7 @@ import { CustomTriggerProps } from '../../../button-dropdown/interfaces';
 import InternalButtonDropdown from '../../../button-dropdown/internal';
 import InternalIcon from '../../../icon/internal';
 import { getBaseProps } from '../../base-component';
+import { spinWhenOpen } from '../../styles/motion/utils';
 import { applyDisplayName } from '../../utils/apply-display-name';
 import { ButtonTriggerProps, MenuDropdownProps } from './interfaces';
 
@@ -63,10 +64,7 @@ export const ButtonTrigger = React.forwardRef(
         )}
         {children && <span className={styles.text}>{children}</span>}
         {children && (
-          <InternalIcon
-            name="caret-down-filled"
-            className={expanded ? buttonDropdownStyles['rotate-up'] : buttonDropdownStyles['rotate-down']}
-          />
+          <InternalIcon name="caret-down-filled" className={spinWhenOpen(buttonDropdownStyles, 'rotate', !!expanded)} />
         )}
       </button>
     );

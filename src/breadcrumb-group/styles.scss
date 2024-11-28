@@ -109,18 +109,8 @@
   }
 }
 
-.button-icon-open {
-  transform: rotate(-180deg);
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
-}
-
-.button-icon-closed {
-  transform: rotate(0deg);
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
+.button-icon {
+  @include styles.spin-180-when-open;
 }
 
 .hidden {
