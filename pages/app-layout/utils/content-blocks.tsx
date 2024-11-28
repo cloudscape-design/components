@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import range from 'lodash/range';
 
@@ -31,7 +31,7 @@ export function Breadcrumbs() {
 }
 
 export function Containers() {
-  const [count, setCount] = useState(2);
+  const [count, setCount] = useState(5);
   return (
     <SpaceBetween size="l">
       {range(count).map(i => (
@@ -91,7 +91,13 @@ export function Footer({ legacyConsoleNav }: { legacyConsoleNav: boolean }) {
   );
 }
 
-export function ScrollableDrawerContent({ contentType = 'text' }: { contentType?: 'text' | 'image' }) {
+export function ScrollableDrawerContent({
+  contentType = 'text',
+  content,
+}: {
+  contentType?: 'text' | 'image';
+  content?: any;
+}) {
   return contentType === 'image' ? (
     <SpaceBetween size="l">
       <div className={styles.contentPlaceholder} />
@@ -120,18 +126,7 @@ export function ScrollableDrawerContent({ contentType = 'text' }: { contentType?
         pellentesque.
       </p>
       <p>Ante in nibh mauris cursus mattis molestie.</p>
-      <p>
-        Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus. Porttitor
-        eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris nunc congue nisi
-        vitae suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat in. Arcu felis bibendum
-        ut tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum morbi blandit. In hac habitasse
-        platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi ipsum. Ornare aenean euismod elementum
-        nisi quis. Elementum curabitur vitae nunc sed velit dignissim sodales. Amet tellus cras adipiscing enim eu. Id
-        interdum velit laoreet id donec ultrices tincidunt. Ullamcorper eget nulla facilisi etiam. Sodales neque sodales
-        ut etiam sit amet nisl purus. Auctor urna nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis
-        pellentesque id. Porta lorem mollis aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed.
-        Pharetra pharetra massa massa ultricies mi.
-      </p>
+      {content}
     </TextContent>
   );
 }
@@ -179,6 +174,9 @@ function CornerMarker(props: {
 }
 
 export function CustomDrawerContent() {
+  const [content, setContent] = useState<JSX.Element[]>([]);
+  const ref = useRef<HTMLDivElement>(null);
+
   return (
     <div className={styles['custom-drawer-wrapper']}>
       <div className={styles['drawer-sticky-header']} data-testid="drawer-sticky-header">
@@ -186,11 +184,38 @@ export function CustomDrawerContent() {
           Sticky header
         </Box>
       </div>
-      <div className={styles['drawer-scrollable-content']}>
-        <ScrollableDrawerContent />
+      <div className={styles['drawer-scrollable-content']} ref={ref}>
+        <ScrollableDrawerContent content={content} />
       </div>
       <div className={styles['drawer-sticky-footer']} data-testid="drawer-sticky-footer">
         <p>This is a sticky footer, it should always be visisble when the panel is open.</p>
+        <Button
+          onClick={() => {
+            const id = Math.random();
+            const newContent = [
+              ...content,
+              <p key={Math.random()} id={id + ''}>
+                Pharetra et ultrices neque ornare. Bibendum neque egestas congue quisque egestas diam in arcu cursus.
+                Porttitor eget dolor morbi non arcu risus quis. Integer quis auctor elit sed vulputate mi sit. Mauris
+                nunc congue nisi vitae suscipit tellus mauris a diam. Diam donec adipiscing tristique risus nec feugiat
+                in. Arcu felis bibendum ut tristique et egestas quis. Nulla porttitor massa id neque aliquam vestibulum
+                morbi blandit. In hac habitasse platea dictumst quisque sagittis. Sollicitudin tempor id eu nisl nunc mi
+                ipsum. Ornare aenean euismod elementum nisi quis. Elementum curabitur vitae nunc sed velit dignissim
+                sodales. Amet tellus cras adipiscing enim eu. Id interdum velit laoreet id donec ultrices tincidunt.
+                Ullamcorper eget nulla facilisi etiam. Sodales neque sodales ut etiam sit amet nisl purus. Auctor urna
+                nunc id cursus metus aliquam eleifend mi in. Urna condimentum mattis pellentesque id. Porta lorem mollis
+                aliquam ut porttitor leo a. Lectus quam id leo in vitae turpis massa sed. Pharetra pharetra massa massa
+                ultricies mi.
+              </p>,
+            ];
+            setContent(newContent);
+            setTimeout(() => {
+              document.getElementById(id + '')?.scrollIntoView();
+            }, 500);
+          }}
+        >
+          Add content
+        </Button>
       </div>
     </div>
   );
