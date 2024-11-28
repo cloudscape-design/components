@@ -133,6 +133,7 @@ const InternalTable = React.forwardRef(
       renderLoaderPending,
       renderLoaderLoading,
       renderLoaderError,
+      renderLoaderEmpty,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -678,6 +679,7 @@ const InternalTable = React.forwardRef(
                                   renderLoaderPending={renderLoaderPending}
                                   renderLoaderLoading={renderLoaderLoading}
                                   renderLoaderError={renderLoaderError}
+                                  renderLoaderEmpty={renderLoaderEmpty}
                                   trackBy={trackBy}
                                 />
                               ))}

@@ -16,6 +16,7 @@ export interface ItemsLoaderProps<T> {
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
   trackBy?: TableProps.TrackBy<T>;
 }
 
@@ -25,6 +26,7 @@ export function ItemsLoader<T>({
   renderLoaderPending,
   renderLoaderLoading,
   renderLoaderError,
+  renderLoaderEmpty,
   trackBy,
 }: ItemsLoaderProps<T>) {
   let content: React.ReactNode = null;
@@ -34,10 +36,12 @@ export function ItemsLoader<T>({
     content = <InternalLiveRegion tagName="span">{renderLoaderLoading({ item })}</InternalLiveRegion>;
   } else if (loadingStatus === 'error' && renderLoaderError) {
     content = <InternalLiveRegion tagName="span">{renderLoaderError({ item })}</InternalLiveRegion>;
+  } else if (loadingStatus === 'finished' && renderLoaderEmpty && item) {
+    content = <InternalLiveRegion tagName="span">{renderLoaderEmpty({ item })}</InternalLiveRegion>;
   } else {
     warnOnce(
       'Table',
-      'Must define `renderLoaderPending`, `renderLoaderLoading`, or `renderLoaderError` when using corresponding loading status.'
+      'Must define `renderLoaderPending`, `renderLoaderLoading`, `renderLoaderError`, or `renderLoaderEmpty` when using corresponding loading status.'
     );
   }
 

@@ -16,6 +16,7 @@ export function TableLoaderCell<ItemType>({
   renderLoaderPending,
   renderLoaderLoading,
   renderLoaderError,
+  renderLoaderEmpty,
   trackBy,
   ...props
 }: TableLoaderCellProps<ItemType>) {
@@ -28,6 +29,7 @@ export function TableLoaderCell<ItemType>({
           renderLoaderPending={renderLoaderPending}
           renderLoaderLoading={renderLoaderLoading}
           renderLoaderError={renderLoaderError}
+          renderLoaderEmpty={renderLoaderEmpty}
           trackBy={trackBy}
         />
       ) : null}
