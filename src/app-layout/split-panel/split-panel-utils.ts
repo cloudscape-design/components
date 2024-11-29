@@ -23,22 +23,16 @@ export function useSplitPanelForcedPosition({
   if (isMobile) {
     return true;
   }
-  // If a scrollbar is present on the body, allow the split panel to stay on the side even if there is a bit less space than there should be,
-  // but only if already on the side, not if it is currently at the bottom.
-  const minWidth = isForcedRef.current ? SPLIT_PANEL_MIN_WIDTH : getSplitPanelMinWidth();
+  // After the split panel changes its position from bottom to side or vice versa,
+  // there is a chance that a scrollbar appears or disappears from the page,
+  //  which changes the available space again and potentially causing an infinite loop.
+  // To prevent that, we give the split panel some "resistance" to change its position:
+  // - if it is on the bottom, require the nominal space plus som extra threshold;
+  // - if it is at the side, tolerate having the nominal space minus that same threshold before jumping to the bottom.
+  const margin = SPLIT_PANEL_SCROLLBAR_MARGIN / 2;
+  const isAtBottom = isForcedRef.current;
+  const minWidth = isAtBottom ? SPLIT_PANEL_MIN_WIDTH + margin : SPLIT_PANEL_MIN_WIDTH - margin;
   const isForced = splitPanelMaxWidth < minWidth;
   isForcedRef.current = isForced;
   return isForced;
-}
-
-// Returns split panel min width with a margin for document scrollbar.
-// The margin prevents a possible infinite bouncing between bottom and side positions
-// caused by the presence of page's vertical scrollbar when on side position only.
-function getSplitPanelMinWidth() {
-  if (typeof document === 'undefined') {
-    return SPLIT_PANEL_MIN_WIDTH;
-  }
-  const margin = SPLIT_PANEL_SCROLLBAR_MARGIN / 2;
-  const hasScrollbar = window.document.documentElement.scrollHeight > window.document.documentElement.clientHeight;
-  return hasScrollbar ? SPLIT_PANEL_MIN_WIDTH - margin : SPLIT_PANEL_MIN_WIDTH + margin;
 }
