@@ -69,7 +69,6 @@ export function Grid({
   startOfWeek = 0,
   granularity = 'day',
 }: GridProps) {
-  console.log(granularity);
   const baseDateTime = baseDate?.getTime();
   // `baseDateTime` is used as a more stable replacement for baseDate
   const weeks = useMemo<Date[][]>(
@@ -188,7 +187,6 @@ export function Grid({
                   inSpecifiedRow: boolean
                 ): boolean => !!inSpecifiedRow || isInFirstGrouping(granularity, date);
 
-                //todo find out why it is wrongly applying for the first in month when a range extends to multiple months
                 const hasBottomBorder = (
                   granularity: DateRangePickerProps['granularity'],
                   date: Date,
@@ -201,23 +199,13 @@ export function Grid({
                   isFirstItemInRange: boolean
                 ): boolean => itemIndex === 0 || isFirstItemInRange || isFirstItem(granularity, date);
 
-                //todo find out why it is wrongly applying for the first in month when a range extends to multiple months
                 const hasRightBorder = (
                   granularity: DateRangePickerProps['granularity'],
                   date: Date,
                   itemIndex: number,
                   rowLength: number,
                   isLastItemInRange: boolean
-                ): boolean => {
-                  console.log({
-                    date,
-                    rowLength,
-                    itemIndex,
-                    isLastItemInRange,
-                    isLastItemInPage2: isLastItemInPage(granularity, date),
-                  });
-                  return itemIndex === rowLength - 1 || isLastItemInRange || isLastItemInPage(granularity, date);
-                };
+                ): boolean => itemIndex === rowLength - 1 || isLastItemInRange || isLastItemInPage(granularity, date);
 
                 return (
                   <GridCell
@@ -235,6 +223,7 @@ export function Grid({
                       [styles['in-range']]: dateIsInRange,
                       [styles['in-range-border-block-start']]: hasTopBorder(granularity, date, !!inRangeStartRow),
                       [styles['in-range-border-block-end']]: hasBottomBorder(granularity, date, !!inRangeEndRow),
+                      //this is causing the wrong border to be set on the 2nd item in the calendar
                       [styles['in-range-border-inline-start']]: hasLeftBorder(
                         granularity,
                         date,
@@ -276,28 +265,28 @@ export function Grid({
 
 const isInFirstGrouping = (granularity: DateRangePickerProps['granularity'], date: Date) => {
   if (granularity === 'month') {
-    return date.getMonth() <= 3;
+    return date.getMonth() < 3;
   }
   return date.getDate() <= 7;
 };
 
 const isInLastGrouping = (granularity: DateRangePickerProps['granularity'], date: Date): boolean => {
   if (granularity === 'month') {
-    return date.getMonth() >= 9; //todo determine why 9 shouldnt it be september
+    return date.getMonth() >= 9;
   }
   return date.getDate() > getDaysInMonth(date) - 7;
 };
 
 const isFirstItem = (granularity: DateRangePickerProps['granularity'], date: Date): boolean => {
   if (granularity === 'month') {
-    return date.getMonth() === 1;
+    return date.getMonth() === 0;
   }
   return date.getDate() === 1;
 };
 
 const isLastItemInPage = (granularity: DateRangePickerProps['granularity'], date: Date): boolean => {
   if (granularity === 'month') {
-    return date.getMonth() === 12;
+    return date.getMonth() === 11;
   }
   return isLastDayOfMonth(date);
 };

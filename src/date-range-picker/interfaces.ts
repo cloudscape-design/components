@@ -291,7 +291,7 @@ export namespace DateRangePickerProps {
     focus(): void;
   }
 
-  export interface I18nStrings {
+  export interface I18nStrings extends CalendarProps.I18nStrings {
     /**
      * Adds `aria-label` to the trigger and dropdown.
      */
@@ -381,38 +381,6 @@ export namespace DateRangePickerProps {
      * custom relative range.
      */
     customRelativeRangeUnitLabel?: string;
-
-    /**
-     * Used as part of the aria label for today's date in the calendar.
-     */
-    todayAriaLabel?: string;
-
-    /**
-     * Used as part of the aria label for this month's button in the calendar
-     * with a 'month' granularity
-     */
-    currentMonthAriaLabel?: string;
-
-    /**
-     * An aria label for the 'next month' button.
-     */
-    nextMonthAriaLabel?: string;
-
-    /**
-     * An aria label for the 'next year' button.
-     */
-    nextYearAriaLabel?: string;
-
-    /**
-     * An aria label for the 'previous month' button.
-     */
-    previousMonthAriaLabel?: string;
-
-    /**
-     * An aria label for the 'previous year' button.
-     */
-    previousYearAriaLabel?: string;
-
     /**
      * Visible label for the Start Date input for the
      * absolute range.
@@ -463,6 +431,7 @@ export type RangeCalendarI18nStrings = Pick<
   | 'todayAriaLabel'
   | 'nextMonthAriaLabel'
   | 'previousMonthAriaLabel'
+  | 'currentMonthAriaLabel'
   | 'nextYearAriaLabel'
   | 'previousYearAriaLabel'
   | 'startDateLabel'
