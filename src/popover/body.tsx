@@ -90,7 +90,6 @@ export default function PopoverBody({
   const dialogProps = isDialog
     ? {
         role: 'dialog',
-
         'aria-labelledby': ariaLabelledby ?? (header ? labelledById : undefined),
       }
     : {};
