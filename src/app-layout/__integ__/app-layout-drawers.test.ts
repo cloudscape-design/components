@@ -223,9 +223,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           await page.openThirdDrawer(theme === 'refresh-toolbar');
           //todo: resolve split panel positioning change on large drawer openeing
           const expectedSplitPanelSelector =
-            theme === 'refresh'
-              ? wrapper.findSplitPanel().findOpenPanelBottom().toSelector()
-              : wrapper.findSplitPanel().findOpenPanelSide().toSelector();
+            theme === 'refresh-toolbar'
+              ? wrapper.findSplitPanel().findOpenPanelSide().toSelector()
+              : wrapper.findSplitPanel().findOpenPanelBottom().toSelector();
           await expect(page.isExisting(expectedSplitPanelSelector)).resolves.toEqual(true);
 
           await page.openFirstDrawer();

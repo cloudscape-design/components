@@ -23,7 +23,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
-import { useSplitPanelForcedPosition } from '../split-panel/split-panel-utils';
+import { useSplitPanelForcedPosition } from '../split-panel/use-split-panel-forced-position';
 import { useDrawers } from '../utils/use-drawers';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import useResize from '../utils/use-resize';
@@ -237,7 +237,7 @@ export const AppLayoutInternalsProvider = React.forwardRef(
 
     const isSplitPanelForcedPosition = useSplitPanelForcedPosition({
       isMobile,
-      splitPanelMaxWidth,
+      availableWidthForSplitPanel: splitPanelMaxWidth,
     });
     const splitPanelPosition = getSplitPanelPosition(isSplitPanelForcedPosition, splitPanelPreferences);
 
