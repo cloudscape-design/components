@@ -127,7 +127,7 @@ describe('Progressive loading', () => {
           { name: 'Root-3' },
         ],
       },
-      getLoadingStatus: () => 'pending',
+      getLoadingStatus: () => 'error',
     });
 
     expect(table.findRows().map(getTextContent)).toEqual([
@@ -136,21 +136,21 @@ describe('Progressive loading', () => {
       'Nested-1.2v0',
       'Nested-1.2.1v0',
       'Nested-1.2.2v0',
-      '[pending] Loader for Nested-1.2',
-      '[pending] Loader for Root-1',
+      '[error] Loader for Nested-1.2',
+      '[error] Loader for Root-1',
       'Root-2v0',
       'Nested-2.1v0',
       'Nested-2.1.1v0',
       'Nested-2.1.2v0',
-      '[pending] Loader for Nested-2.1',
+      '[error] Loader for Nested-2.1',
       'Nested-2.2v0',
       'Nested-2.2.1v0',
       'Nested-2.2.2v0',
-      '[pending] Loader for Nested-2.2',
-      '[pending] Loader for Root-2',
+      '[error] Loader for Nested-2.2',
+      '[error] Loader for Root-2',
       'Root-3v0',
-      '[pending] Loader for Root-3',
-      '[pending] Loader for TABLE ROOT',
+      '[error] Loader for Root-3',
+      '[error] Loader for TABLE ROOT',
     ]);
   });
 
@@ -248,7 +248,7 @@ describe('Progressive loading', () => {
     }
   );
 
-  test.each(['finished', 'pending', 'loading', 'error'] as const)(
+  test.each(['finished', 'loading', 'error'] as const)(
     'loader row with status="%s" is added after empty expanded item',
     status => {
       const { table } = renderTable({
@@ -286,16 +286,22 @@ describe('Progressive loading', () => {
     }
   );
 
-  test('warns when rendering an empty expanded row with no loading status', () => {
-    const { table } = renderTable({
-      expandableRows: {
-        ...defaultExpandableRows,
-        expandedItems: [{ name: 'Root-3' }],
-      },
-      getLoadingStatus: undefined,
-    });
+  test.each([undefined, 'pending'] as const)(
+    'warns when rendering an empty expanded row with loading status = "%s"',
+    status => {
+      const { table } = renderTable({
+        expandableRows: {
+          ...defaultExpandableRows,
+          expandedItems: [{ name: 'Root-3' }],
+        },
+        getLoadingStatus: !status ? undefined : () => status,
+      });
 
-    expect(table.findItemsLoaderByItemId('Root-3')).toBe(null);
-    expect(warnOnce).toHaveBeenCalledWith('Table', 'Expanded items without children must have a loading status.');
-  });
+      expect(table.findItemsLoaderByItemId('Root-3')).toBe(null);
+      expect(warnOnce).toHaveBeenCalledWith(
+        'Table',
+        'Expanded items without children must have "loading", "finished", or "error" loading status.'
+      );
+    }
+  );
 });
