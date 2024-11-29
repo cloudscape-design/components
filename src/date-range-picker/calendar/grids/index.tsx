@@ -3,7 +3,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { addMonths, isAfter, isBefore, isSameMonth, max, min } from 'date-fns';
 
-import { getBaseDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../../../calendar/utils/navigation';
+import {
+  getBaseDay,
+  moveNextDay,
+  moveNextWeek,
+  movePrevDay,
+  movePrevWeek,
+} from '../../../calendar/utils/navigation-day';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';

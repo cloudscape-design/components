@@ -7,16 +7,8 @@ import { isSameMonth, isSameYear } from 'date-fns';
 import { KeyCode } from '../../internal/keycode';
 import handleKey from '../../internal/utils/handle-key';
 import { CalendarProps } from '../interfaces';
-import {
-  moveMonthDown,
-  moveMonthUp,
-  moveNextDay,
-  moveNextMonth,
-  moveNextWeek,
-  movePrevDay,
-  movePrevMonth,
-  movePrevWeek,
-} from '../utils/navigation';
+import { moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../utils/navigation-day';
+import { moveMonthDown, moveMonthUp, moveNextMonth, movePrevMonth } from '../utils/navigation-month';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,
