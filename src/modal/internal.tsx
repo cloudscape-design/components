@@ -240,7 +240,6 @@ function PortaledModal({
               isRefresh && styles.refresh
             )}
             role="dialog"
-            aria-modal={true}
             aria-labelledby={headerId}
             onMouseDown={onOverlayMouseDown}
             onClick={onOverlayClick}
