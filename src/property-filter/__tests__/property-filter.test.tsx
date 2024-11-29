@@ -284,7 +284,7 @@ describe('property filter parts', () => {
       expect(loadItemCalls).toHaveLength(1);
     });
 
-    test('calls onLoadItems when clear button is clicked and asyncProperties=true', () => {
+    test('calls onLoadItems on clear when filter by property and asyncProperties=true', () => {
       const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
       const { propertyFilterWrapper: wrapper, container } = renderComponent({
         onLoadItems: ({ detail }) => loadItemCalls.push(detail),
@@ -319,6 +319,43 @@ describe('property filter parts', () => {
         expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
         expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
         expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+      ]);
+    });
+
+    test('calls onLoadItems on clear when filter by text and asyncProperties=true', () => {
+      const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
+      const { propertyFilterWrapper: wrapper, container } = renderComponent({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'pending',
+        asyncProperties: true,
+      });
+
+      wrapper.focus();
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+      ]);
+
+      wrapper.setInputValue('stat');
+      expect(loadItemCalls).toHaveLength(2);
+
+      jest.advanceTimersByTime(1000);
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: 'stat' }),
+      ]);
+
+      createWrapper(container).find('#focus-target')!.focus();
+
+      wrapper.findClearButton()!.click();
+
+      expect(loadItemCalls).toEqual([
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: '' }),
+        expect.objectContaining({ filteringText: 'stat' }),
+        expect.objectContaining({ filteringText: 'stat' }),
         expect.objectContaining({ filteringText: '' }),
       ]);
     });
