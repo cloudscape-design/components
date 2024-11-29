@@ -218,7 +218,7 @@ export namespace CollectionPreferencesProps {
   export interface ContentDisplayPreference {
     title?: string;
     description?: string;
-    options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
+    options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionOrGroup>;
     liveAnnouncementDndStarted?: (position: number, total: number) => string;
     liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
     liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
@@ -227,6 +227,13 @@ export namespace CollectionPreferencesProps {
     dragHandleAriaDescription?: string;
     enableColumnFiltering?: boolean;
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
+  }
+
+  export interface ContentDisplayOptionOrGroup {
+    id: string;
+    label: string;
+    alwaysVisible?: boolean;
+    options?: ReadonlyArray<ContentDisplayOption>;
   }
 
   export interface ContentDisplayOption {

@@ -143,7 +143,7 @@ export default function ContentDisplayPreference({
       )}
 
       {/* No match */}
-      {sortedAndFilteredOptions.length === 0 && (
+      {enableColumnFiltering && sortedAndFilteredOptions.length === 0 && (
         <div className={getClassName('no-match')}>
           <InternalSpaceBetween size="s" alignItems="center">
             <InternalBox margin={{ top: 'm' }}>
