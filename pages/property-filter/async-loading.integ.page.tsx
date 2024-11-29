@@ -79,7 +79,6 @@ export default function () {
   return (
     <>
       <h1>Integration tests fixture for async loading suggestions</h1>
-      <button id="focus-target">focus target</button>
       <ScreenshotArea disableAnimations={true}>
         <PropertyFilter
           {...labels}

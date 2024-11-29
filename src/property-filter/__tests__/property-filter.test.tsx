@@ -89,13 +89,25 @@ const filteringOptions: readonly FilteringOption[] = [
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
 
 const renderComponent = (props?: Partial<PropertyFilterProps>) => {
-  const { container } = render(
+  const { container, rerender } = render(
     <div>
       <button id="focus-target" />
       <PropertyFilter {...defaultProps} {...props} />
     </div>
   );
-  return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
+  const patchedRerender = (props?: Partial<PropertyFilterProps>) =>
+    rerender(
+      <div>
+        <button id="focus-target" />
+        <PropertyFilter {...defaultProps} {...props} />
+      </div>
+    );
+
+  return {
+    container,
+    propertyFilterWrapper: createWrapper(container).findPropertyFilter()!,
+    rerender: patchedRerender,
+  };
 };
 
 function findValueField(wrapper: ElementWrapper) {
@@ -286,7 +298,11 @@ describe('property filter parts', () => {
 
     test('calls onLoadItems on clear when filter by property and asyncProperties=true', () => {
       const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
-      const { propertyFilterWrapper: wrapper, container } = renderComponent({
+      const {
+        propertyFilterWrapper: wrapper,
+        container,
+        rerender,
+      } = renderComponent({
         onLoadItems: ({ detail }) => loadItemCalls.push(detail),
         filteringStatusType: 'pending',
         asyncProperties: true,
@@ -308,6 +324,12 @@ describe('property filter parts', () => {
         expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
       ]);
 
+      rerender({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'finished',
+        asyncProperties: true,
+      });
+
       createWrapper(container).find('#focus-target')!.focus();
 
       wrapper.findClearButton()!.click();
@@ -319,13 +341,16 @@ describe('property filter parts', () => {
         expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
         expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
         expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: '' }),
       ]);
     });
 
     test('calls onLoadItems on clear when filter by text and asyncProperties=true', () => {
       const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
-      const { propertyFilterWrapper: wrapper, container } = renderComponent({
+      const {
+        propertyFilterWrapper: wrapper,
+        container,
+        rerender,
+      } = renderComponent({
         onLoadItems: ({ detail }) => loadItemCalls.push(detail),
         filteringStatusType: 'pending',
         asyncProperties: true,
@@ -347,9 +372,17 @@ describe('property filter parts', () => {
         expect.objectContaining({ filteringText: 'stat' }),
       ]);
 
+      rerender({
+        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
+        filteringStatusType: 'finished',
+        asyncProperties: true,
+      });
+
       createWrapper(container).find('#focus-target')!.focus();
 
       wrapper.findClearButton()!.click();
+
+      jest.advanceTimersByTime(1000);
 
       expect(loadItemCalls).toEqual([
         expect.objectContaining({ filteringText: '' }),
