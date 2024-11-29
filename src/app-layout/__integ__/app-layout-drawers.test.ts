@@ -209,7 +209,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       )
     );
 
-    test.skip(
+    test(
       'updates side split panel position when using different width drawers',
       setupTest(
         { theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } },
