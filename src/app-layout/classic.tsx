@@ -23,8 +23,12 @@ import { ResizableDrawer } from './drawer/resizable-drawer';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { MobileToolbar } from './mobile-toolbar';
 import { Notifications } from './notifications';
-import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel';
-import { checkSplitPanelForcedPosition } from './split-panel/split-panel-utils';
+import {
+  SideSplitPanelDrawer,
+  SPLIT_PANEL_MIN_WIDTH,
+  SplitPanelProvider,
+  SplitPanelProviderProps,
+} from './split-panel';
 import { togglesConfig } from './toggles';
 import { getStickyOffsetVars } from './utils/sticky-offsets';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
@@ -294,8 +298,10 @@ const ClassicAppLayout = React.forwardRef(
     };
 
     const effectiveToolsWidth = getEffectiveToolsWidth();
-    const splitPanelMaxWidth = resizableSpaceAvailable - effectiveToolsWidth;
-    const isSplitPanelForcedPosition = checkSplitPanelForcedPosition({ isMobile, splitPanelMaxWidth });
+
+    // if there is no space to display split panel in the side, force to bottom
+    const isSplitPanelForcedPosition =
+      isMobile || resizableSpaceAvailable - effectiveToolsWidth < SPLIT_PANEL_MIN_WIDTH;
     const finalSplitPanePosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
 
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
