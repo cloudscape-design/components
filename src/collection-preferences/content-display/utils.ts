@@ -1,39 +1,89 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { CollectionPreferencesProps } from '../interfaces';
 
-export interface OptionWithVisibility extends CollectionPreferencesProps.ContentDisplayOption {
+type OptionOrGroup =
+  | CollectionPreferencesProps.ContentDisplayOptionGroup
+  | CollectionPreferencesProps.ContentDisplayOption;
+
+export interface FlatOption extends CollectionPreferencesProps.ContentDisplayOption {
   visible: boolean;
+  parent: null | string;
+  group: boolean;
 }
 
-export function getSortedOptions({
+export function getProcessedOptions({
   options,
   contentDisplay,
+  filterText,
 }: {
-  options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOption>;
-  contentDisplay: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
-}): ReadonlyArray<OptionWithVisibility> {
-  // By using a Map, we are guaranteed to preserve insertion order on future iteration.
-  const optionsById = new Map<string, OptionWithVisibility>();
-  // We insert contentDisplay first so we respect the currently selected order
-  for (const { id, visible } of contentDisplay) {
-    // If an option is provided in contentDisplay and not options, we default the label to the id
-    optionsById.set(id, { id, label: id, visible });
-  }
-  // We merge options data, and insert any that were not in contentDisplay as non-visible
+  options: readonly OptionOrGroup[];
+  contentDisplay: readonly CollectionPreferencesProps.ContentDisplayItem[];
+  filterText: string;
+}) {
+  const optionDefinitions = new Map<string, OptionOrGroup>();
   for (const option of options) {
-    const existing = optionsById.get(option.id);
-    optionsById.set(option.id, { ...option, visible: !!existing?.visible });
+    optionDefinitions.set(option.id, option);
+    'options' in option && option.options.forEach(option => optionDefinitions.set(option.id, option));
   }
-  return Array.from(optionsById.values());
+
+  const optionsVisibility = new Set<string>();
+  const optionsOrder = new Map<string, number>();
+  for (const optionPreference of contentDisplay) {
+    optionPreference.visible && optionsVisibility.add(optionPreference.id);
+    optionsOrder.set(optionPreference.id, optionsOrder.size);
+  }
+
+  // Add options from content display preference even if those are not defined in preference settings.
+  const undefinedOptions: OptionOrGroup[] = contentDisplay
+    .filter(optionPreference => !optionDefinitions.has(optionPreference.id))
+    .map(optionPreference => ({ ...optionPreference, label: optionPreference.id }));
+
+  options = getFilteredOptions([...undefinedOptions, ...options], filterText);
+  options = getSortedOptions([...undefinedOptions, ...options], optionsOrder);
+
+  const processedOptions: FlatOption[] = [];
+  for (const option of options) {
+    const hasNested = 'options' in option;
+    processedOptions.push({ ...option, visible: optionsVisibility.has(option.id), group: hasNested, parent: null });
+    for (const child of hasNested ? option.options : []) {
+      processedOptions.push({ ...child, visible: optionsVisibility.has(child.id), group: false, parent: option.id });
+    }
+  }
+
+  return processedOptions;
 }
 
-export function getFilteredOptions(options: ReadonlyArray<OptionWithVisibility>, filterText: string) {
+function getFilteredOptions(options: readonly OptionOrGroup[], filterText: string): readonly OptionOrGroup[] {
   filterText = filterText.trim().toLowerCase();
 
   if (!filterText) {
     return options;
   }
 
-  return options.filter(option => option.label.toLowerCase().trim().includes(filterText));
+  const matchOption = (option: OptionOrGroup) => option.label.toLowerCase().trim().includes(filterText);
+
+  let filtered = options.map(option => {
+    if ('options' in option) {
+      return { ...option, options: option.options.filter(matchOption) };
+    }
+    return option;
+  });
+
+  filtered = filtered.filter(option => matchOption(option) || ('options' in option && option.options.length > 0));
+
+  return filtered;
+}
+
+function getSortedOptions(options: readonly OptionOrGroup[], indices: Map<string, number>): readonly OptionOrGroup[] {
+  const compare = (a: OptionOrGroup, b: OptionOrGroup) => (indices.get(a.id) ?? -1) - (indices.get(b.id) ?? -1);
+  return options
+    .map(option => {
+      if ('options' in option) {
+        return { ...option, options: [...option.options].sort(compare) };
+      }
+      return option;
+    })
+    .sort(compare);
 }

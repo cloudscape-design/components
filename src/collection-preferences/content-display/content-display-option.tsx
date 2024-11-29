@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
+import clsx from 'clsx';
 
 import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalToggle from '../../toggle/internal';
-import { OptionWithVisibility } from './utils';
+import { FlatOption } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -15,8 +16,8 @@ export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix
 export interface ContentDisplayOptionProps {
   dragHandleAriaLabel?: string;
   listeners?: DragHandleProps['listeners'];
-  onToggle?: (option: OptionWithVisibility) => void;
-  option: OptionWithVisibility;
+  onToggle?: (option: FlatOption) => void;
+  option: FlatOption;
   disabled?: boolean;
 }
 
@@ -33,10 +34,10 @@ const ContentDisplayOption = forwardRef(
     };
 
     return (
-      <div ref={ref} className={getClassName('content')}>
+      <div ref={ref} className={clsx(getClassName('content'), option.parent !== null && getClassName('nested'))}>
         <DragHandle disabled={disabled} attributes={dragHandleAttributes} listeners={listeners} />
 
-        <label className={getClassName('label')} htmlFor={controlId}>
+        <label className={clsx(getClassName('label'), option.group && getClassName('group'))} htmlFor={controlId}>
           {option.label}
         </label>
         <div className={getClassName('toggle')}>

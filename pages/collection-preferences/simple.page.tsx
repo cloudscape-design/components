@@ -5,7 +5,6 @@ import * as React from 'react';
 import { Box, SpaceBetween } from '~components';
 import CollectionPreferences from '~components/collection-preferences';
 
-import { contentDisplayPreferenceI18nStrings } from '../common/i18n-strings';
 import ScreenshotArea from '../utils/screenshot-area';
 import {
   baseProperties,
@@ -63,21 +62,6 @@ export default function CollectionPreferencesPermutations() {
           />
 
           <Box>Single column visible content</Box>
-        </SpaceBetween>
-
-        <SpaceBetween size="xxs" direction="horizontal" alignItems="center">
-          <CollectionPreferences
-            className="cp-5"
-            {...baseProperties}
-            contentDisplayPreference={{
-              title: 'Column preferences',
-              description: 'Customize the columns visibility and order.',
-              options: [],
-              ...contentDisplayPreferenceI18nStrings,
-            }}
-          />
-
-          <Box>Single column content display with groups</Box>
         </SpaceBetween>
       </ScreenshotArea>
     </>

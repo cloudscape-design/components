@@ -218,7 +218,7 @@ export namespace CollectionPreferencesProps {
   export interface ContentDisplayPreference {
     title?: string;
     description?: string;
-    options: ReadonlyArray<CollectionPreferencesProps.ContentDisplayOptionOrGroup>;
+    options: ReadonlyArray<ContentDisplayOption | ContentDisplayOptionGroup>;
     liveAnnouncementDndStarted?: (position: number, total: number) => string;
     liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
     liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
@@ -229,11 +229,11 @@ export namespace CollectionPreferencesProps {
     i18nStrings?: ContentDisplayPreferenceI18nStrings;
   }
 
-  export interface ContentDisplayOptionOrGroup {
+  export interface ContentDisplayOptionGroup {
     id: string;
     label: string;
     alwaysVisible?: boolean;
-    options?: ReadonlyArray<ContentDisplayOption>;
+    options: ReadonlyArray<ContentDisplayOption>;
   }
 
   export interface ContentDisplayOption {

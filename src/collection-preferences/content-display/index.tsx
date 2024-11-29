@@ -17,7 +17,7 @@ import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
-import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
+import { FlatOption, getProcessedOptions } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -34,10 +34,16 @@ export default function ContentDisplayPreference({
   title,
   description,
   options,
-  value = options.map(({ id }) => ({
-    id,
-    visible: true,
-  })),
+  value = options.flatMap(option => {
+    const nested = 'options' in option ? option.options.map(({ id }) => ({ id, visible: true })) : [];
+    return [
+      {
+        id: option.id,
+        visible: true,
+      },
+      ...nested,
+    ];
+  }),
   onChange,
   liveAnnouncementDndStarted,
   liveAnnouncementDndItemReordered,
@@ -55,23 +61,42 @@ export default function ContentDisplayPreference({
   const titleId = `${idPrefix}-title`;
   const descriptionId = `${idPrefix}-description`;
 
-  const [sortedOptions, sortedAndFilteredOptions] = useMemo(() => {
-    const sorted = getSortedOptions({ options, contentDisplay: value });
-    const filtered = getFilteredOptions(sorted, columnFilteringText);
-    return [sorted, filtered];
-  }, [columnFilteringText, options, value]);
+  const processedOptions = useMemo(
+    () => getProcessedOptions({ options, contentDisplay: value, filterText: columnFilteringText }),
+    [columnFilteringText, options, value]
+  );
 
-  const onToggle = (option: OptionWithVisibility) => {
+  const onToggle = (option: FlatOption) => {
     // We use sortedOptions as base and not value because there might be options that
     // are not in the value yet, so they're added as non-visible after the known ones.
-    onChange(sortedOptions.map(({ id, visible }) => ({ id, visible: id === option.id ? !option.visible : visible })));
+    const next = processedOptions.map(({ id, visible, parent }) => ({
+      id,
+      visible: id === option.id || parent === option.id ? !option.visible : visible,
+    }));
+
+    const optionsVisibility = new Map<string, boolean>();
+    for (const optionPreference of next) {
+      optionsVisibility.set(optionPreference.id, optionPreference.visible);
+    }
+
+    for (const option of options) {
+      if ('options' in option) {
+        let allVisible = true;
+        for (const nested of option.options) {
+          allVisible = allVisible && !!optionsVisibility.get(nested.id);
+        }
+        optionsVisibility.set(option.id, allVisible);
+      }
+    }
+
+    onChange(next.map(({ id }) => ({ id, visible: optionsVisibility.get(id) ?? false })));
   };
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
-    sortedOptions: sortedAndFilteredOptions,
+    sortedOptions: processedOptions,
   });
 
-  const activeOption = activeItem ? sortedAndFilteredOptions.find(({ id }) => id === activeItem) : null;
+  const activeOption = activeItem ? processedOptions.find(({ id }) => id === activeItem) : null;
 
   const announcements = useLiveAnnouncements({
     isDragging: activeItem !== null,
@@ -96,7 +121,7 @@ export default function ContentDisplayPreference({
       'contentDisplayPreference.liveAnnouncementDndDiscarded',
       liveAnnouncementDndDiscarded
     ),
-    sortedOptions: sortedAndFilteredOptions,
+    sortedOptions: processedOptions,
   });
 
   const renderedDragHandleAriaDescription = i18n(
@@ -134,16 +159,16 @@ export default function ContentDisplayPreference({
             countText={i18n(
               'contentDisplayPreference.i18nStrings.columnFilteringCountText',
               i18nStrings?.columnFilteringCountText
-                ? i18nStrings?.columnFilteringCountText(sortedAndFilteredOptions.length)
+                ? i18nStrings?.columnFilteringCountText(processedOptions.length)
                 : undefined,
-              format => format({ count: sortedAndFilteredOptions.length })
+              format => format({ count: processedOptions.length })
             )}
           />
         </div>
       )}
 
       {/* No match */}
-      {enableColumnFiltering && sortedAndFilteredOptions.length === 0 && (
+      {enableColumnFiltering && processedOptions.length === 0 && (
         <div className={getClassName('no-match')}>
           <InternalSpaceBetween size="s" alignItems="center">
             <InternalBox margin={{ top: 'm' }}>
@@ -179,10 +204,10 @@ export default function ContentDisplayPreference({
           const { active, over } = event;
 
           if (over && active.id !== over.id) {
-            const oldIndex = sortedOptions.findIndex(({ id }) => id === active.id);
-            const newIndex = sortedOptions.findIndex(({ id }) => id === over.id);
+            const oldIndex = processedOptions.findIndex(({ id }) => id === active.id);
+            const newIndex = processedOptions.findIndex(({ id }) => id === over.id);
             // We need to remember to trim the options down to id and visible to emit changes.
-            onChange(arrayMove([...sortedOptions], oldIndex, newIndex).map(({ id, visible }) => ({ id, visible })));
+            onChange(arrayMove([...processedOptions], oldIndex, newIndex).map(({ id, visible }) => ({ id, visible })));
           }
         }}
         onDragCancel={() => setActiveItem(null)}
@@ -197,20 +222,18 @@ export default function ContentDisplayPreference({
         >
           <SortableContext
             disabled={columnFilteringText.trim().length > 0}
-            items={sortedAndFilteredOptions.map(({ id }) => id)}
+            items={processedOptions.map(({ id }) => id)}
             strategy={verticalListSortingStrategy}
           >
-            {sortedAndFilteredOptions.map(option => {
-              return (
-                <DraggableOption
-                  dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}
-                  key={option.id}
-                  onKeyDown={handleKeyDown}
-                  onToggle={onToggle}
-                  option={option}
-                />
-              );
-            })}
+            {processedOptions.map(option => (
+              <DraggableOption
+                dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}
+                key={option.id}
+                onKeyDown={handleKeyDown}
+                onToggle={onToggle}
+                option={option}
+              />
+            ))}
           </SortableContext>
         </ul>
         <Portal>
