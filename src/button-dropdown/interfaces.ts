@@ -256,9 +256,16 @@ export interface ItemProps {
   linkStyle?: boolean;
 }
 
-interface InternalItem extends ButtonDropdownProps.Item {
+export interface InternalItem extends ButtonDropdownProps.Item {
   badge?: boolean;
-  isCurrentPage?: boolean;
+  /**
+   * Used in breadcrumb-group: indicates that this breadcrumb item is the current page
+   */
+  isCurrentBreadcrumb?: boolean;
+}
+
+export interface InternalCheckboxItem extends ButtonDropdownProps.CheckboxItem {
+  badge?: boolean;
 }
 
 interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
@@ -267,7 +274,7 @@ interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'>
 
 type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 
-export type InternalItemOrGroup = InternalItem | ButtonDropdownProps.CheckboxItem | InternalItemGroup;
+export type InternalItemOrGroup = InternalItem | InternalCheckboxItem | InternalItemGroup;
 
 export interface InternalButtonDropdownProps
   extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
@@ -304,6 +311,10 @@ export interface InternalButtonDropdownProps
    */
   linkStyle?: boolean;
 
+  /**
+   * Determines whether the dropdown should take up the full available width.
+   * Used in Breadcrumb group component for collapsed breadcrumbs
+   */
   fullWidth?: boolean;
 
   analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;

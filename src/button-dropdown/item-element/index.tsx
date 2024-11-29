@@ -12,8 +12,7 @@ import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { ItemProps, LinkItem } from '../interfaces';
-import { ButtonDropdownProps } from '../interfaces';
+import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
@@ -89,17 +88,8 @@ const ItemElement = ({
   );
 };
 
-type InternalItemProps = ButtonDropdownProps.Item & {
-  badge?: boolean;
-  isCurrentBreadcrumb?: boolean;
-};
-
-type InternalCheckboxItemProps = ButtonDropdownProps.CheckboxItem & {
-  badge?: boolean;
-};
-
 interface MenuItemProps {
-  item: InternalItemProps | InternalCheckboxItemProps;
+  item: InternalItem | InternalCheckboxItem;
   disabled: boolean;
   highlighted: boolean;
   linkStyle?: boolean;
@@ -164,13 +154,7 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   );
 }
 
-const MenuItemContent = ({
-  item,
-  disabled,
-}: {
-  item: InternalItemProps | InternalCheckboxItemProps;
-  disabled: boolean;
-}) => {
+const MenuItemContent = ({ item, disabled }: { item: InternalItem | InternalCheckboxItem; disabled: boolean }) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
   const hasExternal = isLinkItem(item) && item.external;
   const isCheckbox = isCheckboxItem(item);
