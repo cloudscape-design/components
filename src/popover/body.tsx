@@ -90,7 +90,7 @@ export default function PopoverBody({
   const dialogProps = isDialog
     ? {
         role: 'dialog',
-        'aria-modal': shouldTrapFocus ? true : undefined,
+
         'aria-labelledby': ariaLabelledby ?? (header ? labelledById : undefined),
       }
     : {};
