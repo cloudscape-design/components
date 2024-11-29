@@ -82,7 +82,7 @@ export default function () {
         content={
           <div
             style={{
-              backgroundColor: '#fffff0',
+              backgroundColor: 'rgba(255, 255, 0, 0.1)',
               borderBottom: '1px dashed gray',
             }}
           >
