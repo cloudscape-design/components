@@ -30,7 +30,7 @@ export interface DrawerProps extends BaseComponentProps {
   i18nStrings?: I18nStrings;
 }
 
-export interface I18nStrings {
+interface I18nStrings {
   /**
     Specifies the text that's displayed when the panel is in a loading state.
    */

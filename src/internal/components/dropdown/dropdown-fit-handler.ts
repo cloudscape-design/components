@@ -47,7 +47,7 @@ const getClosestParentDimensions = (element: HTMLElement): any => {
 // This value was determined by UX but may be subject to change in the future, depending on the feedback.
 export const defaultMaxDropdownWidth = getBreakpointValue('xxs');
 
-export const getAvailableSpace = ({
+const getAvailableSpace = ({
   trigger,
   overflowParents,
   stretchWidth = false,
@@ -104,7 +104,7 @@ export const getAvailableSpace = ({
   );
 };
 
-export const getInteriorAvailableSpace = ({
+const getInteriorAvailableSpace = ({
   trigger,
   overflowParents,
   isMobile,
@@ -158,7 +158,7 @@ export const getInteriorAvailableSpace = ({
   );
 };
 
-export const getWidths = ({
+const getWidths = ({
   triggerElement,
   dropdownElement,
   desiredMinWidth,
@@ -301,7 +301,7 @@ export const getDropdownPosition = ({
   };
 };
 
-export const getInteriorDropdownPosition = (
+const getInteriorDropdownPosition = (
   trigger: HTMLElement,
   dropdown: HTMLElement,
   overflowParents: ReadonlyArray<BoundingBox>,

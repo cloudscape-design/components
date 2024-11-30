@@ -256,15 +256,15 @@ export interface ItemProps {
   linkStyle?: boolean;
 }
 
-export interface InternalItem extends ButtonDropdownProps.Item {
+interface InternalItem extends ButtonDropdownProps.Item {
   badge?: boolean;
 }
 
-export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
+interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
   items: InternalItems;
 }
 
-export type InternalItems = ReadonlyArray<InternalItemOrGroup>;
+type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 
 export type InternalItemOrGroup = InternalItem | ButtonDropdownProps.CheckboxItem | InternalItemGroup;
 

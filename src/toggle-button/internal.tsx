@@ -64,5 +64,3 @@ export const InternalToggleButton = React.forwardRef(
     );
   }
 );
-
-export default InternalToggleButton;

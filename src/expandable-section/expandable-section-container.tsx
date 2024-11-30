@@ -15,7 +15,7 @@ import { InternalVariant } from './interfaces';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 
-export interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
+interface ExpandableSectionContainerProps extends InternalBaseComponentProps {
   className?: string;
   header: React.ReactNode;
   children?: React.ReactNode;

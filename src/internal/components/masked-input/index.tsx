@@ -63,5 +63,5 @@ const MaskedInput = React.forwardRef(
   }
 );
 
-export { MaskedInputProps, useMask };
+export { MaskedInputProps };
 export default MaskedInput;

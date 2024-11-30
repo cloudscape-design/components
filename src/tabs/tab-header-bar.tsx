@@ -64,7 +64,7 @@ function dismissButton({
   );
 }
 
-export interface TabHeaderBarProps {
+interface TabHeaderBarProps {
   onChange: (changeDetail: TabsProps.ChangeDetail) => void;
   activeTabId: TabsProps['activeTabId'];
   tabs: TabsProps['tabs'];

@@ -3,14 +3,15 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { PropertyFilterOperatorFormProps } from '@cloudscape-design/collection-hooks';
+
 import { DatePicker, FormField, RadioGroup, TimeInput, TimeInputProps } from '~components';
 import Calendar, { CalendarProps } from '~components/calendar';
 import DateInput from '~components/date-input';
-import { ExtendedOperatorFormProps } from '~components/property-filter/interfaces';
 
 import styles from './custom-forms.scss';
 
-export function YesNoForm({ value, onChange }: ExtendedOperatorFormProps<boolean>) {
+export function YesNoForm({ value, onChange }: PropertyFilterOperatorFormProps<boolean>) {
   return (
     <FormField>
       <RadioGroup
@@ -38,7 +39,7 @@ export function DateTimeForm({
   value,
   onChange,
   legacy,
-}: ExtendedOperatorFormProps<string> & { legacy?: boolean }) {
+}: PropertyFilterOperatorFormProps<string> & { legacy?: boolean }) {
   // Using the most reasonable default time per operator.
   const defaultTime = operator === '<' || operator === '>=' ? undefined : '23:59:59';
   const [{ dateValue, timeValue }, setState] = useState(parseValue(value ?? '', defaultTime));
@@ -116,11 +117,11 @@ export function DateTimeForm({
   );
 }
 
-export function DateTimeFormLegacy(props: ExtendedOperatorFormProps<string>) {
+export function DateTimeFormLegacy(props: PropertyFilterOperatorFormProps<string>) {
   return <DateTimeForm {...props} legacy={true} />;
 }
 
-export function DateForm({ filter, value, onChange }: ExtendedOperatorFormProps<string>) {
+export function DateForm({ filter, value, onChange }: PropertyFilterOperatorFormProps<string>) {
   const [{ dateValue }, setState] = useState(parseValue(value ?? ''));
 
   const onChangeDate = (dateValue: string) => {

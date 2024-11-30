@@ -17,7 +17,7 @@ import { DateRangePickerProps } from '../interfaces';
 
 import styles from './styles.css.js';
 
-export interface RelativeRangePickerProps {
+interface RelativeRangePickerProps {
   dateOnly: boolean;
   options: ReadonlyArray<DateRangePickerProps.RelativeOption>;
   initialSelection: DateRangePickerProps.RelativeValue | null;

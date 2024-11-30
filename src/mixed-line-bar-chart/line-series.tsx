@@ -7,7 +7,7 @@ import { ChartScale, NumericChartScale } from '../internal/components/cartesian-
 import { MixedLineBarChartProps } from './interfaces';
 import { isXThreshold, isYThreshold } from './utils';
 
-export interface LineSeriesProps<T> {
+interface LineSeriesProps<T> {
   axis: 'x' | 'y';
   series: MixedLineBarChartProps.LineDataSeries<T> | MixedLineBarChartProps.ThresholdSeries<T>;
 

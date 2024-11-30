@@ -89,11 +89,11 @@ const ItemElement = ({
   );
 };
 
-export type InternalItemProps = ButtonDropdownProps.Item & {
+type InternalItemProps = ButtonDropdownProps.Item & {
   badge?: boolean;
 };
 
-export type InternalCheckboxItemProps = ButtonDropdownProps.CheckboxItem & {
+type InternalCheckboxItemProps = ButtonDropdownProps.CheckboxItem & {
   badge?: boolean;
 };
 

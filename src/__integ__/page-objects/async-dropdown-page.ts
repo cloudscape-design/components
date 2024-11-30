@@ -25,7 +25,7 @@ declare const window: ExtendedWindow;
 export const DEBOUNCE_FILTERING_DELAY = 300;
 export const RESPONSE_PAGE_SIZE = 20;
 
-export class AsyncDropdownPage extends BasePageObject {
+class AsyncDropdownPage extends BasePageObject {
   constructor(
     browser: ConstructorParameters<typeof BasePageObject>[0],
     protected optionsContainerSelector: string,

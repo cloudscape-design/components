@@ -12,7 +12,7 @@ import { getKeyValue, matchesX, StackedBarValues } from './utils';
 
 import styles from './styles.css.js';
 
-export interface BarSeriesProps<T> {
+interface BarSeriesProps<T> {
   axis: 'x' | 'y';
 
   series: MixedLineBarChartProps.BarDataSeries<T>;

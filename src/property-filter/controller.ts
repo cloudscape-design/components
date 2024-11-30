@@ -164,7 +164,7 @@ interface OptionGroup<T> {
   options: T[];
 }
 
-export const getAllValueSuggestions = (
+const getAllValueSuggestions = (
   filteringOptions: readonly InternalFilteringOption[],
   operator: ComparisonOperator | undefined = '=',
   i18nStrings: I18nStringsController,

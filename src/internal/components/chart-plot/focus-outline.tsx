@@ -8,7 +8,7 @@ import { Offset } from '../interfaces';
 
 import styles from './styles.css.js';
 
-export interface FocusOutlineProps {
+interface FocusOutlineProps {
   elementKey?: null | string | number | boolean;
   elementRef?: React.RefObject<SVGSVGElement | SVGGElement>;
   offset?: Offset;

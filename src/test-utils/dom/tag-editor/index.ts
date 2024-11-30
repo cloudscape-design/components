@@ -8,7 +8,7 @@ import LinkWrapper from '../link';
 import attributeEditorStyles from '../../../attribute-editor/styles.selectors.js';
 import styles from '../../../tag-editor/styles.selectors.js';
 
-export class TagEditorRowWrapper extends AttributeEditorRowWrapper {
+class TagEditorRowWrapper extends AttributeEditorRowWrapper {
   findUndoButton(): LinkWrapper | null {
     return this.findComponent(`.${styles['undo-button']}`, LinkWrapper);
   }

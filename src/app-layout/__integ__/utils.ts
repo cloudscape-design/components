@@ -8,11 +8,9 @@ import { viewports } from './constants';
 
 export const testIf = (condition: boolean) => (condition ? test : test.skip);
 
-export const testOnlyIf = (condition: boolean) => (condition ? test.only : test.skip);
-
 export type Theme = 'classic' | 'refresh' | 'refresh-toolbar';
 
-export interface SetupTestOptions {
+interface SetupTestOptions {
   splitPanelPosition?: string;
   size?: 'desktop' | 'mobile';
   disableContentPaddings?: string;

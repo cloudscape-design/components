@@ -29,7 +29,7 @@ export namespace FileTokenProps {
   }
 }
 
-export interface FileTokenProps extends BaseComponentProps {
+interface FileTokenProps extends BaseComponentProps {
   file: File;
   onDismiss: () => void;
   showFileSize?: boolean;

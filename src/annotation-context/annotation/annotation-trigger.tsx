@@ -7,7 +7,7 @@ import { AnnotationIcon } from './annotation-icon';
 
 import styles from './styles.css.js';
 
-export interface AnnotationTriggerProps {
+interface AnnotationTriggerProps {
   open: boolean;
 
   onClick: () => void;
