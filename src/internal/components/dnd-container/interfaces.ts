@@ -11,4 +11,6 @@ export interface ReorderAnnouncements {
   liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
   liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
   liveAnnouncementDndDiscarded?: string;
+  dragHandleAriaLabel?: string;
+  dragHandleAriaDescription?: string;
 }
