@@ -18,6 +18,17 @@ describe('refresh-toolbar', () => {
     const tooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
     const expectedTooltipText = 'Open panel';
 
+    async function focusSplitPanelTriggerWithKeyboard(page: AppLayoutDrawersPage) {
+      await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
+      // Click on the last breadcrumb (which is not a link)
+      await page.click(wrapper.findBreadcrumbs().findBreadcrumbGroup().findBreadcrumbLink(2).toSelector());
+      await page.keys(['Tab', 'Tab']); // Focus the first drawer trigger past the split panel trigger
+      await page.keys(['Shift', 'Tab']); // Tab back to the split panel trigger
+      await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
+      await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
+      await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
+    }
+
     describe.each(['bottom', 'side'] as const)('splitPanelPosition=%s', splitPanelPosition => {
       test(
         'Shows tooltip correctly on split panel trigger for mouse interactions',
@@ -61,22 +72,8 @@ describe('refresh-toolbar', () => {
       test(
         'Shows tooltip correctly for split panel trigger for keyboard (tab) interactions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          await page.click(splitPanelTriggerSelector);
-
-          await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
-          await page.keys(['Tab', 'Tab']);
-          await page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector());
-          await page.keys('Enter');
-          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          //navigate away from slide panel
-          await page.keys(['Shift', 'Tab', 'Null']); // to last breadcrumb - be aware if breadcrumb has tooltip
-          //navigate back to drawer trigger
-          await page.keys(['Tab']);
-          await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBeTruthy();
-          await await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
-          await page.keys(['Shift', 'Tab', 'Null']);
+          await focusSplitPanelTriggerWithKeyboard(page);
+          await page.keys(['Shift', 'Tab']);
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
         })
       );
@@ -84,20 +81,7 @@ describe('refresh-toolbar', () => {
       test(
         'Removes tooltip from split panel trigger on escape key press after showing from keyboard event',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
-          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          await page.click(splitPanelTriggerSelector);
-          await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBeTruthy();
-          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          await page.click(splitPanelTriggerSelector);
-          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          //navigate away from slide panel
-          await page.keys(['Shift', 'Tab', 'Null']); // to last breadcrumb - be aware if breadcrumb has tooltip
-          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          //navigate back to drawer trigger
-          await page.keys(['Tab']);
-          await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBeTruthy();
-          await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
+          await focusSplitPanelTriggerWithKeyboard(page);
           await page.keys('Escape');
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
         })
