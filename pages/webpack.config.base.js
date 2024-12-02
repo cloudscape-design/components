@@ -47,6 +47,12 @@ module.exports = ({
     module: {
       rules: [
         {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+        {
           test: /\.tsx?$/,
           loader: 'ts-loader',
           include: path.resolve(__dirname),
