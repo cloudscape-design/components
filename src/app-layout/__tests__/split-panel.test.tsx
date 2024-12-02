@@ -135,7 +135,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       );
       wrapper.findSplitPanelOpenButton()!.click();
       wrapper.findSplitPanel()!.findCloseButton()!.click();
-      expect(wrapper.findSplitPanel()!.findOpenButton()!.getElement()).toHaveFocus();
+      expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
     });
 
     test(`Moves focus to the slider when focusSplitPanel() is called`, () => {
