@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from '../../app-layout/__integ__/constants';
 
 import styles from '../../../lib/components/container/styles.selectors.js';
@@ -23,12 +23,12 @@ class ContainerStickyPage extends BasePageObject {
 }
 
 function setupTest(
-  { viewport = viewports.desktop, search = '', visualRefresh = true },
+  { isMobile = false, search = '', visualRefresh = true },
   testFn: (page: ContainerStickyPage) => Promise<void>
 ) {
   return useBrowser(async browser => {
     const page = new ContainerStickyPage(browser);
-    await page.setWindowSize(viewport);
+    await page.setWindowSize(isMobile ? viewports.mobile : viewports.desktop);
     await browser.url(`#/light/container/sticky-permutations?visualRefresh=${visualRefresh}&${search}`);
     await page.waitForVisible(tableWrapper.findBodyCell(1, 1).toSelector());
     await testFn(page);
@@ -53,7 +53,7 @@ test(
 
 test(
   'Header cover is not displayed in mobile',
-  setupTest({ viewport: viewports.mobile }, async page => {
+  setupTest({ isMobile: true }, async page => {
     await page.windowScrollTo({ top: 300 });
     expect(page.hasHeaderCover()).resolves.toBe(false);
   })
