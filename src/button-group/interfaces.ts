@@ -138,7 +138,7 @@ export namespace ButtonGroupProps {
   }
 
   export interface IconFileInput {
-    type: 'file-input';
+    type: 'icon-file-input';
     id: string;
     text: string;
     accept?: string;

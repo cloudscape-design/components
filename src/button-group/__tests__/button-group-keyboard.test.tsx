@@ -35,7 +35,7 @@ const items: ButtonGroupProps.ItemOrGroup[] = [
     ],
   },
   { type: 'icon-button', id: 'copy', iconName: 'copy', text: 'Copy', popoverFeedback: 'Copied' },
-  { type: 'file-input', id: 'file', text: 'Choose files' },
+  { type: 'icon-file-input', id: 'file', text: 'Choose files' },
   {
     type: 'menu-dropdown',
     id: 'misc',

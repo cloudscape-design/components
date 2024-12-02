@@ -146,7 +146,7 @@ test('handles file upload', () => {
   const onFilesChange = jest.fn();
 
   const { wrapper } = renderButtonGroup({
-    items: [{ type: 'file-input', id: 'file', text: 'Choose files' }],
+    items: [{ type: 'icon-file-input', id: 'file', text: 'Choose files' }],
     onFilesChange,
   });
 

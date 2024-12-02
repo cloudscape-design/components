@@ -131,7 +131,7 @@ const ItemElement = forwardRef(
             showFeedback={!!tooltip?.feedback}
           />
         )}
-        {item.type === 'file-input' && (
+        {item.type === 'icon-file-input' && (
           <FileInputItem
             ref={buttonRef}
             item={item}

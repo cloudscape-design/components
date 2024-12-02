@@ -174,7 +174,7 @@ export default function PromptInputPage() {
                           onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
                           items={[
                             {
-                              type: 'file-input',
+                              type: 'icon-file-input',
                               id: 'files',
                               text: 'Upload files',
                               multiple: true,
