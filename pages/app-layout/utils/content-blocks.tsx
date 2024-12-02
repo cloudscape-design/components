@@ -209,7 +209,7 @@ export function CustomDrawerContent() {
             ];
             setContent(newContent);
             setTimeout(() => {
-              document.getElementById(id + '')?.scrollIntoView();
+              document.getElementById(id + '')?.scrollIntoView({ block: 'end' });
             }, 500);
           }}
         >

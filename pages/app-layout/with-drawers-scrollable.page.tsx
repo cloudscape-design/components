@@ -1,15 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
-import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import {
   AppLayout,
   Button,
   ContentLayout,
-  Drawer,
   Header,
-  HelpPanel,
   SideNavigation,
   SpaceBetween,
   SplitPanel,
@@ -45,70 +42,13 @@ const getAriaLabels = (title: string) => {
   };
 };
 
-awsuiPlugins.appLayout.registerDrawer({
-  id: 'circle1-global',
-  type: 'global',
-  ariaLabels: getAriaLabels('global drawer 1'),
-  defaultActive: true,
-  resizable: true,
-  defaultSize: 320,
-  trigger: {
-    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
-      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
-      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
-    </svg>`,
-  },
-  mountContent: container => {
-    ReactDOM.render(<CustomDrawerContent />, container);
-  },
-  unmountContent: container => unmountComponentAtNode(container),
-});
-awsuiPlugins.appLayout.registerDrawer({
-  id: 'global-with-stored-state',
-  type: 'global',
-  defaultActive: false,
-  resizable: true,
-  defaultSize: 320,
-
-  ariaLabels: getAriaLabels('global drawer 2'),
-
-  mountContent: container => {
-    ReactDOM.render(
-      <Drawer header="Global drawer">
-        <ScrollableDrawerContent contentType="text" />
-      </Drawer>,
-      container
-    );
-  },
-  unmountContent: container => unmountComponentAtNode(container),
-});
-
-awsuiPlugins.appLayout.registerDrawer({
-  id: 'security',
-  ariaLabels: getAriaLabels('runtime drawer'),
-  resizable: true,
-  defaultSize: 320,
-  trigger: {
-    iconSvg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
-      <rect x="2" y="7" width="12" height="7" fill="none" stroke="currentColor" stroke-width="2" />
-      <path d="M4,7V5a4,4,0,0,1,8,0V7" fill="none" stroke="currentColor" stroke-width="2" />
-    </svg>`,
-  },
-  mountContent: container => {
-    ReactDOM.render(
-      <Drawer>
-        <>
-          <p>This is a headerless drawer in a runtime local drawer.</p>
-          <ScrollableDrawerContent />
-        </>
-      </Drawer>,
-      container
-    );
-  },
-  unmountContent: container => unmountComponentAtNode(container),
-});
-
 export default function WithDrawersScrollable() {
+  window.addEventListener('scroll', () => {
+    console.log('Page scrolled!', {
+      scrollY: window.scrollY,
+      scrollX: window.scrollX,
+    });
+  });
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>('settings');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const sideNavFill = urlParams.sideNavFill ?? false;
@@ -150,29 +90,6 @@ export default function WithDrawersScrollable() {
         content: <CustomDrawerContent />,
         trigger: {
           iconName: 'contact',
-        },
-      },
-      {
-        id: 'settings',
-        ariaLabels: getAriaLabels('fill content'),
-        content: <ContentFill />,
-        trigger: {
-          iconName: 'settings',
-        },
-      },
-      {
-        id: 'help',
-        ariaLabels: getAriaLabels('headerless help'),
-        content: (
-          <HelpPanel>
-            <>
-              <p>This is a headerless help panel in a local drawer.</p>
-              <ScrollableDrawerContent contentType="image" />
-            </>
-          </HelpPanel>
-        ),
-        trigger: {
-          iconName: 'status-info',
         },
       },
     ],
