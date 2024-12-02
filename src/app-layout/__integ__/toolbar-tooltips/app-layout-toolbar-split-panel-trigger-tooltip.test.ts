@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import testutilStyles from '../../../../lib/components/app-layout/test-classes/styles.selectors';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import { AppLayoutDrawersPage, setupTest } from '../utils';
+
+import testutilStyles from '../../../../lib/components/app-layout/test-classes/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
 
