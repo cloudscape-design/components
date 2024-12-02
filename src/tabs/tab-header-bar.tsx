@@ -127,7 +127,7 @@ export function TabHeaderBar({
       return;
     }
     const activeTabRef = tabRefs.current.get(activeTabId);
-    activeTabRef?.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', inline: 'center' });
+    activeTabRef?.scrollIntoView?.({ behavior: smooth ? 'smooth' : 'auto', inline: 'center' });
   };
 
   useEffect(() => {
