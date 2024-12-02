@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/core';
 import { hasSortableData } from '@dnd-kit/sortable';
 
-import { CollectionPreferencesProps } from '../interfaces';
+import { ReorderOptions } from './interfaces';
 import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {
@@ -44,11 +44,7 @@ enum KeyboardCode {
 // getClosestId function which takes its value from the current component
 // state, to make sure they are always in sync.
 
-export default function useDragAndDropReorder({
-  sortedOptions,
-}: {
-  sortedOptions: ReadonlyArray<CollectionPreferencesProps.VisibleContentOption>;
-}) {
+export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: ReorderOptions<Option>) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
   const [activeItemId, setActiveItemId] = useState<UniqueIdentifier | null>(null);
@@ -63,7 +59,8 @@ export default function useDragAndDropReorder({
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (isKeyboard.current && activeItemId) {
-      const currentTargetIndex = sortedOptions.findIndex(({ id }) => id === activeItemId) + positionDelta.current;
+      const currentTargetIndex =
+        sortedOptions.findIndex(option => getId(option) === activeItemId) + positionDelta.current;
       if (event.key === 'ArrowDown' && currentTargetIndex < sortedOptions.length - 1) {
         positionDelta.current += 1;
       } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
@@ -80,9 +77,9 @@ export default function useDragAndDropReorder({
     if (positionDelta.current === 0) {
       return active.id;
     }
-    const currentIndex = sortedOptions.findIndex(({ id }) => id === active.id);
+    const currentIndex = sortedOptions.findIndex(option => getId(option) === active.id);
     const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
-    return sortedOptions[newIndex].id;
+    return getId(sortedOptions[newIndex]);
   };
 
   const collisionDetection: CollisionDetection = ({

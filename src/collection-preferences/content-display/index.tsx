@@ -7,6 +7,8 @@ import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-ki
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
+import useDragAndDropReorder from '../../internal/components/dnd-container/use-drag-and-drop-reorder';
+import useLiveAnnouncements from '../../internal/components/dnd-container/use-live-announcements';
 import Portal from '../../internal/components/portal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalSpaceBetween from '../../space-between/internal';
@@ -15,8 +17,6 @@ import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
 import ContentDisplayOption from './content-display-option';
 import DraggableOption from './draggable-option';
-import useDragAndDropReorder from './use-drag-and-drop-reorder';
-import useLiveAnnouncements from './use-live-announcements';
 import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
 
 import styles from '../styles.css.js';
@@ -29,6 +29,8 @@ interface ContentDisplayPreferenceProps extends CollectionPreferencesProps.Conte
   onChange: (value: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>) => void;
   value?: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
 }
+
+const getId = (option: CollectionPreferencesProps.ContentDisplayOption) => option.id;
 
 export default function ContentDisplayPreference({
   title,
@@ -69,6 +71,7 @@ export default function ContentDisplayPreference({
 
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions: sortedAndFilteredOptions,
+    getId,
   });
 
   const activeOption = activeItem ? sortedAndFilteredOptions.find(({ id }) => id === activeItem) : null;
@@ -97,6 +100,7 @@ export default function ContentDisplayPreference({
       liveAnnouncementDndDiscarded
     ),
     sortedOptions: sortedAndFilteredOptions,
+    getId,
   });
 
   const renderedDragHandleAriaDescription = i18n(
