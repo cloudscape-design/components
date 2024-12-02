@@ -34,7 +34,7 @@ const setupTest = (
   });
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
-  describe('behavior according to presence of scrollbar', () => {
+  describe('Split panel forced position', () => {
     // Viewport width which makes the split panel switch to the bottom
     const splitPanelBreakpoints = {
       classic: 979,
@@ -50,7 +50,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       { scrollbarDisplayCondition: string; scrollbarWhenOnSide: boolean; scrollbarWhenOnBottom: boolean },
     ][] = [
       [
-        'page-level scrollbar never appears',
+        'without page-level scrollbar',
         {
           scrollbarDisplayCondition: 'never',
           scrollbarWhenOnSide: false,
@@ -58,7 +58,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         },
       ],
       [
-        'page-level scrollbar always appears',
+        'with page-level scrollbar',
         {
           scrollbarDisplayCondition: 'always',
           scrollbarWhenOnSide: true,
@@ -66,7 +66,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         },
       ],
       [
-        'page-level scrollbar appears only when split panel is at the bottom',
+        'with page-level scrollbar appearing only when split panel is at the bottom',
         {
           scrollbarDisplayCondition: 'bottom',
           scrollbarWhenOnSide: false,
@@ -74,7 +74,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         },
       ],
       [
-        'page-level scrollbar appears only when split panel is on the side',
+        'with page-level scrollbar appearing only when split panel is on the side',
         {
           scrollbarDisplayCondition: 'side',
           scrollbarWhenOnSide: true,
