@@ -56,3 +56,28 @@ export function renderTimeLabel(locale: string, date: Date, format?: DateRangePi
   const value = date.toLocaleTimeString(locale, options);
   return value;
 }
+
+interface RenderDateAnnouncementProps {
+  date: Date;
+  isCurrent: boolean;
+  locale: string;
+  granularity?: DateRangePickerProps['granularity'];
+  currentLabel?: string;
+}
+
+export function renderDateAnnouncement({
+  date,
+  isCurrent,
+  locale,
+  granularity = 'day',
+  currentLabel,
+}: RenderDateAnnouncementProps): string {
+  const formattedDate =
+    granularity === 'month' ? renderMonthAndYear(locale, date) : getDateLabel(locale, date, 'short');
+
+  if (isCurrent && currentLabel) {
+    return `${formattedDate}. ${currentLabel}`;
+  }
+
+  return formattedDate;
+}

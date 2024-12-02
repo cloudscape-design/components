@@ -42,7 +42,6 @@ export function moveMonth(startDate: Date, isDateFocusable: CalendarProps.IsDate
       return startDate;
     }
     current = addMonths(current, step);
-    console.log({ current });
   }
 
   return current;

@@ -26,7 +26,11 @@ import { normalizeLocale } from '../../../internal/utils/locale';
 import { DateRangePickerProps } from '../../interfaces';
 import { GridCell } from './grid-cell';
 import { GridProps } from './interfaces';
-import { getDateLabel, renderDayName } from './intl';
+import {
+  renderDateAnnouncement,
+  // getDateLabel,   //todo confirm this is not needed anymore
+  renderDayName,
+} from './intl';
 
 import styles from './styles.css.js';
 
@@ -64,6 +68,7 @@ export function Grid({
 
   locale,
   todayAriaLabel,
+  currentMonthAriaLabel,
   ariaLabelledby,
   className,
   startOfWeek = 0,
@@ -76,14 +81,15 @@ export function Grid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseDateTime, startOfWeek]
   );
+  const isMonthPicker = granularity === 'month';
   const weekdays = weeks[0].map(date => date.getDay());
   const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? null);
   const quarters = useCalendarGridRows({ baseDate, granularity: 'month', locale: normalizedLocale });
-  const rows = granularity === 'day' ? weeks : quarters;
+  const rows = isMonthPicker ? quarters : weeks;
 
   return (
     <table role="grid" aria-labelledby={ariaLabelledby} className={clsx(styles.grid, className)}>
-      {granularity === 'day' && (
+      {!isMonthPicker && (
         <thead>
           <tr>
             {weekdays.map(dayIndex => (
@@ -98,15 +104,16 @@ export function Grid({
       <tbody onKeyDown={onGridKeyDownHandler}>
         {rows.map((row, rowIndex) => {
           return (
-            <tr key={rowIndex} className={granularity === 'day' ? styles.week : styles.quarter}>
+            <tr key={rowIndex} className={isMonthPicker ? styles.quarter : styles.week}>
               {row.map((date, rowItemIndex) => {
-                const itemKey =
-                  granularity === 'day' ? `${rowIndex}:${rowItemIndex}` : `Month ${rowIndex * 3 + rowItemIndex + 1}`;
-                const isSameItem = granularity === 'day' ? isSameDay : isSameMonth;
-                const isSamePage = granularity === 'day' ? isSameMonth : isSameYear;
-                const addItems = granularity === 'day' ? addDays : addMonths;
-                const addRows = granularity === 'day' ? addWeeks : addQuarters;
-                const pageName = granularity === 'day' ? 'month' : 'year';
+                const itemKey = isMonthPicker
+                  ? `Month ${rowIndex * 3 + rowItemIndex + 1}`
+                  : `${rowIndex}:${rowItemIndex}`;
+                const isSameItem = isMonthPicker ? isSameMonth : isSameDay;
+                const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+                const addItems = isMonthPicker ? addMonths : addDays;
+                const addRows = isMonthPicker ? addQuarters : addWeeks;
+                const pageName = isMonthPicker ? 'year' : 'month';
                 const isStartDate = !!selectedStartDate && isSameItem(date, selectedStartDate);
                 const isEndDate = !!selectedEndDate && isSameItem(date, selectedEndDate);
                 const isSelected = isStartDate || isEndDate;
@@ -135,8 +142,8 @@ export function Grid({
                 const isFocusable = isFocused && (isEnabled || isDisabledWithReason);
 
                 const baseClasses = {
-                  [styles.day]: granularity === 'day',
-                  [styles.month]: granularity === 'month',
+                  [styles.day]: !isMonthPicker,
+                  [styles.month]: isMonthPicker,
                   [styles['grid-cell']]: true,
                   [styles['in-first-row']]: rowIndex === 0,
                   [styles['in-first-column']]: rowItemIndex === 0,
@@ -150,8 +157,8 @@ export function Grid({
                       className={clsx(baseClasses, {
                         [styles[`in-previous-${pageName}`]]: isBefore(date, baseDate),
                         [styles[`in-next-${pageName}`]]: isAfter(date, baseDate),
-                        [styles[`last-day-of-month`]]: granularity === 'day' && isLastDayOfMonth(date),
-                        [styles[`last-month-of-year`]]: granularity === 'month' && date.getMonth() === 12,
+                        [styles[`last-day-of-month`]]: !isMonthPicker && isLastDayOfMonth(date),
+                        [styles[`last-month-of-year`]]: isMonthPicker && date.getMonth() === 12,
                       })}
                     />
                   );
@@ -163,23 +170,28 @@ export function Grid({
                   handlers.onFocus = () => onFocusedDateChange(date);
                 }
 
+                const isCurrent = isMonthPicker ? isThisMonth(date) : isToday(date);
+                // Screen-reader announcement for the focused day/month.
+                let announcement = renderDateAnnouncement({
+                  date,
+                  isCurrent,
+                  locale,
+                  granularity,
+                });
+
+                if (isMonthPicker && isThisMonth(date) && !!currentMonthAriaLabel) {
+                  announcement += '. ' + currentMonthAriaLabel;
+                } else if (!isMonthPicker && isToday(date) && !!todayAriaLabel) {
+                  announcement += '. ' + todayAriaLabel;
+                }
+
                 // Can't be focused.
                 let tabIndex = undefined;
-                if (isFocusable && (isEnabled || isDisabledWithReason)) {
-                  // Next focus target.
-                  tabIndex = 0;
-                } else if (isEnabled || isDisabledWithReason) {
-                  // Can be focused programmatically.
-                  tabIndex = -1;
+                if (isEnabled || isDisabledWithReason) {
+                  tabIndex = isFocusable
+                    ? 0 // Next focus target.
+                    : -1; // Can be focused programmatically.
                 }
-
-                // Screen-reader announcement for the focused day.
-                let dayAnnouncement = getDateLabel(locale, date, 'short');
-                if (isToday(date)) {
-                  dayAnnouncement += '. ' + todayAriaLabel;
-                }
-
-                const isCurrent = granularity === 'month' ? isThisMonth(date) : isToday(date);
 
                 const hasTopBorder = (
                   granularity: DateRangePickerProps['granularity'],
@@ -237,8 +249,8 @@ export function Grid({
                         row.length,
                         isRangeEndDate
                       ),
-                      [styles.today]: granularity === 'day' && isToday(date),
-                      [styles['this-month']]: granularity === 'month' && isThisMonth(date),
+                      [styles.today]: !isMonthPicker && isToday(date),
+                      [styles['this-month']]: isMonthPicker && isThisMonth(date),
                     })}
                     aria-selected={isEnabled ? isSelected || dateIsInRange : undefined}
                     aria-current={isCurrent ? 'date' : undefined}
@@ -249,9 +261,9 @@ export function Grid({
                     {...handlers}
                   >
                     <span className={styles[`${granularity}-inner`]} aria-hidden="true">
-                      {granularity === 'month' ? date.toLocaleString(locale, { month: 'short' }) : date.getDate()}
+                      {isMonthPicker ? date.toLocaleString(locale, { month: 'short' }) : date.getDate()}
                     </span>
-                    <ScreenreaderOnly>{dayAnnouncement}</ScreenreaderOnly>
+                    <ScreenreaderOnly>{announcement}</ScreenreaderOnly>
                   </GridCell>
                 );
               })}

@@ -166,7 +166,7 @@ export const Grids = ({
 
   const rangeStartDate = min(rangeEnds);
   const rangeEndDate = max(rangeEnds);
-  const pageUnit = granularity === 'day' ? 'month' : 'year';
+  const pageUnit = isMonthPicker ? 'year' : 'month';
 
   const sharedGridProps = {
     selectedEndDate,

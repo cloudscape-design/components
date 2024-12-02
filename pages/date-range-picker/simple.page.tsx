@@ -20,6 +20,7 @@ export default function DatePickerScenario() {
   const [dateOnly, setDateOnly] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const [warning, setWarning] = useState(false);
+  const [monthOnly, setMonthOnly] = useState(false);
   const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
@@ -43,6 +44,9 @@ export default function DatePickerScenario() {
           <Checkbox checked={dateOnly} onChange={event => setDateOnly(event.detail.checked)}>
             Date-only
           </Checkbox>
+          <Checkbox checked={monthOnly} onChange={event => setMonthOnly(event.detail.checked)}>
+            Month-only
+          </Checkbox>
           <Checkbox checked={invalid} onChange={event => setInvalid(event.detail.checked)}>
             Invalid
           </Checkbox>
@@ -60,6 +64,7 @@ export default function DatePickerScenario() {
             onChange={e => setValue(e.detail.value)}
             relativeOptions={showRelativeOptions ? relativeOptions : []}
             isValidRange={isValid}
+            granularity={monthOnly ? 'month' : 'day'}
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}

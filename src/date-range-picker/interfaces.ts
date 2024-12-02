@@ -120,10 +120,10 @@ export interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
-  /**
-   * Specifies the granularity at which users will be able to select a date range.
-   * Defaults to `day`.
-   **/
+  // /**
+  //  * Specifies the granularity at which users will be able to select a date range.
+  //  * Defaults to `day`.
+  //  **/
   granularity?: Granularity;
 }
 export interface DateRangePickerProps

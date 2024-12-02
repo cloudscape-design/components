@@ -14,7 +14,7 @@ import styles from '../../styles.css.js';
 interface CalendarHeaderProps {
   baseDate: Date;
   locale: string;
-  onChangePage: (date: Date) => void;
+  onChangePage: (n: number) => void;
   previousPageLabel?: string;
   nextPageLabel?: string;
   isSingleGrid: boolean;
@@ -33,39 +33,34 @@ export default function CalendarHeader({
   granularity = 'day',
 }: CalendarHeaderProps) {
   const i18n = useInternalI18n('calendar');
-  const renderLabel = granularity === 'day' ? renderMonthAndYear : renderYear;
-  const prevPageLabel = renderLabel(locale, add(baseDate, granularity === 'day' ? { months: -1 } : { years: -1 }));
+  const isMonthPicker = granularity === 'month';
+  const renderLabel = isMonthPicker ? renderYear : renderMonthAndYear;
+  const prevPageLabel = renderLabel(locale, add(baseDate, granularity === 'month' ? { years: -1 } : { months: -1 }));
   const currentPageLabel = renderLabel(locale, baseDate);
-  const pageUnit = granularity === 'day' ? 'month' : 'year';
+  const pageUnit = isMonthPicker ? 'year' : 'month';
 
-  //todo make this work each calendar has its own
   return (
     <>
       <div className={styles['calendar-header']}>
         <PrevPageButton
           ariaLabel={i18n(
-            granularity === 'day' ? 'previousMonthAriaLabel' : 'i18nStrings.previousYearAriaLabel',
+            isMonthPicker ? 'i18nStrings.previousYearAriaLabel' : 'previousMonthAriaLabel',
             previousPageLabel
           )}
-          baseDate={baseDate}
           onChangePage={onChangePage}
         />
-        <h2 className={styles['calendar-header-months-wrapper']}>
+        <h2 className={styles['calendar-header-pages-wrapper']}>
           {!isSingleGrid && (
-            <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-prev${pageUnit}`}>
+            <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-prev${pageUnit}`}>
               {prevPageLabel}
             </span>
           )}
-          <span className={styles['calendar-header-month']} id={`${headingIdPrefix}-current${pageUnit}`}>
+          <span className={styles['calendar-header-page']} id={`${headingIdPrefix}-current${pageUnit}`}>
             {currentPageLabel}
           </span>
         </h2>
         <NextPageButton
-          ariaLabel={i18n(
-            granularity === 'day' ? 'nextMonthAriaLabel' : 'i18nStrings.nextYearAriaLabel',
-            nextPageLabel
-          )}
-          baseDate={baseDate}
+          ariaLabel={i18n(isMonthPicker ? 'i18nStrings.nextYearAriaLabel' : 'nextMonthAriaLabel', nextPageLabel)}
           onChangePage={onChangePage}
         />
       </div>

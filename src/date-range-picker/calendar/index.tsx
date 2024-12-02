@@ -16,9 +16,9 @@ import {
   startOfYear,
 } from 'date-fns';
 
-import { CalendarProps } from '../../calendar/interfaces';
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
 import { getBaseDay } from '../../calendar/utils/navigation-day';
+import { getBaseMonth } from '../../calendar/utils/navigation-month';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
@@ -28,11 +28,11 @@ import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/loca
 import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
-import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
+import { DateRangePickerProps, Granularity, RangeCalendarI18nStrings } from '../interfaces';
 import { Grids } from './grids';
 import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
-import { findDateToFocus, findMonthToDisplay, findYearToDisplay } from './utils';
+import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -47,7 +47,7 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  granularity?: CalendarProps.Granularity;
+  granularity?: Granularity;
 }
 
 export default function DateRangePickerCalendar({
@@ -64,15 +64,17 @@ export default function DateRangePickerCalendar({
   granularity = 'day',
 }: DateRangePickerCalendarProps) {
   const isSingleGrid = useMobile();
+  const isMonthPicker = granularity === 'month';
   const normalizedLocale = normalizeLocale('DateRangePicker', locale);
   const normalizedStartOfWeek = normalizeStartOfWeek(startOfWeek, normalizedLocale);
   const i18n = useInternalI18n('date-range-picker');
 
   const [announcement, setAnnouncement] = useState('');
-  const findPageToDisplay = granularity === 'month' ? findYearToDisplay : findMonthToDisplay;
-  const isSamePage = granularity === 'month' ? isSameYear : isSameMonth;
-  const addPage = granularity === 'month' ? addYears : addMonths;
-  const startOfPage = granularity === 'month' ? startOfYear : startOfMonth;
+  const findPageToDisplay = isMonthPicker ? findYearToDisplay : findMonthToDisplay;
+  const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
+  const addPage = isMonthPicker ? addYears : addMonths;
+  const startOfPage = isMonthPicker ? startOfYear : startOfMonth;
+  const findItemToFocus = isMonthPicker ? findMonthToFocus : findDateToFocus;
   const [currentPage, setCurrentPage] = useState(() => findPageToDisplay(value, isSingleGrid));
   const [focusedDate, setFocusedDate] = useState<Date | null>(() => {
     if (value.start.date) {
@@ -84,7 +86,7 @@ export default function DateRangePickerCalendar({
         return startDate;
       }
     }
-    return findDateToFocus(parseDate(value.start.date), currentPage, isDateEnabled);
+    return findItemToFocus(parseDate(value.start.date), currentPage, isDateEnabled);
   });
 
   const updateCurrentPage = (startDate: string) => {
@@ -206,11 +208,12 @@ export default function DateRangePickerCalendar({
     setAnnouncement(announcement);
   };
 
-  const onHeaderChangePageHandler = (newCurrentPage: Date) => {
-    setCurrentPage(newCurrentPage);
-
-    const newBaseDatePage = isSingleGrid ? newCurrentPage : addPage(newCurrentPage, -1);
-    const newBaseDate = getBaseDay(newBaseDatePage, isDateEnabled);
+  const onHeaderChangePageHandler = (amount: number) => {
+    const addPageFn = isMonthPicker ? addYears : addMonths;
+    const getBaseFn = isMonthPicker ? getBaseMonth : getBaseDay;
+    const newBasePage = addPageFn(currentPage, amount);
+    setCurrentPage(newBasePage);
+    const newBaseDate = getBaseFn(newBasePage, isDateEnabled);
     setFocusedDate(newBaseDate);
   };
 
@@ -251,9 +254,9 @@ export default function DateRangePickerCalendar({
               locale={normalizedLocale}
               onChangePage={onHeaderChangePageHandler}
               previousPageLabel={
-                granularity === 'day' ? i18nStrings?.previousMonthAriaLabel : i18nStrings?.previousYearAriaLabel
+                isMonthPicker ? i18nStrings?.previousYearAriaLabel : i18nStrings?.previousMonthAriaLabel
               }
-              nextPageLabel={granularity === 'day' ? i18nStrings?.nextMonthAriaLabel : i18nStrings?.nextYearAriaLabel}
+              nextPageLabel={isMonthPicker ? i18nStrings?.nextYearAriaLabel : i18nStrings?.nextMonthAriaLabel}
               isSingleGrid={isSingleGrid}
               headingIdPrefix={headingIdPrefix}
             />

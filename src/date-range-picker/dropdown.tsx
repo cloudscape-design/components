@@ -8,13 +8,12 @@ import InternalAlert from '../alert/internal';
 import InternalBox from '../box/internal';
 import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
-import { CalendarProps } from '../calendar/interfaces';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
-import { DateRangePickerProps } from './interfaces';
+import { DateRangePickerProps, Granularity } from './interfaces';
 import ModeSwitcher from './mode-switcher';
 import RelativeRangePicker from './relative-range';
 import { normalizeTimeOffset } from './time-offset';
@@ -53,7 +52,7 @@ export interface DateRangePickerDropdownProps
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  granularity?: CalendarProps.Granularity;
+  granularity?: Granularity;
 }
 
 export function DateRangePickerDropdown({
@@ -196,7 +195,6 @@ export function DateRangePickerDropdown({
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
-                      //todo confirm
                       granularity={granularity}
                     />
                   )}
@@ -210,7 +208,6 @@ export function DateRangePickerDropdown({
                       onChange={range => setSelectedRelativeRange(range)}
                       i18nStrings={i18nStrings}
                       customUnits={customRelativeRangeUnits}
-                      //todo confirm
                       granularity={granularity}
                     />
                   )}

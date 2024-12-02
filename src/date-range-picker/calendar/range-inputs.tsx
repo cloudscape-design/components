@@ -3,14 +3,13 @@
 
 import React from 'react';
 
-import { CalendarProps } from '../../calendar/interfaces';
 import InternalDateInput from '../../date-input/internal';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { RangeCalendarI18nStrings } from '../interfaces';
+import { Granularity, RangeCalendarI18nStrings } from '../interfaces';
 
 import styles from '../styles.css.js';
 
@@ -31,7 +30,7 @@ export interface RangeInputsProps extends BaseComponentProps {
   i18nStrings?: I18nStrings;
   dateOnly: boolean;
   timeInputFormat: TimeInputProps.Format;
-  granularity?: CalendarProps.Granularity;
+  granularity?: Granularity;
 }
 
 export default function RangeInputs({

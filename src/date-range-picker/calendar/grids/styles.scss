@@ -48,10 +48,7 @@
   @include styles.font-body-s;
 }
 
-.week {
-  /* used for identifying element */
-}
-
+.week,
 .quarter {
   /* used for identifying element */
 }
@@ -149,14 +146,16 @@
   }
 }
 
-.today:not(.in-range),
-.this-month:not(.in-range) {
-  background-color: calendar.$grid-current-date-background-color;
-  border-start-start-radius: awsui.$border-radius-item;
-  border-start-end-radius: awsui.$border-radius-item;
-  border-end-start-radius: awsui.$border-radius-item;
-  border-end-end-radius: awsui.$border-radius-item;
-  font-weight: styles.$font-weight-bold;
+.today,
+.this-month {
+  &:not(.in-range) {
+    background-color: calendar.$grid-current-date-background-color;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+    font-weight: styles.$font-weight-bold;
+  }
 }
 
 .selected {

@@ -15,6 +15,7 @@ export interface GridBaseProps {
 
   locale: string;
   todayAriaLabel?: string;
+  currentMonthAriaLabel?: string;
   granularity?: Granularity;
 }
 
