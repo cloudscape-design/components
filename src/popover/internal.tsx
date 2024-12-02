@@ -28,6 +28,7 @@ export interface InternalPopoverProps extends Omit<PopoverProps, 'triggerType' |
   triggerType?: PopoverProps.TriggerType | 'filtering-token';
   size: PopoverProps.Size | 'content';
   __closeAnalyticsAction?: string;
+  isInline?: boolean;
 }
 
 export interface InternalPopoverRef {
@@ -51,11 +52,13 @@ function InternalPopover(
     triggerAriaLabel,
 
     wrapTriggerText = true,
+    isInline = false,
     renderWithPortal = false,
 
     __onOpen,
     __internalRootRef = null,
     __closeAnalyticsAction,
+
     ...restProps
   }: InternalPopoverProps,
   ref: React.Ref<InternalPopoverRef>
@@ -186,7 +189,8 @@ function InternalPopover(
       className={clsx(
         styles.root,
         baseProps.className,
-        triggerType === 'filtering-token' && styles['root-filtering-token']
+        triggerType === 'filtering-token' && styles['root-filtering-token'],
+        isInline && styles['no-wrap']
       )}
       ref={mergedRef}
       onMouseDown={() => {

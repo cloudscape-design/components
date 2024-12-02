@@ -63,7 +63,7 @@ export default function InternalCopyToClipboard({
   const isInline = variant === 'inline';
   const trigger = (
     <InternalPopover
-      className={clsx(isInline && styles['inline-trigger'])}
+      isInline={isInline}
       size="medium"
       position="top"
       triggerType="custom"

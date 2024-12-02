@@ -445,12 +445,32 @@ describe('Input', () => {
           ctrlKey: false,
           altKey: false,
           metaKey: false,
+          isComposing: false,
         });
       });
       const { input } = renderInput({ onKeyDown: keyDownSpy });
       expect(keyDownSpy).not.toHaveBeenCalled();
 
       fireEvent.keyDown(input, { keyCode: 65, key: 'A', shiftKey: true });
+      expect(keyDownSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('onKeyDown provides correct composition state', () => {
+      const keyDownSpy = jest.fn(function (event) {
+        expect(event.detail).toEqual({
+          keyCode: 13,
+          key: 'Enter',
+          shiftKey: false,
+          ctrlKey: false,
+          altKey: false,
+          metaKey: false,
+          isComposing: true,
+        });
+      });
+      const { input } = renderInput({ onKeyDown: keyDownSpy });
+      expect(keyDownSpy).not.toHaveBeenCalled();
+
+      fireEvent.keyDown(input, { keyCode: 13, key: 'Enter', isComposing: true });
       expect(keyDownSpy).toHaveBeenCalledTimes(1);
     });
 
@@ -463,6 +483,7 @@ describe('Input', () => {
           ctrlKey: false,
           altKey: false,
           metaKey: false,
+          isComposing: false,
         });
       });
       const { input } = renderInput({ onKeyUp: keyUpSpy });
