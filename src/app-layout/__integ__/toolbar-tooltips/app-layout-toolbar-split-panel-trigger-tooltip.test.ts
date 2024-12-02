@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import testutilStyles from '../../../../lib/components/app-layout/test-classes/styles.selectors';
 import createWrapper from '../../../../lib/components/test-utils/selectors';
 import { AppLayoutDrawersPage, setupTest } from '../utils';
 
@@ -12,7 +13,7 @@ describe('refresh-toolbar', () => {
     //matches drawerItems[0].id from '../../../../lib/dev-pages/pages/app-layout/utils/drawers';
     const firstDrawerId = 'security';
     const firstDrawerTriggerSelector = wrapper.findDrawerTriggerById(firstDrawerId).toSelector();
-    const splitPanelTriggerSelector = wrapper.findSplitPanelOpenButton().toSelector();
+    const splitPanelTriggerSelector = wrapper.findByClassName(testutilStyles['split-panel-trigger']).toSelector();
     const tooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
     const expectedTooltipText = 'Open panel';
 
