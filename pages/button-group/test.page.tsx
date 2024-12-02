@@ -69,7 +69,7 @@ export default function ButtonGroupPage() {
     text: 'Files',
     items: [
       {
-        type: 'file-input',
+        type: 'icon-file-input',
         id: 'file-input',
         text: 'Choose files',
         multiple: true,
@@ -246,7 +246,7 @@ export default function ButtonGroupPage() {
         return asyncAction();
       case 'experimental-features':
         return syncAction(() => setUseExperimentalFeatures(!!detail.pressed));
-      case 'file-input':
+      case 'icon-file-input':
       default:
         return syncAction();
     }

@@ -22,8 +22,8 @@ import { FileInputProps } from './interfaces';
 import styles from './styles.css.js';
 
 interface InternalFileInputProps {
-  inputClassName?: string;
-  dataItemId?: string;
+  __inputClassName?: string;
+  __nativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
 }
 
 const InternalFileInput = React.forwardRef(
@@ -38,8 +38,8 @@ const InternalFileInput = React.forwardRef(
       variant = 'button',
       children,
       __internalRootRef = null,
-      inputClassName,
-      dataItemId,
+      __inputClassName,
+      __nativeAttributes,
       ...restProps
     }: FileInputProps & InternalBaseComponentProps & InternalFileInputProps,
     ref: Ref<FileInputProps.Ref>
@@ -68,6 +68,7 @@ const InternalFileInput = React.forwardRef(
       'aria-label': ariaLabel || children,
       'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
       'aria-describedby': formFieldContext.ariaDescribedby,
+      ...__nativeAttributes,
     };
     if (formFieldContext.invalid) {
       nativeAttributes['aria-invalid'] = true;
@@ -111,9 +112,8 @@ const InternalFileInput = React.forwardRef(
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
-          className={clsx(styles['file-input'], styles.hidden, inputClassName)}
+          className={clsx(styles['file-input'], styles.hidden, __inputClassName)}
           tabIndex={tabIndex}
-          data-itemid={dataItemId}
           {...nativeAttributes}
         />
 

@@ -31,6 +31,8 @@ const FileInputItem = forwardRef(
     return (
       <div ref={containerRef}>
         <InternalFileInput
+          className={clsx(testUtilStyles['button-group-item'])}
+          ref={ref}
           variant="icon"
           ariaLabel={item.text}
           accept={item.accept}
@@ -40,11 +42,11 @@ const FileInputItem = forwardRef(
             fireCancelableEvent(onFilesChange, { id: item.id, files: event.detail.value });
             setFiles(event.detail.value);
           }}
-          ref={ref}
           data-testid={item.id}
-          dataItemId={item.id}
-          className={clsx(testUtilStyles['button-group-item'])}
-          inputClassName={testUtilStyles.item}
+          __nativeAttributes={{
+            'data-itemid': item.id,
+          }}
+          __inputClassName={testUtilStyles.item}
         />
         {canShowTooltip && (
           <Tooltip

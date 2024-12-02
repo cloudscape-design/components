@@ -26,7 +26,7 @@ const likeButton: ButtonGroupProps.IconToggleButton = {
 };
 
 const fileButton: ButtonGroupProps.IconFileInput = {
-  type: 'file-input',
+  type: 'icon-file-input',
   id: 'file',
   text: 'Choose files',
 };
