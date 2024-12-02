@@ -64,7 +64,7 @@ afterEach(() => {
   window.getComputedStyle = originalGetComputedStyle;
 });
 
-describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
+describeEachAppLayout({ sizes: ['desktop'] }, () => {
   test('should render split panel in bottom position', () => {
     const { wrapper } = renderComponent(
       <AppLayout
@@ -104,10 +104,8 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
       );
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       wrapper.findSplitPanelOpenButton()!.click();
-      if (theme === 'classic' || (theme === 'refresh' && position === 'bottom')) {
+      if (position === 'bottom') {
         expect(wrapper.findSplitPanelOpenButton()).toBeNull();
-      } else {
-        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       }
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
