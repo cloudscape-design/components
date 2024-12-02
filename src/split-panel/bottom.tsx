@@ -75,7 +75,7 @@ export function SplitPanelContentBottom({
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,
         insetInlineEnd: rightOffset,
-        blockSize: isOpen ? cappedSize : isToolbar ? '0px' : undefined,
+        blockSize: isOpen ? cappedSize : undefined,
       }}
       ref={splitPanelRef}
     >

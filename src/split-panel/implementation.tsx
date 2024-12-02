@@ -122,7 +122,7 @@ export function SplitPanelImplementation({
             ariaLabel={i18nStrings.closeButtonAriaLabel}
             ariaExpanded={isOpen}
           />
-        ) : isToolbar || position === 'side' ? null : (
+        ) : position === 'side' ? null : (
           <InternalButton
             className={testUtilStyles['open-button']}
             iconName="angle-up"
