@@ -49,7 +49,7 @@ export default function WithDrawersScrollable() {
       scrollX: window.scrollX,
     });
   });
-  const [activeDrawerId, setActiveDrawerId] = useState<string | null>('settings');
+  const [activeDrawerId, setActiveDrawerId] = useState<string | null>('chat');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const sideNavFill = urlParams.sideNavFill ?? false;
   const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
