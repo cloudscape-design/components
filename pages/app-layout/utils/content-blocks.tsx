@@ -37,7 +37,6 @@ export function Containers() {
       {range(count).map(i => (
         <Container
           key={i}
-          data-testid={`container-${i + 1}`}
           header={
             <Header variant="h2" actions={<Button onClick={() => setCount(count - 1)}>Remove</Button>}>
               Demo container #{i + 1}
