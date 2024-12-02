@@ -8,8 +8,10 @@ import {
   AnalyticsFunnelSubStep,
 } from '../internal/analytics/components/analytics-funnel';
 import { useFunnel } from '../internal/analytics/hooks/use-funnel';
+import { DATA_ATTR_MODAL_ID } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import useBaseComponent from '../internal/hooks/use-base-component';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { ModalProps } from './interfaces';
 import InternalModal, { InternalModalAsFunnel } from './internal';
@@ -24,6 +26,11 @@ function ModalWithAnalyticsFunnel({
   size = 'medium',
   ...props
 }: ModalProps & { analyticsMetadata: any; baseComponentProps: ReturnType<typeof useBaseComponent> }) {
+  const modalId = useUniqueId();
+  const dataAttributes = {
+    [DATA_ATTR_MODAL_ID]: modalId,
+  };
+
   return (
     <AnalyticsFunnel
       mounted={props.visible}
@@ -34,7 +41,7 @@ function ModalWithAnalyticsFunnel({
       funnelType="modal"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
-      funnelNameSelectors={[`.${styles['header--text']}`]}
+      funnelNameSelectors={[`[${DATA_ATTR_MODAL_ID}="${modalId}"] .${styles['header--text']}`]}
     >
       <AnalyticsFunnelStep
         mounted={props.visible}
@@ -50,6 +57,7 @@ function ModalWithAnalyticsFunnel({
             size={size}
             {...props}
             {...baseComponentProps}
+            {...dataAttributes}
             __injectAnalyticsComponentMetadata={true}
           />
         </AnalyticsFunnelSubStep>

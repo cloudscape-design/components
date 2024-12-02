@@ -7,6 +7,7 @@ export const DATA_ATTR_FUNNEL_VALUE = `${DATA_ATTR_FUNNEL}-value`;
 export const DATA_ATTR_FUNNEL_STEP = `${DATA_ATTR_FUNNEL}-step`;
 export const DATA_ATTR_FUNNEL_SUBSTEP = `${DATA_ATTR_FUNNEL}-substep`;
 export const DATA_ATTR_RESOURCE_TYPE = `${DATA_ATTR_FUNNEL}-resource-type`;
+export const DATA_ATTR_MODAL_ID = 'data-analytics-modal-id';
 
 export const DATA_ATTR_FIELD_LABEL = 'data-analytics-field-label';
 export const DATA_ATTR_FIELD_ERROR = 'data-analytics-field-error';

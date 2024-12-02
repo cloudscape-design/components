@@ -83,6 +83,22 @@ describe('Modal Analytics', () => {
     );
   });
 
+  test('send funnelStart with the correct modal when multiple modals are present', () => {
+    render(
+      <>
+        <Modal header="Wrong Modal title" visible={false} />
+        <Modal header="Modal title" visible={true} />
+      </>
+    );
+    act(() => void jest.runAllTimers());
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
+      expect.objectContaining({
+        funnelName: 'Modal title',
+      })
+    );
+  });
+
   test('sends funnelCancelled when modal is dismissed', () => {
     const { rerender } = render(<Modal header="Modal title" visible={true} />);
     act(() => void jest.runAllTimers());
