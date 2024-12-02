@@ -136,9 +136,10 @@ export function DrawerTriggers({
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
+                testutilStyles['split-panel-trigger'],
                 splitPanelResolvedPosition === 'side' && splitPanelTestUtilStyles['open-button']
               )}
-              iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
+              iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => onSplitPanelToggle?.()}
               selected={splitPanelToggleProps.active}
               ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
