@@ -1,18 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { getIsRtl, getScrollInlineStart, isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
+import { getIsRtl, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
-const smoothScroll = (element: HTMLElement, to: number) => {
-  if (isMotionDisabled(element) || !element.scrollTo) {
-    element.scrollLeft = to;
-    return;
-  }
-  // istanbul ignore next: unit tests always have motion disabled
-  element.scrollTo({
-    left: to,
-    behavior: 'smooth',
-  });
-};
+import smoothScroll from './smooth-scroll';
 
 export const onPaginationClick = (
   headerBarRef: React.RefObject<HTMLUListElement>,
