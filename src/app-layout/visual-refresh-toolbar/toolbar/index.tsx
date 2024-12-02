@@ -166,6 +166,9 @@ export function AppLayoutToolbarImplementation({
   }, [anyPanelOpenInMobile]);
 
   const toolbarHidden = toolbarState === 'hide' && !pinnedToolbar;
+  const navLandmarkAttributes = navigationOpen
+    ? { role: 'presentation' }
+    : { role: 'navigation', 'aria-label': ariaLabels?.navigation };
 
   return (
     <ToolbarSlot
@@ -180,11 +183,7 @@ export function AppLayoutToolbarImplementation({
     >
       <div className={styles['toolbar-container']}>
         {hasNavigation && (
-          <nav
-            className={clsx(styles['universal-toolbar-nav'])}
-            role={navigationOpen ? 'presentation' : 'navigation'}
-            aria-label={navigationOpen ? undefined : ariaLabels?.navigation}
-          >
+          <nav {...navLandmarkAttributes} className={clsx(styles['universal-toolbar-nav'])}>
             <TriggerButton
               ariaLabel={ariaLabels?.navigationToggle ?? undefined}
               ariaExpanded={false}
