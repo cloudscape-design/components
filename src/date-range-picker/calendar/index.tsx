@@ -70,6 +70,7 @@ export default function DateRangePickerCalendar({
   const i18n = useInternalI18n('date-range-picker');
 
   const [announcement, setAnnouncement] = useState('');
+  const hasTimeInput = !isMonthPicker || dateOnly;
   const findPageToDisplay = isMonthPicker ? findYearToDisplay : findMonthToDisplay;
   const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
   const addPage = isMonthPicker ? addYears : addMonths;
@@ -100,29 +101,27 @@ export default function DateRangePickerCalendar({
   // recommended to include the start/end time announced with the selection
   // because the user is not aware of the fact that a start/end time is also set as soon as they select a date
   const announceStart = (startDate: Date) => {
-    return (
-      i18n('i18nStrings.startDateLabel', i18nStrings?.startDateLabel) +
-      ', ' +
-      getDateLabel(normalizedLocale, startDate) +
-      ', ' +
-      i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel) +
-      ', ' +
-      renderTimeLabel(normalizedLocale, startDate, timeInputFormat) +
-      '. '
-    );
+    const dayLabel = `${i18n('i18nStrings.startDateLabel', i18nStrings?.startDateLabel)}${
+      isMonthPicker ? '.' : `, ${getDateLabel(normalizedLocale, startDate)}`
+    }`;
+    const timeLabel = `${i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel)}, ${renderTimeLabel(
+      normalizedLocale,
+      startDate,
+      timeInputFormat
+    )}`;
+    return `${dayLabel}${hasTimeInput ? `, ${timeLabel}` : '.'}`;
   };
 
   const announceEnd = (endDate: Date) => {
-    return (
-      i18n('i18nStrings.endDateLabel', i18nStrings?.endDateLabel) +
-      ', ' +
-      getDateLabel(normalizedLocale, endDate) +
-      ', ' +
-      i18n('i18nStrings.endTimeLabel', i18nStrings?.endTimeLabel) +
-      ', ' +
-      renderTimeLabel(normalizedLocale, endDate, timeInputFormat) +
-      '. '
-    );
+    const dayLabel = `${i18n('i18nStrings.endDateLabel', i18nStrings?.endDateLabel)}${
+      isMonthPicker ? '.' : `, ${getDateLabel(normalizedLocale, endDate)}`
+    }`;
+    const timeLabel = `${i18n('i18nStrings.endTimeLabel', i18nStrings?.endTimeLabel)}, ${renderTimeLabel(
+      normalizedLocale,
+      endDate,
+      timeInputFormat
+    )}`;
+    return `${dayLabel}${hasTimeInput ? `, ${timeLabel}` : '.'}`;
   };
 
   const renderSelectedAbsoluteRangeAriaLive = i18n(
@@ -141,6 +140,7 @@ export default function DateRangePickerCalendar({
     );
   };
 
+  //todo  format
   const onSelectDateHandler = (selectedDate: Date) => {
     const { start, end } = value;
     let newStart: Date | undefined = undefined;

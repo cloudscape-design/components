@@ -8,12 +8,15 @@ export default function ({
   hideTimeOffset,
   isDateOnly,
   timeOffset,
+  isMonthOnly,
 }: {
   date: string;
   hideTimeOffset?: boolean;
   isDateOnly: boolean;
+  isMonthOnly: boolean;
   timeOffset?: number;
 }) {
-  const formattedOffset = hideTimeOffset || isDateOnly ? '' : formatTimeOffsetISO(isoDate, timeOffset);
+  //todo  what about granularity of a month
+  const formattedOffset = hideTimeOffset || isDateOnly || isMonthOnly ? '' : formatTimeOffsetISO(isoDate, timeOffset);
   return isoDate + formattedOffset;
 }

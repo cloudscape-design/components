@@ -68,3 +68,15 @@ export function findYearToDisplay(value: DateRangePickerProps.PendingAbsoluteVal
   }
   return startOfYear(Date.now());
 }
+
+//todo
+// export function formatDateToGranularity(date: Date, isDateOnly: Boolean, isMonthOnly: Boolean ) {
+//   if (isMonthOnly) {
+
+//   }
+//   if (isDateOnly) {
+
+//   }
+//   return
+
+// }

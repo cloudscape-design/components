@@ -153,6 +153,37 @@ describe('Date range picker', () => {
       test('accepts optional milliseconds', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
+          dateOnly: true,
+          value: {
+            type: 'absolute',
+            startDate: '2018-01-02T05:00:00.000+08:45',
+            endDate: '2018-01-05T13:00:00.15+08:45',
+          },
+        });
+        expect(wrapper.findTrigger().getElement()).toHaveTextContent(
+          '2018-01-02T05:00:00+08:45 — 2018-01-05T13:00:00+08:45'
+        );
+      });
+
+      test('accepts optional milliseconds dateOnly has effect when true', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          dateOnly: true,
+          value: {
+            type: 'absolute',
+            startDate: '2018-01-02T05:00:00.000+08:45',
+            endDate: '2018-01-05T13:00:00.15+08:45',
+          },
+        });
+        expect(wrapper.findTrigger().getElement()).toHaveTextContent(
+          '2018-01-02T05:00:00+08:45 — 2018-01-05T13:00:00+08:45'
+        );
+      });
+
+      test('accepts optional milliseconds monthly granularity has no effect', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
           value: {
             type: 'absolute',
             startDate: '2018-01-02T05:00:00.000+08:45',
@@ -176,7 +207,18 @@ describe('Date range picker', () => {
         );
       });
 
-      test('shows the month of the selected start date by default', () => {
+      test('formats dates with / in place of - and monthly granularity has no effect', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2018-01-02T05:00:00+08:45', endDate: '2018-01-05T13:00:00+08:45' },
+        });
+        expect(wrapper.findTrigger().getElement()).toHaveTextContent(
+          '2018-01-02T05:00:00+08:45 — 2018-01-05T13:00:00+08:45'
+        );
+      });
+
+      test('shows the month of the selected start date by default with day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2020-03-02T05:00:00+08:45', endDate: '2020-03-12T13:05:21+08:45' },
@@ -187,7 +229,19 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent('March 2020');
       });
 
-      test('pre-fills the dropdown with the selected value', () => {
+      test('shows the month of the selected start date by default with month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2020-03-02T05:00:00+08:45', endDate: '2020-03-12T13:05:21+08:45' },
+        });
+
+        wrapper.findTrigger().click();
+
+        expect(wrapper.findDropdown()!.findHeader().getElement()).toHaveTextContent('20202021');
+      });
+
+      test('pre-fills the dropdown with the selected value with day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -205,7 +259,26 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('12');
       });
 
-      test('start date can be selected', () => {
+      test('pre-fills the dropdown with the selected value with day granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-04-12T13:05:21+08:45' },
+        });
+
+        wrapper.findTrigger().click();
+
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/03');
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/04');
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('MarMarch 2021');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('AprApril 2021');
+      });
+
+      test('start date can be selected in day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -219,7 +292,22 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
       });
 
-      test('start date can be selected with keyboard', () => {
+      test('start date can be selected in month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-04-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findMonthAt('left', 2, 2).click();
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('MayMay 2021');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/05');
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+      });
+
+      test('start date can be selected with keyboard with day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -234,7 +322,23 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
       });
 
-      test('end date can be selected', () => {
+      test('start date can be selected with keyboard with month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findMonthAt('left', 2, 2).focus();
+        wrapper.findDropdown()!.findMonthAt('right', 2, 2).keydown(KeyCode.enter);
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('MayMay 2021');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/05');
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+      });
+
+      test('end date can be selected day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -249,7 +353,23 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
 
-      test('end date can be selected with keyboard', () => {
+      test('end date can be selected month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findMonthAt('left', 2, 2).click();
+        wrapper.findDropdown()!.findMonthAt('right', 2, 2).click();
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('MayMay 2022');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2022/05');
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+      });
+
+      test('end date can be selected with keyboard day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -265,7 +385,24 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
 
-      test('selecting a range in reverse will flip the range correctly', () => {
+      test('end date can be selected with keyboard month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-04-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findMonthAt('left', 2, 3).click();
+        wrapper.findDropdown()!.findMonthAt('left', 3, 3).focus();
+        wrapper.findDropdown()!.findMonthAt('left', 3, 3).keydown(KeyCode.space);
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('SepSeptember 2021');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/09');
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+      });
+
+      test('selecting a range in reverse will flip the range correctly with day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -284,7 +421,27 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
 
-      test('missing start date can be filled (before end date)', () => {
+      test('selecting a range in reverse will flip the range correctly with month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-04-12T13:05:21+08:45' },
+        });
+        wrapper.findTrigger().click();
+
+        wrapper.findDropdown()!.findMonthAt('left', 2, 3).click();
+        wrapper.findDropdown()!.findMonthAt('right', 3, 3).click();
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('JunJune 2021');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/06');
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('SepSeptember 2022');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2022/09');
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+      });
+
+      test('missing start date can be filled (before end date) with day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -303,7 +460,27 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('13:05:21');
       });
 
-      test('missing start date can be filled (after end date, requires a swap)', () => {
+      test('missing start date can be filled (before end date) with month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-04-12T13:05:21+08:45' },
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('');
+        wrapper.findDropdown()!.findMonthAt('left', 2, 3).click();
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('AprApril 2021');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/04');
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('JunJune 2021');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/06');
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+      });
+
+      test('missing start date can be filled (after end date, requires a swap) with day granularity', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-03-12T13:05:21+08:45' },
@@ -322,8 +499,28 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('23:59:59');
       });
 
+      test('missing start date can be filled (after end date, requires a swap) with month granularity', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2021-03-02T05:00:00+08:45', endDate: '2021-04-12T13:05:21+08:45' },
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('');
+        wrapper.findDropdown()!.findMonthAt('left', 2, 3).click();
+
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('AprApril 2021');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2021/04');
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('JunJune 2021');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2021/06');
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+      });
+
       (['hh:mm:ss', 'hh:mm', 'hh'] as DateRangePickerProps['timeInputFormat'][]).forEach(timeInputFormat => {
-        test(`sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat}`, () => {
+        test(`sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat} with day granularity`, () => {
           const onChangeSpy = jest.fn();
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,
@@ -345,6 +542,32 @@ describe('Date range picker', () => {
             })
           );
         });
+      });
+    });
+
+    (['hh:mm:ss', 'hh:mm', 'hh'] as DateRangePickerProps['timeInputFormat'][]).forEach(timeInputFormat => {
+      test(`sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat} with month granularity`, () => {
+        const onChangeSpy = jest.fn();
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          timeInputFormat,
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05');
+        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05');
+        wrapper.findDropdown()!.findApplyButton().click();
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: {
+              type: 'absolute',
+              startDate: '2018-05',
+              endDate: '2018-05',
+            },
+          })
+        );
       });
     });
 

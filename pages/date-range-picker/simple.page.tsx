@@ -14,19 +14,21 @@ import {
 } from '~components';
 
 import AppContext from '../app/app-context';
-import { DateRangePickerDemoContext } from './common';
+import { DateRangePickerDemoContext, dateRangePickerDemoDefaults } from './common';
 import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
 
 export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
-  const monthOnly = urlParams.monthOnly ?? false;
-  const showRelativeOptions = urlParams.showRelativeOptions ?? true;
-  const dateOnly = urlParams.dateOnly ?? false;
-  const invalid = urlParams.invalid ?? false;
-  const warning = urlParams.warning ?? false;
-  const rangeSelectorMode = urlParams.rangeSelectorMode ?? 'default';
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const invalid = urlParams.invalid ?? dateRangePickerDemoDefaults.invalid;
+  const warning = urlParams.warning ?? dateRangePickerDemoDefaults.warning;
+  const rangeSelectorMode =
+    urlParams.rangeSelectorMode ??
+    (dateRangePickerDemoDefaults.rangeSelectorMode as DateRangePickerProps.RangeSelectorMode);
 
   return (
     <Box padding="s">

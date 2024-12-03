@@ -8,11 +8,13 @@ export default function formatDateLocalized({
   date: isoDate,
   hideTimeOffset,
   isDateOnly,
+  isMonthOnly,
   timeOffset,
   locale,
 }: {
   date: string;
   hideTimeOffset?: boolean;
+  isMonthOnly: boolean;
   isDateOnly: boolean;
   timeOffset?: number;
   locale?: string;
@@ -24,12 +26,12 @@ export default function formatDateLocalized({
   }
 
   const formattedDate = new Intl.DateTimeFormat(locale, {
-    day: 'numeric',
     month: 'long',
     year: 'numeric',
+    ...(isMonthOnly ? {} : { day: 'numeric' }),
   }).format(date);
 
-  if (isDateOnly) {
+  if (isDateOnly || isMonthOnly) {
     return formattedDate;
   }
 
