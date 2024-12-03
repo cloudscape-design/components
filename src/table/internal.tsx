@@ -36,6 +36,7 @@ import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { NoDataCell } from './no-data-cell';
+import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
@@ -656,34 +657,42 @@ const InternalTable = React.forwardRef(
                               </tr>
                             );
                           }
+
+                          const loaderContent = getLoaderContent({
+                            item: row.item,
+                            loadingStatus: row.status,
+                            renderLoaderPending,
+                            renderLoaderLoading,
+                            renderLoaderError,
+                            renderLoaderEmpty,
+                          });
                           return (
-                            <tr
-                              key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
-                              className={styles.row}
-                              {...rowRoleProps}
-                            >
-                              {getItemSelectionProps && (
-                                <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
-                              )}
-                              {visibleColumnDefinitions.map((column, colIndex) => (
-                                <TableLoaderCell
-                                  key={getColumnKey(column, colIndex)}
-                                  {...sharedCellProps}
-                                  wrapLines={false}
-                                  columnId={column.id ?? colIndex}
-                                  colIndex={colIndex + colIndexOffset}
-                                  isRowHeader={colIndex === 0}
-                                  level={row.level}
-                                  item={row.item}
-                                  loadingStatus={row.status}
-                                  renderLoaderPending={renderLoaderPending}
-                                  renderLoaderLoading={renderLoaderLoading}
-                                  renderLoaderError={renderLoaderError}
-                                  renderLoaderEmpty={renderLoaderEmpty}
-                                  trackBy={trackBy}
-                                />
-                              ))}
-                            </tr>
+                            loaderContent && (
+                              <tr
+                                key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
+                                className={styles.row}
+                                {...rowRoleProps}
+                              >
+                                {getItemSelectionProps && (
+                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
+                                )}
+                                {visibleColumnDefinitions.map((column, colIndex) => (
+                                  <TableLoaderCell
+                                    key={getColumnKey(column, colIndex)}
+                                    {...sharedCellProps}
+                                    wrapLines={false}
+                                    columnId={column.id ?? colIndex}
+                                    colIndex={colIndex + colIndexOffset}
+                                    isRowHeader={colIndex === 0}
+                                    level={row.level}
+                                    item={row.item}
+                                    trackBy={trackBy}
+                                  >
+                                    {loaderContent}
+                                  </TableLoaderCell>
+                                ))}
+                              </tr>
+                            )
                           );
                         })
                       )}

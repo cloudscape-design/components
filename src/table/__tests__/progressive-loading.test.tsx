@@ -279,6 +279,7 @@ describe('Progressive loading', () => {
           renderLoaderEmpty={status === 'finished' ? undefined : () => 'Finished'}
         />
       );
+      expect(createWrapper().findTable()!.findRows()).toHaveLength(nestedItems.length);
       expect(warnOnce).toHaveBeenCalledWith(
         'Table',
         'Must define `renderLoaderPending`, `renderLoaderLoading`, `renderLoaderError`, or `renderLoaderEmpty` when using corresponding loading status.'

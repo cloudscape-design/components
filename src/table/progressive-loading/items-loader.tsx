@@ -12,23 +12,37 @@ import styles from './styles.css.js';
 
 export interface ItemsLoaderProps<T> {
   item: null | T;
+  trackBy?: TableProps.TrackBy<T>;
+  children: React.ReactNode;
+}
+
+export interface ItemsLoaderContentProps<T> {
+  item: null | T;
   loadingStatus: TableProps.LoadingStatus;
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
-  trackBy?: TableProps.TrackBy<T>;
 }
 
-export function ItemsLoader<T>({
+export function ItemsLoader<T>({ item, trackBy, children }: ItemsLoaderProps<T>) {
+  let parentTrackId = item && trackBy ? applyTrackBy(trackBy, item) : undefined;
+  parentTrackId = typeof parentTrackId === 'string' ? parentTrackId : undefined;
+  return (
+    <div data-root={item ? 'false' : 'true'} data-parentrow={parentTrackId} className={styles['items-loader']}>
+      {children}
+    </div>
+  );
+}
+
+export function getLoaderContent<T>({
   item,
   loadingStatus,
   renderLoaderPending,
   renderLoaderLoading,
   renderLoaderError,
   renderLoaderEmpty,
-  trackBy,
-}: ItemsLoaderProps<T>) {
+}: ItemsLoaderContentProps<T>) {
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {
     content = renderLoaderPending({ item });
@@ -44,12 +58,5 @@ export function ItemsLoader<T>({
       'Must define `renderLoaderPending`, `renderLoaderLoading`, `renderLoaderError`, or `renderLoaderEmpty` when using corresponding loading status.'
     );
   }
-
-  let parentTrackId = item && trackBy ? applyTrackBy(trackBy, item) : undefined;
-  parentTrackId = typeof parentTrackId === 'string' ? parentTrackId : undefined;
-  return (
-    <div data-root={item ? 'false' : 'true'} data-parentrow={parentTrackId} className={styles['items-loader']}>
-      {content}
-    </div>
-  );
+  return content;
 }
