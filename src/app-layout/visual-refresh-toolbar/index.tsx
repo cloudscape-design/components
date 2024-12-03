@@ -468,7 +468,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
-            ...(toolbarProps || !isNested
+            ...(hasToolbar || !isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
                   [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
