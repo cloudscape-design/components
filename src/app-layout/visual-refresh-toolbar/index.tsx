@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -34,8 +34,6 @@ import {
 } from './internal';
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
-
-import styles from './skeleton/styles.css.js';
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
   (
@@ -441,11 +439,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
      * Returns true if the AppLayout is nested
      * Does not apply to iframe
      */
-    const getIsNestedInAppLayout = (element: HTMLElement | null, rootClassName: string): boolean => {
+    const getIsNestedInAppLayout = (element: HTMLElement | null): boolean => {
       let currentElement: Element | null = element?.parentElement ?? null;
 
       while (currentElement) {
-        if (currentElement.classList.contains(rootClassName)) {
+        if (getComputedStyle(currentElement).getPropertyValue(globalVars.stickyVerticalTopOffset)) {
           return true;
         }
         currentElement = currentElement.parentElement;
@@ -454,8 +452,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       return false;
     };
 
-    useEffect(() => {
-      setIsNested(getIsNestedInAppLayout(rootRef.current, styles.root));
+    useLayoutEffect(() => {
+      setIsNested(getIsNestedInAppLayout(rootRef.current));
     }, []);
 
     return (
@@ -466,7 +464,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
-            ...(!isNested
+            ...(toolbarProps || !isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
                   [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
