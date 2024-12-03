@@ -87,7 +87,6 @@ interface SetupTestOptions {
   screenSize?: (typeof viewports)['desktop' | 'mobile'];
   disableContentPaddings?: string;
   theme: string;
-  isMobile?: boolean;
 }
 
 const setupTest = (
@@ -96,11 +95,10 @@ const setupTest = (
     screenSize = viewports.desktop,
     disableContentPaddings = 'false',
     theme,
-    isMobile,
   }: SetupTestOptions,
   testFn: (page: AppLayoutDrawersPage) => Promise<void>
 ) =>
-  useBrowser({ ...screenSize, isMobile }, async browser => {
+  useBrowser({ ...screenSize }, async browser => {
     const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
       splitPanelPosition,
@@ -273,7 +271,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   describe('mobile', () => {
     test(
       'hides the resize handle on drawer open',
-      setupTest({ theme, screenSize: viewports.mobile, isMobile: true }, async page => {
+      setupTest({ theme, screenSize: viewports.mobile }, async page => {
         await page.openFirstDrawer();
         await expect(page.isExisting(wrapper.findActiveDrawerResizeHandle().toSelector())).resolves.toBe(false);
       })
@@ -288,7 +286,6 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           disableContentPaddings: 'true',
           theme,
           screenSize: size === 'desktop' ? viewports.desktop : viewports.mobile,
-          isMobile: size === 'mobile',
         },
         async page => {
           const width = await page.getMainContentWidth();

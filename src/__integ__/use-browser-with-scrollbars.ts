@@ -5,7 +5,6 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 // Workaround until scrollbars are generally shown in tests (AWSUI-59983)
 
 interface Options {
-  isMobile?: boolean;
   width?: number;
   height?: number;
 }
@@ -74,16 +73,6 @@ function useBrowserWithScrollbars(...args: [Options, TestFunction] | [TestFuncti
     capabilities: {
       'goog:chromeOptions': {
         args: flags,
-        mobileEmulation: optionsOverride.isMobile
-          ? {
-              deviceMetrics: {
-                mobile: true,
-                touch: true,
-                width,
-                height,
-              },
-            }
-          : undefined,
       },
     },
     width,
