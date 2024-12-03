@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { BaseComponentProps } from '../internal/base-component';
+import { Breakpoint as InternalBreakpoint } from '../internal/breakpoints';
 import { NonCancelableEventHandler } from '../internal/events';
 
 /*
@@ -59,6 +60,13 @@ export namespace AttributeEditorProps {
      * @deprecated Use `removeButtonAriaLabel` on the component instead.
      */
     removeButtonAriaLabel?: (item: T) => string;
+  }
+
+  export type Breakpoint = InternalBreakpoint;
+
+  export interface GridLayout {
+    breakpoint?: Breakpoint;
+    rows: ReadonlyArray<ReadonlyArray<number>>;
   }
 }
 
@@ -122,6 +130,8 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * A maximum of four fields are supported.
    */
   definition: ReadonlyArray<AttributeEditorProps.FieldDefinition<T>>;
+
+  gridLayout?: ReadonlyArray<AttributeEditorProps.GridLayout>;
 
   /**
    * Called when add button is clicked.
