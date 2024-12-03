@@ -10,7 +10,7 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings, isValid } from './common';
 
 const permutations = createPermutations<
-  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value'>
+  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity'>
 >([
   {
     absoluteFormat: ['iso', 'long-localized'],
@@ -22,6 +22,7 @@ const permutations = createPermutations<
         endDate: '2024-12-31',
       },
     ],
+    granularity: ['month', 'day'],
   },
   {
     absoluteFormat: ['iso', 'long-localized'],
@@ -34,6 +35,7 @@ const permutations = createPermutations<
         endDate: '2024-12-31T23:59:59+01:00',
       },
     ],
+    granularity: ['month', 'day'],
   },
 ]);
 
@@ -52,6 +54,7 @@ export default function DateRangePickerPermutations() {
                 absoluteFormat={permutation.absoluteFormat}
                 dateOnly={permutation.dateOnly}
                 hideTimeOffset={permutation.hideTimeOffset}
+                granularity={permutation.granularity}
                 locale="en-US"
                 i18nStrings={i18nStrings}
                 placeholder={'Filter by a date and time range'}

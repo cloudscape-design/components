@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, Link } from '~components';
+import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link } from '~components';
 
-import { relativeOptions } from './common';
+import AppContext from '../app/app-context';
+import { DateRangePickerDemoContext, relativeOptions } from './common';
 import { makeIsValidFunction } from './is-valid-range';
 
 const localisedUnits = {
@@ -57,15 +58,21 @@ const isValid = makeIsValidFunction({
 });
 
 export default function DatePickerScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
+  const monthOnly = urlParams.monthOnly ?? false;
   return (
     <Box padding="s">
       <h1>Date range picker simple version - localised</h1>
       <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
       <br />
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
       <br />
       <DateRangePicker
+        granularity="month"
         value={value}
         locale={'de-DE'}
         i18nStrings={i18nStrings}

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   Box,
@@ -13,16 +13,20 @@ import {
   SpaceBetween,
 } from '~components';
 
+import AppContext from '../app/app-context';
+import { DateRangePickerDemoContext } from './common';
 import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
 
 export default function DatePickerScenario() {
-  const [showRelativeOptions, setShowRelativeOptions] = useState(true);
-  const [dateOnly, setDateOnly] = useState(false);
-  const [invalid, setInvalid] = useState(false);
-  const [warning, setWarning] = useState(false);
-  const [monthOnly, setMonthOnly] = useState(false);
-  const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
+
+  const monthOnly = urlParams.monthOnly ?? false;
+  const showRelativeOptions = urlParams.showRelativeOptions ?? true;
+  const dateOnly = urlParams.dateOnly ?? false;
+  const invalid = urlParams.invalid ?? false;
+  const warning = urlParams.warning ?? false;
+  const rangeSelectorMode = urlParams.rangeSelectorMode ?? 'default';
 
   return (
     <Box padding="s">
@@ -35,22 +39,27 @@ export default function DatePickerScenario() {
             { id: 'absolute-only', text: 'absolute-only' },
             { id: 'relative-only', text: 'relative-only' },
           ]}
-          onChange={e => setRangeSelectorMode(e.detail.selectedId as DateRangePickerProps.RangeSelectorMode)}
+          onChange={({ detail }) =>
+            setUrlParams({ rangeSelectorMode: detail.selectedId as DateRangePickerProps.RangeSelectorMode })
+          }
         />
         <SpaceBetween direction="horizontal" size="s">
-          <Checkbox checked={showRelativeOptions} onChange={event => setShowRelativeOptions(event.detail.checked)}>
+          <Checkbox
+            checked={showRelativeOptions}
+            onChange={({ detail }) => setUrlParams({ showRelativeOptions: detail.checked })}
+          >
             Show relative options
           </Checkbox>
-          <Checkbox checked={dateOnly} onChange={event => setDateOnly(event.detail.checked)}>
+          <Checkbox checked={dateOnly} onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}>
             Date-only
           </Checkbox>
-          <Checkbox checked={monthOnly} onChange={event => setMonthOnly(event.detail.checked)}>
+          <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
             Month-only
           </Checkbox>
-          <Checkbox checked={invalid} onChange={event => setInvalid(event.detail.checked)}>
+          <Checkbox checked={invalid} onChange={({ detail }) => setUrlParams({ invalid: detail.checked })}>
             Invalid
           </Checkbox>
-          <Checkbox checked={warning} onChange={event => setWarning(event.detail.checked)}>
+          <Checkbox checked={warning} onChange={({ detail }) => setUrlParams({ warning: detail.checked })}>
             Warning
           </Checkbox>
         </SpaceBetween>

@@ -2,7 +2,36 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from '~components/date-range-picker';
 
+import { AppContextType } from '../app/app-context';
 import { makeIsValidFunction } from './is-valid-range';
+
+export type DateRangePickerDemoContext = React.Context<
+  AppContextType<{
+    monthOnly?: boolean;
+    dateOnly?: boolean;
+    showRelativeOptions?: boolean;
+    invalid?: boolean;
+    warning?: boolean;
+    rangeSelectorMode?: DateRangePickerProps.RangeSelectorMode;
+    absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
+    hideTimeOffset?: boolean;
+    timeOffset?: number | string;
+    expandToViewport?: boolean;
+  }>
+>;
+
+export const dateRangePickerDemoDefaults = {
+  monthOnly: false,
+  dateOnly: false,
+  showRelativeOptions: false,
+  invalid: false,
+  warning: false,
+  rangeSelectorMode: 'default',
+  absoluteFormat: 'iso',
+  hideTimeOffset: false,
+  timeOffset: 0,
+  expandToViewport: false,
+};
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {
   const unit = range.amount === 1 ? range.unit : `${range.unit}s`;

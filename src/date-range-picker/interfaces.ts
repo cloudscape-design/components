@@ -66,6 +66,8 @@ export interface DateRangePickerBaseProps {
    * Do not use `dateOnly` flag conditionally. The component does not trigger the value update
    * when the flag changes which means the value format can become inconsistent.
    *
+   * This does not apply when the 'granularity' is set to 'month'
+   *
    * Default: `false`.
    */
   dateOnly?: boolean;
@@ -120,10 +122,10 @@ export interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
-  // /**
-  //  * Specifies the granularity at which users will be able to select a date range.
-  //  * Defaults to `day`.
-  //  **/
+  /**
+   * Specifies the granularity at which users will be able to select a date range.
+   * Defaults to `day`.
+   */
   granularity?: Granularity;
 }
 export interface DateRangePickerProps

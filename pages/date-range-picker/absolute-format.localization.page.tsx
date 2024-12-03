@@ -4,8 +4,8 @@ import React, { useContext, useState } from 'react';
 
 import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '~components';
 
-import AppContext, { AppContextType } from '../app/app-context';
-import { i18nStrings, isValid } from './common';
+import AppContext from '../app/app-context';
+import { DateRangePickerDemoContext, dateRangePickerDemoDefaults, i18nStrings, isValid } from './common';
 
 const locales = [
   'ar',
@@ -30,27 +30,25 @@ const locales = [
 
 const rtlLocales = new Set(['ar', 'he']);
 
-type DemoContext = React.Context<
-  AppContextType<{
-    absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
-    dateOnly?: boolean;
-    hideTimeOffset?: boolean;
-    timeOffset?: number;
-  }>
->;
-
 const initialRange = {
   startDate: '2024-12-09T00:00:00+01:00',
   endDate: '2024-12-31T23:59:59+01:00',
 };
 
 export default function DateRangePickerScenario() {
-  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const absoluteFormat =
+    urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
+  const hideTimeOffset = urlParams.hideTimeOffset ?? dateRangePickerDemoDefaults.hideTimeOffset;
+  const timeOffset = isNaN(parseInt(urlParams.timeOffset as string))
+    ? dateRangePickerDemoDefaults.timeOffset
+    : parseInt(urlParams.timeOffset as string);
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
-    startDate: urlParams.dateOnly ? initialRange.startDate.slice(0, 10) : initialRange.startDate,
-    endDate: urlParams.dateOnly ? initialRange.endDate.slice(0, 10) : initialRange.endDate,
+    startDate: dateOnly ? initialRange.startDate.slice(0, 10) : initialRange.startDate,
+    endDate: dateOnly ? initialRange.endDate.slice(0, 10) : initialRange.endDate,
   });
 
   return (
@@ -61,7 +59,7 @@ export default function DateRangePickerScenario() {
           <label>
             Format{' '}
             <select
-              value={urlParams.absoluteFormat}
+              value={absoluteFormat}
               onChange={event =>
                 setUrlParams({
                   absoluteFormat: event.currentTarget.value as DateRangePickerProps.AbsoluteFormat,
@@ -75,16 +73,24 @@ export default function DateRangePickerScenario() {
           <label>
             <input
               type="checkbox"
-              checked={urlParams.dateOnly}
+              checked={dateOnly}
               onChange={event => setUrlParams({ dateOnly: !!event.target.checked })}
             />{' '}
             Date only
           </label>
           <label>
+            <input
+              type="checkbox"
+              checked={monthOnly}
+              onChange={event => setUrlParams({ monthOnly: !!event.target.checked })}
+            />{' '}
+            Month only
+          </label>
+          <label>
             Time offset from UTC in minutes{' '}
             <input
               type="number"
-              value={urlParams.timeOffset}
+              value={timeOffset}
               onChange={event => {
                 const value = parseInt(event.currentTarget.value);
                 setUrlParams({ timeOffset: isNaN(value) ? 0 : value });
@@ -94,7 +100,7 @@ export default function DateRangePickerScenario() {
           <label>
             <input
               type="checkbox"
-              checked={urlParams.hideTimeOffset}
+              checked={hideTimeOffset}
               onChange={event => setUrlParams({ hideTimeOffset: !!event.target.checked })}
             />{' '}
             Hide time offset
@@ -109,15 +115,16 @@ export default function DateRangePickerScenario() {
                 value={value}
                 locale={locale}
                 i18nStrings={i18nStrings}
+                granularity={monthOnly ? 'month' : 'day'}
                 placeholder={'Filter by a date and time range'}
                 onChange={e => setValue(e.detail.value)}
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}
-                getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
-                absoluteFormat={urlParams.absoluteFormat}
-                dateOnly={urlParams.dateOnly}
-                hideTimeOffset={urlParams.hideTimeOffset}
+                getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
+                absoluteFormat={absoluteFormat}
+                dateOnly={dateOnly}
+                hideTimeOffset={hideTimeOffset}
               />
             </Grid>
           </div>

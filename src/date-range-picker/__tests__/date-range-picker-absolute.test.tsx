@@ -13,6 +13,7 @@ import { isValidRange } from './is-valid-range';
 
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
+  granularity: 'day',
   i18nStrings,
   value: null,
   placeholder: 'Test Placeholder',
@@ -54,7 +55,7 @@ afterEach(() => {
 //todo add for month granularity
 describe('Date range picker', () => {
   describe('absolute mode', () => {
-    test('a11y', async () => {
+    test('a11y day granularity', async () => {
       const { container } = render(
         <DateRangePicker
           {...defaultProps}
@@ -71,8 +72,26 @@ describe('Date range picker', () => {
       await expect(container).toValidateA11y();
     });
 
+    test('a11y month granularity', async () => {
+      const { container } = render(
+        <DateRangePicker
+          {...defaultProps}
+          granularity="month"
+          value={{
+            type: 'absolute',
+            startDate: '2018-01-02T05:00:00.000+08:45',
+            endDate: '2018-01-05T13:00:00.15+08:45',
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findDateRangePicker()!;
+      wrapper.findTrigger().click();
+
+      await expect(container).toValidateA11y();
+    });
+
     describe('form submission', () => {
-      test('should not submit form when pressing buttons', () => {
+      test('should not submit form when pressing buttons day granularity', () => {
         const onSubmit = jest.fn((e: React.FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           e.persist();
@@ -97,6 +116,35 @@ describe('Date range picker', () => {
         wrapper.findDropdown()!.findNextPageButton().click();
         wrapper.findDropdown()!.findDateAt('left', 2, 1).click();
         wrapper.findDropdown()!.findDateAt('right', 2, 1).click();
+        expect(onSubmit).not.toHaveBeenCalled();
+      });
+
+      test('should not submit form when pressing buttons month granularity', () => {
+        const onSubmit = jest.fn((e: React.FormEvent<HTMLFormElement>) => {
+          e.preventDefault();
+          e.persist();
+        });
+
+        const { container } = render(
+          <form onSubmit={onSubmit}>
+            <DateRangePicker
+              {...defaultProps}
+              granularity="month"
+              value={{
+                type: 'absolute',
+                startDate: '2018-01-02T05:00:00.000+08:45',
+                endDate: '2018-01-05T13:00:00.15+08:45',
+              }}
+            />
+          </form>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findPreviousPageButton().click();
+        wrapper.findDropdown()!.findNextPageButton().click();
+        wrapper.findDropdown()!.findMonthAt('left', 2, 1).click();
+        wrapper.findDropdown()!.findMonthAt('right', 2, 1).click();
         expect(onSubmit).not.toHaveBeenCalled();
       });
     });

@@ -2,18 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, Link } from '~components';
+import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link, SpaceBetween } from '~components';
 
-import AppContext, { AppContextType } from '../app/app-context';
-import { i18nStrings, isValid, relativeOptions } from './common';
-
-type DateRangePickerEventsPageContext = React.Context<AppContextType<{ expandToViewport: boolean }>>;
+import AppContext from '../app/app-context';
+import {
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  i18nStrings,
+  isValid,
+  relativeOptions,
+} from './common';
 
 let blurCount = 0;
 let focusCount = 0;
 export default function DateRangePickerScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
-  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerEventsPageContext);
+
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
 
   const blurLogDiv = useRef<HTMLDivElement>(null);
   const focusLogDiv = useRef<HTMLDivElement>(null);
@@ -40,14 +47,17 @@ export default function DateRangePickerScenario() {
   return (
     <Box padding="s">
       <h1>Date range picker with event handlers</h1>
-      <label>
-        <input
-          type="checkbox"
-          checked={urlParams.expandToViewport}
-          onChange={event => setUrlParams({ expandToViewport: event.target.checked })}
-        />
-        expandToViewport
-      </label>
+      <SpaceBetween direction="horizontal" size="m">
+        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+          Month-only
+        </Checkbox>
+        <Checkbox
+          checked={expandToViewport}
+          onChange={({ detail }) => setUrlParams({ expandToViewport: detail.checked })}
+        >
+          expandToViewport
+        </Checkbox>
+      </SpaceBetween>
       <br />
       <Link id="focus-dismiss-helper">Focusable element</Link>
       <br />
@@ -76,7 +86,8 @@ export default function DateRangePickerScenario() {
         }}
         relativeOptions={relativeOptions}
         isValidRange={isValid}
-        expandToViewport={urlParams.expandToViewport}
+        expandToViewport={expandToViewport}
+        granularity={monthOnly ? 'month' : 'day'}
       />
     </Box>
   );

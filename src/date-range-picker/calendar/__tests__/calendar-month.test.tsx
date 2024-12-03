@@ -90,20 +90,15 @@ describe('Date range picker calendar with month granularity', () => {
       expect(findCalendarHeaderText(wrapper)).toBe('20232024');
     });
 
-    //todo  confirm different languages in buttons
-    // test('should allow locale override', () => {
-    //   const locale = 'de-DE';
-    //   const mockedLocaleString = 'März 2018';
-    //   const localStringMock = jest.fn().mockReturnValueOnce(mockedLocaleString);
-    //   const oldImpl = window.Date.prototype.toLocaleDateString;
-    //   window.Date.prototype.toLocaleDateString = localStringMock;
-    //   try {
-    //     const { wrapper } = renderDateRangePicker({ ...defaultProps, locale });
-    //     expect(findCalendarHeaderText(wrapper)).toBe(mockedLocaleString);
-    //   } finally {
-    //     window.Date.prototype.toLocaleDateString = oldImpl;
-    //   }
-    // });
+    test('should allow locale override', () => {
+      const locale = 'de-DE';
+
+      const { wrapper } = renderDateRangePicker({ ...defaultProps, locale });
+      changeMode(wrapper, 'absolute');
+      expect(wrapper.findDropdown()!.findMonthAt('left', 4, 1)!.getElement().textContent!.trim()).toBe(
+        'OktOktober 2023'
+      );
+    });
   });
 
   describe('keyboard navigation', () => {
@@ -421,8 +416,6 @@ describe('Date range picker calendar with month granularity', () => {
           .findMonthAt('left', 2, 2) //May 2024
           .click();
 
-        //todo find out why it is recieving MarMarch 2024
-        // expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('1');
         expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement().value).toBe('2024/03');
       });
 
@@ -455,8 +448,6 @@ describe('Date range picker calendar with month granularity', () => {
           });
           changeMode(wrapper, 'absolute');
 
-          // The calendar month handles two onFocus events to show the disabled reason popup: one to make the date focused, and the other to show the popup.
-          // wrapper.findDropdown()!.findDateAt(...).focus() triggers only one of them
           fireEvent.focus(wrapper.findDropdown()!.findMonthAt('left', 2, 1)!.getElement());
 
           expect(wrapper.findDropdown()!.findMonthAt('left', 2, 1).findDisabledReason()).toBe(null);

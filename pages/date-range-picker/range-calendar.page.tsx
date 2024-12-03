@@ -1,26 +1,32 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { Box, Checkbox, Link, SpaceBetween } from '~components';
 import RangeCalendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 
-import { i18nStrings, i18nStringsDateOnly } from './common';
+import AppContext from '../app/app-context';
+import { DateRangePickerDemoContext, dateRangePickerDemoDefaults, i18nStrings, i18nStringsDateOnly } from './common';
 
 export default function RangeCalendarScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerCalendarProps['value']>({
     start: { date: '2020-01-25', time: '' },
     end: { date: '2020-02-02', time: '' },
   });
-  const [dateOnly, setDateOnly] = useState(false);
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
 
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
         <h1>Range calendar</h1>
 
-        <Checkbox checked={dateOnly} onChange={event => setDateOnly(event.detail.checked)}>
+        <Checkbox checked={dateOnly} onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}>
           Date-only
+        </Checkbox>
+        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+          Month-only
         </Checkbox>
 
         <Link id="focusable-before">Focusable element before the range calendar</Link>
@@ -31,6 +37,7 @@ export default function RangeCalendarScenario() {
           locale="en-GB"
           i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
           dateOnly={dateOnly}
+          granularity={monthOnly ? 'month' : 'day'}
           timeInputFormat="hh:mm"
           isDateEnabled={date => date.getDate() !== 15}
           customAbsoluteRangeControl={undefined}
