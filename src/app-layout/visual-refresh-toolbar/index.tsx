@@ -442,6 +442,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const getIsNestedInAppLayout = (element: HTMLElement | null): boolean => {
       let currentElement: Element | null = element?.parentElement ?? null;
 
+      // this traverse is needed only for JSDOM
+      // in real browsers the globalVar will be propagated to all descendants and this loops exits after initial iteration
       while (currentElement) {
         if (getComputedStyle(currentElement).getPropertyValue(globalVars.stickyVerticalTopOffset)) {
           return true;
@@ -453,8 +455,10 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     };
 
     useLayoutEffect(() => {
-      setIsNested(getIsNestedInAppLayout(rootRef.current));
-    }, []);
+      if (!hasToolbar) {
+        setIsNested(getIsNestedInAppLayout(rootRef.current));
+      }
+    }, [hasToolbar]);
 
     return (
       <>
