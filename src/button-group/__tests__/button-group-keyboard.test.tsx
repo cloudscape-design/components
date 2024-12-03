@@ -51,6 +51,8 @@ test('navigates button dropdown with keyboard', () => {
   const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
   const { wrapper } = renderButtonGroup({ items }, ref);
 
+  window.HTMLElement.prototype.scrollIntoView = function () {};
+
   ref.current?.focus('like');
 
   fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
