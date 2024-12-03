@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 
 import selectionStyles from '../../../lib/components/table/selection/styles.selectors.js';
 import styles from '../../../lib/components/table/styles.selectors.js';
@@ -48,8 +48,8 @@ class StickyHeaderPage extends BasePageObject {
 const desktopSize = { width: 900, height: 800 };
 const mobileSize = { ...desktopSize, width: 600 };
 
-const setupTest = ({ isMobile = false }, testFn: (page: StickyHeaderPage) => Promise<void>) => {
-  return useBrowser({ isMobile }, async browser => {
+const setupTest = (testFn: (page: StickyHeaderPage) => Promise<void>) => {
+  return useBrowser(async browser => {
     const page = new StickyHeaderPage(browser);
     await page.setWindowSize(desktopSize);
     await browser.url('#/light/table/sticky-header-scrollable-container');
@@ -63,7 +63,7 @@ const stickyHeadersSelector = tableWrapper.findColumnHeaders().toSelector();
 describe('Sticky header', () => {
   test(
     `ensure original and sticky header selectors have different parent tables`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       const originalTable = await page.getClosest('table', originalHeadersSelector);
       const stickyTable = await page.getClosest('table', stickyHeadersSelector);
       expect(originalTable).not.toBe(null);
@@ -74,7 +74,7 @@ describe('Sticky header', () => {
 
   test(
     `syncs column sizes from the hidden column headers`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       const originalSizes = await page.getElementSizes(originalHeadersSelector);
       const copySizes = await page.getElementSizes(stickyHeadersSelector);
       expect(copySizes).toEqual(originalSizes);
@@ -83,7 +83,7 @@ describe('Sticky header', () => {
 
   test(
     `syncs column sizes from the hidden column headers when items change`,
-    useBrowser({}, async browser => {
+    useBrowser(async browser => {
       const page = new StickyHeaderPage(browser);
       await browser.url('#/light/table/hooks');
       await page.click(tableWrapper.findPagination().findPageNumberByIndex(2).toSelector());
@@ -95,7 +95,7 @@ describe('Sticky header', () => {
 
   test(
     `scrolls the scroll parent, to reveal focused row`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       await page.click(tableWrapper.findSelectAllTrigger().find('input').toSelector());
       await page.keys(['ArrowDown']);
@@ -105,7 +105,7 @@ describe('Sticky header', () => {
   );
   test(
     `scrollToTop scrolls the scroll parent to reveal the first row`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       await page.click(scrollToTopSelector);
       const { top: scrollTop } = await page.getElementScroll(scrollContainerSelector);
@@ -114,7 +114,7 @@ describe('Sticky header', () => {
   );
   test(
     `scrollToTop does not do anything, when stickyScrollbar is set to 'false'`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.click(toggleStickySelector);
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       await page.click(scrollToTopSelector);
@@ -124,7 +124,7 @@ describe('Sticky header', () => {
   );
   test(
     `respects top offset passed in a property`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       const { top: headerTopBefore } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
       await page.click(setStickyOffsetSelector);
@@ -134,7 +134,7 @@ describe('Sticky header', () => {
   );
   test(
     `syncs column header copies scroll with the table`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.elementScrollTo(tableScrollWrapper.toSelector(), { left: 50 });
       await page.waitForJsTimers();
       const { left: scrollLeft } = await page.getElementScroll(headerSecondary.toSelector());
@@ -143,7 +143,7 @@ describe('Sticky header', () => {
   );
   test(
     `does not affect tab order`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.click(togglePaginationSelector);
       await page.click(tableWrapper.findTextFilter().findInput().toSelector());
       // skip preferences toggle and table scrollable region
@@ -164,7 +164,7 @@ describe('Sticky header', () => {
   );
   test(
     `scrollToTop is called in collection hooks, whenever pagination, filtering and sorting is updated`,
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       await page.click(tableWrapper.findPagination().findNextPageButton().toSelector());
       expect((await page.getElementScroll(scrollContainerSelector)).top).toBeLessThan(200);
@@ -180,7 +180,7 @@ describe('Sticky header', () => {
 
   test(
     'sticky header does not get stuck on mobile but table header row does',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.setWindowSize(mobileSize);
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       const { top: headerOldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
@@ -197,7 +197,7 @@ describe('Sticky header', () => {
 
   test(
     'sticky feature is enabled on desktop',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.elementScrollTo(scrollContainerSelector, { top: 200 });
       const { top: oldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
       await page.elementScrollTo(scrollContainerSelector, { top: 400 });
@@ -213,7 +213,7 @@ describe('Sticky header', () => {
     ].forEach(({ screenSize, name }) => {
       test(
         `sorting works on ${name}`,
-        setupTest({}, async page => {
+        setupTest(async page => {
           await page.setWindowSize(screenSize);
           const oldItem = await page.getText(tableWrapper.findBodyCell(1, 2).toSelector());
           await page.click(tableWrapper.findColumnHeaders().get(2).toSelector());

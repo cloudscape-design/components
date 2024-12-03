@@ -29,12 +29,12 @@ class AppLayoutPage extends BasePageObject {
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
   function setupTest(
-    { isMobile = false, pageName = 'default', extraParams = {} },
+    { viewport = viewports.desktop, pageName = 'default', extraParams = {} },
     testFn: (page: AppLayoutPage) => Promise<void>
   ) {
     return useBrowser(async browser => {
       const page = new AppLayoutPage(browser);
-      await page.setWindowSize(isMobile ? viewports.mobile : viewports.desktop);
+      await page.setWindowSize(viewport);
       await page.visit(`#/light/app-layout/${pageName}?${getUrlParams(theme, extraParams)}`);
       await testFn(page);
     });
@@ -70,7 +70,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
 
   test(
     'switches between mobile and desktop modes',
-    setupTest({}, async page => {
+    setupTest({ viewport: viewports.desktop }, async page => {
       await expect(page.isExisting(mobileSelector)).resolves.toBe(false);
       await page.setWindowSize(viewports.mobile);
       await expect(page.isExisting(mobileSelector)).resolves.toBe(true);
@@ -81,7 +81,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
 
   test(
     'preserves inner content state when switching between mobile and desktop',
-    setupTest({ pageName: 'stateful' }, async page => {
+    setupTest({ viewport: viewports.desktop, pageName: 'stateful' }, async page => {
       await page.click('#content-button');
       await expect(page.getText('#content-text')).resolves.toBe('Clicked: 1');
       await page.setWindowSize(viewports.mobile);
@@ -91,7 +91,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
 
   test(
     'breadcrumbs preservation state works as expected',
-    setupTest({ pageName: 'stateful' }, async page => {
+    setupTest({ viewport: viewports.desktop, pageName: 'stateful' }, async page => {
       await page.click('#breadcrumbs-button');
       await expect(page.getText('#breadcrumbs-text')).resolves.toBe('Clicked: 1');
       await page.setWindowSize(viewports.mobile);
@@ -159,7 +159,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
 
   test(
     'preserves content scroll position when mobile drawer opens and closes',
-    setupTest({ isMobile: true }, async page => {
+    setupTest({ viewport: viewports.mobile }, async page => {
       const contentBefore = await page.getContentPosition();
       await page.click(wrapper.findNavigationToggle().toSelector());
       const navBefore = await page.getNavPosition();
