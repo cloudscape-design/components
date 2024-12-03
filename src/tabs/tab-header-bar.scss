@@ -207,18 +207,18 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
+  scroll-margin-inline-start: 1px;
   & > .tabs-tab-header-container {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
-    scroll-margin-inline-start: 1px;
   }
 }
 
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
+  scroll-margin-inline-end: 1px;
   & > .tabs-tab-header-container {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
-    scroll-margin-inline-end: 1px;
   }
 }
 
