@@ -191,7 +191,9 @@ export default () => {
                   }
                   renderWithPortal={true}
                 >
-                  <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                  <StatusIndicator type="error" iconAriaLabel="Error">
+                    Failed to load instances
+                  </StatusIndicator>
                 </Popover>
               </Box>
             )}
