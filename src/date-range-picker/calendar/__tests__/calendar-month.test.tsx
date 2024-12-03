@@ -339,7 +339,7 @@ describe('Date range picker calendar with month granularity', () => {
 
       test('should not switch if there are no enabled months in future', () => {
         const maxDate = new Date('2024-03-01').getTime();
-        const isDateEnabled = (date: Date) => date.getTime() < maxDate;
+        const isDateEnabled = (date: Date) => date.getTime() <= maxDate;
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,
           isDateEnabled,
