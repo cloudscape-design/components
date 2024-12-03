@@ -1,7 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
+
 import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-page';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 
 test(
   'follow external link in button dropdown group',
@@ -50,7 +51,7 @@ test(
 
 test(
   'focus stays on the trigger on mobiles',
-  useBrowser({ isMobile: true }, async browser => {
+  useBrowser(async browser => {
     const page = new ButtonDropdownPage('ButtonDropdown1', browser);
     await browser.url('#/light/button-dropdown/simple');
 

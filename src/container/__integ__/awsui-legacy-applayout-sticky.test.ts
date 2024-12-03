@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from '../../app-layout/__integ__/constants';
 
 import appLayoutSelectors from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
@@ -21,10 +21,10 @@ class AppLayoutLegacyStickyPage extends BasePageObject {
 }
 
 describe.each(['classic', 'visualRefresh'])('In %s', type => {
-  function setupTest({ isMobile = false }, testFn: (page: AppLayoutLegacyStickyPage) => Promise<void>) {
+  function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutLegacyStickyPage) => Promise<void>) {
     return useBrowser(async browser => {
       const page = new AppLayoutLegacyStickyPage(browser);
-      await page.setWindowSize(isMobile ? viewports.mobile : viewports.desktop);
+      await page.setWindowSize(viewport);
       await browser.url(
         `#/light/app-layout/legacy-table-sticky-notifications/?visualRefresh=${type === 'visualRefresh'}`
       );
@@ -48,7 +48,7 @@ describe.each(['classic', 'visualRefresh'])('In %s', type => {
 
   test(
     'Sticky header is scrolled out of view in mobile viewports',
-    setupTest({ isMobile: true }, async page => {
+    setupTest({ viewport: viewports.mobile }, async page => {
       const { height: demoPageHeaderHeight } = await page.getBoundingBox(demoHeaderSelector);
       const { top: topBefore } = await page.getBoundingBox(containerHeaderSelector);
       expect(topBefore).toBeGreaterThan(demoPageHeaderHeight);

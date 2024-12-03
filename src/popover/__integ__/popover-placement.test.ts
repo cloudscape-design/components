@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject, ElementRect } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 
 import styles from '../../../lib/components/popover/styles.selectors.js';
 
@@ -103,7 +103,7 @@ const setupTest = (
   { position, placement, viewport: [width, height], scrollLeft = 0, scrollTop = 0 }: SetupProps,
   testFn: (page: BasePageObject) => Promise<void>
 ) => {
-  return useBrowser({ isMobile: true }, async browser => {
+  return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width, height });
     await browser.url(`#/light/popover/placement-test?position=${position}&placement=${placement}`);

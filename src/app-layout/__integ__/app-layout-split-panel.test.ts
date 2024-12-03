@@ -11,13 +11,12 @@ const wrapper = createWrapper().findAppLayout();
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   function setupTest(
-    { isMobile = false },
     testFn: (page: AppLayoutSplitViewPage) => Promise<void>,
     url = '#/light/app-layout/with-split-panel'
   ) {
-    return useBrowser({ isMobile }, async browser => {
+    return useBrowser(async browser => {
       const page = new AppLayoutSplitViewPage(browser);
-      await page.setWindowSize(isMobile ? viewports.mobile : viewports.desktop);
+      await page.setWindowSize(viewports.desktop);
       const params = new URLSearchParams({
         visualRefresh: `${theme.startsWith('refresh')}`,
         appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
@@ -30,7 +29,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'slider is accessible by keyboard in side position',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.click(wrapper.findNavigationClose().toSelector());
       await page.openPanel();
       await page.switchPosition('side');
@@ -50,7 +49,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   (theme === 'classic' ? test : test.skip)(
     'slider is accessible by keyboard in bottom position',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
 
@@ -73,7 +72,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   ])(
     'allows split panel slider in $position position to be adjusted to $expectedValue',
     ({ position, repeatKey, expectedValue }) =>
-      setupTest({}, async page => {
+      setupTest(async page => {
         await page.openPanel();
         if (position === 'side') {
           await page.switchPosition('side');
@@ -101,7 +100,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   );
   test(
     'switches to bottom position when screen resizes to mobile',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       await page.switchPosition('side');
       await expect(page.getPanelPosition()).resolves.toEqual('side');
@@ -116,7 +115,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   );
   test(
     'switches to bottom position when screen is too narrow and restores back on resize',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       await page.switchPosition('side');
       await expect(page.getPanelPosition()).resolves.toEqual('side');
@@ -133,7 +132,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'switches to bottom position when when tools panel opens and available space is too small',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.setWindowSize({ ...viewports.desktop, width: 1100 });
       await page.openPanel();
       await page.switchPosition('side');
@@ -147,7 +146,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'should have extended max height for constrained heights',
-    setupTest({}, async page => {
+    setupTest(async page => {
       // Simulating 200% zoom on medium screens (1366x768 / 2 ~= 680x360 ).
       await page.setWindowSize({ width: 680, height: 360 });
       await page.openPanel();
@@ -167,35 +166,31 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   ].forEach(({ url, name }) => {
     test(
       `should not allow resize split panel beyond min and max limits (side position) (${name})`,
-      setupTest(
-        {},
-        async page => {
-          await page.openPanel();
-          await page.switchPosition('side');
-          const { width } = await page.getViewportSize();
-          await page.dragResizerTo({ x: width, y: 0 });
-          expect((await page.getSplitPanelSize()).width).toEqual(280);
+      setupTest(async page => {
+        await page.openPanel();
+        await page.switchPosition('side');
+        const { width } = await page.getViewportSize();
+        await page.dragResizerTo({ x: width, y: 0 });
+        expect((await page.getSplitPanelSize()).width).toEqual(280);
 
-          await page.dragResizerTo({ x: 0, y: 0 });
+        await page.dragResizerTo({ x: 0, y: 0 });
 
-          const arePaddingsEnabled = name === 'paddings enabled';
+        const arePaddingsEnabled = name === 'paddings enabled';
 
-          // different design allows for different split panel max width
-          const expectedWidth = {
-            classic: arePaddingsEnabled ? 505 : 520,
-            refresh: arePaddingsEnabled ? 415 : 454,
-            'refresh-toolbar': arePaddingsEnabled ? 577 : 592,
-          };
-          expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
-        },
-        url
-      )
+        // different design allows for different split panel max width
+        const expectedWidth = {
+          classic: arePaddingsEnabled ? 505 : 520,
+          refresh: arePaddingsEnabled ? 415 : 454,
+          'refresh-toolbar': arePaddingsEnabled ? 577 : 592,
+        };
+        expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
+      }, url)
     );
   });
 
   test(
     'should not allow resize split panel beyond min and max limits (bottom position)',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       const { height } = await page.getViewportSize();
       const { height: headerHeight } = await page.getBoundingBox('#h');
@@ -209,7 +204,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'automatically shrinks split panel when screen resizes (bottom position)',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       const windowHeight = 400;
       const { height: originalHeight } = await page.getSplitPanelSize();
@@ -222,7 +217,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'respects min width when switching panel from bottom to side',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       const { height: viewportHeight } = await page.getViewportSize();
       await page.dragResizerTo({ x: 0, y: viewportHeight });
@@ -236,7 +231,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'should keep split panel position during drag',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.openPanel();
       await page.switchPosition('side');
       await page.dragResizerTo({ x: 0, y: 0 });
@@ -249,7 +244,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
   test(
     'side panel stays in the viewport when scrolling down',
-    setupTest({}, async page => {
+    setupTest(async page => {
       const splitPanelSelector = wrapper.findSplitPanel().findOpenPanelSide().toSelector();
       await page.openPanel();
       await page.switchPosition('side');
@@ -266,37 +261,23 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
 
     test(
       'should resize main content area when switching to side',
-      setupTest(
-        {},
-        async page => {
-          const { height: windowHeight } = await page.getViewportSize();
-          await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(
-            windowHeight / 2 + splitPanelPadding + 'px'
-          );
-          await page.switchPosition('side');
-          await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(splitPanelPadding + 'px');
-        },
-        '#/light/app-layout/with-full-page-table-and-split-panel'
-      )
+      setupTest(async page => {
+        const { height: windowHeight } = await page.getViewportSize();
+        await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(windowHeight / 2 + splitPanelPadding + 'px');
+        await page.switchPosition('side');
+        await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(splitPanelPadding + 'px');
+      }, '#/light/app-layout/with-full-page-table-and-split-panel')
     );
 
     test(
       'should resize main content area when switching to side then back to bottom',
-      setupTest(
-        {},
-        async page => {
-          const { height: windowHeight } = await page.getViewportSize();
-          await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(
-            windowHeight / 2 + splitPanelPadding + 'px'
-          );
-          await page.switchPosition('side');
-          await page.switchPosition('bottom');
-          await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(
-            windowHeight / 2 + splitPanelPadding + 'px'
-          );
-        },
-        '#/light/app-layout/with-full-page-table-and-split-panel'
-      )
+      setupTest(async page => {
+        const { height: windowHeight } = await page.getViewportSize();
+        await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(windowHeight / 2 + splitPanelPadding + 'px');
+        await page.switchPosition('side');
+        await page.switchPosition('bottom');
+        await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(windowHeight / 2 + splitPanelPadding + 'px');
+      }, '#/light/app-layout/with-full-page-table-and-split-panel')
     );
   });
 });

@@ -131,8 +131,8 @@ describe('Visual refresh toolbar only', () => {
       return this.browser.execute(() => document.body.scrollWidth - document.body.clientWidth > 0);
     }
   }
-  function setupTest({ isMobile = false }, testFn: (page: PageObject) => Promise<void>) {
-    return useBrowser({ isMobile }, async browser => {
+  function setupTest(testFn: (page: PageObject) => Promise<void>) {
+    return useBrowser(async browser => {
       const page = new PageObject(browser);
 
       await browser.url(
@@ -149,7 +149,7 @@ describe('Visual refresh toolbar only', () => {
 
   test(
     'displays only the most recently opened drawer in a full-width popup on mobile view (global drawer on top of the local one)',
-    setupTest({ isMobile: true }, async page => {
+    setupTest(async page => {
       await page.click(wrapper.findDrawerTriggerById('security').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
 
@@ -162,7 +162,7 @@ describe('Visual refresh toolbar only', () => {
 
   test(
     'displays only the most recently opened drawer in a full-width popup on mobile view (local drawer on top of the global one)',
-    setupTest({ isMobile: true }, async page => {
+    setupTest(async page => {
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
       await page.click(wrapper.findDrawerTriggerById('security').toSelector());
 
@@ -175,7 +175,7 @@ describe('Visual refresh toolbar only', () => {
 
   test(
     'should open 3 drawers (1 local and 2 global) if the screen size permits',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.setWindowSize({ ...viewports.desktop, width: 1700 });
       await page.click(wrapper.findDrawerTriggerById('security').toSelector());
       await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
@@ -192,7 +192,7 @@ describe('Visual refresh toolbar only', () => {
   describe('active drawers take up all available space on the page and a third drawer is opened', () => {
     test(
       'active drawers can be shrunk to accommodate a third drawer',
-      setupTest({}, async page => {
+      setupTest(async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1600 });
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
         await page.click(wrapper.findDrawerTriggerById('global-with-stored-state').toSelector());
@@ -212,7 +212,7 @@ describe('Visual refresh toolbar only', () => {
 
     test(
       'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1400px)',
-      setupTest({}, async page => {
+      setupTest(async page => {
         await page.setWindowSize({ ...viewports.desktop, width: 1400 });
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
         await page.click(wrapper.findDrawerTriggerById('global-with-stored-state').toSelector());
@@ -228,7 +228,7 @@ describe('Visual refresh toolbar only', () => {
 
     test(
       'first opened drawer should be closed when active drawers can not be shrunk to accommodate it (1345px)',
-      setupTest({}, async page => {
+      setupTest(async page => {
         // Toolbar drawer triggers were being ellipsized
         await page.setWindowSize({ ...viewports.desktop, width: 1345 });
         await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
@@ -248,7 +248,7 @@ describe('Visual refresh toolbar only', () => {
 
   test(
     'should prevent the horizontal page scroll from appearing during resize',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.setWindowSize({ ...viewports.desktop, width: 1600 });
       await page.click(wrapper.findDrawerTriggerById('circle').toSelector());
       await page.click(wrapper.findDrawerTriggerById('global-with-stored-state').toSelector());
@@ -287,7 +287,7 @@ describe('Visual refresh toolbar only', () => {
   for (const viewport of ['mobile', 'desktop']) {
     test(
       `the content inside drawers should be scrollable on ${viewport} view`,
-      setupTest({ isMobile: viewport === 'mobile' }, async page => {
+      setupTest(async page => {
         await page.click(wrapper.findDrawerTriggerById('circle-global').toSelector());
         if (viewport === 'mobile') {
           await page.setWindowSize(viewports.mobile);
@@ -305,7 +305,7 @@ describe('Visual refresh toolbar only', () => {
 
   test(
     'should show sticky elements on scroll in custom global drawer',
-    setupTest({}, async page => {
+    setupTest(async page => {
       await page.setWindowSize(viewports.desktop);
       await expect(page.isDisplayed('[data-testid="drawer-sticky-footer"]')).resolves.toBe(false);
 

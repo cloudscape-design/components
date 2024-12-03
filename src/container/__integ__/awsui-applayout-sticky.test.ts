@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from '../../app-layout/__integ__/constants';
 
 const appLayoutWrapper = createWrapper().findAppLayout();
@@ -27,10 +27,10 @@ class AppLayoutStickyPage extends BasePageObject {
   }
 }
 
-function setupTest({ isMobile = false }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
-  return useBrowser({ isMobile }, async browser => {
+function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutStickyPage) => Promise<void>) {
+  return useBrowser(async browser => {
     const page = new AppLayoutStickyPage(browser);
-    await page.setWindowSize(isMobile ? viewports.mobile : viewports.desktop);
+    await page.setWindowSize(viewport);
     await browser.url('#/light/container/sticky-with-app-layout?visualRefresh=false');
     await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
     await testFn(page);
@@ -81,7 +81,7 @@ test(
 
 test(
   'Does not stick in narrow viewports',
-  setupTest({ isMobile: true }, async page => {
+  setupTest({ viewport: viewports.mobile }, async page => {
     const { top: topBefore } = await page.getBoundingBox(containerHeaderSelector);
     expect(topBefore).toBeGreaterThan(0);
     await page.windowScrollTo({ top: 300 });
