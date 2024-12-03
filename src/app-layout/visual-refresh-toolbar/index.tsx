@@ -440,12 +440,13 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
      * Does not apply to iframe
      */
     const getIsNestedInAppLayout = (element: HTMLElement | null): boolean => {
-      const currentElement: Element | null = element?.parentElement ?? null;
+      let currentElement: Element | null = element?.parentElement ?? null;
 
-      if (currentElement) {
+      while (currentElement) {
         if (getComputedStyle(currentElement).getPropertyValue(globalVars.stickyVerticalTopOffset)) {
           return true;
         }
+        currentElement = currentElement.parentElement;
       }
 
       return false;
