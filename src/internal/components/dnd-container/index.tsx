@@ -14,6 +14,16 @@ import useLiveAnnouncements from './use-live-announcements';
 
 import styles from './styles.css.js';
 
+export interface DndContainerProps<Option> extends ReorderOptions<Option> {
+  onChange: (sortedOption: readonly Option[]) => void;
+  disabled?: boolean;
+  renderOption: (props: RenderOptionProps<Option>) => React.ReactNode;
+  renderActiveOption: (props: RenderActiveOptionProps<Option>) => React.ReactNode;
+  i18nStrings: ReorderAnnouncements;
+  dragOverlayClassName?: string;
+  children?: (optionsContent: React.ReactNode) => React.ReactNode;
+}
+
 interface RenderOptionProps<Option> extends RenderActiveOptionProps<Option> {
   ref: React.RefCallback<HTMLElement>;
   style: React.CSSProperties;
@@ -36,13 +46,9 @@ export function DndContainer<Option>({
   renderOption,
   renderActiveOption,
   i18nStrings,
-}: ReorderOptions<Option> & {
-  onChange: (sortedOption: readonly Option[]) => void;
-  disabled?: boolean;
-  renderOption: (props: RenderOptionProps<Option>) => React.ReactNode;
-  renderActiveOption: (props: RenderActiveOptionProps<Option>) => React.ReactNode;
-  i18nStrings: ReorderAnnouncements;
-}) {
+  dragOverlayClassName = styles['drag-overlay'],
+  children = content => content,
+}: DndContainerProps<Option>) {
   const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
     sortedOptions,
     getId,
@@ -74,22 +80,24 @@ export function DndContainer<Option>({
       }}
       onDragCancel={() => setActiveItem(null)}
     >
-      <SortableContext
-        disabled={disabled}
-        items={sortedOptions.map(option => getId(option))}
-        strategy={verticalListSortingStrategy}
-      >
-        {sortedOptions.map(option => (
-          <DraggableOption
-            key={getId(option)}
-            option={option}
-            getId={getId}
-            renderOption={renderOption}
-            onKeyDown={handleKeyDown}
-            dragHandleAriaLabel={i18nStrings.dragHandleAriaLabel}
-          />
-        ))}
-      </SortableContext>
+      {children(
+        <SortableContext
+          disabled={disabled}
+          items={sortedOptions.map(option => getId(option))}
+          strategy={verticalListSortingStrategy}
+        >
+          {sortedOptions.map(option => (
+            <DraggableOption
+              key={getId(option)}
+              option={option}
+              getId={getId}
+              renderOption={renderOption}
+              onKeyDown={handleKeyDown}
+              dragHandleAriaLabel={i18nStrings.dragHandleAriaLabel}
+            />
+          ))}
+        </SortableContext>
+      )}
 
       <Portal>
         {/* Make sure that the drag overlay is above the modal
@@ -98,7 +106,7 @@ export function DndContainer<Option>({
         {/* className is a documented prop of the DragOverlay component:
               https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles */
         /* eslint-disable-next-line react/forbid-component-props */}
-        <DragOverlay className={styles['drag-overlay']} dropAnimation={null} style={{ zIndex: 5000 }}>
+        <DragOverlay className={dragOverlayClassName} dropAnimation={null} style={{ zIndex: 5000 }}>
           {activeOption &&
             renderActiveOption({
               option: activeOption,
