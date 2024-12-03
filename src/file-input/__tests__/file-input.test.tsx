@@ -138,6 +138,9 @@ describe('FileInput input', () => {
 describe('ref', () => {
   test('can be used to focus the component', () => {
     const ref = React.createRef<FileInputProps.Ref>();
+
+    window.HTMLElement.prototype.scrollIntoView = function () {};
+
     const { container } = testingLibraryRender(
       <InternalFileInput {...defaultProps} ref={ref}>
         Choose files
