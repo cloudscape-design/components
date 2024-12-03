@@ -6818,6 +6818,17 @@ Default: the user's current time offset as provided by the browser.
       "type": "DateRangePickerProps.GetTimeOffsetFunction",
     },
     {
+      "defaultValue": "'day'",
+      "inlineType": {
+        "name": "Granularity",
+        "properties": [],
+        "type": "object",
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "Granularity",
+    },
+    {
       "description": "Specifies whether to hide the time offset in the displayed absolute time range.
 Defaults to \`false\`.",
       "name": "hideTimeOffset",
@@ -6862,6 +6873,11 @@ Defaults to \`false\`.",
           },
           {
             "name": "clearButtonLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "currentMonthAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -6931,7 +6947,17 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "previousYearAriaLabel",
             "optional": true,
             "type": "string",
           },
