@@ -3,7 +3,7 @@
 
 import React, { useState } from 'react';
 
-import { Box, Link } from '~components';
+import { Box, Checkbox, Link, SpaceBetween } from '~components';
 
 import { generateItems } from '../table/generate-data';
 import { DnsName, Status } from './commons';
@@ -16,6 +16,7 @@ import styles from './styles.scss';
 const items = generateItems(10);
 
 export default function Page() {
+  const [fixedOptions, setFixedOptions] = useState(false);
   const [options1, setOptions1] = useState(() => [...items]);
   const [options2, setOptions2] = useState(() => [...items]);
   const [containers, setContainers] = useState(() => [
@@ -31,11 +32,19 @@ export default function Page() {
 
   const containersContent: Record<string, React.ReactNode> = {
     list: (
-      <ReorderableList
-        options={options1}
-        onChange={o => setOptions1([...o])}
-        renderOption={props => <InstanceOption {...props} />}
-      />
+      <SpaceBetween size="m">
+        <Checkbox checked={fixedOptions} onChange={({ detail }) => setFixedOptions(detail.checked)}>
+          Make first 3 items fixed
+        </Checkbox>
+
+        <ReorderableList
+          options={options1}
+          onChange={o => setOptions1([...o])}
+          renderOption={props => <InstanceOption {...props} />}
+          renderStaticOption={option => <InstanceOption option={option} sortable={false} />}
+          fixedOptionsStart={fixedOptions ? 3 : 0}
+        />
+      </SpaceBetween>
     ),
     table: (
       <ReorderableTable

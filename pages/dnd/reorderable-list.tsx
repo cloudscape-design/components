@@ -26,16 +26,22 @@ export function ReorderableList<Option extends { id: string }>({
   options,
   onChange,
   renderOption,
+  renderStaticOption,
+  fixedOptionsStart = 0,
 }: {
   options: readonly Option[];
   onChange: (options: readonly Option[]) => void;
   renderOption: (props: OptionProps<Option>) => React.ReactNode;
+  renderStaticOption: (option: Option) => React.ReactNode;
+  fixedOptionsStart?: number;
 }) {
+  const staticOptions = options.slice(0, fixedOptionsStart);
+  const sortableOptions = options.slice(fixedOptionsStart);
   return (
     <DndContainer
-      sortedOptions={options}
+      sortedOptions={sortableOptions}
       getId={option => option.id}
-      onChange={onChange}
+      onChange={sortedOptions => onChange([...staticOptions, ...sortedOptions])}
       renderOption={props => (
         <li
           className={clsx(styles.option, props.isDragging && styles.placeholder, props.isSorting && styles.sorting)}
@@ -49,6 +55,9 @@ export function ReorderableList<Option extends { id: string }>({
     >
       {content => (
         <ul className={styles.list} aria-label="re-orderable list" role="list">
+          {staticOptions.map(option => (
+            <React.Fragment key={option.id}>{renderStaticOption?.(option)}</React.Fragment>
+          ))}
           {content}
         </ul>
       )}
@@ -62,7 +71,8 @@ export const InstanceOption = forwardRef(
       dragHandleAriaLabel,
       listeners,
       option,
-    }: { dragHandleAriaLabel?: string; listeners?: SyntheticListenerMap; option: Instance },
+      sortable = true,
+    }: { dragHandleAriaLabel?: string; listeners?: SyntheticListenerMap; option: Instance; sortable?: boolean },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const idPrefix = useUniqueId('option');
@@ -72,7 +82,7 @@ export const InstanceOption = forwardRef(
     };
     return (
       <div ref={ref} className={styles['option-body']}>
-        <DragHandle attributes={dragHandleAttributes} listeners={listeners} />
+        <DragHandle attributes={dragHandleAttributes} listeners={listeners} disabled={!sortable} />
 
         <SpaceBetween size="s">
           <SpaceBetween size="s" direction="horizontal">
