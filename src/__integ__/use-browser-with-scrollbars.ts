@@ -81,4 +81,6 @@ function useBrowserWithScrollbars(...args: [Options, TestFunction] | [TestFuncti
   return useBrowser(options, testFn);
 }
 
+export const scrollbarThickness = 15;
+
 export default useBrowserWithScrollbars;

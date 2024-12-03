@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
+import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { testIf } from './utils';
 
@@ -98,7 +98,7 @@ const setupTest = (
   }: SetupTestOptions,
   testFn: (page: AppLayoutDrawersPage) => Promise<void>
 ) =>
-  useBrowser({ ...screenSize }, async browser => {
+  useBrowser(screenSize, async browser => {
     const page = new AppLayoutDrawersPage(browser);
     const params = new URLSearchParams({
       splitPanelPosition,
@@ -288,14 +288,13 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           screenSize: size === 'desktop' ? viewports.desktop : viewports.mobile,
         },
         async page => {
-          const scrollbarWidth = 15;
           const width = await page.getMainContentWidth();
           await page.openFirstDrawer();
           const newWidth = await page.getMainContentWidth();
           if (size === 'desktop') {
             expect(width).toBeGreaterThan(newWidth);
           } else {
-            expect(width + scrollbarWidth).toBe(newWidth);
+            expect(width + scrollbarThickness).toBe(newWidth);
           }
         }
       )

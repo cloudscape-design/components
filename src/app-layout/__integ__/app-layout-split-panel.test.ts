@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser from '../../__integ__/use-browser-with-scrollbars';
+import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
@@ -245,18 +245,21 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.openPanel();
         await page.switchPosition('side');
         const { width } = await page.getViewportSize();
+
+        // Drag the resizer to the right (i.e, make the split panel narrower) as much as possible
         await page.dragResizerTo({ x: width, y: 0 });
         expect((await page.getSplitPanelSize()).width).toEqual(280);
 
+        // Drag the resizer to the left (i.e, make the split panel wider) as much as possible
         await page.dragResizerTo({ x: 0, y: 0 });
 
         const arePaddingsEnabled = name === 'paddings enabled';
 
         // different design allows for different split panel max width
         const expectedWidth = {
-          classic: arePaddingsEnabled ? 505 : 520,
-          refresh: arePaddingsEnabled ? 415 : 454,
-          'refresh-toolbar': arePaddingsEnabled ? 577 : 592,
+          classic: arePaddingsEnabled ? 520 - scrollbarThickness : 520,
+          refresh: arePaddingsEnabled ? 445 - 2 * scrollbarThickness : 469 - scrollbarThickness,
+          'refresh-toolbar': arePaddingsEnabled ? 592 - scrollbarThickness : 592,
         };
         expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
       }, url)
