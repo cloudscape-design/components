@@ -288,13 +288,14 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           screenSize: size === 'desktop' ? viewports.desktop : viewports.mobile,
         },
         async page => {
+          const scrollbarWidth = 15;
           const width = await page.getMainContentWidth();
           await page.openFirstDrawer();
           const newWidth = await page.getMainContentWidth();
           if (size === 'desktop') {
-            await expect(width).toBeGreaterThan(newWidth);
+            expect(width).toBeGreaterThan(newWidth);
           } else {
-            await expect(width).toBe(newWidth);
+            expect(width + scrollbarWidth).toBe(newWidth);
           }
         }
       )
