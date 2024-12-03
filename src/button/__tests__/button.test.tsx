@@ -5,6 +5,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
@@ -63,6 +64,18 @@ describe('Button Component', () => {
     const wrapper = createWrapper(renderResult.container);
     button!.focus();
     expect(document.activeElement).toBe(wrapper.findButton()!.getElement());
+  });
+
+  describe('i18n', () => {
+    test('supports providing externalIconAriaLabel from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ button: { 'i18nStrings.externalIconAriaLabel': 'External test' } }}>
+          <Button external={true}>External</Button>
+        </TestI18nProvider>
+      );
+      const externalIcon = createWrapper(container).findButton()!.find('[role=img]')!.getElement();
+      expect(externalIcon).toHaveAccessibleName('External test');
+    });
   });
 
   describe.each([true, false])('loadingText property, with href: %s', withHref => {

@@ -66,6 +66,9 @@ export interface I18nFormatArgTypes {
   "breadcrumb-group": {
     "expandAriaLabel": never;
   }
+  "button": {
+    "i18nStrings.externalIconAriaLabel": never;
+  }
   "calendar": {
     "nextMonthAriaLabel": never;
     "previousMonthAriaLabel": never;

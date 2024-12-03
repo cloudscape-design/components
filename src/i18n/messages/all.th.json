@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "แสดงเส้นทาง"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "เปิดในแท็บใหม่"
+  },
   "calendar": {
     "nextMonthAriaLabel": "เดือนถัดไป",
     "previousMonthAriaLabel": "เดือนก่อนหน้า",

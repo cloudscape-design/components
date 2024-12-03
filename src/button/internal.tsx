@@ -8,6 +8,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useInternalI18n } from '../i18n/context';
 import Icon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
@@ -109,6 +110,7 @@ export const InternalButton = React.forwardRef(
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
+    const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
     const { funnelInteractionId } = useFunnel();
@@ -231,7 +233,10 @@ export const InternalButton = React.forwardRef(
             {external && (
               <>
                 &nbsp;
-                <span role="img" aria-label={i18nStrings?.externalIconAriaLabel}>
+                <span
+                  role="img"
+                  aria-label={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
+                >
                   <Icon name="external" className={testUtilStyles['external-icon']} />
                 </span>
               </>
