@@ -6,6 +6,7 @@ import {
   AppLayout,
   Box,
   ButtonGroup,
+  ButtonGroupProps,
   Checkbox,
   ColumnLayout,
   FileTokenGroup,
@@ -82,6 +83,8 @@ export default function PromptInputPage() {
 
   const ref = React.createRef<HTMLTextAreaElement>();
 
+  const buttonGroupRef = React.useRef<ButtonGroupProps.Ref>(null);
+
   const onDismiss = (event: { detail: { fileIndex: number } }) => {
     const newItems = [...files];
     newItems.splice(event.detail.fileIndex, 1);
@@ -136,6 +139,8 @@ export default function PromptInputPage() {
             <button id="focus-button" onClick={() => ref.current?.focus()}>
               Focus component
             </button>
+
+            <button onClick={() => buttonGroupRef.current?.focus('files')}>Focus file input</button>
             <button onClick={() => ref.current?.select()}>Select all text</button>
 
             <ColumnLayout columns={2}>
@@ -170,6 +175,7 @@ export default function PromptInputPage() {
                     hasSecondaryActions ? (
                       <Box padding={{ left: 'xxs', top: 'xs' }}>
                         <ButtonGroup
+                          ref={buttonGroupRef}
                           ariaLabel="Chat actions"
                           onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
                           items={[

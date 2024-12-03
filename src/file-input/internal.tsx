@@ -15,6 +15,7 @@ import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { FileInputProps } from './interfaces';
@@ -46,6 +47,9 @@ const InternalFileInput = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(restProps);
     const uploadInputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLButtonElement>(null);
+    const mergedRef = useMergeRefs(__internalRootRef, containerRef);
+
     const uploadButtonLabelId = useUniqueId('upload-button-label');
     const formFieldContext = useFormFieldContext(restProps);
     const selfControlId = useUniqueId('upload-input');
@@ -55,7 +59,10 @@ const InternalFileInput = React.forwardRef(
 
     const [isFocused, setIsFocused] = useState(false);
     const onUploadButtonClick = () => uploadInputRef.current?.click();
-    const onUploadInputFocus = () => setIsFocused(true);
+    const onUploadInputFocus = () => {
+      setIsFocused(true);
+      containerRef.current?.scrollIntoView();
+    };
     const onUploadInputBlur = () => setIsFocused(false);
 
     const onUploadInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -99,7 +106,7 @@ const InternalFileInput = React.forwardRef(
     const { tabIndex } = useSingleTabStopNavigation(uploadInputRef);
 
     return (
-      <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
+      <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
         {/* This is the actual interactive and accessible file-upload element. */}
         {/* It is visually hidden to achieve the desired UX design. */}
         <input

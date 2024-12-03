@@ -29,10 +29,16 @@ const ItemElement = forwardRef(
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
     const buttonRef = useRef<HTMLButtonElement>(null);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
-        buttonRef.current?.focus();
+        if (inputRef) {
+          inputRef.current?.focus();
+        }
+        if (buttonRef) {
+          buttonRef.current?.focus();
+        }
       },
     }));
 
@@ -94,6 +100,8 @@ const ItemElement = forwardRef(
 
     const onFilesChangeHandler = (event: CustomEvent<ButtonGroupProps.FilesChangeDetails>) => {
       fireCancelableEvent(onFilesChange, event.detail, event);
+
+      setTooltip(null);
     };
 
     return (
@@ -133,7 +141,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-file-input' && (
           <FileInputItem
-            ref={buttonRef}
+            ref={inputRef}
             item={item}
             onFilesChange={onFilesChangeHandler}
             showTooltip={tooltip?.item === item.id}
