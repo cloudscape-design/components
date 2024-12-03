@@ -15,6 +15,7 @@ const permutations = createPermutations<ButtonProps>([
     loading: [false, true],
     iconName: [undefined, 'settings'],
     iconAlign: ['left', 'right'],
+    external: [false, true],
     children: [
       'Button',
       <>
@@ -85,6 +86,7 @@ const permutations = createPermutations<ButtonProps>([
   },
   {
     variant: ['inline-link'],
+    external: [false, true],
     iconName: [undefined, 'download'],
     iconAlign: ['left', 'right'],
     children: ['Inline link'],
@@ -98,7 +100,12 @@ export default function ButtonPermutations() {
     <>
       <h1>Button permutations</h1>
       <ScreenshotArea disableAnimations={true}>
-        <PermutationsView permutations={permutations} render={permutation => <Button {...permutation} />} />
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            <Button {...permutation} i18nStrings={{ externalIconAriaLabel: '(opens in a new tab)' }} />
+          )}
+        />
       </ScreenshotArea>
     </>
   );

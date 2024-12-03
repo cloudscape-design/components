@@ -10,6 +10,7 @@ import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 import styles from '../../../lib/components/button/styles.css.js';
+import testUtilStyles from '../../../lib/components/button/test-classes/styles.css.js';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -29,6 +30,10 @@ function renderButton(props: ButtonProps = {}) {
 
 function findIcons(wrapper: ButtonWrapper) {
   return wrapper.findAll(`.${styles.icon}`);
+}
+
+function findExternalIcon(wrapper: ButtonWrapper) {
+  return wrapper.find(`.${testUtilStyles['external-icon']}`);
 }
 
 function expectToHaveClasses(element: HTMLElement, classesMap: Record<string, boolean>) {
@@ -101,6 +106,47 @@ describe('Button Component', () => {
     test('adds a tab index -1 when button with link is disabled', () => {
       const wrapper = renderButton({ disabled: true, href: 'https://amazon.com' });
       expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+    });
+  });
+
+  describe('external property', () => {
+    test('renders an external icon when set', () => {
+      const wrapper = renderButton({ external: true, children: 'Button' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('renders an external icon even when an icon is provided', () => {
+      const wrapper = renderButton({ external: true, children: 'Button', iconName: 'add-plus' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('renders an external icon even when an icon is provided on the right', () => {
+      const wrapper = renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('does not render an external icon when variant is icon', () => {
+      const wrapper = renderButton({ external: true, iconName: 'add-plus', variant: 'icon' });
+      expect(findExternalIcon(wrapper)).not.toBeTruthy();
+    });
+
+    test('sets target=_blank implicitly', () => {
+      const wrapper = renderButton({ external: true, href: 'https://amazon.com', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAttribute('target', '_blank');
+    });
+
+    test('allows target to be overridden', () => {
+      const wrapper = renderButton({ external: true, href: 'https://amazon.com', target: '_top', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAttribute('target', '_top');
+    });
+
+    test('labels the icon using i18nStrings.externalIconAriaLabel', () => {
+      const wrapper = renderButton({
+        external: true,
+        children: 'Button',
+        i18nStrings: { externalIconAriaLabel: 'external' },
+      });
+      expect(wrapper.find('[role=img]')!.getElement()).toHaveAccessibleName('external');
     });
   });
 

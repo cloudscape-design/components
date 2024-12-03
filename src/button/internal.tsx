@@ -8,6 +8,7 @@ import {
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import Icon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
@@ -70,7 +71,8 @@ export const InternalButton = React.forwardRef(
       disabledReason,
       wrapText = true,
       href,
-      target,
+      external,
+      target: targetOverride,
       rel,
       download,
       formAction = 'submit',
@@ -80,6 +82,7 @@ export const InternalButton = React.forwardRef(
       ariaControls,
       fullWidth,
       badge,
+      i18nStrings,
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
@@ -95,6 +98,7 @@ export const InternalButton = React.forwardRef(
 
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
+    const target = targetOverride ?? (external ? '_blank' : undefined);
     const isNotInteractive = loading || disabled;
     const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
@@ -221,7 +225,19 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
-        {shouldHaveContent && <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>}
+        {shouldHaveContent && (
+          <>
+            <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>
+            {external && (
+              <>
+                &nbsp;
+                <span role="img" aria-label={i18nStrings?.externalIconAriaLabel}>
+                  <Icon name="external" className={testUtilStyles['external-icon']} />
+                </span>
+              </>
+            )}
+          </>
+        )}
         <RightIcon {...iconProps} />
       </>
     );
