@@ -246,7 +246,7 @@ export default function ButtonGroupPage() {
         return asyncAction();
       case 'experimental-features':
         return syncAction(() => setUseExperimentalFeatures(!!detail.pressed));
-      case 'icon-file-input':
+      case 'file-input':
       default:
         return syncAction();
     }

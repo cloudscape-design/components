@@ -28,6 +28,7 @@ const FileInputItem = forwardRef(
     const containerRef = React.useRef<HTMLDivElement>(null);
 
     const canShowTooltip = Boolean(showTooltip);
+
     return (
       <div ref={containerRef}>
         <InternalFileInput
