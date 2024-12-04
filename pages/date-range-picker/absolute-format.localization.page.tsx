@@ -6,11 +6,11 @@ import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '
 
 import AppContext from '../app/app-context';
 import {
-  applyDisabledIfEven,
+  applyDisabledReason,
+  checkIfDisabled,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  evenDisabledMsg,
   i18nStrings,
   isValid,
 } from './common';
@@ -49,6 +49,7 @@ export default function DateRangePickerScenario() {
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
   const absoluteFormat =
     urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
   const hideTimeOffset = urlParams.hideTimeOffset ?? dateRangePickerDemoDefaults.hideTimeOffset;
@@ -93,12 +94,25 @@ export default function DateRangePickerScenario() {
               <option value="none">None (Default)</option>
               <option value="all">All</option>
               <option value="only-even">Only even</option>
+              <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
+              <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
+              <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
+              <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
             </select>
           </label>
           <label>
             <input
               type="checkbox"
+              checked={withDisabledReason}
+              onChange={event => setUrlParams({ withDisabledReason: !!event.target.checked })}
+            />{' '}
+            Disabled reasons
+          </label>
+          <label>
+            <input
+              type="checkbox"
               checked={dateOnly}
+              disabled={monthOnly}
               onChange={event => setUrlParams({ dateOnly: !!event.target.checked })}
             />{' '}
             Date only
@@ -146,9 +160,9 @@ export default function DateRangePickerScenario() {
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}
-                isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
+                isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
                 dateDisabledReason={(date: Date) =>
-                  applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
+                  applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)
                 }
                 getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
                 absoluteFormat={absoluteFormat}

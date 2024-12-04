@@ -7,11 +7,11 @@ import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link }
 import AppContext from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import {
-  applyDisabledIfEven,
+  applyDisabledReason,
+  checkIfDisabled,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  evenDisabledMsg,
   i18nStrings,
   isValid,
   relativeOptions,
@@ -28,6 +28,7 @@ export default function DatePickerScenario() {
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
 
   return (
     <Box padding="s">
@@ -47,8 +48,19 @@ export default function DatePickerScenario() {
           <option value="none">None (Default)</option>
           <option value="all">All</option>
           <option value="only-even">Only even</option>
+          <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
+          <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
+          <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
+          <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
         </select>
       </label>
+      <Checkbox
+        checked={withDisabledReason}
+        onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
+      >
+        Disabled reasons
+      </Checkbox>
+
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
       </Checkbox>
@@ -68,10 +80,8 @@ export default function DatePickerScenario() {
             dateOnly={true}
             absoluteFormat="long-localized"
             granularity={monthOnly ? 'month' : 'day'}
-            isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
-            dateDisabledReason={(date: Date) =>
-              applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
-            }
+            isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+            dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
           />
         </FormField>
         <br />

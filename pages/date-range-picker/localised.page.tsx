@@ -6,11 +6,11 @@ import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link } from '~com
 
 import AppContext from '../app/app-context';
 import {
-  applyDisabledIfEven,
+  applyDisabledReason,
+  checkIfDisabled,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  evenDisabledMsg,
   relativeOptions,
 } from './common';
 import { makeIsValidFunction } from './is-valid-range';
@@ -71,6 +71,7 @@ export default function DatePickerScenario() {
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
 
   return (
     <Box padding="s">
@@ -92,6 +93,13 @@ export default function DatePickerScenario() {
           <option value="only-even">Only even</option>
         </select>
       </label>
+      <Checkbox
+        checked={withDisabledReason}
+        onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
+      >
+        Disabled reasons
+      </Checkbox>
+      {/* <Checkbox disabled={monthOnly}  */}
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
       </Checkbox>
@@ -106,10 +114,8 @@ export default function DatePickerScenario() {
         onChange={e => setValue(e.detail.value)}
         relativeOptions={relativeOptions}
         isValidRange={isValid}
-        isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
-        dateDisabledReason={(date: Date) =>
-          applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
-        }
+        isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+        dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
       />
       <br />
       <br />

@@ -7,11 +7,11 @@ import RangeCalendar, { DateRangePickerCalendarProps } from '~components/date-ra
 
 import AppContext from '../app/app-context';
 import {
-  applyDisabledIfEven,
+  applyDisabledReason,
+  checkIfDisabled,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  evenDisabledMsg,
   i18nStrings,
   i18nStringsDateOnly,
 } from './common';
@@ -26,6 +26,7 @@ export default function RangeCalendarScenario() {
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
@@ -43,9 +44,23 @@ export default function RangeCalendarScenario() {
             <option value="none">None (Default)</option>
             <option value="all">All</option>
             <option value="only-even">Only even</option>
+            <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
+            <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
+            <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
+            <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
           </select>
         </label>
-        <Checkbox checked={dateOnly} onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}>
+        <Checkbox
+          checked={withDisabledReason}
+          onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
+        >
+          Disabled reasons
+        </Checkbox>
+        <Checkbox
+          disabled={monthOnly}
+          checked={dateOnly}
+          onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+        >
           Date-only
         </Checkbox>
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
@@ -62,10 +77,8 @@ export default function RangeCalendarScenario() {
           granularity={monthOnly ? 'month' : 'day'}
           timeInputFormat="hh:mm"
           customAbsoluteRangeControl={undefined}
-          isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
-          dateDisabledReason={(date: Date) =>
-            applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
-          }
+          isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+          dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
         />
 
         <Link id="focusable-after">Focusable element after the range calendar</Link>

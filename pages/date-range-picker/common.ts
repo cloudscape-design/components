@@ -18,23 +18,85 @@ export type DateRangePickerDemoContext = React.Context<
     timeOffset?: number | string;
     expandToViewport?: boolean;
     disabledDates?: string;
+    withDisabledReason?: boolean;
   }>
 >;
 
-export type DisabledDate = 'none' | 'all' | 'only-even';
+export type DisabledDate =
+  | 'none'
+  | 'all'
+  | 'only-even'
+  | 'middle-of-page'
+  | 'end-of-page'
+  | 'start-of-page'
+  | 'overlapping-pages';
 
 function isEnabledByOddness(date: Date, isMonthPicker: boolean): boolean {
   return isMonthPicker ? (date.getMonth() + 1) % 2 !== 0 : date.getDate() % 2 !== 0;
 }
 
-export function applyDisabledIfEven(date: Date, disabledDate: DisabledDate, isMonthPicker: boolean): boolean {
-  if (disabledDate === 'only-even') {
-    return isEnabledByOddness(date, isMonthPicker);
+export function checkIfDisabled(date: Date, disabledDate: DisabledDate, isMonthPicker: boolean): boolean {
+  const endOfMonthDays = [28, 29, 30, 31];
+  switch (disabledDate) {
+    case 'only-even':
+      return isEnabledByOddness(date, isMonthPicker);
+    case 'middle-of-page':
+      if (isMonthPicker) {
+        return ![5, 6].includes(date.getMonth());
+      }
+      return date.getDate() !== 15;
+    case 'end-of-page':
+      if (isMonthPicker) {
+        return date.getMonth() !== 11;
+      }
+      return !endOfMonthDays.includes(date.getDate());
+    case 'start-of-page':
+      if (isMonthPicker) {
+        return date.getMonth() > 0;
+      }
+      return date.getDate() > 1;
+    case 'overlapping-pages':
+      if (isMonthPicker) {
+        return ![11, 0].includes(date.getMonth());
+      }
+      return ![...endOfMonthDays, 1].includes(date.getDate());
+    case 'all':
+      return false;
+    case 'none':
+    default:
+      return true;
   }
-  return disabledDate === 'none';
 }
 
 export const evenDisabledMsg = 'Option is not odd enough';
+export function applyDisabledReason(
+  hasDisabledReason: boolean,
+  date: Date,
+  disabledDate: DisabledDate,
+  isMonthPicker: boolean
+): string {
+  if (!hasDisabledReason || checkIfDisabled(date, disabledDate, isMonthPicker)) {
+    return '';
+  }
+
+  const pageType = isMonthPicker ? 'year' : 'month';
+  switch (disabledDate) {
+    case 'only-even':
+      return evenDisabledMsg;
+    case 'middle-of-page':
+      return `Middle of ${pageType} disabled`;
+    case 'end-of-page':
+      return `End of ${pageType} disabled`;
+    case 'start-of-page':
+      return `Start of ${pageType} disabled`;
+    case 'overlapping-pages':
+      return `End and start of ${pageType} disabled`;
+    case 'all':
+      return `Full ${pageType} disabled`;
+    default:
+      return 'Disabled';
+  }
+}
 
 export const dateRangePickerDemoDefaults = {
   monthOnly: false,
@@ -48,6 +110,7 @@ export const dateRangePickerDemoDefaults = {
   timeOffset: 0,
   expandToViewport: false,
   disabledDates: 'none',
+  withDisabledReason: true,
 };
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {

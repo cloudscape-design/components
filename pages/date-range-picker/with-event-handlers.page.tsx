@@ -6,11 +6,11 @@ import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link, SpaceBetwee
 
 import AppContext from '../app/app-context';
 import {
-  applyDisabledIfEven,
+  applyDisabledReason,
+  checkIfDisabled,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  evenDisabledMsg,
   i18nStrings,
   isValid,
   relativeOptions,
@@ -26,6 +26,7 @@ export default function DateRangePickerScenario() {
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
   const blurLogDiv = useRef<HTMLDivElement>(null);
   const focusLogDiv = useRef<HTMLDivElement>(null);
   const handleFocus = () => {
@@ -65,8 +66,18 @@ export default function DateRangePickerScenario() {
             <option value="none">None (Default)</option>
             <option value="all">All</option>
             <option value="only-even">Only even</option>
+            <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
+            <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
+            <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
+            <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
           </select>
         </label>
+        <Checkbox
+          checked={withDisabledReason}
+          onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
+        >
+          Disabled reasons
+        </Checkbox>
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
           Month-only
         </Checkbox>
@@ -107,10 +118,8 @@ export default function DateRangePickerScenario() {
         isValidRange={isValid}
         expandToViewport={expandToViewport}
         granularity={monthOnly ? 'month' : 'day'}
-        isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
-        dateDisabledReason={(date: Date) =>
-          applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
-        }
+        isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+        dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
       />
     </Box>
   );
