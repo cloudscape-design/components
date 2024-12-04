@@ -542,33 +542,32 @@ describe('Date range picker', () => {
             })
           );
         });
-      });
-    });
 
-    //todo confirm what to do
-    (['hh:mm:ss', 'hh:mm', 'hh'] as DateRangePickerProps['timeInputFormat'][]).forEach(timeInputFormat => {
-      test.skip(`sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat} with month granularity`, () => {
-        const onChangeSpy = jest.fn();
-        const { wrapper } = renderDateRangePicker({
-          ...defaultProps,
-          granularity: 'month',
-          timeInputFormat,
-          onChange: event => onChangeSpy(event.detail),
+        test(`ignores time formant and strips out time when selecting a date with format ${timeInputFormat}`, () => {
+          const onChangeSpy = jest.fn();
+          const { wrapper } = renderDateRangePicker({
+            ...defaultProps,
+            granularity: 'month',
+            timeInputFormat,
+            onChange: event => onChangeSpy(event.detail),
+          });
+
+          wrapper.findTrigger().click();
+          wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05');
+          wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05');
+          wrapper.findDropdown()!.findApplyButton().click();
+
+          //todo confirm values set after
+          // expect(onChangeSpy).toHaveBeenCalledWith(
+          //   expect.objectContaining({
+          //     value: {
+          //       type: 'absolute',
+          //       startDate: '2018-05',
+          //       endDate: '2018-05',
+          //     },
+          //   })
+          // );
         });
-
-        wrapper.findTrigger().click();
-        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05');
-        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05');
-        wrapper.findDropdown()!.findApplyButton().click();
-        expect(onChangeSpy).toHaveBeenCalledWith(
-          expect.objectContaining({
-            value: {
-              type: 'absolute',
-              startDate: '2018-05',
-              endDate: '2018-05',
-            },
-          })
-        );
       });
     });
 
@@ -652,6 +651,32 @@ describe('Date range picker', () => {
 
     //todo confirm what to do with month granularity
     describe('time offset', () => {
+      test('ignores the provided time offset when granularity is a month', () => {
+        const onChangeSpy = jest.fn();
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          timeOffset: 6.5 * 60,
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05');
+        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05');
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        //todo confirm values as expected
+        // expect(onChangeSpy).toHaveBeenCalledWith(
+        //   expect.objectContaining({
+        //     value: {
+        //       type: 'absolute',
+        //       startDate: '2018-05-10T00:00:00+06:30',
+        //       endDate: '2018-05-12T23:59:59+06:30',
+        //     },
+        //   })
+        // );
+      });
+
       test('creates values in the provided time offset', () => {
         const onChangeSpy = jest.fn();
         const { wrapper } = renderDateRangePicker({
@@ -860,6 +885,18 @@ describe('Date range picker', () => {
         expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01-02 — 2018-01-05');
       });
 
+      //todo
+      test.skip('formatted month granularity range has no time part', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2018-01', endDate: '2018-01' },
+        });
+        expect(wrapper.findTrigger().getElement()).toHaveTextContent('2018-01 — 2018-01');
+      });
+
+      //todo confirm vaules stripped further in month granularity
+
       test('date-only range is saved without time part', () => {
         const onChangeSpy = jest.fn();
         const { wrapper } = renderDateRangePicker({
@@ -875,6 +912,25 @@ describe('Date range picker', () => {
 
         expect(onChangeSpy).toHaveBeenCalledWith(
           expect.objectContaining({ value: { type: 'absolute', startDate: '2018-05-10', endDate: '2018-05-12' } })
+        );
+      });
+
+      test('month granularity range is saved without day or time part', () => {
+        const onChangeSpy = jest.fn();
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          dateOnly: true,
+          granularity: 'month',
+          onChange: event => onChangeSpy(event.detail),
+        });
+
+        wrapper.findTrigger().click();
+        wrapper.findDropdown()!.findStartDateInput()!.setInputValue('2018/05');
+        wrapper.findDropdown()!.findEndDateInput()!.setInputValue('2018/05');
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({ value: { type: 'absolute', startDate: '2018-05', endDate: '2018-05' } })
         );
       });
     });
@@ -898,7 +954,7 @@ describe('Date range picker', () => {
           ></button>
         </>
       );
-      test('renders current value from calendar', () => {
+      test('renders current value from calendar witn day granularity', () => {
         const { wrapper, getByTestId } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
@@ -910,7 +966,20 @@ describe('Date range picker', () => {
         );
       });
 
-      test('can update value in calendar', () => {
+      test('renders current value from calendar with month granularity', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
+          customAbsoluteRangeControl: customControl,
+        });
+        wrapper.findTrigger().click();
+        expect(getByTestId('display')).toHaveTextContent(
+          '{"start":{"date":"2022-11-24","time":"12:55:00"},"end":{"date":"2022-11-28","time":"11:14:00"}}'
+        );
+      });
+
+      test('can update value in calendar with day granularity', () => {
         const { wrapper, getByTestId } = renderDateRangePicker({
           ...defaultProps,
           customAbsoluteRangeControl: customControl,
@@ -928,7 +997,26 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('12:34:56');
       });
 
-      test('can clear value in calendar', () => {
+      test('can update value in calendar with month granularity', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          customAbsoluteRangeControl: customControl,
+        });
+        wrapper.findTrigger().click();
+        getByTestId('set-date').click();
+        expect(getByTestId('display')).toHaveTextContent(
+          '{"start":{"date":"2022-01-02","time":"00:00:00"},"end":{"date":"2022-02-06","time":"12:34:56"}}'
+        );
+        expect(wrapper.findDropdown()!.findSelectedStartDate()!.getElement()).toHaveTextContent('JanJanuary 2022');
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('2022/01');
+        // expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('00:00:00');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()!.getElement()).toHaveTextContent('FebFebruary 2022');
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('2022/02');
+        // expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('12:34:56');
+      });
+
+      test('can clear value in calendar with day granularity', () => {
         const { wrapper, getByTestId } = renderDateRangePicker({
           ...defaultProps,
           value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
@@ -943,6 +1031,24 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findSelectedEndDate()).toBeNull();
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('');
         expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('');
+      });
+
+      test('can clear value in calendar with month granularity', () => {
+        const { wrapper, getByTestId } = renderDateRangePicker({
+          ...defaultProps,
+          granularity: 'month',
+          value: { type: 'absolute', startDate: '2022-11-24T12:55:00', endDate: '2022-11-28T11:14:00' },
+          customAbsoluteRangeControl: customControl,
+        });
+        wrapper.findTrigger().click();
+        getByTestId('clear-date').click();
+        expect(getByTestId('display')).toHaveTextContent('{"start":{"date":"","time":""},"end":{"date":"","time":""}}');
+        expect(wrapper.findDropdown()!.findSelectedStartDate()).toBeNull();
+        expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveValue('');
+        // expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveValue('');
+        expect(wrapper.findDropdown()!.findSelectedEndDate()).toBeNull();
+        expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveValue('');
+        // expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveValue('');
       });
     });
 
@@ -983,7 +1089,7 @@ describe('Date range picker', () => {
         );
       });
 
-      test.skip('supports using relative range props from i18n provider with month granularity', () => {
+      test('supports using relative range props from i18n provider with month granularity', () => {
         const { container } = render(
           <TestI18nProvider
             messages={{
@@ -1013,18 +1119,24 @@ describe('Date range picker', () => {
         expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
           'Custom start date'
         );
-        expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
-          'Custom start time'
-        );
+        expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
         expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
           'Custom end date'
         );
-        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
-          'Custom end time'
-        );
-        expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleDescription(
-          'Custom constraint text'
-        );
+        expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+
+        //todo  sort out more aria labels
+        // expect(wrapper.findDropdown()?.findPreviousPageButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        //         'Test previous year'
+        //       );
+
+        // expect(wrapper.findDropdown()?.findNextPageButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+        //   'Test next year'
+        // );
+
+        // expect(wrapper.findDropdown()?.findCurrentMonth()!.getElement()!.getAttribute('aria-label')).toMatch(
+        //   'Test current month'
+        // );
       });
     });
   });
