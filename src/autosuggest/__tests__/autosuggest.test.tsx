@@ -135,7 +135,7 @@ test('entered text option should not get screenreader override', () => {
   ).toBeFalsy();
 });
 
-test('should not close dropdown when no realted target in blur', () => {
+test('should not close dropdown when no related target in blur', () => {
   const { wrapper, container } = renderAutosuggest(
     <div>
       <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
