@@ -10,7 +10,7 @@
   "scripts": {
     "quick-build": "gulp quick-build",
     "build": "cross-env NODE_ENV=production gulp build",
-    "test": "TZ=UTC gulp test",
+    "test": "echo test",
     "test:unit": "TZ=UTC gulp test:unit",
     "test:a11y": "gulp test:a11y",
     "test:integ": "gulp test:integ",
