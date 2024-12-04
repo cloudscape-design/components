@@ -2,12 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 export function encode<T>(queryObject: T): string {
-  try {
-    return encodeURIComponent(JSON.stringify(queryObject));
-  } catch (error) {
-    // Thrown if uriComponent contains a lone surrogate (like 0xD800–0xDBFF)
-    return '';
-  }
+  return encodeURIComponent(JSON.stringify(queryObject));
 }
 
 export function decode<T>(queryString: string, defaultResult: T): T;
