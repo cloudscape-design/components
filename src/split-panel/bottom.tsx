@@ -7,6 +7,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
@@ -45,7 +46,14 @@ export function SplitPanelContentBottom({
   const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
-  useResizeObserver(headerRef, entry => reportHeaderHeight(entry.borderBoxHeight));
+  const closedPanelBlockSize = useRef<string>();
+
+  useResizeObserver(headerRef, entry => {
+    const { borderBoxHeight } = entry;
+    closedPanelBlockSize.current = `calc(${borderBoxHeight}px + ${tokens.borderPanelTopWidth})`;
+    reportHeaderHeight(borderBoxHeight);
+  });
+
   useEffect(() => {
     // report empty height when unmounting the panel
     return () => reportHeaderHeight(0);
@@ -75,7 +83,7 @@ export function SplitPanelContentBottom({
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,
         insetInlineEnd: rightOffset,
-        blockSize: isOpen ? cappedSize : undefined,
+        blockSize: isOpen ? cappedSize : isToolbar ? closedPanelBlockSize.current : undefined,
       }}
       ref={splitPanelRef}
     >

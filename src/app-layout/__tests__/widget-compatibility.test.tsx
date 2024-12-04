@@ -13,6 +13,7 @@ import {
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
+import splitPanelTestUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';
 
 const wrapper = createWrapper();
 
@@ -107,13 +108,13 @@ test('renders visual refresh toolbar with navigation using legacy props', () => 
 test('renders visual refresh toolbar with split panel trigger using toolbarProps', () => {
   const onSplitPanelToggle = jest.fn();
   renderNewAppLayout({ toolbarProps: { onSplitPanelToggle } });
-  wrapper.findByClassName(testUtilsStyles['split-panel-trigger'])!.click();
+  wrapper.findByClassName(splitPanelTestUtilStyles['open-button'])!.click();
   expect(onSplitPanelToggle).toHaveBeenCalled();
 });
 
 test('renders visual refresh toolbar with split panel trigger using legacy props', () => {
   const onSplitPanelToggle = jest.fn();
   renderLegacyAppLayout({ appLayoutInternals: { onSplitPanelToggle } });
-  wrapper.findByClassName(testUtilsStyles['split-panel-trigger'])!.click();
+  wrapper.findByClassName(splitPanelTestUtilStyles['open-button'])!.click();
   expect(onSplitPanelToggle).toHaveBeenCalled();
 });

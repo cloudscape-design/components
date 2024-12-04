@@ -7,7 +7,6 @@ import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
 
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
-import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 
 // no-op function to suppress controllability warnings
 function noop() {}
@@ -40,9 +39,7 @@ describe('toolbar mode only features', () => {
         <AppLayout splitPanel={<SplitPanel header="Testing">Dummy for testing</SplitPanel>} />
       );
       expect(wrapper.findToolbar()).toBeTruthy();
-      expect(wrapper.findToolbar()!.getElement()).toContainElement(
-        wrapper.findByClassName(testUtilsStyles['split-panel-trigger'])!.getElement()
-      );
+      expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
     });
 
     test('renders toolbar with split panel trigger in active state', () => {
@@ -54,9 +51,8 @@ describe('toolbar mode only features', () => {
         />
       );
       expect(wrapper.findToolbar()).toBeTruthy();
-      const splitPanelTrigger = wrapper.findByClassName(testUtilsStyles['split-panel-trigger'])!.getElement();
-      expect(wrapper.findToolbar()!.getElement()).toContainElement(splitPanelTrigger);
-      expect(splitPanelTrigger).toHaveAttribute('aria-expanded', 'true');
+      expect(wrapper.findToolbar()!.getElement()).toContainElement(wrapper.findSplitPanelOpenButton()!.getElement());
+      expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveAttribute('aria-expanded', 'true');
     });
 
     // skip on desktop because requires element queries to work
