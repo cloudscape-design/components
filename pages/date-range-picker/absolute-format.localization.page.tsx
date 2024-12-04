@@ -5,7 +5,14 @@ import React, { useContext, useState } from 'react';
 import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '~components';
 
 import AppContext from '../app/app-context';
-import { DateRangePickerDemoContext, dateRangePickerDemoDefaults, i18nStrings, isValid } from './common';
+import {
+  applyDisabledIfEven,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  evenDisabledMsg,
+  i18nStrings,
+  isValid,
+} from './common';
 
 const locales = [
   'ar',
@@ -39,6 +46,7 @@ export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
   const absoluteFormat =
     urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
   const hideTimeOffset = urlParams.hideTimeOffset ?? dateRangePickerDemoDefaults.hideTimeOffset;
@@ -87,6 +95,14 @@ export default function DateRangePickerScenario() {
             Month only
           </label>
           <label>
+            <input
+              type="checkbox"
+              checked={disableEven}
+              onChange={event => setUrlParams({ disableEven: !!event.target.checked })}
+            />{' '}
+            Disable even options
+          </label>
+          <label>
             Time offset from UTC in minutes{' '}
             <input
               type="number"
@@ -121,6 +137,10 @@ export default function DateRangePickerScenario() {
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}
+                isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+                dateDisabledReason={(date: Date) =>
+                  applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+                }
                 getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
                 absoluteFormat={absoluteFormat}
                 dateOnly={dateOnly}

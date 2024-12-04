@@ -545,6 +545,7 @@ describe('Date range picker', () => {
       });
     });
 
+    //todo confirm what to do
     (['hh:mm:ss', 'hh:mm', 'hh'] as DateRangePickerProps['timeInputFormat'][]).forEach(timeInputFormat => {
       test.skip(`sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat} with month granularity`, () => {
         const onChangeSpy = jest.fn();
@@ -571,6 +572,7 @@ describe('Date range picker', () => {
       });
     });
 
+    //todo confirm what to do with month granularity
     describe('time formats', () => {
       test('hh:mm:ss format uses the provided string', () => {
         const onChangeSpy = jest.fn();
@@ -648,6 +650,7 @@ describe('Date range picker', () => {
       });
     });
 
+    //todo confirm what to do with month granularity
     describe('time offset', () => {
       test('creates values in the provided time offset', () => {
         const onChangeSpy = jest.fn();

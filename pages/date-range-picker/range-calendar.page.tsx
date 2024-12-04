@@ -6,7 +6,14 @@ import { Box, Checkbox, Link, SpaceBetween } from '~components';
 import RangeCalendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
 
 import AppContext from '../app/app-context';
-import { DateRangePickerDemoContext, dateRangePickerDemoDefaults, i18nStrings, i18nStringsDateOnly } from './common';
+import {
+  applyDisabledIfEven,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  evenDisabledMsg,
+  i18nStrings,
+  i18nStringsDateOnly,
+} from './common';
 
 export default function RangeCalendarScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
@@ -16,6 +23,7 @@ export default function RangeCalendarScenario() {
   });
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
 
   return (
     <Box padding="s">
@@ -28,6 +36,9 @@ export default function RangeCalendarScenario() {
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
           Month-only
         </Checkbox>
+        <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
+          Disable even dates
+        </Checkbox>
 
         <Link id="focusable-before">Focusable element before the range calendar</Link>
 
@@ -39,7 +50,10 @@ export default function RangeCalendarScenario() {
           dateOnly={dateOnly}
           granularity={monthOnly ? 'month' : 'day'}
           timeInputFormat="hh:mm"
-          isDateEnabled={date => date.getDate() !== 15}
+          isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+          dateDisabledReason={(date: Date) =>
+            applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+          }
           customAbsoluteRangeControl={undefined}
         />
 

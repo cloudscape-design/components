@@ -6,8 +6,10 @@ import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link, SpaceBetwee
 
 import AppContext from '../app/app-context';
 import {
+  applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  evenDisabledMsg,
   i18nStrings,
   isValid,
   relativeOptions,
@@ -21,7 +23,7 @@ export default function DateRangePickerScenario() {
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
-
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
   const blurLogDiv = useRef<HTMLDivElement>(null);
   const focusLogDiv = useRef<HTMLDivElement>(null);
   const handleFocus = () => {
@@ -50,6 +52,9 @@ export default function DateRangePickerScenario() {
       <SpaceBetween direction="horizontal" size="m">
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
           Month-only
+        </Checkbox>
+        <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
+          Disable even dates
         </Checkbox>
         <Checkbox
           checked={expandToViewport}
@@ -88,6 +93,8 @@ export default function DateRangePickerScenario() {
         isValidRange={isValid}
         expandToViewport={expandToViewport}
         granularity={monthOnly ? 'month' : 'day'}
+        isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+        dateDisabledReason={(date: Date) => (applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg)}
       />
     </Box>
   );

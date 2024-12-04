@@ -14,8 +14,16 @@ import {
 } from '~components';
 
 import AppContext from '../app/app-context';
-import { DateRangePickerDemoContext, dateRangePickerDemoDefaults } from './common';
-import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
+import {
+  applyDisabledIfEven,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  evenDisabledMsg,
+  i18nStrings,
+  i18nStringsDateOnly,
+  isValid,
+  relativeOptions,
+} from './common';
 
 export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
@@ -24,6 +32,7 @@ export default function DatePickerScenario() {
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
   const invalid = urlParams.invalid ?? dateRangePickerDemoDefaults.invalid;
   const warning = urlParams.warning ?? dateRangePickerDemoDefaults.warning;
   const rangeSelectorMode =
@@ -58,6 +67,9 @@ export default function DatePickerScenario() {
           <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
             Month-only
           </Checkbox>
+          <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
+            Disable even dates
+          </Checkbox>
           <Checkbox checked={invalid} onChange={({ detail }) => setUrlParams({ invalid: detail.checked })}>
             Invalid
           </Checkbox>
@@ -79,8 +91,10 @@ export default function DatePickerScenario() {
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
-            isDateEnabled={date => date.getDate() !== 14 && date.getDate() !== 15}
-            dateDisabledReason={date => (date.getDate() === 14 || date.getDate() === 15 ? 'Disabled reason' : '')}
+            isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+            dateDisabledReason={(date: Date) =>
+              applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+            }
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
             invalid={invalid}
             warning={warning}

@@ -7,8 +7,10 @@ import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link }
 import AppContext from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import {
+  applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  evenDisabledMsg,
   i18nStrings,
   isValid,
   relativeOptions,
@@ -23,6 +25,7 @@ export default function DatePickerScenario() {
   });
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
 
   return (
     <Box padding="s">
@@ -31,6 +34,9 @@ export default function DatePickerScenario() {
       <br />
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
+      </Checkbox>
+      <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
+        Disable even dates
       </Checkbox>
       <br />
       <ScreenshotArea>
@@ -48,6 +54,10 @@ export default function DatePickerScenario() {
             dateOnly={true}
             absoluteFormat="long-localized"
             granularity={monthOnly ? 'month' : 'day'}
+            isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+            dateDisabledReason={(date: Date) =>
+              applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+            }
           />
         </FormField>
         <br />

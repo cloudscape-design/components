@@ -7,8 +7,10 @@ import { Checkbox, DateRangePicker, DateRangePickerProps, FormField } from '~com
 import AppContext from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import {
+  applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  evenDisabledMsg,
   i18nStrings,
   isValid,
   relativeOptions,
@@ -21,6 +23,7 @@ export default function DatePickerScenario() {
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
 
   return (
     <ScreenshotArea>
@@ -37,6 +40,9 @@ export default function DatePickerScenario() {
       </button>
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
+      </Checkbox>
+      <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
+        Disable even dates
       </Checkbox>
       <button id="focus-dismiss-helper" type="button">
         Focusable element
@@ -55,6 +61,10 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               timeInputFormat="hh:mm"
               expandToViewport={expandToViewport}
+              isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+              dateDisabledReason={(date: Date) =>
+                applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+              }
             />
           </FormField>
         </div>

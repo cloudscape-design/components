@@ -5,7 +5,13 @@ import React, { useContext, useState } from 'react';
 import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link } from '~components';
 
 import AppContext from '../app/app-context';
-import { DateRangePickerDemoContext, relativeOptions } from './common';
+import {
+  applyDisabledIfEven,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  evenDisabledMsg,
+  relativeOptions,
+} from './common';
 import { makeIsValidFunction } from './is-valid-range';
 
 const localisedUnits = {
@@ -61,7 +67,8 @@ export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
-  const monthOnly = urlParams.monthOnly ?? false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
   return (
     <Box padding="s">
       <h1>Date range picker simple version - localised</h1>
@@ -69,6 +76,9 @@ export default function DatePickerScenario() {
       <br />
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
+      </Checkbox>
+      <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
+        Disable even dates
       </Checkbox>
       <br />
       <DateRangePicker
@@ -80,6 +90,8 @@ export default function DatePickerScenario() {
         onChange={e => setValue(e.detail.value)}
         relativeOptions={relativeOptions}
         isValidRange={isValid}
+        isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+        dateDisabledReason={(date: Date) => (applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg)}
       />
       <br />
       <br />

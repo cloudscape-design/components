@@ -32,7 +32,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     setValue: [() => {}],
     locale: ['en-GB'],
     startOfWeek: [1],
-    isDateEnabled: [() => true],
+    isDateEnabled: [() => true, () => false],
     onChange: [() => {}],
     timeInputFormat: ['hh:mm:ss'] as const,
     i18nStrings: [i18nStrings],

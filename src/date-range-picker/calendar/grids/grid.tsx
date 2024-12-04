@@ -158,7 +158,7 @@ export function Grid({
                         [styles[`in-previous-${pageName}`]]: isBefore(date, baseDate),
                         [styles[`in-next-${pageName}`]]: isAfter(date, baseDate),
                         [styles[`last-day-of-month`]]: !isMonthPicker && isLastDayOfMonth(date),
-                        [styles[`last-month-of-year`]]: isMonthPicker && date.getMonth() === 12,
+                        [styles[`last-month-of-year`]]: isMonthPicker && date.getMonth() === 11,
                       })}
                     />
                   );
