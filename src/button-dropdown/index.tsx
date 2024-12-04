@@ -32,6 +32,7 @@ const ButtonDropdown = React.forwardRef(
       onItemClick,
       onItemFollow,
       mainAction,
+      fullWidth,
       ...props
     }: ButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -70,6 +71,7 @@ const ButtonDropdown = React.forwardRef(
         onItemClick={onItemClick}
         onItemFollow={onItemFollow}
         mainAction={mainAction}
+        fullWidth={fullWidth}
         {...getAnalyticsMetadataAttribute({
           component: analyticsComponentMetadata,
         })}

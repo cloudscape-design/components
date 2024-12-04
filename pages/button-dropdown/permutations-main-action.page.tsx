@@ -44,6 +44,7 @@ const permutations = createPermutations<ButtonDropdownProps>([
     loading: [false, true],
     variant: ['primary', 'normal'],
     children: ['Trigger', null],
+    fullWidth: [false, true],
   },
   {
     mainAction: [{ ...viewInstancesItem }, { ...viewInstancesItem, disabled: true }],
