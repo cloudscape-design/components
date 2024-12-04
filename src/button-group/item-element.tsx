@@ -28,17 +28,11 @@ const ItemElement = forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const itemRef = useRef<HTMLButtonElement | HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
-        if (inputRef) {
-          inputRef.current?.focus();
-        }
-        if (buttonRef) {
-          buttonRef.current?.focus();
-        }
+        itemRef.current?.focus();
       },
     }));
 
@@ -123,7 +117,7 @@ const ItemElement = forwardRef(
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
@@ -132,7 +126,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-toggle-button' && (
           <IconToggleButtonItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
@@ -141,7 +135,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-file-input' && (
           <FileInputItem
-            ref={inputRef}
+            ref={itemRef}
             item={item}
             onFilesChange={onFilesChangeHandler}
             showTooltip={tooltip?.item === item.id}
@@ -149,7 +143,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             showTooltip={tooltip?.item === item.id}
             onItemClick={onClickHandler}

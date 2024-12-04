@@ -42,8 +42,6 @@ test('focuses on all item types', () => {
   const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
   const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInput] }, ref);
 
-  window.HTMLElement.prototype.scrollIntoView = function () {};
-
   ref.current!.focus('copy');
   expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
 
