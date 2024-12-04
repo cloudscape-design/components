@@ -18,6 +18,7 @@ import {
   applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  DisabledDate,
   evenDisabledMsg,
   i18nStrings,
   i18nStringsDateOnly,
@@ -32,7 +33,8 @@ export default function DatePickerScenario() {
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const invalid = urlParams.invalid ?? dateRangePickerDemoDefaults.invalid;
   const warning = urlParams.warning ?? dateRangePickerDemoDefaults.warning;
   const rangeSelectorMode =
@@ -55,6 +57,21 @@ export default function DatePickerScenario() {
           }
         />
         <SpaceBetween direction="horizontal" size="s">
+          <label>
+            Disabled dates{' '}
+            <select
+              value={disabledDates}
+              onChange={event =>
+                setUrlParams({
+                  disabledDates: event.currentTarget.value as DisabledDate,
+                })
+              }
+            >
+              <option value="none">None (Default)</option>
+              <option value="all">All</option>
+              <option value="only-even">Only even</option>
+            </select>
+          </label>
           <Checkbox
             checked={showRelativeOptions}
             onChange={({ detail }) => setUrlParams({ showRelativeOptions: detail.checked })}
@@ -66,9 +83,6 @@ export default function DatePickerScenario() {
           </Checkbox>
           <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
             Month-only
-          </Checkbox>
-          <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
-            Disable even dates
           </Checkbox>
           <Checkbox checked={invalid} onChange={({ detail }) => setUrlParams({ invalid: detail.checked })}>
             Invalid
@@ -91,9 +105,9 @@ export default function DatePickerScenario() {
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
-            isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+            isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
             dateDisabledReason={(date: Date) =>
-              applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+              applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
             }
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
             invalid={invalid}

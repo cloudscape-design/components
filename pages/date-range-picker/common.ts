@@ -17,19 +17,21 @@ export type DateRangePickerDemoContext = React.Context<
     hideTimeOffset?: boolean;
     timeOffset?: number | string;
     expandToViewport?: boolean;
-    disableEven?: boolean;
+    disabledDates?: string;
   }>
 >;
+
+export type DisabledDate = 'none' | 'all' | 'only-even';
 
 function isEnabledByOddness(date: Date, isMonthPicker: boolean): boolean {
   return isMonthPicker ? (date.getMonth() + 1) % 2 !== 0 : date.getDate() % 2 !== 0;
 }
 
-export function applyDisabledIfEven(date: Date, isAlwaysTrue: boolean, isMonthPicker: boolean): boolean {
-  if (isAlwaysTrue) {
-    return true;
+export function applyDisabledIfEven(date: Date, disabledDate: DisabledDate, isMonthPicker: boolean): boolean {
+  if (disabledDate === 'only-even') {
+    return isEnabledByOddness(date, isMonthPicker);
   }
-  return isEnabledByOddness(date, isMonthPicker);
+  return disabledDate === 'none';
 }
 
 export const evenDisabledMsg = 'Option is not odd enough';
@@ -45,7 +47,7 @@ export const dateRangePickerDemoDefaults = {
   hideTimeOffset: false,
   timeOffset: 0,
   expandToViewport: false,
-  disableEven: false,
+  disabledDates: 'none',
 };
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {

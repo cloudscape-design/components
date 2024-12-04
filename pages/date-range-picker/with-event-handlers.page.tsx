@@ -9,6 +9,7 @@ import {
   applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  DisabledDate,
   evenDisabledMsg,
   i18nStrings,
   isValid,
@@ -23,7 +24,8 @@ export default function DateRangePickerScenario() {
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
-  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const blurLogDiv = useRef<HTMLDivElement>(null);
   const focusLogDiv = useRef<HTMLDivElement>(null);
   const handleFocus = () => {
@@ -50,11 +52,23 @@ export default function DateRangePickerScenario() {
     <Box padding="s">
       <h1>Date range picker with event handlers</h1>
       <SpaceBetween direction="horizontal" size="m">
+        <label>
+          Disabled dates{' '}
+          <select
+            value={disabledDates}
+            onChange={event =>
+              setUrlParams({
+                disabledDates: event.currentTarget.value as DisabledDate,
+              })
+            }
+          >
+            <option value="none">None (Default)</option>
+            <option value="all">All</option>
+            <option value="only-even">Only even</option>
+          </select>
+        </label>
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
           Month-only
-        </Checkbox>
-        <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
-          Disable even dates
         </Checkbox>
         <Checkbox
           checked={expandToViewport}
@@ -93,8 +107,10 @@ export default function DateRangePickerScenario() {
         isValidRange={isValid}
         expandToViewport={expandToViewport}
         granularity={monthOnly ? 'month' : 'day'}
-        isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
-        dateDisabledReason={(date: Date) => (applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg)}
+        isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
+        dateDisabledReason={(date: Date) =>
+          applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
+        }
       />
     </Box>
   );

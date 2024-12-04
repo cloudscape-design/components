@@ -9,6 +9,7 @@ import {
   applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  DisabledDate,
   evenDisabledMsg,
   i18nStrings,
   isValid,
@@ -46,7 +47,8 @@ export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const absoluteFormat =
     urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
   const hideTimeOffset = urlParams.hideTimeOffset ?? dateRangePickerDemoDefaults.hideTimeOffset;
@@ -79,6 +81,21 @@ export default function DateRangePickerScenario() {
             </select>
           </label>
           <label>
+            Disabled dates{' '}
+            <select
+              value={disabledDates}
+              onChange={event =>
+                setUrlParams({
+                  disabledDates: event.currentTarget.value as DisabledDate,
+                })
+              }
+            >
+              <option value="none">None (Default)</option>
+              <option value="all">All</option>
+              <option value="only-even">Only even</option>
+            </select>
+          </label>
+          <label>
             <input
               type="checkbox"
               checked={dateOnly}
@@ -93,14 +110,6 @@ export default function DateRangePickerScenario() {
               onChange={event => setUrlParams({ monthOnly: !!event.target.checked })}
             />{' '}
             Month only
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              checked={disableEven}
-              onChange={event => setUrlParams({ disableEven: !!event.target.checked })}
-            />{' '}
-            Disable even options
           </label>
           <label>
             Time offset from UTC in minutes{' '}
@@ -137,9 +146,9 @@ export default function DateRangePickerScenario() {
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}
-                isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+                isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
                 dateDisabledReason={(date: Date) =>
-                  applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+                  applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
                 }
                 getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
                 absoluteFormat={absoluteFormat}

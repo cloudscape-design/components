@@ -15,6 +15,7 @@ import {
   applyDisabledIfEven,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
+  DisabledDate,
   evenDisabledMsg,
   i18nStrings,
   isValid,
@@ -26,20 +27,33 @@ export default function DatePickerScenario() {
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const disableEven = urlParams.disableEven ?? dateRangePickerDemoDefaults.disableEven;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
 
   return (
     <Box padding="s">
       <h1>Date range picker with custom control</h1>
       <SpaceBetween direction="horizontal" size="s">
+        <label>
+          Disabled dates{' '}
+          <select
+            value={disabledDates}
+            onChange={event =>
+              setUrlParams({
+                disabledDates: event.currentTarget.value as DisabledDate,
+              })
+            }
+          >
+            <option value="none">None (Default)</option>
+            <option value="all">All</option>
+            <option value="only-even">Only even</option>
+          </select>
+        </label>
         <Checkbox checked={dateOnly} onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}>
           Date-only
         </Checkbox>
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
           Month-only
-        </Checkbox>
-        <Checkbox checked={disableEven} onChange={({ detail }) => setUrlParams({ disableEven: detail.checked })}>
-          Disable even dates
         </Checkbox>
       </SpaceBetween>
       <FormField label="Date Range Picker field">
@@ -53,9 +67,9 @@ export default function DatePickerScenario() {
           isValidRange={isValid}
           rangeSelectorMode="absolute-only"
           granularity={monthOnly ? 'month' : 'day'}
-          isDateEnabled={(date: Date) => applyDisabledIfEven(date, !disableEven, monthOnly)}
+          isDateEnabled={(date: Date) => applyDisabledIfEven(date, disabledDates, monthOnly)}
           dateDisabledReason={(date: Date) =>
-            applyDisabledIfEven(date, !disableEven, monthOnly) ? '' : evenDisabledMsg
+            applyDisabledIfEven(date, disabledDates, monthOnly) ? '' : evenDisabledMsg
           }
           customAbsoluteRangeControl={(selectedDate, setSelectedDate) => (
             <>
