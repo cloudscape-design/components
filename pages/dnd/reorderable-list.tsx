@@ -56,7 +56,9 @@ export function ReorderableList<Option extends { id: string }>({
       {content => (
         <ul className={styles.list} aria-label="re-orderable list" role="list">
           {staticOptions.map(option => (
-            <React.Fragment key={option.id}>{renderStaticOption?.(option)}</React.Fragment>
+            <li className={styles.option} key={option.id}>
+              {renderStaticOption?.(option)}
+            </li>
           ))}
           {content}
         </ul>
