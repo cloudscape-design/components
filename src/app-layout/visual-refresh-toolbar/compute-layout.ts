@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AppLayoutPropsWithDefaults } from '../interfaces';
-import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;
@@ -19,7 +18,7 @@ interface HorizontalLayoutInput {
 
 export const CONTENT_PADDING = 2 * 24; // space-xl
 
-export function computeHorizontalLayout({
+export function useHorizontalLayout({
   navigationOpen,
   navigationWidth,
   placement,
@@ -38,8 +37,14 @@ export function computeHorizontalLayout({
     placement.inlineSize - minContentWidth - CONTENT_PADDING - activeNavigationWidth
   );
   const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
-
-  const splitPanelForcedPosition = resizableSpaceAvailable - activeDrawerSize < SPLIT_PANEL_MIN_WIDTH || isMobile;
+  const splitPanelForcedPosition =
+    isMobile ||
+    !(
+      window?.matchMedia &&
+      window.matchMedia(
+        `(min-width: ${minContentWidth + CONTENT_PADDING + activeNavigationWidth + activeDrawerSize + 280}px)`
+      ).matches
+    );
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
   const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);

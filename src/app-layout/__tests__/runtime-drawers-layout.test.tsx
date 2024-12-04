@@ -6,7 +6,7 @@ import { act, render, waitFor } from '@testing-library/react';
 import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { computeHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout';
+import { useHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
@@ -24,7 +24,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout', () => {
   return {
     ...jest.requireActual('../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout'),
-    computeHorizontalLayout: jest.fn().mockReturnValue({
+    useHorizontalLayout: jest.fn().mockReturnValue({
       splitPanelPosition: 'bottom',
       splitPanelForcedPosition: false,
       sideSplitPanelSize: 0,
@@ -80,7 +80,7 @@ const drawerDefaults: DrawerConfig = {
 describe('toolbar mode only features', () => {
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
     test('first opened drawer (global drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
-      jest.mocked(computeHorizontalLayout).mockReturnValue({
+      jest.mocked(useHorizontalLayout).mockReturnValue({
         splitPanelPosition: 'bottom',
         splitPanelForcedPosition: false,
         sideSplitPanelSize: 0,
@@ -132,7 +132,7 @@ describe('toolbar mode only features', () => {
     });
 
     test('first opened drawer (local drawer) should be closed when active drawers take up all available space on the page and a third drawer is opened', async () => {
-      jest.mocked(computeHorizontalLayout).mockReturnValue({
+      jest.mocked(useHorizontalLayout).mockReturnValue({
         splitPanelPosition: 'bottom',
         splitPanelForcedPosition: false,
         sideSplitPanelSize: 0,
@@ -187,7 +187,7 @@ describe('toolbar mode only features', () => {
     });
 
     test('should change global drawer size via keyboard events on slider handle', async () => {
-      jest.mocked(computeHorizontalLayout).mockReturnValue({
+      jest.mocked(useHorizontalLayout).mockReturnValue({
         splitPanelPosition: 'bottom',
         splitPanelForcedPosition: false,
         sideSplitPanelSize: 0,
