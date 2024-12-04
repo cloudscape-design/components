@@ -52,6 +52,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     ariaLabel,
     ariaRequired,
     enteredTextLabel,
+    showEnteredTextOption,
     filteringResultsText,
     onKeyDown,
     virtualScroll,
@@ -90,7 +91,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     filterText: value,
     filteringType,
     enteredTextLabel,
-    hideEnteredTextLabel: false,
+    hideEnteredTextLabel: !showEnteredTextOption,
     onSelectItem: (option: AutosuggestItem) => {
       const value = option.value || '';
       fireNonCancelableEvent(onChange, { value });
@@ -178,14 +179,13 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   const highlightedOptionIdSource = useUniqueId();
   const highlightedOptionId = autosuggestItemsState.highlightedOption ? highlightedOptionIdSource : undefined;
 
-  const isEmpty = !value && !autosuggestItemsState.items.length;
   const isFiltered = !!value && value.length !== 0;
   const filteredText = isFiltered
     ? filteringResultsText?.(autosuggestItemsState.items.length, options?.length ?? 0)
     : undefined;
   const dropdownStatus = useDropdownStatus({
     ...props,
-    isEmpty,
+    isEmpty: !value && !autosuggestItemsState.items.length,
     isFiltered,
     recoveryText,
     errorIconAriaLabel,
@@ -194,7 +194,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     hasRecoveryCallback: !!onLoadItems,
   });
 
-  const shouldRenderDropdownContent = !isEmpty || !!dropdownStatus.content;
+  const shouldRenderDropdownContent =
+    autosuggestItemsState.items.length !== 0 || !!dropdownStatus.content || (showEnteredTextOption && !!value);
 
   return (
     <AutosuggestInput
