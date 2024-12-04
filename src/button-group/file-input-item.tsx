@@ -44,7 +44,7 @@ const FileInputItem = forwardRef(
             setFiles(event.detail.value);
           }}
           data-testid={item.id}
-          __nativeAttributes={{
+          __inputNativeAttributes={{
             'data-itemid': item.id,
           }}
           __inputClassName={testUtilStyles.item}

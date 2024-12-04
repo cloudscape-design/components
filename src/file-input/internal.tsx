@@ -24,7 +24,7 @@ import styles from './styles.css.js';
 
 interface InternalFileInputProps {
   __inputClassName?: string;
-  __nativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
+  __inputNativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
 }
 
 const InternalFileInput = React.forwardRef(
@@ -40,7 +40,7 @@ const InternalFileInput = React.forwardRef(
       children,
       __internalRootRef = null,
       __inputClassName,
-      __nativeAttributes,
+      __inputNativeAttributes,
       ...restProps
     }: FileInputProps & InternalBaseComponentProps & InternalFileInputProps,
     ref: Ref<FileInputProps.Ref>
@@ -61,7 +61,7 @@ const InternalFileInput = React.forwardRef(
     const onUploadButtonClick = () => uploadInputRef.current?.click();
     const onUploadInputFocus = () => {
       setIsFocused(true);
-      containerRef.current?.scrollIntoView();
+      containerRef.current?.scrollIntoView?.();
     };
     const onUploadInputBlur = () => setIsFocused(false);
 
@@ -75,7 +75,7 @@ const InternalFileInput = React.forwardRef(
       'aria-label': ariaLabel || children,
       'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
       'aria-describedby': formFieldContext.ariaDescribedby,
-      ...__nativeAttributes,
+      ...__inputNativeAttributes,
     };
     if (formFieldContext.invalid) {
       nativeAttributes['aria-invalid'] = true;
