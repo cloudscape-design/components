@@ -24,7 +24,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
 jest.mock('../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout', () => {
   return {
     ...jest.requireActual('../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout'),
-    useHorizontalLayout: jest.fn().mockReturnValue({
+    computeHorizontalLayout: jest.fn().mockReturnValue({
       splitPanelPosition: 'bottom',
       splitPanelForcedPosition: false,
       sideSplitPanelSize: 0,
