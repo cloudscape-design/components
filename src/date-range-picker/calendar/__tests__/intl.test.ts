@@ -129,7 +129,6 @@ describe('intl', () => {
 
   describe('renderMonthAndYear', () => {
     beforeEach(() => {
-      // GetDateLabelSpy.mockRestore();
       RenderMonthAndYearSpy.mockRestore();
     });
     test('renders month and year in English (US)', () => {
