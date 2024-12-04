@@ -3514,6 +3514,13 @@ This is required to provide a good screen reader experience. For more informatio
       "type": "string",
     },
     {
+      "defaultValue": "true",
+      "description": "Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.",
+      "name": "showEnteredTextOption",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "defaultValue": "'finished'",
       "description": "Specifies the current status of loading more options.
 * \`pending\` - Indicates that no request in progress, but more options may be loaded.

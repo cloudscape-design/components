@@ -82,6 +82,11 @@ export interface AutosuggestProps
   enteredTextLabel?: AutosuggestProps.EnteredTextLabel;
 
   /**
+   * Defines whether entered text option is shown as the first option in the dropdown when value is non-empty.
+   */
+  showEnteredTextOption?: boolean;
+
+  /**
    * Specifies the text to display with the number of matches at the bottom of the dropdown menu while filtering.
    *
    * Note that the `matchesCount` includes the `enteredTextLabel` ("Use ${value}") item, so in most cases you
