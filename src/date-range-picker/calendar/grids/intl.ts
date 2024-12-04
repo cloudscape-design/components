@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DateRangePickerProps } from '../../interfaces';
 
-function setDayIndex(date: Date, dayIndex: number): void {
+export function setDayIndex(date: Date, dayIndex: number): void {
   const diff = dayIndex - date.getDay();
   date.setDate(date.getDate() + diff);
 }
