@@ -33,8 +33,8 @@ const setupTest = (
     await testFn(page);
   });
 
-describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
-  describe('Split panel forced position', () => {
+describe('Split panel forced position', () => {
+  describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
     // Viewport width which makes the split panel switch to the bottom
     const splitPanelBreakpoints = {
       classic: 979,
@@ -42,8 +42,14 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       'refresh-toolbar': 907,
     };
 
+    const scrollbarThickness = 15;
+
     const narrow = splitPanelBreakpoints[theme];
-    const wide = narrow + 36;
+
+    // Account 2 times for scrollbarThickness:
+    // once for the threshold we give to the logic to decide when to transition to the side,
+    // and once for the cases where there is a "real" scrollbar taking up actual space.
+    const wide = narrow + scrollbarThickness * 2 + 1;
 
     const cases: [
       string,

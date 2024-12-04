@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AppLayoutPropsWithDefaults } from '../interfaces';
-import { useSplitPanelForcedPosition } from '../split-panel/use-split-panel-forced-position';
+import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;
@@ -19,7 +19,7 @@ interface HorizontalLayoutInput {
 
 export const CONTENT_PADDING = 2 * 24; // space-xl
 
-export function useHorizontalLayout({
+export function computeHorizontalLayout({
   navigationOpen,
   navigationWidth,
   placement,
@@ -40,7 +40,7 @@ export function useHorizontalLayout({
   const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
   const availableWidthForSplitPanel = resizableSpaceAvailable - activeDrawerSize;
-  const splitPanelForcedPosition = useSplitPanelForcedPosition({
+  const splitPanelForcedPosition = shouldSplitPanelBeForcedToBottom({
     isMobile,
     availableWidthForSplitPanel,
   });

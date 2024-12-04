@@ -20,7 +20,7 @@ import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawer
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
-import { computeVerticalLayout, CONTENT_PADDING, useHorizontalLayout } from './compute-layout';
+import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
@@ -243,7 +243,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition,
       maxGlobalDrawersSizes,
       resizableSpaceAvailable,
-    } = useHorizontalLayout({
+    } = computeHorizontalLayout({
       activeDrawerSize: activeDrawer ? activeDrawerSize : 0,
       splitPanelSize,
       minContentWidth,
