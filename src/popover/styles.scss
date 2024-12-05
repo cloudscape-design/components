@@ -46,6 +46,7 @@
   background-color: transparent;
 
   cursor: pointer;
+  border-block-end: awsui.$border-divider-list-width dashed transparent;
   text-decoration: underline dashed currentColor;
   text-underline-offset: 0.2em;
 
