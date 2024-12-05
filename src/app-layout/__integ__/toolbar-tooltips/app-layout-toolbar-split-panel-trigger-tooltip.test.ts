@@ -16,6 +16,12 @@ describe('refresh-toolbar', () => {
     const tooltipSelector = wrapper.findDrawerTriggerTooltip().toSelector();
     const expectedTooltipText = 'Open panel';
 
+    const assertSplitPanelTriggerFocusedWithTooltip = async (page: AppLayoutDrawersPage) => {
+      await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
+      await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
+      await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
+    };
+
     describe.each(['bottom', 'side'] as const)('splitPanelPosition=%s', splitPanelPosition => {
       test(
         'Shows tooltip correctly on split panel trigger for mouse interactions',
@@ -57,15 +63,21 @@ describe('refresh-toolbar', () => {
       );
 
       test(
-        'Shows tooltip correctly for split panel trigger for keyboard (tab) interactions',
+        'Shows and hides tooltip correctly for split panel trigger for keyboard (tab) interactions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
+          // Focus split panel trigger
           await page.click(wrapper.findToolbar().toSelector());
           await page.keys(['Tab', 'Tab']);
-          await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
-          await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
+          await assertSplitPanelTriggerFocusedWithTooltip(page);
+          // Focus breadcrumbs
           await page.keys(['Shift', 'Tab']);
+          await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
+          // Navigate back to split panel trigger
+          await page.keys(['Tab']);
+          await assertSplitPanelTriggerFocusedWithTooltip(page);
+          // Open the split panel
+          await page.keys('Enter');
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
         })
       );
@@ -74,11 +86,10 @@ describe('refresh-toolbar', () => {
         'Removes tooltip from split panel trigger on escape key press after showing from keyboard event',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
+          // Focus split panel trigger
           await page.click(wrapper.findToolbar().toSelector());
           await page.keys(['Tab', 'Tab']);
-          await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
-          await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
-          await expect(page.getElementsCount(tooltipSelector)).resolves.toBe(1);
+          await assertSplitPanelTriggerFocusedWithTooltip(page);
           await page.keys('Escape');
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
         })
