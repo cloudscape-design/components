@@ -101,7 +101,7 @@ export function applyDisabledReason(
 export const dateRangePickerDemoDefaults = {
   monthOnly: false,
   dateOnly: false,
-  showRelativeOptions: false,
+  showRelativeOptions: true,
   invalid: false,
   warning: false,
   rangeSelectorMode: 'default',
