@@ -26,7 +26,7 @@ function setupTest(
 
 describe('Button', () => {
   test(
-    'Emits a mark only for primary visible buttons',
+    'Emits a mark only for primary visible buttons which are loaded',
     setupTest('performance-marks', async ({ getMarks, getElementPerformanceMarkText }) => {
       const marks = await getMarks();
 
@@ -35,44 +35,49 @@ describe('Button', () => {
       expect(marks[0].detail).toMatchObject({
         source: 'awsui',
         instanceIdentifier: expect.any(String),
-        loading: true,
+        loading: false,
         disabled: false,
-        text: 'Primary button',
+        text: 'Primary button without props',
       });
 
-      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe('Primary button');
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe(
+        'Primary button without props'
+      );
     })
   );
 
   test(
     'Emits a mark when properties change',
     setupTest('performance-marks', async ({ page, getMarks, getElementPerformanceMarkText }) => {
-      await page.click('#disabled');
-      await page.click('#loading');
+      await page.click('#loading'); //disables loading
       const marks = await getMarks();
 
-      expect(marks).toHaveLength(3);
+      expect(marks).toHaveLength(2);
+      expect(marks[0].name).toBe('primaryButtonRendered');
+      expect(marks[0].detail).toMatchObject({
+        source: 'awsui',
+        instanceIdentifier: marks[0].detail.instanceIdentifier,
+        loading: false,
+        disabled: false,
+        text: 'Primary button without props',
+      });
+
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe(
+        'Primary button without props'
+      );
+
       expect(marks[1].name).toBe('primaryButtonUpdated');
       expect(marks[1].detail).toMatchObject({
         source: 'awsui',
-        instanceIdentifier: marks[0].detail.instanceIdentifier,
-        loading: true,
-        disabled: true,
-        text: 'Primary button',
-      });
-
-      await expect(getElementPerformanceMarkText(marks[1].detail.instanceIdentifier)).resolves.toBe('Primary button');
-
-      expect(marks[2].name).toBe('primaryButtonUpdated');
-      expect(marks[2].detail).toMatchObject({
-        source: 'awsui',
         instanceIdentifier: marks[1].detail.instanceIdentifier,
         loading: false,
-        disabled: true,
-        text: 'Primary button',
+        disabled: false,
+        text: 'Primary button with props',
       });
 
-      await expect(getElementPerformanceMarkText(marks[2].detail.instanceIdentifier)).resolves.toBe('Primary button');
+      await expect(getElementPerformanceMarkText(marks[1].detail.instanceIdentifier)).resolves.toBe(
+        'Primary button with props'
+      );
     })
   );
 
@@ -87,6 +92,45 @@ describe('Button', () => {
       });
       await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe(
         'Button OUTSIDE modal'
+      );
+    })
+  );
+
+  test(
+    'Emits a mark when evaluateComponentVisbility event for loaded button components',
+    setupTest('performance-marks', async ({ page, getMarks, getElementPerformanceMarkText }) => {
+      let marks = await getMarks();
+      expect(marks).toHaveLength(1);
+
+      await page.click('#evaluateComponentVisbility');
+
+      marks = await getMarks();
+      expect(marks).toHaveLength(2);
+
+      expect(marks[0].name).toBe('primaryButtonRendered');
+      expect(marks[0].detail).toMatchObject({
+        source: 'awsui',
+        instanceIdentifier: marks[0].detail.instanceIdentifier,
+        loading: false,
+        disabled: false,
+        text: 'Primary button without props',
+      });
+
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe(
+        'Primary button without props'
+      );
+
+      expect(marks[1].name).toBe('primaryButtonUpdated');
+      expect(marks[1].detail).toMatchObject({
+        source: 'awsui',
+        instanceIdentifier: marks[1].detail.instanceIdentifier,
+        loading: false,
+        disabled: false,
+        text: 'Primary button without props',
+      });
+
+      await expect(getElementPerformanceMarkText(marks[1].detail.instanceIdentifier)).resolves.toBe(
+        'Primary button without props'
       );
     })
   );

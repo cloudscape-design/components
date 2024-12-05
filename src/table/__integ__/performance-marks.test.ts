@@ -27,28 +27,18 @@ function setupTest(
 
 describe('Table', () => {
   test(
-    'Emits a mark only for visible tables',
+    'Emits a mark only for visible tables which are completed loaded',
     setupTest(async ({ getMarks, isElementPerformanceMarkExisting }) => {
       const marks = await getMarks();
 
-      expect(marks).toHaveLength(2);
+      expect(marks).toHaveLength(1);
       expect(marks[0].name).toBe('tableRendered');
       expect(marks[0].detail).toEqual({
-        source: 'awsui',
-        instanceIdentifier: expect.any(String),
-        loading: true,
-        header: 'This is my table',
-      });
-
-      expect(marks[1].name).toBe('tableRendered');
-      expect(marks[1].detail).toEqual({
         source: 'awsui',
         instanceIdentifier: expect.any(String),
         loading: false,
         header: 'A table without the Header component',
       });
-
-      expect(marks[0].detail.instanceIdentifier).not.toEqual(marks[1].detail.instanceIdentifier);
 
       await expect(isElementPerformanceMarkExisting(marks[0].detail.instanceIdentifier)).resolves.toBeTruthy();
     })
@@ -58,30 +48,59 @@ describe('Table', () => {
     'Emits a mark when properties change',
     setupTest(async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
       await page.click('#loading');
-      let marks = await getMarks();
+      const marks = await getMarks();
 
-      expect(marks).toHaveLength(3);
-      expect(marks[2].name).toBe('tableUpdated');
-      expect(marks[2].detail).toMatchObject({
+      expect(marks).toHaveLength(2);
+      expect(marks[0].name).toBe('tableRendered');
+      expect(marks[0].detail).toEqual({
         source: 'awsui',
-        instanceIdentifier: marks[0].detail.instanceIdentifier,
+        instanceIdentifier: expect.any(String),
+        loading: false,
+        header: 'A table without the Header component',
+      });
+
+      expect(marks[1].name).toBe('tableUpdated');
+      expect(marks[1].detail).toMatchObject({
+        source: 'awsui',
+        instanceIdentifier: marks[1].detail.instanceIdentifier,
         loading: false,
         header: 'This is my table',
       });
-      await expect(isElementPerformanceMarkExisting(marks[2].detail.instanceIdentifier)).resolves.toBeTruthy();
+      await expect(isElementPerformanceMarkExisting(marks[1].detail.instanceIdentifier)).resolves.toBeTruthy();
+    })
+  );
 
-      await page.click('#loading');
-
-      marks = await getMarks();
-
-      expect(marks[3].name).toBe('tableUpdated');
-      expect(marks[3].detail).toMatchObject({
+  test(
+    'Emits a mark when evaluateComponentVisbility event is emitted only for non-loading table components',
+    setupTest(async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
+      let marks = await getMarks();
+      expect(marks).toHaveLength(1);
+      expect(marks[0].name).toBe('tableRendered');
+      expect(marks[0].detail).toEqual({
         source: 'awsui',
-        instanceIdentifier: marks[2].detail.instanceIdentifier,
-        loading: true,
-        header: 'This is my table',
+        instanceIdentifier: expect.any(String),
+        loading: false,
+        header: 'A table without the Header component',
       });
-      await expect(isElementPerformanceMarkExisting(marks[2].detail.instanceIdentifier)).resolves.toBeTruthy();
+
+      await expect(isElementPerformanceMarkExisting(marks[0].detail.instanceIdentifier)).resolves.toBeTruthy();
+      await page.click('#evaluateComponentVisbility');
+      marks = await getMarks();
+      expect(marks).toHaveLength(2);
+      expect(marks[0].name).toBe('tableRendered');
+      expect(marks[0].detail).toEqual({
+        source: 'awsui',
+        instanceIdentifier: expect.any(String),
+        loading: false,
+        header: 'A table without the Header component',
+      });
+      expect(marks[1].name).toBe('tableUpdated');
+      expect(marks[1].detail).toEqual({
+        source: 'awsui',
+        instanceIdentifier: expect.any(String),
+        loading: false,
+        header: 'A table without the Header component',
+      });
     })
   );
 });

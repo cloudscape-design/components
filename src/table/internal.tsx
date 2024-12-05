@@ -199,7 +199,7 @@ const InternalTable = React.forwardRef(
 
     const performanceMarkAttributes = usePerformanceMarks(
       'table',
-      true,
+      () => !loading,
       tableRefObject,
       () => ({
         loading: loading ?? false,
