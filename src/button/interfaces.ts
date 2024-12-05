@@ -88,7 +88,7 @@ export interface BaseButtonProps {
   ariaControls?: string;
 
   /**
-   * Adds an external icon after the button text.
+   * Adds an external icon after the button label text.
    * If an href is provided, it opens the link in a new tab.
    */
   external?: boolean;
