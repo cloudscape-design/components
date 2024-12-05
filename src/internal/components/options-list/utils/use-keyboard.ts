@@ -1,7 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback } from 'react';
-
 import { BaseKeyDetail, CancelableEventHandler } from '../../../events';
 import { KeyCode } from '../../../keycode';
 
@@ -67,22 +65,19 @@ interface UseTriggerKeyboard {
 }
 
 export const useTriggerKeyboard: UseTriggerKeyboard = ({ openDropdown, goHome }) => {
-  return useCallback(
-    (e: CustomEvent<BaseKeyDetail>) => {
-      switch (e.detail.keyCode) {
-        case KeyCode.up:
-        case KeyCode.down:
-          e.preventDefault();
-          goHome();
-          openDropdown();
-          break;
-        case KeyCode.space:
-        case KeyCode.enter:
-          e.preventDefault();
-          openDropdown();
-          break;
-      }
-    },
-    [openDropdown, goHome]
-  );
+  return (event: CustomEvent<BaseKeyDetail>) => {
+    switch (event.detail.keyCode) {
+      case KeyCode.up:
+      case KeyCode.down:
+        event.preventDefault();
+        goHome();
+        openDropdown();
+        break;
+      case KeyCode.space:
+      case KeyCode.enter:
+        event.preventDefault();
+        openDropdown();
+        break;
+    }
+  };
 };
