@@ -60,7 +60,7 @@ describe('refresh-toolbar', () => {
         'Shows tooltip correctly for split panel trigger for keyboard (tab) interactions',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          await page.click(createWrapper().findAppLayout().findToolbar().toSelector());
+          await page.click(wrapper.findToolbar().toSelector());
           await page.keys(['Tab', 'Tab']);
           await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
           await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
@@ -74,7 +74,7 @@ describe('refresh-toolbar', () => {
         'Removes tooltip from split panel trigger on escape key press after showing from keyboard event',
         setupTest({ theme, size, splitPanelPosition }, async (page: AppLayoutDrawersPage) => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
-          await page.click(createWrapper().findAppLayout().findToolbar().toSelector());
+          await page.click(wrapper.findToolbar().toSelector());
           await page.keys(['Tab', 'Tab']);
           await expect(page.isFocused(splitPanelTriggerSelector)).resolves.toBe(true);
           await expect(page.getText(tooltipSelector)).resolves.toBe(expectedTooltipText);
