@@ -29,40 +29,37 @@ export const useMenuKeyboard: UseMenuKeyboard = ({
   closeDropdown,
   preventNativeSpace = false,
 }) => {
-  return useCallback(
-    (e: CustomEvent<BaseKeyDetail>) => {
-      switch (e.detail.keyCode) {
-        case KeyCode.up:
-          e.preventDefault();
-          goUp();
-          break;
-        case KeyCode.down:
-          e.preventDefault();
-          goDown();
-          break;
-        case HOME:
-          goHome();
-          break;
-        case END:
-          goEnd();
-          break;
-        case KeyCode.escape:
-          e.stopPropagation();
-          closeDropdown();
-          break;
-        case KeyCode.enter:
-          e.preventDefault();
+  return (event: CustomEvent<BaseKeyDetail>) => {
+    switch (event.detail.keyCode) {
+      case KeyCode.up:
+        event.preventDefault();
+        goUp();
+        break;
+      case KeyCode.down:
+        event.preventDefault();
+        goDown();
+        break;
+      case HOME:
+        goHome();
+        break;
+      case END:
+        goEnd();
+        break;
+      case KeyCode.escape:
+        event.stopPropagation();
+        closeDropdown();
+        break;
+      case KeyCode.enter:
+        event.preventDefault();
+        selectOption();
+        break;
+      case KeyCode.space:
+        if (preventNativeSpace) {
+          event.preventDefault();
           selectOption();
-          break;
-        case KeyCode.space:
-          if (preventNativeSpace) {
-            e.preventDefault();
-            selectOption();
-          }
-      }
-    },
-    [selectOption, goHome, goEnd, closeDropdown, preventNativeSpace, goUp, goDown]
-  );
+        }
+    }
+  };
 };
 
 interface UseTriggerKeyboard {
