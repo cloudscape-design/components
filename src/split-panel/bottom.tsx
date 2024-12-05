@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -46,11 +46,11 @@ export function SplitPanelContentBottom({
   const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
-  const closedPanelBlockSize = useRef<string>();
+  const [headerBlockSize, setHeaderBlockSize] = useState<number>();
 
   useResizeObserver(headerRef, entry => {
     const { borderBoxHeight } = entry;
-    closedPanelBlockSize.current = `calc(${borderBoxHeight}px + ${tokens.borderPanelTopWidth})`;
+    setHeaderBlockSize(borderBoxHeight);
     reportHeaderHeight(borderBoxHeight);
   });
 
@@ -83,7 +83,11 @@ export function SplitPanelContentBottom({
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,
         insetInlineEnd: rightOffset,
-        blockSize: isOpen ? cappedSize : isToolbar ? closedPanelBlockSize.current : undefined,
+        blockSize: isOpen
+          ? cappedSize
+          : isToolbar && headerBlockSize !== undefined
+            ? `calc(${headerBlockSize}px + ${tokens.borderPanelTopWidth})`
+            : undefined,
       }}
       ref={splitPanelRef}
     >
