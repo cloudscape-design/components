@@ -1,63 +1,56 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
-import AppLayout from '~components/app-layout';
-import Header from '~components/header';
-import ScreenreaderOnly from '~components/internal/components/screenreader-only';
-import Link from '~components/link';
-import SpaceBetween from '~components/space-between';
+import { Box, Button, Checkbox, SpaceBetween } from '~components';
 
 import { IframeWrapper } from '../utils/iframe-wrapper';
-import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Containers, Navigation, Tools } from './utils/content-blocks';
-import labels from './utils/labels';
-import * as toolsContent from './utils/tools-content';
 
 function InnerApp() {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver(entries => {
+      console.log('ResizeObserver fired:', entries);
+    });
+    resizeObserver.observe(ref.current!);
+
+    const intersectionObserver = new IntersectionObserver(entries => {
+      console.log('IntersectionObserver fired:', entries);
+    });
+    intersectionObserver.observe(ref.current!);
+
+    return () => {
+      resizeObserver.disconnect();
+      intersectionObserver.disconnect();
+    };
+  }, []);
+
   return (
-    <AppLayout
-      {...{ __disableRuntimeDrawers: true }}
-      data-testid="secondary-layout"
-      ariaLabels={labels}
-      breadcrumbs={<Breadcrumbs />}
-      navigationHide={true}
-      content={
-        <SpaceBetween size="s">
-          <Header variant="h1" description="This page contains nested app layout instances with an iframe">
-            Multiple app layouts with iframe
-          </Header>
-
-          <Link external={true} href="#">
-            External link
-          </Link>
-
-          <Containers />
-        </SpaceBetween>
-      }
-      tools={<Tools>{toolsContent.long}</Tools>}
-    />
+    <div ref={ref} style={{ height: 300, background: 'yellow', padding: 10 }}>
+      This is the iframe
+    </div>
   );
 }
 
 export default function () {
+  const [checked, setChecked] = useState(false);
   return (
-    <ScreenshotArea gutters={false}>
-      <AppLayout
-        data-testid="main-layout"
-        ariaLabels={labels}
-        navigation={<Navigation />}
-        toolsHide={true}
-        disableContentPaddings={true}
-        content={
-          <>
-            <ScreenreaderOnly>
-              <h1>Multiple app layouts with iframe</h1>
-            </ScreenreaderOnly>
+    <Box padding="xl">
+      <SpaceBetween size="l">
+        <h1>with iframe</h1>
+        <Checkbox checked={checked} onChange={e => setChecked(e.detail.checked)}>
+          Show iframe
+        </Checkbox>
+        <Button onClick={() => setTimeout(() => setChecked(true), 5_000)}>Show with 5s delay</Button>
+
+        <div style={{ border: '1px solid grey', padding: 10 }}>
+          <div style={{ marginBottom: 100 }}>This is the area that will contain the iframe.</div>
+
+          <div style={{ display: checked ? 'block' : 'none', marginTop: 300 }}>
             <IframeWrapper id="inner-iframe" AppComponent={InnerApp} />
-          </>
-        }
-      />
-    </ScreenshotArea>
+          </div>
+        </div>
+      </SpaceBetween>
+    </Box>
   );
 }
