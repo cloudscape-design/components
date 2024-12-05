@@ -6,24 +6,24 @@ import { render } from '@testing-library/react';
 
 import { usePerformanceMarks } from '../index';
 
-function Demo({ enabled }: { enabled: () => boolean }) {
+function Demo() {
   const ref = useRef<HTMLDivElement>(null);
-  const attributes = usePerformanceMarks('test-component', enabled, ref, () => ({}), []);
+  const attributes = usePerformanceMarks('test-component', true, ref, () => ({}), []);
   return <div {...attributes} ref={ref} data-testid="element" />;
 }
 
 describe('Data attribute', () => {
   test('the attribute should be present after the first render', () => {
-    const { getByTestId } = render(<Demo enabled={() => true} />);
+    const { getByTestId } = render(<Demo />);
 
     expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-mark');
   });
 
   test('the attribute should be present after re-rendering', () => {
-    const { getByTestId, rerender } = render(<Demo enabled={() => true} />);
+    const { getByTestId, rerender } = render(<Demo />);
 
     const attributeValueBefore = getByTestId('element').getAttribute('data-analytics-performance-mark');
-    rerender(<Demo enabled={() => true} />);
+    rerender(<Demo />);
 
     expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-mark');
 
@@ -33,7 +33,7 @@ describe('Data attribute', () => {
   });
 
   test('should not render the attribute during server-side rendering', () => {
-    const markup = renderToStaticMarkup(<Demo enabled={() => true} />);
+    const markup = renderToStaticMarkup(<Demo />);
 
     expect(markup).toBe('<div data-testid="element"></div>');
   });

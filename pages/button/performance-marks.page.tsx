@@ -36,9 +36,8 @@ export default function ButtonsPerformanceMarkPage() {
           </Button>
         </label>
         <Button variant="primary" loading={loading} disabled={disabled}>
-          Primary button with props
+          Primary button
         </Button>
-        <Button variant="primary">Primary button without props</Button>
         <Button>Non-primary button</Button>
 
         <Modal visible={false} footer={<Button variant="primary">Submit modal</Button>}></Modal>

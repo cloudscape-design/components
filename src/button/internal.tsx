@@ -113,7 +113,7 @@ export const InternalButton = React.forwardRef(
 
     const performanceMarkAttributes = usePerformanceMarks(
       'primaryButton',
-      () => variant === 'primary' && __emitPerformanceMarks && !loading && !disabled,
+      variant === 'primary' && __emitPerformanceMarks,
       buttonRef,
       () => ({
         loading,
