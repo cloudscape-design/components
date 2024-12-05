@@ -14,7 +14,7 @@ export default function DatePickerScenario() {
         style={{
           inlineSize: '180px',
           marginInlineStart: '300px',
-          marginBlockStart: '300px',
+          marginBlockStart: '285px',
         }}
       >
         <DatePicker
