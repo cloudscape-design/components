@@ -135,7 +135,9 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
   relativeRangeSelectionHeading: 'Choose a range',
+  startMonthLabel: 'Start month',
   startDateLabel: 'Start date',
+  endMonthLabel: 'End month',
   endDateLabel: 'End date',
   startTimeLabel: 'Start time',
   endTimeLabel: 'End time',
@@ -146,7 +148,13 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   renderSelectedAbsoluteRangeAriaLive: (startDate, endDate) => `Range selected from ${startDate} to ${endDate}`,
 };
 
-export const i18nStringsDateOnly = { ...i18nStrings, dateTimeConstraintText: 'Range must be between 6 and 30 days.' };
+export function generateI18nStrings(isDateOnly: boolean, isMonthOnly: boolean): DateRangePickerProps['i18nStrings'] {
+  return {
+    ...i18nStrings,
+    ...(isDateOnly ? { dateTimeConstraintText: 'Range must be between 6 and 30 days.' } : {}),
+    ...(isMonthOnly ? { dateTimeConstraintText: 'For month use YYYY/MM.' } : {}),
+  };
+}
 
 export const relativeOptions = [
   { key: 'previous-5-minutes', amount: 5, unit: 'minute', type: 'relative' },
@@ -154,6 +162,30 @@ export const relativeOptions = [
   { key: 'previous-1-hour', amount: 1, unit: 'hour', type: 'relative' },
   { key: 'previous-6-hours', amount: 6, unit: 'hour', type: 'relative' },
 ] as const;
+
+export const dateOnlyRelativeOptions = [
+  { key: 'previous-1-day', amount: 5, unit: 'day', type: 'relative' },
+  { key: 'previous-7-days', amount: 7, unit: 'day', type: 'relative' },
+  { key: 'previous-1-month', amount: 1, unit: 'month', type: 'relative' },
+  { key: 'previous-6-months', amount: 6, unit: 'month', type: 'relative' },
+] as const;
+
+export const monthOnlyRelativeOptions = [
+  { key: 'previous-1-month', amount: 1, unit: 'month', type: 'relative' },
+  { key: 'previous-2-months', amount: 2, unit: 'month', type: 'relative' },
+  { key: 'previous-3-months', amount: 3, unit: 'month', type: 'relative' },
+  { key: 'previous-6-months', amount: 6, unit: 'month', type: 'relative' },
+] as const;
+
+export function generateRelativeOptions(dateOnly: boolean, monthOnly: boolean) {
+  if (monthOnly) {
+    return monthOnlyRelativeOptions;
+  }
+  if (dateOnly) {
+    return dateOnlyRelativeOptions;
+  }
+  return relativeOptions;
+}
 
 export const isValid = makeIsValidFunction({
   durationBetweenOneAndTwenty: 'The amount part of the range needs to be between 1 and 20.',
@@ -163,3 +195,6 @@ export const isValid = makeIsValidFunction({
   startDateMissing: 'You need to provide a start date.',
   endDateMissing: 'You need to provide an end date.',
 });
+
+export const generatePlaceholder = (dateOnly?: boolean, monthOnly?: boolean) =>
+  `Filter by ${monthOnly ? 'month' : 'date'} ${dateOnly ? '' : ' and time '}range`;

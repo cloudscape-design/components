@@ -203,6 +203,7 @@ export function InternalHeaderActions<T>({ i18nStrings, reloadData, lastUpdated 
     const formattedDate = formatDateLocalized({
       date: lastUpdated.toString(),
       isDateOnly: false,
+      isMonthOnly: false,
     });
 
     return (

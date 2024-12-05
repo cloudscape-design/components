@@ -12,9 +12,10 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  i18nStrings,
+  generateI18nStrings,
+  generatePlaceholder,
+  generateRelativeOptions,
   isValid,
-  relativeOptions,
 } from './common';
 
 export default function DatePickerScenario() {
@@ -26,6 +27,7 @@ export default function DatePickerScenario() {
   });
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const dateOnly = urlParams.dateOnly ?? true;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
@@ -60,7 +62,13 @@ export default function DatePickerScenario() {
       >
         Disabled reasons
       </Checkbox>
-
+      <Checkbox
+        disabled={monthOnly}
+        checked={dateOnly}
+        onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+      >
+        Date-only
+      </Checkbox>
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
       </Checkbox>
@@ -70,14 +78,14 @@ export default function DatePickerScenario() {
           <DateRangePicker
             value={value}
             locale={'en-GB'}
-            i18nStrings={i18nStrings}
+            i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
             timeOffset={0}
-            placeholder={'Filter by a date and time range'}
+            placeholder={generatePlaceholder(dateOnly, monthOnly)}
             onChange={e => setValue(e.detail.value)}
-            relativeOptions={relativeOptions}
+            relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             customRelativeRangeUnits={['second', 'minute', 'hour']}
-            dateOnly={true}
+            dateOnly={dateOnly}
             absoluteFormat="long-localized"
             granularity={monthOnly ? 'month' : 'day'}
             isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}

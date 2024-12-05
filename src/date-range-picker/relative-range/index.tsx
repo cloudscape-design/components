@@ -124,6 +124,10 @@ export default function RelativeRangePicker({
         {showRadioControl && (
           <InternalFormField
             label={i18n('i18nStrings.relativeRangeSelectionHeading', i18nStrings?.relativeRangeSelectionHeading)}
+            description={
+              granularity === 'month' &&
+              'Each month counts from the first day of this month to the last day of this month'
+            }
           >
             <InternalRadioGroup
               className={styles['relative-range-radio-group']}

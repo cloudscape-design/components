@@ -7,18 +7,29 @@ import { setTimeOffset } from './time-offset';
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
-  { timeOffset, dateOnly }: { timeOffset: { startDate?: number; endDate?: number }; dateOnly: boolean }
+  {
+    timeOffset,
+    granularity,
+    dateOnly,
+  }: {
+    timeOffset: { startDate?: number; endDate?: number };
+    granularity: DateRangePickerProps['granularity'];
+    dateOnly: boolean;
+  }
 ): null | DateRangePickerProps.Value {
   if (!value || value.type === 'relative') {
     return value;
   }
-  if (dateOnly) {
+  if (granularity === 'month' || dateOnly) {
     return {
       type: 'absolute',
-      startDate: value.startDate.split('T')[0],
-      endDate: value.endDate.split('T')[0],
+      startDate: dateOnly
+        ? value.startDate.split('T')[0]
+        : value.startDate.split('T')[0].split('-').slice(0, 2).join('-'),
+      endDate: dateOnly ? value.endDate.split('T')[0] : value.endDate.split('T')[0].split('-').slice(0, 2).join('-'),
     };
   }
+
   return setTimeOffset(value, timeOffset);
 }
 

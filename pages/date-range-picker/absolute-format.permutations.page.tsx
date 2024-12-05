@@ -7,7 +7,7 @@ import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween } from '~compo
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings, isValid } from './common';
+import { generateI18nStrings, generatePlaceholder, isValid } from './common';
 
 const permutations = createPermutations<
   Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity'>
@@ -26,7 +26,7 @@ const permutations = createPermutations<
   },
   {
     absoluteFormat: ['iso', 'long-localized'],
-    dateOnly: [false],
+    dateOnly: [true, false],
     hideTimeOffset: [true, false],
     value: [
       {
@@ -56,8 +56,8 @@ export default function DateRangePickerPermutations() {
                 hideTimeOffset={permutation.hideTimeOffset}
                 granularity={permutation.granularity}
                 locale="en-US"
-                i18nStrings={i18nStrings}
-                placeholder={'Filter by a date and time range'}
+                i18nStrings={generateI18nStrings(permutation.dateOnly || false, permutation.granularity === 'month')}
+                placeholder={generatePlaceholder(permutation.dateOnly, permutation.granularity === 'month')}
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}

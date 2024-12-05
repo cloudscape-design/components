@@ -20,10 +20,10 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  i18nStrings,
-  i18nStringsDateOnly,
+  generateI18nStrings,
+  generatePlaceholder,
+  generateRelativeOptions,
   isValid,
-  relativeOptions,
 } from './common';
 
 export default function DatePickerScenario() {
@@ -111,10 +111,10 @@ export default function DatePickerScenario() {
           <DateRangePicker
             value={value}
             locale="en-GB"
-            i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
-            placeholder={'Filter by a date and time range'}
+            i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+            placeholder={generatePlaceholder(dateOnly, monthOnly)}
             onChange={e => setValue(e.detail.value)}
-            relativeOptions={showRelativeOptions ? relativeOptions : []}
+            relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             granularity={monthOnly ? 'month' : 'day'}
             dateOnly={dateOnly}

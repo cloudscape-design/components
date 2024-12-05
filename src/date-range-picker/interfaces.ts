@@ -384,6 +384,11 @@ export namespace DateRangePickerProps {
      */
     customRelativeRangeUnitLabel?: string;
     /**
+     * Visible label for the Start Month input for the
+     * absolute range.
+     */
+    startMonthLabel?: string;
+    /**
      * Visible label for the Start Date input for the
      * absolute range.
      */
@@ -393,6 +398,11 @@ export namespace DateRangePickerProps {
      * absolute range.
      */
     startTimeLabel?: string;
+    /**
+     * Visible label for the End Month input for the
+     * absolute range.
+     */
+    endMonthLabel?: string;
     /**
      * Visible label for the End Date input for the
      * absolute range.
@@ -436,8 +446,10 @@ export type RangeCalendarI18nStrings = Pick<
   | 'currentMonthAriaLabel'
   | 'nextYearAriaLabel'
   | 'previousYearAriaLabel'
+  | 'startMonthLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
+  | 'endMonthLabel'
   | 'endDateLabel'
   | 'endTimeLabel'
   | 'dateTimeConstraintText'

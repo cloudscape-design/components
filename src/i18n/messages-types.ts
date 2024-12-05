@@ -168,8 +168,10 @@ export interface I18nFormatArgTypes {
     "i18nStrings.customRelativeRangeUnitLabel": never;
     "i18nStrings.customRelativeRangeDurationLabel": never;
     "i18nStrings.customRelativeRangeDurationPlaceholder": never;
+    "i18nStrings.startMonthLabel": never;
     "i18nStrings.startDateLabel": never;
     "i18nStrings.startTimeLabel": never;
+    "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
     "i18nStrings.dateTimeConstraintText": never;

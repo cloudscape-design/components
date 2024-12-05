@@ -15,7 +15,13 @@ import styles from '../styles.css.js';
 
 type I18nStrings = Pick<
   RangeCalendarI18nStrings,
-  'dateTimeConstraintText' | 'startDateLabel' | 'startTimeLabel' | 'endDateLabel' | 'endTimeLabel'
+  | 'dateTimeConstraintText'
+  | 'startMonthLabel'
+  | 'startDateLabel'
+  | 'startTimeLabel'
+  | 'endMonthLabel'
+  | 'endDateLabel'
+  | 'endTimeLabel'
 >;
 
 export interface RangeInputsProps extends BaseComponentProps {
@@ -48,14 +54,21 @@ export default function RangeInputs({
   granularity = 'day',
 }: RangeInputsProps) {
   const i18n = useInternalI18n('date-range-picker');
-  const dateInputPlaceholder = granularity === 'month' ? 'YYYY/MM' : 'YYYY/MM/DD';
-  const showTimeInput = !dateOnly && granularity !== 'month';
+  const isMonthPicker = granularity === 'month';
+  const dateInputPlaceholder = isMonthPicker ? 'YYYY/MM' : 'YYYY/MM/DD';
+  const showTimeInput = !dateOnly && !isMonthPicker;
 
   return (
     <InternalFormField constraintText={i18n('i18nStrings.dateTimeConstraintText', i18nStrings?.dateTimeConstraintText)}>
       <div className={styles['date-and-time-container']}>
         <div className={styles['date-and-time-wrapper']}>
-          <InternalFormField label={i18n('i18nStrings.startDateLabel', i18nStrings?.startDateLabel)} stretch={true}>
+          <InternalFormField
+            stretch={true}
+            label={i18n(
+              isMonthPicker ? 'i18nStrings.startMonthLabel' : 'i18nStrings.startDateLabel',
+              isMonthPicker ? i18nStrings?.startMonthLabel : i18nStrings?.startDateLabel
+            )}
+          >
             <InternalDateInput
               value={startDate}
               className={styles['start-date-input']}
@@ -65,7 +78,7 @@ export default function RangeInputs({
             />
           </InternalFormField>
           {showTimeInput && (
-            <InternalFormField label={i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel)} stretch={true}>
+            <InternalFormField stretch={true} label={i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel)}>
               <InternalTimeInput
                 value={startTime}
                 onChange={event => onChangeStartTime(event.detail.value)}
@@ -78,7 +91,13 @@ export default function RangeInputs({
         </div>
 
         <div className={styles['date-and-time-wrapper']}>
-          <InternalFormField label={i18n('i18nStrings.endDateLabel', i18nStrings?.endDateLabel)} stretch={true}>
+          <InternalFormField
+            stretch={true}
+            label={i18n(
+              isMonthPicker ? 'i18nStrings.endMonthLabel' : 'i18nStrings.endDateLabel',
+              isMonthPicker ? i18nStrings?.endMonthLabel : i18nStrings?.endDateLabel
+            )}
+          >
             <InternalDateInput
               value={endDate}
               className={styles['end-date-input']}

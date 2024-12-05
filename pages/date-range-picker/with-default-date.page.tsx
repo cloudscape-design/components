@@ -12,9 +12,10 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  i18nStrings,
+  generateI18nStrings,
+  generatePlaceholder,
+  generateRelativeOptions,
   isValid,
-  relativeOptions,
 } from './common';
 
 export default function DatePickerScenario() {
@@ -25,6 +26,7 @@ export default function DatePickerScenario() {
     endDate: '2018-01-19T15:30:00Z',
   });
 
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
@@ -59,6 +61,13 @@ export default function DatePickerScenario() {
       >
         Disabled reasons
       </Checkbox>
+      <Checkbox
+        disabled={monthOnly}
+        checked={dateOnly}
+        onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+      >
+        Date-only
+      </Checkbox>
 
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
@@ -69,11 +78,12 @@ export default function DatePickerScenario() {
           <DateRangePicker
             value={value}
             locale={'en-GB'}
-            i18nStrings={i18nStrings}
+            i18nStrings={generateI18nStrings(false, monthOnly)}
             timeOffset={0}
-            placeholder={'Filter by a date and time range'}
+            placeholder={generatePlaceholder(false, monthOnly)}
             onChange={e => setValue(e.detail.value)}
-            relativeOptions={relativeOptions}
+            relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
+            dateOnly={dateOnly}
             isValidRange={isValid}
             customRelativeRangeUnits={['second', 'minute', 'hour']}
             granularity={monthOnly ? 'month' : 'day'}

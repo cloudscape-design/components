@@ -34,6 +34,7 @@ import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils';
 
+// import { formatValue } from '../utils';
 import styles from '../styles.css.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
@@ -187,7 +188,7 @@ export default function DateRangePickerCalendar({
       }
     }
 
-    const formatValue = (
+    const formatCurrentValue = (
       date: Date | null | undefined,
       previous: DateRangePickerProps.DateTimeStrings
     ): DateRangePickerProps.DateTimeStrings => {
@@ -202,8 +203,8 @@ export default function DateRangePickerCalendar({
     };
 
     setValue({
-      start: formatValue(newStart, value.start),
-      end: formatValue(newEnd, value.end),
+      start: formatCurrentValue(newStart, value.start),
+      end: formatCurrentValue(newEnd, value.end),
     });
     setAnnouncement(announcement);
   };

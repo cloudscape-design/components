@@ -12,8 +12,7 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  i18nStrings,
-  i18nStringsDateOnly,
+  generateI18nStrings,
 } from './common';
 
 export default function RangeCalendarScenario() {
@@ -72,7 +71,7 @@ export default function RangeCalendarScenario() {
           value={value}
           setValue={setValue}
           locale="en-GB"
-          i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
+          i18nStrings={generateI18nStrings(false, monthOnly)}
           dateOnly={dateOnly}
           granularity={monthOnly ? 'month' : 'day'}
           timeInputFormat="hh:mm"

@@ -132,6 +132,7 @@ export function DateRangePickerDropdown({
         rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
       const formattedRange = formatValue(visibleRange, {
         dateOnly,
+        granularity,
         timeOffset: normalizeTimeOffset(visibleRange, getTimeOffset, timeOffset),
       });
       const newValidationResult = isValidRange(formattedRange);
@@ -145,6 +146,7 @@ export function DateRangePickerDropdown({
     selectedAbsoluteRange,
     setValidationResult,
     dateOnly,
+    granularity,
     getTimeOffset,
     timeOffset,
   ]);

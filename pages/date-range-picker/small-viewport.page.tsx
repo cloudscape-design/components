@@ -12,9 +12,10 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  i18nStrings,
+  generateI18nStrings,
+  generatePlaceholder,
+  generateRelativeOptions,
   isValid,
-  relativeOptions,
 } from './common';
 
 export default function DatePickerScenario() {
@@ -22,6 +23,7 @@ export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
   const [sticky, setSticky] = useState(false);
 
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
   const disabledDates =
@@ -66,7 +68,13 @@ export default function DatePickerScenario() {
       >
         Disabled reasons
       </Checkbox>
-
+      <Checkbox
+        disabled={monthOnly}
+        checked={dateOnly}
+        onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+      >
+        Date-only
+      </Checkbox>
       <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
         Month-only
       </Checkbox>
@@ -79,11 +87,12 @@ export default function DatePickerScenario() {
             <DateRangePicker
               value={value}
               locale="en-GB"
-              i18nStrings={i18nStrings}
-              placeholder="Filter by a date and time range"
+              i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+              placeholder={generatePlaceholder(dateOnly, monthOnly)}
               onChange={e => setValue(e.detail.value)}
               granularity={monthOnly ? 'month' : 'day'}
-              relativeOptions={relativeOptions}
+              relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
+              dateOnly={dateOnly}
               isValidRange={isValid}
               timeInputFormat="hh:mm"
               expandToViewport={expandToViewport}

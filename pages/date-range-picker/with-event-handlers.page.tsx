@@ -11,9 +11,10 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  i18nStrings,
+  generateI18nStrings,
+  generatePlaceholder,
+  generateRelativeOptions,
   isValid,
-  relativeOptions,
 } from './common';
 
 let blurCount = 0;
@@ -23,6 +24,7 @@ export default function DateRangePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
@@ -78,6 +80,13 @@ export default function DateRangePickerScenario() {
         >
           Disabled reasons
         </Checkbox>
+        <Checkbox
+          disabled={monthOnly}
+          checked={dateOnly}
+          onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+        >
+          Date-only
+        </Checkbox>
         <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
           Month-only
         </Checkbox>
@@ -104,9 +113,9 @@ export default function DateRangePickerScenario() {
       <DateRangePicker
         value={value}
         locale={'en-GB'}
-        i18nStrings={i18nStrings}
+        i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
         timeOffset={0}
-        placeholder={'Filter by a date and time range'}
+        placeholder={generatePlaceholder(dateOnly, monthOnly)}
         onFocus={handleFocus}
         onBlur={handleBlur}
         onChange={event => {
@@ -114,8 +123,9 @@ export default function DateRangePickerScenario() {
           setChangeCount(prevCount => prevCount + 1);
           setOnChangeDetails(event.detail.value);
         }}
-        relativeOptions={relativeOptions}
+        relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
         isValidRange={isValid}
+        dateOnly={dateOnly}
         expandToViewport={expandToViewport}
         granularity={monthOnly ? 'month' : 'day'}
         isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
