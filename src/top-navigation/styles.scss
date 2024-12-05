@@ -7,8 +7,6 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-@use './motion';
-
 .top-navigation {
   @include styles.styles-reset;
   background: awsui.$color-background-container-content;
@@ -347,9 +345,5 @@
 }
 
 .icon {
-  transform: rotate(-180deg);
-
-  &.expanded {
-    transform: rotate(0deg);
-  }
+  @include styles.spin-180-when-open;
 }

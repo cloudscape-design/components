@@ -5,6 +5,7 @@
 
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .breadcrumb-group {
   @include styles.styles-reset;
@@ -40,6 +41,11 @@
       margin-inline: 0;
     }
 
+    > .item:last-child {
+      flex-shrink: 1;
+      min-inline-size: 0;
+    }
+
     > .item.hide {
       display: none;
     }
@@ -62,5 +68,46 @@
 }
 
 .breadcrumbs-skeleton {
+  display: none;
+}
+
+.collapsed-button {
+  @include styles.styles-reset;
+  @include styles.text-wrapping;
+  @include styles.font-button;
+  letter-spacing: awsui.$font-button-letter-spacing;
+  color: awsui.$color-text-interactive-default;
+  cursor: pointer;
+  padding-block: 0;
+  padding-inline: 0;
+  border-inline: none;
+  border-block: none;
+  background: none;
+  display: flex;
+  gap: awsui.$space-xxs;
+  max-inline-size: 100%;
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+  }
+  &:hover {
+    color: awsui.$color-text-interactive-hover;
+  }
+  > :last-child {
+    color: awsui.$color-text-breadcrumb-current;
+    font-weight: styles.$font-weight-bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    &:hover {
+      color: awsui.$color-text-interactive-hover;
+    }
+  }
+}
+
+.button-icon {
+  @include styles.spin-180-when-open;
+}
+
+.hidden {
   display: none;
 }

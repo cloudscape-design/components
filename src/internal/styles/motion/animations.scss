@@ -3,6 +3,7 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
+@use './mixins' as mixins;
 @use '../../../internal/styles/tokens' as awsui;
 
 @mixin animation-fade-in {
@@ -78,5 +79,15 @@
     100% {
       transform: scale(1);
     }
+  }
+}
+
+@mixin spin-180-when-open {
+  transform: rotate(0deg);
+  @include mixins.with-motion {
+    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
+  }
+  &-open {
+    transform: rotate(-180deg);
   }
 }

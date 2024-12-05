@@ -12,8 +12,7 @@ import InternalIcon, { InternalIconProps } from '../../icon/internal';
 import { useDropdownContext } from '../../internal/components/dropdown/context';
 import useHiddenDescription from '../../internal/hooks/use-hidden-description';
 import { GeneratedAnalyticsMetadataButtonDropdownClick } from '../analytics-metadata/interfaces';
-import { ItemProps, LinkItem } from '../interfaces';
-import { ButtonDropdownProps } from '../interfaces';
+import { InternalCheckboxItem, InternalItem, ItemProps, LinkItem } from '../interfaces';
 import Tooltip from '../tooltip';
 import { getMenuItemCheckboxProps, getMenuItemProps } from '../utils/menu-item';
 import { isCheckboxItem, isLinkItem } from '../utils/utils';
@@ -89,16 +88,8 @@ const ItemElement = ({
   );
 };
 
-export type InternalItemProps = ButtonDropdownProps.Item & {
-  badge?: boolean;
-};
-
-export type InternalCheckboxItemProps = ButtonDropdownProps.CheckboxItem & {
-  badge?: boolean;
-};
-
 interface MenuItemProps {
-  item: InternalItemProps | InternalCheckboxItemProps;
+  item: InternalItem | InternalCheckboxItem;
   disabled: boolean;
   highlighted: boolean;
   linkStyle?: boolean;
@@ -107,6 +98,7 @@ interface MenuItemProps {
 function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   const menuItemRef = useRef<(HTMLSpanElement & HTMLAnchorElement) | null>(null);
   const isCheckbox = isCheckboxItem(item);
+  const isCurrentBreadcrumb = !isCheckbox && item.isCurrentBreadcrumb;
 
   useEffect(() => {
     if (highlighted && menuItemRef.current) {
@@ -118,7 +110,13 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   const { targetProps, descriptionEl } = useHiddenDescription(item.disabledReason);
   const menuItemProps: React.HTMLAttributes<HTMLSpanElement & HTMLAnchorElement> = {
     'aria-label': item.ariaLabel,
-    className: clsx(styles['menu-item'], analyticsLabels['menu-item'], linkStyle && styles['link-style']),
+    className: clsx(
+      styles['menu-item'],
+      analyticsLabels['menu-item'],
+      linkStyle && styles['link-style'],
+      isCurrentBreadcrumb && styles['current-breadcrumb']
+    ),
+    'aria-current': isCurrentBreadcrumb,
     lang: item.lang,
     ref: menuItemRef,
     // We are using the roving tabindex technique to manage the focus state of the dropdown.
@@ -156,13 +154,7 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
   );
 }
 
-const MenuItemContent = ({
-  item,
-  disabled,
-}: {
-  item: InternalItemProps | InternalCheckboxItemProps;
-  disabled: boolean;
-}) => {
+const MenuItemContent = ({ item, disabled }: { item: InternalItem | InternalCheckboxItem; disabled: boolean }) => {
   const hasIcon = !!(item.iconName || item.iconUrl || item.iconSvg);
   const hasExternal = isLinkItem(item) && item.external;
   const isCheckbox = isCheckboxItem(item);
