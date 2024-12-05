@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-import { getUrlParams, Theme } from './utils';
+import { getUrlParams, testIf, Theme } from './utils';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 
@@ -195,6 +195,17 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       const navBefore = await page.getNavPosition();
       await page.elementScrollTo(wrapper.findNavigation().toSelector(), { top: 100 });
       await expect(page.getNavPosition()).resolves.toEqual(navBefore);
+    })
+  );
+
+  testIf(theme === 'refresh-toolbar')(
+    'should keep header visible and in position while scrolling',
+    setupTest({ pageName: 'multi-layout-with-table-sticky-header' }, async page => {
+      const tableWrapper = createWrapper().findTable();
+      const { top: headerOldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      await page.windowScrollTo({ top: 200 });
+      const { top: headerNewOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      expect(headerOldOffset).toEqual(headerNewOffset);
     })
   );
 });

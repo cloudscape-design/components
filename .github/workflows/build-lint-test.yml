@@ -23,7 +23,7 @@ jobs:
     uses: cloudscape-design/actions/.github/workflows/build-lint-test.yml@main
     secrets: inherit
     with:
-      artifact-path: lib/static-default
+      artifact-path: pages/lib/static-default
       artifact-name: dev-pages
   deploy:
     needs: build
@@ -31,4 +31,4 @@ jobs:
     secrets: inherit
     with:
       artifact-name: dev-pages
-      deployment-path: lib/static-default
+      deployment-path: pages/lib/static-default

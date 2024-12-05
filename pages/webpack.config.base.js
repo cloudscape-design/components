@@ -16,7 +16,7 @@ const replaceModule = (from, to) =>
   new NormalModuleReplacementPlugin(from, resource => (resource.request = resource.request.replace(from, to)));
 
 module.exports = ({
-  outputPath = 'lib/static/',
+  outputPath = 'pages/lib/static/',
   componentsPath,
   designTokensPath,
   globalStylesPath,

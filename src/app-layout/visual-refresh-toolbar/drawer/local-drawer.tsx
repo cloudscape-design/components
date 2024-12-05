@@ -94,7 +94,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
           }}
-          data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
+          data-testid={activeDrawerId && `awsui-app-layout-drawer-${activeDrawerId}`}
         >
           {!isMobile && activeDrawer?.resizable && (
             <div className={styles['drawer-slider']}>

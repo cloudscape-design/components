@@ -16,7 +16,11 @@ export default function () {
       <AppLayout
         ariaLabels={labels}
         disableContentPaddings={true}
-        breadcrumbs={<div className={styles.highlightBorder}>Breadcrumbs</div>}
+        breadcrumbs={
+          <nav aria-label="Breadcrumbs" className={styles.highlightBorder}>
+            Breadcrumbs
+          </nav>
+        }
         notifications={
           <div className={styles.highlightBorder}>
             <Box variant="h2">Notifications</Box>

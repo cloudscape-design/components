@@ -12,7 +12,11 @@ export default function AppLayoutStatefulDemo() {
   return (
     <AppLayout
       ariaLabels={labels}
-      breadcrumbs={<Counter id="breadcrumbs" />}
+      breadcrumbs={
+        <nav aria-label="Breadcrumbs">
+          <Counter id="breadcrumbs" />
+        </nav>
+      }
       navigation={<Counter id="navigation" />}
       tools={<Counter id="tools" />}
       content={
