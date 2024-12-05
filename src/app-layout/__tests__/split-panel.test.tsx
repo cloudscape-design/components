@@ -12,6 +12,8 @@ import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from '.
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
 
+import testUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';
+
 const defaultSplitPanel = (
   <SplitPanel i18nStrings={splitPanelI18nStrings} header="test header">
     test content
@@ -64,7 +66,7 @@ afterEach(() => {
   window.getComputedStyle = originalGetComputedStyle;
 });
 
-describeEachAppLayout({ sizes: ['desktop'] }, () => {
+describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   test('should render split panel in bottom position', () => {
     const { wrapper } = renderComponent(
       <AppLayout
@@ -104,8 +106,10 @@ describeEachAppLayout({ sizes: ['desktop'] }, () => {
       );
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       wrapper.findSplitPanelOpenButton()!.click();
-      if (position === 'bottom') {
+      if (theme === 'classic' || (theme === 'refresh' && position === 'bottom')) {
         expect(wrapper.findSplitPanelOpenButton()).toBeNull();
+      } else {
+        expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
       }
       wrapper.findSplitPanel()!.findCloseButton()!.click();
       expect(wrapper.findSplitPanelOpenButton()).not.toBeNull();
@@ -133,7 +137,11 @@ describeEachAppLayout({ sizes: ['desktop'] }, () => {
       );
       wrapper.findSplitPanelOpenButton()!.click();
       wrapper.findSplitPanel()!.findCloseButton()!.click();
-      expect(wrapper.findSplitPanelOpenButton()!.getElement()).toHaveFocus();
+      const button =
+        position === 'side'
+          ? wrapper.findSplitPanelOpenButton()
+          : wrapper.findSplitPanel()!.findByClassName(testUtilStyles['open-button']);
+      expect(button!.getElement()).toHaveFocus();
     });
 
     test(`Moves focus to the slider when focusSplitPanel() is called`, () => {
