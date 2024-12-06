@@ -151,7 +151,7 @@ export function useSelect({
         closeDropdown();
       }
     },
-    preventNativeSpace: !hasFilter,
+    preventNativeSpace: !hasFilter || !!highlightedOption,
   });
 
   const triggerKeyDownHandler = useTriggerKeyboard({

@@ -167,6 +167,18 @@ describe(`Multiselect with filtering`, () => {
   );
 
   test(
+    'allows space to select an option',
+    setupTest(async page => {
+      await page.clickSelect();
+      // Type in a filtering query that includes a space
+      await page.keys('first cat');
+      // Use space for selection here
+      await page.keys(['ArrowDown', 'ArrowDown', 'Space']);
+      await expect(page.getSelectedOptionLabels()).resolves.toEqual(['option1']);
+    })
+  );
+
+  test(
     'keeps filtering state after selecting an option using keyboard',
     setupTest(async page => {
       await page.clickSelect();
