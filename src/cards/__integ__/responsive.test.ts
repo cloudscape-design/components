@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 
 class CardsPage extends BasePageObject {
   wrapper = new CardsWrapper(createWrapper('body').find(`.${CardsWrapper.rootSelector}`).getElement());
@@ -16,7 +16,8 @@ class CardsPage extends BasePageObject {
   };
 
   testCardsPerRow = async (width: number, cardsPerRow: number) => {
-    await this.setWindowSize({ width, height: 500 });
+    // Avoid vertical scrollbar
+    await this.setWindowSize({ width, height: 1200 });
     await this.waitForJsTimers();
     await expect(this.getCardsPerRow()).resolves.toEqual(cardsPerRow);
   };
