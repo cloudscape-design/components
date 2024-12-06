@@ -20,6 +20,7 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
       (!!computedStyle.transform && computedStyle.transform !== 'none') ||
       (!!computedStyle.perspective && computedStyle.perspective !== 'none') ||
       (!!computedStyle.containerType && computedStyle.containerType !== 'normal') ||
+      (!!computedStyle.clipPath && computedStyle.clipPath !== 'none') ||
       computedStyle.contain?.split(' ').some(s => ['layout', 'paint', 'strict', 'content'].includes(s))
     );
   }) as HTMLElement;

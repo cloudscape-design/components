@@ -121,8 +121,8 @@ export default function usePopoverPosition({
         allowVerticalOverflow,
       });
 
-      // Get the position of the popover relative to the offset parent.
-      const popoverOffset = toRelativePosition(rect, containingBlockRect);
+      // Get the position of the popover relative to the viewport.
+      const popoverOffset = toRelativePosition(rect, viewportRect);
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
       // and use that to recalculate the new popover position.
