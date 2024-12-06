@@ -101,12 +101,25 @@ export class DrpDropdownWrapper extends ComponentWrapper {
     return this.findByClassName(styles['calendar-header'])!;
   }
 
-  findPreviousMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-prev-month-btn']}`, ButtonWrapper)!;
+  findPreviousPageButton(): ButtonWrapper {
+    return this.findComponent(`.${styles['calendar-prev-page-btn']}`, ButtonWrapper)!;
   }
 
-  findNextMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-next-month-btn']}`, ButtonWrapper)!;
+  findNextPageButton(): ButtonWrapper {
+    return this.findComponent(`.${styles['calendar-next-page-btn']}`, ButtonWrapper)!;
+  }
+
+  /**
+   * Returns the day container that corresponds to the current day.
+   */
+  findCurrentDay(): CalendarDateWrapper {
+    return this.findComponent(`.${gridStyles.today}`, CalendarDateWrapper)!;
+  }
+  /**
+   * Returns the month container that corresponds to the current month.
+   */
+  findCurrentMonth(): CalendarDateWrapper {
+    return this.findComponent(`.${gridStyles['this-month']}`, CalendarDateWrapper)!;
   }
 
   /**
@@ -124,6 +137,21 @@ export class DrpDropdownWrapper extends ComponentWrapper {
     const gridClassName = grid === 'right' ? styles['second-grid'] : styles['first-grid'];
     return this.findComponent(
       `.${gridClassName} .${testStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testStyles['calendar-date']}:nth-child(${column})`,
+      CalendarDateWrapper
+    )!;
+  }
+
+  /**
+   * Returns a month container on the calendar.
+   *
+   * @param grid the calendar grid. If only one calendar grid is visible (on small screens), use `'right'`.
+   * @param row 1-based row index of the month.
+   * @param column 1-based column index of the month.
+   */
+  findMonthAt(grid: 'left' | 'right', row: 1 | 2 | 3 | 4, column: 1 | 2 | 3): CalendarDateWrapper {
+    const gridClassName = grid === 'right' ? styles['second-grid'] : styles['first-grid'];
+    return this.findComponent(
+      `.${gridClassName} .${gridStyles.quarter}:nth-child(${row}) .${gridStyles.month}:nth-child(${column})`,
       CalendarDateWrapper
     )!;
   }

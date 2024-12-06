@@ -2,13 +2,16 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { CalendarProps } from '../calendar/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 
-interface DateRangePickerBaseProps {
+export type Granularity = CalendarProps.Granularity; //'day' | 'month';
+
+export interface DateRangePickerBaseProps {
   /**
    * The current date range value. Can be either an absolute time range
    * or a relative time range.
@@ -63,6 +66,8 @@ interface DateRangePickerBaseProps {
    * Do not use `dateOnly` flag conditionally. The component does not trigger the value update
    * when the flag changes which means the value format can become inconsistent.
    *
+   * This does not apply when the 'granularity' is set to 'month'
+   *
    * Default: `false`.
    */
   dateOnly?: boolean;
@@ -83,7 +88,7 @@ interface DateRangePickerBaseProps {
    *
    * Use to restrict the granularity of time that the user can enter.
    *
-   * Has no effect when `dateOnly` is true.
+   * Has no effect when `dateOnly` is true or `granularity` is set to 'month'.
    */
   timeInputFormat?: TimeInputProps.Format;
 
@@ -117,6 +122,11 @@ interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
+  /**
+   * Specifies the granularity at which users will be able to select a date range.
+   * Defaults to `day`.
+   */
+  granularity?: Granularity;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -283,7 +293,7 @@ export namespace DateRangePickerProps {
     focus(): void;
   }
 
-  export interface I18nStrings {
+  export interface I18nStrings extends CalendarProps.I18nStrings {
     /**
      * Adds `aria-label` to the trigger and dropdown.
      */
@@ -373,22 +383,11 @@ export namespace DateRangePickerProps {
      * custom relative range.
      */
     customRelativeRangeUnitLabel?: string;
-
     /**
-     * Used as part of the aria label for today's date in the calendar.
+     * Visible label for the Start Month input for the
+     * absolute range.
      */
-    todayAriaLabel?: string;
-
-    /**
-     * An aria label for the 'next month' button.
-     */
-    nextMonthAriaLabel?: string;
-
-    /**
-     * An aria label for the 'previous month' button.
-     */
-    previousMonthAriaLabel?: string;
-
+    startMonthLabel?: string;
     /**
      * Visible label for the Start Date input for the
      * absolute range.
@@ -399,6 +398,11 @@ export namespace DateRangePickerProps {
      * absolute range.
      */
     startTimeLabel?: string;
+    /**
+     * Visible label for the End Month input for the
+     * absolute range.
+     */
+    endMonthLabel?: string;
     /**
      * Visible label for the End Date input for the
      * absolute range.
@@ -432,13 +436,20 @@ export namespace DateRangePickerProps {
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
+export type QuarterIndex = 0 | 1 | 2;
+
 export type RangeCalendarI18nStrings = Pick<
   DateRangePickerProps.I18nStrings,
   | 'todayAriaLabel'
   | 'nextMonthAriaLabel'
   | 'previousMonthAriaLabel'
+  | 'currentMonthAriaLabel'
+  | 'nextYearAriaLabel'
+  | 'previousYearAriaLabel'
+  | 'startMonthLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
+  | 'endMonthLabel'
   | 'endDateLabel'
   | 'endTimeLabel'
   | 'dateTimeConstraintText'

@@ -4,8 +4,6 @@ import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
-import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
-
 import DateRangePicker, { DateRangePickerProps } from '../../../../lib/components/date-range-picker';
 import { NonCancelableEventHandler } from '../../../../lib/components/internal/events';
 import { KeyCode } from '../../../../lib/components/internal/keycode';
@@ -22,7 +20,7 @@ import screenreaderOnlyStyles from '../../../../lib/components/internal/componen
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));
 afterEach(() => Mockdate.reset());
 
-describe('Date range picker calendar', () => {
+describe('Date range picker calendar with day granularity', () => {
   const outsideId = 'outside';
   const defaultProps: DateRangePickerProps & Pick<Required<DateRangePickerProps>, 'i18nStrings'> = {
     i18nStrings,
@@ -74,10 +72,6 @@ describe('Date range picker calendar', () => {
       .findDropdown()!
       .findAll(`.${gridDayStyles['day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
-  };
-
-  const findToday = (wrapper: DateRangePickerWrapper): ElementWrapper<HTMLElement> => {
-    return wrapper.findDropdown()!.findByClassName(gridDayStyles.today)!;
   };
 
   const findLiveAnnouncement = (wrapper: DateRangePickerWrapper) => {
@@ -187,7 +181,9 @@ describe('Date range picker calendar', () => {
       test('should have the current date focusable if no date is selected', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null });
         changeMode(wrapper, 'absolute');
-        expect(findToday(wrapper)!.getElement()).toContainElement(findFocusableDate(wrapper)!.getElement());
+        expect(wrapper.findDropdown()?.findCurrentDay()!.getElement()).toContainElement(
+          findFocusableDate(wrapper)!.getElement()
+        );
         expect(findFocusableDateText(wrapper)).toBe('20');
       });
 
@@ -243,14 +239,14 @@ describe('Date range picker calendar', () => {
       });
 
       test('should allow first date to be focused after moving dates then navigating between months', () => {
-        wrapper.findDropdown()!.findNextMonthButton().click();
-        wrapper.findDropdown()!.findNextMonthButton().click();
+        wrapper.findDropdown()!.findNextPageButton().click();
+        wrapper.findDropdown()!.findNextPageButton().click();
 
         // focus a new date
         findFocusableDate(wrapper)!.keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findDropdown()!.findPreviousMonthButton()!.click();
-        wrapper.findDropdown()!.findPreviousMonthButton()!.click();
+        wrapper.findDropdown()!.findPreviousPageButton()!.click();
+        wrapper.findDropdown()!.findPreviousPageButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
@@ -260,8 +256,8 @@ describe('Date range picker calendar', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, isDateEnabled });
 
         changeMode(wrapper, 'absolute');
-        wrapper.findDropdown()!.findNextMonthButton()!.click();
-        wrapper.findDropdown()!.findNextMonthButton()!.click();
+        wrapper.findDropdown()!.findNextPageButton()!.click();
+        wrapper.findDropdown()!.findNextPageButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('2');
       });
@@ -605,9 +601,9 @@ describe('Date range picker calendar', () => {
     test('should add `todayAriaLabel` to today in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, value: null, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(findToday(wrapper).find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent).toMatch(
-        'TEST TODAY'
-      );
+      expect(
+        wrapper.findDropdown()?.findCurrentDay().find(`.${screenreaderOnlyStyles.root}`)?.getElement().textContent
+      ).toMatch('TEST TODAY');
     });
 
     test('should add aria-selected="true" to selected range in the calendar', () => {
@@ -624,7 +620,7 @@ describe('Date range picker calendar', () => {
     test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findNextMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findNextPageButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
@@ -632,7 +628,7 @@ describe('Date range picker calendar', () => {
     test('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findPreviousMonthButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findPreviousPageButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS MONTH'
       );
     });

@@ -10,6 +10,7 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   generateI18nStrings,
+  generatePlaceholder,
   generateRelativeOptions,
   isValid,
 } from './common';
@@ -22,7 +23,7 @@ export default function DatePickerScenario() {
     endDate: '2018-01-19T15:30:00Z',
   });
 
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const absoluteFormat =
     urlParams.absoluteFormat ?? ('dateRangePickerDemoDefaults.absoluteFormat' as DateRangePickerProps.AbsoluteFormat);
@@ -51,6 +52,9 @@ export default function DatePickerScenario() {
       >
         Date-only
       </Checkbox>
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
       <br />
       <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
       <br />
@@ -61,9 +65,10 @@ export default function DatePickerScenario() {
             value={value}
             locale={'en-GB'}
             timeOffset={0}
-            placeholder={'Filter by a date and time range'}
+            placeholder={generatePlaceholder(dateOnly, monthOnly)}
             onChange={e => setValue(e.detail.value)}
             dateOnly={dateOnly}
+            granularity={monthOnly ? 'month' : 'day'}
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             customRelativeRangeUnits={['second', 'minute', 'hour']}

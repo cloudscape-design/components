@@ -38,12 +38,14 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     i18nStrings: [i18nStrings],
     dateOnly: [false, true],
     customAbsoluteRangeControl: [undefined],
+    granularity: ['day', 'month'] as const,
   })),
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
     i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [() => 'Custom control'],
+    granularity: ['day', 'month'],
   },
 ]);
 

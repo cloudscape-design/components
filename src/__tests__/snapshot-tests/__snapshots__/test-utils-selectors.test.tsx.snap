@@ -214,9 +214,14 @@ exports[`test-utils selectors 1`] = `
     "awsui_apply-button_mgja0",
     "awsui_calendar-date_1afkv",
     "awsui_calendar-header_mgja0",
+<<<<<<< HEAD
     "awsui_calendar-next-month-btn_mgja0",
     "awsui_calendar-prev-month-btn_mgja0",
     "awsui_calendar-week_1afkv",
+=======
+    "awsui_calendar-next-page-btn_mgja0",
+    "awsui_calendar-prev-page-btn_mgja0",
+>>>>>>> 27c0307a (feat: Month granularity in date-range-picker)
     "awsui_cancel-button_mgja0",
     "awsui_clear-button_mgja0",
     "awsui_custom-range-duration-input_16zmw",
@@ -229,12 +234,16 @@ exports[`test-utils selectors 1`] = `
     "awsui_first-grid_mgja0",
     "awsui_label_mgja0",
     "awsui_mode-switch_mgja0",
+    "awsui_month_1mfbn",
+    "awsui_quarter_1mfbn",
     "awsui_relative-range-radio-group_16zmw",
     "awsui_root_mgja0",
     "awsui_second-grid_mgja0",
     "awsui_start-date-input_mgja0",
     "awsui_start-date_1mfbn",
     "awsui_start-time-input_mgja0",
+    "awsui_this-month_1mfbn",
+    "awsui_today_1mfbn",
     "awsui_validation-error_mgja0",
   ],
   "drawer": [

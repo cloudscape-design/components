@@ -162,6 +162,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.copyButtonText": never;
   }
   "date-range-picker": {
+    "nextMonthAriaLabel": never;
+    "previousMonthAriaLabel": never;
+    "todayAriaLabel": never;
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
     "i18nStrings.relativeRangeSelectionHeading": never;
@@ -193,6 +196,9 @@ export interface I18nFormatArgTypes {
       "unit": string;
       "amount": number;
     }
+    "i18nStrings.nextYearAriaLabel": never;
+    "i18nStrings.previousYearAriaLabel": never;
+    "i18nStrings.currentMonthAriaLabel": never;
   }
   "drawer": {
     "i18nStrings.loadingText": never;

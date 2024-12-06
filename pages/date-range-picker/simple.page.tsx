@@ -34,7 +34,7 @@ export default function DatePickerScenario() {
     endDate: '2024-12-31T23:59:59+01:00',
   });
 
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const absoluteFormat =
     urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
   const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
@@ -109,6 +109,9 @@ export default function DatePickerScenario() {
           >
             Show relative options
           </Checkbox>
+          <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+            Month-only
+          </Checkbox>
           <Checkbox
             disabled={monthOnly}
             checked={dateOnly}
@@ -134,6 +137,7 @@ export default function DatePickerScenario() {
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             dateOnly={dateOnly}
+            granularity={monthOnly ? 'month' : 'day'}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
             isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}

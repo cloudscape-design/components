@@ -113,6 +113,7 @@ const DateRangePicker = React.forwardRef(
       absoluteFormat = 'iso',
       hideTimeOffset,
       customRelativeRangeUnits,
+      granularity = 'day',
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -127,14 +128,20 @@ const DateRangePicker = React.forwardRef(
         showClearButton,
         timeInputFormat,
         hideTimeOffset,
+        granularity,
       },
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
+    const initialValue = value;
+    const [initialValueFormatted, setInitialValueFormatted] = useState(false);
+    const isMonthOnly = granularity === 'month';
+    const hideTime = dateOnly || isMonthOnly;
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
-    const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    value = formatInitialValue(value, dateOnly, normalizedTimeOffset);
-
+    const normalizedTimeOffset = hideTime
+      ? { startDate: undefined, endDate: undefined }
+      : normalizeTimeOffset(value, getTimeOffset, timeOffset);
+    value = formatInitialValue(value, dateOnly, isMonthOnly, normalizedTimeOffset);
     const baseProps = getBaseProps(rest);
     const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
@@ -179,7 +186,10 @@ const DateRangePicker = React.forwardRef(
     const onApply = (newValue: null | DateRangePickerProps.Value): DateRangePickerProps.ValidationResult => {
       const formattedValue = formatValue(newValue, {
         dateOnly,
-        timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
+        monthOnly: isMonthOnly,
+        timeOffset: hideTime
+          ? { startDate: undefined, endDate: undefined }
+          : normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
       });
 
       const validationResult = isValidRange(formattedValue);
@@ -253,7 +263,7 @@ const DateRangePicker = React.forwardRef(
       placeholder,
       formatRelativeRange,
       absoluteFormat,
-      hideTimeOffset,
+      hideTimeOffset: hideTime || hideTimeOffset,
       timeOffset: normalizedTimeOffset,
     });
 
@@ -288,6 +298,13 @@ const DateRangePicker = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
+    useEffect(() => {
+      if (value !== initialValue && !initialValueFormatted) {
+        fireNonCancelableEvent(onChange, { value });
+        setInitialValueFormatted(true);
+      }
+    }, [initialValue, value, initialValueFormatted, onChange]);
+
     return (
       <div
         {...baseProps}
@@ -295,7 +312,7 @@ const DateRangePicker = React.forwardRef(
         className={clsx(
           baseProps.className,
           styles.root,
-          absoluteFormat === 'long-localized' && !dateOnly && styles.wide
+          absoluteFormat === 'long-localized' && !dateOnly && !isMonthOnly && styles.wide
         )}
         onKeyDown={onWrapperKeyDownHandler}
       >
@@ -335,6 +352,7 @@ const DateRangePicker = React.forwardRef(
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
                 customRelativeRangeUnits={customRelativeRangeUnits}
+                granularity={granularity}
               />
             )}
           </ResetContextsForModal>

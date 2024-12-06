@@ -1,8 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { addMonths, isAfter, isBefore, isSameMonth, max, min } from 'date-fns';
+import { addMonths, addYears, isAfter, isBefore, isSameMonth, isSameYear, max, min } from 'date-fns';
 
+import { CalendarProps } from '../../../calendar/interfaces';
 import {
   getBaseDay,
   moveNextDay,
@@ -10,46 +11,34 @@ import {
   movePrevDay,
   movePrevWeek,
 } from '../../../calendar/utils/navigation-day';
+import {
+  getBaseMonth,
+  moveMonthDown,
+  moveMonthUp,
+  moveNextMonth,
+  movePrevMonth,
+} from '../../../calendar/utils/navigation-month';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';
 import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
-import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import { findDateToFocus } from '../utils';
-import { MonthlyGrid } from './monthly-grid';
+import { Grid } from './grid';
+import { SelectGridProps } from './interfaces';
 
 import styles from '../../styles.css.js';
 
-function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
+function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: CalendarProps.Granularity) {
+  const isSame = granularity === 'day' ? isSameMonth : isSameYear;
+  const add = granularity === 'day' ? addMonths : addYears;
   if (isSingleGrid) {
-    return isSameMonth(date, baseDate);
+    return isSame(date, baseDate);
   }
 
-  const previousMonth = addMonths(baseDate, -1);
+  const previous = add(baseDate, -1);
 
-  return isSameMonth(date, previousMonth) || isSameMonth(date, baseDate);
-}
-
-interface GridProps {
-  baseDate: Date;
-  selectedStartDate: Date | null;
-  selectedEndDate: Date | null;
-
-  focusedDate: Date | null;
-  onFocusedDateChange: React.Dispatch<React.SetStateAction<Date | null>>;
-
-  isDateEnabled: DateRangePickerProps.IsDateEnabledFunction;
-  dateDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
-  isSingleGrid: boolean;
-
-  onSelectDate: (date: Date) => void;
-  onChangeMonth: (date: Date) => void;
-
-  locale: string;
-  startOfWeek: DayIndex;
-  todayAriaLabel?: string;
-  headingIdPrefix: string;
+  return isSame(date, previous) || isSame(date, baseDate);
 }
 
 export const Grids = ({
@@ -65,17 +54,26 @@ export const Grids = ({
   isSingleGrid,
 
   onSelectDate,
-  onChangeMonth,
+  onPageChange,
 
   locale,
-  startOfWeek,
   todayAriaLabel,
   headingIdPrefix,
-}: GridProps) => {
+  startOfWeek = 0,
+  granularity = 'day',
+}: SelectGridProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [gridHasFocus, setGridHasFocus] = useState(false);
+  const isMonthPicker = granularity === 'month';
 
   const focusedDateRef = useRef<HTMLTableCellElement>(null);
+
+  const addPages = !isMonthPicker ? addMonths : addYears;
+  const getBase = !isMonthPicker ? getBaseDay : getBaseMonth;
+  const moveDown = isMonthPicker ? moveMonthDown : moveNextWeek;
+  const moveLeft = isMonthPicker ? movePrevMonth : movePrevDay;
+  const moveRight = isMonthPicker ? moveNextMonth : moveNextDay;
+  const moveUp = isMonthPicker ? moveMonthUp : movePrevWeek;
 
   const dateCache = useDateCache();
   baseDate = dateCache(baseDate);
@@ -89,20 +87,20 @@ export const Grids = ({
   );
 
   useEffect(() => {
-    if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid)) {
+    if (focusedDate && !isVisible(focusedDate, baseDate, isSingleGrid, granularity)) {
       const direction = isAfter(focusedDate, baseDate) ? -1 : 1;
 
-      const newMonth = !isSingleGrid && direction === -1 ? addMonths(baseDate, -1) : baseDate;
-      const nearestBaseDate = getBaseDay(newMonth, isDateFocusable);
+      const newPage = !isSingleGrid && direction === -1 ? addPages(baseDate, -1) : baseDate;
+      const nearestBaseDate = getBase(newPage, isDateFocusable);
 
       const newFocusedDate = findDateToFocus(focusedDate, nearestBaseDate, isDateFocusable);
 
       onFocusedDateChange(newFocusedDate);
     }
-  }, [baseDate, focusedDate, isSingleGrid, isDateFocusable, onFocusedDateChange]);
+  }, [baseDate, focusedDate, isSingleGrid, granularity, addPages, isDateFocusable, onFocusedDateChange, getBase]);
 
   const onGridKeyDownHandler = (event: React.KeyboardEvent<HTMLElement>) => {
-    let updatedFocusDate;
+    let updatedFocusDate: Date | null = null;
 
     const keys = [KeyCode.up, KeyCode.down, KeyCode.left, KeyCode.right, KeyCode.space, KeyCode.enter];
 
@@ -117,25 +115,24 @@ export const Grids = ({
         if (!focusedDate || !isDateEnabled(focusedDate)) {
           return;
         }
-
+        // onFocusDate(null);
         onSelectDate(focusedDate);
       },
-      onBlockEnd: () => focusedDate && (updatedFocusDate = moveNextWeek(focusedDate, isDateFocusable)),
-      onBlockStart: () => focusedDate && (updatedFocusDate = movePrevWeek(focusedDate, isDateFocusable)),
-      onInlineEnd: () => focusedDate && (updatedFocusDate = moveNextDay(focusedDate, isDateFocusable)),
-      onInlineStart: () => focusedDate && (updatedFocusDate = movePrevDay(focusedDate, isDateFocusable)),
+      onBlockEnd: () => focusedDate && (updatedFocusDate = moveDown(focusedDate, isDateFocusable)),
+      onBlockStart: () => focusedDate && (updatedFocusDate = moveUp(focusedDate, isDateFocusable)),
+      onInlineStart: () => focusedDate && (updatedFocusDate = moveLeft(focusedDate, isDateFocusable)),
+      onInlineEnd: () => focusedDate && (updatedFocusDate = moveRight(focusedDate, isDateFocusable)),
     });
 
     if (!updatedFocusDate) {
       return;
     }
 
-    const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid);
+    const updatedDateIsVisible = isVisible(updatedFocusDate, baseDate, isSingleGrid, granularity);
 
     if (!updatedDateIsVisible) {
-      const newMonthIsOnLeftSide = !isSingleGrid && isBefore(updatedFocusDate, baseDate);
-
-      onChangeMonth(newMonthIsOnLeftSide ? addMonths(updatedFocusDate, 1) : updatedFocusDate);
+      const newPageIsOnLeftSide = !isSingleGrid && isBefore(updatedFocusDate, baseDate);
+      onPageChange(newPageIsOnLeftSide ? addPages(updatedFocusDate, 1) : updatedFocusDate);
     }
     onFocusedDateChange(updatedFocusDate);
   };
@@ -166,9 +163,27 @@ export const Grids = ({
   const isRangeVisible = (selectedStartDate && selectedEndDate) || gridHasFocus;
 
   const rangeEnds: Date[] = [selectedStartDate ?? focusedDate, selectedEndDate ?? focusedDate].filter(hasValue);
-
   const rangeStartDate = min(rangeEnds);
   const rangeEndDate = max(rangeEnds);
+  const pageUnit = isMonthPicker ? 'year' : 'month';
+
+  const sharedGridProps = {
+    selectedEndDate,
+    selectedStartDate,
+    focusedDate,
+    focusedDateRef,
+    rangeStartDate: isRangeVisible ? rangeStartDate : null,
+    rangeEndDate: isRangeVisible ? rangeEndDate : null,
+    isDateEnabled,
+    dateDisabledReason,
+    onSelectDate,
+    onGridKeyDownHandler,
+    onFocusedDateChange,
+    locale,
+    startOfWeek,
+    todayAriaLabel,
+    granularity,
+  };
 
   return (
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
@@ -177,43 +192,15 @@ export const Grids = ({
           <MonthlyGrid
             padDates="before"
             className={styles['first-grid']}
-            baseDate={addMonths(baseDate, -1)}
-            selectedEndDate={selectedEndDate}
-            selectedStartDate={selectedStartDate}
-            rangeStartDate={isRangeVisible ? rangeStartDate : null}
-            rangeEndDate={isRangeVisible ? rangeEndDate : null}
-            focusedDate={focusedDate}
-            focusedDateRef={focusedDateRef}
-            isDateEnabled={isDateEnabled}
-            dateDisabledReason={dateDisabledReason}
-            onSelectDate={onSelectDate}
-            onGridKeyDownHandler={onGridKeyDownHandler}
-            onFocusedDateChange={onFocusedDateChange}
-            locale={locale}
-            startOfWeek={startOfWeek}
-            todayAriaLabel={todayAriaLabel}
-            ariaLabelledby={`${headingIdPrefix}-prevmonth`}
+            baseDate={addPages(baseDate, -1)}
+            ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
           />
         )}
         <MonthlyGrid
           padDates="after"
           className={styles['second-grid']}
           baseDate={baseDate}
-          selectedEndDate={selectedEndDate}
-          selectedStartDate={selectedStartDate}
-          rangeStartDate={isRangeVisible ? rangeStartDate : null}
-          rangeEndDate={isRangeVisible ? rangeEndDate : null}
-          focusedDate={focusedDate}
-          focusedDateRef={focusedDateRef}
-          isDateEnabled={isDateEnabled}
-          dateDisabledReason={dateDisabledReason}
-          onSelectDate={onSelectDate}
-          onGridKeyDownHandler={onGridKeyDownHandler}
-          onFocusedDateChange={onFocusedDateChange}
-          locale={locale}
-          startOfWeek={startOfWeek}
-          todayAriaLabel={todayAriaLabel}
-          ariaLabelledby={`${headingIdPrefix}-currentmonth`}
+          ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
         />
       </InternalSpaceBetween>
     </div>
