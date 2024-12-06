@@ -103,6 +103,9 @@ export default function DatePickerScenario() {
       >
         Disabled reasons
       </Checkbox>
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
       <br />
       <DateRangePicker
         value={value}

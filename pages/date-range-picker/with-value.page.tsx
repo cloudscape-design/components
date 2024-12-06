@@ -1,8 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, {
+  useContext,
+  useState,
+} from 'react';
 
-import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
+import {
+  Box,
+  Checkbox,
+  DateRangePicker,
+  DateRangePickerProps,
+  FormField,
+  Link,
+} from '~components';
 
 import AppContext from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
@@ -22,7 +32,7 @@ export default function DatePickerScenario() {
     endDate: '2018-01-19T15:30:00Z',
   });
 
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const absoluteFormat =
     urlParams.absoluteFormat ?? ('dateRangePickerDemoDefaults.absoluteFormat' as DateRangePickerProps.AbsoluteFormat);
@@ -51,6 +61,9 @@ export default function DatePickerScenario() {
       >
         Date-only
       </Checkbox>
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
       <br />
       <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
       <br />
@@ -64,6 +77,7 @@ export default function DatePickerScenario() {
             placeholder={'Filter by a date and time range'}
             onChange={e => setValue(e.detail.value)}
             dateOnly={dateOnly}
+            granularity={monthOnly ? 'month' : 'day'}
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             customRelativeRangeUnits={['second', 'minute', 'hour']}
