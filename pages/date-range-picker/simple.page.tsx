@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import {
   Box,
@@ -13,15 +13,38 @@ import {
   SpaceBetween,
 } from '~components';
 
-import { i18nStrings, i18nStringsDateOnly, isValid, relativeOptions } from './common';
+import AppContext from '../app/app-context';
+import {
+  applyDisabledReason,
+  checkIfDisabled,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  DisabledDate,
+  generateI18nStrings,
+  generatePlaceholder,
+  generateRelativeOptions,
+  isValid,
+} from './common';
 
 export default function DatePickerScenario() {
-  const [showRelativeOptions, setShowRelativeOptions] = useState(true);
-  const [dateOnly, setDateOnly] = useState(false);
-  const [invalid, setInvalid] = useState(false);
-  const [warning, setWarning] = useState(false);
-  const [rangeSelectorMode, setRangeSelectorMode] = useState<DateRangePickerProps.RangeSelectorMode>('default');
-  const [value, setValue] = useState<DateRangePickerProps['value']>(null);
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
+  const [value, setValue] = useState<DateRangePickerProps['value']>({
+    type: 'absolute',
+    startDate: '2024-12-30T00:00:00+01:00',
+    endDate: '2024-12-31T23:59:59+01:00',
+  });
+
+  const monthOnly = false;
+  const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
+  const invalid = urlParams.invalid ?? dateRangePickerDemoDefaults.invalid;
+  const warning = urlParams.warning ?? dateRangePickerDemoDefaults.warning;
+  const rangeSelectorMode =
+    urlParams.rangeSelectorMode ??
+    (dateRangePickerDemoDefaults.rangeSelectorMode as DateRangePickerProps.RangeSelectorMode);
 
   return (
     <Box padding="s">
@@ -34,19 +57,53 @@ export default function DatePickerScenario() {
             { id: 'absolute-only', text: 'absolute-only' },
             { id: 'relative-only', text: 'relative-only' },
           ]}
-          onChange={e => setRangeSelectorMode(e.detail.selectedId as DateRangePickerProps.RangeSelectorMode)}
+          onChange={({ detail }) =>
+            setUrlParams({ rangeSelectorMode: detail.selectedId as DateRangePickerProps.RangeSelectorMode })
+          }
         />
         <SpaceBetween direction="horizontal" size="s">
-          <Checkbox checked={showRelativeOptions} onChange={event => setShowRelativeOptions(event.detail.checked)}>
+          <label>
+            Disabled dates{' '}
+            <select
+              value={disabledDates}
+              onChange={event =>
+                setUrlParams({
+                  disabledDates: event.currentTarget.value as DisabledDate,
+                })
+              }
+            >
+              <option value="none">None (Default)</option>
+              <option value="all">All</option>
+              <option value="only-even">Only even</option>
+              <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
+              <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
+              <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
+              <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
+            </select>
+          </label>
+          <Checkbox
+            checked={withDisabledReason}
+            onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
+          >
+            Disabled reasons
+          </Checkbox>
+          <Checkbox
+            checked={showRelativeOptions}
+            onChange={({ detail }) => setUrlParams({ showRelativeOptions: detail.checked })}
+          >
             Show relative options
           </Checkbox>
-          <Checkbox checked={dateOnly} onChange={event => setDateOnly(event.detail.checked)}>
+          <Checkbox
+            disabled={monthOnly}
+            checked={dateOnly}
+            onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+          >
             Date-only
           </Checkbox>
-          <Checkbox checked={invalid} onChange={event => setInvalid(event.detail.checked)}>
+          <Checkbox checked={invalid} onChange={({ detail }) => setUrlParams({ invalid: detail.checked })}>
             Invalid
           </Checkbox>
-          <Checkbox checked={warning} onChange={event => setWarning(event.detail.checked)}>
+          <Checkbox checked={warning} onChange={({ detail }) => setUrlParams({ warning: detail.checked })}>
             Warning
           </Checkbox>
         </SpaceBetween>
@@ -55,16 +112,16 @@ export default function DatePickerScenario() {
           <DateRangePicker
             value={value}
             locale="en-GB"
-            i18nStrings={dateOnly ? i18nStringsDateOnly : i18nStrings}
-            placeholder={'Filter by a date and time range'}
+            i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+            placeholder={generatePlaceholder(dateOnly, monthOnly)}
             onChange={e => setValue(e.detail.value)}
-            relativeOptions={showRelativeOptions ? relativeOptions : []}
+            relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             dateOnly={dateOnly}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
-            isDateEnabled={date => date.getDate() !== 14 && date.getDate() !== 15}
-            dateDisabledReason={date => (date.getDate() === 14 || date.getDate() === 15 ? 'Disabled reason' : '')}
+            isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+            dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
             invalid={invalid}
             warning={warning}
