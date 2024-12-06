@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useLayoutEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
@@ -9,6 +9,7 @@ import { SplitPanelSideToggleProps } from '../../internal/context/split-panel-co
 import { fireNonCancelableEvent } from '../../internal/events';
 import { useControllable } from '../../internal/hooks/use-controllable';
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useMobile } from '../../internal/hooks/use-mobile';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
@@ -78,6 +79,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     const [notificationsHeight, setNotificationsHeight] = useState(0);
     const [navigationAnimationDisabled, setNavigationAnimationDisabled] = useState(true);
     const [splitPanelAnimationDisabled, setSplitPanelAnimationDisabled] = useState(true);
+    const [isNested, setIsNested] = useState(false);
+    const rootRef = useRef<HTMLDivElement>(null);
 
     const [toolsOpen = false, setToolsOpen] = useControllable(controlledToolsOpen, onToolsChange, false, {
       componentName: 'AppLayout',
@@ -432,16 +435,45 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       placement.inlineSize,
     ]);
 
+    /**
+     * Returns true if the AppLayout is nested
+     * Does not apply to iframe
+     */
+    const getIsNestedInAppLayout = (element: HTMLElement | null): boolean => {
+      let currentElement: Element | null = element?.parentElement ?? null;
+
+      // this traverse is needed only for JSDOM
+      // in real browsers the globalVar will be propagated to all descendants and this loops exits after initial iteration
+      while (currentElement) {
+        if (getComputedStyle(currentElement).getPropertyValue(globalVars.stickyVerticalTopOffset)) {
+          return true;
+        }
+        currentElement = currentElement.parentElement;
+      }
+
+      return false;
+    };
+
+    useLayoutEffect(() => {
+      if (!hasToolbar) {
+        setIsNested(getIsNestedInAppLayout(rootRef.current));
+      }
+    }, [hasToolbar]);
+
     return (
       <>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
-          ref={intersectionObserverRef}
+          ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
-            [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
-            [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
             paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
+            ...(hasToolbar || !isNested
+              ? {
+                  [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
+                  [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
+                }
+              : {}),
             ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),
           }}
           toolbar={

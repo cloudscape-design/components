@@ -1,21 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import { useRef } from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
-import { CollectionPreferencesProps } from '../interfaces';
+import { ReorderAnnouncements, ReorderOptions } from './interfaces';
 
-export default function useLiveAnnouncements({
+export default function useLiveAnnouncements<Option>({
   isDragging,
   liveAnnouncementDndStarted,
   liveAnnouncementDndItemReordered,
   liveAnnouncementDndItemCommitted,
   liveAnnouncementDndDiscarded,
   sortedOptions,
-}: Partial<CollectionPreferencesProps.ContentDisplayPreference> & {
-  isDragging: boolean;
-  sortedOptions: ReadonlyArray<CollectionPreferencesProps.ContentDisplayItem>;
-}) {
+  getId,
+}: ReorderOptions<Option> & ReorderAnnouncements & { isDragging: boolean }) {
   const isFirstAnnouncement = useRef(true);
   if (!isDragging) {
     isFirstAnnouncement.current = true;
@@ -24,7 +23,7 @@ export default function useLiveAnnouncements({
   return {
     onDragStart({ active }: DragStartEvent) {
       if (active && liveAnnouncementDndStarted) {
-        const index = sortedOptions.findIndex(option => option.id === active.id);
+        const index = sortedOptions.findIndex(option => getId(option) === active.id);
         return liveAnnouncementDndStarted(index + 1, sortedOptions.length);
       }
     },
@@ -37,15 +36,15 @@ export default function useLiveAnnouncements({
             return;
           }
         }
-        const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
-        const currentIdex = over ? sortedOptions.findIndex(option => option.id === over.id) : initialIndex;
+        const initialIndex = sortedOptions.findIndex(option => getId(option) === active.id);
+        const currentIdex = over ? sortedOptions.findIndex(option => getId(option) === over.id) : initialIndex;
         return liveAnnouncementDndItemReordered(initialIndex + 1, currentIdex + 1, sortedOptions.length);
       }
     },
     onDragEnd({ active, over }: DragEndEvent) {
       if (liveAnnouncementDndItemCommitted) {
-        const initialIndex = sortedOptions.findIndex(option => option.id === active.id);
-        const finalIndex = over ? sortedOptions.findIndex(option => option.id === over.id) : initialIndex;
+        const initialIndex = sortedOptions.findIndex(option => getId(option) === active.id);
+        const finalIndex = over ? sortedOptions.findIndex(option => getId(option) === over.id) : initialIndex;
         return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, sortedOptions.length);
       }
     },

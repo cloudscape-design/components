@@ -110,6 +110,7 @@ export function DrawerTriggers({
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const globalDrawersStartIndex = drawers.length;
   const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
+  const splitPanelResolvedPosition = splitPanelToggleProps?.position;
 
   return (
     <aside
@@ -118,14 +119,7 @@ export function DrawerTriggers({
       ref={triggersContainerRef}
       role="region"
     >
-      <div
-        className={clsx(styles['drawers-trigger-content'], {
-          [styles['has-multiple-triggers']]: hasMultipleTriggers,
-          [styles['has-open-drawer']]: activeDrawerId,
-        })}
-        role="toolbar"
-        aria-orientation="horizontal"
-      >
+      <div className={styles['drawers-trigger-content']} role="toolbar" aria-orientation="horizontal">
         {splitPanelToggleProps && (
           <>
             <TriggerButton
@@ -137,10 +131,10 @@ export function DrawerTriggers({
                 testutilStyles['drawers-trigger'],
                 splitPanelTestUtilStyles['open-button']
               )}
-              iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
+              iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => onSplitPanelToggle?.()}
               selected={splitPanelToggleProps.active}
-              ref={splitPanelFocusRef}
+              ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
               isForSplitPanel={true}

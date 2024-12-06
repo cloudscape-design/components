@@ -364,3 +364,36 @@ test.each(['td', 'th'] as const)('focuses on the element registered inside focus
   rerender(<TestTable contentType="button" />);
   expect(readActiveElement()).toEqual('BUTTON[action]');
 });
+
+test('does not focus re-registered element if the focus is not within the table anymore', () => {
+  const { container, rerender } = render(
+    <div>
+      <TestTable columns={[idColumn, valueColumn]} items={items} />
+      <button data-testid="outside-focus-target">outside</button>
+    </div>
+  );
+  const firstCell = container.querySelector('td')!;
+  const outsideButton = container.querySelector('[data-testid="outside-focus-target"]') as HTMLButtonElement;
+
+  firstCell.focus();
+  expect(firstCell).toHaveFocus();
+
+  rerender(
+    <div>
+      <TestTable columns={[idColumn, valueColumn]} items={items} />
+      <button data-testid="outside-focus-target">outside</button>
+    </div>
+  );
+  expect(firstCell).toHaveFocus();
+
+  outsideButton.focus();
+  expect(outsideButton).toHaveFocus();
+
+  rerender(
+    <div>
+      <TestTable columns={[idColumn, valueColumn]} items={items} />
+      <button data-testid="outside-focus-target">outside</button>
+    </div>
+  );
+  expect(outsideButton).toHaveFocus();
+});
