@@ -13,7 +13,7 @@ import FocusLock from '../internal/components/focus-lock';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
-import { DateRangePickerProps } from './interfaces';
+import { DateRangePickerProps, Granularity } from './interfaces';
 import ModeSwitcher from './mode-switcher';
 import RelativeRangePicker from './relative-range';
 import { normalizeTimeOffset } from './time-offset';
@@ -33,13 +33,13 @@ interface DateRangePickerDropdownProps
       | 'relativeOptions'
       | 'showClearButton'
       | 'dateOnly'
-      | 'timeInputFormat'
       | 'rangeSelectorMode'
     >,
     Pick<
       DateRangePickerProps,
       | 'startOfWeek'
       | 'getTimeOffset'
+      | 'timeInputFormat'
       | 'timeOffset'
       | 'ariaLabelledby'
       | 'ariaDescribedby'
@@ -52,6 +52,7 @@ interface DateRangePickerDropdownProps
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
+  granularity?: Granularity;
 }
 
 export function DateRangePickerDropdown({
@@ -77,8 +78,11 @@ export function DateRangePickerDropdown({
   ariaDescribedby,
   customAbsoluteRangeControl,
   customRelativeRangeUnits,
+  granularity = 'day',
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
+  const isMonthPicker = granularity === 'month';
+  const hideTime = dateOnly || isMonthPicker;
 
   const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
     getDefaultMode(value, relativeOptions, rangeSelectorMode)
@@ -113,7 +117,7 @@ export function DateRangePickerDropdown({
 
   const onApply = () => {
     const newValue =
-      rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
+      rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange, hideTime);
     const newValidationResult = applyValue(newValue);
     if (newValidationResult.valid === false) {
       setApplyClicked(true);
@@ -130,7 +134,8 @@ export function DateRangePickerDropdown({
         rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
       const formattedRange = formatValue(visibleRange, {
         dateOnly,
-        timeOffset: normalizeTimeOffset(visibleRange, getTimeOffset, timeOffset),
+        monthOnly: isMonthPicker,
+        timeOffset: dateOnly || isMonthPicker ? null : normalizeTimeOffset(visibleRange, getTimeOffset, timeOffset),
       });
       const newValidationResult = isValidRange(formattedRange);
       setValidationResult(newValidationResult || VALID_RANGE);
@@ -143,6 +148,7 @@ export function DateRangePickerDropdown({
     selectedAbsoluteRange,
     setValidationResult,
     dateOnly,
+    isMonthPicker,
     getTimeOffset,
     timeOffset,
   ]);
@@ -193,6 +199,7 @@ export function DateRangePickerDropdown({
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
+                      granularity={granularity}
                     />
                   )}
 
@@ -205,6 +212,7 @@ export function DateRangePickerDropdown({
                       onChange={range => setSelectedRelativeRange(range)}
                       i18nStrings={i18nStrings}
                       customUnits={customRelativeRangeUnits}
+                      granularity={granularity}
                     />
                   )}
                 </InternalSpaceBetween>

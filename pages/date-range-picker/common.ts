@@ -123,6 +123,9 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   todayAriaLabel: 'Today',
   nextMonthAriaLabel: 'Next month',
   previousMonthAriaLabel: 'Previous month',
+  nextYearAriaLabel: 'Next year',
+  previousYearAriaLabel: 'Previous year',
+  currentMonthAriaLabel: 'Current month',
   customRelativeRangeDurationLabel: 'Duration',
   customRelativeRangeDurationPlaceholder: 'Enter duration',
   customRelativeRangeOptionLabel: 'Custom range',
@@ -135,6 +138,8 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
   relativeRangeSelectionHeading: 'Choose a range',
+  startMonthLabel: 'Start month',
+  endMonthLabel: 'End month',
   startDateLabel: 'Start date',
   endDateLabel: 'End date',
   startTimeLabel: 'Start time',
@@ -194,5 +199,12 @@ export const isValid = makeIsValidFunction({
   endDateMissing: 'You need to provide an end date.',
 });
 
-export const generatePlaceholder = (dateOnly?: boolean, monthOnly?: boolean) =>
-  `Filter by ${monthOnly ? 'month' : 'date'} ${dateOnly ? '' : ' and time '}range`;
+export const generatePlaceholder = (dateOnly?: boolean, monthOnly?: boolean) => {
+  if (monthOnly) {
+    return `Filter by month range`;
+  }
+  if (dateOnly) {
+    return `Filter by date range`;
+  }
+  return `Filter by date and time range`;
+};
