@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   getAnalyticsLabelAttribute,
   getAnalyticsMetadataAttribute,
@@ -105,6 +106,10 @@ export const InternalButton = React.forwardRef(
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
+
+    if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
+      warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
+    }
 
     const buttonRef = useRef<HTMLElement>(null);
     useForwardFocus(ref, buttonRef);
