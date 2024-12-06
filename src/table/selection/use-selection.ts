@@ -172,6 +172,7 @@ function useMultiSelection<T>({
       indeterminate: allItemsCheckboxIndeterminate,
       onChange: handleToggleAll,
       ariaLabel: joinStrings(ariaLabels?.selectionGroupLabel, ariaLabels?.allItemsSelectionLabel?.({ selectedItems })),
+      selectionGroupLabel: ariaLabels?.selectionGroupLabel,
     }),
     getItemSelectionProps: (item: T): SelectionProps => ({
       name: selectionControlName,
