@@ -114,7 +114,7 @@ export function InlineEditor<ItemType>({
         aria-label={ariaLabels?.activateEditLabel?.(column, item)}
         onKeyDown={handleEscape}
       >
-        <form onSubmit={onSubmitClick} className={styles['body-cell-editor-form']}>
+        <form onSubmit={onSubmitClick}>
           <FormField
             stretch={true}
             label={ariaLabel}
