@@ -2,11 +2,20 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Header, Link, Modal, SpaceBetween, Table, Tabs } from '~components';
+import { Button, Header, Link, Modal, SpaceBetween, Table, Tabs } from '~components';
 import Box from '~components/box';
+
+const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility';
 
 export default function TablePerformanceMarkPage() {
   const [loading, setLoading] = useState(true);
+  const dispatchEvaluateVisibilityEvent = () => {
+    const event = new CustomEvent(EVALUATE_COMPONENT_VISIBILITY_EVENT);
+    setTimeout(() => {
+      document.dispatchEvent(event);
+    }, 0);
+  };
+
   return (
     <Box padding="xxl">
       <h1>Performance marks in table</h1>
@@ -14,6 +23,11 @@ export default function TablePerformanceMarkPage() {
         <label>
           <input type="checkbox" checked={loading} onChange={e => setLoading(e.target.checked)} id="loading" />
           Loading
+        </label>
+        <label>
+          <Button onClick={() => dispatchEvaluateVisibilityEvent()} id="evaluateComponentVisbility">
+            Dispatch EvaluateVisibility Event
+          </Button>
         </label>
 
         <Table
