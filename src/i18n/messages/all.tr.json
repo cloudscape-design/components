@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Yolu göster"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Yeni bir sekmede açılır"
+  },
   "calendar": {
     "nextMonthAriaLabel": "Gelecek ay",
     "previousMonthAriaLabel": "Önceki ay",

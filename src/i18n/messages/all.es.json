@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Mostrar ruta"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Se abre en una pestaña nueva."
+  },
   "calendar": {
     "nextMonthAriaLabel": "Próximo mes",
     "previousMonthAriaLabel": "Mes anterior",

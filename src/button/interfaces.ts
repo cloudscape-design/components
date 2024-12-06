@@ -86,6 +86,20 @@ export interface BaseButtonProps {
    * Adds `aria-controls` to the button. Use when the button controls the contents or presence of an element.
    */
   ariaControls?: string;
+
+  /**
+   * Adds an external icon after the button label text.
+   * If an href is provided, it opens the link in a new tab.
+   */
+  external?: boolean;
+
+  /**
+   * An object containing all the necessary localized strings required by the component. The object should contain:
+   *
+   * * `externalIconAriaLabel` - (optional) Specifies the aria-label for the external icon when `external` is set to `true`.
+   * @i18n
+   */
+  i18nStrings?: ButtonProps.I18nStrings;
 }
 
 export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
@@ -175,6 +189,13 @@ export namespace ButtonProps {
   export type FormAction = 'submit' | 'none';
 
   export type IconAlign = 'left' | 'right';
+
+  export interface I18nStrings {
+    /**
+     * Specifies the aria-label for the external icon when `external` is set to `true`.
+     */
+    externalIconAriaLabel?: string;
+  }
 
   export interface Ref {
     /**
