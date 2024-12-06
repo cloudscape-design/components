@@ -21,11 +21,14 @@ const sortedOptions = [
   { id: 'id1', visible: true },
 ];
 
+const getId = (option: { id: string }) => option.id;
+
 const TestComponent = ({ activeId, isDragging, overId }: { activeId: string; isDragging: boolean; overId: string }) => {
   const { onDragStart, onDragOver, onDragEnd, onDragCancel } = useLiveAnnouncements({
     isDragging,
     ...i18nStrings,
     sortedOptions,
+    getId,
   });
   onDragStart({ active: { id: activeId } } as DragStartEvent);
   onDragOver({ active: { id: activeId }, over: { id: overId } } as DragOverEvent);

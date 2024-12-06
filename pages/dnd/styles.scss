@@ -1,0 +1,125 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+/* stylelint-disable selector-max-type */
+
+@use '~design-tokens' as awsui;
+
+.list {
+  list-style: none;
+  padding-block: 0;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
+}
+
+.option-body {
+  display: flex;
+  gap: awsui.$space-static-xxs;
+  padding-block: awsui.$space-static-xs;
+  padding-inline: awsui.$space-static-xs;
+  background-color: awsui.$color-background-container-content;
+  border-start-start-radius: awsui.$border-radius-item;
+  border-start-end-radius: awsui.$border-radius-item;
+  border-end-start-radius: awsui.$border-radius-item;
+  border-end-end-radius: awsui.$border-radius-item;
+  border-block-end: 1px solid transparent;
+}
+
+.container {
+  margin-block-end: awsui.$space-static-m;
+}
+.container:last-child {
+  margin-block-end: 0;
+}
+
+.sorting {
+  & > .option-body {
+    border-block-end: 1px solid awsui.$color-border-divider-default;
+  }
+}
+.sorting:last-child {
+  border-block-end: none;
+}
+
+.placeholder {
+  > .container-option,
+  > .option-body,
+  > td {
+    position: relative;
+    &:after {
+      content: ' ';
+      position: absolute;
+      inset: 0;
+      background: awsui.$color-drag-placeholder-hover;
+    }
+  }
+  > .container-option:after {
+    border-start-start-radius: awsui.$border-radius-container;
+    border-start-end-radius: awsui.$border-radius-container;
+    border-end-start-radius: awsui.$border-radius-container;
+    border-end-end-radius: awsui.$border-radius-container;
+  }
+  > .option-body:after {
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+  }
+  > td:first-child {
+    border-start-start-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+  }
+  > td:last-child {
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+  }
+}
+
+.active-row {
+  > td:first-child {
+    border-start-start-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+  }
+  > td:last-child {
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+  }
+}
+
+@mixin when-visible-unfocused {
+  // stylelint-disable-next-line selector-combinator-disallowed-list
+  body[data-awsui-focus-visible='true'] & {
+    @content;
+  }
+}
+
+@mixin focus-highlight($border-radius) {
+  position: relative;
+
+  &::before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    inline-size: 100%;
+    block-size: 100%;
+    border-start-start-radius: $border-radius;
+    border-start-end-radius: $border-radius;
+    border-end-start-radius: $border-radius;
+    border-end-end-radius: $border-radius;
+    box-shadow: 0 0 0 2px awsui.$color-border-item-focused;
+  }
+}
+
+.drag-overlay-container {
+  box-shadow: awsui.$shadow-container-active;
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+  @include when-visible-unfocused {
+    @include focus-highlight(awsui.$border-radius-container);
+  }
+}
