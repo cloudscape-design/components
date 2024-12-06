@@ -105,14 +105,14 @@ test('renders visual refresh toolbar with navigation using legacy props', () => 
   expect(onNavigationToggle).toHaveBeenCalled();
 });
 
-test('renders visual refresh toolbar with split panel using toolbarProps', () => {
+test('renders visual refresh toolbar with split panel trigger using toolbarProps', () => {
   const onSplitPanelToggle = jest.fn();
   renderNewAppLayout({ toolbarProps: { onSplitPanelToggle } });
   wrapper.findByClassName(splitPanelTestUtilStyles['open-button'])!.click();
   expect(onSplitPanelToggle).toHaveBeenCalled();
 });
 
-test('renders visual refresh toolbar with split panel using legacy props', () => {
+test('renders visual refresh toolbar with split panel trigger using legacy props', () => {
   const onSplitPanelToggle = jest.fn();
   renderLegacyAppLayout({ appLayoutInternals: { onSplitPanelToggle } });
   wrapper.findByClassName(splitPanelTestUtilStyles['open-button'])!.click();
