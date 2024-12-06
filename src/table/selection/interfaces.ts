@@ -10,4 +10,5 @@ export interface SelectionProps {
   onChange: () => void;
   onShiftToggle?: (value: boolean) => void;
   ariaLabel?: string;
+  selectionGroupLabel?: string;
 }
