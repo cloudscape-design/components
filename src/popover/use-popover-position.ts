@@ -3,7 +3,7 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { findUpUntil, nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 import { getContainingBlock } from '../internal/utils/dom';
@@ -104,6 +104,9 @@ export default function usePopoverPosition({
       const shouldKeepPosition = keepPosition && onContentResize && !!previousInternalPositionRef.current;
       const fixedInternalPosition = (shouldKeepPosition && previousInternalPositionRef.current) ?? undefined;
 
+      // Rectangle outside of which the popover should not be positioned, because it would be clipped.
+      const boundaryRect = getBoundaryRect(popover);
+
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
         scrollable,
@@ -115,13 +118,13 @@ export default function usePopoverPosition({
         trigger: trackRect,
         arrow: arrowRect,
         body: contentBoundingBox,
-        container: containingBlock ? containingBlockRect : getDocumentRect(document),
+        container: boundaryRect,
         viewport: viewportRect,
         renderWithPortal,
         allowVerticalOverflow,
       });
 
-      // Get the position of the popover relative to the offset parent.
+      // Get the position of the popover relative to the containing block.
       const popoverOffset = toRelativePosition(rect, containingBlockRect);
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
@@ -237,4 +240,24 @@ function getDocumentRect(document: Document): BoundingBox {
     inlineSize: document.documentElement.scrollWidth,
     blockSize: document.documentElement.scrollHeight,
   };
+}
+
+function getBoundary(startElement: HTMLDivElement) {
+  if (!startElement.parentElement) {
+    return null;
+  }
+
+  return findUpUntil(startElement.parentElement, element => {
+    const computedStyle = getComputedStyle(element);
+    return !!computedStyle.clipPath && computedStyle.clipPath !== 'none';
+  }) as HTMLElement;
+}
+
+function getBoundaryRect(element: HTMLDivElement) {
+  const boundary = getBoundary(element);
+  if (boundary) {
+    return getLogicalBoundingClientRect(boundary);
+  } else {
+    return getDocumentRect(document);
+  }
 }
