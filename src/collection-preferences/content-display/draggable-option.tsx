@@ -6,7 +6,7 @@ import { CSS } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
 import ContentDisplayOption, { getClassName } from './content-display-option';
-import { OptionWithVisibility } from './utils';
+import { FlatOption } from './utils';
 
 import styles from '../styles.css.js';
 
@@ -18,8 +18,8 @@ export default function DraggableOption({
 }: {
   dragHandleAriaLabel?: string;
   onKeyDown?: (event: React.KeyboardEvent) => void;
-  onToggle: (option: OptionWithVisibility) => void;
-  option: OptionWithVisibility;
+  onToggle: (option: FlatOption) => void;
+  option: FlatOption;
 }) {
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({
     id: option.id,

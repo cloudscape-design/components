@@ -32,6 +32,9 @@ $border-radius: awsui.$border-radius-item;
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 }
+.content-display-option-nested {
+  padding-inline-start: awsui.$space-l;
+}
 
 .content-display-option {
   list-style: none;
@@ -61,6 +64,9 @@ $border-radius: awsui.$border-radius-item;
   flex-grow: 1;
   @include styles.text-wrapping;
   padding-inline-end: awsui.$space-l;
+}
+.content-display-option-group {
+  font-weight: bold;
 }
 
 .drag-overlay {
