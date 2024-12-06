@@ -20,7 +20,7 @@ const splitOnFiltering = (str: string, highlightText: string) => {
   return { noMatches, matches };
 };
 
-export interface HighlightMatchProps {
+interface HighlightMatchProps {
   str?: string;
   highlightText?: string;
 }

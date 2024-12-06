@@ -30,7 +30,7 @@ import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
 
-export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
+interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
   const {

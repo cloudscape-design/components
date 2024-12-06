@@ -8,7 +8,7 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 
-export interface DateRangePickerBaseProps {
+interface DateRangePickerBaseProps {
   /**
    * The current date range value. Can be either an absolute time range
    * or a relative time range.

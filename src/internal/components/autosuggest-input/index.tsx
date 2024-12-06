@@ -24,7 +24,7 @@ import { ExpandToViewport } from '../dropdown/interfaces';
 
 import styles from './styles.css.js';
 
-export interface AutosuggestInputProps
+interface AutosuggestInputProps
   extends BaseComponentProps,
     BaseInputProps,
     InputAutoCorrect,
@@ -49,7 +49,7 @@ export interface AutosuggestInputProps
   onPressEnter?: () => boolean;
 }
 
-export interface AutosuggestInputFocusOptions {
+interface AutosuggestInputFocusOptions {
   preventDropdown?: boolean;
 }
 

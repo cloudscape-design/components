@@ -9,7 +9,7 @@ export class HighlightType {
   ) {}
 }
 
-export interface HighlightedOptionProps<OptionType> {
+interface HighlightedOptionProps<OptionType> {
   options: readonly OptionType[];
   isHighlightable: (option: OptionType) => boolean;
 }

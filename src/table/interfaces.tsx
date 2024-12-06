@@ -561,12 +561,12 @@ export namespace TableProps {
 
 export type TableRow<T> = TableDataRow<T> | TableLoaderRow<T>;
 
-export interface TableDataRow<T> {
+interface TableDataRow<T> {
   type: 'data';
   item: T;
 }
 
-export interface TableLoaderRow<T> {
+interface TableLoaderRow<T> {
   type: 'loader';
   item: null | T;
   level: number;

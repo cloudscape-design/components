@@ -16,7 +16,7 @@ import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-compon
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { FilterRef, PaginationRef, TableComponentsContext } from '../internal/context/table-component-context';
+import { FilterRef, PaginationRef, TableComponentsContextProvider } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -402,7 +402,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContext.Provider value={{ paginationRef, filterRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
@@ -701,7 +701,7 @@ const InternalTable = React.forwardRef(
               />
             </InternalContainer>
           </ColumnWidthsProvider>
-        </TableComponentsContext.Provider>
+        </TableComponentsContextProvider>
       </LinkDefaultVariantContext.Provider>
     );
   }

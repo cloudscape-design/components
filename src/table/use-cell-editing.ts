@@ -6,7 +6,7 @@ import { useCallback, useState } from 'react';
 import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
 import { TableProps } from './interfaces';
 
-export interface CellId {
+interface CellId {
   rowIndex: number;
   colIndex: number;
 }

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-export const DATA_ATTR_FUNNEL = 'data-analytics-funnel';
+const DATA_ATTR_FUNNEL = 'data-analytics-funnel';
 export const DATA_ATTR_FUNNEL_INTERACTION_ID = `${DATA_ATTR_FUNNEL}-interaction-id`;
 export const DATA_ATTR_FUNNEL_KEY = `${DATA_ATTR_FUNNEL}-key`;
 export const DATA_ATTR_FUNNEL_VALUE = `${DATA_ATTR_FUNNEL}-value`;

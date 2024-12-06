@@ -8,13 +8,13 @@ import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
 import styles from './styles.css.js';
 
-export interface CheckboxIconProps extends BaseComponentProps {
+interface CheckboxIconProps extends BaseComponentProps {
   checked?: boolean;
   indeterminate?: boolean;
   disabled?: boolean;
   readOnly?: boolean;
 }
-export interface Dimension {
+interface Dimension {
   viewBox: string;
   indeterminate: string;
   checked: string;
@@ -24,7 +24,7 @@ export interface Dimension {
 }
 
 // Can't use css variables for svg attributes
-export const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimension> = {
+const dimensionsByTheme: Record<NonNullable<'default' | 'refresh'>, Dimension> = {
   default: {
     viewBox: '0 0 14 14',
     indeterminate: '2.5,7 11.5,7',

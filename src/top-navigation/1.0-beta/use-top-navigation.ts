@@ -10,21 +10,21 @@ import { TopNavigationProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface UseTopNavigationParams {
+interface UseTopNavigationParams {
   __internalRootRef?: React.MutableRefObject<HTMLElement> | null;
   identity: TopNavigationProps['identity'];
   search: TopNavigationProps['search'];
   utilities: NonNullable<TopNavigationProps['utilities']>;
 }
 
-export interface ResponsiveState {
+interface ResponsiveState {
   hideUtilityText?: boolean;
   hideSearch?: boolean;
   hideUtilities?: number[];
   hideTitle?: boolean;
 }
 
-export interface TopNavigationSizeConfiguration {
+interface TopNavigationSizeConfiguration {
   hasSearch: boolean;
   availableWidth: number;
   utilitiesLeftPadding: number;
@@ -37,7 +37,7 @@ export interface TopNavigationSizeConfiguration {
   menuTriggerUtilityWidth: number;
 }
 
-export interface UseTopNavigation {
+interface UseTopNavigation {
   ref: React.Ref<HTMLDivElement>;
   virtualRef: React.Ref<HTMLDivElement>;
 
@@ -158,7 +158,7 @@ function getContentBoxWidth(element: Element): number {
 /**
  * Generates the series of responsive steps that can be performed on the header in order.
  */
-export function generateResponsiveStateKeys(
+function generateResponsiveStateKeys(
   utilities: ReadonlyArray<TopNavigationProps.Utility>,
   canHideSearch: boolean,
   canHideTitle: boolean
@@ -199,7 +199,7 @@ export function generateResponsiveStateKeys(
  * Determines the best responsive state configuration of the top navigation, based on the given list of possible responsive states
  * and the current sizes of all elements inside the navigation bar.
  */
-export function determineBestResponsiveState(
+function determineBestResponsiveState(
   possibleStates: ReadonlyArray<ResponsiveState>,
   sizes: TopNavigationSizeConfiguration
 ): ResponsiveState {
