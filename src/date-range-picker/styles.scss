@@ -46,7 +46,7 @@ $calendar-header-color: awsui.$color-text-body-default;
     position: relative;
   }
 
-  &-header-months-wrapper {
+  &-header-pages-wrapper {
     position: absolute;
     inset: 0;
 
@@ -61,7 +61,7 @@ $calendar-header-color: awsui.$color-text-body-default;
     pointer-events: none;
   }
 
-  &-header-month {
+  &-header-page {
     @include styles.font-body-m;
     font-weight: typographyConstants.$font-weight-bold;
     color: $calendar-header-color;
@@ -71,11 +71,11 @@ $calendar-header-color: awsui.$color-text-body-default;
     pointer-events: auto;
   }
 
-  &-next-month-btn {
+  &-next-page-btn {
     /* used for identifying element */
   }
 
-  &-prev-month-btn {
+  &-prev-page-btn {
     /* used for identifying element */
   }
 }

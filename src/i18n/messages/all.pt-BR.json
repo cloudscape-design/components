@@ -126,6 +126,12 @@
     "i18nStrings.copyButtonText": "Copiar"
   },
   "date-range-picker": {
+    "nextMonthAriaLabel": "Próximo mês",
+    "previousMonthAriaLabel": "Mês anterior",
+    "todayAriaLabel": "Hoje",
+    "i18nStrings.nextYearAriaLabel": "Próximo ano",
+    "i18nStrings.previousYearAriaLabel": "Ano anterior",
+    "i18nStrings.currentMonthAriaLabel": "Mês atual",
     "i18nStrings.relativeModeTitle": "Modo relativo",
     "i18nStrings.absoluteModeTitle": "Modo absoluto",
     "i18nStrings.relativeRangeSelectionHeading": "Escolher um intervalo",
