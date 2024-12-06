@@ -8,7 +8,7 @@ import { getStepArray } from './utils.js';
 
 import styles from './styles.css.js';
 
-export interface SliderTicksProps {
+interface SliderTicksProps {
   hideFillLine?: boolean;
   value: number;
   isActive: boolean;
@@ -21,7 +21,7 @@ export interface SliderTicksProps {
   step: number;
 }
 
-export interface SliderTickMarkProps extends SliderTicksProps {
+interface SliderTickMarkProps extends SliderTicksProps {
   type: 'min' | 'max' | 'step';
 }
 

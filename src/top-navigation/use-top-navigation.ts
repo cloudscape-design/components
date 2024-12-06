@@ -10,13 +10,13 @@ import { TopNavigationProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface UseTopNavigationParams {
+interface UseTopNavigationParams {
   identity: TopNavigationProps['identity'];
   search: TopNavigationProps['search'];
   utilities: NonNullable<TopNavigationProps['utilities']>;
 }
 
-export interface ResponsiveState {
+interface ResponsiveState {
   hideUtilityText?: boolean;
   hideSearch?: boolean;
   hideUtilities?: number[];
@@ -36,7 +36,7 @@ export interface TopNavigationSizeConfiguration {
   menuTriggerUtilityWidth: number;
 }
 
-export interface UseTopNavigation {
+interface UseTopNavigation {
   mainRef: React.Ref<HTMLDivElement>;
   virtualRef: React.Ref<HTMLDivElement>;
 

@@ -9,7 +9,7 @@ import Item from '../parts/item';
 import MutliselectItem from '../parts/multiselect-item';
 import { getItemProps } from './get-item-props';
 
-export interface RenderOptionProps {
+interface RenderOptionProps {
   options: ReadonlyArray<DropdownOption>;
   getOptionProps: any;
   filteringValue: string;

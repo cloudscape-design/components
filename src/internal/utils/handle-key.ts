@@ -9,7 +9,7 @@ export function isEventLike(event: any): event is EventLike {
   return isHTMLElement(event.currentTarget) || isSVGElement(event.currentTarget);
 }
 
-export interface EventLike {
+interface EventLike {
   keyCode: number;
   currentTarget: HTMLElement | SVGElement;
 }

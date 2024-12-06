@@ -8,7 +8,7 @@ import { useMobile } from '../internal/hooks/use-mobile/index.js';
 
 import styles from './styles.css.js';
 
-export interface SliderLabelProps {
+interface SliderLabelProps {
   min: number;
   max: number;
   referenceValues?: ReadonlyArray<number>;

@@ -5,7 +5,7 @@ import React, { memo } from 'react';
 import { ChartScale } from '../../internal/components/cartesian-chart/scales';
 import { ChartModel } from '../model';
 
-export interface ThresholdSeriesProps<T> {
+interface ThresholdSeriesProps<T> {
   data: readonly ChartModel.PlotPoint<T>[];
   xScale: ChartScale;
   color: string;

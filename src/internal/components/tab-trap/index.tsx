@@ -4,7 +4,7 @@ import React from 'react';
 
 import styles from './styles.css.js';
 
-export interface TabTrapProps {
+interface TabTrapProps {
   focusNextCallback: (event: React.FocusEvent) => void;
   disabled?: boolean;
 }

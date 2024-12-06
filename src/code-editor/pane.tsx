@@ -16,7 +16,7 @@ const ANNOTATION_ITEM_HEIGHT = 31;
 const PANE_ANNOTATIONS_PADDING = 12;
 const MIN_HEIGHT = 3 * ANNOTATION_ITEM_HEIGHT + 2 * PANE_ANNOTATIONS_PADDING;
 
-export interface PaneProps {
+interface PaneProps {
   id: string;
   paneStatus: PaneStatus;
 

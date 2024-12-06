@@ -102,7 +102,7 @@ export class AutosuggestDropdownWrapper extends ComponentWrapper {
   }
 }
 
-export class PortalAutosuggestDropdownWrapper extends AutosuggestDropdownWrapper {
+class PortalAutosuggestDropdownWrapper extends AutosuggestDropdownWrapper {
   findOpenDropdown(): ElementWrapper | null {
     return createWrapper().find(`.${dropdownStyles.dropdown}[data-open=true]`);
   }

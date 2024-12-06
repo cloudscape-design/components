@@ -16,8 +16,6 @@ import { FlashbarProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export { FlashbarProps };
-
 export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
   const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
     items,

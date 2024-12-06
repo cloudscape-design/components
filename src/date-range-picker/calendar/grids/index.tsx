@@ -25,7 +25,7 @@ function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   return isSameMonth(date, previousMonth) || isSameMonth(date, baseDate);
 }
 
-export interface GridProps {
+interface GridProps {
   baseDate: Date;
   selectedStartDate: Date | null;
   selectedEndDate: Date | null;

@@ -11,22 +11,22 @@ import {
 } from '../../vendor/d3-scale';
 import { ChartDataTypes, ChartDomain, ScaleRange, ScaleType } from './interfaces';
 
-export interface NumericD3Scale {
+interface NumericD3Scale {
   type: 'numeric';
   scale: ScaleContinuousNumeric<number, number>;
 }
 
-export interface TimeD3Scale {
+interface TimeD3Scale {
   type: 'time';
   scale: ScaleTime<number, number>;
 }
 
-export interface CategoricalD3Scale {
+interface CategoricalD3Scale {
   type: 'categorical';
   scale: ScaleBand<ChartDataTypes>;
 }
 
-export type D3Scale = NumericD3Scale | TimeD3Scale | CategoricalD3Scale;
+type D3Scale = NumericD3Scale | TimeD3Scale | CategoricalD3Scale;
 
 type InternalScale = ScaleContinuousNumeric<number, number> | ScaleBand<ChartDataTypes> | ScaleTime<number, number>;
 
@@ -69,7 +69,7 @@ function createBandScale(domain: ChartDomain<ChartDataTypes>) {
   return scale;
 }
 
-export function createScale(type: ScaleType, domain: ChartDomain<ChartDataTypes>, range: ScaleRange): D3Scale {
+function createScale(type: ScaleType, domain: ChartDomain<ChartDataTypes>, range: ScaleRange): D3Scale {
   switch (type) {
     case 'linear':
     case 'log':

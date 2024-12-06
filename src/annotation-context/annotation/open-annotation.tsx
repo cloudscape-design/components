@@ -7,7 +7,7 @@ import { AnnotationContextProps } from '../interfaces';
 import { AnnotationPopover } from './annotation-popover';
 import AnnotationTrigger from './annotation-trigger';
 
-export interface AnnotationProps {
+interface AnnotationProps {
   title: string;
   content: React.ReactNode;
   alert?: React.ReactNode;
