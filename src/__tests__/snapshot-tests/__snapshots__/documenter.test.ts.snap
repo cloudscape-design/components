@@ -9412,6 +9412,17 @@ Each group definition has the following properties:
       "optional": false,
       "type": "ReadonlyArray<KeyValuePairsProps.Item>",
     },
+    {
+      "defaultValue": "150",
+      "description": "Use to specify the desired minimum width for each column in pixels.
+The number of columns is determined by the value of this property, the available space,
+and the maximum number of columns as defined by the \`columns\` property.
+If not set, defaults to 150.
+",
+      "name": "minColumnWidth",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
