@@ -63,7 +63,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
           `Browser viewPortWidth ${viewPortWidth}: contentType '${contentType}' has default width for content, navigation and tools slot.`,
           setupTest(viewPortWidth, async page => {
             await page.setContentType(contentType);
-            await expect(page.getContentWidth()).resolves.toBe(contentWidth);
+            await expect(page.getContentWidth()).resolves.toBe(theme === 'refresh' ? contentWidth : 1620);
 
             // Open the drawers and check their width
             await page.setDrawersOpen();

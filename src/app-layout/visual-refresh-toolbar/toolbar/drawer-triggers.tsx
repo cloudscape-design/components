@@ -118,14 +118,7 @@ export function DrawerTriggers({
       ref={triggersContainerRef}
       role="region"
     >
-      <div
-        className={clsx(styles['drawers-trigger-content'], {
-          [styles['has-multiple-triggers']]: hasMultipleTriggers,
-          [styles['has-open-drawer']]: activeDrawerId,
-        })}
-        role="toolbar"
-        aria-orientation="horizontal"
-      >
+      <div className={styles['drawers-trigger-content']} role="toolbar" aria-orientation="horizontal">
         {splitPanelToggleProps && (
           <>
             <TriggerButton
