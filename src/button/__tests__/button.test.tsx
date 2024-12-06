@@ -3,7 +3,7 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
@@ -14,15 +14,6 @@ import { renderWithSingleTabStopNavigation } from '../../internal/context/__test
 
 import styles from '../../../lib/components/button/styles.css.js';
 import testUtilStyles from '../../../lib/components/button/test-classes/styles.css.js';
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => {
-  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
-  return { ...originalModule, warnOnce: jest.fn(originalModule.warnOnce) };
-});
-
-afterEach(() => {
-  jest.mocked(warnOnce).mockClear();
-});
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -174,11 +165,16 @@ describe('Button Component', () => {
     });
 
     test('warns when used with a right aligned icon', () => {
-      renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
-      expect(warnOnce).toHaveBeenCalledWith(
-        'Button',
-        'A right-aligned icon should not be combined with an external icon.'
-      );
+      const consoleWarnSpy = jest.spyOn(console, 'warn');
+      try {
+        clearMessageCache();
+        renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
+          '[AwsUi] [Button] A right-aligned icon should not be combined with an external icon.'
+        );
+      } finally {
+        consoleWarnSpy.mockRestore();
+      }
     });
   });
 
