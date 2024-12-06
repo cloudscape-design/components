@@ -65,6 +65,13 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `popoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
    * * `pressedPopoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button in pressed state. Defaults to `popoverFeedback`.
    *
+   * * ### file-input
+   *
+   * * `id` (string) - The unique identifier of the button, used as detail in `onFilesChange`.
+   * * `text` (string) - The name of the menu button shown as a tooltip.
+   * * `accept` (optional, string) - Specifies the native file input `accept` attribute to describe the allow-list of file types.
+   * * `multiple` (optional, string) - Specifies the native file input `multiple` attribute to allow users entering more than one file.
+   *
    * ### menu-dropdown
    *
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick`.
@@ -84,6 +91,10 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  /**
+   * Called when the user uploads files. The event detail object contains the id and files from the file input item.
+   */
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
@@ -92,7 +103,7 @@ export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | IconToggleButton | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
@@ -126,6 +137,14 @@ export namespace ButtonGroupProps {
     pressedPopoverFeedback?: React.ReactNode;
   }
 
+  export interface IconFileInput {
+    type: 'icon-file-input';
+    id: string;
+    text: string;
+    accept?: string;
+    multiple?: boolean;
+  }
+
   export interface MenuDropdown {
     type: 'menu-dropdown';
     id: string;
@@ -146,6 +165,11 @@ export namespace ButtonGroupProps {
     id: string;
     pressed?: boolean;
     checked?: boolean;
+  }
+
+  export interface FilesChangeDetails {
+    id: string;
+    files: File[];
   }
 
   export interface Ref {

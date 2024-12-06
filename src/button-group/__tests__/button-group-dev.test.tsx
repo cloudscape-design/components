@@ -1,6 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { fireEvent } from '@testing-library/react';
+
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonGroupProps } from '../../../lib/components/button-group';
@@ -134,4 +136,23 @@ test('handles menu click', () => {
   wrapper.findMenuById('misc')!.openDropdown();
   wrapper.findMenuById('misc')!.findItemById('compact-mode')!.click();
   expect(onItemClick).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'compact-mode', checked: false } }));
+});
+
+test('handles file upload', () => {
+  const file = new File([new Blob(['Test content'], { type: 'text/plain' })], 'test-file.txt', {
+    type: 'text/plain',
+    lastModified: 1590962400000,
+  });
+  const onFilesChange = jest.fn();
+
+  const { wrapper } = renderButtonGroup({
+    items: [{ type: 'icon-file-input', id: 'file', text: 'Choose files' }],
+    onFilesChange,
+  });
+
+  const input = wrapper.findFileInputById('file')!.findNativeInput().getElement();
+  Object.defineProperty(input, 'files', { value: [file] });
+  fireEvent(input, new CustomEvent('change', { bubbles: true }));
+
+  expect(onFilesChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'file', files: [file] } }));
 });

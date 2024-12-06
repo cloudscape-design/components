@@ -10,15 +10,22 @@ import InternalButton from '../button/internal';
 import { useFormFieldContext } from '../contexts/form-field';
 import { getBaseProps } from '../internal/base-component/index.js';
 import ScreenreaderOnly from '../internal/components/screenreader-only';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import checkControlled from '../internal/hooks/check-controlled';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
 import { FileInputProps } from './interfaces';
 
 import styles from './styles.css.js';
+
+interface InternalFileInputProps {
+  __inputClassName?: string;
+  __inputNativeAttributes?: React.InputHTMLAttributes<HTMLInputElement> | Record<`data-${string}`, string>;
+}
 
 const InternalFileInput = React.forwardRef(
   (
@@ -32,12 +39,17 @@ const InternalFileInput = React.forwardRef(
       variant = 'button',
       children,
       __internalRootRef = null,
+      __inputClassName,
+      __inputNativeAttributes,
       ...restProps
-    }: FileInputProps & InternalBaseComponentProps,
+    }: FileInputProps & InternalBaseComponentProps & InternalFileInputProps,
     ref: Ref<FileInputProps.Ref>
   ) => {
     const baseProps = getBaseProps(restProps);
     const uploadInputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLButtonElement>(null);
+    const mergedRef = useMergeRefs(__internalRootRef, containerRef);
+
     const uploadButtonLabelId = useUniqueId('upload-button-label');
     const formFieldContext = useFormFieldContext(restProps);
     const selfControlId = useUniqueId('upload-input');
@@ -47,7 +59,10 @@ const InternalFileInput = React.forwardRef(
 
     const [isFocused, setIsFocused] = useState(false);
     const onUploadButtonClick = () => uploadInputRef.current?.click();
-    const onUploadInputFocus = () => setIsFocused(true);
+    const onUploadInputFocus = () => {
+      setIsFocused(true);
+      containerRef.current?.scrollIntoView?.();
+    };
     const onUploadInputBlur = () => setIsFocused(false);
 
     const onUploadInputChange = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -60,6 +75,7 @@ const InternalFileInput = React.forwardRef(
       'aria-label': ariaLabel || children,
       'aria-labelledby': joinStrings(formFieldContext.ariaLabelledby, uploadButtonLabelId),
       'aria-describedby': formFieldContext.ariaDescribedby,
+      ...__inputNativeAttributes,
     };
     if (formFieldContext.invalid) {
       nativeAttributes['aria-invalid'] = true;
@@ -87,8 +103,10 @@ const InternalFileInput = React.forwardRef(
       }
     }, [value]);
 
+    const { tabIndex } = useSingleTabStopNavigation(uploadInputRef);
+
     return (
-      <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
+      <div {...baseProps} ref={mergedRef} className={clsx(baseProps.className, styles.root)}>
         {/* This is the actual interactive and accessible file-upload element. */}
         {/* It is visually hidden to achieve the desired UX design. */}
         <input
@@ -101,7 +119,8 @@ const InternalFileInput = React.forwardRef(
           onChange={onUploadInputChange}
           onFocus={onUploadInputFocus}
           onBlur={onUploadInputBlur}
-          className={clsx(styles['file-input'], styles.hidden)}
+          className={clsx(styles['file-input'], styles.hidden, __inputClassName)}
+          tabIndex={tabIndex}
           {...nativeAttributes}
         />
 
@@ -112,7 +131,10 @@ const InternalFileInput = React.forwardRef(
           variant={variant === 'icon' ? 'icon' : undefined}
           formAction="none"
           onClick={onUploadButtonClick}
-          className={clsx(styles['file-input-button'], isFocused && styles['force-focus-outline'])}
+          className={clsx(styles['file-input-button'], {
+            [styles['force-focus-outline-button']]: isFocused && variant === 'button',
+            [styles['force-focus-outline-icon']]: isFocused && variant === 'icon',
+          })}
           __nativeAttributes={{ tabIndex: -1, 'aria-hidden': true }}
         >
           {variant === 'button' && children}

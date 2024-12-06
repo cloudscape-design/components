@@ -32,9 +32,15 @@ const menuButton: ButtonGroupProps.MenuDropdown = {
   items: [{ id: 'search', text: 'Search' }],
 };
 
+const fileInput: ButtonGroupProps.IconFileInput = {
+  type: 'icon-file-input',
+  id: 'file',
+  text: 'Choose files',
+};
+
 test('focuses on all item types', () => {
   const ref: { current: ButtonGroupProps.Ref | null } = { current: null };
-  const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton] }, ref);
+  const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInput] }, ref);
 
   ref.current!.focus('copy');
   expect(wrapper.findButtonById('copy')!.getElement()).toHaveFocus();
@@ -44,6 +50,9 @@ test('focuses on all item types', () => {
 
   ref.current!.focus('menu');
   expect(wrapper.findMenuById('menu')!.findTriggerButton()!.getElement()).toHaveFocus();
+
+  ref.current!.focus('file');
+  expect(wrapper.findFileInputById('file')!.findNativeInput().getElement()).toHaveFocus();
 });
 
 test('moves focus to menu trigger after menu is dismissed', () => {
