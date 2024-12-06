@@ -50,7 +50,8 @@ export const useAutosuggestLoadMore = ({
 
   const fireLoadMoreOnRecoveryClick = () => fireLoadMore({ firstPage: false, samePage: true });
 
-  const fireLoadMoreOnInputFocus = () => fireLoadMore({ firstPage: true, samePage: false, filteringText: '' });
+  const fireLoadMoreOnInputFocus = () =>
+    fireLoadMore({ firstPage: true, samePage: false, filteringText: lastFilteringText.current ?? '' });
 
   const fireLoadMoreOnInputChange = (filteringText: string) =>
     fireLoadMore({ firstPage: true, samePage: false, filteringText });
