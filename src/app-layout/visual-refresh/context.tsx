@@ -23,6 +23,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SPLIT_PANEL_MIN_WIDTH } from '../split-panel';
+import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position';
 import { useDrawers } from '../utils/use-drawers';
 import { FocusControlRefs, useFocusControl } from '../utils/use-focus-control';
 import useResize from '../utils/use-resize';
@@ -234,14 +235,10 @@ export const AppLayoutInternalsProvider = React.forwardRef(
       [props.onSplitPanelToggle, isSplitPanelOpen, setIsSplitPanelOpen, setSplitPanelLastInteraction]
     );
 
-    /**
-     * The Split Panel will be in forced (bottom) position if the defined minimum width is
-     * greater than the maximum width. In other words, the maximum width is the currently
-     * available horizontal space based on all other components that are rendered. If the
-     * minimum width exceeds this value then there is not enough horizontal space and we must
-     * force it to the bottom position.
-     */
-    const isSplitPanelForcedPosition = isMobile || SPLIT_PANEL_MIN_WIDTH > splitPanelMaxWidth;
+    const isSplitPanelForcedPosition = shouldSplitPanelBeForcedToBottom({
+      isMobile,
+      availableWidthForSplitPanel: splitPanelMaxWidth,
+    });
     const splitPanelPosition = getSplitPanelPosition(isSplitPanelForcedPosition, splitPanelPreferences);
 
     /**
