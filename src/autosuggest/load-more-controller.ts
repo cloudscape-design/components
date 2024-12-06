@@ -36,12 +36,7 @@ export const useAutosuggestLoadMore = ({
     samePage: boolean;
     filteringText?: string;
   }) => {
-    if (
-      filteringText === undefined ||
-      lastFilteringText.current !== filteringText ||
-      // special handling for clear input click
-      (filteringText === '' && lastFilteringText.current === '')
-    ) {
+    if (filteringText === undefined || lastFilteringText.current !== filteringText) {
       if (filteringText !== undefined) {
         lastFilteringText.current = filteringText;
       }
@@ -55,7 +50,8 @@ export const useAutosuggestLoadMore = ({
 
   const fireLoadMoreOnRecoveryClick = () => fireLoadMore({ firstPage: false, samePage: true });
 
-  const fireLoadMoreOnInputFocus = () => fireLoadMore({ firstPage: true, samePage: false, filteringText: '' });
+  const fireLoadMoreOnInputFocus = () =>
+    fireLoadMore({ firstPage: true, samePage: false, filteringText: lastFilteringText.current ?? '' });
 
   const fireLoadMoreOnInputChange = (filteringText: string) =>
     fireLoadMore({ firstPage: true, samePage: false, filteringText });

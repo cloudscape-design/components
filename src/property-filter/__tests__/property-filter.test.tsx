@@ -296,54 +296,6 @@ describe('property filter parts', () => {
       expect(loadItemCalls).toHaveLength(1);
     });
 
-    test('calls onLoadItems on clear when filter by property and asyncProperties=true', () => {
-      const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
-      const {
-        propertyFilterWrapper: wrapper,
-        container,
-        rerender,
-      } = renderComponent({
-        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
-        filteringStatusType: 'pending',
-        asyncProperties: true,
-      });
-
-      wrapper.focus();
-      expect(loadItemCalls).toEqual([
-        expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: '' }),
-      ]);
-
-      wrapper.setInputValue('state = 123');
-      expect(loadItemCalls).toHaveLength(2);
-
-      jest.advanceTimersByTime(1000);
-      expect(loadItemCalls).toEqual([
-        expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
-      ]);
-
-      rerender({
-        onLoadItems: ({ detail }) => loadItemCalls.push(detail),
-        filteringStatusType: 'finished',
-        asyncProperties: true,
-      });
-
-      createWrapper(container).find('#focus-target')!.focus();
-
-      wrapper.findClearButton()!.click();
-      jest.advanceTimersByTime(1000);
-
-      expect(loadItemCalls).toEqual([
-        expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
-        expect.objectContaining({ filteringText: '123', filteringProperty: stateProperty, filteringOperator: '=' }),
-        expect.objectContaining({ filteringText: '' }),
-      ]);
-    });
-
     test('calls onLoadItems on clear when filter by text and asyncProperties=true', () => {
       const loadItemCalls: PropertyFilterProps.LoadItemsDetail[] = [];
       const {
@@ -362,14 +314,14 @@ describe('property filter parts', () => {
         expect.objectContaining({ filteringText: '' }),
       ]);
 
-      wrapper.setInputValue('stat');
+      wrapper.setInputValue('free-text');
       expect(loadItemCalls).toHaveLength(2);
 
       jest.advanceTimersByTime(1000);
       expect(loadItemCalls).toEqual([
         expect.objectContaining({ filteringText: '' }),
         expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: 'stat' }),
+        expect.objectContaining({ filteringText: 'free-text' }),
       ]);
 
       rerender({
@@ -387,8 +339,8 @@ describe('property filter parts', () => {
       expect(loadItemCalls).toEqual([
         expect.objectContaining({ filteringText: '' }),
         expect.objectContaining({ filteringText: '' }),
-        expect.objectContaining({ filteringText: 'stat' }),
-        expect.objectContaining({ filteringText: 'stat' }),
+        expect.objectContaining({ filteringText: 'free-text' }),
+        expect.objectContaining({ filteringText: 'free-text' }),
         expect.objectContaining({ filteringText: '' }),
       ]);
     });
