@@ -25,6 +25,7 @@ import { isDevelopment } from '../internal/is-development.js';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { isIsoDateOnly } from '../internal/utils/date-time';
+import { splitDateTime } from '../internal/utils/date-time';
 import { formatDateTimeWithOffset } from '../internal/utils/date-time/format-date-time-with-offset';
 import { normalizeLocale } from '../internal/utils/locale';
 import { joinStrings } from '../internal/utils/strings/join-strings';
@@ -141,8 +142,15 @@ const DateRangePicker = React.forwardRef(
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
-
+    value = isDateOnly(value)
+      ? value
+      : dateOnly && value?.type === 'absolute'
+        ? {
+            ...value,
+            startDate: splitDateTime(value.startDate).date,
+            endDate: splitDateTime(value.endDate).date,
+          }
+        : shiftTimeOffset(value, normalizedTimeOffset);
     const baseProps = getBaseProps(rest);
     const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
