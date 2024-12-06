@@ -44,7 +44,7 @@ export function ReorderableList<Option extends { id: string }>({
       onChange={sortedOptions => onChange([...staticOptions, ...sortedOptions])}
       renderOption={props => (
         <li
-          className={clsx(styles.option, props.isDragging && styles.placeholder, props.isSorting && styles.sorting)}
+          className={clsx(props.isDragging && styles.placeholder, props.isSorting && styles.sorting)}
           style={props.style}
         >
           {renderOption(props)}
@@ -56,9 +56,7 @@ export function ReorderableList<Option extends { id: string }>({
       {content => (
         <ul className={styles.list} aria-label="re-orderable list" role="list">
           {staticOptions.map(option => (
-            <li className={styles.option} key={option.id}>
-              {renderStaticOption?.(option)}
-            </li>
+            <li key={option.id}>{renderStaticOption?.(option)}</li>
           ))}
           {content}
         </ul>
