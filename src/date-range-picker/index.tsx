@@ -24,7 +24,7 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development.js';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { isIsoDateOnly } from '../internal/utils/date-time';
+import { isIsoDateOnly, isIsoMonthOnly } from '../internal/utils/date-time';
 import { formatDateTimeWithOffset } from '../internal/utils/date-time/format-date-time-with-offset';
 import { normalizeLocale } from '../internal/utils/locale';
 import { joinStrings } from '../internal/utils/strings/join-strings';
@@ -93,6 +93,13 @@ function isDateOnly(value: null | DateRangePickerProps.Value) {
   return isIsoDateOnly(value.startDate) && isIsoDateOnly(value.endDate);
 }
 
+function isMonthOnly(value: null | DateRangePickerProps.Value) {
+  if (!value || value.type !== 'absolute') {
+    return false;
+  }
+  return isIsoMonthOnly(value.startDate) && isIsoMonthOnly(value.endDate);
+}
+
 const DateRangePicker = React.forwardRef(
   (
     {
@@ -121,6 +128,7 @@ const DateRangePicker = React.forwardRef(
       absoluteFormat = 'iso',
       hideTimeOffset,
       customRelativeRangeUnits,
+      granularity = 'day',
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -135,13 +143,14 @@ const DateRangePicker = React.forwardRef(
         showClearButton,
         timeInputFormat,
         hideTimeOffset,
+        granularity,
       },
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
+    value = isDateOnly(value) || isMonthOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
 
     const baseProps = getBaseProps(rest);
     const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
@@ -187,6 +196,7 @@ const DateRangePicker = React.forwardRef(
     const onApply = (newValue: null | DateRangePickerProps.Value): DateRangePickerProps.ValidationResult => {
       const formattedValue = formatValue(newValue, {
         dateOnly,
+        granularity,
         timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
       });
 
@@ -303,7 +313,7 @@ const DateRangePicker = React.forwardRef(
         className={clsx(
           baseProps.className,
           styles.root,
-          absoluteFormat === 'long-localized' && !dateOnly && styles.wide
+          absoluteFormat === 'long-localized' && !dateOnly && granularity === 'day' && styles.wide
         )}
         onKeyDown={onWrapperKeyDownHandler}
       >
@@ -343,6 +353,7 @@ const DateRangePicker = React.forwardRef(
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
                 customRelativeRangeUnits={customRelativeRangeUnits}
+                granularity={granularity}
               />
             )}
           </ResetContextsForModal>

@@ -1,10 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, Link } from '~components';
+import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link } from '~components';
 
-import { relativeOptions } from './common';
+import AppContext from '../app/app-context';
+import {
+  applyDisabledReason,
+  checkIfDisabled,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  DisabledDate,
+  relativeOptions,
+} from './common';
 import { makeIsValidFunction } from './is-valid-range';
 
 const localisedUnits = {
@@ -57,15 +65,48 @@ const isValid = makeIsValidFunction({
 });
 
 export default function DatePickerScenario() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
+
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
 
   return (
     <Box padding="s">
       <h1>Date range picker simple version - localised</h1>
       <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
       <br />
+      <label>
+        Disabled dates{' '}
+        <select
+          value={disabledDates}
+          onChange={event =>
+            setUrlParams({
+              disabledDates: event.currentTarget.value as DisabledDate,
+            })
+          }
+        >
+          <option value="none">None (Default)</option>
+          <option value="all">All</option>
+          <option value="only-even">Only even</option>
+        </select>
+      </label>
+      <Checkbox
+        checked={withDisabledReason}
+        onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
+      >
+        Disabled reasons
+      </Checkbox>
+      {/* <Checkbox disabled={monthOnly}  */}
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
+
       <br />
       <DateRangePicker
+        granularity="month"
         value={value}
         locale={'de-DE'}
         i18nStrings={i18nStrings}
@@ -73,6 +114,8 @@ export default function DatePickerScenario() {
         onChange={e => setValue(e.detail.value)}
         relativeOptions={relativeOptions}
         isValidRange={isValid}
+        isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+        dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
       />
       <br />
       <br />

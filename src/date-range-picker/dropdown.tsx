@@ -13,7 +13,7 @@ import FocusLock from '../internal/components/focus-lock';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
-import { DateRangePickerProps } from './interfaces';
+import { DateRangePickerProps, Granularity } from './interfaces';
 import ModeSwitcher from './mode-switcher';
 import RelativeRangePicker from './relative-range';
 import { normalizeTimeOffset } from './time-offset';
@@ -52,6 +52,7 @@ export interface DateRangePickerDropdownProps
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
+  granularity?: Granularity;
 }
 
 export function DateRangePickerDropdown({
@@ -77,6 +78,7 @@ export function DateRangePickerDropdown({
   ariaDescribedby,
   customAbsoluteRangeControl,
   customRelativeRangeUnits,
+  granularity = 'day',
 }: DateRangePickerDropdownProps) {
   const i18n = useInternalI18n('date-range-picker');
 
@@ -130,6 +132,7 @@ export function DateRangePickerDropdown({
         rangeSelectionMode === 'relative' ? selectedRelativeRange : joinAbsoluteValue(selectedAbsoluteRange);
       const formattedRange = formatValue(visibleRange, {
         dateOnly,
+        granularity,
         timeOffset: normalizeTimeOffset(visibleRange, getTimeOffset, timeOffset),
       });
       const newValidationResult = isValidRange(formattedRange);
@@ -143,6 +146,7 @@ export function DateRangePickerDropdown({
     selectedAbsoluteRange,
     setValidationResult,
     dateOnly,
+    granularity,
     getTimeOffset,
     timeOffset,
   ]);
@@ -193,6 +197,7 @@ export function DateRangePickerDropdown({
                       dateOnly={dateOnly}
                       timeInputFormat={timeInputFormat}
                       customAbsoluteRangeControl={customAbsoluteRangeControl}
+                      granularity={granularity}
                     />
                   )}
 
@@ -205,6 +210,7 @@ export function DateRangePickerDropdown({
                       onChange={range => setSelectedRelativeRange(range)}
                       i18nStrings={i18nStrings}
                       customUnits={customRelativeRangeUnits}
+                      granularity={granularity}
                     />
                   )}
                 </InternalSpaceBetween>

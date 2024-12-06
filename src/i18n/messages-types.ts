@@ -154,6 +154,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.copyButtonText": never;
   }
   "date-range-picker": {
+    "nextMonthAriaLabel": never;
+    "previousMonthAriaLabel": never;
+    "todayAriaLabel": never;
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
     "i18nStrings.relativeRangeSelectionHeading": never;
@@ -165,8 +168,10 @@ export interface I18nFormatArgTypes {
     "i18nStrings.customRelativeRangeUnitLabel": never;
     "i18nStrings.customRelativeRangeDurationLabel": never;
     "i18nStrings.customRelativeRangeDurationPlaceholder": never;
+    "i18nStrings.startMonthLabel": never;
     "i18nStrings.startDateLabel": never;
     "i18nStrings.startTimeLabel": never;
+    "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
     "i18nStrings.dateTimeConstraintText": never;
@@ -183,6 +188,9 @@ export interface I18nFormatArgTypes {
       "unit": string;
       "amount": number;
     }
+    "i18nStrings.nextYearAriaLabel": never;
+    "i18nStrings.previousYearAriaLabel": never;
+    "i18nStrings.currentMonthAriaLabel": never;
   }
   "drawer": {
     "i18nStrings.loadingText": never;
