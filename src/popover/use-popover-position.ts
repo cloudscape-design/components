@@ -3,7 +3,7 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { findUpUntil, nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
 import { getContainingBlock } from '../internal/utils/dom';
@@ -104,6 +104,8 @@ export default function usePopoverPosition({
       const shouldKeepPosition = keepPosition && onContentResize && !!previousInternalPositionRef.current;
       const fixedInternalPosition = (shouldKeepPosition && previousInternalPositionRef.current) ?? undefined;
 
+      const boundaryRect = getBoundaryRect(popover);
+
       // Calculate the arrow direction and viewport-relative position of the popover.
       const {
         scrollable,
@@ -115,14 +117,14 @@ export default function usePopoverPosition({
         trigger: trackRect,
         arrow: arrowRect,
         body: contentBoundingBox,
-        container: containingBlock ? containingBlockRect : getDocumentRect(document),
+        container: boundaryRect,
         viewport: viewportRect,
         renderWithPortal,
         allowVerticalOverflow,
       });
 
       // Get the position of the popover relative to the viewport.
-      const popoverOffset = toRelativePosition(rect, viewportRect);
+      const popoverOffset = toRelativePosition(rect, containingBlockRect);
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
       // and use that to recalculate the new popover position.
@@ -228,13 +230,22 @@ function getViewportRect(window: Window): BoundingBox {
   };
 }
 
-function getDocumentRect(document: Document): BoundingBox {
-  const { insetBlockStart, insetInlineStart } = getLogicalBoundingClientRect(document.documentElement);
+function getBoundary(startElement: HTMLDivElement) {
+  if (!startElement.parentElement) {
+    return null;
+  }
 
-  return {
-    insetBlockStart,
-    insetInlineStart,
-    inlineSize: document.documentElement.scrollWidth,
-    blockSize: document.documentElement.scrollHeight,
-  };
+  return findUpUntil(startElement.parentElement, element => {
+    const computedStyle = getComputedStyle(element);
+    return !!computedStyle.clipPath && computedStyle.clipPath !== 'none';
+  }) as HTMLElement;
+}
+
+function getBoundaryRect(element: HTMLDivElement) {
+  const boundary = getBoundary(element);
+  if (boundary) {
+    return getLogicalBoundingClientRect(boundary);
+  } else {
+    return getViewportRect(document.defaultView!);
+  }
 }
