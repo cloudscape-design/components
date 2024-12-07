@@ -367,17 +367,25 @@ export interface TableProps<T = any> extends BaseComponentProps {
    **/
   getLoadingStatus?: TableProps.GetLoadingStatus<T>;
   /**
-   * Defines loader properties for pending state.
+   * Renders loader row content for pending state.
    */
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   /**
-   * Defines loader properties for loading state.
+   * Renders loader row content for loading state.
    */
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   /**
-   * Defines loader properties for error state.
+   * Renders loader row content for error state.
    */
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
+  /**
+   * Renders loader row content for empty row state: the loading status is "finished",
+   * and the row is expanded but has empty children array.
+   *
+   * The empty loader state is only supported for expandable rows. Use `empty` slot if
+   * the table items array is empty.
+   */
+  renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
 }
 
 export namespace TableProps {
@@ -556,6 +564,10 @@ export namespace TableProps {
 
   export interface RenderLoaderDetail<T> {
     item: null | T;
+  }
+
+  export interface RenderLoaderEmptyDetail<T> {
+    item: T;
   }
 }
 
