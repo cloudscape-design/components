@@ -96,6 +96,7 @@ module.exports = parallel([
       theme.outputPath,
       {
         ...theme.packageJson,
+        type: 'module',
         files: ['*'],
         main: './index.js',
         exports: getComponentsExports(),
