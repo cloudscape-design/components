@@ -1,0 +1,32 @@
+
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+  <svg class="alert-icon" width="16" height="15" viewBox="0 0 16 15" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6.99976 9.01001V5.01001H8.99976V9.01001H6.99976Z" fill="currentColor inherit">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0 7.99976 7.01001; 5 7.99976 7.01001; -5 7.99976 7.01001; 0 7.99976 7.01001"
+        dur="0.5s"
+        repeatCount="indefinite"
+      />
+    </path>
+    <path d="M8.99976 12V10H6.99976V12H8.99976Z" fill="currentColor inherit">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0 7.99976 11; 5 7.99976 11; -5 7.99976 11; 0 7.99976 11"
+        dur="0.5s"
+        repeatCount="indefinite"
+      />
+    </path>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M7.99976 0C7.00561 0 6.11659 0.54661 5.64562 1.39436C5.62271 1.4356 5.60293 1.47804 5.58629 1.52135L0.324987 11.1654C0.100728 11.5657 0.00976562 12.0074 0.00976562 12.41C0.00976562 13.8423 1.16748 15 2.59976 15H13.4098C14.842 15 15.9998 13.8423 15.9998 12.41C15.9998 11.9666 15.8849 11.5489 15.6963 11.1874L15.6876 11.1711L10.3576 1.40109L10.3539 1.39436C9.88294 0.546592 8.99388 0 7.99976 0ZM7.40762 2.35892C7.41987 2.33645 7.43121 2.31364 7.44161 2.29053C7.57551 2.10487 7.78177 2 7.99976 2C8.24469 2 8.47482 2.1324 8.60412 2.36298L13.9265 12.1191C13.9757 12.2156 13.9998 12.3155 13.9998 12.41C13.9998 12.7377 13.7375 13 13.4098 13H2.59976C2.27205 13 2.00977 12.7377 2.00977 12.41C2.00977 12.2951 2.03767 12.1999 2.07033 12.1421L2.07763 12.1289L7.40762 2.35892Z" fill="currentColor inherit">
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="0 7.99976 7.5; 2 7.99976 7.5; -2 7.99976 7.5; 0 7.99976 7.5"
+        dur="0.5s"
+        repeatCount="indefinite"
+      />
+    </path>
+  </svg>
+
