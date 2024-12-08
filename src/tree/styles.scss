@@ -1,0 +1,164 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+
+$border-radius: 6px;
+// This is the indent configured on the <Tree /> element. It is used to align the start of an item's text with the icon of its children.
+$indent: 0px;
+
+
+.tree {
+  [role='treeitem']:focus {
+    outline: none;
+    // This is handled by the .focused class instead.
+  }
+}
+
+.indentLines {
+  --indent-size: 15px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  display: flex;
+  align-items: flex-start;
+  height: 100%;
+}
+
+.indentLine {
+  display: flex;
+  justify-content: center;
+  width: 15px;
+  height: 36px;
+}
+
+.indentLine > div {
+  width: 1px;
+  height: 100%;
+  background: #ebebf0;
+}
+
+.node {
+  --indent-step: 15px;
+  @include styles.styles-reset;
+  position: relative;
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+
+  display: grid;
+  grid-template:
+    'left right' auto / 1fr auto;
+  gap: 0 10px;
+
+  cursor: pointer;
+
+  .annotation {
+    color: green;
+  }
+
+  .expander {
+    cursor: pointer;
+    //position: absolute;
+    //left: -10px;
+  }
+
+  .icon {
+
+  }
+
+.left {
+  grid-area: left;
+  display: grid;
+  grid-template:
+    'expander itemIcon label badges' auto / auto auto auto auto;
+    //'expander itemIcon label badges' auto
+    //'none annotations annotations annotations' 0px / auto auto auto auto;
+  gap: 8px;
+  justify-content: start;
+
+  .expander {
+    grid-area: expander;
+  }
+
+  .itemIcon {
+    grid-area: itemIcon;
+    display: flex;
+    align-items: center;
+  }
+
+  .label {
+    grid-area: label;
+  }
+
+  .badges {
+    grid-area: badges;
+  }
+
+    .annotations {
+      grid-area: annotations;
+      display: none;
+    }
+  }
+
+  .right {
+    grid-area: right;
+    .controls {
+      visibility: hidden;
+    }
+  }
+
+  &:hover {
+    .right {
+      .controls {
+        visibility: visible;
+      }
+    }
+  }
+
+  .description {
+    grid-area: description;
+  }
+}
+
+
+
+
+.selected {
+  background: awsui.$color-background-item-selected;
+  // border-color: awsui.$color-border-dropdown-item-selected;
+  .selectedMarker {
+    display: block;
+  }
+}
+.focused {
+  background-color: awsui.$color-background-dropdown-item-hover;
+  border-color: awsui.$color-border-dropdown-item-hover;
+}
+
+.text {
+  position: absolute;
+  // This aligns the text with the icon of the item's children.
+  inset-inline-start: $indent;
+  top: 0;
+}
+
+.selectedMarker {
+  position: absolute;
+
+  // This makes the marker overlap the border
+  top: -1px;
+  bottom: -1px;
+  inset-inline-start: -1px;
+
+  background: awsui.$color-border-item-selected;
+  width: 5px;
+  border-start-start-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  display: none;
+}

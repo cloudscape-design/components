@@ -12,7 +12,8 @@
     "jsx": "react",
     "rootDir": "src",
     "outDir": "lib/components",
-    "incremental": true
+    "incremental": true,
+    "skipLibCheck": true,
   },
   "include": ["src", "types"],
   "exclude": [

@@ -146,6 +146,7 @@ const InternalButtonDropdown = React.forwardRef(
       disabledReason,
       onClick: (event: Event) => {
         event.preventDefault();
+        event.stopPropagation();
         clickHandler();
       },
       ariaLabel,
