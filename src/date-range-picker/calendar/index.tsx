@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { addMonths, endOfDay, isAfter, isBefore, isSameMonth, startOfDay, startOfMonth } from 'date-fns';
 
 import { getDateLabel, renderTimeLabel } from '../../calendar/utils/intl';
-import { getBaseDay } from '../../calendar/utils/navigation';
+import { getBaseDay } from '../../calendar/utils/navigation-day';
 import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { useMobile } from '../../internal/hooks/use-mobile/index.js';
