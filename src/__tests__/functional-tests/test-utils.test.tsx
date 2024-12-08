@@ -17,7 +17,7 @@ import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
 const componentWithMultipleRootElements = ['top-navigation', 'app-layout'];
-const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];
+const componentsWithExceptions = ['annotation-context', 'carousel', ...componentWithMultipleRootElements];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));
 
 const RENDER_COMPONENTS_DEFAULT_PROPS: Record<string, unknown>[] = [

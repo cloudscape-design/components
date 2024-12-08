@@ -127,6 +127,11 @@ exports[`test-utils selectors 1`] = `
     "awsui_section_p8a6i",
     "awsui_selection-control_p8a6i",
   ],
+  "carousel": [
+    "awsui_carousel-item_16n63",
+    "awsui_content-wrapper_16n63",
+    "awsui_root_16n63",
+  ],
   "checkbox": [
     "awsui_root_k2y2q",
   ],
