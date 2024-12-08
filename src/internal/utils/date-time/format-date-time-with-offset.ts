@@ -4,7 +4,7 @@
 import { DateRangePickerProps } from '../../../date-range-picker/interfaces';
 import formatDateIso from './format-date-iso';
 import formatDateLocalized from './format-date-localized';
-import { isIsoDateOnly } from './is-iso-date-only';
+import { isIsoDateOnly, isIsoMonthOnly } from './is-iso-only';
 
 export function formatDateTimeWithOffset({
   date,
@@ -20,12 +20,13 @@ export function formatDateTimeWithOffset({
   locale?: string;
 }) {
   const isDateOnly = isIsoDateOnly(date);
+  const isMonthOnly = isIsoMonthOnly(date);
   switch (format) {
     case 'long-localized': {
-      return formatDateLocalized({ date, hideTimeOffset, isDateOnly, locale, timeOffset });
+      return formatDateLocalized({ date, hideTimeOffset, isDateOnly, isMonthOnly, locale, timeOffset });
     }
     default: {
-      return formatDateIso({ date, hideTimeOffset, isDateOnly, timeOffset });
+      return formatDateIso({ date, hideTimeOffset, isDateOnly, isMonthOnly, timeOffset });
     }
   }
 }
