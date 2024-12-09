@@ -10,7 +10,7 @@ describe('Date Range Picker in America/Los_Angeles timezone', () => {
     return useBrowser(async browser => {
       const page = new DateRangePickerPage(createWrapper().findDateRangePicker().getElement(), browser);
       await browser.setTimeZone('America/Los_Angeles');
-      await browser.url('#/light/date-range-picker/with-default-date-only');
+      await browser.url('#/light/date-range-picker/with-value?dateOnly=true&absoluteFormat=long-localized');
       await page.waitForLoad();
       await testFn(page);
     });

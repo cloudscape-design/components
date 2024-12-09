@@ -9,7 +9,7 @@ describe('Date Range Picker', () => {
   const setupTest = (testFn: (page: DateRangePickerPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DateRangePickerPage(createWrapper().findDateRangePicker().getElement(), browser);
-      await browser.url('#/light/date-range-picker/with-default-date');
+      await browser.url('#/light/date-range-picker/with-value');
       await page.waitForLoad();
       await testFn(page);
     });

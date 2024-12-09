@@ -7,13 +7,9 @@ import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link }
 import AppContext from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
 import {
-  applyDisabledReason,
-  checkIfDisabled,
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
-  DisabledDate,
   generateI18nStrings,
-  generatePlaceholder,
   generateRelativeOptions,
   isValid,
 } from './common';
@@ -26,41 +22,28 @@ export default function DatePickerScenario() {
     endDate: '2018-01-19T15:30:00Z',
   });
 
-  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const monthOnly = false;
-  const disabledDates =
-    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
-  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const absoluteFormat =
+    urlParams.absoluteFormat ?? ('dateRangePickerDemoDefaults.absoluteFormat' as DateRangePickerProps.AbsoluteFormat);
+
   return (
     <Box padding="s">
       <h1>Date range picker with selected date</h1>
-      <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
-      <br />
       <label>
-        Disabled dates{' '}
+        Absolute format{' '}
         <select
-          value={disabledDates}
+          value={absoluteFormat}
           onChange={event =>
             setUrlParams({
-              disabledDates: event.currentTarget.value as DisabledDate,
+              absoluteFormat: event.currentTarget.value as DateRangePickerProps.AbsoluteFormat,
             })
           }
         >
-          <option value="none">None (Default)</option>
-          <option value="all">All</option>
-          <option value="only-even">Only even</option>
-          <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
-          <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
-          <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
-          <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
+          <option value="iso">Iso (Default)</option>
+          <option value="long-localized">Long localized</option>
         </select>
       </label>
-      <Checkbox
-        checked={withDisabledReason}
-        onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
-      >
-        Disabled reasons
-      </Checkbox>
       <Checkbox
         disabled={monthOnly}
         checked={dateOnly}
@@ -69,21 +52,23 @@ export default function DatePickerScenario() {
         Date-only
       </Checkbox>
       <br />
+      <Link id="focus-dismiss-helper">Focusable element before the date range picker</Link>
+      <br />
+      <br />
       <ScreenshotArea>
         <FormField label="Date Range Picker field">
           <DateRangePicker
             value={value}
             locale={'en-GB'}
-            i18nStrings={generateI18nStrings(false, monthOnly)}
             timeOffset={0}
-            placeholder={generatePlaceholder(false, monthOnly)}
+            placeholder={'Filter by a date and time range'}
             onChange={e => setValue(e.detail.value)}
-            relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             dateOnly={dateOnly}
+            relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             customRelativeRangeUnits={['second', 'minute', 'hour']}
-            isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-            dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+            i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+            absoluteFormat={absoluteFormat}
           />
         </FormField>
         <br />
