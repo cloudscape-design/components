@@ -20,6 +20,7 @@ describe('Date Range Picker in America/Los_Angeles timezone', () => {
     'Selecting a date',
     setupTest(async page => {
       await page.focusTrigger();
+      await expect(page.getTriggerText()).resolves.toBe('9 January 2018 — 19 January 2018');
       await page.keys('Enter');
 
       // Focus grid

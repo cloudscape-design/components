@@ -14,7 +14,7 @@ const permutations = createPermutations<
 >([
   {
     absoluteFormat: ['iso', 'long-localized'],
-    dateOnly: [true],
+    dateOnly: [true, false],
     value: [
       {
         type: 'absolute',
