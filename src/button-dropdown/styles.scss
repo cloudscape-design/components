@@ -10,6 +10,10 @@ $dropdown-trigger-icon-offset: 2px;
 
 .button-dropdown {
   display: inline-block;
+
+  &.full-width {
+    inline-size: 100%;
+  }
 }
 
 .items-list-container {
@@ -52,6 +56,17 @@ $dropdown-trigger-icon-offset: 2px;
 .title,
 .description {
   color: awsui.$color-text-top-navigation-title;
+}
+
+.trigger-button {
+  &.full-width {
+    display: grid;
+    grid-template-columns: 1fr auto;
+
+    &.loading {
+      grid-template-columns: auto 1fr auto;
+    }
+  }
 }
 
 .split-trigger-wrapper {
@@ -110,6 +125,15 @@ $dropdown-trigger-icon-offset: 2px;
 }
 .dropdown-trigger {
   display: contents;
+}
+
+.main-action-full-width {
+  flex: 1 1 0;
+  text-align: center;
+}
+
+.main-action-trigger-full-width {
+  flex: 0 0 auto;
 }
 
 .test-utils-button-trigger {
