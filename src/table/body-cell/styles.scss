@@ -28,6 +28,8 @@ $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{aws
 $editing-cell-padding-inline: awsui.$space-xxs;
 $editing-cell-padding-block: awsui.$space-scaled-xxxs;
 $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
+// Ensuring enough space for absolute-positioned focus outlines of focus-able cell content elements.
+$cell-negative-space-vertical: 2px;
 
 @mixin cell-focus-outline {
   @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
@@ -98,17 +100,20 @@ $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
 }
 @mixin cell-padding-block($padding) {
   > .body-cell-content {
-    padding-block: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
+    padding-block: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical});
+    margin-block: calc(-1 * #{$cell-negative-space-vertical});
   }
 }
 @mixin cell-padding-block-start($padding) {
   > .body-cell-content {
-    padding-block-start: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
+    padding-block-start: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical});
+    margin-block-start: calc(-1 * #{$cell-negative-space-vertical});
   }
 }
 @mixin cell-padding-block-end($padding) {
   > .body-cell-content {
-    padding-block-end: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width});
+    padding-block-end: calc(#{$padding} - 1 * #{awsui.$border-divider-list-width} + #{$cell-negative-space-vertical});
+    margin-block-end: calc(-1 * #{$cell-negative-space-vertical});
   }
 }
 
@@ -408,6 +413,9 @@ $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
     }
 
     &.body-cell-edit-active {
+      > .body-cell-content {
+        overflow: visible;
+      }
       @include cell-padding-inline-start($editing-cell-padding-inline);
       @include cell-padding-inline-end($editing-cell-padding-inline);
       @include cell-padding-block($editing-cell-padding-block);
