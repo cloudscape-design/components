@@ -3,6 +3,7 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { ButtonProps } from '../button/interfaces.js';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
 import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import IconButtonItem from './icon-button-item';
@@ -26,11 +27,13 @@ const ItemElement = forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const buttonRef = useRef<ButtonProps.Ref>(null);
+    const buttonDropdownRef = useRef<ButtonDropdownProps.Ref>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
         buttonRef.current?.focus();
+        buttonDropdownRef.current?.focus();
       },
     }));
 
@@ -127,7 +130,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
-            ref={buttonRef}
+            ref={buttonDropdownRef}
             item={item}
             showTooltip={tooltip?.item === item.id}
             onItemClick={onClickHandler}
