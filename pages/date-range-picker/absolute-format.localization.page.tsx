@@ -4,8 +4,17 @@ import React, { useContext, useState } from 'react';
 
 import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '~components';
 
-import AppContext, { AppContextType } from '../app/app-context';
-import { i18nStrings, isValid } from './common';
+import AppContext from '../app/app-context';
+import {
+  applyDisabledReason,
+  checkIfDisabled,
+  DateRangePickerDemoContext,
+  dateRangePickerDemoDefaults,
+  DisabledDate,
+  generateI18nStrings,
+  generatePlaceholder,
+  isValid,
+} from './common';
 
 const locales = [
   'ar',
@@ -30,27 +39,28 @@ const locales = [
 
 const rtlLocales = new Set(['ar', 'he']);
 
-type DemoContext = React.Context<
-  AppContextType<{
-    absoluteFormat?: DateRangePickerProps.AbsoluteFormat;
-    dateOnly?: boolean;
-    hideTimeOffset?: boolean;
-    timeOffset?: number;
-  }>
->;
-
 const initialRange = {
   startDate: '2024-12-09T00:00:00+01:00',
   endDate: '2024-12-31T23:59:59+01:00',
 };
 
 export default function DateRangePickerScenario() {
-  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-
+  const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
+  const monthOnly = false;
+  const disabledDates =
+    (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
+  const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
+  const absoluteFormat =
+    urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
+  const hideTimeOffset = urlParams.hideTimeOffset ?? dateRangePickerDemoDefaults.hideTimeOffset;
+  const timeOffset = isNaN(parseInt(urlParams.timeOffset as string))
+    ? dateRangePickerDemoDefaults.timeOffset
+    : parseInt(urlParams.timeOffset as string);
   const [value, setValue] = useState<DateRangePickerProps['value']>({
     type: 'absolute',
-    startDate: urlParams.dateOnly ? initialRange.startDate.slice(0, 10) : initialRange.startDate,
-    endDate: urlParams.dateOnly ? initialRange.endDate.slice(0, 10) : initialRange.endDate,
+    startDate: dateOnly ? initialRange.startDate.slice(0, 10) : initialRange.startDate,
+    endDate: dateOnly ? initialRange.endDate.slice(0, 10) : initialRange.endDate,
   });
 
   return (
@@ -61,7 +71,7 @@ export default function DateRangePickerScenario() {
           <label>
             Format{' '}
             <select
-              value={urlParams.absoluteFormat}
+              value={absoluteFormat}
               onChange={event =>
                 setUrlParams({
                   absoluteFormat: event.currentTarget.value as DateRangePickerProps.AbsoluteFormat,
@@ -73,9 +83,36 @@ export default function DateRangePickerScenario() {
             </select>
           </label>
           <label>
+            Disabled dates{' '}
+            <select
+              value={disabledDates}
+              onChange={event =>
+                setUrlParams({
+                  disabledDates: event.currentTarget.value as DisabledDate,
+                })
+              }
+            >
+              <option value="none">None (Default)</option>
+              <option value="all">All</option>
+              <option value="only-even">Only even</option>
+              <option value="middle-of-page">Middle of {monthOnly ? 'year' : 'month'}</option>
+              <option value="end-of-page">End of {monthOnly ? 'year' : 'month'}</option>
+              <option value="start-of-page">Start of {monthOnly ? 'year' : 'month'}</option>
+              <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
+            </select>
+          </label>
+          <label>
             <input
               type="checkbox"
-              checked={urlParams.dateOnly}
+              checked={withDisabledReason}
+              onChange={event => setUrlParams({ withDisabledReason: !!event.target.checked })}
+            />{' '}
+            Disabled reasons
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={dateOnly}
               onChange={event => setUrlParams({ dateOnly: !!event.target.checked })}
             />{' '}
             Date only
@@ -84,7 +121,7 @@ export default function DateRangePickerScenario() {
             Time offset from UTC in minutes{' '}
             <input
               type="number"
-              value={urlParams.timeOffset}
+              value={timeOffset}
               onChange={event => {
                 const value = parseInt(event.currentTarget.value);
                 setUrlParams({ timeOffset: isNaN(value) ? 0 : value });
@@ -94,7 +131,7 @@ export default function DateRangePickerScenario() {
           <label>
             <input
               type="checkbox"
-              checked={urlParams.hideTimeOffset}
+              checked={hideTimeOffset}
               onChange={event => setUrlParams({ hideTimeOffset: !!event.target.checked })}
             />{' '}
             Hide time offset
@@ -108,16 +145,20 @@ export default function DateRangePickerScenario() {
               <DateRangePicker
                 value={value}
                 locale={locale}
-                i18nStrings={i18nStrings}
-                placeholder={'Filter by a date and time range'}
+                i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+                placeholder={generatePlaceholder(dateOnly, monthOnly)}
                 onChange={e => setValue(e.detail.value)}
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}
-                getTimeOffset={urlParams.timeOffset === undefined ? undefined : () => urlParams.timeOffset!}
-                absoluteFormat={urlParams.absoluteFormat}
-                dateOnly={urlParams.dateOnly}
-                hideTimeOffset={urlParams.hideTimeOffset}
+                isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
+                dateDisabledReason={(date: Date) =>
+                  applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)
+                }
+                getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
+                absoluteFormat={absoluteFormat}
+                dateOnly={dateOnly}
+                hideTimeOffset={hideTimeOffset}
               />
             </Grid>
           </div>
