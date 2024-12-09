@@ -235,11 +235,7 @@ const InternalButtonDropdown = React.forwardRef(
         </InternalButton>
       );
       trigger = (
-        <div
-          role="group"
-          aria-label={ariaLabel}
-          className={clsx(styles['split-trigger-wrapper'], { [styles['full-width']]: canBeFullWidth })}
-        >
+        <div role="group" aria-label={ariaLabel} className={styles['split-trigger-wrapper']}>
           <div
             className={clsx(
               styles['trigger-item'],
