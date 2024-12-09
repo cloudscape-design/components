@@ -5,6 +5,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react
 import { ButtonProps } from '../button/interfaces.js';
 import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
+import FileInputItem from './file-input-item';
 import IconButtonItem from './icon-button-item';
 import IconToggleButtonItem from './icon-toggle-button-item.js';
 import { ButtonGroupProps } from './interfaces';
@@ -18,19 +19,20 @@ interface ItemElementProps {
   tooltip: null | { item: string; feedback: boolean };
   setTooltip: (tooltip: null | { item: string; feedback: boolean }) => void;
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails> | undefined;
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails> | undefined;
 }
 
 const ItemElement = forwardRef(
   (
-    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick }: ItemElementProps,
+    { item, dropdownExpandToViewport, tooltip, setTooltip, onItemClick, onFilesChange }: ItemElementProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
+    const itemRef = useRef<HTMLButtonElement | HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
-        buttonRef.current?.focus();
+        itemRef.current?.focus();
       },
     }));
 
@@ -90,6 +92,12 @@ const ItemElement = forwardRef(
       fireCancelableEvent(onItemClick, event.detail, event);
     };
 
+    const onFilesChangeHandler = (event: CustomEvent<ButtonGroupProps.FilesChangeDetails>) => {
+      fireCancelableEvent(onFilesChange, event.detail, event);
+
+      setTooltip(null);
+    };
+
     return (
       <div
         key={item.id}
@@ -109,7 +117,7 @@ const ItemElement = forwardRef(
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
@@ -118,16 +126,24 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-toggle-button' && (
           <IconToggleButtonItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
             showFeedback={!!tooltip?.feedback}
           />
         )}
+        {item.type === 'icon-file-input' && (
+          <FileInputItem
+            ref={itemRef}
+            item={item}
+            onFilesChange={onFilesChangeHandler}
+            showTooltip={tooltip?.item === item.id}
+          />
+        )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             showTooltip={tooltip?.item === item.id}
             onItemClick={onClickHandler}

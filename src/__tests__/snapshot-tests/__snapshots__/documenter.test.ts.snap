@@ -3849,6 +3849,28 @@ exports[`Documenter definition for button-group matches the snapshot: button-gro
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the user uploads files. The event detail object contains the id and files from the file input item.",
+      "detailInlineType": {
+        "name": "InternalButtonGroupProps.FilesChangeDetails",
+        "properties": [
+          {
+            "name": "files",
+            "optional": false,
+            "type": "Array<File>",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InternalButtonGroupProps.FilesChangeDetails",
+      "name": "onFilesChange",
+    },
+    {
+      "cancelable": false,
       "description": "Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.",
       "detailInlineType": {
         "name": "InternalButtonGroupProps.ItemClickDetails",
@@ -3960,6 +3982,13 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`pressedIconSvg\` (optional, ReactNode) - Custom SVG icon in pressed state. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 * \`popoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
 * \`pressedPopoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button in pressed state. Defaults to \`popoverFeedback\`.
+
+* ### file-input
+
+* \`id\` (string) - The unique identifier of the button, used as detail in \`onFilesChange\`.
+* \`text\` (string) - The name of the menu button shown as a tooltip.
+* \`accept\` (optional, string) - Specifies the native file input \`accept\` attribute to describe the allow-list of file types.
+* \`multiple\` (optional, string) - Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
 
 ### menu-dropdown
 
