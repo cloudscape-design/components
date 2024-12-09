@@ -22,24 +22,28 @@ interface OptionProps<Option> {
 
 export function ReorderableContainers<Option extends { id: string }>({
   options,
-  onChange,
+  onReorder,
   renderOption,
 }: {
   options: readonly Option[];
-  onChange: (options: readonly Option[]) => void;
+  onReorder: (options: readonly Option[]) => void;
   renderOption: (props: OptionProps<Option>) => React.ReactNode;
 }) {
   return (
     <DndContainer
-      sortedOptions={options}
-      getId={option => option.id}
-      onChange={onChange}
-      renderOption={props => (
-        <div className={clsx(styles.container, props.isDragging && styles.placeholder)} style={props.style}>
-          {renderOption(props)}
-        </div>
-      )}
-      renderActiveOption={props => <Box>{renderOption(props)}</Box>}
+      options={options}
+      getOptionId={option => option.id}
+      onReorder={onReorder}
+      renderOption={props => {
+        if (props.isActive) {
+          return <Box>{renderOption(props)}</Box>;
+        }
+        return (
+          <div className={clsx(styles.container, props.isDragging && styles.placeholder)} style={props.style}>
+            {renderOption(props)}
+          </div>
+        );
+      }}
       i18nStrings={i18nStrings}
       dragOverlayClassName={styles['drag-overlay-container']}
     />
