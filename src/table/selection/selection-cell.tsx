@@ -30,15 +30,22 @@ export function TableHeaderSelectionCell({
   onFocusMove,
   ...props
 }: TableHeaderSelectionCellProps) {
+  const selectAllProps = getSelectAllProps ? getSelectAllProps() : undefined;
   return (
-    <TableThElement {...props} isSelection={true} colIndex={0} focusedComponent={focusedComponent}>
-      {getSelectAllProps ? (
+    <TableThElement
+      {...props}
+      isSelection={true}
+      colIndex={0}
+      focusedComponent={focusedComponent}
+      ariaLabel={selectAllProps?.selectionGroupLabel}
+    >
+      {selectAllProps ? (
         <SelectionControl
           onFocusDown={event => {
             onFocusMove!(event.target as HTMLElement, -1, +1);
           }}
           focusedComponent={focusedComponent}
-          {...getSelectAllProps()}
+          {...selectAllProps}
           {...(props.sticky ? { tabIndex: -1 } : {})}
         />
       ) : (
