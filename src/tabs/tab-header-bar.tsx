@@ -29,7 +29,13 @@ import {
   GeneratedAnalyticsMetadataTabsSelect,
 } from './analytics-metadata/interfaces';
 import { TabsProps } from './interfaces';
-import { hasHorizontalOverflow, hasInlineEndOverflow, hasInlineStartOverflow, onPaginationClick } from './scroll-utils';
+import {
+  hasHorizontalOverflow,
+  hasInlineEndOverflow,
+  hasInlineStartOverflow,
+  onPaginationClick,
+  scrollIntoView,
+} from './scroll-utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
@@ -127,7 +133,9 @@ export function TabHeaderBar({
       return;
     }
     const activeTabRef = tabRefs.current.get(activeTabId);
-    activeTabRef?.scrollIntoView?.({ behavior: smooth ? 'smooth' : 'auto', inline: 'center' });
+    if (activeTabRef && headerBarRef.current) {
+      scrollIntoView(activeTabRef, headerBarRef.current, smooth);
+    }
   };
 
   useEffect(() => {

@@ -46,3 +46,25 @@ export const hasInlineStartOverflow = (headerBar: HTMLElement): boolean => {
 export const hasInlineEndOverflow = (headerBar: HTMLElement): boolean => {
   return Math.ceil(getScrollInlineStart(headerBar)) < headerBar.scrollWidth - headerBar.offsetWidth;
 };
+
+export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, smooth = true): void => {
+  if (!tabHeader || !headerBar) {
+    return;
+  }
+  // Extra left and right margin to always make the focus ring visible
+  const margin = 2;
+  let updatedLeftScroll = headerBar.scrollLeft;
+
+  // Anchor tab to left of scroll parent
+  updatedLeftScroll = Math.min(updatedLeftScroll, tabHeader.offsetLeft - margin);
+  // Anchor tab to right of scroll parent
+  updatedLeftScroll = Math.max(
+    updatedLeftScroll,
+    tabHeader.offsetLeft + tabHeader.offsetWidth - headerBar.offsetWidth + margin
+  );
+  if (smooth) {
+    smoothScroll(headerBar, updatedLeftScroll);
+  } else {
+    headerBar.scrollLeft = updatedLeftScroll;
+  }
+};
