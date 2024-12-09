@@ -35,6 +35,8 @@ export default function DatePickerScenario() {
   });
 
   const monthOnly = false;
+  const absoluteFormat =
+    urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
   const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const disabledDates =
@@ -81,6 +83,20 @@ export default function DatePickerScenario() {
               <option value="overlapping-pages">Overlapping {monthOnly ? 'years' : 'months'}</option>
             </select>
           </label>
+          <label>
+            Absolute format{' '}
+            <select
+              value={absoluteFormat}
+              onChange={event =>
+                setUrlParams({
+                  absoluteFormat: event.currentTarget.value as DateRangePickerProps.AbsoluteFormat,
+                })
+              }
+            >
+              <option value="iso">Iso (Default)</option>
+              <option value="long-localized">Long localized</option>
+            </select>
+          </label>
           <Checkbox
             checked={withDisabledReason}
             onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
@@ -125,6 +141,7 @@ export default function DatePickerScenario() {
             getTimeOffset={date => -1 * date.getTimezoneOffset()}
             invalid={invalid}
             warning={warning}
+            absoluteFormat={absoluteFormat}
           />
         </FormField>
         <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>
