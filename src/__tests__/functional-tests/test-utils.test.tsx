@@ -11,7 +11,7 @@ import { pascalCase } from 'change-case';
 
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
-import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapperDom, { getComponentMetadata } from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
@@ -61,27 +61,21 @@ function renderComponents(componentName: string, props = RENDER_COMPONENTS_DEFAU
   );
 }
 
-function getComponentSelectors(componentName: string) {
-  const componentNamePascalCase = pascalCase(componentName);
-  const findAllRegex = new RegExp(`findAll${componentNamePascalCase}.*`);
+function getComponentSelectors(componentNameKebabCase: string) {
+  const componentName = pascalCase(componentNameKebabCase);
+  const componentNamePlural = getComponentMetadata(componentName)!.pluralName;
 
-  // The same set of selector functions are present in both dom and selectors.
-  // For this reason, looking into DOM is representative of both groups.
-  const wrapperPropsList = Object.keys(DomElementWrapper.prototype);
-
-  // Every component has the same set of selector functions.
-  // For this reason, casting the function names into the Alert component.
-  const findName = `find${componentNamePascalCase}` as 'findAlert';
-  const findAllName = wrapperPropsList.find(selector => findAllRegex.test(selector)) as 'findAllAlerts';
-
-  return { findName, findAllName };
+  return {
+    findName: `find${componentName}` as 'findAlert',
+    findAllName: `findAll${componentNamePlural}` as 'findAllAlerts',
+  };
 }
 
 describe('createWrapper', () => {
   let spy: jest.SpyInstance;
 
   beforeEach(() => {
-    spy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    spy = jest.spyOn(console, 'warn').mockImplementation(() => { });
   });
 
   afterEach(() => {
