@@ -14,7 +14,6 @@ const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility
  * This hook manages a boolean state (`evaluateComponentVisibility`) that toggles
  * whenever a custom DOM event (`EVALUATE_COMPONENT_VISIBILITY_EVENT`) is triggered.
  *
- * (`EVALUATE_COMPONENT_VISIBILITY_EVENT`) event is removed when the component unmounts
  * @returns
  */
 const useEvaluateComponentVisibility = () => {

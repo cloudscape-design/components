@@ -86,7 +86,7 @@ describe('Table', () => {
   );
 
   test(
-    'Emits a mark when evaluateComponentVisbility event is emitted',
+    'Emits a mark when evaluateComponentVisibility event is emitted',
     setupTest(async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
       let marks = await getMarks();
       expect(marks).toHaveLength(2);
@@ -106,7 +106,7 @@ describe('Table', () => {
       });
 
       await expect(isElementPerformanceMarkExisting(marks[0].detail.instanceIdentifier)).resolves.toBeTruthy();
-      await page.click('#evaluateComponentVisbility');
+      await page.click('#evaluateComponentVisibility');
       marks = await getMarks();
       expect(marks).toHaveLength(4);
 

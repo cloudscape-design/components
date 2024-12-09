@@ -25,7 +25,7 @@ export default function TablePerformanceMarkPage() {
           Loading
         </label>
         <label>
-          <Button onClick={() => dispatchEvaluateVisibilityEvent()} id="evaluateComponentVisbility">
+          <Button onClick={() => dispatchEvaluateVisibilityEvent()} id="evaluateComponentVisibility">
             Dispatch EvaluateVisibility Event
           </Button>
         </label>

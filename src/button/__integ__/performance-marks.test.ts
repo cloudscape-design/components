@@ -92,12 +92,12 @@ describe('Button', () => {
   );
 
   test(
-    'Emits a mark when evaluateComponentVisbility event for button components',
+    'Emits a mark when evaluateComponentVisibility event for button components',
     setupTest('performance-marks', async ({ page, getMarks, getElementPerformanceMarkText }) => {
       let marks = await getMarks();
       expect(marks).toHaveLength(1);
 
-      await page.click('#evaluateComponentVisbility');
+      await page.click('#evaluateComponentVisibility');
 
       marks = await getMarks();
       expect(marks).toHaveLength(2);
