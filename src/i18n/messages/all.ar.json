@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "عرض المسار"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "تفتح الصفحة في علامة تبويب جديدة"
+  },
   "calendar": {
     "nextMonthAriaLabel": "الشهر التالي",
     "previousMonthAriaLabel": "الشهر السابق",

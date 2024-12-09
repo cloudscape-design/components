@@ -66,6 +66,11 @@ const itemsMixed: Instance[] = [
       },
     ],
   },
+  {
+    name: 'Root-3',
+    description: 'Root item #3',
+    children: [],
+  },
 ];
 
 interface Permutation {
@@ -250,13 +255,15 @@ export default () => {
               expandableRows={{
                 getItemChildren: item => item.children ?? [],
                 isItemExpandable: item => !!item.children,
-                expandedItems: flatten(permutation.items).filter(item => item.children && item.children.length > 0),
+                expandedItems: flatten(permutation.items).filter(
+                  item => item.children && (item.children.length > 0 || item.name === 'Root-3')
+                ),
                 onExpandableItemToggle: () => {},
               }}
               getLoadingStatus={
                 permutation.progressiveLoading
                   ? item => {
-                      if (!item) {
+                      if (!item || item.name === 'Root-3') {
                         return 'pending';
                       }
                       if (item.name === 'Root-1') {

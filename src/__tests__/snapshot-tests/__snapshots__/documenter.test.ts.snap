@@ -3161,6 +3161,14 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     {
+      "defaultValue": "false",
+      "description": "Adds an external icon after the button label text.
+If an href is provided, it opens the link in a new tab.",
+      "name": "external",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
  Use when a button is not the ancestor of a form element, such as when used in a modal.",
       "name": "form",
@@ -3194,6 +3202,25 @@ For example, if you have a 'help' button that links to a documentation page.",
       "name": "href",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`externalIconAriaLabel\` - (optional) Specifies the aria-label for the external icon when \`external\` is set to \`true\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ButtonProps.I18nStrings",
+        "properties": [
+          {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
     },
     {
       "defaultValue": "'left'",
@@ -15914,19 +15941,29 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "type": "(data: TableProps.LiveAnnouncement) => string",
     },
     {
-      "description": "Defines loader properties for error state.",
+      "description": "Renders loader row content for empty row state: the loading status is "finished",
+and the row is expanded but has empty children array.
+The empty loader state is only supported for expandable rows. Use \`empty\` slot if
+the table items array is empty.
+",
+      "name": "renderLoaderEmpty",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode",
+    },
+    {
+      "description": "Renders loader row content for error state.",
       "name": "renderLoaderError",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
-      "description": "Defines loader properties for loading state.",
+      "description": "Renders loader row content for loading state.",
       "name": "renderLoaderLoading",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
-      "description": "Defines loader properties for pending state.",
+      "description": "Renders loader row content for pending state.",
       "name": "renderLoaderPending",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
@@ -17777,6 +17814,32 @@ Applicable only for the normal variant.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Adds an external icon after the button label text.
+If an href is provided, it opens the link in a new tab.",
+      "name": "external",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`externalIconAriaLabel\` - (optional) Specifies the aria-label for the external icon when \`external\` is set to \`true\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ButtonProps.I18nStrings",
+        "properties": [
+          {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
     },
     {
       "description": "Displays an icon next to the text.",

@@ -3,11 +3,14 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import {
   getAnalyticsLabelAttribute,
   getAnalyticsMetadataAttribute,
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { useInternalI18n } from '../i18n/context';
+import Icon from '../icon/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import {
@@ -70,7 +73,8 @@ export const InternalButton = React.forwardRef(
       disabledReason,
       wrapText = true,
       href,
-      target,
+      external,
+      target: targetOverride,
       rel,
       download,
       formAction = 'submit',
@@ -80,6 +84,7 @@ export const InternalButton = React.forwardRef(
       ariaControls,
       fullWidth,
       badge,
+      i18nStrings,
       __nativeAttributes,
       __internalRootRef = null,
       __focusable = false,
@@ -95,16 +100,22 @@ export const InternalButton = React.forwardRef(
 
     checkSafeUrl('Button', href);
     const isAnchor = Boolean(href);
+    const target = targetOverride ?? (external ? '_blank' : undefined);
     const isNotInteractive = loading || disabled;
     const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
       children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
 
+    if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
+      warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
+    }
+
     const buttonRef = useRef<HTMLElement>(null);
     useForwardFocus(ref, buttonRef);
 
     const buttonContext = useButtonContext();
+    const i18n = useInternalI18n('button');
 
     const uniqueId = useUniqueId('button');
     const { funnelInteractionId } = useFunnel();
@@ -221,7 +232,22 @@ export const InternalButton = React.forwardRef(
     const buttonContent = (
       <>
         <LeftIcon {...iconProps} />
-        {shouldHaveContent && <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>}
+        {shouldHaveContent && (
+          <>
+            <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>
+            {external && (
+              <>
+                &nbsp;
+                <span
+                  role="img"
+                  aria-label={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
+                >
+                  <Icon name="external" className={testUtilStyles['external-icon']} />
+                </span>
+              </>
+            )}
+          </>
+        )}
         <RightIcon {...iconProps} />
       </>
     );

@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Tampilkan jalur"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Buka di tab baru"
+  },
   "calendar": {
     "nextMonthAriaLabel": "Bulan berikutnya",
     "previousMonthAriaLabel": "Bulan sebelumnya",
