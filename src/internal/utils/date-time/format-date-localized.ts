@@ -31,7 +31,6 @@ export default function formatDateLocalized({
       year: 'numeric',
     }).format(date);
 
-    console.log(formattedMonthDate);
     return formattedMonthDate;
   }
 
@@ -51,8 +50,6 @@ export default function formatDateLocalized({
     minute: '2-digit',
     second: '2-digit',
   }).format(date);
-
-  console.log(formattedDate);
 
   const formattedDateTime = formattedDate + getDateTimeSeparator(locale) + formattedTime;
 
