@@ -41,6 +41,18 @@ describe('Date range picker', () => {
     describe('shiftTimeOffset', () => {
       test.each([
         [
+          'relative times have not shifted offset with undefined offset values',
+          { type: 'relative', amount: 7, unit: 'day' },
+          { startDate: undefined, endDate: undefined }, //this is the fallback value that will be passed
+          { type: 'relative', amount: 7, unit: 'day' },
+        ],
+        [
+          'relative times have not shifted offset with valid offset vaues',
+          { type: 'relative', amount: 7, unit: 'day' },
+          { startDate: 120, endDate: 120 },
+          { type: 'relative', amount: 7, unit: 'day' },
+        ],
+        [
           'different timezones with positive offset',
           { type: 'absolute', startDate: '2020-10-12T01:23:45+04:00', endDate: '2020-10-12T01:23:45-05:00' },
           { startDate: 120, endDate: 120 },

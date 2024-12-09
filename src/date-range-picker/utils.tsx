@@ -13,7 +13,7 @@ export function formatValue(
   if (
     !value ||
     value.type === 'relative' ||
-    (value.endDate === '' && value.endDate === '' && value.type === 'absolute')
+    (value.startDate === '' && value.endDate === '' && value.type === 'absolute')
   ) {
     return value;
   }

@@ -201,17 +201,12 @@ describe('DateRangePicker utils', () => {
 
     it('should return shifted time offset for relative value', () => {
       const relativeValue: DateRangePickerProps.RelativeValue = { type: 'relative', amount: 7, unit: 'day' };
-      const shiftedValue: DateRangePickerProps.AbsoluteValue = {
-        type: 'absolute',
-        startDate: '2023-01-01',
-        endDate: '2023-01-07',
-      };
-      ShiftTimeOffsetSpy.mockReturnValue(shiftedValue);
+      ShiftTimeOffsetSpy.mockReturnValue(relativeValue);
 
       const result = formatInitialValue(relativeValue, false, normalizedTimeOffset);
 
       expect(ShiftTimeOffsetSpy).toHaveBeenCalledWith(relativeValue, normalizedTimeOffset);
-      expect(result).toBe(shiftedValue);
+      expect(result).toBe(relativeValue);
     });
 
     it('should format value when dateOnly is true for absolute value', () => {

@@ -133,8 +133,6 @@ const DateRangePicker = React.forwardRef(
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    // value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
-
     value = formatInitialValue(value, dateOnly, normalizedTimeOffset);
 
     const baseProps = getBaseProps(rest);
