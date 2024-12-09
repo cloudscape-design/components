@@ -9,6 +9,30 @@ describe('Date range picker', () => {
     describe('setTimeOffset', () => {
       test.each([
         [
+          'absolute date-only dates with no offset',
+          { type: 'absolute', startDate: '2020-10-12', endDate: '2020-10-12' },
+          { startDate: undefined, endDate: undefined },
+          { type: 'absolute', startDate: '2020-10-12+00:00', endDate: '2020-10-12+00:00' },
+        ],
+        [
+          'absolute date-only dates with positive offset',
+          { type: 'absolute', startDate: '2020-10-12', endDate: '2020-10-12' },
+          { startDate: -240, endDate: -240 },
+          { type: 'absolute', startDate: '2020-10-12-04:00', endDate: '2020-10-12-04:00' },
+        ],
+        [
+          'absolute date-only dates with positive offset',
+          { type: 'absolute', startDate: '2020-10-12', endDate: '2020-10-12' },
+          { startDate: 120, endDate: 120 },
+          { type: 'absolute', startDate: '2020-10-12+02:00', endDate: '2020-10-12+02:00' },
+        ],
+        [
+          'absolute dates with no offsets',
+          { type: 'absolute', startDate: '2020-10-12T01:23:45', endDate: '2020-10-12T01:23:45' },
+          { startDate: undefined, endDate: undefined },
+          { type: 'absolute', startDate: '2020-10-12T01:23:45+00:00', endDate: '2020-10-12T01:23:45+00:00' },
+        ],
+        [
           'absolute dates with positive offset',
           { type: 'absolute', startDate: '2020-10-12T01:23:45', endDate: '2020-10-12T01:23:45' },
           { startDate: 120, endDate: 120 },
