@@ -22,11 +22,11 @@ interface ColumnDefinition<Item> {
 
 export function ReorderableTable<Item extends { id: string }>({
   items,
-  onChange,
+  onReorder,
   columnDefinitions,
 }: {
   items: readonly Item[];
-  onChange: (items: readonly Item[]) => void;
+  onReorder: (items: readonly Item[]) => void;
   columnDefinitions: readonly ColumnDefinition<Item>[];
 }) {
   const getColumnDefinitions = (props: {
@@ -61,42 +61,44 @@ export function ReorderableTable<Item extends { id: string }>({
 
   return (
     <DndContainer
-      sortedOptions={items}
-      getId={item => item.id}
-      onChange={onChange}
-      renderOption={props => (
-        <tr ref={props.ref} style={props.style} className={clsx(props.isDragging && styles.placeholder)}>
-          {getColumnDefinitions(props).map(column => (
-            <td key={column.key} className={tableStyles['custom-table-cell']}>
-              {column.render(props.option)}
-            </td>
-          ))}
-        </tr>
-      )}
-      renderActiveOption={props => (
-        <Box>
-          <div className={tableStyles['custom-table']}>
-            <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
-              <tbody>
-                <tr className={styles['active-row']}>
-                  {getColumnDefinitions(props).map((column, index) => (
-                    <td
-                      key={column.key}
-                      className={tableStyles['custom-table-cell']}
-                      style={{ width: columnWidthsRef.current[index] ?? 0 }}
-                    >
-                      {column.render(props.option)}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </Box>
-      )}
-      i18nStrings={i18nStrings}
-    >
-      {content => (
+      options={items}
+      getOptionId={item => item.id}
+      onReorder={onReorder}
+      renderOption={props => {
+        if (props.isActive) {
+          return (
+            <Box>
+              <div className={tableStyles['custom-table']}>
+                <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
+                  <tbody>
+                    <tr className={styles['active-row']}>
+                      {getColumnDefinitions(props).map((column, index) => (
+                        <td
+                          key={column.key}
+                          className={tableStyles['custom-table-cell']}
+                          style={{ width: columnWidthsRef.current[index] ?? 0 }}
+                        >
+                          {column.render(props.option)}
+                        </td>
+                      ))}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </Box>
+          );
+        }
+        return (
+          <tr ref={props.ref} style={props.style} className={clsx(props.isDragging && styles.placeholder)}>
+            {getColumnDefinitions(props).map(column => (
+              <td key={column.key} className={tableStyles['custom-table-cell']}>
+                {column.render(props.option)}
+              </td>
+            ))}
+          </tr>
+        );
+      }}
+      renderContent={content => (
         <div className={tableStyles['custom-table']}>
           <table
             ref={tableRef}
@@ -115,6 +117,7 @@ export function ReorderableTable<Item extends { id: string }>({
           </table>
         </div>
       )}
-    </DndContainer>
+      i18nStrings={i18nStrings}
+    />
   );
 }

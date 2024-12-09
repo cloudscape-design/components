@@ -44,7 +44,7 @@ enum KeyboardCode {
 // getClosestId function which takes its value from the current component
 // state, to make sure they are always in sync.
 
-export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: ReorderOptions<Option>) {
+export default function useDragAndDropReorder<Option>({ options, getOptionId }: ReorderOptions<Option>) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
   const [activeItemId, setActiveItemId] = useState<UniqueIdentifier | null>(null);
@@ -60,8 +60,8 @@ export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (isKeyboard.current && activeItemId) {
       const currentTargetIndex =
-        sortedOptions.findIndex(option => getId(option) === activeItemId) + positionDelta.current;
-      if (event.key === 'ArrowDown' && currentTargetIndex < sortedOptions.length - 1) {
+        options.findIndex(option => getOptionId(option) === activeItemId) + positionDelta.current;
+      if (event.key === 'ArrowDown' && currentTargetIndex < options.length - 1) {
         positionDelta.current += 1;
       } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
         positionDelta.current -= 1;
@@ -77,9 +77,9 @@ export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: 
     if (positionDelta.current === 0) {
       return active.id;
     }
-    const currentIndex = sortedOptions.findIndex(option => getId(option) === active.id);
-    const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
-    return getId(sortedOptions[newIndex]);
+    const currentIndex = options.findIndex(option => getOptionId(option) === active.id);
+    const newIndex = Math.max(0, Math.min(options.length - 1, currentIndex + positionDelta.current));
+    return getOptionId(options[newIndex]);
   };
 
   const collisionDetection: CollisionDetection = ({

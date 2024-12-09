@@ -24,13 +24,13 @@ interface OptionProps<Option> {
 
 export function ReorderableList<Option extends { id: string }>({
   options,
-  onChange,
+  onReorder,
   renderOption,
   renderStaticOption,
   fixedOptionsStart = 0,
 }: {
   options: readonly Option[];
-  onChange: (options: readonly Option[]) => void;
+  onReorder: (options: readonly Option[]) => void;
   renderOption: (props: OptionProps<Option>) => React.ReactNode;
   renderStaticOption: (option: Option) => React.ReactNode;
   fixedOptionsStart?: number;
@@ -39,21 +39,23 @@ export function ReorderableList<Option extends { id: string }>({
   const sortableOptions = options.slice(fixedOptionsStart);
   return (
     <DndContainer
-      sortedOptions={sortableOptions}
-      getId={option => option.id}
-      onChange={sortedOptions => onChange([...staticOptions, ...sortedOptions])}
-      renderOption={props => (
-        <li
-          className={clsx(props.isDragging && styles.placeholder, props.isSorting && styles.sorting)}
-          style={props.style}
-        >
-          {renderOption(props)}
-        </li>
-      )}
-      renderActiveOption={props => <Box>{renderOption(props)}</Box>}
-      i18nStrings={i18nStrings}
-    >
-      {content => (
+      options={sortableOptions}
+      getOptionId={option => option.id}
+      onReorder={sortedOptions => onReorder([...staticOptions, ...sortedOptions])}
+      renderOption={props => {
+        if (props.isActive) {
+          return <Box>{renderOption(props)}</Box>;
+        }
+        return (
+          <li
+            className={clsx(props.isDragging && styles.placeholder, props.isSorting && styles.sorting)}
+            style={props.style}
+          >
+            {renderOption(props)}
+          </li>
+        );
+      }}
+      renderContent={content => (
         <ul className={styles.list} aria-label="re-orderable list" role="list">
           {staticOptions.map(option => (
             <li key={option.id}>{renderStaticOption?.(option)}</li>
@@ -61,7 +63,8 @@ export function ReorderableList<Option extends { id: string }>({
           {content}
         </ul>
       )}
-    </DndContainer>
+      i18nStrings={i18nStrings}
+    />
   );
 }
 

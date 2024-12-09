@@ -16,19 +16,19 @@ const i18nStrings = {
   liveAnnouncementDndItemCommitted,
 };
 
-const sortedOptions = [
+const options = [
   { id: 'id2', visible: true },
   { id: 'id1', visible: true },
 ];
 
-const getId = (option: { id: string }) => option.id;
+const getOptionId = (option: { id: string }) => option.id;
 
 const TestComponent = ({ activeId, isDragging, overId }: { activeId: string; isDragging: boolean; overId: string }) => {
   const { onDragStart, onDragOver, onDragEnd, onDragCancel } = useLiveAnnouncements({
     isDragging,
     ...i18nStrings,
-    sortedOptions,
-    getId,
+    options,
+    getOptionId,
   });
   onDragStart({ active: { id: activeId } } as DragStartEvent);
   onDragOver({ active: { id: activeId }, over: { id: overId } } as DragOverEvent);

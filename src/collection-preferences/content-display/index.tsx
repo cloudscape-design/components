@@ -130,37 +130,41 @@ export default function ContentDisplayPreference({
         role="list"
       >
         <DndContainer
-          sortedOptions={sortedAndFilteredOptions}
-          getId={option => option.id}
-          onChange={options => onChange(options.map(({ id, visible }) => ({ id, visible })))}
-          disabled={columnFilteringText.trim().length > 0}
-          renderOption={props => (
-            <li
-              className={clsx(
-                getOptionClassName(),
-                props.isDragging && styles.placeholder,
-                props.isSorting && styles.sorting
-              )}
-              style={props.style}
-            >
-              <ContentDisplayOption
-                ref={props.ref}
-                listeners={props.listeners}
-                dragHandleAriaLabel={props.dragHandleAriaLabel}
-                onToggle={onToggle}
-                option={props.option}
-                disabled={props.attributes['aria-disabled']}
-              />
-            </li>
-          )}
-          renderActiveOption={props => (
-            <ContentDisplayOption
-              option={props.option}
-              dragHandleAriaLabel={props.dragHandleAriaLabel}
-              listeners={props.listeners}
-              onToggle={onToggle}
-            />
-          )}
+          options={sortedAndFilteredOptions}
+          getOptionId={option => option.id}
+          onReorder={options => onChange(options.map(({ id, visible }) => ({ id, visible })))}
+          disableReorder={columnFilteringText.trim().length > 0}
+          renderOption={props => {
+            if (props.isActive) {
+              return (
+                <ContentDisplayOption
+                  option={props.option}
+                  dragHandleAriaLabel={props.dragHandleAriaLabel}
+                  listeners={props.listeners}
+                  onToggle={onToggle}
+                />
+              );
+            }
+            return (
+              <li
+                className={clsx(
+                  getOptionClassName(),
+                  props.isDragging && styles.placeholder,
+                  props.isSorting && styles.sorting
+                )}
+                style={props.style}
+              >
+                <ContentDisplayOption
+                  ref={props.ref}
+                  listeners={props.listeners}
+                  dragHandleAriaLabel={props.dragHandleAriaLabel}
+                  onToggle={onToggle}
+                  option={props.option}
+                  disabled={props.attributes['aria-disabled']}
+                />
+              </li>
+            );
+          }}
           i18nStrings={{
             liveAnnouncementDndStarted: i18n(
               'contentDisplayPreference.liveAnnouncementDndStarted',
