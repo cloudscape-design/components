@@ -6,7 +6,7 @@ import { SplitPanel } from '~components';
 import AppLayout from '~components/app-layout';
 import BarChart from '~components/bar-chart';
 
-import { barChartInstructions, commonProps, multipleNegativeBarsData } from '../mixed-line-bar-chart/common';
+import { barChartInstructions, commonProps, multipleBarsData } from '../mixed-line-bar-chart/common';
 import ScreenshotArea from '../utils/screenshot-area';
 import { Breadcrumbs, Navigation, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
@@ -30,7 +30,7 @@ export default function () {
             <BarChart
               {...commonProps}
               height={400}
-              series={multipleNegativeBarsData}
+              series={multipleBarsData}
               xDomain={['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']}
               yDomain={[0, 8]}
               xTitle="Food"
