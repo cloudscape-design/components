@@ -28,6 +28,7 @@ const Button = React.forwardRef(
       href,
       target,
       rel,
+      external = false,
       download,
       formAction = 'submit',
       ariaLabel,
@@ -38,12 +39,13 @@ const Button = React.forwardRef(
       ariaControls,
       fullWidth,
       form,
+      i18nStrings,
       ...props
     }: ButtonProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const baseComponentProps = useBaseComponent('Button', {
-      props: { formAction, fullWidth, iconAlign, iconName, rel, target, variant, wrapText },
+      props: { formAction, fullWidth, iconAlign, iconName, rel, target, external, variant, wrapText },
       metadata: { hasDisabledReason: Boolean(disabledReason) },
     });
     const baseProps = getBaseProps(props);
@@ -66,6 +68,7 @@ const Button = React.forwardRef(
         href={href}
         target={target}
         rel={rel}
+        external={external}
         download={download}
         formAction={formAction}
         ariaLabel={ariaLabel}
@@ -76,6 +79,7 @@ const Button = React.forwardRef(
         ariaControls={ariaControls}
         fullWidth={fullWidth}
         form={form}
+        i18nStrings={i18nStrings}
         __injectAnalyticsComponentMetadata={true}
       >
         {children}
