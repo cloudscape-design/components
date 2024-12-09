@@ -24,14 +24,13 @@ import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development.js';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { isIsoDateOnly } from '../internal/utils/date-time';
 import { formatDateTimeWithOffset } from '../internal/utils/date-time/format-date-time-with-offset';
 import { normalizeLocale } from '../internal/utils/locale';
 import { joinStrings } from '../internal/utils/strings/join-strings';
 import { DateRangePickerDropdown } from './dropdown';
 import { DateRangePickerProps } from './interfaces';
-import { normalizeTimeOffset, shiftTimeOffset } from './time-offset';
-import { formatValue } from './utils';
+import { normalizeTimeOffset } from './time-offset';
+import { formatInitialValue, formatValue } from './utils';
 
 import styles from './styles.css.js';
 
@@ -86,13 +85,6 @@ function renderDateRange({
   );
 }
 
-function isDateOnly(value: null | DateRangePickerProps.Value) {
-  if (!value || value.type !== 'absolute') {
-    return false;
-  }
-  return isIsoDateOnly(value.startDate) && isIsoDateOnly(value.endDate);
-}
-
 const DateRangePicker = React.forwardRef(
   (
     {
@@ -141,7 +133,9 @@ const DateRangePicker = React.forwardRef(
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
     const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
+    // value = isDateOnly(value) ? value : shiftTimeOffset(value, normalizedTimeOffset);
+
+    value = formatInitialValue(value, dateOnly, normalizedTimeOffset);
 
     const baseProps = getBaseProps(rest);
     const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({

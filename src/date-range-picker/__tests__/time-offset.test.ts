@@ -1,120 +1,84 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import { DateRangePickerProps } from '../interfaces';
 import { normalizeTimeOffset, setTimeOffset, shiftTimeOffset } from '../time-offset';
 
 describe('Date range picker', () => {
   describe('time offset handling', () => {
-    test('setTimeOffset', () => {
-      expect(
-        setTimeOffset(
+    describe('setTimeOffset', () => {
+      test.each([
+        [
+          'absolute dates with positive offset',
           { type: 'absolute', startDate: '2020-10-12T01:23:45', endDate: '2020-10-12T01:23:45' },
-          { startDate: 120, endDate: 120 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-12T01:23:45+02:00',
-        endDate: '2020-10-12T01:23:45+02:00',
-      });
-
-      expect(
-        setTimeOffset(
+          { startDate: 120, endDate: 120 },
+          { type: 'absolute', startDate: '2020-10-12T01:23:45+02:00', endDate: '2020-10-12T01:23:45+02:00' },
+        ],
+        [
+          'absolute dates with negative offset',
           { type: 'absolute', startDate: '2020-10-12T01:23:45', endDate: '2020-10-12T01:23:45' },
-          { startDate: -240, endDate: -240 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-12T01:23:45-04:00',
-        endDate: '2020-10-12T01:23:45-04:00',
-      });
-
-      expect(
-        setTimeOffset(
+          { startDate: -240, endDate: -240 },
+          { type: 'absolute', startDate: '2020-10-12T01:23:45-04:00', endDate: '2020-10-12T01:23:45-04:00' },
+        ],
+        [
+          'absolute dates with mixed offsets',
           { type: 'absolute', startDate: '2020-10-12T01:23:45', endDate: '2020-10-12T01:23:45' },
-          { startDate: 120, endDate: -240 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-12T01:23:45+02:00',
-        endDate: '2020-10-12T01:23:45-04:00',
+          { startDate: 120, endDate: -240 },
+          { type: 'absolute', startDate: '2020-10-12T01:23:45+02:00', endDate: '2020-10-12T01:23:45-04:00' },
+        ],
+        [
+          'relative value',
+          { type: 'relative', unit: 'second', amount: 5 },
+          { startDate: -240, endDate: -240 },
+          { type: 'relative', unit: 'second', amount: 5 },
+        ],
+        ['null value', null, { startDate: 300, endDate: 300 }, null],
+      ])('should handle %s correctly', (_, value, offset, expected) => {
+        expect(setTimeOffset(value as DateRangePickerProps.Value | null, offset)).toEqual(expected);
       });
-
-      expect(
-        setTimeOffset({ type: 'relative', unit: 'second', amount: 5 }, { startDate: -240, endDate: -240 })
-      ).toEqual({
-        type: 'relative',
-        unit: 'second',
-        amount: 5,
-      });
-
-      expect(setTimeOffset(null, { startDate: 300, endDate: 300 })).toBe(null);
     });
 
-    test('shiftTimeOffset', () => {
-      expect(
-        shiftTimeOffset(
+    describe('shiftTimeOffset', () => {
+      test.each([
+        [
+          'different timezones with positive offset',
           { type: 'absolute', startDate: '2020-10-12T01:23:45+04:00', endDate: '2020-10-12T01:23:45-05:00' },
-          { startDate: 120, endDate: 120 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-11T23:23:45',
-        endDate: '2020-10-12T08:23:45',
-      });
-
-      expect(
-        shiftTimeOffset(
+          { startDate: 120, endDate: 120 },
+          { type: 'absolute', startDate: '2020-10-11T23:23:45', endDate: '2020-10-12T08:23:45' },
+        ],
+        [
+          'UTC and +00:00 with negative offset',
           { type: 'absolute', startDate: '2020-10-12T01:23:45Z', endDate: '2020-10-12T01:23:45+00:00' },
-          { startDate: -240, endDate: -240 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-11T21:23:45',
-        endDate: '2020-10-11T21:23:45',
-      });
-
-      expect(
-        shiftTimeOffset(
+          { startDate: -240, endDate: -240 },
+          { type: 'absolute', startDate: '2020-10-11T21:23:45', endDate: '2020-10-11T21:23:45' },
+        ],
+        [
+          'UTC with mixed offsets',
           { type: 'absolute', startDate: '2020-10-12T01:23:45Z', endDate: '2020-10-12T01:23:45+00:00' },
-          { startDate: 120, endDate: -240 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-12T03:23:45',
-        endDate: '2020-10-11T21:23:45',
-      });
-
-      expect(
-        shiftTimeOffset(
+          { startDate: 120, endDate: -240 },
+          { type: 'absolute', startDate: '2020-10-12T03:23:45', endDate: '2020-10-11T21:23:45' },
+        ],
+        [
+          'positive timezone to UTC',
           { type: 'absolute', startDate: '2020-10-12T00:00:00+10:00', endDate: '2020-10-12T10:00:00+10:00' },
-          { startDate: 10 * 60, endDate: 10 * 60 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-12T00:00:00',
-        endDate: '2020-10-12T10:00:00',
-      });
-
-      expect(
-        shiftTimeOffset(
+          { startDate: 10 * 60, endDate: 10 * 60 },
+          { type: 'absolute', startDate: '2020-10-12T00:00:00', endDate: '2020-10-12T10:00:00' },
+        ],
+        [
+          'negative timezone to UTC',
           { type: 'absolute', startDate: '2020-10-12T00:00:00-10:00', endDate: '2020-10-12T10:00:00-10:00' },
-          { startDate: -10 * 60, endDate: -10 * 60 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-12T00:00:00',
-        endDate: '2020-10-12T10:00:00',
-      });
-
-      expect(
-        shiftTimeOffset(
+          { startDate: -10 * 60, endDate: -10 * 60 },
+          { type: 'absolute', startDate: '2020-10-12T00:00:00', endDate: '2020-10-12T10:00:00' },
+        ],
+        [
+          'positive timezone to local time',
           { type: 'absolute', startDate: '2020-10-12T00:00:00+10:00', endDate: '2020-10-12T10:00:00+10:00' },
-          { startDate: 0, endDate: 0 }
-        )
-      ).toEqual({
-        type: 'absolute',
-        startDate: '2020-10-11T14:00:00',
-        endDate: '2020-10-12T00:00:00',
+          { startDate: 0, endDate: 0 },
+          { type: 'absolute', startDate: '2020-10-11T14:00:00', endDate: '2020-10-12T00:00:00' },
+        ],
+        ['empty dates', { type: 'absolute', startDate: '', endDate: '' }, { startDate: 0, endDate: 0 }, null],
+      ])('should handle %s correctly', (_, value, offset, expected) => {
+        expect(shiftTimeOffset(value as DateRangePickerProps.Value, offset)).toEqual(expected);
       });
     });
   });
