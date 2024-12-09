@@ -62,11 +62,6 @@ $dropdown-trigger-icon-offset: 2px;
 .split-trigger-wrapper {
   display: flex;
 
-  &.full-width {
-    inline-size: 100%;
-    text-align: center;
-  }
-
   & > .trigger-item {
     & > .trigger-button:focus,
     & > .trigger-button:hover {
