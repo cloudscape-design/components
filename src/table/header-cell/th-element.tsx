@@ -8,6 +8,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
 import { getTableColHeaderRoleProps, TableRole } from '../table-role';
@@ -18,7 +19,7 @@ import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableThElementProps {
-  style?: React.CSSProperties;
+  resizableStyle?: ColumnWidthStyle;
   sortingStatus?: SortingStatus;
   sortingDisabled?: boolean;
   focusedComponent?: null | string;
@@ -37,7 +38,7 @@ export interface TableThElementProps {
 }
 
 export function TableThElement({
-  style,
+  resizableStyle,
   sortingStatus,
   sortingDisabled,
   focusedComponent,
@@ -89,7 +90,7 @@ export function TableThElement({
         },
         stickyStyles.className
       )}
-      style={{ ...style, ...stickyStyles.style }}
+      style={{ ...resizableStyle, ...stickyStyles.style }}
       ref={mergedRef}
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
