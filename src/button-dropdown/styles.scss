@@ -10,6 +10,10 @@ $dropdown-trigger-icon-offset: 2px;
 
 .button-dropdown {
   display: inline-block;
+  &.full-width {
+    display: block;
+    max-inline-size: 100%;
+  }
 }
 
 .items-list-container {
@@ -24,18 +28,8 @@ $dropdown-trigger-icon-offset: 2px;
   }
 }
 
-.rotate-up {
-  transform: rotate(-180deg);
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
-}
-
-.rotate-down {
-  transform: rotate(0deg);
-  @include styles.with-motion {
-    transition: transform awsui.$motion-duration-rotate-180 awsui.$motion-easing-rotate-180;
-  }
+.rotate {
+  @include styles.spin-180-when-open;
 }
 
 .header {

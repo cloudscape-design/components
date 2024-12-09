@@ -18,6 +18,7 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
+import { spinWhenOpen } from '../internal/styles/motion/utils';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { GeneratedAnalyticsMetadataButtonDropdownExpand } from './analytics-metadata/interfaces.js';
 import { ButtonDropdownProps, InternalButtonDropdownProps } from './interfaces';
@@ -52,6 +53,7 @@ const InternalButtonDropdown = React.forwardRef(
       __internalRootRef,
       analyticsMetadataTransformer,
       linkStyle,
+      fullWidth,
       ...props
     }: InternalButtonDropdownProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
@@ -129,7 +131,7 @@ const InternalButtonDropdown = React.forwardRef(
         : {
             iconName: 'caret-down-filled',
             iconAlign: 'right',
-            __iconClass: canBeOpened && isOpen ? styles['rotate-up'] : styles['rotate-down'],
+            __iconClass: spinWhenOpen(styles, 'rotate', canBeOpened && isOpen),
           };
 
     const baseTriggerProps: InternalButtonProps = {
@@ -306,7 +308,12 @@ const InternalButtonDropdown = React.forwardRef(
         onKeyUp={onKeyUp}
         onMouseDown={handleMouseEvent}
         onMouseMove={handleMouseEvent}
-        className={clsx(styles['button-dropdown'], styles[`variant-${variant}`], baseProps.className)}
+        className={clsx(
+          styles['button-dropdown'],
+          styles[`variant-${variant}`],
+          fullWidth && styles['full-width'],
+          baseProps.className
+        )}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
         ref={__internalRootRef}
       >
