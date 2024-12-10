@@ -11,8 +11,10 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { joinStrings } from '../internal/utils/strings';
+import { InternalLiveRegionRef } from '../live-region/internal';
 import { TextFilterProps } from './interfaces';
 import { SearchResults } from './search-results';
+import useDebounceSearchResultCallback from './use-debounce-search-result-callback';
 
 import styles from './styles.css.js';
 
@@ -33,6 +35,7 @@ const InternalTextFilter = React.forwardRef(
       disableBrowserAutocorrect,
       onChange,
       onDelayedChange,
+      loading = false,
       __internalRootRef,
       ...rest
     }: InternalTextFilterProps,
@@ -40,6 +43,7 @@ const InternalTextFilter = React.forwardRef(
   ) => {
     const baseProps = getBaseProps(rest);
     const inputRef = useRef<HTMLInputElement>(null);
+    const searchResultsRef = useRef<InternalLiveRegionRef>(null);
     useForwardFocus(ref, inputRef);
 
     const searchResultsId = useUniqueId('text-filter-search-results');
@@ -48,6 +52,15 @@ const InternalTextFilter = React.forwardRef(
     if (tableComponentContext?.filterRef?.current) {
       tableComponentContext.filterRef.current.filterText = filteringText;
     }
+
+    useDebounceSearchResultCallback({
+      searchQuery: filteringText,
+      countText,
+      loading,
+      announceCallback: () => {
+        searchResultsRef.current?.reannounce();
+      },
+    });
 
     return (
       <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
@@ -69,7 +82,11 @@ const InternalTextFilter = React.forwardRef(
           onChange={event => fireNonCancelableEvent(onChange, { filteringText: event.detail.value })}
           __onDelayedInput={event => fireNonCancelableEvent(onDelayedChange, { filteringText: event.detail.value })}
         />
-        {showResults ? <SearchResults id={searchResultsId}>{countText}</SearchResults> : null}
+        {showResults ? (
+          <SearchResults renderLiveRegion={!loading} id={searchResultsId} ref={searchResultsRef}>
+            {countText}
+          </SearchResults>
+        ) : null}
       </div>
     );
   }
