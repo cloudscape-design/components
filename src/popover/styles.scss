@@ -46,14 +46,21 @@
   background-color: transparent;
 
   cursor: pointer;
-  border-block-end: awsui.$border-divider-list-width dashed transparent;
-  text-decoration: underline dashed currentColor;
-  text-underline-offset: 0.2em;
 
-  /* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
-  & span {
+  &:not(.overflow-ellipsis) {
+    border-block-end: awsui.$border-divider-list-width dashed transparent;
     text-decoration: underline dashed currentColor;
-    text-underline-offset: 0.2em;
+    text-underline-offset: 0.25em;
+
+    /* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+    & span {
+      text-decoration: underline dashed currentColor;
+      text-underline-offset: 0.25em;
+    }
+  }
+
+  &.overflow-ellipsis {
+    border-block-end: awsui.$border-divider-list-width dashed currentColor;
   }
 
   &:focus {
