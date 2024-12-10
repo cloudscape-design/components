@@ -122,6 +122,8 @@ const InternalButtonDropdown = React.forwardRef(
 
     const canBeOpened = !loading && !disabled;
 
+    const canBeFullWidth = !!fullWidth && (variant === 'primary' || variant === 'normal');
+
     const triggerVariant = variant === 'navigation' ? undefined : variant === 'inline-icon' ? 'inline-icon' : variant;
     const iconProps: Partial<ButtonProps & { __iconClass?: string }> =
       variant === 'icon' || variant === 'inline-icon'
@@ -223,7 +225,8 @@ const InternalButtonDropdown = React.forwardRef(
           className={clsx(
             styles['trigger-button'],
             hasNoText && styles['has-no-text'],
-            isVisualRefresh && styles['visual-refresh']
+            isVisualRefresh && styles['visual-refresh'],
+            canBeFullWidth && styles['main-action-full-width']
           )}
           variant={variant}
           ariaLabel={mainActionAriaLabel}
@@ -268,7 +271,14 @@ const InternalButtonDropdown = React.forwardRef(
               )}
               {...getAnalyticsMetadataAttribute(analyticsMetadata)}
             >
-              <InternalButton ref={triggerRef} {...baseTriggerProps} __emitPerformanceMarks={false}>
+              <InternalButton
+                ref={triggerRef}
+                {...baseTriggerProps}
+                className={clsx(baseTriggerProps.className, {
+                  [styles['main-action-trigger-full-width']]: canBeFullWidth,
+                })}
+                __emitPerformanceMarks={false}
+              >
                 {children}
               </InternalButton>
             </div>
@@ -278,7 +288,17 @@ const InternalButtonDropdown = React.forwardRef(
     } else {
       trigger = (
         <div className={styles['dropdown-trigger']} {...getAnalyticsMetadataAttribute(analyticsMetadata)}>
-          <InternalButton ref={triggerRef} id={triggerId} {...baseTriggerProps} badge={triggerHasBadge()}>
+          <InternalButton
+            ref={triggerRef}
+            id={triggerId}
+            {...baseTriggerProps}
+            className={clsx(baseTriggerProps.className, {
+              [styles['full-width']]: canBeFullWidth,
+              [styles.loading]: canBeFullWidth && !!loading,
+            })}
+            badge={triggerHasBadge()}
+            fullWidth={fullWidth}
+          >
             {children}
           </InternalButton>
         </div>
@@ -311,7 +331,7 @@ const InternalButtonDropdown = React.forwardRef(
         className={clsx(
           styles['button-dropdown'],
           styles[`variant-${variant}`],
-          fullWidth && styles['full-width'],
+          canBeFullWidth && styles['full-width'],
           baseProps.className
         )}
         aria-owns={expandToViewport && isOpen ? dropdownId : undefined}
