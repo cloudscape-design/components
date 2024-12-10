@@ -60,6 +60,7 @@ export default function CollectionPreferences({
   customPreference,
   getModalRoot,
   removeModalRoot,
+  additionalContent,
   ...rest
 }: CollectionPreferencesProps) {
   const parentMetadata = useContext(CollectionPreferencesMetadata);
@@ -181,6 +182,10 @@ export default function CollectionPreferences({
             size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
             onDismiss={onCancelListener}
           >
+            {/* Additional content */}
+            <div className={styles.additionalContent}>{additionalContent}</div>
+
+            {/* Preferences content */}
             <ModalContentLayout
               left={
                 hasContentOnTheLeft && (

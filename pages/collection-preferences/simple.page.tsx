@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import Alert from '~components/alert';
+import Box from '~components/box';
 import CollectionPreferences from '~components/collection-preferences';
 
 import ScreenshotArea from '../utils/screenshot-area';
@@ -42,6 +44,13 @@ export default function CollectionPreferencesPermutations() {
           className="cp-4"
           {...baseProperties}
           visibleContentPreference={visibleContentPreference}
+          additionalContent={
+            <Box margin={{ bottom: 's' }}>
+              <Alert type={'info'} header={'Test additional content'}>
+                Some additional content
+              </Alert>
+            </Box>
+          }
         />
       </ScreenshotArea>
     </>

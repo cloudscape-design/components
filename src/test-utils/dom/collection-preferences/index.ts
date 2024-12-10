@@ -55,6 +55,10 @@ class PreferencesModalWrapper extends ModalWrapper {
   findCustomPreference(): ElementWrapper | null {
     return this.findByClassName(styles.custom);
   }
+
+  findAdditionalContent(): ElementWrapper | null {
+    return this.findByClassName(styles.additionalContent);
+  }
 }
 
 export default class CollectionPreferencesWrapper extends ComponentWrapper {
