@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useMemo } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
@@ -28,12 +28,7 @@ export function DndContainer<Data>({
   const activeItem = activeItemId ? items.find(item => item.id === activeItemId) : null;
   const isDragging = activeItemId !== null;
   const announcements = useLiveAnnouncements({ items, isDragging, ...i18nStrings });
-  const accessibilityContainer = useMemo(() => document.createElement('div'), []);
-  const onPortalRendered = (container: Element) => {
-    if (!accessibilityContainer.isConnected) {
-      container.append(accessibilityContainer);
-    }
-  };
+  const portalContainer = usePortalContainer();
   return (
     <DndContext
       sensors={sensors}
@@ -44,7 +39,7 @@ export function DndContainer<Data>({
         screenReaderInstructions: i18nStrings.dragHandleAriaDescription
           ? { draggable: i18nStrings.dragHandleAriaDescription }
           : undefined,
-        container: accessibilityContainer,
+        container: portalContainer,
       }}
       onDragStart={({ active }) => setActiveItemId(active.id)}
       onDragEnd={event => {
@@ -75,7 +70,7 @@ export function DndContainer<Data>({
         ))}
       </SortableContext>
 
-      <Portal onRendered={onPortalRendered}>
+      <Portal container={portalContainer}>
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
         <DragOverlay className={dragOverlayClassName} dropAnimation={null} style={{ zIndex: 5000 }}>
@@ -97,6 +92,22 @@ export function DndContainer<Data>({
       </Portal>
     </DndContext>
   );
+}
+
+function usePortalContainer() {
+  const portalContainerRef = useRef(document.createElement('div'));
+  useEffect(() => {
+    const container = portalContainerRef.current;
+    if (!container.isConnected) {
+      document.body.appendChild(container);
+    }
+    return () => {
+      if (container.isConnected) {
+        document.body.removeChild(container);
+      }
+    };
+  }, []);
+  return portalContainerRef.current;
 }
 
 function DraggableItem<Data>({

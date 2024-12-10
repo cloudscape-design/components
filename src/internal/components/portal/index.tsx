@@ -11,7 +11,6 @@ export interface PortalProps {
   container?: null | Element;
   getContainer?: () => Promise<HTMLElement>;
   removeContainer?: (container: HTMLElement) => void;
-  onRendered?: (container: Element) => void;
   children: React.ReactNode;
 }
 
@@ -48,7 +47,7 @@ function manageAsyncContainer(
  * A safe react portal component that renders to a provided node.
  * If a node isn't provided, it creates one under document.body.
  */
-export default function Portal({ container, getContainer, removeContainer, onRendered, children }: PortalProps) {
+export default function Portal({ container, getContainer, removeContainer, children }: PortalProps) {
   const [activeContainer, setActiveContainer] = useState<Element | null>(container ?? null);
 
   useLayoutEffect(() => {
@@ -71,9 +70,5 @@ export default function Portal({ container, getContainer, removeContainer, onRen
     return manageDefaultContainer(setActiveContainer);
   }, [container, getContainer, removeContainer]);
 
-  if (activeContainer) {
-    onRendered?.(activeContainer);
-    return createPortal(children, activeContainer);
-  }
-  return null;
+  return activeContainer && createPortal(children, activeContainer);
 }
