@@ -33,7 +33,7 @@ interface BaseItemComponentProps {
   position?: string;
 }
 
-export interface HeaderProps extends BaseItemComponentProps {
+interface HeaderProps extends BaseItemComponentProps {
   definition: SideNavigationProps.Header;
 }
 
@@ -86,7 +86,7 @@ export function Header({ definition, activeHref, fireFollow }: HeaderProps) {
   );
 }
 
-export interface NavigationItemsListProps extends BaseItemComponentProps {
+interface NavigationItemsListProps extends BaseItemComponentProps {
   items: ReadonlyArray<SideNavigationProps.Item>;
   variant: 'section' | 'section-group' | 'link-group' | 'expandable-link-group' | 'root';
 }

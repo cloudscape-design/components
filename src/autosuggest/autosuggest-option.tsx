@@ -11,7 +11,7 @@ import { AutosuggestItem } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface AutosuggestOptionProps extends BaseComponentProps {
+interface AutosuggestOptionProps extends BaseComponentProps {
   nativeAttributes?: React.HTMLAttributes<HTMLDivElement>;
   highlightText: string;
   option: AutosuggestItem;

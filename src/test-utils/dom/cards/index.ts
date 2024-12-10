@@ -10,7 +10,7 @@ import TextFilterWrapper from '../text-filter';
 import styles from '../../../cards/styles.selectors.js';
 import tableStyles from '../../../table/styles.selectors.js';
 
-export class CardSectionWrapper extends ComponentWrapper {
+class CardSectionWrapper extends ComponentWrapper {
   findSectionHeader(): ElementWrapper | null {
     return this.findByClassName(styles['section-header']);
   }
@@ -20,7 +20,7 @@ export class CardSectionWrapper extends ComponentWrapper {
   }
 }
 
-export class CardWrapper extends ComponentWrapper {
+class CardWrapper extends ComponentWrapper {
   /**
    * Note: for integration/selector-based tests you should add `1` to the expected section index,
    * for example, `.findSections().get(sectionIndex+1)`. The `get` call in this context

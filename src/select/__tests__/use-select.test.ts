@@ -384,6 +384,17 @@ describe('useSelect', () => {
     expect(updateSelectedOption).not.toHaveBeenCalled();
   });
 
+  test('should clear the highlight on the option when a key is typed into the filter', () => {
+    const hook = renderHook(useSelect, { initialProps });
+    const filterProps = hook.result.current.getFilterProps();
+    // Select an option using the keyboard
+    act(() => filterProps.onKeyDown!(createTestEvent(KeyCode.down)));
+    expect(hook.result.current.highlightedOption).toBeTruthy();
+    // Type in the letter "C"
+    act(() => filterProps.onChange!(createCustomEvent({ detail: { value: 'C' } })));
+    expect(hook.result.current.highlightedOption).toBeUndefined();
+  });
+
   test('select without filter should open and navigate to selected option', () => {
     const hook = renderHook(useSelect, {
       initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [{ value: 'child1' }] },

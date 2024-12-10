@@ -23,7 +23,7 @@ interface IViewContext {
 }
 
 const defaultCtx: IViewContext = { state: { view: 'utilities', data: null }, setState: () => {} };
-export const ViewContext = createContext<IViewContext>(defaultCtx);
+const ViewContext = createContext<IViewContext>(defaultCtx);
 
 export const useNavigate = () => {
   const { setState } = useContext(ViewContext);

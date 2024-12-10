@@ -11,7 +11,7 @@ function isDocumentScrollingElement(element: Element | null) {
   return element === document.scrollingElement;
 }
 
-export function getScrollPosition(scrollingContainer: Element) {
+function getScrollPosition(scrollingContainer: Element) {
   const minScroll = {
     x: 0,
     y: 0,
@@ -45,7 +45,7 @@ export function getScrollPosition(scrollingContainer: Element) {
   };
 }
 
-export function getScrollElementRect(element: Element) {
+function getScrollElementRect(element: Element) {
   if (element === document.scrollingElement) {
     const { innerWidth, innerHeight } = window;
 

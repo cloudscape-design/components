@@ -38,7 +38,7 @@ import styles from './styles.css.js';
  * - (keyboard navigation) Safari/Chrome+VO - day announcements are not interruptive and can be missed if navigating fast.
  */
 
-export interface GridProps {
+interface GridProps {
   baseDate: Date;
   selectedStartDate: Date | null;
   selectedEndDate: Date | null;

@@ -15,7 +15,7 @@ import { checkDuplicateHrefs, generateExpandableItemsMapping } from './util';
 
 import styles from './styles.css.js';
 
-export type SideNavigationInternalProps = SideNavigationProps & InternalBaseComponentProps;
+type SideNavigationInternalProps = SideNavigationProps & InternalBaseComponentProps;
 
 export function SideNavigationImplementation({
   header,

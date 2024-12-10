@@ -19,7 +19,7 @@ interface I18nStrings {
   filterSelectedAriaLabel?: string;
 }
 
-export interface ChartFilterItem<T> {
+interface ChartFilterItem<T> {
   label: string;
   color: string;
   type: ChartSeriesMarkerType;

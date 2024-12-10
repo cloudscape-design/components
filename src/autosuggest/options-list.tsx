@@ -8,7 +8,7 @@ import { AutosuggestItemsHandlers, AutosuggestItemsState } from './options-contr
 import PlainList from './plain-list';
 import VirtualList from './virtual-list';
 
-export interface AutosuggestOptionsListProps
+interface AutosuggestOptionsListProps
   extends Pick<AutosuggestProps, 'virtualScroll' | 'selectedAriaLabel' | 'renderHighlightedAriaLive'> {
   statusType: AutosuggestProps.StatusType;
   autosuggestItemsState: AutosuggestItemsState;

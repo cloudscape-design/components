@@ -114,9 +114,3 @@ export namespace FileUploadProps {
     focus(): void;
   }
 }
-
-export interface FileMetadata {
-  showFileSize?: boolean;
-  showFileLastModified?: boolean;
-  showFileThumbnail?: boolean;
-}

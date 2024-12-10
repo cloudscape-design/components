@@ -21,7 +21,7 @@ import {
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export const componentName = 'ExpandableSection';
+const componentName = 'ExpandableSection';
 
 interface ExpandableDefaultHeaderProps {
   id: string;

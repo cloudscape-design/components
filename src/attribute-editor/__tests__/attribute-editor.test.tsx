@@ -167,19 +167,26 @@ describe('Attribute Editor', () => {
     test('enables the add button by default', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps });
       const buttonElement = wrapper.findAddButton().getElement();
-      expect(buttonElement).not.toHaveAttribute('disabled');
+      expect(buttonElement).not.toHaveAttribute('aria-disabled');
     });
 
     test('enables the add button when disableAddButton is false', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, disableAddButton: false });
       const buttonElement = wrapper.findAddButton().getElement();
-      expect(buttonElement).not.toHaveAttribute('disabled');
+      expect(buttonElement).not.toHaveAttribute('aria-disabled');
     });
 
     test('disables the add button when disableAddButton is true', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, disableAddButton: true });
       const buttonElement = wrapper.findAddButton().getElement();
-      expect(buttonElement).toHaveAttribute('disabled');
+      expect(buttonElement).toHaveAttribute('aria-disabled');
+    });
+
+    test('allows the add button to be focused manually when disableAddButton is true', () => {
+      const ref: React.Ref<AttributeEditorProps.Ref> = React.createRef();
+      const wrapper = renderAttributeEditor({ ...defaultProps, ref, disableAddButton: true });
+      ref.current!.focusAddButton();
+      expect(wrapper.findAddButton().getElement()).toHaveFocus();
     });
 
     test('has no aria-describedby if there is no additional info', () => {

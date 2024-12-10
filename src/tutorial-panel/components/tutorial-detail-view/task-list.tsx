@@ -12,7 +12,7 @@ import { Task } from './task';
 
 import styles from './styles.css.js';
 
-export interface TaskListProps {
+interface TaskListProps {
   tasks: ReadonlyArray<TutorialPanelProps.Task>;
   onExitTutorial: () => void;
   currentGlobalStepIndex: HotspotContext['currentStepIndex'];

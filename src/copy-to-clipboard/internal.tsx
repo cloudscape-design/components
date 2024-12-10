@@ -13,7 +13,7 @@ import { CopyToClipboardProps } from './interfaces';
 import styles from './styles.css.js';
 import testStyles from './test-classes/styles.css.js';
 
-export interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
+interface InternalCopyToClipboardProps extends CopyToClipboardProps, InternalBaseComponentProps {}
 
 export default function InternalCopyToClipboard({
   variant = 'button',

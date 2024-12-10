@@ -283,7 +283,7 @@ describe('Tag Editor component', () => {
     test('is not disabled by default ', () => {
       const { wrapper } = renderTagEditor();
 
-      expect(wrapper.findAddButton().getElement()).not.toHaveAttribute('disabled');
+      expect(wrapper.findAddButton().getElement()).not.toHaveAttribute('aria-disabled');
     });
 
     test('is disabled when tag limit has been reached', () => {
@@ -292,7 +292,7 @@ describe('Tag Editor component', () => {
         tagLimit: 1,
       });
 
-      expect(wrapper.findAddButton().getElement()).toHaveAttribute('disabled');
+      expect(wrapper.findAddButton().getElement()).toHaveAttribute('aria-disabled');
     });
 
     test('is disabled when tag limit has been exceeded', () => {
@@ -304,7 +304,7 @@ describe('Tag Editor component', () => {
         tagLimit: 1,
       });
 
-      expect(wrapper.findAddButton().getElement()).toHaveAttribute('disabled');
+      expect(wrapper.findAddButton().getElement()).toHaveAttribute('aria-disabled');
     });
 
     test('adds an empty tag when there are no tags', () => {

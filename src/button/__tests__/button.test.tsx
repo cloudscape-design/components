@@ -3,13 +3,17 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
 
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
+
 import Button, { ButtonProps } from '../../../lib/components/button';
 import InternalButton from '../../../lib/components/button/internal';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
 import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
 import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
 
 import styles from '../../../lib/components/button/styles.css.js';
+import testUtilStyles from '../../../lib/components/button/test-classes/styles.css.js';
 
 function renderWrappedButton(props: ButtonProps = {}) {
   const onClickSpy = jest.fn();
@@ -29,6 +33,10 @@ function renderButton(props: ButtonProps = {}) {
 
 function findIcons(wrapper: ButtonWrapper) {
   return wrapper.findAll(`.${styles.icon}`);
+}
+
+function findExternalIcon(wrapper: ButtonWrapper) {
+  return wrapper.find(`.${testUtilStyles['external-icon']}`);
 }
 
 function expectToHaveClasses(element: HTMLElement, classesMap: Record<string, boolean>) {
@@ -58,6 +66,18 @@ describe('Button Component', () => {
     const wrapper = createWrapper(renderResult.container);
     button!.focus();
     expect(document.activeElement).toBe(wrapper.findButton()!.getElement());
+  });
+
+  describe('i18n', () => {
+    test('supports providing externalIconAriaLabel from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ button: { 'i18nStrings.externalIconAriaLabel': 'External test' } }}>
+          <Button external={true}>External</Button>
+        </TestI18nProvider>
+      );
+      const externalIcon = createWrapper(container).findButton()!.find('[role=img]')!.getElement();
+      expect(externalIcon).toHaveAccessibleName('External test');
+    });
   });
 
   describe.each([true, false])('loadingText property, with href: %s', withHref => {
@@ -101,6 +121,60 @@ describe('Button Component', () => {
     test('adds a tab index -1 when button with link is disabled', () => {
       const wrapper = renderButton({ disabled: true, href: 'https://amazon.com' });
       expect(wrapper.getElement()).toHaveAttribute('tabIndex', '-1');
+    });
+  });
+
+  describe('external property', () => {
+    test('renders an external icon when set', () => {
+      const wrapper = renderButton({ external: true, children: 'Button' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('renders an external icon even when an icon is provided', () => {
+      const wrapper = renderButton({ external: true, children: 'Button', iconName: 'add-plus' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('renders an external icon even when an icon is provided on the right', () => {
+      const wrapper = renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
+      expect(findExternalIcon(wrapper)).toBeTruthy();
+    });
+
+    test('does not render an external icon when variant is icon', () => {
+      const wrapper = renderButton({ external: true, iconName: 'add-plus', variant: 'icon' });
+      expect(findExternalIcon(wrapper)).not.toBeTruthy();
+    });
+
+    test('sets target=_blank implicitly', () => {
+      const wrapper = renderButton({ external: true, href: 'https://amazon.com', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAttribute('target', '_blank');
+    });
+
+    test('allows target to be overridden', () => {
+      const wrapper = renderButton({ external: true, href: 'https://amazon.com', target: '_top', children: 'Button' });
+      expect(wrapper.getElement()).toHaveAttribute('target', '_top');
+    });
+
+    test('labels the icon using i18nStrings.externalIconAriaLabel', () => {
+      const wrapper = renderButton({
+        external: true,
+        children: 'Button',
+        i18nStrings: { externalIconAriaLabel: 'external' },
+      });
+      expect(wrapper.find('[role=img]')!.getElement()).toHaveAccessibleName('external');
+    });
+
+    test('warns when used with a right aligned icon', () => {
+      const consoleWarnSpy = jest.spyOn(console, 'warn');
+      try {
+        clearMessageCache();
+        renderButton({ external: true, children: 'Button', iconName: 'angle-right', iconAlign: 'right' });
+        expect(consoleWarnSpy).toHaveBeenCalledWith(
+          '[AwsUi] [Button] A right-aligned icon should not be combined with an external icon.'
+        );
+      } finally {
+        consoleWarnSpy.mockRestore();
+      }
     });
   });
 

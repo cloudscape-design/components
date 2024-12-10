@@ -18,7 +18,7 @@ import styles from './styles.css.js';
 
 const Divider = () => <InternalBox className={styles.divider} padding={{ top: 'l' }} />;
 
-export interface RowProps<T> {
+interface RowProps<T> {
   breakpoint: ColumnLayoutBreakpoint | null;
   item: T;
   definition: ReadonlyArray<AttributeEditorProps.FieldDefinition<T>>;

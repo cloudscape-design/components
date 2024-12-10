@@ -84,6 +84,7 @@ class GridNavigationProcessor {
 
   // State
   private focusedCell: null | FocusedCell = null;
+  private focusInside = false;
   private keepUserIndex = false;
 
   constructor(navigationAPI: { current: null | SingleTabStopNavigationAPI }) {
@@ -94,10 +95,12 @@ class GridNavigationProcessor {
     this._table = table;
 
     this.table.addEventListener('focusin', this.onFocusin);
+    this.table.addEventListener('focusout', this.onFocusout);
     this.table.addEventListener('keydown', this.onKeydown);
 
     this.cleanup = () => {
       this.table.removeEventListener('focusin', this.onFocusin);
+      this.table.removeEventListener('focusout', this.onFocusout);
       this.table.removeEventListener('keydown', this.onKeydown);
     };
   }
@@ -122,6 +125,9 @@ class GridNavigationProcessor {
   }
 
   public onRegisterFocusable = (focusableElement: HTMLElement) => {
+    if (!this.focusInside) {
+      return;
+    }
     // When newly registered element belongs to the focused cell the focus must transition to it.
     const focusedElement = this.focusedCell?.element;
     if (focusedElement && isTableCell(focusedElement) && focusedElement.contains(focusableElement)) {
@@ -175,6 +181,8 @@ class GridNavigationProcessor {
   }
 
   private onFocusin = (event: FocusEvent) => {
+    this.focusInside = true;
+
     if (!(event.target instanceof HTMLElement)) {
       return;
     }
@@ -196,6 +204,10 @@ class GridNavigationProcessor {
     } else {
       this.keepUserIndex = false;
     }
+  };
+
+  private onFocusout = () => {
+    this.focusInside = false;
   };
 
   private onKeydown = (event: KeyboardEvent) => {

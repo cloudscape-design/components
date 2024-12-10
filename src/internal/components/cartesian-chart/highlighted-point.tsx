@@ -11,7 +11,7 @@ interface SeriesPoint {
   color: string;
 }
 
-export interface HighlightedPointProps {
+interface HighlightedPointProps {
   point: null | SeriesPoint;
   role?: 'group' | 'button';
   ariaLabel?: string;

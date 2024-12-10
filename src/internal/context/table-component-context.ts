@@ -10,12 +10,12 @@ export interface PaginationRef {
   currentPageIndex?: number;
   totalPageCount?: number;
 }
-export interface TableComponentsContextProps {
+interface TableComponentsContextProps {
   filterRef: RefObject<FilterRef>;
   paginationRef: RefObject<PaginationRef>;
 }
 
-export const TableComponentsContext = createContext<TableComponentsContextProps | null>(null);
+const TableComponentsContext = createContext<TableComponentsContextProps | null>(null);
 
 export const TableComponentsContextProvider = TableComponentsContext.Provider;
 

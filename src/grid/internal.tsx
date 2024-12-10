@@ -16,7 +16,7 @@ import { GridProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface InternalGridProps extends GridProps, InternalBaseComponentProps {
+interface InternalGridProps extends GridProps, InternalBaseComponentProps {
   __breakpoint?: Breakpoint | null;
 
   /**

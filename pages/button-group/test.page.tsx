@@ -4,9 +4,11 @@
 import React, { useContext, useState } from 'react';
 
 import { Box, Button, ButtonGroup, ButtonGroupProps, Header, SpaceBetween, StatusIndicator } from '~components';
+import FileTokenGroup from '~components/file-token-group';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { enhanceWindow, WindowWithFlushResponse } from '../common/flush-response';
+import { i18nStrings } from '../file-upload/shared';
 import ScreenshotArea from '../utils/screenshot-area';
 
 declare const window: WindowWithFlushResponse;
@@ -31,6 +33,7 @@ export default function ButtonGroupPage() {
   const [loadingId, setLoading] = useState<null | string>(null);
   const [canSend, setCanSend] = useState(true);
   const [canRedo, setCanRedo] = useState(true);
+  const [files, setFiles] = useState<File[]>([]);
 
   const toggleTexts = {
     like: ['Like', 'Liked'],
@@ -57,6 +60,20 @@ export default function ButtonGroupPage() {
         pressedIconName: 'thumbs-down-filled',
         text: feedback === 'dislike' ? toggleTexts.dislike[1] : toggleTexts.dislike[0],
         pressed: feedback === 'dislike',
+      },
+    ],
+  };
+
+  const fileGroup: ButtonGroupProps.Group = {
+    type: 'group',
+    text: 'Files',
+    items: [
+      {
+        type: 'icon-file-input',
+        id: 'file-input',
+        text: 'Choose files',
+        multiple: true,
+        accept: 'image/png, image/jpeg',
       },
     ],
   };
@@ -176,6 +193,7 @@ export default function ButtonGroupPage() {
     return true;
   }
   const items = [
+    fileGroup,
     feedbackGroup,
     favoriteGroup,
     sendGroup,
@@ -228,9 +246,20 @@ export default function ButtonGroupPage() {
         return asyncAction();
       case 'experimental-features':
         return syncAction(() => setUseExperimentalFeatures(!!detail.pressed));
+      case 'file-input':
       default:
         return syncAction();
     }
+  };
+
+  const onFilesChange: ButtonGroupProps['onFilesChange'] = ({ detail }) => {
+    return setFiles(detail.files);
+  };
+
+  const onDismiss = (event: { detail: { fileIndex: number } }) => {
+    const newItems = [...files];
+    newItems.splice(event.detail.fileIndex, 1);
+    setFiles(newItems);
   };
 
   return (
@@ -247,6 +276,7 @@ export default function ButtonGroupPage() {
             variant="icon"
             items={items}
             onItemClick={onItemClick}
+            onFilesChange={onFilesChange}
             dropdownExpandToViewport={dropdownExpandToViewport}
           />
         </Box>
@@ -258,6 +288,15 @@ export default function ButtonGroupPage() {
         <Button onClick={() => ref.current?.focus('more-actions')} data-testid="focus-on-more-actions">
           Focus on more actions
         </Button>
+
+        <FileTokenGroup
+          items={files.map(file => ({
+            file,
+          }))}
+          onDismiss={onDismiss}
+          i18nStrings={i18nStrings}
+          alignment="horizontal"
+        />
 
         <Box>
           <div id="log"></div>

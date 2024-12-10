@@ -7,7 +7,7 @@ import ButtonWrapper from '../button';
 import styles from '../../../tabs/styles.selectors.js';
 import testUtilStyles from '../../../tabs/test-classes/styles.selectors.js';
 
-export class TabWrapper extends ComponentWrapper {
+class TabWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
     return createWrapper().find(`.${styles['disabled-reason-tooltip']}`);
   }

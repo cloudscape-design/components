@@ -110,6 +110,7 @@ export function DrawerTriggers({
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const globalDrawersStartIndex = drawers.length;
   const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
+  const splitPanelResolvedPosition = splitPanelToggleProps?.position;
 
   return (
     <aside
@@ -130,10 +131,10 @@ export function DrawerTriggers({
                 testutilStyles['drawers-trigger'],
                 splitPanelTestUtilStyles['open-button']
               )}
-              iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
+              iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => onSplitPanelToggle?.()}
               selected={splitPanelToggleProps.active}
-              ref={splitPanelFocusRef}
+              ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
               isForSplitPanel={true}

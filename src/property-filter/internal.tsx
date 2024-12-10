@@ -47,7 +47,7 @@ import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export type PropertyFilterInternalProps = SomeRequired<
+type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
   'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering' | 'hideOperations'
 > &

@@ -8,63 +8,36 @@ export const getEventDetail = <T extends BreadcrumbGroupProps.Item>(item: T) => 
   href: item.href,
 });
 
-const defaultMinBreadcrumbWidth = 150;
-const ellipsisWidth = 50;
+const MIN_BREADCRUMB_WIDTH = 70;
+const ELLIPSIS_WIDTH = 50;
 
 export const getItemsDisplayProperties = (itemsWidths: Array<number>, navWidth: number | null) => {
-  const minBreadcrumbWidth = optimizeMinWidth(itemsWidths, navWidth);
-  const shrinkFactors = itemsWidths.map(width => (width <= minBreadcrumbWidth ? 0 : Math.round(width)));
-  const minWidths = itemsWidths.map(width => (width <= minBreadcrumbWidth ? 0 : minBreadcrumbWidth));
-  const collapsedWidths = itemsWidths.map(width => Math.min(width, minBreadcrumbWidth));
+  const widthsWithFinalCollapsed = [...itemsWidths];
+  widthsWithFinalCollapsed[itemsWidths.length - 1] = Math.min(
+    itemsWidths[itemsWidths.length - 1],
+    MIN_BREADCRUMB_WIDTH
+  );
 
   return {
-    shrinkFactors,
-    minWidths,
-    collapsed: computeNumberOfCollapsedItems(collapsedWidths, navWidth),
+    collapsed: computeNumberOfCollapsedItems(widthsWithFinalCollapsed, navWidth),
   };
 };
 
-const computeNumberOfCollapsedItems = (collapsedWidths: Array<number>, navWidth: number | null): number => {
-  if (!navWidth) {
+const computeNumberOfCollapsedItems = (itemWidths: Array<number>, navWidth: number | null): number => {
+  if (typeof navWidth !== 'number') {
     return 0;
   }
-  let collapsed = 0;
-  const itemsCount = collapsedWidths.length;
-  if (itemsCount > 2) {
-    collapsed = itemsCount - 2;
-    let remainingWidth = navWidth - collapsedWidths[0] - collapsedWidths[itemsCount - 1] - ellipsisWidth;
-    let j = 1;
-    while (remainingWidth > 0 && j < itemsCount - 1) {
-      remainingWidth -= collapsedWidths[itemsCount - 1 - j];
-      j++;
-      if (remainingWidth >= 0) {
-        collapsed--;
-      }
+  let usedWidth = itemWidths.reduce((acc, width) => acc + width, 0);
+  let collapsedItems = 0;
+  while (collapsedItems < itemWidths.length - 1) {
+    if (usedWidth <= navWidth) {
+      break;
+    }
+    collapsedItems += 1;
+    usedWidth = usedWidth - itemWidths[collapsedItems];
+    if (collapsedItems === 1) {
+      usedWidth += ELLIPSIS_WIDTH;
     }
   }
-  return collapsed;
-};
-
-const optimizeMinWidth = (itemsWidths: Array<number>, navWidth: number | null): number => {
-  const collapsedWidths = itemsWidths.map(width => Math.min(width, defaultMinBreadcrumbWidth));
-  if (!navWidth) {
-    return defaultMinBreadcrumbWidth;
-  }
-  const itemsCount = collapsedWidths.length;
-  if (itemsCount > 2) {
-    const minCollapsedWidth = collapsedWidths[0] + ellipsisWidth + collapsedWidths[collapsedWidths.length - 1];
-    if (minCollapsedWidth > navWidth) {
-      return (navWidth - ellipsisWidth) / 2;
-    }
-  }
-  if (itemsCount === 2) {
-    const minCollapsedWidth = collapsedWidths[0] + collapsedWidths[1];
-    if (minCollapsedWidth > navWidth) {
-      return navWidth / 2;
-    }
-  }
-  if (itemsCount === 1) {
-    return Math.min(navWidth, collapsedWidths[0]);
-  }
-  return defaultMinBreadcrumbWidth;
+  return collapsedItems;
 };

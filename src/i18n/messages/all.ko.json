@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "경로 표시"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "새 탭에서 열림"
+  },
   "calendar": {
     "nextMonthAriaLabel": "다음 달",
     "previousMonthAriaLabel": "이전 달",

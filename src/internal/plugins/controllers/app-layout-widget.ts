@@ -13,7 +13,7 @@ interface SecondaryRegistration<Props> {
 }
 
 export type RegistrationState<Props> = PrimaryRegistration<Props> | SecondaryRegistration<Props>;
-export type RegistrationType = RegistrationState<unknown>['type'];
+type RegistrationType = RegistrationState<unknown>['type'];
 
 type RegistrationChangeHandler<Props> = (
   registration: PrimaryRegistration<Props> | SecondaryRegistration<Props>

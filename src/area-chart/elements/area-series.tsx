@@ -5,7 +5,7 @@ import { area, line } from 'd3-shape';
 
 import { ChartModel } from '../model';
 
-export interface AreaSeriesProps<T> {
+interface AreaSeriesProps<T> {
   data: readonly ChartModel.PlotPoint<T>[];
   color: string;
   chartAreaClipPath: string;

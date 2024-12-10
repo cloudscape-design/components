@@ -342,19 +342,14 @@ export type TokenGroup = PropertyFilterProps.TokenGroup;
 export type JoinOperation = PropertyFilterProps.JoinOperation;
 export type ComparisonOperator = PropertyFilterProps.ComparisonOperator;
 export type ExtendedOperator<TokenValue> = PropertyFilterOperatorExtended<TokenValue>;
-export type ExtendedOperatorFormProps<TokenValue> = PropertyFilterOperatorFormProps<TokenValue>;
 export type ExtendedOperatorForm<TokenValue> = PropertyFilterOperatorForm<TokenValue>;
-export type ExtendedOperatorFormat<TokenValue> = PropertyFilterOperatorFormat<TokenValue>;
 export type FilteringOption = PropertyFilterProps.FilteringOption;
 export type FilteringProperty = PropertyFilterProps.FilteringProperty;
-export type FilteringPropertyTokenType = PropertyFilterTokenType;
 export type Query = PropertyFilterProps.Query;
 export type LoadItemsDetail = PropertyFilterProps.LoadItemsDetail;
 export type I18nStrings = PropertyFilterProps.I18nStrings;
 export type GroupText = PropertyFilterProps.GroupText;
-export type FilteringChangeDetail = PropertyFilterProps.FilteringChangeDetail;
 export type FormattedToken = PropertyFilterProps.FormattedToken;
-export type FormattedTokenGroup = PropertyFilterProps.FormattedTokenGroup;
 export type Ref = PropertyFilterProps.Ref;
 
 // Utility types
@@ -366,7 +361,7 @@ export interface InternalFilteringProperty<TokenValue = any> {
   propertyGroup?: string;
   operators: readonly PropertyFilterOperator[];
   defaultOperator: PropertyFilterOperator;
-  getTokenType: (operator?: PropertyFilterOperator) => FilteringPropertyTokenType;
+  getTokenType: (operator?: PropertyFilterOperator) => PropertyFilterTokenType;
   getValueFormatter: (operator?: PropertyFilterOperator) => null | ((value: any) => string);
   getValueFormRenderer: (operator?: PropertyFilterOperator) => null | PropertyFilterOperatorForm<TokenValue>;
   // Original property used in callbacks.

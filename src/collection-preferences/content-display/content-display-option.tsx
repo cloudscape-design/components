@@ -12,7 +12,7 @@ import styles from '../styles.css.js';
 const componentPrefix = 'content-display-option';
 export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix].filter(Boolean).join('-')];
 
-export interface ContentDisplayOptionProps {
+interface ContentDisplayOptionProps {
   dragHandleAriaLabel?: string;
   listeners?: DragHandleProps['listeners'];
   onToggle?: (option: OptionWithVisibility) => void;

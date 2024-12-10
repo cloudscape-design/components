@@ -13,7 +13,7 @@ import { LiveRegionProps } from './interfaces';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
-export interface InternalLiveRegionProps extends InternalBaseComponentProps, LiveRegionProps {
+interface InternalLiveRegionProps extends InternalBaseComponentProps, LiveRegionProps {
   /**
    * The delay between each announcement from this live region. You should
    * leave this set to the default unless this live region is commonly

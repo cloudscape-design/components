@@ -12,7 +12,7 @@ import {
   subtract as getCoordinatesDelta,
 } from '@dnd-kit/utilities';
 
-import { scrollElementIntoView } from '../../../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../../../utils/scrollable-containers';
 import { defaultKeyboardCodes } from './defaults';
 import { EventName } from './utilities/events';
 import { Listeners } from './utilities/listeners';

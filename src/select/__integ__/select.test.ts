@@ -60,6 +60,22 @@ test(
 );
 
 test(
+  'allows space to select an option',
+  useBrowser(async browser => {
+    await browser.url('/#/light/select/select.test');
+    const select = createWrapper().findSelect('#simple_select');
+    const page = new SelectPageObject(browser, select);
+    await page.clickSelect();
+    await page.click(select.findFilteringInput().toSelector());
+    // Type in a filtering query that includes a space
+    await page.keys('tion 2');
+    // Use space for selection here
+    await page.keys(['ArrowDown', 'Space']);
+    await expect(page.getTriggerLabel()).resolves.toEqual('Option 2');
+  })
+);
+
+test(
   'input aria-activedescendant is same as highlighted option id',
   useBrowser(async browser => {
     await browser.url('/#/light/select/select.test');

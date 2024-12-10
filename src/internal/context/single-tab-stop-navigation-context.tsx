@@ -15,10 +15,6 @@ import { nodeBelongs } from '../utils/node-belongs';
 
 export type FocusableChangeHandler = (isFocusable: boolean) => void;
 
-export interface SingleTabStopNavigationOptions {
-  tabIndex?: number;
-}
-
 export const defaultValue: {
   navigationActive: boolean;
   registerFocusable(focusable: HTMLElement, handler: FocusableChangeHandler): () => void;
@@ -57,7 +53,7 @@ export function useSingleTabStopNavigation(
   return { navigationActive, tabIndex };
 }
 
-export interface SingleTabStopNavigationProviderProps {
+interface SingleTabStopNavigationProviderProps {
   navigationActive: boolean;
   children: React.ReactNode;
   getNextFocusTarget: () => null | HTMLElement;

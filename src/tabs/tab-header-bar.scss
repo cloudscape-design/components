@@ -29,7 +29,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   overflow-y: hidden;
   position: relative;
   inline-size: 100%;
-  scroll-snap-type: inline proximity;
   // do not use pointer-events none because it disables scroll by sliding
 
   // Hide scrollbar in all browsers
@@ -75,7 +74,6 @@ $label-horizontal-spacing: awsui.$space-xs;
   flex-shrink: 0;
   display: flex;
   max-inline-size: calc(90% - awsui.$space-l);
-  scroll-snap-align: start;
 }
 
 .tabs-tab-label {
@@ -207,7 +205,6 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:first-child {
   margin-inline-start: 1px;
-  scroll-margin-inline-start: 1px;
   & > .tabs-tab-header-container {
     padding-inline-start: calc(#{$label-horizontal-spacing} - 1px);
   }
@@ -216,7 +213,6 @@ $label-horizontal-spacing: awsui.$space-xs;
 // Remediate focus shadow
 .tabs-tab:last-child {
   margin-inline-end: 1px;
-  scroll-margin-inline-end: 1px;
   & > .tabs-tab-header-container {
     padding-inline-end: calc(#{$label-horizontal-spacing} - 1px);
   }

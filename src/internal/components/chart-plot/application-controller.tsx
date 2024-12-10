@@ -8,7 +8,7 @@ export interface ApplicationRef {
   focus(): void;
 }
 
-export interface ApplicationControllerProps {
+interface ApplicationControllerProps {
   activeElementKey: null | string | number | boolean;
   activeElementRef?: React.RefObject<SVGGElement>;
   onFocus?: (event: React.FocusEvent<SVGGElement>) => void;

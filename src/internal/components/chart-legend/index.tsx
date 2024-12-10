@@ -11,7 +11,7 @@ import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
 
 import styles from './styles.css.js';
 
-export interface ChartLegendItem<T> {
+interface ChartLegendItem<T> {
   label: string;
   color: string;
   type: ChartSeriesMarkerType;

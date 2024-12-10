@@ -8,7 +8,7 @@ import { InternalPosition } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface ArrowProps {
+interface ArrowProps {
   position: InternalPosition | null;
 }
 

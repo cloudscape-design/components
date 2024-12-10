@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { TableComponentsContext, useTableComponentsContext } from '../table-component-context';
+import { TableComponentsContextProvider, useTableComponentsContext } from '../table-component-context';
 
 describe('Verify TableComponentsContext', () => {
   test('returns the correct tableComponentsContext context value to child component', () => {
@@ -18,7 +18,7 @@ describe('Verify TableComponentsContext', () => {
       );
     };
     const { getByTestId } = render(
-      <TableComponentsContext.Provider
+      <TableComponentsContextProvider
         value={{
           paginationRef: {
             current: { totalPageCount: 10, currentPageIndex: 1 },
@@ -27,7 +27,7 @@ describe('Verify TableComponentsContext', () => {
         }}
       >
         <ChildComponent />
-      </TableComponentsContext.Provider>
+      </TableComponentsContextProvider>
     );
     expect(getByTestId('filterText')).toHaveTextContent('test');
     expect(getByTestId('totalPageCount')).toHaveTextContent('10');
@@ -54,7 +54,7 @@ describe('Verify TableComponentsContext', () => {
       );
     };
     const { getByTestId } = render(
-      <TableComponentsContext.Provider
+      <TableComponentsContextProvider
         value={{
           paginationRef: {
             current: { totalPageCount: 10, currentPageIndex: 1 },
@@ -63,7 +63,7 @@ describe('Verify TableComponentsContext', () => {
         }}
       >
         <ChildComponent />
-      </TableComponentsContext.Provider>
+      </TableComponentsContextProvider>
     );
     expect(getByTestId('filterText')).toHaveTextContent(updatedFilterText);
     expect(getByTestId('totalPageCount')).toHaveTextContent(`${updatedTotalPageCount}`);

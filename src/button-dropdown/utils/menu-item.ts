@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-export interface GetMenuItemPropsParams {
+interface GetMenuItemPropsParams {
   disabled: boolean;
   parent?: boolean;
   expanded?: boolean;
@@ -21,7 +21,7 @@ export const getMenuItemProps: (params: GetMenuItemPropsParams) => React.HTMLPro
   'aria-expanded': expanded ? 'true' : parent ? 'false' : undefined,
 });
 
-export interface GetMenuItemCheckboxPropsParams extends GetMenuItemPropsParams {
+interface GetMenuItemCheckboxPropsParams extends GetMenuItemPropsParams {
   checked: boolean;
 }
 

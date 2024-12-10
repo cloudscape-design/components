@@ -29,7 +29,7 @@ import styles from '../styles.css.js';
  * - (keyboard navigation) Safari/Chrome+VO - date announcements are not interruptive and can be missed if navigating fast.
  */
 
-export interface GridProps {
+interface GridProps {
   isDateEnabled: DatePickerProps.IsDateEnabledFunction;
   dateDisabledReason: CalendarProps.DateDisabledReasonFunction;
   focusedDate: Date | null;

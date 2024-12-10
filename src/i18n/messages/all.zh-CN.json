@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "显示路径"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "在新标签页中打开"
+  },
   "calendar": {
     "nextMonthAriaLabel": "下个月",
     "previousMonthAriaLabel": "上个月",

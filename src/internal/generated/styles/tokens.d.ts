@@ -72,3 +72,6 @@ export const spaceScaledS: string;
 
 // Line height
 export const lineHeightBodyM: string;
+
+// Border thickness
+export const borderPanelTopWidth: string;

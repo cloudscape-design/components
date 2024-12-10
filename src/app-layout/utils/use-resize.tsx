@@ -12,7 +12,7 @@ import { usePointerEvents } from './use-pointer-events';
 
 import testutilStyles from '../test-classes/styles.css.js';
 
-export interface DrawerResizeProps {
+interface DrawerResizeProps {
   activeDrawer: AppLayoutProps.Drawer | undefined;
   activeDrawerSize: number;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;

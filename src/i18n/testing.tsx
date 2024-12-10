@@ -6,7 +6,7 @@ import React from 'react';
 // eslint-disable-next-line @cloudscape-design/ban-files
 import { I18nProvider } from './provider';
 
-export interface TestI18nProviderProps {
+interface TestI18nProviderProps {
   messages: Record<string, Record<string, string>>;
   locale?: string;
   children: React.ReactNode;

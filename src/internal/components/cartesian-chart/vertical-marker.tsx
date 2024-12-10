@@ -11,7 +11,7 @@ interface SeriesPoint {
   color: string;
 }
 
-export interface VerticalMarkerProps {
+interface VerticalMarkerProps {
   height: number;
   showPoints?: boolean;
   showLine?: boolean;

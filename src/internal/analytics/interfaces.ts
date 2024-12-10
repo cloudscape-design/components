@@ -11,13 +11,13 @@ export interface AnalyticsMetadata {
 }
 
 // Common properties for all funnels
-export interface BaseFunnelProps {
+interface BaseFunnelProps {
   funnelIdentifier?: string;
   funnelInteractionId: string;
   currentDocument?: Document;
 }
 
-export interface FunnelErrorProps extends BaseFunnelProps {
+interface FunnelErrorProps extends BaseFunnelProps {
   funnelErrorContext?: string;
 }
 
@@ -37,7 +37,7 @@ export interface FunnelStartProps extends Omit<BaseFunnelProps, 'funnelInteracti
 }
 
 // A function type for a generic funnel method
-export type FunnelMethod<T extends BaseFunnelProps> = (props: T) => void;
+type FunnelMethod<T extends BaseFunnelProps> = (props: T) => void;
 
 // Interface for table interaction method props
 export interface TableInteractionProps {
@@ -59,10 +59,10 @@ export interface TableInteractionProps {
   interactionMetadata?: string;
 }
 
-export type TableInteractionMethod = (props: TableInteractionProps) => void;
+type TableInteractionMethod = (props: TableInteractionProps) => void;
 
 // A function type specifically for funnelStart
-export type FunnelStartMethod = (props: FunnelStartProps) => string;
+type FunnelStartMethod = (props: FunnelStartProps) => string;
 
 // Define individual method props by extending the base
 export interface FunnelStepProps extends BaseFunnelProps {
@@ -75,18 +75,18 @@ export interface FunnelStepProps extends BaseFunnelProps {
   subStepConfiguration?: SubStepConfiguration[];
 }
 
-export interface FunnelStepNavigationProps extends FunnelStepProps {
+interface FunnelStepNavigationProps extends FunnelStepProps {
   destinationStepNumber: number;
   navigationType: string;
   totalSubSteps?: number;
 }
 
-export interface FunnelStepErrorProps extends FunnelStepProps {
+interface FunnelStepErrorProps extends FunnelStepProps {
   stepErrorContext?: string;
   stepErrorSelector: string;
 }
 
-export interface FunnelSubStepProps extends FunnelStepProps {
+interface FunnelSubStepProps extends FunnelStepProps {
   subStepIdentifier?: string;
   subStepSelector: string;
   subStepName?: string | undefined;
@@ -94,15 +94,7 @@ export interface FunnelSubStepProps extends FunnelStepProps {
   subStepNumber?: number;
 }
 
-export interface FunnelSubStepErrorProps extends FunnelSubStepProps {
-  subStepErrorContext?: string;
-  fieldIdentifier?: string;
-  fieldErrorContext?: string;
-  fieldLabelSelector: string;
-  fieldErrorSelector: string;
-}
-
-export interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
+interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
   subStepErrorContext?: string;
   fieldIdentifier?: string;
   fieldErrorContext?: string;
@@ -110,11 +102,11 @@ export interface OptionalFunnelSubStepErrorProps extends FunnelSubStepProps {
   fieldErrorSelector?: string;
 }
 
-export interface FunnelLinkInteractionProps extends FunnelSubStepProps {
+interface FunnelLinkInteractionProps extends FunnelSubStepProps {
   elementSelector: string;
 }
 
-export interface FunnelChangeProps extends BaseFunnelProps {
+interface FunnelChangeProps extends BaseFunnelProps {
   stepConfiguration: StepConfiguration[];
 }
 
@@ -175,7 +167,7 @@ export interface TaskCompletionDataProps {
   completionMetadata?: string;
 }
 
-export type TaskCompletionDataMethod = (props: TaskCompletionDataProps) => void;
+type TaskCompletionDataMethod = (props: TaskCompletionDataProps) => void;
 
 export interface IPerformanceMetrics {
   tableInteraction: TableInteractionMethod;
@@ -188,19 +180,19 @@ export interface JSONObject {
   [key: string]: JSONObject | JSONValue;
 }
 
-export interface ComponentMountedProps {
+interface ComponentMountedProps {
   componentName: string;
   taskInteractionId?: string;
   componentConfiguration: JSONObject;
 }
 
-export interface ComponentUpdatedProps extends ComponentMountedProps {
+interface ComponentUpdatedProps extends ComponentMountedProps {
   taskInteractionId: string;
   actionType: string;
 }
 
-export type ComponentMountedMethod = (props: ComponentMountedProps) => string;
-export type ComponentUpdatedMethod = (props: ComponentUpdatedProps) => void;
+type ComponentMountedMethod = (props: ComponentMountedProps) => string;
+type ComponentUpdatedMethod = (props: ComponentUpdatedProps) => void;
 export interface IComponentMetrics {
   componentMounted: ComponentMountedMethod;
   componentUpdated: ComponentUpdatedMethod;
@@ -221,4 +213,4 @@ export interface ModalPerformanceDataProps {
   modalMetadata?: string;
 }
 
-export type ModalPerformanceDataMethod = (props: ModalPerformanceDataProps) => void;
+type ModalPerformanceDataMethod = (props: ModalPerformanceDataProps) => void;

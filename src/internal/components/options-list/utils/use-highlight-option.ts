@@ -9,7 +9,7 @@ export class HighlightType {
   ) {}
 }
 
-export interface HighlightedOptionProps<OptionType> {
+interface HighlightedOptionProps<OptionType> {
   options: readonly OptionType[];
   isHighlightable: (option: OptionType) => boolean;
 }
@@ -37,9 +37,9 @@ export function useHighlightedOption<OptionType>({
 }: HighlightedOptionProps<OptionType>): [HighlightedOptionState<OptionType>, HighlightedOptionHandlers<OptionType>] {
   const [highlightedIndex, setHighlightedIndexState] = useState(-1);
   const [highlightType, setHighlightType] = useState<HighlightType>(new HighlightType('keyboard'));
-  const setHighlightedIndex = useCallback((index: number, highlightType: HighlightType) => {
+  const setHighlightedIndex = useCallback((index: number, newHighlightType: HighlightType) => {
     setHighlightedIndexState(index);
-    setHighlightType(highlightType);
+    setHighlightType(oldHighlight => (oldHighlight.type !== newHighlightType.type ? newHighlightType : oldHighlight));
   }, []);
 
   const highlightedOption =

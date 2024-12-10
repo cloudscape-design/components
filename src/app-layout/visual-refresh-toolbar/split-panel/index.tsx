@@ -39,7 +39,7 @@ export function AppLayoutSplitPanelDrawerSideImplementation({
   );
 }
 
-export interface AppLayoutSplitPanelDrawerBottomImplementationProps {
+interface AppLayoutSplitPanelDrawerBottomImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   splitPanelInternals: SplitPanelProviderProps;
   children: React.ReactNode;
