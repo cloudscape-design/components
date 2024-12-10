@@ -13,7 +13,7 @@ const LIVE_REGION_DELAY = 2000;
 interface SearchResultsProps {
   id: string;
   children: string;
-  renderLiveRegion?: boolean;
+  renderLiveRegion: boolean;
 }
 
 export const SearchResults = React.forwardRef(
@@ -24,7 +24,6 @@ export const SearchResults = React.forwardRef(
       ref,
       () => ({
         reannounce: () => {
-          console.log('LIVE Announce!');
           liveRegionRef.current?.reannounce();
         },
       }),
