@@ -41,7 +41,7 @@ const useEvaluateComponentVisibility = () => {
  */
 export function usePerformanceMarks(
   name: string,
-  enabled: boolean,
+  enabled: () => boolean,
   elementRef: React.RefObject<HTMLElement>,
   getDetails: () => Record<string, string | boolean | number | undefined>,
   dependencies: React.DependencyList
@@ -51,7 +51,7 @@ export function usePerformanceMarks(
   const attributes = useDOMAttribute(elementRef, 'data-analytics-performance-mark', id);
   const evaluateComponentVisibility = useEvaluateComponentVisibility();
   useEffect(() => {
-    if (!enabled || !elementRef.current || isInModal) {
+    if (!enabled() || !elementRef.current || isInModal) {
       return;
     }
     const elementVisible =
@@ -75,7 +75,7 @@ export function usePerformanceMarks(
   }, []);
 
   useEffectOnUpdate(() => {
-    if (!enabled || !elementRef.current || isInModal) {
+    if (!enabled() || !elementRef.current || isInModal) {
       return;
     }
     const elementVisible =
