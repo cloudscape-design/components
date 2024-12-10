@@ -151,10 +151,8 @@ export default function DateRangePickerScenario() {
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}
-                isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-                dateDisabledReason={(date: Date) =>
-                  applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)
-                }
+                isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+                dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
                 getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
                 absoluteFormat={absoluteFormat}
                 dateOnly={dateOnly}

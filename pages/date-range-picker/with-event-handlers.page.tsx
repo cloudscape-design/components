@@ -124,8 +124,8 @@ export default function DateRangePickerScenario() {
         isValidRange={isValid}
         dateOnly={dateOnly}
         expandToViewport={expandToViewport}
-        isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-        dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+        isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+        dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
       />
     </Box>
   );

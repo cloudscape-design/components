@@ -112,8 +112,8 @@ export default function DatePickerScenario() {
         onChange={e => setValue(e.detail.value)}
         relativeOptions={relativeOptions}
         isValidRange={isValid}
-        isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-        dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+        isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+        dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
       />
       <br />
       <br />

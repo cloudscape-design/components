@@ -92,10 +92,8 @@ export default function DatePickerScenario() {
               isValidRange={isValid}
               timeInputFormat="hh:mm"
               expandToViewport={expandToViewport}
-              isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-              dateDisabledReason={(date: Date) =>
-                applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)
-              }
+              isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+              dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
             />
           </FormField>
         </div>

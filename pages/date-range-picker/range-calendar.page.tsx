@@ -72,8 +72,8 @@ export default function RangeCalendarScenario() {
           dateOnly={dateOnly}
           timeInputFormat="hh:mm"
           customAbsoluteRangeControl={undefined}
-          isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-          dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+          isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+          dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
         />
 
         <Link id="focusable-after">Focusable element after the range calendar</Link>

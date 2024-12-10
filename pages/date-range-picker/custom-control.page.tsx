@@ -79,8 +79,8 @@ export default function DatePickerScenario() {
           placeholder={generatePlaceholder(dateOnly, monthOnly)}
           isValidRange={isValid}
           rangeSelectorMode="absolute-only"
-          isDateEnabled={(date: Date) => checkIfDisabled(date, disabledDates, monthOnly)}
-          dateDisabledReason={(date: Date) => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+          isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+          dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
           customAbsoluteRangeControl={(selectedDate, setSelectedDate) => (
             <>
               Auto-select:{' '}
