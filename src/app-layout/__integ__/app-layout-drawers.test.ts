@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { testIf } from './utils';
 
@@ -155,9 +155,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(290 + vrBorderOffsets[theme]);
         await page.dragResizerTo({ x: 0, y: 0 });
         const expectedWidths = {
-          ['classic']: 520,
-          ['refresh']: 447,
-          ['refresh-toolbar']: 593,
+          ['classic']: 505,
+          ['refresh']: 432,
+          ['refresh-toolbar']: 578,
         };
         await expect(page.getActiveDrawerWidth()).resolves.toEqual(expectedWidths[theme]);
       })
@@ -212,7 +212,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     test(
       'updates side split panel position when using different width drawers',
       setupTest(
-        { theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1450 } },
+        { theme, splitPanelPosition: 'side', screenSize: { ...viewports.desktop, width: 1465 } },
         async page => {
           await page.openFirstDrawer();
           await page.openSplitPanel();
@@ -292,9 +292,9 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
           await page.openFirstDrawer();
           const newWidth = await page.getMainContentWidth();
           if (size === 'desktop') {
-            await expect(width).toBeGreaterThan(newWidth);
+            expect(width).toBeGreaterThan(newWidth);
           } else {
-            await expect(width).toBe(newWidth);
+            expect(width + scrollbarThickness).toBe(newWidth);
           }
         }
       )
