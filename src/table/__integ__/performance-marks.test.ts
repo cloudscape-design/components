@@ -84,4 +84,46 @@ describe('Table', () => {
       await expect(isElementPerformanceMarkExisting(marks[2].detail.instanceIdentifier)).resolves.toBeTruthy();
     })
   );
+
+  test(
+    'Emits a mark when evaluateComponentVisibility event is emitted',
+    setupTest(async ({ page, getMarks, isElementPerformanceMarkExisting }) => {
+      let marks = await getMarks();
+      expect(marks).toHaveLength(2);
+      expect(marks[0].name).toBe('tableRendered');
+      expect(marks[0].detail).toEqual({
+        source: 'awsui',
+        instanceIdentifier: expect.any(String),
+        loading: true,
+        header: 'This is my table',
+      });
+      expect(marks[1].name).toBe('tableRendered');
+      expect(marks[1].detail).toEqual({
+        source: 'awsui',
+        instanceIdentifier: expect.any(String),
+        loading: false,
+        header: 'A table without the Header component',
+      });
+
+      await expect(isElementPerformanceMarkExisting(marks[0].detail.instanceIdentifier)).resolves.toBeTruthy();
+      await page.click('#evaluateComponentVisibility');
+      marks = await getMarks();
+      expect(marks).toHaveLength(4);
+
+      expect(marks[2].name).toBe('tableUpdated');
+      expect(marks[2].detail).toEqual({
+        source: 'awsui',
+        instanceIdentifier: expect.any(String),
+        loading: true,
+        header: 'This is my table',
+      });
+      expect(marks[3].name).toBe('tableUpdated');
+      expect(marks[3].detail).toEqual({
+        source: 'awsui',
+        instanceIdentifier: expect.any(String),
+        loading: false,
+        header: 'A table without the Header component',
+      });
+    })
+  );
 });
