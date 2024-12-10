@@ -21,6 +21,9 @@ const intervals = [
   ['2021-08-03', '2021-08-09'],
   ['2021-05-10', '2021-05-31'],
   ['2021-05-10', '2021-05-30'],
+  ['2021-08', '2023-08'],
+  ['2021-08', '2021-08'],
+  ['2021-05', '2022-05'],
 ];
 
 const permutations = createPermutations<DateRangePickerCalendarProps>([
@@ -29,7 +32,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     setValue: [() => {}],
     locale: ['en-GB'],
     startOfWeek: [1],
-    isDateEnabled: [() => true],
+    isDateEnabled: [() => true, () => false],
     onChange: [() => {}],
     timeInputFormat: ['hh:mm:ss'] as const,
     i18nStrings: [i18nStrings],
