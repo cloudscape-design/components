@@ -35,6 +35,8 @@ export namespace AttributeEditorProps {
     constraintText?: FieldRenderable<T> | React.ReactNode;
   }
 
+  export type AddButtonVariant = 'normal' | 'inline-link';
+
   export interface RemoveButtonClickDetail {
     itemIndex: number;
   }
@@ -113,6 +115,13 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * Determines whether the add button is disabled.
    */
   disableAddButton?: boolean;
+
+  /**
+   * Specifies the variant to use for the add button. By default a normal button is used.
+   * Use `inline-link` when using an attribute editor nested inside complex attribute editing
+   * with expandable sections.
+   */
+  addButtonVariant?: AttributeEditorProps.AddButtonVariant;
 
   /**
    * Defines the editor configuration. Each object in the array represents one form field in the row.
