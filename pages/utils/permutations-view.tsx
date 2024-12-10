@@ -21,7 +21,13 @@ function formatValue(key: string, value: any) {
   return value;
 }
 
+const limit = 200;
+
 export default function PermutationsView<T>({ permutations, render }: PermutationsViewProps<T>) {
+  if (permutations.length > limit) {
+    throw new Error(`Too many permutations (${permutations.length}), limit is ${limit}`);
+  }
+
   return (
     <SpaceBetween size="m">
       {permutations.map((permutation, index) => {
