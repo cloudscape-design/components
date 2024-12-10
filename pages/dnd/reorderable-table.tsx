@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { useEffect, useRef } from 'react';
-import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import clsx from 'clsx';
 
 import { Box, SpaceBetween } from '~components';
 import { DndContainer } from '~components/internal/components/dnd-container';
-import DragHandle from '~components/internal/components/drag-handle';
+import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
 import { i18nStrings } from './commons';
 
@@ -30,11 +29,9 @@ export function ReorderableTable<Item extends { id: string }>({
   columnDefinitions: readonly ColumnDefinition<Item>[];
 }) {
   const getColumnDefinitions = (props: {
-    option: Item;
-    dragHandleAriaLabel?: string;
-    listeners?: SyntheticListenerMap;
+    dragHandleAttributes: DragHandleProps['attributes'];
+    dragHandleListeners?: DragHandleProps['listeners'];
   }) => {
-    const dragHandleAttributes = { ['aria-label']: [props.dragHandleAriaLabel, props.option.id].join(', ') };
     const firstColumn = columnDefinitions[0];
     const enhancedColumns = columnDefinitions.map(def => ({ ...def }));
     enhancedColumns[0] = {
@@ -42,7 +39,7 @@ export function ReorderableTable<Item extends { id: string }>({
       label: firstColumn.label,
       render: item => (
         <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-          <DragHandle attributes={dragHandleAttributes} listeners={props.listeners} />
+          <DragHandle attributes={props.dragHandleAttributes} listeners={props.dragHandleListeners} />
           <Box>{firstColumn.render(item)}</Box>
         </SpaceBetween>
       ),
@@ -60,64 +57,55 @@ export function ReorderableTable<Item extends { id: string }>({
   });
 
   return (
-    <DndContainer
-      options={items}
-      getOptionId={item => item.id}
-      onReorder={onReorder}
-      renderOption={props => {
-        if (props.isActive) {
-          return (
-            <Box>
-              <div className={tableStyles['custom-table']}>
-                <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
-                  <tbody>
-                    <tr className={styles['active-row']}>
-                      {getColumnDefinitions(props).map((column, index) => (
-                        <td
-                          key={column.key}
-                          className={tableStyles['custom-table-cell']}
-                          style={{ width: columnWidthsRef.current[index] ?? 0 }}
-                        >
-                          {column.render(props.option)}
-                        </td>
-                      ))}
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </Box>
-          );
-        }
-        return (
-          <tr ref={props.ref} style={props.style} className={clsx(props.isDragging && styles.placeholder)}>
-            {getColumnDefinitions(props).map(column => (
-              <td key={column.key} className={tableStyles['custom-table-cell']}>
-                {column.render(props.option)}
-              </td>
+    <div className={tableStyles['custom-table']}>
+      <table ref={tableRef} className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
+        <thead>
+          <tr>
+            {columnDefinitions.map(column => (
+              <th key={column.key} className={tableStyles['custom-table-cell']}>
+                {column.label}
+              </th>
             ))}
           </tr>
-        );
-      }}
-      renderContent={content => (
-        <div className={tableStyles['custom-table']}>
-          <table
-            ref={tableRef}
-            className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}
-          >
-            <thead>
-              <tr>
-                {columnDefinitions.map(column => (
-                  <th key={column.key} className={tableStyles['custom-table-cell']}>
-                    {column.label}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody>{content}</tbody>
-          </table>
-        </div>
-      )}
-      i18nStrings={i18nStrings}
-    />
+        </thead>
+        <tbody>
+          <DndContainer
+            items={items.map(data => ({ id: data.id, label: data.id, data }))}
+            onItemsChange={items => onReorder(items.map(item => item.data))}
+            renderItem={props => {
+              const row = (
+                <tr
+                  ref={props.ref}
+                  className={clsx(props.isActive ? styles['active-row'] : clsx(props.isDragging && styles.placeholder))}
+                  style={props.isActive ? {} : props.style}
+                >
+                  {getColumnDefinitions(props).map((column, index) => (
+                    <td
+                      key={column.key}
+                      className={tableStyles['custom-table-cell']}
+                      style={props.isActive ? { width: columnWidthsRef.current[index] ?? 0 } : undefined}
+                    >
+                      {column.render(props.item.data)}
+                    </td>
+                  ))}
+                </tr>
+              );
+              return !props.isActive ? (
+                row
+              ) : (
+                <Box>
+                  <div className={tableStyles['custom-table']}>
+                    <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
+                      <tbody>{row}</tbody>
+                    </table>
+                  </div>
+                </Box>
+              );
+            }}
+            i18nStrings={i18nStrings}
+          />
+        </tbody>
+      </table>
+    </div>
   );
 }

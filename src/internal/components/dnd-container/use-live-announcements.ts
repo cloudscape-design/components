@@ -4,17 +4,16 @@
 import { useRef } from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
-import { ReorderI18n, ReorderOptions } from './interfaces';
+import { DndContainerI18nStrings, DndContainerItem } from './interfaces';
 
-export default function useLiveAnnouncements<Option>({
+export default function useLiveAnnouncements<Data>({
+  items,
   isDragging,
   liveAnnouncementDndStarted,
   liveAnnouncementDndItemReordered,
   liveAnnouncementDndItemCommitted,
   liveAnnouncementDndDiscarded,
-  options,
-  getOptionId,
-}: ReorderOptions<Option> & ReorderI18n & { isDragging: boolean }) {
+}: { items: readonly DndContainerItem<Data>[]; isDragging: boolean } & DndContainerI18nStrings) {
   const isFirstAnnouncement = useRef(true);
   if (!isDragging) {
     isFirstAnnouncement.current = true;
@@ -23,8 +22,8 @@ export default function useLiveAnnouncements<Option>({
   return {
     onDragStart({ active }: DragStartEvent) {
       if (active && liveAnnouncementDndStarted) {
-        const index = options.findIndex(option => getOptionId(option) === active.id);
-        return liveAnnouncementDndStarted(index + 1, options.length);
+        const index = items.findIndex(item => item.id === active.id);
+        return liveAnnouncementDndStarted(index + 1, items.length);
       }
     },
     onDragOver({ active, over }: DragOverEvent) {
@@ -36,16 +35,16 @@ export default function useLiveAnnouncements<Option>({
             return;
           }
         }
-        const initialIndex = options.findIndex(option => getOptionId(option) === active.id);
-        const currentIdex = over ? options.findIndex(option => getOptionId(option) === over.id) : initialIndex;
-        return liveAnnouncementDndItemReordered(initialIndex + 1, currentIdex + 1, options.length);
+        const initialIndex = items.findIndex(item => item.id === active.id);
+        const currentIdex = over ? items.findIndex(item => item.id === over.id) : initialIndex;
+        return liveAnnouncementDndItemReordered(initialIndex + 1, currentIdex + 1, items.length);
       }
     },
     onDragEnd({ active, over }: DragEndEvent) {
       if (liveAnnouncementDndItemCommitted) {
-        const initialIndex = options.findIndex(option => getOptionId(option) === active.id);
-        const finalIndex = over ? options.findIndex(option => getOptionId(option) === over.id) : initialIndex;
-        return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, options.length);
+        const initialIndex = items.findIndex(item => item.id === active.id);
+        const finalIndex = over ? items.findIndex(item => item.id === over.id) : initialIndex;
+        return liveAnnouncementDndItemCommitted(initialIndex + 1, finalIndex + 1, items.length);
       }
     },
     onDragCancel() {

@@ -15,13 +15,12 @@ export interface DragHandleProps {
   // @dnd-kit uses this type
   // eslint-disable-next-line @typescript-eslint/ban-types
   listeners: Record<string, Function> | undefined;
-  disabled?: boolean;
 }
 
-export default function DragHandle({ attributes, hideFocus, listeners, disabled }: DragHandleProps) {
+export default function DragHandle({ attributes, hideFocus, listeners }: DragHandleProps) {
+  const disabled = attributes['aria-disabled'];
   return (
     <Handle
-      aria-disabled={disabled}
       className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'], disabled && styles['handle-disabled'])}
       {...attributes}
       {...listeners}

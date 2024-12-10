@@ -130,38 +130,17 @@ export default function ContentDisplayPreference({
         role="list"
       >
         <DndContainer
-          options={sortedAndFilteredOptions}
-          getOptionId={option => option.id}
-          onReorder={options => onChange(options.map(({ id, visible }) => ({ id, visible })))}
+          items={sortedAndFilteredOptions.map(data => ({ id: data.id, label: data.label, data }))}
+          onItemsChange={items => onChange(items.map(({ id, data }) => ({ id, visible: data.visible })))}
           disableReorder={columnFilteringText.trim().length > 0}
-          renderOption={props => {
-            if (props.isActive) {
-              return (
-                <ContentDisplayOption
-                  option={props.option}
-                  dragHandleAriaLabel={props.dragHandleAriaLabel}
-                  listeners={props.listeners}
-                  onToggle={onToggle}
-                />
-              );
-            }
-            return (
-              <li
-                className={clsx(
-                  getOptionClassName(),
-                  props.isDragging && styles.placeholder,
-                  props.isSorting && styles.sorting
-                )}
-                style={props.style}
-              >
-                <ContentDisplayOption
-                  ref={props.ref}
-                  listeners={props.listeners}
-                  dragHandleAriaLabel={props.dragHandleAriaLabel}
-                  onToggle={onToggle}
-                  option={props.option}
-                  disabled={props.attributes['aria-disabled']}
-                />
+          renderItem={({ ref, item, isDragging, isSorting, isActive, style, ...dragHandle }) => {
+            const className = clsx(getOptionClassName(), isDragging && styles.placeholder, isSorting && styles.sorting);
+            const content = <ContentDisplayOption ref={ref} option={item.data} onToggle={onToggle} {...dragHandle} />;
+            return isActive ? (
+              content
+            ) : (
+              <li className={className} style={style}>
+                {content}
               </li>
             );
           }}
