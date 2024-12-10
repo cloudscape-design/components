@@ -119,6 +119,13 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
     removeButtonText: ['Remove item'],
   },
   {
+    definition: [definition4],
+    gridLayout: [[{ rows: [[2, 2], [3, 1], [1]] }]],
+    items: [defaultItems],
+    addButtonText: ['Add item (grid)'],
+    removeButtonText: ['Remove item (grid)'],
+  },
+  {
     definition: [validationDefinitions],
     i18nStrings: [{ errorIconAriaLabel: 'Error', warningIconAriaLabel: 'Warning' }],
     items: [defaultItems],
