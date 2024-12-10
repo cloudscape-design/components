@@ -41,7 +41,7 @@ function ModalWithAnalyticsFunnel({
       funnelType="modal"
       optionalStepNumbers={[]}
       totalFunnelSteps={1}
-      funnelNameSelectors={[`[${DATA_ATTR_MODAL_ID}="${CSS.escape(modalId)}"] .${styles['header--text']}`]}
+      funnelNameSelectors={[`[${DATA_ATTR_MODAL_ID}="${CSS?.escape(modalId)}"] .${styles['header--text']}`]}
     >
       <AnalyticsFunnelStep
         mounted={props.visible}
