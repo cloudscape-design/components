@@ -4,8 +4,8 @@ import { useEffect, useRef } from 'react';
 
 import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
 
-interface DebouncedLiveAnnouncementProps {
-  searchQuery: any; // We listen to changes on that parameter.
+export interface DebouncedLiveAnnouncementProps {
+  searchQuery: any;
   countText: string | undefined;
   loading: boolean;
   announceCallback: () => void;
@@ -20,21 +20,20 @@ export default function useDebounceSearchResultCallback({
   loading,
   announceCallback,
 }: DebouncedLiveAnnouncementProps) {
-  const isLoadingRef = useRef(loading);
+  const loadingRef = useRef(loading);
+
+  // announceCallback is called when:
+  // - For sync filters: on searchQuery/countText changes.
+  // - For async filters: on searchQuery/countText when loading completed and countText exists.
   const debounceLiveAnnouncement = useDebounceCallback(() => {
-    if (!countText || isLoadingRef.current) {
+    if (!countText || loadingRef.current) {
       return;
     }
     announceCallback();
   }, LIVE_REGION_DELAY);
 
-  // Live announce result count:
-  // - For sync filters: on searchQuery/countText changes.
-  // - For async filters: on searchQuery/countText when loading completed and countText exists.
   useEffect(() => {
-    isLoadingRef.current = loading;
-    if (!loading) {
-      debounceLiveAnnouncement();
-    }
+    loadingRef.current = loading;
+    debounceLiveAnnouncement();
   }, [searchQuery, countText, loading, debounceLiveAnnouncement]);
 }
