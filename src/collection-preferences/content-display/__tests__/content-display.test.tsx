@@ -3,6 +3,8 @@
 import React from 'react';
 import { fireEvent } from '@testing-library/react';
 
+import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
+
 import { CollectionPreferencesProps } from '../../../../lib/components';
 import ContentDisplayPreferenceWrapper, {
   ContentDisplayOptionWrapper,
@@ -105,12 +107,12 @@ describe('Content Display preference', () => {
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      await expectAnnouncement('Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      await expectAnnouncement('Moving item to position 2 of 4');
       pressKey(dragHandle, 'Space');
       testOrder({ wrapper, order: [1, 0, 2, 3] });
-      await expectAnnouncement(wrapper, 'Item moved from position 1 to position 2 of 4');
+      await expectAnnouncement('Item moved from position 1 to position 2 of 4');
     });
 
     it('moves item up', async () => {
@@ -118,12 +120,12 @@ describe('Content Display preference', () => {
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 2 of 4');
+      await expectAnnouncement('Picked up item at position 2 of 4');
       pressKey(dragHandle, 'ArrowUp');
-      await expectAnnouncement(wrapper, 'Moving item to position 1 of 4');
+      await expectAnnouncement('Moving item to position 1 of 4');
       pressKey(dragHandle, 'Space');
       testOrder({ wrapper, order: [1, 0, 2, 3] });
-      await expectAnnouncement(wrapper, 'Item moved from position 2 to position 1 of 4');
+      await expectAnnouncement('Item moved from position 2 to position 1 of 4');
     });
 
     it('moves item down and back up', async () => {
@@ -131,14 +133,14 @@ describe('Content Display preference', () => {
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      await expectAnnouncement('Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      await expectAnnouncement('Moving item to position 2 of 4');
       pressKey(dragHandle, 'ArrowUp');
-      await expectAnnouncement(wrapper, 'Moving item back to position 1 of 4');
+      await expectAnnouncement('Moving item back to position 1 of 4');
       pressKey(dragHandle, 'Space');
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      await expectAnnouncement(wrapper, 'Item moved back to its original position 1 of 4');
+      await expectAnnouncement('Item moved back to its original position 1 of 4');
     });
 
     it('ignores keystrokes out of bounds', async () => {
@@ -146,30 +148,30 @@ describe('Content Display preference', () => {
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      await expectAnnouncement('Picked up item at position 1 of 4');
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for (const i of Array(10)) {
         pressKey(dragHandle, 'ArrowUp');
-        await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+        await expectAnnouncement('Picked up item at position 1 of 4');
       }
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      await expectAnnouncement('Moving item to position 2 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 3 of 4');
+      await expectAnnouncement('Moving item to position 3 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 4 of 4');
+      await expectAnnouncement('Moving item to position 4 of 4');
 
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       for (const i of Array(10)) {
         pressKey(dragHandle, 'ArrowDown');
-        await expectAnnouncement(wrapper, 'Moving item to position 4 of 4');
+        await expectAnnouncement('Moving item to position 4 of 4');
       }
       pressKey(dragHandle, 'ArrowUp');
-      await expectAnnouncement(wrapper, 'Moving item to position 3 of 4');
+      await expectAnnouncement('Moving item to position 3 of 4');
       pressKey(dragHandle, 'Space');
       testOrder({ wrapper, order: [1, 2, 0, 3] });
-      await expectAnnouncement(wrapper, 'Item moved from position 1 to position 3 of 4');
+      await expectAnnouncement('Item moved from position 1 to position 3 of 4');
     });
 
     it('cancels reordering when pressing Escape', async () => {
@@ -177,38 +179,38 @@ describe('Content Display preference', () => {
       testOrder({ wrapper, order: [0, 1, 2, 3] });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      await expectAnnouncement('Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      await expectAnnouncement('Moving item to position 2 of 4');
       pressKey(dragHandle, 'Escape');
       testOrder({ wrapper, order: [0, 1, 2, 3] });
-      await expectAnnouncement(wrapper, 'Reordering canceled');
+      await expectAnnouncement('Reordering canceled');
     });
 
     it('moves item between options that are not part of the current preferences', async () => {
       const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
       const dragHandle = wrapper.findOptionByIndex(1)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 1 of 4');
+      await expectAnnouncement('Picked up item at position 1 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 2 of 4');
+      await expectAnnouncement('Moving item to position 2 of 4');
       pressKey(dragHandle, 'ArrowDown');
-      await expectAnnouncement(wrapper, 'Moving item to position 3 of 4');
+      await expectAnnouncement('Moving item to position 3 of 4');
       pressKey(dragHandle, 'Space');
       testOrder({ wrapper, order: [1, 2, 0, 3] });
-      await expectAnnouncement(wrapper, 'Item moved from position 1 to position 3 of 4');
+      await expectAnnouncement('Item moved from position 1 to position 3 of 4');
     });
 
     it('moves an item not part of the current preferences above the ones that are', async () => {
       const wrapper = renderContentDisplay({ preferences: { contentDisplay: [{ id: 'id1', visible: true }] } });
       const dragHandle = wrapper.findOptionByIndex(2)!.findDragHandle().getElement();
       pressKey(dragHandle, 'Space');
-      await expectAnnouncement(wrapper, 'Picked up item at position 2 of 4');
+      await expectAnnouncement('Picked up item at position 2 of 4');
       pressKey(dragHandle, 'ArrowUp');
-      await expectAnnouncement(wrapper, 'Moving item to position 1 of 4');
+      await expectAnnouncement('Moving item to position 1 of 4');
       pressKey(dragHandle, 'Space');
       testOrder({ wrapper, order: [1, 0, 2, 3] });
-      await expectAnnouncement(wrapper, 'Item moved from position 2 to position 1 of 4');
+      await expectAnnouncement('Item moved from position 2 to position 1 of 4');
     });
   });
 
@@ -517,13 +519,13 @@ function testOption({
   expect(element.parentElement!.tagName).toBe('UL');
   expect(option.findLabel().getElement()).toHaveTextContent(`Item ${index + 1}`);
   const dragHandle = option.findDragHandle().getElement();
-  expectAriaLabel(wrapper, dragHandle, `Drag handle, Item ${index + 1}`);
+  expectAriaLabel(wrapper, dragHandle, `Drag handle Item ${index + 1}`);
   expectLabelForToggle(option);
 }
 
-async function expectAnnouncement(wrapper: ContentDisplayPreferenceWrapper, announcement: string) {
+async function expectAnnouncement(announcement: string) {
   await new Promise(resolve => setTimeout(resolve, 0));
-  const liveRegion = wrapper.find('[aria-live="assertive"]');
+  const liveRegion = createWrapper().find('[aria-live="assertive"]');
   expect(liveRegion!.getElement()).toHaveTextContent(announcement);
 }
 

@@ -13,28 +13,22 @@ const componentPrefix = 'content-display-option';
 export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix].filter(Boolean).join('-')];
 
 interface ContentDisplayOptionProps {
-  dragHandleAriaLabel?: string;
-  listeners?: DragHandleProps['listeners'];
+  dragHandleAttributes: DragHandleProps['attributes'];
+  dragHandleListeners?: DragHandleProps['listeners'];
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
-  disabled?: boolean;
 }
 
 const ContentDisplayOption = forwardRef(
   (
-    { dragHandleAriaLabel, listeners, onToggle, option, disabled }: ContentDisplayOptionProps,
+    { dragHandleAttributes, dragHandleListeners, onToggle, option }: ContentDisplayOptionProps,
     ref: ForwardedRef<HTMLDivElement>
   ) => {
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
-
-    const dragHandleAttributes = {
-      ['aria-label']: [dragHandleAriaLabel, option.label].join(', '),
-    };
-
     return (
       <div ref={ref} className={getClassName('content')}>
-        <DragHandle disabled={disabled} attributes={dragHandleAttributes} listeners={listeners} />
+        <DragHandle attributes={dragHandleAttributes} listeners={dragHandleListeners} />
 
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}
