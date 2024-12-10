@@ -5661,7 +5661,13 @@ You must set the current value in the \`preferences.wrapLines\` property.",
       "type": "CollectionPreferencesProps.WrapLinesPreference",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Used to display additional content above the preferences in the modal",
+      "isDefault": false,
+      "name": "additionalContent",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
