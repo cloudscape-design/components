@@ -38,13 +38,12 @@ export function shiftTimeOffset(
   }
 
   /*
-    This regex matches an ISO date-time with
-    - optionally matches date-only format
+    This regex matches an ISO date-time (non date-only or month-only) with
     - optional seconds;
     - optional milliseconds;
     - optional time offset or 'Z'.
   */
-  const dateTimeRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}(:\d{2})?(\.\d{1,3})?(((\+|-)\d{2}(:\d{2})?)|Z)?)?$/;
+  const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2})?(\.\d{1,3})?(((\+|-)\d{2}(:\d{2})?)|Z)?$/;
 
   if (!dateTimeRegex.test(value.startDate) || !dateTimeRegex.test(value.endDate)) {
     warnOnce(
@@ -62,11 +61,21 @@ export function shiftTimeOffset(
   };
 }
 
+export type NormalizedTimeOffset =
+  | {
+      startDate: number;
+      endDate: number;
+    }
+  | {
+      startDate: undefined;
+      endDate: undefined;
+    };
+
 export function normalizeTimeOffset(
   value: null | DateRangePickerProps.Value,
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction,
   timeOffset?: number
-) {
+): NormalizedTimeOffset {
   if (value && value.type === 'absolute') {
     if (getTimeOffset) {
       return {
