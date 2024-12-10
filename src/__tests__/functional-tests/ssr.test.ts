@@ -17,6 +17,7 @@ const allComponents = getAllComponents().filter(component => !skipComponents.inc
 
 test('ensure is it not DOM', () => {
   expect(typeof window).toBe('undefined');
+  expect(typeof CSS).toBe('undefined');
 });
 
 for (const componentName of allComponents) {
