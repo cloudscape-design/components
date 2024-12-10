@@ -21,11 +21,11 @@ function formatValue(key: string, value: any) {
   return value;
 }
 
-const limit = 276;
+const maximumPermutations = 276;
 
 export default function PermutationsView<T>({ permutations, render }: PermutationsViewProps<T>) {
-  if (permutations.length > limit) {
-    throw new Error(`Too many permutations (${permutations.length}), limit is ${limit}`);
+  if (permutations.length > maximumPermutations) {
+    throw new Error(`Too many permutations (${permutations.length}), maximum is ${maximumPermutations}`);
   }
 
   return (
