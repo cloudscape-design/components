@@ -8,6 +8,7 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { ColumnWidthStyle } from '../column-widths-utils';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { TableProps } from '../interfaces.js';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -18,7 +19,6 @@ import tableStyles from '../styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableTdElementProps {
-  style?: React.CSSProperties;
   wrapLines: boolean | undefined;
   isRowHeader?: boolean;
   isFirstRow: boolean;
@@ -51,6 +51,7 @@ export interface TableTdElementProps {
   collapseButtonLabel?: string;
   verticalAlign?: TableProps.VerticalAlign;
   resizableColumns?: boolean;
+  resizableStyle?: ColumnWidthStyle;
   isEditable: boolean;
   isEditing: boolean;
   isEditingDisabled?: boolean;
@@ -60,7 +61,6 @@ export interface TableTdElementProps {
 export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElementProps>(
   (
     {
-      style,
       children,
       wrapLines,
       isRowHeader,
@@ -90,6 +90,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       collapseButtonLabel,
       verticalAlign,
       resizableColumns,
+      resizableStyle,
       isEditable,
       isEditing,
       isEditingDisabled,
@@ -100,6 +101,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
   ) => {
     const Element = isRowHeader ? 'th' : 'td';
     const isVisualRefresh = useVisualRefresh();
+
+    resizableStyle = resizableColumns ? {} : resizableStyle;
 
     nativeAttributes = { ...nativeAttributes, ...getTableCellRoleProps({ tableRole, isRowHeader, colIndex }) };
 
@@ -115,10 +118,9 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
 
     return (
       <Element
-        style={{ ...style, ...stickyStyles.style }}
+        style={{ ...resizableStyle, ...stickyStyles.style }}
         className={clsx(
           styles['body-cell'],
-          wrapLines && styles['body-cell-wrap'],
           isFirstRow && styles['body-cell-first-row'],
           isLastRow && styles['body-cell-last-row'],
           isSelected && styles['body-cell-selected'],
@@ -137,7 +139,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSuccessIcon && styles['body-cell-has-success'],
           level !== undefined && styles['body-cell-expandable'],
           level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
-          verticalAlign === 'top' && styles['body-cell-align-top'],
           stickyStyles.className
         )}
         onClick={onClick}
@@ -159,7 +160,15 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div className={styles['body-cell-content']}>{children}</div>
+        <div
+          className={clsx(
+            styles['body-cell-content'],
+            verticalAlign === 'top' && styles['body-cell-align-top'],
+            wrapLines && styles['body-cell-wrap']
+          )}
+        >
+          {children}
+        </div>
       </Element>
     );
   }

@@ -5,6 +5,12 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { TableProps } from './interfaces';
 
+export interface ColumnWidthStyle {
+  width?: string | number;
+  minWidth?: string | number;
+  maxWidth?: string | number;
+}
+
 export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<any>>) {
   for (const column of columnDefinitions) {
     checkProperty(column, 'minWidth');
@@ -12,7 +18,7 @@ export function checkColumnWidths(columnDefinitions: ReadonlyArray<TableProps.Co
   }
 }
 
-export function setElementWidths(element: HTMLElement, styles: React.CSSProperties) {
+export function setElementWidths(element: HTMLElement, styles: ColumnWidthStyle) {
   function setProperty(property: 'width' | 'minWidth' | 'maxWidth') {
     const value = styles[property];
     let widthCssValue = '';
