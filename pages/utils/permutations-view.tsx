@@ -21,7 +21,7 @@ function formatValue(key: string, value: any) {
   return value;
 }
 
-const limit = 200;
+const limit = 276;
 
 export default function PermutationsView<T>({ permutations, render }: PermutationsViewProps<T>) {
   if (permutations.length > limit) {
