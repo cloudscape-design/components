@@ -87,10 +87,10 @@ describe('Collection preferences - Modal', () => {
   });
   test('is additional content displayed when provided', () => {
     const wrapper = renderCollectionPreferences({
-      additionalContent: 'Test additional content',
+      contentBefore: 'Test content before',
     });
     wrapper.findTriggerButton().click();
-    expect(wrapper.findModal()!.findAdditionalContent()?.findTextContent()).toBe('Test additional content');
+    expect(wrapper.findModal()!.findAdditionalContent()?.getElement().textContent).toBe('Test content before');
   });
 });
 

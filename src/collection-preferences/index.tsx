@@ -60,7 +60,7 @@ export default function CollectionPreferences({
   customPreference,
   getModalRoot,
   removeModalRoot,
-  additionalContent,
+  contentBefore,
   ...rest
 }: CollectionPreferencesProps) {
   const parentMetadata = useContext(CollectionPreferencesMetadata);
@@ -183,7 +183,7 @@ export default function CollectionPreferences({
             onDismiss={onCancelListener}
           >
             {/* Additional content */}
-            <div className={styles.additionalContent}>{additionalContent}</div>
+            <div className={styles['additional-content']}>{contentBefore}</div>
 
             {/* Preferences content */}
             <ModalContentLayout

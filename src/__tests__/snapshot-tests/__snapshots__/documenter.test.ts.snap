@@ -5669,9 +5669,9 @@ You must set the current value in the \`preferences.wrapLines\` property.",
   ],
   "regions": [
     {
-      "description": "Used to display additional content above the preferences in the modal",
+      "description": "Content displayed before the preferences. Use it to display additional information relating to the preferences.",
       "isDefault": false,
-      "name": "additionalContent",
+      "name": "contentBefore",
     },
   ],
   "releaseStatus": "stable",

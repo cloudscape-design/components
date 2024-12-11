@@ -57,7 +57,7 @@ class PreferencesModalWrapper extends ModalWrapper {
   }
 
   findAdditionalContent(): ElementWrapper | null {
-    return this.findByClassName(styles.additionalContent);
+    return this.findByClassName(styles['additional-content']);
   }
 }
 

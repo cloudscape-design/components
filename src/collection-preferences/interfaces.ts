@@ -202,9 +202,9 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   onConfirm?: NonCancelableEventHandler<CollectionPreferencesProps.Preferences<CustomPreferenceType>>;
   /**
-   * Used to display additional content above the preferences in the modal
+   * Content displayed before the preferences. Use it to display additional information relating to the preferences.
    */
-  additionalContent?: React.ReactNode;
+  contentBefore?: React.ReactNode;
 }
 
 export namespace CollectionPreferencesProps {

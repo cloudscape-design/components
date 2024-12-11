@@ -44,10 +44,10 @@ export default function CollectionPreferencesPermutations() {
           className="cp-4"
           {...baseProperties}
           visibleContentPreference={visibleContentPreference}
-          additionalContent={
+          contentBefore={
             <Box margin={{ bottom: 's' }}>
-              <Alert type={'info'} header={'Test additional content'}>
-                Some additional content
+              <Alert type={'info'} header={'Test content before'}>
+                Some information
               </Alert>
             </Box>
           }

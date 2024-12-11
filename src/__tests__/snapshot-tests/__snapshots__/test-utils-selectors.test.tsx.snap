@@ -142,6 +142,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_tab-button--warnings_1gl9c",
   ],
   "collection-preferences": [
+    "awsui_additional-content_tc96w",
     "awsui_cancel-button_tc96w",
     "awsui_confirm-button_tc96w",
     "awsui_content-density_tc96w",
@@ -176,7 +177,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_visible-content-toggle_tc96w",
     "awsui_visible-content_tc96w",
     "awsui_wrap-lines_tc96w",
-    "awsui_additional-content_tc96w",
   ],
   "column-layout": [
     "awsui_column-layout_vvxn7",
