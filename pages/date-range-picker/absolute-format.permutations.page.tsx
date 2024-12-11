@@ -7,14 +7,14 @@ import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween } from '~compo
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { i18nStrings, isValid } from './common';
+import { generateI18nStrings, generatePlaceholder, isValid } from './common';
 
 const permutations = createPermutations<
   Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value'>
 >([
   {
     absoluteFormat: ['iso', 'long-localized'],
-    dateOnly: [true],
+    dateOnly: [true, false],
     value: [
       {
         type: 'absolute',
@@ -25,7 +25,7 @@ const permutations = createPermutations<
   },
   {
     absoluteFormat: ['iso', 'long-localized'],
-    dateOnly: [false],
+    dateOnly: [true, false],
     hideTimeOffset: [true, false],
     value: [
       {
@@ -53,8 +53,8 @@ export default function DateRangePickerPermutations() {
                 dateOnly={permutation.dateOnly}
                 hideTimeOffset={permutation.hideTimeOffset}
                 locale="en-US"
-                i18nStrings={i18nStrings}
-                placeholder={'Filter by a date and time range'}
+                i18nStrings={generateI18nStrings(permutation.dateOnly || false, false)}
+                placeholder={generatePlaceholder(permutation.dateOnly, false)}
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}

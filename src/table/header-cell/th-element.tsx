@@ -34,6 +34,7 @@ export interface TableThElementProps {
   tableRole: TableRole;
   children: React.ReactNode;
   variant: TableProps.Variant;
+  ariaLabel?: string;
 }
 
 export function TableThElement({
@@ -53,6 +54,7 @@ export function TableThElement({
   tableRole,
   children,
   variant,
+  ariaLabel,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -94,6 +96,7 @@ export function TableThElement({
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
+      {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
     >
       {children}
     </th>

@@ -17,6 +17,7 @@ import { fireCancelableEvent } from '../internal/events';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { createWidgetizedComponent } from '../internal/widgets';
+import { AllItemsDropdown } from './all-items-dropdown';
 import {
   GeneratedAnalyticsMetadataBreadcrumbGroupClick,
   GeneratedAnalyticsMetadataBreadcrumbGroupComponent,
@@ -34,19 +35,11 @@ import styles from './styles.css.js';
  */
 const DEFAULT_EXPAND_ARIA_LABEL = 'Show path';
 
-const getDropdownTrigger = ({
-  ariaLabel,
-  triggerRef,
-  disabled,
-  testUtilsClass,
-  isOpen,
-  onClick,
-}: CustomTriggerProps) => {
+const getEllipsisDropdownTrigger = ({ ariaLabel, triggerRef, testUtilsClass, isOpen, onClick }: CustomTriggerProps) => {
   return (
     <InternalButton
       ref={triggerRef}
       className={testUtilsClass}
-      disabled={disabled}
       onClick={event => {
         event.preventDefault();
         onClick();
@@ -78,7 +71,7 @@ const EllipsisDropdown = ({
         items={dropdownItems}
         onItemClick={onDropdownItemClick}
         onItemFollow={onDropdownItemFollow}
-        customTriggerBuilder={getDropdownTrigger}
+        customTriggerBuilder={getEllipsisDropdownTrigger}
         linkStyle={true}
         analyticsMetadataTransformer={metadata => {
           if (metadata.detail?.id) {
@@ -166,7 +159,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
     }
   }, [items, navWidth]);
 
-  const { shrinkFactors, minWidths, collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
+  const { collapsed } = getItemsDisplayProperties(itemsWidths.ghost, navWidth);
 
   let breadcrumbItems = items.map((item, index) => {
     const isLast = index === items.length - 1;
@@ -185,7 +178,6 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
         className={clsx(styles.item, !isDisplayed && styles.hide)}
         key={index}
         {...(isLast ? {} : getAnalyticsMetadataAttribute(clickAnalyticsMetadata))}
-        style={{ flexShrink: shrinkFactors[index], minWidth: `${minWidths[index]}px` }}
         ref={node => setBreadcrumb('real', `${index}`, node)}
       >
         <BreadcrumbItem
@@ -254,7 +246,21 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           }
         : {})}
     >
-      <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+      {collapsed > 0 && collapsed === items.length - 1 ? (
+        <AllItemsDropdown
+          items={items}
+          onItemClick={e =>
+            e.detail.id !== (items.length - 1).toString() &&
+            fireCancelableEvent(onClick, getEventDetail(getEventItem(e)), e)
+          }
+          onItemFollow={e =>
+            e.detail.id !== (items.length - 1).toString() &&
+            fireCancelableEvent(onFollow, getEventDetail(getEventItem(e)), e)
+          }
+        />
+      ) : (
+        <ol className={styles['breadcrumb-group-list']}>{breadcrumbItems}</ol>
+      )}
       <ol className={clsx(styles['breadcrumb-group-list'], styles.ghost)} aria-hidden={true} tabIndex={-1}>
         {hiddenBreadcrumbItems}
       </ol>

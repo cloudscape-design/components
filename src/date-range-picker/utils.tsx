@@ -1,15 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { joinDateTime, splitDateTime } from '../internal/utils/date-time';
+import { isIsoDateOnly } from '../internal/utils/date-time';
 import { normalizeTimeString } from '../internal/utils/date-time/join-date-time';
 import { DateRangePickerProps } from './interfaces';
-import { setTimeOffset } from './time-offset';
+import { setTimeOffset, shiftTimeOffset } from './time-offset';
 
 export function formatValue(
   value: null | DateRangePickerProps.Value,
   { timeOffset, dateOnly }: { timeOffset: { startDate?: number; endDate?: number }; dateOnly: boolean }
 ): null | DateRangePickerProps.Value {
-  if (!value || value.type === 'relative') {
+  if (
+    !value ||
+    value.type === 'relative' ||
+    (value.startDate === '' && value.endDate === '' && value.type === 'absolute')
+  ) {
     return value;
   }
   if (dateOnly) {
@@ -62,4 +67,36 @@ export function joinAbsoluteValue(
     startDate: joinDateTime(value.start.date, startTime),
     endDate: joinDateTime(value.end.date, endTime),
   };
+}
+
+type NormalizedTimeOffset =
+  | {
+      startDate: number;
+      endDate: number;
+    }
+  | {
+      startDate: undefined;
+      endDate: undefined;
+    };
+
+export function formatInitialValue(
+  value: null | DateRangePickerProps.Value,
+  dateOnly: boolean,
+  normalizedTimeOffset: NormalizedTimeOffset
+): DateRangePickerProps.Value | null {
+  if (value?.type !== 'absolute') {
+    return shiftTimeOffset(value, normalizedTimeOffset);
+  }
+
+  if (value.endDate === '' && value.startDate === '') {
+    return value;
+  }
+
+  if (dateOnly) {
+    return formatValue(value, { dateOnly, timeOffset: normalizedTimeOffset });
+  }
+
+  return isIsoDateOnly(value.startDate) && isIsoDateOnly(value.endDate)
+    ? value
+    : shiftTimeOffset(value, normalizedTimeOffset);
 }

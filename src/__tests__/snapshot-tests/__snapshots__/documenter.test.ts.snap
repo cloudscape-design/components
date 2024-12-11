@@ -3161,6 +3161,14 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     {
+      "defaultValue": "false",
+      "description": "Adds an external icon after the button label text.
+If an href is provided, it opens the link in a new tab.",
+      "name": "external",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
  Use when a button is not the ancestor of a form element, such as when used in a modal.",
       "name": "form",
@@ -3194,6 +3202,25 @@ For example, if you have a 'help' button that links to a documentation page.",
       "name": "href",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`externalIconAriaLabel\` - (optional) Specifies the aria-label for the external icon when \`external\` is set to \`true\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ButtonProps.I18nStrings",
+        "properties": [
+          {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
     },
     {
       "defaultValue": "'left'",
@@ -3607,6 +3634,12 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
+      "description": "Sets the button width to be 100% of the parent container width. Button content is centered.",
+      "name": "fullWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -3822,6 +3855,28 @@ exports[`Documenter definition for button-group matches the snapshot: button-gro
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the user uploads files. The event detail object contains the id and files from the file input item.",
+      "detailInlineType": {
+        "name": "InternalButtonGroupProps.FilesChangeDetails",
+        "properties": [
+          {
+            "name": "files",
+            "optional": false,
+            "type": "Array<File>",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InternalButtonGroupProps.FilesChangeDetails",
+      "name": "onFilesChange",
+    },
+    {
+      "cancelable": false,
       "description": "Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.",
       "detailInlineType": {
         "name": "InternalButtonGroupProps.ItemClickDetails",
@@ -3933,6 +3988,13 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`pressedIconSvg\` (optional, ReactNode) - Custom SVG icon in pressed state. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 * \`popoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
 * \`pressedPopoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button in pressed state. Defaults to \`popoverFeedback\`.
+
+* ### file-input
+
+* \`id\` (string) - The unique identifier of the button, used as detail in \`onFilesChange\`.
+* \`text\` (string) - The name of the menu button shown as a tooltip.
+* \`accept\` (optional, string) - Specifies the native file input \`accept\` attribute to describe the allow-list of file types.
+* \`multiple\` (optional, string) - Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
 
 ### menu-dropdown
 
@@ -15925,19 +15987,29 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "type": "(data: TableProps.LiveAnnouncement) => string",
     },
     {
-      "description": "Defines loader properties for error state.",
+      "description": "Renders loader row content for empty row state: the loading status is "finished",
+and the row is expanded but has empty children array.
+The empty loader state is only supported for expandable rows. Use \`empty\` slot if
+the table items array is empty.
+",
+      "name": "renderLoaderEmpty",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode",
+    },
+    {
+      "description": "Renders loader row content for error state.",
       "name": "renderLoaderError",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
-      "description": "Defines loader properties for loading state.",
+      "description": "Renders loader row content for loading state.",
       "name": "renderLoaderLoading",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
-      "description": "Defines loader properties for pending state.",
+      "description": "Renders loader row content for pending state.",
       "name": "renderLoaderPending",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
@@ -17788,6 +17860,32 @@ Applicable only for the normal variant.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Adds an external icon after the button label text.
+If an href is provided, it opens the link in a new tab.",
+      "name": "external",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`externalIconAriaLabel\` - (optional) Specifies the aria-label for the external icon when \`external\` is set to \`true\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ButtonProps.I18nStrings",
+        "properties": [
+          {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
     },
     {
       "description": "Displays an icon next to the text.",
