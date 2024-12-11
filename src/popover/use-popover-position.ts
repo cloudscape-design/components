@@ -6,7 +6,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { fundUpUntilMultiple, isContainingBlock } from '../internal/utils/dom';
+import { findUpUntilMultiple, isContainingBlock } from '../internal/utils/dom';
 import {
   calculateScroll,
   getFirstScrollableParent,
@@ -88,7 +88,7 @@ export default function usePopoverPosition({
       const viewportRect = getViewportRect(document.defaultView!);
       const trackRect = getLogicalBoundingClientRect(track);
       const arrowRect = getDimensions(arrow);
-      const { containingBlock, boundary } = fundUpUntilMultiple({
+      const { containingBlock, boundary } = findUpUntilMultiple({
         startElement: popover,
         tests: {
           containingBlock: isContainingBlock,

@@ -32,7 +32,7 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
  * but traversing the DOM only once.
  */
 
-export function fundUpUntilMultiple({
+export function findUpUntilMultiple({
   startElement,
   tests,
 }: {

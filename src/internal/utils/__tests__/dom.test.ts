@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  fundUpUntilMultiple,
+  findUpUntilMultiple,
   isHTMLElement,
   isNode,
   isSVGElement,
@@ -74,7 +74,7 @@ test('an object is recognized as SVGElement', () => {
   expect(isSVGElement({ ...node, style: {}, ownerDocument: {}, ownerSVGElement: {} })).toBe(true);
 });
 
-describe('fundUpUntilMultiple', () => {
+describe('findUpUntilMultiple', () => {
   test('returns the expected element for each key', () => {
     const div = document.createElement('div');
     div.innerHTML = `
@@ -83,7 +83,7 @@ describe('fundUpUntilMultiple', () => {
       </div>
     `;
     expect(
-      fundUpUntilMultiple({
+      findUpUntilMultiple({
         startElement: div.querySelector<HTMLElement>('#target')!,
         tests: { first: node => node.id === 'first', second: node => node.id === 'second' },
       })
@@ -106,7 +106,7 @@ describe('fundUpUntilMultiple', () => {
       </div>
     `;
     expect(
-      fundUpUntilMultiple({
+      findUpUntilMultiple({
         startElement: div.querySelector<HTMLElement>('#target')!,
         tests: { first: testFn, second: testFn },
       })
