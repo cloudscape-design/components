@@ -6,7 +6,6 @@ import ButtonWrapper from '../button';
 import FormFieldWrapper from '../form-field';
 
 import styles from '../../../attribute-editor/styles.selectors.js';
-import gridstyles from '../../../grid/styles.selectors.js';
 
 export class AttributeEditorRowWrapper extends ElementWrapper {
   /**
@@ -22,10 +21,7 @@ export class AttributeEditorRowWrapper extends ElementWrapper {
    * @param column 1-based column index
    */
   findField(column: number): FormFieldWrapper | null {
-    return this.findComponent(
-      `.${styles['row-control']} > .${gridstyles.grid} > .${gridstyles['grid-column']}:nth-child(${column}) > div > .${styles.field}`,
-      FormFieldWrapper
-    );
+    return this.findComponent(`.${styles.field}:nth-child(${column})`, FormFieldWrapper);
   }
 
   findRemoveButton(): ButtonWrapper | null {
@@ -33,7 +29,7 @@ export class AttributeEditorRowWrapper extends ElementWrapper {
   }
 
   findCustomAction(): ElementWrapper | null {
-    return this.findComponent(`.${styles['button-container']}`, ElementWrapper);
+    return this.findComponent(`.${styles['remove-button-container']}`, ElementWrapper);
   }
 }
 
