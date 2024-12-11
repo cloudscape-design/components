@@ -85,10 +85,10 @@ describe('Date Range Picker', () => {
             await page.keys('Enter');
             await expect(page.isDropdownOpen()).resolves.toBe(true);
             await expect(page.isDropdownFocused()).resolves.toBe(true);
-            await page.clickRange(`previous-6-${granularity === 'day' ? 'hours' : 'months'}`);
+            await page.clickRange(`last-6-${granularity === 'day' ? 'hours' : 'months'}`);
             await page.clickApplyButton();
             await expect(page.getText('#onChangeEvent')).resolves.toBe(
-              `onChange Event: 1 times. Latest detail: {"key":"previous-6-${granularity === 'day' ? 'hours' : 'months'}","amount":6,"unit":"${granularity === 'day' ? 'hour' : 'month'}","type":"relative"}`
+              `onChange Event: 1 times. Latest detail: {"key":"last-6-${granularity === 'day' ? 'hours' : 'months'}","amount":6,"unit":"${granularity === 'day' ? 'hour' : 'month'}","type":"relative"}`
             );
             await expect(page.getText('#onBlurEvent')).resolves.toBe('onBlur event called 0 times.');
           },
@@ -105,7 +105,7 @@ describe('Date Range Picker', () => {
             await page.keys('Enter');
             await expect(page.isDropdownOpen()).resolves.toBe(true);
             await expect(page.isDropdownFocused()).resolves.toBe(true);
-            await page.clickRange(`previous-6-${granularity === 'day' ? 'hours' : 'months'}`);
+            await page.clickRange(`last-6-${granularity === 'day' ? 'hours' : 'months'}`);
             await page.clickApplyButton();
             await page.clickPosition(400, 80);
             await expect(page.getText('#onBlurEvent')).resolves.toBe('onBlur event called 1 times.');
