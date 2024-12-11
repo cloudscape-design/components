@@ -3,14 +3,14 @@
 import React, { createRef } from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
-import { InternalLiveRegionRef } from '../../../lib/components/live-region/internal'; // Adjust path as needed
+import { InternalLiveRegionRef } from '../../../lib/components/live-region/internal';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { SearchResults } from '../../../lib/components/text-filter/search-results'; // Adjust path as needed
+import { SearchResults } from '../../../lib/components/text-filter/search-results';
 
 import styles from '../../../lib/components/text-filter/styles.css.js';
 
 const renderSearchResults = (renderLiveRegion: boolean) => {
-  const ref = createRef<InternalLiveRegionRef>(); // Create a ref to test the imperative handle
+  const ref = createRef<InternalLiveRegionRef>();
   const { container } = render(
     <SearchResults id="dummy-id" ref={ref} renderLiveRegion={renderLiveRegion}>
       123 results found
