@@ -142,9 +142,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_tab-button--warnings_1gl9c",
   ],
   "collection-preferences": [
-    "awsui_additional-content_tc96w",
     "awsui_cancel-button_tc96w",
     "awsui_confirm-button_tc96w",
+    "awsui_content-before_tc96w",
     "awsui_content-density_tc96w",
     "awsui_content-display-description_tc96w",
     "awsui_content-display-no-match_tc96w",

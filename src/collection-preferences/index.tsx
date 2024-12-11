@@ -182,8 +182,8 @@ export default function CollectionPreferences({
             size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
             onDismiss={onCancelListener}
           >
-            {/* Additional content */}
-            <div className={styles['additional-content']}>{contentBefore}</div>
+            {/* Content before */}
+            <div className={styles['content-before']}>{contentBefore}</div>
 
             {/* Preferences content */}
             <ModalContentLayout

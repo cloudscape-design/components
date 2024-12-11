@@ -90,7 +90,7 @@ describe('Collection preferences - Modal', () => {
       contentBefore: 'Test content before',
     });
     wrapper.findTriggerButton().click();
-    expect(wrapper.findModal()!.findAdditionalContent()?.getElement().textContent).toBe('Test content before');
+    expect(wrapper.findModal()!.findContentBefore()?.getElement().textContent).toBe('Test content before');
   });
 });
 
