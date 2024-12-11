@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
@@ -82,9 +81,10 @@ const filteringOptions: readonly FilteringOption[] = [
 
 const defaultProps = createDefaultProps(filteringProperties, filteringOptions);
 
-const renderComponent = (props?: Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>) => {
-  const { container } = render(<PropertyFilter {...defaultProps} {...props} />);
-  return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()! };
+type RenderComponentProps = Partial<PropertyFilterProps & { ref: React.Ref<Ref> }>;
+const renderComponent = (props?: RenderComponentProps) => {
+  const { container, rerender } = render(<PropertyFilter {...defaultProps} {...props} />);
+  return { container, propertyFilterWrapper: createWrapper(container).findPropertyFilter()!, rerender };
 };
 
 describe('filtering input', () => {
@@ -417,6 +417,66 @@ describe('count text', () => {
       query: { operation: 'or', tokens: [], tokenGroups: [{ propertyKey: 'string', value: 'first', operator: ':' }] },
     });
     expect(wrapper.findResultsCount()!.getElement()).toHaveTextContent('5 matches');
+  });
+
+  describe('live announcement', () => {
+    beforeAll(() => {
+      jest.useFakeTimers();
+    });
+
+    afterAll(() => {
+      jest.useRealTimers();
+    });
+
+    function getPoliteRegion() {
+      return document.querySelector('[aria-live=polite]')!;
+    }
+
+    const testProps: RenderComponentProps = {
+      enableTokenGroups: true,
+      countText: '5 matches',
+      query: { operation: 'or', tokens: [], tokenGroups: [{ propertyKey: 'string', value: 'first', operator: ':' }] },
+    };
+
+    test('includes the live announcement when all conditions met', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent(testProps);
+      jest.runAllTimers();
+      expect(wrapper.findResultsCount().getElement()).toHaveTextContent('5 matches');
+      expect(getPoliteRegion()).toHaveTextContent('5 matches');
+    });
+
+    test('does not include the live announcement when loading = true', () => {
+      const { propertyFilterWrapper: wrapper } = renderComponent({
+        ...testProps,
+        loading: true,
+      });
+      jest.runAllTimers();
+      expect(wrapper.findResultsCount().getElement()).toHaveTextContent('5 matches');
+      expect(getPoliteRegion()).toBeNull();
+    });
+
+    test('includes the live announcement when loading switches from true to false', () => {
+      const { rerender } = renderComponent({
+        ...testProps,
+        loading: true,
+      });
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toBeNull();
+
+      rerender(<PropertyFilter {...defaultProps} {...testProps} loading={false} />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('5 matches');
+    });
+
+    test('re-announce the live announcement when countText changes', () => {
+      const { rerender } = renderComponent(testProps);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('5 matches');
+
+      rerender(<PropertyFilter {...defaultProps} {...testProps} countText="123 matches" loading={false} />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('123 matches');
+    });
   });
 });
 

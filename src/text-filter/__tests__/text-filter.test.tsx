@@ -18,10 +18,6 @@ function renderTextFilter(jsx: React.ReactElement) {
   };
 }
 
-function getPoliteRegion() {
-  return document.querySelector('[aria-live=polite]')!;
-}
-
 test('should have no initial value for filtering', () => {
   const { wrapper } = renderTextFilter(<TextFilter filteringText={''} />);
   expect(wrapper.findInput().findNativeInput().getElement().value).toBe('');
@@ -146,6 +142,10 @@ describe('countText', () => {
   });
 
   describe('live announcement', () => {
+    function getPoliteRegion() {
+      return document.querySelector('[aria-live=polite]')!;
+    }
+
     beforeAll(() => {
       jest.useFakeTimers();
     });
@@ -155,16 +155,14 @@ describe('countText', () => {
     });
 
     test('includes the live announcement when all conditions met', () => {
-      const { wrapper } = renderTextFilter(<TextFilter filteringText="test" countText="10 matches" />);
+      renderTextFilter(<TextFilter filteringText="test" countText="10 matches" />);
       jest.runAllTimers();
-      expect(wrapper.findResultsCount().getElement()).toHaveTextContent('10 matches');
       expect(getPoliteRegion()).toHaveTextContent('10 matches');
     });
 
     test('does not include the live announcement when loading = true', () => {
-      const { wrapper } = renderTextFilter(<TextFilter filteringText="test" loading={true} countText="10 matches" />);
+      renderTextFilter(<TextFilter filteringText="test" loading={true} countText="10 matches" />);
       jest.runAllTimers();
-      expect(wrapper.findResultsCount().getElement()).toHaveTextContent('10 matches');
       expect(getPoliteRegion()).toBeNull();
     });
 
@@ -184,10 +182,9 @@ describe('countText', () => {
       expect(getPoliteRegion()).toHaveTextContent('10 matches');
 
       rerender(<TextFilter filteringText="A" countText="123 matches" />);
-      expect(getPoliteRegion()).toHaveTextContent('10 matches.');
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('123 matches');
     });
-
-    test('re-announce the live announcement when filtering text changes', () => {});
   });
 });
 
