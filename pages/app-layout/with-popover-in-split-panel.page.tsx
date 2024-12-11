@@ -27,7 +27,6 @@ import styles from '../popover/positioning.scss';
 type ContentType = 'grid' | 'chart';
 
 export default function () {
-  const [renderWithPortal, setRenderWithPortal] = useState(false);
   const [content, setContent] = useState<ContentType>('grid');
   const [open, setOpen] = useState(true);
   const [position, setPosition] = useState<PopoverProps.Position>('top');
@@ -50,6 +49,7 @@ export default function () {
           <h1>Popover inside split panel</h1>
           <SpaceBetween size="s">
             <SegmentedControl
+              data-testid="content-control"
               label="Split panel content"
               options={[
                 { id: 'grid', text: 'Grid' },
@@ -59,31 +59,21 @@ export default function () {
               onChange={({ detail }) => setContent(detail.selectedId as ContentType)}
             />
             {content === 'grid' && (
-              <>
-                <div>
-                  <div>Popover position</div>
-                  <SegmentedControl
-                    label="Position"
-                    options={[
-                      { id: 'top', text: 'Top' },
-                      { id: 'right', text: 'Right' },
-                      { id: 'bottom', text: 'Bottom' },
-                      { id: 'left', text: 'Left' },
-                    ]}
-                    selectedId={position}
-                    onChange={onPositionChange}
-                  />
-                </div>
-                <label>
-                  <input
-                    id="renderWithPortal"
-                    type="checkbox"
-                    checked={renderWithPortal}
-                    onChange={e => setRenderWithPortal(e.target.checked)}
-                  />{' '}
-                  renderWithPortal
-                </label>
-              </>
+              <div>
+                <div>Popover position</div>
+                <SegmentedControl
+                  data-testid="position-control"
+                  label="Position"
+                  options={[
+                    { id: 'top', text: 'Top' },
+                    { id: 'right', text: 'Right' },
+                    { id: 'bottom', text: 'Bottom' },
+                    { id: 'left', text: 'Left' },
+                  ]}
+                  selectedId={position}
+                  onChange={onPositionChange}
+                />
+              </div>
             )}
           </SpaceBetween>
         </>
@@ -102,7 +92,7 @@ export default function () {
                       className={clsx(styles.square, styles[`square-row-${row}`], styles[`square-col-${col}`])}
                     >
                       <Popover
-                        id={`popover-${row}-${col}`}
+                        data-testid={`popover-${row}-${col}`}
                         size="medium"
                         position={position}
                         header="Memory error"
@@ -113,7 +103,6 @@ export default function () {
                           </>
                         }
                         dismissAriaLabel="Close"
-                        renderWithPortal={renderWithPortal}
                       >
                         Click!
                       </Popover>
