@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { addMonths, addYears, isSameMonth, isSameYear, startOfMonth, startOfYear } from 'date-fns';
+import { addMonths, addYears, isSameMonth, startOfMonth, startOfYear } from 'date-fns';
 
 import { parseDate } from '../../internal/utils/date-time';
 import { DateRangePickerProps } from '../interfaces';
@@ -28,11 +28,11 @@ export function findMonthToFocus(
   baseDate: Date,
   isMonthEnabled: DateRangePickerProps.IsDateEnabledFunction
 ) {
-  if (selected && isMonthEnabled(selected) && isSameYear(selected, baseDate)) {
+  if (selected && isMonthEnabled(selected) && isSameMonth(selected, baseDate)) {
     return selected;
   }
   const today = new Date();
-  if (isMonthEnabled(today) && isSameYear(today, baseDate)) {
+  if (isMonthEnabled(today) && isSameMonth(today, baseDate)) {
     return today;
   }
   if (isMonthEnabled(baseDate)) {
