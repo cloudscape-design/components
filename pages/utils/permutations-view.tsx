@@ -21,7 +21,13 @@ function formatValue(key: string, value: any) {
   return value;
 }
 
+const maximumPermutations = 276;
+
 export default function PermutationsView<T>({ permutations, render }: PermutationsViewProps<T>) {
+  if (permutations.length > maximumPermutations) {
+    throw new Error(`Too many permutations (${permutations.length}), maximum is ${maximumPermutations}`);
+  }
+
   return (
     <SpaceBetween size="m">
       {permutations.map((permutation, index) => {
