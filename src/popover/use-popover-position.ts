@@ -90,7 +90,10 @@ export default function usePopoverPosition({
       const arrowRect = getDimensions(arrow);
       const { containingBlock, boundary } = fundUpUntilMultiple({
         startElement: popover,
-        tests: { containingBlock: isContainingBlock, boundary: isBoundary },
+        tests: {
+          containingBlock: isContainingBlock,
+          boundary: (element: HTMLElement) => isContainingBlock(element) || isBoundary(element),
+        },
       });
 
       // Rectangle for the containing block, which provides the reference frame for the popover coordinates.
