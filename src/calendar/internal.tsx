@@ -20,7 +20,8 @@ import useCalendarGridRows from './grid/use-calendar-grid-rows';
 import CalendarHeader from './header';
 import { CalendarProps } from './interfaces.js';
 import useCalendarLabels from './use-calendar-labels';
-import { getBaseDay, getBaseMonth } from './utils/navigation';
+import { getBaseDay } from './utils/navigation-day';
+import { getBaseMonth } from './utils/navigation-month';
 
 import styles from './styles.css.js';
 
