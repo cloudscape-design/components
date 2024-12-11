@@ -49,16 +49,6 @@ export default function () {
         <>
           <h1>Popover inside split panel</h1>
           <SpaceBetween size="s">
-            <label>
-              <input
-                id="renderWithPortal"
-                type="checkbox"
-                checked={renderWithPortal}
-                onChange={e => setRenderWithPortal(e.target.checked)}
-              />{' '}
-              renderWithPortal
-            </label>
-
             <SegmentedControl
               label="Split panel content"
               options={[
@@ -69,20 +59,31 @@ export default function () {
               onChange={({ detail }) => setContent(detail.selectedId as ContentType)}
             />
             {content === 'grid' && (
-              <div>
-                <div>Popover position</div>
-                <SegmentedControl
-                  label="Position"
-                  options={[
-                    { id: 'top', text: 'Top' },
-                    { id: 'right', text: 'Right' },
-                    { id: 'bottom', text: 'Bottom' },
-                    { id: 'left', text: 'Left' },
-                  ]}
-                  selectedId={position}
-                  onChange={onPositionChange}
-                />
-              </div>
+              <>
+                <div>
+                  <div>Popover position</div>
+                  <SegmentedControl
+                    label="Position"
+                    options={[
+                      { id: 'top', text: 'Top' },
+                      { id: 'right', text: 'Right' },
+                      { id: 'bottom', text: 'Bottom' },
+                      { id: 'left', text: 'Left' },
+                    ]}
+                    selectedId={position}
+                    onChange={onPositionChange}
+                  />
+                </div>
+                <label>
+                  <input
+                    id="renderWithPortal"
+                    type="checkbox"
+                    checked={renderWithPortal}
+                    onChange={e => setRenderWithPortal(e.target.checked)}
+                  />{' '}
+                  renderWithPortal
+                </label>
+              </>
             )}
           </SpaceBetween>
         </>
