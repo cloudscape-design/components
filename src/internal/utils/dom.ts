@@ -27,6 +27,11 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
   return findUpUntil(startElement.parentElement, isContainingBlock) as HTMLElement;
 }
 
+/*
+ * Allows to find multiple elements in the page each according to a specific test function,
+ * but traversing the DOM only once.
+ */
+
 export function fundUpUntilMultiple({
   startElement,
   tests,
