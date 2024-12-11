@@ -31,7 +31,7 @@ export default function () {
         <Button onClick={() => setCountText('36 matches')}>Set count text to [36 matches]</Button>
         <Button onClick={() => setCountText('')}>Remove count text</Button>
         <Button onClick={() => setLoading(prevIsLoading => !prevIsLoading)}>
-          Toggle Loading (currently loading is [{String(loading)}])
+          Toggle loading state (current value: [{String(loading)}])
         </Button>
       </SpaceBetween>
     </I18nProvider>
