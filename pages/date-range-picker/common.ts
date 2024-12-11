@@ -115,7 +115,7 @@ export const dateRangePickerDemoDefaults = {
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {
   const unit = range.amount === 1 ? range.unit : `${range.unit}s`;
-  return `Previous ${range.amount} ${unit}`;
+  return `Last ${range.amount} ${unit}`;
 }
 
 export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
@@ -160,24 +160,24 @@ export function generateI18nStrings(isDateOnly: boolean, isMonthOnly: boolean): 
 }
 
 export const relativeOptions = [
-  { key: 'previous-5-minutes', amount: 5, unit: 'minute', type: 'relative' },
-  { key: 'previous-30-minutes', amount: 30, unit: 'minute', type: 'relative' },
-  { key: 'previous-1-hour', amount: 1, unit: 'hour', type: 'relative' },
-  { key: 'previous-6-hours', amount: 6, unit: 'hour', type: 'relative' },
+  { key: 'last-5-minutes', amount: 5, unit: 'minute', type: 'relative' },
+  { key: 'last-30-minutes', amount: 30, unit: 'minute', type: 'relative' },
+  { key: 'last-1-hour', amount: 1, unit: 'hour', type: 'relative' },
+  { key: 'last-6-hours', amount: 6, unit: 'hour', type: 'relative' },
 ] as const;
 
 export const dateOnlyRelativeOptions = [
-  { key: 'previous-1-day', amount: 5, unit: 'day', type: 'relative' },
-  { key: 'previous-7-days', amount: 7, unit: 'day', type: 'relative' },
-  { key: 'previous-1-month', amount: 1, unit: 'month', type: 'relative' },
-  { key: 'previous-6-months', amount: 6, unit: 'month', type: 'relative' },
+  { key: 'last-1-day', amount: 5, unit: 'day', type: 'relative' },
+  { key: 'last-7-days', amount: 7, unit: 'day', type: 'relative' },
+  { key: 'last-1-month', amount: 1, unit: 'month', type: 'relative' },
+  { key: 'last-6-months', amount: 6, unit: 'month', type: 'relative' },
 ] as const;
 
 export const monthOnlyRelativeOptions = [
-  { key: 'previous-1-month', amount: 1, unit: 'month', type: 'relative' },
-  { key: 'previous-2-months', amount: 2, unit: 'month', type: 'relative' },
-  { key: 'previous-3-months', amount: 3, unit: 'month', type: 'relative' },
-  { key: 'previous-6-months', amount: 6, unit: 'month', type: 'relative' },
+  { key: 'last-1-month', amount: 1, unit: 'month', type: 'relative' },
+  { key: 'last-2-months', amount: 2, unit: 'month', type: 'relative' },
+  { key: 'last-3-months', amount: 3, unit: 'month', type: 'relative' },
+  { key: 'last-6-months', amount: 6, unit: 'month', type: 'relative' },
 ] as const;
 
 export function generateRelativeOptions(dateOnly: boolean, monthOnly: boolean) {
