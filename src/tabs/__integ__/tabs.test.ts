@@ -223,10 +223,22 @@ test(
     await page.setWindowSize({ width: 500, height: 1000 });
     await page.click('#add-tab');
     await page.click(page.paginationButton('right', true));
+    await page.click(page.paginationButton('right', true));
     await page.click(wrapper.findTabLinkByIndex(7).toSelector());
     await page.waitForAssertion(async () =>
       expect(await page.isExisting(page.paginationButton('right', true))).toBe(false)
     );
+  })
+);
+
+test(
+  'tab selection does not cause vertical scroll',
+  setupTest(async page => {
+    await page.setWindowSize({ width: 600, height: 300 });
+    const { top: initialTopScrollPosition } = await page.getWindowScroll();
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
+    const { top: currentTopScrollPosition } = await page.getWindowScroll();
+    expect(initialTopScrollPosition).toEqual(currentTopScrollPosition);
   })
 );
 
