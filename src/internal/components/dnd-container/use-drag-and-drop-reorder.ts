@@ -7,6 +7,7 @@ import {
   CollisionDetection,
   DroppableContainer,
   KeyboardCoordinateGetter,
+  KeyboardSensor,
   PointerSensor,
   UniqueIdentifier,
   useSensor,
@@ -15,7 +16,6 @@ import {
 import { hasSortableData } from '@dnd-kit/sortable';
 
 import { ReorderOptions } from './interfaces';
-import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {
   Space = 'Space',
