@@ -47,8 +47,6 @@ const InternalAttributeEditor = React.forwardRef(
     }: InternalAttributeEditorProps<T>,
     ref: React.Ref<AttributeEditorProps.Ref>
   ) => {
-    const [breakpoint, breakpointRef] = useContainerBreakpoints(['default', 'xxs', 'xs']);
-
     const removeButtonRefs = useRef<Array<ButtonProps.Ref | undefined>>([]);
     const addButtonRef = useRef<ButtonProps.Ref>(null);
     const wasNonEmpty = useRef<boolean>(false);
@@ -67,8 +65,6 @@ const InternalAttributeEditor = React.forwardRef(
         addButtonRef.current?.focus();
       },
     }));
-
-    const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
     const additionalInfoId = useUniqueId('attribute-editor-info');
     const infoAriaDescribedBy = additionalInfo ? additionalInfoId : undefined;
@@ -89,7 +85,7 @@ const InternalAttributeEditor = React.forwardRef(
       gridLayout = gridDefaults[definition.length];
       if (!gridLayout) {
         console.warn('AttributeEditor', '`gridLayout` is required for more than 8 attributes. Cannot render.');
-        return <div />;
+        gridLayout = [];
       }
     }
 
@@ -100,6 +96,11 @@ const InternalAttributeEditor = React.forwardRef(
       }),
       {} as Record<AttributeEditorProps.Breakpoint, AttributeEditorProps.GridLayout>
     );
+
+    const [breakpoint, breakpointRef] = useContainerBreakpoints(
+      Object.keys(gridLayoutBreakpoints) as AttributeEditorProps.Breakpoint[]
+    );
+    const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
 
     const gridLayoutForBreakpoint = matchBreakpointMapping(gridLayoutBreakpoints, breakpoint || 'default');
 

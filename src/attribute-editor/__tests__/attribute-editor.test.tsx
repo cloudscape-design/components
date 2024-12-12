@@ -3,6 +3,8 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import ButtonDropdown from '../../../lib/components/button-dropdown';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -16,15 +18,17 @@ import liveRegionStyles from '../../../lib/components/live-region/test-classes/s
 let containerQueryBreakpoint = 'm';
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
-  useContainerQuery: () => [containerQueryBreakpoint, () => {}],
+  useContainerQuery: jest.fn(),
 }));
 
 beforeEach(() => {
   jest.spyOn(console, 'warn').mockImplementation();
+  (useContainerQuery as jest.Mock).mockImplementation(() => [containerQueryBreakpoint, () => {}]);
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
+  jest.resetAllMocks();
 });
 
 interface Item {
@@ -629,6 +633,26 @@ describe('Attribute Editor', () => {
       expect(wrapper.findRow(1)!.findRemoveButton()).toBeFalsy();
       expect(wrapper.findRow(2)!.findRemoveButton()).toBeTruthy();
       expect(wrapper.findRow(3)!.findRemoveButton()).toBeFalsy();
+    });
+  });
+
+  describe('responsiveness', () => {
+    test('should pass resolved breakpoints from the gridLayout to useContainerQuery - 1', () => {
+      render(<AttributeEditor {...defaultProps} gridLayout={[{ breakpoint: 'default', rows: [] }]} />);
+      expect(useContainerQuery).toHaveBeenCalledWith(expect.any(Function), ['default']);
+    });
+    test('should pass resolved breakpoints from the gridLayout to useContainerQuery - 2', () => {
+      render(
+        <AttributeEditor
+          {...defaultProps}
+          gridLayout={[
+            { breakpoint: 'default', rows: [] },
+            { breakpoint: 'xl', rows: [] },
+            { breakpoint: 's', rows: [] },
+          ]}
+        />
+      );
+      expect(useContainerQuery).toHaveBeenCalledWith(expect.any(Function), ['default,xl,s']);
     });
   });
 

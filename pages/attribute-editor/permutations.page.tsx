@@ -121,17 +121,17 @@ export const permutations = createPermutations<AttributeEditorProps<Item>>([
   {
     definition: [definition4],
     gridLayout: [
-      [{ rows: [[2, 1, 3, 1]] }],
-      [{ rows: [[2, 1, 3, 1]], removeButton: { width: 'auto' } }],
-      [{ rows: [[2, 1, 3, 1]], removeButton: { ownRow: true } }],
       [
+        { rows: [[2, 1, 3, 1]], breakpoint: 'l' },
         {
           rows: [
-            [2, 2],
+            [2, 1],
             [3, 1],
           ],
         },
       ],
+      [{ rows: [[2, 1, 3, 1]], removeButton: { width: 'auto' } }],
+      [{ rows: [[2, 1, 3, 1]], removeButton: { ownRow: true } }],
     ],
     items: [defaultItems],
     addButtonText: ['Add item (grid)'],
