@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { format, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 
 import { formatTimeOffsetISO } from './format-time-offset';
 
@@ -19,7 +19,11 @@ export default function ({
 }) {
   const formattedOffset = hideTimeOffset || isDateOnly || isMonthOnly ? '' : formatTimeOffsetISO(isoDate, timeOffset);
   if (isMonthOnly) {
-    return format(parseISO(isoDate), 'yyyy-MM');
+    const date = parseISO(isoDate);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    return `${year}-${month}`;
   }
+
   return isoDate + formattedOffset;
 }
