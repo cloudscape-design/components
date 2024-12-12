@@ -158,18 +158,13 @@
   "size-limit": [
     {
       "path": "lib/components/internal/plugins/index.js",
-      "limit": "2.5 kB"
+      "brotli": false,
+      "limit": "11 kB"
     },
     {
-      "path": [
-        "lib/components/app-layout/visual-refresh-toolbar/exports.js",
-        "lib/components/split-panel/implementation.js",
-        "lib/components/breadcrumb-group/implementation.js",
-        "lib/components/drawer/implementation.js",
-        "lib/components/side-navigation/implementation.js",
-        "lib/components/help-panel/implementation.js"
-      ],
-      "limit": "140 kB"
+      "path": "lib/components/internal/widget-exports.js",
+      "brotli": false,
+      "limit": "795 kB"
     }
   ],
   "browserslist": [
