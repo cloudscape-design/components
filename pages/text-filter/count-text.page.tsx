@@ -15,23 +15,18 @@ export default function () {
 
   return (
     <I18nProvider messages={[messages]} locale="en">
+      <h1>Demo page for countText live announcement testing</h1>
       <SpaceBetween size="l">
-        <h1>Demo page for countText live announcement testing</h1>
-        <SpaceBetween direction="horizontal" size="s">
-          Count Text:
-          <label>
-            <input type="radio" name="count-text" value="18 matches" onChange={() => setCountText('18 matches')} /> 18
-            matches
-          </label>
-          <label>
-            <input type="radio" name="count-text" value="36 matches" onChange={() => setCountText('36 matches')} /> 36
-            matches
-          </label>
-          <label>
-            <input type="radio" name="count-text" value="" onChange={() => setCountText('')} /> [Empty]
-          </label>
+        <SpaceBetween direction="horizontal" size="s" key="settings">
+          <span>Count Text:</span>
+          {['18 matches', '36 matches', ''].map((countText, index) => (
+            <label key={index}>
+              <input type="radio" name="count-text" value={countText} onChange={() => setCountText(countText)} />{' '}
+              {countText !== '' ? countText : '[Empty]'}
+            </label>
+          ))}
         </SpaceBetween>
-        <label htmlFor="loading-state-toggle">
+        <label htmlFor="loading-state-toggle" key="loadingStateToggle">
           <input id="loading-state-toggle" type="checkbox" onChange={event => setLoading(event.target.checked)} />{' '}
           Loading
         </label>
