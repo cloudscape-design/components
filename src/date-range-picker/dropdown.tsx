@@ -89,7 +89,7 @@ export function DateRangePickerDropdown({
   );
 
   const [selectedAbsoluteRange, setSelectedAbsoluteRange] = useState<DateRangePickerProps.PendingAbsoluteValue>(() =>
-    splitAbsoluteValue(value?.type === 'absolute' ? value : null)
+    splitAbsoluteValue(value?.type === 'absolute' ? value : null, hideTime)
   );
 
   const [selectedRelativeRange, setSelectedRelativeRange] = useState<DateRangePickerProps.RelativeValue | null>(

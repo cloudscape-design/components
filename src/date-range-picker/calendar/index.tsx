@@ -92,8 +92,7 @@ export default function DateRangePickerCalendar({
   });
 
   const updateCurrentPage = (startDate: string) => {
-    if (startDate.length >= 8) {
-      //todo see how condition above plays
+    if ((isMonthPicker && startDate.length >= 4) || startDate.length >= 8) {
       const newCurrentPage = startOfPage(parseDate(startDate));
       setCurrentPage(isSingleGrid ? newCurrentPage : addPage(newCurrentPage, 1));
     }
