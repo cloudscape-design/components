@@ -39,6 +39,15 @@ export interface KeyValuePairsProps extends BaseComponentProps {
    * Don't use `ariaLabel` and `ariaLabelledby` at the same time.
    */
   ariaLabelledby?: string;
+
+  /**
+   * Use to specify the desired minimum width for each column in pixels.
+   *
+   * The number of columns is determined by the value of this property, the available space,
+   * and the maximum number of columns as defined by the `columns` property.
+   * If not set, defaults to 150.
+   */
+  minColumnWidth?: number;
 }
 
 export namespace KeyValuePairsProps {

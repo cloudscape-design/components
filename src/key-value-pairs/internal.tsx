@@ -45,6 +45,7 @@ const InternalKeyValuePairs = React.forwardRef(
       className,
       ariaLabel,
       ariaLabelledby,
+      minColumnWidth,
       ...rest
     }: KeyValuePairsProps & Required<Pick<KeyValuePairsProps, 'columns'>>,
     ref: React.Ref<HTMLDivElement>
@@ -62,7 +63,12 @@ const InternalKeyValuePairs = React.forwardRef(
           minColumnWidth={150} is set to use FlexibleColumnLayout which has only 1 nested div wrapper for column items,
           otherwise GridColumnLayout will be used, which has 2 nested div, therefore it is not a11y compatible for dl -> dt/dd relationship
         */}
-          <ColumnLayout __tagOverride="dl" columns={Math.min(columns, 4)} variant="text-grid" minColumnWidth={150}>
+          <ColumnLayout
+            __tagOverride="dl"
+            columns={Math.min(columns, 4)}
+            variant="text-grid"
+            minColumnWidth={minColumnWidth}
+          >
             {items.map((pair, index) => {
               if (pair.type === 'group') {
                 return (
