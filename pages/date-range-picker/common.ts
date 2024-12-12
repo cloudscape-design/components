@@ -19,6 +19,7 @@ export type DateRangePickerDemoContext = React.Context<
     expandToViewport?: boolean;
     disabledDates?: string;
     withDisabledReason?: boolean;
+    hasValue?: boolean;
   }>
 >;
 
@@ -111,6 +112,7 @@ export const dateRangePickerDemoDefaults = {
   expandToViewport: false,
   disabledDates: 'none',
   withDisabledReason: true,
+  hasValue: true,
 };
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {
