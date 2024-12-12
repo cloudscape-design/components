@@ -167,21 +167,26 @@ describe('countText', () => {
     });
 
     test('includes the live announcement when loading switches from true to false', () => {
-      const { rerender } = renderTextFilter(<TextFilter filteringText="test" loading={true} countText="10 matches" />);
+      const defaultProps = {
+        countText: '10 matches',
+        filteringText: 'A',
+      };
+      const { rerender } = renderTextFilter(<TextFilter {...defaultProps} loading={true} />);
       jest.runAllTimers();
       expect(getPoliteRegion()).toBeNull();
 
-      rerender(<TextFilter filteringText="test" loading={false} countText="123 matches" />);
+      rerender(<TextFilter {...defaultProps} loading={false} />);
       jest.runAllTimers();
-      expect(getPoliteRegion()).toHaveTextContent('123 matches');
+      expect(getPoliteRegion()).toHaveTextContent('10 matches');
     });
 
     test('re-announce the live announcement when countText changes', () => {
-      const { rerender } = renderTextFilter(<TextFilter filteringText="A" countText="10 matches" />);
+      const filteringText = 'A';
+      const { rerender } = renderTextFilter(<TextFilter filteringText={filteringText} countText="10 matches" />);
       jest.runAllTimers();
       expect(getPoliteRegion()).toHaveTextContent('10 matches');
 
-      rerender(<TextFilter filteringText="A" countText="123 matches" />);
+      rerender(<TextFilter filteringText={filteringText} countText="123 matches" />);
       jest.runAllTimers();
       expect(getPoliteRegion()).toHaveTextContent('123 matches');
     });
