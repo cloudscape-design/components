@@ -28,11 +28,6 @@ import {
 
 export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
-  const [value, setValue] = useState<DateRangePickerProps['value']>({
-    type: 'absolute',
-    startDate: '2024-12-30T00:00:00+01:00',
-    endDate: '2024-12-31T23:59:59+01:00',
-  });
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const absoluteFormat =
@@ -47,6 +42,17 @@ export default function DatePickerScenario() {
   const rangeSelectorMode =
     urlParams.rangeSelectorMode ??
     (dateRangePickerDemoDefaults.rangeSelectorMode as DateRangePickerProps.RangeSelectorMode);
+  const hasValue = urlParams.hasValue ?? dateRangePickerDemoDefaults.hasValue;
+
+  const [value, setValue] = useState<DateRangePickerProps['value']>(
+    hasValue
+      ? {
+          type: 'absolute',
+          startDate: '2024-12-30T00:00:00+01:00',
+          endDate: '2024-12-31T23:59:59+01:00',
+        }
+      : null
+  );
 
   return (
     <Box padding="s">
@@ -97,6 +103,9 @@ export default function DatePickerScenario() {
               <option value="long-localized">Long localized</option>
             </select>
           </label>
+          <Checkbox checked={hasValue} onChange={({ detail }) => setUrlParams({ hasValue: detail.checked })}>
+            Has initial value
+          </Checkbox>
           <Checkbox
             checked={withDisabledReason}
             onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}

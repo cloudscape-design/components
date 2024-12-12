@@ -41,6 +41,12 @@ describe('findDateToFocus', () => {
     const baseDate = createDate('2023-08-01');
     expect(findDateToFocus(selected, baseDate, (date: Date) => date.getMonth() === 7)).toEqual(baseDate);
   });
+  test('should handle leap years correctly', () => {
+    jest.setSystemTime(createDate('2024-02-29').getTime()); // Set 'today' to a leap year
+    const baseDate = createDate('2024-02-01');
+    const today = new Date();
+    expect(findDateToFocus(null, baseDate, () => true)).toEqual(today);
+  });
 });
 describe('findMonthToFocus', () => {
   beforeEach(() => {
@@ -52,8 +58,8 @@ describe('findMonthToFocus', () => {
     jest.useRealTimers();
   });
   test('should return selected date if it is enabled and in the same year as baseDate', () => {
-    const selected = createDate('2023-03-10');
-    const baseDate = createDate('2023-06-01');
+    const selected = createDate('2023-03');
+    const baseDate = createDate('2023-06');
     expect(findMonthToFocus(selected, baseDate, () => true)).toEqual(selected);
   });
   test('should return today if selected is null, today is enabled and in the same year as baseDate', () => {
@@ -79,12 +85,6 @@ describe('findMonthToFocus', () => {
     const selected = createDate('2022-12-01');
     const baseDate = createDate('2024-01-01');
     expect(findMonthToFocus(selected, baseDate, date => date.getFullYear() === 2024)).toEqual(baseDate);
-  });
-  test('should handle leap years correctly', () => {
-    jest.setSystemTime(createDate('2024-02-29').getTime()); // Set 'today' to a leap year
-    const baseDate = createDate('2024-01-01');
-    const today = new Date();
-    expect(findMonthToFocus(null, baseDate, () => true)).toEqual(today);
   });
 });
 describe('findMonthToDisplay', () => {
