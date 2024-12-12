@@ -40,8 +40,9 @@ export default function () {
             <input type="radio" name="count-text" value="" onChange={() => setCountText('')} /> [Empty]
           </label>
         </SpaceBetween>
-        <label>
-          <input id="density-toggle" type="checkbox" onChange={event => setLoading(event.target.checked)} /> Loading
+        <label htmlFor="loading-state-toggle">
+          <input id="loading-state-toggle" type="checkbox" onChange={event => setLoading(event.target.checked)} />{' '}
+          Loading
         </label>
         <PropertyFilter
           query={query}
