@@ -48,13 +48,15 @@ describe('useDebounceSearchResultCallback', () => {
       expect(announceCallback).toHaveBeenCalledTimes(1);
     });
 
-    test('should call announceCallback twice when searchQuery changes and countText stays the same', () => {
+    test('should call announceCallback when searchQuery changes and countText stays the same', () => {
       const { rerender } = renderTestComponent({
         announceCallback,
         loading: false,
         searchQuery: 'A',
         countText: '123 matches',
       });
+      expect(announceCallback).toHaveBeenCalledTimes(1);
+
       rerender(
         <TestComponent
           announceCallback={announceCallback}
@@ -67,7 +69,7 @@ describe('useDebounceSearchResultCallback', () => {
       expect(announceCallback).toHaveBeenCalledTimes(2);
     });
 
-    test('should call announceCallback twice when searchQuery stays and countText changes', () => {
+    test('should call announceCallback when searchQuery stays and countText changes', () => {
       const searchQuery = 'A';
       const { rerender } = renderTestComponent({
         announceCallback,
@@ -75,6 +77,8 @@ describe('useDebounceSearchResultCallback', () => {
         searchQuery,
         countText: '123 matches',
       });
+      expect(announceCallback).toHaveBeenCalledTimes(1);
+
       rerender(
         <TestComponent
           announceCallback={announceCallback}
