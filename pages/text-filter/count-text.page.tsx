@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Button from '~components/button';
 import { I18nProvider } from '~components/i18n';
 import messages from '~components/i18n/messages/all.en';
 import SpaceBetween from '~components/space-between';
@@ -18,6 +17,23 @@ export default function () {
     <I18nProvider messages={[messages]} locale="en">
       <SpaceBetween size="l">
         <h1>Demo page for countText live announcement testing</h1>
+        <SpaceBetween direction="horizontal" size="s">
+          Count Text:
+          <label>
+            <input type="radio" name="count-text" value="18 matches" onChange={() => setCountText('18 matches')} /> 18
+            matches
+          </label>
+          <label>
+            <input type="radio" name="count-text" value="36 matches" onChange={() => setCountText('36 matches')} /> 36
+            matches
+          </label>
+          <label>
+            <input type="radio" name="count-text" value="" onChange={() => setCountText('')} /> [Empty]
+          </label>
+        </SpaceBetween>
+        <label>
+          <input id="density-toggle" type="checkbox" onChange={event => setLoading(event.target.checked)} /> Loading
+        </label>
         <TextFilter
           filteringText={filteringText}
           filteringPlaceholder="Find instances"
@@ -27,12 +43,6 @@ export default function () {
           onChange={({ detail }) => setFilteringText(detail.filteringText)}
           ref={textFilterRef}
         />
-        <Button onClick={() => setCountText('18 matches')}>Set count text to [18 matches]</Button>
-        <Button onClick={() => setCountText('36 matches')}>Set count text to [36 matches]</Button>
-        <Button onClick={() => setCountText('')}>Remove count text</Button>
-        <Button onClick={() => setLoading(prevIsLoading => !prevIsLoading)}>
-          Toggle loading state (current value: [{String(loading)}])
-        </Button>
       </SpaceBetween>
     </I18nProvider>
   );
