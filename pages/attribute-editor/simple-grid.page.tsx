@@ -98,7 +98,7 @@ export default function AttributeEditorPage() {
   return (
     <Box margin="xl">
       <h1>Attribute Editor - Grid</h1>
-      <h2>Simple non-responsive 2:3:1 layout</h2>
+      <h2>Non-responsive 2:3:auto layout</h2>
       <AttributeEditor<Tag>
         {...labelProps}
         additionalInfo={additionalInfo}
@@ -108,7 +108,7 @@ export default function AttributeEditorPage() {
         onRemoveButtonClick={onRemoveButtonClick}
         gridLayout={[{ rows: [[2, 3]], removeButton: { width: 'auto' } }]}
       />
-      <h2>Simple non-responsive 2:3:1 layout</h2>
+      <h2>Non-responsive 4:1 - 2:2 layout</h2>
       <AttributeEditor<Tag>
         {...labelProps}
         additionalInfo={additionalInfo}
@@ -122,6 +122,41 @@ export default function AttributeEditorPage() {
               [4, 1],
               [2, 2],
             ],
+          },
+        ]}
+      />
+      <h2>Responsive layout</h2>
+      <AttributeEditor<Tag>
+        {...labelProps}
+        additionalInfo={additionalInfo}
+        items={items}
+        definition={[...definition, ...definition]}
+        onAddButtonClick={onAddButtonClick}
+        onRemoveButtonClick={onRemoveButtonClick}
+        gridLayout={[
+          {
+            breakpoint: 'xl',
+            rows: [[4, 1, 2, 2]],
+            removeButton: {
+              width: 'auto',
+            },
+          },
+          {
+            breakpoint: 'l',
+            rows: [[4, 1, 2, 2]],
+            removeButton: {
+              ownRow: true,
+            },
+          },
+          {
+            breakpoint: 's',
+            rows: [
+              [3, 1],
+              [2, 2],
+            ],
+          },
+          {
+            rows: [[1], [1], [1], [1]],
           },
         ]}
       />
