@@ -27,8 +27,15 @@ export interface TextFilterProps extends BaseComponentProps, FormFieldControlPro
    * the number listed. For example, "25+ matches."
    *
    * The count text is only displayed when `filteringText` isn't empty.
+   * When the `countText` or `filteringText` changes, it will be announced to assistive technologies.
    */
   countText?: string;
+
+  /**
+   * Set to `true` while the related collection is loading (e.g. during an async filtering action).
+   * If set to `true`, the live announcement of countText by assistive technologies will be paused until it changes back to `false`.
+   */
+  loading?: boolean;
 
   /**
    * Specifies if the filtering input is disabled.

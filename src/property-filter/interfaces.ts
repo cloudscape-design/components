@@ -44,8 +44,16 @@ export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewpor
    * the number listed. For example, "25+ matches."
    *
    * The count text is only displayed when `query.tokens` isn't empty.
+   * When the `countText` or `query` changes, it will be announced to assistive technologies.
    */
   countText?: string;
+
+  /**
+   * Set to `true` while the related collection is loading (e.g. during an async filtering action).
+   * If set to `true`, the live announcement of countText by assistive technologies will be paused until it changes back to `false`.
+   */
+  loading?: boolean;
+
   /**
    * An object representing the current query displayed in the property filter, which has three properties: `operation`, `tokens`, and `tokenGroups`.
    * The `operation` property has two valid values: "and", "or", and controls the join operation to be applied between tokens when filtering the items.
