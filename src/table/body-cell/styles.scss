@@ -25,8 +25,9 @@ $edit-button-padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
 // Cell vertical padding + xxs space that would normally come from the button.
 $success-icon-padding-right: calc(#{$edit-button-padding-right} + #{$icon-width-with-spacing});
 $interactive-column-padding-inline-end: calc(#{$cell-horizontal-padding} + #{awsui.$space-l});
+$editing-cell-padding-inline: awsui.$space-xxs;
+$editing-cell-padding-block: awsui.$space-scaled-xxxs;
 $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
-
 // Ensuring enough space for absolute-positioned focus outlines of focus-able cell content elements.
 $cell-negative-space-vertical: 2px;
 
@@ -131,11 +132,18 @@ $cell-negative-space-vertical: 2px;
 
   &-content {
     box-sizing: border-box;
-  }
-  &:not(.body-cell-wrap) > .body-cell-content {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    block-size: 100%;
+    align-content: center;
+
+    &.body-cell-align-top {
+      align-content: baseline;
+    }
+
+    &:not(.body-cell-wrap) {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
   &:first-child {
     border-inline-start: $border-placeholder;
@@ -177,19 +185,9 @@ $cell-negative-space-vertical: 2px;
     &:not(.has-selection):not(.body-cell-editable) {
       border-inline-start: none;
     }
-
-    // Give extra space on the edge to allow slight content overflow.
-    // That is to prevent focus outline on cell content from being cut out.
-    > .body-cell-content {
-      padding-inline-start: awsui.$border-divider-list-width;
-      margin-inline-start: calc(-1 * #{awsui.$border-divider-list-width});
-    }
   }
   &:first-child:not(.is-visual-refresh) {
     @include cell-padding-inline-start($cell-edge-horizontal-padding);
-  }
-  &-align-top {
-    vertical-align: top;
   }
   &-first-row {
     border-block-start: $border-placeholder;
@@ -380,19 +378,6 @@ $cell-negative-space-vertical: 2px;
       color: awsui.$color-text-button-normal-active;
     }
 
-    &-form {
-      margin-block: calc(-1 * #{awsui.$space-xs});
-      margin-inline: calc(-1.5 * #{awsui.$space-xs});
-
-      .is-visual-refresh.body-cell:first-child.has-striped-rows > & {
-        margin-inline-start: calc(-1 * #{awsui.$space-xxs});
-      }
-
-      .is-visual-refresh.body-cell:first-child:not(.has-striped-rows) > & {
-        margin-inline-start: calc(-1 * #{awsui.$space-xxxs});
-      }
-    }
-
     &-row {
       display: flex;
       flex-flow: row nowrap;
@@ -431,6 +416,9 @@ $cell-negative-space-vertical: 2px;
       > .body-cell-content {
         overflow: visible;
       }
+      @include cell-padding-inline-start($editing-cell-padding-inline);
+      @include cell-padding-inline-end($editing-cell-padding-inline);
+      @include cell-padding-block($editing-cell-padding-block);
     }
 
     &:not(.body-cell-edit-active) {
