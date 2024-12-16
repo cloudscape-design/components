@@ -33,6 +33,7 @@ import { normalizeTimeOffset } from './time-offset';
 import { formatInitialValue, formatValue } from './utils';
 
 import styles from './styles.css.js';
+import testutilStyles from './test-classes/styles.css.js';
 
 export { DateRangePickerProps };
 
@@ -132,8 +133,6 @@ const DateRangePicker = React.forwardRef(
       },
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
-    const initialValue = value;
-    const [initialValueFormatted, setInitialValueFormatted] = useState(false);
     const isMonthOnly = granularity === 'month';
     const hideTime = dateOnly || isMonthOnly;
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
@@ -276,7 +275,7 @@ const DateRangePicker = React.forwardRef(
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
         ariaLabel={i18nStrings?.ariaLabel}
         ariaDescribedby={ariaDescribedby}
-        className={clsx(styles.label, {
+        className={clsx(testutilStyles.label, styles.label, {
           [styles['label-enabled']]: !readOnly && !disabled,
         })}
         hideCaret={true}
@@ -298,13 +297,6 @@ const DateRangePicker = React.forwardRef(
 
     const mergedRef = useMergeRefs(rootRef, __internalRootRef);
 
-    useEffect(() => {
-      if (value !== initialValue && !initialValueFormatted) {
-        fireNonCancelableEvent(onChange, { value });
-        setInitialValueFormatted(true);
-      }
-    }, [initialValue, value, initialValueFormatted, onChange]);
-
     return (
       <div
         {...baseProps}
@@ -312,6 +304,7 @@ const DateRangePicker = React.forwardRef(
         className={clsx(
           baseProps.className,
           styles.root,
+          testutilStyles.root,
           absoluteFormat === 'long-localized' && !dateOnly && !isMonthOnly && styles.wide
         )}
         onKeyDown={onWrapperKeyDownHandler}

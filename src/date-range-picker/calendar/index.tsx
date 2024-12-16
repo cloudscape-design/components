@@ -34,8 +34,8 @@ import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
 import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from './utils';
 
-// import { formatValue } from '../utils';
 import styles from '../styles.css.js';
+import testutilStyles from '../test-classes/styles.css.js';
 
 export interface DateRangePickerCalendarProps extends BaseComponentProps {
   value: DateRangePickerProps.PendingAbsoluteValue;
@@ -307,7 +307,7 @@ export default function DateRangePickerCalendar({
         </SpaceBetween>
       </div>
       {/* Can't use message here because the contents are checked in tests */}
-      <InternalLiveRegion className={styles['calendar-aria-live']} hidden={true} tagName="span">
+      <InternalLiveRegion className={testutilStyles['calendar-aria-live']} hidden={true} tagName="span">
         {announcement}
       </InternalLiveRegion>
     </>

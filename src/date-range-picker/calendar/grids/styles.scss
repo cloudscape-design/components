@@ -190,7 +190,6 @@
   background-color: calendar.$grid-in-range-background-color;
   font-weight: styles.$font-weight-bold;
   @include in-range-borders;
-
   @include in-range-border-radius(start, end);
   @include in-range-border-radius(end, end);
   @include in-range-border-radius(end, start);

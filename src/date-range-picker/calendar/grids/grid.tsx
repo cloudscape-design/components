@@ -26,12 +26,9 @@ import { normalizeLocale } from '../../../internal/utils/locale';
 import { DateRangePickerProps } from '../../interfaces';
 import { GridCell } from './grid-cell';
 import { GridProps } from './interfaces';
-import {
-  renderDateAnnouncement,
-  // getDateLabel,   //todo confirm this is not needed anymore
-  renderDayName,
-} from './intl';
+import { renderDateAnnouncement, renderDayName } from './intl';
 
+import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 /**
@@ -93,7 +90,7 @@ export function Grid({
         <thead>
           <tr>
             {weekdays.map(dayIndex => (
-              <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], styles['day-header'])}>
+              <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], testutilStyles['day-header'])}>
                 <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
                 <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
               </th>
@@ -104,7 +101,7 @@ export function Grid({
       <tbody onKeyDown={onGridKeyDownHandler}>
         {rows.map((row, rowIndex) => {
           return (
-            <tr key={rowIndex} className={isMonthPicker ? styles.quarter : styles.week}>
+            <tr key={rowIndex} className={isMonthPicker ? testutilStyles.quarter : testutilStyles.week}>
               {row.map((date, rowItemIndex) => {
                 const itemKey = isMonthPicker
                   ? `Month ${rowIndex * 3 + rowItemIndex + 1}`
@@ -142,6 +139,8 @@ export function Grid({
                 const isFocusable = isFocused && (isEnabled || isDisabledWithReason);
 
                 const baseClasses = {
+                  [testutilStyles.day]: !isMonthPicker,
+                  [testutilStyles.month]: isMonthPicker,
                   [styles.day]: !isMonthPicker,
                   [styles.month]: isMonthPicker,
                   [styles['grid-cell']]: true,
@@ -170,7 +169,10 @@ export function Grid({
                   handlers.onFocus = () => onFocusedDateChange(date);
                 }
 
+                const isCurrentDay = !isMonthPicker && isToday(date);
+                const isCurrentMonth = isMonthPicker && isThisMonth(date);
                 const isCurrent = isMonthPicker ? isThisMonth(date) : isToday(date);
+
                 // Screen-reader announcement for the focused day/month.
                 let announcement = renderDateAnnouncement({
                   date,
@@ -229,6 +231,8 @@ export function Grid({
                       [styles.selected]: isSelected,
                       [styles['start-date']]: isStartDate,
                       [styles['end-date']]: isEndDate,
+                      [testutilStyles['start-date']]: isStartDate,
+                      [testutilStyles['end-date']]: isEndDate,
                       [styles['range-start-date']]: isRangeStartDate,
                       [styles['range-end-date']]: isRangeEndDate,
                       [styles['no-range']]: isSelected && onlyOneSelected,
@@ -249,8 +253,10 @@ export function Grid({
                         row.length,
                         isRangeEndDate
                       ),
-                      [styles.today]: !isMonthPicker && isToday(date),
-                      [styles['this-month']]: isMonthPicker && isThisMonth(date),
+                      [styles.today]: isCurrentDay,
+                      [testutilStyles.today]: isCurrentDay,
+                      [styles['this-month']]: isCurrentMonth,
+                      [testutilStyles['this-month']]: isCurrentMonth,
                     })}
                     aria-selected={isEnabled ? isSelected || dateIsInRange : undefined}
                     aria-current={isCurrent ? 'date' : undefined}

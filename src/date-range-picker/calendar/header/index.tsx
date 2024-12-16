@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+import clsx from 'clsx';
 import { add } from 'date-fns';
 
 import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl';
@@ -10,6 +11,7 @@ import { Granularity } from '../../interfaces';
 import { NextPageButton, PrevPageButton } from './header-button';
 
 import styles from '../../styles.css.js';
+import testutilStyles from '../../test-classes/styles.css.js';
 
 interface CalendarHeaderProps {
   baseDate: Date;
@@ -44,7 +46,7 @@ export default function CalendarHeader({
 
   return (
     <>
-      <div className={styles['calendar-header']}>
+      <div className={clsx(testutilStyles['calendar-header'], styles['calendar-header'])}>
         <PrevPageButton
           ariaLabel={i18n(
             isMonthPicker ? 'i18nStrings.previousYearAriaLabel' : 'previousMonthAriaLabel',

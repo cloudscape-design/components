@@ -13,8 +13,8 @@ import { changeMode } from '../../__tests__/change-mode';
 import { i18nStrings } from '../../__tests__/i18n-strings';
 import { isValidRange } from '../../__tests__/is-valid-range';
 
-import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
-import styles from '../../../../lib/components/date-range-picker/styles.selectors.js';
+import testutilStyles from '../../../../lib/components/date-range-picker/test-classes/styles.selectors.js';
+// import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));
@@ -54,7 +54,7 @@ describe('Date range picker calendar with day granularity', () => {
   const findFocusableDate = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .find(`.${gridDayStyles.day}[tabIndex="0"]`)
+      .find(`.${testutilStyles.day}[tabIndex="0"]`)
       ?.find(`:not(.${screenreaderOnlyStyles.root})`);
   };
 
@@ -70,12 +70,12 @@ describe('Date range picker calendar with day granularity', () => {
   const findDropdownWeekdays = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .findAll(`.${gridDayStyles['day-header']} :not(.${screenreaderOnlyStyles.root})`)
+      .findAll(`.${testutilStyles['day-header']} :not(.${screenreaderOnlyStyles.root})`)
       .map(day => day.getElement().textContent!.trim());
   };
 
   const findLiveAnnouncement = (wrapper: DateRangePickerWrapper) => {
-    return wrapper.findDropdown()!.findByClassName(styles['calendar-aria-live'])!.getElement();
+    return wrapper.findDropdown()!.findByClassName(testutilStyles['calendar-aria-live'])!.getElement();
   };
 
   beforeEach(() => {

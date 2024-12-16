@@ -20,6 +20,7 @@ import { normalizeTimeOffset } from './time-offset';
 import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } from './utils';
 
 import styles from './styles.css.js';
+import testutilStyles from './test-classes/styles.css.js';
 
 const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
@@ -160,7 +161,7 @@ export function DateRangePickerDropdown({
       <FocusLock className={styles['focus-lock']} autoFocus={true}>
         <div
           ref={scrollableContainerRef}
-          className={styles.dropdown}
+          className={clsx(styles.dropdown, testutilStyles.dropdown)}
           tabIndex={0}
           role="dialog"
           aria-label={i18nStrings?.ariaLabel}
@@ -218,7 +219,7 @@ export function DateRangePickerDropdown({
                 </InternalSpaceBetween>
 
                 <InternalBox
-                  className={styles['validation-section']}
+                  className={testutilStyles['validation-section']}
                   margin={!validationResult.valid ? { top: 's' } : undefined}
                 >
                   {!validationResult.valid && (
@@ -227,7 +228,7 @@ export function DateRangePickerDropdown({
                         type="error"
                         statusIconAriaLabel={i18n('i18nStrings.errorIconAriaLabel', i18nStrings?.errorIconAriaLabel)}
                       >
-                        <span className={styles['validation-error']}>{validationResult.errorMessage}</span>
+                        <span className={testutilStyles['validation-error']}>{validationResult.errorMessage}</span>
                       </InternalAlert>
                       <InternalLiveRegion hidden={true} tagName="span">
                         {validationResult.errorMessage}
@@ -247,7 +248,7 @@ export function DateRangePickerDropdown({
                   <div className={styles['footer-button-wrapper']}>
                     <InternalButton
                       onClick={onClear}
-                      className={styles['clear-button']}
+                      className={testutilStyles['clear-button']}
                       variant="link"
                       formAction="none"
                     >
@@ -259,7 +260,7 @@ export function DateRangePickerDropdown({
                   <InternalSpaceBetween size="xs" direction="horizontal">
                     <InternalButton
                       onClick={closeDropdown}
-                      className={styles['cancel-button']}
+                      className={testutilStyles['cancel-button']}
                       variant="link"
                       formAction="none"
                     >
@@ -268,7 +269,7 @@ export function DateRangePickerDropdown({
 
                     <InternalButton
                       onClick={onApply}
-                      className={styles['apply-button']}
+                      className={testutilStyles['apply-button']}
                       ref={applyButtonRef}
                       formAction="none"
                     >

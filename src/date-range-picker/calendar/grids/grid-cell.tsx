@@ -7,7 +7,7 @@ import useHiddenDescription from '../../../internal/hooks/use-hidden-description
 import { useMergeRefs } from '../../../internal/hooks/use-merge-refs';
 import { applyDisplayName } from '../../../internal/utils/apply-display-name';
 
-import styles from './styles.css.js';
+import testutilStyles from '../../test-classes/styles.css.js';
 
 interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   disabledReason?: string;
@@ -67,12 +67,7 @@ export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.
         <>
           {descriptionEl}
           {showTooltip && (
-            <Tooltip
-              className={styles['disabled-reason-tooltip']}
-              trackRef={ref}
-              value={disabledReason!}
-              onDismiss={() => setShowTooltip(false)}
-            />
+            <Tooltip className={testutilStyles['disabled-reason-tooltip']} trackRef={ref} value={disabledReason!} />
           )}
         </>
       )}
