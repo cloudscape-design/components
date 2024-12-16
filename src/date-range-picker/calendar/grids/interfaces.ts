@@ -41,6 +41,7 @@ export interface SelectGridProps extends GridBaseProps {
    * @returns
    */
   onPageChange: (date: Date) => void;
+
   isSingleGrid: boolean;
 
   headingIdPrefix: string;

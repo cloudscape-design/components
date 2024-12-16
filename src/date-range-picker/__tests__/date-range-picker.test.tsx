@@ -246,8 +246,7 @@ describe('Date range picker', () => {
         const value: any = { type: 'invalid' };
         renderDateRangePicker({ ...updatedProps, value });
 
-        //todo  find out if need to be called twice
-        expect(warnOnce).toHaveBeenCalledTimes(2);
+        expect(warnOnce).toHaveBeenCalledTimes(1);
         expect(warnOnce).toHaveBeenCalledWith(
           'DateRangePicker',
           'You provided an invalid value. Reverting back to default.'

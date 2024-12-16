@@ -413,13 +413,12 @@ export namespace DateRangePickerProps {
      * absolute range.
      */
     endTimeLabel?: string;
-
     /**
      * Constraint text for the input fields for the
      * absolute range.
      */
     dateTimeConstraintText?: string;
-
+    //todo add other constraint texts here from API doc when signed off
     /**
      * Provides a text alternative for the error icon in the error alert.
      */
