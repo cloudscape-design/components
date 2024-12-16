@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-
 import { isIsoDateOnly, isIsoMonthOnly } from '../../../../../lib/components/internal/utils/date-time/is-iso-only';
 
 describe('isIsoDateOnly', () => {

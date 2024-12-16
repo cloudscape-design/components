@@ -9,13 +9,19 @@ import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { RangeCalendarI18nStrings } from '../interfaces';
+import { Granularity, RangeCalendarI18nStrings } from '../interfaces';
 
 import styles from '../styles.css.js';
 
 type I18nStrings = Pick<
   RangeCalendarI18nStrings,
-  'dateTimeConstraintText' | 'startDateLabel' | 'startTimeLabel' | 'endDateLabel' | 'endTimeLabel'
+  | 'dateTimeConstraintText'
+  | 'startMonthLabel'
+  | 'startDateLabel'
+  | 'startTimeLabel'
+  | 'endMonthLabel'
+  | 'endDateLabel'
+  | 'endTimeLabel'
 >;
 
 interface RangeInputsProps extends BaseComponentProps {
@@ -30,6 +36,7 @@ interface RangeInputsProps extends BaseComponentProps {
   i18nStrings?: I18nStrings;
   dateOnly: boolean;
   timeInputFormat: TimeInputProps.Format;
+  granularity?: Granularity;
 }
 
 export default function RangeInputs({
@@ -44,23 +51,36 @@ export default function RangeInputs({
   i18nStrings,
   dateOnly,
   timeInputFormat,
+  granularity = 'day',
 }: RangeInputsProps) {
   const i18n = useInternalI18n('date-range-picker');
+  const isMonthPicker = granularity === 'month';
+  const dateInputPlaceholder = isMonthPicker ? 'YYYY/MM' : 'YYYY/MM/DD';
+  const showTimeInput = !dateOnly && !isMonthPicker;
+
+  //todo confirm if other dateTimeConstraint texts needed for i18n
 
   return (
     <InternalFormField constraintText={i18n('i18nStrings.dateTimeConstraintText', i18nStrings?.dateTimeConstraintText)}>
       <div className={styles['date-and-time-container']}>
         <div className={styles['date-and-time-wrapper']}>
-          <InternalFormField label={i18n('i18nStrings.startDateLabel', i18nStrings?.startDateLabel)} stretch={true}>
+          <InternalFormField
+            stretch={true}
+            label={i18n(
+              isMonthPicker ? 'i18nStrings.startMonthLabel' : 'i18nStrings.startDateLabel',
+              isMonthPicker ? i18nStrings?.startMonthLabel : i18nStrings?.startDateLabel
+            )}
+          >
             <InternalDateInput
               value={startDate}
               className={styles['start-date-input']}
               onChange={event => onChangeStartDate(event.detail.value)}
-              placeholder="YYYY/MM/DD"
+              placeholder={dateInputPlaceholder}
+              granularity={granularity}
             />
           </InternalFormField>
-          {!dateOnly && (
-            <InternalFormField label={i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel)} stretch={true}>
+          {showTimeInput && (
+            <InternalFormField stretch={true} label={i18n('i18nStrings.startTimeLabel', i18nStrings?.startTimeLabel)}>
               <InternalTimeInput
                 value={startTime}
                 onChange={event => onChangeStartTime(event.detail.value)}
@@ -73,15 +93,22 @@ export default function RangeInputs({
         </div>
 
         <div className={styles['date-and-time-wrapper']}>
-          <InternalFormField label={i18n('i18nStrings.endDateLabel', i18nStrings?.endDateLabel)} stretch={true}>
+          <InternalFormField
+            stretch={true}
+            label={i18n(
+              isMonthPicker ? 'i18nStrings.endMonthLabel' : 'i18nStrings.endDateLabel',
+              isMonthPicker ? i18nStrings?.endMonthLabel : i18nStrings?.endDateLabel
+            )}
+          >
             <InternalDateInput
               value={endDate}
               className={styles['end-date-input']}
               onChange={event => onChangeEndDate(event.detail.value)}
-              placeholder="YYYY/MM/DD"
+              placeholder={dateInputPlaceholder}
+              granularity={granularity}
             />
           </InternalFormField>
-          {!dateOnly && (
+          {showTimeInput && (
             <InternalFormField label={i18n('i18nStrings.endTimeLabel', i18nStrings?.endTimeLabel)} stretch={true}>
               <InternalTimeInput
                 value={endTime}
