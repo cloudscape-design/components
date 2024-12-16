@@ -4,7 +4,7 @@ import React from 'react';
 
 import { InternalButton } from '../../../button/internal';
 
-import styles from '../../styles.css.js';
+import testutilStyles from '../../test-classes/styles.css.js';
 
 interface HeaderButtonProps {
   ariaLabel?: string;
@@ -19,7 +19,7 @@ export function PrevPageButton({ ariaLabel, onChangePage }: HeaderButtonProps) {
       variant={'icon'}
       onClick={() => onChangePage(-1)}
       formAction="none"
-      className={styles[`calendar-prev-page-btn`]}
+      className={testutilStyles[`calendar-prev-page-btn`]}
     />
   );
 }
@@ -32,7 +32,7 @@ export function NextPageButton({ ariaLabel, onChangePage }: HeaderButtonProps) {
       variant={'icon'}
       onClick={() => onChangePage(1)}
       formAction="none"
-      className={styles[`calendar-next-page-btn`]}
+      className={testutilStyles[`calendar-next-page-btn`]}
     />
   );
 }

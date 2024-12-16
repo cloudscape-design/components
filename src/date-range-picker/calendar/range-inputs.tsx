@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
+import clsx from 'clsx';
 
 import InternalDateInput from '../../date-input/internal';
 import InternalFormField from '../../form-field/internal';
@@ -12,6 +13,7 @@ import InternalTimeInput from '../../time-input/internal';
 import { Granularity, RangeCalendarI18nStrings } from '../interfaces';
 
 import styles from '../styles.css.js';
+import testutilStyles from '../test-classes/styles.css.js';
 
 type I18nStrings = Pick<
   RangeCalendarI18nStrings,
@@ -73,7 +75,7 @@ export default function RangeInputs({
           >
             <InternalDateInput
               value={startDate}
-              className={styles['start-date-input']}
+              className={clsx(testutilStyles['start-date-input'], isMonthPicker && testutilStyles['start-month-input'])}
               onChange={event => onChangeStartDate(event.detail.value)}
               placeholder={dateInputPlaceholder}
               granularity={granularity}
@@ -86,7 +88,7 @@ export default function RangeInputs({
                 onChange={event => onChangeStartTime(event.detail.value)}
                 format={timeInputFormat}
                 placeholder={timeInputFormat}
-                className={styles['start-time-input']}
+                className={testutilStyles['start-time-input']}
               />
             </InternalFormField>
           )}
@@ -102,7 +104,7 @@ export default function RangeInputs({
           >
             <InternalDateInput
               value={endDate}
-              className={styles['end-date-input']}
+              className={clsx(testutilStyles['end-date-input'], isMonthPicker && testutilStyles['end-month-picker'])}
               onChange={event => onChangeEndDate(event.detail.value)}
               placeholder={dateInputPlaceholder}
               granularity={granularity}
@@ -115,7 +117,7 @@ export default function RangeInputs({
                 onChange={event => onChangeEndTime(event.detail.value)}
                 format={timeInputFormat}
                 placeholder={timeInputFormat}
-                className={styles['end-time-input']}
+                className={testutilStyles['end-time-input']}
               />
             </InternalFormField>
           )}

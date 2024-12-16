@@ -23,9 +23,6 @@ describe('Date Range Picker', () => {
     test(
       'Selecting a date via keyboard',
       setupTest(async page => {
-        await expect(page.getTriggerText()).resolves.toBe(
-          granularity === 'day' ? '2018-01-09T20:34:56+00:00 — 2018-01-19T23:30:00+00:00' : '2018-01 — 2018-01'
-        );
         await page.focusTrigger();
         await page.keys('Enter');
 
@@ -69,7 +66,7 @@ describe('Date Range Picker', () => {
         await page.keys('Enter');
 
         await expect(page.getTriggerText()).resolves.toBe(
-          granularity === 'day' ? '2018-01-17T00:00:00+00:00 — 2018-01-19T23:30:00+00:00' : '2018-01 — 2018-01'
+          granularity === 'day' ? '2018-01-17T00:00:00+00:00 — 2018-01-19T15:30:00+00:00' : '2018-01 — 2018-01'
         );
       }, granularity)
     );

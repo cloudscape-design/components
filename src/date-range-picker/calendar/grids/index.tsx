@@ -27,7 +27,7 @@ import { findDateToFocus } from '../utils';
 import { Grid } from './grid';
 import { SelectGridProps } from './interfaces';
 
-import styles from '../../styles.css.js';
+import testutilStyles from '../../test-classes/styles.css.js';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: CalendarProps.Granularity) {
   const isSame = granularity === 'day' ? isSameMonth : isSameYear;
@@ -115,7 +115,6 @@ export const Grids = ({
         if (!focusedDate || !isDateEnabled(focusedDate)) {
           return;
         }
-        // onFocusDate(null);
         onSelectDate(focusedDate);
       },
       onBlockEnd: () => focusedDate && (updatedFocusDate = moveDown(focusedDate, isDateFocusable)),
@@ -191,14 +190,14 @@ export const Grids = ({
         {!isSingleGrid && (
           <Grid
             {...sharedGridProps}
-            className={styles['first-grid']}
+            className={testutilStyles['first-grid']}
             baseDate={addPages(baseDate, -1)}
             ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
           />
         )}
         <Grid
           {...sharedGridProps}
-          className={styles['second-grid']}
+          className={testutilStyles['second-grid']}
           baseDate={baseDate}
           ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}
         />
