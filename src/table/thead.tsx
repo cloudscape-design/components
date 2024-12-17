@@ -124,7 +124,6 @@ const Thead = React.forwardRef(
               <TableHeaderCell
                 {...commonCellProps}
                 key={columnId}
-                style={getColumnStyles(sticky, columnId)}
                 tabIndex={sticky ? -1 : 0}
                 focusedComponent={focusedComponent}
                 column={column}
@@ -137,6 +136,7 @@ const Thead = React.forwardRef(
                 updateColumn={updateColumn}
                 onResizeFinish={() => onResizeFinish(columnWidths)}
                 resizableColumns={resizableColumns}
+                resizableStyle={getColumnStyles(sticky, columnId)}
                 onClick={detail => {
                   setLastUserAction('sorting');
                   fireNonCancelableEvent(onSortingChange, detail);

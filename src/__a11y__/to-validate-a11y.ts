@@ -63,7 +63,8 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
 
   const htmlValidateResult = htmlValidator.validateString(element.outerHTML);
 
-  const pass = axeResult.violations.length === 0 && axeResult.incomplete.length === 0 && htmlValidateResult.valid;
+  const axeViolations = getAxeViolations(axeResult);
+  const pass = axeViolations.length === 0 && htmlValidateResult.valid;
   if (pass) {
     return { pass, message: () => 'OK' };
   }
@@ -72,7 +73,6 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
     const htmlViolations = (htmlValidateResult.results[0]?.messages || []).map(
       message => `${message.message} [${message.ruleId}]`
     );
-    const axeViolations = axeResult.violations.concat(axeResult.incomplete);
     // TODO: remove polyfill with es2019 support
     const flattenAxeViolations = flatMap(axeViolations, violation =>
       violation.nodes.map(node => `${node.failureSummary} [${violation.id}]`)
@@ -87,6 +87,17 @@ async function toValidateA11y(this: jest.MatcherUtils, element: HTMLElement) {
   };
 
   return { pass, message: generateMessage };
+}
+
+function getAxeViolations(result: Axe.AxeResults) {
+  return ignoreAriaRequiredChildren([...result.violations, ...result.incomplete]);
+}
+
+// As per https://accessibilityinsights.io/info-examples/web/aria-required-children,
+// some roles require children. For example, a role="listbox" requires "group" or "option" children.
+// However, we are currently using empty list elements with aria-description pointing to the footer status text.
+function ignoreAriaRequiredChildren(axeViolations: Axe.Result[]) {
+  return axeViolations.filter(result => result.id !== 'aria-required-children');
 }
 
 expect.extend({

@@ -5,15 +5,12 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { setElementWidths } from './column-widths-utils';
+import { ColumnWidthStyle, setElementWidths } from './column-widths-utils';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 
-export interface ColumnWidthDefinition {
+export interface ColumnWidthDefinition extends ColumnWidthStyle {
   id: PropertyKey;
-  minWidth?: string | number;
-  maxWidth?: string | number;
-  width?: string | number;
 }
 
 function readWidths(
@@ -61,7 +58,7 @@ function updateWidths(
 }
 
 interface WidthsContext {
-  getColumnStyles(sticky: boolean, columnId: PropertyKey): React.CSSProperties;
+  getColumnStyles(sticky: boolean, columnId: PropertyKey): ColumnWidthStyle;
   columnWidths: Map<PropertyKey, number>;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   setCell: (sticky: boolean, columnId: PropertyKey, node: null | HTMLElement) => void;
@@ -98,7 +95,7 @@ export function ColumnWidthsProvider({ visibleColumns, resizableColumns, contain
     }
   };
 
-  const getColumnStyles = (sticky: boolean, columnId: PropertyKey): React.CSSProperties => {
+  const getColumnStyles = (sticky: boolean, columnId: PropertyKey): ColumnWidthStyle => {
     const column = visibleColumns.find(column => column.id === columnId);
     if (!column) {
       return {};
