@@ -8,20 +8,20 @@ import { CSS } from '@dnd-kit/utilities';
 
 import { joinStrings } from '../../utils/strings';
 import Portal from '../portal';
-import { DndContainerItem, DndContainerProps, RenderItemProps } from './interfaces';
+import { DndAreaItem, DndAreaProps, RenderItemProps } from './interfaces';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 
 import styles from './styles.css.js';
 
-export function DndContainer<Data>({
+export function DndArea<Data>({
   items,
   renderItem,
   onItemsChange,
   disableReorder,
   i18nStrings,
   dragOverlayClassName = styles['drag-overlay'],
-}: DndContainerProps<Data>) {
+}: DndAreaProps<Data>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors } = useDragAndDropReorder({
     items,
   });
@@ -116,7 +116,7 @@ function DraggableItem<Data>({
   onKeyDown,
   renderItem,
 }: {
-  item: DndContainerItem<Data>;
+  item: DndAreaItem<Data>;
   dragHandleAriaLabel?: string;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: RenderItemProps<Data>) => React.ReactNode;

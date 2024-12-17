@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { DndContainer } from '../../../../../lib/components/internal/components/dnd-container';
+import { DndContainer } from '../../../../../lib/components/internal/components/dnd-area';
 
 test('renders all items with correct attributes', () => {
   const items = [

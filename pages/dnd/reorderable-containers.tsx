@@ -5,7 +5,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import clsx from 'clsx';
 
 import { Box, Container, SpaceBetween } from '~components';
-import { DndContainer } from '~components/internal/components/dnd-container';
+import { DndArea } from '~components/internal/components/dnd-area';
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
 import { ArrowButtons, i18nStrings } from './commons';
@@ -29,7 +29,7 @@ export function ReorderableContainers<Option extends { id: string; title: string
   renderOption: (props: OptionProps<Option>) => React.ReactNode;
 }) {
   return (
-    <DndContainer
+    <DndArea
       items={options.map(option => ({ id: option.id, label: option.title, data: option }))}
       onItemsChange={items => onReorder(items.map(item => item.data))}
       renderItem={props => {

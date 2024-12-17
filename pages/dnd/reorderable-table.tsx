@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { Box, SpaceBetween } from '~components';
-import { DndContainer } from '~components/internal/components/dnd-container';
+import { DndArea } from '~components/internal/components/dnd-area';
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
 import { i18nStrings } from './commons';
@@ -69,7 +69,7 @@ export function ReorderableTable<Item extends { id: string }>({
           </tr>
         </thead>
         <tbody>
-          <DndContainer
+          <DndArea
             items={items.map(data => ({ id: data.id, label: data.id, data }))}
             onItemsChange={items => onReorder(items.map(item => item.data))}
             renderItem={props => {

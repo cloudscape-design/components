@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/core';
 import { hasSortableData } from '@dnd-kit/sortable';
 
-import { DndContainerItem } from './interfaces';
+import { DndAreaItem } from './interfaces';
 import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {
@@ -44,7 +44,7 @@ enum KeyboardCode {
 // getClosestId function which takes its value from the current component
 // state, to make sure they are always in sync.
 
-export default function useDragAndDropReorder<Data>({ items }: { items: readonly DndContainerItem<Data>[] }) {
+export default function useDragAndDropReorder<Data>({ items }: { items: readonly DndAreaItem<Data>[] }) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
   const [activeItemId, setActiveItemId] = useState<UniqueIdentifier | null>(null);

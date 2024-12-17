@@ -6,7 +6,7 @@ import { useUniqueId } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
 import { Box, SpaceBetween } from '~components';
-import { DndContainer } from '~components/internal/components/dnd-container';
+import { DndArea } from '~components/internal/components/dnd-area';
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
 import { Instance } from '../table/generate-data';
@@ -41,7 +41,7 @@ export function ReorderableList<Option extends { id: string }>({
       {staticOptions.map(option => (
         <li key={option.id}>{renderStaticOption?.(option)}</li>
       ))}
-      <DndContainer
+      <DndArea
         items={sortableOptions.map(option => ({ id: option.id, label: option.id, data: option }))}
         onItemsChange={items => onReorder([...staticOptions, ...items.map(item => item.data)])}
         renderItem={props => {
