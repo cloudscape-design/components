@@ -2,12 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import React, { ForwardedRef, forwardRef } from 'react';
-import { SyntheticListenerMap } from '@dnd-kit/core/dist/hooks/utilities';
 import clsx from 'clsx';
 
 import { Box, Container, SpaceBetween } from '~components';
 import { DndContainer } from '~components/internal/components/dnd-container';
-import DragHandle from '~components/internal/components/drag-handle';
+import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
 import { ArrowButtons, i18nStrings } from './commons';
 
@@ -16,30 +15,34 @@ import styles from './styles.scss';
 interface OptionProps<Option> {
   ref?: ForwardedRef<HTMLDivElement>;
   option: Option;
-  dragHandleAriaLabel?: string;
-  listeners?: SyntheticListenerMap;
+  dragHandleAttributes: DragHandleProps['attributes'];
+  dragHandleListeners?: DragHandleProps['listeners'];
 }
 
-export function ReorderableContainers<Option extends { id: string }>({
+export function ReorderableContainers<Option extends { id: string; title: string }>({
   options,
-  onChange,
+  onReorder,
   renderOption,
 }: {
   options: readonly Option[];
-  onChange: (options: readonly Option[]) => void;
+  onReorder: (options: readonly Option[]) => void;
   renderOption: (props: OptionProps<Option>) => React.ReactNode;
 }) {
   return (
     <DndContainer
-      sortedOptions={options}
-      getId={option => option.id}
-      onChange={onChange}
-      renderOption={props => (
-        <div className={clsx(styles.container, props.isDragging && styles.placeholder)} style={props.style}>
-          {renderOption(props)}
-        </div>
-      )}
-      renderActiveOption={props => <Box>{renderOption(props)}</Box>}
+      items={options.map(option => ({ id: option.id, label: option.title, data: option }))}
+      onItemsChange={items => onReorder(items.map(item => item.data))}
+      renderItem={props => {
+        const className = clsx(styles.container, props.isDragging && styles.placeholder);
+        const content = renderOption({ ...props, option: props.item.data });
+        return props.isActive ? (
+          <Box>{content}</Box>
+        ) : (
+          <div className={className} style={props.style}>
+            {content}
+          </div>
+        );
+      }}
       i18nStrings={i18nStrings}
       dragOverlayClassName={styles['drag-overlay-container']}
     />
@@ -49,13 +52,13 @@ export function ReorderableContainers<Option extends { id: string }>({
 export const ContainerWithDragHandle = forwardRef(
   (
     {
-      dragHandleAriaLabel,
-      listeners,
+      dragHandleAttributes,
+      dragHandleListeners,
       option,
       ...arrowButtonsProps
     }: {
-      dragHandleAriaLabel?: string;
-      listeners?: SyntheticListenerMap;
+      dragHandleAttributes: DragHandleProps['attributes'];
+      dragHandleListeners?: DragHandleProps['listeners'];
       option: { id: string; title: string; content: React.ReactNode };
       disabledUp?: boolean;
       disabledDown?: boolean;
@@ -64,15 +67,12 @@ export const ContainerWithDragHandle = forwardRef(
     },
     ref: ForwardedRef<HTMLDivElement>
   ) => {
-    const dragHandleAttributes = {
-      ['aria-label']: [dragHandleAriaLabel, option.id].join(', '),
-    };
     return (
       <div ref={ref} className={styles['container-option']}>
         <Container
           header={
             <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-              <DragHandle attributes={dragHandleAttributes} listeners={listeners} />
+              <DragHandle attributes={dragHandleAttributes} listeners={dragHandleListeners} />
               <Box variant="h2">{option.title}</Box>
               <ArrowButtons {...arrowButtonsProps} />
             </SpaceBetween>

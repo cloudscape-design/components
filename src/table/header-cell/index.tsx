@@ -13,6 +13,7 @@ import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { KeyCode } from '../../internal/keycode';
 import { GeneratedAnalyticsMetadataTableSort } from '../analytics-metadata/interfaces';
+import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { Divider, Resizer } from '../resizer';
 import { StickyColumnsModel } from '../sticky-columns';
@@ -24,7 +25,6 @@ import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
 export interface TableHeaderCellProps<ItemType> {
-  style?: React.CSSProperties;
   tabIndex: number;
   column: TableProps.ColumnDefinition<ItemType>;
   activeSortingColumn?: TableProps.SortingColumn<ItemType>;
@@ -40,6 +40,7 @@ export interface TableHeaderCellProps<ItemType> {
   colIndex: number;
   updateColumn: (columnId: PropertyKey, newWidth: number) => void;
   resizableColumns?: boolean;
+  resizableStyle?: ColumnWidthStyle;
   isEditable?: boolean;
   columnId: PropertyKey;
   stickyState: StickyColumnsModel;
@@ -53,7 +54,6 @@ export interface TableHeaderCellProps<ItemType> {
 }
 
 export function TableHeaderCell<ItemType>({
-  style,
   tabIndex,
   column,
   activeSortingColumn,
@@ -69,6 +69,7 @@ export function TableHeaderCell<ItemType>({
   colIndex,
   updateColumn,
   resizableColumns,
+  resizableStyle,
   onResizeFinish,
   isEditable,
   columnId,
@@ -120,7 +121,7 @@ export function TableHeaderCell<ItemType>({
 
   return (
     <TableThElement
-      style={style}
+      resizableStyle={resizableStyle}
       cellRef={cellRefCombined}
       sortingStatus={sortingStatus}
       sortingDisabled={sortingDisabled}

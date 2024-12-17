@@ -4,7 +4,7 @@
 import React from 'react';
 
 import { Box, Button, SpaceBetween, StatusIndicator } from '~components';
-import { DndContainerProps } from '~components/internal/components/dnd-container';
+import { DndContainerProps } from '~components/internal/components/dnd-container/interfaces';
 
 import { Instance } from '../table/generate-data';
 import { stateToStatusIndicator } from '../table/shared-configs';
