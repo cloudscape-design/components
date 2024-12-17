@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+import { AppLayoutVisibilityContext } from '../../../app-layout/utils/applayout-visibility-context';
 import { useAppLayoutToolbarEnabled } from '../../../app-layout/utils/feature-flags';
 import { BreadcrumbsSlotContext } from '../../../app-layout/visual-refresh-toolbar/contexts';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
@@ -15,9 +16,10 @@ function useSetGlobalBreadcrumbsImplementation({
   const { isInToolbar } = useContext(BreadcrumbsSlotContext) ?? {};
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
   const [registered, setRegistered] = useState(false);
+  const isLayoutVisible = useContext(AppLayoutVisibilityContext);
 
   useEffect(() => {
-    if (isInToolbar || __disableGlobalization) {
+    if (isInToolbar || __disableGlobalization || !isLayoutVisible) {
       return;
     }
     const registration = awsuiPluginsInternal.breadcrumbs.registerBreadcrumbs(props, isRegistered =>
@@ -30,7 +32,7 @@ function useSetGlobalBreadcrumbsImplementation({
     };
     // subsequent prop changes are handled by another effect
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isInToolbar, __disableGlobalization]);
+  }, [isInToolbar, __disableGlobalization, isLayoutVisible]);
 
   useLayoutEffect(() => {
     registrationRef.current?.update(props);

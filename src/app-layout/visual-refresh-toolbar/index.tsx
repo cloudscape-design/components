@@ -17,6 +17,7 @@ import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
+import { AppLayoutVisibilityContext } from '../utils/applayout-visibility-context';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
@@ -463,7 +464,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     return (
       <>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
-        {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
+        {!hasToolbar && breadcrumbs ? (
+          <AppLayoutVisibilityContext.Provider value={isIntersecting}>
+            <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly>
+          </AppLayoutVisibilityContext.Provider>
+        ) : null}
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
