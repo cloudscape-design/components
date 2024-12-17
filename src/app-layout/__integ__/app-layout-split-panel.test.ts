@@ -258,6 +258,20 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     })
   );
 
+  test(
+    'avoids covering the page content when collapsed at the bottom',
+    setupTest(async page => {
+      const splitPanel = wrapper.findSplitPanel();
+      const splitPanelSelector = wrapper.findSplitPanel().toSelector();
+      const contentSelector = wrapper.findContentRegion().findSpaceBetween().toSelector();
+      await expect(page.isExisting(splitPanel.findOpenButton().toSelector())).resolves.toBe(true);
+      await page.windowScrollTo({ top: 1000 });
+      const { top: splitPAnelTop } = await page.getBoundingBox(splitPanelSelector);
+      const { bottom: contentBottom } = await page.getBoundingBox(contentSelector);
+      expect(splitPAnelTop).toBeGreaterThanOrEqual(contentBottom);
+    })
+  );
+
   describe('interaction with table sticky header', () => {
     // bottom padding is included into the offset in VR but not in classic
     const splitPanelPadding = theme === 'refresh' ? 40 : 0;

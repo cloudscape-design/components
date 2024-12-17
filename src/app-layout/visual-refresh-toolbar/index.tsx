@@ -204,6 +204,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
+    const [splitPanelHeaderBockSize, setSplitPanelHeaderBlockSize] = useState(0);
 
     const onSplitPanelResizeHandler = (size: number) => {
       setSplitPanelSize(size);
@@ -362,9 +363,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToggle: onSplitPanelToggleHandler,
       position: splitPanelPosition,
       reportSize: size => setSplitPanelReportedSize(size),
-      reportHeaderHeight: () => {
-        /*unused in this design*/
-      },
+      reportHeaderHeight: size => setSplitPanelHeaderBlockSize(size),
+      headerHeight: splitPanelHeaderBockSize,
       rightOffset: 0,
       size: splitPanelSize,
       topOffset: 0,
@@ -467,7 +467,12 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
-            paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
+            paddingBlockEnd:
+              splitPanelPosition === 'bottom'
+                ? splitPanelOpen
+                  ? splitPanelReportedSize
+                  : splitPanelHeaderBockSize
+                : '',
             ...(hasToolbar || !isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
