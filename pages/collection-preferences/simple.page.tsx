@@ -31,6 +31,15 @@ export default function CollectionPreferencesPermutations() {
           visibleContentPreference={visibleContentPreference}
           stickyColumnsPreference={stickyColumnsPreference}
           customPreference={customPreference}
+          contentBefore={
+            <Box margin={{ bottom: 's' }}>
+              <Alert type={'warning'} header={'Local storage not enabled'}>
+                Go to your browser settings to enable local storage. This will persist your settings across sessions
+                unless your local storage is cleared. If local storage is not enabled preferences are saved in session
+                storage as a fallback.
+              </Alert>
+            </Box>
+          }
         />
         <CollectionPreferences className={`cp-2`} {...baseProperties} customPreference={customPreference} />
         <CollectionPreferences
@@ -44,13 +53,6 @@ export default function CollectionPreferencesPermutations() {
           className="cp-4"
           {...baseProperties}
           visibleContentPreference={visibleContentPreference}
-          contentBefore={
-            <Box margin={{ bottom: 's' }}>
-              <Alert type={'info'} header={'Test content before'}>
-                Some information
-              </Alert>
-            </Box>
-          }
         />
       </ScreenshotArea>
     </>
