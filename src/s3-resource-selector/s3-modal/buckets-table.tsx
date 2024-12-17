@@ -94,17 +94,6 @@ export function BucketsTable({
           minWidth: '250px',
         },
         {
-          id: 'CreationDate',
-          header: i18n('i18nStrings.columnBucketCreationDate', i18nStrings?.columnBucketCreationDate),
-          ariaLabel: getColumnAriaLabel(
-            i18n,
-            i18nStrings,
-            i18n('i18nStrings.columnBucketCreationDate', i18nStrings?.columnBucketCreationDate)
-          ),
-          sortingComparator: (a, b) => compareDates(a.CreationDate, b.CreationDate),
-          cell: item => formatDefault(item.CreationDate),
-        },
-        {
           id: 'Region',
           header: i18n('i18nStrings.columnBucketRegion', i18nStrings?.columnBucketRegion),
           ariaLabel: getColumnAriaLabel(
@@ -115,6 +104,17 @@ export function BucketsTable({
           sortingField: 'Region',
           cell: item => formatDefault(item.Region),
           minWidth: '150px',
+        },
+        {
+          id: 'CreationDate',
+          header: i18n('i18nStrings.columnBucketCreationDate', i18nStrings?.columnBucketCreationDate),
+          ariaLabel: getColumnAriaLabel(
+            i18n,
+            i18nStrings,
+            i18n('i18nStrings.columnBucketCreationDate', i18nStrings?.columnBucketCreationDate)
+          ),
+          sortingComparator: (a, b) => compareDates(a.CreationDate, b.CreationDate),
+          cell: item => formatDefault(item.CreationDate),
         },
       ]}
       onSelect={item => onSelect(item?.Name ?? '')}
