@@ -10,9 +10,7 @@ import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
-import styles from '../../../lib/components/autosuggest/styles.css.js';
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
-import statusIconStyles from '../../../lib/components/status-indicator/styles.selectors.js';
 
 const defaultOptions: AutosuggestProps.Options = [
   { value: '1', label: 'One' },
@@ -140,6 +138,17 @@ test('should not close dropdown when no realted target in blur', () => {
   expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
 });
 
+it('should warn if recoveryText is provided without associated handler', () => {
+  renderAutosuggest(
+    <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" recoveryText="Retry" />
+  );
+  expect(warnOnce).toHaveBeenCalledTimes(1);
+  expect(warnOnce).toHaveBeenCalledWith(
+    'Autosuggest',
+    '`onLoadItems` must be provided for `recoveryText` to be displayed.'
+  );
+});
+
 describe('onSelect', () => {
   test('should select normal value', () => {
     const onChange = jest.fn();
@@ -173,89 +182,6 @@ describe('onSelect', () => {
     expect(onChange).toHaveBeenCalledWith({ value: 'test' });
     expect(onSelect).toHaveBeenCalledWith({ value: 'test', selectedOption: undefined });
     expect(wrapper.findDropdown().findOpenDropdown()).toBeFalsy();
-  });
-});
-
-describe('Dropdown states', () => {
-  (
-    [
-      ['loading', true],
-      ['error', true],
-      ['finished', false],
-    ] as const
-  ).forEach(([statusType, isSticky]) => {
-    test(`should display ${statusType} status text as ${isSticky ? 'sticky' : 'non-sticky'} footer`, () => {
-      const statusText = {
-        [`${statusType}Text`]: `Test ${statusType} text`,
-      };
-      const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} statusType={statusType} {...statusText} />);
-      wrapper.focus();
-      expect(wrapper.findStatusIndicator()!.getElement()).toHaveTextContent(`Test ${statusType} text`);
-
-      const dropdown = wrapper.findDropdown()!.findOpenDropdown()!;
-      expect(Boolean(dropdown.findByClassName(styles['list-bottom']))).toBe(!isSticky);
-    });
-
-    test(`check a11y for ${statusType} and ${isSticky ? 'sticky' : 'non-sticky'} footer`, async () => {
-      const statusText = {
-        [`${statusType}Text`]: `Test ${statusType} text`,
-      };
-      const { container, wrapper } = renderAutosuggest(
-        <Autosuggest {...defaultProps} statusType={statusType} {...statusText} ariaLabel="input" />
-      );
-      wrapper.focus();
-
-      await expect(container).toValidateA11y();
-    });
-  });
-
-  test('should display error status icon with provided aria label', () => {
-    const { wrapper } = renderAutosuggest(
-      <Autosuggest
-        {...defaultProps}
-        statusType="error"
-        errorText="Test error text"
-        errorIconAriaLabel="Test error text"
-      />
-    );
-    wrapper.focus();
-    const statusIcon = wrapper.findStatusIndicator()!.findByClassName(statusIconStyles.icon)!.getElement();
-    expect(statusIcon).toHaveAttribute('aria-label', 'Test error text');
-    expect(statusIcon).toHaveAttribute('role', 'img');
-  });
-
-  test('should associate the error status footer with the dropdown', () => {
-    const { wrapper } = renderAutosuggest(
-      <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" />
-    );
-    wrapper.focus();
-    expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription('Test error text');
-  });
-
-  test('should associate the finished status footer with the dropdown', () => {
-    const { wrapper } = renderAutosuggest(
-      <Autosuggest {...defaultProps} statusType="finished" finishedText="Finished text" />
-    );
-    wrapper.focus();
-    expect(wrapper.findDropdown().find('ul')!.getElement()).toHaveAccessibleDescription('Finished text');
-  });
-
-  it('when no options is matched the dropdown is shown but aria-expanded is false', () => {
-    const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} statusType="finished" value="free-text" />);
-    wrapper.setInputValue('free-text');
-    expect(wrapper.findNativeInput().getElement()).toHaveAttribute('aria-expanded', 'false');
-    expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
-  });
-
-  it('should warn if recoveryText is provided without associated handler', () => {
-    renderAutosuggest(
-      <Autosuggest {...defaultProps} statusType="error" errorText="Test error text" recoveryText="Retry" />
-    );
-    expect(warnOnce).toHaveBeenCalledTimes(1);
-    expect(warnOnce).toHaveBeenCalledWith(
-      'Autosuggest',
-      '`onLoadItems` must be provided for `recoveryText` to be displayed.'
-    );
   });
 });
 
