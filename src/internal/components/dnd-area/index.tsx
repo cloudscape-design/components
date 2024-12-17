@@ -143,7 +143,10 @@ function DraggableItem<Data>({
           }
         },
       };
-  const className = isDragging ? clsx(styles.placeholder, styles[`placeholder-${borderRadiusVariant}`]) : undefined;
+  const className = clsx(
+    isDragging && clsx(styles.placeholder, styles[`placeholder-${borderRadiusVariant}`]),
+    isSorting && styles.sorting
+  );
   return (
     <>
       {renderItem({
