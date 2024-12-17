@@ -418,7 +418,8 @@ $cell-negative-space-vertical: 2px;
       }
       @include cell-padding-inline-start($editing-cell-padding-inline);
       @include cell-padding-inline-end($editing-cell-padding-inline);
-      @include cell-padding-block($editing-cell-padding-block);
+      @include cell-padding-block-start($editing-cell-padding-block);
+      @include cell-padding-block-end(calc($editing-cell-padding-block + 1px));
     }
 
     &:not(.body-cell-edit-active) {
