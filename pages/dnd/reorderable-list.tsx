@@ -5,7 +5,7 @@ import React, { ForwardedRef, forwardRef } from 'react';
 import { useUniqueId } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
-import { Box, SpaceBetween } from '~components';
+import { SpaceBetween } from '~components';
 import { DndArea } from '~components/internal/components/dnd-area';
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
@@ -44,10 +44,10 @@ export function ReorderableList<Option extends { id: string }>({
         items={sortableOptions.map(option => ({ id: option.id, label: option.id, data: option }))}
         onItemsChange={items => onReorder([...staticOptions, ...items.map(item => item.data)])}
         renderItem={props => {
-          const className = clsx(props.isDragging && styles.placeholder, props.isSorting && styles.sorting);
+          const className = clsx(props.className, styles.option, props.isSorting && styles.sorting);
           const content = renderOption({ ...props, option: props.item.data });
           return props.isActive ? (
-            <Box>{content}</Box>
+            <li className={className}>{content}</li>
           ) : (
             <li className={className} style={props.style}>
               {content}

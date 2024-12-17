@@ -73,7 +73,7 @@ export function ReorderableTable<Item extends { id: string }>({
               const row = (
                 <tr
                   ref={props.ref}
-                  className={clsx(props.isActive ? styles['active-row'] : clsx(props.isDragging && styles.placeholder))}
+                  className={clsx(props.className, styles.row, props.isActive && styles['active-row'])}
                   style={props.isActive ? {} : props.style}
                 >
                   {getColumnDefinitions(props).map((column, index) => (
@@ -90,13 +90,11 @@ export function ReorderableTable<Item extends { id: string }>({
               return !props.isActive ? (
                 row
               ) : (
-                <Box>
-                  <div className={tableStyles['custom-table']}>
-                    <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
-                      <tbody>{row}</tbody>
-                    </table>
-                  </div>
-                </Box>
+                <div className={tableStyles['custom-table']}>
+                  <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
+                    <tbody>{row}</tbody>
+                  </table>
+                </div>
               );
             }}
             i18nStrings={i18nStrings}

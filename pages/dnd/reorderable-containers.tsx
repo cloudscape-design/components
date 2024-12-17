@@ -32,12 +32,11 @@ export function ReorderableContainers<Option extends { id: string; title: string
       items={options.map(option => ({ id: option.id, label: option.title, data: option }))}
       onItemsChange={items => onReorder(items.map(item => item.data))}
       renderItem={props => {
-        const className = clsx(styles.container, props.isDragging && styles.placeholder);
         const content = renderOption({ ...props, option: props.item.data });
         return props.isActive ? (
-          <Box>{content}</Box>
+          content
         ) : (
-          <div className={className} style={props.style}>
+          <div className={clsx(props.className, styles.container)} style={props.style}>
             {content}
           </div>
         );

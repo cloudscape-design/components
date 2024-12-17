@@ -67,6 +67,7 @@ export function DndArea<Data>({
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings.dragHandleAriaLabel}
+            borderRadiusVariant={borderRadiusVariant}
           />
         ))}
       </SortableContext>
@@ -83,6 +84,7 @@ export function DndArea<Data>({
             renderItem({
               item: activeItem,
               style: {},
+              className: styles.active,
               isDragging: true,
               isSorting: false,
               isActive: true,
@@ -118,11 +120,13 @@ function DraggableItem<Data>({
   dragHandleAriaLabel,
   onKeyDown,
   renderItem,
+  borderRadiusVariant,
 }: {
   item: DndAreaItem<Data>;
   dragHandleAriaLabel?: string;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: RenderItemProps<Data>) => React.ReactNode;
+  borderRadiusVariant: 'item' | 'container';
 }) {
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({ id: item.id });
   const style = { transform: CSS.Translate.toString(transform) };
@@ -139,12 +143,14 @@ function DraggableItem<Data>({
           }
         },
       };
+  const className = isDragging ? clsx(styles.placeholder, styles[`placeholder-${borderRadiusVariant}`]) : undefined;
   return (
     <>
       {renderItem({
         item,
         ref: setNodeRef,
         style,
+        className,
         isDragging,
         isSorting,
         isActive: false,

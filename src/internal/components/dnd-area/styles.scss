@@ -28,3 +28,33 @@
     @include drag-overlay-with-radius(awsui.$border-radius-container);
   }
 }
+
+.active {
+  @include styles.default-text-style;
+}
+
+.placeholder {
+  position: relative;
+  &:after {
+    content: ' ';
+    position: absolute;
+    inset: 0;
+    background: awsui.$color-drag-placeholder-hover;
+  }
+  &-item {
+    &:after {
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
+    }
+  }
+  &-container {
+    &:after {
+      border-start-start-radius: awsui.$border-radius-container;
+      border-start-end-radius: awsui.$border-radius-container;
+      border-end-start-radius: awsui.$border-radius-container;
+      border-end-end-radius: awsui.$border-radius-container;
+    }
+  }
+}
