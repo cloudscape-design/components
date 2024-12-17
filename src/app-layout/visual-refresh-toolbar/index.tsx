@@ -204,7 +204,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
-    const [splitPanelHeaderBockSize, setSplitPanelHeaderBlockSize] = useState(0);
+    const [splitPanelHeaderBlockSize, setSplitPanelHeaderBlockSize] = useState(0);
 
     const onSplitPanelResizeHandler = (size: number) => {
       setSplitPanelSize(size);
@@ -364,7 +364,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       position: splitPanelPosition,
       reportSize: size => setSplitPanelReportedSize(size),
       reportHeaderHeight: size => setSplitPanelHeaderBlockSize(size),
-      headerHeight: splitPanelHeaderBockSize,
+      headerHeight: splitPanelHeaderBlockSize,
       rightOffset: 0,
       size: splitPanelSize,
       topOffset: 0,
@@ -471,7 +471,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
               splitPanelPosition === 'bottom'
                 ? splitPanelOpen
                   ? splitPanelReportedSize
-                  : splitPanelHeaderBockSize
+                  : splitPanelHeaderBlockSize
                 : '',
             ...(hasToolbar || !isNested
               ? {
