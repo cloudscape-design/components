@@ -7,7 +7,7 @@ export interface DndAreaProps<Data> {
   onItemsChange: (sortedOptions: readonly DndAreaItem<Data>[]) => void;
   i18nStrings: DndAreaI18nStrings;
   disableReorder?: boolean;
-  dragOverlayClassName?: string;
+  borderRadiusVariant?: 'item' | 'container';
 }
 
 export interface DndAreaItem<Data> {
@@ -20,15 +20,14 @@ export interface RenderItemProps<Data> {
   ref?: React.RefCallback<HTMLElement>;
   item: DndAreaItem<Data>;
   style: React.CSSProperties;
+  className?: string;
   isDragging: boolean;
   isSorting: boolean;
   isActive: boolean;
-  dragHandleAttributes: {
-    'aria-label'?: string;
-    'aria-describedby'?: string;
-    'aria-disabled'?: boolean;
-  };
-  dragHandleListeners?: {
+  dragHandleProps: {
+    ariaLabel: string;
+    ariaDescribedby?: string;
+    disabled?: boolean;
     onPointerDown?: React.PointerEventHandler;
     onKeyDown?: React.KeyboardEventHandler;
   };

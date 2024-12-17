@@ -17,8 +17,7 @@ import styles from './styles.scss';
 interface OptionProps<Option> {
   ref?: ForwardedRef<HTMLDivElement>;
   option: Option;
-  dragHandleAttributes: DragHandleProps['attributes'];
-  dragHandleListeners?: DragHandleProps['listeners'];
+  dragHandleProps: DragHandleProps;
 }
 
 export function ReorderableList<Option extends { id: string }>({
@@ -64,13 +63,11 @@ export function ReorderableList<Option extends { id: string }>({
 export const InstanceOption = forwardRef(
   (
     {
-      dragHandleAttributes,
-      dragHandleListeners,
+      dragHandleProps,
       option,
       sortable = true,
     }: {
-      dragHandleAttributes?: DragHandleProps['attributes'];
-      dragHandleListeners?: DragHandleProps['listeners'];
+      dragHandleProps?: DragHandleProps;
       option: Instance;
       sortable?: boolean;
     },
@@ -80,13 +77,7 @@ export const InstanceOption = forwardRef(
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
       <div ref={ref} className={styles['option-body']}>
-        <DragHandle
-          attributes={{
-            ...dragHandleAttributes,
-            ['aria-disabled']: !sortable,
-          }}
-          listeners={dragHandleListeners}
-        />
+        <DragHandle ariaLabel="" {...dragHandleProps} disabled={!sortable} />
 
         <SpaceBetween size="s">
           <SpaceBetween size="s" direction="horizontal">

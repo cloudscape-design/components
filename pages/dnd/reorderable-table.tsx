@@ -28,10 +28,7 @@ export function ReorderableTable<Item extends { id: string }>({
   onReorder: (items: readonly Item[]) => void;
   columnDefinitions: readonly ColumnDefinition<Item>[];
 }) {
-  const getColumnDefinitions = (props: {
-    dragHandleAttributes: DragHandleProps['attributes'];
-    dragHandleListeners?: DragHandleProps['listeners'];
-  }) => {
+  const getColumnDefinitions = (props: { dragHandleProps: DragHandleProps }) => {
     const firstColumn = columnDefinitions[0];
     const enhancedColumns = columnDefinitions.map(def => ({ ...def }));
     enhancedColumns[0] = {
@@ -39,7 +36,7 @@ export function ReorderableTable<Item extends { id: string }>({
       label: firstColumn.label,
       render: item => (
         <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-          <DragHandle attributes={props.dragHandleAttributes} listeners={props.dragHandleListeners} />
+          <DragHandle {...props.dragHandleProps} />
           <Box>{firstColumn.render(item)}</Box>
         </SpaceBetween>
       ),

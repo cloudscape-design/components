@@ -88,38 +88,3 @@
     border-end-end-radius: awsui.$border-radius-item;
   }
 }
-
-@mixin when-visible-unfocused {
-  // stylelint-disable-next-line selector-combinator-disallowed-list
-  body[data-awsui-focus-visible='true'] & {
-    @content;
-  }
-}
-
-@mixin focus-highlight($border-radius) {
-  position: relative;
-
-  &::before {
-    content: ' ';
-    display: block;
-    position: absolute;
-    inline-size: 100%;
-    block-size: 100%;
-    border-start-start-radius: $border-radius;
-    border-start-end-radius: $border-radius;
-    border-end-start-radius: $border-radius;
-    border-end-end-radius: $border-radius;
-    box-shadow: 0 0 0 2px awsui.$color-border-item-focused;
-  }
-}
-
-.drag-overlay-container {
-  box-shadow: awsui.$shadow-container-active;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
-  @include when-visible-unfocused {
-    @include focus-highlight(awsui.$border-radius-container);
-  }
-}

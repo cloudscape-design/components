@@ -15,8 +15,7 @@ import styles from './styles.scss';
 interface OptionProps<Option> {
   ref?: ForwardedRef<HTMLDivElement>;
   option: Option;
-  dragHandleAttributes: DragHandleProps['attributes'];
-  dragHandleListeners?: DragHandleProps['listeners'];
+  dragHandleProps: DragHandleProps;
 }
 
 export function ReorderableContainers<Option extends { id: string; title: string }>({
@@ -44,7 +43,7 @@ export function ReorderableContainers<Option extends { id: string; title: string
         );
       }}
       i18nStrings={i18nStrings}
-      dragOverlayClassName={styles['drag-overlay-container']}
+      borderRadiusVariant="container"
     />
   );
 }
@@ -52,13 +51,11 @@ export function ReorderableContainers<Option extends { id: string; title: string
 export const ContainerWithDragHandle = forwardRef(
   (
     {
-      dragHandleAttributes,
-      dragHandleListeners,
+      dragHandleProps,
       option,
       ...arrowButtonsProps
     }: {
-      dragHandleAttributes: DragHandleProps['attributes'];
-      dragHandleListeners?: DragHandleProps['listeners'];
+      dragHandleProps: DragHandleProps;
       option: { id: string; title: string; content: React.ReactNode };
       disabledUp?: boolean;
       disabledDown?: boolean;
@@ -72,7 +69,7 @@ export const ContainerWithDragHandle = forwardRef(
         <Container
           header={
             <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-              <DragHandle attributes={dragHandleAttributes} listeners={dragHandleListeners} />
+              <DragHandle {...dragHandleProps} />
               <Box variant="h2">{option.title}</Box>
               <ArrowButtons {...arrowButtonsProps} />
             </SpaceBetween>
