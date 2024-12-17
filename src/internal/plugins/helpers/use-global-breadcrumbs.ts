@@ -2,9 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { AppLayoutVisibilityContext } from '../../../app-layout/utils/applayout-visibility-context';
 import { useAppLayoutToolbarEnabled } from '../../../app-layout/utils/feature-flags';
-import { BreadcrumbsSlotContext } from '../../../app-layout/visual-refresh-toolbar/contexts';
+import {
+  AppLayoutVisibilityContext,
+  BreadcrumbsSlotContext,
+} from '../../../app-layout/visual-refresh-toolbar/contexts';
 import { BreadcrumbGroupProps } from '../../../breadcrumb-group/interfaces';
 import { awsuiPluginsInternal } from '../api';
 import { BreadcrumbsGlobalRegistration } from '../controllers/breadcrumbs';
@@ -14,9 +16,9 @@ function useSetGlobalBreadcrumbsImplementation({
   ...props
 }: BreadcrumbGroupProps<any> & { __disableGlobalization?: boolean }) {
   const { isInToolbar } = useContext(BreadcrumbsSlotContext) ?? {};
+  const isLayoutVisible = useContext(AppLayoutVisibilityContext) ?? true;
   const registrationRef = useRef<BreadcrumbsGlobalRegistration<BreadcrumbGroupProps> | null>();
   const [registered, setRegistered] = useState(false);
-  const isLayoutVisible = useContext(AppLayoutVisibilityContext);
 
   useEffect(() => {
     if (isInToolbar || __disableGlobalization || !isLayoutVisible) {

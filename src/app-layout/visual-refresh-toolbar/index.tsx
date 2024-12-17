@@ -17,12 +17,12 @@ import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
-import { AppLayoutVisibilityContext } from '../utils/applayout-visibility-context';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
+import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
@@ -462,13 +462,9 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }, [hasToolbar]);
 
     return (
-      <>
+      <AppLayoutVisibilityContext.Provider value={isIntersecting}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
-        {!hasToolbar && breadcrumbs ? (
-          <AppLayoutVisibilityContext.Provider value={isIntersecting}>
-            <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly>
-          </AppLayoutVisibilityContext.Provider>
-        ) : null}
+        {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           style={{
@@ -537,7 +533,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
         />
-      </>
+      </AppLayoutVisibilityContext.Provider>
     );
   }
 );
