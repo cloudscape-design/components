@@ -4,7 +4,7 @@
 import { useRef } from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
-import { DndContainerI18nStrings, DndContainerItem } from './interfaces';
+import { DndAreaI18nStrings, DndAreaItem } from './interfaces';
 
 export default function useLiveAnnouncements<Data>({
   items,
@@ -13,7 +13,7 @@ export default function useLiveAnnouncements<Data>({
   liveAnnouncementDndItemReordered,
   liveAnnouncementDndItemCommitted,
   liveAnnouncementDndDiscarded,
-}: { items: readonly DndContainerItem<Data>[]; isDragging: boolean } & DndContainerI18nStrings) {
+}: { items: readonly DndAreaItem<Data>[]; isDragging: boolean } & DndAreaI18nStrings) {
   const isFirstAnnouncement = useRef(true);
   if (!isDragging) {
     isFirstAnnouncement.current = true;

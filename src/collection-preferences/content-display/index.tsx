@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
-import { DndContainer } from '../../internal/components/dnd-container';
+import { DndArea } from '../../internal/components/dnd-area';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
@@ -129,13 +129,20 @@ export default function ContentDisplayPreference({
         aria-labelledby={titleId}
         role="list"
       >
-        <DndContainer
+        <DndArea
           items={sortedAndFilteredOptions.map(data => ({ id: data.id, label: data.label, data }))}
           onItemsChange={items => onChange(items.map(({ id, data }) => ({ id, visible: data.visible })))}
           disableReorder={columnFilteringText.trim().length > 0}
-          renderItem={({ ref, item, isDragging, isSorting, isActive, style, ...dragHandle }) => {
-            const className = clsx(getOptionClassName(), isDragging && styles.placeholder, isSorting && styles.sorting);
-            const content = <ContentDisplayOption ref={ref} option={item.data} onToggle={onToggle} {...dragHandle} />;
+          renderItem={({ ref, item, isSorting, isActive, style, className, dragHandleProps }) => {
+            className = clsx(className, getOptionClassName(), isSorting && styles.sorting);
+            const content = (
+              <ContentDisplayOption
+                ref={ref}
+                option={item.data}
+                onToggle={onToggle}
+                dragHandleProps={dragHandleProps}
+              />
+            );
             return isActive ? (
               content
             ) : (
