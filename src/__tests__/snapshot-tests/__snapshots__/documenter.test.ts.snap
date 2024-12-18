@@ -1446,8 +1446,6 @@ to work.",
    It renders the form field in a warning state if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
-
-A maximum of four fields are supported.
 ",
       "name": "definition",
       "optional": false,
@@ -1458,6 +1456,24 @@ A maximum of four fields are supported.
       "name": "disableAddButton",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Optionally specifies the layout of the attributes. By default, all attributes will be
+equally spaced and wrapped into multiple rows on smaller viewports. This property is required if more
+than 8 attributes are specified in the \`definition\`.
+A \`gridLayout\` is an array of objects, containing:
+- \`rows\` (\`number[][]\`): the rows in which to display the attributes. Each row consists of a list of numbers indicating
+  the relative width of each attribute. For example, \`[[1, 1, 1, 1]]\` is a single row of four evenly-spaced attributes,
+  or \`[[1, 2], [1, 1, 1]]\` splits five attributes onto two rows.
+- \`breakpoint\` (\`string\`): optionally specifies that the given entry should only be used when at least that much width is available.
+- \`removeButton\`: optionally configures the remove (or row action) button placement. If this is not provided, the button will be
+  placed at the end of a single row, or below if multiple rows are present. The \`removeButton\` property supports contains two properties:
+  - \`ownRow\` (\`boolean\`): forces the remove button onto its own row.
+  - \`width\` (\`number | 'auto'\`): a number indicating the relative width (equivalent to a \`rows\` entry), or 'auto' to fit to the button width.
+",
+      "name": "gridLayout",
+      "optional": true,
+      "type": "ReadonlyArray<AttributeEditorProps.GridLayout>",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",

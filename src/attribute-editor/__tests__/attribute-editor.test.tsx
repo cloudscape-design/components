@@ -3,6 +3,8 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
 import ButtonDropdown from '../../../lib/components/button-dropdown';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -12,6 +14,22 @@ import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/t
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
 import buttonStyles from '../../../lib/components/button/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
+
+let containerQueryBreakpoint = 'm';
+jest.mock('@cloudscape-design/component-toolkit', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit'),
+  useContainerQuery: jest.fn(),
+}));
+
+beforeEach(() => {
+  jest.spyOn(console, 'warn').mockImplementation();
+  (useContainerQuery as jest.Mock).mockImplementation(() => [containerQueryBreakpoint, () => {}]);
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+  jest.resetAllMocks();
+});
 
 interface Item {
   key: string;
@@ -546,12 +564,7 @@ describe('Attribute Editor', () => {
           },
         ],
       });
-      const [labelId, inputId] = wrapper
-        .findRow(1)!
-        .find('[role="group"]')!
-        .getElement()
-        .getAttribute('aria-labelledby')!
-        .split(' ');
+      const [labelId, inputId] = wrapper.findRow(1)!.getElement().getAttribute('aria-labelledby')!.split(' ');
       const label =
         wrapper.getElement().querySelector(`#${labelId}`)!.textContent +
         ' ' +
@@ -620,6 +633,51 @@ describe('Attribute Editor', () => {
       expect(wrapper.findRow(1)!.findRemoveButton()).toBeFalsy();
       expect(wrapper.findRow(2)!.findRemoveButton()).toBeTruthy();
       expect(wrapper.findRow(3)!.findRemoveButton()).toBeFalsy();
+    });
+  });
+
+  describe('responsiveness', () => {
+    test('should pass resolved breakpoints from the gridLayout to useContainerQuery - 1', () => {
+      render(<AttributeEditor {...defaultProps} gridLayout={[{ breakpoint: 'default', rows: [] }]} />);
+      expect(useContainerQuery).toHaveBeenCalledWith(expect.any(Function), ['default']);
+    });
+    test('should pass resolved breakpoints from the gridLayout to useContainerQuery - 2', () => {
+      render(
+        <AttributeEditor
+          {...defaultProps}
+          gridLayout={[
+            { breakpoint: 'default', rows: [] },
+            { breakpoint: 'xl', rows: [] },
+            { breakpoint: 's', rows: [] },
+          ]}
+        />
+      );
+      expect(useContainerQuery).toHaveBeenCalledWith(expect.any(Function), ['default,xl,s']);
+    });
+  });
+
+  describe('warnings', () => {
+    test('should warn if no layout supplied for >8 attributes', () => {
+      render(<AttributeEditor {...defaultProps} definition={new Array(10)} />);
+      expect(console.warn).toHaveBeenCalledWith(
+        'AttributeEditor',
+        '`gridLayout` is required for more than 8 attributes. Cannot render.'
+      );
+    });
+    test('should warn if no grid layout found for current breakpoint', () => {
+      containerQueryBreakpoint = 'm';
+      render(<AttributeEditor {...defaultProps} gridLayout={[{ breakpoint: 'xl', rows: [] }]} />);
+      expect(console.warn).toHaveBeenCalledWith(
+        'AttributeEditor',
+        'No `gridLayout` entry found for breakpoint m. Cannot render.'
+      );
+    });
+    test('should warn if grid layout does not match definition', () => {
+      render(<AttributeEditor {...defaultProps} gridLayout={[{ rows: [[1]] }]} />);
+      expect(console.warn).toHaveBeenCalledWith(
+        'AttributeEditor',
+        'Incorrect number of columns in layout (1) for definition (3). Cannot render.'
+      );
     });
   });
 });

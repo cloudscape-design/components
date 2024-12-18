@@ -98,7 +98,7 @@ export default function AttributeEditorPage() {
 
   return (
     <Box margin="xl">
-      <h1>Attribute Editor - Functional</h1>
+      <h1>Attribute Editor - Custom row actions</h1>
       <AttributeEditor<Tag>
         ref={ref}
         {...labelProps}
