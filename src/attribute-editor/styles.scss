@@ -28,10 +28,6 @@
 .divider {
   grid-column: 1 / -1;
   border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
-  .row:last-child > &,
-  .row:nth-last-child(2) > & {
-    display: none;
-  }
 }
 
 .row-control {

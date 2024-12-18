@@ -10,7 +10,7 @@ import { useInternalI18n } from '../i18n/context';
 import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { AttributeEditorProps } from './interfaces';
-import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSingleLine } from './utils';
+import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSameLine } from './utils';
 
 import styles from './styles.css.js';
 
@@ -73,7 +73,7 @@ export const Row = React.memo(
 
     let gridColumnStart = 1;
     let gridColumnEnd = 1;
-    const removeButtonOnSingleLine = isRemoveButtonOnSingleLine(layout);
+    const removeButtonOnSameLine = isRemoveButtonOnSameLine(layout);
 
     return (
       <div
@@ -107,8 +107,8 @@ export const Row = React.memo(
         })}
         <div
           className={clsx(styles['remove-button-container'], {
-            [styles['remove-button-field-padding']]: removeButtonOnSingleLine && index === 0,
-            [styles['remove-button-own-row']]: !removeButtonOnSingleLine,
+            [styles['remove-button-field-padding']]: removeButtonOnSameLine && index === 0,
+            [styles['remove-button-own-row']]: !removeButtonOnSameLine,
           })}
           style={{ ...getRemoveButtonGridColumns(layout, gridColumnEnd) }}
         >
@@ -127,7 +127,7 @@ export const Row = React.memo(
               </InternalButton>
             ))}
         </div>
-        {layout.rows.length > 1 && <div className={styles.divider} />}
+        {!removeButtonOnSameLine && <div className={styles.divider} />}
       </div>
     );
   }

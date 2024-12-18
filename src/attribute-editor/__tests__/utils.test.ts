@@ -5,7 +5,7 @@ import {
   getGridTemplateColumns,
   getItemGridColumns,
   getRemoveButtonGridColumns,
-  isRemoveButtonOnSingleLine,
+  isRemoveButtonOnSameLine,
 } from '../utils';
 
 describe('utils', () => {
@@ -57,13 +57,13 @@ describe('utils', () => {
     });
   });
 
-  describe('isRemoveButtonOnSingleLine', () => {
+  describe('isRemoveButtonOnSameLine', () => {
     it('should return true for single row layout without ownRow', () => {
       const layout: AttributeEditorProps.GridLayout = {
         rows: [[1]],
         removeButton: { width: 1 },
       };
-      expect(isRemoveButtonOnSingleLine(layout)).toBe(true);
+      expect(isRemoveButtonOnSameLine(layout)).toBe(true);
     });
 
     it('should return false for single row layout with ownRow', () => {
@@ -71,7 +71,7 @@ describe('utils', () => {
         rows: [[1]],
         removeButton: { width: 1, ownRow: true },
       };
-      expect(isRemoveButtonOnSingleLine(layout)).toBe(false);
+      expect(isRemoveButtonOnSameLine(layout)).toBe(false);
     });
 
     it('should return false for multi-row layout', () => {
@@ -79,7 +79,7 @@ describe('utils', () => {
         rows: [[1], [1]],
         removeButton: { width: 1 },
       };
-      expect(isRemoveButtonOnSingleLine(layout)).toBe(false);
+      expect(isRemoveButtonOnSameLine(layout)).toBe(false);
     });
   });
 

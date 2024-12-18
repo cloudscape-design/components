@@ -35,7 +35,7 @@ export function getRemoveButtonGridColumns(
       ),
     0
   );
-  if (isRemoveButtonOnSingleLine(layout)) {
+  if (isRemoveButtonOnSameLine(layout)) {
     const removeButtonWidth = typeof layout.removeButton?.width === 'number' ? layout.removeButton?.width : 1;
     return {
       gridColumnStart: previousGridColumnEnd,
@@ -45,7 +45,7 @@ export function getRemoveButtonGridColumns(
   return { gridColumnStart: 1, gridColumnEnd: maxColumns + 1 };
 }
 
-export function isRemoveButtonOnSingleLine(layout: AttributeEditorProps.GridLayout) {
+export function isRemoveButtonOnSameLine(layout: AttributeEditorProps.GridLayout) {
   return layout.rows.length === 1 && !layout.removeButton?.ownRow;
 }
 
@@ -59,7 +59,7 @@ export function getGridTemplateColumns(layout: AttributeEditorProps.GridLayout) 
     0
   );
 
-  const removeButtonColumn = isRemoveButtonOnSingleLine(layout)
+  const removeButtonColumn = isRemoveButtonOnSameLine(layout)
     ? layout.removeButton?.width === 'auto'
       ? 'max-content'
       : `${layout.removeButton?.width ?? 1}fr`
