@@ -46,9 +46,7 @@ export function ReorderableList<Option extends { id: string }>({
         renderItem={props => {
           const className = clsx(props.className, styles.option, props.isSorting && styles.sorting);
           const content = renderOption({ ...props, option: props.item.data });
-          return props.isActive ? (
-            <li className={className}>{content}</li>
-          ) : (
+          return (
             <li className={className} style={props.style}>
               {content}
             </li>
