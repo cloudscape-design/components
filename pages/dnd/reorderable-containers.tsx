@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ForwardedRef } from 'react';
 import clsx from 'clsx';
 
 import { Box, Container, SpaceBetween } from '~components';
@@ -31,10 +31,10 @@ export function ReorderableContainers<Option extends { id: string; title: string
     <DndArea
       items={options.map(option => ({ id: option.id, label: option.title, data: option }))}
       onItemsChange={items => onReorder(items.map(item => item.data))}
-      renderItem={props => {
+      renderItem={({ ref, className, style, ...props }) => {
         const content = renderOption({ ...props, option: props.item.data });
         return (
-          <div className={clsx(props.className, styles.container)} style={props.style}>
+          <div ref={ref} className={clsx(className, styles.container)} style={style}>
             {content}
           </div>
         );
@@ -45,36 +45,29 @@ export function ReorderableContainers<Option extends { id: string; title: string
   );
 }
 
-export const ContainerWithDragHandle = forwardRef(
-  (
-    {
-      dragHandleProps,
-      option,
-      ...arrowButtonsProps
-    }: {
-      dragHandleProps: DragHandleProps;
-      option: { id: string; title: string; content: React.ReactNode };
-      disabledUp?: boolean;
-      disabledDown?: boolean;
-      onMoveUp: () => void;
-      onMoveDown: () => void;
-    },
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    return (
-      <div ref={ref} className={styles['container-option']}>
-        <Container
-          header={
-            <SpaceBetween size="xs" direction="horizontal" alignItems="center">
-              <DragHandle {...dragHandleProps} />
-              <Box variant="h2">{option.title}</Box>
-              <ArrowButtons {...arrowButtonsProps} />
-            </SpaceBetween>
-          }
-        >
-          {option.content}
-        </Container>
-      </div>
-    );
-  }
-);
+export const ContainerWithDragHandle = ({
+  dragHandleProps,
+  option,
+  ...arrowButtonsProps
+}: {
+  dragHandleProps: DragHandleProps;
+  option: { id: string; title: string; content: React.ReactNode };
+  disabledUp?: boolean;
+  disabledDown?: boolean;
+  onMoveUp: () => void;
+  onMoveDown: () => void;
+}) => {
+  return (
+    <Container
+      header={
+        <SpaceBetween size="xs" direction="horizontal" alignItems="center">
+          <DragHandle {...dragHandleProps} />
+          <Box variant="h2">{option.title}</Box>
+          <ArrowButtons {...arrowButtonsProps} />
+        </SpaceBetween>
+      }
+    >
+      {option.content}
+    </Container>
+  );
+};

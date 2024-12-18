@@ -69,25 +69,25 @@ export function ReorderableTable<Item extends { id: string }>({
           <DndArea
             items={items.map(data => ({ id: data.id, label: data.id, data }))}
             onItemsChange={items => onReorder(items.map(item => item.data))}
-            renderItem={props => {
+            renderItem={({ item, ref, className, style, isActive, dragHandleProps }) => {
               const row = (
                 <tr
-                  ref={props.ref}
-                  className={clsx(props.className, styles.row, props.isActive && styles['active-row'])}
-                  style={props.isActive ? {} : props.style}
+                  ref={ref}
+                  className={clsx(className, styles.row, isActive && styles['active-row'])}
+                  style={isActive ? {} : style}
                 >
-                  {getColumnDefinitions(props).map((column, index) => (
+                  {getColumnDefinitions({ dragHandleProps }).map((column, index) => (
                     <td
                       key={column.key}
                       className={tableStyles['custom-table-cell']}
-                      style={props.isActive ? { width: columnWidthsRef.current[index] ?? 0 } : undefined}
+                      style={isActive ? { width: columnWidthsRef.current[index] ?? 0 } : undefined}
                     >
-                      {column.render(props.item.data)}
+                      {column.render(item.data)}
                     </td>
                   ))}
                 </tr>
               );
-              return !props.isActive ? (
+              return !isActive ? (
                 row
               ) : (
                 <div className={tableStyles['custom-table']}>
