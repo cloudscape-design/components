@@ -223,7 +223,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const scaledSeries = makeScaledSeries(visibleSeries, xAxisProps.scale, yAxisProps.scale);
   const barGroups: ScaledBarGroup<T>[] = makeScaledBarGroups(visibleSeries, xAxisProps.scale, plotWidth, plotHeight, y);
-  console.log('barGroups', barGroups);
 
   const { isPopoverOpen, isPopoverPinned, showPopover, pinPopover, dismissPopover } = usePopover();
 
