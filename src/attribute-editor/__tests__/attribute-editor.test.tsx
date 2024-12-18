@@ -9,6 +9,7 @@ import Input from '../../../lib/components/input';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 interface Item {
@@ -193,6 +194,18 @@ describe('Attribute Editor', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps });
       const buttonElement = wrapper.findAddButton().getElement();
       expect(buttonElement).not.toHaveAttribute('aria-describedby');
+    });
+
+    test('allows button variant to be changed', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, addButtonVariant: 'inline-link' });
+      const buttonElement = wrapper.findAddButton().getElement();
+      expect(buttonElement).toHaveClass(buttonStyles['variant-inline-link']);
+    });
+
+    test('adds icon for inline-link variant', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, addButtonVariant: 'inline-link' });
+      const buttonElement = wrapper.findAddButton().getElement();
+      expect(createWrapper(buttonElement).findIcon()).toBeTruthy();
     });
   });
 
