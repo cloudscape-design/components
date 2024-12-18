@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import styles from './styles.css.js';
 
-export interface MobileExpandableGroupProps {
+interface MobileExpandableGroupProps {
   /**
    * Trigger element.
    */

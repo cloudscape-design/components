@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import styles from './styles.css.js';
 
-export interface ScreenreaderOnlyProps {
+interface ScreenreaderOnlyProps {
   id?: string;
   className?: string;
   children?: React.ReactNode;

@@ -7,13 +7,13 @@ import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfac
 import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
 import { AutosuggestProps } from './interfaces';
 
-export interface UseAutosuggestLoadMoreProps {
+interface UseAutosuggestLoadMoreProps {
   options?: AutosuggestProps.Options;
   statusType: DropdownStatusProps.StatusType;
   onLoadItems: (detail: OptionsLoadItemsDetail) => void;
 }
 
-export interface AutosuggestLoadMoreHandlers {
+interface AutosuggestLoadMoreHandlers {
   fireLoadMoreOnScroll(): void;
   fireLoadMoreOnRecoveryClick(): void;
   fireLoadMoreOnInputFocus(): void;
@@ -50,7 +50,8 @@ export const useAutosuggestLoadMore = ({
 
   const fireLoadMoreOnRecoveryClick = () => fireLoadMore({ firstPage: false, samePage: true });
 
-  const fireLoadMoreOnInputFocus = () => fireLoadMore({ firstPage: true, samePage: false, filteringText: '' });
+  const fireLoadMoreOnInputFocus = () =>
+    fireLoadMore({ firstPage: true, samePage: false, filteringText: lastFilteringText.current ?? '' });
 
   const fireLoadMoreOnInputChange = (filteringText: string) =>
     fireLoadMore({ firstPage: true, samePage: false, filteringText });

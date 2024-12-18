@@ -90,4 +90,39 @@ describe('Button', () => {
       );
     })
   );
+
+  test(
+    'Emits a mark when evaluateComponentVisibility event for button components',
+    setupTest('performance-marks', async ({ page, getMarks, getElementPerformanceMarkText }) => {
+      let marks = await getMarks();
+      expect(marks).toHaveLength(1);
+
+      await page.click('#evaluateComponentVisibility');
+
+      marks = await getMarks();
+      expect(marks).toHaveLength(2);
+
+      expect(marks[0].name).toBe('primaryButtonRendered');
+      expect(marks[0].detail).toMatchObject({
+        source: 'awsui',
+        instanceIdentifier: marks[0].detail.instanceIdentifier,
+        loading: true,
+        disabled: false,
+        text: 'Primary button',
+      });
+
+      await expect(getElementPerformanceMarkText(marks[0].detail.instanceIdentifier)).resolves.toBe('Primary button');
+
+      expect(marks[1].name).toBe('primaryButtonUpdated');
+      expect(marks[1].detail).toMatchObject({
+        source: 'awsui',
+        instanceIdentifier: marks[1].detail.instanceIdentifier,
+        loading: true,
+        disabled: false,
+        text: 'Primary button',
+      });
+
+      await expect(getElementPerformanceMarkText(marks[1].detail.instanceIdentifier)).resolves.toBe('Primary button');
+    })
+  );
 });

@@ -26,7 +26,7 @@ const InternalStep = ({ status, statusIconAriaLabel, header, details }: StepsPro
   );
 };
 
-export const InternalSteps = ({
+const InternalSteps = ({
   steps,
   ariaLabel,
   ariaLabelledby,

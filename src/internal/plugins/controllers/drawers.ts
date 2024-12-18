@@ -3,9 +3,9 @@
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
 
-export type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
+type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
-export interface MountContentContext {
+interface MountContentContext {
   onVisibilityChange: DrawerVisibilityChange;
 }
 
@@ -51,11 +51,11 @@ export type UpdateDrawerConfig = { id: DrawerConfig['id'] } & Partial<
   Pick<DrawerConfig, (typeof updatableProperties)[number]>
 >;
 
-export type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
+type DrawersRegistrationListener = (drawers: Array<DrawerConfig>) => void;
 
 export type DrawersToggledListener = (drawerId: string, params?: OpenCloseDrawerParams) => void;
 
-export interface OpenCloseDrawerParams {
+interface OpenCloseDrawerParams {
   initiatedByUserAction: boolean;
 }
 

@@ -16,7 +16,7 @@ import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-compon
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { FilterRef, PaginationRef, TableComponentsContext } from '../internal/context/table-component-context';
+import { FilterRef, PaginationRef, TableComponentsContextProvider } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -36,6 +36,7 @@ import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { NoDataCell } from './no-data-cell';
+import { getLoaderContent } from './progressive-loading/items-loader';
 import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
@@ -133,6 +134,7 @@ const InternalTable = React.forwardRef(
       renderLoaderPending,
       renderLoaderLoading,
       renderLoaderError,
+      renderLoaderEmpty,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -402,7 +404,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContext.Provider value={{ paginationRef, filterRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
@@ -621,15 +623,11 @@ const InternalTable = React.forwardRef(
                                     <TableBodyCell
                                       key={getColumnKey(column, colIndex)}
                                       {...sharedCellProps}
-                                      style={
-                                        resizableColumns
-                                          ? {}
-                                          : {
-                                              width: column.width,
-                                              minWidth: column.minWidth,
-                                              maxWidth: column.maxWidth,
-                                            }
-                                      }
+                                      resizableStyle={{
+                                        width: column.width,
+                                        minWidth: column.minWidth,
+                                        maxWidth: column.maxWidth,
+                                      }}
                                       ariaLabels={ariaLabels}
                                       column={column}
                                       item={row.item}
@@ -655,33 +653,42 @@ const InternalTable = React.forwardRef(
                               </tr>
                             );
                           }
+
+                          const loaderContent = getLoaderContent({
+                            item: row.item,
+                            loadingStatus: row.status,
+                            renderLoaderPending,
+                            renderLoaderLoading,
+                            renderLoaderError,
+                            renderLoaderEmpty,
+                          });
                           return (
-                            <tr
-                              key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
-                              className={styles.row}
-                              {...rowRoleProps}
-                            >
-                              {getItemSelectionProps && (
-                                <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
-                              )}
-                              {visibleColumnDefinitions.map((column, colIndex) => (
-                                <TableLoaderCell
-                                  key={getColumnKey(column, colIndex)}
-                                  {...sharedCellProps}
-                                  wrapLines={false}
-                                  columnId={column.id ?? colIndex}
-                                  colIndex={colIndex + colIndexOffset}
-                                  isRowHeader={colIndex === 0}
-                                  level={row.level}
-                                  item={row.item}
-                                  loadingStatus={row.status}
-                                  renderLoaderPending={renderLoaderPending}
-                                  renderLoaderLoading={renderLoaderLoading}
-                                  renderLoaderError={renderLoaderError}
-                                  trackBy={trackBy}
-                                />
-                              ))}
-                            </tr>
+                            loaderContent && (
+                              <tr
+                                key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
+                                className={styles.row}
+                                {...rowRoleProps}
+                              >
+                                {getItemSelectionProps && (
+                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
+                                )}
+                                {visibleColumnDefinitions.map((column, colIndex) => (
+                                  <TableLoaderCell
+                                    key={getColumnKey(column, colIndex)}
+                                    {...sharedCellProps}
+                                    wrapLines={false}
+                                    columnId={column.id ?? colIndex}
+                                    colIndex={colIndex + colIndexOffset}
+                                    isRowHeader={colIndex === 0}
+                                    level={row.level}
+                                    item={row.item}
+                                    trackBy={trackBy}
+                                  >
+                                    {loaderContent}
+                                  </TableLoaderCell>
+                                ))}
+                              </tr>
+                            )
                           );
                         })
                       )}
@@ -701,7 +708,7 @@ const InternalTable = React.forwardRef(
               />
             </InternalContainer>
           </ColumnWidthsProvider>
-        </TableComponentsContext.Provider>
+        </TableComponentsContextProvider>
       </LinkDefaultVariantContext.Provider>
     );
   }

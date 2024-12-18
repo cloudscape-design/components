@@ -28,8 +28,6 @@ import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems
 
 import styles from './styles.css.js';
 
-export { FlashbarProps };
-
 // If the number of items is equal or less than this value,
 // the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
 const maxNonCollapsibleItems = 1;

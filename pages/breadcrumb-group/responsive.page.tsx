@@ -20,7 +20,7 @@ export default function ResponsiveBreadcrumbsPage() {
             <ResponsiveBreadcrumbs
               widths={[900, 800, 700, 600, 500, 400, 300, 200]}
               items={[
-                'A',
+                'Amazon service name',
                 'Longer breadrcumb',
                 'ABC',
                 'Another even longer breadcrumb',

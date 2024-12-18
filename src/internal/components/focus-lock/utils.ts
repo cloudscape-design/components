@@ -33,7 +33,7 @@ export function getAllFocusables(container: HTMLElement): HTMLElement[] {
   return Array.prototype.slice.call(container.querySelectorAll(tabbables));
 }
 
-export function getFocusables(container: HTMLElement): HTMLElement[] {
+function getFocusables(container: HTMLElement): HTMLElement[] {
   return getAllFocusables(container).filter((element: HTMLElement) => element.tabIndex !== -1);
 }
 

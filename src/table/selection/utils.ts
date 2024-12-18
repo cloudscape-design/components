@@ -5,7 +5,7 @@ import { TableProps } from '../interfaces';
 import { getTrackableValue } from '../utils';
 
 export const SELECTION_ITEM = 'selection-item';
-export const SELECTION_ROOT = 'selection-root';
+const SELECTION_ROOT = 'selection-root';
 
 // A set, that compares items by their "trackables" (the results of applying `trackBy` to them)
 export class ItemSet<T> {

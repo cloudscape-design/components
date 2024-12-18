@@ -10,7 +10,7 @@ import { TopNavigationProps } from '../interfaces';
 
 import styles from '../styles.css.js';
 
-export interface OverflowMenuProps extends BaseComponentProps {
+interface OverflowMenuProps extends BaseComponentProps {
   utilities: ReadonlyArray<TopNavigationProps.Utility>;
 
   isNarrowViewport?: boolean;

@@ -36,7 +36,7 @@ import {
   getTextFromSelector,
 } from '../selectors';
 
-export const FUNNEL_VERSION = '1.4';
+const FUNNEL_VERSION = '1.4';
 
 interface AnalyticsFunnelProps {
   mounted?: boolean;

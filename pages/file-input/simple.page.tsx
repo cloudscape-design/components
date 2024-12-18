@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Box, ColumnLayout, FileInput } from '~components';
+import { Box, ColumnLayout, FileInput, FileInputProps } from '~components';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -10,10 +10,13 @@ export default function DateInputScenario() {
   const [files, setFiles] = useState<File[]>([]);
   const [files2, setFiles2] = useState<File[]>([]);
 
+  const ref = React.useRef<FileInputProps.Ref>(null);
+
   return (
     <ScreenshotArea>
       <Box padding="l">
         <h1>File input</h1>
+        <button onClick={() => ref.current?.focus()}>Focus file input</button>
         <ColumnLayout columns={2}>
           <div>
             <FileInput
@@ -21,6 +24,7 @@ export default function DateInputScenario() {
               ariaLabel="prompt file input"
               variant="icon"
               value={files}
+              ref={ref}
               onChange={event => setFiles(event.detail.value)}
             />
 

@@ -22,7 +22,7 @@ export interface MaskArgs {
   segments: Array<FormatSegment>;
 }
 
-export interface ChangeResult {
+interface ChangeResult {
   value: string;
   position: number;
 }

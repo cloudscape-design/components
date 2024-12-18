@@ -23,7 +23,6 @@ describe('Data attribute', () => {
     const { getByTestId, rerender } = render(<Demo />);
 
     const attributeValueBefore = getByTestId('element').getAttribute('data-analytics-performance-mark');
-
     rerender(<Demo />);
 
     expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-mark');

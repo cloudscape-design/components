@@ -22,6 +22,7 @@ import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-con
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
+import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
@@ -204,6 +205,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     );
 
     const [splitPanelReportedSize, setSplitPanelReportedSize] = useState(0);
+    const [splitPanelHeaderBlockSize, setSplitPanelHeaderBlockSize] = useState(0);
 
     const onSplitPanelResizeHandler = (size: number) => {
       setSplitPanelSize(size);
@@ -362,9 +364,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onToggle: onSplitPanelToggleHandler,
       position: splitPanelPosition,
       reportSize: size => setSplitPanelReportedSize(size),
-      reportHeaderHeight: () => {
-        /*unused in this design*/
-      },
+      reportHeaderHeight: size => setSplitPanelHeaderBlockSize(size),
+      headerHeight: splitPanelHeaderBlockSize,
       rightOffset: 0,
       size: splitPanelSize,
       topOffset: 0,
@@ -461,14 +462,19 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }, [hasToolbar]);
 
     return (
-      <>
+      <AppLayoutVisibilityContext.Provider value={isIntersecting}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
           style={{
-            paddingBlockEnd: splitPanelOpen && splitPanelPosition === 'bottom' ? splitPanelReportedSize : '',
+            paddingBlockEnd:
+              splitPanelPosition === 'bottom'
+                ? splitPanelOpen
+                  ? splitPanelReportedSize
+                  : splitPanelHeaderBlockSize
+                : '',
             ...(hasToolbar || !isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
@@ -528,7 +534,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
         />
-      </>
+      </AppLayoutVisibilityContext.Provider>
     );
   }
 );

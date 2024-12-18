@@ -21,9 +21,9 @@ import { formatValue, getDefaultMode, joinAbsoluteValue, splitAbsoluteValue } fr
 
 import styles from './styles.css.js';
 
-export const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
+const VALID_RANGE: DateRangePickerProps.ValidRangeResult = { valid: true };
 
-export interface DateRangePickerDropdownProps
+interface DateRangePickerDropdownProps
   extends Pick<
       Required<DateRangePickerProps>,
       | 'locale'

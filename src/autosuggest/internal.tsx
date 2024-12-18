@@ -30,7 +30,7 @@ import AutosuggestOptionsList from './options-list';
 
 import styles from './styles.css.js';
 
-export interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
+interface InternalAutosuggestProps extends AutosuggestProps, InternalBaseComponentProps {}
 
 const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, ref: Ref<AutosuggestProps.Ref>) => {
   const {
@@ -195,7 +195,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     hasRecoveryCallback: !!onLoadItems,
   });
 
-  const shouldRenderDropdownContent = !isEmpty || dropdownStatus.content;
+  const shouldRenderDropdownContent = !isEmpty || !!dropdownStatus.content;
 
   return (
     <AutosuggestInput
@@ -222,7 +222,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       expandToViewport={expandToViewport}
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
-      dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
+      dropdownExpanded={shouldRenderDropdownContent}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

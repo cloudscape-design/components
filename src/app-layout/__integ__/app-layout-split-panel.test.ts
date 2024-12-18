@@ -1,88 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
+import { AppLayoutSplitViewPage } from './utils';
 
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
 
 const wrapper = createWrapper().findAppLayout();
-class AppLayoutSplitViewPage extends BasePageObject {
-  async openPanel() {
-    await this.click(wrapper.findSplitPanel().findOpenButton().toSelector());
-  }
-
-  // the argument here is the position value
-  async switchPosition(position: 'bottom' | 'side') {
-    await this.click(wrapper.findSplitPanel().findPreferencesButton().toSelector());
-    const tile = createWrapper().findModal().findContent().findTiles().findItemByValue(position);
-    await this.click(tile.toSelector());
-    await this.click('button=Confirm');
-  }
-
-  async dragResizerTo({ x: targetX, y: targetY }: { x: number; y: number }) {
-    const resizerSelector = wrapper.findSplitPanel().findSlider().toSelector();
-    const resizerBox = await this.getBoundingBox(resizerSelector);
-    await this.browser.performActions([
-      {
-        type: 'pointer',
-        id: 'mouse',
-        parameters: { pointerType: 'mouse' },
-        actions: [
-          { type: 'pointerMove', duration: 0, x: Math.ceil(resizerBox.left), y: Math.ceil(resizerBox.top) }, // hover on the resizer
-          { type: 'pointerDown', button: 0 },
-          { type: 'pause', duration: 30 }, // extra delay to allow event listeners to update
-          { type: 'pointerMove', duration: 0, x: targetX, y: targetY },
-          { type: 'pause', duration: 30 }, // extra delay to allow event listeners to update
-          { type: 'pointerUp', button: 0 },
-        ],
-      },
-    ]);
-  }
-
-  async getPanelPosition() {
-    if (await this.isExisting(wrapper.findSplitPanel().findSlider().toSelector())) {
-      if (await this.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())) {
-        return 'bottom';
-      }
-      return 'side';
-    }
-    // can't detect position when the panel is closed
-    return undefined;
-  }
-
-  getSplitPanelSize() {
-    return this.getBoundingBox(wrapper.findSplitPanel().toSelector());
-  }
-
-  async getSplitPanelSliderValue() {
-    const attrValue = await this.getElementAttribute(
-      wrapper.findSplitPanel().findSlider().toSelector(),
-      'aria-valuenow'
-    );
-    return parseFloat(attrValue);
-  }
-
-  getContentOffsetBottom(theme: string) {
-    const contentSelector = wrapper.findContentRegion().toSelector();
-    switch (theme) {
-      case 'classic':
-        return this.browser.execute(contentSelector => {
-          return getComputedStyle(document.querySelector(contentSelector)!.parentElement!.parentElement!).marginBottom;
-        }, contentSelector);
-      case 'refresh':
-        return this.browser.execute(contentSelector => {
-          return getComputedStyle(document.querySelector(contentSelector)!).paddingBottom;
-        }, contentSelector);
-      case 'refresh-toolbar':
-        return this.browser.execute(contentSelector => {
-          return getComputedStyle(document.querySelector(contentSelector)!.parentElement!).paddingBottom;
-        }, contentSelector);
-    }
-  }
-}
 
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme => {
   function setupTest(
@@ -105,6 +30,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   test(
     'slider is accessible by keyboard in side position',
     setupTest(async page => {
+      await page.click(wrapper.findNavigationClose().toSelector());
       await page.openPanel();
       await page.switchPosition('side');
       await page.keys(['Shift', 'Tab', 'Shift']);
@@ -244,15 +170,21 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.openPanel();
         await page.switchPosition('side');
         const { width } = await page.getViewportSize();
+
+        // Drag the resizer to the right (i.e, make the split panel narrower) as much as possible
         await page.dragResizerTo({ x: width, y: 0 });
         expect((await page.getSplitPanelSize()).width).toEqual(280);
 
+        // Drag the resizer to the left (i.e, make the split panel wider) as much as possible
         await page.dragResizerTo({ x: 0, y: 0 });
+
+        const arePaddingsEnabled = name === 'paddings enabled';
+
         // different design allows for different split panel max width
         const expectedWidth = {
-          classic: 520,
-          refresh: name === 'paddings enabled' ? 445 : 469,
-          'refresh-toolbar': 592,
+          classic: arePaddingsEnabled ? 520 - scrollbarThickness : 520,
+          refresh: arePaddingsEnabled ? 445 - 2 * scrollbarThickness : 469 - scrollbarThickness,
+          'refresh-toolbar': arePaddingsEnabled ? 592 - scrollbarThickness : 592,
         };
         expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
       }, url)
@@ -323,6 +255,20 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       await page.windowScrollTo({ top: 500 });
       const { top: offsetAfter } = await page.getBoundingBox(splitPanelSelector);
       expect(offsetAfter).toEqual(offsetBefore);
+    })
+  );
+
+  test(
+    'avoids covering the page content when collapsed at the bottom',
+    setupTest(async page => {
+      const splitPanel = wrapper.findSplitPanel();
+      const splitPanelSelector = wrapper.findSplitPanel().toSelector();
+      const contentSelector = wrapper.findContentRegion().findSpaceBetween().toSelector();
+      await expect(page.isExisting(splitPanel.findOpenButton().toSelector())).resolves.toBe(true);
+      await page.windowScrollTo({ top: 1000 });
+      const { top: splitPAnelTop } = await page.getBoundingBox(splitPanelSelector);
+      const { bottom: contentBottom } = await page.getBoundingBox(contentSelector);
+      expect(splitPAnelTop).toBeGreaterThanOrEqual(contentBottom);
     })
   );
 

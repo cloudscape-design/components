@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "パスの表示"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
+  },
   "calendar": {
     "nextMonthAriaLabel": "来月",
     "previousMonthAriaLabel": "前月",

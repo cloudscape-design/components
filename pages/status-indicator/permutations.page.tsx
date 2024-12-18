@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import StatusIndicator, { InternalStatusIndicatorProps } from '~components/status-indicator/internal';
+import InternalStatusIndicator, { InternalStatusIndicatorProps } from '~components/status-indicator/internal';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -38,9 +38,9 @@ export default function StatusIndicatorPermutations() {
           render={permutation => (
             <div style={{ overflow: 'hidden' }}>
               <div style={{ width: permutation.wrapText ? 'auto' : 200 }}>
-                <StatusIndicator {...permutation} iconAriaLabel={`status ${permutation.type}`}>
+                <InternalStatusIndicator {...permutation} iconAriaLabel={`status ${permutation.type}`}>
                   {permutation.children ?? <>Status {permutation.type}</>}
-                </StatusIndicator>
+                </InternalStatusIndicator>
               </div>
             </div>
           )}

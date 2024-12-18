@@ -13,7 +13,7 @@ import { balanceLabelNodes, computeSmartAngle, Dimension } from './utils';
 
 import styles from './styles.css.js';
 
-export interface LabelsProps<T> {
+interface LabelsProps<T> {
   pieData: PieArcDatum<InternalChartDatum<T>>[];
   visibleDataSum: number;
   dimensions: Dimension;

@@ -49,6 +49,9 @@
   "breadcrumb-group": {
     "expandAriaLabel": "Afficher le chemin"
   },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "S’ouvre dans un nouvel onglet"
+  },
   "calendar": {
     "nextMonthAriaLabel": "Mois suivant",
     "previousMonthAriaLabel": "Mois précédent",

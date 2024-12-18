@@ -9,7 +9,7 @@ describe('Date Range Picker', () => {
   const setupTest = (testFn: (page: DateRangePickerPage) => Promise<void>) => {
     return useBrowser(async browser => {
       const page = new DateRangePickerPage(createWrapper().findDateRangePicker().getElement(), browser);
-      await browser.url('#/light/date-range-picker/with-default-date');
+      await browser.url('#/light/date-range-picker/with-value');
       await page.waitForLoad();
       await testFn(page);
     });
@@ -18,6 +18,7 @@ describe('Date Range Picker', () => {
   test(
     'Selecting a date via keyboard',
     setupTest(async page => {
+      await expect(page.getTriggerText()).resolves.toBe('2018-01-09T12:34:56+00:00 — 2018-01-19T15:30:00+00:00');
       await page.focusTrigger();
       await page.keys('Enter');
 
@@ -41,6 +42,7 @@ describe('Date Range Picker', () => {
   test(
     'should choose the correct date input to fill',
     setupTest(async page => {
+      await expect(page.getTriggerText()).resolves.toBe('2018-01-09T12:34:56+00:00 — 2018-01-19T15:30:00+00:00');
       await page.focusTrigger();
       await page.keys('Enter');
 
@@ -65,6 +67,7 @@ describe('Date Range Picker', () => {
   test(
     'should not steal focus when clicking away onto another element',
     setupTest(async page => {
+      await expect(page.getTriggerText()).resolves.toBe('2018-01-09T12:34:56+00:00 — 2018-01-19T15:30:00+00:00');
       await page.focusTrigger();
       await page.keys('Enter');
       await page.focusPrevElement();
@@ -75,6 +78,7 @@ describe('Date Range Picker', () => {
   test(
     'should trap focus inside dropdown',
     setupTest(async page => {
+      await expect(page.getTriggerText()).resolves.toBe('2018-01-09T12:34:56+00:00 — 2018-01-19T15:30:00+00:00');
       await page.focusTrigger();
       await page.keys('Enter');
 
