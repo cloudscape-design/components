@@ -201,6 +201,10 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    * The values for all configured preferences are present even if the user didn't change their values.
    */
   onConfirm?: NonCancelableEventHandler<CollectionPreferencesProps.Preferences<CustomPreferenceType>>;
+  /**
+   * Content displayed before the preferences. Use it to display additional information relating to the preferences.
+   */
+  contentBefore?: React.ReactNode;
 }
 
 export namespace CollectionPreferencesProps {
