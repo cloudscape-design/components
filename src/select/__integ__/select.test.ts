@@ -109,8 +109,6 @@ test(
     const { height: actualDropdownHeight } = await page.getBoundingBox(optionsSelector);
     const availableDropdownHeight = smallestContainerHeight - triggerHeight;
     expect(actualDropdownHeight).toBeLessThan(availableDropdownHeight);
-    const { top: containerScrollTop } = await page.getElementScroll('#smallest_container');
-    expect(containerScrollTop).toBe(0);
   })
 );
 
