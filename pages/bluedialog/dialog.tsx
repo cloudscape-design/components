@@ -50,7 +50,7 @@ export default function Bluedialog({ onSubmit }: any) {
         <div className={styles['blue-dialog-box__content']}>
           <SpaceBetween direction="vertical" size="l">
             <FormField label="What did you dislike about the response?">
-              <SpaceBetween size={'s'} direction={'horizontal'}>
+              <SpaceBetween size={'xxl'} direction={'horizontal'}>
                 <Checkbox
                   checked={feedbackOptions.harmful}
                   onChange={({ detail }) => setFeedbackOptions({ ...feedbackOptions, harmful: detail.checked })}
