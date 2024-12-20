@@ -77,8 +77,9 @@ export default function Bluedialog({ onSubmit }: any) {
                 </Checkbox>
               </SpaceBetween>
             </FormField>
-            <FormField label="Tell us more - optional">
+            <FormField label="Tell us more - optional" stretch={true}>
               <Textarea
+                rows={1}
                 onChange={({ detail }) => setFeedbackText(detail.value)}
                 value={feedbackText}
                 placeholder={'Additional feedback'}
