@@ -144,6 +144,7 @@ exports[`test-utils selectors 1`] = `
   "collection-preferences": [
     "awsui_cancel-button_tc96w",
     "awsui_confirm-button_tc96w",
+    "awsui_content-before_tc96w",
     "awsui_content-density_tc96w",
     "awsui_content-display-description_tc96w",
     "awsui_content-display-no-match_tc96w",
