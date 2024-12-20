@@ -580,6 +580,14 @@ describe('current date', () => {
       }
     }
   });
+
+  test('uses current date if supplied value is invalid', () => {
+    const { container } = render(
+      <Calendar {...defaultProps} value="dddd" isDateEnabled={date => date.getDay() !== 4} />
+    );
+    const wrapper = createWrapper(container).findCalendar()!;
+    expect(wrapper.findHeader().getElement()).toHaveTextContent('Januar 2022');
+  });
 });
 
 describe('test API', () => {
