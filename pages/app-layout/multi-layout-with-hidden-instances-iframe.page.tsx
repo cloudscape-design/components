@@ -3,25 +3,36 @@
 import React, { useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
+import BreadcrumbGroup from '~components/breadcrumb-group';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import Link from '~components/link';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
+import './utils/external-widget';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Tools } from './utils/content-blocks';
+import { Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 
 function createView(name: string) {
   return function View() {
     return (
       <AppLayout
-        {...{ __disableRuntimeDrawers: true }}
         data-testid="secondary-layout"
         ariaLabels={labels}
-        breadcrumbs={<Breadcrumbs />}
+        breadcrumbs={
+          name !== 'page2' && (
+            <BreadcrumbGroup
+              onFollow={event => event.preventDefault()}
+              items={[
+                { text: 'Home', href: '#' },
+                { text: name, href: `#${name}` },
+              ]}
+            />
+          )
+        }
         navigationHide={true}
         content={
           <SpaceBetween size="s">
@@ -45,7 +56,7 @@ function createView(name: string) {
 const ROUTES: Array<{ navLink: SideNavigationProps.Link; View: React.ComponentType }> = [
   { navLink: { type: 'link', text: 'Page 1', href: 'page1' }, View: createView('page1') },
   { navLink: { type: 'link', text: 'Page 2', href: 'page2' }, View: createView('page2') },
-  { navLink: { type: 'link', text: 'Page 3', href: 'page3' }, View: createView('page2') },
+  { navLink: { type: 'link', text: 'Page 3', href: 'page3' }, View: createView('page3') },
 ];
 
 export default function () {
@@ -55,6 +66,7 @@ export default function () {
   return (
     <ScreenshotArea gutters={false}>
       <AppLayout
+        {...{ __disableRuntimeDrawers: true }}
         data-testid="main-layout"
         ariaLabels={labels}
         navigation={

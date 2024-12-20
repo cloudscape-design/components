@@ -110,7 +110,7 @@ export function trimStart(source: string): string {
   return source.slice(spacesLength);
 }
 
-export function trimFirstSpace(source: string): string {
+function trimFirstSpace(source: string): string {
   return source[0] === ' ' ? source.slice(1) : source;
 }
 

@@ -20,7 +20,8 @@ import useCalendarGridRows from './grid/use-calendar-grid-rows';
 import CalendarHeader from './header';
 import { CalendarProps } from './interfaces.js';
 import useCalendarLabels from './use-calendar-labels';
-import { getBaseDay, getBaseMonth } from './utils/navigation';
+import { getBaseDay } from './utils/navigation-day';
+import { getBaseMonth } from './utils/navigation-month';
 
 import styles from './styles.css.js';
 
@@ -55,7 +56,7 @@ export default function Calendar({
 
   // Set displayed date to value if defined or to current date otherwise.
   const parsedValue = value && value.length >= 4 ? parseDate(value) : null;
-  const memoizedValue = parsedValue ? valueDateCache(parsedValue) : null;
+  const memoizedValue = parsedValue && !isNaN(parsedValue.getDate()) ? valueDateCache(parsedValue) : null;
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 

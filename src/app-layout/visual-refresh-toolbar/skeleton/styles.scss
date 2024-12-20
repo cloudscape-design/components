@@ -2,6 +2,7 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
+@use 'sass:map' as map;
 @use '../../../internal/styles' as styles;
 @use '../../../internal/styles/tokens' as awsui;
 @use '../../../internal/generated/custom-css-properties/index.scss' as custom-props;
@@ -61,11 +62,7 @@
     grid-template-rows: min-content min-content 1fr min-content;
 
     &.has-adaptive-widths-default {
-      @each $breakpoint, $width in constants.$adaptive-content-widths {
-        @include styles.media-breakpoint-up($breakpoint) {
-          #{custom-props.$maxContentWidth}: $width;
-        }
-      }
+      #{custom-props.$maxContentWidth}: map.get(constants.$adaptive-content-widths, styles.$breakpoint-xx-large);
     }
 
     &.has-adaptive-widths-dashboard {

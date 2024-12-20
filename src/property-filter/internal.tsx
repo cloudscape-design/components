@@ -17,8 +17,10 @@ import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id/index';
 import { SomeRequired } from '../internal/types';
 import { joinStrings } from '../internal/utils/strings';
+import { InternalLiveRegionRef } from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import { SearchResults } from '../text-filter/search-results';
+import useDebounceSearchResultCallback from '../text-filter/use-debounce-search-result-callback';
 import { GeneratedAnalyticsMetadataPropertyFilterClearFilters } from './analytics-metadata/interfaces';
 import { getAllowedOperators, getAutosuggestOptions, getQueryActions, parseText } from './controller';
 import { usePropertyFilterI18n } from './i18n-utils';
@@ -47,7 +49,7 @@ import tokenListStyles from '../internal/components/token-list/styles.css.js';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-export type PropertyFilterInternalProps = SomeRequired<
+type PropertyFilterInternalProps = SomeRequired<
   PropertyFilterProps,
   'filteringOptions' | 'customGroupsText' | 'enableTokenGroups' | 'disableFreeTextFiltering' | 'hideOperations'
 > &
@@ -85,6 +87,7 @@ const PropertyFilterInternal = React.forwardRef(
       tokenLimitShowFewerAriaLabel,
       tokenLimitShowMoreAriaLabel,
       enableTokenGroups,
+      loading = false,
       __internalRootRef,
       ...rest
     }: PropertyFilterInternalProps,
@@ -108,6 +111,7 @@ const PropertyFilterInternal = React.forwardRef(
 
     const mergedRef = useMergeRefs(tokenListRef, __internalRootRef);
     const inputRef = useRef<AutosuggestInputRef>(null);
+    const searchResultsRef = useRef<InternalLiveRegionRef>(null);
     const baseProps = getBaseProps(rest);
 
     const i18nStrings = usePropertyFilterI18n(rest.i18nStrings);
@@ -298,6 +302,15 @@ const PropertyFilterInternal = React.forwardRef(
       fireNonCancelableEvent(onLoadItems, { ...loadMoreDetail, firstPage: true, samePage: false });
     };
 
+    useDebounceSearchResultCallback({
+      searchQuery: query,
+      countText,
+      loading,
+      announceCallback: () => {
+        searchResultsRef.current?.reannounce();
+      },
+    });
+
     const propertyStep = parsedText.step === 'property' ? parsedText : null;
     const customValueKey = propertyStep ? propertyStep.property.propertyKey + ':' + propertyStep.operator : '';
     const [customFormValueRecord, setCustomFormValueRecord] = useState<Record<string, any>>({});
@@ -391,7 +404,9 @@ const PropertyFilterInternal = React.forwardRef(
             />
             {showResults ? (
               <div className={styles.results}>
-                <SearchResults id={searchResultsId}>{countText}</SearchResults>
+                <SearchResults id={searchResultsId} renderLiveRegion={!loading} ref={searchResultsRef}>
+                  {countText}
+                </SearchResults>
               </div>
             ) : null}
           </div>

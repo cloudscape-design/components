@@ -2,18 +2,25 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { fireNonCancelableEvent } from '../../internal/events';
-import { DrawerConfig as RuntimeDrawerConfig } from '../../internal/plugins/controllers/drawers';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import {
+  DrawerConfig as RuntimeDrawerConfig,
+  DrawerStateChangeParams,
+} from '../../internal/plugins/controllers/drawers';
 import { sortByPriority } from '../../internal/plugins/helpers/utils';
 import { AppLayoutProps } from '../interfaces';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 
 import styles from './styles.css.js';
 
+export interface RuntimeDrawer extends AppLayoutProps.Drawer {
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
+}
+
 export interface DrawersLayout {
-  global: Array<AppLayoutProps.Drawer>;
-  localBefore: Array<AppLayoutProps.Drawer>;
-  localAfter: Array<AppLayoutProps.Drawer>;
+  global: Array<RuntimeDrawer>;
+  localBefore: Array<RuntimeDrawer>;
+  localAfter: Array<RuntimeDrawer>;
 }
 
 type VisibilityCallback = (isVisible: boolean) => void;
@@ -55,6 +62,7 @@ const mapRuntimeConfigToDrawer = (
   runtimeConfig: RuntimeDrawerConfig
 ): AppLayoutProps.Drawer & {
   orderPriority?: number;
+  onToggle?: NonCancelableEventHandler<DrawerStateChangeParams>;
 } => {
   const { mountContent, unmountContent, trigger, ...runtimeDrawer } = runtimeConfig;
 

@@ -7,7 +7,7 @@ import BoxWrapper from '../box';
 import columnLayoutStyles from '../../../column-layout/flexible-column-layout/styles.selectors.js';
 import styles from '../../../key-value-pairs/styles.selectors.js';
 
-export class KeyValuePairsPairWrapper extends ComponentWrapper {
+class KeyValuePairsPairWrapper extends ComponentWrapper {
   findLabel(): ElementWrapper | null {
     return this.findByClassName(styles['key-label']);
   }
@@ -21,7 +21,7 @@ export class KeyValuePairsPairWrapper extends ComponentWrapper {
   }
 }
 
-export class KeyValuePairsItemWrapper extends KeyValuePairsPairWrapper {
+class KeyValuePairsItemWrapper extends KeyValuePairsPairWrapper {
   findGroupTitle(): ElementWrapper | null {
     return this.findComponent(`.${BoxWrapper.rootSelector}`, ElementWrapper);
   }

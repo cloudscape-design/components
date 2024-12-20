@@ -6,7 +6,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { getContainingBlock } from '../internal/utils/dom';
+import { findUpUntilMultiple, isContainingBlock } from '../internal/utils/dom';
 import {
   calculateScroll,
   getFirstScrollableParent,
@@ -88,8 +88,19 @@ export default function usePopoverPosition({
       const viewportRect = getViewportRect(document.defaultView!);
       const trackRect = getLogicalBoundingClientRect(track);
       const arrowRect = getDimensions(arrow);
-      const containingBlock = getContainingBlock(popover);
+      const { containingBlock, boundary } = findUpUntilMultiple({
+        startElement: popover,
+        tests: {
+          containingBlock: isContainingBlock,
+          boundary: (element: HTMLElement) => isContainingBlock(element) || isBoundary(element),
+        },
+      });
+
+      // Rectangle for the containing block, which provides the reference frame for the popover coordinates.
       const containingBlockRect = containingBlock ? getLogicalBoundingClientRect(containingBlock) : viewportRect;
+
+      // Rectangle outside of which the popover should not be positioned, because it would be clipped.
+      const boundaryRect = boundary ? getLogicalBoundingClientRect(boundary) : getDocumentRect(document);
 
       const bodyBorderWidth = getBorderWidth(body);
       const contentRect = getLogicalBoundingClientRect(contentRef.current);
@@ -115,13 +126,13 @@ export default function usePopoverPosition({
         trigger: trackRect,
         arrow: arrowRect,
         body: contentBoundingBox,
-        container: containingBlock ? containingBlockRect : getDocumentRect(document),
+        container: boundaryRect,
         viewport: viewportRect,
         renderWithPortal,
         allowVerticalOverflow,
       });
 
-      // Get the position of the popover relative to the offset parent.
+      // Get the position of the popover relative to the containing block.
       const popoverOffset = toRelativePosition(rect, containingBlockRect);
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
@@ -237,4 +248,9 @@ function getDocumentRect(document: Document): BoundingBox {
     inlineSize: document.documentElement.scrollWidth,
     blockSize: document.documentElement.scrollHeight,
   };
+}
+
+function isBoundary(element: HTMLElement) {
+  const computedStyle = getComputedStyle(element);
+  return !!computedStyle.clipPath && computedStyle.clipPath !== 'none';
 }

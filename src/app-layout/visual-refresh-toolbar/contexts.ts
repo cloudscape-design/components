@@ -10,3 +10,8 @@ interface BreadcrumbsSlotContextType {
 
 export const BreadcrumbsSlotContext =
   awsuiPluginsInternal.sharedReactContexts.createContext<BreadcrumbsSlotContextType>(React, 'BreadcrumbsSlotContext');
+
+export const AppLayoutVisibilityContext = awsuiPluginsInternal.sharedReactContexts.createContext<boolean>(
+  React,
+  'AppLayoutVisibilityContext'
+);

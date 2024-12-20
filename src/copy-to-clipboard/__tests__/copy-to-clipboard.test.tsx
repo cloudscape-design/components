@@ -85,6 +85,21 @@ describe('CopyToClipboard', () => {
       );
     });
 
+    test('copies to clipboard and shows success message when clicking on popover trigger', async () => {
+      const { container } = render(
+        <CopyToClipboard {...defaultProps} popoverRenderWithPortal={popoverRenderWithPortal} />
+      );
+      const copyToClipboardWrapper = createWrapper(container).findCopyToClipboard()!;
+      const popoverWrapper = createWrapper(container).findPopover();
+
+      popoverWrapper!.findTrigger().click();
+      await waitFor(() =>
+        expect(copyToClipboardWrapper.findStatusText({ popoverRenderWithPortal })!.getElement().textContent).toBe(
+          'Copied to clipboard'
+        )
+      );
+    });
+
     test('fails to copy to clipboard and shows error message', async () => {
       const { container } = render(
         <CopyToClipboard

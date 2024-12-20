@@ -18,7 +18,7 @@ import { PromptInputProps } from './interfaces';
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
-export interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
+interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
 
 const InternalPromptInput = React.forwardRef(
   (

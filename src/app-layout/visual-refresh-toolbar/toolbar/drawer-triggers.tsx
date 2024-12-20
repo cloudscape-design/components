@@ -9,7 +9,7 @@ import { useMobile } from '../../../internal/hooks/use-mobile';
 import { splitItems } from '../../drawer/drawers-helpers';
 import OverflowMenu from '../../drawer/overflow-menu';
 import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../../interfaces';
-import { TOOLS_DRAWER_ID } from '../../utils/use-drawers';
+import { OnChangeParams, TOOLS_DRAWER_ID } from '../../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../../utils/use-focus-control';
 import TriggerButton from './trigger-button';
 
@@ -31,12 +31,12 @@ interface DrawerTriggersProps {
   activeDrawerId: string | null;
   drawersFocusRef: React.Ref<Focusable> | undefined;
   drawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  onActiveDrawerChange: ((drawerId: string | null) => void) | undefined;
+  onActiveDrawerChange: ((drawerId: string | null, params: OnChangeParams) => void) | undefined;
 
   activeGlobalDrawersIds: ReadonlyArray<string>;
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
-  onActiveGlobalDrawersChange?: (newDrawerId: string) => void;
+  onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -110,6 +110,7 @@ export function DrawerTriggers({
   const toolsOnlyMode = drawers.length === 1 && drawers[0].id === TOOLS_DRAWER_ID;
   const globalDrawersStartIndex = drawers.length;
   const hasOpenDrawer = !!activeDrawerId || (splitPanelPosition === 'side' && splitPanelOpen);
+  const splitPanelResolvedPosition = splitPanelToggleProps?.position;
 
   return (
     <aside
@@ -118,14 +119,7 @@ export function DrawerTriggers({
       ref={triggersContainerRef}
       role="region"
     >
-      <div
-        className={clsx(styles['drawers-trigger-content'], {
-          [styles['has-multiple-triggers']]: hasMultipleTriggers,
-          [styles['has-open-drawer']]: activeDrawerId,
-        })}
-        role="toolbar"
-        aria-orientation="horizontal"
-      >
+      <div className={styles['drawers-trigger-content']} role="toolbar" aria-orientation="horizontal">
         {splitPanelToggleProps && (
           <>
             <TriggerButton
@@ -137,10 +131,10 @@ export function DrawerTriggers({
                 testutilStyles['drawers-trigger'],
                 splitPanelTestUtilStyles['open-button']
               )}
-              iconName={splitPanelToggleProps.position === 'side' ? 'view-vertical' : 'view-horizontal'}
+              iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => onSplitPanelToggle?.()}
               selected={splitPanelToggleProps.active}
-              ref={splitPanelFocusRef}
+              ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
               isForSplitPanel={true}
@@ -164,7 +158,9 @@ export function DrawerTriggers({
               iconName={item.trigger!.iconName}
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
-              onClick={() => onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null)}
+              onClick={() =>
+                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true })
+              }
               ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
               selected={item.id === activeDrawerId}
               badge={item.badge}
@@ -178,7 +174,9 @@ export function DrawerTriggers({
             />
           );
         })}
-        {visibleItems.length > globalDrawersStartIndex && <div className={styles['group-divider']}></div>}
+        {globalDrawersStartIndex > 0 && visibleItems.length > globalDrawersStartIndex && (
+          <div className={styles['group-divider']}></div>
+        )}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
           return (
@@ -195,7 +193,7 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id);
+                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id, { initiatedByUserAction: true });
               }}
               ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
               selected={activeGlobalDrawersIds.includes(item.id)}
@@ -239,9 +237,9 @@ export function DrawerTriggers({
             onItemClick={event => {
               const id = event.detail.id;
               if (globalDrawers.find(drawer => drawer.id === id)) {
-                onActiveGlobalDrawersChange?.(id);
+                onActiveGlobalDrawersChange?.(id, { initiatedByUserAction: true });
               } else {
-                onActiveDrawerChange?.(event.detail.id);
+                onActiveDrawerChange?.(event.detail.id, { initiatedByUserAction: true });
               }
             }}
             globalDrawersStartIndex={globalDrawersStartIndex - indexOfOverflowItem}

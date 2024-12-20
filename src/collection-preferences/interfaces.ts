@@ -79,9 +79,9 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDensityPreference?: CollectionPreferencesProps.ContentDensityPreference;
   /**
-   * Configures the sticky columns preference.
+   * Configures the sticky columns preference that can be set for both left and right columns.
    *
-   * You can set it for both left and right columns.
+   * If you set it, the component displays this preference in the modal.
    *
    * It contains the following:
    * - `label` (string) - Specifies the label for each radio group.
@@ -91,21 +91,25 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   stickyColumnsPreference?: CollectionPreferencesProps.StickyColumnsPreference;
   /**
-   * Configures the built-in content display preference for order and visibility of columns in a table.
+   * Configures the built-in content display preference for order and visibility of the table columns.
    *
-   * Once set, the component displays this preference in the modal.
+   * Recommended for table and not applicable for cards.
+   *
    * Cannot be used together with `visibleContentPreference`.
+   *
+   * If you set it, the component displays this preference in the modal.
    *
    * It contains the following:
    * - `title` (string) - Specifies the text displayed at the top of the preference.
    * - `description` (string) - Specifies the description displayed below the title.
+   * - `options` - Specifies an array of options for reordering and visible content selection.
+   * - `enableColumnFiltering` (boolean) - Adds a columns filter.
    * - `liveAnnouncementDndStarted` ((position: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an option is picked.
    * - `liveAnnouncementDndDiscarded` (string) - (Optional) Adds a message to be announced by screen readers when a reordering action is canceled.
    * - `liveAnnouncementDndItemReordered` ((initialPosition: number, currentPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when an item is being moved.
    * - `liveAnnouncementDndItemCommitted` ((initialPosition: number, finalPosition: number, total: number) => string) - (Optional) Adds a message to be announced by screen readers when a reordering action is committed.
    * - `dragHandleAriaDescription` (string) - (Optional) Adds an ARIA description for the drag handle.
    * - `dragHandleAriaLabel` (string) - (Optional) Adds an ARIA label for the drag handle.
-   * - `options` - Specifies an array of options for reordering and visible content selection.
    *
    * Each option contains the following:
    * - `id` (string) - Corresponds to a table column `id`.
@@ -117,10 +121,13 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    */
   contentDisplayPreference?: CollectionPreferencesProps.ContentDisplayPreference;
   /**
-   * Configures the built-in "visible content selection" preference (for example, visible sections in cards).
+   * Configures the built-in visible sections preference for cards or visible columns for table.
+   *
+   * Recommended for cards. For table use `contentDisplayPreference` instead.
+   *
+   * Cannot be used together with `contentDisplayPreference`.
    *
    * If you set it, the component displays this preference in the modal.
-   * Cannot be used together with `contentDisplayPreference`.
    *
    * It contains the following:
    * - `title` (string) - Specifies the text displayed at the top of the preference.
@@ -128,7 +135,7 @@ export interface CollectionPreferencesProps<CustomPreferenceType = any> extends 
    *
    * Each group of options contains the following:
    * - `label` (string) - The text to display as a title for the options group.
-   * - `options` - Specifies an aray of options in the group. Each option contains the following:
+   * - `options` - Specifies an array of options in the group. Each option contains the following:
    *   - `id` (string) - Corresponds to a column `id` for tables or to a section `id` for cards.
    *   - `label` (string) - Specifies a short description of the content.
    *   - `editable` (boolean) - (Optional) Determines whether the user is able to toggle its visibility. This is `true` by default.

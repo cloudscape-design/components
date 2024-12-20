@@ -131,7 +131,7 @@ export const TagControl = React.forwardRef(
   }
 );
 
-export interface UndoButtonProps {
+interface UndoButtonProps {
   children: React.ReactNode;
   onClick: () => void;
 }

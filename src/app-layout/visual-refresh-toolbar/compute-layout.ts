@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { AppLayoutPropsWithDefaults } from '../interfaces';
-import { checkSplitPanelForcedPosition } from '../split-panel/split-panel-utils';
+import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;
@@ -39,8 +39,11 @@ export function computeHorizontalLayout({
   );
   const totalActiveGlobalDrawersSize = Object.values(activeGlobalDrawersSizes).reduce((acc, size) => acc + size, 0);
 
-  const splitPanelMaxWidth = resizableSpaceAvailable - activeDrawerSize;
-  const splitPanelForcedPosition = checkSplitPanelForcedPosition({ isMobile, splitPanelMaxWidth });
+  const availableWidthForSplitPanel = resizableSpaceAvailable - activeDrawerSize;
+  const splitPanelForcedPosition = shouldSplitPanelBeForcedToBottom({
+    isMobile,
+    availableWidthForSplitPanel,
+  });
   const resolvedSplitPanelPosition = splitPanelForcedPosition ? 'bottom' : splitPanelPosition ?? 'bottom';
   const sideSplitPanelSize = resolvedSplitPanelPosition === 'side' && splitPanelOpen ? splitPanelSize ?? 0 : 0;
   const maxSplitPanelSize = Math.max(resizableSpaceAvailable - totalActiveGlobalDrawersSize - activeDrawerSize, 0);
@@ -110,10 +113,15 @@ export function computeVerticalLayout({
   return { toolbar, notifications, header, drawers };
 }
 
-export function getDrawerTopOffset(
+export function getDrawerStyles(
   verticalOffsets: VerticalLayoutOutput,
   isMobile: boolean,
   placement: AppLayoutPropsWithDefaults['placement']
-) {
-  return isMobile ? verticalOffsets.toolbar : verticalOffsets.drawers ?? placement.insetBlockStart;
+): {
+  drawerTopOffset: number;
+  drawerHeight: string;
+} {
+  const drawerTopOffset = isMobile ? verticalOffsets.toolbar : verticalOffsets.drawers ?? placement.insetBlockStart;
+  const drawerHeight = `calc(100vh - ${drawerTopOffset}px - ${placement.insetBlockEnd}px)`;
+  return { drawerTopOffset, drawerHeight };
 }

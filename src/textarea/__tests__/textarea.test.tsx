@@ -378,6 +378,7 @@ describe('Textarea', () => {
           ctrlKey: false,
           altKey: false,
           metaKey: false,
+          isComposing: false,
         });
       });
       const { textarea } = renderTextarea({ onKeyDown: keyDownSpy });
@@ -396,6 +397,7 @@ describe('Textarea', () => {
           ctrlKey: false,
           altKey: false,
           metaKey: false,
+          isComposing: false,
         });
       });
       const { textarea } = renderTextarea({ onKeyUp: keyUpSpy });

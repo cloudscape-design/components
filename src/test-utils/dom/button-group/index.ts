@@ -4,7 +4,9 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import ButtonWrapper from '../button/index.js';
 import ButtonDropdownWrapper from '../button-dropdown/index.js';
+import FileInputWrapper from '../file-input/index.js';
 import createWrapper from '../index.js';
+import ToggleButtonWrapper from '../toggle-button/index.js';
 
 import testUtilStyles from '../../../button-group/test-classes/styles.selectors.js';
 
@@ -22,16 +24,34 @@ export default class ButtonGroupWrapper extends ComponentWrapper {
    * Finds a button item by its id.
    */
   findButtonById(id: string): null | ButtonWrapper {
-    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${id}"]`;
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${CSS.escape(id)}"]`;
     const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
     return wrapper && new ButtonWrapper(wrapper.getElement());
+  }
+
+  /**
+   * Finds a toggle button item by its id.
+   */
+  findToggleButtonById(id: string): null | ToggleButtonWrapper {
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${CSS.escape(id)}"]`;
+    const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLButtonElement>;
+    return wrapper && new ToggleButtonWrapper(wrapper.getElement());
+  }
+
+  /**
+   * Finds a file input item by its id.
+   */
+  findFileInputById(id: string): null | FileInputWrapper {
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${CSS.escape(id)}"]`;
+    const wrapper = this.find(inlineItemSelector) as ElementWrapper<HTMLDivElement>;
+    return wrapper && new FileInputWrapper(wrapper.getElement());
   }
 
   /**
    * Finds a menu item by its id.
    */
   findMenuById(id: string): null | ButtonDropdownWrapper {
-    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${id}"]`;
+    const inlineItemSelector = `.${testUtilStyles['button-group-item']}[data-testid="${CSS.escape(id)}"]`;
     const wrapper = this.find(inlineItemSelector);
     return wrapper && new ButtonDropdownWrapper(wrapper.getElement());
   }

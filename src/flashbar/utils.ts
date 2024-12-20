@@ -107,7 +107,7 @@ export function getFlashTypeCount(
   return count;
 }
 
-export type LabelName =
+type LabelName =
   | 'errorIconAriaLabel'
   | 'warningIconAriaLabel'
   | 'successIconAriaLabel'

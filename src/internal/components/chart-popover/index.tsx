@@ -15,7 +15,7 @@ import { nodeBelongs } from '../../utils/node-belongs';
 import popoverStyles from '../../../popover/styles.css.js';
 import styles from './styles.css.js';
 
-export interface ChartPopoverProps extends PopoverProps {
+interface ChartPopoverProps extends PopoverProps {
   /** Title of the popover */
   title?: React.ReactNode;
 

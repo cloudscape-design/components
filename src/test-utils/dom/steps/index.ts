@@ -4,7 +4,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 
 import styles from '../../../steps/styles.selectors.js';
 
-export class StepWrapper extends ComponentWrapper {
+class StepWrapper extends ComponentWrapper {
   /**
    * Finds the header of a step
    */

@@ -284,18 +284,6 @@ describe('ARIA labels', () => {
     expect(wrapper.find('[aria-live="polite"]')).toBeTruthy();
   });
 
-  it('sets aria-modal to true when a dismiss button is present', () => {
-    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
-    wrapper.findTrigger().click();
-    expect(wrapper.findBody()!.getElement()).toHaveAttribute('aria-modal', 'true');
-  });
-
-  it('does not set aria-modal when a dismiss button is not present', () => {
-    const wrapper = renderPopover({ children: 'Trigger', content: 'Popover', dismissButton: false });
-    wrapper.findTrigger().click();
-    expect(wrapper.findBody()!.getElement()).not.toHaveAttribute('aria-modal');
-  });
-
   it('does not pass the dismissAriaLabel to the dismiss button if not defined', () => {
     const wrapper = renderPopover({ children: 'Trigger', content: 'Popover' });
     wrapper.findTrigger().click();

@@ -26,7 +26,7 @@ const MenuDropdownItem = React.forwardRef(
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const onClickHandler = (event: CustomEvent<ButtonDropdownProps.ItemClickDetails>) => {
-      fireCancelableEvent(onItemClick, { id: event.detail.id }, event);
+      fireCancelableEvent(onItemClick, { id: event.detail.id, checked: event.detail.checked }, event);
     };
 
     return (

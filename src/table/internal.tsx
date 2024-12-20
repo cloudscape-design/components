@@ -16,7 +16,7 @@ import { getAnalyticsMetadataProps, getBaseProps } from '../internal/base-compon
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { CollectionLabelContext } from '../internal/context/collection-label-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { FilterRef, PaginationRef, TableComponentsContext } from '../internal/context/table-component-context';
+import { FilterRef, PaginationRef, TableComponentsContextProvider } from '../internal/context/table-component-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -32,15 +32,16 @@ import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
 import { GeneratedAnalyticsMetadataTableComponent } from './analytics-metadata/interfaces';
 import { TableBodyCell } from './body-cell';
-import { TableTdElement } from './body-cell/td-element';
 import { checkColumnWidths } from './column-widths-utils';
 import { useExpandableTableProps } from './expandable-rows/expandable-rows-utils';
 import { TableForwardRefType, TableProps, TableRow } from './interfaces';
 import { NoDataCell } from './no-data-cell';
-import { ItemsLoader } from './progressive-loading/items-loader';
+import { getLoaderContent } from './progressive-loading/items-loader';
+import { TableLoaderCell } from './progressive-loading/loader-cell';
 import { useProgressiveLoadingProps } from './progressive-loading/progressive-loading-utils';
 import { ResizeTracker } from './resizer';
-import { focusMarkers, SelectionControl, useSelection, useSelectionFocusMove } from './selection';
+import { focusMarkers, useSelection, useSelectionFocusMove } from './selection';
+import { TableBodySelectionCell } from './selection/selection-cell';
 import { useStickyColumns } from './sticky-columns';
 import StickyHeader, { StickyHeaderRef } from './sticky-header';
 import { StickyScrollbar } from './sticky-scrollbar';
@@ -133,6 +134,7 @@ const InternalTable = React.forwardRef(
       renderLoaderPending,
       renderLoaderLoading,
       renderLoaderError,
+      renderLoaderEmpty,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -402,7 +404,7 @@ const InternalTable = React.forwardRef(
 
     return (
       <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-        <TableComponentsContext.Provider value={{ paginationRef, filterRef }}>
+        <TableComponentsContextProvider value={{ paginationRef, filterRef }}>
           <ColumnWidthsProvider
             visibleColumns={visibleColumnWidthsWithSelection}
             resizableColumns={resizableColumns}
@@ -550,7 +552,6 @@ const InternalTable = React.forwardRef(
                           });
                           const getTableItemKey = (item: T) => getItemKey(trackBy, item, rowIndex);
                           const sharedCellProps = {
-                            isVisualRefresh,
                             isFirstRow,
                             isLastRow,
                             isSelected: hasSelection && isRowSelected(row),
@@ -584,21 +585,17 @@ const InternalTable = React.forwardRef(
                                 {...rowRoleProps}
                               >
                                 {getItemSelectionProps && (
-                                  <TableTdElement
+                                  <TableBodySelectionCell
                                     {...sharedCellProps}
-                                    className={styles['selection-control']}
-                                    wrapLines={false}
                                     columnId={selectionColumnId}
-                                    colIndex={0}
-                                  >
-                                    <SelectionControl
-                                      onFocusDown={moveFocusDown}
-                                      onFocusUp={moveFocusUp}
-                                      {...getItemSelectionProps(row.item)}
-                                      rowIndex={rowIndex}
-                                      itemKey={`${getTableItemKey(row.item)}`}
-                                    />
-                                  </TableTdElement>
+                                    selectionControlProps={{
+                                      ...getItemSelectionProps(row.item),
+                                      onFocusDown: moveFocusDown,
+                                      onFocusUp: moveFocusUp,
+                                      rowIndex,
+                                      itemKey: `${getTableItemKey(row.item)}`,
+                                    }}
+                                  />
                                 )}
 
                                 {visibleColumnDefinitions.map((column, colIndex) => {
@@ -626,15 +623,11 @@ const InternalTable = React.forwardRef(
                                     <TableBodyCell
                                       key={getColumnKey(column, colIndex)}
                                       {...sharedCellProps}
-                                      style={
-                                        resizableColumns
-                                          ? {}
-                                          : {
-                                              width: column.width,
-                                              minWidth: column.minWidth,
-                                              maxWidth: column.maxWidth,
-                                            }
-                                      }
+                                      resizableStyle={{
+                                        width: column.width,
+                                        minWidth: column.minWidth,
+                                        maxWidth: column.maxWidth,
+                                      }}
                                       ariaLabels={ariaLabels}
                                       column={column}
                                       item={row.item}
@@ -660,46 +653,42 @@ const InternalTable = React.forwardRef(
                               </tr>
                             );
                           }
+
+                          const loaderContent = getLoaderContent({
+                            item: row.item,
+                            loadingStatus: row.status,
+                            renderLoaderPending,
+                            renderLoaderLoading,
+                            renderLoaderError,
+                            renderLoaderEmpty,
+                          });
                           return (
-                            <tr
-                              key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
-                              className={styles.row}
-                              {...rowRoleProps}
-                            >
-                              {getItemSelectionProps && (
-                                <TableTdElement
-                                  {...sharedCellProps}
-                                  className={styles['selection-control']}
-                                  wrapLines={false}
-                                  columnId={selectionColumnId}
-                                  colIndex={0}
-                                >
-                                  {null}
-                                </TableTdElement>
-                              )}
-                              {visibleColumnDefinitions.map((column, colIndex) => (
-                                <TableTdElement
-                                  key={getColumnKey(column, colIndex)}
-                                  {...sharedCellProps}
-                                  wrapLines={false}
-                                  columnId={column.id ?? colIndex}
-                                  colIndex={colIndex + colIndexOffset}
-                                  isRowHeader={colIndex === 0}
-                                  level={row.level}
-                                >
-                                  {colIndex === 0 ? (
-                                    <ItemsLoader
-                                      item={row.item}
-                                      loadingStatus={row.status}
-                                      renderLoaderPending={renderLoaderPending}
-                                      renderLoaderLoading={renderLoaderLoading}
-                                      renderLoaderError={renderLoaderError}
-                                      trackBy={trackBy}
-                                    />
-                                  ) : null}
-                                </TableTdElement>
-                              ))}
-                            </tr>
+                            loaderContent && (
+                              <tr
+                                key={(row.item ? getTableItemKey(row.item) : 'root-' + rowIndex) + '-' + row.from}
+                                className={styles.row}
+                                {...rowRoleProps}
+                              >
+                                {getItemSelectionProps && (
+                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
+                                )}
+                                {visibleColumnDefinitions.map((column, colIndex) => (
+                                  <TableLoaderCell
+                                    key={getColumnKey(column, colIndex)}
+                                    {...sharedCellProps}
+                                    wrapLines={false}
+                                    columnId={column.id ?? colIndex}
+                                    colIndex={colIndex + colIndexOffset}
+                                    isRowHeader={colIndex === 0}
+                                    level={row.level}
+                                    item={row.item}
+                                    trackBy={trackBy}
+                                  >
+                                    {loaderContent}
+                                  </TableLoaderCell>
+                                ))}
+                              </tr>
+                            )
                           );
                         })
                       )}
@@ -719,7 +708,7 @@ const InternalTable = React.forwardRef(
               />
             </InternalContainer>
           </ColumnWidthsProvider>
-        </TableComponentsContext.Provider>
+        </TableComponentsContextProvider>
       </LinkDefaultVariantContext.Provider>
     );
   }

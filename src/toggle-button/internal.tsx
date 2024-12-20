@@ -27,7 +27,7 @@ export const InternalToggleButton = React.forwardRef(
       onChange,
       className,
       ...rest
-    }: ToggleButtonProps,
+    }: ToggleButtonProps & { __title?: string },
     ref: React.Ref<ToggleButtonProps.Ref>
   ) => {
     if (isDevelopment) {
@@ -64,5 +64,3 @@ export const InternalToggleButton = React.forwardRef(
     );
   }
 );
-
-export default InternalToggleButton;

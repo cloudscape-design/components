@@ -13,7 +13,7 @@ export interface FormatFunction {
   <T, A = unknown>(namespace: string, component: string, key: string, provided: T, handler?: CustomHandler<T, A>): T;
 }
 
-export interface InternalI18nContextProps {
+interface InternalI18nContextProps {
   locale: string | null;
   format: FormatFunction;
 }

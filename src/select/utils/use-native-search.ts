@@ -11,7 +11,7 @@ import {
 } from '../../internal/components/option/utils/filter-options';
 import { useDebounceCallback } from '../../internal/hooks/use-debounce-callback';
 
-export const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
+const isRepeatedChar = (str: string) => str.split('').every(c => c === str[0]);
 
 interface UseNativeSearchProps {
   isEnabled: boolean;

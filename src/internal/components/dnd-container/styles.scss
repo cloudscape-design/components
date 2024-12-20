@@ -1,0 +1,21 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+$border-radius: awsui.$border-radius-item;
+
+.drag-overlay {
+  box-shadow: awsui.$shadow-container-active;
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+  @include focus-visible.when-visible-unfocused {
+    @include styles.focus-highlight(0px, $border-radius);
+  }
+}

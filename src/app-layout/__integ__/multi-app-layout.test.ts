@@ -50,6 +50,27 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
           });
         })
       );
+
+      test(
+        'secondary layout does not vertically overflow the primary one',
+        setupTest(async page => {
+          // Provide enough height for all page elements to fit without overflow
+          const outerBrowserWindowHeight = 1400;
+          await page.setWindowSize({ width: 1200, height: outerBrowserWindowHeight });
+
+          // Retrieve the actual viewport size, excluding browser UI
+          const { height: innerViewportSize } = await page.getViewportSize();
+
+          const { bottom: mainLayoutBottom } = await page.getBoundingBox(mainLayout.toSelector());
+          expect(mainLayoutBottom).toBeLessThanOrEqual(innerViewportSize);
+
+          await page.runInsideIframe(iframeId, !!iframe, async () => {
+            const { bottom: secondaryLayoutBottom } = await page.getBoundingBox(secondaryLayout.toSelector());
+            expect(secondaryLayoutBottom).toBeLessThanOrEqual(innerViewportSize);
+            expect(secondaryLayoutBottom).toBeLessThanOrEqual(mainLayoutBottom);
+          });
+        })
+      );
     });
   });
 });

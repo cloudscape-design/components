@@ -13,8 +13,6 @@ import Modal from '../../../lib/components/modal';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tests__/mocks';
 
-import modalStyles from '../../../lib/components/modal/styles.selectors.js';
-
 mockInnerText();
 
 describe('Form Analytics', () => {
@@ -367,7 +365,7 @@ describe('Form Analytics', () => {
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelStart).toHaveBeenCalledWith(
       expect.objectContaining({
-        funnelNameSelector: `.${modalStyles['header--text']}`,
+        funnelName: 'My Modal Funnel',
         stepConfiguration: [{ isOptional: false, name: 'My Modal Funnel', number: 1 }],
       })
     );

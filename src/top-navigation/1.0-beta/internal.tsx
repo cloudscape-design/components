@@ -16,7 +16,7 @@ import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';
 
-export type InternalTopNavigationProps = TopNavigationProps & InternalBaseComponentProps;
+type InternalTopNavigationProps = TopNavigationProps & InternalBaseComponentProps;
 
 export default function InternalTopNavigation({
   __internalRootRef,

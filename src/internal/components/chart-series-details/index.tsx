@@ -33,7 +33,7 @@ export interface ChartSeriesDetailItem extends ChartDetailPair {
 }
 export type ExpandedSeries = Set<string>;
 
-export interface ChartSeriesDetailsProps extends BaseComponentProps {
+interface ChartSeriesDetailsProps extends BaseComponentProps {
   details: ReadonlyArray<ChartSeriesDetailItem>;
   expandedSeries?: ExpandedSeries;
   setPopoverText?: (s: string) => void;

@@ -114,6 +114,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * `ariaLabel`, `disabled`, `loading`, `loadingText`, `href`, `target`, `rel`, `download`, `iconAlt`, `iconName`, `iconUrl`, `iconSvg`, `onClick`, `onFollow`.
    */
   mainAction?: ButtonDropdownProps.MainAction;
+
+  /**
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
+   */
+  fullWidth?: boolean;
 }
 
 export namespace ButtonDropdownProps {
@@ -258,15 +263,23 @@ export interface ItemProps {
 
 export interface InternalItem extends ButtonDropdownProps.Item {
   badge?: boolean;
+  /**
+   * Used in breadcrumb-group: indicates that this breadcrumb item is the current page
+   */
+  isCurrentBreadcrumb?: boolean;
 }
 
-export interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
+export interface InternalCheckboxItem extends ButtonDropdownProps.CheckboxItem {
+  badge?: boolean;
+}
+
+interface InternalItemGroup extends Omit<ButtonDropdownProps.ItemGroup, 'items'> {
   items: InternalItems;
 }
 
-export type InternalItems = ReadonlyArray<InternalItemOrGroup>;
+type InternalItems = ReadonlyArray<InternalItemOrGroup>;
 
-export type InternalItemOrGroup = InternalItem | ButtonDropdownProps.CheckboxItem | InternalItemGroup;
+export type InternalItemOrGroup = InternalItem | InternalCheckboxItem | InternalItemGroup;
 
 export interface InternalButtonDropdownProps
   extends Omit<ButtonDropdownProps, 'variant' | 'items'>,
@@ -302,6 +315,12 @@ export interface InternalButtonDropdownProps
    * Used in Breadcrumb group component for collapsed breadcrumbs
    */
   linkStyle?: boolean;
+
+  /**
+   * Determines whether the dropdown should take up the full available width.
+   * Used in Breadcrumb group component for collapsed breadcrumbs
+   */
+  fullWidth?: boolean;
 
   analyticsMetadataTransformer?: (input: GeneratedAnalyticsMetadataFragment) => GeneratedAnalyticsMetadataFragment;
 }

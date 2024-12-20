@@ -39,6 +39,8 @@ interface SkeletonLayoutProps
   bottomSplitPanel?: React.ReactNode;
   globalTools?: React.ReactNode;
   globalToolsOpen?: boolean;
+  navigationAnimationDisabled?: boolean;
+  isNested?: boolean;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -65,6 +67,8 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       maxContentWidth,
       disableContentPaddings,
       globalToolsOpen,
+      navigationAnimationDisabled,
+      isNested,
     },
     ref
   ) => {
@@ -79,7 +83,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
           [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
         })}
         style={{
-          minBlockSize: `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
+          minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
           [customCssProps.maxContentWidth]: isMaxWidth ? '100%' : maxContentWidth ? `${maxContentWidth}px` : '',
           [customCssProps.navigationWidth]: `${navigationWidth}px`,
           [customCssProps.toolsWidth]: `${toolsWidth}px`,
@@ -92,7 +96,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               styles.navigation,
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
-              sharedStyles['with-motion-horizontal']
+              !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
             )}
           >
             {navigation}

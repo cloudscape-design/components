@@ -14,7 +14,6 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderControlInvalidFocusRingShadowSpread: '{borderControlFocusRingShadowSpread}',
   borderDividerSectionWidth: '1px',
   borderDropdownVirtualOffsetWidth: '0px',
-  borderFieldWidth: '1px',
   borderInvalidWidth: '4px',
   borderItemWidth: '1px',
   borderLineChartLineJoin: 'miter',
@@ -37,6 +36,9 @@ const tokens: StyleDictionary.BordersDictionary = {
   borderTableStickyWidth: '0px',
   borderLinkFocusRingOutline: '5px auto Highlight',
   borderLinkFocusRingShadowSpread: '0px',
+  borderWidthAlert: '1px',
+  borderWidthField: '1px',
+  borderWidthPopover: '1px',
 };
 
 const expandedTokens: StyleDictionary.ExpandedGlobalScopeDictionary = merge({}, parentTokens, tokens);

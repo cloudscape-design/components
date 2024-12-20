@@ -50,7 +50,7 @@ interface InternalPieChartProps<T extends PieChartProps.Datum>
   dataSum: number;
 }
 
-export interface PopoverData<T> {
+interface PopoverData<T> {
   datum: T;
   trackRef: React.RefObject<SVGElement>;
   series: SeriesInfo;

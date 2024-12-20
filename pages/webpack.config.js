@@ -17,6 +17,6 @@ module.exports = () => {
       themeDefinition.designTokensOutput
     ),
     globalStylesPath: themeDefinition.globalStylesPath,
-    outputPath: `lib/static-${theme}`,
+    outputPath: `pages/lib/static-${theme}`,
   });
 };

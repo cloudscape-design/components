@@ -1,7 +1,6 @@
 <svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
 <circle cx="8" cy="7" r="5" />
-<path d="M3 15H13" />
+<path d="M3 15H13"/>
 <path d="M6 7H10" />
-<path d="M8 15V11" />
+<path d="M8 15L8 12" />
 </svg>
-

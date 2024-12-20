@@ -13,7 +13,7 @@ export interface SeriesInfo {
   markerType: 'line' | 'rectangle';
 }
 
-export interface ChartDetailPair {
+interface ChartDetailPair {
   key: ReactNode;
   value: ReactNode;
 }

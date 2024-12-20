@@ -6,9 +6,7 @@ import { CartesianChartProps } from '../internal/components/cartesian-chart/inte
 
 export type ChartDataTypes = number | string | Date;
 
-export type SeriesType = 'line' | 'bar';
 export type ScaleType = 'linear' | 'log' | 'time' | 'categorical';
-export type ScaleRange = [number, number];
 
 export interface InternalChartSeries<T> {
   index: number;

@@ -15,7 +15,7 @@ import { HelpPanelProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export type HelpPanelInternalProps = HelpPanelProps & InternalBaseComponentProps;
+type HelpPanelInternalProps = HelpPanelProps & InternalBaseComponentProps;
 
 export function HelpPanelImplementation({
   header,

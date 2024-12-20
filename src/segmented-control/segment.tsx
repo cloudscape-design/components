@@ -11,7 +11,7 @@ import { SegmentedControlProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export interface SegmentProps extends SegmentedControlProps.Option {
+interface SegmentProps extends SegmentedControlProps.Option {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
   onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
   isActive: boolean;

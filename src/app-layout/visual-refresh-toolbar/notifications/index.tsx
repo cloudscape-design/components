@@ -9,12 +9,13 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
 import { createWidgetizedComponent } from '../../../internal/widgets';
 import { AppLayoutInternals } from '../interfaces';
+import { NotificationsSkeleton } from '../skeleton/slot-skeletons';
 import { NotificationsSlot } from '../skeleton/slot-wrappers';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
-interface AppLayoutNotificationsImplementationProps {
+export interface AppLayoutNotificationsImplementationProps {
   appLayoutInternals: AppLayoutInternals;
   children: React.ReactNode;
 }
@@ -59,4 +60,7 @@ export function AppLayoutNotificationsImplementation({
   );
 }
 
-export const createWidgetizedAppLayoutNotifications = createWidgetizedComponent(AppLayoutNotificationsImplementation);
+export const createWidgetizedAppLayoutNotifications = createWidgetizedComponent(
+  AppLayoutNotificationsImplementation,
+  NotificationsSkeleton
+);

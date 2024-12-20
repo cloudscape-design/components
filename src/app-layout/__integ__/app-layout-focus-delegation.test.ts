@@ -7,6 +7,8 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
 import { getUrlParams, testIf, Theme } from './utils';
 
+import splitPanelTestUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';
+
 const wrapper = createWrapper().findAppLayout();
 
 interface SetupTestObj {
@@ -59,7 +61,11 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
             await page.keys(['Tab', 'Tab']);
             await expect(page.isFocused(wrapper.findSplitPanel().findCloseButton().toSelector())).resolves.toBe(true);
             await page.keys('Enter');
-            await expect(page.isFocused(wrapper.findSplitPanel().findOpenButton().toSelector())).resolves.toBe(true);
+            const openButton =
+              mobile || theme === 'refresh-toolbar'
+                ? wrapper.findSplitPanel().findByClassName(splitPanelTestUtilStyles['open-button'])
+                : wrapper.findSplitPanelOpenButton();
+            await expect(page.isFocused(openButton.toSelector())).resolves.toBe(true);
             await page.keys('Enter');
             await expect(page.isFocused(wrapper.findSplitPanel().findSlider().toSelector())).resolves.toBe(true);
           },

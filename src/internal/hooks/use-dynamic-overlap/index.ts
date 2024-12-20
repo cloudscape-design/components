@@ -8,7 +8,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { DynamicOverlapContext } from '../../context/dynamic-overlap-context';
 
-export interface UseDynamicOverlapProps {
+interface UseDynamicOverlapProps {
   /**
    * Disables hook if not needed. By default, `false`.
    */

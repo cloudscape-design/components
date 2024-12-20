@@ -224,7 +224,7 @@ interface UpdateCellStylesProps {
   stickyColumnsLast: number;
 }
 
-export default class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
+class StickyColumnsStore extends AsyncStore<StickyColumnsState> {
   private cellOffsets: CellOffsets = {
     offsets: new Map(),
     stickyWidthInlineStart: 0,

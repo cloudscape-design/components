@@ -5,10 +5,26 @@ import { act, render } from '@testing-library/react';
 
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
+import { DATA_ATTR_RESOURCE_TYPE, getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
+import createWrapper, { BreadcrumbGroupWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 
 import itemStyles from '../../../lib/components/breadcrumb-group/item/styles.css.js';
 import styles from '../../../lib/components/breadcrumb-group/styles.css.js';
+
+let mockMobileViewport = false;
+jest.mock('@cloudscape-design/component-toolkit', () => {
+  return {
+    ...jest.requireActual('@cloudscape-design/component-toolkit'),
+    useContainerQuery: () => (mockMobileViewport ? [10, () => {}] : [9999, () => {}]),
+  };
+});
+jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
+  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
+  getLogicalBoundingClientRect: () => ({ inlineSize: 50 }),
+}));
+afterEach(() => {
+  mockMobileViewport = false;
+});
 
 const renderBreadcrumbGroup = (props: BreadcrumbGroupProps) => {
   const renderResult = render(<BreadcrumbGroup {...props} />);
@@ -69,6 +85,27 @@ describe('BreadcrumbGroup Component', () => {
       });
     });
 
+    test('renders with items (mobile)', () => {
+      mockMobileViewport = true;
+      wrapper = renderBreadcrumbGroup({ items });
+      expect(wrapper.getElement().nodeName).toBe('NAV');
+
+      const dropdown = wrapper.findDropdown()!;
+      dropdown.openDropdown();
+      const links = dropdown.findItems();
+      expect(links).toHaveLength(3);
+
+      links.forEach((link, i) => {
+        expect(link.getElement()).toHaveTextContent(items[i].text);
+        if (i === links.length - 1) {
+          // last item should not have an href
+          expect(link.getElement().querySelector('a')).toBeFalsy();
+        } else {
+          expect(link.getElement().querySelector('a')).toHaveAttribute('href', items[i].href);
+        }
+      });
+    });
+
     test('has ellipsis', () => {
       expect(wrapper.findDropdown()!.findNativeButton()).not.toBe(null);
       expect(wrapper.findByClassName(styles.ellipsis)!.getElement()).toBeInTheDocument();
@@ -120,9 +157,25 @@ describe('BreadcrumbGroup Component', () => {
       rerender(<BreadcrumbGroup items={items.slice()} />);
       expect(getIcons()).toHaveLength(2);
     });
+
+    test('clicking current page in mobile dropdown should close dropdown without events', () => {
+      mockMobileViewport = true;
+      const onClick = jest.fn();
+      const onFollow = jest.fn();
+      const { container } = render(<BreadcrumbGroup items={items} onClick={onClick} onFollow={onFollow} />);
+      const wrapper = createWrapper(container).findBreadcrumbGroup()!;
+      const dropdown = wrapper.findDropdown()!;
+      dropdown.openDropdown();
+      expect(dropdown.findItems().length).toBe(3);
+      dropdown.findItems()[2].click();
+      expect(dropdown.findOpenDropdown()).toBeFalsy();
+      expect(onClick).not.toHaveBeenCalled();
+      expect(onFollow).not.toHaveBeenCalled();
+    });
   });
 
-  test('supports extended items object', () => {
+  test.each([[true], [false]])('supports extended items object (mobile: %p)', mobile => {
+    mockMobileViewport = mobile;
     interface ExtendedItem extends BreadcrumbGroupProps.Item {
       metadata: number;
     }
@@ -142,7 +195,13 @@ describe('BreadcrumbGroup Component', () => {
       />
     );
     const wrapper = createWrapper(container).findBreadcrumbGroup()!;
-    wrapper.findBreadcrumbLink(2)!.click();
+    if (mobile) {
+      const dropdown = wrapper.findDropdown()!;
+      dropdown.openDropdown();
+      dropdown.findItems()[1].click();
+    } else {
+      wrapper.findBreadcrumbLink(2)!.click();
+    }
     expect(onClick).toHaveBeenCalledWith(items[1]);
   });
 
@@ -229,6 +288,54 @@ describe('BreadcrumbGroup Component', () => {
       anchors.forEach(anchor => {
         expect(anchor).toHaveAttribute('tabindex', '-1');
       });
+    });
+  });
+
+  describe.each([[true], [false]])('funnel attributes (mobile: %p)', mobile => {
+    beforeEach(() => {
+      mockMobileViewport = mobile;
+    });
+    function getElementsText(elements: Array<ElementWrapper>) {
+      return Array.from(elements).map(element => element.getElement().textContent);
+    }
+
+    function getFunnelNameElements(wrapper: BreadcrumbGroupWrapper) {
+      return wrapper.findAll(getFunnelNameSelector());
+    }
+
+    function getResourceTypeElements(wrapper: BreadcrumbGroupWrapper) {
+      return wrapper.findAll(`[${DATA_ATTR_RESOURCE_TYPE}]`);
+    }
+
+    test('should add funnel name and resource type attributes', () => {
+      const wrapper = renderBreadcrumbGroup({
+        items: [
+          { text: 'Home', href: '/home' },
+          { text: 'Resource', href: '/resource' },
+          { text: 'Name', href: '/resource/name' },
+        ],
+      });
+      expect(getElementsText(getResourceTypeElements(wrapper))).toEqual(['Resource']);
+      expect(getElementsText(getFunnelNameElements(wrapper))).toEqual(['Name']);
+    });
+
+    test('allows funnel name and resource type to be the same item', () => {
+      const wrapper = renderBreadcrumbGroup({
+        items: [
+          { text: 'Home', href: '/home' },
+          { text: 'Page', href: '/page' },
+        ],
+      });
+      expect(getElementsText(getResourceTypeElements(wrapper))).toEqual(['Page']);
+      expect(getElementsText(getFunnelNameElements(wrapper))).toEqual(['Page']);
+    });
+
+    test('only adds funnel name if there is only one item', () => {
+      const wrapper = renderBreadcrumbGroup({
+        items: [{ text: 'Home', href: '/home' }],
+      });
+      expect(getElementsText(getResourceTypeElements(wrapper))).toEqual([]);
+      expect(getElementsText(getFunnelNameElements(wrapper))).toEqual(['Home']);
     });
   });
 });

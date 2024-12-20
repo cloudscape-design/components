@@ -28,12 +28,14 @@ export interface SplitPanelContextBaseProps {
   onToggle: () => void;
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;
   reportHeaderHeight: (pixels: number) => void;
+  headerHeight?: number;
   setSplitPanelToggle: (config: SplitPanelSideToggleProps) => void;
   refs: SplitPanelFocusControlRefs;
 }
 
 export interface SplitPanelContextProps extends SplitPanelContextBaseProps {
   relativeSize: number;
+  animationDisabled?: boolean;
 }
 
 const SplitPanelContext = createContext<SplitPanelContextProps | null>(null);

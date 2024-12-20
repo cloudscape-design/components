@@ -5,7 +5,7 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { viewports } from './constants';
-import { getUrlParams, Theme } from './utils';
+import { getUrlParams, testIf, Theme } from './utils';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 
@@ -19,7 +19,7 @@ class AppLayoutPage extends BasePageObject {
   }
 
   getNavPosition() {
-    return this.getBoundingBox(wrapper.findNavigation().findSideNavigation().findHeaderLink().toSelector());
+    return this.getBoundingBox(wrapper.findNavigation().findSideNavigation().findItemByIndex(1).toSelector());
   }
 
   getContentPosition() {
@@ -186,6 +186,26 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       ).resolves.toBe(0);
       const { top: contentTop } = await page.getBoundingBox('[data-testid="content-root"]');
       expect(contentTop).toEqual(expectedOffset);
+    })
+  );
+
+  test(
+    'Side nav does not display a scrollbar when there is no header',
+    setupTest({ pageName: 'with-drawers-scrollable' }, async page => {
+      const navBefore = await page.getNavPosition();
+      await page.elementScrollTo(wrapper.findNavigation().toSelector(), { top: 100 });
+      await expect(page.getNavPosition()).resolves.toEqual(navBefore);
+    })
+  );
+
+  testIf(theme === 'refresh-toolbar')(
+    'should keep header visible and in position while scrolling',
+    setupTest({ pageName: 'multi-layout-with-table-sticky-header' }, async page => {
+      const tableWrapper = createWrapper().findTable();
+      const { top: headerOldOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      await page.windowScrollTo({ top: 200 });
+      const { top: headerNewOffset } = await page.getBoundingBox(tableWrapper.findHeaderSlot().toSelector());
+      expect(headerOldOffset).toEqual(headerNewOffset);
     })
   );
 });

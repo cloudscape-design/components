@@ -100,7 +100,7 @@ export default function Navigation() {
               onNavigationClick && onNavigationClick(event);
             }}
           >
-            <div className={styles['animated-content']}>
+            <div className={clsx(styles['content-container'], styles['animated-content'])}>
               <div className={styles['hide-navigation']}>
                 <InternalButton
                   ariaLabel={ariaLabels?.navigationClose ?? undefined}

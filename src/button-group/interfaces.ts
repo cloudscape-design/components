@@ -38,15 +38,39 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * ### icon-button
    *
    * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
-   * * `text` (string) - The name shown as a tooltip or menu text for this button.
-   * * `disabled` (optional, boolean) - The disabled state indication for the button.
-   * * `loading` (optional, boolean) - The loading state indication for the button.
+   * * `text` (string) - The name shown as a tooltip for this button.
+   * * `disabled` (optional, boolean) - The disabled state indication for this button.
+   * * `loading` (optional, boolean) - The loading state indication for this button.
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
    * * `iconAlt` (optional, string) - Specifies alternate text for the icon when using `iconUrl`.
    * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
    * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
-   * * `popoverFeedback` (optional, string) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   * * `popoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   *
+   * ### icon-toggle-button
+   *
+   * * `id` (string) - The unique identifier of the button, used as detail in `onItemClick` handler and to focus the button using `ref.focus(id)`.
+   * * `pressed` (boolean) - The toggle button pressed state.
+   * * `text` (string) - The name shown as a tooltip for this button.
+   * * `disabled` (optional, boolean) - The disabled state indication for this button.
+   * * `loading` (optional, boolean) - The loading state indication for this button.
+   * * `loadingText` (optional, string) - The loading text announced to screen readers.
+   * * `iconName` (optional, string) - Specifies the name of the icon, used with the [icon component](/components/icon/).
+   * * `iconUrl` (optional, string) - Specifies the URL of a custom icon.
+   * * `iconSvg` (optional, ReactNode) - Custom SVG icon. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * * `pressedIconName` (optional, string) - Specifies the name of the icon in pressed state, used with the [icon component](/components/icon/).
+   * * `pressedIconUrl` (optional, string) - Specifies the URL of a custom icon in pressed state.
+   * * `pressedIconSvg` (optional, ReactNode) - Custom SVG icon in pressed state. Equivalent to the `svg` slot of the [icon component](/components/icon/).
+   * * `popoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
+   * * `pressedPopoverFeedback` (optional, ReactNode) - Text that appears when the user clicks the button in pressed state. Defaults to `popoverFeedback`.
+   *
+   * * ### file-input
+   *
+   * * `id` (string) - The unique identifier of the button, used as detail in `onFilesChange`.
+   * * `text` (string) - The name of the menu button shown as a tooltip.
+   * * `accept` (optional, string) - Specifies the native file input `accept` attribute to describe the allow-list of file types.
+   * * `multiple` (optional, string) - Specifies the native file input `multiple` attribute to allow users entering more than one file.
    *
    * ### menu-dropdown
    *
@@ -57,7 +81,7 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * * `loadingText` (optional, string) - The loading text announced to screen readers.
    * * `items` (ButtonDropdownProps.ItemOrGroup[]) - The array of dropdown items that belong to this menu.
    *
-   * group
+   * ### group
    *
    * * `text` (string) - The name of the group rendered as ARIA label for this group.
    * * `items` ((ButtonGroupProps.IconButton | ButtonGroupProps.MenuDropdown)[]) - The array of items that belong to this group.
@@ -67,6 +91,10 @@ export interface ButtonGroupProps extends BaseComponentProps {
    * Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.
    */
   onItemClick?: NonCancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+  /**
+   * Called when the user uploads files. The event detail object contains the id and files from the file input item.
+   */
+  onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
 }
 
 export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
@@ -75,7 +103,7 @@ export namespace ButtonGroupProps {
   export type Variant = 'icon';
 
   export type ItemOrGroup = Item | Group;
-  export type Item = IconButton | MenuDropdown;
+  export type Item = IconButton | IconToggleButton | IconFileInput | MenuDropdown;
 
   export interface IconButton {
     type: 'icon-button';
@@ -89,6 +117,32 @@ export namespace ButtonGroupProps {
     iconUrl?: string;
     iconSvg?: React.ReactNode;
     popoverFeedback?: React.ReactNode;
+  }
+
+  export interface IconToggleButton {
+    type: 'icon-toggle-button';
+    id: string;
+    text: string;
+    pressed: boolean;
+    disabled?: boolean;
+    loading?: boolean;
+    loadingText?: string;
+    iconName?: IconProps.Name;
+    iconUrl?: string;
+    iconSvg?: React.ReactNode;
+    pressedIconName?: IconProps.Name;
+    pressedIconUrl?: string;
+    pressedIconSvg?: React.ReactNode;
+    popoverFeedback?: React.ReactNode;
+    pressedPopoverFeedback?: React.ReactNode;
+  }
+
+  export interface IconFileInput {
+    type: 'icon-file-input';
+    id: string;
+    text: string;
+    accept?: string;
+    multiple?: boolean;
   }
 
   export interface MenuDropdown {
@@ -109,6 +163,13 @@ export namespace ButtonGroupProps {
 
   export interface ItemClickDetails {
     id: string;
+    pressed?: boolean;
+    checked?: boolean;
+  }
+
+  export interface FilesChangeDetails {
+    id: string;
+    files: File[];
   }
 
   export interface Ref {

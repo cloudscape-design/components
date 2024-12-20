@@ -5,7 +5,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { AnnotationContextProps } from '../interfaces';
 import AnnotationTrigger from './annotation-trigger';
 
-export interface AnnotationProps {
+interface AnnotationProps {
   globalStepIndex: number;
 
   onOpen: (stepId: number) => void;

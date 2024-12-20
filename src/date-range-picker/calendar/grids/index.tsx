@@ -3,7 +3,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { addMonths, isAfter, isBefore, isSameMonth, max, min } from 'date-fns';
 
-import { getBaseDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../../../calendar/utils/navigation';
+import {
+  getBaseDay,
+  moveNextDay,
+  moveNextWeek,
+  movePrevDay,
+  movePrevWeek,
+} from '../../../calendar/utils/navigation-day';
 import { useDateCache } from '../../../internal/hooks/use-date-cache';
 import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';
@@ -11,7 +17,7 @@ import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { DateRangePickerProps, DayIndex } from '../../interfaces';
 import { findDateToFocus } from '../utils';
-import { Grid } from './grid';
+import { MonthlyGrid } from './monthly-grid';
 
 import styles from '../../styles.css.js';
 
@@ -25,7 +31,7 @@ function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean) {
   return isSameMonth(date, previousMonth) || isSameMonth(date, baseDate);
 }
 
-export interface GridProps {
+interface GridProps {
   baseDate: Date;
   selectedStartDate: Date | null;
   selectedEndDate: Date | null;
@@ -168,7 +174,7 @@ export const Grids = ({
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
       <InternalSpaceBetween size="xs" direction="horizontal">
         {!isSingleGrid && (
-          <Grid
+          <MonthlyGrid
             className={styles['first-grid']}
             baseDate={addMonths(baseDate, -1)}
             selectedEndDate={selectedEndDate}
@@ -188,7 +194,7 @@ export const Grids = ({
             ariaLabelledby={`${headingIdPrefix}-prevmonth`}
           />
         )}
-        <Grid
+        <MonthlyGrid
           className={styles['second-grid']}
           baseDate={baseDate}
           selectedEndDate={selectedEndDate}

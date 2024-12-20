@@ -1,0 +1,8 @@
+<svg viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg">
+<path d="M5 3H15" stroke-miterlimit="10"/>
+<path d="M5 8H15" stroke-miterlimit="10"/>
+<path d="M5 13H15" stroke-miterlimit="10"/>
+<path d="M2.01 3.01H2V3H2.01V3.01Z" class="filled"/>
+<path d="M2.01 8.01H2V8H2.01V8.01Z" class="filled"/>
+<path d="M2.01 13.01H2V13H2.01V13.01Z" class="filled"/>
+</svg>

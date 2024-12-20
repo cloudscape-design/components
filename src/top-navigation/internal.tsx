@@ -22,7 +22,7 @@ import { useTopNavigation } from './use-top-navigation.js';
 
 import styles from './styles.css.js';
 
-export type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
+type InternalTopNavigationProps = SomeRequired<TopNavigationProps, 'utilities'> & InternalBaseComponentProps;
 
 export default function InternalTopNavigation({
   __internalRootRef,

@@ -21,7 +21,7 @@ import { TutorialPanelProps } from '../../interfaces';
 
 import styles from './styles.css.js';
 
-export interface TutorialListProps {
+interface TutorialListProps {
   loading?: boolean;
   tutorials: TutorialPanelProps['tutorials'];
   onStartTutorial: HotspotContext['onStartTutorial'];

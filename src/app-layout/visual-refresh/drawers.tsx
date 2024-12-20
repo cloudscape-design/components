@@ -26,7 +26,7 @@ import styles from './styles.css.js';
  *
  * Note if one of the triggers is for a split-panel, it would not count that
  */
-export const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT = 2;
+const VISIBLE_MOBILE_TOOLBAR_TRIGGERS_LIMIT = 2;
 
 /**
  * The Drawers root component is mounted in the AppLayout index file. It will only

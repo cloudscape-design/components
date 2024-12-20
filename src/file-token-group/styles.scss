@@ -1,0 +1,143 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use './constants' as constants;
+@use '../token-group/mixins.scss' as mixins;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@mixin token-box-validation {
+  border-inline-start-width: awsui.$border-invalid-width;
+
+  > .dismiss-button {
+    color: awsui.$color-text-interactive-default;
+    &:hover {
+      color: awsui.$color-text-interactive-hover;
+    }
+  }
+}
+
+.root {
+  @include styles.styles-reset();
+}
+
+.file-loading-overlay {
+  position: absolute;
+  inset-inline-end: awsui.$space-static-xs;
+  inset-block-end: awsui.$space-static-xxs;
+
+  &-single-row {
+    inset-inline-end: awsui.$space-static-xxl;
+  }
+}
+
+.file-option-name,
+.file-option-size,
+.file-option-last-modified {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.file-option {
+  inline-size: 100%;
+  min-inline-size: 0;
+  display: flex;
+  gap: awsui.$space-scaled-xs;
+}
+
+.file-option-thumbnail {
+  margin-block-start: awsui.$space-static-xxs;
+}
+
+.file-option-thumbnail-image {
+  @include styles.font-body-s;
+
+  inline-size: constants.$image-size;
+  block-size: constants.$image-size;
+  object-fit: cover;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.file-option-metadata {
+  inline-size: 100%;
+
+  &.with-image {
+    inline-size: calc(100% - constants.$image-size);
+  }
+
+  &.single-row-loading {
+    inline-size: calc(100% - constants.$spinner-size);
+  }
+}
+
+.token {
+  position: relative;
+  block-size: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: awsui.$space-xxs;
+
+  &-grid {
+    display: grid;
+    grid-template-rows: max-content auto;
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      display: flex;
+    }
+  }
+
+  &-contains-image {
+    grid-template-rows: constants.$file-token-height auto;
+  }
+}
+
+.token-box {
+  @include mixins.token-box-styles();
+
+  &.horizontal {
+    max-inline-size: constants.$compact-token-width;
+
+    @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
+      max-inline-size: 100%;
+    }
+  }
+
+  &.error {
+    border-color: awsui.$color-border-status-error;
+    @include token-box-validation;
+  }
+
+  &.warning {
+    border-color: awsui.$color-border-status-warning;
+    @include token-box-validation;
+  }
+
+  &.read-only {
+    border-color: awsui.$color-border-input-disabled;
+    background-color: awsui.$color-background-container-content;
+    pointer-events: none;
+
+    > .dismiss-button {
+      color: awsui.$color-text-button-inline-icon-disabled;
+
+      &:hover {
+        /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
+        cursor: initial;
+        color: awsui.$color-text-button-inline-icon-disabled;
+      }
+    }
+  }
+
+  &.loading {
+    border-color: awsui.$color-border-control-disabled;
+    background-color: awsui.$color-background-container-content;
+  }
+}

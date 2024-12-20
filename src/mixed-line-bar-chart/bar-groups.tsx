@@ -9,7 +9,7 @@ import styles from './styles.css.js';
 
 const OUTLINE_PADDING = 2;
 
-export interface BarGroups<T extends ChartDataTypes> {
+interface BarGroups<T extends ChartDataTypes> {
   ariaLabel: string;
   isRefresh: boolean;
   isPopoverPinned: boolean;

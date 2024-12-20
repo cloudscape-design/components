@@ -332,7 +332,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   // TODO: make a uniform verticalMarkerX state to fit all use-cases.
   const highlightedX = useMemo(() => {
     if (highlightedGroupIndex !== null) {
-      return barGroups[highlightedGroupIndex].x;
+      return barGroups[highlightedGroupIndex]?.x;
     }
     if (verticalMarkerX !== null) {
       return verticalMarkerX.label;
@@ -420,7 +420,7 @@ export default function ChartContainer<T extends ChartDataTypes>({
   if (verticalMarkerX !== null) {
     verticalLineX = verticalMarkerX.scaledX;
   } else if (isGroupNavigation && highlightedGroupIndex !== null) {
-    const x = xAxisProps.scale.d3Scale(barGroups[highlightedGroupIndex].x as any) ?? null;
+    const x = xAxisProps.scale.d3Scale(barGroups[highlightedGroupIndex]?.x as any) ?? null;
     if (x !== null) {
       verticalLineX = xOffset + x;
     }

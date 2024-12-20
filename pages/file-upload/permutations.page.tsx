@@ -26,7 +26,7 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
     value: [
       [
         new File([new Blob(['demo content 1'])], 'demo file 1', { type: 'image/*' }),
-        new File([new Blob(['demo content 2'])], 'demo file 2', { type: 'image/*' }),
+        new File([new Blob(['demo content 2'])], 'demo file 2 with long file name', { type: 'image/*' }),
       ],
     ],
     showFileSize: [true],
@@ -37,6 +37,7 @@ const permutations = createPermutations<Omit<FileUploadProps, 'dismissAriaLabel'
     constraintText: ['File size must not exceed 1 MB'],
     fileErrors: [undefined, ['File size is above 1 MB', 'File size is above 1 MB']],
     fileWarnings: [undefined, ['File type is image', 'File type is image']],
+    fileTokenAlignment: ['vertical', 'horizontal'],
   },
 ]);
 

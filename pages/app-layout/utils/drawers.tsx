@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { AppLayoutProps, Drawer, SpaceBetween } from '~components';
+import { AppLayoutProps, Box, Drawer, SpaceBetween } from '~components';
 
 import { drawerIds } from './drawer-ids';
 
@@ -24,6 +24,9 @@ function Security() {
         <div className={styles.contentPlaceholder} />
         <div className={styles.contentPlaceholder} />
         <div className={styles.contentPlaceholder} />
+        <Box float="right">
+          <button data-testid="drawer-button">🦆</button>
+        </Box>
       </SpaceBetween>
     </Drawer>
   );

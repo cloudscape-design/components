@@ -27,7 +27,7 @@ import {
 
 import styles from './styles.css.js';
 
-export interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
+interface InternalSliderProps extends SliderProps, InternalBaseComponentProps {}
 
 export default function InternalSlider({
   value,

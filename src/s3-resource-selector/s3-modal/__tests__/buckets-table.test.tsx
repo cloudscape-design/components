@@ -6,7 +6,8 @@ import { render } from '@testing-library/react';
 import { BucketsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/buckets-table';
 import createWrapper, { TableWrapper } from '../../../../lib/components/test-utils/dom';
 import { buckets, i18nStrings, waitForFetch } from '../../__tests__/fixtures';
-import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent } from './utils';
+import { compareDates } from '../table-utils';
+import { getColumnAriaLabels, getHeaderVisibleText, getTableBodyContent, getTableColumnContent } from './utils';
 
 async function renderTable(jsx: React.ReactElement) {
   const { container } = render(jsx);
@@ -59,6 +60,24 @@ test('renders correct sorting state', async () => {
   expect(getColumnAriaLabels(wrapper)).toEqual(['Name, sorted descending', 'Creation date, not sorted']);
 });
 
+test('sorts objects by creation date', async () => {
+  const wrapper = await renderTable(<BucketsTable {...defaultProps} />);
+  const date1 = buckets[0].CreationDate;
+  const date2 = buckets[1].CreationDate;
+  // Ensure the starting date 1 is more recent than date 2, and they are displayed as such
+  expect(compareDates(date1, date2)).toBeGreaterThan(compareDates(date2, date1));
+  expect(getTableColumnContent(wrapper, 3)[0]).toEqual(date1);
+  expect(getTableColumnContent(wrapper, 3)[1]).toEqual(date2);
+
+  wrapper.findColumnSortingArea(3)!.click();
+  expect(getTableColumnContent(wrapper, 3)[0]).toEqual(date2);
+  expect(getTableColumnContent(wrapper, 3)[1]).toEqual(date1);
+
+  wrapper.findColumnSortingArea(3)!.click();
+  expect(getTableColumnContent(wrapper, 3)[0]).toEqual(date1);
+  expect(getTableColumnContent(wrapper, 3)[1]).toEqual(date2);
+});
+
 test('Renders correct buckets table content', async () => {
   const wrapper = await renderTable(<BucketsTable {...defaultProps} />);
   expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Name', 'Creation date']);
@@ -81,18 +100,18 @@ test('Renders empty state when data fetch failed', async () => {
   expect(wrapper.findEmptySlot()!.getElement()).toHaveTextContent('No buckets');
 });
 
-test('Renders region column when it is requested', async () => {
+test('Renders region column in correct order when it is requested', async () => {
   const wrapper = await renderTable(
     <BucketsTable
       {...defaultProps}
       i18nStrings={{ ...i18nStrings, columnBucketRegion: 'Region' }}
-      visibleColumns={['Name', 'Region']}
+      visibleColumns={['Name', 'CreationDate', 'Region']}
     />
   );
-  expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Name', 'Region']);
+  expect(getHeaderVisibleText(wrapper)).toEqual(['', 'Name', 'Region', 'Creation date']);
   expect(getTableBodyContent(wrapper)).toEqual([
-    ['', buckets[0].Name, buckets[0].Region],
-    ['', buckets[1].Name, buckets[1].Region],
+    ['', buckets[0].Name, buckets[0].Region, buckets[0].CreationDate],
+    ['', buckets[1].Name, buckets[1].Region, buckets[1].CreationDate],
   ]);
 });
 

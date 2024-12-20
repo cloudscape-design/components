@@ -21,7 +21,7 @@ export interface ActionConfig {
   unmountContent: (container: HTMLElement) => void;
 }
 
-export type ActionRegistrationListener = (action: Array<ActionConfig>) => void;
+type ActionRegistrationListener = (action: Array<ActionConfig>) => void;
 
 export interface ActionsApiPublic {
   registerAction(config: ActionConfig): void;

@@ -198,13 +198,12 @@ describe('controlId', () => {
     test('generates unique ids for every form field component', () => {
       const renderResult = render(
         <>
-          <FormField data-testid="1" label="Label1"></FormField>
-          <FormField data-testid="2" label="Label2"></FormField>
+          <FormField label="Label1"></FormField>
+          <FormField label="Label2"></FormField>
         </>
       );
 
-      const wrapper1 = createWrapper(renderResult.container).findFormField('[data-testid="1"]')!;
-      const wrapper2 = createWrapper(renderResult.container).findFormField('[data-testid="2"]')!;
+      const [wrapper1, wrapper2] = createWrapper(renderResult.container).findAllFormFields();
       expect(wrapper1.findLabel()?.getElement().id).not.toBe(wrapper2.findLabel()?.getElement().id);
     });
 

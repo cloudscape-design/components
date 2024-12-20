@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { getUrlParams, Theme } from './utils';
 
@@ -47,8 +47,11 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
     });
   }
 
-  const drawerBorderOffset = 1;
-  const navigationBorderOffset = theme === 'refresh' ? 1 : 0;
+  const borderThickness = 1;
+
+  // In Visual Refresh with the old app layout, if the navigation has a scrollbar, the scrollbar thickness is added to the navigation slot's width.
+  const navigationBorderOffset = theme === 'refresh' ? borderThickness + scrollbarThickness : 0;
+  const drawerBorderOffset = theme === 'refresh' ? borderThickness + scrollbarThickness : borderThickness;
 
   describe('Default width per contentType', () => {
     const testCases = [
@@ -63,7 +66,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
           `Browser viewPortWidth ${viewPortWidth}: contentType '${contentType}' has default width for content, navigation and tools slot.`,
           setupTest(viewPortWidth, async page => {
             await page.setContentType(contentType);
-            await expect(page.getContentWidth()).resolves.toBe(contentWidth);
+            await expect(page.getContentWidth()).resolves.toBe(theme === 'refresh' ? contentWidth : 1620);
 
             // Open the drawers and check their width
             await page.setDrawersOpen();

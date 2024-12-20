@@ -246,6 +246,7 @@ const permutations = createPermutations<KeyValuePairsProps>([
   },
   {
     columns: [4],
+    minColumnWidth: [undefined, 500],
     items: [
       [
         {

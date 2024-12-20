@@ -62,6 +62,7 @@ type PageContext = React.Context<
 export default () => {
   const settings = usePageSettings();
   const [toolsOpen, setToolsOpen] = useState(true);
+  const [terminationReasons, setTerminationReasons] = useState(() => new Map<string, string>());
   const [preferences, setPreferences] = useState<CollectionPreferencesProps.Preferences>({
     wrapLines: true,
     stickyColumns: { first: 0, last: 0 },
@@ -69,7 +70,14 @@ export default () => {
 
   const tableData = useTableData();
 
-  const columnDefinitions = createColumns();
+  const columnDefinitions = createColumns({ terminationReasons });
+
+  const handleSubmit: TableProps.SubmitEditFunction<Instance> = (currentItem, column, newValue) => {
+    if (column.id === 'termination-reason' && typeof newValue === 'string') {
+      setTerminationReasons(prev => new Map(prev).set(currentItem.name, newValue));
+    }
+    return Promise.resolve();
+  };
 
   return (
     <I18nProvider messages={[messages]} locale="en">
@@ -95,7 +103,7 @@ export default () => {
             pagination={settings.usePagination && <Pagination {...tableData.paginationProps} />}
             columnDisplay={preferences.contentDisplay}
             preferences={createPreferences({ preferences, setPreferences })}
-            submitEdit={() => {}}
+            submitEdit={handleSubmit}
             variant="full-page"
             renderAriaLive={renderAriaLive}
             loading={tableData.loading}
@@ -183,10 +191,13 @@ export default () => {
                   }
                   renderWithPortal={true}
                 >
-                  <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                  <StatusIndicator type="error" iconAriaLabel="Error">
+                    Failed to load instances
+                  </StatusIndicator>
                 </Popover>
               </Box>
             )}
+            renderLoaderEmpty={() => <Box>No instances found</Box>}
           />
         }
       />
@@ -312,6 +323,8 @@ function useTableData() {
       const pages = loadingState.get(item.name)?.pages ?? 0;
       return children.slice(0, pages * NESTED_PAGE_SIZE);
     };
+    // Decorate isItemExpandable to allow expandable items with empty children.
+    collectionResult.collectionProps.expandableRows.isItemExpandable = item => item.type !== 'instance';
     // Decorate onExpandableItemToggle to trigger loading when expanded.
     collectionResult.collectionProps.expandableRows.onExpandableItemToggle = event => {
       onExpandableItemToggle!(event);

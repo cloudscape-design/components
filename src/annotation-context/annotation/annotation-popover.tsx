@@ -18,7 +18,7 @@ import { AnnotationContextProps } from '../interfaces';
 
 import styles from './styles.css.js';
 
-export interface AnnotationPopoverProps {
+interface AnnotationPopoverProps {
   title: string;
   content: React.ReactNode;
   alert: React.ReactNode;

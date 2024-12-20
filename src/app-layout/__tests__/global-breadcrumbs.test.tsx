@@ -4,7 +4,7 @@
 import React, { useState } from 'react';
 import { act, render, cleanup, waitFor } from '@testing-library/react';
 import { describeEachAppLayout } from './utils';
-import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
@@ -26,7 +26,7 @@ const defaultAppLayoutProps = {
 };
 
 function findAllBreadcrumbsInstances() {
-  return wrapper.findAllByClassName(BreadcrumbGroupWrapper.rootSelector);
+  return wrapper.findAllBreadcrumbGroups();
 }
 
 function findDiscoveredBreadcrumbs() {
@@ -281,11 +281,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         <DestructibleLayout />
       </>
     );
-    expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.getElement()).toBeEmptyDOMElement();
+    expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.findBreadcrumbGroup()).toBeFalsy();
 
     wrapper.find('[data-testid="unmount"]')!.click();
     await waitFor(() => {
-      expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.getElement()).not.toBeEmptyDOMElement();
+      expect(wrapper.find('[data-testid="local-breadcrumbs"]')!.findBreadcrumbGroup()).toBeTruthy();
     });
   });
 

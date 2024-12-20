@@ -21,6 +21,7 @@ const modes = [
 const tokenCategories = [
   require('./color-palette'),
   require('./color-charts'),
+  require('./color-severity'),
   require('./colors'),
   require('./typography'),
   require('./borders'),

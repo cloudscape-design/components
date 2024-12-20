@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useImperativeHandle, useRef } from 'react';
 
-export interface ForwardFocusRef {
+interface ForwardFocusRef {
   focus(): void;
 }
 

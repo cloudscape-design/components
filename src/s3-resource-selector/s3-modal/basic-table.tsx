@@ -194,7 +194,7 @@ interface InternalHeaderActionsProps<T> {
   lastUpdated: Date | undefined;
 }
 
-export function InternalHeaderActions<T>({ i18nStrings, reloadData, lastUpdated }: InternalHeaderActionsProps<T>) {
+function InternalHeaderActions<T>({ i18nStrings, reloadData, lastUpdated }: InternalHeaderActionsProps<T>) {
   function getLastUpdated() {
     if (!lastUpdated || !i18nStrings.lastUpdatedText) {
       return null;
@@ -203,6 +203,7 @@ export function InternalHeaderActions<T>({ i18nStrings, reloadData, lastUpdated 
     const formattedDate = formatDateLocalized({
       date: lastUpdated.toString(),
       isDateOnly: false,
+      isMonthOnly: false,
     });
 
     return (

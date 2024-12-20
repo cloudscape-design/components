@@ -5,11 +5,11 @@ import { createRef } from 'react';
 import { act, renderHook } from '../../__tests__/render-hook';
 import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
 import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { createCustomEvent } from '../../internal/events';
+import { BaseKeyDetail, createCustomEvent } from '../../internal/events';
 import { KeyCode } from '../../internal/keycode';
 import { useSelect } from '../utils/use-select';
 
-const createTestEvent = (keyCode: KeyCode) =>
+const createTestEvent = (keyCode: KeyCode): CustomEvent<BaseKeyDetail> =>
   createCustomEvent({
     cancelable: true,
     detail: {
@@ -19,6 +19,7 @@ const createTestEvent = (keyCode: KeyCode) =>
       shiftKey: false,
       altKey: false,
       metaKey: false,
+      isComposing: false,
     },
   });
 
@@ -381,6 +382,17 @@ describe('useSelect', () => {
     act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.down)));
     act(() => hook.result.current.getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter)));
     expect(updateSelectedOption).not.toHaveBeenCalled();
+  });
+
+  test('should clear the highlight on the option when a key is typed into the filter', () => {
+    const hook = renderHook(useSelect, { initialProps });
+    const filterProps = hook.result.current.getFilterProps();
+    // Select an option using the keyboard
+    act(() => filterProps.onKeyDown!(createTestEvent(KeyCode.down)));
+    expect(hook.result.current.highlightedOption).toBeTruthy();
+    // Type in the letter "C"
+    act(() => filterProps.onChange!(createCustomEvent({ detail: { value: 'C' } })));
+    expect(hook.result.current.highlightedOption).toBeUndefined();
   });
 
   test('select without filter should open and navigate to selected option', () => {

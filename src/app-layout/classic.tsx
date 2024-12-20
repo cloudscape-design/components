@@ -24,7 +24,7 @@ import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
 import { MobileToolbar } from './mobile-toolbar';
 import { Notifications } from './notifications';
 import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel';
-import { checkSplitPanelForcedPosition } from './split-panel/split-panel-utils';
+import { shouldSplitPanelBeForcedToBottom } from './split-panel/split-panel-forced-position';
 import { togglesConfig } from './toggles';
 import { getStickyOffsetVars } from './utils/sticky-offsets';
 import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
@@ -294,8 +294,11 @@ const ClassicAppLayout = React.forwardRef(
     };
 
     const effectiveToolsWidth = getEffectiveToolsWidth();
-    const splitPanelMaxWidth = resizableSpaceAvailable - effectiveToolsWidth;
-    const isSplitPanelForcedPosition = checkSplitPanelForcedPosition({ isMobile, splitPanelMaxWidth });
+    const availableWidthForSplitPanel = resizableSpaceAvailable - effectiveToolsWidth;
+    const isSplitPanelForcedPosition = shouldSplitPanelBeForcedToBottom({
+      isMobile,
+      availableWidthForSplitPanel,
+    });
     const finalSplitPanePosition = isSplitPanelForcedPosition ? 'bottom' : splitPanelPosition;
 
     const splitPaneAvailableOnTheSide = splitPanelDisplayed && finalSplitPanePosition === 'side';
@@ -408,7 +411,7 @@ const ClassicAppLayout = React.forwardRef(
             drawers={drawers}
             activeDrawerId={activeDrawerId}
             onDrawerChange={newDrawerId => {
-              onActiveDrawerChange(newDrawerId);
+              onActiveDrawerChange(newDrawerId, { initiatedByUserAction: true });
               if (newDrawerId !== activeDrawerId) {
                 focusToolsButtons();
                 focusDrawersButtons();
@@ -544,7 +547,7 @@ const ClassicAppLayout = React.forwardRef(
                 if (!isOpen) {
                   focusToolsButtons();
                   focusDrawersButtons();
-                  onActiveDrawerChange(null);
+                  onActiveDrawerChange(null, { initiatedByUserAction: true });
                 }
               }}
               isOpen={true}
@@ -593,7 +596,7 @@ const ClassicAppLayout = React.forwardRef(
                   focusToolsButtons();
                   focusDrawersButtons();
                 }
-                onActiveDrawerChange(newDrawerId);
+                onActiveDrawerChange(newDrawerId, { initiatedByUserAction: true });
               }}
               ariaLabels={ariaLabels}
             />

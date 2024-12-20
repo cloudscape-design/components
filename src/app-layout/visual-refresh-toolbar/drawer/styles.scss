@@ -49,10 +49,8 @@
 
   &.drawer-global {
     @include mobile-only {
-      display: none;
-
-      &.last-opened {
-        display: block;
+      &:not(.last-opened) {
+        display: none;
       }
     }
   }
@@ -73,6 +71,7 @@
       grid-column: 3;
       grid-row: 2;
       z-index: 1;
+      align-self: start;
     }
 
     > .drawer-content {

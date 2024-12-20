@@ -15,7 +15,7 @@ import styles from './styles.css.js';
 // Should have the same value as the `border-line-chart-width` token.
 const STROKE_WIDTH = 2;
 
-export interface DataSeriesProps<T> {
+interface DataSeriesProps<T> {
   axis: 'x' | 'y';
 
   plotHeight: number;

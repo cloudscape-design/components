@@ -23,7 +23,6 @@ interface DisabledInlineEditorProps<ItemType> extends TableBodyCellProps<ItemTyp
 }
 
 export function DisabledInlineEditor<ItemType>({
-  className,
   item,
   column,
   ariaLabels,
@@ -31,9 +30,6 @@ export function DisabledInlineEditor<ItemType>({
   onEditStart,
   onEditEnd,
   editDisabledReason,
-  isVisualRefresh,
-  interactiveCell = true,
-  resizableColumns = false,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
   const clickAwayRef = useClickAway(() => {
@@ -45,7 +41,7 @@ export function DisabledInlineEditor<ItemType>({
   const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
   // When a cell is both expandable and editable the icon is always shown.
-  const showIcon = hasHover || hasFocus || isEditing || !interactiveCell;
+  const showIcon = hasHover || hasFocus || isEditing;
 
   const iconRef = useRef(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -73,15 +69,9 @@ export function DisabledInlineEditor<ItemType>({
       nativeAttributes={
         { 'data-inline-editing-active': isEditing.toString() } as TableTdElementProps['nativeAttributes']
       }
-      className={clsx(
-        className,
-        styles['body-cell-editable'],
-        interactiveCell && styles['body-cell-interactive'],
-        resizableColumns && styles['resizable-columns'],
-        isEditing && styles['body-cell-edit-disabled-popover'],
-        isVisualRefresh && styles['is-visual-refresh']
-      )}
-      onClick={interactiveCell && !isEditing ? onClick : undefined}
+      isEditing={isEditing}
+      isEditingDisabled={true}
+      onClick={!isEditing ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
       ref={clickAwayRef}
@@ -96,7 +86,6 @@ export function DisabledInlineEditor<ItemType>({
           aria-label={ariaLabels?.activateEditLabel?.(column, item)}
           aria-haspopup="dialog"
           aria-disabled="true"
-          onClick={!interactiveCell && !isEditing ? onClick : undefined}
           onFocus={() => setHasFocus(true)}
           onBlur={() => setHasFocus(false)}
           onKeyDown={handleEscape}

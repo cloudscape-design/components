@@ -11,7 +11,7 @@ jest.mock('@cloudscape-design/component-toolkit', () => ({
   useContainerQuery: () => [100, () => {}],
 }));
 
-describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ theme, size }) => {
+describeEachAppLayout(({ theme, size }) => {
   test('Default state', () => {
     const { wrapper } = renderComponent(<AppLayout />);
 
@@ -36,6 +36,12 @@ describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, ({ 
   test('should render breadcrumbs', () => {
     const { wrapper } = renderComponent(<AppLayout breadcrumbs="Breadcrumbs" />);
     expect(wrapper.findBreadcrumbs()).toBeTruthy();
+  });
+
+  test('should not find tools slot as findActiveDrawer utility', () => {
+    const { wrapper } = renderComponent(<AppLayout toolsOpen={true} tools="test content" />);
+    expect(wrapper.findTools()!.getElement()).toHaveTextContent('test content');
+    expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
   [

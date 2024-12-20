@@ -4,7 +4,7 @@ import { DependencyList, RefObject, useEffect, useRef } from 'react';
 
 import { Focusable } from './use-focus-control';
 
-export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
+type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
 
 export interface SplitPanelFocusControlRefs {
   toggle: RefObject<Focusable>;

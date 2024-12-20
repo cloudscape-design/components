@@ -60,7 +60,7 @@ describe('Autosuggest load-more-controller', () => {
     expect(onLoadItems).toBeCalledTimes(1);
   });
 
-  test('overrides filtering text when called on input focus', () => {
+  test('returns current filtering text when called on input focus', () => {
     let filteringText = '';
     const onLoadItems = (detail: OptionsLoadItemsDetail) => {
       filteringText = detail.filteringText;
@@ -70,7 +70,7 @@ describe('Autosuggest load-more-controller', () => {
     });
     act(() => result.current.fireLoadMoreOnInputChange('input'));
     act(() => result.current.fireLoadMoreOnInputFocus());
-    expect(filteringText).toBe('');
+    expect(filteringText).toBe('input');
   });
 
   test('does not override filtering text when called on recovery or scroll', () => {

@@ -4,7 +4,7 @@ import React from 'react';
 
 import styles from './styles.css.js';
 
-export interface AnnotationIconProps {
+interface AnnotationIconProps {
   open?: boolean;
 }
 

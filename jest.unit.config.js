@@ -21,6 +21,7 @@ module.exports = mergePresets(cloudscapePreset, {
     'environment.js$',
     '/internal\\/vendor/',
     '<rootDir>/pages',
+    'test-utils/selectors',
   ],
   coverageThreshold: {
     global: {

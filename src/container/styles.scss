@@ -246,16 +246,19 @@
   flex: 1;
   &-fit-height {
     overflow: auto;
+    display: flex;
+    flex-direction: column;
   }
+}
+.content-inner {
+  flex: 1;
+
   &.with-paddings {
     padding-block: awsui.$space-scaled-l;
     padding-inline: awsui.$space-container-horizontal;
 
-    .header + & {
+    &.with-header {
       padding-block-start: awsui.$space-container-content-top;
-      &.content-with-media {
-        padding-block-start: 0;
-      }
     }
   }
 }
