@@ -6,7 +6,7 @@ import { XDomain, YDomain } from '../../internal/components/cartesian-chart/inte
 import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
 import { ChartPlotRef } from '../../internal/components/chart-plot';
 import { ChartSeriesMarkerType } from '../../internal/components/chart-series-marker';
-import { ReadonlyAsyncStore } from '../async-store';
+import { ReadonlyAsyncStore } from '../../internal/utils/async-store';
 import { AreaChartProps } from '../interfaces';
 
 export interface ChartModel<T extends AreaChartProps.DataTypes> {

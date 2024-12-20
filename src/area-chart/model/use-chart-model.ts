@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { MouseEvent, RefObject, useEffect, useMemo, useRef } from 'react';
+import React, { MouseEvent, RefObject, useEffect, useLayoutEffect, useMemo, useRef } from 'react';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
@@ -13,7 +13,6 @@ import { circleIndex } from '../../internal/utils/circle-index';
 import handleKey from '../../internal/utils/handle-key';
 import { nodeBelongs } from '../../internal/utils/node-belongs';
 import { throttle } from '../../internal/utils/throttle';
-import { useReaction } from '../async-store';
 import { AreaChartProps } from '../interfaces';
 import computeChartProps from './compute-chart-props';
 import createSeriesDecorator from './create-series-decorator';
@@ -373,7 +372,11 @@ export default function useChartModel<T extends AreaChartProps.DataTypes>({
   ]);
 
   // Notify client when series highlight change.
-  useReaction(model.interactions, state => state.highlightedSeries, setHighlightedSeries);
+  setHighlightedSeries = useStableCallback(setHighlightedSeries);
+  useLayoutEffect(
+    () => model.interactions.subscribe(state => state.highlightedSeries, setHighlightedSeries),
+    [model.interactions, setHighlightedSeries]
+  );
 
   // Update interactions store when series highlight in a controlled way.
   useEffect(() => {
