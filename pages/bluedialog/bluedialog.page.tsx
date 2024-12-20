@@ -10,12 +10,9 @@ export default function BluedialogPage() {
   const submitData = (data: any) => {
     console.log(data); // submit the form with these values to determine next action
   };
-  const skipDialog = () => {
-    console.log('skip dialog');
-  };
   return (
     <Box padding="xxl">
-      <Bluedialog onSubmit={submitData} onSkip={skipDialog} />
+      <Bluedialog onSubmit={submitData} />
     </Box>
   );
 }
