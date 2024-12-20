@@ -13,22 +13,18 @@ const componentPrefix = 'content-display-option';
 export const getClassName = (suffix?: string) => styles[[componentPrefix, suffix].filter(Boolean).join('-')];
 
 interface ContentDisplayOptionProps {
-  dragHandleAttributes: DragHandleProps['attributes'];
-  dragHandleListeners?: DragHandleProps['listeners'];
+  dragHandleProps: DragHandleProps;
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
 }
 
 const ContentDisplayOption = forwardRef(
-  (
-    { dragHandleAttributes, dragHandleListeners, onToggle, option }: ContentDisplayOptionProps,
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
+  ({ dragHandleProps, onToggle, option }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
       <div ref={ref} className={getClassName('content')}>
-        <DragHandle attributes={dragHandleAttributes} listeners={dragHandleListeners} />
+        <DragHandle {...dragHandleProps} />
 
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}

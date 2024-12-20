@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export interface DndContainerProps<Data> {
-  items: readonly DndContainerItem<Data>[];
+export interface DndAreaProps<Data> {
+  items: readonly DndAreaItem<Data>[];
   renderItem: (props: RenderItemProps<Data>) => React.ReactNode;
-  onItemsChange: (sortedOptions: readonly DndContainerItem<Data>[]) => void;
-  i18nStrings: DndContainerI18nStrings;
+  onItemsChange: (sortedOptions: readonly DndAreaItem<Data>[]) => void;
+  i18nStrings: DndAreaI18nStrings;
   disableReorder?: boolean;
-  dragOverlayClassName?: string;
+  borderRadiusVariant?: 'item' | 'container';
 }
 
-export interface DndContainerItem<Data> {
+export interface DndAreaItem<Data> {
   id: string;
   label: string;
   data: Data;
@@ -18,23 +18,22 @@ export interface DndContainerItem<Data> {
 
 export interface RenderItemProps<Data> {
   ref?: React.RefCallback<HTMLElement>;
-  item: DndContainerItem<Data>;
+  item: DndAreaItem<Data>;
   style: React.CSSProperties;
+  className?: string;
   isDragging: boolean;
   isSorting: boolean;
   isActive: boolean;
-  dragHandleAttributes: {
-    'aria-label'?: string;
-    'aria-describedby'?: string;
-    'aria-disabled'?: boolean;
-  };
-  dragHandleListeners?: {
+  dragHandleProps: {
+    ariaLabel: string;
+    ariaDescribedby?: string;
+    disabled?: boolean;
     onPointerDown?: React.PointerEventHandler;
     onKeyDown?: React.KeyboardEventHandler;
   };
 }
 
-export interface DndContainerI18nStrings {
+export interface DndAreaI18nStrings {
   liveAnnouncementDndStarted?: (position: number, total: number) => string;
   liveAnnouncementDndItemReordered?: (initialPosition: number, currentPosition: number, total: number) => string;
   liveAnnouncementDndItemCommitted?: (initialPosition: number, finalPosition: number, total: number) => string;
