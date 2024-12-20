@@ -41,7 +41,7 @@ export default function Page() {
           options={options1}
           onReorder={o => setOptions1([...o])}
           renderOption={props => <InstanceOption {...props} />}
-          renderStaticOption={option => <InstanceOption option={option} sortable={false} />}
+          renderStaticOption={option => <InstanceOption option={option} />}
           fixedOptionsStart={fixedOptions ? 3 : 0}
         />
       </SpaceBetween>
