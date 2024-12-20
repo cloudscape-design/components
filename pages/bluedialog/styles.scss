@@ -13,6 +13,7 @@
   border-end-start-radius: 16px;
   border-end-end-radius: 16px;
 }
+
 .blue-dialog-box__header {
   display: flex;
   justify-content: space-between;
@@ -22,8 +23,7 @@
 }
 
 .blue-dialog-box__content {
-  padding-block-start: 0;
-  padding-block-end: 20px;
+  padding-block: 20px;
   padding-inline: 20px;
 }
 
