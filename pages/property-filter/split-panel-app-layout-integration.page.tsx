@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { useCollection } from '@cloudscape-design/collection-hooks';
+import { PropertyFilterQuery, useCollection } from '@cloudscape-design/collection-hooks';
 
 import {
   AppLayout,
@@ -27,6 +27,7 @@ import { useOptionsLoader } from '../common/options-loader';
 import ScreenshotArea from '../utils/screenshot-area';
 import { columnDefinitions, filteringProperties, labels } from './common-props';
 import { allItems, states, TableItem } from './table.data';
+import { decode, encode } from './utils';
 
 type PageContext = React.Context<
   AppContextType<{
@@ -37,6 +38,7 @@ type PageContext = React.Context<
     hideOperations?: boolean;
     asyncOptions?: boolean;
     emptyOptions?: boolean;
+    propertyFilters?: string;
   }>
 >;
 
@@ -50,6 +52,7 @@ export default function () {
       hideOperations = false,
       asyncOptions = false,
       emptyOptions = false,
+      propertyFilters = '',
     },
     setUrlParams,
   } = useContext(AppContext as PageContext);
@@ -73,7 +76,7 @@ export default function () {
         </Box>
       ),
       filteringProperties,
-      defaultQuery: { tokens: [{ propertyKey: 'averagelatency', operator: '!=', value: '30' }], operation: 'and' },
+      defaultQuery: decode<PropertyFilterQuery>(propertyFilters, { operation: 'and', tokens: [], tokenGroups: [] }),
     },
     sorting: {},
   });
@@ -218,6 +221,10 @@ export default function () {
                   virtualScroll={virtualScroll}
                   expandToViewport={expandToViewport}
                   countText={`${items.length} matches`}
+                  onChange={event => {
+                    propertyFilterProps.onChange(event);
+                    setUrlParams({ propertyFilters: encode(event.detail) });
+                  }}
                 />
               }
               columnDefinitions={columnDefinitions}
