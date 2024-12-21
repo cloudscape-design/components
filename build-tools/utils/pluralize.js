@@ -17,6 +17,7 @@ const pluralizationMap = {
   ButtonGroup: 'ButtonGroups',
   Calendar: 'Calendars',
   Cards: 'Cards',
+  Carousel: 'Carousels',
   Checkbox: 'Checkboxes',
   CodeEditor: 'CodeEditors',
   CollectionPreferences: 'CollectionPreferences',

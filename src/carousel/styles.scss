@@ -1,0 +1,61 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles/tokens' as awsui;
+@use '../internal/styles' as styles;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+.root {
+  @include styles.styles-reset;
+  overflow: hidden;
+  position: relative;
+  padding-inline: 7px;
+}
+
+.content-wrapper {
+  block-size: 100%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.carousel-wrapper {
+  list-style-type: none;
+  padding-inline-start: 0;
+  flex-direction: row;
+  position: relative;
+  inline-size: 100%;
+  block-size: 100%;
+  z-index: 1;
+  display: flex;
+  box-sizing: content-box;
+
+  @include styles.with-motion {
+    transition: transform 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+  }
+}
+
+.carousel-item {
+  border-start-start-radius: 16px;
+  border-start-end-radius: 16px;
+  border-end-start-radius: 16px;
+  border-end-end-radius: 16px;
+  flex-shrink: 0;
+  block-size: 100%;
+  margin-inline-end: 30px;
+  position: relative;
+  display: block;
+
+  &:focus {
+    outline: none;
+  }
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight('4px');
+  }
+}
