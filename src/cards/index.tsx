@@ -106,6 +106,7 @@ const Cards = React.forwardRef(function <T = any>(
   const hasToolsHeader = header || filter || pagination || preferences;
   const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;
   const headerRef = useRef<HTMLDivElement>(null);
+  console.log('dummy');
 
   const { scrollToTop, scrollToItem } = stickyScrolling(refObject, headerRef);
   stickyHeader = !isMobile && stickyHeader;
