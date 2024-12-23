@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
+import clsx from 'clsx';
 
 import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
@@ -16,14 +17,15 @@ interface ContentDisplayOptionProps {
   dragHandleProps: DragHandleProps;
   onToggle?: (option: OptionWithVisibility) => void;
   option: OptionWithVisibility;
+  className?: string;
 }
 
 const ContentDisplayOption = forwardRef(
-  ({ dragHandleProps, onToggle, option }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
+  ({ dragHandleProps, onToggle, option, className }: ContentDisplayOptionProps, ref: ForwardedRef<HTMLDivElement>) => {
     const idPrefix = useUniqueId(componentPrefix);
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
-      <div ref={ref} className={getClassName('content')}>
+      <div ref={ref} className={clsx(getClassName('content'), className)}>
         <DragHandle {...dragHandleProps} />
 
         <label className={getClassName('label')} htmlFor={controlId}>

@@ -19,6 +19,9 @@
 
 .option {
   list-style: none;
+  padding-block: awsui.$space-static-xs;
+  padding-inline: awsui.$space-static-xs;
+  background-color: awsui.$color-background-container-content;
   border-block-end: 1px solid transparent;
 }
 
@@ -29,19 +32,18 @@
 .option-body {
   display: flex;
   gap: awsui.$space-static-xxs;
-  padding-block: awsui.$space-static-xs;
-  padding-inline: awsui.$space-static-xs;
-  background-color: awsui.$color-background-container-content;
-  border-start-start-radius: awsui.$border-radius-item;
-  border-start-end-radius: awsui.$border-radius-item;
-  border-end-start-radius: awsui.$border-radius-item;
-  border-end-end-radius: awsui.$border-radius-item;
 }
 
 // Container styles
 
 .container {
+  --awsui-sortable-area-item-border: #{awsui.$border-radius-container};
+
   margin-block-end: awsui.$space-static-m;
+
+  > div {
+    --awsui-sortable-area-item-border: initial;
+  }
 }
 
 .container:last-child {

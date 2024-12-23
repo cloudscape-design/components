@@ -90,7 +90,7 @@ export function ReorderableTable<Item extends { id: string }>({
               return !isActive ? (
                 row
               ) : (
-                <div className={tableStyles['custom-table']}>
+                <div className={tableStyles['custom-table']} style={{ overflow: 'visible' }}>
                   <table className={clsx(tableStyles['custom-table-table'], tableStyles['use-wrapper-paddings'])}>
                     <tbody>{row}</tbody>
                   </table>

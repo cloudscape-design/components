@@ -133,20 +133,20 @@ export default function ContentDisplayPreference({
           items={sortedAndFilteredOptions.map(data => ({ id: data.id, label: data.label, data }))}
           onItemsChange={items => onChange(items.map(({ id, data }) => ({ id, visible: data.visible })))}
           disableReorder={columnFilteringText.trim().length > 0}
-          renderItem={({ ref, item, isSorting, isActive, style, className, dragHandleProps }) => {
-            className = clsx(className, getOptionClassName(), isSorting && styles.sorting);
+          renderItem={({ ref, item, isActive, style, className, dragHandleProps }) => {
             const content = (
               <ContentDisplayOption
                 ref={ref}
                 option={item.data}
                 onToggle={onToggle}
                 dragHandleProps={dragHandleProps}
+                className={isActive ? className : undefined}
               />
             );
             return isActive ? (
               content
             ) : (
-              <li className={className} style={style}>
+              <li className={clsx(className, getOptionClassName())} style={style}>
                 {content}
               </li>
             );
