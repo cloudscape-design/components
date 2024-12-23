@@ -31,8 +31,12 @@ export default function () {
   const [loading, setLoading] = useState(true);
 
   const [tags, setTags] = useState<ReadonlyArray<TagEditorProps.Tag>>(() => [
-    ...range(10).map(i => ({ key: `Tag ${i + 1}`, value: `Tag ${i + 1} - Value ${i + 1}`, existing: true })),
-    ...range(20).map(i => ({ key: `Tag ${i + 21}`, value: `Tag ${i + 21} - Value ${i + 21}`, existing: false })),
+    // ...range(10).map(i => ({ key: `Tag ${i + 1}`, value: `Tag ${i + 1} - Value ${i + 1}`, existing: true })),
+    // ...range(20).map(i => ({ key: `Tag ${i + 21}`, value: `Tag ${i + 21} - Value ${i + 21}`, existing: false })),
+    { key: ' foo', value: 'bar', existing: true },
+    { key: '  foo', value: 'bar', existing: true },
+    { key: '   foo', value: 'bar', existing: true },
+    { key: '    foo', value: 'bar', existing: true },
   ]);
 
   const onChange = useCallback((event: NonCancelableCustomEvent<TagEditorProps.ChangeDetail>) => {
