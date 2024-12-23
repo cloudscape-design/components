@@ -82,9 +82,7 @@ const InternalPromptInput = React.forwardRef(
     );
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-      if (onKeyDown) {
-        fireKeyboardEvent(onKeyDown, event);
-      }
+      fireKeyboardEvent(onKeyDown, event);
 
       if (event.key === 'Enter' && !event.shiftKey) {
         if ('form' in event.target && event.target.form !== null && !event.isDefaultPrevented()) {

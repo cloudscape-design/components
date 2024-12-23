@@ -43,7 +43,7 @@ export const ResizableDrawer = ({
   const sizeControlProps: SizeControlProps = {
     position: 'side',
     panelRef: drawerRefObject,
-    handleRef: refs.slider,
+    handleRef: refs.handle,
     onResize: setSidePanelWidth,
   };
 
@@ -60,15 +60,17 @@ export const ResizableDrawer = ({
       resizeHandle={
         !isMobile &&
         activeDrawer?.resizable && (
-          <PanelResizeHandle
-            ref={refs.slider}
-            position="side"
-            className={testutilStyles['drawers-slider']}
-            ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-            ariaValuenow={relativeSize}
-            onKeyDown={onKeyDown}
-            onPointerDown={onSliderPointerDown}
-          />
+          <div ref={refs.handle}>
+            <PanelResizeHandle
+              ref={refs.slider}
+              position="side"
+              className={testutilStyles['drawers-slider']}
+              ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+              ariaValuenow={relativeSize}
+              onKeyDown={onKeyDown}
+              onPointerDown={onSliderPointerDown}
+            />
+          </div>
         )
       }
       ariaLabels={{
