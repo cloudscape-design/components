@@ -5667,7 +5667,13 @@ You must set the current value in the \`preferences.wrapLines\` property.",
       "type": "CollectionPreferencesProps.WrapLinesPreference",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Content displayed before the preferences. Use it to display additional information relating to the preferences.",
+      "isDefault": false,
+      "name": "contentBefore",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
