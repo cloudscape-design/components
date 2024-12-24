@@ -1,5 +1,5 @@
 # This workflow executes a full dry-run test, which means that all we build and test all @cloudscape-design packages in GitHub.
-# This ensures that the changes in the current package do not cause any regressions for its consumers.
+# This ensures that the changes in the current package do not cause any regressions for its consumers. -restart
 name: Dry-run
 on:
   workflow_dispatch:
