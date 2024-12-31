@@ -31,6 +31,7 @@ export interface InternalContainerProps extends Omit<ContainerProps, 'variant'>,
   __headerRef?: React.RefObject<HTMLDivElement>;
   __fullPage?: boolean;
   __disableStickyMobile?: boolean;
+  __transparentHeader?: boolean;
   /**
    * Additional internal variant:
    * * `embedded` - Use this variant within a parent container (such as a modal,
@@ -77,6 +78,7 @@ export default function InternalContainer({
   __disableStickyMobile = true,
   __funnelSubStepProps,
   __subStepRef,
+  __transparentHeader,
   ...restProps
 }: InternalContainerProps) {
   const isMobile = useMobile();
@@ -155,6 +157,7 @@ export default function InternalContainer({
                     [styles['with-hidden-content']]: !children || __hiddenContent,
                     [styles['header-with-media']]: hasMedia,
                     [styles['header-full-page']]: __fullPage && isRefresh,
+                    [styles['header-transparent']]: __transparentHeader && isRefresh,
                   }
                 )}
                 {...stickyStyles}

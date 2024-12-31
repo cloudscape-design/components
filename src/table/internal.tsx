@@ -417,6 +417,7 @@ const InternalTable = React.forwardRef(
               className={clsx(baseProps.className, styles.root)}
               __funnelSubStepProps={__funnelSubStepProps}
               __fullPage={variant === 'full-page'}
+              __transparentHeader={variant === 'borderless'}
               header={
                 <>
                   {hasHeader && (
