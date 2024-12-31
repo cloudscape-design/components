@@ -34,6 +34,11 @@ const ExampleTable = ({ variant }: { variant: 'container' | 'embedded' | 'border
       variant={variant}
       onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       selectedItems={selectedItems}
+      ariaLabels={{
+        selectionGroupLabel: 'Items selection',
+        allItemsSelectionLabel: () => 'select all',
+        itemSelectionLabel: (selection, item) => item.name,
+      }}
       columnDefinitions={[
         {
           id: 'variable',
