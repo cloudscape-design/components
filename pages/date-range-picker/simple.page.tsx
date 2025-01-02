@@ -28,13 +28,8 @@ import {
 
 export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
-  const [value, setValue] = useState<DateRangePickerProps['value']>({
-    type: 'absolute',
-    startDate: '2024-12-30T00:00:00+01:00',
-    endDate: '2024-12-31T23:59:59+01:00',
-  });
 
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const absoluteFormat =
     urlParams.absoluteFormat ?? (dateRangePickerDemoDefaults.absoluteFormat as DateRangePickerProps.AbsoluteFormat);
   const showRelativeOptions = urlParams.showRelativeOptions ?? dateRangePickerDemoDefaults.showRelativeOptions;
@@ -47,6 +42,17 @@ export default function DatePickerScenario() {
   const rangeSelectorMode =
     urlParams.rangeSelectorMode ??
     (dateRangePickerDemoDefaults.rangeSelectorMode as DateRangePickerProps.RangeSelectorMode);
+  const hasValue = urlParams.hasValue ?? dateRangePickerDemoDefaults.hasValue;
+
+  const [value, setValue] = useState<DateRangePickerProps['value']>(
+    hasValue
+      ? {
+          type: 'absolute',
+          startDate: '2024-12-30T00:00:00+01:00',
+          endDate: '2024-12-31T23:59:59+01:00',
+        }
+      : null
+  );
 
   return (
     <Box padding="s">
@@ -97,6 +103,9 @@ export default function DatePickerScenario() {
               <option value="long-localized">Long localized</option>
             </select>
           </label>
+          <Checkbox checked={hasValue} onChange={({ detail }) => setUrlParams({ hasValue: detail.checked })}>
+            Has initial value
+          </Checkbox>
           <Checkbox
             checked={withDisabledReason}
             onChange={({ detail }) => setUrlParams({ withDisabledReason: detail.checked })}
@@ -108,6 +117,9 @@ export default function DatePickerScenario() {
             onChange={({ detail }) => setUrlParams({ showRelativeOptions: detail.checked })}
           >
             Show relative options
+          </Checkbox>
+          <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+            Month-only
           </Checkbox>
           <Checkbox
             disabled={monthOnly}
@@ -134,6 +146,7 @@ export default function DatePickerScenario() {
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             dateOnly={dateOnly}
+            granularity={monthOnly ? 'month' : 'day'}
             timeInputFormat="hh:mm"
             rangeSelectorMode={rangeSelectorMode}
             isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}

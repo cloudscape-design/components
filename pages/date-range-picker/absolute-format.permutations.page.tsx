@@ -10,11 +10,12 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { generateI18nStrings, generatePlaceholder, isValid } from './common';
 
 const permutations = createPermutations<
-  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value'>
+  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity'>
 >([
   {
     absoluteFormat: ['iso', 'long-localized'],
     dateOnly: [true, false],
+    granularity: ['month', 'day'],
     value: [
       {
         type: 'absolute',
@@ -26,6 +27,7 @@ const permutations = createPermutations<
   {
     absoluteFormat: ['iso', 'long-localized'],
     dateOnly: [true, false],
+    granularity: ['month', 'day'],
     hideTimeOffset: [true, false],
     value: [
       {
@@ -51,10 +53,11 @@ export default function DateRangePickerPermutations() {
                 value={permutation.value}
                 absoluteFormat={permutation.absoluteFormat}
                 dateOnly={permutation.dateOnly}
+                granularity={permutation.granularity}
                 hideTimeOffset={permutation.hideTimeOffset}
                 locale="en-US"
-                i18nStrings={generateI18nStrings(permutation.dateOnly || false, false)}
-                placeholder={generatePlaceholder(permutation.dateOnly, false)}
+                i18nStrings={generateI18nStrings(permutation.dateOnly || false, permutation.granularity === 'month')}
+                placeholder={generatePlaceholder(permutation.dateOnly, permutation.granularity === 'month')}
                 relativeOptions={[]}
                 isValidRange={isValid}
                 rangeSelectorMode={'absolute-only'}

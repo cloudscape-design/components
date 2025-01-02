@@ -69,6 +69,7 @@ export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
   const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
+  const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
@@ -103,6 +104,16 @@ export default function DatePickerScenario() {
       >
         Disabled reasons
       </Checkbox>
+      <Checkbox
+        disabled={monthOnly}
+        checked={dateOnly}
+        onChange={({ detail }) => setUrlParams({ dateOnly: detail.checked })}
+      >
+        Date-only
+      </Checkbox>
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
       <br />
       <DateRangePicker
         value={value}
@@ -112,6 +123,8 @@ export default function DatePickerScenario() {
         onChange={e => setValue(e.detail.value)}
         relativeOptions={relativeOptions}
         isValidRange={isValid}
+        granularity={monthOnly ? 'month' : 'day'}
+        dateOnly={dateOnly}
         isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
         dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
       />

@@ -121,6 +121,12 @@
     "i18nStrings.copyButtonText": "Copy"
   },
   "date-range-picker": {
+    "nextMonthAriaLabel": "Next month",
+    "previousMonthAriaLabel": "Previous month",
+    "todayAriaLabel": "Today",
+    "i18nStrings.nextYearAriaLabel": "Next year",
+    "i18nStrings.previousYearAriaLabel": "Previous year",
+    "i18nStrings.currentMonthAriaLabel": "Current month",
     "i18nStrings.relativeModeTitle": "Relative mode",
     "i18nStrings.absoluteModeTitle": "Absolute mode",
     "i18nStrings.relativeRangeSelectionHeading": "Choose a range",
@@ -132,8 +138,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Unit of time",
     "i18nStrings.customRelativeRangeDurationLabel": "Duration",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Enter a duration",
+    "i18nStrings.startMonthLabel": "Start month",
     "i18nStrings.startDateLabel": "Start date",
     "i18nStrings.startTimeLabel": "Start time",
+    "i18nStrings.endMonthLabel": "End month",
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
     "i18nStrings.dateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",

@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../../box/internal';
+import { CalendarProps } from '../../calendar/interfaces';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import InternalInput from '../../input/internal';
@@ -15,6 +16,7 @@ import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import { DateRangePickerProps } from '../interfaces';
 
+import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
 interface RelativeRangePickerProps {
@@ -25,6 +27,7 @@ interface RelativeRangePickerProps {
   i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
   customUnits?: DateRangePickerProps.TimeUnit[];
+  granularity?: CalendarProps.Granularity;
 }
 
 interface UnitSelectOption {
@@ -32,7 +35,8 @@ interface UnitSelectOption {
   label: string;
 }
 
-const dayUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['day', 'week', 'month', 'year'];
+const monthUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['month', 'year'];
+const dayUnits: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['day', 'week', ...monthUnits];
 const units: ReadonlyArray<DateRangePickerProps.TimeUnit> = ['second', 'minute', 'hour', ...dayUnits];
 
 const CUSTOM_OPTION_SELECT_KEY = 'awsui-internal-custom-duration-key';
@@ -45,6 +49,7 @@ export default function RelativeRangePicker({
   i18nStrings,
   isSingleGrid,
   customUnits,
+  granularity = 'day',
 }: RelativeRangePickerProps) {
   const i18n = useInternalI18n('date-range-picker');
   const formatRelativeRange = i18n(
@@ -88,7 +93,7 @@ export default function RelativeRangePicker({
     return NaN;
   });
 
-  let finalUnits = dateOnly ? dayUnits : units;
+  let finalUnits = granularity === 'month' ? monthUnits : dateOnly ? dayUnits : units;
   if (customUnits) {
     finalUnits = customUnits.filter(unit => {
       if (units.includes(unit)) {
@@ -102,7 +107,8 @@ export default function RelativeRangePicker({
     });
   }
 
-  let initialCustomTimeUnit: DateRangePickerProps.TimeUnit = dateOnly ? 'day' : 'minute';
+  let initialCustomTimeUnit: DateRangePickerProps.TimeUnit =
+    granularity === 'month' ? 'month' : dateOnly ? 'day' : 'minute';
   if (!finalUnits.includes(initialCustomTimeUnit)) {
     initialCustomTimeUnit = finalUnits[0];
   }
@@ -119,9 +125,13 @@ export default function RelativeRangePicker({
         {showRadioControl && (
           <InternalFormField
             label={i18n('i18nStrings.relativeRangeSelectionHeading', i18nStrings?.relativeRangeSelectionHeading)}
+            description={
+              granularity === 'month' &&
+              'Each month counts from the first day of this month to the last day of this month'
+            }
           >
             <InternalRadioGroup
-              className={styles['relative-range-radio-group']}
+              className={testutilStyles['relative-range-radio-group']}
               onChange={({ detail }) => {
                 setSelectedRadio(detail.value);
 
@@ -174,7 +184,7 @@ export default function RelativeRangePicker({
                   >
                     <InternalInput
                       type="number"
-                      className={styles['custom-range-duration-input']}
+                      className={testutilStyles['custom-range-duration-input']}
                       value={isNaN(customDuration) || customDuration === 0 ? '' : customDuration?.toString()}
                       onChange={e => {
                         const amount = Number(e.detail.value);
@@ -196,7 +206,7 @@ export default function RelativeRangePicker({
                     label={i18n('i18nStrings.customRelativeRangeUnitLabel', i18nStrings?.customRelativeRangeUnitLabel)}
                   >
                     <InternalSelect
-                      className={styles['custom-range-unit-select']}
+                      className={testutilStyles['custom-range-unit-select']}
                       selectedOption={
                         {
                           value: customUnitOfTime,
