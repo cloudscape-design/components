@@ -12,6 +12,7 @@ import SplitPanel from '~components/split-panel';
 import AppContext, { AppContextType } from '../app/app-context';
 import { Footer, Tools } from './utils/content-blocks';
 import labels from './utils/labels';
+import { splitPaneli18nStrings } from './utils/strings';
 import * as toolsContent from './utils/tools-content';
 
 const overflowWhenSplitPanelIsAtBottom = (
@@ -91,21 +92,7 @@ export default function () {
           </div>
         }
         splitPanel={
-          <SplitPanel
-            header="Split panel header"
-            i18nStrings={{
-              preferencesTitle: 'Preferences',
-              preferencesPositionLabel: 'Split panel position',
-              preferencesPositionDescription: 'Choose the default split panel position for the service.',
-              preferencesPositionSide: 'Side',
-              preferencesPositionBottom: 'Bottom',
-              preferencesConfirm: 'Confirm',
-              preferencesCancel: 'Cancel',
-              closeButtonAriaLabel: 'Close panel',
-              openButtonAriaLabel: 'Open panel',
-              resizeHandleAriaLabel: 'Slider',
-            }}
-          >
+          <SplitPanel header="Split panel header" i18nStrings={splitPaneli18nStrings}>
             <div id="radio-group-label">Let content overflow vertically when split panel is:</div>
             <RadioGroup
               ariaLabelledby="radio-group-label"

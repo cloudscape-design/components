@@ -2,9 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { strict as assert } from 'assert';
 
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser from '../../__integ__/use-browser-with-scrollbars';
 import DatePickerPage from './page-objects/date-picker-page';
 
 class DatePickerDropdownTestPage extends DatePickerPage {

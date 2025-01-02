@@ -33,7 +33,7 @@
     "@dnd-kit/sortable": "^7.0.2",
     "@dnd-kit/utilities": "^3.2.1",
     "@juggle/resize-observer": "^3.3.1",
-    "ace-builds": "^1.34.0",
+    "ace-builds": "1.36.0",
     "balanced-match": "^1.0.2",
     "clsx": "^1.1.0",
     "d3-shape": "^1.3.7",
@@ -158,18 +158,13 @@
   "size-limit": [
     {
       "path": "lib/components/internal/plugins/index.js",
-      "limit": "2.5 kB"
+      "brotli": false,
+      "limit": "11 kB"
     },
     {
-      "path": [
-        "lib/components/app-layout/visual-refresh-toolbar/exports.js",
-        "lib/components/split-panel/implementation.js",
-        "lib/components/breadcrumb-group/implementation.js",
-        "lib/components/drawer/implementation.js",
-        "lib/components/side-navigation/implementation.js",
-        "lib/components/help-panel/implementation.js"
-      ],
-      "limit": "140 kB"
+      "path": "lib/components/internal/widget-exports.js",
+      "brotli": false,
+      "limit": "795 kB"
     }
   ],
   "browserslist": [
