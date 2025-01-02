@@ -127,6 +127,10 @@
     background-color: awsui.$color-background-layout-main;
   }
 
+  &.header-transparent {
+    background-color: transparent;
+  }
+
   &.header-with-media {
     background: none;
     &:not(:empty) {
