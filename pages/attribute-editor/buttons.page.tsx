@@ -12,7 +12,7 @@ interface Tag {
 
 interface ControlProps extends InputProps {
   index: number;
-  setItems?: any;
+  setItems: React.Dispatch<React.SetStateAction<Tag[]>>;
   prop: keyof Tag;
 }
 
@@ -30,7 +30,7 @@ const Control = React.memo(({ value, index, setItems, prop }: ControlProps) => {
     <Input
       value={value}
       onChange={({ detail }) => {
-        setItems((items: any) => {
+        setItems(items => {
           const updatedItems = [...items];
           updatedItems[index] = { ...updatedItems[index], [prop]: detail.value };
           return updatedItems;
@@ -98,7 +98,7 @@ export default function AttributeEditorPage() {
 
   return (
     <Box margin="xl">
-      <h1>Attribute Editor - Functional</h1>
+      <h1>Attribute Editor - Custom row actions</h1>
       <AttributeEditor<Tag>
         ref={ref}
         {...labelProps}
