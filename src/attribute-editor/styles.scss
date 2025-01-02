@@ -37,16 +37,19 @@
   /* used in test-utils */
 }
 
-.button-container-haslabel {
-  // We only support vertical alignment of the remove button for labels with exactly one line.
-  // The value is calculated as follows:
-  // padding-top = awsui-form-field-controls: 4px +
-  // line height (also applies to icon size) awsui-form-field-label: 22px
-  padding-block-start: calc(#{awsui.$space-xxs} + #{awsui.$line-height-body-m});
-}
+.button-container {
+  /* used in test-utils */
+  &-haslabel {
+    // We only support vertical alignment of the remove button for labels with exactly one line.
+    // The value is calculated as follows:
+    // padding-top = awsui-form-field-controls: 4px +
+    // line height (also applies to icon size) awsui-form-field-label: 22px
+    padding-block-start: calc(#{awsui.$space-xxs} + #{awsui.$line-height-body-m});
+  }
 
-.button-container-nolabel {
-  padding-block-start: #{awsui.$space-xxs};
+  &-nolabel {
+    padding-block-start: #{awsui.$space-xxs};
+  }
 }
 
 .divider {

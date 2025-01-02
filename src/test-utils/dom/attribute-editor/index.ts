@@ -31,6 +31,10 @@ export class AttributeEditorRowWrapper extends ElementWrapper {
   findRemoveButton(): ButtonWrapper | null {
     return this.findComponent(`.${styles['remove-button']}`, ButtonWrapper);
   }
+
+  findCustomAction(): ElementWrapper | null {
+    return this.findComponent(`.${styles['button-container']}`, ElementWrapper);
+  }
 }
 
 export default class AttributeEditorWrapper extends ComponentWrapper {

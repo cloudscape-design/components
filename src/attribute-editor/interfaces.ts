@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
+import { Breakpoint } from '../internal/breakpoints';
 import { NonCancelableEventHandler } from '../internal/events';
 
 /*
@@ -47,6 +49,13 @@ export namespace AttributeEditorProps {
      * Focuses the 'add' button. Use this, for example, after a user removes the last row.
      */
     focusAddButton(): void;
+  }
+
+  export interface RowActionsProps<T> {
+    item: T;
+    itemIndex: number;
+    ref: React.Ref<ButtonDropdownProps.Ref>;
+    breakpoint: Breakpoint | null;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -122,6 +131,16 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    * A maximum of four fields are supported.
    */
   definition: ReadonlyArray<AttributeEditorProps.FieldDefinition<T>>;
+
+  /**
+   * Specifies a custom action trigger for each row, in place of the remove button.
+   * Only button and button dropdown components are supported.
+   * If you provide this, `removeButtonText`, `removeButtonAriaLabel`,
+   * and `onRemoveButtonClick` will be ignored.
+   * The trigger must be given the provided `ref` in order for `focusRemoveButton`
+   * to work.
+   */
+  customRowActions?: (props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode;
 
   /**
    * Called when add button is clicked.
