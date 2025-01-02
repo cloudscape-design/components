@@ -11,6 +11,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 export default () => {
   return (
     <ScreenshotArea>
+      <h1>Stacked and container variants</h1>
+
       {/* These two should look identical */}
       <Grid gridDefinition={[{ colspan: 6 }, { colspan: 6 }]}>
         <ExampleTable variant="container" />
