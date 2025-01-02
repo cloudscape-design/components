@@ -77,6 +77,14 @@ awsuiPlugins.alertContent.registerContentReplacer({
 
 const alertTypeOptions = ['error', 'warning', 'info', 'success'].map(type => ({ value: type }));
 
+const i18nStrings: AlertProps.I18nStrings = {
+  dismissAriaLabel: 'Dismiss',
+  errorIconAriaLabel: 'error',
+  warningIconAriaLabel: 'warning',
+  infoIconAriaLabel: 'info',
+  successIconAriaLabel: 'success',
+};
+
 export default function () {
   const {
     urlParams: { loading = false, hidden = false, type = 'error', autofocus = false },
@@ -134,20 +142,13 @@ export default function () {
         <ScreenshotArea gutters={false}>
           {hidden ? null : (
             <SpaceBetween size="m">
-              <Alert
-                type={type}
-                statusIconAriaLabel={type}
-                dismissAriaLabel="Dismiss"
-                header="Header"
-                action={<Button>Action</Button>}
-              >
+              <Alert type={type} i18nStrings={i18nStrings} header="Header" action={<Button>Action</Button>}>
                 {!contentSwapped ? content1 : content2}
               </Alert>
 
               <Alert
                 type={type}
-                statusIconAriaLabel={type}
-                dismissAriaLabel="Dismiss"
+                i18nStrings={i18nStrings}
                 header="Header"
                 action={<Button>Action</Button>}
                 ref={alertRef}

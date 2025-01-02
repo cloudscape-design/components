@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "المحور الصادي"
   },
   "alert": {
-    "dismissAriaLabel": "تجاهل التنبيه"
+    "dismissAriaLabel": "تجاهل التنبيه",
+    "i18nStrings.successIconAriaLabel": "نجاح",
+    "i18nStrings.errorIconAriaLabel": "خطأ",
+    "i18nStrings.warningIconAriaLabel": "تحذير",
+    "i18nStrings.infoIconAriaLabel": "المعلومات",
+    "i18nStrings.dismissAriaLabel": "تجاهل التنبيه"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "الخطوة التالية",
@@ -132,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "الوحدة الزمنية",
     "i18nStrings.customRelativeRangeDurationLabel": "المُدَّة",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "إدخال المُدَّة",
+    "i18nStrings.startMonthLabel": "شهر البداية",
     "i18nStrings.startDateLabel": "تاريخ البدء",
     "i18nStrings.startTimeLabel": "وقت البدء",
+    "i18nStrings.endMonthLabel": "نهاية الشهر",
     "i18nStrings.endDateLabel": "تاريخ الانتهاء",
     "i18nStrings.endTimeLabel": "وقت الانتهاء",
     "i18nStrings.dateTimeConstraintText": "استخدم الصيغة YYYY/MM/DD للتاريخ، وصيغة 24 ساعة للوقت.",

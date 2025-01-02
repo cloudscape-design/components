@@ -45,7 +45,7 @@ beforeAll(() => {
 });
 describe('Alert renders correct analytics metadata', () => {
   test('on dismiss button', () => {
-    const wrapper = renderAlert({ dismissible: true, dismissAriaLabel: 'dismiss label' });
+    const wrapper = renderAlert({ dismissible: true, i18nStrings: { dismissAriaLabel: 'dismiss label' } });
     const dismissButton = wrapper.findDismissButton()!.getElement();
     validateComponentNameAndLabels(dismissButton, labels);
     expect(getGeneratedAnalyticsMetadata(dismissButton)).toEqual({
