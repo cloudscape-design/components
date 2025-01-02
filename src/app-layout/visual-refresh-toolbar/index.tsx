@@ -22,6 +22,7 @@ import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-con
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
 import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
+import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
@@ -461,11 +462,12 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     }, [hasToolbar]);
 
     return (
-      <>
+      <AppLayoutVisibilityContext.Provider value={isIntersecting}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
+          isNested={isNested}
           style={{
             paddingBlockEnd:
               splitPanelPosition === 'bottom'
@@ -532,7 +534,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           maxContentWidth={maxContentWidth}
           disableContentPaddings={disableContentPaddings}
         />
-      </>
+      </AppLayoutVisibilityContext.Provider>
     );
   }
 );

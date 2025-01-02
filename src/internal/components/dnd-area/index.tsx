@@ -5,23 +5,24 @@ import React, { useEffect, useRef } from 'react';
 import { DndContext, DragOverlay } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+import clsx from 'clsx';
 
 import { joinStrings } from '../../utils/strings';
 import Portal from '../portal';
-import { DndContainerItem, DndContainerProps, RenderItemProps } from './interfaces';
+import { DndAreaItem, DndAreaProps, RenderItemProps } from './interfaces';
 import useDragAndDropReorder from './use-drag-and-drop-reorder';
 import useLiveAnnouncements from './use-live-announcements';
 
 import styles from './styles.css.js';
 
-export function DndContainer<Data>({
+export function DndArea<Data>({
   items,
   renderItem,
   onItemsChange,
   disableReorder,
   i18nStrings,
-  dragOverlayClassName = styles['drag-overlay'],
-}: DndContainerProps<Data>) {
+  borderRadiusVariant = 'item',
+}: DndAreaProps<Data>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors } = useDragAndDropReorder({
     items,
   });
@@ -66,6 +67,7 @@ export function DndContainer<Data>({
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings.dragHandleAriaLabel}
+            borderRadiusVariant={borderRadiusVariant}
           />
         ))}
       </SortableContext>
@@ -73,18 +75,21 @@ export function DndContainer<Data>({
       <Portal container={portalContainer}>
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
-        <DragOverlay className={dragOverlayClassName} dropAnimation={null} style={{ zIndex: 5000 }}>
+        <DragOverlay
+          className={clsx(styles['drag-overlay'], styles[`drag-overlay-${borderRadiusVariant}`])}
+          dropAnimation={null}
+          style={{ zIndex: 5000 }}
+        >
           {activeItem &&
             renderItem({
               item: activeItem,
               style: {},
+              className: styles.active,
               isDragging: true,
               isSorting: false,
               isActive: true,
-              dragHandleAttributes: {
-                ['aria-label']: joinStrings(i18nStrings.dragHandleAriaLabel, activeItem.label),
-              },
-              dragHandleListeners: {
+              dragHandleProps: {
+                ariaLabel: joinStrings(i18nStrings.dragHandleAriaLabel, activeItem.label) ?? '',
                 onKeyDown: handleKeyDown,
               },
             })}
@@ -115,11 +120,13 @@ function DraggableItem<Data>({
   dragHandleAriaLabel,
   onKeyDown,
   renderItem,
+  borderRadiusVariant,
 }: {
-  item: DndContainerItem<Data>;
+  item: DndAreaItem<Data>;
   dragHandleAriaLabel?: string;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: RenderItemProps<Data>) => React.ReactNode;
+  borderRadiusVariant: 'item' | 'container';
 }) {
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({ id: item.id });
   const style = { transform: CSS.Translate.toString(transform) };
@@ -136,22 +143,26 @@ function DraggableItem<Data>({
           }
         },
       };
-  const dragHandleAttributes = {
-    ['aria-label']: joinStrings(dragHandleAriaLabel, item.label),
-    ['aria-describedby']: attributes['aria-describedby'],
-    ['aria-disabled']: attributes['aria-disabled'],
-  };
+  const className = clsx(
+    isDragging && clsx(styles.placeholder, styles[`placeholder-${borderRadiusVariant}`]),
+    isSorting && styles.sorting
+  );
   return (
     <>
       {renderItem({
         item,
         ref: setNodeRef,
         style,
+        className,
         isDragging,
         isSorting,
         isActive: false,
-        dragHandleListeners,
-        dragHandleAttributes,
+        dragHandleProps: {
+          ...dragHandleListeners,
+          ariaLabel: joinStrings(dragHandleAriaLabel, item.label) ?? '',
+          ariaDescribedby: attributes['aria-describedby'],
+          disabled: attributes['aria-disabled'],
+        },
       })}
     </>
   );

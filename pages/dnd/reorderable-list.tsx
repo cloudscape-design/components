@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ForwardedRef, forwardRef } from 'react';
+import React, { ForwardedRef } from 'react';
 import { useUniqueId } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
-import { Box, SpaceBetween } from '~components';
-import { DndContainer } from '~components/internal/components/dnd-container';
+import { SpaceBetween } from '~components';
+import { DndArea } from '~components/internal/components/dnd-area';
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
 
 import { Instance } from '../table/generate-data';
@@ -17,8 +17,7 @@ import styles from './styles.scss';
 interface OptionProps<Option> {
   ref?: ForwardedRef<HTMLDivElement>;
   option: Option;
-  dragHandleAttributes: DragHandleProps['attributes'];
-  dragHandleListeners?: DragHandleProps['listeners'];
+  dragHandleProps: DragHandleProps;
 }
 
 export function ReorderableList<Option extends { id: string }>({
@@ -41,16 +40,14 @@ export function ReorderableList<Option extends { id: string }>({
       {staticOptions.map(option => (
         <li key={option.id}>{renderStaticOption?.(option)}</li>
       ))}
-      <DndContainer
+      <DndArea
         items={sortableOptions.map(option => ({ id: option.id, label: option.id, data: option }))}
         onItemsChange={items => onReorder([...staticOptions, ...items.map(item => item.data)])}
-        renderItem={props => {
-          const className = clsx(props.isDragging && styles.placeholder, props.isSorting && styles.sorting);
+        renderItem={({ ref, className, style, ...props }) => {
+          className = clsx(className, styles.option, props.isSorting && styles.sorting);
           const content = renderOption({ ...props, option: props.item.data });
-          return props.isActive ? (
-            <Box>{content}</Box>
-          ) : (
-            <li className={className} style={props.style}>
+          return (
+            <li ref={ref} className={className} style={style}>
               {content}
             </li>
           );
@@ -61,49 +58,34 @@ export function ReorderableList<Option extends { id: string }>({
   );
 }
 
-export const InstanceOption = forwardRef(
-  (
-    {
-      dragHandleAttributes,
-      dragHandleListeners,
-      option,
-      sortable = true,
-    }: {
-      dragHandleAttributes?: DragHandleProps['attributes'];
-      dragHandleListeners?: DragHandleProps['listeners'];
-      option: Instance;
-      sortable?: boolean;
-    },
-    ref: ForwardedRef<HTMLDivElement>
-  ) => {
-    const idPrefix = useUniqueId('option');
-    const controlId = `${idPrefix}-control-${option.id}`;
-    return (
-      <div ref={ref} className={styles['option-body']}>
-        <DragHandle
-          attributes={{
-            ...dragHandleAttributes,
-            ['aria-disabled']: !sortable,
-          }}
-          listeners={dragHandleListeners}
-        />
+export const InstanceOption = ({
+  dragHandleProps,
+  option,
+}: {
+  dragHandleProps?: DragHandleProps;
+  option: Instance;
+}) => {
+  const idPrefix = useUniqueId('option');
+  const controlId = `${idPrefix}-control-${option.id}`;
+  return (
+    <div className={styles['option-body']}>
+      {dragHandleProps ? <DragHandle {...dragHandleProps} /> : <DragHandle ariaLabel="" disabled={true} />}
 
-        <SpaceBetween size="s">
-          <SpaceBetween size="s" direction="horizontal">
-            <div style={{ width: 120 }}>
-              <label className={styles['option-label']} htmlFor={controlId}>
-                {option.id}
-              </label>
-            </div>
-            <div style={{ width: 120 }}>{option.type}</div>
-            <div style={{ width: 120 }}>
-              <Status {...option} />
-            </div>
-          </SpaceBetween>
-
-          <DnsName {...option} />
+      <SpaceBetween size="s">
+        <SpaceBetween size="s" direction="horizontal">
+          <div style={{ width: 120 }}>
+            <label className={styles['option-label']} htmlFor={controlId}>
+              {option.id}
+            </label>
+          </div>
+          <div style={{ width: 120 }}>{option.type}</div>
+          <div style={{ width: 120 }}>
+            <Status {...option} />
+          </div>
         </SpaceBetween>
-      </div>
-    );
-  }
-);
+
+        <DnsName {...option} />
+      </SpaceBetween>
+    </div>
+  );
+};

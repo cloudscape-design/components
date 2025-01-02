@@ -56,7 +56,7 @@ export default function Calendar({
 
   // Set displayed date to value if defined or to current date otherwise.
   const parsedValue = value && value.length >= 4 ? parseDate(value) : null;
-  const memoizedValue = parsedValue ? valueDateCache(parsedValue) : null;
+  const memoizedValue = parsedValue && !isNaN(parsedValue.getDate()) ? valueDateCache(parsedValue) : null;
   const defaultDisplayedDate = memoizedValue ?? new Date();
   const [displayedDate, setDisplayedDate] = useState(defaultDisplayedDate);
 
