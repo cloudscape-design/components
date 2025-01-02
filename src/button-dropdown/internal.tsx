@@ -222,6 +222,7 @@ const InternalButtonDropdown = React.forwardRef(
           ref={mainActionRef}
           {...mainActionProps}
           {...mainActionIconProps}
+          fullWidth={canBeFullWidth}
           className={clsx(
             styles['trigger-button'],
             hasNoText && styles['has-no-text'],
