@@ -35,6 +35,7 @@ const InternalAttributeEditor = React.forwardRef(
       addButtonVariant = 'normal',
       removeButtonText,
       removeButtonAriaLabel,
+      customRowActions,
       i18nStrings,
       onAddButtonClick,
       onRemoveButtonClick,
@@ -95,6 +96,7 @@ const InternalAttributeEditor = React.forwardRef(
               removable={isItemRemovable(item)}
               removeButtonText={removeButtonText}
               removeButtonRefs={removeButtonRefs.current}
+              customRowActions={customRowActions}
               onRemoveButtonClick={onRemoveButtonClick}
               removeButtonAriaLabel={removeButtonAriaLabel}
             />

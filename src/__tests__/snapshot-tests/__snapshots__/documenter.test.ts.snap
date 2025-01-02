@@ -1426,6 +1426,17 @@ with expandable sections.",
       "type": "string",
     },
     {
+      "description": "Specifies a custom action trigger for each row, in place of the remove button.
+Only button and button dropdown components are supported.
+If you provide this, \`removeButtonText\`, \`removeButtonAriaLabel\`,
+and \`onRemoveButtonClick\` will be ignored.
+The trigger must be given the provided \`ref\` in order for \`focusRemoveButton\`
+to work.",
+      "name": "customRowActions",
+      "optional": true,
+      "type": "(props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode",
+    },
+    {
       "description": "Defines the editor configuration. Each object in the array represents one form field in the row.
 * \`label\` (ReactNode) - Text label for the form field.
 * \`info\` (ReactNode) - Info link for the form field.
@@ -3591,9 +3602,25 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
   ],
   "functions": [
     {
-      "description": "Focuses the underlying native button.",
+      "description": "Focuses the underlying native button. If a main action is defined this will focus that button.",
       "name": "focus",
-      "parameters": [],
+      "parameters": [
+        {
+          "name": "options",
+          "type": "FocusOptions",
+        },
+      ],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the underlying native button for the dropdown.",
+      "name": "focusDropdownTrigger",
+      "parameters": [
+        {
+          "name": "options",
+          "type": "FocusOptions",
+        },
+      ],
       "returnType": "void",
     },
   ],

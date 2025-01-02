@@ -58,6 +58,7 @@ exports[`test-utils selectors 1`] = `
   "attribute-editor": [
     "awsui_add-button_n4qlp",
     "awsui_additional-info_n4qlp",
+    "awsui_button-container_n4qlp",
     "awsui_empty_n4qlp",
     "awsui_field_n4qlp",
     "awsui_remove-button_n4qlp",
