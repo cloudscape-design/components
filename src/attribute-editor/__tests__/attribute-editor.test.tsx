@@ -4,12 +4,18 @@ import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
 import AttributeEditor, { AttributeEditorProps } from '../../../lib/components/attribute-editor';
+import ButtonDropdown from '../../../lib/components/button-dropdown';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Input from '../../../lib/components/input';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
+
+const MOCKED_BREAKPOINT = 's';
+jest.mock('../../../lib/components/internal/hooks/container-queries', () => ({
+  useContainerBreakpoints: jest.fn(() => [MOCKED_BREAKPOINT]),
+}));
 
 interface Item {
   key: string;
@@ -555,6 +561,72 @@ describe('Attribute Editor', () => {
       );
       const wrapper = createWrapper(container).findAttributeEditor()!;
       expect(wrapper.findRow(1)!.findRemoveButton()!.getElement()).toHaveTextContent('Custom remove');
+    });
+  });
+
+  describe('custom buttons', () => {
+    test('allows a custom row action', () => {
+      const { container } = render(
+        <AttributeEditor {...defaultProps} customRowActions={() => <ButtonDropdown items={[]} />} />
+      );
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.findRow(1)!.findCustomAction()!.findButtonDropdown()).toBeTruthy();
+    });
+    test('passes expected arguments to custom row action', () => {
+      const actionRenderer = jest.fn();
+      render(<AttributeEditor {...defaultProps} customRowActions={actionRenderer} />);
+      expect(actionRenderer).toHaveBeenNthCalledWith(
+        1,
+        expect.objectContaining({
+          item: defaultProps.items![0],
+          itemIndex: 0,
+          ref: expect.any(Function),
+          breakpoint: 's',
+        })
+      );
+      expect(actionRenderer).toHaveBeenNthCalledWith(
+        2,
+        expect.objectContaining({
+          item: defaultProps.items![1],
+          itemIndex: 1,
+          ref: expect.any(Function),
+          breakpoint: 's',
+        })
+      );
+      expect(actionRenderer).toHaveBeenNthCalledWith(
+        3,
+        expect.objectContaining({
+          item: defaultProps.items![2],
+          itemIndex: 2,
+          ref: expect.any(Function),
+          breakpoint: 's',
+        })
+      );
+    });
+    test('does not render standard button if custom row action defined', () => {
+      const { container } = render(
+        <AttributeEditor {...defaultProps} customRowActions={() => <ButtonDropdown items={[]} />} />
+      );
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.findRow(1)!.findRemoveButton()).toBeFalsy();
+    });
+    test('renders standard button if custom row action returns undefined, nothing if null', () => {
+      const { container } = render(
+        <AttributeEditor
+          {...defaultProps}
+          customRowActions={({ itemIndex }) =>
+            itemIndex === 1 ? undefined : itemIndex === 2 ? null : <ButtonDropdown items={[]} />
+          }
+        />
+      );
+      const wrapper = createWrapper(container).findAttributeEditor()!;
+      expect(wrapper.findRow(1)!.findCustomAction()!.findButtonDropdown()).toBeTruthy();
+      expect(wrapper.findRow(2)!.findCustomAction()!.findButtonDropdown()).toBeFalsy();
+      expect(wrapper.findRow(3)!.findCustomAction()!.findButtonDropdown()).toBeFalsy();
+
+      expect(wrapper.findRow(1)!.findRemoveButton()).toBeFalsy();
+      expect(wrapper.findRow(2)!.findRemoveButton()).toBeTruthy();
+      expect(wrapper.findRow(3)!.findRemoveButton()).toBeFalsy();
     });
   });
 });

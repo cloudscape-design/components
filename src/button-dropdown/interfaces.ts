@@ -188,9 +188,13 @@ export namespace ButtonDropdownProps {
 
   export interface Ref {
     /**
-     * Focuses the underlying native button.
+     * Focuses the underlying native button. If a main action is defined this will focus that button.
      */
-    focus(): void;
+    focus(options?: FocusOptions): void;
+    /**
+     * Focuses the underlying native button for the dropdown.
+     */
+    focusDropdownTrigger(options?: FocusOptions): void;
   }
 }
 

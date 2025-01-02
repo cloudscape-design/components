@@ -27,6 +27,7 @@ interface RowProps<T> {
   removable: boolean;
   removeButtonText?: string;
   removeButtonRefs: Array<ButtonProps.Ref | undefined>;
+  customRowActions?: (props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode;
   onRemoveButtonClick?: NonCancelableEventHandler<AttributeEditorProps.RemoveButtonClickDetail>;
   removeButtonAriaLabel?: (item: T) => string;
 }
@@ -58,6 +59,7 @@ export const Row = React.memo(
     removable,
     removeButtonText,
     removeButtonRefs,
+    customRowActions,
     onRemoveButtonClick,
     removeButtonAriaLabel,
   }: RowProps<T>) => {
@@ -70,6 +72,12 @@ export const Row = React.memo(
     }, [onRemoveButtonClick, index]);
 
     const firstControlId = useUniqueId('first-control-id-');
+
+    const buttonRef = (ref: ButtonProps.Ref | null) => {
+      removeButtonRefs[index] = ref ?? undefined;
+    };
+
+    const customActions = customRowActions?.({ item, itemIndex: index, ref: buttonRef, breakpoint });
 
     return (
       <InternalBox className={styles.row} margin={{ bottom: 's' }}>
@@ -110,17 +118,19 @@ export const Row = React.memo(
                 isNarrowViewport={isNarrowViewport}
                 hasLabel={definition.some(row => row.label)}
               >
-                <InternalButton
-                  className={styles['remove-button']}
-                  formAction="none"
-                  ref={ref => {
-                    removeButtonRefs[index] = ref ?? undefined;
-                  }}
-                  ariaLabel={(removeButtonAriaLabel ?? i18nStrings.removeButtonAriaLabel)?.(item)}
-                  onClick={handleRemoveClick}
-                >
-                  {i18n('removeButtonText', removeButtonText)}
-                </InternalButton>
+                {customActions !== undefined ? (
+                  customActions
+                ) : (
+                  <InternalButton
+                    className={styles['remove-button']}
+                    formAction="none"
+                    ref={buttonRef}
+                    ariaLabel={(removeButtonAriaLabel ?? i18nStrings.removeButtonAriaLabel)?.(item)}
+                    onClick={handleRemoveClick}
+                  >
+                    {i18n('removeButtonText', removeButtonText)}
+                  </InternalButton>
+                )}
               </ButtonContainer>
             )}
           </InternalGrid>
@@ -140,7 +150,7 @@ interface ButtonContainer {
 
 const ButtonContainer = ({ index, children, isNarrowViewport, hasLabel }: ButtonContainer) => (
   <div
-    className={clsx({
+    className={clsx(styles['button-container'], {
       [styles['button-container-haslabel']]: !isNarrowViewport && index === 0 && hasLabel,
       [styles['button-container-nolabel']]: !isNarrowViewport && index === 0 && !hasLabel,
       [styles['right-align']]: isNarrowViewport,
