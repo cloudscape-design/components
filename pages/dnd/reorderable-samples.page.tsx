@@ -39,9 +39,9 @@ export default function Page() {
 
         <ReorderableList
           options={options1}
-          onChange={o => setOptions1([...o])}
+          onReorder={o => setOptions1([...o])}
           renderOption={props => <InstanceOption {...props} />}
-          renderStaticOption={option => <InstanceOption option={option} sortable={false} />}
+          renderStaticOption={option => <InstanceOption option={option} />}
           fixedOptionsStart={fixedOptions ? 3 : 0}
         />
       </SpaceBetween>
@@ -49,7 +49,7 @@ export default function Page() {
     table: (
       <ReorderableTable
         items={options2}
-        onChange={o => setOptions2([...o])}
+        onReorder={o => setOptions2([...o])}
         columnDefinitions={[
           { key: 'id', label: 'ID', render: item => <Link>{item.id}</Link> },
           { key: 'type', label: 'Type', render: item => item.type },
@@ -67,7 +67,7 @@ export default function Page() {
 
       <ReorderableContainers
         options={containersWithContent}
-        onChange={o => setContainers(o.map(({ id, title }) => ({ id, title })))}
+        onReorder={o => setContainers(o.map(({ id, title }) => ({ id, title })))}
         renderOption={props => (
           <ContainerWithDragHandle
             {...props}

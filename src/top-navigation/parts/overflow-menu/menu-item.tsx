@@ -142,7 +142,7 @@ const ExpandableItem: React.FC<
         <ListItem
           endIcon={
             <span className={spinWhenOpen(styles, 'icon', expanded)}>
-              <InternalIcon name="caret-up-filled" />
+              <InternalIcon name="caret-down-filled" />
             </span>
           }
         >

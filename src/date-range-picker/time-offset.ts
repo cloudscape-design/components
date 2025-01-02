@@ -38,7 +38,7 @@ export function shiftTimeOffset(
   }
 
   /*
-    This regex matches an ISO date-time with
+    This regex matches an ISO date-time (non date-only or month-only) with
     - optional seconds;
     - optional milliseconds;
     - optional time offset or 'Z'.
@@ -61,11 +61,21 @@ export function shiftTimeOffset(
   };
 }
 
+export type NormalizedTimeOffset =
+  | {
+      startDate: number;
+      endDate: number;
+    }
+  | {
+      startDate: undefined;
+      endDate: undefined;
+    };
+
 export function normalizeTimeOffset(
   value: null | DateRangePickerProps.Value,
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction,
   timeOffset?: number
-) {
+): NormalizedTimeOffset {
   if (value && value.type === 'absolute') {
     if (getTimeOffset) {
       return {

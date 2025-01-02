@@ -114,6 +114,11 @@ export interface ButtonDropdownProps extends BaseComponentProps, ExpandToViewpor
    * `ariaLabel`, `disabled`, `loading`, `loadingText`, `href`, `target`, `rel`, `download`, `iconAlt`, `iconName`, `iconUrl`, `iconSvg`, `onClick`, `onFollow`.
    */
   mainAction?: ButtonDropdownProps.MainAction;
+
+  /**
+   * Sets the button width to be 100% of the parent container width. Button content is centered.
+   */
+  fullWidth?: boolean;
 }
 
 export namespace ButtonDropdownProps {

@@ -58,6 +58,20 @@ class AsyncPropertyFilterPage extends BasePageObject {
     await this.openValueEdit();
     await this.keys(value);
   };
+
+  setCursorPosition(startPosition: number, endPosition: number) {
+    return this.browser.execute(
+      (defaultSelector, startPosition, endPosition) => {
+        return (document.querySelector(defaultSelector) as HTMLInputElement).setSelectionRange(
+          startPosition,
+          endPosition
+        );
+      },
+      inputSelector,
+      startPosition,
+      endPosition
+    );
+  }
 }
 
 function setupTest(
@@ -205,4 +219,29 @@ test.each<TestCase>(testCases)('%p', (_, asyncProperties, token, scenario) =>
       await page.expectLoadItemsEvents(result);
     }
   })()
+);
+
+test(
+  'calls onLoadItems after clearing input with backspace and asyncProperties=true',
+  setupTest(true, 'property', async page => {
+    await page.openFilteringInput();
+    await page.typeInFilteringInput('label');
+
+    await expect(page.getValue(inputSelector)).resolves.toBe('label');
+
+    await page.expectLoadItemsEvents([
+      { firstPage: true, samePage: false, filteringText: '' },
+      { firstPage: true, samePage: false, filteringText: 'label' },
+    ]);
+
+    await page.setCursorPosition(0, 5);
+    await page.keys(['Backspace']);
+    await expect(page.getValue(inputSelector)).resolves.toBe('');
+
+    await page.expectLoadItemsEvents([
+      { firstPage: true, samePage: false, filteringText: '' },
+      { firstPage: true, samePage: false, filteringText: 'label' },
+      { firstPage: true, samePage: false, filteringText: '' },
+    ]);
+  })
 );

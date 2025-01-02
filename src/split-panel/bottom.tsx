@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
@@ -41,16 +41,15 @@ export function SplitPanelContentBottom({
     disableContentPaddings,
     contentWrapperPaddings,
     reportHeaderHeight,
+    headerHeight: headerBlockSize,
     animationDisabled,
   } = useSplitPanelContext();
   const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
-  const [headerBlockSize, setHeaderBlockSize] = useState<number>();
 
   useResizeObserver(headerRef, entry => {
     const { borderBoxHeight } = entry;
-    setHeaderBlockSize(borderBoxHeight);
     reportHeaderHeight(borderBoxHeight);
   });
 
