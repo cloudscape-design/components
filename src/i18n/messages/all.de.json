@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "y-Achse"
   },
   "alert": {
-    "dismissAriaLabel": "Warnung verwerfen"
+    "dismissAriaLabel": "Warnung verwerfen",
+    "i18nStrings.successIconAriaLabel": "Erfolg",
+    "i18nStrings.errorIconAriaLabel": "Fehler",
+    "i18nStrings.warningIconAriaLabel": "Warnung",
+    "i18nStrings.infoIconAriaLabel": "Info",
+    "i18nStrings.dismissAriaLabel": "Warnung verwerfen"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Weiter",
@@ -132,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Zeiteinheit",
     "i18nStrings.customRelativeRangeDurationLabel": "Dauer",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Dauer eingeben",
+    "i18nStrings.startMonthLabel": "Startmonat",
     "i18nStrings.startDateLabel": "Startdatum",
     "i18nStrings.startTimeLabel": "Startzeit",
+    "i18nStrings.endMonthLabel": "Endmonat",
     "i18nStrings.endDateLabel": "Enddatum",
     "i18nStrings.endTimeLabel": "Endzeit",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",

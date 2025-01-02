@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "y 轴"
   },
   "alert": {
-    "dismissAriaLabel": "关闭提示"
+    "dismissAriaLabel": "关闭提示",
+    "i18nStrings.successIconAriaLabel": "成功",
+    "i18nStrings.errorIconAriaLabel": "错误",
+    "i18nStrings.warningIconAriaLabel": "警告",
+    "i18nStrings.infoIconAriaLabel": "信息",
+    "i18nStrings.dismissAriaLabel": "关闭提醒"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "下一步",
@@ -132,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "时间单位",
     "i18nStrings.customRelativeRangeDurationLabel": "持续时间",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "输入持续时间",
+    "i18nStrings.startMonthLabel": "开始月份",
     "i18nStrings.startDateLabel": "开始日期",
     "i18nStrings.startTimeLabel": "开始时间",
+    "i18nStrings.endMonthLabel": "结束月底",
     "i18nStrings.endDateLabel": "结束日期",
     "i18nStrings.endTimeLabel": "结束时间",
     "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",

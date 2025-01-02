@@ -14,6 +14,34 @@ export namespace AlertProps {
      */
     focus(): void;
   }
+
+  export interface I18nStrings {
+    /*
+     * Specifies the ARIA label for the alert icon for type `success`.
+     * @property {string} [successIconAriaLabel] - optional
+     */
+    successIconAriaLabel?: string;
+    /*
+     * Specifies the ARIA label for the alert icon for type `error`.
+     * @property {string} [errorIconAriaLabel] - optional
+     */
+    errorIconAriaLabel?: string;
+    /*
+     * Specifies the ARIA label for the alert icon for type `warning`.
+     * @property {string} [warningIconAriaLabel] - optional
+     */
+    warningIconAriaLabel?: string;
+    /*
+     * Specifies the ARIA label for the alert icon for type `info`.
+     * @property {string} [infoIconAriaLabel] - optional
+     */
+    infoIconAriaLabel?: string;
+    /*
+     * Specifies the ARIA label for the dismiss button.
+     * @property {string} [dismissAriaLabel] - optional
+     */
+    dismissAriaLabel?: string;
+  }
 }
 
 export interface AlertProps extends BaseComponentProps {
@@ -24,6 +52,9 @@ export interface AlertProps extends BaseComponentProps {
 
   /**
    * Provides a text alternative for the icon.
+   *
+   * @deprecated Use the label properties inside `i18nStrings` instead.
+   * If the label is assigned via the `i18nStrings` property, this label will be ignored.
    */
   statusIconAriaLabel?: string;
 
@@ -40,6 +71,9 @@ export interface AlertProps extends BaseComponentProps {
   /**
    * Adds an aria-label to the dismiss button.
    * @i18n
+   *
+   * @deprecated Use `i18nStrings.dismissAriaLabel` instead.
+   * If the label is assigned via the `i18nStrings` property, this label will be ignored.
    */
   dismissAriaLabel?: string;
   /**
@@ -71,4 +105,10 @@ export interface AlertProps extends BaseComponentProps {
    * **Deprecated** Replaced by `action`.
    */
   onButtonClick?: NonCancelableEventHandler;
+  /**
+   * An object containing all the necessary localized strings required by the component.
+   * @property {AlertProps.I18nStrings} [i18nStrings] - optional
+   * @i18n
+   */
+  i18nStrings?: AlertProps.I18nStrings;
 }
