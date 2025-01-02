@@ -435,6 +435,15 @@ describe('with main action', () => {
 
     expect(wrapper.findMainAction()!.getElement()).toHaveFocus();
   });
+
+  test('ref.focusDropdownTrigger focuses the dropdown', () => {
+    const ref = React.createRef<ButtonDropdownProps.Ref>();
+    const wrapper = renderSplitButtonDropdown({ mainAction: { text: 'Main' } }, ref);
+
+    ref.current!.focusDropdownTrigger();
+
+    expect(wrapper.findNativeButton()!.getElement()).toHaveFocus();
+  });
 });
 
 test('should work in controlled context', () => {
