@@ -135,6 +135,7 @@ export function TableHeaderCell<ItemType>({
       stickyState={stickyState}
       tableRole={tableRole}
       variant={variant}
+      ariaLabelledby={headerId}
       {...(sortingDisabled
         ? {}
         : getAnalyticsMetadataAttribute({
@@ -154,21 +155,19 @@ export function TableHeaderCell<ItemType>({
           [styles['header-cell-fake-focus']]: focusedComponent === `sorting-control-${String(columnId)}`,
           [styles['header-cell-content-expandable']]: isExpandable,
         })}
-        aria-label={
-          column.ariaLabel
-            ? column.ariaLabel({
-                sorted: sorted,
-                descending: sorted && !!sortingDescending,
-                disabled: !!sortingDisabled,
-              })
-            : undefined
-        }
         {...(sortingStatus && !sortingDisabled
           ? {
               onKeyPress: handleKeyPress,
               tabIndex: clickableHeaderTabIndex,
               role: 'button',
               onClick: handleClick,
+              'aria-label': column.ariaLabel
+                ? column.ariaLabel({
+                    sorted: sorted,
+                    descending: sorted && !!sortingDescending,
+                    disabled: !!sortingDisabled,
+                  })
+                : undefined,
             }
           : {})}
       >

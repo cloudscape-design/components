@@ -36,6 +36,7 @@ export interface TableThElementProps {
   children: React.ReactNode;
   variant: TableProps.Variant;
   ariaLabel?: string;
+  ariaLabelledby?: string;
 }
 
 export function TableThElement({
@@ -56,6 +57,7 @@ export function TableThElement({
   children,
   variant,
   ariaLabel,
+  ariaLabelledby,
   ...props
 }: TableThElementProps) {
   const isVisualRefresh = useVisualRefresh();
@@ -98,6 +100,7 @@ export function TableThElement({
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
       {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
+      aria-labelledby={ariaLabelledby}
     >
       {children}
     </th>
