@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import Alert from '~components/alert';
+import Box from '~components/box';
 import CollectionPreferences from '~components/collection-preferences';
 
 import ScreenshotArea from '../utils/screenshot-area';
@@ -29,6 +31,15 @@ export default function CollectionPreferencesPermutations() {
           visibleContentPreference={visibleContentPreference}
           stickyColumnsPreference={stickyColumnsPreference}
           customPreference={customPreference}
+          contentBefore={
+            <Box margin={{ bottom: 's' }}>
+              <Alert type={'warning'} header={'Local storage not enabled'}>
+                Go to your browser settings to enable local storage. This will persist your settings across sessions
+                unless your local storage is cleared. If local storage is not enabled preferences are saved in session
+                storage as a fallback.
+              </Alert>
+            </Box>
+          }
         />
         <CollectionPreferences className={`cp-2`} {...baseProperties} customPreference={customPreference} />
         <CollectionPreferences
