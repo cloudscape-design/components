@@ -82,7 +82,13 @@ export function fireCancelableEvent<T>(
   return event.defaultPrevented;
 }
 
-export function fireKeyboardEvent(handler: CancelableEventHandler<BaseKeyDetail>, reactEvent: React.KeyboardEvent) {
+export function fireKeyboardEvent(
+  handler: CancelableEventHandler<BaseKeyDetail> | undefined,
+  reactEvent: React.KeyboardEvent
+) {
+  if (!handler) {
+    return;
+  }
   return fireCancelableEvent(
     handler,
     {

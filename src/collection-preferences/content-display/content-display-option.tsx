@@ -24,7 +24,9 @@ const ContentDisplayOption = forwardRef(
     const controlId = `${idPrefix}-control-${option.id}`;
     return (
       <div ref={ref} className={getClassName('content')}>
-        <DragHandle {...dragHandleProps} />
+        <div className={styles['drag-handle-wrapper']}>
+          <DragHandle {...dragHandleProps} />
+        </div>
 
         <label className={getClassName('label')} htmlFor={controlId}>
           {option.label}

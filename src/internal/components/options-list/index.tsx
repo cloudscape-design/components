@@ -115,7 +115,7 @@ const OptionsList = (
       style={{ position }}
       role={role}
       onScroll={handleScroll}
-      onKeyDown={event => onKeyDown && fireKeyboardEvent(onKeyDown, event)}
+      onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}
       onMouseMove={event => onMouseMove?.(getItemIndex(menuRef, event))}
       onMouseUp={event => onMouseUp?.(getItemIndex(menuRef, event))}
       onBlur={event => fireNonCancelableEvent(onBlur, { relatedTarget: event.relatedTarget })}
