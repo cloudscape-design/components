@@ -50,34 +50,44 @@ const longTextWithExpandableSection = (
 
 const allTypes: AlertProps.Type[] = ['info', 'success', 'warning', 'error'];
 
+const i18nStrings: AlertProps.I18nStrings = {
+  dismissAriaLabel: 'Close alert',
+  errorIconAriaLabel: 'error',
+  warningIconAriaLabel: 'warning',
+  infoIconAriaLabel: 'info',
+  successIconAriaLabel: 'success',
+};
+
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<AlertProps>([
   {
+    i18nStrings: [i18nStrings],
     children: [longText, longTextWithLink],
     type: allTypes,
   },
   {
-    dismissAriaLabel: ['Close alert'],
+    i18nStrings: [i18nStrings],
     dismissible: [true],
     header: ['Default Example Header'],
     type: allTypes,
   },
   {
+    i18nStrings: [i18nStrings],
     buttonText: ['Button text'],
     children: ['Default Example Body'],
     type: allTypes,
   },
   {
+    i18nStrings: [i18nStrings],
     dismissible: [true],
-    dismissAriaLabel: ['Close alert'],
     buttonText: ['Button text'],
     header: ['Default Example Header', longText],
     children: ['Default Example Body', longText],
     type: allTypes,
   },
   {
+    i18nStrings: [i18nStrings],
     dismissible: [true, false],
-    dismissAriaLabel: ['Close alert'],
     header: [undefined, 'Default Example Header'],
     children: ['Default Example Body', longText],
     action: [
@@ -88,16 +98,17 @@ const permutations = createPermutations<AlertProps>([
     type: allTypes,
   },
   {
+    i18nStrings: [i18nStrings],
     header: ['With expandable section'],
     children: [longTextWithExpandableSection],
     type: ['info'],
   },
   {
+    i18nStrings: [i18nStrings],
     header: ['With unbreakable word'],
     children: [longTextWithUnbreakableWord],
     type: ['info'],
     dismissible: [true, false],
-    dismissAriaLabel: ['Close alert'],
     action: [undefined, <Button>Action</Button>],
   },
 ]);
@@ -107,10 +118,7 @@ export default function AlertScenario() {
     <article>
       <h1>Alert permutations</h1>
       <ScreenshotArea>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => <Alert statusIconAriaLabel={permutation.type ?? 'Info'} {...permutation} />}
-        />
+        <PermutationsView permutations={permutations} render={permutation => <Alert {...permutation} />} />
       </ScreenshotArea>
     </article>
   );

@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "y축"
   },
   "alert": {
-    "dismissAriaLabel": "알림 무시"
+    "dismissAriaLabel": "알림 무시",
+    "i18nStrings.successIconAriaLabel": "성공",
+    "i18nStrings.errorIconAriaLabel": "오류",
+    "i18nStrings.warningIconAriaLabel": "경고",
+    "i18nStrings.infoIconAriaLabel": "정보",
+    "i18nStrings.dismissAriaLabel": "알림 무시"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "다음",
@@ -132,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "시간 단위",
     "i18nStrings.customRelativeRangeDurationLabel": "기간",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "기간 입력",
+    "i18nStrings.startMonthLabel": "시작 월",
     "i18nStrings.startDateLabel": "시작 날짜",
     "i18nStrings.startTimeLabel": "시작 시간",
+    "i18nStrings.endMonthLabel": "마지막 월",
     "i18nStrings.endDateLabel": "종료 날짜",
     "i18nStrings.endTimeLabel": "종료 시간",
     "i18nStrings.dateTimeConstraintText": "날짜에는 YYYY/MM/DD를 사용합니다. 시간에는 24시간 형식을 사용합니다.",

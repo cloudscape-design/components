@@ -12,6 +12,14 @@ import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
+const i18nStrings: AlertProps.I18nStrings = {
+  dismissAriaLabel: 'Dismiss',
+  errorIconAriaLabel: 'error',
+  warningIconAriaLabel: 'warning',
+  infoIconAriaLabel: 'info',
+  successIconAriaLabel: 'success',
+};
+
 awsuiPlugins.alert.registerAction({
   id: 'awsui/alert-test-action',
   mountContent: (container, context) => {
@@ -44,6 +52,7 @@ awsuiPlugins.alert.registerAction({
 const permutations = createPermutations<AlertProps>([
   {
     dismissible: [true, false],
+    i18nStrings: [i18nStrings],
     header: ['Alert'],
     children: ['Content'],
     type: ['success', 'error'],
@@ -64,12 +73,7 @@ export default function () {
     <>
       <h1>Alert runtime actions</h1>
       <ScreenshotArea>
-        <PermutationsView
-          permutations={permutations}
-          render={permutation => (
-            <Alert statusIconAriaLabel={permutation.type} dismissAriaLabel="Dismiss" {...permutation} />
-          )}
-        />
+        <PermutationsView permutations={permutations} render={permutation => <Alert {...permutation} />} />
       </ScreenshotArea>
     </>
   );
