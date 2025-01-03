@@ -7,7 +7,6 @@ export interface DndAreaProps<Data> {
   onItemsChange: (sortedOptions: readonly DndAreaItem<Data>[]) => void;
   i18nStrings: DndAreaI18nStrings;
   disableReorder?: boolean;
-  borderRadiusVariant?: 'item' | 'container';
 }
 
 export interface DndAreaItem<Data> {

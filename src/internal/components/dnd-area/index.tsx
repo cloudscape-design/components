@@ -15,14 +15,7 @@ import useLiveAnnouncements from './use-live-announcements';
 
 import styles from './styles.css.js';
 
-export function DndArea<Data>({
-  items,
-  renderItem,
-  onItemsChange,
-  disableReorder,
-  i18nStrings,
-  borderRadiusVariant = 'item',
-}: DndAreaProps<Data>) {
+export function DndArea<Data>({ items, renderItem, onItemsChange, disableReorder, i18nStrings }: DndAreaProps<Data>) {
   const { activeItemId, setActiveItemId, collisionDetection, handleKeyDown, sensors } = useDragAndDropReorder({
     items,
   });
@@ -67,7 +60,6 @@ export function DndArea<Data>({
             renderItem={renderItem}
             onKeyDown={handleKeyDown}
             dragHandleAriaLabel={i18nStrings.dragHandleAriaLabel}
-            borderRadiusVariant={borderRadiusVariant}
           />
         ))}
       </SortableContext>
@@ -75,11 +67,7 @@ export function DndArea<Data>({
       <Portal container={portalContainer}>
         {/* Make sure that the drag overlay is above the modal  by assigning the z-index as inline style
             so that it prevails over dnd-kit's inline z-index of 999 */}
-        <DragOverlay
-          className={clsx(styles['drag-overlay'], styles[`drag-overlay-${borderRadiusVariant}`])}
-          dropAnimation={null}
-          style={{ zIndex: 5000 }}
-        >
+        <DragOverlay dropAnimation={null} style={{ zIndex: 5000 }}>
           {activeItem &&
             renderItem({
               item: activeItem,
@@ -120,13 +108,11 @@ function DraggableItem<Data>({
   dragHandleAriaLabel,
   onKeyDown,
   renderItem,
-  borderRadiusVariant,
 }: {
   item: DndAreaItem<Data>;
   dragHandleAriaLabel?: string;
   onKeyDown: (event: React.KeyboardEvent) => void;
   renderItem: (props: RenderItemProps<Data>) => React.ReactNode;
-  borderRadiusVariant: 'item' | 'container';
 }) {
   const { isDragging, isSorting, listeners, setNodeRef, transform, attributes } = useSortable({ id: item.id });
   const style = { transform: CSS.Translate.toString(transform) };
@@ -143,10 +129,7 @@ function DraggableItem<Data>({
           }
         },
       };
-  const className = clsx(
-    isDragging && clsx(styles.placeholder, styles[`placeholder-${borderRadiusVariant}`]),
-    isSorting && styles.sorting
-  );
+  const className = clsx(isDragging && styles.placeholder, isSorting && styles.sorting);
   return (
     <>
       {renderItem({

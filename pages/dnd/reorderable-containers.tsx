@@ -34,13 +34,12 @@ export function ReorderableContainers<Option extends { id: string; title: string
       renderItem={({ ref, className, style, ...props }) => {
         const content = renderOption({ ...props, option: props.item.data });
         return (
-          <div ref={ref} className={clsx(className, styles.container)} style={style}>
+          <div ref={ref} className={clsx(styles.container, className)} style={style}>
             {content}
           </div>
         );
       }}
       i18nStrings={i18nStrings}
-      borderRadiusVariant="container"
     />
   );
 }

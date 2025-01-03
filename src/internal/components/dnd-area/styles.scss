@@ -13,30 +13,19 @@
   }
 }
 
-@mixin drag-overlay-with-radius($border-radius) {
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
-
-  @include focus-visible.when-visible-unfocused {
-    @include styles.focus-highlight(0px, $border-radius);
-  }
-}
-
-.drag-overlay {
-  box-shadow: awsui.$shadow-container-active;
-
-  &-item {
-    @include drag-overlay-with-radius(awsui.$border-radius-item);
-  }
-  &-container {
-    @include drag-overlay-with-radius(awsui.$border-radius-container);
-  }
-}
-
 .active {
   @include styles.default-text-style;
+
+  box-shadow: awsui.$shadow-container-active;
+
+  border-start-start-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+  border-start-end-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+  border-end-start-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+  border-end-end-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+  
+  @include focus-visible.when-visible-unfocused {
+    @include styles.focus-highlight(0px, var(--awsui-sortable-area-item-border, awsui.$border-radius-item));
+  }
 }
 
 .placeholder {
@@ -46,22 +35,10 @@
     position: absolute;
     inset: 0;
     background: awsui.$color-drag-placeholder-hover;
-  }
-  &-item {
-    &:after {
-      border-start-start-radius: awsui.$border-radius-item;
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-start-radius: awsui.$border-radius-item;
-      border-end-end-radius: awsui.$border-radius-item;
-    }
-  }
-  &-container {
-    &:after {
-      border-start-start-radius: awsui.$border-radius-container;
-      border-start-end-radius: awsui.$border-radius-container;
-      border-end-start-radius: awsui.$border-radius-container;
-      border-end-end-radius: awsui.$border-radius-container;
-    }
+    border-start-start-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+    border-start-end-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+    border-end-start-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
+    border-end-end-radius: var(--awsui-sortable-area-item-border, awsui.$border-radius-item);
   }
 }
 
