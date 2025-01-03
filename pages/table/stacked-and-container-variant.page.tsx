@@ -4,9 +4,13 @@ import React, { useState } from 'react';
 
 import Grid from '~components/grid';
 import Header from '~components/header';
-import Table from '~components/table';
+import Table, { TableProps } from '~components/table';
 
 import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems } from './generate-data';
+import { columnsConfig } from './shared-configs';
+
+const tableItems = generateItems(6);
 
 export default () => {
   return (
@@ -28,68 +32,17 @@ export default () => {
   );
 };
 
-const ExampleTable = ({ variant }: { variant: 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page' }) => {
-  const [selectedItems, setSelectedItems] = useState<any>([{ name: 'Item 6' }]);
+const ExampleTable = ({ variant }: { variant: TableProps.Variant }) => {
+  const [selectedItems, setSelectedItems] = useState<any>([tableItems[tableItems.length - 1]]);
 
   return (
     <Table
       variant={variant}
       onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       selectedItems={selectedItems}
-      ariaLabels={{
-        selectionGroupLabel: 'Items selection',
-        allItemsSelectionLabel: () => 'select all',
-        itemSelectionLabel: (selection, item) => item.name,
-      }}
-      columnDefinitions={[
-        {
-          id: 'variable',
-          header: 'Name',
-          cell: item => item.name,
-          sortingField: 'name',
-          isRowHeader: true,
-        },
-        {
-          id: 'value',
-          header: 'Value',
-          cell: item => item.value,
-          sortingField: 'value',
-        },
-      ]}
-      items={[
-        {
-          name: 'Item 1',
-          value: 'First',
-          size: 'Small',
-        },
-        {
-          name: 'Item 2',
-          value: 'Second',
-          size: 'Large',
-        },
-        {
-          name: 'Item 3',
-          value: 'Third',
-          size: 'Large',
-        },
-        {
-          name: 'Item 4',
-          value: 'Fourth',
-          size: 'Small',
-        },
-        {
-          name: 'Item 5',
-          value: '-',
-          size: 'Large',
-        },
-        {
-          name: 'Item 6',
-          value: 'Sixth',
-          size: 'Small',
-        },
-      ]}
+      columnDefinitions={columnsConfig}
+      items={tableItems}
       selectionType="multi"
-      trackBy="name"
       header={<Header>Table with variant {variant}</Header>}
     />
   );
