@@ -110,6 +110,17 @@ it('updates based on resize observer if dynamic flag is set', () => {
   expect(updateColumn).toHaveBeenCalledWith('id', 234);
 });
 
+it('is labelled using the header cell content', () => {
+  const { container } = render(
+    <TableWrapper>
+      <TestComponent column={{ cell: () => null, header: () => 'Test' }} />
+    </TableWrapper>
+  );
+  const ariaLabelledBy = container.querySelector('th')!.getAttribute('aria-labelledby');
+  expect(ariaLabelledBy).toBeTruthy();
+  expect(container.querySelector(`.${styles['header-cell-text']}`)).toHaveAttribute('id', ariaLabelledBy);
+});
+
 describe('i18n', () => {
   it('supports using editIconAriaLabel from i18n provider', () => {
     const { container } = render(

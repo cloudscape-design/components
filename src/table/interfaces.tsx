@@ -88,8 +88,6 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `ariaLabel` (LabelData => string) - An optional function that's called to provide an `aria-label` for the cell header.
    *   It receives the current sorting state of this column, the direction it's sorted in, and an indication of
    *   whether the sorting is disabled, as three Boolean values: `sorted`, `descending` and `disabled`.
-   *   We recommend that you use this for sortable columns to provide more meaningful labels based on the
-   *   current sorting direction.
    * * `sortingField` (string) - Enables default column sorting. The value is used in [collection hooks](/get-started/dev-guides/collection-hooks/)
    *   to reorder the items. Provide the name of the property within each item that should be used for sorting by this column.
    *   For more complex sorting use `sortingComparator` instead.
