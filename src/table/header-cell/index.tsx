@@ -103,6 +103,11 @@ export function TableHeaderCell<ItemType>({
   };
 
   const headerId = useUniqueId('table-header-');
+  const columnAriaLabel = column.ariaLabel?.({
+    sorted: sorted,
+    descending: sorted && !!sortingDescending,
+    disabled: !!sortingDisabled,
+  });
 
   const clickableHeaderRef = useRef<HTMLDivElement>(null);
   const { tabIndex: clickableHeaderTabIndex } = useSingleTabStopNavigation(clickableHeaderRef, { tabIndex });
@@ -135,6 +140,7 @@ export function TableHeaderCell<ItemType>({
       stickyState={stickyState}
       tableRole={tableRole}
       variant={variant}
+      ariaLabel={columnAriaLabel}
       ariaLabelledby={headerId}
       {...(sortingDisabled
         ? {}
@@ -161,13 +167,7 @@ export function TableHeaderCell<ItemType>({
               tabIndex: clickableHeaderTabIndex,
               role: 'button',
               onClick: handleClick,
-              'aria-label': column.ariaLabel
-                ? column.ariaLabel({
-                    sorted: sorted,
-                    descending: sorted && !!sortingDescending,
-                    disabled: !!sortingDisabled,
-                  })
-                : undefined,
+              'aria-label': columnAriaLabel,
             }
           : {})}
       >

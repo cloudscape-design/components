@@ -72,6 +72,9 @@ export function TableThElement({
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
+  // Ensure ariaLabel (if one is provided) overrides ariaLabelledby
+  const labelProps = ariaLabel ? { 'aria-label': ariaLabel } : { 'aria-labelledby': ariaLabelledby };
+
   return (
     <th
       data-focus-id={`header-${String(columnId)}`}
@@ -99,8 +102,7 @@ export function TableThElement({
       {...getTableColHeaderRoleProps({ tableRole, sortingStatus, colIndex })}
       tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
       {...copyAnalyticsMetadataAttribute(props)}
-      {...(ariaLabel ? { 'aria-label': ariaLabel } : {})}
-      aria-labelledby={ariaLabelledby}
+      {...labelProps}
     >
       {children}
     </th>

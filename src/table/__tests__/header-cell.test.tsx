@@ -110,7 +110,17 @@ it('updates based on resize observer if dynamic flag is set', () => {
   expect(updateColumn).toHaveBeenCalledWith('id', 234);
 });
 
-it('is labelled using the header cell content', () => {
+it('is labelled using the column ariaLabel if one is provided', () => {
+  const { container } = render(
+    <TableWrapper>
+      <TestComponent column={{ cell: () => null, header: () => 'Test', ariaLabel: () => 'Programmatic label' }} />
+    </TableWrapper>
+  );
+  expect(container.querySelector('th')).not.toHaveAttribute('aria-labelledby');
+  expect(container.querySelector('th')).toHaveAttribute('aria-label', 'Programmatic label');
+});
+
+it("is labelled using the header cell content if a column ariaLabel isn't provided", () => {
   const { container } = render(
     <TableWrapper>
       <TestComponent column={{ cell: () => null, header: () => 'Test' }} />
