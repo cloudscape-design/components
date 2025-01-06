@@ -44,6 +44,11 @@ const ExampleTable = ({ variant }: { variant: TableProps.Variant }) => {
       items={tableItems}
       selectionType="multi"
       header={<Header>Table with variant {variant}</Header>}
+      ariaLabels={{
+        selectionGroupLabel: 'Items selection',
+        allItemsSelectionLabel: () => 'select all',
+        itemSelectionLabel: (selection, item) => item.id,
+      }}
     />
   );
 };
