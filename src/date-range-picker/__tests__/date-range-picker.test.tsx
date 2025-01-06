@@ -261,13 +261,12 @@ describe('Date range picker', () => {
 
         wrapper.findDropdown()!.findApplyButton().click();
 
+        const dayObjectProperties = { endDate: 'T23:59:59+00:00', type: 'absolute' };
+        const monthObjectProperties = { endDate: '', startDate: '2025-09', type: 'absolute' };
+
         expect(onChangeSpy).toHaveBeenCalledWith(
           expect.objectContaining({
-            value: expect.objectContaining(
-              granularity === 'day'
-                ? { endDate: 'T23:59:59+00:00', type: 'absolute' }
-                : { endDate: '', startDate: '2024-09', type: 'absolute' }
-            ),
+            value: expect.objectContaining(granularity === 'day' ? dayObjectProperties : monthObjectProperties),
           })
         );
       });
