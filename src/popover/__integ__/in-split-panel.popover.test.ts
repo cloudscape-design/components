@@ -61,7 +61,6 @@ describe('Popover does not overflow split panel', () => {
 async function expectPopoverWithinSplitPanelBoundaries(page: BasePageObject) {
   const splitPanelPosition = await page.getBoundingBox(splitPanelSelector);
   const popoverContainerPosition = await page.getBoundingBox(popoverContainerSelector);
-  console.log({ splitPanelPosition, popoverContainerPosition });
   expect(popoverContainerPosition.left).toBeGreaterThanOrEqual(splitPanelPosition.left);
   expect(popoverContainerPosition.top).toBeGreaterThanOrEqual(splitPanelPosition.top);
   expect(popoverContainerPosition.right).toBeLessThanOrEqual(splitPanelPosition.right);
