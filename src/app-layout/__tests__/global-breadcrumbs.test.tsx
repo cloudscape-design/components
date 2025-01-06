@@ -305,6 +305,24 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     );
     expect(findAllBreadcrumbsInstances()).toHaveLength(2);
   });
+
+  test('has base component props', async () => {
+    render(
+      <AppLayout
+        content={
+          <>
+            <BreadcrumbGroup items={defaultBreadcrumbs} />
+          </>
+        }
+      />
+    );
+
+    await delay();
+
+    expect(
+      (wrapper.findAppLayout()?.findBreadcrumbs()?.findBreadcrumbGroup()?.getElement() as any).__awsuiMetadata__
+    ).toBeDefined();
+  });
 });
 
 describe('without feature flag', () => {
