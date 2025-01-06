@@ -10,21 +10,21 @@ import { renderToStaticMarkup } from 'react-dom/server';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-const skipComponents = [
-  'modal', // it uses portal API which does not work on server
-];
-const allComponents = getAllComponents().filter(component => !skipComponents.includes(component));
-
 test('ensure is it not DOM', () => {
   expect(typeof window).toBe('undefined');
   expect(typeof CSS).toBe('undefined');
 });
 
-for (const componentName of allComponents) {
+for (const componentName of getAllComponents()) {
   test(`renders ${componentName} without crashing`, () => {
     const { default: Component } = requireComponent(componentName);
     const props = getRequiredPropsForComponent(componentName);
     const content = renderToStaticMarkup(React.createElement(Component, props, 'test content'));
-    expect(content.length).toBeGreaterThan(0);
+    if (componentName === 'modal') {
+      // modal uses portal API which does not work on server and returns an empty content
+      expect(content.length).toEqual(0);
+    } else {
+      expect(content.length).toBeGreaterThan(0);
+    }
   });
 }
