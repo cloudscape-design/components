@@ -4,8 +4,20 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { I18nProvider, I18nProviderProps } from '../../../lib/components/i18n';
-import { MESSAGES, TestComponent } from './test-component';
+import { MESSAGES, SimpleTestComponent, TestComponent } from './test-component';
+
+beforeEach(() => {
+  clearMessageCache();
+  jest.spyOn(console, 'warn').mockImplementation(() => {});
+});
+
+afterEach(() => {
+  expect(console.warn).not.toHaveBeenCalled();
+  jest.restoreAllMocks();
+});
 
 describe('with custom "lang" on <html>', () => {
   afterEach(() => {
@@ -144,4 +156,11 @@ it('allows nesting providers', () => {
 
   expect(container.querySelector('#top-level-string')).toHaveTextContent('My custom string');
   expect(container.querySelector('#nested-string')).toHaveTextContent('nested string');
+});
+
+it('prints a warning when a string is not provided neither via prop nor I18nProvider', () => {
+  render(<SimpleTestComponent />);
+  expect(console.warn).toHaveBeenCalledTimes(1);
+  expect(console.warn).toHaveBeenCalledWith(expect.stringMatching(/topLevelString.*I18nProvider/));
+  jest.mocked(console.warn).mockReset();
 });

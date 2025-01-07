@@ -22,6 +22,7 @@ import styles from '../styles.scss';
 export function Breadcrumbs() {
   return (
     <BreadcrumbGroup
+      expandAriaLabel="Show path"
       items={[
         { text: 'Home', href: '#' },
         { text: 'Service', href: '#' },

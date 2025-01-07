@@ -30,10 +30,8 @@ type UseMultiselectOptions = SomeRequired<
     | 'selectedOptions'
     | 'filteringType'
     | 'filteringResultsText'
-    | 'disabled'
     | 'noMatch'
     | 'renderHighlightedAriaLive'
-    | 'deselectAriaLabel'
     | 'keepOpen'
     | 'onBlur'
     | 'onFocus'
@@ -56,7 +54,6 @@ export function useMultiselect({
   options,
   filteringType,
   filteringResultsText,
-  disabled,
   statusType,
   empty,
   loadingText,
@@ -65,7 +62,6 @@ export function useMultiselect({
   noMatch,
   renderHighlightedAriaLive,
   selectedOptions,
-  deselectAriaLabel,
   keepOpen,
   onBlur,
   onFocus,
@@ -82,10 +78,7 @@ export function useMultiselect({
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
 
-  const i18n = useInternalI18n('multiselect');
   const i18nCommon = useInternalI18n('select');
-  const recoveryText = i18nCommon('recoveryText', restProps.recoveryText);
-  const errorIconAriaLabel = i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel);
   const selectedAriaLabel = i18nCommon('selectedAriaLabel', restProps.selectedAriaLabel);
 
   if (restProps.recoveryText && !onLoadItems) {
@@ -190,14 +183,14 @@ export function useMultiselect({
     loadingText,
     finishedText,
     errorText,
-    recoveryText,
+    getRecoveryText: () => i18nCommon('recoveryText', restProps.recoveryText),
     isEmpty,
     isNoMatch,
     noMatch,
     isFiltered,
     filteringResultsText: filteredText,
     onRecoveryClick: handleRecoveryClick,
-    errorIconAriaLabel: errorIconAriaLabel,
+    getErrorIconAriaLabel: () => i18nCommon('errorIconAriaLabel', restProps.errorIconAriaLabel),
     hasRecoveryCallback: !!onLoadItems,
   });
 
@@ -208,21 +201,6 @@ export function useMultiselect({
     selectedAriaLabel,
     renderHighlightedAriaLive,
   });
-
-  const tokens: TokenGroupProps['items'] = selectedOptions.map(option => ({
-    label: option.label,
-    disabled: disabled || option.disabled,
-    labelTag: option.labelTag,
-    description: option.description,
-    iconAlt: option.iconAlt,
-    iconName: option.iconName,
-    iconUrl: option.iconUrl,
-    iconSvg: option.iconSvg,
-    tags: option.tags,
-    dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
-      format({ option__label: option.label ?? '' })
-    ),
-  }));
 
   useEffect(() => {
     scrollToIndex.current?.(highlightedIndex);
@@ -248,7 +226,6 @@ export function useMultiselect({
 
   return {
     isOpen,
-    tokens,
     announcement,
     dropdownStatus,
     filteringValue,

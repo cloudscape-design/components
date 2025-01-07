@@ -316,6 +316,7 @@ export const loadingStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -357,6 +358,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -382,6 +384,7 @@ export const loadingSteps2Interactive: ReadonlyArray<StepsProps.Step> = [
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -414,6 +417,7 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -439,6 +443,7 @@ export const loadingSteps3Interactive: ReadonlyArray<StepsProps.Step> = [
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -476,6 +481,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -501,6 +507,7 @@ export const successfulStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -538,6 +545,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -563,6 +571,7 @@ export const blockedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         Gathered Security Group IDs:{' '}
         <Popover
           header={'Security Group IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -601,6 +610,7 @@ export const failedStepsInteractive: ReadonlyArray<StepsProps.Step> = [
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -634,6 +644,7 @@ export const failedStepsWithRetryTextInteractive: ReadonlyArray<StepsProps.Step>
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>
@@ -672,6 +683,7 @@ export const failedStepsWithRetryButtonInteractive: ReadonlyArray<StepsProps.Ste
         Listed EC2 instances:{' '}
         <Popover
           header={'EC2 Instance IDs'}
+          dismissAriaLabel="Close"
           content={
             <Box fontSize="body-s">
               <ul>

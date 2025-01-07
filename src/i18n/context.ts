@@ -3,6 +3,9 @@
 
 import React, { useContext } from 'react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
+
+import { isDevelopment } from '../internal/is-development';
 import { I18nFormatArgTypes } from './messages-types';
 
 export type CustomHandler<ReturnValue, FormatFnArgs> = (formatFn: (args: FormatFnArgs) => string) => ReturnValue;
@@ -20,7 +23,15 @@ interface InternalI18nContextProps {
 
 export const InternalI18nContext = React.createContext<InternalI18nContextProps>({
   locale: null,
-  format: <T>(_namespace: string, _component: string, _key: string, provided: T) => provided,
+  format: <T>(_namespace: string, component: string, key: string, provided: T) => {
+    if (isDevelopment && !provided) {
+      warnOnce(
+        component,
+        `Localization is not provided for key ${key}. Provide the value as a prop or use I18nProvider`
+      );
+    }
+    return provided;
+  },
 });
 
 export function useLocale(): string | null {

@@ -17,7 +17,7 @@ const longText =
 const longTextWithLink = (
   <>
     Lorem ipsum dolor sit amet, <Link href="#">consectetur</Link> adipisicing{' '}
-    <Link external={true} href="#">
+    <Link external={true} href="#" externalIconAriaLabel="(opens in new tab)">
       elit
     </Link>
     , sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
