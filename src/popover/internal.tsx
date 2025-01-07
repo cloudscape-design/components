@@ -218,7 +218,7 @@ function InternalPopover(
         </span>
       )}
       <ResetContextsForModal>
-        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+        {renderWithPortal ? <Portal visible={visible}>{popoverContent}</Portal> : popoverContent}
       </ResetContextsForModal>
     </span>
   );
