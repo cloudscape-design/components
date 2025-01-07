@@ -42,6 +42,7 @@
       }
     ],
     "@cloudscape-design/no-motion-outside-of-mixin": [true],
+    "@cloudscape-design/z-index-value-constraint": [true],
     "plugin/no-unsupported-browser-features": [
       true,
       {

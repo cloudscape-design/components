@@ -85,6 +85,13 @@ describe('Collection preferences - Modal', () => {
     wrapper.findModal()!.findConfirmButton()!.click();
     expectVisibleModal(wrapper, false);
   });
+  test('is additional content displayed when provided', () => {
+    const wrapper = renderCollectionPreferences({
+      contentBefore: 'Test content before',
+    });
+    wrapper.findTriggerButton().click();
+    expect(wrapper.findModal()!.findContentBefore()?.getElement().textContent).toBe('Test content before');
+  });
 });
 
 describe('Collection preferences - Events', () => {
