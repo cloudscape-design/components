@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
-import { Button, Checkbox, Form, FormField, SpaceBetween, Textarea } from '~components';
+import { Box, Button, Checkbox, Form, FormField, SpaceBetween, Textarea } from '~components';
 
 import styles from './styles.scss';
 
-export default function Bluedialog({ onSubmit }: any) {
+export default function Bluedialog({ onSubmit, onSkip }: any) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
   // Inputs (these following can be clubbed into one state object)
@@ -37,17 +37,23 @@ export default function Bluedialog({ onSubmit }: any) {
   function submitData() {
     onSubmit({ feedbackOptions, feedbackText });
   }
+  function skipDialog() {
+    onSkip(); // can be used by the parent component to dismiss/ hide this dialog box
+  }
 
   return (
     <div
       className={styles['blue-dialog-box']}
       role={'dialog'}
-      aria-labelledby="dialog-title"
+      aria-labelledby="feedback dialog"
       aria-modal="false" // Maintains natural focus flow since it's an inline dialog
       tabIndex={-1} // This allows the dialog to receive focus
     >
       <Form>
-        <div className={styles['blue-dialog-box__content']}>
+        <Box padding={'l'}>
+          <div className={styles['blue-dialog-box__close']}>
+            <Button iconName="close" variant="icon" onClick={skipDialog} aria-label="Close dialog" />
+          </div>
           <SpaceBetween direction="vertical" size="l">
             <FormField label="What did you dislike about the response?">
               <SpaceBetween size={'xxl'} direction={'horizontal'}>
@@ -86,7 +92,8 @@ export default function Bluedialog({ onSubmit }: any) {
               />
             </FormField>
           </SpaceBetween>
-        </div>
+        </Box>
+
         <div className={styles['blue-dialog-box__footer']}>
           <Button onClick={submitData} ariaLabel="Submit form">
             Submit

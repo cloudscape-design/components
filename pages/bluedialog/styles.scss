@@ -14,17 +14,8 @@
   border-end-end-radius: 16px;
 }
 
-.blue-dialog-box__header {
-  display: flex;
-  justify-content: space-between;
-  padding-block-start: 10px;
-  padding-block-end: 0;
-  padding-inline: 20px;
-}
-
-.blue-dialog-box__content {
-  padding-block: 20px;
-  padding-inline: 20px;
+.blue-dialog-box__close {
+  float: right;
 }
 
 .blue-dialog-box__footer {
