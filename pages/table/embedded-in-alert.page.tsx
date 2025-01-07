@@ -6,91 +6,55 @@ import Alert from '~components/alert';
 import Box from '~components/box';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
-import Table from '~components/table';
+import Table, { TableProps } from '~components/table';
+
+import ScreenshotArea from '../utils/screenshot-area';
+import { generateItems } from './generate-data';
+import { columnsConfig } from './shared-configs';
+
+const tableItems = generateItems(6);
 
 export default () => {
   return (
-    <SpaceBetween direction="vertical" size="m">
-      <Alert type="info" header="Alert with borderless table">
-        <Box variant="p">Some explanation</Box>
+    <ScreenshotArea>
+      <h1>Table embedded in alert</h1>
+
+      <SpaceBetween direction="vertical" size="m">
+        <Alert type="info" header="Alert with borderless table" statusIconAriaLabel="Info">
+          <Box variant="p">Some description</Box>
+
+          <ExampleTable variant="borderless" />
+        </Alert>
+
+        <Alert type="info" header="Alert with container table" statusIconAriaLabel="Info">
+          <Box variant="p">Some description</Box>
+
+          <ExampleTable variant="container" />
+        </Alert>
 
         <ExampleTable variant="borderless" />
-      </Alert>
-
-      <Alert type="info" header="Alert with container table">
-        <Box variant="p">Some explanation</Box>
-
-        <ExampleTable variant="container" />
-      </Alert>
-
-      <ExampleTable variant="borderless" />
-    </SpaceBetween>
+      </SpaceBetween>
+    </ScreenshotArea>
   );
 };
 
-const ExampleTable = ({ variant }: { variant: 'container' | 'embedded' | 'borderless' | 'stacked' | 'full-page' }) => {
-  const [selectedItems, setSelectedItems] = useState<any>([{ name: 'Item 6' }]);
+const ExampleTable = ({ variant }: { variant: TableProps.Variant }) => {
+  const [selectedItems, setSelectedItems] = useState<any>([tableItems[tableItems.length - 1]]);
 
   return (
     <Table
       variant={variant}
       onSelectionChange={({ detail }) => setSelectedItems(detail.selectedItems)}
       selectedItems={selectedItems}
+      columnDefinitions={columnsConfig}
+      items={tableItems}
+      selectionType="multi"
+      header={<Header>Table with variant {variant}</Header>}
       ariaLabels={{
         selectionGroupLabel: 'Items selection',
         allItemsSelectionLabel: () => 'select all',
-        itemSelectionLabel: (selection, item) => item.name,
+        itemSelectionLabel: (selection, item) => item.id,
       }}
-      columnDefinitions={[
-        {
-          id: 'variable',
-          header: 'Name',
-          cell: item => item.name,
-          sortingField: 'name',
-          isRowHeader: true,
-        },
-        {
-          id: 'value',
-          header: 'Value',
-          cell: item => item.value,
-          sortingField: 'value',
-        },
-      ]}
-      items={[
-        {
-          name: 'Item 1',
-          value: 'First',
-          size: 'Small',
-        },
-        {
-          name: 'Item 2',
-          value: 'Second',
-          size: 'Large',
-        },
-        {
-          name: 'Item 3',
-          value: 'Third',
-          size: 'Large',
-        },
-        {
-          name: 'Item 4',
-          value: 'Fourth',
-          size: 'Small',
-        },
-        {
-          name: 'Item 5',
-          value: '-',
-          size: 'Large',
-        },
-        {
-          name: 'Item 6',
-          value: 'Sixth',
-          size: 'Small',
-        },
-      ]}
-      selectionType="multi"
-      trackBy="name"
-      header={<Header>Table with variant {variant}</Header>}
     />
   );
 };
