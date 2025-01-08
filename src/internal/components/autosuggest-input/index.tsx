@@ -17,6 +17,7 @@ import { BaseComponentProps, getBaseProps } from '../../base-component';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../../context/form-field-context';
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
+import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { KeyCode } from '../../keycode';
 import { nodeBelongs } from '../../utils/node-belongs';
 import Dropdown from '../dropdown';
@@ -100,6 +101,8 @@ const AutosuggestInput = React.forwardRef(
     const baseProps = getBaseProps(restProps);
     const formFieldContext = useFormFieldContext(restProps);
 
+    const containerRefObject = useRef<HTMLDivElement>(null);
+    const containerRef = useMergeRefs(containerRefObject, __internalRootRef);
     const inputRef = useRef<HTMLInputElement>(null);
     const dropdownContentRef = useRef<HTMLDivElement>(null);
     const dropdownFooterRef = useRef<HTMLDivElement>(null);
@@ -130,6 +133,11 @@ const AutosuggestInput = React.forwardRef(
     }));
 
     const handleBlur = () => {
+      // When the document in not in focus it means the focus moved outside the page. In that case the dropdown shall stay open
+      // so that when the user comes back it does not re-open unexpectedly when the focus is restored by the browser.
+      if (!document.hasFocus()) {
+        return;
+      }
       if (!preventCloseOnBlurRef.current) {
         closeDropdown();
         fireNonCancelableEvent(onBlur, null);
@@ -254,7 +262,7 @@ const AutosuggestInput = React.forwardRef(
     }, [open]);
 
     return (
-      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={__internalRootRef}>
+      <div {...baseProps} className={clsx(baseProps.className, styles.root)} ref={containerRef}>
         <Dropdown
           minWidth={dropdownWidth}
           stretchWidth={!dropdownWidth}

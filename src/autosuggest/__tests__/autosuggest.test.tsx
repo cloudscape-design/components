@@ -121,21 +121,26 @@ test('entered text option should not get screenreader override', () => {
   ).toBeFalsy();
 });
 
-test('should not close dropdown when no realted target in blur', () => {
-  const { wrapper, container } = renderAutosuggest(
-    <div>
-      <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
-      <button id="focus-target">focus target</button>
-    </div>
-  );
+test('should close dropdown on blur when document is in focus', () => {
+  jest.spyOn(document, 'hasFocus').mockImplementation(() => true);
+
+  const { wrapper } = renderAutosuggest(<Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />);
   wrapper.findNativeInput().focus();
   expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
 
-  document.body.focus();
+  wrapper.findNativeInput().blur();
+  expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+});
+
+test('should not close dropdown on blur when document is not in focus', () => {
+  jest.spyOn(document, 'hasFocus').mockImplementation(() => false);
+
+  const { wrapper } = renderAutosuggest(<Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />);
+  wrapper.findNativeInput().focus();
   expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
 
-  createWrapper(container).find('#focus-target')!.focus();
-  expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
+  wrapper.findNativeInput().blur();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
 });
 
 it('should warn if recoveryText is provided without associated handler', () => {
