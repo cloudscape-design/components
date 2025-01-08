@@ -34,6 +34,8 @@ when the \`dismissible\` property is set to \`true\`.",
       "type": "string",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.dismissAriaLabel\` instead.
+If the label is assigned via the \`i18nStrings\` property, this label will be ignored.",
       "description": "Adds an aria-label to the dismiss button.",
       "i18nTag": true,
       "name": "dismissAriaLabel",
@@ -48,6 +50,44 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "boolean",
     },
     {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "AlertProps.I18nStrings",
+        "properties": [
+          {
+            "name": "dismissAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "infoIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "successIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AlertProps.I18nStrings",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -57,6 +97,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "deprecatedTag": "Use the label properties inside \`i18nStrings\` instead.
+If the label is assigned via the \`i18nStrings\` property, this label will be ignored.",
       "description": "Provides a text alternative for the icon.",
       "name": "statusIconAriaLabel",
       "optional": true,
