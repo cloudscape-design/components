@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -12,7 +12,6 @@ export interface PortalProps {
   getContainer?: () => Promise<HTMLElement>;
   removeContainer?: (container: HTMLElement) => void;
   children: React.ReactNode;
-  visible?: boolean;
 }
 
 function manageDefaultContainer(setState: React.Dispatch<React.SetStateAction<Element | null>>) {
@@ -48,10 +47,8 @@ function manageAsyncContainer(
  * A safe react portal component that renders to a provided node.
  * If a node isn't provided, it creates one under document.body.
  */
-export default function Portal({ container, getContainer, removeContainer, children, visible = true }: PortalProps) {
+export default function Portal({ container, getContainer, removeContainer, children }: PortalProps) {
   const [activeContainer, setActiveContainer] = useState<Element | null>(container ?? null);
-  const wasVisibleRef = useRef(visible);
-  wasVisibleRef.current = wasVisibleRef.current || visible;
 
   useLayoutEffect(() => {
     if (container) {
@@ -69,10 +66,8 @@ export default function Portal({ container, getContainer, removeContainer, child
     if (getContainer && removeContainer) {
       return manageAsyncContainer(getContainer, removeContainer, setActiveContainer);
     }
-    if (wasVisibleRef.current) {
-      return manageDefaultContainer(setActiveContainer);
-    }
-  }, [visible, container, getContainer, removeContainer]);
+    return manageDefaultContainer(setActiveContainer);
+  }, [container, getContainer, removeContainer]);
 
   return activeContainer && createPortal(children, activeContainer);
 }
