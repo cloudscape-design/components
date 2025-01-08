@@ -1,8 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
-
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
 import { viewports } from './constants';
 import { AppLayoutSplitViewPage } from './utils';
 
@@ -31,6 +30,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
   test(
     'slider is accessible by keyboard in side position',
     setupTest(async page => {
+      await page.click(wrapper.findNavigationClose().toSelector());
       await page.openPanel();
       await page.switchPosition('side');
       await page.keys(['Shift', 'Tab', 'Shift']);
@@ -170,15 +170,21 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.openPanel();
         await page.switchPosition('side');
         const { width } = await page.getViewportSize();
+
+        // Drag the resizer to the right (i.e, make the split panel narrower) as much as possible
         await page.dragResizerTo({ x: width, y: 0 });
         expect((await page.getSplitPanelSize()).width).toEqual(280);
 
+        // Drag the resizer to the left (i.e, make the split panel wider) as much as possible
         await page.dragResizerTo({ x: 0, y: 0 });
+
+        const arePaddingsEnabled = name === 'paddings enabled';
+
         // different design allows for different split panel max width
         const expectedWidth = {
-          classic: 520,
-          refresh: name === 'paddings enabled' ? 445 : 469,
-          'refresh-toolbar': 592,
+          classic: arePaddingsEnabled ? 520 - scrollbarThickness : 520,
+          refresh: arePaddingsEnabled ? 445 - 2 * scrollbarThickness : 469 - scrollbarThickness,
+          'refresh-toolbar': arePaddingsEnabled ? 592 - scrollbarThickness : 592,
         };
         expect((await page.getSplitPanelSize()).width).toEqual(expectedWidth[theme]);
       }, url)
@@ -249,6 +255,20 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       await page.windowScrollTo({ top: 500 });
       const { top: offsetAfter } = await page.getBoundingBox(splitPanelSelector);
       expect(offsetAfter).toEqual(offsetBefore);
+    })
+  );
+
+  test(
+    'avoids covering the page content when collapsed at the bottom',
+    setupTest(async page => {
+      const splitPanel = wrapper.findSplitPanel();
+      const splitPanelSelector = wrapper.findSplitPanel().toSelector();
+      const contentSelector = wrapper.findContentRegion().findSpaceBetween().toSelector();
+      await expect(page.isExisting(splitPanel.findOpenButton().toSelector())).resolves.toBe(true);
+      await page.windowScrollTo({ top: 1000 });
+      const { top: splitPAnelTop } = await page.getBoundingBox(splitPanelSelector);
+      const { bottom: contentBottom } = await page.getBoundingBox(contentSelector);
+      expect(splitPAnelTop).toBeGreaterThanOrEqual(contentBottom);
     })
   );
 

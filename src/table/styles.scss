@@ -53,6 +53,7 @@
 
 .table {
   inline-size: 100%;
+  block-size: 100%;
   border-spacing: 0;
   position: relative;
   box-sizing: border-box;
@@ -75,6 +76,7 @@
       padding-inline: awsui.$space-table-horizontal;
     }
   }
+  &.variant-stacked:not(.has-footer),
   &.variant-container:not(.has-footer) {
     padding-block-end: awsui.$space-table-content-bottom;
   }

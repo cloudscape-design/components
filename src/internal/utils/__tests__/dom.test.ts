@@ -1,7 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { isHTMLElement, isNode, isSVGElement, parseCssVariable } from '../../../../lib/components/internal/utils/dom';
+import {
+  findUpUntilMultiple,
+  isHTMLElement,
+  isNode,
+  isSVGElement,
+  parseCssVariable,
+} from '../../../../lib/components/internal/utils/dom';
 
 describe('parseCssVariable', () => {
   [true, false].forEach(supports => {
@@ -66,4 +72,44 @@ test('an object is recognized as SVGElement', () => {
   const node = { nodeType: 1, nodeName: '', parentNode: {} };
   expect(isSVGElement({ ...node, style: {}, ownerDocument: {} })).toBe(false);
   expect(isSVGElement({ ...node, style: {}, ownerDocument: {}, ownerSVGElement: {} })).toBe(true);
+});
+
+describe('findUpUntilMultiple', () => {
+  test('returns the expected element for each key', () => {
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <div id="first" class="match">
+        <div id="second" class="match"><div id="target"></div></div>
+      </div>
+    `;
+    expect(
+      findUpUntilMultiple({
+        startElement: div.querySelector<HTMLElement>('#target')!,
+        tests: { first: node => node.id === 'first', second: node => node.id === 'second' },
+      })
+    ).toEqual({ first: expect.objectContaining({ id: 'first' }), second: expect.objectContaining({ id: 'second' }) });
+  });
+
+  test('skips non-HTMLElement parents', () => {
+    const div = document.createElement('div');
+    const testFn = (node: HTMLElement) => {
+      expect(node.tagName).not.toBe('foreignObject');
+      return !!node.className.match(/match/);
+    };
+    div.innerHTML = `
+      <div class="match" id="match">
+        <svg>
+          <foreignObject>
+            <div id="target"></div>
+          </foreignObject>
+        </svg>
+      </div>
+    `;
+    expect(
+      findUpUntilMultiple({
+        startElement: div.querySelector<HTMLElement>('#target')!,
+        tests: { first: testFn, second: testFn },
+      })
+    ).toEqual({ first: expect.objectContaining({ id: 'match' }), second: expect.objectContaining({ id: 'match' }) });
+  });
 });

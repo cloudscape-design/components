@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/core';
 import { hasSortableData } from '@dnd-kit/sortable';
 
-import { ReorderOptions } from './interfaces';
+import { DndAreaItem } from './interfaces';
 import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {
@@ -44,7 +44,7 @@ enum KeyboardCode {
 // getClosestId function which takes its value from the current component
 // state, to make sure they are always in sync.
 
-export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: ReorderOptions<Option>) {
+export default function useDragAndDropReorder<Data>({ items }: { items: readonly DndAreaItem<Data>[] }) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
   const [activeItemId, setActiveItemId] = useState<UniqueIdentifier | null>(null);
@@ -59,9 +59,8 @@ export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: 
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (isKeyboard.current && activeItemId) {
-      const currentTargetIndex =
-        sortedOptions.findIndex(option => getId(option) === activeItemId) + positionDelta.current;
-      if (event.key === 'ArrowDown' && currentTargetIndex < sortedOptions.length - 1) {
+      const currentTargetIndex = items.findIndex(item => item.id === activeItemId) + positionDelta.current;
+      if (event.key === 'ArrowDown' && currentTargetIndex < items.length - 1) {
         positionDelta.current += 1;
       } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
         positionDelta.current -= 1;
@@ -77,9 +76,9 @@ export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: 
     if (positionDelta.current === 0) {
       return active.id;
     }
-    const currentIndex = sortedOptions.findIndex(option => getId(option) === active.id);
-    const newIndex = Math.max(0, Math.min(sortedOptions.length - 1, currentIndex + positionDelta.current));
-    return getId(sortedOptions[newIndex]);
+    const currentIndex = items.findIndex(item => item.id === active.id);
+    const newIndex = Math.max(0, Math.min(items.length - 1, currentIndex + positionDelta.current));
+    return items[newIndex].id;
   };
 
   const collisionDetection: CollisionDetection = ({
@@ -154,12 +153,12 @@ export default function useDragAndDropReorder<Option>({ sortedOptions, getId }: 
   );
 
   return {
-    activeItem: activeItemId,
+    activeItemId,
+    setActiveItemId: setActiveItem,
     collisionDetection,
     coordinateGetter,
     handleKeyDown,
     sensors,
-    setActiveItem,
   };
 }
 

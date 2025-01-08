@@ -10,9 +10,12 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import TextFilter, { TextFilterProps } from '../../../lib/components/text-filter';
 
 function renderTextFilter(jsx: React.ReactElement) {
-  const { container } = render(jsx);
+  const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findTextFilter()!;
-  return { wrapper };
+  return {
+    wrapper,
+    rerender,
+  };
 }
 
 test('should have no initial value for filtering', () => {
@@ -136,6 +139,57 @@ describe('countText', () => {
 
     expect(document.getElementById(ariaDescribedby[0])).toHaveTextContent('10 matches');
     expect(ariaDescribedby[1]).toBe('test-description');
+  });
+
+  describe('live announcement', () => {
+    function getPoliteRegion() {
+      return document.querySelector('[aria-live=polite]')!;
+    }
+
+    beforeAll(() => {
+      jest.useFakeTimers();
+    });
+
+    afterAll(() => {
+      jest.useRealTimers();
+    });
+
+    test('includes the live announcement when all conditions met', () => {
+      renderTextFilter(<TextFilter filteringText="test" countText="10 matches" />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('10 matches');
+    });
+
+    test('does not include the live announcement when loading = true', () => {
+      renderTextFilter(<TextFilter filteringText="test" loading={true} countText="10 matches" />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toBeNull();
+    });
+
+    test('includes the live announcement when loading switches from true to false', () => {
+      const defaultProps = {
+        countText: '10 matches',
+        filteringText: 'A',
+      };
+      const { rerender } = renderTextFilter(<TextFilter {...defaultProps} loading={true} />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toBeNull();
+
+      rerender(<TextFilter {...defaultProps} loading={false} />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('10 matches');
+    });
+
+    test('re-announce the live announcement when countText changes', () => {
+      const filteringText = 'A';
+      const { rerender } = renderTextFilter(<TextFilter filteringText={filteringText} countText="10 matches" />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('10 matches');
+
+      rerender(<TextFilter filteringText={filteringText} countText="123 matches" />);
+      jest.runAllTimers();
+      expect(getPoliteRegion()).toHaveTextContent('123 matches');
+    });
   });
 });
 

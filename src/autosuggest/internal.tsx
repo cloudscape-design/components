@@ -195,7 +195,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     hasRecoveryCallback: !!onLoadItems,
   });
 
-  const shouldRenderDropdownContent = !isEmpty || dropdownStatus.content;
+  const shouldRenderDropdownContent = !isEmpty || !!dropdownStatus.content;
 
   return (
     <AutosuggestInput
@@ -222,7 +222,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
       expandToViewport={expandToViewport}
       ariaControls={listId}
       ariaActivedescendant={highlightedOptionId}
-      dropdownExpanded={autosuggestItemsState.items.length > 1 || dropdownStatus.content !== null}
+      dropdownExpanded={shouldRenderDropdownContent}
       dropdownContent={
         shouldRenderDropdownContent && (
           <AutosuggestOptionsList

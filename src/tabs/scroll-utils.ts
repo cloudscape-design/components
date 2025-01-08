@@ -60,7 +60,7 @@ export const scrollIntoView = (tabHeader: HTMLElement, headerBar: HTMLElement, s
   // Anchor tab to right of scroll parent
   updatedLeftScroll = Math.max(
     updatedLeftScroll,
-    tabHeader.offsetLeft + tabHeader.offsetWidth - headerBar.offsetWidth + margin
+    tabHeader.offsetLeft + tabHeader.offsetWidth / 2 - headerBar.offsetWidth / 2 + margin
   );
   if (smooth) {
     smoothScroll(headerBar, updatedLeftScroll);
