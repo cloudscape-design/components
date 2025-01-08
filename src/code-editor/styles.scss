@@ -27,9 +27,13 @@
   inset: 0;
 
   &:focus {
-    position: absolute;
-    overflow: visible;
     @include styles.focus-highlight(3px);
+    // Required to avoid SASS mixed declarations warning (https://sass-lang.com/d/mixed-decls)
+    // stylelint-disable-next-line no-duplicate-selectors
+    & {
+      position: absolute;
+      overflow: visible;
+    }
   }
 }
 
