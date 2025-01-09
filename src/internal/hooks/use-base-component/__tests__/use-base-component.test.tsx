@@ -31,14 +31,14 @@ function Demo({ variant }: { variant: string }) {
 /**
  * This demo component mimics the Modal component.
  */
-function PortalDemoComponent() {
+function PortalDemoComponent({ container }: { container?: HTMLElement }) {
   const { __internalRootRef } = useBaseComponent('PortalDemoComponent');
   const [isVisible, setIsVisible] = useState(false);
 
   return (
     <>
       <Button onClick={() => setIsVisible(true)}>Show modal</Button>
-      <Portal>
+      <Portal container={container}>
         <div
           id="portalContentWrapper"
           style={{
@@ -66,30 +66,31 @@ test('should call the useTelemetry hook passing down the given component name an
   expect(useTelemetry).toHaveBeenCalledWith('DemoComponent', { props: { variant: 'default' } });
 });
 
-test('metadata get attached on the Portal component root DOM node when elementRef is changing', () => {
-  /**
-   * This test component uses the  internal Portal component where a conditional
-   * rendering is happening:
-   * - initially the Portal content does not get rendered
-   * - Portal's useLayoutEffect gets fired synchronously after all DOM mutations
-   * - the Portal's child elements got rendered
-   *
-   * The test covers the case that the metadata got attached after the modal got opened.
-   */
-  const { container, rerender } = render(<PortalDemoComponent />);
-  const wrapper = createWrapper(container);
+test.each([{ customContainer: false }, { customContainer: true }])(
+  'metadata get attached on the Portal component root DOM node when elementRef is changing, custom container = $customContainer',
+  ({ customContainer }) => {
+    /**
+     * This test component uses the  internal Portal component which delays the rendering of the content
+     * if the container is provided explicitly.
+     *
+     * The test covers the case that the metadata got attached after the modal got opened.
+     */
+    const { container, rerender } = render(
+      <PortalDemoComponent container={customContainer ? document.body : undefined} />
+    );
+    const wrapper = createWrapper(container);
 
-  const getPortalRootDomNode = () => {
-    return document.querySelector('#portalContentWrapper')! as any;
-  };
+    const getPortalRootDomNode = () => {
+      return document.querySelector('#portalContentWrapper')! as any;
+    };
 
-  expect(getPortalRootDomNode()[COMPONENT_METADATA_KEY]).toBeUndefined();
-  wrapper.findButton()!.click();
+    wrapper.findButton()!.click();
 
-  // By re-rendering the component we have the mechanism in place to ensure all updates
-  // to the DOM (attaching the metadata to the changed ref from the modal) have been done.
-  rerender(<PortalDemoComponent />);
+    // By re-rendering the component we have the mechanism in place to ensure all updates
+    // to the DOM (attaching the metadata to the changed ref from the modal) have been done.
+    rerender(<PortalDemoComponent container={customContainer ? document.body : undefined} />);
 
-  expect(getPortalRootDomNode()[COMPONENT_METADATA_KEY]?.name).toBe('PortalDemoComponent');
-  expect(getPortalRootDomNode()[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
-});
+    expect(getPortalRootDomNode()[COMPONENT_METADATA_KEY]?.name).toBe('PortalDemoComponent');
+    expect(getPortalRootDomNode()[COMPONENT_METADATA_KEY]?.version).toBe(PACKAGE_VERSION);
+  }
+);

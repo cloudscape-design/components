@@ -14,15 +14,6 @@ export interface PortalProps {
   children: React.ReactNode;
 }
 
-function manageDefaultContainer(setState: React.Dispatch<React.SetStateAction<Element | null>>) {
-  const newContainer = document.createElement('div');
-  document.body.appendChild(newContainer);
-  setState(newContainer);
-  return () => {
-    document.body.removeChild(newContainer);
-  };
-}
-
 function manageAsyncContainer(
   getContainer: () => Promise<HTMLElement>,
   removeContainer: (container: HTMLElement) => void,
@@ -63,12 +54,14 @@ export default function Portal({ container, getContainer, removeContainer, child
         warnOnce('portal', '`getContainer` is required when `removeContainer` is provided');
       }
     }
-
     if (getContainer && removeContainer) {
       return manageAsyncContainer(getContainer, removeContainer, setActiveContainer);
     }
-    return manageDefaultContainer(setActiveContainer);
   }, [container, getContainer, removeContainer]);
 
-  return activeContainer && createPortal(children, activeContainer);
+  if (container || (getContainer && removeContainer)) {
+    return activeContainer && createPortal(children, activeContainer);
+  }
+
+  return typeof document !== 'undefined' ? createPortal(children, document.body) : null;
 }
