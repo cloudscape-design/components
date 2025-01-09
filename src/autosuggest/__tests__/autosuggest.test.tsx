@@ -122,8 +122,6 @@ test('entered text option should not get screenreader override', () => {
 });
 
 test('should close dropdown on blur when document is in focus', () => {
-  jest.spyOn(document, 'hasFocus').mockImplementation(() => true);
-
   const { wrapper } = renderAutosuggest(<Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />);
   wrapper.findNativeInput().focus();
   expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
