@@ -235,7 +235,7 @@ export default function MultiselectPage() {
           <Box variant="h1">Test: Inline tokens</Box>
           <div style={{ width: 200 }}>
             <Multiselect
-              {...{ inlineTokens: true }}
+              inlineTokens={true}
               statusType="pending"
               filteringType="none"
               options={options1}
