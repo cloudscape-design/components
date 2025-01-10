@@ -86,9 +86,6 @@ export function fireKeyboardEvent(
   handler: CancelableEventHandler<BaseKeyDetail> | undefined,
   reactEvent: React.KeyboardEvent
 ) {
-  if (!handler) {
-    return;
-  }
   return fireCancelableEvent(
     handler,
     {
