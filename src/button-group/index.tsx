@@ -43,7 +43,7 @@ const ButtonGroup = React.forwardRef(
   }
 );
 
-function getItemCounts(allItems: readonly ButtonGroupProps.ItemOrGroup[]) {
+function getItemCounts(allItems: readonly ButtonGroupProps.ItemOrGroup[] = []) {
   const counters = { 'icon-button': 0, 'icon-toggle-button': 0, 'icon-file-input': 0, 'menu-dropdown': 0, group: 0 };
 
   function count(items: readonly ButtonGroupProps.ItemOrGroup[]) {
