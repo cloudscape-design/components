@@ -4,6 +4,7 @@
 import { useEffect, useState } from 'react';
 
 import { useModalContext } from '../../context/modal-context';
+import { useTabContext } from '../../context/tab-context';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useRandomId } from '../use-unique-id';
@@ -48,10 +49,11 @@ export function usePerformanceMarks(
 ) {
   const id = useRandomId();
   const { isInModal } = useModalContext();
+  const { isInFirstTab } = useTabContext();
   const attributes = useDOMAttribute(elementRef, 'data-analytics-performance-mark', id);
   const evaluateComponentVisibility = useEvaluateComponentVisibility();
   useEffect(() => {
-    if (!enabled() || !elementRef.current || isInModal) {
+    if (!enabled || !elementRef.current || isInModal || isInFirstTab === false) {
       return;
     }
     const elementVisible =
@@ -64,6 +66,7 @@ export function usePerformanceMarks(
     }
 
     const renderedMarkName = `${name}Rendered`;
+    console.log('mark');
     performance.mark(renderedMarkName, {
       detail: {
         source: 'awsui',
@@ -75,7 +78,7 @@ export function usePerformanceMarks(
   }, []);
 
   useEffectOnUpdate(() => {
-    if (!enabled() || !elementRef.current || isInModal) {
+    if (!enabled || !elementRef.current || isInModal || isInFirstTab === false) {
       return;
     }
     const elementVisible =
