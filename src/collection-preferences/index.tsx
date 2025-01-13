@@ -73,6 +73,7 @@ export default function CollectionPreferences({
       hasContentDisplayPreference: !!contentDisplayPreference,
       hasContentDensityPreference: !!contentDensityPreference,
       hasStickyColumnsPreference: !!stickyColumnsPreference,
+      hasContentDisplayColumnFiltering: !!contentDisplayPreference?.enableColumnFiltering,
       visibleContentOptionsCount: visibleContentPreference?.options?.length,
     },
   });
