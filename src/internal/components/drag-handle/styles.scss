@@ -56,12 +56,14 @@
     color: awsui.$color-text-interactive-hover;
   }
 
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
   @include focus-visible.when-visible {
     &:not(.hide-focus) {
       @include styles.focus-highlight(0px);
-    }
-    &.hide-focus {
-      outline: none;
     }
   }
 }
