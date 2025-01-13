@@ -20,6 +20,7 @@ export const defaultSplitPanelContextProps: SplitPanelContextProps = {
   refs: {
     preferences: { current: null },
     slider: { current: null },
+    handle: { current: null },
     toggle: { current: null },
   },
 };
