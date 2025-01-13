@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
 
-import { Button, Container, Header } from '~components';
+import { Button, Container, Header, Popover } from '~components';
 import ButtonDropdown from '~components/button-dropdown';
 import SpaceBetween from '~components/space-between';
 import Tabs, { TabsProps } from '~components/tabs';
@@ -135,6 +135,39 @@ export default function TabsDemoPage() {
     },
   ]);
 
+  const tabsPopoverActions = [
+    {
+      id: 'first',
+      label: 'First tab label',
+      action: (
+        <Popover header="Header" content="Description">
+          <span data-testid="popover1">Popover 1</span>
+        </Popover>
+      ),
+      content: <p>First tab content</p>,
+    },
+    {
+      id: 'second',
+      label: 'Second tab label',
+      action: (
+        <Popover header="Header" content="Description">
+          <span data-testid="popover2">Popover 2</span>
+        </Popover>
+      ),
+      content: <p>Second tab content</p>,
+    },
+    {
+      id: 'third',
+      label: 'Third tab label',
+      action: (
+        <Popover header="Header" content="Description">
+          <span data-testid="popover3">Popover 3</span>
+        </Popover>
+      ),
+      content: <p>Third tab content</p>,
+    },
+  ];
+
   return (
     <>
       <h1>Tabs</h1>
@@ -165,6 +198,13 @@ export default function TabsDemoPage() {
           <h2>Tabs with actions and dismissibles</h2>
           <Tabs
             tabs={tabsBoth}
+            i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
+          />
+        </div>
+        <div>
+          <h2>Tabs with popover actions</h2>
+          <Tabs
+            tabs={tabsPopoverActions}
             i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
           />
         </div>
