@@ -8,6 +8,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
+import { documentHasFocus } from '../../../lib/components/internal/utils/dom';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
@@ -43,8 +44,15 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => {
     warnOnce: jest.fn(),
   };
 });
+
+jest.mock('../../../lib/components/internal/utils/dom', () => ({
+  ...jest.requireActual('../../../lib/components/internal/utils/dom'),
+  documentHasFocus: jest.fn(() => true),
+}));
+
 beforeEach(() => {
-  (warnOnce as any).mockClear();
+  (warnOnce as jest.Mock).mockClear();
+  (documentHasFocus as jest.Mock).mockClear();
 });
 
 test('renders correct labels when focused', () => {
@@ -131,7 +139,7 @@ test('should close dropdown on blur when document is in focus', () => {
 });
 
 test('should not close dropdown on blur when document is not in focus', () => {
-  jest.spyOn(document, 'hasFocus').mockImplementation(() => false);
+  (documentHasFocus as jest.Mock).mockImplementation(() => false);
 
   const { wrapper } = renderAutosuggest(<Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />);
   wrapper.findNativeInput().focus();
