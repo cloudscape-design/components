@@ -11,6 +11,11 @@ import ToolbarAppLayout from './visual-refresh-toolbar';
 
 export const AppLayoutInternal = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>((props, ref) => {
   const isRefresh = useVisualRefresh();
+  if (!(window as any).__awsuiDebug?.logs) {
+    (window as any).__awsuiDebug = { logs: [] };
+  }
+  (window as any).__awsuiDebug.logs.push('isVR: ' + isRefresh);
+
   const isToolbar = useAppLayoutToolbarEnabled();
   if (isRefresh) {
     if (isToolbar) {
