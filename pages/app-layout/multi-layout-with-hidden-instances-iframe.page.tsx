@@ -3,6 +3,7 @@
 import React, { useRef, useState } from 'react';
 
 import AppLayout from '~components/app-layout';
+import BreadcrumbGroup from '~components/breadcrumb-group';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import Link from '~components/link';
@@ -12,7 +13,7 @@ import SpaceBetween from '~components/space-between';
 import './utils/external-widget';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Breadcrumbs, Tools } from './utils/content-blocks';
+import { Tools } from './utils/content-blocks';
 import labels from './utils/labels';
 
 function createView(name: string) {
@@ -21,7 +22,17 @@ function createView(name: string) {
       <AppLayout
         data-testid="secondary-layout"
         ariaLabels={labels}
-        breadcrumbs={<Breadcrumbs />}
+        breadcrumbs={
+          name !== 'page2' && (
+            <BreadcrumbGroup
+              onFollow={event => event.preventDefault()}
+              items={[
+                { text: 'Home', href: '#' },
+                { text: name, href: `#${name}` },
+              ]}
+            />
+          )
+        }
         navigationHide={true}
         content={
           <SpaceBetween size="s">

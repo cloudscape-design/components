@@ -232,6 +232,17 @@ test(
 );
 
 test(
+  'tab selection does not cause vertical scroll',
+  setupTest(async page => {
+    await page.setWindowSize({ width: 600, height: 300 });
+    const { top: initialTopScrollPosition } = await page.getWindowScroll();
+    await page.click(wrapper.findTabLinkByIndex(3).toSelector());
+    const { top: currentTopScrollPosition } = await page.getWindowScroll();
+    expect(initialTopScrollPosition).toEqual(currentTopScrollPosition);
+  })
+);
+
+test(
   'does not scroll on click if not needed',
   setupTest(async page => {
     await page.click(wrapper.findTabLinkByIndex(2).toSelector());

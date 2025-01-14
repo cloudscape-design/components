@@ -191,10 +191,13 @@ export default () => {
                   }
                   renderWithPortal={true}
                 >
-                  <StatusIndicator type="error">Failed to load instances</StatusIndicator>
+                  <StatusIndicator type="error" iconAriaLabel="Error">
+                    Failed to load instances
+                  </StatusIndicator>
                 </Popover>
               </Box>
             )}
+            renderLoaderEmpty={() => <Box>No instances found</Box>}
           />
         }
       />
@@ -320,6 +323,8 @@ function useTableData() {
       const pages = loadingState.get(item.name)?.pages ?? 0;
       return children.slice(0, pages * NESTED_PAGE_SIZE);
     };
+    // Decorate isItemExpandable to allow expandable items with empty children.
+    collectionResult.collectionProps.expandableRows.isItemExpandable = item => item.type !== 'instance';
     // Decorate onExpandableItemToggle to trigger loading when expanded.
     collectionResult.collectionProps.expandableRows.onExpandableItemToggle = event => {
       onExpandableItemToggle!(event);

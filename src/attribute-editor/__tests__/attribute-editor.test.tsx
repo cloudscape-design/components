@@ -9,6 +9,7 @@ import Input from '../../../lib/components/input';
 import createWrapper, { AttributeEditorWrapper } from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/attribute-editor/styles.css.js';
+import buttonStyles from '../../../lib/components/button/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 interface Item {
@@ -167,25 +168,44 @@ describe('Attribute Editor', () => {
     test('enables the add button by default', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps });
       const buttonElement = wrapper.findAddButton().getElement();
-      expect(buttonElement).not.toHaveAttribute('disabled');
+      expect(buttonElement).not.toHaveAttribute('aria-disabled');
     });
 
     test('enables the add button when disableAddButton is false', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, disableAddButton: false });
       const buttonElement = wrapper.findAddButton().getElement();
-      expect(buttonElement).not.toHaveAttribute('disabled');
+      expect(buttonElement).not.toHaveAttribute('aria-disabled');
     });
 
     test('disables the add button when disableAddButton is true', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps, disableAddButton: true });
       const buttonElement = wrapper.findAddButton().getElement();
-      expect(buttonElement).toHaveAttribute('disabled');
+      expect(buttonElement).toHaveAttribute('aria-disabled');
+    });
+
+    test('allows the add button to be focused manually when disableAddButton is true', () => {
+      const ref: React.Ref<AttributeEditorProps.Ref> = React.createRef();
+      const wrapper = renderAttributeEditor({ ...defaultProps, ref, disableAddButton: true });
+      ref.current!.focusAddButton();
+      expect(wrapper.findAddButton().getElement()).toHaveFocus();
     });
 
     test('has no aria-describedby if there is no additional info', () => {
       const wrapper = renderAttributeEditor({ ...defaultProps });
       const buttonElement = wrapper.findAddButton().getElement();
       expect(buttonElement).not.toHaveAttribute('aria-describedby');
+    });
+
+    test('allows button variant to be changed', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, addButtonVariant: 'inline-link' });
+      const buttonElement = wrapper.findAddButton().getElement();
+      expect(buttonElement).toHaveClass(buttonStyles['variant-inline-link']);
+    });
+
+    test('adds icon for inline-link variant', () => {
+      const wrapper = renderAttributeEditor({ ...defaultProps, addButtonVariant: 'inline-link' });
+      const buttonElement = wrapper.findAddButton().getElement();
+      expect(createWrapper(buttonElement).findIcon()).toBeTruthy();
     });
   });
 

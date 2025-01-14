@@ -1,12 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useModalContext } from '../../context/modal-context';
 import { useDOMAttribute } from '../use-dom-attribute';
 import { useEffectOnUpdate } from '../use-effect-on-update';
 import { useRandomId } from '../use-unique-id';
+
+const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility';
+
+/**
+ * This hook manages a boolean state (`evaluateComponentVisibility`) that toggles
+ * whenever a custom DOM event (`EVALUATE_COMPONENT_VISIBILITY_EVENT`) is triggered.
+ *
+ * @returns
+ */
+const useEvaluateComponentVisibility = () => {
+  const [evaluateComponentVisibility, setEvaluateComponentVisibility] = useState(false);
+
+  useEffect(() => {
+    const handleEvaluateComponentVisibility = () => {
+      setEvaluateComponentVisibility(prev => !prev);
+    };
+
+    document.addEventListener(EVALUATE_COMPONENT_VISIBILITY_EVENT, handleEvaluateComponentVisibility);
+
+    return () => {
+      document.removeEventListener(EVALUATE_COMPONENT_VISIBILITY_EVENT, handleEvaluateComponentVisibility);
+    };
+  }, []);
+
+  return evaluateComponentVisibility;
+};
 
 /**
  * This function returns an object that needs to be spread onto the same
@@ -15,7 +41,7 @@ import { useRandomId } from '../use-unique-id';
  */
 export function usePerformanceMarks(
   name: string,
-  enabled: boolean,
+  enabled: () => boolean,
   elementRef: React.RefObject<HTMLElement>,
   getDetails: () => Record<string, string | boolean | number | undefined>,
   dependencies: React.DependencyList
@@ -23,12 +49,11 @@ export function usePerformanceMarks(
   const id = useRandomId();
   const { isInModal } = useModalContext();
   const attributes = useDOMAttribute(elementRef, 'data-analytics-performance-mark', id);
-
+  const evaluateComponentVisibility = useEvaluateComponentVisibility();
   useEffect(() => {
-    if (!enabled || !elementRef.current || isInModal) {
+    if (!enabled() || !elementRef.current || isInModal) {
       return;
     }
-
     const elementVisible =
       elementRef.current.offsetWidth > 0 &&
       elementRef.current.offsetHeight > 0 &&
@@ -39,7 +64,6 @@ export function usePerformanceMarks(
     }
 
     const renderedMarkName = `${name}Rendered`;
-
     performance.mark(renderedMarkName, {
       detail: {
         source: 'awsui',
@@ -51,7 +75,7 @@ export function usePerformanceMarks(
   }, []);
 
   useEffectOnUpdate(() => {
-    if (!enabled || !elementRef.current || isInModal) {
+    if (!enabled() || !elementRef.current || isInModal) {
       return;
     }
     const elementVisible =
@@ -62,9 +86,7 @@ export function usePerformanceMarks(
     if (!elementVisible) {
       return;
     }
-
     const updatedMarkName = `${name}Updated`;
-
     performance.mark(updatedMarkName, {
       detail: {
         source: 'awsui',
@@ -73,7 +95,7 @@ export function usePerformanceMarks(
       },
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, dependencies);
+  }, [evaluateComponentVisibility, ...dependencies]);
 
   return attributes;
 }

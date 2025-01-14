@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "y-軸"
   },
   "alert": {
-    "dismissAriaLabel": "アラートを閉じる"
+    "dismissAriaLabel": "アラートを閉じる",
+    "i18nStrings.successIconAriaLabel": "成功",
+    "i18nStrings.errorIconAriaLabel": "エラー",
+    "i18nStrings.warningIconAriaLabel": "警告",
+    "i18nStrings.infoIconAriaLabel": "情報",
+    "i18nStrings.dismissAriaLabel": "アラートを閉じる"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "次へ",
@@ -48,6 +53,9 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "パスの表示"
+  },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "新しいタブで開く"
   },
   "calendar": {
     "nextMonthAriaLabel": "来月",
@@ -129,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "時間の単位",
     "i18nStrings.customRelativeRangeDurationLabel": "期間",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "期間の入力",
+    "i18nStrings.startMonthLabel": "開始月",
     "i18nStrings.startDateLabel": "開始日",
     "i18nStrings.startTimeLabel": "開始時刻",
+    "i18nStrings.endMonthLabel": "終了月",
     "i18nStrings.endDateLabel": "終了日",
     "i18nStrings.endTimeLabel": "終了時刻",
     "i18nStrings.dateTimeConstraintText": "日付には YYYY/MM/DD を使用します。時刻には 24 時間形式を使用します。",

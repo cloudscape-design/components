@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "Eixo Y"
   },
   "alert": {
-    "dismissAriaLabel": "Descartar alerta"
+    "dismissAriaLabel": "Descartar alerta",
+    "i18nStrings.successIconAriaLabel": "Êxito",
+    "i18nStrings.errorIconAriaLabel": "Erro",
+    "i18nStrings.warningIconAriaLabel": "Aviso",
+    "i18nStrings.infoIconAriaLabel": "Informações",
+    "i18nStrings.dismissAriaLabel": "Descartar alerta"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Próxima",
@@ -48,6 +53,9 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "Mostrar caminho"
+  },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Abre em uma nova guia"
   },
   "calendar": {
     "nextMonthAriaLabel": "Próximo mês",
@@ -129,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Unidade de tempo",
     "i18nStrings.customRelativeRangeDurationLabel": "Duração",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Inserir uma duração",
+    "i18nStrings.startMonthLabel": "Mês de início",
     "i18nStrings.startDateLabel": "Data de início",
     "i18nStrings.startTimeLabel": "Horário de início",
+    "i18nStrings.endMonthLabel": "Mês de término",
     "i18nStrings.endDateLabel": "Data de término",
     "i18nStrings.endTimeLabel": "Horário de término",
     "i18nStrings.dateTimeConstraintText": "Para a data, use o formato AAAA/MM/DD. Para o horário, use o formato de 24 horas.",

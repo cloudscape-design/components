@@ -12,21 +12,37 @@ import styles from './styles.css.js';
 
 export interface ItemsLoaderProps<T> {
   item: null | T;
+  trackBy?: TableProps.TrackBy<T>;
+  children: React.ReactNode;
+}
+
+export interface ItemsLoaderContentProps<T> {
+  item: null | T;
   loadingStatus: TableProps.LoadingStatus;
   renderLoaderPending?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderLoading?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
   renderLoaderError?: (detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode;
-  trackBy?: TableProps.TrackBy<T>;
+  renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
 }
 
-export function ItemsLoader<T>({
+export function ItemsLoader<T>({ item, trackBy, children }: ItemsLoaderProps<T>) {
+  let parentTrackId = item && trackBy ? applyTrackBy(trackBy, item) : undefined;
+  parentTrackId = typeof parentTrackId === 'string' ? parentTrackId : undefined;
+  return (
+    <div data-root={item ? 'false' : 'true'} data-parentrow={parentTrackId} className={styles['items-loader']}>
+      {children}
+    </div>
+  );
+}
+
+export function getLoaderContent<T>({
   item,
   loadingStatus,
   renderLoaderPending,
   renderLoaderLoading,
   renderLoaderError,
-  trackBy,
-}: ItemsLoaderProps<T>) {
+  renderLoaderEmpty,
+}: ItemsLoaderContentProps<T>) {
   let content: React.ReactNode = null;
   if (loadingStatus === 'pending' && renderLoaderPending) {
     content = renderLoaderPending({ item });
@@ -34,18 +50,13 @@ export function ItemsLoader<T>({
     content = <InternalLiveRegion tagName="span">{renderLoaderLoading({ item })}</InternalLiveRegion>;
   } else if (loadingStatus === 'error' && renderLoaderError) {
     content = <InternalLiveRegion tagName="span">{renderLoaderError({ item })}</InternalLiveRegion>;
+  } else if (loadingStatus === 'finished' && renderLoaderEmpty && item) {
+    content = <InternalLiveRegion tagName="span">{renderLoaderEmpty({ item })}</InternalLiveRegion>;
   } else {
     warnOnce(
       'Table',
-      'Must define `renderLoaderPending`, `renderLoaderLoading`, or `renderLoaderError` when using corresponding loading status.'
+      'Must define `renderLoaderPending`, `renderLoaderLoading`, `renderLoaderError`, or `renderLoaderEmpty` when using corresponding loading status.'
     );
   }
-
-  let parentTrackId = item && trackBy ? applyTrackBy(trackBy, item) : undefined;
-  parentTrackId = typeof parentTrackId === 'string' ? parentTrackId : undefined;
-  return (
-    <div data-root={item ? 'false' : 'true'} data-parentrow={parentTrackId} className={styles['items-loader']}>
-      {content}
-    </div>
-  );
+  return content;
 }

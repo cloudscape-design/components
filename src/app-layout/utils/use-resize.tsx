@@ -12,7 +12,7 @@ import { usePointerEvents } from './use-pointer-events';
 
 import testutilStyles from '../test-classes/styles.css.js';
 
-export interface DrawerResizeProps {
+interface DrawerResizeProps {
   activeDrawer: AppLayoutProps.Drawer | undefined;
   activeDrawerSize: number;
   onActiveDrawerResize: (detail: { id: string; size: number }) => void;
@@ -61,7 +61,7 @@ function useResize(
   const sizeControlProps: SizeControlProps = {
     position: 'side',
     panelRef: drawerRefObject,
-    handleRef: drawersRefs.slider,
+    handleRef: drawersRefs.handle,
     onResize: setSidePanelWidth,
   };
 
@@ -69,15 +69,17 @@ function useResize(
   const onKeyDown = useKeyboardEvents(sizeControlProps);
 
   const resizeHandle = (
-    <PanelResizeHandle
-      ref={drawersRefs.slider}
-      position="side"
-      ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-      ariaValuenow={relativeSize}
-      className={testutilStyles['drawers-slider']}
-      onKeyDown={onKeyDown}
-      onPointerDown={onSliderPointerDown}
-    />
+    <div ref={drawersRefs.handle}>
+      <PanelResizeHandle
+        ref={drawersRefs.slider}
+        position="side"
+        ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+        ariaValuenow={relativeSize}
+        className={testutilStyles['drawers-slider']}
+        onKeyDown={onKeyDown}
+        onPointerDown={onSliderPointerDown}
+      />
+    </div>
   );
 
   return { resizeHandle, drawerSize };

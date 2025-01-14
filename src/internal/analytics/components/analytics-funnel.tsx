@@ -36,13 +36,13 @@ import {
   getTextFromSelector,
 } from '../selectors';
 
-export const FUNNEL_VERSION = '1.4';
+const FUNNEL_VERSION = '1.4';
 
 interface AnalyticsFunnelProps {
   mounted?: boolean;
   children?: React.ReactNode;
   stepConfiguration?: StepConfiguration[];
-  funnelNameSelectors?: string[];
+  funnelNameSelectors?: () => string[];
   funnelType: FunnelStartProps['funnelType'];
   optionalStepNumbers: FunnelStartProps['optionalStepNumbers'];
   totalFunnelSteps: FunnelStartProps['totalFunnelSteps'];
@@ -139,7 +139,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
     */
     let funnelInteractionId: string;
     const handle = setTimeout(() => {
-      funnelNameSelector.current = evaluateSelectors(props.funnelNameSelectors || [], getFunnelNameSelector());
+      funnelNameSelector.current = evaluateSelectors(props.funnelNameSelectors?.() || [], getFunnelNameSelector());
       if (props.funnelType === 'single-page' && wizardCount.current > 0) {
         return;
       }

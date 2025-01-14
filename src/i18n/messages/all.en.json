@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "y-axis"
   },
   "alert": {
-    "dismissAriaLabel": "Dismiss alert"
+    "dismissAriaLabel": "Dismiss alert",
+    "i18nStrings.successIconAriaLabel": "Success",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Warning",
+    "i18nStrings.infoIconAriaLabel": "Info",
+    "i18nStrings.dismissAriaLabel": "Dismiss alert"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Next",
@@ -48,6 +53,9 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "Show path"
+  },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Opens in a new tab"
   },
   "calendar": {
     "nextMonthAriaLabel": "Next month",
@@ -129,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Unit of time",
     "i18nStrings.customRelativeRangeDurationLabel": "Duration",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Enter a duration",
+    "i18nStrings.startMonthLabel": "Start month",
     "i18nStrings.startDateLabel": "Start date",
     "i18nStrings.startTimeLabel": "Start time",
+    "i18nStrings.endMonthLabel": "End month",
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
     "i18nStrings.dateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",

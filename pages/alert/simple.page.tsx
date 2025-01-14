@@ -10,6 +10,7 @@ import Link from '~components/link';
 import SpaceBetween from '~components/space-between';
 
 import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings } from './common';
 
 import styles from './styles.scss';
 
@@ -34,7 +35,7 @@ export default function AlertScenario() {
               <Alert
                 header="This is going to be an extremely long title for an alert not sure whether it makes any sense but whatever"
                 visible={visible}
-                statusIconAriaLabel="Warning"
+                i18nStrings={i18nStrings}
                 dismissible={true}
                 buttonText="Button text"
                 type="warning"
@@ -48,7 +49,7 @@ export default function AlertScenario() {
                 <Link href="#">This is a secondary link</Link>
               </Alert>
             </div>
-            <Alert header="Info" statusIconAriaLabel="Info">
+            <Alert header="Info" i18nStrings={i18nStrings}>
               Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
               dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
               ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu

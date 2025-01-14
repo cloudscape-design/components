@@ -355,33 +355,44 @@ describe('Date range picker', () => {
       expectToHaveFocus(wrapper.findDropdown()!.getElement());
     });
 
-    test('shows warning when range selector mode and value type are not compatible', () => {
-      const compatible: [DateRangePickerProps.RangeSelectorMode, null | DateRangePickerProps.Value][] = [
-        ['default', null],
-        ['default', absoluteValue],
-        ['default', relativeValue],
-        ['absolute-only', null],
-        ['absolute-only', absoluteValue],
-        ['relative-only', null],
-        ['relative-only', relativeValue],
-      ];
-      for (const [rangeSelectorMode, value] of compatible) {
-        renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
-      }
-      expect(warnOnce).not.toHaveBeenCalled();
+    describe('value compatibility for compatible cases', () => {
+      afterEach(() => {
+        jest.clearAllMocks();
+      });
 
-      const incompatible: [DateRangePickerProps.RangeSelectorMode, null | DateRangePickerProps.Value][] = [
-        ['absolute-only', relativeValue],
-        ['relative-only', absoluteValue],
+      const compatibleCases: [string, DateRangePickerProps.RangeSelectorMode, null | DateRangePickerProps.Value][] = [
+        ['default mode with null value', 'default', null],
+        ['default mode with absolute value', 'default', absoluteValue],
+        ['default mode with relative value', 'default', relativeValue],
+        ['absolute-only mode with null value', 'absolute-only', null],
+        ['absolute-only mode with absolute value', 'absolute-only', absoluteValue],
+        ['relative-only mode with null value', 'relative-only', null],
+        ['relative-only mode with relative value', 'relative-only', relativeValue],
       ];
-      for (const [rangeSelectorMode, value] of incompatible) {
+
+      test.each(compatibleCases)('does not show warning for %s', (_, rangeSelectorMode, value) => {
         renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
-      }
-      expect(warnOnce).toHaveBeenCalledTimes(2);
-      expect(warnOnce).toHaveBeenCalledWith(
-        'DateRangePicker',
-        'The provided value does not correspond to the current range selector mode. Reverting back to default.'
-      );
+        expect(warnOnce).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('value compatibility for incompatible cases', () => {
+      afterEach(() => {
+        jest.clearAllMocks();
+      });
+
+      const incompatibleCases: [string, DateRangePickerProps.RangeSelectorMode, DateRangePickerProps.Value][] = [
+        ['absolute-only mode with relative value', 'absolute-only', relativeValue],
+        ['relative-only mode with absolute value', 'relative-only', absoluteValue],
+      ];
+
+      test.each(incompatibleCases)('shows warning for %s', (_, rangeSelectorMode, value) => {
+        renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
+        expect(warnOnce).toHaveBeenCalledWith(
+          'DateRangePicker',
+          'The provided value does not correspond to the current range selector mode. Reverting back to default.'
+        );
+      });
     });
   });
 

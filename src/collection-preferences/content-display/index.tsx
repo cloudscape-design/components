@@ -1,22 +1,18 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo, useState } from 'react';
-import { DndContext, DragOverlay } from '@dnd-kit/core';
-import { arrayMove, SortableContext, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import clsx from 'clsx';
 
 import InternalBox from '../../box/internal';
 import InternalButton from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
-import Portal from '../../internal/components/portal';
+import { DndArea } from '../../internal/components/dnd-area';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalSpaceBetween from '../../space-between/internal';
 import InternalTextFilter from '../../text-filter/internal';
 import { getAnalyticsInnerContextAttribute } from '../analytics-metadata/utils';
 import { CollectionPreferencesProps } from '../interfaces';
-import ContentDisplayOption from './content-display-option';
-import DraggableOption from './draggable-option';
-import useDragAndDropReorder from './use-drag-and-drop-reorder';
-import useLiveAnnouncements from './use-live-announcements';
+import ContentDisplayOption, { getClassName as getOptionClassName } from './content-display-option';
 import { getFilteredOptions, getSortedOptions, OptionWithVisibility } from './utils';
 
 import styles from '../styles.css.js';
@@ -66,43 +62,6 @@ export default function ContentDisplayPreference({
     // are not in the value yet, so they're added as non-visible after the known ones.
     onChange(sortedOptions.map(({ id, visible }) => ({ id, visible: id === option.id ? !option.visible : visible })));
   };
-
-  const { activeItem, collisionDetection, handleKeyDown, sensors, setActiveItem } = useDragAndDropReorder({
-    sortedOptions: sortedAndFilteredOptions,
-  });
-
-  const activeOption = activeItem ? sortedAndFilteredOptions.find(({ id }) => id === activeItem) : null;
-
-  const announcements = useLiveAnnouncements({
-    isDragging: activeItem !== null,
-    liveAnnouncementDndStarted: i18n(
-      'contentDisplayPreference.liveAnnouncementDndStarted',
-      liveAnnouncementDndStarted,
-      format => (position, total) => format({ position, total })
-    ),
-    liveAnnouncementDndItemReordered: i18n(
-      'contentDisplayPreference.liveAnnouncementDndItemReordered',
-      liveAnnouncementDndItemReordered,
-      format => (initialPosition, currentPosition, total) =>
-        format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
-    ),
-    liveAnnouncementDndItemCommitted: i18n(
-      'contentDisplayPreference.liveAnnouncementDndItemCommitted',
-      liveAnnouncementDndItemCommitted,
-      format => (initialPosition, finalPosition, total) =>
-        format({ initialPosition, finalPosition, total, isInitialPosition: `${initialPosition === finalPosition}` })
-    ),
-    liveAnnouncementDndDiscarded: i18n(
-      'contentDisplayPreference.liveAnnouncementDndDiscarded',
-      liveAnnouncementDndDiscarded
-    ),
-    sortedOptions: sortedAndFilteredOptions,
-  });
-
-  const renderedDragHandleAriaDescription = i18n(
-    'contentDisplayPreference.dragHandleAriaDescription',
-    dragHandleAriaDescription
-  );
 
   return (
     <div className={styles[componentPrefix]} {...getAnalyticsInnerContextAttribute('contentDisplay')}>
@@ -162,76 +121,71 @@ export default function ContentDisplayPreference({
         </div>
       )}
 
-      {/* Drag and drop */}
-      <DndContext
-        sensors={sensors}
-        collisionDetection={collisionDetection}
-        accessibility={{
-          announcements,
-          restoreFocus: false,
-          screenReaderInstructions: renderedDragHandleAriaDescription
-            ? { draggable: renderedDragHandleAriaDescription }
-            : undefined,
-        }}
-        onDragStart={({ active }) => setActiveItem(active.id)}
-        onDragEnd={event => {
-          setActiveItem(null);
-          const { active, over } = event;
-
-          if (over && active.id !== over.id) {
-            const oldIndex = sortedOptions.findIndex(({ id }) => id === active.id);
-            const newIndex = sortedOptions.findIndex(({ id }) => id === over.id);
-            // We need to remember to trim the options down to id and visible to emit changes.
-            onChange(arrayMove([...sortedOptions], oldIndex, newIndex).map(({ id, visible }) => ({ id, visible })));
-          }
-        }}
-        onDragCancel={() => setActiveItem(null)}
-      >
-        {/* Use explicit list role to work around Safari not announcing lists as such when list-style is set to none.
+      {/* Use explicit list role to work around Safari not announcing lists as such when list-style is set to none.
             See https://bugs.webkit.org/show_bug.cgi?id=170179 */}
-        <ul
-          className={getClassName('option-list')}
-          aria-describedby={descriptionId}
-          aria-labelledby={titleId}
-          role="list"
-        >
-          <SortableContext
-            disabled={columnFilteringText.trim().length > 0}
-            items={sortedAndFilteredOptions.map(({ id }) => id)}
-            strategy={verticalListSortingStrategy}
-          >
-            {sortedAndFilteredOptions.map(option => {
-              return (
-                <DraggableOption
-                  dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}
-                  key={option.id}
-                  onKeyDown={handleKeyDown}
-                  onToggle={onToggle}
-                  option={option}
-                />
-              );
-            })}
-          </SortableContext>
-        </ul>
-        <Portal>
-          {/* Make sure that the drag overlay is above the modal
-              by assigning the z-index as inline style
-              so that it prevails over dnd-kit's inline z-index of 999  */}
-          {/* className is a documented prop of the DragOverlay component:
-              https://docs.dndkit.com/api-documentation/draggable/drag-overlay#class-name-and-inline-styles */
-          /* eslint-disable-next-line react/forbid-component-props */}
-          <DragOverlay className={styles['drag-overlay']} dropAnimation={null} style={{ zIndex: 5000 }}>
-            {activeOption && (
+      <ul
+        className={getClassName('option-list')}
+        aria-describedby={descriptionId}
+        aria-labelledby={titleId}
+        role="list"
+      >
+        <DndArea
+          items={sortedAndFilteredOptions.map(data => ({ id: data.id, label: data.label, data }))}
+          onItemsChange={items => onChange(items.map(({ id, data }) => ({ id, visible: data.visible })))}
+          disableReorder={columnFilteringText.trim().length > 0}
+          renderItem={({ ref, item, isSorting, isActive, style, className, dragHandleProps }) => {
+            className = clsx(className, getOptionClassName(), isSorting && styles.sorting);
+            const content = (
               <ContentDisplayOption
-                listeners={{ onKeyDown: handleKeyDown }}
-                dragHandleAriaLabel={i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel)}
+                ref={ref}
+                option={item.data}
                 onToggle={onToggle}
-                option={activeOption}
+                dragHandleProps={dragHandleProps}
               />
-            )}
-          </DragOverlay>
-        </Portal>
-      </DndContext>
+            );
+            return isActive ? (
+              content
+            ) : (
+              <li className={className} style={style}>
+                {content}
+              </li>
+            );
+          }}
+          i18nStrings={{
+            liveAnnouncementDndStarted: i18n(
+              'contentDisplayPreference.liveAnnouncementDndStarted',
+              liveAnnouncementDndStarted,
+              format => (position, total) => format({ position, total })
+            ),
+            liveAnnouncementDndItemReordered: i18n(
+              'contentDisplayPreference.liveAnnouncementDndItemReordered',
+              liveAnnouncementDndItemReordered,
+              format => (initialPosition, currentPosition, total) =>
+                format({ currentPosition, total, isInitialPosition: `${initialPosition === currentPosition}` })
+            ),
+            liveAnnouncementDndItemCommitted: i18n(
+              'contentDisplayPreference.liveAnnouncementDndItemCommitted',
+              liveAnnouncementDndItemCommitted,
+              format => (initialPosition, finalPosition, total) =>
+                format({
+                  initialPosition,
+                  finalPosition,
+                  total,
+                  isInitialPosition: `${initialPosition === finalPosition}`,
+                })
+            ),
+            liveAnnouncementDndDiscarded: i18n(
+              'contentDisplayPreference.liveAnnouncementDndDiscarded',
+              liveAnnouncementDndDiscarded
+            ),
+            dragHandleAriaLabel: i18n('contentDisplayPreference.dragHandleAriaLabel', dragHandleAriaLabel),
+            dragHandleAriaDescription: i18n(
+              'contentDisplayPreference.dragHandleAriaDescription',
+              dragHandleAriaDescription
+            ),
+          }}
+        />
+      </ul>
     </div>
   );
 }

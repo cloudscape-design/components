@@ -35,6 +35,7 @@ export default function ModalFunnelPage() {
     <>
       <h1>Modal Funnel</h1>
       <Button onClick={() => setVisible(true)}>Open Modal</Button>
+      <Modal visible={false} header="Wrong modal title" />
       {visible && (
         <Modal
           analyticsMetadata={{

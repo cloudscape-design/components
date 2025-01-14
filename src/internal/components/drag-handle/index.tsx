@@ -1,32 +1,81 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { ButtonHTMLAttributes } from 'react';
+import React, { forwardRef, useRef } from 'react';
 import clsx from 'clsx';
 
+import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
-import Handle from '../handle';
+import useForwardFocus from '../../hooks/forward-focus';
+import { DragHandleProps } from './interfaces';
+import { ResizeIcon } from './resize-icon';
 
-import handleStyles from '../handle/styles.css.js';
 import styles from './styles.css.js';
 
-export interface DragHandleProps {
-  attributes: ButtonHTMLAttributes<HTMLDivElement>;
-  hideFocus?: boolean;
-  // @dnd-kit uses this type
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  listeners: Record<string, Function> | undefined;
-  disabled?: boolean;
-}
+export { DragHandleProps };
 
-export default function DragHandle({ attributes, hideFocus, listeners, disabled }: DragHandleProps) {
-  return (
-    <Handle
-      aria-disabled={disabled}
-      className={clsx(styles.handle, hideFocus && handleStyles['hide-focus'], disabled && styles['handle-disabled'])}
-      {...attributes}
-      {...listeners}
-    >
-      <InternalIcon variant={disabled ? 'disabled' : undefined} name="drag-indicator" />
-    </Handle>
-  );
-}
+const DragHandle = forwardRef(
+  (
+    {
+      variant = 'drag-indicator',
+      size = 'normal',
+      ariaLabel,
+      ariaDescribedby,
+      ariaValue,
+      disabled,
+      onPointerDown,
+      onKeyDown,
+      className,
+    }: DragHandleProps,
+    ref: React.Ref<DragHandleProps.Ref>
+  ) => {
+    const dragHandleRefObject = useRef<HTMLDivElement>(null);
+
+    useForwardFocus(ref, dragHandleRefObject);
+
+    const iconProps: IconProps = (() => {
+      const shared = { variant: disabled ? ('disabled' as const) : undefined, size };
+      switch (variant) {
+        case 'drag-indicator':
+          return { ...shared, name: 'drag-indicator' };
+        case 'resize-area':
+          return { ...shared, name: 'resize-area' };
+        case 'resize-horizontal':
+          return { ...shared, svg: <ResizeIcon variant="horizontal" /> };
+        case 'resize-vertical':
+          return { ...shared, svg: <ResizeIcon variant="vertical" /> };
+      }
+    })();
+
+    return (
+      // We need to use a div with button role instead of a button
+      // so that Safari will focus on it when clicking it.
+      // (See https://bugs.webkit.org/show_bug.cgi?id=22261)
+      // Otherwise, we can't reliably catch keyboard events coming from the handle
+      // when it is being dragged.
+      <div
+        ref={dragHandleRefObject}
+        role={ariaValue ? 'slider' : 'button'}
+        tabIndex={0}
+        className={clsx(
+          className,
+          styles.handle,
+          styles[`handle-${variant}`],
+          styles[`handle-size-${size}`],
+          disabled && styles['handle-disabled']
+        )}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedby}
+        aria-disabled={disabled}
+        aria-valuemax={ariaValue?.valueMax}
+        aria-valuemin={ariaValue?.valueMin}
+        aria-valuenow={ariaValue?.valueNow}
+        onPointerDown={onPointerDown}
+        onKeyDown={onKeyDown}
+      >
+        <InternalIcon {...iconProps} />
+      </div>
+    );
+  }
+);
+
+export default DragHandle;

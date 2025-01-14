@@ -397,3 +397,21 @@ describe('ref support', () => {
     expect(wrapper.findContent()?.getElement()).toBeFalsy();
   });
 });
+
+test('does not add portal to the body unless visible', () => {
+  const { unmount } = render(
+    <Popover content="Content" renderWithPortal={true}>
+      Trigger
+    </Popover>
+  );
+
+  expect(document.querySelectorAll('body > div')).toHaveLength(1);
+
+  createWrapper().findPopover()!.findTrigger().getElement().click();
+
+  expect(document.querySelectorAll('body > div')).toHaveLength(2);
+
+  unmount();
+
+  expect(document.querySelectorAll('body > div')).toHaveLength(1);
+});

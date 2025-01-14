@@ -8,7 +8,13 @@ import { usePerformanceMarks } from '../index';
 
 function Demo() {
   const ref = useRef<HTMLDivElement>(null);
-  const attributes = usePerformanceMarks('test-component', true, ref, () => ({}), []);
+  const attributes = usePerformanceMarks(
+    'test-component',
+    () => true,
+    ref,
+    () => ({}),
+    []
+  );
   return <div {...attributes} ref={ref} data-testid="element" />;
 }
 
@@ -23,7 +29,6 @@ describe('Data attribute', () => {
     const { getByTestId, rerender } = render(<Demo />);
 
     const attributeValueBefore = getByTestId('element').getAttribute('data-analytics-performance-mark');
-
     rerender(<Demo />);
 
     expect(getByTestId('element')).toHaveAttribute('data-analytics-performance-mark');

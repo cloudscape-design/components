@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "eje y"
   },
   "alert": {
-    "dismissAriaLabel": "Descartar alerta"
+    "dismissAriaLabel": "Descartar alerta",
+    "i18nStrings.successIconAriaLabel": "Éxito",
+    "i18nStrings.errorIconAriaLabel": "Error",
+    "i18nStrings.warningIconAriaLabel": "Aviso",
+    "i18nStrings.infoIconAriaLabel": "Información",
+    "i18nStrings.dismissAriaLabel": "Descartar alerta"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Siguiente",
@@ -48,6 +53,9 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "Mostrar ruta"
+  },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Se abre en una pestaña nueva."
   },
   "calendar": {
     "nextMonthAriaLabel": "Próximo mes",
@@ -129,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Unidad de tiempo",
     "i18nStrings.customRelativeRangeDurationLabel": "Duración",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Introduzca una duración",
+    "i18nStrings.startMonthLabel": "Mes de inicio",
     "i18nStrings.startDateLabel": "Fecha de inicio",
     "i18nStrings.startTimeLabel": "Hora de inicio",
+    "i18nStrings.endMonthLabel": "Mes de finalización",
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
@@ -152,7 +162,7 @@
   "file-upload": {
     "i18nStrings.limitShowFewer": "Mostrar menos",
     "i18nStrings.limitShowMore": "Mostrar más",
-    "i18nStrings.removeFileAriaLabel": "Eliminar archivo{fileIndex}",
+    "i18nStrings.removeFileAriaLabel": "Eliminar archivo {fileIndex}",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.warningIconAriaLabel": "Aviso",
     "i18nStrings.uploadButtonText": "{multiple, select, true {Elegir archivos} false {Elegir archivo} other {}}",

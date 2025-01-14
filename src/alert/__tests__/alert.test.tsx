@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import '../../__a11y__/to-validate-a11y';
 import Alert, { AlertProps } from '../../../lib/components/alert';
 import Button from '../../../lib/components/button';
+import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -21,6 +22,14 @@ function renderAlert(props: AlertProps = {}) {
   const { container } = render(<Alert {...props} />);
   return { wrapper: createWrapper(container).findAlert()!, container };
 }
+
+const i18nStrings: AlertProps.I18nStrings = {
+  successIconAriaLabel: 'status: success',
+  infoIconAriaLabel: 'status: info',
+  warningIconAriaLabel: 'status: warning',
+  errorIconAriaLabel: 'status: error',
+  dismissAriaLabel: 'dismiss',
+};
 
 beforeEach(() => {
   jest.mocked(useVisualRefresh).mockReset();
@@ -71,16 +80,16 @@ describe('Alert Component', () => {
       expect(wrapper.findDismissButton()!.getElement()).not.toHaveAttribute('aria-label');
     });
     it('dismiss button can have specified label', () => {
-      const { wrapper } = renderAlert({ dismissible: true, dismissAriaLabel: 'close' });
-      expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'close');
+      const { wrapper } = renderAlert({ dismissible: true, i18nStrings });
+      expect(wrapper.findDismissButton()!.getElement()).toHaveAttribute('aria-label', 'dismiss');
     });
     it('status icon does not have a label by default', () => {
       const { wrapper } = renderAlert({});
       expect(wrapper.find('[role="img"]')!.getElement()).not.toHaveAttribute('aria-label');
     });
     it('status icon can have a label', () => {
-      const { wrapper } = renderAlert({ statusIconAriaLabel: 'Info' });
-      expect(wrapper.find('[role="img"]')!.getElement()).toHaveAttribute('aria-label', 'Info');
+      const { wrapper } = renderAlert({ i18nStrings });
+      expect(wrapper.find('[role="img"]')!.getElement()).toHaveAttribute('aria-label', 'status: info');
     });
   });
   describe('visibility', () => {
@@ -145,8 +154,7 @@ describe('Alert Component', () => {
     const { container } = renderAlert({
       dismissible: true,
       header: 'Header',
-      dismissAriaLabel: 'Dismiss',
-      statusIconAriaLabel: 'Icon',
+      i18nStrings,
       action: <button type="button">Action</button>,
     });
     await expect(container).toValidateA11y();
@@ -185,6 +193,68 @@ describe('Alert Component', () => {
       const { wrapper } = renderAlert({ header: 'Header', children: ['Content'] });
       expect(wrapper.findByClassName(styles['icon-size-big'])).toBeFalsy();
       expect(wrapper.findByClassName(styles['icon-size-normal'])).toBeTruthy();
+    });
+  });
+
+  describe('i18n', () => {
+    const alertTypes: AlertProps.Type[] = ['info', 'success', 'error', 'warning'];
+    const i18nMessages = {
+      alert: {
+        'i18nStrings.successIconAriaLabel': 'success default label',
+        'i18nStrings.infoIconAriaLabel': 'info default label',
+        'i18nStrings.warningIconAriaLabel': 'warning default label',
+        'i18nStrings.errorIconAriaLabel': 'error default label',
+        'i18nStrings.dismissAriaLabel': 'dismiss default label',
+      },
+    };
+
+    function renderAlertForI18n(props: AlertProps = {}) {
+      const { container } = render(
+        <TestI18nProvider messages={i18nMessages}>
+          <Alert {...props} />
+        </TestI18nProvider>
+      );
+      const wrapper = createWrapper(container)!.findAlert()!;
+      const statusIcon = wrapper.findByClassName(styles.icon)!.getElement();
+      const dismissButton = wrapper.findDismissButton()!.getElement();
+      return { statusIcon, dismissButton };
+    }
+
+    describe.each(alertTypes)('alert type: %s', type => {
+      it('assigns the specified aria labels via i18nStrings prop', () => {
+        const { statusIcon, dismissButton } = renderAlertForI18n({ dismissible: true, type, i18nStrings });
+        expect(statusIcon).toHaveAccessibleName(`status: ${type}`);
+        expect(dismissButton).toHaveAccessibleName('dismiss');
+      });
+
+      it('assigns the labels from i18n provider, when not specified', () => {
+        const { statusIcon, dismissButton } = renderAlertForI18n({ dismissible: true, type });
+        expect(statusIcon).toHaveAccessibleName(`${type} default label`);
+        expect(dismissButton).toHaveAccessibleName('dismiss default label');
+      });
+    });
+
+    describe('deprecated aria labels', () => {
+      it('ignores the deprecated values if i18nStrings is specified', () => {
+        const { statusIcon, dismissButton } = renderAlertForI18n({
+          dismissible: true,
+          dismissAriaLabel: 'deprecated dismiss label',
+          statusIconAriaLabel: 'deprecated status icon label',
+          i18nStrings,
+        });
+        expect(statusIcon).toHaveAccessibleName('status: info');
+        expect(dismissButton).toHaveAccessibleName('dismiss');
+      });
+
+      it('uses the deprecated values if i18nStrings is not specified', () => {
+        const { statusIcon, dismissButton } = renderAlertForI18n({
+          dismissible: true,
+          dismissAriaLabel: 'deprecated dismiss label',
+          statusIconAriaLabel: 'deprecated status icon label',
+        });
+        expect(statusIcon).toHaveAccessibleName('deprecated status icon label');
+        expect(dismissButton).toHaveAccessibleName('deprecated dismiss label');
+      });
     });
   });
 });

@@ -10,7 +10,7 @@ import Arrow from '../popover/arrow';
 import PopoverBody from '../popover/body';
 import PopoverContainer from '../popover/container';
 
-export interface TooltipProps {
+interface TooltipProps {
   children?: React.ReactNode;
   content?: React.ReactNode;
   position?: 'top' | 'right' | 'bottom' | 'left';

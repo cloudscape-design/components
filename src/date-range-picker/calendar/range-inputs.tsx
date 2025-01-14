@@ -18,7 +18,7 @@ type I18nStrings = Pick<
   'dateTimeConstraintText' | 'startDateLabel' | 'startTimeLabel' | 'endDateLabel' | 'endTimeLabel'
 >;
 
-export interface RangeInputsProps extends BaseComponentProps {
+interface RangeInputsProps extends BaseComponentProps {
   startDate: string;
   onChangeStartDate: (value: string) => void;
   startTime: string;

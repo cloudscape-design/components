@@ -29,6 +29,7 @@
 
   &-cell {
     position: relative;
+    box-sizing: border-box;
     border-inline-start: 1px solid tokens.$color-border-divider-default;
     border-block-end: 1px solid tokens.$color-border-divider-default;
     padding-block: 8px;

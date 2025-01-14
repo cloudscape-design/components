@@ -22,7 +22,7 @@ export interface ChartPlotRef {
   focusApplication(): void;
 }
 
-export interface ChartPlotProps {
+interface ChartPlotProps {
   width: number | string;
   height: number | string;
   transform?: string;

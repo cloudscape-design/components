@@ -14,7 +14,7 @@ import { DrawerProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
+type DrawerInternalProps = DrawerProps & InternalBaseComponentProps;
 
 export function DrawerImplementation({
   header,

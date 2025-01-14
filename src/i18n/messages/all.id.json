@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "sumbu y"
   },
   "alert": {
-    "dismissAriaLabel": "Abaikan pemberitahuan"
+    "dismissAriaLabel": "Abaikan pemberitahuan",
+    "i18nStrings.successIconAriaLabel": "Berhasil",
+    "i18nStrings.errorIconAriaLabel": "Kesalahan",
+    "i18nStrings.warningIconAriaLabel": "Peringatan",
+    "i18nStrings.infoIconAriaLabel": "Info",
+    "i18nStrings.dismissAriaLabel": "Abaikan pemberitahuan"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Berikutnya",
@@ -48,6 +53,9 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "Tampilkan jalur"
+  },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Buka di tab baru"
   },
   "calendar": {
     "nextMonthAriaLabel": "Bulan berikutnya",
@@ -129,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Satuan waktu",
     "i18nStrings.customRelativeRangeDurationLabel": "Durasi",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Masukkan durasi",
+    "i18nStrings.startMonthLabel": "Bulan mulai",
     "i18nStrings.startDateLabel": "Tanggal mulai",
     "i18nStrings.startTimeLabel": "Waktu mulai",
+    "i18nStrings.endMonthLabel": "Bulan berakhir",
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",

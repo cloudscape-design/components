@@ -35,6 +35,7 @@ const items: ButtonGroupProps.ItemOrGroup[] = [
     ],
   },
   { type: 'icon-button', id: 'copy', iconName: 'copy', text: 'Copy', popoverFeedback: 'Copied' },
+  { type: 'icon-file-input', id: 'file', text: 'Choose files' },
   {
     type: 'menu-dropdown',
     id: 'misc',
@@ -59,6 +60,11 @@ test('navigates button dropdown with keyboard', () => {
   fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.left });
   expect(wrapper.findToggleButtonById('like')!.getElement()).toHaveFocus();
   expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Like');
+
+  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
+  fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.right });
+  expect(wrapper.findFileInputById('file')!.findNativeInput().getElement()).toHaveFocus();
+  expect(wrapper.findTooltip()!.getElement()).toHaveTextContent('Choose files');
 
   fireEvent.keyDown(wrapper.getElement(), { keyCode: KeyCode.end });
   expect(wrapper.findMenuById('misc')!.findTriggerButton()!.getElement()).toHaveFocus();

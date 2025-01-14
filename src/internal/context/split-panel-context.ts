@@ -28,6 +28,7 @@ export interface SplitPanelContextBaseProps {
   onToggle: () => void;
   onPreferencesChange: (detail: { position: 'side' | 'bottom' }) => void;
   reportHeaderHeight: (pixels: number) => void;
+  headerHeight?: number;
   setSplitPanelToggle: (config: SplitPanelSideToggleProps) => void;
   refs: SplitPanelFocusControlRefs;
 }

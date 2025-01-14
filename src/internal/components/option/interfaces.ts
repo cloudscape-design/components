@@ -5,7 +5,7 @@ import React from 'react';
 import { IconProps } from '../../../icon/interfaces';
 import { BaseComponentProps } from '../../base-component';
 
-export interface BaseOption {
+interface BaseOption {
   value?: string;
   label?: string;
   lang?: string;
@@ -25,7 +25,7 @@ export interface OptionDefinition extends BaseOption {
   __labelPrefix?: string;
 }
 
-export interface InternalOptionDefinition extends OptionDefinition {
+interface InternalOptionDefinition extends OptionDefinition {
   __customIcon?: React.ReactNode;
 }
 

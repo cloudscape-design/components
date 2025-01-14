@@ -11,7 +11,7 @@ import { useReducedMotion } from '@cloudscape-design/component-toolkit/internal'
 
 export type TransitionStatus = ReactTransitionGroupTransitionStatus | 'enter' | 'exit';
 
-export interface TransitionProps {
+interface TransitionProps {
   in: boolean;
   exit?: boolean;
 

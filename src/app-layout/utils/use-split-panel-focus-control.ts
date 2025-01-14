@@ -4,11 +4,12 @@ import { DependencyList, RefObject, useEffect, useRef } from 'react';
 
 import { Focusable } from './use-focus-control';
 
-export type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
+type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
 
 export interface SplitPanelFocusControlRefs {
   toggle: RefObject<Focusable>;
-  slider: RefObject<HTMLDivElement>;
+  slider: RefObject<Focusable>;
+  handle: RefObject<HTMLDivElement>;
   preferences: RefObject<Focusable>;
 }
 export interface SplitPanelFocusControlState {
@@ -19,7 +20,8 @@ export interface SplitPanelFocusControlState {
 export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPanelFocusControlState {
   const refs = {
     toggle: useRef<Focusable>(null),
-    slider: useRef<HTMLDivElement>(null),
+    slider: useRef<Focusable>(null),
+    handle: useRef<HTMLDivElement>(null),
     preferences: useRef<Focusable>(null),
   };
   const lastInteraction = useRef<SplitPanelLastInteraction | null>(null);

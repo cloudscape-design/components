@@ -7,6 +7,7 @@ import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal
 
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
+import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
@@ -40,12 +41,18 @@ export function SplitPanelContentBottom({
     disableContentPaddings,
     contentWrapperPaddings,
     reportHeaderHeight,
+    headerHeight: headerBlockSize,
     animationDisabled,
   } = useSplitPanelContext();
   const isMobile = useMobile();
 
   const headerRef = useRef<HTMLDivElement>(null);
-  useResizeObserver(headerRef, entry => reportHeaderHeight(entry.borderBoxHeight));
+
+  useResizeObserver(headerRef, entry => {
+    const { borderBoxHeight } = entry;
+    reportHeaderHeight(borderBoxHeight);
+  });
+
   useEffect(() => {
     // report empty height when unmounting the panel
     return () => reportHeaderHeight(0);
@@ -75,7 +82,11 @@ export function SplitPanelContentBottom({
         insetBlockEnd: bottomOffset,
         insetInlineStart: leftOffset,
         insetInlineEnd: rightOffset,
-        blockSize: isOpen ? cappedSize : isToolbar ? '0px' : undefined,
+        blockSize: isOpen
+          ? cappedSize
+          : isToolbar && headerBlockSize !== undefined
+            ? `calc(${headerBlockSize}px + ${tokens.borderPanelTopWidth})`
+            : undefined,
       }}
       ref={splitPanelRef}
     >

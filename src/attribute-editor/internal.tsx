@@ -32,6 +32,7 @@ const InternalAttributeEditor = React.forwardRef(
       isItemRemovable = () => true,
       empty,
       addButtonText,
+      addButtonVariant = 'normal',
       removeButtonText,
       removeButtonAriaLabel,
       i18nStrings,
@@ -103,10 +104,17 @@ const InternalAttributeEditor = React.forwardRef(
         <InternalButton
           className={styles['add-button']}
           disabled={disableAddButton}
+          // Using aria-disabled="true" and tabindex="-1" instead of "disabled"
+          // because focus can be dynamically moved to this button by calling
+          // `focusAddButton()` on the ref.
+          __nativeAttributes={disableAddButton ? { tabIndex: -1 } : {}}
+          __focusable={true}
           onClick={onAddButtonClick}
           formAction="none"
           ref={addButtonRef}
           ariaDescribedby={infoAriaDescribedBy}
+          variant={addButtonVariant}
+          iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
         >
           {addButtonText}
         </InternalButton>

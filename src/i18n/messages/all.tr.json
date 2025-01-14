@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "y ekseni"
   },
   "alert": {
-    "dismissAriaLabel": "Uyarıyı kapat"
+    "dismissAriaLabel": "Uyarıyı kapat",
+    "i18nStrings.successIconAriaLabel": "Başarılı",
+    "i18nStrings.errorIconAriaLabel": "Hata",
+    "i18nStrings.warningIconAriaLabel": "Uyarı",
+    "i18nStrings.infoIconAriaLabel": "Bilgi",
+    "i18nStrings.dismissAriaLabel": "Uyarıyı kapat"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "Sonraki",
@@ -48,6 +53,9 @@
   },
   "breadcrumb-group": {
     "expandAriaLabel": "Yolu göster"
+  },
+  "button": {
+    "i18nStrings.externalIconAriaLabel": "Yeni bir sekmede açılır"
   },
   "calendar": {
     "nextMonthAriaLabel": "Gelecek ay",
@@ -129,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Zaman birimi",
     "i18nStrings.customRelativeRangeDurationLabel": "Süre",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Bir süre girin",
+    "i18nStrings.startMonthLabel": "Başlangıç ayı",
     "i18nStrings.startDateLabel": "Başlangıç tarihi",
     "i18nStrings.startTimeLabel": "Başlangıç zamanı",
+    "i18nStrings.endMonthLabel": "Bitiş ayı",
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",

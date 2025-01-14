@@ -10,7 +10,7 @@ interface RefShim<T> {
   current: T | null;
 }
 
-export interface AlertFlashContentContext {
+interface AlertFlashContentContext {
   type: string;
   headerRef: RefShim<HTMLElement>;
   contentRef: RefShim<HTMLElement>;
@@ -24,7 +24,7 @@ interface AlertFlashContentInitialContext {
 
 export type ReplacementType = 'original' | 'remove' | 'replaced';
 
-export interface ReplacementApi {
+interface ReplacementApi {
   hideHeader(): void;
   restoreHeader(): void;
   replaceHeader(replacer: (container: HTMLElement) => void): void;
@@ -44,7 +44,7 @@ export interface AlertFlashContentConfig {
   initialCheck?: (context: AlertFlashContentInitialContext) => boolean;
 }
 
-export type AlertFlashContentRegistrationListener = (provider: AlertFlashContentConfig) => () => void;
+type AlertFlashContentRegistrationListener = (provider: AlertFlashContentConfig) => () => void;
 
 export interface AlertFlashContentApiPublic {
   registerContentReplacer(config: AlertFlashContentConfig): void;

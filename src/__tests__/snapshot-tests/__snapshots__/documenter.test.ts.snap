@@ -34,6 +34,8 @@ when the \`dismissible\` property is set to \`true\`.",
       "type": "string",
     },
     {
+      "deprecatedTag": "Use \`i18nStrings.dismissAriaLabel\` instead.
+If the label is assigned via the \`i18nStrings\` property, this label will be ignored.",
       "description": "Adds an aria-label to the dismiss button.",
       "i18nTag": true,
       "name": "dismissAriaLabel",
@@ -48,6 +50,44 @@ An \`onDismiss\` event is fired when a user clicks the button.",
       "type": "boolean",
     },
     {
+      "description": "An object containing all the necessary localized strings required by the component.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "AlertProps.I18nStrings",
+        "properties": [
+          {
+            "name": "dismissAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "errorIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "infoIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "successIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "warningIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "AlertProps.I18nStrings",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -57,6 +97,8 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "deprecatedTag": "Use the label properties inside \`i18nStrings\` instead.
+If the label is assigned via the \`i18nStrings\` property, this label will be ignored.",
       "description": "Provides a text alternative for the icon.",
       "name": "statusIconAriaLabel",
       "optional": true,
@@ -1400,6 +1442,22 @@ The event \`detail\` contains the index of the corresponding item.",
       "description": "Specifies the text that's displayed in the add button.",
       "name": "addButtonText",
       "optional": false,
+      "type": "string",
+    },
+    {
+      "description": "Specifies the variant to use for the add button. By default a normal button is used.
+Use \`inline-link\` when using an attribute editor nested inside complex attribute editing
+with expandable sections.",
+      "inlineType": {
+        "name": "AttributeEditorProps.AddButtonVariant",
+        "type": "union",
+        "values": [
+          "normal",
+          "inline-link",
+        ],
+      },
+      "name": "addButtonVariant",
+      "optional": true,
       "type": "string",
     },
     {
@@ -3161,6 +3219,14 @@ This property only applies when an \`href\` is provided.",
       "type": "boolean | string",
     },
     {
+      "defaultValue": "false",
+      "description": "Adds an external icon after the button label text.
+If an href is provided, it opens the link in a new tab.",
+      "name": "external",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "The id of the <form> element to associate with the button. The value of this attribute must be the id of a <form> in the same document.
  Use when a button is not the ancestor of a form element, such as when used in a modal.",
       "name": "form",
@@ -3194,6 +3260,25 @@ For example, if you have a 'help' button that links to a documentation page.",
       "name": "href",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`externalIconAriaLabel\` - (optional) Specifies the aria-label for the external icon when \`external\` is set to \`true\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ButtonProps.I18nStrings",
+        "properties": [
+          {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
     },
     {
       "defaultValue": "'left'",
@@ -3607,6 +3692,12 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
+      "description": "Sets the button width to be 100% of the parent container width. Button content is centered.",
+      "name": "fullWidth",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
 use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
 use the \`id\` attribute, consider setting it on a parent element instead.",
@@ -3822,6 +3913,28 @@ exports[`Documenter definition for button-group matches the snapshot: button-gro
   "events": [
     {
       "cancelable": false,
+      "description": "Called when the user uploads files. The event detail object contains the id and files from the file input item.",
+      "detailInlineType": {
+        "name": "InternalButtonGroupProps.FilesChangeDetails",
+        "properties": [
+          {
+            "name": "files",
+            "optional": false,
+            "type": "Array<File>",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "InternalButtonGroupProps.FilesChangeDetails",
+      "name": "onFilesChange",
+    },
+    {
+      "cancelable": false,
       "description": "Called when the user clicks on an item, and the item is not disabled. The event detail object contains the id of the clicked item.",
       "detailInlineType": {
         "name": "InternalButtonGroupProps.ItemClickDetails",
@@ -3933,6 +4046,13 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
 * \`pressedIconSvg\` (optional, ReactNode) - Custom SVG icon in pressed state. Equivalent to the \`svg\` slot of the [icon component](/components/icon/).
 * \`popoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button. Use to provide feedback to the user.
 * \`pressedPopoverFeedback\` (optional, ReactNode) - Text that appears when the user clicks the button in pressed state. Defaults to \`popoverFeedback\`.
+
+* ### file-input
+
+* \`id\` (string) - The unique identifier of the button, used as detail in \`onFilesChange\`.
+* \`text\` (string) - The name of the menu button shown as a tooltip.
+* \`accept\` (optional, string) - Specifies the native file input \`accept\` attribute to describe the allow-list of file types.
+* \`multiple\` (optional, string) - Specifies the native file input \`multiple\` attribute to allow users entering more than one file.
 
 ### menu-dropdown
 
@@ -5605,7 +5725,13 @@ You must set the current value in the \`preferences.wrapLines\` property.",
       "type": "CollectionPreferencesProps.WrapLinesPreference",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Content displayed before the preferences. Use it to display additional information relating to the preferences.",
+      "isDefault": false,
+      "name": "contentBefore",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;
@@ -9412,6 +9538,17 @@ Each group definition has the following properties:
       "optional": false,
       "type": "ReadonlyArray<KeyValuePairsProps.Item>",
     },
+    {
+      "defaultValue": "150",
+      "description": "Use to specify the desired minimum width for each column in pixels.
+The number of columns is determined by the value of this property, the available space,
+and the maximum number of columns as defined by the \`columns\` property.
+If not set, defaults to 150.
+",
+      "name": "minColumnWidth",
+      "optional": true,
+      "type": "number",
+    },
   ],
   "regions": [],
   "releaseStatus": "stable",
@@ -12848,6 +12985,7 @@ is provided by its parent form field component.
 If the total number of results is unknown, also include an indication that there may be more results than
 the number listed. For example, "25+ matches."
 The count text is only displayed when \`query.tokens\` isn't empty.
+When the \`countText\` or \`query\` changes, it will be announced to assistive technologies.
 ",
       "name": "countText",
       "optional": true,
@@ -13255,6 +13393,13 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Set to \`true\` while the related collection is loading (e.g. during an async filtering action).
+If set to \`true\`, the live announcement of countText by assistive technologies will be paused until it changes back to \`false\`.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
     },
     {
       "description": "An object representing the current query displayed in the property filter, which has three properties: \`operation\`, \`tokens\`, and \`tokenGroups\`.
@@ -15914,19 +16059,29 @@ Important: in tables with expandable rows the \`firstIndex\`, \`lastIndex\`, and
       "type": "(data: TableProps.LiveAnnouncement) => string",
     },
     {
-      "description": "Defines loader properties for error state.",
+      "description": "Renders loader row content for empty row state: the loading status is "finished",
+and the row is expanded but has empty children array.
+The empty loader state is only supported for expandable rows. Use \`empty\` slot if
+the table items array is empty.
+",
+      "name": "renderLoaderEmpty",
+      "optional": true,
+      "type": "(detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode",
+    },
+    {
+      "description": "Renders loader row content for error state.",
       "name": "renderLoaderError",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
-      "description": "Defines loader properties for loading state.",
+      "description": "Renders loader row content for loading state.",
       "name": "renderLoaderLoading",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
     },
     {
-      "description": "Defines loader properties for pending state.",
+      "description": "Renders loader row content for pending state.",
       "name": "renderLoaderPending",
       "optional": true,
       "type": "(detail: TableProps.RenderLoaderDetail<T>) => React.ReactNode",
@@ -16771,6 +16926,7 @@ is provided by its parent form field component.
 If the total number of results is unknown, also include an indication that there may be more results than
 the number listed. For example, "25+ matches."
 The count text is only displayed when \`filteringText\` isn't empty.
+When the \`countText\` or \`filteringText\` changes, it will be announced to assistive technologies.
 ",
       "name": "countText",
       "optional": true,
@@ -16826,6 +16982,13 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "name": "id",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Set to \`true\` while the related collection is loading (e.g. during an async filtering action).
+If set to \`true\`, the live announcement of countText by assistive technologies will be paused until it changes back to \`false\`.",
+      "name": "loading",
+      "optional": true,
+      "type": "boolean",
     },
   ],
   "regions": [],
@@ -17777,6 +17940,32 @@ Applicable only for the normal variant.",
       "name": "disabledReason",
       "optional": true,
       "type": "string",
+    },
+    {
+      "description": "Adds an external icon after the button label text.
+If an href is provided, it opens the link in a new tab.",
+      "name": "external",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "description": "An object containing all the necessary localized strings required by the component. The object should contain:
+* \`externalIconAriaLabel\` - (optional) Specifies the aria-label for the external icon when \`external\` is set to \`true\`.",
+      "i18nTag": true,
+      "inlineType": {
+        "name": "ButtonProps.I18nStrings",
+        "properties": [
+          {
+            "name": "externalIconAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "ButtonProps.I18nStrings",
     },
     {
       "description": "Displays an icon next to the text.",
@@ -18814,7 +19003,7 @@ Defaults to \`false\`.
 - \`cancelButton\` (string) - The text of the button that enables the user to exit the flow.
 - \`previousButton\` (string) - The text of the button that enables the user to return to the previous step.
 - \`nextButton\` (string) - The text of the button that enables the user to move to the next step.
-- \`submitButton\` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the \`submitButtonText\` component property.
+- \`submitButton\` (string) - The text of the button that enables the user to submit the form. **Deprecated**, replaced by the \`submitButtonText\` component property. \`submitButton\` is not supported by the I18nProvider.
 - \`optional\` (string) - The text displayed next to the step title and form header title when a step is declared optional.
 - \`nextButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *next* button is in a loading state.
 - \`submitButtonLoadingAnnouncement\` (string) - The text that a screen reader announces when the *submit* button is in a loading state.",
