@@ -12,7 +12,7 @@ import InternalButtonGroup from './internal';
 export { ButtonGroupProps };
 
 const ButtonGroup = React.forwardRef(
-  ({ variant, dropdownExpandToViewport, ...rest }: ButtonGroupProps, ref: React.Ref<ButtonGroupProps.Ref>) => {
+  ({ variant, dropdownExpandToViewport = false, ...rest }: ButtonGroupProps, ref: React.Ref<ButtonGroupProps.Ref>) => {
     const baseProps = getBaseProps(rest);
     const itemCounts = getItemCounts(rest.items);
     const baseComponentProps = useBaseComponent('ButtonGroup', {

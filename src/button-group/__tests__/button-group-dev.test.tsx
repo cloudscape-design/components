@@ -180,7 +180,7 @@ test('adds feature metrics', () => {
   expect(useBaseComponent).toHaveBeenCalledWith('ButtonGroup', {
     props: {
       variant: 'icon',
-      dropdownExpandToViewport: undefined,
+      dropdownExpandToViewport: false,
     },
     metadata: {
       iconButtonsCount: 1,

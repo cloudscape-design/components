@@ -6,6 +6,7 @@ import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
+import { SomeRequired } from '../internal/types';
 
 export interface ButtonGroupProps extends BaseComponentProps {
   /**
@@ -97,7 +98,9 @@ export interface ButtonGroupProps extends BaseComponentProps {
   onFilesChange?: NonCancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
 }
 
-export interface InternalButtonGroupProps extends ButtonGroupProps, InternalBaseComponentProps {}
+export interface InternalButtonGroupProps
+  extends SomeRequired<ButtonGroupProps, 'dropdownExpandToViewport'>,
+    InternalBaseComponentProps {}
 
 export namespace ButtonGroupProps {
   export type Variant = 'icon';
