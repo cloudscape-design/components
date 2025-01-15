@@ -23,7 +23,7 @@ export interface TopNavigationProps extends BaseComponentProps {
   search?: React.ReactNode;
 
   /**
-   * Determines whether to show a border at the bottom.
+   * Determines whether to show a border at the bottom of the top navigation.
    */
   showBottomBorder?: boolean;
 

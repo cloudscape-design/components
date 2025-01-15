@@ -18596,7 +18596,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "TopNavigationProps.Identity",
     },
     {
-      "description": "Determines whether to show a border at the bottom.",
+      "description": "Determines whether to show a border at the bottom of the top navigation.",
       "name": "showBottomBorder",
       "optional": true,
       "type": "boolean",
