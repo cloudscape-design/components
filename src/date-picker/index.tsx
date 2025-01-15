@@ -168,11 +168,6 @@ const DatePicker = React.forwardRef(
 
     baseProps.className = clsx(baseProps.className, styles.root, styles['date-picker-container']);
 
-    const handleMouseDown = (event: React.MouseEvent) => {
-      // prevent currently focused element from losing it
-      event.preventDefault();
-    };
-
     return (
       <div {...baseProps} ref={mergedRef} onKeyDown={!disabled && !readOnly ? onWrapperKeyDownHandler : undefined}>
         {disabled || readOnly ? (
@@ -183,7 +178,6 @@ const DatePicker = React.forwardRef(
             stretchHeight={true}
             open={isDropDownOpen}
             onDropdownClose={onDropdownCloseHandler}
-            onMouseDown={handleMouseDown}
             trigger={trigger}
             expandToViewport={expandToViewport}
             scrollable={false}
