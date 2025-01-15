@@ -55,12 +55,15 @@ $trigger-underline-offset: 0.25em;
 
   cursor: pointer;
 
+  /*
+    This transparent border is necessary to maintain space between the trigger and the bottom-positioned popover.
+  */
+  border-block-end: awsui.$border-divider-list-width dashed transparent;
   @include trigger-underline-styles;
 
   &.overflow-ellipsis {
     /*
-      this line-height must be overridden, because of the overflow: hidden,
-      otherwise the underline styles would be hidden
+      This line-height needs to be overridden because the overflow: hidden would otherwise conceal the underline styles.
     */
     line-height: calc(1 + #{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
   }
