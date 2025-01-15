@@ -23,6 +23,11 @@ export interface TopNavigationProps extends BaseComponentProps {
   search?: React.ReactNode;
 
   /**
+   * Determines whether to show a border at the bottom.
+   */
+  showBottomBorder?: boolean;
+
+  /**
    * A list of utility navigation elements.
    * The supported utility types are: `button` and `menu-dropdown`.
    *

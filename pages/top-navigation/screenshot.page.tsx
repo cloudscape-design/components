@@ -187,7 +187,7 @@ export default function TopNavigationPage() {
               i18nStrings={I18N_STRINGS}
               identity={{
                 href: '#',
-                title: 'Title with an href',
+                title: 'Title with an href and bottom border',
               }}
               utilities={[
                 {
@@ -235,6 +235,7 @@ export default function TopNavigationPage() {
                   items: profileActions,
                 },
               ]}
+              showBottomBorder={true}
             />
           </section>
         ))}
