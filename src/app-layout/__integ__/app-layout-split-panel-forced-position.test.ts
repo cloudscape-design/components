@@ -3,6 +3,7 @@
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { scrollbarThickness } from '../../__integ__/scrollbars';
 import { viewports } from './constants';
 import { AppLayoutSplitViewPage } from './utils';
 
@@ -42,8 +43,6 @@ describe('Split panel forced position', () => {
       refresh: 1030,
       'refresh-toolbar': 907,
     };
-
-    const scrollbarThickness = 15;
 
     const narrow = splitPanelBreakpoints[theme];
 

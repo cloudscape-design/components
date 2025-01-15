@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
+import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowserWithScrollbars from '../../__integ__/use-browser-with-scrollbars';
 import { getUrlParams, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout().findNavigation();
 
 function setupTest(testFn: (page: BasePageObject) => Promise<void>, theme: Theme) {
-  return useBrowserWithScrollbars(async browser => {
+  return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     const params = getUrlParams(theme);
     await browser.url(`#/light/app-layout/navigation-with-scrollbar?${params}`);

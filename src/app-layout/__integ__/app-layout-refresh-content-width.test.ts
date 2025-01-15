@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import useBrowser, { scrollbarThickness } from '../../__integ__/use-browser-with-scrollbars';
+import { scrollbarThickness } from '../../__integ__/scrollbars';
 import { viewports } from './constants';
 import { getUrlParams, Theme } from './utils';
 
