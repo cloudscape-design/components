@@ -6,10 +6,12 @@ import { fireEvent } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonGroupProps } from '../../../lib/components/button-group';
-import useBaseComponent from '../../../lib/components/internal/hooks/use-base-component';
+import * as baseComponentHooks from '../../../lib/components/internal/hooks/use-base-component';
 import { renderButtonGroup } from './common';
 
 import buttonStyles from '../../../lib/components/button/styles.css.js';
+
+const useBaseComponentSpy = jest.spyOn(baseComponentHooks, 'default');
 
 jest.mock('../../../lib/components/internal/hooks/use-base-component', () => jest.fn().mockReturnValue({}));
 
@@ -20,7 +22,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
-  (useBaseComponent as jest.Mock).mockReset();
+  useBaseComponentSpy.mockReset();
 });
 
 const emptyGroup: ButtonGroupProps.ItemOrGroup[] = [
@@ -177,7 +179,7 @@ test('adds feature metrics', () => {
       { type: 'menu-dropdown', id: 'menu1', text: 'menu1', items: [] },
     ],
   });
-  expect(useBaseComponent).toHaveBeenCalledWith('ButtonGroup', {
+  expect(useBaseComponentSpy).toHaveBeenCalledWith('ButtonGroup', {
     props: {
       variant: 'icon',
       dropdownExpandToViewport: false,
