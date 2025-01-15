@@ -12,6 +12,14 @@
 @import './container';
 @import './motion';
 
+$trigger-underline-offset: 0.25em;
+
+@mixin trigger-underline-styles {
+  text-decoration: underline dashed currentColor;
+  text-decoration-thickness: awsui.$border-divider-list-width;
+  text-underline-offset: $trigger-underline-offset;
+}
+
 .root {
   @include styles.styles-reset;
   color: inherit;
@@ -47,20 +55,19 @@
 
   cursor: pointer;
 
-  &:not(.overflow-ellipsis) {
-    border-block-end: awsui.$border-divider-list-width dashed transparent;
-    text-decoration: underline dashed currentColor;
-    text-underline-offset: 0.25em;
-
-    /* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
-    & span {
-      text-decoration: underline dashed currentColor;
-      text-underline-offset: 0.25em;
-    }
-  }
+  @include trigger-underline-styles;
 
   &.overflow-ellipsis {
-    border-block-end: awsui.$border-divider-list-width dashed currentColor;
+    /*
+      this line-height must be overridden, because of the overflow: hidden,
+      otherwise the underline styles would be hidden
+    */
+    line-height: calc(1 + #{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
+  }
+
+  /* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
+  & span {
+    @include trigger-underline-styles;
   }
 
   &:focus {
