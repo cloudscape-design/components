@@ -128,7 +128,7 @@
   }
 
   // "embedded" variant is passed to container only from table variants "borderless" and "embedded"
-  &.header-variant-embedded {
+  &-variant-embedded:not(.header-sticky-enabled) {
     background-color: transparent;
   }
 

@@ -75,7 +75,8 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
   }
-  &-variant-borderless {
+  &-variant-embedded:not(.header-cell-sticky),
+  &-variant-borderless:not(.header-cell-sticky) {
     background: none;
   }
   &:last-child,

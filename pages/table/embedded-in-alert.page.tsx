@@ -26,6 +26,12 @@ export default () => {
           <ExampleTable variant="borderless" />
         </Alert>
 
+        <Alert type="info" header="Alert with embedded table" statusIconAriaLabel="Info">
+          <Box variant="p">Some description</Box>
+
+          <ExampleTable variant="embedded" />
+        </Alert>
+
         <Alert type="info" header="Alert with container table" statusIconAriaLabel="Info">
           <Box variant="p">Some description</Box>
 
