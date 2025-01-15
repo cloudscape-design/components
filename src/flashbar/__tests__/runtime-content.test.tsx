@@ -5,6 +5,7 @@ import { render, waitFor } from '@testing-library/react';
 
 import Button from '../../../lib/components/button';
 import Flashbar from '../../../lib/components/flashbar';
+import { metrics } from '../../../lib/components/internal/metrics';
 import awsuiPlugins from '../../../lib/components/internal/plugins';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { AlertFlashContentConfig } from '../../../lib/components/internal/plugins/controllers/alert-flash-content';
@@ -263,6 +264,7 @@ describe('asynchronous rendering', () => {
 
   test('warns if registerReplacement called after unmounting', async () => {
     const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    const sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendPanoramaMetric');
     const headerFn = jest.fn();
     const contentFn = jest.fn();
     const asyncContent: AlertFlashContentConfig = {
@@ -294,14 +296,24 @@ describe('asynchronous rendering', () => {
     unmount();
 
     await waitFor(() => {
-      const message = (method: string) =>
-        `[AwsUi] [Runtime flash content] \`${method}\` called after component unmounted`;
-      expect(consoleWarnSpy).toBeCalledWith(message('hideHeader'));
-      expect(consoleWarnSpy).toBeCalledWith(message('restoreHeader'));
-      expect(consoleWarnSpy).toBeCalledWith(message('replaceHeader'));
-      expect(consoleWarnSpy).toBeCalledWith(message('hideContent'));
-      expect(consoleWarnSpy).toBeCalledWith(message('restoreContent'));
-      expect(consoleWarnSpy).toBeCalledWith(message('replaceContent'));
+      const assertWarningLogged = (method: string) => {
+        const message = `"${method}" called after component unmounted`;
+        expect(consoleWarnSpy).toBeCalledWith('[AwsUi]', '[flash-content-replacer]', message);
+        expect(sendPanoramaMetricSpy).toBeCalledWith({
+          eventName: 'awsui-runtime-api-warning',
+          eventDetail: {
+            component: 'flash-content-replacer',
+            version: expect.any(String),
+            message,
+          },
+        });
+      };
+      assertWarningLogged('hideHeader');
+      assertWarningLogged('restoreHeader');
+      assertWarningLogged('replaceHeader');
+      assertWarningLogged('hideContent');
+      assertWarningLogged('restoreContent');
+      assertWarningLogged('replaceContent');
       expect(headerFn).not.toBeCalled();
       expect(contentFn).not.toBeCalled();
     });
