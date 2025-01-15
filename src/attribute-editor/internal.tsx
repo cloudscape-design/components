@@ -32,6 +32,7 @@ const InternalAttributeEditor = React.forwardRef(
       isItemRemovable = () => true,
       empty,
       addButtonText,
+      addButtonVariant = 'normal',
       removeButtonText,
       removeButtonAriaLabel,
       i18nStrings,
@@ -112,6 +113,8 @@ const InternalAttributeEditor = React.forwardRef(
           formAction="none"
           ref={addButtonRef}
           ariaDescribedby={infoAriaDescribedBy}
+          variant={addButtonVariant}
+          iconName={addButtonVariant === 'inline-link' ? 'add-plus' : undefined}
         >
           {addButtonText}
         </InternalButton>

@@ -106,6 +106,7 @@ $label-horizontal-spacing: awsui.$space-xs;
 
   & > .tabs-tab-dismiss,
   & > .tabs-tab-action {
+    position: relative;
     display: flex;
     align-items: center;
   }
