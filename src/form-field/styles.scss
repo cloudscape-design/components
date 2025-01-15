@@ -19,6 +19,7 @@
   color: awsui.$color-text-form-label;
   // We display label inline to achieve the proper line-wrapping with info links
   display: inline;
+  @include styles.font-smoothing;
   @include styles.font-label;
   @include styles.info-link-spacing;
 }
@@ -27,11 +28,13 @@
   display: inline-flex;
   padding-inline-start: awsui.$space-xs;
   border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  @include styles.font-smoothing;
 }
 
 .description,
 .constraint {
   @include styles.form-control-description;
+  @include styles.font-smoothing;
 }
 
 .hints,
@@ -75,6 +78,7 @@
 
 .error__message,
 .warning__message {
+  @include styles.font-smoothing;
   margin-inline-start: awsui.$space-xxs;
 }
 
