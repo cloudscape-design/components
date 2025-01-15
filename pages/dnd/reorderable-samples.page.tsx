@@ -7,8 +7,8 @@ import { Box, Checkbox, Link, SpaceBetween } from '~components';
 
 import { generateItems } from '../table/generate-data';
 import { DnsName, Status } from './commons';
-import { ContainerWithDragHandle, ReorderableContainers } from './reorderable-containers';
-import { InstanceOption, ReorderableList } from './reorderable-list';
+import { ReorderableContainers } from './reorderable-containers';
+import { ReorderableList } from './reorderable-list';
 import { ReorderableTable } from './reorderable-table';
 
 import styles from './styles.scss';
@@ -40,8 +40,6 @@ export default function Page() {
         <ReorderableList
           options={options1}
           onReorder={o => setOptions1([...o])}
-          renderOption={props => <InstanceOption {...props} />}
-          renderStaticOption={option => <InstanceOption option={option} />}
           fixedOptionsStart={fixedOptions ? 3 : 0}
         />
       </SpaceBetween>
@@ -66,17 +64,12 @@ export default function Page() {
       <h1 className={styles.title}>Reorderable samples page</h1>
 
       <ReorderableContainers
-        options={containersWithContent}
+        items={containersWithContent}
         onReorder={o => setContainers(o.map(({ id, title }) => ({ id, title })))}
-        renderOption={props => (
-          <ContainerWithDragHandle
-            {...props}
-            disabledUp={containers[0].id === props.option.id}
-            disabledDown={containers[containers.length - 1].id === props.option.id}
-            onMoveUp={() => setContainers(prev => [props.option, ...prev.filter(c => c.id !== props.option.id)])}
-            onMoveDown={() => setContainers(prev => [...prev.filter(c => c.id !== props.option.id), props.option])}
-          />
-        )}
+        disabledUp={item => containers[0].id === item.id}
+        disabledDown={item => containers[containers.length - 1].id === item.id}
+        onMoveUp={item => setContainers(prev => [item, ...prev.filter(c => c.id !== item.id)])}
+        onMoveDown={item => setContainers(prev => [...prev.filter(c => c.id !== item.id), item])}
       />
     </Box>
   );

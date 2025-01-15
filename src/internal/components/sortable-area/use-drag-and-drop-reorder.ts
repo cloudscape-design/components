@@ -14,7 +14,7 @@ import {
 } from '@dnd-kit/core';
 import { hasSortableData } from '@dnd-kit/sortable';
 
-import { DndAreaItem } from './interfaces';
+import { SortableAreaProps } from './interfaces';
 import { KeyboardSensor } from './keyboard-sensor';
 
 enum KeyboardCode {
@@ -44,7 +44,13 @@ enum KeyboardCode {
 // getClosestId function which takes its value from the current component
 // state, to make sure they are always in sync.
 
-export default function useDragAndDropReorder<Data>({ items }: { items: readonly DndAreaItem<Data>[] }) {
+export default function useDragAndDropReorder<Item>({
+  items,
+  itemDefinition,
+}: {
+  items: readonly Item[];
+  itemDefinition: SortableAreaProps.ItemDefinition<Item>;
+}) {
   const isKeyboard = useRef(false);
   const positionDelta = useRef(0);
   const [activeItemId, setActiveItemId] = useState<UniqueIdentifier | null>(null);
@@ -59,7 +65,8 @@ export default function useDragAndDropReorder<Data>({ items }: { items: readonly
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (isKeyboard.current && activeItemId) {
-      const currentTargetIndex = items.findIndex(item => item.id === activeItemId) + positionDelta.current;
+      const currentTargetIndex =
+        items.findIndex(item => itemDefinition.id(item) === activeItemId) + positionDelta.current;
       if (event.key === 'ArrowDown' && currentTargetIndex < items.length - 1) {
         positionDelta.current += 1;
       } else if (event.key === 'ArrowUp' && currentTargetIndex > 0) {
@@ -76,9 +83,9 @@ export default function useDragAndDropReorder<Data>({ items }: { items: readonly
     if (positionDelta.current === 0) {
       return active.id;
     }
-    const currentIndex = items.findIndex(item => item.id === active.id);
+    const currentIndex = items.findIndex(item => itemDefinition.id(item) === active.id);
     const newIndex = Math.max(0, Math.min(items.length - 1, currentIndex + positionDelta.current));
-    return items[newIndex].id;
+    return itemDefinition.id(items[newIndex]);
   };
 
   const collisionDetection: CollisionDetection = ({

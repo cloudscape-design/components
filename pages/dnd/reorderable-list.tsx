@@ -1,36 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { ForwardedRef } from 'react';
+import React from 'react';
 import { useUniqueId } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
 import { SpaceBetween } from '~components';
-import { DndArea } from '~components/internal/components/dnd-area';
 import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
+import SortableArea from '~components/internal/components/sortable-area';
 
 import { Instance } from '../table/generate-data';
 import { DnsName, i18nStrings, Status } from './commons';
 
 import styles from './styles.scss';
 
-interface OptionProps<Option> {
-  ref?: ForwardedRef<HTMLDivElement>;
-  option: Option;
-  dragHandleProps: DragHandleProps;
-}
-
-export function ReorderableList<Option extends { id: string }>({
+export function ReorderableList({
   options,
   onReorder,
-  renderOption,
-  renderStaticOption,
   fixedOptionsStart = 0,
 }: {
-  options: readonly Option[];
-  onReorder: (options: readonly Option[]) => void;
-  renderOption: (props: OptionProps<Option>) => React.ReactNode;
-  renderStaticOption: (option: Option) => React.ReactNode;
+  options: readonly Instance[];
+  onReorder: (options: readonly Instance[]) => void;
   fixedOptionsStart?: number;
 }) {
   const staticOptions = options.slice(0, fixedOptionsStart);
@@ -38,17 +28,19 @@ export function ReorderableList<Option extends { id: string }>({
   return (
     <ul className={styles.list} aria-label="re-orderable list" role="list">
       {staticOptions.map(option => (
-        <li key={option.id}>{renderStaticOption?.(option)}</li>
+        <li key={option.id}>
+          <InstanceOption option={option} />
+        </li>
       ))}
-      <DndArea
-        items={sortableOptions.map(option => ({ id: option.id, label: option.id, data: option }))}
-        onItemsChange={items => onReorder([...staticOptions, ...items.map(item => item.data)])}
-        renderItem={({ ref, className, style, ...props }) => {
-          className = clsx(className, styles.option, props.isSorting && styles.sorting);
-          const content = renderOption({ ...props, option: props.item.data });
+      <SortableArea
+        items={sortableOptions}
+        itemDefinition={{ id: option => option.id, label: option => option.id }}
+        onItemsChange={({ detail }) => onReorder([...staticOptions, ...detail.items])}
+        renderItem={({ item, ref, className, style, dragHandleProps, ...props }) => {
+          className = clsx(className, styles.option, props.isSortingActive && styles.sorting);
           return (
             <li ref={ref} className={className} style={style}>
-              {content}
+              <InstanceOption dragHandleProps={dragHandleProps} option={item} />
             </li>
           );
         }}
@@ -58,13 +50,7 @@ export function ReorderableList<Option extends { id: string }>({
   );
 }
 
-export const InstanceOption = ({
-  dragHandleProps,
-  option,
-}: {
-  dragHandleProps?: DragHandleProps;
-  option: Instance;
-}) => {
+function InstanceOption({ dragHandleProps, option }: { dragHandleProps?: DragHandleProps; option: Instance }) {
   const idPrefix = useUniqueId('option');
   const controlId = `${idPrefix}-control-${option.id}`;
   return (
@@ -88,4 +74,4 @@ export const InstanceOption = ({
       </SpaceBetween>
     </div>
   );
-};
+}

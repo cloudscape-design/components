@@ -4,12 +4,12 @@
 import React from 'react';
 
 import { Box, Button, SpaceBetween, StatusIndicator } from '~components';
-import { DndAreaProps } from '~components/internal/components/dnd-area/interfaces';
+import { SortableAreaProps } from '~components/internal/components/sortable-area/interfaces';
 
 import { Instance } from '../table/generate-data';
 import { stateToStatusIndicator } from '../table/shared-configs';
 
-export const i18nStrings: DndAreaProps<unknown>['i18nStrings'] = {
+export const i18nStrings: SortableAreaProps<unknown>['i18nStrings'] = {
   dragHandleAriaLabel: 'Drag handle',
   dragHandleAriaDescription:
     "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",

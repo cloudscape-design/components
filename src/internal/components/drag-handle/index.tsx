@@ -5,6 +5,7 @@ import clsx from 'clsx';
 
 import { IconProps } from '../../../icon/interfaces';
 import InternalIcon from '../../../icon/internal';
+import { getBaseProps } from '../../base-component';
 import useForwardFocus from '../../hooks/forward-focus';
 import { DragHandleProps } from './interfaces';
 import { ResizeIcon } from './resize-icon';
@@ -13,7 +14,7 @@ import styles from './styles.css.js';
 
 export { DragHandleProps };
 
-const DragHandle = forwardRef(
+const InternalDragHandle = forwardRef(
   (
     {
       variant = 'drag-indicator',
@@ -24,10 +25,11 @@ const DragHandle = forwardRef(
       disabled,
       onPointerDown,
       onKeyDown,
-      className,
+      ...rest
     }: DragHandleProps,
     ref: React.Ref<DragHandleProps.Ref>
   ) => {
+    const baseProps = getBaseProps(rest);
     const dragHandleRefObject = useRef<HTMLDivElement>(null);
 
     useForwardFocus(ref, dragHandleRefObject);
@@ -53,11 +55,12 @@ const DragHandle = forwardRef(
       // Otherwise, we can't reliably catch keyboard events coming from the handle
       // when it is being dragged.
       <div
+        {...baseProps}
         ref={dragHandleRefObject}
         role={ariaValue ? 'slider' : 'button'}
         tabIndex={0}
         className={clsx(
-          className,
+          baseProps.className,
           styles.handle,
           styles[`handle-${variant}`],
           styles[`handle-size-${size}`],
@@ -78,4 +81,4 @@ const DragHandle = forwardRef(
   }
 );
 
-export default DragHandle;
+export default InternalDragHandle;
