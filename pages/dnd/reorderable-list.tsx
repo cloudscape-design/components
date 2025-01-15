@@ -5,9 +5,7 @@ import React, { ForwardedRef } from 'react';
 import { useUniqueId } from '@dnd-kit/utilities';
 import clsx from 'clsx';
 
-import { SpaceBetween } from '~components';
-import { DndArea } from '~components/internal/components/dnd-area';
-import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
+import { DragHandle, DragHandleProps, SortableArea, SpaceBetween } from '~components';
 
 import { Instance } from '../table/generate-data';
 import { DnsName, i18nStrings, Status } from './commons';
@@ -40,12 +38,13 @@ export function ReorderableList<Option extends { id: string }>({
       {staticOptions.map(option => (
         <li key={option.id}>{renderStaticOption?.(option)}</li>
       ))}
-      <DndArea
-        items={sortableOptions.map(option => ({ id: option.id, label: option.id, data: option }))}
-        onItemsChange={items => onReorder([...staticOptions, ...items.map(item => item.data)])}
+      <SortableArea
+        items={sortableOptions}
+        itemDefinition={{ id: option => option.id, label: option => option.id }}
+        onItemsChange={({ detail }) => onReorder([...staticOptions, ...detail.items])}
         renderItem={({ ref, className, style, ...props }) => {
-          className = clsx(className, styles.option, props.isSorting && styles.sorting);
-          const content = renderOption({ ...props, option: props.item.data });
+          className = clsx(className, styles.option, props.isSortingActive && styles.sorting);
+          const content = renderOption({ ...props, option: props.item });
           return (
             <li ref={ref} className={className} style={style}>
               {content}

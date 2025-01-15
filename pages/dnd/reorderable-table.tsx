@@ -4,9 +4,7 @@
 import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import { Box, SpaceBetween } from '~components';
-import { DndArea } from '~components/internal/components/dnd-area';
-import DragHandle, { DragHandleProps } from '~components/internal/components/drag-handle';
+import { Box, DragHandle, DragHandleProps, SortableArea, SpaceBetween } from '~components';
 
 import { i18nStrings } from './commons';
 
@@ -66,28 +64,29 @@ export function ReorderableTable<Item extends { id: string }>({
           </tr>
         </thead>
         <tbody>
-          <DndArea
-            items={items.map(data => ({ id: data.id, label: data.id, data }))}
-            onItemsChange={items => onReorder(items.map(item => item.data))}
-            renderItem={({ item, ref, className, style, isActive, dragHandleProps }) => {
+          <SortableArea
+            items={items}
+            itemDefinition={{ id: item => item.id, label: item => item.id }}
+            onItemsChange={({ detail }) => onReorder(detail.items)}
+            renderItem={({ item, ref, className, style, isDragGhost, dragHandleProps }) => {
               const row = (
                 <tr
                   ref={ref}
-                  className={clsx(className, styles.row, isActive && styles['active-row'])}
-                  style={isActive ? {} : style}
+                  className={clsx(className, styles.row, isDragGhost && styles['active-row'])}
+                  style={isDragGhost ? {} : style}
                 >
                   {getColumnDefinitions({ dragHandleProps }).map((column, index) => (
                     <td
                       key={column.key}
                       className={tableStyles['custom-table-cell']}
-                      style={isActive ? { width: columnWidthsRef.current[index] ?? 0 } : undefined}
+                      style={isDragGhost ? { width: columnWidthsRef.current[index] ?? 0 } : undefined}
                     >
-                      {column.render(item.data)}
+                      {column.render(item)}
                     </td>
                   ))}
                 </tr>
               );
-              return !isActive ? (
+              return !isDragGhost ? (
                 row
               ) : (
                 <div className={tableStyles['custom-table']}>

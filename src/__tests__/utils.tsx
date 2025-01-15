@@ -35,10 +35,10 @@ export function getAllComponents(): string[] {
  * This function indicates whether a specific component supports properties
  * that can be rendered to the DOM.
  *
- * @param componentName the name of the component in kebap-case
+ * @param componentName the name of the component in kebab-case
  */
 export function supportsDOMProperties(componentName: string) {
-  const componentsWithoutDOMPropertiesSupport = ['annotation-context'];
+  const componentsWithoutDOMPropertiesSupport = ['annotation-context', 'sortable-area'];
   return !componentsWithoutDOMPropertiesSupport.includes(componentName);
 }
 

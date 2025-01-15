@@ -109,6 +109,10 @@ export { ElementWrapper };
         export { DateRangePickerWrapper };
       
 
+        import DragHandleWrapper from './drag-handle';
+        export { DragHandleWrapper };
+      
+
         import DrawerWrapper from './drawer';
         export { DrawerWrapper };
       
@@ -243,6 +247,10 @@ export { ElementWrapper };
 
         import SliderWrapper from './slider';
         export { SliderWrapper };
+      
+
+        import SortableAreaWrapper from './sortable-area';
+        export { SortableAreaWrapper };
       
 
         import SpaceBetweenWrapper from './space-between';
@@ -842,6 +850,26 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         * @returns {Array<DateRangePickerWrapper>}
         */
        findAllDateRangePickers(selector?: string): Array<DateRangePickerWrapper>;
+
+       /**
+        * Returns the wrapper of the first DragHandle that matches the specified CSS selector.
+        * If no CSS selector is specified, returns the wrapper of the first DragHandle.
+        * If no matching DragHandle is found, returns \`null\`.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {DragHandleWrapper | null}
+        */
+       findDragHandle(selector?: string): DragHandleWrapper | null;
+
+       /**
+        * Returns an array of DragHandle wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the DragHandles inside the current wrapper.
+        * If no matching DragHandle is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<DragHandleWrapper>}
+        */
+       findAllDragHandles(selector?: string): Array<DragHandleWrapper>;
 
        /**
         * Returns the wrapper of the first Drawer that matches the specified CSS selector.
@@ -1524,6 +1552,26 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
        findAllSliders(selector?: string): Array<SliderWrapper>;
 
        /**
+        * Returns the wrapper of the first SortableArea that matches the specified CSS selector.
+        * If no CSS selector is specified, returns the wrapper of the first SortableArea.
+        * If no matching SortableArea is found, returns \`null\`.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {SortableAreaWrapper | null}
+        */
+       findSortableArea(selector?: string): SortableAreaWrapper | null;
+
+       /**
+        * Returns an array of SortableArea wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the SortableAreas inside the current wrapper.
+        * If no matching SortableArea is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<SortableAreaWrapper>}
+        */
+       findAllSortableAreas(selector?: string): Array<SortableAreaWrapper>;
+
+       /**
         * Returns the wrapper of the first SpaceBetween that matches the specified CSS selector.
         * If no CSS selector is specified, returns the wrapper of the first SpaceBetween.
         * If no matching SpaceBetween is found, returns \`null\`.
@@ -2191,6 +2239,17 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         return this.findAllComponents(DateRangePickerWrapper, selector);
       };
 
+      ElementWrapper.prototype.findDragHandle = function(selector) {
+        const rootSelector = \`.\${DragHandleWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DragHandleWrapper);
+      };
+
+      ElementWrapper.prototype.findAllDragHandles = function(selector) {
+        return this.findAllComponents(DragHandleWrapper, selector);
+      };
+
       ElementWrapper.prototype.findDrawer = function(selector) {
         const rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
         // casting to 'any' is needed to avoid this issue with generics
@@ -2565,6 +2624,17 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         return this.findAllComponents(SliderWrapper, selector);
       };
 
+      ElementWrapper.prototype.findSortableArea = function(selector) {
+        const rootSelector = \`.\${SortableAreaWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SortableAreaWrapper);
+      };
+
+      ElementWrapper.prototype.findAllSortableAreas = function(selector) {
+        return this.findAllComponents(SortableAreaWrapper, selector);
+      };
+
       ElementWrapper.prototype.findSpaceBetween = function(selector) {
         const rootSelector = \`.\${SpaceBetweenWrapper.rootSelector}\`;
         // casting to 'any' is needed to avoid this issue with generics
@@ -2885,6 +2955,10 @@ export { ElementWrapper };
         export { DateRangePickerWrapper };
       
 
+        import DragHandleWrapper from './drag-handle';
+        export { DragHandleWrapper };
+      
+
         import DrawerWrapper from './drawer';
         export { DrawerWrapper };
       
@@ -3019,6 +3093,10 @@ export { ElementWrapper };
 
         import SliderWrapper from './slider';
         export { SliderWrapper };
+      
+
+        import SortableAreaWrapper from './sortable-area';
+        export { SortableAreaWrapper };
       
 
         import SpaceBetweenWrapper from './space-between';
@@ -3566,6 +3644,24 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
         * @returns {MultiElementWrapper<DateRangePickerWrapper>}
         */
        findAllDateRangePickers(selector?: string): MultiElementWrapper<DateRangePickerWrapper>;
+
+       /**
+        * Returns a wrapper that matches the DragHandles with the specified CSS selector.
+        * If no CSS selector is specified, returns a wrapper that matches DragHandles.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {DragHandleWrapper}
+        */
+       findDragHandle(selector?: string): DragHandleWrapper;
+
+       /**
+        * Returns a multi-element wrapper that matches DragHandles with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches DragHandles.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<DragHandleWrapper>}
+        */
+       findAllDragHandles(selector?: string): MultiElementWrapper<DragHandleWrapper>;
 
        /**
         * Returns a wrapper that matches the Drawers with the specified CSS selector.
@@ -4178,6 +4274,24 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
         * @returns {MultiElementWrapper<SliderWrapper>}
         */
        findAllSliders(selector?: string): MultiElementWrapper<SliderWrapper>;
+
+       /**
+        * Returns a wrapper that matches the SortableAreas with the specified CSS selector.
+        * If no CSS selector is specified, returns a wrapper that matches SortableAreas.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {SortableAreaWrapper}
+        */
+       findSortableArea(selector?: string): SortableAreaWrapper;
+
+       /**
+        * Returns a multi-element wrapper that matches SortableAreas with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches SortableAreas.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<SortableAreaWrapper>}
+        */
+       findAllSortableAreas(selector?: string): MultiElementWrapper<SortableAreaWrapper>;
 
        /**
         * Returns a wrapper that matches the SpaceBetweens with the specified CSS selector.
@@ -4809,6 +4923,17 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
         return this.findAllComponents(DateRangePickerWrapper, selector);
       };
 
+      ElementWrapper.prototype.findDragHandle = function(selector) {
+        const rootSelector = \`.\${DragHandleWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, DragHandleWrapper);
+      };
+
+      ElementWrapper.prototype.findAllDragHandles = function(selector) {
+        return this.findAllComponents(DragHandleWrapper, selector);
+      };
+
       ElementWrapper.prototype.findDrawer = function(selector) {
         const rootSelector = \`.\${DrawerWrapper.rootSelector}\`;
         // casting to 'any' is needed to avoid this issue with generics
@@ -5181,6 +5306,17 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
 
       ElementWrapper.prototype.findAllSliders = function(selector) {
         return this.findAllComponents(SliderWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findSortableArea = function(selector) {
+        const rootSelector = \`.\${SortableAreaWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, SortableAreaWrapper);
+      };
+
+      ElementWrapper.prototype.findAllSortableAreas = function(selector) {
+        return this.findAllComponents(SortableAreaWrapper, selector);
       };
 
       ElementWrapper.prototype.findSpaceBetween = function(selector) {

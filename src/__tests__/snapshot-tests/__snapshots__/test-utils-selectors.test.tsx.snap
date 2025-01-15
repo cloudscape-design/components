@@ -237,6 +237,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_validation-error_mgja0",
     "awsui_week_1mfbn",
   ],
+  "drag-handle": [
+    "awsui_handle_dxnez",
+  ],
   "drawer": [
     "awsui_drawer_1sxt8",
     "awsui_header_1sxt8",
@@ -353,7 +356,6 @@ exports[`test-utils selectors 1`] = `
     "awsui_dropdown_qwoo0",
     "awsui_filter-container_z5mul",
     "awsui_filtering-match-highlight_1p2cx",
-    "awsui_handle_sdha6",
     "awsui_has-background_15o6u",
     "awsui_highlighted_15o6u",
     "awsui_inner-list-item_10ipo",

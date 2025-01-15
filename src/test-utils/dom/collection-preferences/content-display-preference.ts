@@ -6,7 +6,7 @@ import TextFilterWrapper from '../text-filter';
 import ToggleWrapper from '../toggle';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
-import dragHandleStyles from '../../../internal/components/drag-handle/styles.selectors.js';
+import dragHandleStyles from '../../../drag-handle/styles.selectors.js';
 
 const getClassName = (suffix: string): string => styles[`content-display-${suffix}`];
 

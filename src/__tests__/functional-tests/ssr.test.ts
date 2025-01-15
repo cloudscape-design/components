@@ -23,6 +23,9 @@ for (const componentName of getAllComponents()) {
     if (componentName === 'modal') {
       // modal uses portal API which does not work on server and returns an empty content
       expect(content.length).toEqual(0);
+    } else if (componentName === 'sortable-area') {
+      // sortable area does not render any node when items array is empty
+      expect(content.length).toEqual(0);
     } else {
       expect(content.length).toBeGreaterThan(0);
     }

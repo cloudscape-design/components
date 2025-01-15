@@ -2,7 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
 
-import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
+import { DragHandleProps } from '../../drag-handle/interfaces';
+import InternalDragHandle from '../../drag-handle/internal';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import InternalToggle from '../../toggle/internal';
 import { OptionWithVisibility } from './utils';
@@ -25,7 +26,7 @@ const ContentDisplayOption = forwardRef(
     return (
       <div ref={ref} className={getClassName('content')}>
         <div className={styles['drag-handle-wrapper']}>
-          <DragHandle {...dragHandleProps} />
+          <InternalDragHandle {...dragHandleProps} />
         </div>
 
         <label className={getClassName('label')} htmlFor={controlId}>

@@ -7286,6 +7286,125 @@ with the input using \`ariaDescribedby\`.",
 }
 `;
 
+exports[`Documenter definition for drag-handle matches the snapshot: drag-handle 1`] = `
+{
+  "events": [
+    {
+      "cancelable": true,
+      "name": "onKeyDown",
+    },
+    {
+      "cancelable": true,
+      "name": "onPointerDown",
+    },
+  ],
+  "functions": [
+    {
+      "name": "focus",
+      "parameters": [
+        {
+          "name": "options",
+          "type": "FocusOptions",
+        },
+      ],
+      "returnType": "void",
+    },
+  ],
+  "name": "DragHandle",
+  "properties": [
+    {
+      "name": "ariaDescribedby",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "ariaLabel",
+      "optional": false,
+      "type": "string",
+    },
+    {
+      "inlineType": {
+        "name": "DragHandleProps.AriaValue",
+        "properties": [
+          {
+            "name": "valueMax",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "valueMin",
+            "optional": false,
+            "type": "number",
+          },
+          {
+            "name": "valueNow",
+            "optional": false,
+            "type": "number",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "ariaValue",
+      "optional": true,
+      "type": "DragHandleProps.AriaValue",
+    },
+    {
+      "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
+      "description": "Adds the specified classes to the root element of the component.",
+      "name": "className",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "name": "disabled",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
+use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes). If you must
+use the \`id\` attribute, consider setting it on a parent element instead.",
+      "description": "Adds the specified ID to the root element of the component.",
+      "name": "id",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": ""normal"",
+      "inlineType": {
+        "name": "DragHandleProps.Size",
+        "type": "union",
+        "values": [
+          "small",
+          "normal",
+        ],
+      },
+      "name": "size",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "defaultValue": ""drag-indicator"",
+      "inlineType": {
+        "name": "DragHandleProps.Variant",
+        "type": "union",
+        "values": [
+          "drag-indicator",
+          "resize-area",
+          "resize-horizontal",
+          "resize-vertical",
+        ],
+      },
+      "name": "variant",
+      "optional": true,
+      "type": "string",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for drawer matches the snapshot: drawer 1`] = `
 {
   "events": [],
@@ -15140,6 +15259,123 @@ with the input using \`ariaDescribedby\`.",
       "name": "warning",
       "optional": true,
       "type": "boolean",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
+exports[`Documenter definition for sortable-area matches the snapshot: sortable-area 1`] = `
+{
+  "events": [
+    {
+      "cancelable": false,
+      "detailInlineType": {
+        "name": "SortableAreaProps.ItemsChangeDetail",
+        "properties": [
+          {
+            "name": "items",
+            "optional": false,
+            "type": "Array<Item>",
+          },
+          {
+            "name": "movedItem",
+            "optional": false,
+            "type": "Item",
+          },
+        ],
+        "type": "object",
+      },
+      "detailType": "SortableAreaProps.ItemsChangeDetail<Item>",
+      "name": "onItemsChange",
+    },
+  ],
+  "functions": [],
+  "name": "SortableArea",
+  "properties": [
+    {
+      "defaultValue": "false",
+      "name": "disableReorder",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
+      "inlineType": {
+        "name": "SortableAreaProps.DndAreaI18nStrings",
+        "properties": [
+          {
+            "name": "dragHandleAriaDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "dragHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "liveAnnouncementDndDiscarded",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "liveAnnouncementDndItemCommitted",
+            "optional": true,
+            "type": "(initialPosition: number, finalPosition: number, total: number) => string",
+          },
+          {
+            "name": "liveAnnouncementDndItemReordered",
+            "optional": true,
+            "type": "(initialPosition: number, currentPosition: number, total: number) => string",
+          },
+          {
+            "name": "liveAnnouncementDndStarted",
+            "optional": true,
+            "type": "(position: number, total: number) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "i18nStrings",
+      "optional": true,
+      "type": "SortableAreaProps.DndAreaI18nStrings",
+    },
+    {
+      "inlineType": {
+        "name": "SortableAreaProps.ItemDefinition",
+        "properties": [
+          {
+            "name": "borderRadius",
+            "optional": true,
+            "type": "SortableAreaProps.BorderRadiusVariant",
+          },
+          {
+            "name": "id",
+            "optional": false,
+            "type": "(item: Item) => string",
+          },
+          {
+            "name": "label",
+            "optional": false,
+            "type": "(item: Item) => string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "itemDefinition",
+      "optional": false,
+      "type": "SortableAreaProps.ItemDefinition<Item>",
+    },
+    {
+      "name": "items",
+      "optional": false,
+      "type": "typeOperator",
+    },
+    {
+      "name": "renderItem",
+      "optional": false,
+      "type": "(props: SortableAreaProps.RenderItemProps<Item>) => React.ReactNode",
     },
   ],
   "regions": [],

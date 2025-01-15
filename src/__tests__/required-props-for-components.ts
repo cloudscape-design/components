@@ -157,6 +157,11 @@ const defaultProps: Record<string, Record<string, any>> = {
   steps: {
     steps: [],
   },
+  'sortable-area': {
+    items: [],
+    itemDefinition: { id: () => '', label: () => '' },
+    renderItem: () => null,
+  },
 };
 
 export function getRequiredPropsForComponent(componentName: string): Record<string, any> {

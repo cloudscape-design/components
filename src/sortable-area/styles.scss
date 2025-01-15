@@ -1,0 +1,70 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../internal/styles' as styles;
+@use '../internal/styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
+
+@mixin animated {
+  @include styles.with-motion {
+    transition: transform awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
+  }
+}
+
+@mixin drag-overlay-with-radius($border-radius) {
+  border-start-start-radius: $border-radius;
+  border-start-end-radius: $border-radius;
+  border-end-start-radius: $border-radius;
+  border-end-end-radius: $border-radius;
+
+  @include focus-visible.when-visible-unfocused {
+    @include styles.focus-highlight(0px, $border-radius);
+  }
+}
+
+.drag-overlay {
+  box-shadow: awsui.$shadow-container-active;
+
+  &-item {
+    @include drag-overlay-with-radius(awsui.$border-radius-item);
+  }
+  &-container {
+    @include drag-overlay-with-radius(awsui.$border-radius-container);
+  }
+}
+
+.active {
+  @include styles.default-text-style;
+}
+
+.placeholder {
+  position: relative;
+  &:after {
+    content: ' ';
+    position: absolute;
+    inset: 0;
+    background: awsui.$color-drag-placeholder-hover;
+  }
+  &-item {
+    &:after {
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
+    }
+  }
+  &-container {
+    &:after {
+      border-start-start-radius: awsui.$border-radius-container;
+      border-start-end-radius: awsui.$border-radius-container;
+      border-end-start-radius: awsui.$border-radius-container;
+      border-end-end-radius: awsui.$border-radius-container;
+    }
+  }
+}
+
+.sorting {
+  @include animated;
+}
