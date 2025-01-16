@@ -13,8 +13,8 @@ import {
   SplitPanel,
   Toggle,
 } from '~components';
-import { AppLayoutProps } from '~components/app-layout';
 import awsuiPlugins from '~components/internal/plugins';
+import { PageLayoutProps } from '~components/page-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
@@ -25,7 +25,7 @@ type DemoContext = React.Context<
   AppContextType<{
     hasTools: boolean | undefined;
     hasDrawers: boolean | undefined;
-    splitPanelPosition: AppLayoutProps.SplitPanelPreferences['position'];
+    splitPanelPosition: PageLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
 
@@ -36,10 +36,10 @@ export default function WithDrawers() {
   const hasTools = urlParams.hasTools ?? false;
   const hasDrawers = urlParams.hasDrawers ?? true;
   const [isToolsOpen, setIsToolsOpen] = useState(false);
-  const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-  const appLayoutRef = useRef<AppLayoutProps.Ref>(null);
+  const [isNavigationOpen, setIsNavigationOpen] = useState(true);
+  const appLayoutRef = useRef<PageLayoutProps.Ref>(null);
 
-  const drawersProps: Pick<AppLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = !hasDrawers
+  const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = !hasDrawers
     ? null
     : {
         activeDrawerId: activeDrawerId,

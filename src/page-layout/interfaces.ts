@@ -9,3 +9,17 @@ export interface PageLayoutProps extends AppLayoutProps {
    */
   navigationTriggerHide?: boolean;
 }
+
+export namespace PageLayoutProps {
+  export type AnalyticsMetadata = AppLayoutProps.AnalyticsMetadata;
+  export type ContentType = AppLayoutProps.ContentType;
+  export type Ref = AppLayoutProps.Ref;
+  export type Drawer = AppLayoutProps.Drawer;
+  export type DrawerAriaLabels = AppLayoutProps.DrawerAriaLabels;
+  export type Labels = AppLayoutProps.Labels;
+  export type ChangeDetail = AppLayoutProps.ChangeDetail;
+  export type SplitPanelResizeDetail = AppLayoutProps.SplitPanelResizeDetail;
+  export type SplitPanelPreferences = AppLayoutProps.SplitPanelPreferences;
+  export type SplitPanelPosition = AppLayoutProps.SplitPanelPosition;
+  export type DrawerChangeDetail = AppLayoutProps.DrawerChangeDetail;
+}
