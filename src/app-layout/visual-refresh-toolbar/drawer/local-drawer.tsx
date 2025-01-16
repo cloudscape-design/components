@@ -55,7 +55,7 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
     minWidth: minDrawerSize,
     maxWidth: maxDrawerSize,
     panelRef: drawerRef,
-    handleRef: drawersFocusControl.refs.handle,
+    handleRef: drawersFocusControl.refs.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
   // temporary handle a situation when app-layout is old, but this component come as a widget
@@ -98,17 +98,15 @@ export function AppLayoutDrawerImplementation({ appLayoutInternals }: AppLayoutD
         >
           {!isMobile && activeDrawer?.resizable && (
             <div className={styles['drawer-slider']}>
-              <div ref={drawersFocusControl.refs.handle}>
-                <PanelResizeHandle
-                  ref={drawersFocusControl.refs.slider}
-                  position="side"
-                  className={testutilStyles['drawers-slider']}
-                  ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-                  ariaValuenow={resizeProps.relativeSize}
-                  onKeyDown={resizeProps.onKeyDown}
-                  onPointerDown={resizeProps.onPointerDown}
-                />
-              </div>
+              <PanelResizeHandle
+                ref={drawersFocusControl.refs.slider}
+                position="side"
+                className={testutilStyles['drawers-slider']}
+                ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+                ariaValuenow={resizeProps.relativeSize}
+                onKeyDown={resizeProps.onKeyDown}
+                onPointerDown={resizeProps.onPointerDown}
+              />
             </div>
           )}
           <div className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}>
