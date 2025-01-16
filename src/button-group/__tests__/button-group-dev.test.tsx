@@ -13,8 +13,6 @@ import buttonStyles from '../../../lib/components/button/styles.css.js';
 
 const useBaseComponentSpy = jest.spyOn(baseComponentHooks, 'default');
 
-jest.mock('../../../lib/components/internal/hooks/use-base-component', () => jest.fn().mockReturnValue({}));
-
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
@@ -22,7 +20,6 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
-  useBaseComponentSpy.mockReset();
 });
 
 const emptyGroup: ButtonGroupProps.ItemOrGroup[] = [
