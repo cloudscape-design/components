@@ -4,6 +4,7 @@
 import { ReactNode } from 'react';
 
 import debounce from '../../debounce';
+import { reportRuntimeApiWarning } from '../helpers/metrics';
 
 // this code should not depend on React typings, because it is portable between major versions
 interface RefShim<T> {
@@ -74,7 +75,8 @@ export class AlertFlashContentController {
 
   registerContentReplacer = (content: AlertFlashContentConfig) => {
     if (this.#provider) {
-      console.warn(
+      reportRuntimeApiWarning(
+        'alert-flash-content',
         `Cannot call \`registerContentReplacer\` with new provider: provider with id "${this.#provider.id}" already registered.`
       );
       return;
