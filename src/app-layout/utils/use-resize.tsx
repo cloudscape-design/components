@@ -61,7 +61,7 @@ function useResize(
   const sizeControlProps: SizeControlProps = {
     position: 'side',
     panelRef: drawerRefObject,
-    handleRef: drawersRefs.handle,
+    handleRef: drawersRefs.slider,
     onResize: setSidePanelWidth,
   };
 
@@ -69,17 +69,15 @@ function useResize(
   const onKeyDown = useKeyboardEvents(sizeControlProps);
 
   const resizeHandle = (
-    <div ref={drawersRefs.handle}>
-      <PanelResizeHandle
-        ref={drawersRefs.slider}
-        position="side"
-        ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
-        ariaValuenow={relativeSize}
-        className={testutilStyles['drawers-slider']}
-        onKeyDown={onKeyDown}
-        onPointerDown={onSliderPointerDown}
-      />
-    </div>
+    <PanelResizeHandle
+      ref={drawersRefs.slider}
+      position="side"
+      ariaLabel={activeDrawer?.ariaLabels?.resizeHandle}
+      ariaValuenow={relativeSize}
+      className={testutilStyles['drawers-slider']}
+      onKeyDown={onKeyDown}
+      onPointerDown={onSliderPointerDown}
+    />
   );
 
   return { resizeHandle, drawerSize };
