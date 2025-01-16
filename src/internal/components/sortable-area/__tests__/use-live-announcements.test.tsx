@@ -4,7 +4,7 @@ import React from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 import { render } from '@testing-library/react';
 
-import useLiveAnnouncements from '../use-live-announcements';
+import useLiveAnnouncements from '../../../../../lib/components/internal/components/sortable-area/use-live-announcements';
 
 const liveAnnouncementDndStarted = jest.fn();
 const liveAnnouncementDndItemReordered = jest.fn();
@@ -25,7 +25,8 @@ const TestComponent = ({ activeId, isDragging, overId }: { activeId: string; isD
   const { onDragStart, onDragOver, onDragEnd, onDragCancel } = useLiveAnnouncements({
     isDragging,
     ...i18nStrings,
-    items: items.map(item => ({ id: item.id, label: item.id, data: item })),
+    items: items,
+    itemDefinition: { id: item => item.id, label: item => item.id },
   });
   onDragStart({ active: { id: activeId } } as DragStartEvent);
   onDragOver({ active: { id: activeId }, over: { id: overId } } as DragOverEvent);

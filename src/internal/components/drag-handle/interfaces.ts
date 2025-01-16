@@ -8,9 +8,9 @@ export interface DragHandleProps {
   ariaDescribedby?: string;
   ariaValue?: DragHandleProps.AriaValue;
   disabled?: boolean;
+  className?: string;
   onPointerDown?: React.PointerEventHandler;
   onKeyDown?: React.KeyboardEventHandler;
-  className?: string;
 }
 
 export namespace DragHandleProps {
