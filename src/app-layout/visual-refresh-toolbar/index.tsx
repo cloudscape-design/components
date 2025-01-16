@@ -36,7 +36,11 @@ import {
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
 
-const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
+interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
+  navigationTriggerHide?: boolean;
+}
+
+const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (
     {
       ariaLabels,
@@ -68,6 +72,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       minContentWidth,
       maxContentWidth,
       placement,
+      navigationTriggerHide,
       ...rest
     },
     forwardRef
@@ -270,6 +275,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         navigationOpen: resolvedNavigationOpen,
         onNavigationToggle,
         navigationFocusRef: navigationFocusControl.refs.toggle,
+        navigationTriggerHide,
         breadcrumbs,
         activeDrawerId: activeDrawer?.id ?? null,
         // only pass it down if there are non-empty drawers or tools
