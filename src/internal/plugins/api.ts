@@ -11,6 +11,7 @@ import { AppLayoutWidgetApiInternal, AppLayoutWidgetController } from './control
 import { BreadcrumbsApiInternal, BreadcrumbsController } from './controllers/breadcrumbs';
 import { DrawersApiInternal, DrawersApiPublic, DrawersController } from './controllers/drawers';
 import { SharedReactContexts, SharedReactContextsApiInternal } from './controllers/shared-react-contexts';
+import { reportRuntimeApiLoadMetric } from './helpers/metrics';
 
 const storageKey = Symbol.for('awsui-plugin-api');
 
@@ -62,6 +63,9 @@ export function loadApi() {
   }
   const win = window as unknown as WindowWithApi;
   const existingApi = findUpApi(win);
+  if (!existingApi) {
+    reportRuntimeApiLoadMetric();
+  }
   win[storageKey] = installApi(existingApi ?? {});
   return win[storageKey];
 }

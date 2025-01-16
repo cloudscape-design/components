@@ -6,9 +6,12 @@ import { fireEvent } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { ButtonGroupProps } from '../../../lib/components/button-group';
+import * as baseComponentHooks from '../../../lib/components/internal/hooks/use-base-component';
 import { renderButtonGroup } from './common';
 
 import buttonStyles from '../../../lib/components/button/styles.css.js';
+
+const useBaseComponentSpy = jest.spyOn(baseComponentHooks, 'default');
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -155,4 +158,35 @@ test('handles file upload', () => {
   fireEvent(input, new CustomEvent('change', { bubbles: true }));
 
   expect(onFilesChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { id: 'file', files: [file] } }));
+});
+
+test('adds feature metrics', () => {
+  renderButtonGroup({
+    items: [
+      { type: 'icon-button', id: 'icon1', text: 'icon1' },
+      {
+        type: 'group',
+        text: 'group1',
+        items: [
+          { type: 'icon-toggle-button', id: 'toggle1', text: 'toggle1', pressed: false },
+          { type: 'icon-toggle-button', id: 'toggle2', text: 'toggle2', pressed: false },
+        ],
+      },
+      { type: 'icon-file-input', id: 'file1', text: 'file1' },
+      { type: 'menu-dropdown', id: 'menu1', text: 'menu1', items: [] },
+    ],
+  });
+  expect(useBaseComponentSpy).toHaveBeenCalledWith('ButtonGroup', {
+    props: {
+      variant: 'icon',
+      dropdownExpandToViewport: false,
+    },
+    metadata: {
+      iconButtonsCount: 1,
+      iconToggleButtonsCount: 2,
+      iconFileInputsCount: 1,
+      menuDropdownsCount: 1,
+      groupsCount: 1,
+    },
+  });
 });

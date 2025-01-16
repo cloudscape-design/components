@@ -63,7 +63,6 @@ export default function Portal({ container, getContainer, removeContainer, child
         warnOnce('portal', '`getContainer` is required when `removeContainer` is provided');
       }
     }
-
     if (getContainer && removeContainer) {
       return manageAsyncContainer(getContainer, removeContainer, setActiveContainer);
     }

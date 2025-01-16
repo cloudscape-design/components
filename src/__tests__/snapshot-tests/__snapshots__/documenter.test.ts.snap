@@ -1445,6 +1445,22 @@ The event \`detail\` contains the index of the corresponding item.",
       "type": "string",
     },
     {
+      "description": "Specifies the variant to use for the add button. By default a normal button is used.
+Use \`inline-link\` when using an attribute editor nested inside complex attribute editing
+with expandable sections.",
+      "inlineType": {
+        "name": "AttributeEditorProps.AddButtonVariant",
+        "type": "union",
+        "values": [
+          "normal",
+          "inline-link",
+        ],
+      },
+      "name": "addButtonVariant",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
@@ -3975,6 +3991,7 @@ Use this to provide a unique accessible name for each button group on the page."
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Use this property to determine dropdown placement strategy for all menu dropdown items.
 By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
 Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and

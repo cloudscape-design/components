@@ -1,7 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { metrics } from '../../../../lib/components/internal/metrics';
 import { loadApi } from '../../../../lib/components/internal/plugins/api';
 import { DrawerConfig, UpdateDrawerConfig } from '../../../../lib/components/internal/plugins/controllers/drawers';
+
+jest.mock('../../../../lib/components/internal/metrics', () => ({ metrics: { sendPanoramaMetric: () => {} } }));
 
 function delay() {
   return new Promise(resolve => setTimeout(resolve));
@@ -62,4 +65,28 @@ test('partial API can be extended', () => {
   loadApi();
   expect(api.awsuiPlugins.alert).toBeDefined();
   expect(api.awsuiPluginsInternal.alert).toBeDefined();
+});
+
+describe('usage metrics', () => {
+  let sendPanoramaMetricSpy: jest.SpyInstance;
+  beforeEach(() => {
+    sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendPanoramaMetric');
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  test('reports usage metric only once', () => {
+    loadApi();
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(1);
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        eventName: 'awsui-runtime-api-loaded',
+      })
+    );
+
+    loadApi();
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(1);
+  });
 });

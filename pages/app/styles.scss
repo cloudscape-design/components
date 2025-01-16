@@ -20,15 +20,6 @@ body {
     caret-color: transparent !important;
   }
   // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
-
-  &.macos {
-    // override scrollbars in macos for stable screenshot tests
-    // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
-    ::-webkit-scrollbar {
-      inline-size: 0;
-      block-size: 0;
-    }
-  }
 }
 
 /*
