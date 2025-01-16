@@ -44,9 +44,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -74,9 +71,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -108,9 +102,6 @@ Map {
       "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -181,9 +172,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -211,9 +199,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -245,9 +230,6 @@ Map {
       "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -289,9 +271,6 @@ Map {
       "onToggle": [Function],
       "position": "bottom",
       "refs": {
-        "handle": {
-          "current": null,
-        },
         "preferences": {
           "current": null,
         },
@@ -352,9 +331,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -382,9 +358,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -416,9 +389,6 @@ Map {
       "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -489,9 +459,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -519,9 +486,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -553,9 +517,6 @@ Map {
       "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -626,9 +587,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -656,9 +614,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -690,9 +645,6 @@ Map {
       "splitPanelControlId": "split-panel4",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -812,9 +764,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -846,9 +795,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -878,9 +824,6 @@ Map {
       "splitPanelControlId": "split-panel6",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -955,9 +898,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -989,9 +929,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1021,9 +958,6 @@ Map {
       "splitPanelControlId": "split-panel6",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -1101,9 +1035,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1135,9 +1066,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1167,9 +1095,6 @@ Map {
       "splitPanelControlId": "split-panel6",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -1213,9 +1138,6 @@ Map {
       "onToggle": [Function],
       "position": "bottom",
       "refs": {
-        "handle": {
-          "current": null,
-        },
         "preferences": {
           "current": null,
         },
@@ -1280,9 +1202,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1314,9 +1233,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1346,9 +1262,6 @@ Map {
       "splitPanelControlId": "split-panel6",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -1423,9 +1336,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1457,9 +1367,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1489,9 +1396,6 @@ Map {
       "splitPanelControlId": "split-panel6",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -1566,9 +1470,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1600,9 +1501,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1632,9 +1530,6 @@ Map {
       "splitPanelControlId": "split-panel6",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -1781,9 +1676,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1811,9 +1703,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -1845,9 +1734,6 @@ Map {
       "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -1934,9 +1820,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -1964,9 +1847,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -1998,9 +1878,6 @@ Map {
       "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -2042,9 +1919,6 @@ Map {
       "onToggle": [Function],
       "position": "bottom",
       "refs": {
-        "handle": {
-          "current": null,
-        },
         "preferences": {
           "current": null,
         },
@@ -2121,9 +1995,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -2151,9 +2022,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -2185,9 +2053,6 @@ Map {
       "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -2274,9 +2139,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -2304,9 +2166,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -2338,9 +2197,6 @@ Map {
       "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
@@ -2427,9 +2283,6 @@ Map {
           "close": {
             "current": null,
           },
-          "handle": {
-            "current": null,
-          },
           "slider": {
             "current": null,
           },
@@ -2457,9 +2310,6 @@ Map {
         "loseFocus": [Function],
         "refs": {
           "close": {
-            "current": null,
-          },
-          "handle": {
             "current": null,
           },
           "slider": {
@@ -2491,9 +2341,6 @@ Map {
       "splitPanelControlId": "split-panel8",
       "splitPanelFocusControl": {
         "refs": {
-          "handle": {
-            "current": null,
-          },
           "preferences": {
             "current": null,
           },
