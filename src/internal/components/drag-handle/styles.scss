@@ -4,8 +4,8 @@
 */
 
 @use '../../styles' as styles;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .handle {
   appearance: none;
@@ -24,6 +24,7 @@
     block-size: awsui.$line-height-body-m;
     padding-inline: awsui.$space-scaled-xxxs;
   }
+
   &-size-small {
     block-size: awsui.$line-height-body-s;
   }
@@ -35,6 +36,7 @@
       cursor: grabbing;
     }
   }
+
   &-resize-area {
     cursor: nwse-resize;
 
@@ -42,12 +44,15 @@
       cursor: nesw-resize;
     }
   }
+
   &-resize-horizontal {
     cursor: ew-resize;
   }
+
   &-resize-vertical {
     cursor: ns-resize;
   }
+
   &-disabled {
     cursor: default;
   }
@@ -70,13 +75,16 @@
 
 .resize-icon {
   stroke: awsui.$color-text-interactive-default;
+
   &:hover {
     stroke: awsui.$color-text-interactive-hover;
   }
+
   &-vertical {
     margin-block: auto;
     margin-inline: auto;
   }
+
   &-horizontal {
     transform: rotate(90deg);
   }
