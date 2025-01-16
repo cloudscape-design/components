@@ -127,6 +127,11 @@
     background-color: awsui.$color-background-layout-main;
   }
 
+  // "embedded" variant is passed to container only from table variants "borderless" and "embedded"
+  &-variant-embedded:not(.header-sticky-enabled) {
+    background-color: transparent;
+  }
+
   &.header-with-media {
     background: none;
     &:not(:empty) {
