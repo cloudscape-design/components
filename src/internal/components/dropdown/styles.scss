@@ -23,7 +23,6 @@
   display: none;
   // Needs to be higher than a global navigation element
   z-index: 2000;
-  user-select: none;
   transform-origin: top;
 
   // When used in portal we need z-index to be higher than modal's
