@@ -24,7 +24,7 @@ export interface MultiselectProps extends BaseSelectProps {
    */
   hideTokens?: boolean;
   /**
-   * Shows tokens inside the input instead of below.
+   * Shows tokens inside the trigger instead of below it.
    */
   inlineTokens?: boolean;
   /**
