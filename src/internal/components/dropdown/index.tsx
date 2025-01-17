@@ -233,16 +233,20 @@ const Dropdown = ({
 
     // Position normal overflow dropdowns with fixed positioning relative to viewport
     if (expandToViewport && !interior) {
-      target.style.position = 'absolute';
+      const isIOSVirtualKeyboardPresent =
+        window.visualViewport?.height && window.visualViewport.height < window.innerHeight;
+      target.style.position = isIOSVirtualKeyboardPresent ? 'absolute' : 'fixed';
+      const verticalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollTop : 0;
+      const horizontalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollLeft : 0;
       if (position.dropBlockStart) {
-        target.style.insetBlockEnd = `calc(100% - ${document.documentElement.scrollTop + triggerBox.top}px)`;
+        target.style.insetBlockEnd = `calc(100% - ${verticalScrollOffset + triggerBox.top}px)`;
       } else {
-        target.style.insetBlockStart = `${document.documentElement.scrollTop + triggerBox.bottom}px`;
+        target.style.insetBlockStart = `${verticalScrollOffset + triggerBox.bottom}px`;
       }
       if (position.dropInlineStart) {
-        target.style.insetInlineStart = `calc(${triggerBox.right}px - ${position.inlineSize})`;
+        target.style.insetInlineStart = `calc(${horizontalScrollOffset + triggerBox.right}px - ${position.inlineSize})`;
       } else {
-        target.style.insetInlineStart = `${triggerBox.left}px`;
+        target.style.insetInlineStart = `${horizontalScrollOffset + triggerBox.left}px`;
       }
       // Keep track of the initial dropdown position and direction.
       // Dropdown direction doesn't need to change as the user scrolls, just needs to stay attached to the trigger.
@@ -391,18 +395,26 @@ const Dropdown = ({
     }
     const updateDropdownPosition = () => {
       if (triggerRef.current && dropdownRef.current && verticalContainerRef.current) {
+        const isIOSVirtualKeyboardPresent =
+          window.visualViewport?.height && window.visualViewport.height < window.innerHeight;
+
+        dropdownRef.current.style.position = isIOSVirtualKeyboardPresent ? 'absolute' : 'fixed';
+
+        const verticalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollTop : 0;
+        const horizontalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollLeft : 0;
+
         const triggerRect = getLogicalBoundingClientRect(triggerRef.current);
         const target = dropdownRef.current;
         if (fixedPosition.current) {
           if (fixedPosition.current.dropBlockStart) {
-            dropdownRef.current.style.insetBlockEnd = `calc(100% - ${document.documentElement.scrollTop + triggerRect.insetBlockStart}px)`;
+            dropdownRef.current.style.insetBlockEnd = `calc(100% - ${verticalScrollOffset + triggerRect.insetBlockStart}px)`;
           } else {
-            target.style.insetBlockStart = `${document.documentElement.scrollTop + triggerRect.insetBlockEnd}px`;
+            target.style.insetBlockStart = `${verticalScrollOffset + triggerRect.insetBlockEnd}px`;
           }
           if (fixedPosition.current.dropInlineStart) {
-            target.style.insetInlineStart = `calc(${triggerRect.insetInlineEnd}px - ${fixedPosition.current.inlineSize})`;
+            target.style.insetInlineStart = `calc(${horizontalScrollOffset + triggerRect.insetInlineEnd}px - ${fixedPosition.current.inlineSize})`;
           } else {
-            target.style.insetInlineStart = `${triggerRect.insetInlineStart}px`;
+            target.style.insetInlineStart = `${horizontalScrollOffset + triggerRect.insetInlineStart}px`;
           }
         }
       }
