@@ -233,11 +233,11 @@ const Dropdown = ({
 
     // Position normal overflow dropdowns with fixed positioning relative to viewport
     if (expandToViewport && !interior) {
-      target.style.position = 'fixed';
+      target.style.position = 'absolute';
       if (position.dropBlockStart) {
-        target.style.insetBlockEnd = `calc(100% - ${triggerBox.top}px)`;
+        target.style.insetBlockEnd = `calc(100% - ${document.documentElement.scrollTop + triggerBox.top}px)`;
       } else {
-        target.style.insetBlockStart = `${triggerBox.bottom}px`;
+        target.style.insetBlockStart = `${document.documentElement.scrollTop + triggerBox.bottom}px`;
       }
       if (position.dropInlineStart) {
         target.style.insetInlineStart = `calc(${triggerBox.right}px - ${position.inlineSize})`;
@@ -395,9 +395,9 @@ const Dropdown = ({
         const target = dropdownRef.current;
         if (fixedPosition.current) {
           if (fixedPosition.current.dropBlockStart) {
-            dropdownRef.current.style.insetBlockEnd = `calc(100% - ${triggerRect.insetBlockStart}px)`;
+            dropdownRef.current.style.insetBlockEnd = `calc(100% - ${document.documentElement.scrollTop + triggerRect.insetBlockStart}px)`;
           } else {
-            target.style.insetBlockStart = `${triggerRect.insetBlockEnd}px`;
+            target.style.insetBlockStart = `${document.documentElement.scrollTop + triggerRect.insetBlockEnd}px`;
           }
           if (fixedPosition.current.dropInlineStart) {
             target.style.insetInlineStart = `calc(${triggerRect.insetInlineEnd}px - ${fixedPosition.current.inlineSize})`;
