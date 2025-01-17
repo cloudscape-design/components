@@ -7,6 +7,7 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import InternalContainer from '../container/internal';
 import { getBaseProps } from '../internal/base-component';
+import { TabContext } from '../internal/context/tab-context';
 import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
@@ -96,7 +97,17 @@ export default function Tabs({
       };
 
       const isContentShown = isTabSelected && !selectedTab.disabled;
-      return <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>;
+      const firstTab = firstEnabledTab(tabs);
+
+      return (
+        <TabContext.Provider
+          value={{
+            isInFirstTab: firstTab !== null && firstTab.id === tab.id,
+          }}
+        >
+          <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>
+        </TabContext.Provider>
+      );
     };
 
     return (
