@@ -305,7 +305,6 @@ describe('DateRangePicker utils', () => {
     });
   });
 
-  //todo  add month only tests
   describe('formatInitialValue', () => {
     const normalizedTimeOffset = { startDate: 0, endDate: 0 };
 

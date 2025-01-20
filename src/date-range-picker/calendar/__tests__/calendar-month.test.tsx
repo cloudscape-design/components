@@ -286,7 +286,6 @@ describe('Date range picker calendar with month granularity', () => {
         expect(findCalendarHeaderText(wrapper)).toBe('20182019');
       });
 
-      //todo confirm this behavior is wanted
       test('should allow first Month to be focused after moving dates then navigating between years', () => {
         wrapper.findDropdown()!.findNextPageButton().click();
         expect(findCalendarHeaderText(wrapper)).toBe('20242025');

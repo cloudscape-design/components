@@ -429,7 +429,6 @@ describe('Date range picker', () => {
         });
 
         (['hh:mm:ss', 'hh:mm', 'hh'] as DateRangePickerProps['timeInputFormat'][]).forEach(timeInputFormat => {
-          //todo - find where the onChange is getting time formatted values
           testIf(granularity === 'day')(
             granularity === 'day'
               ? `sets start and end time to the beginning and end of day when only selecting a date with format ${timeInputFormat}`
@@ -624,7 +623,6 @@ describe('Date range picker', () => {
         });
       });
 
-      //todo  fix
       describe('time offset', () => {
         test('creates values in the provided time offset', () => {
           const onChangeSpy = jest.fn();
