@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 import {
   getIsRtl,
@@ -13,8 +13,6 @@ import { SizeControlProps } from './interfaces';
 import styles from '../resize/styles.css.js';
 
 export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: SizeControlProps) => {
-  const controller = useRef(new AbortController());
-
   const onDocumentPointerMove = useCallback(
     (event: PointerEvent) => {
       if (!panelRef || !panelRef.current || !handleRef || !handleRef.current) {
@@ -52,8 +50,9 @@ export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: Si
 
     currentDocument.body.classList.remove(styles['resize-active']);
     currentDocument.body.classList.remove(styles[`resize-${position}`]);
-    controller.current.abort();
-  }, [panelRef, position]);
+    currentDocument.removeEventListener('pointerup', onDocumentPointerUp);
+    currentDocument.removeEventListener('pointermove', onDocumentPointerMove);
+  }, [panelRef, onDocumentPointerMove, position]);
 
   const onSliderPointerDown = useCallback(() => {
     const panelElement = panelRef?.current;
@@ -64,8 +63,8 @@ export const usePointerEvents = ({ position, panelRef, handleRef, onResize }: Si
     const currentDocument = panelElement.ownerDocument;
     currentDocument.body.classList.add(styles['resize-active']);
     currentDocument.body.classList.add(styles[`resize-${position}`]);
-    currentDocument.addEventListener('pointerup', onDocumentPointerUp, { signal: controller.current.signal });
-    currentDocument.addEventListener('pointermove', onDocumentPointerMove, { signal: controller.current.signal });
+    currentDocument.addEventListener('pointerup', onDocumentPointerUp);
+    currentDocument.addEventListener('pointermove', onDocumentPointerMove);
   }, [panelRef, onDocumentPointerMove, onDocumentPointerUp, position]);
 
   return onSliderPointerDown;
