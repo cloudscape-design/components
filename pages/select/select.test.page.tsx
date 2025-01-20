@@ -75,6 +75,9 @@ export default function SelectPage() {
     <article>
       <ScreenshotArea>
         <Box padding="l">
+          <div style={{ blockSize: '600px', backgroundColor: 'aqua' }}>
+            <button id="overflow_focus_target">focus</button>
+          </div>
           <Box padding="s">
             <Box variant="h1">Overflow test</Box>
             <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>

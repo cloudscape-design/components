@@ -6,6 +6,13 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import SelectPageObject from './page-objects/select-page';
 
+const getContainerScroll = (browser: WebdriverIO.Browser, selector: string) => {
+  return browser.execute((selector: string) => {
+    const container = document.querySelector(selector);
+    return { top: container?.scrollTop || 0, left: container?.scrollLeft || 0 };
+  }, selector);
+};
+
 test(
   'allows filtering for options which have labels with spaces',
   useBrowser(async browser => {
@@ -100,6 +107,7 @@ test(
   useBrowser(async browser => {
     await browser.url('/#/light/select/select.test');
     const page = new BasePageObject(browser);
+    await page.windowScrollTo({ top: 600 });
     const select = createWrapper().findSelect('#select_overflow');
     const triggerSelector = select.findTrigger().toSelector();
     const optionsSelector = select.findDropdown().findOpenDropdown().toSelector();
@@ -109,6 +117,22 @@ test(
     const { height: actualDropdownHeight } = await page.getBoundingBox(optionsSelector);
     const availableDropdownHeight = smallestContainerHeight - triggerHeight;
     expect(actualDropdownHeight).toBeLessThan(availableDropdownHeight);
+  })
+);
+
+test(
+  'does not scroll the parent container with overflow:hidden on dropdown open',
+  useBrowser(async browser => {
+    await browser.url('/#/light/select/select.test');
+    const page = new BasePageObject(browser);
+
+    await page.click('#overflow_focus_target');
+    // Focus the select inside smallest_container, open dropdown, move focus away
+    await page.keys(['Tab', 'Enter', 'Tab']);
+    await page.windowScrollTo({ top: 600 });
+    const containerScroll = await getContainerScroll(browser, '#smallest_container');
+    // const { top: containerScrollTop } = await page.getElementScroll('#smallest_container');
+    expect(containerScroll.top).toBe(0); // <- doesn't fail
   })
 );
 
