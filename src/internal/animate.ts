@@ -93,7 +93,7 @@ export function animate({
           if (event.target === element) {
             // Clean up remaining inline styles
             element.style.transitionProperty = '';
-            element.removeEventListener('transitionstart', onTransitionEnd);
+            element.removeEventListener('transitionend', onTransitionEnd);
             if (onTransitionsEnd) {
               ongoingAnimations.delete(id);
               if (ongoingAnimations.size === 0) {

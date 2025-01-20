@@ -130,20 +130,19 @@ test('should show the tracking line and activate resizer onMouseDown', () => {
 test('should attach event listeners to the body on mousedown and remove on mouseup ', () => {
   const { wrapper } = renderTable(<Table {...defaultProps} />);
   jest.spyOn(document, 'addEventListener');
-  jest.spyOn(document, 'removeEventListener');
+  jest.spyOn(AbortController.prototype, 'abort');
   expect(document.addEventListener).toHaveBeenCalledTimes(0);
 
   fireMousedown(wrapper.findColumnResizer(1)!);
   expect(document.addEventListener).toHaveBeenCalledTimes(2);
-  expect(document.addEventListener).toHaveBeenCalledWith('mousemove', expect.any(Function));
-  expect(document.addEventListener).toHaveBeenCalledWith('mouseup', expect.any(Function));
-  expect(document.removeEventListener).toHaveBeenCalledTimes(0);
+  expect(document.addEventListener).toHaveBeenCalledWith('mousemove', expect.any(Function), expect.any(Object));
+  expect(document.addEventListener).toHaveBeenCalledWith('mouseup', expect.any(Function), expect.any(Object));
+  expect(AbortController.prototype.abort).toHaveBeenCalledTimes(0);
 
   (document.addEventListener as jest.Mock).mockReset();
   fireMouseup(200);
   expect(document.addEventListener).toHaveBeenCalledTimes(0);
-  expect(document.removeEventListener).toHaveBeenCalledWith('mousemove', expect.any(Function));
-  expect(document.removeEventListener).toHaveBeenCalledWith('mouseup', expect.any(Function));
+  expect(AbortController.prototype.abort).toHaveBeenCalledTimes(1);
 });
 
 test('should correctly handle a column with special character', () => {
