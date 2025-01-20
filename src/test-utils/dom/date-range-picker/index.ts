@@ -107,6 +107,24 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   }
 
   /**
+   * For backwards compatibility only.
+   * This utility should not be used in new code.
+   * Instead, use the 'findPreviousPage' button.
+   */
+  findPreviousMonthButton(): ButtonWrapper {
+    return this.findComponent(`.${testutilStyles['calendar-prev-month-btn']}`, ButtonWrapper)!;
+  }
+
+  /**
+   * For backwards compatibility only.
+   * This utility should not be used in new code.
+   * Instead, use the 'findNextPage' button.
+   */
+  findNextMonthButton(): ButtonWrapper {
+    return this.findComponent(`.${testutilStyles['calendar-next-month-btn']}`, ButtonWrapper)!;
+  }
+
+  /**
    * Returns the day container that corresponds to the current day.
    */
   findCurrentDay(): CalendarDateWrapper {

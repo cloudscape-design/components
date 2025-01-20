@@ -58,6 +58,7 @@ export const Grids = ({
 
   locale,
   todayAriaLabel,
+  currentMonthAriaLabel,
   headingIdPrefix,
   startOfWeek = 0,
   granularity = 'day',
@@ -181,6 +182,7 @@ export const Grids = ({
     locale,
     startOfWeek,
     todayAriaLabel,
+    currentMonthAriaLabel,
     granularity,
   };
 

@@ -1018,9 +1018,12 @@ describe('Date range picker', () => {
                   'i18nStrings.endDateLabel': 'Custom end date',
                   'i18nStrings.endTimeLabel': 'Custom end time',
                   'i18nStrings.dateTimeConstraintText': 'Custom constraint text',
-                  'i18nStrings.currentMonthAriaLabel': 'Test current month',
-                  'i18nStrings.previousYearAriaLabel': 'Test previous year',
-                  'i18nStrings.nextYearAriaLabel': 'Test next year',
+                  'i18nStrings.todayAriaLabel': 'Custom today',
+                  'i18nStrings.nextMonthAriaLabel': 'Custom next month',
+                  'i18nStrings.previousMonthAriaLabel': 'Custom previous month',
+                  'i18nStrings.currentMonthAriaLabel': 'Custom this month',
+                  'i18nStrings.previousYearAriaLabel': 'Custom previous year',
+                  'i18nStrings.nextYearAriaLabel': 'Custom next year',
                 },
               }}
             >
@@ -1035,6 +1038,16 @@ describe('Date range picker', () => {
           const wrapper = createWrapper(container).findDateRangePicker()!;
           wrapper.openDropdown();
 
+          //prev page
+          expect(wrapper.findDropdown()!.findPreviousPageButton().getElement()).toHaveAccessibleName(
+            granularity === 'day' ? 'Custom previous month' : 'Custom previous year'
+          );
+
+          //next page
+          expect(wrapper.findDropdown()!.findNextPageButton().getElement()).toHaveAccessibleName(
+            granularity === 'day' ? 'Custom next month' : 'Custom next year'
+          );
+
           expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
             granularity === 'day' ? 'Custom start date' : 'Custom start month'
           );
@@ -1043,6 +1056,9 @@ describe('Date range picker', () => {
           );
 
           if (granularity === 'day') {
+            expect(wrapper.findDropdown()!.findCurrentDay().getElement()).toHaveTextContent(
+              '20January 20, 2025. Custom today'
+            );
             expect(
               wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()
             ).toHaveAccessibleDescription('Custom constraint text');
@@ -1054,58 +1070,12 @@ describe('Date range picker', () => {
               'Custom end time'
             );
           } else {
+            expect(wrapper.findDropdown()!.findCurrentMonth().getElement()).toHaveTextContent('Custom this month');
             expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
             expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
           }
         });
       });
-
-      //todo  test for other labels
-      //   test('should add `currentMonthAriaLabel` to current month', () => {
-      //     const { container } = render(
-      //       <Calendar
-      //         {...defaultProps}
-      //         i18nStrings={{
-      //           currentMonthAriaLabel: 'TEST CURRENT MONTH',
-      //         }}
-      //       />
-      //     );
-      //     expect(getCurrentMonthLabelText(container)).toMatch('TEST CURRENT MONTH');
-      //   });
-
-      //   test('does not add `undefined` if `currentMonthAriaLabel` is not provided', () => {
-      //     const { container } = render(<Calendar {...defaultProps} i18nStrings={undefined} />);
-      //     expect(getCurrentMonthLabelText(container)).not.toContain('undefined');
-      //   });
-
-      //   test('should add `nextYearAriaLabel` to appropriate button', () => {
-      //     const { container } = render(
-      //       <Calendar
-      //         {...defaultProps}
-      //         i18nStrings={{
-      //           nextYearAriaLabel: 'TEST NEXT YEAR',
-      //         }}
-      //       />
-      //     );
-      //     const wrapper = createWrapper(container);
-      //     expect(wrapper.findCalendar()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
-      //       'TEST NEXT YEAR'
-      //     );
-      //   });
-
-      //   test('should add `previousYearAriaLabel` to appropriate button', () => {
-      //     const { container } = render(
-      //       <Calendar
-      //         {...defaultProps}
-      //         i18nStrings={{
-      //           previousYearAriaLabel: 'TEST PREVIOUS YEAR',
-      //         }}
-      //       />
-      //     );
-      //     const wrapper = createWrapper(container);
-      //     expect(wrapper.findCalendar()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
-      //       'TEST PREVIOUS YEAR'
-      //     );
     });
   });
 });

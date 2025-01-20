@@ -127,7 +127,7 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   previousMonthAriaLabel: 'Previous month',
   nextYearAriaLabel: 'Next year',
   previousYearAriaLabel: 'Previous year',
-  currentMonthAriaLabel: 'Current month',
+  currentMonthAriaLabel: 'This month',
   customRelativeRangeDurationLabel: 'Duration',
   customRelativeRangeDurationPlaceholder: 'Enter duration',
   customRelativeRangeOptionLabel: 'Custom range',

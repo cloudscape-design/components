@@ -49,7 +49,7 @@ export default function CalendarHeader({
       <div className={clsx(testutilStyles['calendar-header'], styles['calendar-header'])}>
         <PrevPageButton
           ariaLabel={i18n(
-            isMonthPicker ? 'i18nStrings.previousYearAriaLabel' : 'previousMonthAriaLabel',
+            isMonthPicker ? 'i18nStrings.previousYearAriaLabel' : 'i18nStrings.previousMonthAriaLabel',
             previousPageLabel
           )}
           onChangePage={onChangePage}
@@ -65,7 +65,10 @@ export default function CalendarHeader({
           </span>
         </h2>
         <NextPageButton
-          ariaLabel={i18n(isMonthPicker ? 'i18nStrings.nextYearAriaLabel' : 'nextMonthAriaLabel', nextPageLabel)}
+          ariaLabel={i18n(
+            isMonthPicker ? 'i18nStrings.nextYearAriaLabel' : 'i18nStrings.nextMonthAriaLabel',
+            nextPageLabel
+          )}
           onChangePage={onChangePage}
         />
       </div>
