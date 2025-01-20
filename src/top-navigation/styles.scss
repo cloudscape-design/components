@@ -10,6 +10,7 @@
 .top-navigation {
   @include styles.styles-reset;
   background: awsui.$color-background-container-content;
+  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 
   > .padding-box {
     display: flex;
@@ -34,10 +35,6 @@
 
   &.narrow > .padding-box {
     block-size: awsui.$space-xxxl;
-  }
-
-  &.with-bottom-border {
-    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
   }
 }
 

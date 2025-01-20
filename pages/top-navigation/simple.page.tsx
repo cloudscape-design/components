@@ -60,16 +60,6 @@ export default function TopNavigationPage() {
         identity={{
           href: '#',
           logo: { src: tallLogo, alt: 'Only logo, no title' },
-          title: 'Tall logo, resized to fit, with bottom border',
-        }}
-        showBottomBorder={true}
-      />
-      <br />
-      <TopNavigation
-        i18nStrings={I18N_STRINGS}
-        identity={{
-          href: '#',
-          logo: { src: tallLogo, alt: 'Only logo, no title' },
           title: 'Tall logo, resized to fit',
         }}
       />

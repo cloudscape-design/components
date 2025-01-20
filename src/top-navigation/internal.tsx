@@ -30,7 +30,6 @@ export default function InternalTopNavigation({
   i18nStrings,
   utilities,
   search,
-  showBottomBorder,
   ...restProps
 }: InternalTopNavigationProps) {
   checkSafeUrl('TopNavigation', identity.href);
@@ -101,7 +100,6 @@ export default function InternalTopNavigation({
           [styles.hidden]: isVirtual,
           [styles.narrow]: isNarrowViewport,
           [styles.medium]: isMediumViewport,
-          [styles['with-bottom-border']]: showBottomBorder,
         })}
       >
         <div className={styles['padding-box']}>
