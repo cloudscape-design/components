@@ -293,12 +293,11 @@ export namespace DateRangePickerProps {
     focus(): void;
   }
 
-  export interface I18nStrings extends CalendarProps.I18nStrings {
+  export interface I18nStrings {
     /**
      * Adds `aria-label` to the trigger and dropdown.
      */
     ariaLabel?: string;
-
     /**
      * Adds `aria-labelledby` to the trigger and dropdown.
      */
@@ -428,6 +427,38 @@ export namespace DateRangePickerProps {
      * When the property is set, screen readers announce the selected range when the absolute range gets selected.
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
+    /**
+     * Used as part of the `aria-label` for today's date in the calendar.
+     */
+    todayAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'next month' button.
+     */
+    nextMonthAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'previous month' button.
+     */
+    previousMonthAriaLabel?: string;
+
+    /**
+     * Used as part of the `aria-label` for the current month in the calendar.
+     * @i18n
+     */
+    currentMonthAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'next year' button.
+     * @i18n
+     */
+    nextYearAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'previous year' button.
+     * @i18n
+     */
+    previousYearAriaLabel?: string;
   }
 
   export type AbsoluteFormat = 'iso' | 'long-localized';
@@ -440,11 +471,11 @@ export type QuarterIndex = 0 | 1 | 2;
 export type RangeCalendarI18nStrings = Pick<
   DateRangePickerProps.I18nStrings,
   | 'todayAriaLabel'
-  // | 'nextMonthAriaLabel'
-  // | 'previousMonthAriaLabel'
-  // | 'currentMonthAriaLabel'
-  // | 'nextYearAriaLabel'
-  // | 'previousYearAriaLabel'
+  | 'nextMonthAriaLabel'
+  | 'previousMonthAriaLabel'
+  | 'currentMonthAriaLabel'
+  | 'nextYearAriaLabel'
+  | 'previousYearAriaLabel'
   | 'startMonthLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
