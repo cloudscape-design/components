@@ -9,8 +9,7 @@ export interface Focusable {
 export interface FocusControlRefs {
   toggle: RefObject<Focusable>;
   close: RefObject<Focusable>;
-  slider: RefObject<Focusable>;
-  handle: RefObject<HTMLDivElement>;
+  slider: RefObject<HTMLDivElement>;
 }
 
 export interface FocusControlState {
@@ -36,8 +35,7 @@ export function useMultipleFocusControl(
       refs.current[drawerId] = {
         toggle: createRef<Focusable>(),
         close: createRef<Focusable>(),
-        slider: createRef<Focusable>(),
-        handle: createRef<HTMLDivElement>(),
+        slider: createRef<HTMLDivElement>(),
       };
     }
   });
@@ -103,8 +101,7 @@ export function useFocusControl(
   const refs = {
     toggle: useRef<Focusable>(null),
     close: useRef<Focusable>(null),
-    slider: useRef<Focusable>(null),
-    handle: useRef<HTMLDivElement>(null),
+    slider: useRef<HTMLDivElement>(null),
   };
   const previousFocusedElement = useRef<HTMLElement>();
   const shouldFocus = useRef(false);

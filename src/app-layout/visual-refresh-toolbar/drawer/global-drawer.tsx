@@ -58,7 +58,7 @@ function AppLayoutGlobalDrawerImplementation({
     minWidth: minDrawerSize,
     maxWidth: maxDrawerSize,
     panelRef: drawerRef,
-    handleRef: refs?.handle,
+    handleRef: refs?.slider,
     onResize: size => onActiveDrawerResize({ id: activeDrawerId!, size }),
   });
   const size = getLimitedValue(minDrawerSize, activeDrawerSize, maxDrawerSize);
@@ -111,17 +111,15 @@ function AppLayoutGlobalDrawerImplementation({
           >
             {!isMobile && activeGlobalDrawer?.resizable && (
               <div className={styles['drawer-slider']}>
-                <div ref={refs.handle}>
-                  <PanelResizeHandle
-                    ref={refs?.slider}
-                    position="side"
-                    className={testutilStyles['drawers-slider']}
-                    ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
-                    ariaValuenow={resizeProps.relativeSize}
-                    onKeyDown={resizeProps.onKeyDown}
-                    onPointerDown={resizeProps.onPointerDown}
-                  />
-                </div>
+                <PanelResizeHandle
+                  ref={refs?.slider}
+                  position="side"
+                  className={testutilStyles['drawers-slider']}
+                  ariaLabel={activeGlobalDrawer?.ariaLabels?.resizeHandle}
+                  ariaValuenow={resizeProps.relativeSize}
+                  onKeyDown={resizeProps.onKeyDown}
+                  onPointerDown={resizeProps.onPointerDown}
+                />
               </div>
             )}
             <div

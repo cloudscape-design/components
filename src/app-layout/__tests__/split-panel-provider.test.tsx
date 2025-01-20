@@ -41,7 +41,6 @@ describe.each(['bottom', 'side'] as const)('position=%s', position => {
     onToggle: () => {},
     refs: {
       slider: { current: null },
-      handle: { current: null },
       toggle: { current: null },
       preferences: { current: null },
     },

@@ -18,6 +18,7 @@ import { FormFieldValidationControlProps, useFormFieldContext } from '../../cont
 import { BaseKeyDetail, fireCancelableEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
 import { InternalBaseComponentProps } from '../../hooks/use-base-component';
 import { KeyCode } from '../../keycode';
+import { documentHasFocus } from '../../utils/dom';
 import { nodeBelongs } from '../../utils/node-belongs';
 import Dropdown from '../dropdown';
 import { ExpandToViewport } from '../dropdown/interfaces';
@@ -130,6 +131,11 @@ const AutosuggestInput = React.forwardRef(
     }));
 
     const handleBlur = () => {
+      // When the document in not in focus it means the focus moved outside the page. In that case the dropdown shall stay open
+      // so that when the user comes back it does not re-open unexpectedly when the focus is restored by the browser.
+      if (!documentHasFocus()) {
+        return;
+      }
       if (!preventCloseOnBlurRef.current) {
         closeDropdown();
         fireNonCancelableEvent(onBlur, null);

@@ -1,13 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { Metrics } from '@cloudscape-design/component-toolkit/internal';
-
-import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../../internal/environment';
+import { metrics } from '../../internal/metrics';
 import { FlashbarProps } from '../interfaces';
 import { getFlashTypeCount } from '../utils';
 
-const metrics = new Metrics(PACKAGE_SOURCE, PACKAGE_VERSION);
 const eventContext = 'csa_flashbar';
 
 export const sendRenderMetric = (items: FlashbarProps['items']) => {

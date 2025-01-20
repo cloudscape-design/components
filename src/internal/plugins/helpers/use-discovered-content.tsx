@@ -7,6 +7,7 @@ import {
   AlertFlashContentResult,
   ReplacementType,
 } from '../controllers/alert-flash-content';
+import { reportRuntimeApiWarning } from './metrics';
 
 export function createUseDiscoveredContent(componentName: string, controller: AlertFlashContentApiInternal) {
   return function useDiscoveredContent({
@@ -43,8 +44,9 @@ export function createUseDiscoveredContent(componentName: string, controller: Al
 
         function checkMounted(methodName: string) {
           if (!mounted) {
-            console.warn(
-              `[AwsUi] [Runtime ${componentName} content] \`${methodName}\` called after component unmounted`
+            reportRuntimeApiWarning(
+              `${componentName}-content-replacer`,
+              `"${methodName}" called after component unmounted`
             );
             return false;
           }

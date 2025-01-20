@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { metrics } from '../../../../../lib/components/internal/metrics';
 import {
   DrawerConfig,
   DrawersController,
@@ -95,11 +96,13 @@ describe('update drawer', () => {
 
 describe('console warnings', () => {
   let consoleWarnSpy: jest.SpyInstance;
+  let sendPanoramaMetricSpy: jest.SpyInstance;
   beforeEach(() => {
     consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation(() => {});
+    sendPanoramaMetricSpy = jest.spyOn(metrics, 'sendPanoramaMetric');
   });
   afterEach(() => {
-    consoleWarnSpy.mockRestore();
+    jest.restoreAllMocks();
   });
 
   test('warns if multiple change listeners attempted to register', () => {
@@ -107,6 +110,38 @@ describe('console warnings', () => {
     drawers.onDrawersRegistered(() => {});
     expect(consoleWarnSpy).not.toHaveBeenCalled();
     drawers.onDrawersRegistered(() => {});
-    expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringMatching(/multiple app layout instances detected/));
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      '[AwsUi]',
+      '[app-layout-drawers]',
+      expect.stringMatching(/multiple app layout instances detected/)
+    );
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
+      eventName: 'awsui-runtime-api-warning',
+      eventDetail: {
+        component: 'app-layout-drawers',
+        version: expect.any(String),
+        message: expect.stringMatching(/multiple app layout instances detected/),
+      },
+    });
+  });
+
+  test('warns if multiple drawers with same id got registered', () => {
+    const drawers = new DrawersController();
+    drawers.registerDrawer({ ...drawerA });
+    expect(consoleWarnSpy).not.toHaveBeenCalled();
+    drawers.registerDrawer({ ...drawerA });
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      '[AwsUi]',
+      '[app-layout-drawers]',
+      expect.stringMatching(/drawer with id "drawerA" is already registered/)
+    );
+    expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
+      eventName: 'awsui-runtime-api-warning',
+      eventDetail: {
+        component: 'app-layout-drawers',
+        version: expect.any(String),
+        message: expect.stringMatching(/drawer with id "drawerA" is already registered/),
+      },
+    });
   });
 });

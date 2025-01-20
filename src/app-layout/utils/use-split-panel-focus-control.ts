@@ -8,8 +8,7 @@ type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 
 
 export interface SplitPanelFocusControlRefs {
   toggle: RefObject<Focusable>;
-  slider: RefObject<Focusable>;
-  handle: RefObject<HTMLDivElement>;
+  slider: RefObject<HTMLDivElement>;
   preferences: RefObject<Focusable>;
 }
 export interface SplitPanelFocusControlState {
@@ -20,8 +19,7 @@ export interface SplitPanelFocusControlState {
 export function useSplitPanelFocusControl(dependencies: DependencyList): SplitPanelFocusControlState {
   const refs = {
     toggle: useRef<Focusable>(null),
-    slider: useRef<Focusable>(null),
-    handle: useRef<HTMLDivElement>(null),
+    slider: useRef<HTMLDivElement>(null),
     preferences: useRef<Focusable>(null),
   };
   const lastInteraction = useRef<SplitPanelLastInteraction | null>(null);
