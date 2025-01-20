@@ -249,7 +249,9 @@ exports[`test-utils selectors 1`] = `
 =======
     "awsui_apply-button_1afkv",
     "awsui_calendar-header_1afkv",
+    "awsui_calendar-next-month-btn_1afkv",
     "awsui_calendar-next-page-btn_1afkv",
+    "awsui_calendar-prev-month-btn_1afkv",
     "awsui_calendar-prev-page-btn_1afkv",
     "awsui_cancel-button_1afkv",
     "awsui_clear-button_1afkv",

@@ -20,6 +20,7 @@ import {
 import { getCalendarMonth } from 'mnth';
 
 import useCalendarGridRows from '../../../calendar/grid/use-calendar-grid-rows';
+import { useInternalI18n } from '../../../i18n/context';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
 import { formatDate } from '../../../internal/utils/date-time';
 import { normalizeLocale } from '../../../internal/utils/locale';
@@ -78,11 +79,17 @@ export function Grid({
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [baseDateTime, startOfWeek]
   );
+  const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
   const weekdays = weeks[0].map(date => date.getDay());
   const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? null);
   const quarters = useCalendarGridRows({ baseDate, granularity: 'month', locale: normalizedLocale, startOfWeek });
   const rows = isMonthPicker ? quarters : weeks;
+
+  const currentAnnouncement = i18n(
+    granularity === 'day' ? 'i18nStrings.todayAriaLabel' : 'i18nStrings.currentMonthAriaLabel',
+    granularity === 'day' ? todayAriaLabel : currentMonthAriaLabel
+  );
 
   return (
     <table role="grid" aria-labelledby={ariaLabelledby} className={clsx(styles.grid, className)}>
@@ -181,10 +188,12 @@ export function Grid({
                   granularity,
                 });
 
-                if (isMonthPicker && isThisMonth(date) && !!currentMonthAriaLabel) {
-                  announcement += '. ' + currentMonthAriaLabel;
-                } else if (!isMonthPicker && isToday(date) && !!todayAriaLabel) {
-                  announcement += '. ' + todayAriaLabel;
+                if (currentAnnouncement) {
+                  if (isMonthPicker && isThisMonth(date)) {
+                    announcement += `. ${currentAnnouncement}`;
+                  } else if (!isMonthPicker && isToday(date)) {
+                    announcement += `. ${currentAnnouncement}`;
+                  }
                 }
 
                 // Can't be focused.
@@ -239,7 +248,6 @@ export function Grid({
                       [styles['in-range']]: dateIsInRange,
                       [styles['in-range-border-block-start']]: hasTopBorder(granularity, date, !!inRangeStartRow),
                       [styles['in-range-border-block-end']]: hasBottomBorder(granularity, date, !!inRangeEndRow),
-                      //this is causing the wrong border to be set on the 2nd item in the calendar
                       [styles['in-range-border-inline-start']]: hasLeftBorder(
                         granularity,
                         date,

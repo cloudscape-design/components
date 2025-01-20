@@ -440,11 +440,11 @@ export type QuarterIndex = 0 | 1 | 2;
 export type RangeCalendarI18nStrings = Pick<
   DateRangePickerProps.I18nStrings,
   | 'todayAriaLabel'
-  | 'nextMonthAriaLabel'
-  | 'previousMonthAriaLabel'
-  | 'currentMonthAriaLabel'
-  | 'nextYearAriaLabel'
-  | 'previousYearAriaLabel'
+  // | 'nextMonthAriaLabel'
+  // | 'previousMonthAriaLabel'
+  // | 'currentMonthAriaLabel'
+  // | 'nextYearAriaLabel'
+  // | 'previousYearAriaLabel'
   | 'startMonthLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
