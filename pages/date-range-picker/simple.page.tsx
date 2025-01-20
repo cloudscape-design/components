@@ -54,6 +54,8 @@ export default function DatePickerScenario() {
       : null
   );
 
+  console.log(rangeSelectorMode);
+
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">

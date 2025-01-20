@@ -44,7 +44,6 @@ const dayRelativeOptions = [
   { amount: 10, unit: 'hour', type: 'relative', key: 'ten-hours' },
 ] as DateRangePickerProps['relativeOptions'];
 
-//todo  should relative options be filtered with month granularity
 const monthRelativeOptions = [
   { amount: 5, unit: 'month', type: 'relative', key: 'five-months' },
   { amount: 10, unit: 'month', type: 'relative', key: 'ten-months' },
@@ -179,9 +178,8 @@ describe('Date range picker', () => {
       });
     });
 
-    //todo - confirm this is wanted and happens event when relative options passed into it
-    test.skip('opens relative range mode by default', () => {
-      const { wrapper } = renderDateRangePicker({ granularity } as DateRangePickerProps);
+    test('opens relative range mode by default', () => {
+      const { wrapper } = renderDateRangePicker({ ...updatedProps } as DateRangePickerProps);
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).not.toBeNull();
     });
@@ -193,7 +191,7 @@ describe('Date range picker', () => {
     });
 
     test('shows the clear button by default', () => {
-      const { wrapper } = renderDateRangePicker({ granularity } as DateRangePickerProps);
+      const { wrapper } = renderDateRangePicker({ ...updatedProps } as DateRangePickerProps);
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.findClearButton()).not.toBeNull();
     });
@@ -443,10 +441,13 @@ describe('Date range picker', () => {
             wrapper.findDropdown()![findAt]('right', 3, 3).click();
             wrapper.findDropdown()!.findApplyButton().click();
 
-            //todo  fix
-            // expect(isValidRange).toHaveBeenLastCalledWith(
-            //   expect.objectContaining({ type: 'absolute', startDate: expectedStartDate, endDate: expectedEndDate })
-            // );
+            expect(isValidRange).toHaveBeenLastCalledWith(
+              expect.objectContaining({
+                type: 'absolute',
+                startDate: expectedStartDate,
+                endDate: granularity === 'day' ? '2020-10-13' : '2020-09',
+              })
+            );
           });
         });
 
