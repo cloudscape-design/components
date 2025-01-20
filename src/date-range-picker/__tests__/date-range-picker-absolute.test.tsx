@@ -1006,6 +1006,64 @@ describe('Date range picker', () => {
       });
 
       describe('i18n', () => {
+        test('supports using absolute range with i18n defaults', () => {
+          const { container } = render(
+            <DateRangePicker
+              {...defaultProps}
+              rangeSelectorMode="absolute-only"
+              i18nStrings={i18nStrings}
+              granularity={granularity}
+            />
+          );
+          const wrapper = createWrapper(container).findDateRangePicker()!;
+          wrapper.openDropdown();
+
+          //prev page
+          expect(wrapper.findDropdown()!.findPreviousPageButton().getElement()).toHaveAccessibleName(
+            i18nStrings[granularity === 'day' ? 'previousMonthAriaLabel' : 'previousYearAriaLabel']
+          );
+
+          //next page
+          expect(wrapper.findDropdown()!.findNextPageButton().getElement()).toHaveAccessibleName(
+            i18nStrings[granularity === 'day' ? 'nextMonthAriaLabel' : 'nextYearAriaLabel']
+          );
+
+          expect(wrapper.findDropdown()!.findStartDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+            i18nStrings[granularity === 'day' ? 'startDateLabel' : 'startMonthLabel']
+          );
+          expect(wrapper.findDropdown()!.findEndDateInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+            i18nStrings[granularity === 'day' ? 'endDateLabel' : 'endMonthLabel']
+          );
+
+          if (granularity === 'day') {
+            expect(wrapper.findDropdown()!.findCurrentDay().getElement()).toHaveTextContent(
+              `20January 20, 2025. ${i18nStrings.todayAriaLabel}`
+            );
+            expect(
+              wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()
+            ).toHaveAccessibleDescription(i18nStrings.dateTimeConstraintText);
+            expect(wrapper.findDropdown()!.findStartTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+              i18nStrings.startTimeLabel
+            );
+
+            expect(wrapper.findDropdown()!.findEndTimeInput()!.findNativeInput().getElement()).toHaveAccessibleName(
+              i18nStrings.endTimeLabel
+            );
+          } else {
+            expect(wrapper.findDropdown()!.findPreviousMonthButton().getElement()).toHaveAccessibleName(
+              i18nStrings.previousYearAriaLabel
+            );
+            expect(wrapper.findDropdown()!.findNextMonthButton().getElement()).toHaveAccessibleName(
+              i18nStrings.nextYearAriaLabel
+            );
+            expect(wrapper.findDropdown()!.findCurrentMonth().getElement()).toHaveTextContent(
+              i18nStrings.currentMonthAriaLabel as string
+            );
+            expect(wrapper.findDropdown()!.findStartTimeInput()).toBeNull();
+            expect(wrapper.findDropdown()!.findEndTimeInput()).toBeNull();
+          }
+        });
+
         test('supports using absolute range customized from i18n provider', () => {
           const { container } = render(
             <TestI18nProvider
@@ -1018,9 +1076,9 @@ describe('Date range picker', () => {
                   'i18nStrings.endDateLabel': 'Custom end date',
                   'i18nStrings.endTimeLabel': 'Custom end time',
                   'i18nStrings.dateTimeConstraintText': 'Custom constraint text',
-                  'i18nStrings.todayAriaLabel': 'Custom today',
-                  'i18nStrings.nextMonthAriaLabel': 'Custom next month',
-                  'i18nStrings.previousMonthAriaLabel': 'Custom previous month',
+                  todayAriaLabel: 'Custom today',
+                  nextMonthAriaLabel: 'Custom next month',
+                  previousMonthAriaLabel: 'Custom previous month',
                   'i18nStrings.currentMonthAriaLabel': 'Custom this month',
                   'i18nStrings.previousYearAriaLabel': 'Custom previous year',
                   'i18nStrings.nextYearAriaLabel': 'Custom next year',
@@ -1056,6 +1114,12 @@ describe('Date range picker', () => {
           );
 
           if (granularity === 'day') {
+            expect(wrapper.findDropdown()!.findPreviousMonthButton().getElement()).toHaveAccessibleName(
+              'Custom previous month'
+            );
+            expect(wrapper.findDropdown()!.findNextMonthButton().getElement()).toHaveAccessibleName(
+              'Custom next month'
+            );
             expect(wrapper.findDropdown()!.findCurrentDay().getElement()).toHaveTextContent(
               '20January 20, 2025. Custom today'
             );
