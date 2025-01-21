@@ -8,6 +8,33 @@ export interface PageLayoutProps extends AppLayoutProps {
    * while navigation drawer might be displayed, but opened using a custom trigger.
    */
   navigationTriggerHide?: boolean;
+
+  /**
+   * Drawers property. If you set both `drawers` and `tools`, `drawers` will take precedence.
+
+   * Each Drawer is an item in the drawers wrapper with the following properties:
+   * * id (string) - the id of the drawer.
+   * * content (React.ReactNode) - the content in the drawer.
+   * * trigger (DrawerTrigger) - (Optional) the button that opens and closes the active drawer.
+   * If not set, the corresponding trigger button won't be rendered.
+   * In this scenario the drawer's state should be managed using the controlled API.
+   * * ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer (`activeDrawerId` and `onDrawerChange`).
+   * * badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+   * * resizable (boolean) - if the drawer is resizable or not.
+   * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
+   * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+   *
+   * #### DrawerTrigger
+   * - `iconName` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
+   * - `iconSvg` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
+   *
+   * #### DrawerAriaLabels
+   * - `drawerName` (string) - Label for the drawer itself, and for the drawer trigger button tooltip text.
+   * - `closeButton` (string) - (Optional) Label for the close button.
+   * - `triggerButton` (string) - (Optional) Label for the trigger button.
+   * - `resizeHandle` (string) - (Optional) Label for the resize handle.
+   */
+  drawers?: Array<AppLayoutProps.Drawer>;
 }
 
 export namespace PageLayoutProps {
