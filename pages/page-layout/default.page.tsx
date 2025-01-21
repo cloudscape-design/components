@@ -2,22 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import {
-  Button,
-  ContentLayout,
-  Header,
-  HelpPanel,
-  Link,
-  PageLayout,
-  SpaceBetween,
-  SplitPanel,
-  Toggle,
-} from '~components';
-import awsuiPlugins from '~components/internal/plugins';
+import { Button, ContentLayout, Header, HelpPanel, Link, PageLayout, SpaceBetween, SplitPanel } from '~components';
 import { PageLayoutProps } from '~components/page-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import { Breadcrumbs, Containers, CustomDrawerContent } from './utils/content-blocks';
+import { Breadcrumbs, Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
 import appLayoutLabels from './utils/labels';
 
@@ -33,32 +22,28 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-  const hasTools = urlParams.hasTools ?? false;
-  const hasDrawers = urlParams.hasDrawers ?? true;
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
   const appLayoutRef = useRef<PageLayoutProps.Ref>(null);
 
-  const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = !hasDrawers
-    ? null
-    : {
-        activeDrawerId: activeDrawerId,
-        drawers: [
-          {
-            ariaLabels: {
-              closeButton: 'ProHelp close button',
-              drawerName: 'ProHelp drawer content',
-              triggerButton: 'ProHelp trigger button',
-              resizeHandle: 'ProHelp resize handle',
-            },
-            content: <CustomDrawerContent />,
-            id: 'pro-help',
-          },
-        ],
-        onDrawerChange: event => {
-          setActiveDrawerId(event.detail.activeDrawerId);
+  const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
+    activeDrawerId: activeDrawerId,
+    drawers: [
+      {
+        ariaLabels: {
+          closeButton: 'ProHelp close button',
+          drawerName: 'ProHelp drawer content',
+          triggerButton: 'ProHelp trigger button',
+          resizeHandle: 'ProHelp resize handle',
         },
-      };
+        content: <CustomDrawerContent />,
+        id: 'pro-help',
+      },
+    ],
+    onDrawerChange: event => {
+      setActiveDrawerId(event.detail.activeDrawerId);
+    },
+  };
 
   return (
     <PageLayout
@@ -72,7 +57,7 @@ export default function WithDrawers() {
             <SpaceBetween size="m">
               <Header
                 variant="h1"
-                description="Sometimes you need custom drawers to get the job done."
+                description="Sometimes you need custom triggers for drawers and navigation to get the job done."
                 info={
                   <Link
                     data-testid="info-link-header"
@@ -87,18 +72,10 @@ export default function WithDrawers() {
                   </Link>
                 }
               >
-                Testing Custom Drawers!
+                Page layout
               </Header>
 
               <SpaceBetween size="xs">
-                <Toggle checked={hasTools} onChange={({ detail }) => setUrlParams({ hasTools: detail.checked })}>
-                  Use Tools
-                </Toggle>
-
-                <Toggle checked={hasDrawers} onChange={({ detail }) => setUrlParams({ hasDrawers: detail.checked })}>
-                  Use Drawers
-                </Toggle>
-
                 <Button onClick={() => setIsNavigationOpen(current => !current)}>Toggle navigation</Button>
 
                 <Button
@@ -107,19 +84,9 @@ export default function WithDrawers() {
                     appLayoutRef.current?.focusActiveDrawer();
                   }}
                 >
-                  Open a local drawer without a trigger
+                  Open a drawer without trigger
                 </Button>
-                <Button onClick={() => setActiveDrawerId(null)}>Close a local drawer without a trigger</Button>
-
-                <Button
-                  onClick={() => awsuiPlugins.appLayout.openDrawer('circle4-global')}
-                  data-testid="open-drawer-button"
-                >
-                  Open a drawer without a trigger
-                </Button>
-                <Button onClick={() => awsuiPlugins.appLayout.closeDrawer('circle4-global')}>
-                  Close a drawer without a trigger
-                </Button>
+                <Button onClick={() => setActiveDrawerId(null)}>Close a drawer without trigger</Button>
               </SpaceBetween>
             </SpaceBetween>
           }
@@ -174,9 +141,9 @@ export default function WithDrawers() {
       }}
       tools={<Info helpPathSlug={helpPathSlug} />}
       toolsOpen={isToolsOpen}
-      toolsHide={!hasTools}
       navigationTriggerHide={true}
       navigationOpen={isNavigationOpen}
+      navigation={<Navigation />}
       onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
       {...drawersProps}
     />
