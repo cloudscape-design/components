@@ -26,6 +26,7 @@ import {
   hasEnoughSpaceToStretchBeyondTriggerWidth,
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
+import { applyFixedDropdownPosition, LogicalDOMRect } from './dropdown-position';
 import { DropdownProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -196,7 +197,7 @@ const Dropdown = ({
 
   const setDropdownPosition = (
     position: DropdownPosition | InteriorDropdownPosition,
-    triggerBox: DOMRect,
+    triggerBox: LogicalDOMRect,
     target: HTMLDivElement,
     verticalContainer: HTMLDivElement
   ) => {
@@ -233,21 +234,11 @@ const Dropdown = ({
 
     // Position normal overflow dropdowns with fixed positioning relative to viewport
     if (expandToViewport && !interior) {
-      const isIOSVirtualKeyboardPresent =
-        window.visualViewport?.height && window.visualViewport.height < window.innerHeight;
-      target.style.position = isIOSVirtualKeyboardPresent ? 'absolute' : 'fixed';
-      const verticalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollTop : 0;
-      const horizontalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollLeft : 0;
-      if (position.dropBlockStart) {
-        target.style.insetBlockEnd = `calc(100% - ${verticalScrollOffset + triggerBox.top}px)`;
-      } else {
-        target.style.insetBlockStart = `${verticalScrollOffset + triggerBox.bottom}px`;
-      }
-      if (position.dropInlineStart) {
-        target.style.insetInlineStart = `calc(${horizontalScrollOffset + triggerBox.right}px - ${position.inlineSize})`;
-      } else {
-        target.style.insetInlineStart = `${horizontalScrollOffset + triggerBox.left}px`;
-      }
+      applyFixedDropdownPosition({
+        position,
+        dropdownElement: target,
+        triggerRect: triggerBox,
+      });
       // Keep track of the initial dropdown position and direction.
       // Dropdown direction doesn't need to change as the user scrolls, just needs to stay attached to the trigger.
       fixedPosition.current = position;
@@ -394,29 +385,12 @@ const Dropdown = ({
       return;
     }
     const updateDropdownPosition = () => {
-      if (triggerRef.current && dropdownRef.current && verticalContainerRef.current) {
-        const isIOSVirtualKeyboardPresent =
-          window.visualViewport?.height && window.visualViewport.height < window.innerHeight;
-
-        dropdownRef.current.style.position = isIOSVirtualKeyboardPresent ? 'absolute' : 'fixed';
-
-        const verticalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollTop : 0;
-        const horizontalScrollOffset = isIOSVirtualKeyboardPresent ? document.documentElement.scrollLeft : 0;
-
-        const triggerRect = getLogicalBoundingClientRect(triggerRef.current);
-        const target = dropdownRef.current;
-        if (fixedPosition.current) {
-          if (fixedPosition.current.dropBlockStart) {
-            dropdownRef.current.style.insetBlockEnd = `calc(100% - ${verticalScrollOffset + triggerRect.insetBlockStart}px)`;
-          } else {
-            target.style.insetBlockStart = `${verticalScrollOffset + triggerRect.insetBlockEnd}px`;
-          }
-          if (fixedPosition.current.dropInlineStart) {
-            target.style.insetInlineStart = `calc(${horizontalScrollOffset + triggerRect.insetInlineEnd}px - ${fixedPosition.current.inlineSize})`;
-          } else {
-            target.style.insetInlineStart = `${horizontalScrollOffset + triggerRect.insetInlineStart}px`;
-          }
-        }
+      if (triggerRef.current && dropdownRef.current && verticalContainerRef.current && fixedPosition.current) {
+        applyFixedDropdownPosition({
+          position: fixedPosition.current,
+          dropdownElement: dropdownRef.current,
+          triggerRect: getLogicalBoundingClientRect(triggerRef.current),
+        });
       }
     };
 
