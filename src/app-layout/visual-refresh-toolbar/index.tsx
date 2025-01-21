@@ -15,7 +15,7 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
@@ -23,7 +23,7 @@ import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-contro
 import { ActiveDrawersContext } from '../utils/visibility-context';
 import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
 import { AppLayoutVisibilityContext } from './contexts';
-import { AppLayoutInternals } from './interfaces';
+import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
   AppLayoutGlobalDrawers,
@@ -35,10 +35,6 @@ import {
 } from './internal';
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
-
-interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
-  navigationTriggerHide?: boolean;
-}
 
 const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (
