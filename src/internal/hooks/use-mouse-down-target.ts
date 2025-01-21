@@ -12,11 +12,11 @@ const useEventListenersSingleton = createSingletonHandler<Node | null>(setTarget
   function handleKeyDown() {
     setTarget(null);
   }
-  window.addEventListener('mousedown', handleMouseDown);
-  window.addEventListener('keydown', handleKeyDown);
+  const controller = new AbortController();
+  window.addEventListener('mousedown', handleMouseDown, { signal: controller.signal });
+  window.addEventListener('keydown', handleKeyDown, { signal: controller.signal });
   return () => {
-    window.removeEventListener('mousedown', handleMouseDown);
-    window.removeEventListener('keydown', handleKeyDown);
+    controller.abort();
   };
 });
 

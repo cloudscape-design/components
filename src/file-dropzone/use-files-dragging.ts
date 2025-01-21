@@ -47,15 +47,14 @@ export function useFilesDragging() {
       dragTimer = setTimeout(() => setFilesDragging(false), 25);
     };
 
-    document.addEventListener('dragover', onDocumentDragOver, false);
-    document.addEventListener('dragleave', onDocumentDragLeave, false);
-    document.addEventListener('drop', onDocumentDrop, false);
+    const controller = new AbortController();
+    document.addEventListener('dragover', onDocumentDragOver, { signal: controller.signal });
+    document.addEventListener('dragleave', onDocumentDragLeave, { signal: controller.signal });
+    document.addEventListener('drop', onDocumentDrop, { signal: controller.signal });
 
     return () => {
       dragTimer && clearTimeout(dragTimer);
-      document.removeEventListener('dragover', onDocumentDragOver);
-      document.removeEventListener('dragleave', onDocumentDragLeave);
-      document.removeEventListener('drop', onDocumentDrop);
+      controller.abort();
     };
   }, []);
 

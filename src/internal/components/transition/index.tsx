@@ -50,15 +50,15 @@ export function Transition({
     if (node === null) {
       return;
     }
+    const controller = new AbortController();
     const listener = (e: TransitionEvent | AnimationEvent) => {
       if (e.target === node) {
-        node.removeEventListener('transitionend', listener);
-        node.removeEventListener('animationend', listener);
+        controller.abort();
         done();
       }
     };
-    node.addEventListener('transitionend', listener);
-    node.addEventListener('animationend', listener);
+    node.addEventListener('transitionend', listener, { signal: controller.signal });
+    node.addEventListener('animationend', listener, { signal: controller.signal });
   }, []);
 
   return (
