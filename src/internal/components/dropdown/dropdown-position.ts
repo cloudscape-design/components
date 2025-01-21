@@ -18,12 +18,14 @@ export function applyFixedDropdownPosition({
   position,
   dropdownElement,
   triggerRect,
+  isMobile,
 }: {
   position: DropdownPosition;
   dropdownElement: HTMLElement;
   triggerRect: LogicalDOMRect;
+  isMobile: boolean;
 }) {
-  const useAbsolutePositioning = window.visualViewport?.height && window.visualViewport.height < window.innerHeight;
+  const useAbsolutePositioning = isMobile;
 
   const verticalScrollOffset = useAbsolutePositioning ? document.documentElement.scrollTop : 0;
   const horizontalScrollOffset = useAbsolutePositioning

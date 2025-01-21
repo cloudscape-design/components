@@ -238,6 +238,7 @@ const Dropdown = ({
         position,
         dropdownElement: target,
         triggerRect: triggerBox,
+        isMobile,
       });
       // Keep track of the initial dropdown position and direction.
       // Dropdown direction doesn't need to change as the user scrolls, just needs to stay attached to the trigger.
@@ -390,6 +391,7 @@ const Dropdown = ({
           position: fixedPosition.current,
           dropdownElement: dropdownRef.current,
           triggerRect: getLogicalBoundingClientRect(triggerRef.current),
+          isMobile,
         });
       }
     };
@@ -402,7 +404,7 @@ const Dropdown = ({
     return () => {
       controller.abort();
     };
-  }, [open, expandToViewport]);
+  }, [open, expandToViewport, isMobile]);
 
   const referrerId = useUniqueId();
 
