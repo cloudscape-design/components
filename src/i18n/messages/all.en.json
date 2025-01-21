@@ -126,9 +126,9 @@
     "i18nStrings.copyButtonText": "Copy"
   },
   "date-range-picker": {
-    "i18nStrings.nextMonthAriaLabel": "Next month",
-    "i18nStrings.previousMonthAriaLabel": "Previous month",
-    "i18nStrings.todayAriaLabel": "Today",
+    "nextMonthAriaLabel": "Next month",
+    "previousMonthAriaLabel": "Previous month",
+    "todayAriaLabel": "Today",
     "i18nStrings.nextYearAriaLabel": "Next year",
     "i18nStrings.previousYearAriaLabel": "Previous year",
     "i18nStrings.currentMonthAriaLabel": "This month",
@@ -149,7 +149,9 @@
     "i18nStrings.endMonthLabel": "End month",
     "i18nStrings.endDateLabel": "End date",
     "i18nStrings.endTimeLabel": "End time",
+    "i18nStrings.dateConstraintText": "For date, use YYYY/MM/DD.",
     "i18nStrings.dateTimeConstraintText": "For date, use YYYY/MM/DD. For time, use 24 hr format.",
+    "i18nStrings.monthConstraintText": "For month, use YYYY/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Range selected from {startDate} to {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Last {amount} seconds} one {Last {amount} second} other {Last {amount} seconds}}} minute {{amount, plural, zero {Last {amount} minutes} one {Last {amount} minute} other {Last {amount} minutes}}} hour {{amount, plural, zero {Last {amount} hours} one {Last {amount} hour} other {Last {amount} hours}}} day {{amount, plural, zero {Last {amount} days} one {Last {amount} day} other {Last {amount} days}}} week {{amount, plural, zero {Last {amount} weeks} one {Last {amount} week} other {Last {amount} weeks}}} month {{amount, plural, zero {Last {amount} months} one {Last {amount} month} other {Last {amount} months}}} year {{amount, plural, zero {Last {amount} years} one {Last {amount} year} other {Last {amount} years}}} other {}}",

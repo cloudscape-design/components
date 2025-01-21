@@ -182,7 +182,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endMonthLabel": never;
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
+    "i18nStrings.dateConstraintText": never;
     "i18nStrings.dateTimeConstraintText": never;
+    "i18nStrings.monthConstraintText": never;
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": {
       "startDate": string | number;

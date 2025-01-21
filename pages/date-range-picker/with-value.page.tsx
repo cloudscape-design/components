@@ -9,9 +9,9 @@ import ScreenshotArea from '../utils/screenshot-area';
 import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
-  generateI18nStrings,
   generatePlaceholder,
   generateRelativeOptions,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -72,7 +72,7 @@ export default function DatePickerScenario() {
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
             isValidRange={isValid}
             customRelativeRangeUnits={['second', 'minute', 'hour']}
-            i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+            i18nStrings={i18nStrings}
             absoluteFormat={absoluteFormat}
           />
         </FormField>
