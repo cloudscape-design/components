@@ -9,7 +9,7 @@ import { renderHook } from '../../__tests__/render-hook';
 import useTableFocusNavigation from '../use-table-focus-navigation';
 
 const focusFn = jest.fn();
-const abortFn = jest.fn();
+const rootRemoveEventListener = jest.fn();
 
 function renderComponent(jsx: React.ReactElement) {
   const { container, rerender, getByTestId, queryByTestId, unmount } = render(jsx);
@@ -48,7 +48,7 @@ const TestComponent = () => {
 
   const handleKeyup = (evt: React.KeyboardEvent) => {
     if (evt.key === 'BIGUP') {
-      abortFn();
+      jest.spyOn(tableRef.current!, 'removeEventListener').mockImplementation(rootRemoveEventListener as any);
     }
   };
 
@@ -175,7 +175,7 @@ describe('useTableFocusNavigation', () => {
     fireEvent.click(getByTestId('0,0'));
     fireEvent.keyUp(getByTestId('0,0'), { key: 'BIGUP' });
     unmount();
-    expect(abortFn).toHaveBeenCalled();
+    expect(rootRemoveEventListener).toHaveBeenCalled();
   });
 
   it('should not navigate focus when focus navigation is disabled', () => {
