@@ -135,7 +135,9 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   customRelativeRangeUnitLabel: 'Unit of time',
   formatRelativeRange: formatRelativeRange,
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
+  dateConstraintText: 'Range must be between 6 and 30 days.',
   dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.',
+  monthConstraintText: 'For month use YYY/MM.',
   modeSelectionLabel: 'Date range mode',
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
@@ -152,14 +154,6 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   errorIconAriaLabel: 'Error',
   renderSelectedAbsoluteRangeAriaLive: (startDate, endDate) => `Range selected from ${startDate} to ${endDate}`,
 };
-
-export function generateI18nStrings(isDateOnly: boolean, isMonthOnly: boolean): DateRangePickerProps['i18nStrings'] {
-  return {
-    ...i18nStrings,
-    ...(isDateOnly ? { dateTimeConstraintText: 'Range must be between 6 and 30 days.' } : {}),
-    ...(isMonthOnly ? { dateTimeConstraintText: 'For month use YYYY/MM.' } : {}),
-  };
-}
 
 export const relativeOptions = [
   { key: 'last-5-minutes', amount: 5, unit: 'minute', type: 'relative' },

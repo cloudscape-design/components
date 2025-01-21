@@ -372,52 +372,73 @@ export namespace DateRangePickerProps {
      * the custom relative range.
      */
     customRelativeRangeDurationLabel?: string;
+
     /**
      * Placeholder for the duration selector for
      * the custom relative range.
      */
     customRelativeRangeDurationPlaceholder?: string;
+
     /**
      * Visible label for the unit selector for the
      * custom relative range.
      */
     customRelativeRangeUnitLabel?: string;
+
     /**
      * Visible label for the Start Month input for the
      * absolute range.
      */
     startMonthLabel?: string;
+
     /**
      * Visible label for the Start Date input for the
      * absolute range.
      */
     startDateLabel?: string;
+
     /**
      * Visible label for the Start Time input for the
      * absolute range.
      */
     startTimeLabel?: string;
+
     /**
      * Visible label for the End Month input for the
      * absolute range.
      */
     endMonthLabel?: string;
+
     /**
      * Visible label for the End Date input for the
      * absolute range.
      */
     endDateLabel?: string;
+
     /**
      * Visible label for the End Time input for the
      * absolute range.
      */
     endTimeLabel?: string;
+
+    /**
+     * Constraint text for the date input field for the
+     * absolute range with no time option.
+     */
+    dateConstraintText?: string;
+
     /**
      * Constraint text for the input fields for the
      * absolute range.
      */
     dateTimeConstraintText?: string;
-    //todo add other constraint texts here from API doc when signed off
+
+    /**
+     * Constraint text for the month input fields for the
+     * absolute range.
+     */
+    monthConstraintText?: string;
+
     /**
      * Provides a text alternative for the error icon in the error alert.
      */
@@ -427,6 +448,7 @@ export namespace DateRangePickerProps {
      * When the property is set, screen readers announce the selected range when the absolute range gets selected.
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
+
     /**
      * Used as part of the `aria-label` for today's date in the calendar.
      */
@@ -482,6 +504,8 @@ export type RangeCalendarI18nStrings = Pick<
   | 'endMonthLabel'
   | 'endDateLabel'
   | 'endTimeLabel'
+  | 'dateConstraintText'
   | 'dateTimeConstraintText'
+  | 'monthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
 >;

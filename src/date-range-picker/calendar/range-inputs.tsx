@@ -17,7 +17,9 @@ import testutilStyles from '../test-classes/styles.css.js';
 
 type I18nStrings = Pick<
   RangeCalendarI18nStrings,
+  | 'dateConstraintText'
   | 'dateTimeConstraintText'
+  | 'monthConstraintText'
   | 'startMonthLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
@@ -60,10 +62,21 @@ export default function RangeInputs({
   const dateInputPlaceholder = isMonthPicker ? 'YYYY/MM' : 'YYYY/MM/DD';
   const showTimeInput = !dateOnly && !isMonthPicker;
 
-  //todo confirm if other dateTimeConstraint texts needed for i18n
-
   return (
-    <InternalFormField constraintText={i18n('i18nStrings.dateTimeConstraintText', i18nStrings?.dateTimeConstraintText)}>
+    <InternalFormField
+      constraintText={i18n(
+        isMonthPicker
+          ? 'i18nStrings.monthConstraintText'
+          : dateOnly
+            ? 'i18nStrings.dateConstraintText'
+            : 'i18nStrings.dateTimeConstraintText',
+        isMonthPicker
+          ? i18nStrings?.monthConstraintText
+          : dateOnly
+            ? i18nStrings?.dateConstraintText
+            : i18nStrings?.dateTimeConstraintText
+      )}
+    >
       <div className={styles['date-and-time-container']}>
         <div className={styles['date-and-time-wrapper']}>
           <InternalFormField

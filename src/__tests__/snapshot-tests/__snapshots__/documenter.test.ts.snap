@@ -7087,6 +7087,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "dateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "dateTimeConstraintText",
             "optional": true,
             "type": "string",
@@ -7123,6 +7128,11 @@ Defaults to \`false\`.",
           },
           {
             "name": "modeSelectionLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "monthConstraintText",
             "optional": true,
             "type": "string",
           },

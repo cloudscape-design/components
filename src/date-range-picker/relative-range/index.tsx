@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../../box/internal';
-import { CalendarProps } from '../../calendar/interfaces';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import InternalInput from '../../input/internal';
@@ -14,7 +13,7 @@ import { RadioGroupProps } from '../../radio-group/interfaces';
 import InternalRadioGroup from '../../radio-group/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
-import { DateRangePickerProps } from '../interfaces';
+import { DateRangePickerProps, Granularity } from '../interfaces';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -27,7 +26,7 @@ interface RelativeRangePickerProps {
   i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
   customUnits?: DateRangePickerProps.TimeUnit[];
-  granularity?: CalendarProps.Granularity;
+  granularity?: Granularity;
 }
 
 interface UnitSelectOption {
