@@ -10,6 +10,7 @@ interface FocusTrackerOptions {
 export default class FocusTracker {
   private readonly onFocusLeave: () => void;
   private readonly onFocusEnter: () => void;
+  private readonly controller: AbortController;
 
   private currentlyFocused = false;
 
@@ -19,17 +20,17 @@ export default class FocusTracker {
   ) {
     this.onFocusEnter = onFocusEnter;
     this.onFocusLeave = onFocusLeave;
+    this.controller = new AbortController();
   }
 
   initialize() {
     this.currentlyFocused = nodeBelongs(this.node, document.activeElement);
-    document.addEventListener('focusin', this.focusInListener);
-    document.addEventListener('focusout', this.focusOutListener);
+    document.addEventListener('focusin', this.focusInListener, { signal: this.controller.signal });
+    document.addEventListener('focusout', this.focusOutListener, { signal: this.controller.signal });
   }
 
   destroy() {
-    document.removeEventListener('focusin', this.focusInListener);
-    document.removeEventListener('focusout', this.focusOutListener);
+    this.controller.abort();
   }
 
   private focusInListener = (event: FocusEvent) => {
