@@ -68,6 +68,12 @@ $trigger-underline-offset: 0.25em;
     line-height: calc(1 + #{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
   }
 
+  /*
+    These styles override the custom block content inside the popover trigger.
+    Inline elements automatically inherit the underline styles, whereas block elements do not.
+    One use case is when the StatusIndicator component is used as the popover trigger.
+    However, since it has display: inline-block, it does not inherit these styles automatically.
+  */
   /* stylelint-disable selector-combinator-disallowed-list, selector-max-type, selector-max-universal */
   & * {
     @include trigger-underline-styles;
