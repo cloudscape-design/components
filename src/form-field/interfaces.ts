@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { CSSProperties } from 'react';
 
 import { AnalyticsMetadata } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
@@ -106,4 +106,5 @@ export interface InternalFormFieldProps extends FormFieldProps, InternalBaseComp
    */
   __disableGutters?: boolean;
   __analyticsMetadata?: AnalyticsMetadata;
+  __style?: CSSProperties;
 }
