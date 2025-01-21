@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -312,6 +312,63 @@ describe('Date range picker', () => {
 
         changeMode(wrapper, 'relative');
         expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
+      });
+
+      test('reannounces error text when apply is clicked', async () => {
+        Mockdate.set(new Date('2020-01-01T12:30:20'));
+        ({ wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          isValidRange: value => {
+            if (value === null) {
+              return {
+                valid: false,
+                errorMessage: 'No range selected',
+              };
+            }
+            if (value.type === 'relative' && value.amount === 10) {
+              return { valid: false, errorMessage: '10 is not allowed.' };
+            }
+            if (value.type === 'absolute') {
+              const [endDateWithoutTime] = value.endDate.split('T');
+
+              if (!endDateWithoutTime) {
+                return {
+                  valid: false,
+                  errorMessage: 'You must provide an end date',
+                };
+              }
+
+              if (value.startDate < '2020-01-01T00:00:00') {
+                return {
+                  valid: false,
+                  errorMessage: 'The range cannot start before 2020',
+                };
+              }
+            }
+            return { valid: true };
+          },
+        }));
+        wrapper.openDropdown();
+        changeMode(wrapper, 'absolute');
+        wrapper.findDropdown()?.findDateAt('left', 1, 1).click();
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        const liveRegion = document.querySelectorAll('[aria-live=polite]')![3];
+
+        // announces first validation error
+        await waitFor(() => expect(liveRegion).toHaveTextContent('You must provide an end date'));
+
+        wrapper.findDropdown()?.findDateAt('left', 1, 3).click();
+
+        // announces different validation error
+        await waitFor(() => expect(liveRegion).toHaveTextContent('The range cannot start before 2020'));
+
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        // reannounces second validation error
+        await waitFor(() => expect(liveRegion).toHaveTextContent('The range cannot start before 2020.'));
+
+        Mockdate.reset();
       });
     });
 
