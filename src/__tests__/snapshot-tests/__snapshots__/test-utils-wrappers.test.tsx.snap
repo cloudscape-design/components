@@ -197,6 +197,10 @@ export { ElementWrapper };
         export { MultiselectWrapper };
       
 
+        import PageLayoutWrapper from './page-layout';
+        export { PageLayoutWrapper };
+      
+
         import PaginationWrapper from './pagination';
         export { PaginationWrapper };
       
@@ -1282,6 +1286,26 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         * @returns {Array<MultiselectWrapper>}
         */
        findAllMultiselects(selector?: string): Array<MultiselectWrapper>;
+
+       /**
+        * Returns the wrapper of the first PageLayout that matches the specified CSS selector.
+        * If no CSS selector is specified, returns the wrapper of the first PageLayout.
+        * If no matching PageLayout is found, returns \`null\`.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {PageLayoutWrapper | null}
+        */
+       findPageLayout(selector?: string): PageLayoutWrapper | null;
+
+       /**
+        * Returns an array of PageLayout wrapper that matches the specified CSS selector.
+        * If no CSS selector is specified, returns all of the PageLayouts inside the current wrapper.
+        * If no matching PageLayout is found, returns an empty array.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {Array<PageLayoutWrapper>}
+        */
+       findAllPageLayouts(selector?: string): Array<PageLayoutWrapper>;
 
        /**
         * Returns the wrapper of the first Pagination that matches the specified CSS selector.
@@ -2433,6 +2457,17 @@ declare module '@cloudscape-design/test-utils-core/dist/dom' {
         return this.findAllComponents(MultiselectWrapper, selector);
       };
 
+      ElementWrapper.prototype.findPageLayout = function(selector) {
+        const rootSelector = \`.\${PageLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PageLayoutWrapper);
+      };
+
+      ElementWrapper.prototype.findAllPageLayouts = function(selector) {
+        return this.findAllComponents(PageLayoutWrapper, selector);
+      };
+
       ElementWrapper.prototype.findPagination = function(selector) {
         const rootSelector = \`.\${PaginationWrapper.rootSelector}\`;
         // casting to 'any' is needed to avoid this issue with generics
@@ -2971,6 +3006,10 @@ export { ElementWrapper };
 
         import MultiselectWrapper from './multiselect';
         export { MultiselectWrapper };
+      
+
+        import PageLayoutWrapper from './page-layout';
+        export { PageLayoutWrapper };
       
 
         import PaginationWrapper from './pagination';
@@ -3962,6 +4001,24 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
         * @returns {MultiElementWrapper<MultiselectWrapper>}
         */
        findAllMultiselects(selector?: string): MultiElementWrapper<MultiselectWrapper>;
+
+       /**
+        * Returns a wrapper that matches the PageLayouts with the specified CSS selector.
+        * If no CSS selector is specified, returns a wrapper that matches PageLayouts.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {PageLayoutWrapper}
+        */
+       findPageLayout(selector?: string): PageLayoutWrapper;
+
+       /**
+        * Returns a multi-element wrapper that matches PageLayouts with the specified CSS selector.
+        * If no CSS selector is specified, returns a multi-element wrapper that matches PageLayouts.
+        *
+        * @param {string} [selector] CSS Selector
+        * @returns {MultiElementWrapper<PageLayoutWrapper>}
+        */
+       findAllPageLayouts(selector?: string): MultiElementWrapper<PageLayoutWrapper>;
 
        /**
         * Returns a wrapper that matches the Paginations with the specified CSS selector.
@@ -5049,6 +5106,17 @@ declare module '@cloudscape-design/test-utils-core/dist/selectors' {
 
       ElementWrapper.prototype.findAllMultiselects = function(selector) {
         return this.findAllComponents(MultiselectWrapper, selector);
+      };
+
+      ElementWrapper.prototype.findPageLayout = function(selector) {
+        const rootSelector = \`.\${PageLayoutWrapper.rootSelector}\`;
+        // casting to 'any' is needed to avoid this issue with generics
+        // https://github.com/microsoft/TypeScript/issues/29132
+        return (this as any).findComponent(selector ? appendSelector(selector, rootSelector) : rootSelector, PageLayoutWrapper);
+      };
+
+      ElementWrapper.prototype.findAllPageLayouts = function(selector) {
+        return this.findAllComponents(PageLayoutWrapper, selector);
       };
 
       ElementWrapper.prototype.findPagination = function(selector) {
