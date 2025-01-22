@@ -23,8 +23,8 @@ export interface PopoverProps extends BaseComponentProps {
 
   /**
    * Specifies the type of content inside the trigger region. The following types are available:
-   * - `text` - Use for single line text triggers.
-   * - `text-inline` - Use for multiline text triggers.
+   * - `text` - Use for triggers containing inline components, like status indicator.
+   * - `text-inline` - Use for triggers containing plain text only.
    * - `custom` - Use for the [button](/components/button/) component.
    */
   triggerType?: PopoverProps.TriggerType;
