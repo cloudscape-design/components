@@ -1060,8 +1060,8 @@ describe('Date range picker', () => {
               );
             }
             if (granularity === 'day') {
-              expect(wrapper.findDropdown()!.findCurrentDay().getElement()).toHaveTextContent(
-                `21January 21, 2025. ${i18nStrings.todayAriaLabel}`
+              expect(wrapper.findDropdown()!.findCurrentDay().getElement().textContent).toContain(
+                i18nStrings.todayAriaLabel
               );
             } else {
               expect(wrapper.findDropdown()!.findPreviousMonthButton().getElement()).toHaveAccessibleName(
@@ -1070,8 +1070,8 @@ describe('Date range picker', () => {
               expect(wrapper.findDropdown()!.findNextMonthButton().getElement()).toHaveAccessibleName(
                 i18nStrings.nextYearAriaLabel
               );
-              expect(wrapper.findDropdown()!.findCurrentMonth().getElement()).toHaveTextContent(
-                i18nStrings.currentMonthAriaLabel as string
+              expect(wrapper.findDropdown()!.findCurrentMonth().getElement().textContent).toContain(
+                i18nStrings.currentMonthAriaLabel
               );
             }
           });
@@ -1156,11 +1156,11 @@ describe('Date range picker', () => {
               expect(wrapper.findDropdown()!.findNextMonthButton().getElement()).toHaveAccessibleName(
                 'Custom next month'
               );
-              expect(wrapper.findDropdown()!.findCurrentDay().getElement()).toHaveTextContent(
-                '21January 21, 2025. Custom today'
-              );
+              expect(wrapper.findDropdown()!.findCurrentDay().getElement().textContent).toContain('Custom today');
             } else {
-              expect(wrapper.findDropdown()!.findCurrentMonth().getElement()).toHaveTextContent('Custom this month');
+              expect(wrapper.findDropdown()!.findCurrentMonth().getElement().textContent).toContain(
+                'Custom this month'
+              );
             }
           });
         });

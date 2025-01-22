@@ -126,9 +126,9 @@
     "i18nStrings.copyButtonText": "Kopyala"
   },
   "date-range-picker": {
-    "nextMonthAriaLabel": "Gelecek ay",
-    "previousMonthAriaLabel": "Önceki ay",
-    "todayAriaLabel": "Bugün",
+    "i18nStrings.nextMonthAriaLabel": "Gelecek ay",
+    "i18nStrings.previousMonthAriaLabel": "Önceki ay",
+    "i18nStrings.todayAriaLabel": "Bugün",
     "i18nStrings.nextYearAriaLabel": "Gelecek yıl",
     "i18nStrings.previousYearAriaLabel": "Önceki yıl",
     "i18nStrings.currentMonthAriaLabel": "Geçerli ay",

@@ -126,9 +126,9 @@
     "i18nStrings.copyButtonText": "Salin"
   },
   "date-range-picker": {
-    "nextMonthAriaLabel": "Bulan berikutnya",
-    "previousMonthAriaLabel": "Bulan sebelumnya",
-    "todayAriaLabel": "Hari ini",
+    "i18nStrings.nextMonthAriaLabel": "Bulan berikutnya",
+    "i18nStrings.previousMonthAriaLabel": "Bulan sebelumnya",
+    "i18nStrings.todayAriaLabel": "Hari ini",
     "i18nStrings.nextYearAriaLabel": "Tahun berikutnya",
     "i18nStrings.previousYearAriaLabel": "Tahun sebelumnya",
     "i18nStrings.currentMonthAriaLabel": "Bulan saat ini",

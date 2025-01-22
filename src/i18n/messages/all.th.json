@@ -97,9 +97,9 @@
     "contentDisplayPreference.liveAnnouncementDndItemCommitted": "{isInitialPosition, select, true {รายการย้ายกลับไปยังตำแหน่งเดิม {initialPosition} จาก {total}} false {รายการย้ายจากตำแหน่ง {initialPosition} ไปยังตำแหน่ง {finalPosition} จาก {total}} other {}}"
   },
   "date-range-picker": {
-    "nextMonthAriaLabel": "เดือนถัดไป",
-    "previousMonthAriaLabel": "เดือนก่อนหน้า",
-    "todayAriaLabel": "วันนี้",
+    "i18nStrings.nextMonthAriaLabel": "เดือนถัดไป",
+    "i18nStrings.previousMonthAriaLabel": "เดือนก่อนหน้า",
+    "i18nStrings.todayAriaLabel": "วันนี้",
     "i18nStrings.relativeModeTitle": "โหมดสัมพัทธ์",
     "i18nStrings.absoluteModeTitle": "โหมดสัมบูรณ์",
     "i18nStrings.relativeRangeSelectionHeading": "เลือกช่วง",
