@@ -5,7 +5,7 @@ import * as React from 'react';
 import Box from '~components/box';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 
-import { deselectAriaLabel, i18nStrings } from './constants';
+import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants';
 
 const _selectedOptions1 = [
   {
@@ -113,6 +113,7 @@ const options2 = [
     ],
   },
 ];
+
 export default function MultiselectPage() {
   const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>(_selectedOptions1);
   const [selectedOptions2, setSelectedOptions2] = React.useState<MultiselectProps.Options>(_selectedOptions1);
@@ -242,7 +243,7 @@ export default function MultiselectPage() {
               placeholder={'Choose option'}
               selectedOptions={selectedOptions7}
               i18nStrings={i18nStrings}
-              ariaLabel={`${selectedOptions7.length} accounts selected`}
+              ariaLabel={getInlineAriaLabel(selectedOptions7)}
               onChange={event => {
                 setSelectedOptions7(event.detail.selectedOptions);
               }}
