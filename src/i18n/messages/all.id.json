@@ -126,12 +126,6 @@
     "i18nStrings.copyButtonText": "Salin"
   },
   "date-range-picker": {
-    "i18nStrings.nextMonthAriaLabel": "Bulan berikutnya",
-    "i18nStrings.previousMonthAriaLabel": "Bulan sebelumnya",
-    "i18nStrings.todayAriaLabel": "Hari ini",
-    "i18nStrings.nextYearAriaLabel": "Tahun berikutnya",
-    "i18nStrings.previousYearAriaLabel": "Tahun sebelumnya",
-    "i18nStrings.currentMonthAriaLabel": "Bulan saat ini",
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolut",
     "i18nStrings.relativeRangeSelectionHeading": "Pilih rentang",
