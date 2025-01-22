@@ -3,8 +3,6 @@
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import { ButtonProps } from '../button/interfaces.js';
-import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
-import { FileInputProps } from '../file-input/interfaces';
 import { fireCancelableEvent, NonCancelableEventHandler } from '../internal/events';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import FileInputItem from './file-input-item';
@@ -30,15 +28,11 @@ const ItemElement = forwardRef(
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = useRef<HTMLDivElement>(null);
-    const buttonRef = useRef<ButtonProps.Ref>(null);
-    const fileInputRef = useRef<FileInputProps.Ref>(null);
-    const buttonDropdownRef = useRef<ButtonDropdownProps.Ref>(null);
+    const itemRef = useRef<HTMLButtonElement | HTMLInputElement>(null);
 
     useImperativeHandle(ref, () => ({
       focus: () => {
-        buttonRef.current?.focus();
-        fileInputRef.current?.focus();
-        buttonDropdownRef.current?.focus();
+        itemRef.current?.focus();
       },
     }));
 
@@ -123,7 +117,7 @@ const ItemElement = forwardRef(
       >
         {item.type === 'icon-button' && (
           <IconButtonItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
@@ -132,7 +126,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-toggle-button' && (
           <IconToggleButtonItem
-            ref={buttonRef}
+            ref={itemRef}
             item={item}
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
@@ -141,7 +135,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'icon-file-input' && (
           <FileInputItem
-            ref={fileInputRef}
+            ref={itemRef}
             item={item}
             onFilesChange={onFilesChangeHandler}
             showTooltip={tooltip?.item === item.id}
@@ -149,7 +143,7 @@ const ItemElement = forwardRef(
         )}
         {item.type === 'menu-dropdown' && (
           <MenuDropdownItem
-            ref={buttonDropdownRef}
+            ref={itemRef}
             item={item}
             showTooltip={tooltip?.item === item.id}
             onItemClick={onClickHandler}

@@ -217,8 +217,8 @@ describe('default href navigation', () => {
     expect(onClickSpy).toHaveBeenCalled();
   });
 
-  describe.each([true, false])('mobile=%b', mobile => {
-    test('toggles category on click', () => {
+  [true, false].forEach(mobile => {
+    test(`toggles category on click when mobile=${mobile}`, () => {
       (useMobile as jest.Mock).mockReturnValue(mobile);
       const categoryId = 'category';
       const itemId = 'nested-item';
@@ -231,40 +231,6 @@ describe('default href navigation', () => {
       act(() => wrapper.findExpandableCategoryById(categoryId)!.click());
 
       expect(wrapper.findItemById(itemId)).not.toBeNull();
-    });
-    test('returns focus acter clicking item', () => {
-      const { container } = render(
-        <div>
-          <ButtonDropdown
-            items={[
-              { id: '1', text: '1' },
-              { id: '2', text: '2' },
-            ]}
-          />
-        </div>
-      );
-      const wrapper = createWrapper(container).findButtonDropdown()!;
-      wrapper.openDropdown();
-      wrapper.findItemById('1')?.click();
-      expect(wrapper.findNativeButton().getElement()).toHaveFocus();
-    });
-    test('allows focus to be moved in the onItemClick function', () => {
-      const { container } = render(
-        <div>
-          <ButtonDropdown
-            items={[
-              { id: '1', text: '1' },
-              { id: '2', text: '2' },
-            ]}
-            onItemClick={e => e.detail.id === '1' && container.querySelector('input')?.focus()}
-          />
-          <input />
-        </div>
-      );
-      const wrapper = createWrapper(container).findButtonDropdown()!;
-      wrapper.openDropdown();
-      wrapper.findItemById('1')?.click();
-      expect(container.querySelector('input')).toHaveFocus();
     });
   });
 });

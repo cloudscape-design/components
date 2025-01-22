@@ -121,7 +121,6 @@ export default function InternalFormField({
   __internalRootRef = null,
   __disableGutters = false,
   __analyticsMetadata = undefined,
-  __style = {},
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
@@ -217,7 +216,6 @@ export default function InternalFormField({
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.root)}
-      style={__style}
       ref={__internalRootRef}
       {...analyticsAttributes}
       {...copyAnalyticsMetadataAttribute(rest)}

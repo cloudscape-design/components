@@ -75,13 +75,13 @@ export function useButtonDropdown({
       target: isLink ? getItemTarget(item) : undefined,
       checked: isCheckbox ? !item.checked : undefined,
     };
-    onReturnFocus();
     if (onItemFollow && isLink && isPlainLeftClick(event)) {
       fireCancelableEvent(onItemFollow, details, event);
     }
     if (onItemClick) {
       fireCancelableEvent(onItemClick, details, event);
     }
+    onReturnFocus();
     closeDropdown();
   };
 

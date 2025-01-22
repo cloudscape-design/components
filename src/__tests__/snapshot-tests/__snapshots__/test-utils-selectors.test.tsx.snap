@@ -60,9 +60,9 @@ exports[`test-utils selectors 1`] = `
     "awsui_additional-info_n4qlp",
     "awsui_empty_n4qlp",
     "awsui_field_n4qlp",
-    "awsui_remove-button-container_n4qlp",
     "awsui_remove-button_n4qlp",
     "awsui_root_n4qlp",
+    "awsui_row-control_n4qlp",
     "awsui_row_n4qlp",
   ],
   "autosuggest": [

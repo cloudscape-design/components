@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -13,6 +13,7 @@ import { useFunnel } from '../internal/analytics/hooks/use-funnel.js';
 import { getBaseProps } from '../internal/base-component';
 import Dropdown from '../internal/components/dropdown';
 import OptionsList from '../internal/components/options-list';
+import useForwardFocus from '../internal/hooks/forward-focus';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
@@ -110,18 +111,7 @@ const InternalButtonDropdown = React.forwardRef(
     const mainActionRef = useRef<HTMLElement>(null);
     const triggerRef = useRef<HTMLElement>(null);
 
-    useImperativeHandle(
-      ref,
-      () => ({
-        focus(...args) {
-          (isMainAction ? mainActionRef : triggerRef).current?.focus(...args);
-        },
-        focusDropdownTrigger(...args) {
-          triggerRef.current?.focus(...args);
-        },
-      }),
-      [mainActionRef, triggerRef, isMainAction]
-    );
+    useForwardFocus(ref, isMainAction ? mainActionRef : triggerRef);
 
     const clickHandler = () => {
       if (!loading && !disabled) {
