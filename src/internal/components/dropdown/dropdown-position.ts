@@ -24,8 +24,13 @@ export function applyDropdownPositionRelativeToViewport({
   triggerRect: LogicalDOMRect;
   isMobile: boolean;
 }) {
+  // Fixed positions is not respected in iOS when the virtual keyboard is being displayed.
+  // For this reason we use absolute positioning in mobile.
   const useAbsolutePositioning = isMobile;
 
+  // Since when using expandToViewport=true the dropdown is attached to the root of the body,
+  // the same coordinates can be used for fixed or absolute position,
+  // except when using absolute position we need to take into account the scroll position of the body itself.
   const verticalScrollOffset = useAbsolutePositioning ? document.documentElement.scrollTop : 0;
   const horizontalScrollOffset = useAbsolutePositioning ? document.documentElement.scrollLeft : 0;
 
