@@ -21,7 +21,7 @@ describe('applyDropdownPositionRelativeToViewport', () => {
     dropInlineStart: false,
   };
 
-  test("anchored to the trigger's block start", () => {
+  test("sets block end when the dropdown is anchored to the trigger's block start (expands up)", () => {
     const dropdownElement = document.createElement('div');
     applyDropdownPositionRelativeToViewport({
       dropdownElement,
@@ -33,7 +33,7 @@ describe('applyDropdownPositionRelativeToViewport', () => {
     expect(dropdownElement.style.insetBlockStart).toBeFalsy();
   });
 
-  test("anchored to the trigger's block end", () => {
+  test("aligns block start with the trigger's block end when the dropdown is anchored to the trigger's block end (expands down)", () => {
     const dropdownElement = document.createElement('div');
     applyDropdownPositionRelativeToViewport({
       dropdownElement,
@@ -45,18 +45,7 @@ describe('applyDropdownPositionRelativeToViewport', () => {
     expect(dropdownElement.style.insetBlockStart).toEqual(`${triggerRect.insetBlockEnd}px`);
   });
 
-  test("anchored to the trigger's inline start", () => {
-    const dropdownElement = document.createElement('div');
-    applyDropdownPositionRelativeToViewport({
-      dropdownElement,
-      triggerRect,
-      position: { ...baseDropdownPosition, dropInlineStart: true },
-      isMobile: false,
-    });
-    expect(dropdownElement.style.insetInlineStart).toBeTruthy();
-  });
-
-  test("not anchored to the trigger's inline start", () => {
+  test("aligns inline start with the trigger's inline start when the dropdown is anchored to the trigger's inline start (anchored from the left in LTR)", () => {
     const dropdownElement = document.createElement('div');
     applyDropdownPositionRelativeToViewport({
       dropdownElement,
@@ -65,6 +54,17 @@ describe('applyDropdownPositionRelativeToViewport', () => {
       isMobile: false,
     });
     expect(dropdownElement.style.insetInlineStart).toEqual(`${triggerRect.insetInlineStart}px`);
+  });
+
+  test("sets inline end when the dropdown is anchored to the trigger's inline start (anchored from the right in LTR)", () => {
+    const dropdownElement = document.createElement('div');
+    applyDropdownPositionRelativeToViewport({
+      dropdownElement,
+      triggerRect,
+      position: { ...baseDropdownPosition, dropInlineStart: true },
+      isMobile: false,
+    });
+    expect(dropdownElement.style.insetInlineStart).toBeTruthy();
   });
 
   test('uses fixed position on desktop', () => {
