@@ -12,7 +12,8 @@ export interface LogicalDOMRect {
   insetInlineEnd: number;
 }
 
-export function applyFixedDropdownPosition({
+// Applies its position to the dropdown element when expandToViewport is set to true.
+export function applyDropdownPositionRelativeToViewport({
   position,
   dropdownElement,
   triggerRect,

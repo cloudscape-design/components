@@ -26,7 +26,7 @@ import {
   hasEnoughSpaceToStretchBeyondTriggerWidth,
   InteriorDropdownPosition,
 } from './dropdown-fit-handler';
-import { applyFixedDropdownPosition, LogicalDOMRect } from './dropdown-position';
+import { applyDropdownPositionRelativeToViewport, LogicalDOMRect } from './dropdown-position';
 import { DropdownProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -234,7 +234,7 @@ const Dropdown = ({
 
     // Position normal overflow dropdowns with fixed positioning relative to viewport
     if (expandToViewport && !interior) {
-      applyFixedDropdownPosition({
+      applyDropdownPositionRelativeToViewport({
         position,
         dropdownElement: target,
         triggerRect: triggerBox,
@@ -387,7 +387,7 @@ const Dropdown = ({
     }
     const updateDropdownPosition = () => {
       if (triggerRef.current && dropdownRef.current && verticalContainerRef.current && fixedPosition.current) {
-        applyFixedDropdownPosition({
+        applyDropdownPositionRelativeToViewport({
           position: fixedPosition.current,
           dropdownElement: dropdownRef.current,
           triggerRect: getLogicalBoundingClientRect(triggerRef.current),
