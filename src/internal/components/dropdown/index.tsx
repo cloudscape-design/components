@@ -410,11 +410,11 @@ const Dropdown = ({
 
     updateDropdownPosition();
 
-    window.addEventListener('scroll', updateDropdownPosition, true);
-    window.addEventListener('resize', updateDropdownPosition, true);
+    const controller = new AbortController();
+    window.addEventListener('scroll', updateDropdownPosition, { capture: true, signal: controller.signal });
+    window.addEventListener('resize', updateDropdownPosition, { capture: true, signal: controller.signal });
     return () => {
-      window.removeEventListener('scroll', updateDropdownPosition, true);
-      window.removeEventListener('resize', updateDropdownPosition, true);
+      controller.abort();
     };
   }, [open, expandToViewport]);
 

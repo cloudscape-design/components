@@ -29,11 +29,11 @@ function useFocusVisibleState() {
       }
     }
 
-    document.addEventListener('mousedown', handleMousedown);
-    document.addEventListener('keydown', handleKeydown);
+    const controller = new AbortController();
+    document.addEventListener('mousedown', handleMousedown, { signal: controller.signal });
+    document.addEventListener('keydown', handleKeydown, { signal: controller.signal });
     return () => {
-      document.removeEventListener('mousedown', handleMousedown);
-      document.removeEventListener('keydown', handleKeydown);
+      controller.abort();
     };
   });
 

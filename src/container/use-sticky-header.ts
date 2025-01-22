@@ -109,11 +109,11 @@ export const useStickyHeader = (
   );
   useEffect(() => {
     if (isSticky) {
-      window.addEventListener('scroll', checkIfStuck, true);
-      window.addEventListener('resize', checkIfStuck);
+      const controller = new AbortController();
+      window.addEventListener('scroll', checkIfStuck, { capture: true, signal: controller.signal });
+      window.addEventListener('resize', checkIfStuck, { signal: controller.signal });
       return () => {
-        window.removeEventListener('scroll', checkIfStuck, true);
-        window.removeEventListener('resize', checkIfStuck);
+        controller.abort();
       };
     }
   }, [isSticky, checkIfStuck]);

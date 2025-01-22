@@ -174,12 +174,12 @@ function TriggerButton(
 
       const wrapperDiv = containerRef.current;
       if (wrapperDiv) {
-        wrapperDiv.addEventListener('pointerdown', handlePointerDownEvent);
-        wrapperDiv.addEventListener('keydown', handleKeyDownEvent);
+        const controller = new AbortController();
+        wrapperDiv.addEventListener('pointerdown', handlePointerDownEvent, { signal: controller.signal });
+        wrapperDiv.addEventListener('keydown', handleKeyDownEvent, { signal: controller.signal });
 
         return () => {
-          wrapperDiv.removeEventListener('pointerdown', handlePointerDownEvent);
-          wrapperDiv.removeEventListener('keydown', handleKeyDownEvent);
+          controller.abort();
         };
       }
     }

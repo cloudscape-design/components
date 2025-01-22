@@ -2,9 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
-import { Breakpoint as InternalBreakpoint } from '../internal/breakpoints';
 import { NonCancelableEventHandler } from '../internal/events';
 
 /*
@@ -53,14 +51,6 @@ export namespace AttributeEditorProps {
     focusAddButton(): void;
   }
 
-  export interface RowActionsProps<T> {
-    item: T;
-    itemIndex: number;
-    ref: React.Ref<ButtonDropdownProps.Ref>;
-    breakpoint: Breakpoint | null;
-    ownRow: boolean;
-  }
-
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export interface I18nStrings<T = any> {
     errorIconAriaLabel?: string;
@@ -71,17 +61,6 @@ export namespace AttributeEditorProps {
      * @deprecated Use `removeButtonAriaLabel` on the component instead.
      */
     removeButtonAriaLabel?: (item: T) => string;
-  }
-
-  export type Breakpoint = InternalBreakpoint;
-
-  export interface GridLayout {
-    breakpoint?: Breakpoint;
-    rows: ReadonlyArray<ReadonlyArray<number>>;
-    removeButton?: {
-      ownRow?: boolean;
-      width?: number | 'auto';
-    };
   }
 }
 
@@ -139,7 +118,6 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
 
   /**
    * Defines the editor configuration. Each object in the array represents one form field in the row.
-   * If more than 6 attributes are specified, a `gridLayout` must be provided.
    *
    * * `label` (ReactNode) - Text label for the form field.
    * * `info` (ReactNode) - Info link for the form field.
@@ -149,40 +127,10 @@ export interface AttributeEditorProps<T> extends BaseComponentProps {
    *    It renders the form field in a warning state if the returned value is not `null` or `undefined`.
    * * `constraintText` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
    * * `control` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
+   *
+   * A maximum of four fields are supported.
    */
   definition: ReadonlyArray<AttributeEditorProps.FieldDefinition<T>>;
-
-  /**
-   * Optionally specifies the layout of the attributes. By default, all attributes will be
-   * equally spaced and wrapped into multiple rows on smaller viewports.
-   *
-   * A `gridLayout` is an array of breakpoint definitions. Each definition consists of:
-   * - `rows` (`number[][]`): the rows in which to display the attributes. Each row consists of a list of numbers indicating
-   *   the relative width of each attribute. For example, `[[1, 1, 1, 1]]` is a single row of four evenly-spaced attributes,
-   *   or `[[1, 2], [1, 1, 1]]` splits five attributes onto two rows.
-   * - `breakpoint` (`string`): optionally specifies that the given entry should only be used when at least that much width is available.
-   * - `removeButton`: optionally configures the remove (or row action) button placement. If this is not provided, the button will be
-   *   placed at the end of a single row, or below if multiple rows are present. The `removeButton` property supports contains two properties:
-   *   - `ownRow` (`boolean`): forces the remove button onto its own row.
-   *   - `width` (`number | 'auto'`): a number indicating the relative width (equivalent to a `rows` entry), or 'auto' to fit to the button width.
-   */
-  gridLayout?: ReadonlyArray<AttributeEditorProps.GridLayout>;
-
-  /**
-   * Specifies a custom action trigger for each row, in place of the remove button.
-   * Only button and button dropdown components are supported.
-   * If you provide this, `removeButtonText`, `removeButtonAriaLabel`,
-   * and `onRemoveButtonClick` will be ignored.
-   * The trigger must be given the provided `ref` in order for `focusRemoveButton`
-   * to work.
-   * The function receives the following properties:
-   * - `item`: The item being rendered in the current row.
-   * - `itemIndex` (`number`): The index of the item.
-   * - `ref` (`ReactRef`): A React ref that should be passed to the rendered button.
-   * - `breakpoint` (`Breakpoint`): The current breakpoint, for responsive behavior.
-   * - `ownRow` (`boolean`): Whether the button is rendered on its own row.
-   */
-  customRowActions?: (props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode;
 
   /**
    * Called when add button is clicked.

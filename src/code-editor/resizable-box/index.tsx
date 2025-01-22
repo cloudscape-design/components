@@ -40,12 +40,12 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
     const onMouseUp = () => {
       setDragOffset(null);
     };
+    const controller = new AbortController();
     document.body.classList.add(styles['resize-active']);
-    document.addEventListener('mousemove', onMouseMove);
-    document.addEventListener('mouseup', onMouseUp);
+    document.addEventListener('mousemove', onMouseMove, { signal: controller.signal });
+    document.addEventListener('mouseup', onMouseUp, { signal: controller.signal });
     return () => {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
+      controller.abort();
       document.body.classList.remove(styles['resize-active']);
     };
   }, [dragOffset, minHeight, onResizeStable]);

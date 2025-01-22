@@ -12,7 +12,7 @@ interface Tag {
 
 interface ControlProps extends InputProps {
   index: number;
-  setItems: React.Dispatch<React.SetStateAction<Tag[]>>;
+  setItems?: any;
   prop: keyof Tag;
 }
 
@@ -30,7 +30,7 @@ const Control = React.memo(({ value, index, setItems, prop }: ControlProps) => {
     <Input
       value={value}
       onChange={({ detail }) => {
-        setItems(items => {
+        setItems((items: any) => {
           const updatedItems = [...items];
           updatedItems[index] = { ...updatedItems[index], [prop]: detail.value };
           return updatedItems;

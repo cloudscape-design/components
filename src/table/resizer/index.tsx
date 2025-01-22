@@ -163,15 +163,16 @@ export function Resizer({
     };
 
     updateTrackerPosition(getLogicalBoundingClientRect(elements.header).insetInlineEnd);
+    const controller = new AbortController();
 
     if (isDragging) {
       document.body.classList.add(styles['resize-active']);
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', onMouseMove, { signal: controller.signal });
+      document.addEventListener('mouseup', onMouseUp, { signal: controller.signal });
     }
     if (resizerHasFocus) {
       document.body.classList.add(styles['resize-active-with-focus']);
-      elements.header.addEventListener('keydown', onKeyDown);
+      elements.header.addEventListener('keydown', onKeyDown, { signal: controller.signal });
     }
     if (isKeyboardDragging) {
       document.body.classList.add(styles['resize-active']);
@@ -181,9 +182,7 @@ export function Resizer({
       clearTimeout(autoGrowTimeout.current);
       document.body.classList.remove(styles['resize-active']);
       document.body.classList.remove(styles['resize-active-with-focus']);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onMouseUp);
-      elements.header.removeEventListener('keydown', onKeyDown);
+      controller.abort();
     };
   }, [minWidth, isDragging, isKeyboardDragging, resizerHasFocus, onWidthUpdate, onWidthUpdateCommit]);
 
