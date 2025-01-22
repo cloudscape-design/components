@@ -126,9 +126,9 @@
     "i18nStrings.copyButtonText": "コピー"
   },
   "date-range-picker": {
-    "nextMonthAriaLabel": "来月",
-    "previousMonthAriaLabel": "前月",
-    "todayAriaLabel": "今日",
+    "i18nStrings.nextMonthAriaLabel": "来月",
+    "i18nStrings.previousMonthAriaLabel": "前月",
+    "i18nStrings.todayAriaLabel": "今日",
     "i18nStrings.nextYearAriaLabel": "翌年",
     "i18nStrings.previousYearAriaLabel": "前年",
     "i18nStrings.currentMonthAriaLabel": "当月",

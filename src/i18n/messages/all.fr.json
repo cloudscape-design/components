@@ -126,9 +126,9 @@
     "i18nStrings.copyButtonText": "Copier"
   },
   "date-range-picker": {
-    "nextMonthAriaLabel": "Mois suivant",
-    "previousMonthAriaLabel": "Mois précédent",
-    "todayAriaLabel": "Aujourd'hui",
+    "i18nStrings.nextMonthAriaLabel": "Mois suivant",
+    "i18nStrings.previousMonthAriaLabel": "Mois précédent",
+    "i18nStrings.odayAriaLabel": "Aujourd'hui",
     "i18nStrings.nextYearAriaLabel": "Année suivante",
     "i18nStrings.previousYearAriaLabel": "Année précédente",
     "i18nStrings.currentMonthAriaLabel": "Mois en cours",

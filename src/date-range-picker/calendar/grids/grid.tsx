@@ -87,7 +87,7 @@ export function Grid({
   const rows = isMonthPicker ? quarters : weeks;
 
   const currentAnnouncement = i18n(
-    granularity === 'day' ? 'todayAriaLabel' : 'i18nStrings.currentMonthAriaLabel',
+    granularity === 'day' ? 'i18nStrings.todayAriaLabel' : 'i18nStrings.currentMonthAriaLabel',
     granularity === 'day' ? todayAriaLabel : currentMonthAriaLabel
   );
 

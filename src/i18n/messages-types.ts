@@ -162,9 +162,9 @@ export interface I18nFormatArgTypes {
     "i18nStrings.copyButtonText": never;
   }
   "date-range-picker": {
-    "nextMonthAriaLabel": never;
-    "previousMonthAriaLabel": never;
-    "todayAriaLabel": never;
+    "i18nStrings.nextMonthAriaLabel": never;
+    "i18nStrings.previousMonthAriaLabel": never;
+    "i18nStrings.todayAriaLabel": never;
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
     "i18nStrings.relativeRangeSelectionHeading": never;
