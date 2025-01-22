@@ -24,7 +24,7 @@ export function applyDropdownPositionRelativeToViewport({
   triggerRect: LogicalDOMRect;
   isMobile: boolean;
 }) {
-  // Fixed positions is not respected in iOS when the virtual keyboard is being displayed.
+  // Fixed positions are not respected in iOS when the virtual keyboard is being displayed.
   // For this reason we use absolute positioning in mobile.
   const useAbsolutePositioning = isMobile;
 
