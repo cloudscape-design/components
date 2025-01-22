@@ -1,8 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
-
 import { DropdownPosition } from './dropdown-fit-handler';
 
 export interface LogicalDOMRect {
@@ -28,11 +26,7 @@ export function applyFixedDropdownPosition({
   const useAbsolutePositioning = isMobile;
 
   const verticalScrollOffset = useAbsolutePositioning ? document.documentElement.scrollTop : 0;
-  const horizontalScrollOffset = useAbsolutePositioning
-    ? getIsRtl(document.body)
-      ? window.innerWidth - document.documentElement.scrollLeft
-      : document.documentElement.scrollLeft
-    : 0;
+  const horizontalScrollOffset = useAbsolutePositioning ? document.documentElement.scrollLeft : 0;
 
   dropdownElement.style.position = useAbsolutePositioning ? 'absolute' : 'fixed';
 
