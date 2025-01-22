@@ -23,6 +23,7 @@
   border-start-end-radius: awsui.$border-radius-dropdown;
   border-end-start-radius: awsui.$border-radius-dropdown;
   border-end-end-radius: awsui.$border-radius-dropdown;
+  user-select: none;
 
   &-embedded {
     border-start-start-radius: 0px;

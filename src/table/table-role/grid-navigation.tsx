@@ -93,15 +93,14 @@ class GridNavigationProcessor {
 
   public init(table: HTMLTableElement) {
     this._table = table;
+    const controller = new AbortController();
 
-    this.table.addEventListener('focusin', this.onFocusin);
-    this.table.addEventListener('focusout', this.onFocusout);
-    this.table.addEventListener('keydown', this.onKeydown);
+    this.table.addEventListener('focusin', this.onFocusin, { signal: controller.signal });
+    this.table.addEventListener('focusout', this.onFocusout, { signal: controller.signal });
+    this.table.addEventListener('keydown', this.onKeydown, { signal: controller.signal });
 
     this.cleanup = () => {
-      this.table.removeEventListener('focusin', this.onFocusin);
-      this.table.removeEventListener('focusout', this.onFocusout);
-      this.table.removeEventListener('keydown', this.onKeydown);
+      controller.abort();
     };
   }
 

@@ -119,15 +119,14 @@ export default function PopoverContainer({
 
     const updatePositionOnResize = () => requestAnimationFrame(() => updatePositionHandler());
     const refreshPosition = () => requestAnimationFrame(() => positionHandlerRef.current());
+    const controller = new AbortController();
 
-    window.addEventListener('click', onClick);
-    window.addEventListener('resize', updatePositionOnResize);
-    window.addEventListener('scroll', refreshPosition, true);
+    window.addEventListener('click', onClick, { signal: controller.signal });
+    window.addEventListener('resize', updatePositionOnResize, { signal: controller.signal });
+    window.addEventListener('scroll', refreshPosition, { capture: true, signal: controller.signal });
 
     return () => {
-      window.removeEventListener('click', onClick);
-      window.removeEventListener('resize', updatePositionOnResize);
-      window.removeEventListener('scroll', refreshPosition, true);
+      controller.abort();
     };
   }, [hideOnOverscroll, keepPosition, positionHandlerRef, trackRef, updatePositionHandler]);
 

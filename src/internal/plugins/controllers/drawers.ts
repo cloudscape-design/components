@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import debounce from '../../debounce';
 import { NonCancelableEventHandler } from '../../events';
+import { reportRuntimeApiWarning } from '../helpers/metrics';
 
 type DrawerVisibilityChange = (callback: (isVisible: boolean) => void) => void;
 
@@ -84,6 +85,9 @@ export class DrawersController {
   }, 0);
 
   registerDrawer = (config: DrawerConfig) => {
+    if (this.drawers.find(drawer => drawer.id === config.id)) {
+      reportRuntimeApiWarning('app-layout-drawers', `drawer with id "${config.id}" is already registered`);
+    }
     this.drawers = this.drawers.concat(config);
     this.scheduleUpdate();
   };
@@ -108,7 +112,10 @@ export class DrawersController {
 
   onDrawersRegistered = (listener: DrawersRegistrationListener) => {
     if (this.drawersRegistrationListener !== null) {
-      console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onDrawersRegistered'
+      );
     }
     this.drawersRegistrationListener = listener;
     this.scheduleUpdate();
@@ -123,7 +130,10 @@ export class DrawersController {
 
   onDrawerOpened = (listener: DrawersToggledListener) => {
     if (this.drawerOpenedListener !== null) {
-      console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onDrawerOpened'
+      );
     }
 
     this.drawerOpenedListener = listener;
@@ -135,7 +145,10 @@ export class DrawersController {
 
   onDrawerClosed = (listener: DrawersToggledListener) => {
     if (this.drawerClosedListener !== null) {
-      console.warn('[AwsUi] [runtime drawers] multiple app layout instances detected');
+      reportRuntimeApiWarning(
+        'app-layout-drawers',
+        'multiple app layout instances detected when calling onDrawerClosed'
+      );
     }
 
     this.drawerClosedListener = listener;

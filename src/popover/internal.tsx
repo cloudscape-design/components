@@ -154,30 +154,28 @@ function InternalPopover(
       className={clsx(popoverClasses, !renderWithPortal && styles['popover-inline-content'])}
       data-awsui-referrer-id={referrerId}
     >
-      {visible && (
-        <PopoverContainer
-          size={size}
-          fixedWidth={fixedWidth}
-          position={position}
-          trackRef={triggerRef}
-          arrow={position => <Arrow position={position} />}
-          renderWithPortal={renderWithPortal}
-          zIndex={renderWithPortal ? 7000 : undefined}
-        >
-          <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
-            <PopoverBody
-              dismissButton={dismissButton}
-              dismissAriaLabel={dismissAriaLabel}
-              header={header}
-              onDismiss={onDismiss}
-              overflowVisible="both"
-              closeAnalyticsAction={__closeAnalyticsAction}
-            >
-              {content}
-            </PopoverBody>
-          </LinkDefaultVariantContext.Provider>
-        </PopoverContainer>
-      )}
+      <PopoverContainer
+        size={size}
+        fixedWidth={fixedWidth}
+        position={position}
+        trackRef={triggerRef}
+        arrow={position => <Arrow position={position} />}
+        renderWithPortal={renderWithPortal}
+        zIndex={renderWithPortal ? 7000 : undefined}
+      >
+        <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
+          <PopoverBody
+            dismissButton={dismissButton}
+            dismissAriaLabel={dismissAriaLabel}
+            header={header}
+            onDismiss={onDismiss}
+            overflowVisible="both"
+            closeAnalyticsAction={__closeAnalyticsAction}
+          >
+            {content}
+          </PopoverBody>
+        </LinkDefaultVariantContext.Provider>
+      </PopoverContainer>
     </div>
   );
 
@@ -217,9 +215,11 @@ function InternalPopover(
           {children}
         </span>
       )}
-      <ResetContextsForModal>
-        {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
-      </ResetContextsForModal>
+      {visible && (
+        <ResetContextsForModal>
+          {renderWithPortal ? <Portal>{popoverContent}</Portal> : popoverContent}
+        </ResetContextsForModal>
+      )}
     </span>
   );
 }

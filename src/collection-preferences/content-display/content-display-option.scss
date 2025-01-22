@@ -35,3 +35,7 @@
   @include styles.text-wrapping;
   padding-inline-end: awsui.$space-l;
 }
+
+.drag-handle-wrapper {
+  margin-inline: awsui.$space-scaled-xxs;
+}

@@ -19,6 +19,7 @@
   color: awsui.$color-text-form-label;
   // We display label inline to achieve the proper line-wrapping with info links
   display: inline;
+  @include styles.font-smoothing;
   @include styles.font-label;
   @include styles.info-link-spacing;
 }

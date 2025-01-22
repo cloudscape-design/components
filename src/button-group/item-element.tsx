@@ -59,12 +59,12 @@ const ItemElement = forwardRef(
         }
       };
 
-      window.addEventListener('pointerdown', handlePointerDownEvent);
-      window.addEventListener('keydown', handleKeyDownEvent);
+      const controller = new AbortController();
+      window.addEventListener('pointerdown', handlePointerDownEvent, { signal: controller.signal });
+      window.addEventListener('keydown', handleKeyDownEvent, { signal: controller.signal });
 
       return () => {
-        window.removeEventListener('pointerdown', handlePointerDownEvent);
-        window.removeEventListener('keydown', handleKeyDownEvent);
+        controller.abort();
       };
     }, [item.id, tooltip, setTooltip]);
 

@@ -60,6 +60,7 @@ export default function CollectionPreferences({
   customPreference,
   getModalRoot,
   removeModalRoot,
+  contentBefore,
   ...rest
 }: CollectionPreferencesProps) {
   const parentMetadata = useContext(CollectionPreferencesMetadata);
@@ -72,6 +73,7 @@ export default function CollectionPreferences({
       hasContentDisplayPreference: !!contentDisplayPreference,
       hasContentDensityPreference: !!contentDensityPreference,
       hasStickyColumnsPreference: !!stickyColumnsPreference,
+      hasContentDisplayColumnFiltering: !!contentDisplayPreference?.enableColumnFiltering,
       visibleContentOptionsCount: visibleContentPreference?.options?.length,
     },
   });
@@ -181,6 +183,10 @@ export default function CollectionPreferences({
             size={hasContentOnTheLeft && hasContentOnTheRight ? 'large' : 'medium'}
             onDismiss={onCancelListener}
           >
+            {/* Content before */}
+            <div className={styles['content-before']}>{contentBefore}</div>
+
+            {/* Preferences content */}
             <ModalContentLayout
               left={
                 hasContentOnTheLeft && (

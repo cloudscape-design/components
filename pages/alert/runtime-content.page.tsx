@@ -19,6 +19,7 @@ import awsuiPlugins from '~components/internal/plugins';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
+import { i18nStrings } from './common';
 
 type PageContext = React.Context<
   AppContextType<{ loading: boolean; hidden: boolean; type: AlertProps.Type; autofocus: boolean }>
@@ -134,20 +135,13 @@ export default function () {
         <ScreenshotArea gutters={false}>
           {hidden ? null : (
             <SpaceBetween size="m">
-              <Alert
-                type={type}
-                statusIconAriaLabel={type}
-                dismissAriaLabel="Dismiss"
-                header="Header"
-                action={<Button>Action</Button>}
-              >
+              <Alert type={type} i18nStrings={i18nStrings} header="Header" action={<Button>Action</Button>}>
                 {!contentSwapped ? content1 : content2}
               </Alert>
 
               <Alert
                 type={type}
-                statusIconAriaLabel={type}
-                dismissAriaLabel="Dismiss"
+                i18nStrings={i18nStrings}
                 header="Header"
                 action={<Button>Action</Button>}
                 ref={alertRef}

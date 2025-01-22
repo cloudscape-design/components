@@ -4,17 +4,25 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { DndArea } from '../../../../../lib/components/internal/components/dnd-area';
+import SortableArea, { SortableAreaProps } from '../../../../../lib/components/internal/components/sortable-area';
+
+interface Item {
+  id: string;
+  label: string;
+}
+
+const items: readonly Item[] = [
+  { id: '1', label: 'First' },
+  { id: '2', label: 'Second' },
+];
+const itemDefinition: SortableAreaProps.ItemDefinition<Item> = { id: item => item.id, label: item => item.label };
 
 test('renders all items with correct attributes', () => {
-  const items = [
-    { id: '1', label: 'First', data: {} },
-    { id: '2', label: 'Second', data: {} },
-  ];
   const renderItem = jest.fn();
   render(
-    <DndArea
+    <SortableArea
       items={items}
+      itemDefinition={itemDefinition}
       onItemsChange={() => {}}
       renderItem={renderItem}
       i18nStrings={{
@@ -28,9 +36,9 @@ test('renders all items with correct attributes', () => {
     expect(renderItem).toHaveBeenCalledWith(
       expect.objectContaining({
         item: items[i],
-        isDragging: false,
-        isActive: false,
-        isSorting: false,
+        isDropPlaceholder: false,
+        isDragGhost: false,
+        isSortingActive: false,
         dragHandleProps: {
           ariaLabel: `Drag handle ${items[i].label}`,
           ariaDescribedby: expect.any(String),
@@ -44,13 +52,16 @@ test('renders all items with correct attributes', () => {
 });
 
 test('adds disabled to every item drag handle when reordering is disabled', () => {
-  const items = [
-    { id: '1', label: 'First', data: {} },
-    { id: '2', label: 'Second', data: {} },
-  ];
   const renderItem = jest.fn();
   render(
-    <DndArea items={items} onItemsChange={() => {}} renderItem={renderItem} disableReorder={true} i18nStrings={{}} />
+    <SortableArea
+      items={items}
+      itemDefinition={itemDefinition}
+      onItemsChange={() => {}}
+      renderItem={renderItem}
+      disableReorder={true}
+      i18nStrings={{}}
+    />
   );
   for (let i = 0; i < items.length; i++) {
     expect(renderItem).toHaveBeenCalledWith(

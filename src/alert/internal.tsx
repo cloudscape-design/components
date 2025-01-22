@@ -45,10 +45,9 @@ const InternalAlert = React.forwardRef(
   (
     {
       type,
-      statusIconAriaLabel,
+      i18nStrings,
       visible = true,
       dismissible,
-      dismissAriaLabel,
       children,
       header,
       buttonText,
@@ -56,6 +55,8 @@ const InternalAlert = React.forwardRef(
       onDismiss,
       onButtonClick,
       __internalRootRef = null,
+      statusIconAriaLabel: deprecatedStatusIconAriaLabel,
+      dismissAriaLabel: deprecatedDismissAriaLabel,
       ...rest
     }: InternalAlertProps,
     ref: React.Ref<AlertProps.Ref>
@@ -95,6 +96,16 @@ const InternalAlert = React.forwardRef(
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_ALERT]: type,
     };
+
+    const statusIconAriaLabel = i18n(
+      `i18nStrings.${type}IconAriaLabel`,
+      i18nStrings?.[`${type}IconAriaLabel`] ?? deprecatedStatusIconAriaLabel
+    );
+
+    const dismissAriaLabel = i18n(
+      'i18nStrings.dismissAriaLabel',
+      i18nStrings?.dismissAriaLabel ?? i18n('dismissAriaLabel', deprecatedDismissAriaLabel)
+    );
 
     return (
       <div
@@ -179,7 +190,7 @@ const InternalAlert = React.forwardRef(
                     variant="icon"
                     iconName="close"
                     formAction="none"
-                    ariaLabel={i18n('dismissAriaLabel', dismissAriaLabel)}
+                    ariaLabel={dismissAriaLabel}
                     onClick={() => fireNonCancelableEvent(onDismiss)}
                   />
                 </div>

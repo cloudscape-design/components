@@ -4,22 +4,15 @@
 */
 
 @use '../../styles' as styles;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 @use '../../styles/tokens' as awsui;
+@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .handle {
   appearance: none;
-  background: transparent;
-  border-block: none;
-  border-inline: none;
-  padding-block: 0;
-  padding-inline: awsui.$space-scaled-xxxs;
-  margin-block: 0;
-  margin-inline: awsui.$space-scaled-xxs;
-
   color: awsui.$color-text-interactive-default;
+  background: transparent;
+  inline-size: fit-content;
 
-  cursor: grab;
   // Prevent the browser from scrolling on touch devices when the touch event comes from the drag handle,
   // because this would otherwise interfere with actually dragging the handle.
   // The `touch-action` CSS property is not supported in desktop Safari but it is in mobile Safari
@@ -27,24 +20,72 @@
   /* stylelint-disable-next-line plugin/no-unsupported-browser-features */
   touch-action: none;
 
+  &-size-normal {
+    block-size: awsui.$line-height-body-m;
+    padding-inline: awsui.$space-scaled-xxxs;
+  }
+
+  &-size-small {
+    block-size: awsui.$line-height-body-s;
+  }
+
+  &-drag-indicator {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  &-resize-area {
+    cursor: nwse-resize;
+
+    @include styles.with-direction('rtl') {
+      cursor: nesw-resize;
+    }
+  }
+
+  &-resize-horizontal {
+    cursor: ew-resize;
+  }
+
+  &-resize-vertical {
+    cursor: ns-resize;
+  }
+
+  &-disabled {
+    cursor: default;
+  }
+
   &:hover {
     color: awsui.$color-text-interactive-hover;
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
   }
 
   @include focus-visible.when-visible {
     &:not(.hide-focus) {
       @include styles.focus-highlight(0px);
     }
-    &.hide-focus {
-      outline: none;
-    }
   }
 }
 
-.handle:active {
-  cursor: grabbing;
-}
+.resize-icon {
+  stroke: awsui.$color-text-interactive-default;
 
-.handle-disabled {
-  cursor: default;
+  &:hover {
+    stroke: awsui.$color-text-interactive-hover;
+  }
+
+  &-vertical {
+    margin-block: auto;
+    margin-inline: auto;
+  }
+
+  &-horizontal {
+    transform: rotate(90deg);
+  }
 }

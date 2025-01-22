@@ -611,11 +611,11 @@ export const AnalyticsFunnelSubStep = ({
         focusCleanupFunction.current?.();
       }
     };
-    window.addEventListener('mousedown', onMouseDown);
-    window.addEventListener('mouseup', onMouseUp);
+    const controller = new AbortController();
+    window.addEventListener('mousedown', onMouseDown, { signal: controller.signal });
+    window.addEventListener('mouseup', onMouseUp, { signal: controller.signal });
     return () => {
-      window.removeEventListener('mousedown', onMouseDown);
-      window.removeEventListener('mouseup', onMouseUp);
+      controller.abort();
     };
   }, [
     funnelInteractionId,

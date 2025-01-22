@@ -11,7 +11,12 @@
     "i18nStrings.yAxisAriaRoleDescription": "Y 軸"
   },
   "alert": {
-    "dismissAriaLabel": "關閉提醒"
+    "dismissAriaLabel": "關閉提醒",
+    "i18nStrings.successIconAriaLabel": "成功",
+    "i18nStrings.errorIconAriaLabel": "錯誤",
+    "i18nStrings.warningIconAriaLabel": "警告",
+    "i18nStrings.infoIconAriaLabel": "資訊",
+    "i18nStrings.dismissAriaLabel": "關閉提醒"
   },
   "annotation-context": {
     "i18nStrings.nextButtonText": "下一步",
@@ -132,8 +137,10 @@
     "i18nStrings.customRelativeRangeUnitLabel": "時間單位",
     "i18nStrings.customRelativeRangeDurationLabel": "持續時間",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "輸入持續時間",
+    "i18nStrings.startMonthLabel": "開始月份",
     "i18nStrings.startDateLabel": "開始日期",
     "i18nStrings.startTimeLabel": "開始時間",
+    "i18nStrings.endMonthLabel": "結束月份",
     "i18nStrings.endDateLabel": "結束日期",
     "i18nStrings.endTimeLabel": "結束時間",
     "i18nStrings.dateTimeConstraintText": "日期請使用 YYYY/MM/DD 格式。時間請使用 24 小時格式。",

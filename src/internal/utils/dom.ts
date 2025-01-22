@@ -128,3 +128,11 @@ export function isSVGElement(target: unknown): target is SVGElement {
       typeof target.ownerSVGElement === 'object')
   );
 }
+
+export function documentHasFocus() {
+  // In JSDOM the hasFocus() always returns false which differs from the in-browser experience, see: https://github.com/jsdom/jsdom/issues/3794.
+  // Thus, when detecting JSDOM environment we return true here explicitly for the tests to work expectedly.
+  // The detection depends on the default userAgent set in JSDOM, see: https://github.com/jsdom/jsdom?tab=readme-ov-file#advanced-configuration.
+  const isJSDOM = typeof navigator !== 'undefined' && navigator.userAgent?.includes('jsdom');
+  return isJSDOM || (typeof document !== undefined && document.hasFocus());
+}
