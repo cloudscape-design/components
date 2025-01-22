@@ -126,12 +126,6 @@
     "i18nStrings.copyButtonText": "نسخ"
   },
   "date-range-picker": {
-    "nextMonthAriaLabel": "الشهر التالي",
-    "previousMonthAriaLabel": "الشهر السابق",
-    "todayAriaLabel": "اليوم",
-    "i18nStrings.nextYearAriaLabel": "العام المقبل",
-    "i18nStrings.previousYearAriaLabel": "العام السابق",
-    "i18nStrings.currentMonthAriaLabel": "الشهر الحالي",
     "i18nStrings.relativeModeTitle": "الوضع النسبي",
     "i18nStrings.absoluteModeTitle": "الوضع المُطلق",
     "i18nStrings.relativeRangeSelectionHeading": "اختر النطاق",
