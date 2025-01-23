@@ -28,7 +28,7 @@ describe.each(['classic', 'visualRefresh'])('In %s', type => {
       await browser.url(
         `#/light/app-layout/legacy-table-sticky-notifications/?visualRefresh=${type === 'visualRefresh'}`
       );
-      await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
+      await page.waitForVisible(appLayoutWrapper.findContentRegion().find('h1').toSelector());
       await testFn(page);
     });
   }

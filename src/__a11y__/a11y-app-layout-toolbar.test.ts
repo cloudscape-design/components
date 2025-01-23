@@ -22,7 +22,7 @@ describe('A11y checks for app layout toolbar', () => {
         useBrowser(async browser => {
           const page = new A11yPageObject(browser);
           await browser.url(url);
-          await page.waitForVisible('main');
+          await page.waitForVisible('h1');
           await page.assertNoAxeViolations();
         })
       );

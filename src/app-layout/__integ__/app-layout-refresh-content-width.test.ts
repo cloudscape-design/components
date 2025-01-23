@@ -43,7 +43,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       const page = new AppLayoutRefreshNotoficationsPage(browser);
       await page.setWindowSize({ ...viewports.desktop, width: viewportWidth });
       await browser.url(`#/light/app-layout/refresh-content-width/?${getUrlParams(theme)}`);
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
       await testFn(page);
     });
   }

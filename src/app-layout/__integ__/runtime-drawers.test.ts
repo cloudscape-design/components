@@ -30,7 +30,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
           splitPanelPosition: 'side',
         })}`
       );
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
       await testFn(page);
     });
   }

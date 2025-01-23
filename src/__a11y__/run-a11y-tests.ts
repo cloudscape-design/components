@@ -13,7 +13,7 @@ function setupTest(url: string, testFn: (page: A11yPageObject) => Promise<void>)
   return useBrowser(async browser => {
     const page = new A11yPageObject(browser);
     await browser.url(url);
-    await page.waitForVisible('main');
+    await page.waitForVisible('h1');
     await testFn(page);
   });
 }

@@ -24,7 +24,7 @@ describe('Visual refresh toolbar only', () => {
         }).toString()}`
       );
       await page.runInsideIframe(iframeId, true, async () => {
-        await page.waitForVisible(secondaryLayout.findContentRegion().toSelector());
+        await page.waitForVisible(secondaryLayout.findContentRegion().find('h1').toSelector());
       });
       await testFn(page);
     });

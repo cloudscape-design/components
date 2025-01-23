@@ -38,16 +38,16 @@ describe('Disabled reasons', () => {
         await page.assertDropdownOpen(true);
         const dropdown = select.findDropdown();
         const disabledOption = select.findDropdown().findOption(1);
-        const disabledOptionToolipSelector = disabledOption.findDisabledReason().toSelector();
+        const disabledOptionTooltipSelector = disabledOption.findDisabledReason().find('div').toSelector();
 
         await page.hoverElement(disabledOption.toSelector());
-        expect(await page.isDisplayed(disabledOptionToolipSelector)).toBe(true);
+        expect(await page.isDisplayed(disabledOptionTooltipSelector)).toBe(true);
         await page.elementScrollTo(dropdown.findOptionsContainer().toSelector(), { top: 500 });
         await page.waitForJsTimers();
-        expect(await page.isDisplayed(disabledOptionToolipSelector)).toBe(false);
+        expect(await page.isDisplayed(disabledOptionTooltipSelector)).toBe(false);
         await page.elementScrollTo(dropdown.findOptionsContainer().toSelector(), { top: 0 });
         await page.waitForJsTimers();
-        expect(await page.isDisplayed(disabledOptionToolipSelector)).toBe(true);
+        expect(await page.isDisplayed(disabledOptionTooltipSelector)).toBe(true);
       })
     );
 
@@ -59,17 +59,17 @@ describe('Disabled reasons', () => {
         await page.assertDropdownOpen(true);
         const dropdown = select.findDropdown();
         const disabledOption = select.findDropdown().findOption(50);
-        const disabledOptionToolipSelector = disabledOption.findDisabledReason().toSelector();
+        const disabledOptionTooltipSelector = disabledOption.findDisabledReason().find('div').toSelector();
 
         await page.elementScrollTo(dropdown.findOptionsContainer().toSelector(), { top: 1000 });
         await page.hoverElement(disabledOption.toSelector());
-        expect(await page.isDisplayed(disabledOptionToolipSelector)).toBe(true);
+        expect(await page.isDisplayed(disabledOptionTooltipSelector)).toBe(true);
         await page.elementScrollTo(dropdown.findOptionsContainer().toSelector(), { top: 500 });
         await page.waitForJsTimers();
-        expect(await page.isDisplayed(disabledOptionToolipSelector)).toBe(false);
+        expect(await page.isDisplayed(disabledOptionTooltipSelector)).toBe(false);
         await page.elementScrollTo(dropdown.findOptionsContainer().toSelector(), { top: 1000 });
         await page.waitForJsTimers();
-        expect(await page.isDisplayed(disabledOptionToolipSelector)).toBe(true);
+        expect(await page.isDisplayed(disabledOptionTooltipSelector)).toBe(true);
       })
     );
   });

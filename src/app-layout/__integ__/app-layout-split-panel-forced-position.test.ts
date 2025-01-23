@@ -30,7 +30,7 @@ const setupTest = (
     const url = `#/light/app-layout/with-split-panel-and-body-scroll?${params.toString()}`;
 
     await browser.url(url);
-    const content = createWrapper().findAppLayout().findContentRegion();
+    const content = createWrapper().findAppLayout().findContentRegion().find('h1');
     await page.waitForVisible(content.toSelector());
     await testFn(page);
   });

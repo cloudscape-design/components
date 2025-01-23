@@ -28,7 +28,7 @@ function setupTest({ url }: { url: string }, testFn: (page: GlobalBreadcrumbsPag
   return useBrowser(async browser => {
     const page = new GlobalBreadcrumbsPage(browser);
     await browser.url(url);
-    await page.waitForVisible(wrapper.findAppLayout().findContentRegion().toSelector());
+    await page.waitForVisible(wrapper.findAppLayout().findContentRegion().find('h1').toSelector());
     await testFn(page);
   });
 }

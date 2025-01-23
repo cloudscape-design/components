@@ -82,7 +82,7 @@ function setupTest(
   return useBrowser(async browser => {
     const page = new AsyncPropertyFilterPage(browser);
     await browser.url(`#/light/property-filter/async-loading.integ?asyncProperties=${asyncProperties}&token=${token}`);
-    await page.waitForVisible('main');
+    await page.waitForVisible('h1');
     await testFn(page);
   });
 }

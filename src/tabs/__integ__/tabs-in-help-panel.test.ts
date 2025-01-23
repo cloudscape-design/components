@@ -12,7 +12,7 @@ const setupTest = (visualRefresh = false, testFn: (page: BasePageObject) => Prom
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await browser.url(`#/light/tabs/in-app-layout-help-panel/?${visualRefresh ? 'visualRefresh=true' : ''}`);
-    await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
+    await page.waitForVisible(appLayoutWrapper.findContentRegion().find('h1').toSelector());
     await testFn(page);
   });
 };

@@ -12,7 +12,7 @@ function setupTest(testFn: (page: A11yPageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new A11yPageObject(browser);
     await browser.url('#/light/property-filter/async-loading.integ?token=property');
-    await page.waitForVisible('main');
+    await page.waitForVisible('h1');
     await testFn(page);
   });
 }

@@ -32,7 +32,7 @@ function setupTest({ viewport = viewports.desktop }, testFn: (page: AppLayoutSti
     const page = new AppLayoutStickyPage(browser);
     await page.setWindowSize(viewport);
     await browser.url('#/light/container/sticky-with-app-layout?visualRefresh=false');
-    await page.waitForVisible(appLayoutWrapper.findContentRegion().toSelector());
+    await page.waitForVisible(appLayoutWrapper.findContentRegion().find('h1').toSelector());
     await testFn(page);
   });
 }

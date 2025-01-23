@@ -26,7 +26,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       const page = new AppLayoutStickyPage(browser);
       await page.setWindowSize(viewport);
       await browser.url(`#/light/app-layout/with-sticky-notifications/?${getUrlParams(theme)}`);
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
       await testFn(page);
     });
   }

@@ -19,7 +19,7 @@ const STEP_IDENTIFIER = FUNNEL_IDENTIFIER;
 class SinglePageCreate extends BasePageObject {
   async visit(url: string) {
     await this.browser.url(url);
-    await this.waitForVisible(wrapper.findAppLayout().findContentRegion().toSelector());
+    await this.waitForVisible(wrapper.findAppLayout().findContentRegion().find('h1').toSelector());
   }
 
   getFormAttribute(attribute: string) {

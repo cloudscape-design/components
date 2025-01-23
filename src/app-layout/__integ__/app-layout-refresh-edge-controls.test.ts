@@ -21,7 +21,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       const page = new AppLayoutRefreshEdgeControlsPage(browser);
       await page.setWindowSize(viewports.desktop);
       await browser.url(`#/light/app-layout/disable-paddings-edge-controls/?${getUrlParams(theme)}`);
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
       await testFn(page);
     });
   }

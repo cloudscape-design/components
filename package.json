@@ -22,7 +22,8 @@
     "start:watch": "gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "node ./scripts/install-peer-dependency.js browser-test-tools:chore-webdriverio9"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
@@ -50,6 +51,9 @@
     "react-dom": "^16.8 || ^17 || ^18"
   },
   "devDependencies": {
+    "@wdio/globals": "^9.4.1",
+    "@wdio/types": "^9.2.2",
+    "webdriverio": "^9.4.1",
     "@babel/core": "^7.23.7",
     "@babel/plugin-syntax-typescript": "^7.23.3",
     "@cloudscape-design/browser-test-tools": "^3.0.0",

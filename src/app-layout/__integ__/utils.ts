@@ -79,7 +79,7 @@ export const setupTest = (
       ...(splitPanelPosition ? { splitPanelPosition } : {}),
     }).toString();
     await browser.url(`#/light/app-layout/with-drawers?${params}`);
-    await page.waitForVisible(wrapper.findContentRegion().toSelector());
+    await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
     await testFn(page);
   });
 

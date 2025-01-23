@@ -9,7 +9,7 @@ test(
   useBrowser(async browser => {
     const page = new A11yPageObject(browser);
     await browser.url('#/dark/undefined-texts');
-    await page.waitForVisible('main');
+    await page.waitForVisible('h1');
     await expect(page.getUndefinedTexts()).resolves.toEqual([
       'This page contains undefined strings',
       'aria-label: undefined button',

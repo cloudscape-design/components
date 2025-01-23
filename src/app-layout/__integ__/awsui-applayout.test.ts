@@ -15,7 +15,7 @@ const mobileSelector = `.${testutilStyles['mobile-bar']}`;
 class AppLayoutPage extends BasePageObject {
   async visit(url: string) {
     await this.browser.url(url);
-    await this.waitForVisible(wrapper.findContentRegion().toSelector());
+    await this.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
   }
 
   getNavPosition() {

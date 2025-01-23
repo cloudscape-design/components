@@ -24,7 +24,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
       });
       await browser.url(`${url}?${params.toString()}`);
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
       await testFn(page);
     });
   }
@@ -95,7 +95,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
       const page = new AppLayoutSplitViewPage(browser);
       await page.setWindowSize(viewports.desktop);
       await browser.url(`#/light/app-layout/with-split-panel?visualRefresh=false&splitPanelPosition=side`);
-      await page.waitForVisible(wrapper.findContentRegion().toSelector());
+      await page.waitForVisible(wrapper.findContentRegion().find('h1').toSelector());
       await page.openPanel();
       await expect(page.getPanelPosition()).resolves.toEqual('side');
     })
