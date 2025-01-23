@@ -24,6 +24,10 @@ export interface MultiselectProps extends BaseSelectProps {
    */
   hideTokens?: boolean;
   /**
+   * Shows tokens inside the trigger instead of below it.
+   */
+  inlineTokens?: boolean;
+  /**
    * Specifies an `aria-label` for the token deselection button.
    * @i18n
    */

@@ -11260,6 +11260,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Shows tokens inside the trigger instead of below it.",
+      "name": "inlineTokens",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Overrides the invalidation state. Usually the invalid state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its

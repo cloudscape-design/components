@@ -28,7 +28,7 @@ type InternalMultiselectProps = SomeRequired<
   MultiselectProps,
   'options' | 'selectedOptions' | 'filteringType' | 'statusType' | 'keepOpen' | 'hideTokens'
 > &
-  InternalBaseComponentProps & { inlineTokens?: boolean };
+  InternalBaseComponentProps;
 
 const InternalMultiselect = React.forwardRef(
   (
