@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { Box, Input, InputProps, Link, NonCancelableCustomEvent } from '~components';
+import { Box, Button, Input, InputProps, Link } from '~components';
 import AttributeEditor, { AttributeEditorProps } from '~components/attribute-editor';
 
 interface Tag {
@@ -30,7 +30,7 @@ const Control = React.memo(({ value, index, setItems, prop }: ControlProps) => {
     <Input
       value={value}
       onChange={({ detail }) => {
-        setItems(items => {
+        setItems((items: Tag[]) => {
           const updatedItems = [...items];
           updatedItems[index] = { ...updatedItems[index], [prop]: detail.value };
           return updatedItems;
@@ -82,22 +82,20 @@ export default function AttributeEditorPage() {
     setItems(items => [...items, {}]);
   }, []);
 
-  const onRemoveButtonClick = useCallback(
-    ({ detail: { itemIndex } }: NonCancelableCustomEvent<AttributeEditorProps.RemoveButtonClickDetail>) => {
-      setItems(items => {
-        const newItems = items.slice();
-        newItems.splice(itemIndex, 1);
-        return newItems;
-      });
-    },
-    []
-  );
+  const onRemoveButtonClick = useCallback(({ detail: { itemIndex } }: { detail: { itemIndex: number } }) => {
+    setItems(items => {
+      const newItems = items.slice();
+      newItems.splice(itemIndex, 1);
+      return newItems;
+    });
+  }, []);
 
   const additionalInfo = useMemo(() => `You can add ${tagLimit - items.length} more tags.`, [items.length]);
 
   return (
     <Box margin="xl">
-      <h1>Attribute Editor - Functional</h1>
+      <h1>Attribute Editor - Grid</h1>
+      <h2>Non-responsive 2:3:auto layout</h2>
       <AttributeEditor<Tag>
         {...labelProps}
         additionalInfo={additionalInfo}
@@ -105,6 +103,73 @@ export default function AttributeEditorPage() {
         definition={definition}
         onAddButtonClick={onAddButtonClick}
         onRemoveButtonClick={onRemoveButtonClick}
+        gridLayout={[{ rows: [[2, 3]], removeButton: { width: 'auto' } }]}
+      />
+      <h2>Non-responsive 4:1 - 2:2 layout</h2>
+      <AttributeEditor<Tag>
+        {...labelProps}
+        additionalInfo={additionalInfo}
+        items={items}
+        definition={[...definition, ...definition]}
+        onAddButtonClick={onAddButtonClick}
+        onRemoveButtonClick={onRemoveButtonClick}
+        gridLayout={[
+          {
+            rows: [
+              [4, 1],
+              [2, 2],
+            ],
+          },
+        ]}
+      />
+      <h2>Responsive layout</h2>
+      <AttributeEditor<Tag>
+        {...labelProps}
+        additionalInfo={additionalInfo}
+        items={items}
+        definition={[...definition, ...definition]}
+        customRowActions={({ breakpoint, item, itemIndex }) => {
+          const clickHandler = () => {
+            onRemoveButtonClick({ detail: { itemIndex } });
+          };
+          const ariaLabel = `Remove ${item.key}`;
+          if (breakpoint === 'xl') {
+            return <Button iconName="remove" variant="icon" ariaLabel={ariaLabel} onClick={clickHandler} />;
+          }
+          return (
+            <Button ariaLabel={ariaLabel} onClick={clickHandler}>
+              Remove
+            </Button>
+          );
+        }}
+        onAddButtonClick={onAddButtonClick}
+        onRemoveButtonClick={onRemoveButtonClick}
+        gridLayout={[
+          {
+            breakpoint: 'xl',
+            rows: [[4, 1, 2, 2]],
+            removeButton: {
+              width: 'auto',
+            },
+          },
+          {
+            breakpoint: 'l',
+            rows: [[4, 1, 2, 2]],
+            removeButton: {
+              ownRow: true,
+            },
+          },
+          {
+            breakpoint: 's',
+            rows: [
+              [3, 1],
+              [2, 2],
+            ],
+          },
+          {
+            rows: [[1], [1], [1], [1]],
+          },
+        ]}
       />
     </Box>
   );
