@@ -53,7 +53,6 @@ const PageLayout = React.forwardRef(
         props: {
           contentType,
           disableContentPaddings: rest.disableContentPaddings,
-          disableBodyScroll: rest.disableBodyScroll,
           navigationWidth,
           navigationHide: rest.navigationHide,
           toolsHide: rest.toolsHide,
