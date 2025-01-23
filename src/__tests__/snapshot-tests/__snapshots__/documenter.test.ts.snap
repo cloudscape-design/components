@@ -7162,6 +7162,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "relativeRangeSelectionDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "relativeRangeSelectionHeading",
             "optional": true,
             "type": "string",

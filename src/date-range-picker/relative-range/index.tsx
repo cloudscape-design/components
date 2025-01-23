@@ -6,6 +6,7 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import InternalBox from '../../box/internal';
+import { CalendarProps } from '../../calendar/interfaces';
 import InternalFormField from '../../form-field/internal';
 import { useInternalI18n } from '../../i18n/context';
 import InternalInput from '../../input/internal';
@@ -13,7 +14,7 @@ import { RadioGroupProps } from '../../radio-group/interfaces';
 import InternalRadioGroup from '../../radio-group/internal';
 import InternalSelect from '../../select/internal';
 import InternalSpaceBetween from '../../space-between/internal';
-import { DateRangePickerProps, Granularity } from '../interfaces';
+import { DateRangePickerProps } from '../interfaces';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';
@@ -26,7 +27,7 @@ interface RelativeRangePickerProps {
   i18nStrings?: DateRangePickerProps.I18nStrings;
   isSingleGrid: boolean;
   customUnits?: DateRangePickerProps.TimeUnit[];
-  granularity?: Granularity;
+  granularity?: CalendarProps.Granularity;
 }
 
 interface UnitSelectOption {
@@ -126,7 +127,11 @@ export default function RelativeRangePicker({
             label={i18n('i18nStrings.relativeRangeSelectionHeading', i18nStrings?.relativeRangeSelectionHeading)}
             description={
               granularity === 'month' &&
-              'Each month counts from the first day of this month to the last day of this month'
+              granularity === 'month' &&
+              i18n(
+                'i18nStrings.relativeRangeSelectionMonthlyDescription',
+                i18nStrings?.relativeRangeSelectionMonthlyDescription
+              )
             }
           >
             <InternalRadioGroup

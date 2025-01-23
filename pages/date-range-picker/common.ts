@@ -142,6 +142,7 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
   relativeRangeSelectionHeading: 'Choose a range',
+  relativeRangeSelectionMonthlyDescription: 'Each month counts from the first day to the last day.',
   startMonthLabel: 'Start month',
   endMonthLabel: 'End month',
   startDateLabel: 'Start date',

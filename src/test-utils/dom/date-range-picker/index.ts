@@ -107,7 +107,7 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Alias for findPreviousButton for compatibility with previous versions
+   * Alias for findPreviousButton for compatibility with previous versions.
    * @deprecated
    */
   findPreviousMonthButton(): ButtonWrapper {
@@ -115,7 +115,7 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   }
 
   /**
-   * Alias for findNextButton for compatibility with previous versions
+   * Alias for findNextButton for compatibility with previous versions.
    * @deprecated
    */
   findNextMonthButton(): ButtonWrapper {

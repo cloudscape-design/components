@@ -75,8 +75,7 @@ export function Grid({
   const baseDateTime = baseDate?.getTime();
   // `baseDateTime` is used as a more stable replacement for baseDate
   const weeks = useMemo<Date[][]>(
-    () => getCalendarMonth(baseDate, { firstDayOfWeek: startOfWeek }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    () => getCalendarMonth(new Date(baseDateTime), { firstDayOfWeek: startOfWeek }),
     [baseDateTime, startOfWeek]
   );
   const i18n = useInternalI18n('date-range-picker');
@@ -204,31 +203,31 @@ export function Grid({
                     : -1; // Can be focused programmatically.
                 }
 
-                const hasTopBorder = (
-                  granularity: DateRangePickerProps['granularity'],
-                  date: Date,
-                  inSpecifiedRow: boolean
-                ): boolean => !!inSpecifiedRow || isInFirstGrouping(granularity, date);
+                // const hasTopBorder = (
+                //   granularity: DateRangePickerProps['granularity'],
+                //   date: Date,
+                //   inSpecifiedRow: boolean
+                // ): boolean => !!inSpecifiedRow || isInFirstGrouping(granularity, date);
 
-                const hasBottomBorder = (
-                  granularity: DateRangePickerProps['granularity'],
-                  date: Date,
-                  inSpecifiedRow: boolean
-                ): boolean => !!inSpecifiedRow || isInLastGrouping(granularity, date);
-                const hasLeftBorder = (
-                  granularity: DateRangePickerProps['granularity'],
-                  date: Date,
-                  itemIndex: number,
-                  isFirstItemInRange: boolean
-                ): boolean => itemIndex === 0 || isFirstItemInRange || isFirstItem(granularity, date);
+                // const hasBottomBorder = (
+                //   granularity: DateRangePickerProps['granularity'],
+                //   date: Date,
+                //   inSpecifiedRow: boolean
+                // ): boolean => !!inSpecifiedRow || isInLastGrouping(granularity, date);
+                // const hasLeftBorder = (
+                //   granularity: DateRangePickerProps['granularity'],
+                //   date: Date,
+                //   itemIndex: number,
+                //   isFirstItemInRange: boolean
+                // ): boolean => itemIndex === 0 || isFirstItemInRange || isFirstItem(granularity, date);
 
-                const hasRightBorder = (
-                  granularity: DateRangePickerProps['granularity'],
-                  date: Date,
-                  itemIndex: number,
-                  rowLength: number,
-                  isLastItemInRange: boolean
-                ): boolean => itemIndex === rowLength - 1 || isLastItemInRange || isLastItemInPage(granularity, date);
+                // const hasRightBorder = (
+                //   granularity: DateRangePickerProps['granularity'],
+                //   date: Date,
+                //   itemIndex: number,
+                //   rowLength: number,
+                //   isLastItemInRange: boolean
+                // ): boolean => itemIndex === rowLength - 1 || isLastItemInRange || isLastItemInPage(granularity, date);
 
                 return (
                   <GridCell
@@ -246,21 +245,26 @@ export function Grid({
                       [styles['range-end-date']]: isRangeEndDate,
                       [styles['no-range']]: isSelected && onlyOneSelected,
                       [styles['in-range']]: dateIsInRange,
-                      [styles['in-range-border-block-start']]: hasTopBorder(granularity, date, !!inRangeStartRow),
-                      [styles['in-range-border-block-end']]: hasBottomBorder(granularity, date, !!inRangeEndRow),
-                      [styles['in-range-border-inline-start']]: hasLeftBorder(
-                        granularity,
-                        date,
-                        rowItemIndex,
-                        isRangeStartDate
-                      ),
-                      [styles['in-range-border-inline-end']]: hasRightBorder(
-                        granularity,
-                        date,
-                        rowItemIndex,
-                        row.length,
-                        isRangeEndDate
-                      ),
+                      [styles['in-range-border-block-start']]:
+                        !!inRangeStartRow || isInFirstGrouping(granularity, date), // hasTopBorder(granularity, date, !!inRangeStartRow),
+                      [styles['in-range-border-block-end']]: !!inRangeEndRow || isInLastGrouping(granularity, date), //hasBottomBorder(granularity, date, !!inRangeEndRow),
+                      [styles['in-range-border-inline-start']]:
+                        rowItemIndex === 0 || isRangeStartDate || isFirstItem(granularity, date),
+                      // hasLeftBorder(
+                      //   granularity,
+                      //   date,
+                      //   rowItemIndex,
+                      //   isRangeStartDate
+                      // ),
+                      [styles['in-range-border-inline-end']]:
+                        rowItemIndex === row.length - 1 || isRangeEndDate || isLastItemInPage(granularity, date),
+                      // hasRightBorder(
+                      //   granularity,
+                      //   date,
+                      //   rowItemIndex,
+                      //   row.length,
+                      //   isRangeEndDate
+                      // ),
                       [styles.today]: isCurrentDay,
                       [testutilStyles.today]: isCurrentDay,
                       [styles['this-month']]: isCurrentMonth,

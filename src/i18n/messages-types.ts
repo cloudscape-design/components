@@ -165,6 +165,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
     "i18nStrings.relativeRangeSelectionHeading": never;
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": never;
     "i18nStrings.cancelButtonLabel": never;
     "i18nStrings.clearButtonLabel": never;
     "i18nStrings.applyButtonLabel": never;
