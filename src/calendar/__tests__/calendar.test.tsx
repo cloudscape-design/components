@@ -3,6 +3,8 @@
 
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
+import addMonths from 'date-fns/addMonths';
+import range from 'lodash/range';
 import MockDate from 'mockdate';
 
 import '../../__a11y__/to-validate-a11y';
@@ -42,12 +44,18 @@ function getDayText(wrapper: CalendarWrapper, row: number, col: number) {
   return wrapper.findDateAt(row, col).findByClassName(styles['date-inner'])!.getElement().textContent;
 }
 
-describe('Calendar', () => {
-  test('check a11y', async () => {
-    const { container } = renderCalendar();
-    await expect(container).toValidateA11y();
-  });
+test('check a11y', async () => {
+  const { container } = renderCalendar();
+  await expect(container).toValidateA11y();
 });
+
+test.each(range(0, 11).map(month => addMonths(new Date('2025-01-01'), month).toISOString().split('T')[0]))(
+  'always renders 42 days, value=%s',
+  value => {
+    renderCalendar({ value });
+    expect(document.querySelectorAll(`.${styles['calendar-date']}`)).toHaveLength(42);
+  }
+);
 
 describe('Calendar locale US', () => {
   beforeEach(() => {
@@ -59,6 +67,22 @@ describe('Calendar locale US', () => {
   test('start of the week is Sunday', () => {
     const { wrapper } = renderCalendar();
     expect(findCalendarWeekdays(wrapper)[0]).toBe('Sun');
+  });
+
+  describe('Calendar header', () => {
+    test('previous button navigates to previous month', () => {
+      const { wrapper } = renderCalendar({ value: '2022-01-07' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
+      wrapper.findPreviousButton().click();
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('December 2021');
+    });
+
+    test('next button navigates to next month', () => {
+      const { wrapper } = renderCalendar({ value: '2022-01-07' });
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
+      wrapper.findNextButton().click();
+      expect(wrapper.findHeader().getElement()).toHaveTextContent('February 2022');
+    });
   });
 });
 
@@ -72,22 +96,6 @@ describe('Calendar locale DE', () => {
   test('start of the week is Monday', () => {
     const { wrapper } = renderCalendar();
     expect(findCalendarWeekdays(wrapper)[0]).toBe('Mo');
-  });
-});
-
-describe('Calendar header', () => {
-  test('previous button navigates to previous month', () => {
-    const { wrapper } = renderCalendar({ value: '2022-01-07' });
-    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
-    wrapper.findPreviousButton().click();
-    expect(wrapper.findHeader().getElement()).toHaveTextContent('December 2021');
-  });
-
-  test('next button navigates to next month', () => {
-    const { wrapper } = renderCalendar({ value: '2022-01-07' });
-    expect(wrapper.findHeader().getElement()).toHaveTextContent('January 2022');
-    wrapper.findNextButton().click();
-    expect(wrapper.findHeader().getElement()).toHaveTextContent('February 2022');
   });
 });
 
