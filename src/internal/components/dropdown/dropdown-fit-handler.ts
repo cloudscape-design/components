@@ -4,6 +4,7 @@ import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolk
 
 import { getBreakpointValue } from '../../breakpoints';
 import { BoundingBox, getOverflowParentDimensions, getOverflowParents } from '../../utils/scrollable-containers';
+import { LogicalDOMRect } from './dropdown-position';
 
 import styles from './styles.css.js';
 
@@ -361,7 +362,7 @@ export const calculatePosition = (
   isMobile: boolean,
   minWidth?: number,
   stretchBeyondTriggerWidth?: boolean
-): [DropdownPosition, DOMRect] => {
+): [DropdownPosition, LogicalDOMRect] => {
   // cleaning previously assigned values,
   // so that they are not reused in case of screen resize and similar events
   verticalContainerElement.style.maxBlockSize = '';
@@ -393,6 +394,6 @@ export const calculatePosition = (
         isMobile,
         stretchBeyondTriggerWidth,
       });
-  const triggerBox = triggerElement.getBoundingClientRect();
+  const triggerBox = getLogicalBoundingClientRect(triggerElement);
   return [position, triggerBox];
 };
