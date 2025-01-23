@@ -129,6 +129,7 @@
     "i18nStrings.relativeModeTitle": "Relative mode",
     "i18nStrings.absoluteModeTitle": "Absolute mode",
     "i18nStrings.relativeRangeSelectionHeading": "Choose a range",
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": "Each month counts from the first day to the last day.",
     "i18nStrings.cancelButtonLabel": "Cancel",
     "i18nStrings.clearButtonLabel": "Clear and dismiss",
     "i18nStrings.applyButtonLabel": "Apply",

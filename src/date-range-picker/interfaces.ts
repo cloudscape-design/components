@@ -9,7 +9,7 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 
-export type Granularity = CalendarProps.Granularity; //'day' | 'month';
+export type Granularity = CalendarProps.Granularity;
 
 export interface DateRangePickerBaseProps {
   /**
@@ -298,6 +298,7 @@ export namespace DateRangePickerProps {
      * Adds `aria-label` to the trigger and dropdown.
      */
     ariaLabel?: string;
+
     /**
      * Adds `aria-labelledby` to the trigger and dropdown.
      */
@@ -331,8 +332,13 @@ export namespace DateRangePickerProps {
      * Heading for the relative range selection area
      * @i18n
      */
-
     relativeRangeSelectionHeading?: string;
+
+    /**
+     * Description for the relative range selection area
+     * @i18n
+     */
+    relativeRangeSelectionMonthlyDescription?: string;
 
     /**
      * Visible label of the Cancel button
