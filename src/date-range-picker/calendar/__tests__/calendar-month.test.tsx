@@ -72,11 +72,6 @@ describe('Date range picker calendar with month granularity', () => {
     return wrapper.findDropdown()!.findByClassName(testutilStyles['calendar-aria-live'])!.getElement();
   };
 
-  // beforeEach(() => {
-  //   // Set default locale of the browser to en-US for more consistent tests
-  //   const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC' });
-  //   jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
-  // });
   afterEach(() => jest.restoreAllMocks());
 
   describe('localization', () => {
@@ -288,17 +283,17 @@ describe('Date range picker calendar with month granularity', () => {
       });
 
       test('should allow first Month to be focused after moving dates then navigating between years', () => {
-        wrapper.findDropdown()!.findNextPageButton().click();
+        wrapper.findDropdown()!.findNextButton().click();
         expect(findCalendarHeaderText(wrapper)).toBe('20242025');
-        wrapper.findDropdown()!.findNextPageButton().click();
+        wrapper.findDropdown()!.findNextButton().click();
         expect(findCalendarHeaderText(wrapper)).toBe('20252026');
 
         // focus a new date
         findFocusableMonth(wrapper)!.keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findDropdown()!.findPreviousPageButton()!.click();
+        wrapper.findDropdown()!.findPreviousButton()!.click();
         expect(findCalendarHeaderText(wrapper)).toBe('20242025');
-        wrapper.findDropdown()!.findPreviousPageButton()!.click();
+        wrapper.findDropdown()!.findPreviousButton()!.click();
         expect(findCalendarHeaderText(wrapper)).toBe('20232024');
 
         expect(findFocusableMonthText(wrapper)).toBe('Jan');

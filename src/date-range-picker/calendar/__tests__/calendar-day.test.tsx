@@ -238,14 +238,14 @@ describe('Date range picker calendar with day granularity', () => {
       });
 
       test('should allow first date to be focused after moving dates then navigating between months', () => {
-        wrapper.findDropdown()!.findNextPageButton().click();
-        wrapper.findDropdown()!.findNextPageButton().click();
+        wrapper.findDropdown()!.findNextButton().click();
+        wrapper.findDropdown()!.findNextButton().click();
 
         // focus a new date
         findFocusableDate(wrapper)!.keydown(KeyCode.right);
         // navigate to previous month
-        wrapper.findDropdown()!.findPreviousPageButton()!.click();
-        wrapper.findDropdown()!.findPreviousPageButton()!.click();
+        wrapper.findDropdown()!.findPreviousButton()!.click();
+        wrapper.findDropdown()!.findPreviousButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('1');
       });
@@ -255,8 +255,8 @@ describe('Date range picker calendar with day granularity', () => {
         const { wrapper } = renderDateRangePicker({ ...defaultProps, isDateEnabled });
 
         changeMode(wrapper, 'absolute');
-        wrapper.findDropdown()!.findNextPageButton()!.click();
-        wrapper.findDropdown()!.findNextPageButton()!.click();
+        wrapper.findDropdown()!.findNextButton()!.click();
+        wrapper.findDropdown()!.findNextButton()!.click();
 
         expect(findFocusableDateText(wrapper)).toBe('2');
       });
@@ -619,7 +619,7 @@ describe('Date range picker calendar with day granularity', () => {
     test('should add `nextMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findNextPageButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findNextButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST NEXT MONTH'
       );
     });
@@ -627,7 +627,7 @@ describe('Date range picker calendar with day granularity', () => {
     test('should add `previousMonthAriaLabel` to appropriate button in the calendar', () => {
       const { wrapper } = renderDateRangePicker({ ...defaultProps, i18nStrings });
       changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findPreviousPageButton()!.getElement()!.getAttribute('aria-label')).toMatch(
+      expect(wrapper.findDropdown()!.findPreviousButton()!.getElement()!.getAttribute('aria-label')).toMatch(
         'TEST PREVIOUS MONTH'
       );
     });
