@@ -100,8 +100,8 @@ describe('Date range picker', () => {
           const wrapper = createWrapper(container).findDateRangePicker()!;
 
           wrapper.findTrigger().click();
-          wrapper.findDropdown()!.findPreviousPageButton().click();
-          wrapper.findDropdown()!.findNextPageButton().click();
+          wrapper.findDropdown()!.findPreviousButton().click();
+          wrapper.findDropdown()!.findNextButton().click();
           wrapper.findDropdown()![findAt]('left', 2, 1).click();
           wrapper.findDropdown()![findAt]('right', 2, 1).click();
           expect(onSubmit).not.toHaveBeenCalled();
@@ -1020,12 +1020,12 @@ describe('Date range picker', () => {
             wrapper.openDropdown();
 
             //prev page
-            expect(wrapper.findDropdown()!.findPreviousPageButton().getElement()).toHaveAccessibleName(
+            expect(wrapper.findDropdown()!.findPreviousButton().getElement()).toHaveAccessibleName(
               i18nStrings[granularity === 'day' ? 'previousMonthAriaLabel' : 'previousYearAriaLabel']
             );
 
             //next page
-            expect(wrapper.findDropdown()!.findNextPageButton().getElement()).toHaveAccessibleName(
+            expect(wrapper.findDropdown()!.findNextButton().getElement()).toHaveAccessibleName(
               i18nStrings[granularity === 'day' ? 'nextMonthAriaLabel' : 'nextYearAriaLabel']
             );
 
@@ -1111,12 +1111,12 @@ describe('Date range picker', () => {
             wrapper.openDropdown();
 
             //prev page
-            expect(wrapper.findDropdown()!.findPreviousPageButton().getElement()).toHaveAccessibleName(
+            expect(wrapper.findDropdown()!.findPreviousButton().getElement()).toHaveAccessibleName(
               granularity === 'day' ? 'Custom previous month' : 'Custom previous year'
             );
 
             //next page
-            expect(wrapper.findDropdown()!.findNextPageButton().getElement()).toHaveAccessibleName(
+            expect(wrapper.findDropdown()!.findNextButton().getElement()).toHaveAccessibleName(
               granularity === 'day' ? 'Custom next month' : 'Custom next year'
             );
 

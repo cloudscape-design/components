@@ -14,7 +14,7 @@ interface HeaderButtonProps {
   granularity?: Granularity;
 }
 
-export function PrevPageButton({ ariaLabel, onChangePage, granularity = 'day' }: HeaderButtonProps) {
+export function PrevPageButton({ ariaLabel, onChangePage }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-left"
@@ -22,15 +22,12 @@ export function PrevPageButton({ ariaLabel, onChangePage, granularity = 'day' }:
       variant={'icon'}
       onClick={() => onChangePage(-1)}
       formAction="none"
-      className={clsx(
-        testutilStyles[`calendar-prev-page-btn`],
-        granularity === 'day' && testutilStyles[`calendar-prev-month-btn`]
-      )}
+      className={clsx(testutilStyles[`calendar-prev-page-btn`], testutilStyles[`calendar-prev-month-btn`])}
     />
   );
 }
 
-export function NextPageButton({ ariaLabel, onChangePage, granularity = 'day' }: HeaderButtonProps) {
+export function NextPageButton({ ariaLabel, onChangePage }: HeaderButtonProps) {
   return (
     <InternalButton
       iconName="angle-right"
@@ -38,10 +35,7 @@ export function NextPageButton({ ariaLabel, onChangePage, granularity = 'day' }:
       variant={'icon'}
       onClick={() => onChangePage(1)}
       formAction="none"
-      className={clsx(
-        testutilStyles[`calendar-next-page-btn`],
-        granularity === 'day' && testutilStyles[`calendar-next-month-btn`]
-      )}
+      className={clsx(testutilStyles[`calendar-next-page-btn`], testutilStyles[`calendar-next-month-btn`])}
     />
   );
 }

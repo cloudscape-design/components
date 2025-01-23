@@ -98,27 +98,25 @@ export class DrpDropdownWrapper extends ComponentWrapper {
     return this.findByClassName(testutilStyles['calendar-header'])!;
   }
 
-  findPreviousPageButton(): ButtonWrapper {
+  findPreviousButton(): ButtonWrapper {
     return this.findComponent(`.${testutilStyles['calendar-prev-page-btn']}`, ButtonWrapper)!;
   }
 
-  findNextPageButton(): ButtonWrapper {
+  findNextButton(): ButtonWrapper {
     return this.findComponent(`.${testutilStyles['calendar-next-page-btn']}`, ButtonWrapper)!;
   }
 
   /**
-   * For backwards compatibility only.
-   * This utility should not be used in new code.
-   * Instead, use the 'findPreviousPage' button.
+   * Alias for findPreviousButton for compatibility with previous versions
+   * @deprecated
    */
   findPreviousMonthButton(): ButtonWrapper {
     return this.findComponent(`.${testutilStyles['calendar-prev-month-btn']}`, ButtonWrapper)!;
   }
 
   /**
-   * For backwards compatibility only.
-   * This utility should not be used in new code.
-   * Instead, use the 'findNextPage' button.
+   * Alias for findNextButton for compatibility with previous versions
+   * @deprecated
    */
   findNextMonthButton(): ButtonWrapper {
     return this.findComponent(`.${testutilStyles['calendar-next-month-btn']}`, ButtonWrapper)!;
