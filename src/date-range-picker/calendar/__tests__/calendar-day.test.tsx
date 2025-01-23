@@ -14,7 +14,6 @@ import { i18nStrings } from '../../__tests__/i18n-strings';
 import { isValidRange } from '../../__tests__/is-valid-range';
 
 import testutilStyles from '../../../../lib/components/date-range-picker/test-classes/styles.selectors.js';
-// import gridDayStyles from '../../../../lib/components/date-range-picker/calendar/grids/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
 beforeEach(() => Mockdate.set(new Date('2020-10-20T12:30:20')));

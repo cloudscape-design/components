@@ -147,7 +147,6 @@ describe('Date range picker', () => {
       });
 
       describe('selection', () => {
-        //todo - confirm how this works as no slashes in props
         test('formats dates with / in place of -', () => {
           const { wrapper } = renderDateRangePicker({
             ...defaultProps,

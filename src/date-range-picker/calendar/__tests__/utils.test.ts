@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import MockDate from 'mockdate';
+
 import { findDateToFocus, findMonthToDisplay, findMonthToFocus, findYearToDisplay } from '../utils';
 // Helper function to create Date objects from YYYY-MM-DD strings
 const createDate = (dateString: string) => new Date(dateString);
 describe('findDateToFocus', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
-    jest.useFakeTimers();
-    jest.setSystemTime(createDate('2023-06-15').getTime()); // Set a fixed date for 'today'
+    MockDate.set(new Date('2023-06-15'));
   });
   afterEach(() => {
-    jest.useRealTimers();
+    MockDate.reset();
   });
   test('should return selected date if it is enabled and in the same month as baseDate', () => {
     const selected = createDate('2023-06-10');
@@ -42,7 +42,7 @@ describe('findDateToFocus', () => {
     expect(findDateToFocus(selected, baseDate, (date: Date) => date.getMonth() === 7)).toEqual(baseDate);
   });
   test('should handle leap years correctly', () => {
-    jest.setSystemTime(createDate('2024-02-29').getTime()); // Set 'today' to a leap year
+    MockDate.set(new Date('2024-02-29')); // Set 'today' to a leap year
     const baseDate = createDate('2024-02-01');
     const today = new Date();
     expect(findDateToFocus(null, baseDate, () => true)).toEqual(today);
@@ -50,12 +50,10 @@ describe('findDateToFocus', () => {
 });
 describe('findMonthToFocus', () => {
   beforeEach(() => {
-    jest.resetAllMocks();
-    jest.useFakeTimers();
-    jest.setSystemTime(createDate('2023-06-15').getTime()); // Set a fixed date for 'today'
+    MockDate.set(new Date('2023-06-15'));
   });
   afterEach(() => {
-    jest.useRealTimers();
+    MockDate.reset();
   });
   test('should return selected date if it is enabled and in the same year as baseDate', () => {
     const selected = createDate('2023-03');
@@ -89,11 +87,10 @@ describe('findMonthToFocus', () => {
 });
 describe('findMonthToDisplay', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(createDate('2023-06-15').getTime()); // Set a fixed date for Date.now()
+    MockDate.set(new Date('2023-06-15'));
   });
   afterEach(() => {
-    jest.useRealTimers();
+    MockDate.reset();
   });
   test('should return start date month for single grid', () => {
     const value = { start: { date: '2023-03-15', time: '00:00' }, end: { date: '', time: '' } };
@@ -134,11 +131,10 @@ describe('findMonthToDisplay', () => {
 });
 describe('findYearToDisplay', () => {
   beforeEach(() => {
-    jest.useFakeTimers();
-    jest.setSystemTime(createDate('2023-06-15').getTime()); // Set a fixed date for Date.now()
+    MockDate.set(new Date('2023-06-15'));
   });
   afterEach(() => {
-    jest.useRealTimers();
+    MockDate.reset();
   });
   test('should return start year for single grid', () => {
     const value = { start: { date: '2023-03-15', time: '00:00' }, end: { date: '', time: '' } };
