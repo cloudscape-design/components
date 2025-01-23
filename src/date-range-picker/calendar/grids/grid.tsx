@@ -32,6 +32,46 @@ import { renderDateAnnouncement, renderDayName } from './intl';
 import testutilStyles from '../../test-classes/styles.css.js';
 import styles from './styles.css.js';
 
+interface DatePickerStrategyUtils {
+  getItemKey: (rowIndex: number, rowItemIndex: number) => string;
+  isSameItem: (date1: Date, date2: Date) => boolean;
+  isSamePage: (date1: Date, date2: Date) => boolean;
+  addItems: (date: Date, amount: number) => Date;
+  addRows: (date: Date, amount: number) => Date;
+  getPageName: () => string;
+}
+
+class DatePickerStrategy {
+  private isMonthPicker: boolean;
+
+  constructor(isMonthPicker: boolean) {
+    this.isMonthPicker = isMonthPicker;
+  }
+
+  getStrategy(): DatePickerStrategyUtils {
+    return {
+      getItemKey: (rowIndex: number, rowItemIndex: number): string => {
+        return this.isMonthPicker ? `Month ${rowIndex * 3 + rowItemIndex + 1}` : `${rowIndex}:${rowItemIndex}`;
+      },
+      isSameItem: (date1: Date, date2: Date) => {
+        return this.isMonthPicker ? isSameMonth(date1, date2) : isSameDay(date1, date2);
+      },
+      isSamePage: (date1: Date, date2: Date) => {
+        return this.isMonthPicker ? isSameYear(date1, date2) : isSameMonth(date1, date2);
+      },
+      addItems: (date: Date, amount: number) => {
+        return this.isMonthPicker ? addMonths(date, amount) : addDays(date, amount);
+      },
+      addRows: (date: Date, amount: number) => {
+        return this.isMonthPicker ? addQuarters(date, amount) : addWeeks(date, amount);
+      },
+      getPageName: () => {
+        return this.isMonthPicker ? 'year' : 'month';
+      },
+    };
+  }
+}
+
 /**
  * Calendar grid supports two mechanisms of keyboard navigation:
  * - Native screen-reader table navigation (semantic table markup);
@@ -109,14 +149,11 @@ export function Grid({
           return (
             <tr key={rowIndex} className={isMonthPicker ? testutilStyles.quarter : testutilStyles.week}>
               {row.map((date, rowItemIndex) => {
-                const itemKey = isMonthPicker
-                  ? `Month ${rowIndex * 3 + rowItemIndex + 1}`
-                  : `${rowIndex}:${rowItemIndex}`;
-                const isSameItem = isMonthPicker ? isSameMonth : isSameDay;
-                const isSamePage = isMonthPicker ? isSameYear : isSameMonth;
-                const addItems = isMonthPicker ? addMonths : addDays;
-                const addRows = isMonthPicker ? addQuarters : addWeeks;
-                const pageName = isMonthPicker ? 'year' : 'month';
+                const { getItemKey, isSameItem, isSamePage, addItems, addRows, getPageName } = new DatePickerStrategy(
+                  isMonthPicker
+                ).getStrategy();
+                const itemKey = getItemKey(rowIndex, rowItemIndex);
+                const pageName = getPageName();
                 const isStartDate = !!selectedStartDate && isSameItem(date, selectedStartDate);
                 const isEndDate = !!selectedEndDate && isSameItem(date, selectedEndDate);
                 const isSelected = isStartDate || isEndDate;
@@ -203,32 +240,6 @@ export function Grid({
                     : -1; // Can be focused programmatically.
                 }
 
-                // const hasTopBorder = (
-                //   granularity: DateRangePickerProps['granularity'],
-                //   date: Date,
-                //   inSpecifiedRow: boolean
-                // ): boolean => !!inSpecifiedRow || isInFirstGrouping(granularity, date);
-
-                // const hasBottomBorder = (
-                //   granularity: DateRangePickerProps['granularity'],
-                //   date: Date,
-                //   inSpecifiedRow: boolean
-                // ): boolean => !!inSpecifiedRow || isInLastGrouping(granularity, date);
-                // const hasLeftBorder = (
-                //   granularity: DateRangePickerProps['granularity'],
-                //   date: Date,
-                //   itemIndex: number,
-                //   isFirstItemInRange: boolean
-                // ): boolean => itemIndex === 0 || isFirstItemInRange || isFirstItem(granularity, date);
-
-                // const hasRightBorder = (
-                //   granularity: DateRangePickerProps['granularity'],
-                //   date: Date,
-                //   itemIndex: number,
-                //   rowLength: number,
-                //   isLastItemInRange: boolean
-                // ): boolean => itemIndex === rowLength - 1 || isLastItemInRange || isLastItemInPage(granularity, date);
-
                 return (
                   <GridCell
                     ref={isFocused ? focusedDateRef : undefined}
@@ -246,25 +257,12 @@ export function Grid({
                       [styles['no-range']]: isSelected && onlyOneSelected,
                       [styles['in-range']]: dateIsInRange,
                       [styles['in-range-border-block-start']]:
-                        !!inRangeStartRow || isInFirstGrouping(granularity, date), // hasTopBorder(granularity, date, !!inRangeStartRow),
-                      [styles['in-range-border-block-end']]: !!inRangeEndRow || isInLastGrouping(granularity, date), //hasBottomBorder(granularity, date, !!inRangeEndRow),
+                        !!inRangeStartRow || isInFirstGrouping(granularity, date),
+                      [styles['in-range-border-block-end']]: !!inRangeEndRow || isInLastGrouping(granularity, date),
                       [styles['in-range-border-inline-start']]:
                         rowItemIndex === 0 || isRangeStartDate || isFirstItem(granularity, date),
-                      // hasLeftBorder(
-                      //   granularity,
-                      //   date,
-                      //   rowItemIndex,
-                      //   isRangeStartDate
-                      // ),
                       [styles['in-range-border-inline-end']]:
                         rowItemIndex === row.length - 1 || isRangeEndDate || isLastItemInPage(granularity, date),
-                      // hasRightBorder(
-                      //   granularity,
-                      //   date,
-                      //   rowItemIndex,
-                      //   row.length,
-                      //   isRangeEndDate
-                      // ),
                       [styles.today]: isCurrentDay,
                       [testutilStyles.today]: isCurrentDay,
                       [styles['this-month']]: isCurrentMonth,
