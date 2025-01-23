@@ -83,20 +83,6 @@ describe('intl', () => {
   });
 
   describe('renderDayName', () => {
-    // const originalDate = global.Date;
-    // beforeAll(() => {
-    //   // Mock the Date constructor to always return a specific date
-    //   global.Date = class extends Date {
-    //     constructor() {
-    //       super('2023-06-11T00:00:00Z'); // Sunday
-    //     }
-    //   } as any;
-    // });
-
-    // afterAll(() => {
-    //   global.Date = originalDate;
-    // });
-
     beforeEach(() => {
       MockDate.set(new Date('2023-06-11T00:00:00Z'));
     });
