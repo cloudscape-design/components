@@ -9,6 +9,7 @@ import { NonCancelableEventHandler } from '../../../../lib/components/internal/e
 import { KeyCode } from '../../../../lib/components/internal/keycode';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 import DateRangePickerWrapper from '../../../../lib/components/test-utils/dom/date-range-picker';
+import { SomeRequired } from '../../../internal/types';
 import { changeMode } from '../../__tests__/change-mode';
 import { i18nStrings } from '../../__tests__/i18n-strings';
 import { isValidRange } from '../../__tests__/is-valid-range';
@@ -21,7 +22,7 @@ afterEach(() => Mockdate.reset());
 
 describe('Date range picker calendar with month granularity', () => {
   const outsideId = 'outside';
-  const defaultProps: DateRangePickerProps & Pick<Required<DateRangePickerProps>, 'i18nStrings'> = {
+  const defaultProps: DateRangePickerProps & SomeRequired<DateRangePickerProps, 'i18nStrings'> = {
     i18nStrings,
     granularity: 'month',
     relativeOptions: [
@@ -71,11 +72,11 @@ describe('Date range picker calendar with month granularity', () => {
     return wrapper.findDropdown()!.findByClassName(testutilStyles['calendar-aria-live'])!.getElement();
   };
 
-  beforeEach(() => {
-    // Set default locale of the browser to en-US for more consistent tests
-    const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC' });
-    jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
-  });
+  // beforeEach(() => {
+  //   // Set default locale of the browser to en-US for more consistent tests
+  //   const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC' });
+  //   jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
+  // });
   afterEach(() => jest.restoreAllMocks());
 
   describe('localization', () => {

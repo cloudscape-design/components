@@ -73,7 +73,7 @@ function expectToHaveFocus(element: HTMLElement) {
 
 describe('Date range picker', () => {
   describe.each(['day', 'month'] as const)('With granularity of %s', granularity => {
-    const updatedProps: DateRangePickerProps = {
+    const currentModeDefaultProps: DateRangePickerProps = {
       ...defaultProps,
       granularity,
       relativeOptions: granularity === 'day' ? dayRelativeOptions : monthRelativeOptions,
@@ -84,7 +84,7 @@ describe('Date range picker', () => {
 
     describe('accessibility attributes', () => {
       test('aria-describedby', () => {
-        const { wrapper } = renderDateRangePicker({ ...updatedProps, ariaDescribedby: '#element' });
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, ariaDescribedby: '#element' });
         expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-describedby', '#element');
 
         wrapper.openDropdown();
@@ -92,7 +92,7 @@ describe('Date range picker', () => {
       });
 
       test('aria-labelledby', () => {
-        const { wrapper } = renderDateRangePicker({ ...updatedProps, ariaLabelledby: '#element' });
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, ariaLabelledby: '#element' });
         expect(wrapper.findTrigger().getElement()).toHaveAttribute(
           'aria-labelledby',
           expect.stringContaining('#element')
@@ -103,12 +103,12 @@ describe('Date range picker', () => {
       });
 
       test('aria-invalid', () => {
-        const { wrapper } = renderDateRangePicker({ ...updatedProps, invalid: true });
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, invalid: true });
         expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-invalid', 'true');
       });
 
       test('controlId', () => {
-        const { wrapper } = renderDateRangePicker({ ...updatedProps, controlId: 'test' });
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, controlId: 'test' });
         expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
       });
 
@@ -116,7 +116,7 @@ describe('Date range picker', () => {
         const value = { type: 'relative', amount: 5, unit: 'day' } as const;
         const { container } = render(
           <FormField label="Label">
-            <DateRangePicker {...updatedProps} value={value} />
+            <DateRangePicker {...currentModeDefaultProps} value={value} />
           </FormField>
         );
         const wrapper = createWrapper(container).findDateRangePicker()!;
@@ -128,7 +128,7 @@ describe('Date range picker', () => {
       test('does not pass through form field context to dropdown elements', () => {
         const { container } = render(
           <FormField label="Label">
-            <DateRangePicker {...updatedProps} />
+            <DateRangePicker {...currentModeDefaultProps} />
           </FormField>
         );
         const wrapper = createWrapper(container).findDateRangePicker()!;
@@ -179,32 +179,32 @@ describe('Date range picker', () => {
     });
 
     test('opens relative range mode by default', () => {
-      const { wrapper } = renderDateRangePicker({ ...updatedProps } as DateRangePickerProps);
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps } as DateRangePickerProps);
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).not.toBeNull();
     });
 
     test('opens absolute range mode by default if no relative ranges are provided', () => {
-      const { wrapper } = renderDateRangePicker({ ...updatedProps, relativeOptions: [] });
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, relativeOptions: [] });
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
     });
 
     test('shows the clear button by default', () => {
-      const { wrapper } = renderDateRangePicker({ ...updatedProps } as DateRangePickerProps);
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps } as DateRangePickerProps);
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.findClearButton()).not.toBeNull();
     });
 
     test('hides the clear button if specified', () => {
-      const { wrapper } = renderDateRangePicker({ ...updatedProps, showClearButton: false });
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, showClearButton: false });
       wrapper.openDropdown();
       expect(wrapper.findDropdown()!.findClearButton()).toBeNull();
     });
 
     describe('checkControlled', () => {
       test('should log a warning when no onChange is undefined', () => {
-        renderDateRangePicker({ ...updatedProps, onChange: undefined });
+        renderDateRangePicker({ ...currentModeDefaultProps, onChange: undefined });
         expect(warnOnce).toHaveBeenCalledTimes(1);
         expect(warnOnce).toHaveBeenCalledWith(
           'DateRangePicker',
@@ -213,7 +213,7 @@ describe('Date range picker', () => {
       });
 
       test('should not log a warning when onChange is provided', () => {
-        renderDateRangePicker({ ...updatedProps, onChange: () => {} });
+        renderDateRangePicker({ ...currentModeDefaultProps, onChange: () => {} });
         expect(warnOnce).not.toHaveBeenCalled();
       });
     });
@@ -225,7 +225,7 @@ describe('Date range picker', () => {
       beforeEach(() => {
         onChangeSpy = jest.fn();
         ({ wrapper } = renderDateRangePicker({
-          ...updatedProps,
+          ...currentModeDefaultProps,
           onChange: event => onChangeSpy(event.detail),
           isValidRange: value => {
             if (value === null) {
@@ -242,7 +242,7 @@ describe('Date range picker', () => {
 
       test('falls back to value = null when invalid value type is provided', () => {
         const value: any = { type: 'invalid' };
-        renderDateRangePicker({ ...updatedProps, value });
+        renderDateRangePicker({ ...currentModeDefaultProps, value });
 
         expect(warnOnce).toHaveBeenCalledTimes(1);
         expect(warnOnce).toHaveBeenCalledWith(
@@ -325,7 +325,7 @@ describe('Date range picker', () => {
       beforeEach(() => {
         onChangeSpy = jest.fn();
         ({ wrapper } = renderDateRangePicker({
-          ...updatedProps,
+          ...currentModeDefaultProps,
           onChange: event => onChangeSpy(event.detail),
         }));
       });
@@ -353,7 +353,7 @@ describe('Date range picker', () => {
     describe('range selector mode', () => {
       (['absolute-only', 'relative-only'] as const).forEach(rangeSelectorMode =>
         test(`shows no mode switcher when mode = ${rangeSelectorMode} and value = null`, () => {
-          const { wrapper } = renderDateRangePicker({ ...updatedProps, rangeSelectorMode });
+          const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, rangeSelectorMode });
           wrapper.openDropdown();
 
           expect(wrapper.findDropdown()!.findSelectionModeSwitch()).toBeNull();
@@ -367,7 +367,7 @@ describe('Date range picker', () => {
         ] as const
       ).forEach(([rangeSelectorMode, value]) =>
         test(`uses null as value when mode = ${rangeSelectorMode} and value.type = ${value.type}`, () => {
-          const { wrapper } = renderDateRangePicker({ ...updatedProps, rangeSelectorMode, value });
+          const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, rangeSelectorMode, value });
           wrapper.openDropdown();
 
           expect(wrapper.findTrigger().getElement()).toHaveTextContent('');
@@ -428,7 +428,7 @@ describe('Date range picker', () => {
             const expectedStartDate = granularity === 'month' ? `2019-09` : `2020-09-15`;
 
             const isValidRange = jest.fn().mockReturnValue({ valid: false, errorMessage: 'Error' });
-            const { wrapper } = renderDateRangePicker({ ...updatedProps, dateOnly: true, isValidRange });
+            const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, dateOnly: true, isValidRange });
             wrapper.openDropdown();
             changeMode(wrapper, 'absolute');
             // When endDate hasn't been selected
@@ -465,7 +465,7 @@ describe('Date range picker', () => {
                   },
                 }}
               >
-                <DateRangePicker {...updatedProps} i18nStrings={undefined} />
+                <DateRangePicker {...currentModeDefaultProps} i18nStrings={undefined} />
               </TestI18nProvider>
             );
             const wrapper = createWrapper(container).findDateRangePicker()!;
