@@ -38,6 +38,9 @@ interface DatePickerStrategyUtils {
   isSamePage: (date1: Date, date2: Date) => boolean;
   addItems: (date: Date, amount: number) => Date;
   addRows: (date: Date, amount: number) => Date;
+  checkIfCurrentDay: (date: Date) => boolean;
+  checkIfCurrentMonth: (date: Date) => boolean;
+  checkIfCurrent: (date: Date) => boolean;
   getPageName: () => string;
 }
 
@@ -65,6 +68,18 @@ class DatePickerStrategy {
       addRows: (date: Date, amount: number) => {
         return this.isMonthPicker ? addQuarters(date, amount) : addWeeks(date, amount);
       },
+      checkIfCurrentDay: (date: Date) => {
+        return this.isMonthPicker ? false : isToday(date);
+      },
+      checkIfCurrentMonth: (date: Date) => {
+        return this.isMonthPicker ? isThisMonth(date) : false;
+      },
+      checkIfCurrent: (date: Date) => {
+        return this.isMonthPicker ? isThisMonth(date) : isToday(date);
+      },
+      // const isCurrentDay = !isMonthPicker && isToday(date);
+      // const isCurrentMonth = isMonthPicker && isThisMonth(date);
+      // const isCurrent = isMonthPicker ? isThisMonth(date) : isToday(date);
       getPageName: () => {
         return this.isMonthPicker ? 'year' : 'month';
       },
@@ -149,11 +164,22 @@ export function Grid({
           return (
             <tr key={rowIndex} className={isMonthPicker ? testutilStyles.quarter : testutilStyles.week}>
               {row.map((date, rowItemIndex) => {
-                const { getItemKey, isSameItem, isSamePage, addItems, addRows, getPageName } = new DatePickerStrategy(
-                  isMonthPicker
-                ).getStrategy();
+                const {
+                  getItemKey,
+                  isSameItem,
+                  isSamePage,
+                  addItems,
+                  addRows,
+                  checkIfCurrent,
+                  checkIfCurrentDay,
+                  checkIfCurrentMonth,
+                  getPageName,
+                } = new DatePickerStrategy(isMonthPicker).getStrategy();
                 const itemKey = getItemKey(rowIndex, rowItemIndex);
                 const pageName = getPageName();
+                const isCurrentDay = checkIfCurrentDay(date);
+                const isCurrentMonth = checkIfCurrentMonth(date);
+                const isCurrent = checkIfCurrent(date);
                 const isStartDate = !!selectedStartDate && isSameItem(date, selectedStartDate);
                 const isEndDate = !!selectedEndDate && isSameItem(date, selectedEndDate);
                 const isSelected = isStartDate || isEndDate;
@@ -211,10 +237,6 @@ export function Grid({
                   handlers.onClick = () => onSelectDate(date);
                   handlers.onFocus = () => onFocusedDateChange(date);
                 }
-
-                const isCurrentDay = !isMonthPicker && isToday(date);
-                const isCurrentMonth = isMonthPicker && isThisMonth(date);
-                const isCurrent = isMonthPicker ? isThisMonth(date) : isToday(date);
 
                 // Screen-reader announcement for the focused day/month.
                 let announcement = renderDateAnnouncement({
