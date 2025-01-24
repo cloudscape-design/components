@@ -14,7 +14,7 @@ export default function WithDrawers() {
   const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
-  const appLayoutRef = useRef<PageLayoutProps.Ref>(null);
+  const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
 
   const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
     activeDrawerId: activeDrawerId,
@@ -38,7 +38,7 @@ export default function WithDrawers() {
   return (
     <PageLayout
       ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
-      ref={appLayoutRef}
+      ref={pageLayoutRef}
       content={
         <ContentLayout
           disableOverlap={true}
@@ -54,7 +54,7 @@ export default function WithDrawers() {
                     onFollow={() => {
                       setHelpPathSlug('header');
                       setIsToolsOpen(true);
-                      appLayoutRef.current?.focusToolsClose();
+                      pageLayoutRef.current?.focusToolsClose();
                     }}
                   >
                     Info
@@ -65,12 +65,19 @@ export default function WithDrawers() {
               </Header>
 
               <SpaceBetween size="xs">
-                <Button onClick={() => setIsNavigationOpen(current => !current)}>Toggle navigation</Button>
+                <Button
+                  onClick={() => {
+                    setIsNavigationOpen(current => !current);
+                    pageLayoutRef.current?.focusNavigation();
+                  }}
+                >
+                  Toggle navigation
+                </Button>
 
                 <Button
                   onClick={() => {
                     setActiveDrawerId('pro-help');
-                    appLayoutRef.current?.focusActiveDrawer();
+                    pageLayoutRef.current?.focusActiveDrawer();
                   }}
                 >
                   Open a drawer without trigger
