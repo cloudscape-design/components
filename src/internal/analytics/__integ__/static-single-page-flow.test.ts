@@ -88,9 +88,10 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         subStepConfiguration: [
           { name: 'Container 1 - header', number: 1, subStepIdentifier: 'container-1' },
           { name: 'Container 2 - header', number: 2, subStepIdentifier: 'container-2' },
+          { name: 'Expandable Section 1 - Header', number: 3, subStepIdentifier: 'expandable-section-1' },
         ],
         stepNumber: 1,
-        totalSubSteps: 2,
+        totalSubSteps: 3,
       });
     })
   );
@@ -102,7 +103,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
       await page.keys('Tab'); // From Input -> S3 Resource selector Info
       await page.keys('Tab'); // S3 Resource selector Info -> S3 Resource Selector Input
       await page.keys('Tab'); // S3 Resource selector Input -> S3 Resource selector Browse button
-      await page.keys('Tab'); // S3 Resource selector Browse button -> Cancel button
+      await page.keys('Tab'); // S3 Resource selector Browse button -> Additional configuration header
       const { funnelLog, actions } = await page.getFunnelLog();
       expect(actions).toEqual([
         'funnelStart',
@@ -111,6 +112,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         'funnelSubStepComplete',
         'funnelSubStepStart',
         'funnelSubStepComplete',
+        'funnelSubStepStart',
       ]);
 
       // funnelSubStepStart - Container 1
@@ -204,6 +206,29 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepName: 'Form Header',
         subStepName: 'Container 2 - header',
       });
+
+      // funnelSubStepStart - Expandable Section 1
+      expect(funnelLog[6].props).toEqual({
+        stepNameSelector: expect.any(String),
+        subStepNameSelector: expect.any(String),
+        subStepAllSelector: expect.any(String),
+        subStepSelector: expect.any(String),
+        funnelInteractionId: FUNNEL_INTERACTION_ID,
+        funnelIdentifier: FUNNEL_IDENTIFIER,
+        stepIdentifier: STEP_IDENTIFIER,
+        subStepIdentifier: 'expandable-section-1',
+        stepName: 'Form Header',
+        stepNumber: 1,
+        subStepName: 'Expandable Section 1 - Header',
+        subStepNumber: 3,
+      });
+
+      expect(funnelLog[6].resolvedProps).toEqual({
+        subStepAllElements: expect.any(Object),
+        subStepElement: expect.any(Object),
+        stepName: 'Form Header',
+        subStepName: 'Expandable Section 1 - Header',
+      });
     })
   );
 
@@ -238,7 +263,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepIdentifier: STEP_IDENTIFIER,
         stepName: 'Form Header',
         stepNumber: 1,
-        totalSubSteps: 2,
+        totalSubSteps: 3,
       });
       expect(funnelStepCompleteEvent.resolvedProps).toEqual({
         stepName: 'Form Header',

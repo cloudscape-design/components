@@ -9,6 +9,7 @@ import {
 
 import { InternalContainerAsSubstep } from '../container/internal';
 import { AnalyticsFunnelSubStep } from '../internal/analytics/components/analytics-funnel';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { GeneratedAnalyticsMetadataExpandableSectionComponent } from './analytics-metadata/interfaces';
 import { InternalVariant } from './interfaces';
@@ -36,19 +37,24 @@ export const ExpandableSectionContainer = ({
   __injectAnalyticsComponentMetadata,
   ...rest
 }: ExpandableSectionContainerProps) => {
+  const analyticsMetadata = getAnalyticsMetadataProps(rest as BasePropsWithAnalyticsMetadata);
   const analyticsComponentMetadata: GeneratedAnalyticsMetadataExpandableSectionComponent = {
     name: 'awsui.ExpandableSection',
     label: { root: 'self' },
     properties: { variant, expanded: `${!!expanded}` },
   };
 
+  console.log(analyticsMetadata);
   const metadataAttribute = __injectAnalyticsComponentMetadata
     ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
     : {};
 
   if (variant === 'container' || variant === 'stacked') {
     return (
-      <AnalyticsFunnelSubStep>
+      <AnalyticsFunnelSubStep
+        subStepIdentifier={analyticsMetadata?.instanceIdentifier}
+        subStepErrorContext={analyticsMetadata?.errorContext}
+      >
         <InternalContainerAsSubstep
           {...rest}
           className={className}
