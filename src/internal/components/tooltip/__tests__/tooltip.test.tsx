@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render } from '@testing-library/react';
+import { act, render } from '@testing-library/react';
 
 import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip';
 import StatusIndicator from '../../../../../lib/components/status-indicator';
@@ -33,6 +33,7 @@ function renderTooltip(props: Partial<TooltipProps>) {
       trackKey={props.trackKey}
       value={props.value ?? ''}
       contentAttributes={props.contentAttributes}
+      onDismiss={props.onDismiss ?? (() => {})}
     />
   );
   return new TooltipInternalWrapper(container);
@@ -81,5 +82,20 @@ describe('Tooltip', () => {
     const wrapper = renderTooltip({ value: 'Value', trackKey });
 
     expect(wrapper.findTooltip()?.getElement()).toHaveAttribute('data-testid', trackKey);
+  });
+
+  it('calls onDismiss when an Escape keypress is detected anywhere', () => {
+    const onDismiss = jest.fn();
+    const keydownEvent = new KeyboardEvent('keydown', { key: 'Escape', bubbles: true });
+    jest.spyOn(keydownEvent, 'stopPropagation');
+
+    renderTooltip({ value: 'Value', onDismiss });
+    expect(onDismiss).not.toHaveBeenCalled();
+
+    act(() => {
+      document.body.dispatchEvent(keydownEvent);
+    });
+    expect(keydownEvent.stopPropagation).toHaveBeenCalled();
+    expect(onDismiss).toHaveBeenCalled();
   });
 });
