@@ -8,6 +8,7 @@ import { applyDefaults } from '../app-layout/defaults';
 import { AppLayoutProps } from '../app-layout/interfaces';
 import { useAppLayoutPlacement } from '../app-layout/utils/use-app-layout-placement';
 import AppLayoutToolbarInternal from '../app-layout/visual-refresh-toolbar';
+import { AppLayoutToolbarEnabledContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { NonCancelableCustomEvent } from '../internal/events';
@@ -121,9 +122,11 @@ const PageLayout = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     return (
-      <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
-        <AppLayoutToolbarInternal ref={ref} {...props} />
-      </div>
+      <AppLayoutToolbarEnabledContext.Provider value={true}>
+        <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
+          <AppLayoutToolbarInternal ref={ref} {...props} />
+        </div>
+      </AppLayoutToolbarEnabledContext.Provider>
     );
   }
 );

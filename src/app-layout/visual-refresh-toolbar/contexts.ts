@@ -15,3 +15,8 @@ export const AppLayoutVisibilityContext = awsuiPluginsInternal.sharedReactContex
   React,
   'AppLayoutVisibilityContext'
 );
+
+export const AppLayoutToolbarEnabledContext = awsuiPluginsInternal.sharedReactContexts.createContext<boolean>(
+  React,
+  'AppLayoutToolbarEnabledContext'
+);
