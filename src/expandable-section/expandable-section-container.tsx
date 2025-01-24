@@ -44,7 +44,6 @@ export const ExpandableSectionContainer = ({
     properties: { variant, expanded: `${!!expanded}` },
   };
 
-  console.log(analyticsMetadata);
   const metadataAttribute = __injectAnalyticsComponentMetadata
     ? getAnalyticsMetadataAttribute({ component: analyticsComponentMetadata })
     : {};
