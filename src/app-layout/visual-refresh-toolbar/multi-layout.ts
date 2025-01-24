@@ -18,7 +18,6 @@ export interface SharedProps {
   navigationOpen: boolean;
   onNavigationToggle: (open: boolean) => void;
   navigationFocusRef: React.Ref<Focusable> | undefined;
-  navigationTriggerHide?: boolean;
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
@@ -65,13 +64,12 @@ export function mergeProps(
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
+      // there is never a case where navigation will exist and a toggle will not so toolbar
+      // can use the hasNavigation here to conditionally render the navigationToggle button
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;
       toolbar.onNavigationToggle = props.onNavigationToggle;
-    }
-    if (props.navigationTriggerHide) {
-      toolbar.hasNavigation = false;
     }
     if (props.splitPanel && !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')) {
       toolbar.hasSplitPanel = true;
