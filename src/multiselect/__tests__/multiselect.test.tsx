@@ -650,10 +650,10 @@ test('Trigger receives focus when autofocus is true', () => {
   expect(document.activeElement).toBe(wrapper.findTrigger().getElement());
 });
 
-describe('With inline tokens (private API)', () => {
+describe('With inline tokens', () => {
   it('can render inline tokens', () => {
     const { wrapper } = renderMultiselect(
-      <Multiselect {...{ inlineTokens: true }} options={defaultOptions} selectedOptions={[defaultOptions[0]]} />
+      <Multiselect inlineTokens={true} options={defaultOptions} selectedOptions={[defaultOptions[0]]} />
     );
 
     // Trigger contains token labels and the number of selected items
@@ -666,7 +666,7 @@ describe('With inline tokens (private API)', () => {
 
   it('shows placeholder when no items are selected', () => {
     const { wrapper } = renderMultiselect(
-      <Multiselect {...{ inlineTokens: true }} selectedOptions={[]} placeholder="Choose something" />
+      <Multiselect inlineTokens={true} selectedOptions={[]} placeholder="Choose something" />
     );
 
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('Choose something');
@@ -677,7 +677,7 @@ describe('With inline tokens (private API)', () => {
       { value: '1', label: 'First', description: 'description', tags: ['tag'], labelTag: 'label' },
     ];
     const { wrapper } = renderMultiselect(
-      <Multiselect {...{ inlineTokens: true }} options={extendedOptions} selectedOptions={[extendedOptions[0]]} />
+      <Multiselect inlineTokens={true} options={extendedOptions} selectedOptions={[extendedOptions[0]]} />
     );
 
     expect(wrapper.findTrigger().getElement()).toHaveTextContent('First');
@@ -689,7 +689,7 @@ describe('With inline tokens (private API)', () => {
   it('shows multiple selected options inline', () => {
     const { wrapper } = renderMultiselect(
       <Multiselect
-        {...{ inlineTokens: true }}
+        inlineTokens={true}
         options={defaultOptions}
         selectedOptions={[defaultOptions[0], defaultOptions[1], defaultOptions[2]]}
       />

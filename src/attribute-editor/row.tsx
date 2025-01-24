@@ -107,7 +107,7 @@ export const Row = React.memo(
                 errorIconAriaLabel: i18nStrings.errorIconAriaLabel,
                 warningIconAriaLabel: i18nStrings.warningIconAriaLabel,
               }}
-              __hideLabel={index !== 0 && layout.rows.length === 1}
+              __hideLabel={index !== 0 && removeButtonOnSameLine}
               controlId={defIndex === 0 ? firstControlId : undefined}
             >
               {render(item, index, control)}
