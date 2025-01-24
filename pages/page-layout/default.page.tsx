@@ -78,15 +78,6 @@ export default function WithDrawers() {
               <SpaceBetween size="xs">
                 <Button
                   onClick={() => {
-                    setIsNavigationOpen(current => !current);
-                    pageLayoutRef.current?.focusNavigation();
-                  }}
-                >
-                  Toggle navigation
-                </Button>
-
-                <Button
-                  onClick={() => {
                     setActiveDrawerId('pro-help');
                     pageLayoutRef.current?.focusActiveDrawer();
                   }}
@@ -148,7 +139,6 @@ export default function WithDrawers() {
       }}
       tools={<Info helpPathSlug={helpPathSlug} />}
       toolsOpen={isToolsOpen}
-      navigationTriggerHide={true}
       navigationOpen={isNavigationOpen}
       navigation={<Navigation />}
       onNavigationChange={event => setIsNavigationOpen(event.detail.open)}

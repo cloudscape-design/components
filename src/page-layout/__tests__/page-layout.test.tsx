@@ -22,7 +22,7 @@ describe('PageLayout', () => {
       return (
         <PageLayout
           ref={pageLayoutRef}
-          navigationTriggerHide={true}
+          toolbarHide={true}
           navigationOpen={isNavigationOpen}
           onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
           navigation={<>Mock Navigation</>}
@@ -58,11 +58,12 @@ describe('PageLayout', () => {
     const drawerId = 'pro-help';
     const PageLayoutWrapper = () => {
       const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-      const appLayoutRef = useRef<PageLayoutProps.Ref>(null);
+      const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
 
       return (
         <PageLayout
-          ref={appLayoutRef}
+          ref={pageLayoutRef}
+          toolbarHide={true}
           activeDrawerId={activeDrawerId}
           drawers={[
             {

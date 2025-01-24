@@ -52,11 +52,7 @@ export function mergeProps(
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
-    if (
-      props.drawers &&
-      props.drawers.some(drawer => drawer.trigger) &&
-      !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')
-    ) {
+    if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
       toolbar.drawersFocusRef = props.drawersFocusRef;
@@ -68,11 +64,7 @@ export function mergeProps(
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
-    if (
-      props.navigation &&
-      !props.navigationTriggerHide &&
-      !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')
-    ) {
+    if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;
@@ -92,7 +84,7 @@ export function mergeProps(
     }
   }
   // do not render toolbar if no fields are defined, except ariaLabels, which are always there
-  return Object.keys(toolbar).filter(key => !['ariaLabels', 'hasNavigation'].includes(key)).length > 0 ? toolbar : null;
+  return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
 export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {

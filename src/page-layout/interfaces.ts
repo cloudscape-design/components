@@ -4,10 +4,9 @@ import { AppLayoutProps } from '../app-layout/interfaces';
 
 export interface PageLayoutProps extends Omit<AppLayoutProps, 'disableBodyScroll'> {
   /**
-   * If `true`, the navigation trigger is not displayed at all,
-   * while navigation drawer might be displayed, but opened using a custom trigger.
+   * If `true`, the toolbar is not displayed at all.
    */
-  navigationTriggerHide?: boolean;
+  toolbarHide?: boolean;
 
   /**
    * Drawers property. If you set both `drawers` and `tools`, `drawers` will take precedence.

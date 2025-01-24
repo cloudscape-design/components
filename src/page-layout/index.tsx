@@ -62,7 +62,7 @@ const PageLayout = React.forwardRef(
           minContentWidth,
           stickyNotifications: rest.stickyNotifications,
           disableContentHeaderOverlap: rest.disableContentHeaderOverlap,
-          navigationTriggerHide: rest.navigationTriggerHide,
+          toolbarHide: rest.toolbarHide,
         },
         metadata: {
           drawersCount: rest.drawers?.length ?? null,
