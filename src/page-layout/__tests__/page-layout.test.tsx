@@ -14,6 +14,14 @@ export function renderComponent(jsx: React.ReactElement) {
 }
 
 describe('PageLayout', () => {
+  test('without toolbar', () => {
+    const { wrapper } = renderComponent(
+      <PageLayout toolbarHide={true} navigation={<>Mock Navigation</>} content={<div>Content</div>} />
+    );
+
+    expect(wrapper.findToolbar()).toBeFalsy();
+  });
+
   test('triggerless navigation', () => {
     const PageLayoutWrapper = () => {
       const [isNavigationOpen, setIsNavigationOpen] = useState(false);
