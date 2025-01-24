@@ -74,7 +74,12 @@ const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTM
         <>
           {descriptionEl}
           {showTooltip && (
-            <Tooltip className={styles['disabled-reason-tooltip']} trackRef={ref} value={disabledReason!} />
+            <Tooltip
+              className={styles['disabled-reason-tooltip']}
+              trackRef={ref}
+              value={disabledReason!}
+              onDismiss={() => setShowTooltip(false)}
+            />
           )}
         </>
       )}

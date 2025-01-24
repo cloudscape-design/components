@@ -528,6 +528,7 @@ const TabTrigger = forwardRef(
                 className={styles['disabled-reason-tooltip']}
                 trackRef={tabLabelRefObject}
                 value={tab.disabledReason!}
+                onDismiss={() => setShowTooltip(false)}
               />
             )}
           </>

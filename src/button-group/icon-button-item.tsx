@@ -14,19 +14,17 @@ import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 
+interface IconButtonItemProps {
+  item: ButtonGroupProps.IconButton;
+  showTooltip: boolean;
+  showFeedback: boolean;
+  onTooltipDismiss: () => void;
+  onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
+}
+
 const IconButtonItem = forwardRef(
   (
-    {
-      item,
-      showTooltip,
-      showFeedback,
-      onItemClick,
-    }: {
-      item: ButtonGroupProps.IconButton;
-      showTooltip: boolean;
-      showFeedback: boolean;
-      onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
-    },
+    { item, showTooltip, showFeedback, onTooltipDismiss, onItemClick }: IconButtonItemProps,
     ref: React.Ref<ButtonProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -69,6 +67,7 @@ const IconButtonItem = forwardRef(
               item.text
             }
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
+            onDismiss={onTooltipDismiss}
           />
         )}
       </div>
