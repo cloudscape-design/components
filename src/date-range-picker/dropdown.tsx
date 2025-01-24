@@ -13,7 +13,7 @@ import FocusLock from '../internal/components/focus-lock';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
-import { DateRangePickerProps, Granularity } from './interfaces';
+import { DateRangePickerProps } from './interfaces';
 import ModeSwitcher from './mode-switcher';
 import RelativeRangePicker from './relative-range';
 import { normalizeTimeOffset } from './time-offset';
@@ -53,7 +53,7 @@ interface DateRangePickerDropdownProps
   onDropdownClose: () => void;
   isSingleGrid: boolean;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 
 export function DateRangePickerDropdown({

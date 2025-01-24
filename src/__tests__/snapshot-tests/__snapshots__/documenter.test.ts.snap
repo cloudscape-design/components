@@ -7000,13 +7000,16 @@ Default: the user's current time offset as provided by the browser.
       "description": "Specifies the granularity at which users will be able to select a date range.
 Defaults to \`day\`.",
       "inlineType": {
-        "name": "Granularity",
-        "properties": [],
-        "type": "object",
+        "name": "DateRangePickerProps.Granularity",
+        "type": "union",
+        "values": [
+          "day",
+          "month",
+        ],
       },
       "name": "granularity",
       "optional": true,
-      "type": "Granularity",
+      "type": "string",
     },
     {
       "description": "Specifies whether to hide the time offset in the displayed absolute time range.
