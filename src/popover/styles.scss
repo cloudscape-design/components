@@ -12,6 +12,8 @@
 @import './container';
 @import './motion';
 
+$trigger-underline-offset: 0.25em;
+
 .root {
   @include styles.styles-reset;
   color: inherit;
@@ -36,8 +38,31 @@
   @include styles.text-wrapping;
 }
 
+.trigger-type-text-inline {
+  border-block: 0;
+  /*
+    This transparent border is necessary to maintain space between the trigger and the bottom-positioned popover.
+  */
+  border-block-end: awsui.$border-divider-list-width dashed transparent;
+  text-decoration: underline dashed currentColor;
+  text-decoration-thickness: awsui.$border-divider-list-width;
+  text-underline-offset: $trigger-underline-offset;
+
+  &.overflow-ellipsis {
+    /*
+      This line-height needs to be overridden because the overflow: hidden would otherwise conceal the underline styles.
+    */
+    line-height: calc(1 + #{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
+  }
+}
+
 .trigger-type-text {
   border-block: 0;
+  border-block-end: awsui.$border-divider-list-width dashed currentColor;
+}
+
+.trigger-type-text-inline,
+.trigger-type-text {
   border-inline: 0;
   margin-block: 0;
   margin-inline: 0;
@@ -46,7 +71,6 @@
   background-color: transparent;
 
   cursor: pointer;
-  border-block-end: awsui.$border-divider-list-width dashed currentColor;
 
   &:focus {
     outline: none;

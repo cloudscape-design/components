@@ -12224,13 +12224,15 @@ that don't have visible text, and to distinguish between multiple triggers with 
     {
       "defaultValue": "'text'",
       "description": "Specifies the type of content inside the trigger region. The following types are available:
-- \`text\` - Use for inline text triggers.
+- \`text\` - Use for triggers containing inline components, like status indicator.
+- \`text-inline\` - Use for triggers containing plain text only.
 - \`custom\` - Use for the [button](/components/button/) component.",
       "inlineType": {
         "name": "PopoverProps.TriggerType",
         "type": "union",
         "values": [
           "text",
+          "text-inline",
           "custom",
         ],
       },
