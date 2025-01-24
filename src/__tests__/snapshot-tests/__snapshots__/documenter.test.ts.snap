@@ -11493,7 +11493,48 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
 exports[`Documenter definition for page-layout matches the snapshot: page-layout 1`] = `
 {
   "events": [],
-  "functions": [],
+  "functions": [
+    {
+      "description": "Manually closes the navigation drawer if it is necessary for the current
+viewport size.",
+      "name": "closeNavigationIfNecessary",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.",
+      "name": "focusActiveDrawer",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the navigation. Use this to focus the navigation after opening it programmatically.",
+      "name": "focusNavigation",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the split panel if it is open.",
+      "name": "focusSplitPanel",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusToolsClose",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Opens the tools panel if it is not already open. Note that it is preferable
+to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`.",
+      "name": "openTools",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
   "name": "PageLayout",
   "properties": [
     {
@@ -11524,9 +11565,8 @@ If not set, a corresponding trigger button is not displayed, while the drawer mi
       "type": "Array<PageLayoutProps.Drawer>",
     },
     {
-      "description": "If \`true\`, the navigation trigger is not displayed at all,
-while navigation drawer might be displayed, but opened using a custom trigger.",
-      "name": "navigationTriggerHide",
+      "description": "If \`true\`, the toolbar is not displayed at all.",
+      "name": "toolbarHide",
       "optional": true,
       "type": "boolean",
     },
