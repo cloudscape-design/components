@@ -220,7 +220,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
-    const navigationFocusControl = useFocusControl(navigationOpen);
+    const navigationFocusControl = useFocusControl(navigationOpen, navigationTriggerHide);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
@@ -235,6 +235,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusToolsClose: () => drawersFocusControl.setFocus(true),
       focusActiveDrawer: () => drawersFocusControl.setFocus(true),
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+      focusNavigation: () => navigationFocusControl.setFocus(true),
     }));
 
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;

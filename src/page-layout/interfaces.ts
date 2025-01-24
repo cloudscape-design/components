@@ -39,7 +39,12 @@ export interface PageLayoutProps extends Omit<AppLayoutProps, 'disableBodyScroll
 export namespace PageLayoutProps {
   export type AnalyticsMetadata = AppLayoutProps.AnalyticsMetadata;
   export type ContentType = AppLayoutProps.ContentType;
-  export type Ref = AppLayoutProps.Ref;
+  export interface Ref extends AppLayoutProps.Ref {
+    /**
+     * Focuses the navigation. Use this to focus the navigation after opening it programmatically.
+     */
+    focusNavigation(): void;
+  }
   export type Drawer = AppLayoutProps.Drawer;
   export type DrawerAriaLabels = AppLayoutProps.DrawerAriaLabels;
   export type Labels = AppLayoutProps.Labels;

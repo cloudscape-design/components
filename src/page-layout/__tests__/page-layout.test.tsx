@@ -17,9 +17,11 @@ describe('PageLayout', () => {
   test('triggerless navigation', () => {
     const PageLayoutWrapper = () => {
       const [isNavigationOpen, setIsNavigationOpen] = useState(false);
+      const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
 
       return (
         <PageLayout
+          ref={pageLayoutRef}
           navigationTriggerHide={true}
           navigationOpen={isNavigationOpen}
           onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
@@ -27,7 +29,13 @@ describe('PageLayout', () => {
           content={
             <div>
               Content
-              <button data-testid="toggle-navigation" onClick={() => setIsNavigationOpen(current => !current)}>
+              <button
+                data-testid="toggle-navigation"
+                onClick={() => {
+                  setIsNavigationOpen(current => !current);
+                  pageLayoutRef.current?.focusNavigation();
+                }}
+              >
                 Toggle navigation
               </button>
             </div>
@@ -43,6 +51,7 @@ describe('PageLayout', () => {
     wrapper.find(`[data-testid="toggle-navigation"]`)!.click();
 
     expect(wrapper.findOpenNavigationPanel()).toBeTruthy();
+    expect(wrapper.findNavigationClose()!.getElement()).toHaveFocus();
   });
 
   test('triggerless drawers', () => {
