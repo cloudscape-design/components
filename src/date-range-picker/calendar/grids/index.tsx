@@ -3,7 +3,6 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { addMonths, addYears, isAfter, isBefore, isSameMonth, isSameYear, max, min } from 'date-fns';
 
-import { CalendarProps } from '../../../calendar/interfaces';
 import {
   getBaseDay,
   moveNextDay,
@@ -23,13 +22,14 @@ import { KeyCode } from '../../../internal/keycode';
 import handleKey from '../../../internal/utils/handle-key';
 import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
+import { DateRangePickerProps } from '../../interfaces';
 import { findDateToFocus } from '../utils';
 import { Grid } from './grid';
 import { SelectGridProps } from './interfaces';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 
-function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: CalendarProps.Granularity) {
+function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: DateRangePickerProps.Granularity) {
   const isSame = granularity === 'day' ? isSameMonth : isSameYear;
   const add = granularity === 'day' ? addMonths : addYears;
   if (isSingleGrid) {

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DateRangePickerProps, DayIndex, Granularity } from '../../interfaces';
+import { DateRangePickerProps, DayIndex } from '../../interfaces';
 
 export interface GridBaseProps {
   baseDate: Date;
@@ -16,7 +16,7 @@ export interface GridBaseProps {
   locale: string;
   todayAriaLabel?: string;
   currentMonthAriaLabel?: string;
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 
 export interface GridProps extends GridBaseProps {
