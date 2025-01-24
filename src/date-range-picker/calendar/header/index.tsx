@@ -7,7 +7,7 @@ import { add } from 'date-fns';
 import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl';
 import { useInternalI18n } from '../../../i18n/context.js';
 import InternalLiveRegion from '../../../live-region/internal';
-import { Granularity } from '../../interfaces';
+import { DateRangePickerProps } from '../../interfaces';
 import { NextPageButton, PrevPageButton } from './header-button';
 
 import styles from '../../styles.css.js';
@@ -21,7 +21,7 @@ interface CalendarHeaderProps {
   nextPageLabel?: string;
   isSingleGrid: boolean;
   headingIdPrefix: string;
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 
 export default function CalendarHeader({

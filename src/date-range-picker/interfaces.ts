@@ -2,14 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { CalendarProps } from '../calendar/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
-
-export type Granularity = CalendarProps.Granularity;
 
 export interface DateRangePickerBaseProps {
   /**
@@ -126,7 +123,7 @@ export interface DateRangePickerBaseProps {
    * Specifies the granularity at which users will be able to select a date range.
    * Defaults to `day`.
    */
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -520,6 +517,8 @@ export namespace DateRangePickerProps {
   }
 
   export type AbsoluteFormat = 'iso' | 'long-localized';
+
+  export type Granularity = 'day' | 'month';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;

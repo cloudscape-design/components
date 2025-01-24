@@ -10,7 +10,7 @@ import { useInternalI18n } from '../../i18n/context.js';
 import { BaseComponentProps } from '../../internal/base-component';
 import { TimeInputProps } from '../../time-input/interfaces';
 import InternalTimeInput from '../../time-input/internal';
-import { Granularity, RangeCalendarI18nStrings } from '../interfaces';
+import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';
@@ -40,7 +40,7 @@ interface RangeInputsProps extends BaseComponentProps {
   i18nStrings?: I18nStrings;
   dateOnly: boolean;
   timeInputFormat: TimeInputProps.Format;
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 
 export default function RangeInputs({

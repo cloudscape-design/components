@@ -4,14 +4,14 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { InternalButton } from '../../../button/internal';
-import { Granularity } from '../../interfaces';
+import { DateRangePickerProps } from '../../interfaces';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 
 interface HeaderButtonProps {
   ariaLabel?: string;
   onChangePage: (n: number) => void;
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 
 export function PrevPageButton({ ariaLabel, onChangePage }: HeaderButtonProps) {

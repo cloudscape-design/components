@@ -28,7 +28,7 @@ import { normalizeLocale, normalizeStartOfWeek } from '../../internal/utils/loca
 import InternalLiveRegion from '../../live-region/internal';
 import SpaceBetween from '../../space-between/internal';
 import { TimeInputProps } from '../../time-input/interfaces';
-import { DateRangePickerProps, Granularity, RangeCalendarI18nStrings } from '../interfaces';
+import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
 import { Grids } from './grids';
 import CalendarHeader from './header';
 import RangeInputs from './range-inputs.js';
@@ -48,7 +48,7 @@ export interface DateRangePickerCalendarProps extends BaseComponentProps {
   dateOnly?: boolean;
   timeInputFormat?: TimeInputProps.Format;
   customAbsoluteRangeControl: DateRangePickerProps.AbsoluteRangeControl | undefined;
-  granularity?: Granularity;
+  granularity?: DateRangePickerProps.Granularity;
 }
 
 export default function DateRangePickerCalendar({
