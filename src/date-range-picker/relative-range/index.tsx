@@ -124,15 +124,15 @@ export default function RelativeRangePicker({
       <InternalSpaceBetween size="xs" direction="vertical">
         {showRadioControl && (
           <InternalFormField
-            label={i18n('i18nStrings.relativeRangeSelectionHeading', i18nStrings?.relativeRangeSelectionHeading)}
-            description={
-              granularity === 'month' &&
-              granularity === 'month' &&
-              i18n(
-                'i18nStrings.relativeRangeSelectionMonthlyDescription',
-                i18nStrings?.relativeRangeSelectionMonthlyDescription
-              )
-            }
+            {...{
+              label: i18n('i18nStrings.relativeRangeSelectionHeading', i18nStrings?.relativeRangeSelectionHeading),
+              description:
+                granularity === 'month' &&
+                i18n(
+                  'i18nStrings.relativeRangeSelectionMonthlyDescription',
+                  i18nStrings?.relativeRangeSelectionMonthlyDescription
+                ),
+            }}
           >
             <InternalRadioGroup
               className={testutilStyles['relative-range-radio-group']}
