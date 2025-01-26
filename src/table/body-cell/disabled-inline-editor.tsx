@@ -32,6 +32,7 @@ export function DisabledInlineEditor<ItemType>({
   editDisabledReason,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
+  const isExpandableColumn = rest.level !== undefined;
   const clickAwayRef = useClickAway(() => {
     if (isEditing) {
       onEditEnd(true);
@@ -71,29 +72,41 @@ export function DisabledInlineEditor<ItemType>({
       }
       isEditing={isEditing}
       isEditingDisabled={true}
-      onClick={!isEditing ? onClick : undefined}
+      onClick={!isEditing && !isExpandableColumn ? onClick : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
-      ref={clickAwayRef}
+      onFocus={() => setHasFocus(true)}
+      onBlur={() => {
+        // The hover state is cleared to address an issue on touch devices when the touch event emulates the mouse-enter,
+        // but the mouse-leave might not follow if clicking outside the table.
+        setHasHover(false);
+        setHasFocus(false);
+      }}
+      ref={!isExpandableColumn ? clickAwayRef : undefined}
     >
       {column.cell(item)}
 
       <div className={styles['body-cell-editor-wrapper']}>
-        <button
-          ref={buttonRef}
-          tabIndex={tabIndex}
-          className={clsx(styles['body-cell-editor'], styles['body-cell-editor-disabled'])}
-          aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-          aria-haspopup="dialog"
-          aria-disabled="true"
-          onFocus={() => setHasFocus(true)}
-          onBlur={() => setHasFocus(false)}
-          onKeyDown={handleEscape}
-          {...targetProps}
-        >
-          {showIcon && <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />}
-          {descriptionEl}
-        </button>
+        <div ref={isExpandableColumn ? clickAwayRef : undefined}>
+          <button
+            ref={buttonRef}
+            tabIndex={tabIndex}
+            className={clsx(
+              styles['body-cell-editor'],
+              styles['body-cell-editor-disabled'],
+              isExpandableColumn && styles['body-cell-editor-focusable']
+            )}
+            onMouseDown={!isEditing && isExpandableColumn ? onClick : undefined}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+            aria-haspopup="dialog"
+            aria-disabled="true"
+            onKeyDown={handleEscape}
+            {...targetProps}
+          >
+            {showIcon && <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />}
+            {descriptionEl}
+          </button>
+        </div>
       </div>
 
       {isEditing && (
