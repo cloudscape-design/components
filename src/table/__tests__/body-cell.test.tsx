@@ -323,21 +323,6 @@ describe('TableBodyCell', () => {
       fireEvent.keyDown(disabledButton, { key: 'Escape' });
       expect(onEditEndMock).toBeCalledWith(true);
     });
-
-    test('show and hide lock icon based on hover when popover is not visible', () => {
-      const { container } = render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
-
-      // No icon by default
-      expect(wrapper(container).findIcon()).toBeNull();
-
-      // Hover over TD element
-      fireEvent.mouseEnter(container.querySelector('[data-inline-editing-active]')!);
-      expect(wrapper(container).findIcon()).not.toBeNull();
-
-      // Remove mouse
-      fireEvent.mouseLeave(container.querySelector('[data-inline-editing-active]')!);
-      expect(wrapper(container).findIcon()).toBeNull();
-    });
   });
 
   test('does not set tab index when negative', () => {

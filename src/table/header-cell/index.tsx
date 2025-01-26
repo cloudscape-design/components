@@ -181,7 +181,7 @@ export function TableHeaderCell<ItemType>({
           id={headerId}
         >
           {column.header}
-          {isEditable && !isExpandable ? (
+          {isEditable ? (
             <span
               className={styles['edit-icon']}
               role="img"

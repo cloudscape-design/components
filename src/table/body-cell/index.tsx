@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import { useInternalI18n } from '../../i18n/context';
 import Icon from '../../icon/internal';
@@ -45,6 +46,7 @@ function TableCellEditable<ItemType>({
     'data-inline-editing-active': isEditing.toString(),
   };
   const isFocusMoveNeededRef = useRef(false);
+  const isExpandableColumn = rest.level !== undefined;
 
   useEffect(() => {
     if (!isEditing && editActivateRef.current && isFocusMoveNeededRef.current) {
@@ -53,10 +55,7 @@ function TableCellEditable<ItemType>({
     }
   }, [isEditing]);
   // To improve the initial page render performance we only show the edit icon when necessary.
-  const [hasHover, setHasHover] = useState(false);
   const [hasFocus, setHasFocus] = useState(false);
-  // When a cell is both expandable and editable the icon is always shown.
-  const showIcon = hasHover || hasFocus;
 
   const prevSuccessfulEdit = usePrevious(successfulEdit);
   const prevHasFocus = usePrevious(hasFocus);
@@ -80,10 +79,10 @@ function TableCellEditable<ItemType>({
       {...rest}
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       isEditing={isEditing}
-      hasSuccessIcon={showSuccessIcon && showIcon}
-      onClick={!isEditing ? onEditStart : undefined}
-      onMouseEnter={() => setHasHover(true)}
-      onMouseLeave={() => setHasHover(false)}
+      hasSuccessIcon={showSuccessIcon && hasFocus}
+      onClick={!isEditing && !isExpandableColumn ? onEditStart : undefined}
+      onFocus={() => setHasFocus(true)}
+      onBlur={() => setHasFocus(false)}
     >
       {isEditing ? (
         <InlineEditor
@@ -101,7 +100,7 @@ function TableCellEditable<ItemType>({
         <>
           {column.cell(item)}
 
-          {showSuccessIcon && showIcon && (
+          {showSuccessIcon && hasFocus && (
             <>
               <span
                 className={styles['body-cell-success']}
@@ -123,14 +122,15 @@ function TableCellEditable<ItemType>({
 
           <div className={styles['body-cell-editor-wrapper']}>
             <button
-              className={styles['body-cell-editor']}
+              className={clsx(styles['body-cell-editor'], isExpandableColumn && styles['body-cell-editor-focusable'])}
               aria-label={ariaLabels?.activateEditLabel?.(column, item)}
               ref={editActivateRef}
-              onFocus={() => setHasFocus(true)}
-              onBlur={() => setHasFocus(false)}
+              onClick={!isEditing && isExpandableColumn ? onEditStart : undefined}
               tabIndex={editActivateTabIndex}
             >
-              {showIcon && <Icon name="edit" />}
+              <span className={styles['body-cell-editor-icon']}>
+                <Icon name="edit" />
+              </span>
             </button>
           </div>
         </>
@@ -140,15 +140,14 @@ function TableCellEditable<ItemType>({
 }
 
 export function TableBodyCell<ItemType>(props: TableBodyCellProps<ItemType>) {
-  const isExpandableColumnCell = props.level !== undefined;
   const editDisabledReason = props.column.editConfig?.disabledReason?.(props.item);
 
   // Inline editing is deactivated for expandable column because editable cells are interactive
   // and cannot include interactive content such as expand toggles.
-  if (editDisabledReason && !isExpandableColumnCell) {
+  if (editDisabledReason) {
     return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...props} />;
   }
-  if ((props.isEditable || props.isEditing) && !isExpandableColumnCell) {
+  if (props.isEditable || props.isEditing) {
     return <TableCellEditable {...props} />;
   }
 
