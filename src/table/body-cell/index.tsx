@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 import { useInternalI18n } from '../../i18n/context';
 import Icon from '../../icon/internal';
@@ -45,6 +46,7 @@ function TableCellEditable<ItemType>({
     'data-inline-editing-active': isEditing.toString(),
   };
   const isFocusMoveNeededRef = useRef(false);
+  const isExpandableColumn = rest.level !== undefined;
 
   useEffect(() => {
     if (!isEditing && editActivateRef.current && isFocusMoveNeededRef.current) {
@@ -81,9 +83,16 @@ function TableCellEditable<ItemType>({
       nativeAttributes={tdNativeAttributes as TableTdElementProps['nativeAttributes']}
       isEditing={isEditing}
       hasSuccessIcon={showSuccessIcon && showIcon}
-      onClick={!isEditing ? onEditStart : undefined}
+      onClick={!isEditing && !isExpandableColumn ? onEditStart : undefined}
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
+      onFocus={() => setHasFocus(true)}
+      onBlur={() => {
+        // The hover state is cleared to address an issue on touch devices when the touch event emulates the mouse-enter,
+        // but the mouse-leave might not follow if clicking outside the table.
+        setHasHover(false);
+        setHasFocus(false);
+      }}
     >
       {isEditing ? (
         <InlineEditor
@@ -123,11 +132,10 @@ function TableCellEditable<ItemType>({
 
           <div className={styles['body-cell-editor-wrapper']}>
             <button
-              className={styles['body-cell-editor']}
+              className={clsx(styles['body-cell-editor'], isExpandableColumn && styles['body-cell-editor-focusable'])}
               aria-label={ariaLabels?.activateEditLabel?.(column, item)}
               ref={editActivateRef}
-              onFocus={() => setHasFocus(true)}
-              onBlur={() => setHasFocus(false)}
+              onMouseDown={!isEditing && isExpandableColumn ? onEditStart : undefined}
               tabIndex={editActivateTabIndex}
             >
               {showIcon && <Icon name="edit" />}
@@ -140,15 +148,14 @@ function TableCellEditable<ItemType>({
 }
 
 export function TableBodyCell<ItemType>(props: TableBodyCellProps<ItemType>) {
-  const isExpandableColumnCell = props.level !== undefined;
   const editDisabledReason = props.column.editConfig?.disabledReason?.(props.item);
 
   // Inline editing is deactivated for expandable column because editable cells are interactive
   // and cannot include interactive content such as expand toggles.
-  if (editDisabledReason && !isExpandableColumnCell) {
+  if (editDisabledReason) {
     return <DisabledInlineEditor editDisabledReason={editDisabledReason} {...props} />;
   }
-  if ((props.isEditable || props.isEditing) && !isExpandableColumnCell) {
+  if (props.isEditable || props.isEditing) {
     return <TableCellEditable {...props} />;
   }
 
