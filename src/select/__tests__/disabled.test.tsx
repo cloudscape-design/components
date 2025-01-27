@@ -152,7 +152,7 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         expect(dropdown.findOption(1)!.findDisabledReason()!.getElement()).toHaveTextContent('disabled reason');
         window.dispatchEvent(new Event('scroll'));
         await waitFor(() => {
-          expect(dropdown.findOption(1)!.findDisabledReason()!.getElement()).toBeEmptyDOMElement();
+          expect(dropdown.findOption(1)!.findDisabledReason()).toBe(null);
         });
       });
     });
