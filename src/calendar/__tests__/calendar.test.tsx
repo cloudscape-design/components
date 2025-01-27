@@ -49,7 +49,8 @@ test('check a11y', async () => {
   await expect(container).toValidateA11y();
 });
 
-test.each(range(0, 11).map(month => addMonths(new Date('2025-01-01'), month).toISOString().split('T')[0]))(
+const eachMonthOfTheYear = range(0, 11).map(month => addMonths(new Date('2025-01-01'), month).toISOString().split('T')[0]);
+test.each(eachMonthOfTheYear)(
   'always renders 42 days, value=%s',
   value => {
     renderCalendar({ value });
