@@ -12,7 +12,7 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
+  i18nStrings,
 } from './common';
 
 export default function RangeCalendarScenario() {
@@ -21,7 +21,7 @@ export default function RangeCalendarScenario() {
     start: { date: '2020-01-25', time: '' },
     end: { date: '2020-02-02', time: '' },
   });
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
@@ -62,14 +62,18 @@ export default function RangeCalendarScenario() {
         >
           Date-only
         </Checkbox>
+        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+          Month-only
+        </Checkbox>
         <Link id="focusable-before">Focusable element before the range calendar</Link>
 
         <RangeCalendar
           value={value}
           setValue={setValue}
           locale="en-GB"
-          i18nStrings={generateI18nStrings(false, monthOnly)}
+          i18nStrings={i18nStrings}
           dateOnly={dateOnly}
+          granularity={monthOnly ? 'month' : 'day'}
           timeInputFormat="hh:mm"
           customAbsoluteRangeControl={undefined}
           isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}

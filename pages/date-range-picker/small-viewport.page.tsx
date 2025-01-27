@@ -12,9 +12,9 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
   generatePlaceholder,
   generateRelativeOptions,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -24,7 +24,7 @@ export default function DatePickerScenario() {
   const [sticky, setSticky] = useState(false);
 
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
@@ -75,6 +75,9 @@ export default function DatePickerScenario() {
       >
         Date-only
       </Checkbox>
+      <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+        Month-only
+      </Checkbox>
       <button id="focus-dismiss-helper" type="button">
         Focusable element
       </button>
@@ -84,11 +87,12 @@ export default function DatePickerScenario() {
             <DateRangePicker
               value={value}
               locale="en-GB"
-              i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+              i18nStrings={i18nStrings}
               placeholder={generatePlaceholder(dateOnly, monthOnly)}
               onChange={e => setValue(e.detail.value)}
               relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
               dateOnly={dateOnly}
+              granularity={monthOnly ? 'month' : 'day'}
               isValidRange={isValid}
               timeInputFormat="hh:mm"
               expandToViewport={expandToViewport}

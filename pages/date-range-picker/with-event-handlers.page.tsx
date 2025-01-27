@@ -11,9 +11,9 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
   generatePlaceholder,
   generateRelativeOptions,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -23,7 +23,7 @@ export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
   const disabledDates =
@@ -87,6 +87,9 @@ export default function DateRangePickerScenario() {
         >
           Date-only
         </Checkbox>
+        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+          Month-only
+        </Checkbox>
         <Checkbox
           checked={expandToViewport}
           onChange={({ detail }) => setUrlParams({ expandToViewport: detail.checked })}
@@ -110,7 +113,7 @@ export default function DateRangePickerScenario() {
       <DateRangePicker
         value={value}
         locale={'en-GB'}
-        i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+        i18nStrings={i18nStrings}
         timeOffset={0}
         placeholder={generatePlaceholder(dateOnly, monthOnly)}
         onFocus={handleFocus}
@@ -123,6 +126,7 @@ export default function DateRangePickerScenario() {
         relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
         isValidRange={isValid}
         dateOnly={dateOnly}
+        granularity={monthOnly ? 'month' : 'day'}
         expandToViewport={expandToViewport}
         isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
         dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}

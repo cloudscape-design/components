@@ -11,8 +11,8 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
   generatePlaceholder,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -47,7 +47,7 @@ const initialRange = {
 export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
@@ -118,6 +118,14 @@ export default function DateRangePickerScenario() {
             Date only
           </label>
           <label>
+            <input
+              type="checkbox"
+              checked={monthOnly}
+              onChange={event => setUrlParams({ monthOnly: !!event.target.checked })}
+            />{' '}
+            Month only
+          </label>
+          <label>
             Time offset from UTC in minutes{' '}
             <input
               type="number"
@@ -145,7 +153,7 @@ export default function DateRangePickerScenario() {
               <DateRangePicker
                 value={value}
                 locale={locale}
-                i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+                i18nStrings={i18nStrings}
                 placeholder={generatePlaceholder(dateOnly, monthOnly)}
                 onChange={e => setValue(e.detail.value)}
                 relativeOptions={[]}
@@ -156,6 +164,7 @@ export default function DateRangePickerScenario() {
                 getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
                 absoluteFormat={absoluteFormat}
                 dateOnly={dateOnly}
+                granularity={monthOnly ? 'month' : 'day'}
                 hideTimeOffset={hideTimeOffset}
               />
             </Grid>

@@ -8,7 +8,7 @@ import { FormFieldValidationControlProps } from '../internal/context/form-field-
 import { NonCancelableEventHandler } from '../internal/events';
 import { TimeInputProps } from '../time-input/interfaces';
 
-interface DateRangePickerBaseProps {
+export interface DateRangePickerBaseProps {
   /**
    * The current date range value. Can be either an absolute time range
    * or a relative time range.
@@ -63,6 +63,8 @@ interface DateRangePickerBaseProps {
    * Do not use `dateOnly` flag conditionally. The component does not trigger the value update
    * when the flag changes which means the value format can become inconsistent.
    *
+   * This does not apply when the 'granularity' is set to 'month'
+   *
    * Default: `false`.
    */
   dateOnly?: boolean;
@@ -83,7 +85,7 @@ interface DateRangePickerBaseProps {
    *
    * Use to restrict the granularity of time that the user can enter.
    *
-   * Has no effect when `dateOnly` is true.
+   * Has no effect when `dateOnly` is true or `granularity` is set to 'month'.
    */
   timeInputFormat?: TimeInputProps.Format;
 
@@ -117,6 +119,11 @@ interface DateRangePickerBaseProps {
    * Default: the user's current time offset as provided by the browser.
    */
   getTimeOffset?: DateRangePickerProps.GetTimeOffsetFunction;
+  /**
+   * Specifies the granularity at which users will be able to select a date range.
+   * Defaults to `day`.
+   */
+  granularity?: DateRangePickerProps.Granularity;
 }
 export interface DateRangePickerProps
   extends BaseComponentProps,
@@ -302,40 +309,56 @@ export namespace DateRangePickerProps {
     /**
      * Label of the mode selection group. In the standard view, it adds 'aria-label' to the group of segments.
      * In a narrow container the label is visible and attached to the select component.
+     * @i18n
      */
     modeSelectionLabel?: string;
 
     /**
      * Segment title of the relative range selection mode
+     * @i18n
      */
     relativeModeTitle?: string;
 
     /**
      * Segment title of the absolute range selection mode
+     * @i18n
      */
     absoluteModeTitle?: string;
 
     /**
      * Heading for the relative range selection area
+     * @i18n
      */
     relativeRangeSelectionHeading?: string;
 
     /**
+     * Description for the relative range selection area
+     * @i18n
+     */
+    relativeRangeSelectionMonthlyDescription?: string;
+
+    /**
      * Visible label of the Cancel button
+     * @i18n
      */
     cancelButtonLabel?: string;
+
     /**
      * Visible label of the Clear and dismiss button
+     * @i18n
      */
     clearButtonLabel?: string;
+
     /**
      * Visible label of the Apply button
+     * @i18n
      */
     applyButtonLabel?: string;
 
     /**
      * Formatting function for relative ranges.
      * This function must convert a relative range to a human-readable string.
+     * @i18n
      */
     formatRelativeRange?: (value: RelativeValue) => string;
 
@@ -343,81 +366,111 @@ export namespace DateRangePickerProps {
      * Formatting function for time units.
      *
      * This function must return a localized form of the unit that fits the provided time value.
+     * @i18n
      */
     formatUnit?: (unit: TimeUnit, value: number) => string;
 
     /**
      * Visible label for the option for selecting
      * a custom relative range.
+     * @i18n
      */
     customRelativeRangeOptionLabel?: string;
 
     /**
      * Visible description for the option for selecting
      * a custom relative range.
+     * @i18n
      */
     customRelativeRangeOptionDescription?: string;
 
     /**
      * Visible label for the duration selector for
      * the custom relative range.
+     * @i18n
      */
     customRelativeRangeDurationLabel?: string;
+
     /**
      * Placeholder for the duration selector for
      * the custom relative range.
+     * @i18n
      */
     customRelativeRangeDurationPlaceholder?: string;
+
     /**
      * Visible label for the unit selector for the
      * custom relative range.
+     * @i18n
      */
     customRelativeRangeUnitLabel?: string;
 
     /**
-     * Used as part of the aria label for today's date in the calendar.
+     * Visible label for the Start Month input for the
+     * absolute range.
+     * @i18n
      */
-    todayAriaLabel?: string;
-
-    /**
-     * An aria label for the 'next month' button.
-     */
-    nextMonthAriaLabel?: string;
-
-    /**
-     * An aria label for the 'previous month' button.
-     */
-    previousMonthAriaLabel?: string;
+    startMonthLabel?: string;
 
     /**
      * Visible label for the Start Date input for the
      * absolute range.
+     * @i18n
      */
     startDateLabel?: string;
+
     /**
      * Visible label for the Start Time input for the
      * absolute range.
+     * @i18n
      */
     startTimeLabel?: string;
+
+    /**
+     * Visible label for the End Month input for the
+     * absolute range.
+     * @i18n
+     */
+    endMonthLabel?: string;
+
     /**
      * Visible label for the End Date input for the
      * absolute range.
+     * @i18n
      */
     endDateLabel?: string;
+
     /**
      * Visible label for the End Time input for the
      * absolute range.
+     * @i18n
      */
     endTimeLabel?: string;
 
     /**
+     * Constraint text for the date input field for the
+     * absolute range with no time option.
+     * @i18n
+     */
+    dateConstraintText?: string;
+
+    /**
      * Constraint text for the input fields for the
      * absolute range.
+     * @i18n
      */
     dateTimeConstraintText?: string;
 
     /**
+     * Constraint text for the month input fields for the
+     * absolute range.
+     * @i18n
+     */
+    monthConstraintText?: string;
+
+    /**
      * Provides a text alternative for the error icon in the error alert.
+     * @i18n
      */
     errorIconAriaLabel?: string;
 
@@ -425,22 +478,69 @@ export namespace DateRangePickerProps {
      * When the property is set, screen readers announce the selected range when the absolute range gets selected.
      */
     renderSelectedAbsoluteRangeAriaLive?: (startDate: string, endDate: string) => string;
+
+    /**
+     * Used as part of the `aria-label` for today's date in the calendar.
+     * @i18n
+     */
+    todayAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'next month' button.
+     * @i18n
+     */
+    nextMonthAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'previous month' button.
+     * @i18n
+     */
+    previousMonthAriaLabel?: string;
+
+    /**
+     * Used as part of the `aria-label` for the current month in the calendar.
+     * @i18n
+     */
+    currentMonthAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'next year' button.
+     * @i18n
+     */
+    nextYearAriaLabel?: string;
+
+    /**
+     * Specifies an `aria-label` for the 'previous year' button.
+     * @i18n
+     */
+    previousYearAriaLabel?: string;
   }
 
   export type AbsoluteFormat = 'iso' | 'long-localized';
+
+  export type Granularity = 'day' | 'month';
 }
 
 export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+
+export type QuarterIndex = 0 | 1 | 2;
 
 export type RangeCalendarI18nStrings = Pick<
   DateRangePickerProps.I18nStrings,
   | 'todayAriaLabel'
   | 'nextMonthAriaLabel'
   | 'previousMonthAriaLabel'
+  | 'currentMonthAriaLabel'
+  | 'nextYearAriaLabel'
+  | 'previousYearAriaLabel'
+  | 'startMonthLabel'
   | 'startDateLabel'
   | 'startTimeLabel'
+  | 'endMonthLabel'
   | 'endDateLabel'
   | 'endTimeLabel'
+  | 'dateConstraintText'
   | 'dateTimeConstraintText'
+  | 'monthConstraintText'
   | 'renderSelectedAbsoluteRangeAriaLive'
 >;
