@@ -26,7 +26,6 @@ const triggerPermutations = createPermutations<PopoverProps & { size: PopoverPro
       'Reallylongpopovercontentwithalotoftextbutnospacesthatwillprobablyoverflowthepopovertrigger',
     ],
     wrapTriggerText: [true, false],
-    triggerType: ['text', 'text-inline'],
   },
 ]);
 
