@@ -34,6 +34,7 @@ declare const window: ExtendedWindow;
 function isAppLayoutPage(pageId?: string) {
   const appLayoutPages = [
     'app-layout',
+    'page-layout',
     'content-layout',
     'grid-navigation-custom',
     'expandable-rows-test',

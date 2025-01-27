@@ -11490,6 +11490,92 @@ This is only shown when \`statusType\` is set to \`finished\` or not set at all.
 }
 `;
 
+exports[`Documenter definition for page-layout matches the snapshot: page-layout 1`] = `
+{
+  "events": [],
+  "functions": [
+    {
+      "description": "Manually closes the navigation drawer if it is necessary for the current
+viewport size.",
+      "name": "closeNavigationIfNecessary",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the active drawer. Use this to focus the active drawer after opening it programmatically.",
+      "name": "focusActiveDrawer",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the navigation. Use this to focus the navigation after opening it programmatically.",
+      "name": "focusNavigation",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the split panel if it is open.",
+      "name": "focusSplitPanel",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the tools panel if it is open. Use this to focus the tools panel
+after changing the content, for example when clicking on an 'info' link while
+the panel is already open.",
+      "name": "focusToolsClose",
+      "parameters": [],
+      "returnType": "void",
+    },
+    {
+      "description": "Opens the tools panel if it is not already open. Note that it is preferable
+to control the state by listening to \`toolsChange\` and providing \`toolsOpen\`.",
+      "name": "openTools",
+      "parameters": [],
+      "returnType": "void",
+    },
+  ],
+  "name": "PageLayout",
+  "properties": [
+    {
+      "description": "Drawers property. If you set both \`drawers\` and \`tools\`, \`drawers\` will take precedence.
+Each Drawer is an item in the drawers wrapper with the following properties:
+* id (string) - the id of the drawer.
+* content (React.ReactNode) - the content in the drawer.
+* trigger (DrawerTrigger) - (Optional) the button that opens and closes the active drawer.
+If not set, a corresponding trigger button is not displayed, while the drawer might be displayed, but opened using a custom trigger.
+* ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
+* badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+* resizable (boolean) - if the drawer is resizable or not.
+* defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
+* onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+
+#### DrawerTrigger
+- \`iconName\` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
+- \`iconSvg\` (React.ReactNode) - (Optional) Specifies the SVG of a custom icon. For more information, see [SVG icon guidelines](/components/icon/?tabId=api#slots)
+
+#### DrawerAriaLabels
+- \`drawerName\` (string) - Label for the drawer itself, and for the drawer trigger button tooltip text.
+- \`closeButton\` (string) - (Optional) Label for the close button.
+- \`triggerButton\` (string) - (Optional) Label for the trigger button.
+- \`resizeHandle\` (string) - (Optional) Label for the resize handle.
+",
+      "name": "drawers",
+      "optional": true,
+      "type": "Array<PageLayoutProps.Drawer>",
+    },
+    {
+      "description": "If \`true\`, the toolbar is not displayed at all.",
+      "name": "toolbarHide",
+      "optional": true,
+      "type": "boolean",
+    },
+  ],
+  "regions": [],
+  "releaseStatus": "stable",
+}
+`;
+
 exports[`Documenter definition for pagination matches the snapshot: pagination 1`] = `
 {
   "events": [
