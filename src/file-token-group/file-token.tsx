@@ -187,6 +187,7 @@ function InternalFileToken({
           trackRef={containerRef}
           trackKey={file.name}
           value={<InternalBox fontWeight="normal">{file.name}</InternalBox>}
+          onDismiss={() => setShowTooltip(false)}
         />
       )}
     </div>

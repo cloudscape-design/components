@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
@@ -52,6 +52,9 @@ const MultiSelectItem = (
 
   const { descriptionId, descriptionEl } = useHiddenDescription(disabledReason);
 
+  const [canShowTooltip, setCanShowTooltip] = useState(true);
+  useEffect(() => setCanShowTooltip(true), [highlighted]);
+
   return (
     <SelectableItem
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
@@ -90,13 +93,14 @@ const MultiSelectItem = (
       {isDisabledWithReason && (
         <>
           {descriptionEl}
-          {highlighted && (
+          {highlighted && canShowTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
               trackRef={internalRef}
               value={disabledReason!}
               position="right"
               hideOnOverscroll={true}
+              onDismiss={() => setCanShowTooltip(false)}
             />
           )}
         </>
