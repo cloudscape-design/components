@@ -85,7 +85,7 @@ function TableCellEditable<ItemType>({
       onMouseEnter={() => setHasHover(true)}
       onMouseLeave={() => setHasHover(false)}
     >
-      {isEditing ? (
+      {isEditing && column.editConfig ? (
         <InlineEditor
           ariaLabels={ariaLabels}
           column={column}
