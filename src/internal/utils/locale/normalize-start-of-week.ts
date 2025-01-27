@@ -3,7 +3,7 @@
 
 import { getWeekStartByLocale } from 'weekstart';
 
-type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
+export type DayIndex = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 
 export function normalizeStartOfWeek(startOfWeek: number | undefined, locale: string) {
   return (typeof startOfWeek === 'number' ? startOfWeek % 7 : getWeekStartByLocale(locale)) as DayIndex;

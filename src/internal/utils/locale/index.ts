@@ -3,4 +3,4 @@
 
 export { mergeLocales } from './merge-locales';
 export { normalizeLocale } from './normalize-locale';
-export { normalizeStartOfWeek } from './normalize-start-of-week';
+export { normalizeStartOfWeek, DayIndex } from './normalize-start-of-week';

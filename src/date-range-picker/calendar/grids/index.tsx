@@ -175,6 +175,7 @@ export const Grids = ({
       <InternalSpaceBetween size="xs" direction="horizontal">
         {!isSingleGrid && (
           <MonthlyGrid
+            padDates="before"
             className={styles['first-grid']}
             baseDate={addMonths(baseDate, -1)}
             selectedEndDate={selectedEndDate}
@@ -195,6 +196,7 @@ export const Grids = ({
           />
         )}
         <MonthlyGrid
+          padDates="after"
           className={styles['second-grid']}
           baseDate={baseDate}
           selectedEndDate={selectedEndDate}
