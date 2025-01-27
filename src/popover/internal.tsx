@@ -74,7 +74,7 @@ function InternalPopover(
   const [visible, setVisible] = useState(false);
 
   const focusTrigger = useCallback(() => {
-    if (['text', 'text-inline'].includes(triggerType)) {
+    if (triggerType === 'text') {
       triggerRef.current?.focus();
     } else {
       triggerRef.current && getFirstFocusable(triggerRef.current)?.focus();
@@ -198,7 +198,7 @@ function InternalPopover(
         });
       }}
     >
-      {['text', 'text-inline'].includes(triggerType) ? (
+      {triggerType === 'text' ? (
         <button
           {...triggerProps}
           className={clsx(triggerProps.className, wrapTriggerText === false && styles['overflow-ellipsis'])}
