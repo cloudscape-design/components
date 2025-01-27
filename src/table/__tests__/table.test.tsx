@@ -9,6 +9,7 @@ import Select from '../../../lib/components/select';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { ElementWrapper, PaginationWrapper, TableWrapper } from '../../../lib/components/test-utils/dom';
 
+import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import styles from '../../../lib/components/table/styles.css.js';
@@ -523,4 +524,43 @@ test('should submit edits successfully', async () => {
   await waitFor(() => {
     expect(data.name).toBe('banana');
   });
+});
+
+test('shows and hides cell disabled reason', () => {
+  const { wrapper } = renderTable(
+    <Table<{ name: string }>
+      columnDefinitions={[
+        {
+          id: 'name',
+          header: 'Name',
+          cell: item => item.name,
+          editConfig: {
+            ariaLabel: 'test-name',
+            constraintText: 'test-constraint',
+            editingCell: () => null,
+            disabledReason: item => `Cannot edit ${item.name}`,
+          },
+        },
+      ]}
+      items={[{ name: 'test1' }, { name: 'test2' }]}
+      ariaLabels={{
+        activateEditLabel() {
+          return 'activate-edit';
+        },
+        cancelEditLabel() {
+          return 'cancel-edit';
+        },
+        submitEditLabel() {
+          return 'save-edit';
+        },
+      }}
+      submitEdit={() => {}}
+    />
+  );
+
+  wrapper.findEditCellButton(1, 1)!.click();
+  expect(createWrapper().findByClassName(popoverStyles.container)!.getElement()).toHaveTextContent('Cannot edit test1');
+
+  wrapper.findEditCellButton(2, 1)!.click();
+  expect(createWrapper().findByClassName(popoverStyles.container)!.getElement()).toHaveTextContent('Cannot edit test2');
 });
