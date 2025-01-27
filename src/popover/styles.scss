@@ -3,7 +3,6 @@
  SPDX-License-Identifier: Apache-2.0
 */
 
-@use 'sass:string';
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
@@ -51,9 +50,9 @@ $trigger-underline-offset: 0.25em;
 
   &.overflow-ellipsis {
     /*
-      This line-height needs to be overridden because the overflow: hidden would otherwise conceal the underline styles.
+      This style needs because of the overflow: hidden would otherwise conceal the underline styles.
     */
-    line-height: string.unquote('calc(1 + #{$trigger-underline-offset} + #{awsui.$border-divider-list-width})');
+    padding-block-end: calc(#{$trigger-underline-offset} + #{awsui.$border-divider-list-width});
   }
 }
 
