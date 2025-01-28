@@ -14,9 +14,6 @@ export interface GridBaseProps {
   dateDisabledReason: DateRangePickerProps.DateDisabledReasonFunction;
 
   locale: string;
-  todayAriaLabel?: string;
-  currentMonthAriaLabel?: string;
-  granularity?: DateRangePickerProps.Granularity;
 }
 
 export interface GridProps extends GridBaseProps {
@@ -28,10 +25,23 @@ export interface GridProps extends GridBaseProps {
 
   ariaLabelledby: string;
   className?: string;
+
+  /**
+   * Used to only add the dates of previous and next months outside the month pages
+   */
+  padDates: 'none' | 'before' | 'after' | 'both';
+}
+
+export interface YearGridProps extends GridProps {
+  currentMonthAriaLabel?: string;
+}
+
+export interface MonthGridProps extends GridProps {
   /**
    * Only expected on the daily calendar view
    */
   startOfWeek?: DayIndex;
+  todayAriaLabel?: string;
 }
 
 export interface SelectGridProps extends GridBaseProps {
@@ -49,4 +59,7 @@ export interface SelectGridProps extends GridBaseProps {
    * not needed for grids with a month granularity
    */
   startOfWeek?: DayIndex;
+  granularity?: DateRangePickerProps.Granularity;
+  todayAriaLabel?: string;
+  currentMonthAriaLabel?: string;
 }

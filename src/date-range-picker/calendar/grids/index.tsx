@@ -24,10 +24,12 @@ import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { DateRangePickerProps } from '../../interfaces';
 import { findDateToFocus } from '../utils';
-import { Grid } from './grid';
 import { SelectGridProps } from './interfaces';
+import { MonthlyGrid } from './monthly-grid';
+import { YearlyGrid } from './yearly-grid';
 
 import testutilStyles from '../../test-classes/styles.css.js';
+// import { previousDay } from 'date-fns/esm';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: DateRangePickerProps.Granularity) {
   const isSame = granularity === 'day' ? isSameMonth : isSameYear;
@@ -166,6 +168,16 @@ export const Grids = ({
   const rangeStartDate = min(rangeEnds);
   const rangeEndDate = max(rangeEnds);
   const pageUnit = isMonthPicker ? 'year' : 'month';
+  const GridComponent = isMonthPicker ? YearlyGrid : MonthlyGrid;
+
+  const calendarMonthProps = {
+    startOfWeek,
+    todayAriaLabel,
+  };
+
+  const calendarYearProps = {
+    currentMonthAriaLabel,
+  };
 
   const sharedGridProps = {
     selectedEndDate,
@@ -180,29 +192,25 @@ export const Grids = ({
     onGridKeyDownHandler,
     onFocusedDateChange,
     locale,
-    startOfWeek,
-    todayAriaLabel,
-    currentMonthAriaLabel,
     granularity,
+    ...(isMonthPicker ? calendarYearProps : calendarMonthProps),
   };
 
   return (
     <div ref={containerRef} onFocus={onGridFocus} onBlur={onGridBlur}>
       <InternalSpaceBetween size="xs" direction="horizontal">
         {!isSingleGrid && (
-          <MonthlyGrid
-            padDates="before"
-            className={styles['first-grid']}
+          <GridComponent
             {...sharedGridProps}
+            padDates={isMonthPicker ? 'none' : 'before'}
             className={testutilStyles['first-grid']}
             baseDate={addPages(baseDate, -1)}
             ariaLabelledby={`${headingIdPrefix}-prev${pageUnit}`}
           />
         )}
-        <MonthlyGrid
-          padDates="after"
-          className={styles['second-grid']}
+        <GridComponent
           {...sharedGridProps}
+          padDates={isMonthPicker ? 'none' : isSingleGrid ? 'both' : 'after'}
           className={testutilStyles['second-grid']}
           baseDate={baseDate}
           ariaLabelledby={`${headingIdPrefix}-current${pageUnit}`}

@@ -14,6 +14,8 @@ export function getCalendarYear(date: Date): Date[][] {
     .map((_, i: number) => new Array(3).fill(0).map((_, j: number) => new Date(year, i * 3 + j)));
 }
 
+type PadDate = 'none' | 'before' | 'after' | 'both';
+
 interface CalendarWeek {
   days: CalendarDate[];
   testIndex?: number;
@@ -31,7 +33,7 @@ interface CalendarDate {
 }
 
 export class MonthCalendar {
-  padDates: 'before' | 'after';
+  padDates: PadDate;
   weekdays: number[];
   weeks: CalendarWeek[];
   range: [Date, Date];
@@ -42,7 +44,7 @@ export class MonthCalendar {
     startOfWeek,
     selection,
   }: {
-    padDates: 'before' | 'after';
+    padDates: PadDate;
     baseDate: Date;
     startOfWeek: DayIndex;
     selection: null | [Date, Date];
@@ -61,10 +63,15 @@ export class MonthCalendar {
         return false;
       }
       switch (padDates) {
+        case 'both':
+          isSameMonth(date, baseDate) || isBefore(date, baseDate) || isAfter(date, baseDate);
         case 'before':
           return isSameMonth(date, baseDate) || isBefore(date, baseDate);
         case 'after':
           return isSameMonth(date, baseDate) || isAfter(date, baseDate);
+        case 'none':
+        default:
+          return false;
       }
     };
 
@@ -122,13 +129,17 @@ export class MonthCalendar {
 
 export function getCalendarMonthWithSixRows(
   date: Date,
-  { startOfWeek, padDates }: { startOfWeek: DayIndex; padDates: 'before' | 'after' }
+  { startOfWeek, padDates }: { startOfWeek: DayIndex; padDates: PadDate }
 ) {
   switch (padDates) {
+    case 'none':
+      return [ ...getCurrentMonthRows(date, startOfWeek)].slice(-6);
     case 'before':
       return [...getPrevMonthRows(date, startOfWeek), ...getCurrentMonthRows(date, startOfWeek)].slice(-6);
     case 'after':
       return [...getCurrentMonthRows(date, startOfWeek), ...getNextMonthRows(date, startOfWeek)].slice(0, 6);
+    case 'both':
+      return [...getPrevMonthRows(date, startOfWeek), ...getCurrentMonthRows(date, startOfWeek), ...getNextMonthRows(date, startOfWeek)].slice(0, 6);
   }
 }
 

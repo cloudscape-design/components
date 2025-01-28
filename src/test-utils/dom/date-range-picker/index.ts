@@ -149,7 +149,7 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   ): CalendarDateWrapper {
     const gridClassName = grid === 'right' ? testutilStyles['second-grid'] : testutilStyles['first-grid'];
     return this.findComponent(
-      `.${gridClassName} .${testStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testStyles['calendar-date']}:nth-child(${column})`,
+      `.${gridClassName} .${testutilStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testutilStyles['calendar-date']}:nth-child(${column})`,
       // `.${gridClassName} .${testutilStyles.week}:nth-child(${row}) .${testutilStyles.day}:nth-child(${column})`,
       CalendarDateWrapper
     )!;
