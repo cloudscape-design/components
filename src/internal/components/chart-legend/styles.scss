@@ -28,12 +28,12 @@
   margin-inline: 0;
   padding-block: 0;
   padding-inline: 0;
+  gap: awsui.$space-scaled-xxs awsui.$space-m;
 }
 
 .marker {
   display: inline-flex;
   align-items: flex-start;
-  margin-inline-end: awsui.$space-m;
   padding-block: 0;
   padding-inline: 0;
   border-block: 0;
@@ -48,10 +48,6 @@
 
   @include focus-visible.when-visible {
     @include styles.focus-highlight(2px);
-  }
-
-  &:last-child {
-    margin-inline-end: 0;
   }
 
   &.marker--dimmed {
