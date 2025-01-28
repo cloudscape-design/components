@@ -170,12 +170,12 @@ export const Grids = ({
   const pageUnit = isMonthPicker ? 'year' : 'month';
   const GridComponent = isMonthPicker ? YearlyGrid : MonthlyGrid;
 
-  const calendarMonthProps = {
+  const monthlyGridProps = {
     startOfWeek,
     todayAriaLabel,
   };
 
-  const calendarYearProps = {
+  const yearlyGridProps = {
     currentMonthAriaLabel,
   };
 
@@ -193,7 +193,6 @@ export const Grids = ({
     onFocusedDateChange,
     locale,
     granularity,
-    ...(isMonthPicker ? calendarYearProps : calendarMonthProps),
   };
 
   return (
@@ -202,6 +201,7 @@ export const Grids = ({
         {!isSingleGrid && (
           <GridComponent
             {...sharedGridProps}
+            {...(isMonthPicker ? yearlyGridProps : monthlyGridProps)}
             padDates={isMonthPicker ? 'none' : 'before'}
             className={testutilStyles['first-grid']}
             baseDate={addPages(baseDate, -1)}
@@ -210,6 +210,7 @@ export const Grids = ({
         )}
         <GridComponent
           {...sharedGridProps}
+          {...(isMonthPicker ? yearlyGridProps : monthlyGridProps)}
           padDates={isMonthPicker ? 'none' : isSingleGrid ? 'both' : 'after'}
           className={testutilStyles['second-grid']}
           baseDate={baseDate}

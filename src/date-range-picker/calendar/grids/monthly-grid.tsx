@@ -88,7 +88,6 @@ export function MonthlyGrid({
   //todo confirm not needed normalized locale
   // const normalizedLocale = normalizeLocale('DateRangePicker', locale ?? null);
   // const rows = useCalendarGridRows({ baseDate, granularity: 'month', locale: normalizedLocale, startOfWeek });
-
   const currentAnnouncement = i18n('i18nStrings.todayAriaLabel', todayAriaLabel);
 
   return (
@@ -173,6 +172,7 @@ export function MonthlyGrid({
                     handlers.onClick = () => onSelectDate(date);
                     handlers.onFocus = () => onFocusedDateChange(date);
                   }
+          
 
                   // Can't be focused.
                   let tabIndex = undefined;
