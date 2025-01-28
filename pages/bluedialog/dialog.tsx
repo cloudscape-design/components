@@ -2,21 +2,21 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
-import { Box, Button, Checkbox, Form, FormField, SpaceBetween, Textarea } from '~components';
+import { Button } from '~components';
 
 import styles from './styles.scss';
 
-export default function Bluedialog({ onSubmit, onSkip }: any) {
+export default function FeedbackDialog({
+  children,
+  footer,
+  onDismiss,
+}: {
+  children: React.ReactNode;
+  footer: React.ReactNode;
+  onDismiss: () => void;
+}) {
   const dialogRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLElement | null>(null);
-  // Inputs (these following can be clubbed into one state object)
-  const [feedbackOptions, setFeedbackOptions] = React.useState({
-    harmful: false,
-    incomplete: false,
-    inaccurate: false,
-    other: false,
-  });
-  const [feedbackText, setFeedbackText] = React.useState('');
 
   useEffect(() => {
     // Store the element that had focus before dialog opened
@@ -34,72 +34,24 @@ export default function Bluedialog({ onSubmit, onSkip }: any) {
     };
   }, []);
 
-  function submitData() {
-    onSubmit({ feedbackOptions, feedbackText });
-  }
-  function skipDialog() {
-    onSkip(); // can be used by the parent component to dismiss/ hide this dialog box
-  }
-
   return (
     <div
-      className={styles['blue-dialog-box']}
-      role={'dialog'}
-      aria-labelledby="feedback dialog"
+      ref={dialogRef}
+      className={styles['feedback-dialog']}
+      role="dialog"
+      aria-label="Feedback dialog"
       aria-modal="false" // Maintains natural focus flow since it's an inline dialog
       tabIndex={-1} // This allows the dialog to receive focus
     >
-      <Form>
-        <Box padding={'l'}>
-          <div className={styles['blue-dialog-box__close']}>
-            <Button iconName="close" variant="icon" onClick={skipDialog} aria-label="Close dialog" />
-          </div>
-          <SpaceBetween direction="vertical" size="l">
-            <FormField label="What did you dislike about the response?">
-              <SpaceBetween size={'xxl'} direction={'horizontal'}>
-                <Checkbox
-                  checked={feedbackOptions.harmful}
-                  onChange={({ detail }) => setFeedbackOptions({ ...feedbackOptions, harmful: detail.checked })}
-                >
-                  Harmful
-                </Checkbox>
-                <Checkbox
-                  checked={feedbackOptions.incomplete}
-                  onChange={({ detail }) => setFeedbackOptions({ ...feedbackOptions, incomplete: detail.checked })}
-                >
-                  Incomplete
-                </Checkbox>
-                <Checkbox
-                  checked={feedbackOptions.inaccurate}
-                  onChange={({ detail }) => setFeedbackOptions({ ...feedbackOptions, inaccurate: detail.checked })}
-                >
-                  Inaccurate
-                </Checkbox>
-                <Checkbox
-                  checked={feedbackOptions.other}
-                  onChange={({ detail }) => setFeedbackOptions({ ...feedbackOptions, other: detail.checked })}
-                >
-                  Other
-                </Checkbox>
-              </SpaceBetween>
-            </FormField>
-            <FormField label="Tell us more - optional" stretch={true}>
-              <Textarea
-                rows={1}
-                onChange={({ detail }) => setFeedbackText(detail.value)}
-                value={feedbackText}
-                placeholder={'Additional feedback'}
-              />
-            </FormField>
-          </SpaceBetween>
-        </Box>
-
-        <div className={styles['blue-dialog-box__footer']}>
-          <Button onClick={submitData} ariaLabel="Submit form">
-            Submit
-          </Button>
+      <div className={styles.content}>
+        <div className={styles.dismiss}>
+          <Button iconName="close" variant="icon" onClick={onDismiss} ariaLabel="Close dialog" />
         </div>
-      </Form>
+
+        <div className={styles['inner-content']}>{children}</div>
+      </div>
+
+      <div className={styles.footer}>{footer}</div>
     </div>
   );
 }

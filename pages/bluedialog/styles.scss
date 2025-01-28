@@ -4,25 +4,44 @@
 */
 @use '~design-tokens' as awsui;
 
-.blue-dialog-box {
+.feedback-dialog {
+  // these to be feedback dialog's own design tokens
   border-block: 1px solid awsui.$color-border-status-info;
   border-inline: 1px solid awsui.$color-border-status-info;
   background-color: awsui.$color-background-status-info;
-  border-start-start-radius: 16px;
-  border-start-end-radius: 16px;
-  border-end-start-radius: 16px;
-  border-end-end-radius: 16px;
+
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+
+  outline-offset: 5px;
 }
 
-.blue-dialog-box__close {
-  float: right;
+.content {
+  display: flex;
+  align-items: baseline;
+
+  padding-block-start: awsui.$space-scaled-s;
+  padding-block-end: awsui.$space-scaled-l;
+  padding-inline: awsui.$space-container-horizontal;
 }
 
-.blue-dialog-box__footer {
+.dismiss {
+  order: 1;
+}
+
+.inner-content {
+  flex: 1;
+}
+
+.footer {
   border-block-start: 1px solid awsui.$color-border-divider-default;
-  padding-block: 10px;
-  padding-inline: 20px;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-container-horizontal;
+}
+
+.footer-buttons {
   display: flex;
   flex-direction: row-reverse;
-  gap: 20px;
 }
