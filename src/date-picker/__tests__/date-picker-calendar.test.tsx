@@ -18,6 +18,8 @@ import {
 import calendarStyles from '../../../lib/components/calendar/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 
+const toLocaleDateString = window.Date.prototype.toLocaleDateString;
+
 describe('Date picker calendar', () => {
   const defaultProps: DatePickerProps = {
     i18nStrings: {
@@ -40,7 +42,10 @@ describe('Date picker calendar', () => {
     const locale = new Intl.DateTimeFormat('en-US', { timeZone: 'UTC' });
     jest.spyOn(Intl, 'DateTimeFormat').mockImplementation(() => locale);
   });
-  afterEach(() => jest.restoreAllMocks());
+  afterEach(() => {
+    jest.restoreAllMocks();
+    window.Date.prototype.toLocaleDateString = toLocaleDateString;
+  });
 
   describe('basic calendar interaction', () => {
     let wrapper: DatePickerWrapper, getByTestId: (selector: string) => HTMLElement;
@@ -116,18 +121,18 @@ describe('Date picker calendar', () => {
 
     test('should allow locale override', () => {
       const locale = 'de-DE';
-      const localStringMock = jest.fn().mockReturnValue('März 2018');
-      const oldImpl = window.Date.prototype.toLocaleDateString;
+      const localStringMock = jest.fn().mockReturnValue('translated');
       window.Date.prototype.toLocaleDateString = localStringMock;
 
       const { wrapper } = renderDatePicker({ ...defaultProps, locale });
       wrapper.findOpenCalendarButton().click();
-      expect(findCalendarHeaderText(wrapper)).toBe('März 2018');
-      // we render 2018/03/22 which results in
-      // -> 35 (5 weeks á 7 days) + 7 (weekday names) * 2 + 1 (month name)
-      expect(localStringMock).toHaveBeenCalledTimes(51);
+      expect(findCalendarHeaderText(wrapper)).toBe('translated');
+      // For each calendar we render 6 weeks (42 days) and each requires a label.
+      // Additionally, we generate short and full labels for weekday names (14 in total),
+      // and 2 labels for month name.
+      // 42 + 14 + 2 = 58.
+      expect(localStringMock).toHaveBeenCalledTimes(58);
       expect(localStringMock).toHaveBeenCalledWith(locale, expect.any(Object));
-      window.Date.prototype.toLocaleDateString = oldImpl;
     });
 
     test('should override start day of week', () => {
