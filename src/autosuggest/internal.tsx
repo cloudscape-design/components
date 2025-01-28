@@ -77,9 +77,7 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
   );
 
   const i18n = useInternalI18n('autosuggest');
-  const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
   const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
-  const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
   if (restProps.recoveryText && !onLoadItems) {
     warnOnce('Autosuggest', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
@@ -188,8 +186,8 @@ const InternalAutosuggest = React.forwardRef((props: InternalAutosuggestProps, r
     ...props,
     isEmpty,
     isFiltered,
-    recoveryText,
-    errorIconAriaLabel,
+    getRecoveryText: () => i18n('errorIconAriaLabel', restProps.errorIconAriaLabel),
+    getErrorIconAriaLabel: () => i18n('recoveryText', restProps.recoveryText),
     onRecoveryClick: handleRecoveryClick,
     filteringResultsText: filteredText,
     hasRecoveryCallback: !!onLoadItems,

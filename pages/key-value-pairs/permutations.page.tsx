@@ -58,7 +58,7 @@ const permutations = createPermutations<KeyValuePairsProps>([
         {
           label: 'CNAMEs',
           value: (
-            <Link external={true} href="#">
+            <Link external={true} href="#" externalIconAriaLabel="(opens in new tab)">
               abc.service23G24.xyz
             </Link>
           ),
