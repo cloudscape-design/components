@@ -12,6 +12,7 @@ import SelectWrapper from '../select';
 import gridStyles from '../../../date-range-picker/calendar/grids/styles.selectors.js';
 import relativeRangeStyles from '../../../date-range-picker/relative-range/styles.selectors.js';
 import styles from '../../../date-range-picker/styles.selectors.js';
+import testStyles from '../../../date-range-picker/test-classes/styles.selectors.js';
 
 export class CalendarDateWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
@@ -122,7 +123,7 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   ): CalendarDateWrapper {
     const gridClassName = grid === 'right' ? styles['second-grid'] : styles['first-grid'];
     return this.findComponent(
-      `.${gridClassName} .${gridStyles.week}:nth-child(${row}) .${gridStyles.day}:nth-child(${column})`,
+      `.${gridClassName} .${testStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testStyles['calendar-date']}:nth-child(${column})`,
       CalendarDateWrapper
     )!;
   }
