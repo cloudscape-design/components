@@ -8,6 +8,7 @@ import {
   createFlashbarContext,
   createFlashbarWarningContext,
   createHeaderContext,
+  createResponsiveFontsContext,
   createTopNavigationContext,
 } from '../utils/contexts';
 import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
@@ -50,6 +51,8 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
   builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
   // eslint-disable-next-line @typescript-eslint/no-var-requires
   builder.addContext(createAlertContext(require('./contexts/alert').tokens));
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  builder.addContext(createResponsiveFontsContext(require('./contexts/responsive-fonts').tokens));
   builder.addContext({
     id: 'alert-header',
     selector: '.awsui-context-content-header .awsui-context-alert',

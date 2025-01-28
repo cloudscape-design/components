@@ -57,3 +57,11 @@ export const createAppLayoutToolsDrawerTriggerContext = (tokens: TokenCategory<s
     tokens,
   };
 };
+
+export const createResponsiveFontsContext = (tokens: TokenCategory<string, GlobalValue | ModeValue>) => {
+  return {
+    id: 'responsive-fonts',
+    selector: '.awsui-context-responsive-fonts',
+    tokens,
+  };
+};
