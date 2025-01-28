@@ -40,6 +40,7 @@ export default function Tabs({
   disableContentPaddings = false,
   i18nStrings,
   fitHeight,
+  preserveInactiveTabs = false,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -86,6 +87,9 @@ export default function Tabs({
         [styles['tabs-content-active']]: isTabSelected,
       });
 
+      const isContentShown = isTabSelected && !selectedTab.disabled;
+      const isContentPersisted = preserveInactiveTabs || isContentShown;
+
       const contentAttributes: JSX.IntrinsicElements['div'] = {
         className: classes,
         role: 'tabpanel',
@@ -93,10 +97,12 @@ export default function Tabs({
         key: `${idNamespace}-${tab.id}-panel`,
         tabIndex: 0,
         'aria-labelledby': getTabElementId({ namespace: idNamespace, tabId: tab.id }),
+        style: {
+          display: isTabSelected ? 'block' : 'none',
+        },
       };
 
-      const isContentShown = isTabSelected && !selectedTab.disabled;
-      return <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>;
+      return <div {...contentAttributes}>{isContentPersisted && tab.content}</div>;
     };
 
     return (
