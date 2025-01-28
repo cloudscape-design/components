@@ -21,7 +21,12 @@ import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawer
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
-import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
+import {
+  computeHorizontalLayout,
+  computeSplitPanelOffsets,
+  computeVerticalLayout,
+  CONTENT_PADDING,
+} from './compute-layout';
 import { AppLayoutVisibilityContext } from './contexts';
 import { AppLayoutInternals } from './interfaces';
 import {
@@ -461,6 +466,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
     }, [hasToolbar]);
 
+    const splitPanelOffsets = computeSplitPanelOffsets({
+      placement,
+      hasSplitPanel: !!splitPanel,
+      splitPanelOpen,
+      splitPanelPosition,
+      splitPanelFullHeight: splitPanelReportedSize,
+      splitPanelHeaderHeight: splitPanelHeaderBlockSize,
+    });
+
     return (
       <AppLayoutVisibilityContext.Provider value={isIntersecting}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
@@ -469,16 +483,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
           style={{
-            paddingBlockEnd:
-              splitPanelPosition === 'bottom'
-                ? splitPanelOpen
-                  ? splitPanelReportedSize
-                  : splitPanelHeaderBlockSize
-                : '',
+            paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
             ...(hasToolbar || !isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
-                  [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
+                  [globalVars.stickyVerticalBottomOffset]: `${splitPanelOffsets.stickyVerticalBottomOffset}px`,
                 }
               : {}),
             ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),
