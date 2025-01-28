@@ -232,6 +232,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -552,6 +559,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -2757,6 +2771,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -3077,6 +3098,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -5282,6 +5310,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -5602,6 +5637,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -7807,6 +7849,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -8127,6 +8176,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -10332,6 +10388,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#f2f3f3",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#f1faff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -10652,6 +10715,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#0073bb",
           },
         },
         "color-border-input-default": {
@@ -12857,6 +12927,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#414750",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#12293b",
+            "light": "#12293b",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -13177,6 +13254,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "#879596",
             "light": "#879596",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#00a1c9",
+            "light": "#00a1c9",
           },
         },
         "color-border-input-default": {
@@ -15382,6 +15466,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#f2f3f3",
       },
     },
+    "color-background-feedback-dialog": {
+      "$description": "The background color of the feedback dialog.",
+      "$value": {
+        "dark": "#12293b",
+        "light": "#f1faff",
+      },
+    },
     "color-background-home-header": {
       "$description": "The background color of the home header, displayed on the Service's home page.",
       "$value": {
@@ -15702,6 +15793,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#879596",
         "light": "#879596",
+      },
+    },
+    "color-border-feedback-dialog": {
+      "$description": "The border color of the feedback dialog.",
+      "$value": {
+        "dark": "#00a1c9",
+        "light": "#0073bb",
       },
     },
     "color-border-input-default": {
@@ -17912,6 +18010,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f3f3f7",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -18232,6 +18337,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -20437,6 +20549,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#131920",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -20757,6 +20876,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-input-default": {
@@ -22962,6 +23088,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f3f3f7",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -23282,6 +23415,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -25487,6 +25627,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f3f3f7",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -25807,6 +25954,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -28012,6 +28166,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#f3f3f7",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#f0fbff",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -28332,6 +28493,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#8c8c94",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#006ce0",
           },
         },
         "color-border-input-default": {
@@ -30537,6 +30705,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#131920",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -30857,6 +31032,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-input-default": {
@@ -33062,6 +33244,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#131920",
           },
         },
+        "color-background-feedback-dialog": {
+          "$description": "The background color of the feedback dialog.",
+          "$value": {
+            "dark": "#001129",
+            "light": "#001129",
+          },
+        },
         "color-background-home-header": {
           "$description": "The background color of the home header, displayed on the Service's home page.",
           "$value": {
@@ -33382,6 +33571,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "#656871",
             "light": "#656871",
+          },
+        },
+        "color-border-feedback-dialog": {
+          "$description": "The border color of the feedback dialog.",
+          "$value": {
+            "dark": "#42b4ff",
+            "light": "#42b4ff",
           },
         },
         "color-border-input-default": {
@@ -35587,6 +35783,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#f3f3f7",
       },
     },
+    "color-background-feedback-dialog": {
+      "$description": "The background color of the feedback dialog.",
+      "$value": {
+        "dark": "#001129",
+        "light": "#f0fbff",
+      },
+    },
     "color-background-home-header": {
       "$description": "The background color of the home header, displayed on the Service's home page.",
       "$value": {
@@ -35907,6 +36110,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#656871",
         "light": "#8c8c94",
+      },
+    },
+    "color-border-feedback-dialog": {
+      "$description": "The border color of the feedback dialog.",
+      "$value": {
+        "dark": "#42b4ff",
+        "light": "#006ce0",
       },
     },
     "color-border-input-default": {

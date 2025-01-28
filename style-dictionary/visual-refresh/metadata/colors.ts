@@ -227,6 +227,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     public: true,
     themeable: true,
   },
+  colorBackgroundFeedbackDialog: {
+    description: 'The background color of the feedback dialog.',
+    public: true,
+    themeable: true,
+  },
   colorBackgroundStatusSuccess: {
     description: 'The background color of an item in success state. For example: success alerts.',
     public: true,
@@ -418,6 +423,11 @@ const metadata: StyleDictionary.MetadataIndex = {
   },
   colorBorderStatusWarning: {
     description: 'The border color of an item in warning state. For example: warning alerts.',
+    public: true,
+    themeable: true,
+  },
+  colorBorderFeedbackDialog: {
+    description: 'The border color of the feedback dialog.',
     public: true,
     themeable: true,
   },
