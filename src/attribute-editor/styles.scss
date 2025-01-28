@@ -9,16 +9,25 @@
 
 .root {
   @include styles.styles-reset;
-  display: block;
+  display: grid;
+  grid-template-rows: min-content;
+  gap: awsui.$space-grid-gutter;
+  align-items: start;
 }
 
 .empty {
   @include styles.font-body-m;
   color: awsui.$color-text-empty;
+  grid-column: 1 / -1;
 }
 
 .row {
-  /* used in test-utils */
+  display: contents;
+}
+
+.divider {
+  grid-column: 1 / -1;
+  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .row-control {
@@ -27,30 +36,6 @@
 
 .field {
   /* used in test-utils */
-}
-
-.add-button {
-  /* used in test-utils */
-}
-
-.remove-button {
-  /* used in test-utils */
-}
-
-.button-container-haslabel {
-  // We only support vertical alignment of the remove button for labels with exactly one line.
-  // The value is calculated as follows:
-  // padding-top = awsui-form-field-controls: 4px +
-  // line height (also applies to icon size) awsui-form-field-label: 22px
-  padding-block-start: calc(#{awsui.$space-xxs} + #{awsui.$line-height-body-m});
-}
-
-.button-container-nolabel {
-  padding-block-start: #{awsui.$space-xxs};
-}
-
-.divider {
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
 }
 
 .additional-info {
@@ -65,7 +50,24 @@
   }
 }
 
-.right-align {
-  display: flex;
-  justify-content: flex-end;
+.add-row {
+  grid-column: 1 / -1;
+}
+
+.add-button {
+  /* used in test-utils */
+}
+
+.remove-button-container {
+  display: inline-block;
+}
+.remove-button-field-padding {
+  padding-block-start: calc(#{awsui.$space-xxs} + #{awsui.$line-height-body-m});
+}
+.remove-button-own-row {
+  justify-self: end;
+}
+
+.remove-button {
+  /* used in test-utils */
 }

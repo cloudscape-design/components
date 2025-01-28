@@ -99,7 +99,7 @@ export default function InternalExpandableSection({
 
   return (
     <ExpandableSectionContainer
-      {...baseProps}
+      {...props}
       expanded={expanded}
       className={clsx(baseProps.className, styles.root, analyticsSelectors.root)}
       variant={variant}

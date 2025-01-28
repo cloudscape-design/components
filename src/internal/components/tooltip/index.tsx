@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 
 import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
@@ -39,7 +38,7 @@ export default function Tooltip({
 
   return (
     <Portal>
-      <div className={clsx(styles.root, className)} {...contentAttributes} data-testid={trackKey}>
+      <div className={styles.root} {...contentAttributes} data-testid={trackKey}>
         <Transition in={true}>
           {() => (
             <PopoverContainer
@@ -51,6 +50,7 @@ export default function Tooltip({
               zIndex={7000}
               arrow={position => <PopoverArrow position={position} />}
               hideOnOverscroll={hideOnOverscroll}
+              className={className}
             >
               <PopoverBody dismissButton={false} dismissAriaLabel={undefined} onDismiss={undefined} header={undefined}>
                 {value}

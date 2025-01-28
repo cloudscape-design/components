@@ -169,6 +169,15 @@ describe('TableBodyCell', () => {
     expect(stickyCellRef).toHaveBeenCalledWith(null);
   });
 
+  it('should not throw an error if column is not editable', () => {
+    const col: typeof column = {
+      id: 'test',
+      header: 'Test',
+      cell: item => item.test,
+    };
+    render(<TestComponent column={col} isEditing={true} />);
+  });
+
   describe('success icon behaviour', () => {
     const bodyCellSuccessIcon$ = `.${styles['body-cell-success']}`;
 

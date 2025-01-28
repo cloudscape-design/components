@@ -1468,7 +1468,25 @@ with expandable sections.",
       "type": "string",
     },
     {
+      "description": "Specifies a custom action trigger for each row, in place of the remove button.
+Only button and button dropdown components are supported.
+If you provide this, \`removeButtonText\`, \`removeButtonAriaLabel\`,
+and \`onRemoveButtonClick\` will be ignored.
+The trigger must be given the provided \`ref\` in order for \`focusRemoveButton\`
+to work.
+The function receives the following properties:
+- \`item\`: The item being rendered in the current row.
+- \`itemIndex\` (\`number\`): The index of the item.
+- \`ref\` (\`ReactRef\`): A React ref that should be passed to the rendered button.
+- \`breakpoint\` (\`Breakpoint\`): The current breakpoint, for responsive behavior.
+- \`ownRow\` (\`boolean\`): Whether the button is rendered on its own row.",
+      "name": "customRowActions",
+      "optional": true,
+      "type": "(props: AttributeEditorProps.RowActionsProps<T>) => React.ReactNode",
+    },
+    {
       "description": "Defines the editor configuration. Each object in the array represents one form field in the row.
+If more than 6 attributes are specified, a \`gridLayout\` must be provided.
 * \`label\` (ReactNode) - Text label for the form field.
 * \`info\` (ReactNode) - Info link for the form field.
 * \`errorText\` ((item, itemIndex) => ReactNode) - Error message text to display as a control validation message.
@@ -1477,8 +1495,6 @@ with expandable sections.",
    It renders the form field in a warning state if the returned value is not \`null\` or \`undefined\`.
 * \`constraintText\` ((item, itemIndex) => ReactNode) - Text to display as a constraint message below the field.
 * \`control\` ((item, itemIndex) => ReactNode) - A control to use as the input for the field.
-
-A maximum of four fields are supported.
 ",
       "name": "definition",
       "optional": false,
@@ -1489,6 +1505,23 @@ A maximum of four fields are supported.
       "name": "disableAddButton",
       "optional": true,
       "type": "boolean",
+    },
+    {
+      "description": "Optionally specifies the layout of the attributes. By default, all attributes will be
+equally spaced and wrapped into multiple rows on smaller viewports.
+A \`gridLayout\` is an array of breakpoint definitions. Each definition consists of:
+- \`rows\` (\`number[][]\`): the rows in which to display the attributes. Each row consists of a list of numbers indicating
+  the relative width of each attribute. For example, \`[[1, 1, 1, 1]]\` is a single row of four evenly-spaced attributes,
+  or \`[[1, 2], [1, 1, 1]]\` splits five attributes onto two rows.
+- \`breakpoint\` (\`string\`): optionally specifies that the given entry should only be used when at least that much width is available.
+- \`removeButton\`: optionally configures the remove (or row action) button placement. If this is not provided, the button will be
+  placed at the end of a single row, or below if multiple rows are present. The \`removeButton\` property supports contains two properties:
+  - \`ownRow\` (\`boolean\`): forces the remove button onto its own row.
+  - \`width\` (\`number | 'auto'\`): a number indicating the relative width (equivalent to a \`rows\` entry), or 'auto' to fit to the button width.
+",
+      "name": "gridLayout",
+      "optional": true,
+      "type": "ReadonlyArray<AttributeEditorProps.GridLayout>",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -3633,9 +3666,25 @@ modifier keys (that is, CTRL, ALT, SHIFT, META), and the item has an \`href\` se
   ],
   "functions": [
     {
-      "description": "Focuses the underlying native button.",
+      "description": "Focuses the underlying native button. If a main action is defined this will focus that button.",
       "name": "focus",
-      "parameters": [],
+      "parameters": [
+        {
+          "name": "options",
+          "type": "FocusOptions",
+        },
+      ],
+      "returnType": "void",
+    },
+    {
+      "description": "Focuses the underlying native button for the dropdown.",
+      "name": "focusDropdownTrigger",
+      "parameters": [
+        {
+          "name": "options",
+          "type": "FocusOptions",
+        },
+      ],
       "returnType": "void",
     },
   ],
@@ -11211,6 +11260,12 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "description": "Shows tokens inside the trigger instead of below it.",
+      "name": "inlineTokens",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Overrides the invalidation state. Usually the invalid state
 comes from the parent \`FormField\`component,
 however sometimes you need to override its
@@ -12123,13 +12178,15 @@ that don't have visible text, and to distinguish between multiple triggers with 
     {
       "defaultValue": "'text'",
       "description": "Specifies the type of content inside the trigger region. The following types are available:
-- \`text\` - Use for inline text triggers.
+- \`text\` - Use for triggers containing inline components, like status indicator.
+- \`text-inline\` - Use for triggers containing plain text only.
 - \`custom\` - Use for the [button](/components/button/) component.",
       "inlineType": {
         "name": "PopoverProps.TriggerType",
         "type": "union",
         "values": [
           "text",
+          "text-inline",
           "custom",
         ],
       },
