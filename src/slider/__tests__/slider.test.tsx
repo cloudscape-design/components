@@ -289,6 +289,23 @@ describe('Slider events', () => {
 
     expect(screen.queryByText('50')).not.toBeInTheDocument();
   });
+
+  test('close tooltip on Esc keydown', () => {
+    const wrapper = renderSlider({
+      min: 0,
+      max: 100,
+      value: 50,
+    });
+    act(() => {
+      fireEvent.mouseEnter(wrapper.findNativeInput()!.getElement());
+    });
+    expect(screen.queryByText('50')).toBeInTheDocument();
+
+    act(() => {
+      fireEvent.keyDown(window, { key: 'Escape' });
+    });
+    expect(screen.queryByText('50')).not.toBeInTheDocument();
+  });
 });
 
 describe('Slider i18n', () => {
