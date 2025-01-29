@@ -45,10 +45,11 @@
   background: transparent;
   border-block: none;
   border-inline: none;
-  padding-block: 0;
-  padding-inline: 0;
+  padding-inline: awsui.$space-xxs;
+  padding-block: awsui.$space-xxs;
   cursor: pointer;
   scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
+  box-sizing: content-box;
 
   // These dimensions match the dimensions of the contained SVG icon.
   inline-size: 16px;

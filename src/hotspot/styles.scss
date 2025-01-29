@@ -20,20 +20,25 @@
 
 .markerWrapper {
   position: absolute;
-
-  inset-block-start: 0;
+  inset-block-start: calc(-1 * #{awsui.$space-xxs});
 }
 
 .placement-right {
   inset-inline-start: 100%;
-  margin-inline-start: awsui.$space-xxs;
 }
 
 .placement-left {
   inset-inline-end: 100%;
-  margin-inline-end: awsui.$space-xxs;
 }
 
 .inlineWrapper {
-  margin-inline-start: awsui.$space-xxs;
+  display: inline-block;
+  position: relative;
+  vertical-align: text-top;
+  inline-size: awsui.$space-scaled-m;
+  background: red;
+
+  & > .markerWrapper {
+    inset-block-start: calc(-1 * (#{awsui.$space-xxxs} + #{awsui.$space-xxs}));
+  }
 }

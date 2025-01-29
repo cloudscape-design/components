@@ -51,9 +51,10 @@ export default function Hotspot({
       {...baseProps}
       className={clsx(baseProps.className, styles.root, styles.inlineWrapper)}
       ref={__internalRootRef}
-      onClick={e => e.stopPropagation()}
     >
-      {content}
+      <div className={styles.markerWrapper} onClick={e => e.stopPropagation()}>
+        {content}
+      </div>
     </span>
   );
 }
