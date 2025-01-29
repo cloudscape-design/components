@@ -7,6 +7,9 @@ import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-ut
 import { viewports } from './constants';
 import { getUrlParams, Theme } from './utils';
 
+import vrDrawerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import vrToolbarDrawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.selectors.js';
+
 const wrapper = createWrapper().findAppLayout();
 const findDrawerById = (wrapper: AppLayoutWrapper, id: string) => {
   return wrapper.find(`[data-testid="awsui-app-layout-drawer-${id}"]`);
@@ -117,7 +120,14 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
         const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
         const scrollBefore = await getScrollPosition();
 
-        await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+        const scrollableContainer =
+          theme === 'classic'
+            ? wrapper.findActiveDrawer().toSelector()
+            : theme === 'refresh'
+              ? `.${vrDrawerStyles['drawer-content-container']}`
+              : `.${vrToolbarDrawerStyles['drawer-content-container']}`;
+
+        await page.elementScrollTo(scrollableContainer, { top: 100 });
         await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
         await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
       })
@@ -316,7 +326,8 @@ describe('Visual refresh toolbar only', () => {
       const getScrollPosition = () => page.getBoundingBox('[data-testid="drawer-sticky-header"]');
       const scrollBefore = await getScrollPosition();
 
-      await page.elementScrollTo(wrapper.findActiveDrawer().toSelector(), { top: 100 });
+      const scrollableContainer = `.${vrToolbarDrawerStyles['drawer-content-container']}`;
+      await page.elementScrollTo(scrollableContainer, { top: 100 });
       await expect(getScrollPosition()).resolves.toEqual(scrollBefore);
       await expect(page.isDisplayed('[data-testid="drawer-sticky-header"]')).resolves.toBe(true);
     })
