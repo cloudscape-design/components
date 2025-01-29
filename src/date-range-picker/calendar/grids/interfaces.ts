@@ -29,19 +29,11 @@ export interface GridProps extends GridBaseProps {
   /**
    * Used to only add the dates of previous and next months outside the month pages
    */
-  padDates: 'none' | 'before' | 'after' | 'both';
-}
-
-export interface YearGridProps extends GridProps {
+  padDates: 'before' | 'after';
   currentMonthAriaLabel?: string;
-}
-
-export interface MonthGridProps extends GridProps {
-  /**
-   * Only expected on the daily calendar view
-   */
   startOfWeek?: DayIndex;
   todayAriaLabel?: string;
+  granularity: DateRangePickerProps.Granularity;
 }
 
 export interface SelectGridProps extends GridBaseProps {

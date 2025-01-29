@@ -150,7 +150,6 @@ export class DrpDropdownWrapper extends ComponentWrapper {
     const gridClassName = grid === 'right' ? testutilStyles['second-grid'] : testutilStyles['first-grid'];
     return this.findComponent(
       `.${gridClassName} .${testutilStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testutilStyles['calendar-date']}:nth-child(${column})`,
-      // `.${gridClassName} .${testutilStyles.week}:nth-child(${row}) .${testutilStyles.day}:nth-child(${column})`,
       CalendarDateWrapper
     )!;
   }
@@ -165,7 +164,7 @@ export class DrpDropdownWrapper extends ComponentWrapper {
   findMonthAt(grid: 'left' | 'right', row: 1 | 2 | 3 | 4, column: 1 | 2 | 3): CalendarDateWrapper {
     const gridClassName = grid === 'right' ? testutilStyles['second-grid'] : testutilStyles['first-grid'];
     return this.findComponent(
-      `.${gridClassName} .${testutilStyles.quarter}:nth-child(${row}) .${testutilStyles.month}:nth-child(${column})`,
+      `.${gridClassName} .${testutilStyles['calendar-quarter']}:nth-child(${row}) .${testutilStyles['calendar-month']}:nth-child(${column})`,
       CalendarDateWrapper
     )!;
   }

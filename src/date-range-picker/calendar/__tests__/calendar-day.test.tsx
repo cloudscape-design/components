@@ -53,7 +53,7 @@ describe('Date range picker calendar with day granularity', () => {
   const findFocusableDate = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .find(`.${testutilStyles.day}[tabIndex="0"]`)
+      .find(`.${testutilStyles['calendar-date']}[tabIndex="0"]`)
       ?.find(`:not(.${screenreaderOnlyStyles.root})`);
   };
 

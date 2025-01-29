@@ -55,7 +55,7 @@ describe('Date range picker calendar with month granularity', () => {
   const findFocusableMonth = (wrapper: DateRangePickerWrapper) => {
     return wrapper
       .findDropdown()!
-      .find(`.${testutilStyles.month}[tabIndex="0"]`)
+      .find(`.${testutilStyles['calendar-month']}[tabIndex="0"]`)
       ?.find(`:not(.${screenreaderOnlyStyles.root})`);
   };
 
@@ -627,7 +627,7 @@ describe('Date range picker calendar with month granularity', () => {
           wrapper.findDropdown()!.findMonthAt('left', 2, 2).click();
 
           expect(findLiveAnnouncement(wrapper)).toHaveTextContent(new RegExp(i18nStrings.endDateLabel!));
-          //todo update announcement
+
           expect(findLiveAnnouncement(wrapper)).toHaveTextContent(
             'End date, Wednesday, May 1, 2019. Monday, April 1, 2019 – Wednesday, May 1, 2019'
           );

@@ -105,38 +105,40 @@
 .in-first-column {
   border-inline-start: 1px solid calendar.$grid-border;
 
-  &.in-visible-calendar,
-  &.in-current-month,
-  &.in-current-year {
-    border-inline-start: calendar.$grid-border;
+  &.in-visible-calendar {
+    &.in-visible-calendar.in-current-month,
+    &.in-current-year {
+      border-inline-start: calendar.$grid-border;
+    }
   }
 }
 
 .enabled {
   cursor: pointer;
 
-  &.in-visible-calendar,
-  &.in-current-month,
-  &.in-current-year {
-    color: calendar.$grid-date-color;
-    &:not(.in-range),
-    &.end-date.start-date,
-    &.no-range {
-      &,
-      &::after {
-        border-start-start-radius: awsui.$border-radius-item;
-        border-start-end-radius: awsui.$border-radius-item;
-        border-end-start-radius: awsui.$border-radius-item;
-        border-end-end-radius: awsui.$border-radius-item;
-      }
-    }
-    &:hover {
-      color: awsui.$color-text-calendar-date-hover;
-      background-color: calendar.$grid-hover-background-color;
-      &:not(.selected) {
+  &.in-visible-calendar {
+    &.in-visible-calendar.in-current-month,
+    &.in-current-year {
+      color: calendar.$grid-date-color;
+      &:not(.in-range),
+      &.end-date.start-date,
+      &.no-range {
+        &,
         &::after {
-          border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
-          border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+          border-start-start-radius: awsui.$border-radius-item;
+          border-start-end-radius: awsui.$border-radius-item;
+          border-end-start-radius: awsui.$border-radius-item;
+          border-end-end-radius: awsui.$border-radius-item;
+        }
+      }
+      &:hover {
+        color: awsui.$color-text-calendar-date-hover;
+        background-color: calendar.$grid-hover-background-color;
+        &:not(.selected) {
+          &::after {
+            border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+            border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+          }
         }
       }
     }
@@ -177,6 +179,22 @@
     border-inline: awsui.$border-item-width solid calendar.$grid-selected-border-color;
     z-index: 0;
   }
+
+  // &.start-date,
+  // &.range-start-date {
+  //   @include border-radius(start, start);
+  //   &.in-range-border-bottom {
+  //     @include border-radius(end, start);
+  //   }
+  // }
+
+  // &.end-date,
+  // &.range-end-date {
+  //   @include border-radius(end, end);
+  //   &.in-range-border-top {
+  //     @include border-radius(start, end);
+  //   }
+  // }
 
   > .day-inner,
   > .month-inner {
