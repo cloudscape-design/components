@@ -70,7 +70,7 @@ export default function DatePickerScenario() {
             dateOnly={dateOnly}
             granularity={monthOnly ? 'month' : 'day'}
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
-            isValidRange={isValid}
+            isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
             customRelativeRangeUnits={['second', 'minute', 'hour']}
             i18nStrings={i18nStrings}
             absoluteFormat={absoluteFormat}

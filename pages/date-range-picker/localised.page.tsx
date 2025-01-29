@@ -13,7 +13,7 @@ import {
   DisabledDate,
   relativeOptions,
 } from './common';
-import { makeIsValidFunction } from './is-valid-range';
+import { makeIsDateValidFunction, makeIsMonthValidFunction } from './is-valid-range';
 
 const localisedUnits = {
   second: ['Sekunde', 'Sekunden'],
@@ -31,44 +31,49 @@ function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string 
 }
 
 const i18nStrings: DateRangePickerProps['i18nStrings'] = {
-  todayAriaLabel: 'Heute',
-  nextMonthAriaLabel: 'Nächster Monat',
-  previousMonthAriaLabel: 'Vorheriger Monat',
-  customRelativeRangeDurationLabel: 'Dauer',
-  customRelativeRangeDurationPlaceholder: 'Zeitdauer angeben',
-  customRelativeRangeOptionLabel: 'Benutzerdefinierter Zeitraum',
-  customRelativeRangeOptionDescription: 'Einen benutzerdefinierten Zeitraum in der Vergangenheit angeben',
-  customRelativeRangeUnitLabel: 'Zeiteinheit',
-  monthConstraintText: 'Für den Monat verwenden Sie JJJJ/MM.',
-  dateConstraintText: 'Für das Datum verwenden Sie JJJJ/MM/TT.',
-  formatRelativeRange: formatRelativeRange,
-  formatUnit: (unit, value) => localisedUnits[unit][value === 1 ? 0 : 1],
-  dateTimeConstraintText: 'Zeitraum muss zwischen 6 und 30 Tagen betragen. Benutzen Sie das 24-Stunden-Format.',
   relativeModeTitle: 'Relativer Zeitraum',
   absoluteModeTitle: 'Absoluter Zeitraum',
   relativeRangeSelectionHeading: 'Einen Zeitraum wählen',
+  cancelButtonLabel: 'Abbrechen',
+  clearButtonLabel: 'Löschen und schließen',
+  applyButtonLabel: 'Anwenden',
+  customRelativeRangeOptionLabel: 'Benutzerdefinierter Zeitraum',
+  customRelativeRangeOptionDescription: 'Einen benutzerdefinierten Zeitraum in der Vergangenheit angeben',
+  customRelativeRangeUnitLabel: 'Zeiteinheit',
+  customRelativeRangeDurationLabel: 'Dauer',
+  customRelativeRangeDurationPlaceholder: 'Zeitdauer angeben',
+  startMonthLabel: 'Startmonat',
+  startDateLabel: 'Startdatum',
+  startTimeLabel: 'Startzeit',
+  endMonthLabel: 'Endmonat',
+  endDateLabel: 'Enddatum',
+  endTimeLabel: 'Endzeit',
+  dateTimeConstraintText: 'Zeitraum muss zwischen 6 und 30 Tagen betragen. Benutzen Sie das 24-Stunden-Format.',
+  monthConstraintText: 'Für den Monat verwenden Sie JJJJ/MM.',
+  dateConstraintText: 'Für das Datum verwenden Sie JJJJ/MM/TT.',
+  errorIconAriaLabel: 'Fehler',
+  renderSelectedAbsoluteRangeAriaLive: (startDate, endDate) => `Zeitraum ausgewählt von ${startDate} bis ${endDate}`,
+  todayAriaLabel: 'Heute',
+  nextMonthAriaLabel: 'Nächster Monat',
+  previousMonthAriaLabel: 'Vorheriger Monat',
+  previousYearAriaLabel: 'Letztes Jahr',
+  nextYearAriaLabel: 'Nächstes Jahr',
+  currentMonthAriaLabel: 'Dieser Monat',
+  formatRelativeRange: formatRelativeRange,
+  formatUnit: (unit, value) => localisedUnits[unit][value === 1 ? 0 : 1],
   relativeRangeSelectionMonthlyDescription:
     '"Jede Option repräsentiert den gesamten Monat, gerechnet vom ersten bis zum letzten Tag.',
-  startDateLabel: 'Startdatum',
-  startMonthLabel: 'Startmonat',
-  endDateLabel: 'Enddatum',
-  startTimeLabel: 'Startzeit',
-  endTimeLabel: 'Endzeit',
-  endMonthLabel: 'Endmonat',
-  clearButtonLabel: 'Löschen und schließen',
-  cancelButtonLabel: 'Abbrechen',
-  applyButtonLabel: 'Anwenden',
-  renderSelectedAbsoluteRangeAriaLive: (startDate, endDate) => `Zeitraum ausgewählt von ${startDate} bis ${endDate}`,
 };
 
-const isValid = makeIsValidFunction({
+const localizedErrors = {
   durationBetweenOneAndTwenty: 'Die Zeitdauer muss zwischen 1 und 20 liegen.',
   durationMissing: 'Sie müssen eine Zeitdauer angeben.',
   minimumStartDate: 'Der Zeitraum darf nicht vor 2018 beginnen.',
   noValueSelected: 'Sie müssen einen Zeitraum auswählen.',
+  notLongEnough: 'Der ausgewählte Datumsbereich ist zu klein. Wählen Sie einen Bereich von mindestens einem Monat.',
   startDateMissing: 'Sie müssen ein Startdatum angeben.',
   endDateMissing: 'Sie müssen ein Enddatum angeben.',
-});
+};
 
 export default function DatePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
@@ -129,7 +134,11 @@ export default function DatePickerScenario() {
           placeholder={'Nach einem Zeitraum filtern'}
           onChange={e => setValue(e.detail.value)}
           relativeOptions={relativeOptions}
-          isValidRange={isValid}
+          isValidRange={value =>
+            monthOnly
+              ? makeIsMonthValidFunction(localizedErrors)(value)
+              : makeIsDateValidFunction(localizedErrors)(value)
+          }
           granularity={monthOnly ? 'month' : 'day'}
           dateOnly={dateOnly}
           isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}

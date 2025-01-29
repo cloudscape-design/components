@@ -158,7 +158,7 @@ export default function DateRangePickerScenario() {
                   placeholder={generatePlaceholder(dateOnly, monthOnly)}
                   onChange={e => setValue(e.detail.value)}
                   relativeOptions={[]}
-                  isValidRange={isValid}
+                  isValidRange={isValid(monthOnly ? 'month' : 'day')}
                   rangeSelectorMode={'absolute-only'}
                   isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
                   dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}

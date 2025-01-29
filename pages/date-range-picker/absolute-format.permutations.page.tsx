@@ -59,7 +59,7 @@ export default function DateRangePickerPermutations() {
                 i18nStrings={i18nStrings}
                 placeholder={generatePlaceholder(permutation.dateOnly, permutation.granularity === 'month')}
                 relativeOptions={[]}
-                isValidRange={isValid}
+                isValidRange={value => isValid(permutation.granularity || 'day')(value)}
                 rangeSelectorMode={'absolute-only'}
                 getTimeOffset={() => 60}
               />

@@ -144,7 +144,7 @@ export default function DatePickerScenario() {
             placeholder={generatePlaceholder(dateOnly, monthOnly)}
             onChange={e => setValue(e.detail.value)}
             relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
-            isValidRange={isValid}
+            isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
             dateOnly={dateOnly}
             granularity={monthOnly ? 'month' : 'day'}
             timeInputFormat="hh:mm"

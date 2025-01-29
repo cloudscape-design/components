@@ -125,7 +125,7 @@ export default function DateRangePickerScenario() {
             setOnChangeDetails(event.detail.value);
           }}
           relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
-          isValidRange={isValid}
+          isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
           dateOnly={dateOnly}
           granularity={monthOnly ? 'month' : 'day'}
           expandToViewport={expandToViewport}

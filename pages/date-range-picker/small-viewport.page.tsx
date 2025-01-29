@@ -93,7 +93,7 @@ export default function DatePickerScenario() {
               relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
               dateOnly={dateOnly}
               granularity={monthOnly ? 'month' : 'day'}
-              isValidRange={isValid}
+              isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
               timeInputFormat="hh:mm"
               expandToViewport={expandToViewport}
               isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}

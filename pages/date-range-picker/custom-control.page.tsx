@@ -80,7 +80,7 @@ export default function DatePickerScenario() {
           i18nStrings={i18nStrings}
           relativeOptions={[]}
           placeholder={generatePlaceholder(dateOnly, monthOnly)}
-          isValidRange={isValid}
+          isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
           rangeSelectorMode="absolute-only"
           granularity={monthOnly ? 'month' : 'day'}
           dateOnly={dateOnly}
