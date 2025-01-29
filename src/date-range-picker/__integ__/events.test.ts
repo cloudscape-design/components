@@ -46,7 +46,7 @@ describe('Date Range Picker', () => {
     });
   };
 
-  describe.each<boolean>([false, true] as const)('DatePicker blur events (expandTOViewport=%s)', expandToViewport => {
+  describe.each([false, true])('DatePicker blur events (expandToViewport=%s)', expandToViewport => {
     describe.each(['day', 'month'] as const)('With granularity of %s', granularity => {
       test(
         'onBlur is fired when clicking next to the date range picker',

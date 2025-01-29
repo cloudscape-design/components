@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '~components';
+import { Box, DateRangePicker, DateRangePickerProps, FormField, Grid, SpaceBetween } from '~components';
 
 import AppContext from '../app/app-context';
 import {
@@ -150,23 +150,25 @@ export default function DateRangePickerScenario() {
           <div key={`pickers-${locale}`} dir={rtlLocales.has(locale) ? 'rtl' : 'ltr'}>
             <Grid gridDefinition={[{ colspan: 1 }, { colspan: 11 }]}>
               <div style={{ textAlign: 'right' }}>{locale}</div>
-              <DateRangePicker
-                value={value}
-                locale={locale}
-                i18nStrings={i18nStrings}
-                placeholder={generatePlaceholder(dateOnly, monthOnly)}
-                onChange={e => setValue(e.detail.value)}
-                relativeOptions={[]}
-                isValidRange={isValid}
-                rangeSelectorMode={'absolute-only'}
-                isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
-                dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
-                getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
-                absoluteFormat={absoluteFormat}
-                dateOnly={dateOnly}
-                granularity={monthOnly ? 'month' : 'day'}
-                hideTimeOffset={hideTimeOffset}
-              />
+              <FormField label="Date Range Picker field">
+                <DateRangePicker
+                  value={value}
+                  locale={locale}
+                  i18nStrings={i18nStrings}
+                  placeholder={generatePlaceholder(dateOnly, monthOnly)}
+                  onChange={e => setValue(e.detail.value)}
+                  relativeOptions={[]}
+                  isValidRange={isValid}
+                  rangeSelectorMode={'absolute-only'}
+                  isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+                  dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+                  getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
+                  absoluteFormat={absoluteFormat}
+                  dateOnly={dateOnly}
+                  granularity={monthOnly ? 'month' : 'day'}
+                  hideTimeOffset={hideTimeOffset}
+                />
+              </FormField>
             </Grid>
           </div>
         ))}
