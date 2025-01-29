@@ -16,6 +16,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { generateItems, Instance } from './generate-data';
 import { columnsConfig } from './shared-configs';
 
+import styles from './styles.scss';
+
 type DemoContext = React.Context<
   AppContextType<{
     loading: boolean;
@@ -340,7 +342,7 @@ export default () => {
           ariaLabels={{ ...ariaLabels, tableLabel: 'Inline editing table' }}
           header={<Header>Large table with inline editing</Header>}
         />
-        <div style={{ backgroundColor: 'orange' }}>
+        <div className={styles['borderless-wrapper']}>
           <Table
             {...collectionProps}
             variant="borderless"
