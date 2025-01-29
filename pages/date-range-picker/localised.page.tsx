@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link } from '~components';
+import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link } from '~components';
 
 import AppContext from '../app/app-context';
 import {
@@ -39,16 +39,22 @@ const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   customRelativeRangeOptionLabel: 'Benutzerdefinierter Zeitraum',
   customRelativeRangeOptionDescription: 'Einen benutzerdefinierten Zeitraum in der Vergangenheit angeben',
   customRelativeRangeUnitLabel: 'Zeiteinheit',
+  monthConstraintText: 'Für den Monat verwenden Sie JJJJ/MM.',
+  dateConstraintText: 'Für das Datum verwenden Sie JJJJ/MM/TT.',
   formatRelativeRange: formatRelativeRange,
   formatUnit: (unit, value) => localisedUnits[unit][value === 1 ? 0 : 1],
   dateTimeConstraintText: 'Zeitraum muss zwischen 6 und 30 Tagen betragen. Benutzen Sie das 24-Stunden-Format.',
   relativeModeTitle: 'Relativer Zeitraum',
   absoluteModeTitle: 'Absoluter Zeitraum',
   relativeRangeSelectionHeading: 'Einen Zeitraum wählen',
+  relativeRangeSelectionMonthlyDescription:
+    '"Jede Option repräsentiert den gesamten Monat, gerechnet vom ersten bis zum letzten Tag.',
   startDateLabel: 'Startdatum',
+  startMonthLabel: 'Startmonat',
   endDateLabel: 'Enddatum',
   startTimeLabel: 'Startzeit',
   endTimeLabel: 'Endzeit',
+  endMonthLabel: 'Endmonat',
   clearButtonLabel: 'Löschen und schließen',
   cancelButtonLabel: 'Abbrechen',
   applyButtonLabel: 'Anwenden',
@@ -115,19 +121,21 @@ export default function DatePickerScenario() {
         Month-only
       </Checkbox>
       <br />
-      <DateRangePicker
-        value={value}
-        locale={'de-DE'}
-        i18nStrings={i18nStrings}
-        placeholder={'Nach einem Zeitraum filtern'}
-        onChange={e => setValue(e.detail.value)}
-        relativeOptions={relativeOptions}
-        isValidRange={isValid}
-        granularity={monthOnly ? 'month' : 'day'}
-        dateOnly={dateOnly}
-        isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
-        dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
-      />
+      <FormField label="Date Range Picker field">
+        <DateRangePicker
+          value={value}
+          locale={'de-DE'}
+          i18nStrings={i18nStrings}
+          placeholder={'Nach einem Zeitraum filtern'}
+          onChange={e => setValue(e.detail.value)}
+          relativeOptions={relativeOptions}
+          isValidRange={isValid}
+          granularity={monthOnly ? 'month' : 'day'}
+          dateOnly={dateOnly}
+          isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+          dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+        />
+      </FormField>
       <br />
       <br />
       <Link id="focusable-element-after-date-picker">Focusable element after the date range picker</Link>

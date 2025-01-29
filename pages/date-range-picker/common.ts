@@ -137,7 +137,7 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
   dateConstraintText: 'Range must be between 6 and 30 days.',
   dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.',
-  monthConstraintText: 'For month use YYY/MM.',
+  monthConstraintText: 'For month use YYYY/MM.',
   modeSelectionLabel: 'Date range mode',
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
