@@ -3,6 +3,16 @@
 name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      role-to-assume:
+        type: string
+        description: Use to override the AWS role used during release
+        required: false
+      project-name:
+        type: string
+        description: Use to override the CodeBuild project called
+        required: false
   push:
     branches:
       - main
@@ -18,3 +28,5 @@ jobs:
     secrets: inherit
     with:
       skip-test: true
+      role-to-assume: ${{ inputs.role-to-assume }}
+      project-name: ${{ inputs.project-name }}      
