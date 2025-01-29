@@ -161,10 +161,10 @@ export class YearCalendar {
         const isVisible = isMonthVisible(quarterIndex, monthIndex);
         const isSelected = !!(selection && (isSameMonth(month, selection[0]) || isSameMonth(month, selection[1])));
         const isInRange = isMonthInRange(quarterIndex, monthIndex);
-        const isTop = isVisible && !isSelected && !isMonthVisible(quarterIndex - 1, monthIndex);
-        const isBottom = isVisible && !isSelected && !isMonthVisible(quarterIndex + 1, monthIndex);
-        const isLeft = isVisible && !isSelected && !isMonthVisible(quarterIndex, monthIndex - 1);
-        const isRight = isVisible && !isSelected && !isMonthVisible(quarterIndex, monthIndex + 1);
+        const isTop = isVisible && !isMonthVisible(quarterIndex - 1, monthIndex);
+        const isBottom = isVisible && !isMonthVisible(quarterIndex + 1, monthIndex);
+        const isLeft = isVisible && !isMonthVisible(quarterIndex, monthIndex - 1);
+        const isRight = isVisible && !isMonthVisible(quarterIndex, monthIndex + 1);
         const isRangeTop = isInRange && !isMonthInRange(quarterIndex - 1, monthIndex);
         const isRangeBottom = isInRange && !isMonthInRange(quarterIndex + 1, monthIndex);
         const isRangeLeft = isInRange && !isMonthInRange(quarterIndex, monthIndex - 1);
