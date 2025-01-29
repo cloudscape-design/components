@@ -24,13 +24,10 @@ import { hasValue } from '../../../internal/utils/has-value';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { DateRangePickerProps } from '../../interfaces';
 import { findDateToFocus } from '../utils';
-// import { MonthlyGrid } from './monthly-grid';
-// import { YearlyGrid } from './yearly-grid';
 import { Grid } from './grid';
 import { SelectGridProps } from './interfaces';
 
 import testutilStyles from '../../test-classes/styles.css.js';
-// import { previousDay } from 'date-fns/esm';
 
 function isVisible(date: Date, baseDate: Date, isSingleGrid: boolean, granularity: DateRangePickerProps.Granularity) {
   const isSame = granularity === 'day' ? isSameMonth : isSameYear;
@@ -169,16 +166,6 @@ export const Grids = ({
   const rangeStartDate = min(rangeEnds);
   const rangeEndDate = max(rangeEnds);
   const pageUnit = isMonthPicker ? 'year' : 'month';
-  // const GridComponent = isMonthPicker ? YearlyGrid : MonthlyGrid;
-
-  // const monthlyGridProps = {
-  //   startOfWeek,
-  //   todayAriaLabel,
-  // };
-
-  // const yearlyGridProps = {
-  //   currentMonthAriaLabel,
-  // };
 
   const sharedGridProps = {
     selectedEndDate,
@@ -205,7 +192,6 @@ export const Grids = ({
         {!isSingleGrid && (
           <Grid
             {...sharedGridProps}
-            // {...(isMonthPicker ? yearlyGridProps : monthlyGridProps)}
             padDates={'before'}
             className={testutilStyles['first-grid']}
             baseDate={addPages(baseDate, -1)}
@@ -214,7 +200,6 @@ export const Grids = ({
         )}
         <Grid
           {...sharedGridProps}
-          // {...(isMonthPicker ? yearlyGridProps : monthlyGridProps)}
           padDates={'after'}
           className={testutilStyles['second-grid']}
           baseDate={baseDate}
