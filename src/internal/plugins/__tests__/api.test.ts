@@ -82,7 +82,7 @@ describe('usage metrics', () => {
     expect(sendPanoramaMetricSpy).toHaveBeenCalledTimes(1);
     expect(sendPanoramaMetricSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        eventName: 'awsui-runtime-api-loaded',
+        eventContext: 'awsui-runtime-api-loaded',
       })
     );
 
