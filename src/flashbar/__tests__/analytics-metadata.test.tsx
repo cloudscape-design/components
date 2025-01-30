@@ -11,6 +11,7 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import Button from '../../../lib/components/button';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
@@ -202,6 +203,18 @@ describe('Flashbar renders correct analytics metadata', () => {
         expanded: 'false',
       },
       ...getMetadata(undefined, true, true),
+    });
+  });
+
+  describe('analytics attributes', () => {
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the flashbar type`, () => {
+      const wrapper = renderFlashbar({ items: [{ id: '0', type: 'success' }] });
+      expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="success"]`)!.getElement()).toBeInTheDocument();
+    });
+
+    test(`adds ${DATA_ATTR_ANALYTICS_FLASHBAR} attribute with the effective flashbar type when loading`, () => {
+      const wrapper = renderFlashbar({ items: [{ id: '0', type: 'success', loading: true }] });
+      expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="info"]`)!.getElement()).toBeInTheDocument();
     });
   });
 });

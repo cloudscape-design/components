@@ -7,7 +7,6 @@ import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-too
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
-import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
 import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
@@ -23,7 +22,6 @@ import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
-import { sendDismissMetric } from './internal/analytics';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -142,11 +140,6 @@ export const Flash = React.forwardRef(
 
     const effectiveType = loading ? 'info' : type;
 
-    const handleDismiss: ButtonProps['onClick'] = event => {
-      sendDismissMetric(effectiveType);
-      onDismiss && onDismiss(event);
-    };
-
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
     };
@@ -230,7 +223,7 @@ export const Flash = React.forwardRef(
             onButtonClick={onButtonClick}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, handleDismiss)}
+        {dismissible && dismissButton(dismissLabel, onDismiss)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}
