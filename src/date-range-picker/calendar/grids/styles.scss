@@ -106,7 +106,7 @@
   border-inline-start: 1px solid calendar.$grid-border;
 
   &.in-visible-calendar {
-    &.in-visible-calendar.in-current-month,
+    &.in-current-month,
     &.in-current-year {
       border-inline-start: calendar.$grid-border;
     }
@@ -117,7 +117,7 @@
   cursor: pointer;
 
   &.in-visible-calendar {
-    &.in-visible-calendar.in-current-month,
+    &.in-current-month,
     &.in-current-year {
       color: calendar.$grid-date-color;
       &:not(.in-range),

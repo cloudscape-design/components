@@ -2,16 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 import clsx from 'clsx';
-import {
-  isAfter,
-  isBefore,
-  isLastDayOfMonth,
-  isSameDay,
-  isSameMonth,
-  isSameYear,
-  isThisMonth,
-  isToday,
-} from 'date-fns';
+import { isLastDayOfMonth, isSameDay, isSameMonth, isSameYear, isThisMonth, isToday } from 'date-fns';
 
 import { useInternalI18n } from '../../../i18n/context';
 import ScreenreaderOnly from '../../../internal/components/screenreader-only';
@@ -42,7 +33,7 @@ const dayUtils: DatePickerUtils = {
   checkIfCurrentDay: date => isToday(date),
   checkIfCurrentMonth: () => false,
   checkIfCurrent: date => isToday(date),
-  getPageName: () => 'year',
+  getPageName: () => 'month',
 };
 
 const monthUtils: DatePickerUtils = {
@@ -52,7 +43,7 @@ const monthUtils: DatePickerUtils = {
   checkIfCurrentDay: () => false,
   checkIfCurrentMonth: date => isThisMonth(date),
   checkIfCurrent: date => isThisMonth(date),
-  getPageName: () => 'month',
+  getPageName: () => 'year',
 };
 
 /**
@@ -213,8 +204,6 @@ export function Grid({
                         key={itemKey}
                         ref={isFocused ? focusedDateRef : undefined}
                         className={clsx(baseClasses, {
-                          [styles[`in-previous-${pageName}`]]: isBefore(date, baseDate),
-                          [styles[`in-next-${pageName}`]]: isAfter(date, baseDate),
                           [styles[`last-day-of-month`]]: !isMonthPicker && isLastDayOfMonth(date),
                           [styles[`last-month-of-year`]]: isMonthPicker && date.getMonth() === 11,
                         })}
