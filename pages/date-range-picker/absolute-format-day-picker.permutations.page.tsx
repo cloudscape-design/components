@@ -15,7 +15,6 @@ const permutations = createPermutations<
   {
     absoluteFormat: ['iso', 'long-localized'],
     dateOnly: [true, false],
-    granularity: ['month', 'day'],
     value: [
       {
         type: 'absolute',
@@ -27,7 +26,6 @@ const permutations = createPermutations<
   {
     absoluteFormat: ['iso', 'long-localized'],
     dateOnly: [true, false],
-    granularity: ['month', 'day'],
     hideTimeOffset: [true, false],
     value: [
       {
@@ -43,7 +41,7 @@ export default function DateRangePickerPermutations() {
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
-        <h1>Absolute date range picker with custom absolute format</h1>
+        <h1>Absolute date range picker month calendar with custom absolute format</h1>
         <hr />
         <ScreenshotArea>
           <PermutationsView
@@ -53,13 +51,13 @@ export default function DateRangePickerPermutations() {
                 value={permutation.value}
                 absoluteFormat={permutation.absoluteFormat}
                 dateOnly={permutation.dateOnly}
-                granularity={permutation.granularity}
+                granularity="day"
                 hideTimeOffset={permutation.hideTimeOffset}
                 locale="en-US"
                 i18nStrings={i18nStrings}
-                placeholder={generatePlaceholder(permutation.dateOnly, permutation.granularity === 'month')}
+                placeholder={generatePlaceholder(permutation.dateOnly, false)}
                 relativeOptions={[]}
-                isValidRange={value => isValid(permutation.granularity || 'day')(value)}
+                isValidRange={value => isValid('day')(value)}
                 rangeSelectorMode={'absolute-only'}
                 getTimeOffset={() => 60}
               />

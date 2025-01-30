@@ -21,9 +21,6 @@ const intervals = [
   ['2021-08-03', '2021-08-09'],
   ['2021-05-10', '2021-05-31'],
   ['2021-05-10', '2021-05-30'],
-  ['2021-08', '2023-08'],
-  ['2021-08', '2021-08'],
-  ['2021-05', '2022-05'],
 ];
 
 const permutations = createPermutations<DateRangePickerCalendarProps>([
@@ -32,20 +29,18 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     setValue: [() => {}],
     locale: ['en-GB'],
     startOfWeek: [1],
-    isDateEnabled: [() => true, () => false],
+    isDateEnabled: [() => true, () => false, (date: Date) => date.getDate() % 2 !== 0],
     onChange: [() => {}],
     timeInputFormat: ['hh:mm:ss'] as const,
     i18nStrings: [i18nStrings],
     dateOnly: [false, true],
     customAbsoluteRangeControl: [undefined],
-    granularity: ['day', 'month'] as const,
   })),
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
     i18nStrings: [i18nStrings],
     customAbsoluteRangeControl: [() => 'Custom control'],
-    granularity: ['day', 'month'],
   },
 ]);
 
@@ -53,7 +48,7 @@ export default function DateRangePickerCalendarPage() {
   let i = -1;
   return (
     <Box padding="s">
-      <h1>Date-range-picker calendar page for screenshot tests</h1>
+      <h1>Date-range-picker month calendar page for screenshot tests</h1>
       <ScreenshotArea>
         <div style={{ blockSize: `${intervals.length * 400}px` }}>
           <PermutationsView
