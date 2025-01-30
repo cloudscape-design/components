@@ -305,7 +305,7 @@ describe('asynchronous rendering', () => {
         const message = `"${method}" called after component unmounted`;
         expect(consoleWarnSpy).toBeCalledWith('[AwsUi]', '[alert-content-replacer]', message);
         expect(sendPanoramaMetricSpy).toBeCalledWith({
-          eventName: 'awsui-runtime-api-warning',
+          eventContext: 'awsui-runtime-api-warning',
           eventDetail: {
             component: 'alert-content-replacer',
             version: expect.any(String),
@@ -374,7 +374,7 @@ test('can only register a single provider', () => {
     )
   );
   expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
-    eventName: 'awsui-runtime-api-warning',
+    eventContext: 'awsui-runtime-api-warning',
     eventDetail: {
       component: 'alert-flash-content',
       version: expect.any(String),

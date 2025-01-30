@@ -300,7 +300,7 @@ describe('asynchronous rendering', () => {
         const message = `"${method}" called after component unmounted`;
         expect(consoleWarnSpy).toBeCalledWith('[AwsUi]', '[flash-content-replacer]', message);
         expect(sendPanoramaMetricSpy).toBeCalledWith({
-          eventName: 'awsui-runtime-api-warning',
+          eventContext: 'awsui-runtime-api-warning',
           eventDetail: {
             component: 'flash-content-replacer',
             version: expect.any(String),
