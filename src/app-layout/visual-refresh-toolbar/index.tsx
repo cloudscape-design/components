@@ -68,7 +68,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       minContentWidth,
       maxContentWidth,
       placement,
-      toolbarHide,
+      navigationTriggerHide,
       ...rest
     },
     forwardRef
@@ -220,7 +220,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
-    const navigationFocusControl = useFocusControl(navigationOpen, toolbarHide);
+    const navigationFocusControl = useFocusControl(navigationOpen, navigationTriggerHide);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
@@ -272,6 +272,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         navigationOpen: resolvedNavigationOpen,
         onNavigationToggle,
         navigationFocusRef: navigationFocusControl.refs.toggle,
+        navigationTriggerHide,
         breadcrumbs,
         activeDrawerId: activeDrawer?.id ?? null,
         // only pass it down if there are non-empty drawers or tools
@@ -295,7 +296,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       isIntersecting
     );
 
-    const hasToolbar = !toolbarHide && !embeddedViewMode && !!toolbarProps;
+    const hasToolbar = !embeddedViewMode && !!toolbarProps;
     const discoveredBreadcrumbs = useGetGlobalBreadcrumbs(hasToolbar && !breadcrumbs);
 
     const verticalOffsets = computeVerticalLayout({

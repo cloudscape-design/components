@@ -16,7 +16,7 @@ export function renderComponent(jsx: React.ReactElement) {
 describe('PageLayout', () => {
   test('without toolbar', () => {
     const { wrapper } = renderComponent(
-      <PageLayout toolbarHide={true} navigation={<>Mock Navigation</>} content={<div>Content</div>} />
+      <PageLayout navigationTriggerHide={true} navigation={<>Mock Navigation</>} content={<div>Content</div>} />
     );
 
     expect(wrapper.findToolbar()).toBeFalsy();
@@ -30,7 +30,7 @@ describe('PageLayout', () => {
       return (
         <PageLayout
           ref={pageLayoutRef}
-          toolbarHide={true}
+          navigationTriggerHide={true}
           navigationOpen={isNavigationOpen}
           onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
           navigation={<>Mock Navigation</>}
@@ -71,7 +71,7 @@ describe('PageLayout', () => {
       return (
         <PageLayout
           ref={pageLayoutRef}
-          toolbarHide={true}
+          navigationTriggerHide={true}
           activeDrawerId={activeDrawerId}
           drawers={[
             {

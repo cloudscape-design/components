@@ -12,7 +12,7 @@ import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-cont
 import { VerticalLayoutOutput } from './compute-layout';
 
 export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
-  toolbarHide?: boolean;
+  navigationTriggerHide?: boolean;
 }
 
 export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean };

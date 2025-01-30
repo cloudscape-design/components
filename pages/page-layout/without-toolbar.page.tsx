@@ -111,7 +111,7 @@ export default function WithDrawers() {
       }}
       tools={<Info helpPathSlug={helpPathSlug} />}
       toolsOpen={isToolsOpen}
-      toolbarHide={true}
+      navigationTriggerHide={true}
       navigationOpen={isNavigationOpen}
       navigation={<Navigation />}
       onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
