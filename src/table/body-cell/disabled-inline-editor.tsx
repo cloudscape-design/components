@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import Icon from '../../icon/internal';
@@ -32,16 +32,12 @@ export function DisabledInlineEditor<ItemType>({
   editDisabledReason,
   ...rest
 }: DisabledInlineEditorProps<ItemType>) {
+  const isExpandableColumn = rest.level !== undefined;
   const clickAwayRef = useClickAway(() => {
     if (isEditing) {
       onEditEnd(true);
     }
   });
-
-  const [hasHover, setHasHover] = useState(false);
-  const [hasFocus, setHasFocus] = useState(false);
-  // When a cell is both expandable and editable the icon is always shown.
-  const showIcon = hasHover || hasFocus || isEditing;
 
   const iconRef = useRef(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -71,29 +67,34 @@ export function DisabledInlineEditor<ItemType>({
       }
       isEditing={isEditing}
       isEditingDisabled={true}
-      onClick={!isEditing ? onClick : undefined}
-      onMouseEnter={() => setHasHover(true)}
-      onMouseLeave={() => setHasHover(false)}
-      ref={clickAwayRef}
+      onClick={!isEditing && !isExpandableColumn ? onClick : undefined}
+      ref={!isExpandableColumn ? clickAwayRef : undefined}
     >
       {column.cell(item)}
 
       <div className={styles['body-cell-editor-wrapper']}>
-        <button
-          ref={buttonRef}
-          tabIndex={tabIndex}
-          className={clsx(styles['body-cell-editor'], styles['body-cell-editor-disabled'])}
-          aria-label={ariaLabels?.activateEditLabel?.(column, item)}
-          aria-haspopup="dialog"
-          aria-disabled="true"
-          onFocus={() => setHasFocus(true)}
-          onBlur={() => setHasFocus(false)}
-          onKeyDown={handleEscape}
-          {...targetProps}
-        >
-          {showIcon && <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />}
-          {descriptionEl}
-        </button>
+        <div ref={isExpandableColumn ? clickAwayRef : undefined}>
+          <button
+            ref={buttonRef}
+            tabIndex={tabIndex}
+            className={clsx(
+              styles['body-cell-editor'],
+              styles['body-cell-editor-disabled'],
+              isExpandableColumn && styles['body-cell-editor-focusable']
+            )}
+            onClick={!isEditing && isExpandableColumn ? onClick : undefined}
+            aria-label={ariaLabels?.activateEditLabel?.(column, item)}
+            aria-haspopup="dialog"
+            aria-disabled="true"
+            onKeyDown={handleEscape}
+            {...targetProps}
+          >
+            <span className={styles['body-cell-editor-icon']}>
+              <Icon name="lock-private" variant="normal" __internalRootRef={iconRef} />
+            </span>
+            {descriptionEl}
+          </button>
+        </div>
       </div>
 
       {isEditing && (
