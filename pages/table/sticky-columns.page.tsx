@@ -16,6 +16,8 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { generateItems, Instance } from './generate-data';
 import { columnsConfig } from './shared-configs';
 
+import styles from './styles.scss';
+
 type DemoContext = React.Context<
   AppContextType<{
     loading: boolean;
@@ -125,7 +127,7 @@ const COLUMN_DEFINITIONS: TableProps.ColumnDefinition<ExtendedInstance>[] = [
   {
     id: 'description-10',
     header: 'Description',
-    cell: item => <Link href="#">Link: {item.description}</Link> || '-',
+    cell: item => <Link href="#">Link: {item.description || '-'}</Link>,
     sortingField: 'description',
   },
   {
@@ -340,6 +342,23 @@ export default () => {
           ariaLabels={{ ...ariaLabels, tableLabel: 'Inline editing table' }}
           header={<Header>Large table with inline editing</Header>}
         />
+        <div className={styles['borderless-wrapper']}>
+          <Table
+            {...collectionProps}
+            variant="borderless"
+            data-test-id="borderless-table"
+            stickyColumns={{
+              first: parseInt(urlParams.stickyColumnsFirst || '0'),
+              last: parseInt(urlParams.stickyColumnsLast || '0'),
+            }}
+            {...urlParams}
+            ariaLabels={{ ...ariaLabels, tableLabel: 'Borderless table' }}
+            columnDefinitions={COLUMN_DEFINITIONS}
+            selectedItems={selectedItems}
+            onSelectionChange={({ detail: { selectedItems } }) => setSelectedItems(selectedItems)}
+            items={items}
+          />
+        </div>
       </SpaceBetween>
     </ScreenshotArea>
   );
