@@ -41,6 +41,7 @@ interface PopoverContainerProps {
   allowVerticalOverflow?: boolean;
   // Whether the popover should be hidden when the trigger is scrolled away.
   hideOnOverscroll?: boolean;
+  className?: string;
 }
 
 export default function PopoverContainer({
@@ -58,6 +59,7 @@ export default function PopoverContainer({
   allowScrollToFit,
   allowVerticalOverflow,
   hideOnOverscroll,
+  className,
 }: PopoverContainerProps) {
   const bodyRef = useRef<HTMLDivElement | null>(null);
   const contentRef = useRef<HTMLDivElement | null>(null);
@@ -134,7 +136,7 @@ export default function PopoverContainer({
     <div
       ref={popoverRef}
       style={{ ...popoverStyle, zIndex }}
-      className={clsx(styles.container, isRefresh && styles.refresh)}
+      className={clsx(styles.container, isRefresh && styles.refresh, className)}
     >
       <div
         ref={arrowRef}

@@ -7,6 +7,7 @@ import {
   BreadcrumbGroup,
   Button,
   Container,
+  ExpandableSection,
   Form,
   FormField,
   Header,
@@ -32,6 +33,7 @@ export default function StaticSinglePageCreatePage() {
   const [mounted, setUnmounted] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState('');
+  const [value2, setValue2] = useState('');
   const [errorText, setErrorText] = useState('');
   const [validationError, setValidationError] = useState<string | undefined>();
   const [fetchError, setFetchError] = useState<string | null>(null);
@@ -188,6 +190,24 @@ export default function StaticSinglePageCreatePage() {
                   <S3ResourceSelector {...s3ResourceSelectorProps} />
                 </FormField>
               </Container>
+              <ExpandableSection
+                analyticsMetadata={{ instanceIdentifier: 'expandable-section-1' }}
+                variant="container"
+                headerText="Expandable Section 1 - Header"
+                defaultExpanded={true}
+              >
+                <SpaceBetween size="s">
+                  <FormField label="This is an ordinary text field">
+                    <Input
+                      data-testid="field2"
+                      value={value2}
+                      onChange={event => {
+                        setValue2(event.detail.value);
+                      }}
+                    />
+                  </FormField>
+                </SpaceBetween>
+              </ExpandableSection>
             </SpaceBetween>
           </Form>
         )
