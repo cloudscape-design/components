@@ -241,6 +241,26 @@ export function Grid({
                       : -1; // Can be focused programmatically.
                   }
 
+                  console.log({
+                    [styles['in-visible-calendar']]: true,
+                    [styles[`in-current-${pageName}`]]: isSamePage(date, baseDate),
+                    [styles.enabled]: isEnabled,
+                    [styles.selected]: isSelected,
+                    [styles['start-date']]: isStartDate,
+                    [styles['end-date']]: isEndDate,
+                    [testutilStyles['start-date']]: isStartDate,
+                    [testutilStyles['end-date']]: isEndDate,
+                    [styles['no-range']]: isSelected && onlyOneSelected,
+                    [styles['in-range']]: isInRange,
+                    [styles['in-range-border-block-start']]: isSelectionTop,
+                    [styles['in-range-border-block-end']]: isSelectionBottom,
+                    [styles['in-range-border-inline-start']]: isSelectionLeft,
+                    [styles['in-range-border-inline-end']]: isSelectionRight,
+                    [styles.today]: isCurrentDay,
+                    [testutilStyles.today]: isCurrentDay,
+                    [styles['this-month']]: isCurrentMonth,
+                    [testutilStyles['this-month']]: isCurrentMonth,
+                  });
                   return (
                     <GridCell
                       ref={isFocused ? focusedDateRef : undefined}
