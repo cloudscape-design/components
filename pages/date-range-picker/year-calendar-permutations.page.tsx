@@ -12,9 +12,15 @@ import ScreenshotArea from '../utils/screenshot-area';
 import { i18nStrings } from './common';
 
 const intervals = [
-  ['2021-08', '2023-08'],
-  ['2021-08', '2021-08'],
-  ['2021-05', '2022-05'],
+  ['2021-08', '2023-08'], //multi year
+  ['2021-08', '2021-08'], //same month
+  ['2021-05', '2022-05'], //one year
+  ['2024-12', '2025-01'], //start-end
+  ['2022-02', '2022-03'], //next
+  ['2021-01', '2021-03'], //q1
+  ['2022-04', '2022-06'], //q2
+  ['2023-07', '2022-09'], //q3
+  ['2024-10', '2024-12'], //q4
 ];
 
 const permutations = createPermutations<DateRangePickerCalendarProps>([
@@ -22,10 +28,8 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
     value: [{ start: { date: startDate, time: '' }, end: { date: endDate, time: '' } }],
     setValue: [() => {}],
     locale: ['en-GB'],
-    startOfWeek: [1],
     isDateEnabled: [() => true, () => false, (date: Date) => (date.getMonth() + 1) % 2 !== 0],
     onChange: [() => {}],
-    timeInputFormat: ['hh:mm:ss'] as const,
     i18nStrings: [i18nStrings],
     dateOnly: [false, true],
     customAbsoluteRangeControl: [undefined],
@@ -50,7 +54,10 @@ export default function DateRangePickerCalendarPage() {
             render={permutation => {
               i++;
               return (
-                <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
+                <div
+                  style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}
+                  data-permutation={JSON.stringify(permutation)}
+                >
                   <Dropdown
                     stretchWidth={true}
                     stretchHeight={true}
@@ -61,7 +68,7 @@ export default function DateRangePickerCalendarPage() {
                     trigger={null}
                   >
                     <Box padding="m">
-                      <Calendar {...permutation} />
+                      <Calendar {...permutation} granularity="month" />
                     </Box>
                   </Dropdown>
                 </div>

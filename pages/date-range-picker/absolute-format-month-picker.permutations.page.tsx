@@ -18,7 +18,7 @@ const permutations = createPermutations<
       {
         type: 'absolute',
         startDate: '2024-12',
-        endDate: '2025-1',
+        endDate: '2025-01',
       },
     ],
   },
@@ -28,7 +28,7 @@ const permutations = createPermutations<
     value: [
       {
         type: 'absolute',
-        startDate: '2023-6',
+        startDate: '2023-06',
         endDate: '2024-02',
       },
     ],

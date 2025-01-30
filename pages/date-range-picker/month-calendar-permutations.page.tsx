@@ -21,6 +21,8 @@ const intervals = [
   ['2021-08-03', '2021-08-09'],
   ['2021-05-10', '2021-05-31'],
   ['2021-05-10', '2021-05-30'],
+  ['2024-12-15', '2025-01-15'],
+  ['2025-01-15', '2025-01-15'],
 ];
 
 const permutations = createPermutations<DateRangePickerCalendarProps>([

@@ -180,22 +180,6 @@
     z-index: 0;
   }
 
-  // &.start-date,
-  // &.range-start-date {
-  //   @include border-radius(start, start);
-  //   &.in-range-border-bottom {
-  //     @include border-radius(end, start);
-  //   }
-  // }
-
-  // &.end-date,
-  // &.range-end-date {
-  //   @include border-radius(end, end);
-  //   &.in-range-border-top {
-  //     @include border-radius(start, end);
-  //   }
-  // }
-
   > .day-inner,
   > .month-inner {
     color: calendar.$grid-selected-text-color;
@@ -212,4 +196,11 @@
   @include in-range-border-radius(end, end);
   @include in-range-border-radius(end, start);
   @include in-range-border-radius(start, start);
+}
+
+.no-range {
+  @include border-radius(start, start);
+  @include border-radius(start, end);
+  @include border-radius(end, start);
+  @include border-radius(end, end);
 }
