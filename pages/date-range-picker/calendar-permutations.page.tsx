@@ -52,7 +52,7 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
 export default function DateRangePickerCalendarPage() {
   let i = -1;
   return (
-    <>
+    <Box padding="s">
       <h1>Date-range-picker calendar page for screenshot tests</h1>
       <ScreenshotArea>
         <div style={{ blockSize: `${intervals.length * 400}px` }}>
@@ -81,6 +81,6 @@ export default function DateRangePickerCalendarPage() {
           />
         </div>
       </ScreenshotArea>
-    </>
+    </Box>
   );
 }
