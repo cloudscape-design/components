@@ -26,6 +26,9 @@ describe('mergeMultiAppLayoutProps', () => {
         id: 'drawer1',
         ariaLabels: { drawerName: 'Drawer 1' },
         content: <div>Drawer 1 Content</div>,
+        trigger: {
+          iconName: 'add-plus',
+        },
       },
     ],
     onActiveDrawerChange: mockParentActiveDrawerChange,

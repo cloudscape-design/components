@@ -11565,8 +11565,9 @@ If not set, a corresponding trigger button is not displayed, while the drawer mi
       "type": "Array<PageLayoutProps.Drawer>",
     },
     {
-      "description": "If \`true\`, the toolbar is not displayed at all.",
-      "name": "toolbarHide",
+      "description": "If \`true\`, the navigation trigger is not displayed at all,
+while navigation drawer might be displayed, but opened using a custom trigger.",
+      "name": "navigationTriggerHide",
       "optional": true,
       "type": "boolean",
     },
