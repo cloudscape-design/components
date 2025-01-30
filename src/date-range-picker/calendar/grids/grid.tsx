@@ -191,7 +191,7 @@ export function Grid({
                       ? isSameItem(rangeStartDate, rangeEndDate)
                       : !selectedStartDate || !selectedEndDate;
 
-                  const isEnabled = !isDateEnabled || isDateEnabled(date);
+                  const isEnabled = (!isDateEnabled || isDateEnabled(date)) && isSamePage(date, baseDate);
                   const disabledReason = dateDisabledReason(date);
 
                   const isDisabledWithReason = !isEnabled && !!disabledReason;
