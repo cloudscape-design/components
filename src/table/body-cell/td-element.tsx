@@ -31,8 +31,8 @@ export interface TableTdElementProps {
     'style' | 'className' | 'onClick'
   >;
   onClick?: () => void;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
+  onFocus?: () => void;
+  onBlur?: () => void;
   children?: React.ReactNode;
   isEvenRow?: boolean;
   stripedRows?: boolean;
@@ -71,8 +71,8 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
       isPrevSelected,
       nativeAttributes,
       onClick,
-      onMouseEnter,
-      onMouseLeave,
+      onFocus,
+      onBlur,
       isEvenRow,
       stripedRows,
       isSelection,
@@ -115,6 +115,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     const cellRefObject = useRef<HTMLTableCellElement>(null);
     const mergedRef = useMergeRefs(stickyStyles.ref, ref, cellRefObject);
     const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
+    const isEditingActive = isEditing && !isEditingDisabled;
 
     return (
       <Element
@@ -137,19 +138,19 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isEditing && !isEditingDisabled && styles['body-cell-edit-active'],
           isEditing && isEditingDisabled && styles['body-cell-edit-disabled-popover'],
           hasSuccessIcon && styles['body-cell-has-success'],
-          level !== undefined && styles['body-cell-expandable'],
-          level !== undefined && styles[`expandable-level-${getLevelClassSuffix(level)}`],
+          level !== undefined && !isEditingActive && styles['body-cell-expandable'],
+          level !== undefined && !isEditingActive && styles[`expandable-level-${getLevelClassSuffix(level)}`],
           stickyStyles.className
         )}
         onClick={onClick}
-        onMouseEnter={onMouseEnter}
-        onMouseLeave={onMouseLeave}
+        onFocus={onFocus}
+        onBlur={onBlur}
         ref={mergedRef}
         {...nativeAttributes}
         tabIndex={cellTabIndex === -1 ? undefined : cellTabIndex}
         {...copyAnalyticsMetadataAttribute(rest)}
       >
-        {level !== undefined && isExpandable && (
+        {level !== undefined && isExpandable && !isEditingActive && (
           <div className={styles['expandable-toggle-wrapper']}>
             <ExpandToggleButton
               isExpanded={isExpanded}

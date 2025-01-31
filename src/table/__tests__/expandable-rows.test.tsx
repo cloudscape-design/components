@@ -283,7 +283,7 @@ describe('Expandable rows', () => {
     expect(table.findEditCellButton(1, 2)).not.toBe(null);
   });
 
-  test('first column of expandable table cannot be editable', () => {
+  test('columns can be both editable and expandable', () => {
     const { table } = renderTable({
       items: simpleItems,
       columnDefinitions: [
@@ -297,7 +297,6 @@ describe('Expandable rows', () => {
         onExpandableItemToggle: () => {},
       },
     });
-    expect(table.findEditCellButton(1, 1)).toBe(null);
-    expect(table.findEditCellButton(1, 2)).not.toBe(null);
+    expect(table.findEditCellButton(1, 1)).not.toBe(null);
   });
 });

@@ -5,9 +5,12 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { scrollbarThickness } from '../../__integ__/scrollbars';
 import { viewports } from './constants';
-import { AppLayoutSplitViewPage } from './utils';
+import { AppLayoutSplitViewPage, getUrlParams } from './utils';
 
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.selectors.js';
+import tableScrollbarStyles from '../../../lib/components/table/sticky-scrollbar/styles.selectors.js';
+
+const scrollbarSelector = `.${tableScrollbarStyles['sticky-scrollbar-visible']}`;
 
 const wrapper = createWrapper().findAppLayout();
 
@@ -19,11 +22,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     return useBrowser(async browser => {
       const page = new AppLayoutSplitViewPage(browser);
       await page.setWindowSize(viewports.desktop);
-      const params = new URLSearchParams({
-        visualRefresh: `${theme.startsWith('refresh')}`,
-        appLayoutToolbar: `${theme === 'refresh-toolbar'}`,
-      });
-      await browser.url(`${url}?${params.toString()}`);
+      await browser.url(`${url}?${getUrlParams(theme)}`);
       await page.waitForVisible(wrapper.findContentRegion().toSelector());
       await testFn(page);
     });
@@ -274,7 +273,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
     })
   );
 
-  describe('interaction with table sticky header', () => {
+  describe('interaction with table sticky elements', () => {
     // bottom padding is included into the offset in VR but not in classic
     const splitPanelPadding = theme === 'refresh' ? 40 : 0;
 
@@ -297,6 +296,20 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         await page.switchPosition('bottom');
         await expect(page.getContentOffsetBottom(theme)).resolves.toEqual(windowHeight / 2 + splitPanelPadding + 'px');
       }, '#/light/app-layout/with-full-page-table-and-split-panel')
+    );
+
+    test(
+      'bottom split panel does not block table sticky scrollbar',
+      setupTest(async page => {
+        // open tools panel to narrow the content area and display horizontal scroll on table
+        await page.click(wrapper.findToolsToggle().toSelector());
+        await expect(page.isClickable(scrollbarSelector)).resolves.toBe(true);
+        await page.click(wrapper.findSplitPanelOpenButton().toSelector());
+        await expect(
+          page.isDisplayedInViewport(wrapper.findSplitPanel().findOpenPanelBottom().toSelector())
+        ).resolves.toBe(true);
+        await expect(page.isClickable(scrollbarSelector)).resolves.toBe(true);
+      }, '#/light/app-layout/with-sticky-table-and-split-panel')
     );
   });
 });
