@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { Box, Button, Checkbox, Form, FormField, SpaceBetween, Textarea } from '~components';
 
@@ -20,21 +20,24 @@ export default function GenAIFeedback() {
   });
   const [feedbackText, setFeedbackText] = React.useState('');
   const checkboxRef = useRef<HTMLElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    dialogRef.current?.focus();
+  }, [dialogRef]);
 
   const selectOption = (option: string, checked: boolean) => {
     setFeedbackOptions({ ...feedbackOptions, [option]: checked });
     setErrorMessage(null);
   };
 
-  const submitData = () => {
+  const submitFeedback = () => {
     // Validation
     const isFeedbackOptionSelected = Object.values(feedbackOptions).some(val => !!val);
     if (!isFeedbackOptionSelected) {
       setErrorMessage('At least one option must be selected.');
       // Move focus to the required input
-      if (checkboxRef.current) {
-        checkboxRef.current.focus();
-      }
+      checkboxRef.current?.focus();
       return;
     }
 
@@ -51,10 +54,11 @@ export default function GenAIFeedback() {
     <Box padding="xxl">
       {showDialog && (
         <FeedbackDialog
+          ref={dialogRef}
           onDismiss={dismissDialog}
           footer={
             <div className={styles['footer-buttons']}>
-              <Button onClick={submitData} ariaLabel="Submit form">
+              <Button onClick={submitFeedback} ariaLabel="Submit form">
                 Submit
               </Button>
             </div>

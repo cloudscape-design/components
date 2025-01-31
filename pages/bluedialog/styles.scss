@@ -21,18 +21,20 @@
 .content {
   display: flex;
   align-items: baseline;
-
-  padding-block-start: awsui.$space-scaled-s;
-  padding-block-end: awsui.$space-scaled-l;
-  padding-inline: awsui.$space-container-horizontal;
 }
 
 .dismiss {
   order: 1;
+  padding-inline-end: awsui.$space-container-horizontal;
 }
 
 .inner-content {
   flex: 1;
+  overflow: hidden; // prevent textarea from growing outside of the container
+
+  padding-block-start: awsui.$space-scaled-s;
+  padding-block-end: awsui.$space-scaled-l;
+  padding-inline-start: awsui.$space-container-horizontal;
 }
 
 .footer {
