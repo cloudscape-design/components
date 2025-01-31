@@ -58,7 +58,7 @@ export function OpenAnnotation({
   onPreviousButtonClick,
   i18nStrings,
 }: AnnotationProps) {
-  const trackRef = useRef<HTMLButtonElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
@@ -66,7 +66,7 @@ export function OpenAnnotation({
         open={true}
         onClick={onDismiss}
         i18nStrings={i18nStrings}
-        ref={trackRef}
+        iconRef={trackRef}
         totalLocalSteps={totalLocalSteps}
         taskLocalStepIndex={taskLocalStepIndex}
       />

@@ -48,12 +48,6 @@
   padding-inline: awsui.$space-xxs;
   padding-block: awsui.$space-xxs;
   cursor: pointer;
-  scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
-  box-sizing: content-box;
-
-  // These dimensions match the dimensions of the contained SVG icon.
-  inline-size: 16px;
-  block-size: 16px;
 
   &:focus {
     outline: none;
@@ -63,9 +57,17 @@
     @include styles.focus-highlight(2px, awsui.$border-radius-control-circular-focus-ring);
   }
 
-  > .icon {
+  > .icon-wrapper {
     position: relative;
-    stroke: awsui.$color-text-link-default;
+    scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
+
+    // These dimensions match the dimensions of the contained SVG icon.
+    inline-size: 16px;
+    block-size: 16px;
+
+    > .icon {
+      stroke: awsui.$color-text-link-default;
+    }
   }
 
   &:hover {

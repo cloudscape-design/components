@@ -15,10 +15,11 @@ interface AnnotationTriggerProps {
   i18nStrings: AnnotationContextProps['i18nStrings'];
   taskLocalStepIndex: number;
   totalLocalSteps: number;
+  iconRef?: React.Ref<HTMLDivElement>;
 }
 
 export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(function AnnotationTrigger(
-  { open, onClick: onClickHandler, i18nStrings, taskLocalStepIndex, totalLocalSteps }: AnnotationTriggerProps,
+  { open, onClick: onClickHandler, i18nStrings, taskLocalStepIndex, totalLocalSteps, iconRef }: AnnotationTriggerProps,
   ref
 ) {
   const onClick = useCallback(
@@ -37,7 +38,7 @@ export default React.forwardRef<HTMLButtonElement, AnnotationTriggerProps>(funct
       aria-label={i18nStrings.labelHotspot(open, taskLocalStepIndex ?? 0, totalLocalSteps ?? 0)}
       onClick={onClick}
     >
-      <AnnotationIcon open={open} />
+      <AnnotationIcon open={open} ref={iconRef} />
     </button>
   );
 });

@@ -25,7 +25,7 @@ export default function AnnotationScroll() {
     document.documentElement.style.setProperty(
       properties.contentScrollMargin,
       // Add 4px to scroll-margin to avoid edge on edge
-      `calc(var(${fixedHeightVar}) + 4px) 0 calc(var(${fixedHeightVar}) + 4px) 0`
+      `calc(var(${fixedHeightVar}) + 6px) 0 calc(var(${fixedHeightVar}) + 6px) 0`
     );
   }, []);
 

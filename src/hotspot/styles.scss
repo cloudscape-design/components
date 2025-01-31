@@ -36,9 +36,9 @@
   position: relative;
   vertical-align: text-top;
   inline-size: awsui.$space-scaled-m;
-  background: red;
+  min-block-size: 1em;
 
-  & > .markerWrapper {
+  > .markerWrapper {
     inset-block-start: calc(-1 * (#{awsui.$space-xxxs} + #{awsui.$space-xxs}));
   }
 }
