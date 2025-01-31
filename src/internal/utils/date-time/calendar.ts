@@ -1,12 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import addMonths from 'date-fns/addMonths';
-import isAfter from 'date-fns/isAfter';
-import isBefore from 'date-fns/isBefore';
-import isSameDay from 'date-fns/isSameDay';
-import isSameMonth from 'date-fns/isSameMonth';
-import subMonths from 'date-fns/subMonths';
+import { addMonths, isAfter, isBefore, isSameDay, isSameMonth, subMonths } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 
 import { DayIndex } from '../locale';
