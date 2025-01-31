@@ -49,14 +49,13 @@ test('check a11y', async () => {
   await expect(container).toValidateA11y();
 });
 
-const eachMonthOfTheYear = range(0, 11).map(month => addMonths(new Date('2025-01-01'), month).toISOString().split('T')[0]);
-test.each(eachMonthOfTheYear)(
-  'always renders 42 days, value=%s',
-  value => {
-    renderCalendar({ value });
-    expect(document.querySelectorAll(`.${styles['calendar-date']}`)).toHaveLength(42);
-  }
+const eachMonthOfTheYear = range(0, 11).map(
+  month => addMonths(new Date('2025-01-01'), month).toISOString().split('T')[0]
 );
+test.each(eachMonthOfTheYear)('always renders 42 days, value=%s', value => {
+  renderCalendar({ value });
+  expect(document.querySelectorAll(`.${styles['calendar-date']}`)).toHaveLength(42);
+});
 
 describe('Calendar locale US', () => {
   beforeEach(() => {
