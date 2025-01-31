@@ -81,7 +81,8 @@ export function mergeProps(
     if (props.navigationTriggerHide) {
       toolbar.hasNavigation = false;
     }
-    if (props.splitPanel && !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')) {
+    const splitPanelTriggerHide = (props?.splitPanel as React.ReactElement)?.props?.closeBehavior === 'hide';
+    if (props.splitPanel && !splitPanelTriggerHide && !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')) {
       toolbar.hasSplitPanel = true;
       toolbar.splitPanelFocusRef = props.splitPanelFocusRef;
       toolbar.splitPanelToggleProps = props.splitPanelToggleProps;

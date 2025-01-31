@@ -2,7 +2,17 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import { Button, ContentLayout, Header, HelpPanel, Link, PageLayout, SpaceBetween, SplitPanel } from '~components';
+import {
+  Button,
+  ContentLayout,
+  Header,
+  HelpPanel,
+  Link,
+  PageLayout,
+  SpaceBetween,
+  SplitPanel,
+  Toggle,
+} from '~components';
 import { PageLayoutProps } from '~components/page-layout';
 
 import AppContext, { AppContextType } from '../app/app-context';
@@ -12,8 +22,10 @@ import appLayoutLabels from './utils/labels';
 
 type DemoContext = React.Context<
   AppContextType<{
-    hasTools: boolean | undefined;
-    hasDrawers: boolean | undefined;
+    navigationTriggerHide: boolean | undefined;
+    drawerTriggerHide: boolean | undefined;
+    splitPanelTriggerHide: boolean | undefined;
+    breadcrumbsHide: boolean | undefined;
     splitPanelPosition: PageLayoutProps.SplitPanelPreferences['position'];
   }>
 >;
@@ -22,8 +34,13 @@ export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
   const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+  const navigationTriggerHide = urlParams.navigationTriggerHide ?? false;
+  const drawerTriggerHide = urlParams.drawerTriggerHide ?? false;
+  const splitPanelTriggerHide = urlParams.splitPanelTriggerHide ?? false;
+  const breadcrumbsHide = urlParams.breadcrumbsHide ?? false;
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
+  const [splitPanelOpen, setSplitPanelOpen] = useState(false);
   const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
 
   const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
@@ -38,6 +55,11 @@ export default function WithDrawers() {
         },
         content: <CustomDrawerContent />,
         id: 'pro-help',
+        trigger: drawerTriggerHide
+          ? undefined
+          : {
+              iconName: 'contact',
+            },
       },
     ],
     onDrawerChange: event => {
@@ -48,7 +70,7 @@ export default function WithDrawers() {
   return (
     <PageLayout
       ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
-      breadcrumbs={<Breadcrumbs />}
+      breadcrumbs={breadcrumbsHide ? undefined : <Breadcrumbs />}
       ref={pageLayoutRef}
       content={
         <ContentLayout
@@ -76,6 +98,40 @@ export default function WithDrawers() {
               </Header>
 
               <SpaceBetween size="xs">
+                <Toggle
+                  checked={navigationTriggerHide}
+                  onChange={({ detail }) => setUrlParams({ navigationTriggerHide: detail.checked })}
+                >
+                  Hide navigation trigger
+                </Toggle>
+                <Toggle
+                  checked={drawerTriggerHide}
+                  onChange={({ detail }) => setUrlParams({ drawerTriggerHide: detail.checked })}
+                >
+                  Hide drawer trigger
+                </Toggle>
+                <Toggle
+                  checked={splitPanelTriggerHide}
+                  onChange={({ detail }) => setUrlParams({ splitPanelTriggerHide: detail.checked })}
+                >
+                  Hide split panel trigger
+                </Toggle>
+                <Toggle
+                  checked={breadcrumbsHide}
+                  onChange={({ detail }) => setUrlParams({ breadcrumbsHide: detail.checked })}
+                >
+                  Hide breadcrumbs
+                </Toggle>
+
+                <Button
+                  onClick={() => {
+                    setIsNavigationOpen(current => !current);
+                    pageLayoutRef.current?.focusNavigation();
+                  }}
+                >
+                  Toggle navigation
+                </Button>
+
                 <Button
                   onClick={() => {
                     setActiveDrawerId('pro-help');
@@ -85,6 +141,7 @@ export default function WithDrawers() {
                   Open a drawer without trigger
                 </Button>
                 <Button onClick={() => setActiveDrawerId(null)}>Close a drawer without trigger</Button>
+                <Button onClick={() => setSplitPanelOpen(true)}>Open split panel</Button>
               </SpaceBetween>
             </SpaceBetween>
           }
@@ -110,6 +167,7 @@ export default function WithDrawers() {
       }
       splitPanel={
         <SplitPanel
+          closeBehavior={splitPanelTriggerHide ? 'hide' : undefined}
           header="Split panel header"
           i18nStrings={{
             preferencesTitle: 'Preferences',
@@ -127,9 +185,11 @@ export default function WithDrawers() {
           This is the Split Panel!
         </SplitPanel>
       }
+      splitPanelOpen={splitPanelOpen}
       splitPanelPreferences={{
         position: urlParams.splitPanelPosition,
       }}
+      onSplitPanelToggle={event => setSplitPanelOpen(event.detail.open)}
       onSplitPanelPreferencesChange={event => {
         const { position } = event.detail;
         setUrlParams({ splitPanelPosition: position === 'side' ? position : undefined });
@@ -142,6 +202,7 @@ export default function WithDrawers() {
       navigationOpen={isNavigationOpen}
       navigation={<Navigation />}
       onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
+      navigationTriggerHide={navigationTriggerHide}
       {...drawersProps}
     />
   );
