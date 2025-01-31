@@ -127,7 +127,11 @@ export function Grid({
         <thead>
           <tr>
             {calendar.header.map(dayIndex => (
-              <th key={dayIndex} scope="col" className={clsx(styles['grid-cell'], testutilStyles['day-header'])}>
+              <th
+                key={dayIndex}
+                scope="col"
+                className={clsx(styles['grid-cell'], styles['day-header'], testutilStyles['day-header'])}
+              >
                 <span aria-hidden="true">{renderDayName(locale, dayIndex, 'short')}</span>
                 <ScreenreaderOnly>{renderDayName(locale, dayIndex, 'long')}</ScreenreaderOnly>
               </th>
