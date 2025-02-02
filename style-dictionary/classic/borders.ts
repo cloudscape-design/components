@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import merge from 'lodash/merge';
+import merge from 'lodash/merge.js';
 
-import { StyleDictionary } from '../utils/interfaces';
-import { tokens as parentTokens } from '../visual-refresh/borders';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/borders.js';
 
 const tokens: StyleDictionary.BordersDictionary = {
   borderActiveWidth: '2px',
