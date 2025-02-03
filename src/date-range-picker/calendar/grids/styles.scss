@@ -48,11 +48,8 @@
   @include styles.font-body-s;
 }
 
-.week {
-  /* used for identifying element */
-}
-
-.day {
+.day,
+.month {
   border-block-end: calendar.$grid-border;
   border-inline-end: calendar.$grid-border;
   padding-block: awsui.$space-xxs;
@@ -83,21 +80,25 @@
     );
   }
 
-  > .day-inner {
+  > .day-inner,
+  > .month-inner {
     position: relative;
     z-index: 1;
   }
 }
 
-.in-first-row:not(.in-previous-month) {
+.in-first-row:not(.in-previous-month),
+.in-first-row:not(.in-previous-year) {
   border-block-start: calendar.$grid-border;
 }
 
-.in-previous-month:not(.last-day-of-month) {
+.in-previous-month:not(.last-day-of-month),
+.in-previous-year:not(.last-month-of-year) {
   border-inline-end-color: transparent;
 }
 
-.in-next-month {
+.in-next-month,
+.in-next-year {
   border-color: transparent;
 }
 
@@ -105,7 +106,10 @@
   border-inline-start: 1px solid calendar.$grid-border;
 
   &.in-visible-calendar {
-    border-inline-start: calendar.$grid-border;
+    &.in-current-month,
+    &.in-current-year {
+      border-inline-start: calendar.$grid-border;
+    }
   }
 }
 
@@ -113,38 +117,44 @@
   cursor: pointer;
 
   &.in-visible-calendar {
-    color: calendar.$grid-date-color;
-    &:not(.in-range),
-    &.end-date.start-date,
-    &.no-range {
-      &,
-      &::after {
-        border-start-start-radius: awsui.$border-radius-item;
-        border-start-end-radius: awsui.$border-radius-item;
-        border-end-start-radius: awsui.$border-radius-item;
-        border-end-end-radius: awsui.$border-radius-item;
-      }
-    }
-    &:hover {
-      color: awsui.$color-text-calendar-date-hover;
-      background-color: calendar.$grid-hover-background-color;
-      &:not(.selected) {
+    &.in-current-month,
+    &.in-current-year {
+      color: calendar.$grid-date-color;
+      &:not(.in-range),
+      &.end-date.start-date,
+      &.no-range {
+        &,
         &::after {
-          border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
-          border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+          border-start-start-radius: awsui.$border-radius-item;
+          border-start-end-radius: awsui.$border-radius-item;
+          border-end-start-radius: awsui.$border-radius-item;
+          border-end-end-radius: awsui.$border-radius-item;
+        }
+      }
+      &:hover {
+        color: awsui.$color-text-calendar-date-hover;
+        background-color: calendar.$grid-hover-background-color;
+        &:not(.selected) {
+          &::after {
+            border-block: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+            border-inline: awsui.$border-item-width solid calendar.$grid-hover-border-color;
+          }
         }
       }
     }
   }
 }
 
-.today:not(.in-range) {
-  background-color: calendar.$grid-current-date-background-color;
-  border-start-start-radius: awsui.$border-radius-item;
-  border-start-end-radius: awsui.$border-radius-item;
-  border-end-start-radius: awsui.$border-radius-item;
-  border-end-end-radius: awsui.$border-radius-item;
-  font-weight: styles.$font-weight-bold;
+.today,
+.this-month {
+  &:not(.in-range) {
+    background-color: calendar.$grid-current-date-background-color;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+    font-weight: styles.$font-weight-bold;
+  }
 }
 
 .selected {
@@ -170,12 +180,8 @@
     z-index: 0;
   }
 
-  &.start-date,
-  &.end-date {
-    /* used in test utils */
-  }
-
-  > .day-inner {
+  > .day-inner,
+  > .month-inner {
     color: calendar.$grid-selected-text-color;
     position: relative;
     z-index: 2;
@@ -186,13 +192,15 @@
   background-color: calendar.$grid-in-range-background-color;
   font-weight: styles.$font-weight-bold;
   @include in-range-borders;
-
   @include in-range-border-radius(start, end);
   @include in-range-border-radius(end, end);
   @include in-range-border-radius(end, start);
   @include in-range-border-radius(start, start);
 }
 
-.disabled-reason-tooltip {
-  /* used in test-utils or tests */
+.no-range {
+  @include border-radius(start, start);
+  @include border-radius(start, end);
+  @include border-radius(end, start);
+  @include border-radius(end, end);
 }

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
 
-import { Box, DateRangePicker, DateRangePickerProps, Grid, SpaceBetween } from '~components';
+import { Box, DateRangePicker, DateRangePickerProps, FormField, Grid, SpaceBetween } from '~components';
 
 import AppContext from '../app/app-context';
 import {
@@ -11,8 +11,8 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
   generatePlaceholder,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -47,7 +47,7 @@ const initialRange = {
 export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
@@ -118,6 +118,14 @@ export default function DateRangePickerScenario() {
             Date only
           </label>
           <label>
+            <input
+              type="checkbox"
+              checked={monthOnly}
+              onChange={event => setUrlParams({ monthOnly: !!event.target.checked })}
+            />{' '}
+            Month only
+          </label>
+          <label>
             Time offset from UTC in minutes{' '}
             <input
               type="number"
@@ -142,22 +150,25 @@ export default function DateRangePickerScenario() {
           <div key={`pickers-${locale}`} dir={rtlLocales.has(locale) ? 'rtl' : 'ltr'}>
             <Grid gridDefinition={[{ colspan: 1 }, { colspan: 11 }]}>
               <div style={{ textAlign: 'right' }}>{locale}</div>
-              <DateRangePicker
-                value={value}
-                locale={locale}
-                i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
-                placeholder={generatePlaceholder(dateOnly, monthOnly)}
-                onChange={e => setValue(e.detail.value)}
-                relativeOptions={[]}
-                isValidRange={isValid}
-                rangeSelectorMode={'absolute-only'}
-                isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
-                dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
-                getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
-                absoluteFormat={absoluteFormat}
-                dateOnly={dateOnly}
-                hideTimeOffset={hideTimeOffset}
-              />
+              <FormField label="Date Range Picker field">
+                <DateRangePicker
+                  value={value}
+                  locale={locale}
+                  i18nStrings={i18nStrings}
+                  placeholder={generatePlaceholder(dateOnly, monthOnly)}
+                  onChange={e => setValue(e.detail.value)}
+                  relativeOptions={[]}
+                  isValidRange={isValid(monthOnly ? 'month' : 'day')}
+                  rangeSelectorMode={'absolute-only'}
+                  isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+                  dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+                  getTimeOffset={timeOffset === undefined ? undefined : () => timeOffset!}
+                  absoluteFormat={absoluteFormat}
+                  dateOnly={dateOnly}
+                  granularity={monthOnly ? 'month' : 'day'}
+                  hideTimeOffset={hideTimeOffset}
+                />
+              </FormField>
             </Grid>
           </div>
         ))}

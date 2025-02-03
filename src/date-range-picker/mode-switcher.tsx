@@ -6,7 +6,7 @@ import { useInternalI18n } from '../i18n/context';
 import InternalSegmentedControl from '../segmented-control/internal';
 import { DateRangePickerProps } from './interfaces';
 
-import styles from './styles.css.js';
+import testutilStyles from './test-classes/styles.css.js';
 
 interface ModeSwitcherProps extends Pick<DateRangePickerProps, 'i18nStrings'> {
   mode: 'absolute' | 'relative';
@@ -18,7 +18,7 @@ export default function ModeSwitcher({ i18nStrings, mode, onChange }: ModeSwitch
 
   return (
     <InternalSegmentedControl
-      className={styles['mode-switch']}
+      className={testutilStyles['mode-switch']}
       selectedId={mode}
       label={i18nStrings?.modeSelectionLabel}
       options={[
