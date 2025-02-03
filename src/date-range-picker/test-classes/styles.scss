@@ -2,8 +2,43 @@
  Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
  SPDX-License-Identifier: Apache-2.0
 */
-
+.root,
+.dropdown,
+.label,
+//relative range 
+.relative-range-radio-group,
+.custom-range-duration-input,
+.custom-range-unit-select,
+//absolute
+.mode-switch,
+.first-grid,
+.second-grid,
+.calendar-header,
+.calendar-next-page-btn,
+.calendar-prev-page-btn,
+.calendar-next-month-btn,
+.calendar-prev-month-btn,
+.calendar-aria-live,
+.calendar-date,
 .calendar-week,
-.calendar-date {
+.calendar-month,
+.calendar-quarter,
+.today,
+.this-month,
+.day-header,
+.start-date,
+.end-date,
+.start-time-input,
+.end-time-input,
+.start-date-input,
+.end-date-input,
+.start-month-input,
+.end-month-input,
+.disabled-reason-tooltip,
+.validation-section,
+.validation-error,
+.clear-button,
+.apply-button,
+.cancel-button {
   /* used in test-utils */
 }

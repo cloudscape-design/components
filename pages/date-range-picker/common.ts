@@ -3,7 +3,7 @@
 import { DateRangePickerProps } from '~components/date-range-picker';
 
 import { AppContextType } from '../app/app-context';
-import { makeIsValidFunction } from './is-valid-range';
+import { makeIsDateValidFunction, makeIsMonthValidFunction } from './is-valid-range';
 
 export type DateRangePickerDemoContext = React.Context<
   AppContextType<{
@@ -19,6 +19,7 @@ export type DateRangePickerDemoContext = React.Context<
     expandToViewport?: boolean;
     disabledDates?: string;
     withDisabledReason?: boolean;
+    hasValue?: boolean;
   }>
 >;
 
@@ -111,11 +112,12 @@ export const dateRangePickerDemoDefaults = {
   expandToViewport: false,
   disabledDates: 'none',
   withDisabledReason: true,
+  hasValue: true,
 };
 
 function formatRelativeRange(range: DateRangePickerProps.RelativeValue): string {
   const unit = range.amount === 1 ? range.unit : `${range.unit}s`;
-  return `Previous ${range.amount} ${unit}`;
+  return `Last ${range.amount} ${unit}`;
 }
 
 export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
@@ -123,6 +125,9 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   todayAriaLabel: 'Today',
   nextMonthAriaLabel: 'Next month',
   previousMonthAriaLabel: 'Previous month',
+  nextYearAriaLabel: 'Next year',
+  previousYearAriaLabel: 'Previous year',
+  currentMonthAriaLabel: 'This month',
   customRelativeRangeDurationLabel: 'Duration',
   customRelativeRangeDurationPlaceholder: 'Enter duration',
   customRelativeRangeOptionLabel: 'Custom range',
@@ -130,11 +135,16 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   customRelativeRangeUnitLabel: 'Unit of time',
   formatRelativeRange: formatRelativeRange,
   formatUnit: (unit, value) => (value === 1 ? unit : `${unit}s`),
+  dateConstraintText: 'Range must be between 6 and 30 days.',
   dateTimeConstraintText: 'Range must be between 6 and 30 days. Use 24 hour format.',
+  monthConstraintText: 'For month use YYYY/MM.',
   modeSelectionLabel: 'Date range mode',
   relativeModeTitle: 'Relative range',
   absoluteModeTitle: 'Absolute range',
   relativeRangeSelectionHeading: 'Choose a range',
+  relativeRangeSelectionMonthlyDescription: 'Each month counts from the first day to the last day.',
+  startMonthLabel: 'Start month',
+  endMonthLabel: 'End month',
   startDateLabel: 'Start date',
   endDateLabel: 'End date',
   startTimeLabel: 'Start time',
@@ -146,33 +156,25 @@ export const i18nStrings: DateRangePickerProps['i18nStrings'] = {
   renderSelectedAbsoluteRangeAriaLive: (startDate, endDate) => `Range selected from ${startDate} to ${endDate}`,
 };
 
-export function generateI18nStrings(isDateOnly: boolean, isMonthOnly: boolean): DateRangePickerProps['i18nStrings'] {
-  return {
-    ...i18nStrings,
-    ...(isDateOnly ? { dateTimeConstraintText: 'Range must be between 6 and 30 days.' } : {}),
-    ...(isMonthOnly ? { dateTimeConstraintText: 'For month use YYYY/MM.' } : {}),
-  };
-}
-
 export const relativeOptions = [
-  { key: 'previous-5-minutes', amount: 5, unit: 'minute', type: 'relative' },
-  { key: 'previous-30-minutes', amount: 30, unit: 'minute', type: 'relative' },
-  { key: 'previous-1-hour', amount: 1, unit: 'hour', type: 'relative' },
-  { key: 'previous-6-hours', amount: 6, unit: 'hour', type: 'relative' },
+  { key: 'last-5-minutes', amount: 5, unit: 'minute', type: 'relative' },
+  { key: 'last-30-minutes', amount: 30, unit: 'minute', type: 'relative' },
+  { key: 'last-1-hour', amount: 1, unit: 'hour', type: 'relative' },
+  { key: 'last-6-hours', amount: 6, unit: 'hour', type: 'relative' },
 ] as const;
 
 export const dateOnlyRelativeOptions = [
-  { key: 'previous-1-day', amount: 5, unit: 'day', type: 'relative' },
-  { key: 'previous-7-days', amount: 7, unit: 'day', type: 'relative' },
-  { key: 'previous-1-month', amount: 1, unit: 'month', type: 'relative' },
-  { key: 'previous-6-months', amount: 6, unit: 'month', type: 'relative' },
+  { key: 'last-1-day', amount: 5, unit: 'day', type: 'relative' },
+  { key: 'last-7-days', amount: 7, unit: 'day', type: 'relative' },
+  { key: 'last-1-month', amount: 1, unit: 'month', type: 'relative' },
+  { key: 'last-6-months', amount: 6, unit: 'month', type: 'relative' },
 ] as const;
 
 export const monthOnlyRelativeOptions = [
-  { key: 'previous-1-month', amount: 1, unit: 'month', type: 'relative' },
-  { key: 'previous-2-months', amount: 2, unit: 'month', type: 'relative' },
-  { key: 'previous-3-months', amount: 3, unit: 'month', type: 'relative' },
-  { key: 'previous-6-months', amount: 6, unit: 'month', type: 'relative' },
+  { key: 'last-1-month', amount: 1, unit: 'month', type: 'relative' },
+  { key: 'last-2-months', amount: 2, unit: 'month', type: 'relative' },
+  { key: 'last-3-months', amount: 3, unit: 'month', type: 'relative' },
+  { key: 'last-6-months', amount: 6, unit: 'month', type: 'relative' },
 ] as const;
 
 export function generateRelativeOptions(dateOnly: boolean, monthOnly: boolean) {
@@ -185,14 +187,29 @@ export function generateRelativeOptions(dateOnly: boolean, monthOnly: boolean) {
   return relativeOptions;
 }
 
-export const isValid = makeIsValidFunction({
-  durationBetweenOneAndTwenty: 'The amount part of the range needs to be between 1 and 20.',
-  durationMissing: 'You need to provide a duration.',
-  minimumStartDate: 'The range cannot start before 2018.',
-  noValueSelected: 'You need to select a range.',
-  startDateMissing: 'You need to provide a start date.',
-  endDateMissing: 'You need to provide an end date.',
-});
+export const isValid = (granularity: DateRangePickerProps.Granularity) => {
+  const errorMessages = {
+    durationBetweenOneAndTwenty: 'The amount part of the range needs to be between 1 and 20.',
+    durationMissing: 'You need to provide a duration.',
+    notLongEnough: 'The selected date range is too small. Select a range of one month or larger.',
+    minimumStartDate: 'The range cannot start before 2018.',
+    noValueSelected: 'You need to select a range.',
+    startDateMissing: 'You need to provide a start date.',
+    endDateMissing: 'You need to provide an end date.',
+  };
 
-export const generatePlaceholder = (dateOnly?: boolean, monthOnly?: boolean) =>
-  `Filter by ${monthOnly ? 'month' : 'date'} ${dateOnly ? '' : ' and time '}range`;
+  if (granularity === 'month') {
+    return makeIsMonthValidFunction(errorMessages);
+  }
+  return makeIsDateValidFunction(errorMessages);
+};
+
+export const generatePlaceholder = (dateOnly?: boolean, monthOnly?: boolean) => {
+  if (monthOnly) {
+    return `Filter by month range`;
+  }
+  if (dateOnly) {
+    return `Filter by date range`;
+  }
+  return `Filter by date and time range`;
+};

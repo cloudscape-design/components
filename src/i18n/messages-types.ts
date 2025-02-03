@@ -165,6 +165,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
     "i18nStrings.relativeRangeSelectionHeading": never;
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": never;
     "i18nStrings.cancelButtonLabel": never;
     "i18nStrings.clearButtonLabel": never;
     "i18nStrings.applyButtonLabel": never;
@@ -173,6 +174,12 @@ export interface I18nFormatArgTypes {
     "i18nStrings.customRelativeRangeUnitLabel": never;
     "i18nStrings.customRelativeRangeDurationLabel": never;
     "i18nStrings.customRelativeRangeDurationPlaceholder": never;
+    "i18nStrings.previousMonthAriaLabel": never;
+    "i18nStrings.nextMonthAriaLabel": never;
+    "i18nStrings.previousYearAriaLabel": never;
+    "i18nStrings.nextYearAriaLabel": never;
+    "i18nStrings.currentMonthAriaLabel": never;
+    "i18nStrings.todayAriaLabel": never;
     "i18nStrings.startMonthLabel": never;
     "i18nStrings.startDateLabel": never;
     "i18nStrings.startTimeLabel": never;
@@ -180,6 +187,8 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
     "i18nStrings.dateTimeConstraintText": never;
+    "i18nStrings.dateConstraintText": never;
+    "i18nStrings.monthConstraintText": never;
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": {
       "startDate": string | number;

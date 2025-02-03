@@ -33,6 +33,7 @@ import { normalizeTimeOffset } from './time-offset';
 import { formatInitialValue, formatValue } from './utils';
 
 import styles from './styles.css.js';
+import testutilStyles from './test-classes/styles.css.js';
 
 export { DateRangePickerProps };
 
@@ -113,6 +114,7 @@ const DateRangePicker = React.forwardRef(
       absoluteFormat = 'iso',
       hideTimeOffset,
       customRelativeRangeUnits,
+      granularity = 'day',
       ...rest
     }: DateRangePickerProps,
     ref: Ref<DateRangePickerProps.Ref>
@@ -127,14 +129,18 @@ const DateRangePicker = React.forwardRef(
         showClearButton,
         timeInputFormat,
         hideTimeOffset,
+        granularity,
       },
       metadata: { hasDisabledReasons: Boolean(dateDisabledReason) },
     });
+    const isMonthOnly = granularity === 'month';
+    const hideTime = dateOnly || isMonthOnly;
     checkControlled('DateRangePicker', 'value', value, 'onChange', onChange);
 
-    const normalizedTimeOffset = normalizeTimeOffset(value, getTimeOffset, timeOffset);
-    value = formatInitialValue(value, dateOnly, normalizedTimeOffset);
-
+    const normalizedTimeOffset = hideTime
+      ? { startDate: undefined, endDate: undefined }
+      : normalizeTimeOffset(value, getTimeOffset, timeOffset);
+    value = formatInitialValue(value, dateOnly, isMonthOnly, normalizedTimeOffset);
     const baseProps = getBaseProps(rest);
     const { invalid, warning, controlId, ariaDescribedby, ariaLabelledby } = useFormFieldContext({
       ariaLabelledby: rest.ariaLabelledby ?? i18nStrings?.ariaLabelledby,
@@ -179,7 +185,10 @@ const DateRangePicker = React.forwardRef(
     const onApply = (newValue: null | DateRangePickerProps.Value): DateRangePickerProps.ValidationResult => {
       const formattedValue = formatValue(newValue, {
         dateOnly,
-        timeOffset: normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
+        monthOnly: isMonthOnly,
+        timeOffset: hideTime
+          ? { startDate: undefined, endDate: undefined }
+          : normalizeTimeOffset(newValue, getTimeOffset, timeOffset),
       });
 
       const validationResult = isValidRange(formattedValue);
@@ -253,7 +262,7 @@ const DateRangePicker = React.forwardRef(
       placeholder,
       formatRelativeRange,
       absoluteFormat,
-      hideTimeOffset,
+      hideTimeOffset: hideTime || hideTimeOffset,
       timeOffset: normalizedTimeOffset,
     });
 
@@ -266,7 +275,7 @@ const DateRangePicker = React.forwardRef(
         ariaLabelledby={joinStrings(ariaLabelledby, triggerContentId)}
         ariaLabel={i18nStrings?.ariaLabel}
         ariaDescribedby={ariaDescribedby}
-        className={clsx(styles.label, {
+        className={clsx(testutilStyles.label, styles.label, {
           [styles['label-enabled']]: !readOnly && !disabled,
         })}
         hideCaret={true}
@@ -295,7 +304,8 @@ const DateRangePicker = React.forwardRef(
         className={clsx(
           baseProps.className,
           styles.root,
-          absoluteFormat === 'long-localized' && !dateOnly && styles.wide
+          testutilStyles.root,
+          absoluteFormat === 'long-localized' && !dateOnly && !isMonthOnly && styles.wide
         )}
         onKeyDown={onWrapperKeyDownHandler}
       >
@@ -335,6 +345,7 @@ const DateRangePicker = React.forwardRef(
                 ariaDescribedby={ariaDescribedby}
                 customAbsoluteRangeControl={customAbsoluteRangeControl}
                 customRelativeRangeUnits={customRelativeRangeUnits}
+                granularity={granularity}
               />
             )}
           </ResetContextsForModal>

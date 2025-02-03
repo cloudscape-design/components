@@ -7,31 +7,29 @@ import { Box, DateRangePicker, DateRangePickerProps, SpaceBetween } from '~compo
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
-import { generateI18nStrings, generatePlaceholder, isValid } from './common';
+import { generatePlaceholder, i18nStrings, isValid } from './common';
 
 const permutations = createPermutations<
-  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value'>
+  Pick<DateRangePickerProps, 'absoluteFormat' | 'dateOnly' | 'hideTimeOffset' | 'value' | 'granularity'>
 >([
   {
     absoluteFormat: ['iso', 'long-localized'],
-    dateOnly: [true, false],
     value: [
       {
         type: 'absolute',
-        startDate: '2024-12-30',
-        endDate: '2024-12-31',
+        startDate: '2024-12',
+        endDate: '2025-01',
       },
     ],
   },
   {
     absoluteFormat: ['iso', 'long-localized'],
-    dateOnly: [true, false],
     hideTimeOffset: [true, false],
     value: [
       {
         type: 'absolute',
-        startDate: '2024-12-30T00:00:00+01:00',
-        endDate: '2024-12-31T23:59:59+01:00',
+        startDate: '2023-06',
+        endDate: '2024-02',
       },
     ],
   },
@@ -41,7 +39,7 @@ export default function DateRangePickerPermutations() {
   return (
     <Box padding="s">
       <SpaceBetween direction="vertical" size="m">
-        <h1>Absolute date range picker with custom absolute format</h1>
+        <h1>Absolute date range picker year calendar with custom absolute format</h1>
         <hr />
         <ScreenshotArea>
           <PermutationsView
@@ -50,13 +48,14 @@ export default function DateRangePickerPermutations() {
               <DateRangePicker
                 value={permutation.value}
                 absoluteFormat={permutation.absoluteFormat}
-                dateOnly={permutation.dateOnly}
+                dateOnly={false}
+                granularity="month"
                 hideTimeOffset={permutation.hideTimeOffset}
                 locale="en-US"
-                i18nStrings={generateI18nStrings(permutation.dateOnly || false, false)}
-                placeholder={generatePlaceholder(permutation.dateOnly, false)}
+                i18nStrings={i18nStrings}
+                placeholder={generatePlaceholder(permutation.dateOnly, permutation.granularity === 'month')}
                 relativeOptions={[]}
-                isValidRange={isValid}
+                isValidRange={value => isValid('month')(value)}
                 rangeSelectorMode={'absolute-only'}
                 getTimeOffset={() => 60}
               />

@@ -9,19 +9,16 @@ import RadioGroupWrapper from '../radio-group';
 import SegmentedControlWrapper from '../segmented-control';
 import SelectWrapper from '../select';
 
-import gridStyles from '../../../date-range-picker/calendar/grids/styles.selectors.js';
-import relativeRangeStyles from '../../../date-range-picker/relative-range/styles.selectors.js';
-import styles from '../../../date-range-picker/styles.selectors.js';
-import testStyles from '../../../date-range-picker/test-classes/styles.selectors.js';
+import testutilStyles from '../../../date-range-picker/test-classes/styles.selectors.js';
 
 export class CalendarDateWrapper extends ComponentWrapper {
   findDisabledReason(): ElementWrapper | null {
-    return createWrapper().find(`.${gridStyles['disabled-reason-tooltip']}`);
+    return createWrapper().find(`.${testutilStyles['disabled-reason-tooltip']}`);
   }
 }
 
 export default class DateRangePickerWrapper extends ComponentWrapper {
-  static rootSelector: string = styles.root;
+  static rootSelector: string = testutilStyles.root;
 
   /**
    * Alias for `findTrigger`
@@ -34,7 +31,7 @@ export default class DateRangePickerWrapper extends ComponentWrapper {
    * Returns the trigger element that can be used to open the picker dropdown.
    */
   findTrigger(): ElementWrapper {
-    return this.findByClassName(styles.label)!;
+    return this.findByClassName(testutilStyles.label)!;
   }
   /**
    * @param options
@@ -42,7 +39,7 @@ export default class DateRangePickerWrapper extends ComponentWrapper {
    */
   findDropdown(options = { expandToViewport: false }): DrpDropdownWrapper | null {
     const wrapper = options.expandToViewport ? createWrapper() : this;
-    return wrapper.findComponent(`.${styles.dropdown}`, DrpDropdownWrapper);
+    return wrapper.findComponent(`.${testutilStyles.dropdown}`, DrpDropdownWrapper);
   }
 
   @usesDom
@@ -74,39 +71,68 @@ export class SelectionModeSwitchWrapper extends ElementWrapper {
 
 export class DrpDropdownWrapper extends ComponentWrapper {
   findSelectionModeSwitch(): SelectionModeSwitchWrapper {
-    return this.findComponent(`.${styles['mode-switch']}`, SelectionModeSwitchWrapper)!;
+    return this.findComponent(`.${testutilStyles['mode-switch']}`, SelectionModeSwitchWrapper)!;
   }
 
   findValidationError(): ElementWrapper<HTMLSpanElement> | null {
-    return this.findByClassName(styles['validation-error']);
+    return this.findByClassName(testutilStyles['validation-error']);
   }
 
   // -- Relative mode --
 
   findRelativeRangeRadioGroup(): RadioGroupWrapper | null {
-    return this.findComponent(`.${relativeRangeStyles['relative-range-radio-group']}`, RadioGroupWrapper);
+    return this.findComponent(`.${testutilStyles['relative-range-radio-group']}`, RadioGroupWrapper);
   }
 
   findCustomRelativeRangeDuration(): InputWrapper | null {
-    return this.findComponent(`.${relativeRangeStyles['custom-range-duration-input']}`, InputWrapper);
+    return this.findComponent(`.${testutilStyles['custom-range-duration-input']}`, InputWrapper);
   }
 
   findCustomRelativeRangeUnit(): SelectWrapper | null {
-    return this.findComponent(`.${relativeRangeStyles['custom-range-unit-select']}`, SelectWrapper);
+    return this.findComponent(`.${testutilStyles['custom-range-unit-select']}`, SelectWrapper);
   }
 
   // -- Absolute mode --
 
   findHeader(): ElementWrapper {
-    return this.findByClassName(styles['calendar-header'])!;
+    return this.findByClassName(testutilStyles['calendar-header'])!;
   }
 
+  findPreviousButton(): ButtonWrapper {
+    return this.findComponent(`.${testutilStyles['calendar-prev-page-btn']}`, ButtonWrapper)!;
+  }
+
+  findNextButton(): ButtonWrapper {
+    return this.findComponent(`.${testutilStyles['calendar-next-page-btn']}`, ButtonWrapper)!;
+  }
+
+  /**
+   * Alias for findPreviousButton for compatibility with previous versions.
+   * @deprecated
+   */
   findPreviousMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-prev-month-btn']}`, ButtonWrapper)!;
+    return this.findComponent(`.${testutilStyles['calendar-prev-month-btn']}`, ButtonWrapper)!;
   }
 
+  /**
+   * Alias for findNextButton for compatibility with previous versions.
+   * @deprecated
+   */
   findNextMonthButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['calendar-next-month-btn']}`, ButtonWrapper)!;
+    return this.findComponent(`.${testutilStyles['calendar-next-month-btn']}`, ButtonWrapper)!;
+  }
+
+  /**
+   * Returns the day container that corresponds to the current day.
+   */
+  findCurrentDay(): CalendarDateWrapper {
+    return this.findComponent(`.${testutilStyles.today}`, CalendarDateWrapper)!;
+  }
+  /**
+   * Returns the month container that corresponds to the current month.
+   */
+  findCurrentMonth(): CalendarDateWrapper {
+    return this.findComponent(`.${testutilStyles['this-month']}`, CalendarDateWrapper)!;
   }
 
   /**
@@ -121,48 +147,63 @@ export class DrpDropdownWrapper extends ComponentWrapper {
     row: 1 | 2 | 3 | 4 | 5 | 6,
     column: 1 | 2 | 3 | 4 | 5 | 6 | 7
   ): CalendarDateWrapper {
-    const gridClassName = grid === 'right' ? styles['second-grid'] : styles['first-grid'];
+    const gridClassName = grid === 'right' ? testutilStyles['second-grid'] : testutilStyles['first-grid'];
     return this.findComponent(
-      `.${gridClassName} .${testStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testStyles['calendar-date']}:nth-child(${column})`,
+      `.${gridClassName} .${testutilStyles['calendar-week']}[data-awsui-weekindex="${row}"] .${testutilStyles['calendar-date']}:nth-child(${column})`,
+      CalendarDateWrapper
+    )!;
+  }
+
+  /**
+   * Returns a month container on the calendar.
+   *
+   * @param grid the calendar grid. If only one calendar grid is visible (on small screens), use `'right'`.
+   * @param row 1-based row index of the month.
+   * @param column 1-based column index of the month.
+   */
+  findMonthAt(grid: 'left' | 'right', row: 1 | 2 | 3 | 4, column: 1 | 2 | 3): CalendarDateWrapper {
+    const gridClassName = grid === 'right' ? testutilStyles['second-grid'] : testutilStyles['first-grid'];
+    return this.findComponent(
+      `.${gridClassName} .${testutilStyles['calendar-quarter']}:nth-child(${row}) .${testutilStyles['calendar-month']}:nth-child(${column})`,
       CalendarDateWrapper
     )!;
   }
 
   findSelectedStartDate(): ElementWrapper | null {
-    return this.findByClassName(gridStyles['start-date']);
+    return this.findByClassName(testutilStyles['start-date']);
   }
 
   findSelectedEndDate(): ElementWrapper | null {
-    return this.findByClassName(gridStyles['end-date']);
+    return this.findByClassName(testutilStyles['end-date']);
   }
 
   findStartDateInput(): InputWrapper | null {
-    return this.findComponent(`.${styles['start-date-input']}`, InputWrapper);
+    return this.findComponent(`.${testutilStyles['start-date-input']}`, InputWrapper);
   }
 
   findStartTimeInput(): InputWrapper | null {
-    return this.findComponent(`.${styles['start-time-input']}`, InputWrapper);
+    return this.findComponent(`.${testutilStyles['start-time-input']}`, InputWrapper);
   }
 
   findEndDateInput(): InputWrapper | null {
-    return this.findComponent(`.${styles['end-date-input']}`, InputWrapper);
+    return this.findComponent(`.${testutilStyles['end-date-input']}`, InputWrapper);
   }
 
   findEndTimeInput(): InputWrapper | null {
-    return this.findComponent(`.${styles['end-time-input']}`, InputWrapper);
+    return this.findComponent(`.${testutilStyles['end-time-input']}`, InputWrapper);
   }
 
   // -- Footer --
 
   findClearButton(): ButtonWrapper | null {
-    return this.findComponent(`.${styles['clear-button']}`, ButtonWrapper);
+    return this.findComponent(`.${testutilStyles['clear-button']}`, ButtonWrapper);
   }
 
   findCancelButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['cancel-button']}`, ButtonWrapper)!;
+    return this.findComponent(`.${testutilStyles['cancel-button']}`, ButtonWrapper)!;
   }
 
   findApplyButton(): ButtonWrapper {
-    return this.findComponent(`.${styles['apply-button']}`, ButtonWrapper)!;
+    return this.findComponent(`.${testutilStyles['apply-button']}`, ButtonWrapper)!;
   }
 }
