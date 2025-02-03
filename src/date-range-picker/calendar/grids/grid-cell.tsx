@@ -13,10 +13,6 @@ interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   disabledReason?: string;
 }
 
-interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
-  disabledReason?: string;
-}
-
 export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
   const { disabledReason, ...rest } = props;
   const isDisabledWithReason = !!disabledReason;
