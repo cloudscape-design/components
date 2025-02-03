@@ -274,7 +274,12 @@ export const InternalButton = React.forwardRef(
       <>
         {descriptionEl}
         {showTooltip && (
-          <Tooltip className={testUtilStyles['disabled-reason-tooltip']} trackRef={buttonRef} value={disabledReason!} />
+          <Tooltip
+            className={testUtilStyles['disabled-reason-tooltip']}
+            trackRef={buttonRef}
+            value={disabledReason!}
+            onDismiss={() => setShowTooltip(false)}
+          />
         )}
       </>
     );

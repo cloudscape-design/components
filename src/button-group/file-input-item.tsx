@@ -11,19 +11,15 @@ import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 
+interface FileInputItemProps {
+  item: ButtonGroupProps.IconFileInput;
+  showTooltip: boolean;
+  onTooltipDismiss: () => void;
+  onFilesChange?: CancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
+}
+
 const FileInputItem = forwardRef(
-  (
-    {
-      item,
-      showTooltip,
-      onFilesChange,
-    }: {
-      item: ButtonGroupProps.IconFileInput;
-      showTooltip: boolean;
-      onFilesChange?: CancelableEventHandler<ButtonGroupProps.FilesChangeDetails>;
-    },
-    ref: React.Ref<FileInputProps.Ref>
-  ) => {
+  ({ item, showTooltip, onTooltipDismiss, onFilesChange }: FileInputItemProps, ref: React.Ref<FileInputProps.Ref>) => {
     const [files, setFiles] = useState<File[]>([]);
     const containerRef = React.useRef<HTMLDivElement>(null);
 
@@ -55,6 +51,7 @@ const FileInputItem = forwardRef(
             trackKey={item.id}
             value={item.text}
             className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
+            onDismiss={onTooltipDismiss}
           />
         )}
       </div>
