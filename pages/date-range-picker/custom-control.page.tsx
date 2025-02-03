@@ -1,16 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import endOfMonth from 'date-fns/endOfMonth';
-import endOfQuarter from 'date-fns/endOfQuarter';
-import endOfWeek from 'date-fns/endOfWeek';
-import endOfYear from 'date-fns/endOfYear';
-import enLocale from 'date-fns/locale/en-GB';
-import startOfMonth from 'date-fns/startOfMonth';
-import startOfQuarter from 'date-fns/startOfQuarter';
-import startOfWeek from 'date-fns/startOfWeek';
-import startOfYear from 'date-fns/startOfYear';
-import sub from 'date-fns/sub';
+import {
+  endOfMonth,
+  endOfQuarter,
+  endOfWeek,
+  endOfYear,
+  startOfMonth,
+  startOfQuarter,
+  startOfWeek,
+  startOfYear,
+  sub,
+} from 'date-fns';
 
 import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link, SpaceBetween } from '~components';
 import { formatDate } from '~components/internal/utils/date-time';
@@ -60,11 +61,11 @@ export default function DatePickerScenario() {
           onFollow={() =>
             setSelectedDate({
               start: {
-                date: formatDate(startOfWeek(new Date(), { locale: enLocale })),
+                date: formatDate(startOfWeek(new Date())),
                 time: '',
               },
               end: {
-                date: formatDate(endOfWeek(new Date(), { locale: enLocale })),
+                date: formatDate(endOfWeek(new Date())),
                 time: '',
               },
             })
@@ -203,7 +204,7 @@ export default function DatePickerScenario() {
         <DateRangePicker
           value={value}
           onChange={e => setValue(e.detail.value)}
-          locale={enLocale.code}
+          locale="en-GB"
           i18nStrings={i18nStrings}
           relativeOptions={[]}
           placeholder={generatePlaceholder(dateOnly, monthOnly)}
