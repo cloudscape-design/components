@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 
 import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -80,14 +80,22 @@ allVariants.forEach(variant => {
     });
 
     describe('ARIA live region', () => {
+      beforeEach(() => {
+        jest.useFakeTimers();
+      });
+
+      afterEach(() => {
+        jest.clearAllTimers();
+      });
+
       test('is present in the DOM while in-progress', () => {
-        renderProgressBar({ variant, value: 0 });
-        expect(createWrapper().find('[aria-live]')).not.toBeNull();
+        renderProgressBar({ variant, value: 22 });
+        expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('22%');
       });
 
       test('contains result text', () => {
-        const wrapper = renderProgressBar({ variant, value: 100, status: 'success', resultText: 'Result!' });
-        expect(wrapper.find('[aria-live]')!.getElement()).toHaveTextContent('Result!');
+        renderProgressBar({ variant, value: 100, status: 'success', resultText: 'Result!' });
+        expect(createWrapper().findLiveRegion()!.getElement()).toHaveTextContent('Result!');
       });
     });
 
@@ -253,8 +261,10 @@ describe('Progress updates', () => {
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 0%`);
     rerender(<ProgressBar label={label} value={2} />);
 
-    // 6 seconds passed, live region has a new value
-    jest.advanceTimersByTime(6000);
+    act(() => {
+      // 6 seconds passed, live region has a new value
+      jest.advanceTimersByTime(6000);
+    });
     expect(wrapper.find(`.${liveRegionStyles.root}`)?.getElement().textContent).toBe(`${label}: 2%`);
   });
 
