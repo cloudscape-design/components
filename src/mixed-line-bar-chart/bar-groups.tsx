@@ -11,7 +11,6 @@ const OUTLINE_PADDING = 2;
 
 interface BarGroups<T extends ChartDataTypes> {
   ariaLabel: string;
-  isRefresh: boolean;
   isPopoverPinned: boolean;
   barGroups: ScaledBarGroup<T>[];
   highlightedGroupIndex: null | number;
@@ -25,7 +24,6 @@ interface BarGroups<T extends ChartDataTypes> {
  */
 export default function BarGroups<T extends ChartDataTypes>({
   ariaLabel,
-  isRefresh,
   isPopoverPinned,
   barGroups,
   highlightedGroupIndex,
@@ -41,7 +39,7 @@ export default function BarGroups<T extends ChartDataTypes>({
           width={group.position.width + 2 * OUTLINE_PADDING}
           height={group.position.height + 2 * OUTLINE_PADDING}
           ref={index === highlightedGroupIndex ? highlightedGroupRef : undefined}
-          rx={isRefresh ? 4 : 2}
+          rx={4}
           role="button"
           aria-label={ariaLabel}
           aria-haspopup={true}

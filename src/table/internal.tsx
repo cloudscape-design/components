@@ -26,7 +26,6 @@ import { usePerformanceMarks } from '../internal/hooks/use-performance-marks';
 import { usePrevious } from '../internal/hooks/use-previous';
 import { useScrollSync } from '../internal/hooks/use-scroll-sync';
 import { useTableInteractionMetrics } from '../internal/hooks/use-table-interaction-metrics';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { SomeRequired } from '../internal/types';
 import InternalLiveRegion from '../live-region/internal';
@@ -295,12 +294,7 @@ const InternalTable = React.forwardRef(
       }
     }
 
-    const isVisualRefresh = useVisualRefresh();
-    const computedVariant = isVisualRefresh
-      ? variant
-      : ['embedded', 'full-page'].indexOf(variant) > -1
-        ? 'container'
-        : variant;
+    const computedVariant = variant;
     const hasHeader = !!(header || filter || pagination || preferences);
     const hasSelection = !!selectionType;
     const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;

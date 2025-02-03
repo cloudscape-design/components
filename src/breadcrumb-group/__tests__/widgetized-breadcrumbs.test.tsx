@@ -8,7 +8,6 @@ import { createWidgetizedBreadcrumbGroup } from '../../../lib/components/breadcr
 import { InternalBreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/interfaces';
 import { BreadcrumbGroupSkeleton } from '../../../lib/components/breadcrumb-group/skeleton';
 import { DATA_ATTR_RESOURCE_TYPE, getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { FunctionComponent } from '../../../lib/components/internal/widgets';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
@@ -44,28 +43,7 @@ function getResourceTypeElements(container: HTMLElement) {
   return container.querySelectorAll(`[${DATA_ATTR_RESOURCE_TYPE}]`);
 }
 
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(false),
-}));
-
-describe('Classic design', () => {
-  beforeEach(() => {
-    jest.mocked(useVisualRefresh).mockReturnValue(false);
-  });
-
-  test('should render normal layout by default', () => {
-    const { wrapper, container } = renderComponent(<WidgetizedBreadcrumbs {...defaultProps} />);
-    expect(wrapper).toBeTruthy();
-    expect(getElementsText(getResourceTypeElements(container))).toEqual(['Resource']);
-    expect(getElementsText(getFunnelNameElements(container))).toEqual(['Page name']);
-  });
-});
-
 describe('Refresh design', () => {
-  beforeEach(() => {
-    jest.mocked(useVisualRefresh).mockReturnValue(true);
-  });
-
   test('should render normal layout by default', () => {
     const { wrapper, container } = renderComponent(<WidgetizedBreadcrumbs {...defaultProps} />);
     expect(wrapper).toBeTruthy();

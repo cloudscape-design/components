@@ -28,7 +28,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useIntersectionObserver } from '../internal/hooks/use-intersection-observer';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';
 import {
@@ -115,8 +114,6 @@ function PortaledModal({
 
   const refObject = useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(breakpointsRef, refObject, __internalRootRef);
-
-  const isRefresh = useVisualRefresh();
 
   const baseProps = getBaseProps(rest);
 
@@ -233,12 +230,7 @@ function PortaledModal({
             {...baseProps}
             {...__funnelProps}
             {...__funnelStepProps}
-            className={clsx(
-              styles.root,
-              { [styles.hidden]: !visible },
-              baseProps.className,
-              isRefresh && styles.refresh
-            )}
+            className={clsx(styles.root, { [styles.hidden]: !visible }, baseProps.className, styles.refresh)}
             role="dialog"
             aria-labelledby={headerId}
             onMouseDown={onOverlayMouseDown}
@@ -249,12 +241,7 @@ function PortaledModal({
           >
             <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
               <div
-                className={clsx(
-                  styles.dialog,
-                  styles[size],
-                  styles[`breakpoint-${breakpoint}`],
-                  isRefresh && styles.refresh
-                )}
+                className={clsx(styles.dialog, styles[size], styles[`breakpoint-${breakpoint}`], styles.refresh)}
                 onKeyDown={escKeyHandler}
                 {...metadataAttribute}
               >

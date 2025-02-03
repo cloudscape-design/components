@@ -7,7 +7,6 @@ import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
@@ -34,21 +33,26 @@ export function SplitPanelContentSide({
   onToggle,
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
-  const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarEnabled();
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
-        [sharedStyles['with-motion-horizontal']]: !animationDisabled,
-        [testUtilStyles['open-position-side']]: isOpen,
-        [styles['drawer-closed']]: !isOpen,
-        [styles['with-toolbar']]: isToolbar,
-        [styles.refresh]: isRefresh,
-      })}
+      className={clsx(
+        baseProps.className,
+        styles.drawer,
+        styles['position-side'],
+        testUtilStyles.root,
+        styles.refresh,
+        {
+          [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+          [testUtilStyles['open-position-side']]: isOpen,
+          [styles['drawer-closed']]: !isOpen,
+          [styles['with-toolbar']]: isToolbar,
+        }
+      )}
       style={{
-        width: isOpen ? cappedSize : isRefresh ? '0px' : undefined,
-        maxWidth: isRefresh ? '100%' : undefined,
+        width: isOpen ? cappedSize : '0px',
+        maxWidth: '100%',
         ...style,
       }}
       ref={splitPanelRef}
@@ -74,7 +78,7 @@ export function SplitPanelContentSide({
             ariaLabel={openButtonAriaLabel}
             ariaExpanded={isOpen}
             //toggleRef should only be assigned when there is no other trigger-buttons
-            ref={isRefresh || isToolbar ? null : toggleRef}
+            ref={isToolbar ? null : toggleRef}
           />
         )}
         <div

@@ -14,7 +14,6 @@ import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import globalVars from '../internal/styles/global-vars';
 import { SomeRequired } from '../internal/types';
 import { createWidgetizedComponent } from '../internal/widgets';
@@ -38,7 +37,6 @@ export function SplitPanelImplementation({
   i18nStrings = {},
   ...restProps
 }: SplitPanelImplementationProps) {
-  const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarEnabled();
 
   const {
@@ -60,7 +58,7 @@ export function SplitPanelImplementation({
   const baseProps = getBaseProps(restProps);
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
 
-  const appLayoutMaxWidth = isRefresh && position === 'bottom' ? contentWidthStyles : undefined;
+  const appLayoutMaxWidth = position === 'bottom' ? contentWidthStyles : undefined;
 
   const openButtonAriaLabel = i18nStrings.openButtonAriaLabel;
   useEffect(() => {
@@ -113,9 +111,7 @@ export function SplitPanelImplementation({
         {isOpen ? (
           <InternalButton
             className={testUtilStyles['close-button']}
-            iconName={
-              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
-            }
+            iconName={closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'}
             variant="icon"
             onClick={onToggle}
             formAction="none"
@@ -189,7 +185,7 @@ export function SplitPanelImplementation({
    * is still needed for the early return to prevent execution
    * of the following code.
    */
-  if (isRefresh && !isToolbar && !isOpen && position === 'side') {
+  if (!isToolbar && !isOpen && position === 'side') {
     return <></>;
   }
 
@@ -234,7 +230,6 @@ export function SplitPanelImplementation({
           visible={true}
           preferences={{ position }}
           disabledSidePosition={position === 'bottom' && isForcedPosition}
-          isRefresh={isRefresh}
           i18nStrings={{
             header: i18nStrings.preferencesTitle,
             confirm: i18nStrings.preferencesConfirm,

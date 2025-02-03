@@ -45,12 +45,9 @@ interface AppLayoutState {
 
 export function applyDefaults(
   contentType: AppLayoutProps.ContentType,
-  stateFromProps: Pick<AppLayoutProps, 'minContentWidth' | 'maxContentWidth' | 'navigationOpen' | 'toolsOpen'>,
-  isRefresh: boolean
+  stateFromProps: Pick<AppLayoutProps, 'minContentWidth' | 'maxContentWidth' | 'navigationOpen' | 'toolsOpen'>
 ): AppLayoutState {
-  const contentTypeDefaults = isRefresh
-    ? { ...defaults[contentType], maxContentWidth: undefined }
-    : defaults[contentType];
+  const contentTypeDefaults = { ...defaults[contentType], maxContentWidth: undefined };
 
   return {
     maxContentWidth: stateFromProps.maxContentWidth ?? contentTypeDefaults.maxContentWidth,

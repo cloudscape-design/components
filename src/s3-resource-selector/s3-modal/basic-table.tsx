@@ -48,7 +48,6 @@ interface BasicS3TableProps<T> {
   fetchData: () => Promise<ReadonlyArray<T>>;
   trackBy: TableProps.TrackBy<T>;
   i18nStrings: BasicS3TableStrings<T>;
-  isVisualRefresh?: boolean;
   visibleColumns: ReadonlyArray<string>;
   isItemDisabled: TableProps.IsItemDisabled<T> | undefined;
   onSelect: (item: T | undefined) => void;
@@ -80,7 +79,6 @@ export function BasicS3Table<T>({
   fetchData,
   trackBy,
   i18nStrings = {},
-  isVisualRefresh,
   visibleColumns,
   isItemDisabled,
   onSelect,
@@ -149,11 +147,11 @@ export function BasicS3Table<T>({
 
   return (
     <InternalTable<T>
-      variant={isVisualRefresh ? 'borderless' : 'container'}
+      variant={'borderless'}
       {...collectionProps}
       header={
         <InternalHeader
-          variant={isVisualRefresh ? 'h3' : 'h2'}
+          variant={'h3'}
           headingTagOverride={'h3'}
           actions={
             <InternalHeaderActions<T> reloadData={reloadData} i18nStrings={i18nStrings} lastUpdated={lastUpdated} />

@@ -5,7 +5,6 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { PACKAGE_VERSION } from '../../environment';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { useUniqueId } from '../../hooks/use-unique-id';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { nodeBelongs } from '../../utils/node-belongs';
 import {
   FunnelContext,
@@ -109,7 +108,6 @@ function evaluateSelectors(selectors: string[], defaultSelector: string) {
 const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...props }: AnalyticsFunnelProps) => {
   const [funnelInteractionId, setFunnelInteractionId] = useState<string>('');
   const [submissionAttempt, setSubmissionAttempt] = useState(0);
-  const isVisualRefresh = useVisualRefresh();
   const funnelState = useRef<FunnelState>('default');
   const funnelNameSelector = useRef<string>(getFunnelNameSelector());
   const errorCount = useRef<number>(0);
@@ -166,7 +164,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,
         componentVersion: PACKAGE_VERSION,
-        componentTheme: isVisualRefresh ? 'vr' : 'classic',
+        componentTheme: 'vr',
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
         resourceType: props.funnelResourceType || getTextFromSelector(`[${DATA_ATTR_RESOURCE_TYPE}]`),

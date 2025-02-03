@@ -3,7 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition } from './interfaces';
 
 import styles from './styles.css.js';
@@ -13,12 +12,10 @@ interface ArrowProps {
 }
 
 const Arrow = (props: ArrowProps) => {
-  const isVisualRefresh = useVisualRefresh();
-
   return (
     <div className={clsx(styles.arrow, props.position && styles[`arrow-position-${props.position}`])}>
       <div className={styles['arrow-outer']} />
-      <div className={clsx(styles['arrow-inner'], isVisualRefresh && styles.refresh)} />
+      <div className={clsx(styles['arrow-inner'], styles.refresh)} />
     </div>
   );
 };

@@ -15,7 +15,6 @@ import SeriesDetails from '../internal/components/chart-series-details';
 import SeriesMarker from '../internal/components/chart-series-marker';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { SomeRequired } from '../internal/types';
 import { nodeBelongs } from '../internal/utils/node-belongs';
@@ -88,14 +87,12 @@ export default <T extends PieChartProps.Datum>({
   const popoverRef = useRef<HTMLElement | null>(null);
 
   const hasLabels = !(hideTitles && hideDescriptions);
-  const isRefresh = useVisualRefresh();
 
   const height = useHeightMeasure(() => plotRef.current?.svg ?? null, !fitHeight) ?? explicitHeight;
 
   const dimensions = useMemo(
-    () =>
-      getDimensionsBySize({ size: fitHeight ? Math.min(height, width) : size, hasLabels, visualRefresh: isRefresh }),
-    [fitHeight, height, width, size, hasLabels, isRefresh]
+    () => getDimensionsBySize({ size: fitHeight ? Math.min(height, width) : size, hasLabels }),
+    [fitHeight, height, width, size, hasLabels]
   );
 
   // Inner content is only available for donut charts and the inner description is not displayed for small charts

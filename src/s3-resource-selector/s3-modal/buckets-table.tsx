@@ -18,7 +18,6 @@ interface BucketsTableProps {
   selectableItemsTypes: S3ResourceSelectorProps['selectableItemsTypes'];
   fetchData: S3ResourceSelectorProps['fetchBuckets'];
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
-  isVisualRefresh?: boolean;
   onDrilldown: (path: string) => void;
   onSelect: (uri: string) => void;
 }
@@ -26,7 +25,6 @@ interface BucketsTableProps {
 export function BucketsTable({
   forwardFocusRef,
   i18nStrings,
-  isVisualRefresh,
   isItemDisabled,
   selectableItemsTypes,
   fetchData,
@@ -70,7 +68,6 @@ export function BucketsTable({
           ),
         },
       }}
-      isVisualRefresh={isVisualRefresh}
       columnDefinitions={[
         {
           id: 'Name',

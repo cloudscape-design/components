@@ -13,7 +13,6 @@ import { useMergeRefs } from '../../hooks/use-merge-refs';
 import { useMobile } from '../../hooks/use-mobile';
 import { usePortalModeClasses } from '../../hooks/use-portal-mode-classes';
 import { useUniqueId } from '../../hooks/use-unique-id/index.js';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
 import { nodeBelongs } from '../../utils/node-belongs';
 import { getFirstFocusable, getLastFocusable } from '../focus-lock/utils.js';
 import TabTrap from '../tab-trap/index.js';
@@ -69,7 +68,6 @@ interface TransitionContentProps {
   dropdownClasses: string;
   stretchWidth: boolean;
   interior: boolean;
-  isRefresh: boolean;
   dropdownRef: React.RefObject<HTMLDivElement>;
   verticalContainerRef: React.RefObject<HTMLDivElement>;
   expandToViewport?: boolean;
@@ -92,7 +90,6 @@ const TransitionContent = ({
   dropdownClasses,
   stretchWidth,
   interior,
-  isRefresh,
   dropdownRef,
   verticalContainerRef,
   expandToViewport,
@@ -111,12 +108,11 @@ const TransitionContent = ({
   const contentRef = useMergeRefs(dropdownRef, transitionRef);
   return (
     <div
-      className={clsx(styles.dropdown, dropdownClasses, {
+      className={clsx(styles.dropdown, dropdownClasses, styles.refresh, {
         [styles.open]: open,
         [styles['with-limited-width']]: !stretchWidth,
         [styles['hide-block-border']]: stretchWidth,
         [styles.interior]: interior,
-        [styles.refresh]: isRefresh,
         [styles['use-portal']]: expandToViewport && !interior,
         [styles['stretch-beyond-trigger-width']]: stretchBeyondTriggerWidth,
       })}
@@ -134,11 +130,7 @@ const TransitionContent = ({
       onMouseDown={onMouseDown}
     >
       <div
-        className={clsx(
-          styles['dropdown-content-wrapper'],
-          !header && !children && styles['is-empty'],
-          isRefresh && styles.refresh
-        )}
+        className={clsx(styles['dropdown-content-wrapper'], !header && !children && styles['is-empty'], styles.refresh)}
       >
         <div ref={verticalContainerRef} className={styles['dropdown-content']}>
           <DropdownContextProvider position={position}>
@@ -187,8 +179,6 @@ const Dropdown = ({
   const verticalContainerRef = useRef<HTMLDivElement>(null);
   // To keep track of the initial position (drop up/down) which is kept the same during fixed repositioning
   const fixedPosition = useRef<DropdownPosition | null>(null);
-
-  const isRefresh = useVisualRefresh();
 
   const dropdownClasses = usePortalModeClasses(triggerRef);
   const [position, setPosition] = useState<DropdownContextProviderProps['position']>('bottom-right');
@@ -455,7 +445,6 @@ const Dropdown = ({
                 stretchBeyondTriggerWidth={stretchBeyondTriggerWidth}
                 footer={footer}
                 onMouseDown={onMouseDown}
-                isRefresh={isRefresh}
                 dropdownRef={dropdownRef}
                 verticalContainerRef={verticalContainerRef}
                 position={position}

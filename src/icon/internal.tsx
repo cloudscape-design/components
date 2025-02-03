@@ -8,7 +8,6 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import icons from './generated/icons';
 import { IconProps } from './interfaces';
 
@@ -51,8 +50,6 @@ const InternalIcon = ({
   ...props
 }: InternalIconProps) => {
   const iconRef = useRef<HTMLElement>(null);
-  // To ensure a re-render is triggered on visual mode changes
-  useVisualRefresh();
   const [parentHeight, setParentHeight] = useState<number | null>(null);
   const contextualSize = size === 'inherit';
   const iconSize = contextualSize ? iconSizeMap(parentHeight) : size;

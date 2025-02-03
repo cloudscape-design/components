@@ -11,7 +11,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import { applyDefaults } from './defaults';
@@ -69,7 +68,6 @@ const AppLayout = React.forwardRef(
       },
       analyticsMetadata
     );
-    const isRefresh = useVisualRefresh();
     const isMobile = useMobile();
 
     const i18n = useInternalI18n('app-layout');
@@ -85,11 +83,10 @@ const AppLayout = React.forwardRef(
       drawersOverflow: i18n('ariaLabels.drawersOverflow', rest.ariaLabels?.drawersOverflow),
       drawersOverflowWithBadge: i18n('ariaLabels.drawersOverflowWithBadge', rest.ariaLabels?.drawersOverflowWithBadge),
     };
-    const { navigationOpen: defaultNavigationOpen, ...restDefaults } = applyDefaults(
-      contentType,
-      { maxContentWidth, minContentWidth },
-      isRefresh
-    );
+    const { navigationOpen: defaultNavigationOpen, ...restDefaults } = applyDefaults(contentType, {
+      maxContentWidth,
+      minContentWidth,
+    });
 
     const [navigationOpen = false, setNavigationOpen] = useControllable(
       controlledNavigationOpen,

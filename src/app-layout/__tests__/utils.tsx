@@ -9,7 +9,6 @@ import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 
@@ -20,10 +19,6 @@ import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visua
 // Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
-}));
-
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(false),
 }));
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
@@ -53,7 +48,7 @@ interface AppLayoutTestConfig {
 type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
 
 const defaultTestConfig: AppLayoutTestConfig = {
-  themes: ['classic', 'refresh', 'refresh-toolbar'],
+  themes: ['refresh', 'refresh-toolbar'],
   sizes: ['desktop', 'mobile'],
 };
 
@@ -70,12 +65,10 @@ export function describeEachAppLayout(
       describe(`Theme=${theme}, Size=${size}`, () => {
         beforeEach(() => {
           (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
-          (useVisualRefresh as jest.Mock).mockReturnValue(theme !== 'classic');
           setGlobalFlag('appLayoutWidget', theme === 'refresh-toolbar');
         });
         afterEach(() => {
           (useMobile as jest.Mock).mockReset();
-          (useVisualRefresh as jest.Mock).mockReset();
           setGlobalFlag('appLayoutWidget', undefined);
         });
         test('mocks applied correctly', () => {

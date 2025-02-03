@@ -8,7 +8,6 @@ import { getBaseProps } from '../internal/base-component';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
@@ -34,7 +33,6 @@ export function useFlashbar({
   const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
   const mergedRef = useMergeRefs(ref, breakpointRef, __internalRootRef);
   const isReducedMotion = useReducedMotion(ref);
-  const isVisualRefresh = useVisualRefresh();
   const [previousItems, setPreviousItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>(items);
   const [nextFocusId, setNextFocusId] = useState<string | null>(null);
 
@@ -76,7 +74,6 @@ export function useFlashbar({
     baseProps,
     breakpoint,
     isReducedMotion,
-    isVisualRefresh,
     mergedRef,
     ref,
   };

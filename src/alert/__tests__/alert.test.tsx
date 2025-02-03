@@ -8,14 +8,12 @@ import Alert, { AlertProps } from '../../../lib/components/alert';
 import Button from '../../../lib/components/button';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import styles from '../../../lib/components/alert/styles.css.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),
-  useVisualRefresh: jest.fn().mockReturnValue(false),
 }));
 
 function renderAlert(props: AlertProps = {}) {
@@ -30,10 +28,6 @@ const i18nStrings: AlertProps.I18nStrings = {
   errorIconAriaLabel: 'status: error',
   dismissAriaLabel: 'dismiss',
 };
-
-beforeEach(() => {
-  jest.mocked(useVisualRefresh).mockReset();
-});
 
 describe('Alert Component', () => {
   describe('structure', () => {
@@ -173,23 +167,7 @@ describe('Alert Component', () => {
   });
 
   describe('icon size', () => {
-    test('classic - big if has header and content', () => {
-      const { wrapper } = renderAlert({ header: 'Header', children: ['Content'] });
-      expect(wrapper.findByClassName(styles['icon-size-normal'])).toBeFalsy();
-      expect(wrapper.findByClassName(styles['icon-size-big'])).toBeTruthy();
-    });
-    test('classic - normal if only header', () => {
-      const { wrapper } = renderAlert({ header: 'Header' });
-      expect(wrapper.findByClassName(styles['icon-size-big'])).toBeFalsy();
-      expect(wrapper.findByClassName(styles['icon-size-normal'])).toBeTruthy();
-    });
-    test('classic - normal if only content', () => {
-      const { wrapper } = renderAlert({ children: ['Content'] });
-      expect(wrapper.findByClassName(styles['icon-size-big'])).toBeFalsy();
-      expect(wrapper.findByClassName(styles['icon-size-normal'])).toBeTruthy();
-    });
     test('visual refresh - always normal', () => {
-      jest.mocked(useVisualRefresh).mockReturnValue(true);
       const { wrapper } = renderAlert({ header: 'Header', children: ['Content'] });
       expect(wrapper.findByClassName(styles['icon-size-big'])).toBeFalsy();
       expect(wrapper.findByClassName(styles['icon-size-normal'])).toBeTruthy();

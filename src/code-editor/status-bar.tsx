@@ -21,7 +21,6 @@ interface StatusBarProps {
   i18nStrings?: CodeEditorProps.I18nStrings;
   errorCount: number;
   warningCount: number;
-  isRefresh: boolean;
 
   errorsTabRef?: React.RefObject<HTMLButtonElement>;
   warningsTabRef?: React.RefObject<HTMLButtonElement>;
@@ -50,7 +49,6 @@ export function StatusBar({
   i18nStrings,
   errorCount,
   warningCount,
-  isRefresh,
 }: StatusBarProps) {
   const i18n = useInternalI18n('code-editor');
   const errorText = `${i18n('i18nStrings.errorsTab', i18nStrings?.errorsTab)}: ${errorCount}`;
@@ -83,7 +81,6 @@ export function StatusBar({
             ref={errorsTabRef}
             ariaLabel={errorText}
             paneId={paneId}
-            isRefresh={isRefresh}
           />
 
           <span className={styles['tab-button--divider']}></span>
@@ -104,7 +101,6 @@ export function StatusBar({
             ariaHidden={paneStatus === 'error' && isTabFocused ? true : undefined}
             ariaLabel={warningText}
             paneId={paneId}
-            isRefresh={isRefresh}
           />
         </div>
         <InternalLiveRegion assertive={true} hidden={true} tagName="span">

@@ -15,7 +15,6 @@ import Dropdown from '../internal/components/dropdown';
 import OptionsList from '../internal/components/options-list';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
 import { isDevelopment } from '../internal/is-development';
 import { spinWhenOpen } from '../internal/styles/motion/utils';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
@@ -74,7 +73,6 @@ const InternalButtonDropdown = React.forwardRef(
       }
     }
     const isMainAction = mainAction && (variant === 'primary' || variant === 'normal');
-    const isVisualRefresh = useVisualRefresh();
 
     const {
       isOpen,
@@ -236,7 +234,7 @@ const InternalButtonDropdown = React.forwardRef(
           className={clsx(
             styles['trigger-button'],
             hasNoText && styles['has-no-text'],
-            isVisualRefresh && styles['visual-refresh'],
+            styles['visual-refresh'],
             canBeFullWidth && styles['main-action-full-width']
           )}
           variant={variant}
@@ -275,7 +273,7 @@ const InternalButtonDropdown = React.forwardRef(
               className={clsx(
                 styles['trigger-item'],
                 styles['dropdown-trigger'],
-                isVisualRefresh && styles['visual-refresh'],
+                styles['visual-refresh'],
                 styles[`variant-${variant}`],
                 baseTriggerProps.disabled && styles.disabled,
                 baseTriggerProps.loading && styles.loading

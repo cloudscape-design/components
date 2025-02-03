@@ -43,15 +43,13 @@ export function getAriaDescribedBy({ error, warning, description, constraint }: 
   return describedBy;
 }
 
-export function getGridDefinition(stretch: boolean, secondaryControlPresent: boolean, isRefresh: boolean) {
+export function getGridDefinition(stretch: boolean, secondaryControlPresent: boolean) {
   let columns: Array<{ colspan: GridProps.BreakpointMapping | number }>;
 
   if (stretch) {
     columns = [{ colspan: 12 }, { colspan: 12 }];
-  } else if (isRefresh) {
-    columns = [{ colspan: { default: 12, xs: 8 } }, { colspan: { default: 12, xs: 4 } }];
   } else {
-    columns = [{ colspan: { default: 12, xs: 9 } }, { colspan: { default: 12, xs: 3 } }];
+    columns = [{ colspan: { default: 12, xs: 8 } }, { colspan: { default: 12, xs: 4 } }];
   }
 
   if (!secondaryControlPresent) {

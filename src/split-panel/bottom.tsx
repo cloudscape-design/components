@@ -9,7 +9,6 @@ import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SplitPanelContentProps } from './interfaces';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
@@ -32,7 +31,6 @@ export function SplitPanelContentBottom({
   panelHeaderId,
   onToggle,
 }: SplitPanelContentBottomProps) {
-  const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarEnabled();
   const {
     bottomOffset,
@@ -59,8 +57,7 @@ export function SplitPanelContentBottom({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const centeredMaxWidthClasses = clsx({
-    [styles['pane-bottom-center-align']]: isRefresh,
+  const centeredMaxWidthClasses = clsx(styles['pane-bottom-center-align'], {
     [styles['pane-bottom-content-nav-padding']]: contentWrapperPaddings?.closedNav,
     [styles['pane-bottom-content-tools-padding']]: contentWrapperPaddings?.closedTools,
   });
@@ -68,15 +65,21 @@ export function SplitPanelContentBottom({
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.drawer, styles['position-bottom'], testUtilStyles.root, {
-        [sharedStyles['with-motion-vertical']]: !animationDisabled,
-        [testUtilStyles['open-position-bottom']]: isOpen,
-        [styles['drawer-closed']]: !isOpen,
-        [styles['drawer-mobile']]: isMobile,
-        [styles['drawer-disable-content-paddings']]: disableContentPaddings,
-        [styles.refresh]: isRefresh,
-        [styles['with-toolbar']]: isToolbar,
-      })}
+      className={clsx(
+        baseProps.className,
+        styles.drawer,
+        styles['position-bottom'],
+        testUtilStyles.root,
+        styles.refresh,
+        {
+          [sharedStyles['with-motion-vertical']]: !animationDisabled,
+          [testUtilStyles['open-position-bottom']]: isOpen,
+          [styles['drawer-closed']]: !isOpen,
+          [styles['drawer-mobile']]: isMobile,
+          [styles['drawer-disable-content-paddings']]: disableContentPaddings,
+          [styles['with-toolbar']]: isToolbar,
+        }
+      )}
       onClick={() => !isOpen && onToggle()}
       style={{
         insetBlockEnd: bottomOffset,
@@ -96,7 +99,7 @@ export function SplitPanelContentBottom({
           {header}
         </div>
         <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>
-          <div className={clsx({ [styles['content-bottom-max-width']]: isRefresh })} style={appLayoutMaxWidth}>
+          <div className={styles['content-bottom-max-width']} style={appLayoutMaxWidth}>
             {children}
           </div>
         </div>

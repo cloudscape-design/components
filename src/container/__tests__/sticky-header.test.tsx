@@ -10,9 +10,6 @@ jest.mock('../../../lib/components/container/use-sticky-header', () => ({
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(true),
 }));
-jest.mock('../../internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(true),
-}));
 
 jest.mock('@cloudscape-design/component-toolkit/dom', () => ({
   findUpUntil: jest.fn(),

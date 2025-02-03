@@ -22,7 +22,6 @@ import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { useFunnelChangeEvent } from './analytics';
 import { GeneratedAnalyticsMetadataWizardComponent } from './analytics-metadata/interfaces';
 import { WizardProps } from './interfaces';
@@ -69,7 +68,6 @@ export default function InternalWizard({
   const farthestStepIndex = useRef<number>(actualActiveStepIndex);
   farthestStepIndex.current = Math.max(farthestStepIndex.current, actualActiveStepIndex);
 
-  const isVisualRefresh = useVisualRefresh();
   const isLastStep = actualActiveStepIndex >= steps.length - 1;
 
   const navigationEvent = (requestedStepIndex: number, reason: WizardProps.NavigationReason) => {
@@ -177,9 +175,7 @@ export default function InternalWizard({
         ? getAnalyticsMetadataAttribute({ component: componentAnalyticsMetadata })
         : {})}
     >
-      <div
-        className={clsx(styles.wizard, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
-      >
+      <div className={clsx(styles.wizard, styles.refresh, smallContainer && styles['small-container'])}>
         <WizardNavigation
           activeStepIndex={actualActiveStepIndex}
           farthestStepIndex={farthestStepIndex.current}
@@ -191,9 +187,7 @@ export default function InternalWizard({
           onSkipToClick={onSkipToClick}
           steps={steps}
         />
-        <div
-          className={clsx(styles.form, isVisualRefresh && styles.refresh, smallContainer && styles['small-container'])}
-        >
+        <div className={clsx(styles.form, styles.refresh, smallContainer && styles['small-container'])}>
           <WizardForm
             steps={steps}
             showCollapsedSteps={smallContainer}

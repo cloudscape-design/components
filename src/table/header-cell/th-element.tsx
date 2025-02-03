@@ -7,7 +7,6 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { TableProps } from '../interfaces';
 import { StickyColumnsModel, useStickyCellStyles } from '../sticky-columns';
@@ -58,8 +57,6 @@ export function TableThElement({
   ariaLabel,
   ...props
 }: TableThElementProps) {
-  const isVisualRefresh = useVisualRefresh();
-
   const stickyStyles = useStickyCellStyles({
     stickyColumns: stickyState,
     columnId,
@@ -79,7 +76,7 @@ export function TableThElement({
         sticky && styles['header-cell-sticky'],
         stuck && styles['header-cell-stuck'],
         stripedRows && styles['has-striped-rows'],
-        isVisualRefresh && styles['is-visual-refresh'],
+        styles['is-visual-refresh'],
         isSelection && clsx(tableStyles['selection-control'], tableStyles['selection-control-header']),
         {
           [styles['header-cell-fake-focus']]: focusedComponent === `header-${String(columnId)}`,

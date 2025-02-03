@@ -2,10 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentConfiguration, useComponentMetrics } from '@cloudscape-design/component-toolkit/internal';
 
-import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
-import { useVisualRefresh } from '../use-visual-mode';
+import { PACKAGE_SOURCE, PACKAGE_VERSION } from '../../environment';
 
 export function useTelemetry(componentName: string, config?: ComponentConfiguration) {
-  const theme = useVisualRefresh() ? 'vr' : THEME;
+  const theme = 'vr';
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
 }
