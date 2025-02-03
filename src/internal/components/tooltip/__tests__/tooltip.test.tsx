@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { act, render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import Tooltip, { TooltipProps } from '../../../../../lib/components/internal/components/tooltip';
 import StatusIndicator from '../../../../../lib/components/status-indicator';
@@ -92,9 +92,7 @@ describe('Tooltip', () => {
     renderTooltip({ value: 'Value', onDismiss });
     expect(onDismiss).not.toHaveBeenCalled();
 
-    act(() => {
-      document.body.dispatchEvent(keydownEvent);
-    });
+    fireEvent.keyDown(window, keydownEvent);
     expect(keydownEvent.stopPropagation).toHaveBeenCalled();
     expect(onDismiss).toHaveBeenCalled();
   });

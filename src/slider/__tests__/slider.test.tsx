@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -278,15 +278,10 @@ describe('Slider events', () => {
       max: 100,
       value: 50,
     });
-    act(() => {
-      fireEvent.mouseEnter(wrapper.findNativeInput()!.getElement());
-    });
+    fireEvent.mouseEnter(wrapper.findNativeInput()!.getElement());
     expect(screen.queryByText('50')).toBeInTheDocument();
 
-    act(() => {
-      fireEvent.mouseLeave(wrapper.findNativeInput()!.getElement());
-    });
-
+    fireEvent.mouseLeave(wrapper.findNativeInput()!.getElement());
     expect(screen.queryByText('50')).not.toBeInTheDocument();
   });
 
@@ -296,14 +291,10 @@ describe('Slider events', () => {
       max: 100,
       value: 50,
     });
-    act(() => {
-      fireEvent.mouseEnter(wrapper.findNativeInput()!.getElement());
-    });
+    fireEvent.mouseEnter(wrapper.findNativeInput()!.getElement());
     expect(screen.queryByText('50')).toBeInTheDocument();
 
-    act(() => {
-      fireEvent.keyDown(window, { key: 'Escape' });
-    });
+    fireEvent.keyDown(window, { key: 'Escape' });
     expect(screen.queryByText('50')).not.toBeInTheDocument();
   });
 });
