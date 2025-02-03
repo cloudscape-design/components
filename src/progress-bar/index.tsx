@@ -104,15 +104,17 @@ export default function ProgressBar({
               </InternalLiveRegion>
             </>
           ) : (
-            <ResultState
-              resultText={resultText}
-              isInFlash={isInFlash}
-              resultButtonText={resultButtonText}
-              status={status}
-              onClick={() => {
-                fireNonCancelableEvent(onResultButtonClick);
-              }}
-            />
+            <InternalLiveRegion hidden={false} tagName="span" delay={0}>
+              <ResultState
+                resultText={resultText}
+                isInFlash={isInFlash}
+                resultButtonText={resultButtonText}
+                status={status}
+                onClick={() => {
+                  fireNonCancelableEvent(onResultButtonClick);
+                }}
+              />
+            </InternalLiveRegion>
           )}
         </div>
       </div>
