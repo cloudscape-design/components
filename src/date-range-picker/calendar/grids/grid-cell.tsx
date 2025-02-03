@@ -13,6 +13,10 @@ interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   disabledReason?: string;
 }
 
+interface GridCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
+  disabledReason?: string;
+}
+
 export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.Ref<HTMLTableCellElement>) => {
   const { disabledReason, ...rest } = props;
   const isDisabledWithReason = !!disabledReason;
@@ -67,7 +71,12 @@ export const GridCell = forwardRef((props: GridCellProps, focusedDateRef: React.
         <>
           {descriptionEl}
           {showTooltip && (
-            <Tooltip className={testutilStyles['disabled-reason-tooltip']} trackRef={ref} value={disabledReason!} />
+            <Tooltip
+              className={testutilStyles['disabled-reason-tooltip']}
+              trackRef={ref}
+              value={disabledReason!}
+              onDismiss={() => setShowTooltip(false)}
+            />
           )}
         </>
       )}
