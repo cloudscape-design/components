@@ -29,6 +29,7 @@ const Multiselect = React.forwardRef(
   ) => {
     const baseComponentProps = useBaseComponent('Multiselect', {
       props: {
+        inlineTokens: restProps.inlineTokens,
         autoFocus: restProps.autoFocus,
         expandToViewport: restProps.expandToViewport,
         filteringType,
@@ -42,9 +43,6 @@ const Multiselect = React.forwardRef(
         hasDisabledReasons: options.some(option => Boolean(option.disabledReason)),
       },
     });
-
-    // Private API for inline tokens
-    const inlineTokens = Boolean((restProps as any).inlineTokens);
 
     const componentAnalyticsMetadata: GeneratedAnalyticsMetadataMultiselectComponent = {
       name: 'awsui.Multiselect',
@@ -63,7 +61,6 @@ const Multiselect = React.forwardRef(
         selectedOptions={selectedOptions}
         keepOpen={keepOpen}
         hideTokens={hideTokens}
-        inlineTokens={inlineTokens}
         {...restProps}
         {...baseComponentProps}
         ref={ref}
