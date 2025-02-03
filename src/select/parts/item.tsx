@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal.js';
@@ -61,6 +61,9 @@ const Item = (
 
   const { descriptionEl, descriptionId } = useHiddenDescription(disabledReason);
 
+  const [canShowTooltip, setCanShowTooltip] = useState(true);
+  useEffect(() => setCanShowTooltip(true), [highlighted]);
+
   return (
     <SelectableItem
       ariaSelected={Boolean(selected)}
@@ -102,13 +105,14 @@ const Item = (
         {isDisabledWithReason && (
           <>
             {descriptionEl}
-            {highlighted && (
+            {highlighted && canShowTooltip && (
               <Tooltip
                 className={styles['disabled-reason-tooltip']}
                 trackRef={internalRef}
                 value={disabledReason!}
                 position="right"
                 hideOnOverscroll={true}
+                onDismiss={() => setCanShowTooltip(false)}
               />
             )}
           </>

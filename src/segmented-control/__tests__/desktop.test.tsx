@@ -344,6 +344,35 @@ describe('Segment disabled property', () => {
       expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
     });
 
+    test('close tooltip on Escape keydown', () => {
+      const { segmentedControlWrapper } = renderSegmentedControl(
+        <SegmentedControl
+          selectedId="seg-1"
+          options={defaultOptions.map(option => {
+            if (option.id === 'seg-2') {
+              return {
+                ...option,
+                disabled: true,
+                disabledReason: 'disabled reason',
+              };
+            }
+
+            return option;
+          })}
+        />
+      );
+
+      fireEvent.mouseEnter(segmentedControlWrapper.findSegmentById('seg-2')!.getElement());
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()!.getElement()).toHaveTextContent(
+        'disabled reason'
+      );
+
+      fireEvent.keyDown(window, { key: 'Escape' });
+
+      expect(segmentedControlWrapper.findSegmentById('seg-2')!.findDisabledReason()).toBe(null);
+    });
+
     test('has no aria-describedby by default', () => {
       const { segmentedControlWrapper } = renderSegmentedControl(
         <SegmentedControl selectedId="seg-1" options={defaultOptions} />

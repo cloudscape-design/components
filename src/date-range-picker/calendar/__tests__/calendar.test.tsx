@@ -496,6 +496,26 @@ describe('Date range picker calendar', () => {
         expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()).toBe(null);
       });
 
+      test('close tooltip on Esc but leaves the dialog open', () => {
+        const { wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          value: { type: 'absolute', startDate: '2018-03-01T00:00:00', endDate: '2018-03-01T00:00:00' },
+          isDateEnabled,
+          dateDisabledReason,
+        });
+        changeMode(wrapper, 'absolute');
+
+        fireEvent.mouseEnter(wrapper.findDropdown()!.findDateAt('left', 4, 1).getElement());
+
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()!.getElement()).toHaveTextContent(
+          'Disabled with a reason'
+        );
+
+        fireEvent.keyDown(window, { key: 'Escape' });
+        expect(wrapper.findDropdown()).not.toBeNull();
+        expect(wrapper.findDropdown()!.findDateAt('left', 4, 1).findDisabledReason()).toBe(null);
+      });
+
       test('has no aria-describedby by default', () => {
         const { wrapper } = renderDateRangePicker({
           ...defaultProps,

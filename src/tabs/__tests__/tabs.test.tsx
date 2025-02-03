@@ -1100,6 +1100,37 @@ describe('Tabs', () => {
         expect(wrapper.findTabLinkById('second')!.findDisabledReason()).toBe(null);
       });
 
+      test('close tooltip on Esc keydown', () => {
+        const firstTabId = defaultTabs[0].id;
+        const { wrapper } = renderTabs(
+          <Tabs
+            tabs={defaultTabs.map(item => {
+              if (item.id === 'second') {
+                return {
+                  ...item,
+                  disabled: true,
+                  disabledReason: 'disabled reason',
+                };
+              }
+
+              return item;
+            })}
+            activeTabId={firstTabId}
+            onChange={() => void 0}
+          />
+        );
+
+        fireEvent.mouseEnter(wrapper.findTabLinkById('second')!.getElement());
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()!.getElement()).toHaveTextContent(
+          'disabled reason'
+        );
+
+        fireEvent.keyDown(window, { key: 'Escape' });
+
+        expect(wrapper.findTabLinkById('second')!.findDisabledReason()).toBe(null);
+      });
+
       test('has no aria-describedby by default', () => {
         const firstTabId = defaultTabs[0].id;
         const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId={firstTabId} onChange={() => void 0} />);

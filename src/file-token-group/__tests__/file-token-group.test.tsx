@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useState } from 'react';
-import { act, fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
+import { fireEvent, render as testingLibraryRender, screen } from '@testing-library/react';
 
 import '../../__a11y__/to-validate-a11y';
 import FileTokenGroup, { FileTokenGroupProps } from '../../../lib/components/file-token-group';
@@ -220,26 +220,27 @@ describe('File loading', () => {
 describe('Tooltip', () => {
   test('Should show ellipsis on long file names', () => {
     const wrapper = render({ items: [{ file: file3 }] });
-    act(() => {
-      fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
-    });
-
+    fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
     expect(wrapper.findFileToken(1)!.findFileName().getElement()).toHaveClass(testStyles['ellipsis-active']);
   });
 
   test('Should show tooltip on mouse enter', () => {
     const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
 
-    act(() => {
-      fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
-    });
-
+    fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
     expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
 
-    act(() => {
-      fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
-    });
+    fireEvent.mouseLeave(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
+  });
 
+  test('Should hide tooltip on Escape', () => {
+    const wrapper = render({ items: [{ file: file3 }], alignment: 'horizontal' });
+
+    fireEvent.mouseEnter(wrapper.findFileToken(1)!.findFileName().getElement());
+    expect(document.querySelector(`.${tooltipStyles.root}`)).not.toBeNull();
+
+    fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
     expect(document.querySelector(`.${tooltipStyles.root}`)).toBeNull();
   });
 });

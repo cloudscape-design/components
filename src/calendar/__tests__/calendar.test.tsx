@@ -371,6 +371,29 @@ describe('disabled date', () => {
       expect(wrapper.findDateAt(1, 6).findDisabledReason()).toBe(null);
     });
 
+    test('closes tooltip on Esc', () => {
+      const { container } = render(
+        <Calendar
+          {...defaultProps}
+          value="2022-01-03"
+          isDateEnabled={(date: Date) => date.getDay() !== 6 && date.getDay() !== 0}
+          dateDisabledReason={(date: Date) => {
+            if (date.getDay() === 6) {
+              return 'Disabled on Saturdays';
+            } else if (date.getDay() === 0) {
+              return 'Disabled on Sundays';
+            }
+            return '';
+          }}
+        />
+      );
+      const wrapper = createWrapper(container).findCalendar()!;
+      wrapper.findDateAt(1, 6).focus();
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()!.getElement()).toHaveTextContent('Disabled on Saturdays');
+      fireEvent.keyDown(wrapper.findDateAt(1, 6).getElement(), { key: 'Escape', code: 'Escape' });
+      expect(wrapper.findDateAt(1, 6).findDisabledReason()).toBe(null);
+    });
+
     test('open tooltip on mouseenter', () => {
       const { container } = render(
         <Calendar

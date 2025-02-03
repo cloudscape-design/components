@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import PopoverArrow from '../../../popover/arrow';
 import PopoverBody from '../../../popover/body';
@@ -20,6 +20,7 @@ export interface TooltipProps {
   contentAttributes?: React.HTMLAttributes<HTMLDivElement>;
   size?: PopoverProps['size'];
   hideOnOverscroll?: boolean;
+  onDismiss?: () => void;
 }
 
 export default function Tooltip({
@@ -31,10 +32,35 @@ export default function Tooltip({
   position = 'top',
   size = 'small',
   hideOnOverscroll,
+  onDismiss,
 }: TooltipProps) {
   if (!trackKey && (typeof value === 'string' || typeof value === 'number')) {
     trackKey = value;
   }
+
+  useEffect(() => {
+    const controller = new AbortController();
+    window.addEventListener(
+      'keydown',
+      (event: KeyboardEvent) => {
+        if (event.key === 'Escape') {
+          // Prevent any surrounding modals or dialogs from acting on this Esc.
+          event.stopPropagation();
+          onDismiss?.();
+        }
+      },
+      {
+        // The tooltip is often activated on mouseover, which means the focus can
+        // be anywhere else on the page. Capture also means that this gets called
+        // before any wrapper modals or dialogs can detect it and act on it.
+        capture: true,
+        signal: controller.signal,
+      }
+    );
+    return () => {
+      controller.abort();
+    };
+  }, [onDismiss]);
 
   return (
     <Portal>

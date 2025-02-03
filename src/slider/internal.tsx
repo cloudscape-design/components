@@ -128,7 +128,11 @@ export default function InternalSlider({
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
       {showTooltip && (
-        <Tooltip value={valueFormatter ? valueFormatter(sliderValue) : sliderValue} trackRef={handleRef} />
+        <Tooltip
+          value={valueFormatter ? valueFormatter(sliderValue) : sliderValue}
+          trackRef={handleRef}
+          onDismiss={() => setShowTooltip(false)}
+        />
       )}
       <div
         ref={handleRef}

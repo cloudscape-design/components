@@ -58,6 +58,20 @@ test.each([copyButton, likeButton, menuButton, fileInput])(
   }
 );
 
+test.each([copyButton, likeButton, menuButton, fileInput])(
+  'shows the tooltip on pointer enter and hides on Esc key, item id=$id',
+  item => {
+    const { wrapper } = renderButtonGroup({ items: [likeButton, copyButton, menuButton, fileInput] });
+    const button = item.id === 'file' ? wrapper.findFileInputById(item.id)! : wrapper.findButtonById(item.id)!;
+
+    fireEvent.pointerEnter(button.getElement());
+    expect(wrapper.findTooltip()!.getElement()).toHaveTextContent(item.text);
+
+    fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
+    expect(wrapper.findTooltip()).toBeNull();
+  }
+);
+
 test.each([copyButton, likeButton, menuButton])('shows no tooltip in loading state, item id=$id', item => {
   const { wrapper } = renderButtonGroup({
     items: [likeButton, copyButton, menuButton].map(item => ({ ...item, loading: true })),
