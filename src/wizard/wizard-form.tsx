@@ -108,8 +108,15 @@ function WizardForm({
         <div className={clsx(styles['collapsed-steps'], !showCollapsedSteps && styles['collapsed-steps-hidden'])}>
           {i18nStrings.collapsedStepsLabel?.(activeStepIndex + 1, steps.length)}
         </div>
-        <InternalHeader className={styles['form-header-component']} variant="h1" description={description} info={info}>
-          <span className={styles['form-header-component-wrapper']} tabIndex={-1} ref={stepHeaderRef}>
+        <InternalHeader
+          className={styles['form-header-component']}
+          variant="h1"
+          description={description}
+          info={info}
+          __headingTagRef={stepHeaderRef}
+          __headingTagTabIndex={-1}
+        >
+          <span className={styles['form-header-component-wrapper']}>
             <span {...{ [DATA_ATTR_FUNNEL_KEY]: FUNNEL_KEY_STEP_NAME }}>{title}</span>
             {isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
           </span>
