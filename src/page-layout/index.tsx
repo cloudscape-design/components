@@ -40,11 +40,19 @@ const PageLayout = React.forwardRef(
     }: PageLayoutProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
+    const isVisualRefresh = useVisualRefresh();
     if (isDevelopment) {
       if (rest.toolsOpen && rest.toolsHide) {
         warnOnce(
           'PageLayout',
           `You have enabled both the \`toolsOpen\` prop and the \`toolsHide\` prop. This is not supported. Set \`toolsOpen\` to \`false\` when you set \`toolsHide\` to \`true\`.`
+        );
+      }
+
+      if (!isVisualRefresh) {
+        warnOnce(
+          'PageLayout',
+          `This component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.`
         );
       }
     }
