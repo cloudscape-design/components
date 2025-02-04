@@ -9,8 +9,9 @@ import {
   createFlashbarContext,
   createFlashbarWarningContext,
   createTopNavigationContext,
-} from '../utils/contexts';
-import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
+} from '../utils/contexts.js';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes.js';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),
@@ -18,43 +19,38 @@ const modes = [
   createMotionMode('.awsui-motion-disabled'),
 ];
 
-const tokenCategories = [
-  require('./color-palette'),
-  require('./color-charts'),
-  require('./color-severity'),
-  require('./colors'),
-  require('./typography'),
-  require('./borders'),
-  require('./motion'),
-  require('./sizes'),
-  require('./spacing'),
-  require('./shadows'),
+const tokenCategories: Array<StyleDictionary.CategoryModule> = [
+  await import('./color-palette.js'),
+  await import('./color-charts.js'),
+  await import('./color-severity.js'),
+  await import('./colors.js'),
+  await import('./typography.js'),
+  await import('./borders.js'),
+  await import('./motion.js'),
+  await import('./sizes.js'),
+  await import('./spacing.js'),
+  await import('./shadows.js'),
 ];
 
-export function buildClassicOpenSource(builder: ThemeBuilder) {
+export async function buildClassicOpenSource(builder: ThemeBuilder) {
   tokenCategories.forEach(({ tokens, mode: modeId }) => {
     const mode = modes.find(mode => mode.id === modeId);
     builder.addTokens(tokens, mode);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createCompactTableContext(require('./contexts/compact-table').tokens));
-
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createTopNavigationContext(require('./contexts/top-navigation').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createAlertContext(require('./contexts/alert').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createAppLayoutToolsDrawerTriggerContext(require('./contexts/tools-drawer-trigger').tokens));
+  builder.addContext(createCompactTableContext((await import('./contexts/compact-table.js')).tokens));
+  builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
+  builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
+  builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
+  builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
+  builder.addContext(
+    createAppLayoutToolsDrawerTriggerContext((await import('./contexts/tools-drawer-trigger.js')).tokens)
+  );
 
   return builder.build();
 }
 
 const builder = new ThemeBuilder('classic', ':root', modes);
-const theme = buildClassicOpenSource(builder);
+const theme = await buildClassicOpenSource(builder);
 
 export default theme;
