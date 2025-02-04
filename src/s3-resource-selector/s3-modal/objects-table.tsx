@@ -3,6 +3,7 @@
 import React from 'react';
 
 import { useInternalI18n } from '../../i18n/context';
+import { IconProps } from '../../icon/interfaces';
 import InternalIcon from '../../icon/internal';
 import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import InternalLink from '../../link/internal';
@@ -92,9 +93,12 @@ export function ObjectsTable({
           sortingField: 'Key',
           cell: item => {
             const isClickable = item.IsFolder || includes(selectableItemsTypes, 'versions');
+            const iconProps: IconProps = item.IsFolder
+              ? { name: 'folder', ariaLabel: i18nStrings?.labelIconFolder }
+              : { name: 'file', ariaLabel: i18nStrings?.labelIconFile };
             return (
               <>
-                <InternalIcon name={item.IsFolder ? 'folder' : 'file'} />{' '}
+                <InternalIcon {...iconProps} />{' '}
                 {isClickable ? (
                   <InternalLink onFollow={() => item.Key && onDrilldown(item)} variant="link">
                     {item.Key}

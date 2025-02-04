@@ -82,6 +82,8 @@ export const i18nStrings: S3ResourceSelectorProps.I18nStrings = {
   labelRefresh: 'Refresh the data',
   labelModalDismiss: 'Dismiss the modal',
   labelBreadcrumbs: 'S3 navigation',
+  labelIconFolder: 'Folder',
+  labelIconFile: 'File',
 };
 
 export const buckets: ReadonlyArray<S3ResourceSelectorProps.Bucket> = [
