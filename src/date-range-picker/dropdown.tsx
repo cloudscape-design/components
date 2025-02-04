@@ -10,7 +10,7 @@ import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import FocusLock from '../internal/components/focus-lock';
-import InternalLiveRegion from '../live-region/internal';
+import InternalLiveRegion, { InternalLiveRegionRef } from '../live-region/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import Calendar from './calendar';
 import { DateRangePickerProps } from './interfaces';
@@ -84,6 +84,7 @@ export function DateRangePickerDropdown({
   const i18n = useInternalI18n('date-range-picker');
   const isMonthPicker = granularity === 'month';
   const hideTime = dateOnly || isMonthPicker;
+  const liveRegionRef = useRef<InternalLiveRegionRef>(null);
 
   const [rangeSelectionMode, setRangeSelectionMode] = useState<'absolute' | 'relative'>(
     getDefaultMode(value, relativeOptions, rangeSelectorMode)
@@ -123,6 +124,7 @@ export function DateRangePickerDropdown({
     if (newValidationResult.valid === false) {
       setApplyClicked(true);
       setValidationResult(newValidationResult);
+      liveRegionRef.current?.reannounce();
     } else {
       setApplyClicked(false);
       closeDropdown();
@@ -230,7 +232,7 @@ export function DateRangePickerDropdown({
                       >
                         <span className={testutilStyles['validation-error']}>{validationResult.errorMessage}</span>
                       </InternalAlert>
-                      <InternalLiveRegion hidden={true} tagName="span">
+                      <InternalLiveRegion hidden={true} tagName="span" ref={liveRegionRef}>
                         {validationResult.errorMessage}
                       </InternalLiveRegion>
                     </>
