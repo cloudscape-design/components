@@ -1,0 +1,31 @@
+
+
+name: "Close Stale Issues"
+
+on:
+  # allow to run manually when needed
+  workflow_dispatch:
+  # at 7:15 and 19:15 every day
+  schedule:
+    - cron: "15 7,19 * * *"
+
+jobs:
+  cleanup:
+    permissions:
+      issues: write
+      contents: read
+    runs-on: ubuntu-latest
+    name: Stale issue job
+    steps:
+      - uses: aws-actions/stale-issue-cleanup@v6
+        with:
+          issue-types: issues
+
+          stale-issue-message: This issue will automatically resolve if we don't hear back from you soon.
+          response-requested-label: response-requested
+          stale-issue-label: closing-soon
+
+          days-before-stale: 6
+          days-before-close: 3
+
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
