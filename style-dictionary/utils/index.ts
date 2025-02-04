@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { TokenCategory } from '@cloudscape-design/theming-build';
 
-import { StyleDictionary } from './interfaces';
+import { StyleDictionary } from './interfaces.js';
 
 const expandColorEntry = (entry: StyleDictionary.ColorModeEntry): StyleDictionary.ExpandedColorModeEntry => {
   if (typeof entry === 'string') {

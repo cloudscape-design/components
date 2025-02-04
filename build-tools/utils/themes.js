@@ -12,8 +12,8 @@ const themes = [
     designTokensDir: 'design-tokens',
     designTokensPackageJson: { name: '@cloudscape-design/design-tokens' },
     outputPath: path.join(workspace.targetPath, 'components'),
-    primaryThemePath: './classic',
-    secondaryThemePaths: ['./visual-refresh-secondary'],
+    primaryThemePath: './classic/index.js',
+    secondaryThemePaths: ['./visual-refresh-secondary/index.js'],
   },
 ];
 

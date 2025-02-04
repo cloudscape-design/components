@@ -9,9 +9,10 @@ import {
   createFlashbarWarningContext,
   createHeaderContext,
   createTopNavigationContext,
-} from '../utils/contexts';
-import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
-import alertHeaderContextTokens from './contexts/header-alert';
+} from '../utils/contexts.js';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes.js';
+import alertHeaderContextTokens from './contexts/header-alert.js';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),
@@ -19,37 +20,31 @@ const modes = [
   createMotionMode('.awsui-motion-disabled'),
 ];
 
-const tokenCategories = [
-  require('./color-palette'),
-  require('./color-charts'),
-  require('./color-severity'),
-  require('./colors'),
-  require('./typography'),
-  require('./borders'),
-  require('./motion'),
-  require('./sizes'),
-  require('./spacing'),
-  require('./shadows'),
+const tokenCategories: Array<StyleDictionary.CategoryModule> = [
+  await import('./color-palette.js'),
+  await import('./color-charts.js'),
+  await import('./color-severity.js'),
+  await import('./colors.js'),
+  await import('./typography.js'),
+  await import('./borders.js'),
+  await import('./motion.js'),
+  await import('./sizes.js'),
+  await import('./spacing.js'),
+  await import('./shadows.js'),
 ];
 
-export function buildVisualRefresh(builder: ThemeBuilder) {
+export async function buildVisualRefresh(builder: ThemeBuilder) {
   tokenCategories.forEach(({ tokens, mode: modeId }) => {
     const mode = modes.find(mode => mode.id === modeId);
     builder.addTokens(tokens, mode);
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createCompactTableContext(require('./contexts/compact-table').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createTopNavigationContext(require('./contexts/top-navigation').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createHeaderContext(require('./contexts/header').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createFlashbarContext(require('./contexts/flashbar').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createFlashbarWarningContext(require('./contexts/flashbar-warning').tokens));
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  builder.addContext(createAlertContext(require('./contexts/alert').tokens));
+  builder.addContext(createCompactTableContext((await import('./contexts/compact-table.js')).tokens));
+  builder.addContext(createTopNavigationContext((await import('./contexts/top-navigation.js')).tokens));
+  builder.addContext(createHeaderContext((await import('./contexts/header.js')).tokens));
+  builder.addContext(createFlashbarContext((await import('./contexts/flashbar.js')).tokens));
+  builder.addContext(createFlashbarWarningContext((await import('./contexts/flashbar-warning.js')).tokens));
+  builder.addContext(createAlertContext((await import('./contexts/alert.js')).tokens));
   builder.addContext({
     id: 'alert-header',
     selector: '.awsui-context-content-header .awsui-context-alert',
@@ -60,6 +55,6 @@ export function buildVisualRefresh(builder: ThemeBuilder) {
 }
 
 const builder = new ThemeBuilder('visual-refresh', ':root', modes);
-const theme = buildVisualRefresh(builder);
+const theme = await buildVisualRefresh(builder);
 
 export default theme;

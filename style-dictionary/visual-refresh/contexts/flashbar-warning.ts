@@ -1,11 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import merge from 'lodash/merge';
+import merge from 'lodash/merge.js';
 
-import { expandColorDictionary, pickState } from '../../utils';
-import { StyleDictionary } from '../../utils/interfaces';
-import { tokens as parentTokens } from '../colors';
-import { alertButtonTokens } from './alert';
+import { expandColorDictionary, pickState } from '../../utils/index.js';
+import { StyleDictionary } from '../../utils/interfaces.js';
+import { tokens as parentTokens } from '../colors.js';
+import { alertButtonTokens } from './alert.js';
 
 // Token configuration that is shared between classic and visual refresh
 export const sharedTokens: StyleDictionary.ColorsDictionary = {

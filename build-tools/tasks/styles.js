@@ -3,7 +3,7 @@
 const { parallel, series } = require('gulp');
 const { readFileSync } = require('fs');
 const { createHash } = require('crypto');
-const { join, basename } = require('path');
+const { join } = require('path');
 const { buildThemedComponentsInternal } = require('@cloudscape-design/theming-build/internal');
 
 const themes = require('../utils/themes');
@@ -12,6 +12,8 @@ const { task } = require('../utils/gulp-utils');
 const { writeFile } = require('../utils/files');
 const { compileTypescript } = require('./typescript');
 
+const styleDictionaryRoot = join(__dirname, '../../', workspace.compiledStyleDictionary);
+
 function generateEnvironment() {
   return task(`style-dictionary:environment`, () => {
     const tokenStylesPath = join(workspace.sourcePath, './internal/styles/global.scss');
@@ -19,8 +21,8 @@ function generateEnvironment() {
     hash.update(readFileSync(tokenStylesPath, 'utf-8'));
     const tokenStylesHash = hash.digest('hex').slice(0, 6);
     writeFile(
-      join(rootDir, workspace.compiledStyleDictionary, 'utils/environment.js'),
-      `exports.tokenStylesSuffix = "${tokenStylesHash}";`
+      join(styleDictionaryRoot, 'utils/environment.js'),
+      `export const tokenStylesSuffix = "${tokenStylesHash}";`
     );
     return Promise.resolve();
   });
@@ -34,18 +36,18 @@ function compileStyleDictionary() {
   });
 }
 
-const rootDir = join(__dirname, '../../');
-
 function stylesTask(theme) {
-  return task(`styles:${theme.name}`, () => {
+  return task(`styles:${theme.name}`, async () => {
     const designTokensOutputDir = join(workspace.targetPath, theme.designTokensDir);
-    const primary = getTheme(theme.primaryThemePath);
-    const secondary = theme.secondaryThemePaths ? theme.secondaryThemePaths.map(path => getTheme(path)) : [];
-    const styleDictionaryName = basename(theme.primaryThemePath);
+    // eslint-disable-next-line no-unsanitized/method
+    const { default: primary } = await import(join(styleDictionaryRoot, theme.primaryThemePath));
+    const secondary = await Promise.all(
+      // eslint-disable-next-line no-unsanitized/method
+      theme.secondaryThemePaths?.map(async path => (await import(join(styleDictionaryRoot, path))).default) ?? []
+    );
 
-    const metadata = require(
-      join(rootDir, `${workspace.compiledStyleDictionary}/${styleDictionaryName}/metadata`)
-    ).default;
+    // eslint-disable-next-line no-unsanitized/method
+    const { default: metadata } = await import(join(styleDictionaryRoot, theme.primaryThemePath, '../metadata.js'));
     const exposed = [];
     const themeable = [];
     const variablesMap = {};
@@ -81,10 +83,6 @@ function stylesTask(theme) {
       failOnDeprecations: true,
     });
   });
-}
-
-function getTheme(themePath) {
-  return require(join(rootDir, workspace.compiledStyleDictionary, themePath)).default;
 }
 
 module.exports = series(

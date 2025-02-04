@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { StyleDictionary } from '../utils/interfaces';
-import { updateDescriptions } from '../utils/metadata';
-import parentMetadata from '../visual-refresh/metadata';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { updateDescriptions } from '../utils/metadata.js';
+import parentMetadata from '../visual-refresh/metadata/index.js';
 
 const updatedDescriptions: StyleDictionary.TokenIndex<string> = {
   colorTextAccent:

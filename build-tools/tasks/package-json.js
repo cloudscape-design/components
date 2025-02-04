@@ -80,6 +80,7 @@ function generatePackageJson(target, baseContent, { injectDependencies } = {}) {
 
 const styleDictionaryPackageJson = generatePackageJson(path.join(workspace.targetPath, 'style-dictionary'), {
   name: '@cloudscape-design/style-dictionary',
+  type: 'module',
   dependencies: { lodash: '^4.0.0' },
 });
 
