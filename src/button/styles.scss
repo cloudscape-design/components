@@ -34,32 +34,6 @@
     border-color: map.get($variant, 'active-border-color');
   }
 
-  &:focus {
-    outline: none;
-    text-decoration: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
-  &.variant-icon,
-  &.variant-modal-dismiss,
-  &.variant-flashbar-icon {
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(
-        (
-          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
-          'horizontal': awsui.$space-button-focus-outline-gutter,
-        )
-      );
-    }
-  }
-  &.variant-inline-icon {
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
-    }
-  }
-
   &.disabled {
     background: map.get($variant, 'disabled-background');
     border-color: map.get($variant, 'disabled-border-color');
@@ -96,6 +70,29 @@
     }
   }
 
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+
+    &.variant-icon,
+    &.variant-flashbar-icon {
+      @include styles.focus-highlight(
+        (
+          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
+          'horizontal': awsui.$space-button-focus-outline-gutter,
+        )
+      );
+    }
+
+    &.variant-inline-icon {
+      @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
+    }
+  }
+
   &.button-no-text {
     padding-inline-start: awsui.$space-button-icon-only-horizontal;
     padding-inline-end: awsui.$space-button-icon-only-horizontal;
@@ -111,7 +108,6 @@
   }
 
   &.variant-icon,
-  &.variant-inline-icon,
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
