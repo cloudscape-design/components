@@ -1,6 +1,5 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Simulate } from 'react-dom/test-utils';
 
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
 import { act } from '@cloudscape-design/test-utils-core/utils-dom';
@@ -29,9 +28,28 @@ export default class TextareaWrapper extends ComponentWrapper<HTMLTextAreaElemen
    * @param value value to set the textarea to.
    */
   @usesDom setTextareaValue(value: string): void {
-    const element: HTMLTextAreaElement = this.findNativeTextarea().getElement();
+    const element = this.findNativeTextarea().getElement();
     act(() => {
-      Simulate.change(element, { target: { value } as unknown as EventTarget });
+      const event = new Event('change', { bubbles: true, cancelable: false });
+      setNativeValue(element, value);
+      element.dispatchEvent(event);
     });
+  }
+}
+
+// Copied from @testing-library/dom/dist/events.js
+function setNativeValue(element: Element, value: string): void {
+  const { set: valueSetter } = Object.getOwnPropertyDescriptor(element, 'value') || {};
+  const prototype = Object.getPrototypeOf(element);
+  const { set: prototypeValueSetter } = Object.getOwnPropertyDescriptor(prototype, 'value') || {};
+
+  if (prototypeValueSetter && valueSetter !== prototypeValueSetter) {
+    prototypeValueSetter.call(element, value);
+  } else {
+    if (valueSetter) {
+      valueSetter.call(element, value);
+    } else {
+      throw new Error('The given element does not have a value setter');
+    }
   }
 }
