@@ -87,7 +87,6 @@ export default function InternalContainer({
   const { isSticky, isStuck, stickyStyles } = useStickyHeader(
     rootRef,
     headerRef,
-    variant,
     __stickyHeader,
     __stickyOffset,
     __mobileStickyOffset,

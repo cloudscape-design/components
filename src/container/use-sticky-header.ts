@@ -8,7 +8,6 @@ import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
-import { ContainerProps } from './interfaces';
 
 interface StickyHeaderContextProps {
   isStuck: boolean;
@@ -45,10 +44,6 @@ export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
 export const useStickyHeader = (
   rootRef: RefObject<HTMLDivElement>,
   headerRef: RefObject<HTMLDivElement>,
-  /**
-   * variant extends those from the ContainerProps to also include those from table
-   */
-  variant: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards' | 'borderless' = 'default',
   __stickyHeader?: boolean,
   __stickyOffset?: number,
   __mobileStickyOffset?: number,
@@ -105,15 +100,14 @@ export const useStickyHeader = (
         //using Math.round to adjust for rounding errors in floating-point arithmetic and timing issues
         const rootTop = Math.round((rootRef.current.getBoundingClientRect().top + rootTopBorderWidth) * 10000) / 10000;
         const headerTop = Math.round(headerRef.current.getBoundingClientRect().top * 10000) / 10000;
-
-        if (rootTop < headerTop && (variant === 'full-page' || headerTop === 0)) {
+        if (rootTop < headerTop) {
           setIsStuck(true);
         } else {
           setIsStuck(false);
         }
       }
     },
-    [rootRef, headerRef, variant]
+    [rootRef, headerRef]
   );
 
   useEffect(() => {
