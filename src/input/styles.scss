@@ -139,7 +139,7 @@
 
 .input-icon-right {
   position: absolute;
-  inset-block-start: styles.$control-icon-vertical-offset;
+  inset-block-start: calc(#{styles.$control-icon-vertical-offset} - #{awsui.$space-xxxs});
   inset-inline-end: calc(#{styles.$control-icon-horizontal-offset} - #{awsui.$space-xxs});
 }
 
