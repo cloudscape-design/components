@@ -238,12 +238,11 @@ export const InternalButton = React.forwardRef(
             {external && (
               <>
                 &nbsp;
-                <span
-                  role="img"
-                  aria-label={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
-                >
-                  <Icon name="external" className={testUtilStyles['external-icon']} />
-                </span>
+                <Icon
+                  name="external"
+                  className={testUtilStyles['external-icon']}
+                  ariaLabel={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
+                />
               </>
             )}
           </>

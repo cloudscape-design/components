@@ -182,12 +182,11 @@ export function TableHeaderCell<ItemType>({
         >
           {column.header}
           {isEditable ? (
-            <span
-              className={styles['edit-icon']}
-              role="img"
-              aria-label={i18n('columnDefinitions.editConfig.editIconAriaLabel', column.editConfig?.editIconAriaLabel)}
-            >
-              <InternalIcon name="edit" />
+            <span className={styles['edit-icon']}>
+              <InternalIcon
+                name="edit"
+                ariaLabel={i18n('columnDefinitions.editConfig.editIconAriaLabel', column.editConfig?.editIconAriaLabel)}
+              />
             </span>
           ) : null}
         </div>

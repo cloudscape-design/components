@@ -104,15 +104,13 @@ function TableCellEditable<ItemType>({
             <>
               <span
                 className={styles['body-cell-success']}
-                aria-label={ariaLabels?.successfulEditLabel?.(column)}
-                role="img"
                 onMouseDown={e => {
                   // Prevent the editor's Button blur event to be fired when clicking the success icon.
                   // This prevents unfocusing the button and triggers the `TableTdElement` onClick event which initiates the edit mode.
                   e.preventDefault();
                 }}
               >
-                <Icon name="status-positive" variant="success" />
+                <Icon name="status-positive" variant="success" ariaLabel={ariaLabels?.successfulEditLabel?.(column)} />
               </span>
               <InternalLiveRegion tagName="span" hidden={true}>
                 {i18n('ariaLabels.successfulEditLabel', ariaLabels?.successfulEditLabel?.(column))}

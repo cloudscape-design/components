@@ -85,7 +85,7 @@ describe('Alert Component', () => {
     });
     it('status icon does not have a label by default', () => {
       const { wrapper } = renderAlert({});
-      expect(wrapper.find('[role="img"]')!.getElement()).not.toHaveAttribute('aria-label');
+      expect(wrapper.find('[role="img"]')).toBeNull();
     });
     it('status icon can have a label', () => {
       const { wrapper } = renderAlert({ i18nStrings });
@@ -215,7 +215,7 @@ describe('Alert Component', () => {
         </TestI18nProvider>
       );
       const wrapper = createWrapper(container)!.findAlert()!;
-      const statusIcon = wrapper.findByClassName(styles.icon)!.getElement();
+      const statusIcon = wrapper.findByClassName(styles.icon)!.findIcon()!.getElement();
       const dismissButton = wrapper.findDismissButton()!.getElement();
       return { statusIcon, dismissButton };
     }
