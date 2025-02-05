@@ -79,6 +79,7 @@
     @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
 
     &.variant-icon,
+    &.variant-modal-dismiss,
     &.variant-flashbar-icon {
       @include styles.focus-highlight(
         (
@@ -108,6 +109,7 @@
   }
 
   &.variant-icon,
+  &.variant-inline-icon,
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
