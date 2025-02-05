@@ -98,20 +98,12 @@ export const useStickyHeader = (
         return;
       }
       if (rootRef.current && headerRef.current) {
-        // const overflowParents = getOverflowParents(rootRef.current);
-        // const mainElement = findUpUntil(rootRef.current, elem => elem.tagName === 'MAIN');
         const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
-        //using math.Round to adjust for rounding errors in floating-point arithmetic and timing issues
+        //using Math.round to adjust for rounding errors in floating-point arithmetic and timing issues
         const rootTop = Math.round((rootRef.current.getBoundingClientRect().top + rootTopBorderWidth) * 10000) / 10000;
         const headerTop = Math.round(headerRef.current.getBoundingClientRect().top * 10000) / 10000;
 
-        // console.log({ headerTopDistance, currentHTD: rootTop - headerTop, overflowParents, mainElement, rootTopBorderWidth, rootTop, headerTop, variant, isStuck: (variant === 'full-page' || headerTop === 0 || hasInnerOverflowParents) && rootTop < headerTop})
-        if (
-          (variant === 'full-page' ||
-            headerTop === 0 || //when the header is at the top of the page
-            headerTop !== rootTop) &&
-          rootTop < headerTop
-        ) {
+        if (rootTop < headerTop && (variant === 'full-page' || headerTop === 0)) {
           setIsStuck(true);
         } else {
           setIsStuck(false);
