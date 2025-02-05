@@ -147,6 +147,9 @@ export default function StaticSinglePageCreatePage() {
               >
                 <SpaceBetween size="s">
                   <FormField
+                    analyticsMetadata={{
+                      instanceIdentifier: 'field1',
+                    }}
                     info={
                       <Link data-testid="external-link" external={true} href="#">
                         Learn more
