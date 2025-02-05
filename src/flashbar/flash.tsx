@@ -134,19 +134,24 @@ export const Flash = React.forwardRef(
     const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
 
-    const iconType = ICON_TYPES[type];
+    const statusIconAriaLabel =
+      props.statusIconAriaLabel ||
+      i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`];
 
-    const icon = loading ? <InternalSpinner /> : <InternalIcon name={iconType} />;
+    const iconType = ICON_TYPES[type];
+    const icon = loading ? (
+      <span role="img" aria-label={statusIconAriaLabel}>
+        <InternalSpinner />
+      </span>
+    ) : (
+      <InternalIcon name={iconType} ariaLabel={statusIconAriaLabel} />
+    );
 
     const effectiveType = loading ? 'info' : type;
 
     const analyticsAttributes = {
       [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
     };
-
-    const statusIconAriaLabel =
-      props.statusIconAriaLabel ||
-      i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`];
 
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
@@ -175,13 +180,7 @@ export const Flash = React.forwardRef(
       >
         <div className={styles['flash-body']}>
           <div className={styles['flash-focus-container']} tabIndex={-1}>
-            <div
-              className={clsx(styles['flash-icon'], styles['flash-text'])}
-              role="img"
-              aria-label={statusIconAriaLabel}
-            >
-              {icon}
-            </div>
+            <div className={clsx(styles['flash-icon'], styles['flash-text'])}>{icon}</div>
             <div className={clsx(styles['flash-message'], styles['flash-text'])}>
               <div
                 className={clsx(

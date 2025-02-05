@@ -119,7 +119,10 @@ describe('i18n', () => {
         </TableWrapper>
       </TestI18nProvider>
     );
-    expect(container.querySelector(`.${styles['edit-icon']}`)).toHaveAttribute('aria-label', 'Custom editable');
+    expect(container.querySelector(`.${styles['edit-icon']} [role=img]`)).toHaveAttribute(
+      'aria-label',
+      'Custom editable'
+    );
   });
 
   test('does not set tab index when negative', () => {

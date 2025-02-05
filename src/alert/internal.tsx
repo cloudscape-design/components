@@ -132,8 +132,8 @@ const InternalAlert = React.forwardRef(
               )}
             >
               <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                <div className={clsx(styles.icon, styles.text)} role="img" aria-label={statusIconAriaLabel}>
-                  <InternalIcon name={typeToIcon[type]} size={size} />
+                <div className={clsx(styles.icon, styles.text)}>
+                  <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                 </div>
                 <div className={clsx(styles.message, styles.text)}>
                   <div

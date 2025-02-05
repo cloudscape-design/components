@@ -52,8 +52,8 @@ export function FormFieldError({ id, children, errorIconAriaLabel }: FormFieldEr
     <>
       <div id={id} className={styles.error}>
         <div className={styles['error-icon-shake-wrapper']}>
-          <div role="img" aria-label={i18nErrorIconAriaLabel} className={styles['error-icon-scale-wrapper']}>
-            <InternalIcon name="status-negative" size="small" />
+          <div className={styles['error-icon-scale-wrapper']}>
+            <InternalIcon name="status-negative" size="small" ariaLabel={i18nErrorIconAriaLabel} />
           </div>
         </div>
         <span className={styles.error__message} ref={contentRef}>
@@ -75,8 +75,8 @@ export function FormFieldWarning({ id, children, warningIconAriaLabel }: FormFie
     <>
       <div id={id} className={styles.warning}>
         <div className={styles['warning-icon-shake-wrapper']}>
-          <div role="img" aria-label={i18nWarningIconAriaLabel} className={styles['warning-icon-scale-wrapper']}>
-            <InternalIcon name="status-warning" size="small" />
+          <div className={styles['warning-icon-scale-wrapper']}>
+            <InternalIcon name="status-warning" size="small" ariaLabel={i18nWarningIconAriaLabel} />
           </div>
         </div>
         <span className={styles.warning__message} ref={contentRef}>
