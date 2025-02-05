@@ -45,7 +45,10 @@ export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
 export const useStickyHeader = (
   rootRef: RefObject<HTMLDivElement>,
   headerRef: RefObject<HTMLDivElement>,
-  variant: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards' = 'default',
+  /**
+   * variant extends those from the ContainerProps to also include those from table
+   */
+  variant: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards' | 'borderless' = 'default',
   __stickyHeader?: boolean,
   __stickyOffset?: number,
   __mobileStickyOffset?: number,
@@ -112,6 +115,7 @@ export const useStickyHeader = (
     },
     [rootRef, headerRef, variant]
   );
+
   useEffect(() => {
     if (isSticky) {
       const controller = new AbortController();

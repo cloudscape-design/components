@@ -22,9 +22,47 @@ beforeEach(() => {
   jest.resetAllMocks();
 });
 
-describe.each(['embedded', 'full-page', 'cards', 'default', 'stacked'] as Array<
-  ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards'
->)('useStickyHeader with variant %s', variant => {
+describe.each(['embedded', 'full-page', 'cards', 'default', 'stacked', 'borderless'] as Array<
+  ContainerProps['variant'] | 'embedded' | 'full-page' | 'borderless' | 'cards'
+>)('useStickyHeader with variant of %s', variant => {
+  test('should set isStuck to false when __stickyHeader is false', () => {
+    const rootRef = {
+      current: document.createElement('div'),
+    };
+    rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+    const headerRef = {
+      current: document.createElement('div'),
+    };
+    headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: -200 });
+
+    const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, variant, false, 0, 0, false));
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
+
+    expect(result.current.isStuck).toBe(false);
+  });
+
+  test('should set isStuck to false when __disableMobile is false', () => {
+    const rootRef = {
+      current: document.createElement('div'),
+    };
+    rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+    const headerRef = {
+      current: document.createElement('div'),
+    };
+    headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: -200 });
+
+    const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, variant, true, 0, 0, true));
+    act(() => {
+      window.dispatchEvent(new Event('scroll'));
+    });
+
+    expect(result.current.isStuck).toBe(false);
+  });
+
   test('should set isStuck to false when rootTop headerTop are equal and headerTop is not 0', () => {
     const rootRef = {
       current: document.createElement('div'),
