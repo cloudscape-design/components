@@ -44,7 +44,9 @@ describe('Property filter autosuggest', () => {
       expect(wrapper.findDropdown().findOption(1)!.getElement()).toHaveTextContent('abc');
     });
     test('is used for highlighting', () => {
-      expect(wrapper.findDropdown().findHighlightedMatches()[0].getElement()).toHaveTextContent('abc');
+      const highlightMatch = wrapper.findDropdown().findHighlightedMatches()[0].getElement();
+      expect(highlightMatch.tagName).toBe('MARK');
+      expect(highlightMatch).toHaveTextContent('abc');
     });
     test('is not used for the enteredText- option', () => {
       expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('123');

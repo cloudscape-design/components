@@ -25,8 +25,9 @@ interface HighlightMatchProps {
   highlightText?: string;
 }
 
-const Highlight = ({ str }: HighlightMatchProps) =>
-  str ? <span className={styles['filtering-match-highlight']}>{str}</span> : null;
+function Highlight({ str }: HighlightMatchProps) {
+  return str ? <mark className={styles['filtering-match-highlight']}>{str}</mark> : null;
+}
 
 export default function HighlightMatch({ str, highlightText }: HighlightMatchProps) {
   if (!str || !highlightText) {
