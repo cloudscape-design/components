@@ -15,13 +15,14 @@ import testUtilStyles from './test-classes/styles.css.js';
 interface MenuDropdownItemProps {
   item: ButtonGroupProps.MenuDropdown;
   showTooltip: boolean;
+  onTooltipDismiss: () => void;
   onItemClick?: CancelableEventHandler<ButtonGroupProps.ItemClickDetails>;
   expandToViewport?: boolean;
 }
 
 const MenuDropdownItem = React.forwardRef(
   (
-    { item, showTooltip, onItemClick, expandToViewport }: MenuDropdownItemProps,
+    { item, showTooltip, onItemClick, onTooltipDismiss, expandToViewport }: MenuDropdownItemProps,
     ref: React.Ref<ButtonDropdownProps.Ref>
   ) => {
     const containerRef = React.useRef<HTMLDivElement>(null);
@@ -47,6 +48,7 @@ const MenuDropdownItem = React.forwardRef(
                 trackKey={item.id}
                 value={item.text}
                 className={clsx(testUtilStyles.tooltip, testUtilStyles['button-group-tooltip'])}
+                onDismiss={onTooltipDismiss}
               />
             )}
             <InternalButton

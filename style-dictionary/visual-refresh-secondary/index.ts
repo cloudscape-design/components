@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ThemeBuilder } from '@cloudscape-design/theming-build';
 
-import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes';
-import { buildVisualRefresh } from '../visual-refresh';
+import { createColorMode, createDensityMode, createMotionMode } from '../utils/modes.js';
+import { buildVisualRefresh } from '../visual-refresh/index.js';
 
 const modes = [
   createColorMode('.awsui-dark-mode'),

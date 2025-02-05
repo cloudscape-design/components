@@ -46,7 +46,7 @@ $calendar-header-color: awsui.$color-text-body-default;
     position: relative;
   }
 
-  &-header-months-wrapper {
+  &-header-pages-wrapper {
     position: absolute;
     inset: 0;
 
@@ -61,7 +61,7 @@ $calendar-header-color: awsui.$color-text-body-default;
     pointer-events: none;
   }
 
-  &-header-month {
+  &-header-page {
     @include styles.font-body-m;
     font-weight: typographyConstants.$font-weight-bold;
     color: $calendar-header-color;
@@ -70,19 +70,6 @@ $calendar-header-color: awsui.$color-text-body-default;
 
     pointer-events: auto;
   }
-
-  &-next-month-btn {
-    /* used for identifying element */
-  }
-
-  &-prev-month-btn {
-    /* used for identifying element */
-  }
-}
-
-.first-grid,
-.second-grid {
-  /* used in test-utils */
 }
 
 .date-and-time-container {
@@ -146,10 +133,6 @@ $calendar-header-color: awsui.$color-text-body-default;
   white-space: nowrap;
 }
 
-.mode-switch {
-  /* used in test-utils */
-}
-
 .dropdown {
   // There needs to be an outer container because we set a fixed width on the
   // actual dropdown and calendar grid, so the scrollbar would mess up the
@@ -178,32 +161,4 @@ $calendar-header-color: awsui.$color-text-body-default;
   &.one-grid {
     inline-size: calc(#{$calendar-grid-width} + 2 * #{awsui.$space-l});
   }
-}
-
-.start-date-input,
-.start-time-input,
-.end-date-input,
-.end-time-input {
-  /* used in test-utils */
-}
-
-.validation-section {
-  /* used in test-utils */
-}
-
-.validation-error {
-  /* used in test-utils */
-}
-
-.clear-button {
-  /* used in test-utils */
-}
-.apply-button {
-  /* used in test-utils */
-}
-.cancel-button {
-  /* used in test-utils */
-}
-.calendar-aria-live {
-  /* used in test-utils */
 }

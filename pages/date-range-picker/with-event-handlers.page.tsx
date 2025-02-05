@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useRef, useState } from 'react';
 
-import { Box, Checkbox, DateRangePicker, DateRangePickerProps, Link, SpaceBetween } from '~components';
+import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link, SpaceBetween } from '~components';
 
 import AppContext from '../app/app-context';
 import {
@@ -11,9 +11,9 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
   generatePlaceholder,
   generateRelativeOptions,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -23,7 +23,7 @@ export default function DateRangePickerScenario() {
   const { urlParams, setUrlParams } = useContext(AppContext as DateRangePickerDemoContext);
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
   const expandToViewport = urlParams.expandToViewport ?? dateRangePickerDemoDefaults.expandToViewport;
   const disabledDates =
@@ -87,6 +87,9 @@ export default function DateRangePickerScenario() {
         >
           Date-only
         </Checkbox>
+        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+          Month-only
+        </Checkbox>
         <Checkbox
           checked={expandToViewport}
           onChange={({ detail }) => setUrlParams({ expandToViewport: detail.checked })}
@@ -107,26 +110,29 @@ export default function DateRangePickerScenario() {
         onChange Event: {changeCount} times. Latest detail: {JSON.stringify(onChangeDetails)}
       </div>
       <br />
-      <DateRangePicker
-        value={value}
-        locale={'en-GB'}
-        i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
-        timeOffset={0}
-        placeholder={generatePlaceholder(dateOnly, monthOnly)}
-        onFocus={handleFocus}
-        onBlur={handleBlur}
-        onChange={event => {
-          setValue(event.detail.value);
-          setChangeCount(prevCount => prevCount + 1);
-          setOnChangeDetails(event.detail.value);
-        }}
-        relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
-        isValidRange={isValid}
-        dateOnly={dateOnly}
-        expandToViewport={expandToViewport}
-        isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
-        dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
-      />
+      <FormField label="Date Range Picker field">
+        <DateRangePicker
+          value={value}
+          locale={'en-GB'}
+          i18nStrings={i18nStrings}
+          timeOffset={0}
+          placeholder={generatePlaceholder(dateOnly, monthOnly)}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          onChange={event => {
+            setValue(event.detail.value);
+            setChangeCount(prevCount => prevCount + 1);
+            setOnChangeDetails(event.detail.value);
+          }}
+          relativeOptions={generateRelativeOptions(dateOnly, monthOnly)}
+          isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
+          dateOnly={dateOnly}
+          granularity={monthOnly ? 'month' : 'day'}
+          expandToViewport={expandToViewport}
+          isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
+          dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
+        />
+      </FormField>
     </Box>
   );
 }

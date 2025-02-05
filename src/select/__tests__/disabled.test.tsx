@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
@@ -127,6 +127,22 @@ describe.each([false, true])('expandToViewport=%s', expandToViewport => {
         wrapper.openDropdown();
         wrapper.selectOptionByValue('1', { expandToViewport });
         expect(wrapper.findDropdown({ expandToViewport })?.findOpenDropdown()).toBeTruthy();
+      });
+
+      test('closes tooltip when Esc is pressed but leaves dropdown open', () => {
+        const { wrapper } = renderSelect({
+          options: [{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }],
+        });
+        wrapper.openDropdown();
+        wrapper.findTrigger().keydown(KeyCode.down);
+        expect(
+          wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()!.getElement()
+        ).toHaveTextContent('disabled reason');
+        fireEvent.keyDown(wrapper.findDropdown({ expandToViewport }).findOptionsContainer()!.getElement(), {
+          key: 'Escape',
+        });
+        expect(wrapper.findDropdown().findOpenDropdown()).not.toBeNull();
+        expect(wrapper.findDropdown({ expandToViewport }).findOption(1)!.findDisabledReason()).toBeNull();
       });
 
       test('hides disabled reason when the option is scrolled away', async () => {

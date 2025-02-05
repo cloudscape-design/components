@@ -128,6 +128,7 @@ const ItemElement = forwardRef(
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
             showFeedback={!!tooltip?.feedback}
+            onTooltipDismiss={() => setTooltip(null)}
           />
         )}
         {item.type === 'icon-toggle-button' && (
@@ -137,6 +138,7 @@ const ItemElement = forwardRef(
             onItemClick={onClickHandler}
             showTooltip={tooltip?.item === item.id}
             showFeedback={!!tooltip?.feedback}
+            onTooltipDismiss={() => setTooltip(null)}
           />
         )}
         {item.type === 'icon-file-input' && (
@@ -145,6 +147,7 @@ const ItemElement = forwardRef(
             item={item}
             onFilesChange={onFilesChangeHandler}
             showTooltip={tooltip?.item === item.id}
+            onTooltipDismiss={() => setTooltip(null)}
           />
         )}
         {item.type === 'menu-dropdown' && (
@@ -154,6 +157,7 @@ const ItemElement = forwardRef(
             showTooltip={tooltip?.item === item.id}
             onItemClick={onClickHandler}
             expandToViewport={dropdownExpandToViewport}
+            onTooltipDismiss={() => setTooltip(null)}
           />
         )}
       </div>

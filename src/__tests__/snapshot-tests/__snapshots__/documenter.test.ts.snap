@@ -6939,6 +6939,8 @@ If provided, the date becomes focusable.",
 Do not use \`dateOnly\` flag conditionally. The component does not trigger the value update
 when the flag changes which means the value format can become inconsistent.
 
+This does not apply when the 'granularity' is set to 'month'
+
 Default: \`false\`.
 ",
       "name": "dateOnly",
@@ -6994,6 +6996,22 @@ Default: the user's current time offset as provided by the browser.
       "type": "DateRangePickerProps.GetTimeOffsetFunction",
     },
     {
+      "defaultValue": "'day'",
+      "description": "Specifies the granularity at which users will be able to select a date range.
+Defaults to \`day\`.",
+      "inlineType": {
+        "name": "DateRangePickerProps.Granularity",
+        "type": "union",
+        "values": [
+          "day",
+          "month",
+        ],
+      },
+      "name": "granularity",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies whether to hide the time offset in the displayed absolute time range.
 Defaults to \`false\`.",
       "name": "hideTimeOffset",
@@ -7042,6 +7060,11 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "currentMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "customRelativeRangeDurationLabel",
             "optional": true,
             "type": "string",
@@ -7067,12 +7090,22 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "dateConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "dateTimeConstraintText",
             "optional": true,
             "type": "string",
           },
           {
             "name": "endDateLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "endMonthLabel",
             "optional": true,
             "type": "string",
           },
@@ -7102,12 +7135,27 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "monthConstraintText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "nextMonthAriaLabel",
             "optional": true,
             "type": "string",
           },
           {
+            "name": "nextYearAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "previousMonthAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "previousYearAriaLabel",
             "optional": true,
             "type": "string",
           },
@@ -7122,12 +7170,22 @@ Defaults to \`false\`.",
             "type": "string",
           },
           {
+            "name": "relativeRangeSelectionMonthlyDescription",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "renderSelectedAbsoluteRangeAriaLive",
             "optional": true,
             "type": "(startDate: string, endDate: string) => string",
           },
           {
             "name": "startDateLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "startMonthLabel",
             "optional": true,
             "type": "string",
           },
@@ -7283,7 +7341,7 @@ but you can override it using this property.",
       "description": "Specifies the format of the time input for absolute ranges.
 Use to restrict the granularity of time that the user can enter.
 
-Has no effect when \`dateOnly\` is true.
+Has no effect when \`dateOnly\` is true or \`granularity\` is set to 'month'.
 ",
       "inlineType": {
         "name": "TimeInputProps.Format",

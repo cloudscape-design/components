@@ -1,11 +1,17 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useState } from 'react';
-import endOfMonth from 'date-fns/endOfMonth';
-import endOfWeek from 'date-fns/endOfWeek';
-import enLocale from 'date-fns/locale/en-GB';
-import startOfMonth from 'date-fns/startOfMonth';
-import startOfWeek from 'date-fns/startOfWeek';
+import {
+  endOfMonth,
+  endOfQuarter,
+  endOfWeek,
+  endOfYear,
+  startOfMonth,
+  startOfQuarter,
+  startOfWeek,
+  startOfYear,
+  sub,
+} from 'date-fns';
 
 import { Box, Checkbox, DateRangePicker, DateRangePickerProps, FormField, Link, SpaceBetween } from '~components';
 import { formatDate } from '~components/internal/utils/date-time';
@@ -17,8 +23,8 @@ import {
   DateRangePickerDemoContext,
   dateRangePickerDemoDefaults,
   DisabledDate,
-  generateI18nStrings,
   generatePlaceholder,
+  i18nStrings,
   isValid,
 } from './common';
 
@@ -27,10 +33,132 @@ export default function DatePickerScenario() {
   const [value, setValue] = useState<DateRangePickerProps['value']>(null);
 
   const dateOnly = urlParams.dateOnly ?? dateRangePickerDemoDefaults.dateOnly;
-  const monthOnly = false;
+  const monthOnly = urlParams.monthOnly ?? dateRangePickerDemoDefaults.monthOnly;
   const disabledDates =
     (urlParams.disabledDates as DisabledDate) ?? (dateRangePickerDemoDefaults.disabledDates as DisabledDate);
   const withDisabledReason = urlParams.withDisabledReason ?? dateRangePickerDemoDefaults.withDisabledReason;
+
+  const renderCustomDateAbsoluteRangeControl = (
+    selectedDate: DateRangePickerProps.PendingAbsoluteValue,
+    setSelectedDate: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>
+  ) => {
+    return (
+      <>
+        Auto-select:{' '}
+        <Link
+          onFollow={() => {
+            const today = formatDate(new Date());
+            return setSelectedDate({
+              start: { date: today, time: '' },
+              end: { date: today, time: '' },
+            });
+          }}
+        >
+          1D
+        </Link>{' '}
+        <Link
+          variant="secondary"
+          onFollow={() =>
+            setSelectedDate({
+              start: {
+                date: formatDate(startOfWeek(new Date())),
+                time: '',
+              },
+              end: {
+                date: formatDate(endOfWeek(new Date())),
+                time: '',
+              },
+            })
+          }
+        >
+          7D
+        </Link>{' '}
+        <Link
+          onFollow={() =>
+            setSelectedDate({
+              start: { date: formatDate(startOfMonth(new Date())), time: '' },
+              end: { date: formatDate(endOfMonth(new Date())), time: '' },
+            })
+          }
+        >
+          1M
+        </Link>{' '}
+        <Link
+          onFollow={() =>
+            setSelectedDate({
+              start: { date: '', time: '' },
+              end: { date: '', time: '' },
+            })
+          }
+        >
+          None
+        </Link>
+      </>
+    );
+  };
+
+  const renderCustomMonthAbsoluteRangeControl = (
+    selectedDate: DateRangePickerProps.PendingAbsoluteValue,
+    setSelectedDate: React.Dispatch<React.SetStateAction<DateRangePickerProps.PendingAbsoluteValue>>
+  ) => {
+    const today = new Date();
+    const lastMonth = sub(today, { months: 1 });
+    const oneQuarterAgoDate = sub(today, { months: 3 });
+    const oneYearAgoDate = sub(today, { years: 1 });
+
+    return (
+      <>
+        Auto-select:{' '}
+        <Link
+          onFollow={() =>
+            setSelectedDate({
+              start: { date: formatDate(lastMonth), time: '' },
+              end: { date: formatDate(lastMonth), time: '' },
+            })
+          }
+        >
+          Last full month
+        </Link>{' '}
+        <Link
+          variant="secondary"
+          onFollow={() =>
+            setSelectedDate({
+              start: {
+                date: formatDate(startOfQuarter(oneQuarterAgoDate)),
+                time: '',
+              },
+              end: {
+                date: formatDate(endOfQuarter(oneQuarterAgoDate)),
+                time: '',
+              },
+            })
+          }
+        >
+          Last full quarter
+        </Link>{' '}
+        <Link
+          onFollow={() =>
+            setSelectedDate({
+              start: { date: formatDate(startOfYear(oneYearAgoDate)), time: '' },
+              end: { date: formatDate(endOfYear(oneYearAgoDate)), time: '' },
+            })
+          }
+        >
+          Last full year
+        </Link>{' '}
+        <Link
+          onFollow={() =>
+            setSelectedDate({
+              start: { date: '', time: '' },
+              end: { date: '', time: '' },
+            })
+          }
+        >
+          None
+        </Link>
+      </>
+    );
+  };
 
   return (
     <Box padding="s">
@@ -68,72 +196,29 @@ export default function DatePickerScenario() {
         >
           Date-only
         </Checkbox>
+        <Checkbox checked={monthOnly} onChange={({ detail }) => setUrlParams({ monthOnly: detail.checked })}>
+          Month-only
+        </Checkbox>
       </SpaceBetween>
       <FormField label="Date Range Picker field">
         <DateRangePicker
           value={value}
           onChange={e => setValue(e.detail.value)}
-          locale={enLocale.code}
-          i18nStrings={generateI18nStrings(dateOnly, monthOnly)}
+          locale="en-GB"
+          i18nStrings={i18nStrings}
           relativeOptions={[]}
           placeholder={generatePlaceholder(dateOnly, monthOnly)}
-          isValidRange={isValid}
+          isValidRange={value => isValid(monthOnly ? 'month' : 'day')(value)}
           rangeSelectorMode="absolute-only"
+          granularity={monthOnly ? 'month' : 'day'}
+          dateOnly={dateOnly}
           isDateEnabled={date => checkIfDisabled(date, disabledDates, monthOnly)}
           dateDisabledReason={date => applyDisabledReason(withDisabledReason, date, disabledDates, monthOnly)}
-          customAbsoluteRangeControl={(selectedDate, setSelectedDate) => (
-            <>
-              Auto-select:{' '}
-              <Link
-                onFollow={() => {
-                  const today = formatDate(new Date());
-                  return setSelectedDate({
-                    start: { date: today, time: '' },
-                    end: { date: today, time: '' },
-                  });
-                }}
-              >
-                1D
-              </Link>{' '}
-              <Link
-                variant="secondary"
-                onFollow={() =>
-                  setSelectedDate({
-                    start: {
-                      date: formatDate(startOfWeek(new Date(), { locale: enLocale })),
-                      time: '',
-                    },
-                    end: {
-                      date: formatDate(endOfWeek(new Date(), { locale: enLocale })),
-                      time: '',
-                    },
-                  })
-                }
-              >
-                7D
-              </Link>{' '}
-              <Link
-                onFollow={() =>
-                  setSelectedDate({
-                    start: { date: formatDate(startOfMonth(new Date())), time: '' },
-                    end: { date: formatDate(endOfMonth(new Date())), time: '' },
-                  })
-                }
-              >
-                1M
-              </Link>{' '}
-              <Link
-                onFollow={() =>
-                  setSelectedDate({
-                    start: { date: '', time: '' },
-                    end: { date: '', time: '' },
-                  })
-                }
-              >
-                None
-              </Link>
-            </>
-          )}
+          customAbsoluteRangeControl={(selectedDate, setSelectedDate) =>
+            monthOnly
+              ? renderCustomMonthAbsoluteRangeControl(selectedDate, setSelectedDate)
+              : renderCustomDateAbsoluteRangeControl(selectedDate, setSelectedDate)
+          }
         />
       </FormField>
     </Box>

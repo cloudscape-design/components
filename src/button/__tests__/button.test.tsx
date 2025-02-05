@@ -256,6 +256,18 @@ describe('Button Component', () => {
         expect(wrapper.findDisabledReason()).toBeNull();
       });
 
+      test('close tooltip on Esc keydown', () => {
+        const wrapper = renderButton({ ...defaultProps, disabled: true, disabledReason: 'reason' });
+
+        fireEvent.mouseEnter(wrapper.getElement());
+
+        expect(wrapper.findDisabledReason()).not.toBeNull();
+        expect(wrapper.findDisabledReason()!.getElement()).toHaveTextContent('reason');
+
+        fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' });
+        expect(wrapper.findDisabledReason()).toBeNull();
+      });
+
       test('has no aria-describedby by default', () => {
         const wrapper = renderButton({ ...defaultProps });
 
