@@ -101,7 +101,7 @@ test('renders separate icons for folder and file', async () => {
   const wrapper = await renderTable(<ObjectsTable {...defaultProps} />);
   expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toHaveAccessibleName('Folder');
   expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('folder'));
-  expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toHaveAccessibleName('File');
+  expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toHaveAccessibleName('Object');
   expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('file'));
 });
 

@@ -267,7 +267,7 @@ export namespace S3ResourceSelectorProps {
     labelBreadcrumbs?: string;
     labelExpandBreadcrumbs?: string;
     labelClearFilter?: string;
-    labelIconFile?: string;
+    labelIconObject?: string;
     labelIconFolder?: string;
   }
 
