@@ -127,4 +127,29 @@ describe('PageLayout', () => {
 
     expect(wrapper.findActiveDrawer()).toBeTruthy();
   });
+
+  test('should not render the toolbar when there is no nav & drawers triggers & no breadcrumbs', () => {
+    const { wrapper } = renderComponent(
+      <PageLayout
+        navigationTriggerHide={true}
+        navigation={<>Mock Navigation</>}
+        breadcrumbs={undefined}
+        drawers={[
+          {
+            ariaLabels: {
+              closeButton: 'ProHelp close button',
+              drawerName: 'ProHelp drawer content',
+              triggerButton: 'ProHelp trigger button',
+              resizeHandle: 'ProHelp resize handle',
+            },
+            content: <div>Drawer content</div>,
+            id: 'pro-help',
+          },
+        ]}
+        content={<div>Content</div>}
+      />
+    );
+
+    expect(wrapper.findToolbar()).toBeFalsy();
+  });
 });
