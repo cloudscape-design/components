@@ -25,7 +25,7 @@ beforeEach(() => {
 describe.each(['embedded', 'full-page', 'cards', 'default', 'stacked'] as Array<
   ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards'
 >)('useStickyHeader with variant %s', variant => {
-  test('should set isStuck properly when rootTop is less than headerTop', () => {
+  test('should set isStuck to true when rootTop is less than headerTop', () => {
     const rootRef = {
       current: document.createElement('div'),
     };
@@ -41,7 +41,7 @@ describe.each(['embedded', 'full-page', 'cards', 'default', 'stacked'] as Array<
       window.dispatchEvent(new Event('scroll'));
     });
 
-    expect(result.current.isStuck).toBe(variant === 'full-page');
+    expect(result.current.isStuck).toBe(true);
   });
 
   test('should set isStuck to false when rootTop is larger than than headerTop', () => {
