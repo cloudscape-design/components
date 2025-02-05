@@ -8,6 +8,7 @@ import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import globalVars from '../internal/styles/global-vars';
 import { getOverflowParents } from '../internal/utils/scrollable-containers';
+import { ContainerProps } from './interfaces';
 
 interface StickyHeaderContextProps {
   isStuck: boolean;
@@ -44,6 +45,7 @@ export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
 export const useStickyHeader = (
   rootRef: RefObject<HTMLDivElement>,
   headerRef: RefObject<HTMLDivElement>,
+  variant: ContainerProps['variant'] | 'embedded' | 'full-page' | 'cards',
   __stickyHeader?: boolean,
   __stickyOffset?: number,
   __mobileStickyOffset?: number,
@@ -94,18 +96,22 @@ export const useStickyHeader = (
         return;
       }
       if (rootRef.current && headerRef.current) {
+        const overflowParents = getOverflowParents(rootRef.current);
+        const mainElement = findUpUntil(rootRef.current, elem => elem.tagName === 'MAIN');
         const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
         const rootTop = rootRef.current.getBoundingClientRect().top + rootTopBorderWidth;
         const headerTop = headerRef.current.getBoundingClientRect().top;
 
-        if (rootTop < headerTop) {
+        // If it has overflow parents inside the app layout, we ignore the expectation headerTop is at 0 for when table is in app layout.
+        const hasInnerOverflowParents = overflowParents.length > 0 && overflowParents[0] !== mainElement;
+        if ((variant === 'full-page' || headerTop === 0 || hasInnerOverflowParents) && rootTop < headerTop) {
           setIsStuck(true);
         } else {
           setIsStuck(false);
         }
       }
     },
-    [rootRef, headerRef]
+    [rootRef, headerRef, variant]
   );
   useEffect(() => {
     if (isSticky) {
