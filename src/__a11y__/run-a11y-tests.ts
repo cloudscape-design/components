@@ -27,16 +27,17 @@ const vrOnlyComponents = ['app-layout-toolbar'];
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
     findAllPages().forEach(inputUrl => {
-      let skipPages = [
+      const skipPages = [
         ...skip,
         'theming/tokens',
         // this page intentionally has issues to test the helper
         'undefined-texts',
       ];
-      if (theme !== 'visual-refresh') {
-        skipPages = skipPages.concat(vrOnlyComponents);
-      }
-      const testFunction = skipPages.includes(inputUrl) ? test.skip : test;
+      const testFunction =
+        skipPages.includes(inputUrl) ||
+        (theme !== 'visual-refresh' && vrOnlyComponents.some(vrOnlyComponent => inputUrl.startsWith(vrOnlyComponent)))
+          ? test.skip
+          : test;
       const url = urlFormatter(inputUrl, theme, mode);
       testFunction(
         url,
