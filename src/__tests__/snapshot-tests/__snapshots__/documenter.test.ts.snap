@@ -9472,9 +9472,16 @@ exports[`Documenter definition for icon matches the snapshot: icon 1`] = `
   "name": "Icon",
   "properties": [
     {
-      "description": "Specifies alternate text for a custom icon (using the \`url\` attribute). We recommend that you provide this for accessibility.
+      "deprecatedTag": "Use \`ariaLabel\` instead.",
+      "description": "Specifies alternate text for a custom icon (using the \`url\` attribute).
 This property is ignored if you use a predefined icon or if you set your custom icon using the \`svg\` slot.",
       "name": "alt",
+      "optional": true,
+      "type": "string",
+    },
+    {
+      "description": "Specifies alternate text for the icon. We recommend that you provide this for accessibility.",
+      "name": "ariaLabel",
       "optional": true,
       "type": "string",
     },

@@ -9,6 +9,7 @@ export interface IconProps extends BaseComponentProps {
    * Specifies the icon to be displayed.
    */
   name?: IconProps.Name;
+
   /**
    * Specifies the size of the icon.
    *
@@ -32,11 +33,19 @@ export interface IconProps extends BaseComponentProps {
    * If you set both `url` and `svg`, `svg` will take precedence.
    */
   url?: string;
+
   /**
-   * Specifies alternate text for a custom icon (using the `url` attribute). We recommend that you provide this for accessibility.
+   * Specifies alternate text for a custom icon (using the `url` attribute).
    * This property is ignored if you use a predefined icon or if you set your custom icon using the `svg` slot.
+   *
+   * @deprecated Use `ariaLabel` instead.
    */
   alt?: string;
+
+  /**
+   * Specifies alternate text for the icon. We recommend that you provide this for accessibility.
+   */
+  ariaLabel?: string;
 
   /**
    * Specifies the SVG of a custom icon.
