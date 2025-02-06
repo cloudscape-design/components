@@ -34,32 +34,6 @@
     border-color: map.get($variant, 'active-border-color');
   }
 
-  &:focus {
-    outline: none;
-    text-decoration: none;
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
-  &.variant-icon,
-  &.variant-modal-dismiss,
-  &.variant-flashbar-icon {
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(
-        (
-          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
-          'horizontal': awsui.$space-button-focus-outline-gutter,
-        )
-      );
-    }
-  }
-  &.variant-inline-icon {
-    @include focus-visible.when-visible {
-      @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
-    }
-  }
-
   &.disabled {
     background: map.get($variant, 'disabled-background');
     border-color: map.get($variant, 'disabled-border-color');
@@ -93,6 +67,30 @@
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
       @include adjust-for-variant(map.get(constants.$variants, $variant));
+    }
+  }
+
+  &:focus {
+    outline: none;
+    text-decoration: none;
+  }
+
+  @include focus-visible.when-visible {
+    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
+
+    &.variant-icon,
+    &.variant-modal-dismiss,
+    &.variant-flashbar-icon {
+      @include styles.focus-highlight(
+        (
+          'vertical': awsui.$space-button-icon-focus-outline-gutter-vertical,
+          'horizontal': awsui.$space-button-focus-outline-gutter,
+        )
+      );
+    }
+
+    &.variant-inline-icon {
+      @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
     }
   }
 
