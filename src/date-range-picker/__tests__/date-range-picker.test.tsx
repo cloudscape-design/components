@@ -176,6 +176,13 @@ describe('Date range picker', () => {
           i18nStrings.modeSelectionLabel
         );
       });
+
+      test('does not have aria-expanded', () => {
+        const { wrapper } = renderDateRangePicker();
+        expect(wrapper.findTrigger().getElement()).not.toHaveAttribute('aria-expanded');
+        wrapper.openDropdown();
+        expect(wrapper.findDropdown()!.getElement()).not.toHaveAttribute('aria-expanded');
+      });
     });
 
     test('opens relative range mode by default', () => {
