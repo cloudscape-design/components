@@ -22,15 +22,20 @@ function urlFormatter(inputUrl: string, theme: Theme, mode: Mode) {
   return `#/${mode}/${inputUrl}?visualRefresh=${theme === 'visual-refresh' ? 'true' : 'false'}`;
 }
 
+const vrOnlyComponents = ['app-layout-toolbar'];
+
 export default function runA11yTests(theme: Theme, mode: Mode, skip: string[] = []) {
   describe(`A11y checks for ${mode} ${theme}`, () => {
     findAllPages().forEach(inputUrl => {
-      const skipPages = [
+      let skipPages = [
         ...skip,
         'theming/tokens',
         // this page intentionally has issues to test the helper
         'undefined-texts',
       ];
+      if (theme !== 'visual-refresh') {
+        skipPages = skipPages.concat(vrOnlyComponents);
+      }
       const testFunction = skipPages.includes(inputUrl) ? test.skip : test;
       const url = urlFormatter(inputUrl, theme, mode);
       testFunction(
