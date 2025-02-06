@@ -112,7 +112,7 @@ const Trigger = React.forwardRef(
         {...triggerProps}
         id={id}
         ref={mergedRef}
-        pressed={isOpen}
+        pressed={!!isOpen}
         disabled={disabled}
         readOnly={readOnly}
         invalid={invalid}
