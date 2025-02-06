@@ -7,8 +7,22 @@ import { pascalCase } from 'change-case';
 import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 
 import { PACKAGE_VERSION } from '../../../lib/components/internal/environment';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent, supportsDOMProperties } from '../utils';
+
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
+  const original = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
+  return { ...original, useVisualRefresh: jest.fn() };
+});
+
+beforeEach(() => {
+  (useVisualRefresh as jest.Mock).mockReturnValue(true);
+});
+
+afterEach(() => {
+  (useVisualRefresh as jest.Mock).mockReset();
+});
 
 describe('useBaseComponent hook is used in all allowlisted public components', () => {
   const componentRoot = document.createElement('div');

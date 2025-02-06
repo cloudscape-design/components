@@ -3,8 +3,22 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
+
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
+  const original = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
+  return { ...original, useVisualRefresh: jest.fn() };
+});
+
+beforeEach(() => {
+  (useVisualRefresh as jest.Mock).mockReturnValue(true);
+});
+
+afterEach(() => {
+  (useVisualRefresh as jest.Mock).mockReset();
+});
 
 declare global {
   interface Window {
