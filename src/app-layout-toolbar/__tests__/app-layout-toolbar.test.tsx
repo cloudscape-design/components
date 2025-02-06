@@ -19,25 +19,18 @@ export function renderComponent(jsx: React.ReactElement) {
 }
 
 describe('AppLayoutToolbar component', () => {
-  let consoleWarnSpy: jest.SpyInstance;
-
   beforeEach(() => {
     (useVisualRefresh as jest.Mock).mockReturnValue(true);
-    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
   });
   afterEach(() => {
     (useVisualRefresh as jest.Mock).mockReset();
-    consoleWarnSpy?.mockRestore();
   });
 
-  test('warns when use in classic theme', () => {
+  test('throws an error when use in classic theme', () => {
     (useVisualRefresh as jest.Mock).mockReturnValue(false);
 
-    renderComponent(<AppLayoutToolbar content={<div></div>} />);
-
-    expect(console.warn).toHaveBeenCalledTimes(1);
-    expect(console.warn).toHaveBeenCalledWith(
-      '[AwsUi] [AppLayoutToolbar] This component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.'
+    expect(() => render(<AppLayoutToolbar content={<div></div>} />)).toThrowError(
+      'AppLayoutToolbar component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.'
     );
   });
 
