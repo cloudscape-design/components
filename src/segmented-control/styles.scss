@@ -6,6 +6,7 @@
 @use '../internal/styles/' as styles;
 @use 'segment';
 @use 'sass:list' as list;
+@use '../internal/styles/tokens' as awsui;
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -22,6 +23,16 @@
 .segment-part {
   display: -ms-inline-grid;
   display: inline-grid;
+  gap: 17px;
+  border-inline: solid 2px awsui.$color-border-input-default;
+  border-block: solid 2px awsui.$color-border-input-default;
+  border-start-start-radius: 8px;
+  border-start-end-radius: 8px;
+  border-end-start-radius: 8px;
+  border-end-end-radius: 8px;
+  align-items: center;
+  min-block-size: 28px;
+  padding-inline: 2px;
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     display: none;
   }
@@ -37,7 +48,8 @@
 @for $i from 2 through 6 {
   .segment-count-#{$i} {
     // The repeat syntax is not used since it is broken when using with SASS together
-    grid-template-columns: repeatValue(1fr, $i);
+    //grid-template-columns: repeatValue(1fr, $i);
+    grid-template-columns: repeat(#{$i}, auto);
   }
 }
 
