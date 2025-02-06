@@ -97,9 +97,9 @@ export const useStickyHeader = (
       }
       if (rootRef.current && headerRef.current) {
         const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
-        //using Math.round to adjust for rounding errors in floating-point arithmetic and timing issues
-        const rootTop = Math.round((rootRef.current.getBoundingClientRect().top + rootTopBorderWidth) * 10000) / 10000;
-        const headerTop = Math.round(headerRef.current.getBoundingClientRect().top * 10000) / 10000;
+        // Using Math.round to adjust for rounding errors in floating-point arithmetic and timing issues
+        const rootTop = Math.round(rootRef.current.getBoundingClientRect().top + rootTopBorderWidth);
+        const headerTop = Math.round(headerRef.current.getBoundingClientRect().top);
         if (rootTop < headerTop) {
           setIsStuck(true);
         } else {
