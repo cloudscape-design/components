@@ -40,8 +40,8 @@ const AppLayoutToolbar = React.forwardRef(
     }: AppLayoutToolbarProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
-    const isVisualRefresh = useVisualRefresh();
-    if (!isVisualRefresh) {
+    const isRefresh = useVisualRefresh();
+    if (!isRefresh) {
       throw new Error(
         `AppLayoutToolbar component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.`
       );
@@ -77,7 +77,6 @@ const AppLayoutToolbar = React.forwardRef(
       },
       analyticsMetadata
     );
-    const isRefresh = useVisualRefresh();
     const isMobile = useMobile();
 
     const i18n = useInternalI18n('app-layout');
@@ -103,7 +102,7 @@ const AppLayoutToolbar = React.forwardRef(
       controlledNavigationOpen,
       controlledOnNavigationChange,
       isMobile ? false : defaultNavigationOpen,
-      { componentName: 'AppLayout', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
+      { componentName: 'AppLayoutToolbar', controlledProp: 'navigationOpen', changeHandler: 'onNavigationChange' }
     );
     const onNavigationChange = (event: NonCancelableCustomEvent<AppLayoutProps.ChangeDetail>) => {
       setNavigationOpen(event.detail.open);
