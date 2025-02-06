@@ -79,9 +79,20 @@ export interface FormFieldProps extends BaseComponentProps {
    * non-empty string, it will render the form field in a warning state.
    */
   warningText?: React.ReactNode;
+
+  /**
+   * Specifies additional analytics-related metadata.
+   * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
+   * @analytics
+   */
+  analyticsMetadata?: FormFieldProps.AnalyticsMetadata;
 }
 
 export namespace FormFieldProps {
+  export interface AnalyticsMetadata {
+    instanceIdentifier?: string;
+  }
+
   export interface I18nStrings {
     /**
      * Provides a text alternative for the error icon in the error message.

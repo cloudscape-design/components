@@ -325,7 +325,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepNumber: 1,
         subStepName: 'Container 1 - header',
         fieldErrorContext: null,
-        fieldIdentifier: null,
+        fieldIdentifier: 'field1',
         subStepErrorContext: null,
       });
 

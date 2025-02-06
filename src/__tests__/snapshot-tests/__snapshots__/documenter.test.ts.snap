@@ -8514,6 +8514,25 @@ exports[`Documenter definition for form-field matches the snapshot: form-field 1
   "name": "FormField",
   "properties": [
     {
+      "analyticsTag": "",
+      "description": "Specifies additional analytics-related metadata.
+* \`instanceIdentifier\` - A unique string that identifies this component instance in your application.",
+      "inlineType": {
+        "name": "FormFieldProps.AnalyticsMetadata",
+        "properties": [
+          {
+            "name": "instanceIdentifier",
+            "optional": true,
+            "type": "string",
+          },
+        ],
+        "type": "object",
+      },
+      "name": "analyticsMetadata",
+      "optional": true,
+      "type": "FormFieldProps.AnalyticsMetadata",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
