@@ -18,10 +18,10 @@ export interface AppLayoutToolbarProps extends BaseLayoutProps {
    * * trigger (DrawerTrigger) - (Optional) the button that opens and closes the active drawer.
    * If not set, a corresponding trigger button is not displayed, while the drawer might be displayed, but opened using a custom trigger.
    * * ariaLabels (DrawerAriaLabels) - the labels for the interactive elements of the drawer.
-   * * badge (boolean) - Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
-   * * resizable (boolean) - if the drawer is resizable or not.
-   * * defaultSize (number) - starting size of the drawer. if not set, defaults to 290.
-   * * onResize (({ size: number }) => void) - Fired when the active drawer is resized.
+   * * badge (boolean) - (Optional) Adds a badge to the corner of the icon to indicate a state change. For example: Unread notifications.
+   * * resizable (boolean) - (Optional) if the drawer is resizable or not.
+   * * defaultSize (number) - (Optional) starting size of the drawer. if not set, defaults to 290.
+   * * onResize (({ size: number }) => void) - (Optional) Fired when the active drawer is resized.
    *
    * #### DrawerTrigger
    * - `iconName` (IconProps.Name) - (Optional) Specifies the icon to be displayed.
