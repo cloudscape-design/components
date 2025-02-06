@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { AppLayoutProps, BaseLayoutProps } from '../app-layout/interfaces';
 
-export interface PageLayoutProps extends BaseLayoutProps {
+export interface AppLayoutToolbarProps extends BaseLayoutProps {
   /**
    * If `true`, the navigation trigger is not displayed at all,
    * while navigation drawer might be displayed, but opened using a custom trigger.
@@ -33,10 +33,10 @@ export interface PageLayoutProps extends BaseLayoutProps {
    * - `triggerButton` (string) - (Optional) Label for the trigger button.
    * - `resizeHandle` (string) - (Optional) Label for the resize handle.
    */
-  drawers?: Array<PageLayoutProps.Drawer>;
+  drawers?: Array<AppLayoutToolbarProps.Drawer>;
 }
 
-export namespace PageLayoutProps {
+export namespace AppLayoutToolbarProps {
   export type AnalyticsMetadata = AppLayoutProps.AnalyticsMetadata;
   export type ContentType = AppLayoutProps.ContentType;
   export interface Ref extends AppLayoutProps.Ref {

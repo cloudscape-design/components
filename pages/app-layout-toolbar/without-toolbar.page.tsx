@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
-import { Button, ContentLayout, Header, HelpPanel, Link, PageLayout, SpaceBetween } from '~components';
-import { PageLayoutProps } from '~components/page-layout';
+import { AppLayoutToolbar, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween } from '~components';
+import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 
 import { Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
 import { drawerLabels } from './utils/drawers';
@@ -14,9 +14,9 @@ export default function WithDrawers() {
   const [helpPathSlug, setHelpPathSlug] = useState<string>('default');
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
-  const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
+  const pageLayoutRef = useRef<AppLayoutToolbarProps.Ref>(null);
 
-  const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
+  const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
     activeDrawerId: activeDrawerId,
     drawers: [
       {
@@ -36,7 +36,7 @@ export default function WithDrawers() {
   };
 
   return (
-    <PageLayout
+    <AppLayoutToolbar
       ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
       ref={pageLayoutRef}
       content={

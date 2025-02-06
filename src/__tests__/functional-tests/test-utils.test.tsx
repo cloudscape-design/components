@@ -16,7 +16,7 @@ import createWrapperSelectors from '../../../lib/components/test-utils/selectors
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'page-layout'];
+const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-layout-toolbar'];
 const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));
 

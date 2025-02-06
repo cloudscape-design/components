@@ -3,7 +3,7 @@
 /* eslint simple-import-sort/imports: 0 */
 import React, { useRef, useState } from 'react';
 import { render } from '@testing-library/react';
-import PageLayout, { PageLayoutProps } from '../../../lib/components/page-layout';
+import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 
@@ -13,12 +13,12 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
 
 export function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
-  const wrapper = createWrapper(container).findPageLayout()!;
+  const wrapper = createWrapper(container).findAppLayoutToolbar()!;
 
   return { wrapper, rerender, container };
 }
 
-describe('PageLayout', () => {
+describe('AppLayoutToolbar component', () => {
   let consoleWarnSpy: jest.SpyInstance;
 
   beforeEach(() => {
@@ -33,22 +33,22 @@ describe('PageLayout', () => {
   test('warns when use in classic theme', () => {
     (useVisualRefresh as jest.Mock).mockReturnValue(false);
 
-    renderComponent(<PageLayout content={<div></div>} />);
+    renderComponent(<AppLayoutToolbar content={<div></div>} />);
 
     expect(console.warn).toHaveBeenCalledTimes(1);
     expect(console.warn).toHaveBeenCalledWith(
-      '[AwsUi] [PageLayout] This component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.'
+      '[AwsUi] [AppLayoutToolbar] This component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.'
     );
   });
 
   test('triggerless navigation', () => {
-    const PageLayoutWrapper = () => {
+    const AppLayoutToolbarWrapper = () => {
       const [isNavigationOpen, setIsNavigationOpen] = useState(false);
-      const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
+      const appLayoutToolbarRef = useRef<AppLayoutToolbarProps.Ref>(null);
 
       return (
-        <PageLayout
-          ref={pageLayoutRef}
+        <AppLayoutToolbar
+          ref={appLayoutToolbarRef}
           navigationTriggerHide={true}
           navigationOpen={isNavigationOpen}
           onNavigationChange={event => setIsNavigationOpen(event.detail.open)}
@@ -60,7 +60,7 @@ describe('PageLayout', () => {
                 data-testid="toggle-navigation"
                 onClick={() => {
                   setIsNavigationOpen(current => !current);
-                  pageLayoutRef.current?.focusNavigation();
+                  appLayoutToolbarRef.current?.focusNavigation();
                 }}
               >
                 Toggle navigation
@@ -70,7 +70,7 @@ describe('PageLayout', () => {
         />
       );
     };
-    const { wrapper } = renderComponent(<PageLayoutWrapper />);
+    const { wrapper } = renderComponent(<AppLayoutToolbarWrapper />);
 
     expect(wrapper.findNavigationToggle()).toBeFalsy();
     expect(wrapper.findOpenNavigationPanel()).toBeFalsy();
@@ -83,13 +83,13 @@ describe('PageLayout', () => {
 
   test('triggerless drawers', () => {
     const drawerId = 'pro-help';
-    const PageLayoutWrapper = () => {
+    const AppLayoutToolbarWrapper = () => {
       const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);
-      const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
+      const appLayoutToolbarRef = useRef<AppLayoutToolbarProps.Ref>(null);
 
       return (
-        <PageLayout
-          ref={pageLayoutRef}
+        <AppLayoutToolbar
+          ref={appLayoutToolbarRef}
           navigationTriggerHide={true}
           activeDrawerId={activeDrawerId}
           drawers={[
@@ -118,7 +118,7 @@ describe('PageLayout', () => {
         />
       );
     };
-    const { wrapper } = renderComponent(<PageLayoutWrapper />);
+    const { wrapper } = renderComponent(<AppLayoutToolbarWrapper />);
 
     expect(wrapper.findDrawerTriggerById(drawerId)).toBeFalsy();
     expect(wrapper.findActiveDrawer()).toBeFalsy();
@@ -130,7 +130,7 @@ describe('PageLayout', () => {
 
   test('should not render the toolbar when there is no nav & drawers triggers & no breadcrumbs', () => {
     const { wrapper } = renderComponent(
-      <PageLayout
+      <AppLayoutToolbar
         navigationTriggerHide={true}
         navigation={<>Mock Navigation</>}
         breadcrumbs={undefined}

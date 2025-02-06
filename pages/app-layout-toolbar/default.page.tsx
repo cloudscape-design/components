@@ -3,17 +3,17 @@
 import React, { useContext, useRef, useState } from 'react';
 
 import {
+  AppLayoutToolbar,
   Button,
   ContentLayout,
   Header,
   HelpPanel,
   Link,
-  PageLayout,
   SpaceBetween,
   SplitPanel,
   Toggle,
 } from '~components';
-import { PageLayoutProps } from '~components/page-layout';
+import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { Breadcrumbs, Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
@@ -26,7 +26,7 @@ type DemoContext = React.Context<
     drawerTriggerHide: boolean | undefined;
     splitPanelTriggerHide: boolean | undefined;
     breadcrumbsHide: boolean | undefined;
-    splitPanelPosition: PageLayoutProps.SplitPanelPreferences['position'];
+    splitPanelPosition: AppLayoutToolbarProps.SplitPanelPreferences['position'];
   }>
 >;
 
@@ -41,9 +41,9 @@ export default function WithDrawers() {
   const [isToolsOpen, setIsToolsOpen] = useState(false);
   const [isNavigationOpen, setIsNavigationOpen] = useState(true);
   const [splitPanelOpen, setSplitPanelOpen] = useState(false);
-  const pageLayoutRef = useRef<PageLayoutProps.Ref>(null);
+  const pageLayoutRef = useRef<AppLayoutToolbarProps.Ref>(null);
 
-  const drawersProps: Pick<PageLayoutProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
+  const drawersProps: Pick<AppLayoutToolbarProps, 'activeDrawerId' | 'onDrawerChange' | 'drawers'> | null = {
     activeDrawerId: activeDrawerId,
     drawers: [
       {
@@ -68,7 +68,7 @@ export default function WithDrawers() {
   };
 
   return (
-    <PageLayout
+    <AppLayoutToolbar
       ariaLabels={{ ...appLayoutLabels, ...drawerLabels }}
       breadcrumbs={breadcrumbsHide ? undefined : <Breadcrumbs />}
       ref={pageLayoutRef}

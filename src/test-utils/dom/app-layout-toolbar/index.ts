@@ -4,6 +4,6 @@ import AppLayoutWrapper from '../app-layout';
 
 import testutilStyles from '../../../app-layout/test-classes/styles.selectors.js';
 
-export default class PageLayoutWrapper extends AppLayoutWrapper {
+export default class AppLayoutToolbarWrapper extends AppLayoutWrapper {
   static rootSelector = testutilStyles.root;
 }

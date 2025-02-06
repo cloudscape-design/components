@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useRef, useState } from 'react';
 
+import AppLayoutToolbar from '~components/app-layout-toolbar';
 import BreadcrumbGroup from '~components/breadcrumb-group';
 import Header from '~components/header';
 import ScreenreaderOnly from '~components/internal/components/screenreader-only';
 import Link from '~components/link';
-import PageLayout from '~components/page-layout';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
@@ -18,7 +18,7 @@ import labels from './utils/labels';
 function createView(name: string) {
   return function View() {
     return (
-      <PageLayout
+      <AppLayoutToolbar
         data-testid="secondary-layout"
         ariaLabels={labels}
         breadcrumbs={
@@ -64,7 +64,7 @@ export default function () {
 
   return (
     <ScreenshotArea gutters={false}>
-      <PageLayout
+      <AppLayoutToolbar
         {...{ __disableRuntimeDrawers: true }}
         data-testid="main-layout"
         ariaLabels={labels}

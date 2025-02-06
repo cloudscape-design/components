@@ -19,11 +19,11 @@ import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { isDevelopment } from '../internal/is-development';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { PageLayoutProps } from './interfaces';
+import { AppLayoutToolbarProps } from './interfaces';
 
-export { PageLayoutProps };
+export { AppLayoutToolbarProps };
 
-const PageLayout = React.forwardRef(
+const AppLayoutToolbar = React.forwardRef(
   (
     {
       contentType = 'default',
@@ -37,27 +37,27 @@ const PageLayout = React.forwardRef(
       onNavigationChange: controlledOnNavigationChange,
       analyticsMetadata,
       ...rest
-    }: PageLayoutProps,
+    }: AppLayoutToolbarProps,
     ref: React.Ref<AppLayoutProps.Ref>
   ) => {
     const isVisualRefresh = useVisualRefresh();
     if (isDevelopment) {
       if (rest.toolsOpen && rest.toolsHide) {
         warnOnce(
-          'PageLayout',
+          'AppLayoutToolbar',
           `You have enabled both the \`toolsOpen\` prop and the \`toolsHide\` prop. This is not supported. Set \`toolsOpen\` to \`false\` when you set \`toolsHide\` to \`true\`.`
         );
       }
 
       if (!isVisualRefresh) {
         warnOnce(
-          'PageLayout',
+          'AppLayoutToolbar',
           `This component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.`
         );
       }
     }
     const { __internalRootRef } = useBaseComponent<HTMLDivElement>(
-      'PageLayout',
+      'AppLayoutToolbar',
       {
         props: {
           contentType,
@@ -139,5 +139,5 @@ const PageLayout = React.forwardRef(
   }
 );
 
-applyDisplayName(PageLayout, 'PageLayout');
-export default PageLayout;
+applyDisplayName(AppLayoutToolbar, 'AppLayoutToolbar');
+export default AppLayoutToolbar;
