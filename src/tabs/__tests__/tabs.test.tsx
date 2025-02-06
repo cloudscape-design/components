@@ -3,6 +3,7 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
+import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -24,6 +25,21 @@ jest.mock('../../../lib/components/tabs/scroll-utils', () => {
     hasInlineEndOverflow: (...args: any) =>
       mockHorizontalOverflow ? true : originalScrollUtilsModule.hasInlineEndOverflow(...args),
   };
+});
+
+jest.mock('@cloudscape-design/component-toolkit/internal', () => {
+  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
+
+  //just mock the `warnOnce` export
+  return {
+    __esModule: true,
+    ...originalModule,
+    warnOnce: jest.fn(),
+  };
+});
+
+beforeEach(() => {
+  (warnOnce as jest.Mock).mockClear();
 });
 
 function renderTabs(element: React.ReactElement) {
@@ -192,6 +208,39 @@ describe('Tabs', () => {
 
       expect(tabLinks[index].getElement()).toHaveAttribute('aria-controls', renderedTabId);
     });
+  });
+
+  test('renders tabs with contentRenderStrategy: eager', () => {
+    const tabs = renderTabs(
+      <Tabs tabs={defaultTabs.map(tab => ({ ...tab, contentRenderStrategy: 'eager' }))} />
+    ).wrapper;
+    const tabContents = tabs.findAllByClassName(styles['tabs-content']);
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).not.toBeEmptyDOMElement();
+  });
+
+  test('renders tabs with contentRenderStrategy: lazy', () => {
+    const tabs = renderTabs(
+      <Tabs tabs={defaultTabs.map(tab => ({ ...tab, contentRenderStrategy: 'lazy' }))} />
+    ).wrapper;
+    const tabContents = tabs.findAllByClassName(styles['tabs-content']);
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).toBeEmptyDOMElement();
+    tabs.findTabLinkByIndex(2)!.click();
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).not.toBeEmptyDOMElement();
+  });
+
+  test('renders tabs with contentRenderStrategy: active', () => {
+    const tabs = renderTabs(
+      <Tabs tabs={defaultTabs.map(tab => ({ ...tab, contentRenderStrategy: 'active' }))} />
+    ).wrapper;
+    const tabContents = tabs.findAllByClassName(styles['tabs-content']);
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).toBeEmptyDOMElement();
+    tabs.findTabLinkByIndex(2)!.click();
+    expect(tabContents[0].getElement()).toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).not.toBeEmptyDOMElement();
   });
 
   describe('Active tab', () => {

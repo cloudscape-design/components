@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -28,6 +28,18 @@ function firstEnabledTab(tabs: ReadonlyArray<TabsProps.Tab>) {
     return enabledTabs[0];
   }
   return null;
+}
+
+function shouldRenderTabContent(tab: TabsProps.Tab, viewedTabs: Set<string>) {
+  switch (tab.contentRenderStrategy) {
+    case 'active':
+      return false; // rendering active tab is handled directly in component
+    case 'eager':
+      return true;
+    case 'lazy':
+      return viewedTabs.has(tab.id);
+  }
+  return false;
 }
 
 export default function Tabs({
@@ -59,6 +71,18 @@ export default function Tabs({
     controlledProp: 'activeTabId',
     changeHandler: 'onChange',
   });
+
+  const [viewedTabs, setViewedTabs] = useState(new Set(activeTabId));
+
+  useEffect(() => {
+    if (activeTabId) {
+      setViewedTabs(prevViewedTabs => {
+        const newViewedTabs = new Set(prevViewedTabs);
+        newViewedTabs.add(activeTabId);
+        return newViewedTabs;
+      });
+    }
+  }, [activeTabId]);
 
   const baseProps = getBaseProps(rest);
 
@@ -95,8 +119,9 @@ export default function Tabs({
         'aria-labelledby': getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       };
 
-      const isContentShown = isTabSelected && !selectedTab.disabled;
-      return <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>;
+      const isContentShown = !tab.disabled && (isTabSelected || shouldRenderTabContent(tab, viewedTabs));
+
+      return <div {...contentAttributes}>{isContentShown && tab.content}</div>;
     };
 
     return (
