@@ -134,6 +134,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],
           resizableColumns && styles['resizable-columns'],
+          verticalAlign === 'top' && styles['body-cell-align-top'],
           isEditable && styles['body-cell-editable'],
           isEditing && !isEditingDisabled && styles['body-cell-edit-active'],
           isEditing && isEditingDisabled && styles['body-cell-edit-disabled-popover'],
@@ -161,15 +162,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           </div>
         )}
 
-        <div
-          className={clsx(
-            styles['body-cell-content'],
-            verticalAlign === 'top' && styles['body-cell-align-top'],
-            wrapLines && styles['body-cell-wrap']
-          )}
-        >
-          {children}
-        </div>
+        <div className={clsx(styles['body-cell-content'], wrapLines && styles['body-cell-wrap'])}>{children}</div>
       </Element>
     );
   }
