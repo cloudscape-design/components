@@ -66,10 +66,13 @@ class TabsPage extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: TabsPage) => Promise<void>, smallViewport = false) => {
+const setupTest = (
+  testFn: (page: TabsPage) => Promise<void>,
+  { smallViewport = false, pagePath = 'responsive-integ' }: { smallViewport?: boolean; pagePath?: string } = {}
+) => {
   return useBrowser(async browser => {
     const page = new TabsPage(browser);
-    await browser.url('#/light/tabs/responsive-integ');
+    await browser.url(`#/light/tabs/${pagePath}`);
     await page.waitForVisible(wrapper.findTabContent().toSelector());
     if (smallViewport) {
       await page.setWindowSize({ width: 400, height: 1000 });
@@ -80,16 +83,22 @@ const setupTest = (testFn: (page: TabsPage) => Promise<void>, smallViewport = fa
 
 test(
   'displays pagination buttons in small viewports',
-  setupTest(async page => {
-    await page.hasPaginationButtons(true);
-  }, true)
+  setupTest(
+    async page => {
+      await page.hasPaginationButtons(true);
+    },
+    { smallViewport: true }
+  )
 );
 
 test(
   'does not display pagination buttons in large viewports',
-  setupTest(async page => {
-    await page.hasPaginationButtons(false);
-  }, false)
+  setupTest(
+    async page => {
+      await page.hasPaginationButtons(false);
+    },
+    { smallViewport: false }
+  )
 );
 
 test(
@@ -127,11 +136,14 @@ test(
 
 test(
   'does not scroll when using arrows',
-  setupTest(async page => {
-    await page.focusTabHeader();
-    await page.navigateTabList(1);
-    await expect(page.getScrollLeft()).resolves.toBe(0);
-  }, true)
+  setupTest(
+    async page => {
+      await page.focusTabHeader();
+      await page.navigateTabList(1);
+      await expect(page.getScrollLeft()).resolves.toBe(0);
+    },
+    { smallViewport: true }
+  )
 );
 
 test(
@@ -166,17 +178,20 @@ test(
 
 test(
   'scrolls when using the left/right pagination buttons with the keyboard',
-  setupTest(async page => {
-    await page.setWindowSize({ width: 550, height: 1000 });
-    await page.focusTabHeader();
-    // arrows have a focus ring (and a tab stop) even in disabled state
-    await page.keys(['Tab', 'Tab', 'Space']);
-    await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
-    await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
-    await page.keys(['Shift', 'Tab', 'Shift', 'Tab', 'Space']);
-    await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
-    await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
-  }, true)
+  setupTest(
+    async page => {
+      await page.setWindowSize({ width: 550, height: 1000 });
+      await page.focusTabHeader();
+      // arrows have a focus ring (and a tab stop) even in disabled state
+      await page.keys(['Tab', 'Tab', 'Space']);
+      await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(true);
+      await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(false);
+      await page.keys(['Shift', 'Tab', 'Shift', 'Tab', 'Space']);
+      await expect(page.isExisting(page.paginationButton('left', true))).resolves.toBe(false);
+      await expect(page.isExisting(page.paginationButton('right', true))).resolves.toBe(true);
+    },
+    { smallViewport: true }
+  )
 );
 
 test(
@@ -244,70 +259,85 @@ test(
 
 test(
   'does not scroll on click if not needed',
-  setupTest(async page => {
-    await page.click(wrapper.findTabLinkByIndex(2).toSelector());
-    await expect(page.getScrollLeft()).resolves.toBe(0);
-  }, true)
+  setupTest(
+    async page => {
+      await page.click(wrapper.findTabLinkByIndex(2).toSelector());
+      await expect(page.getScrollLeft()).resolves.toBe(0);
+    },
+    { smallViewport: true }
+  )
 );
 
 test(
   'scrolls selected tab header into view when focusing',
-  setupTest(async page => {
-    await page.click(page.paginationButton('right', true));
-    await expect(page.getScrollLeft()).resolves.toBeGreaterThan(200);
-    await page.click('#before');
-    await page.keys(['Tab', 'Tab']); // Type Tab twice in order to navigate past the scroll left button
-    await expect(page.getScrollLeft()).resolves.toBe(0);
-  }, true)
+  setupTest(
+    async page => {
+      await page.click(page.paginationButton('right', true));
+      await expect(page.getScrollLeft()).resolves.toBeGreaterThan(200);
+      await page.click('#before');
+      await page.keys(['Tab', 'Tab']); // Type Tab twice in order to navigate past the scroll left button
+      await expect(page.getScrollLeft()).resolves.toBe(0);
+    },
+    { smallViewport: true }
+  )
 );
 
 [false, true].forEach(smallViewport => {
   test(
     'has the same arrow left/right keys behavior when paginated',
-    setupTest(async page => {
-      await page.click('#before');
-      await expect(page.findActiveTabIndex()).resolves.toBe(0);
-      if (smallViewport) {
-        // arrows have a focus ring (and a tab stop) even in disabled state
-        await page.keys('Tab');
-      }
-      await page.keys(['Tab', 'ArrowRight']);
-      await expect(page.findActiveTabIndex()).resolves.toBe(1);
-      await page.navigateTabList(7);
-      await expect(page.findActiveTabIndex()).resolves.toBe(0);
-      await page.navigateTabList(-3);
-      await expect(page.findActiveTabIndex()).resolves.toBe(5);
-      await page.navigateTabList(-1);
-      await expect(page.findActiveTabIndex()).resolves.toBe(3);
-    }, smallViewport)
+    setupTest(
+      async page => {
+        await page.click('#before');
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+        if (smallViewport) {
+          // arrows have a focus ring (and a tab stop) even in disabled state
+          await page.keys('Tab');
+        }
+        await page.keys(['Tab', 'ArrowRight']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(1);
+        await page.navigateTabList(7);
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+        await page.navigateTabList(-3);
+        await expect(page.findActiveTabIndex()).resolves.toBe(5);
+        await page.navigateTabList(-1);
+        await expect(page.findActiveTabIndex()).resolves.toBe(3);
+      },
+      { smallViewport }
+    )
   );
   test(
     'has the same arrow home/end keys behavior when paginated',
-    setupTest(async page => {
-      await page.focusTabHeader();
-      if (smallViewport) {
-        // arrows have a focus ring (and a tab stop) even in disabled state
-        await page.keys('Tab');
-      }
-      await page.keys(['End']);
-      await page.navigateTabList(-2);
-      await expect(page.findActiveTabIndex()).resolves.toBe(5);
-      await page.keys(['Home']);
-      await expect(page.findActiveTabIndex()).resolves.toBe(0);
-    }, smallViewport)
+    setupTest(
+      async page => {
+        await page.focusTabHeader();
+        if (smallViewport) {
+          // arrows have a focus ring (and a tab stop) even in disabled state
+          await page.keys('Tab');
+        }
+        await page.keys(['End']);
+        await page.navigateTabList(-2);
+        await expect(page.findActiveTabIndex()).resolves.toBe(5);
+        await page.keys(['Home']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+      },
+      { smallViewport }
+    )
   );
 });
 
 test(
   'header buttons do not trigger form submission',
-  setupTest(async page => {
-    const urlBefore = await page.getUrl();
-    await page.click(wrapper.find(page.paginationButton('left')).toSelector());
-    await page.click(wrapper.find(page.paginationButton('right')).toSelector());
-    const urlAfter = await page.getUrl();
+  setupTest(
+    async page => {
+      const urlBefore = await page.getUrl();
+      await page.click(wrapper.find(page.paginationButton('left')).toSelector());
+      await page.click(wrapper.find(page.paginationButton('right')).toSelector());
+      const urlAfter = await page.getUrl();
 
-    expect(urlAfter).toEqual(urlBefore);
-  }, true)
+      expect(urlAfter).toEqual(urlBefore);
+    },
+    { smallViewport: true }
+  )
 );
 
 test(
@@ -404,6 +434,29 @@ test(
     await page.keys(['Tab']);
     await expect(page.isFocused(wrapper.findTabContent().toSelector())).resolves.toBe(true);
   })
+);
+
+test(
+  'verifies focus returns to active tab',
+  setupTest(async page => {
+    await page.click(wrapper.findTabLinkByIndex(6).toSelector());
+    await page.keys(['Tab']);
+    await page.keys(['Shift', 'Tab']);
+    await expect(page.isFocused(wrapper.findTabLinkByIndex(6).toSelector())).resolves.toBe(true);
+  })
+);
+
+test(
+  'verifies focus returns to active tab (no actions/dismissible)',
+  setupTest(
+    async page => {
+      await page.click(wrapper.findTabLinkByIndex(2).toSelector());
+      await page.keys(['Tab']);
+      await page.keys(['Shift', 'Tab']);
+      await expect(page.isFocused(wrapper.findTabLinkByIndex(2).toSelector())).resolves.toBe(true);
+    },
+    { pagePath: 'controllability' }
+  )
 );
 
 test(

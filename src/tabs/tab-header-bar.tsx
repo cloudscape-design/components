@@ -42,7 +42,7 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 const tabSelector = `.${styles['tabs-tab-link']}`;
-const focusedTabSelector = `[role="tab"].${styles['tabs-tab-focused']}`;
+const focusedTabSelector = `.${styles['tabs-tab-focused']}`;
 const focusableTabSelector = `.${styles['tabs-tab-focusable']}`;
 
 function dismissButton({
