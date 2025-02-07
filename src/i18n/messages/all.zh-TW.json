@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "確認",
     "i18nStrings.preferencesModalWrapLines": "換行",
     "i18nStrings.preferencesModalTheme": "佈景主題",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "篩選主題",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "篩選主題",
     "i18nStrings.preferencesModalLightThemes": "淺色佈景主題",
     "i18nStrings.preferencesModalDarkThemes": "深色佈景主題",
     "i18nStrings.cursorPositionAriaLabel": "列 {row} 上的游標"

@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "確認",
     "i18nStrings.preferencesModalWrapLines": "折り返す",
     "i18nStrings.preferencesModalTheme": "テーマ",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "テーマをフィルタリング",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "テーマをフィルタリング",
     "i18nStrings.preferencesModalLightThemes": "明るいテーマ",
     "i18nStrings.preferencesModalDarkThemes": "暗いテーマ",
     "i18nStrings.cursorPositionAriaLabel": "カーソルは行 {row}"

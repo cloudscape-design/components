@@ -661,6 +661,8 @@ describe('Code editor component', () => {
             'i18nStrings.preferencesModalTheme': 'Custom theme',
             'i18nStrings.preferencesModalLightThemes': 'Custom light themes',
             'i18nStrings.preferencesModalDarkThemes': 'Custom dark themes',
+            'i18nStrings.preferencesModalThemeFilteringAriaLabel': 'Custom theme filter',
+            'i18nStrings.preferencesModalThemeFilteringPlaceholder': 'Custom theme filter placeholder',
           },
         }}
       >
@@ -680,6 +682,9 @@ describe('Code editor component', () => {
     expect(modal.findContent()!.findCheckbox()!.findLabel().getElement()).toHaveTextContent('Custom wrap lines');
     expect(modal.findContent()!.findFormField()!.findLabel()!.getElement()).toHaveTextContent('Custom theme');
     modal.findContent()!.findSelect()!.openDropdown();
+    const filteringInput = modal.findContent()!.findSelect()!.findFilteringInput()!.findNativeInput().getElement();
+    expect(filteringInput).toHaveAccessibleName('Custom theme filter');
+    expect(filteringInput).toHaveAttribute('placeholder', 'Custom theme filter placeholder');
     expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(1)')!.getElement()).toHaveTextContent(
       'Custom light themes'
     );

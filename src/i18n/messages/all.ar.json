@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "تأكيد",
     "i18nStrings.preferencesModalWrapLines": "ترحيل الكلمات من نهاية السطر",
     "i18nStrings.preferencesModalTheme": "الشكل",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "تصفية الموضوعات",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "تصفية الموضوعات",
     "i18nStrings.preferencesModalLightThemes": "الأشكال فاتحة اللون",
     "i18nStrings.preferencesModalDarkThemes": "الأشكال قاتمة اللون",
     "i18nStrings.cursorPositionAriaLabel": "المؤشر على السطر رقم {row}"
