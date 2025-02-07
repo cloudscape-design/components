@@ -74,7 +74,11 @@ export default function Modal({ size = 'medium', ...props }: ModalProps) {
   const baseComponentProps = useBaseComponent(
     'Modal',
     {
-      props: { size, disableContentPaddings: props.disableContentPaddings },
+      props: {
+        size,
+        disableContentPaddings: props.disableContentPaddings,
+        flowType: analyticsMetadata.flowType,
+      },
       metadata: {
         hasResourceType: Boolean(analyticsMetadata?.resourceType),
         hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
