@@ -23,13 +23,13 @@
 .segment-part {
   display: -ms-inline-grid;
   display: inline-grid;
-  gap: 17px;
+  gap: 10px;
   border-inline: solid 2px awsui.$color-border-input-default;
   border-block: solid 2px awsui.$color-border-input-default;
-  border-start-start-radius: 8px;
-  border-start-end-radius: 8px;
-  border-end-start-radius: 8px;
-  border-end-end-radius: 8px;
+  border-start-start-radius: 24px;
+  border-start-end-radius: 24px;
+  border-end-start-radius: 24px;
+  border-end-end-radius: 24px;
   align-items: center;
   min-block-size: 28px;
   padding-inline: 2px;

@@ -42,19 +42,21 @@ $selected-color: awsui.$color-text-segment-active;
   // border-block: styles.$control-border-width solid $default-border-color;
   // border-inline: styles.$control-border-width solid $default-border-color;
   padding-block: 2px;
-  padding-inline: calc(awsui.$space-button-horizontal - 8px);
+  padding-inline: calc(awsui.$space-button-horizontal - 4px);
   //border-inline-end-width: 0;
   background: $default-background;
   color: $default-color;
   border-inline: none;
   border-block: none;
-  border-start-start-radius: 4px;
-  border-start-end-radius: 4px;
-  border-end-start-radius: 4px;
-  border-end-end-radius: 4px;
+  border-start-start-radius: 20px;
+  border-start-end-radius: 20px;
+  border-end-start-radius: 20px;
+  border-end-end-radius: 20px;
   overflow: visible;
   position: relative;
   block-size: calc(100% - 4px);
+  display: flex;
+  align-items: center;
 
   &:focus {
     outline: none;
@@ -72,18 +74,17 @@ $selected-color: awsui.$color-text-segment-active;
   }
 
   // &:last-child {
-  //   // border-inline-end-width: styles.$control-border-width;
-  //   // border-start-start-radius: 0;
-  //   // border-start-end-radius: 8px;
-  //   // border-end-start-radius: 0;
-  //   // border-end-end-radius: 8px;
-  //   border-radius: 4px;
+  //   border-inline-end-width: styles.$control-border-width;
+  //   border-start-start-radius: 4px;
+  //   border-start-end-radius: 20px;
+  //   border-end-start-radius: 4px;
+  //   border-end-end-radius: 20px;
   // }
   // &:first-child {
-  //   border-start-start-radius: 8px;
-  //   border-start-end-radius: 0;
-  //   border-end-start-radius: 8px;
-  //   border-end-end-radius: 0;
+  //   border-start-start-radius: 20px;
+  //   border-start-end-radius: 4px;
+  //   border-end-start-radius: 20px;
+  //   border-end-end-radius: 4px;
   // }
 
   &.disabled {
@@ -126,9 +127,9 @@ $selected-color: awsui.$color-text-segment-active;
   &:not(:last-child)::after {
     content: '';
     position: absolute;
-    inset-inline-end: -9px;
-    inset-block-start: 4px;
-    block-size: calc(100% - 8px);
+    inset-inline-end: -6px;
+    inset-block-start: 6px;
+    block-size: calc(100% - 12px);
     inline-size: 1px;
     background: awsui.$color-border-input-default;
     z-index: 1;
