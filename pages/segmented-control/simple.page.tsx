@@ -7,6 +7,7 @@ import SegmentedControl from '~components/segmented-control';
 
 export default function SegmentedControlPage() {
   const [selectedFirstId, setSelecteFirstdId] = useState<string | null>('seg1-1');
+  const [selectedSecondId, setSelecteSecondId] = useState<string | null>('seg2-1');
   const [selectedId, setSelectedId] = useState<string | null>('seg-4');
   return (
     <article>
@@ -17,8 +18,8 @@ export default function SegmentedControlPage() {
             <SegmentedControl
               options={[
                 { text: 'Logs Insights QL', id: 'seg1-1', disabled: false },
-                { text: 'OpenSearch PPL - new', id: 'seg1-2', disabled: false },
-                { text: 'OpenSearch SQL - new', id: 'seg1-3', disabled: false },
+                { text: 'OpenSearch PPL', id: 'seg1-2', disabled: false },
+                { text: 'OpenSearch SQL', id: 'seg1-3', disabled: false },
               ]}
               onChange={event => setSelecteFirstdId(event.detail.selectedId)}
               selectedId={selectedFirstId}
@@ -37,6 +38,18 @@ export default function SegmentedControlPage() {
             />
             <Button>Button</Button>
           </SpaceBetween>
+        </Box>
+        <Box margin={{ horizontal: 'm', vertical: 'xxl' }}>
+          <SegmentedControl
+            options={[
+              { iconName: 'view-horizontal', id: 'seg2-1', disabled: false },
+              { iconName: 'view-vertical', id: 'seg2-2', disabled: false },
+              { iconName: 'view-full', id: 'seg2-3', disabled: false },
+            ]}
+            onChange={event => setSelecteSecondId(event.detail.selectedId)}
+            selectedId={selectedSecondId}
+            label="Segmented Control Label"
+          />
         </Box>
         <Box margin={{ horizontal: 'm', vertical: 'xxl' }}>
           <SegmentedControl
