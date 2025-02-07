@@ -66,19 +66,6 @@
   min-inline-size: 0;
 }
 
-.flash-focus-container {
-  display: flex;
-  flex: 1;
-  min-inline-size: 0;
-
-  &:focus {
-    outline: none;
-  }
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(awsui.$space-button-focus-outline-gutter);
-  }
-}
-
 .flash-text {
   margin-block: awsui.$border-width-field;
   margin-inline: 0;

@@ -63,7 +63,7 @@ function dismissButton(
 
 export const focusFlashById = throttle(
   (element: HTMLElement | null, itemId: string) => {
-    const selector = `[data-itemid="${CSS.escape(itemId)}"] .${styles['flash-focus-container']}`;
+    const selector = `[data-itemid="${CSS.escape(itemId)}"] button`;
     element?.querySelector<HTMLElement>(selector)?.focus();
   },
   FOCUS_THROTTLE_DELAY,
@@ -179,36 +179,34 @@ export const Flash = React.forwardRef(
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
-          <div className={styles['flash-focus-container']} tabIndex={-1}>
-            <div className={clsx(styles['flash-icon'], styles['flash-text'])}>{icon}</div>
-            <div className={clsx(styles['flash-message'], styles['flash-text'])}>
-              <div
-                className={clsx(
-                  styles['flash-header'],
-                  headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
-                )}
-                ref={headerRef}
-              >
-                {header}
-              </div>
-              <div
-                className={clsx(styles['header-replacement'], headerReplacementType !== 'replaced' && styles.hidden)}
-                ref={replacementHeaderRef}
-              ></div>
-              <div
-                className={clsx(
-                  styles['flash-content'],
-                  contentReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
-                )}
-                ref={contentRef}
-              >
-                {content}
-              </div>
-              <div
-                className={clsx(styles['content-replacement'], contentReplacementType !== 'replaced' && styles.hidden)}
-                ref={replacementContentRef}
-              ></div>
+          <div className={clsx(styles['flash-icon'], styles['flash-text'])}>{icon}</div>
+          <div className={clsx(styles['flash-message'], styles['flash-text'])}>
+            <div
+              className={clsx(
+                styles['flash-header'],
+                headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
+              )}
+              ref={headerRef}
+            >
+              {header}
             </div>
+            <div
+              className={clsx(styles['header-replacement'], headerReplacementType !== 'replaced' && styles.hidden)}
+              ref={replacementHeaderRef}
+            ></div>
+            <div
+              className={clsx(
+                styles['flash-content'],
+                contentReplacementType !== 'original' ? styles.hidden : analyticsSelectors['flash-header']
+              )}
+              ref={contentRef}
+            >
+              {content}
+            </div>
+            <div
+              className={clsx(styles['content-replacement'], contentReplacementType !== 'replaced' && styles.hidden)}
+              ref={replacementContentRef}
+            ></div>
           </div>
           <ActionsWrapper
             className={styles['action-button-wrapper']}
