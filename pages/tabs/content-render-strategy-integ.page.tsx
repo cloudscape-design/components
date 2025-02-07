@@ -14,12 +14,13 @@ const TabWithState = () => {
     </FormField>
   );
 };
-const TabWithLoading = () => {
+
+const TabWithLoading = ({ id }: { id: string }) => {
   const [loaded, setLoaded] = useState(false);
   useEffect(() => {
     setTimeout(() => setLoaded(true), 1000);
   }, []);
-  return <div>{loaded ? 'Loaded' : 'Loading...'}</div>;
+  return <div id={id}>{loaded ? 'Loaded' : 'Loading...'}</div>;
 };
 
 export default function TabsDemoPage() {
@@ -39,32 +40,25 @@ export default function TabsDemoPage() {
     {
       label: 'Lazy loading',
       id: 'lazy',
-      content: <TabWithLoading />,
+      content: <TabWithLoading id="loading-lazy" />,
       contentRenderStrategy: 'lazy',
     },
     {
       label: 'Eager loading',
       id: 'eager',
-      content: <TabWithLoading />,
+      content: <TabWithLoading id="loading-eager" />,
       contentRenderStrategy: 'eager',
     },
   ];
-  const [selectedTab, setSelectedTab] = useState(tabs[0].id);
-  const [loaded, setLoaded] = useState(new Set([tabs[0].id]));
   return (
     <>
       <h1>Tabs</h1>
 
       <SpaceBetween size="xs">
         <div>
-          <h2>Controlled component</h2>
+          <h2>Content render strategy</h2>
           <Tabs
             tabs={tabs}
-            activeTabId={selectedTab}
-            onChange={event => {
-              setSelectedTab(event.detail.activeTabId);
-              setLoaded(new Set([...loaded.values(), event.detail.activeTabId]));
-            }}
             i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
           />
         </div>

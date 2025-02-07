@@ -3,7 +3,6 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import TestI18nProvider from '../../../lib/components/i18n/testing';
@@ -25,21 +24,6 @@ jest.mock('../../../lib/components/tabs/scroll-utils', () => {
     hasInlineEndOverflow: (...args: any) =>
       mockHorizontalOverflow ? true : originalScrollUtilsModule.hasInlineEndOverflow(...args),
   };
-});
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => {
-  const originalModule = jest.requireActual('@cloudscape-design/component-toolkit/internal');
-
-  //just mock the `warnOnce` export
-  return {
-    __esModule: true,
-    ...originalModule,
-    warnOnce: jest.fn(),
-  };
-});
-
-beforeEach(() => {
-  (warnOnce as jest.Mock).mockClear();
 });
 
 function renderTabs(element: React.ReactElement) {
