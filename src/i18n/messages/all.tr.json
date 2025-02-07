@@ -307,6 +307,8 @@
     "i18nStrings.labelFiltering": "{itemsType} bul",
     "i18nStrings.labelRefresh": "Verileri yenile",
     "i18nStrings.labelBreadcrumbs": "S3 gezintisi",
+    "i18nStrings.labelIconFolder": "Klasör",
+    "i18nStrings.labelIconObject": "Nesne",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 eşleşme} other {{count} eşleşme}}"
   },
   "select": {

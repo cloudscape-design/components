@@ -307,6 +307,8 @@
     "i18nStrings.labelFiltering": "{itemsType} を検索",
     "i18nStrings.labelRefresh": "データを更新",
     "i18nStrings.labelBreadcrumbs": "S3 ナビゲーション",
+    "i18nStrings.labelIconFolder": "フォルダ",
+    "i18nStrings.labelIconObject": "オブジェクト",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 件の一致} other {{count} 件の一致}}"
   },
   "select": {

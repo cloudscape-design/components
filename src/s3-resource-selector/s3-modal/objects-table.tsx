@@ -94,8 +94,8 @@ export function ObjectsTable({
           cell: item => {
             const isClickable = item.IsFolder || includes(selectableItemsTypes, 'versions');
             const iconProps: IconProps = item.IsFolder
-              ? { name: 'folder', ariaLabel: i18nStrings?.labelIconFolder }
-              : { name: 'file', ariaLabel: i18nStrings?.labelIconObject };
+              ? { name: 'folder', ariaLabel: i18n('i18nStrings.labelIconFolder', i18nStrings?.labelIconFolder) }
+              : { name: 'file', ariaLabel: i18n('i18nStrings.labelIconObject', i18nStrings?.labelIconObject) };
             return (
               <>
                 <InternalIcon {...iconProps} />{' '}

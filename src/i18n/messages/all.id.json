@@ -307,6 +307,8 @@
     "i18nStrings.labelFiltering": "Temukan {itemsType}",
     "i18nStrings.labelRefresh": "Segarkan data",
     "i18nStrings.labelBreadcrumbs": "Navigasi S3",
+    "i18nStrings.labelIconFolder": "Folder",
+    "i18nStrings.labelIconObject": "Objek",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 kecocokan} other {{count} kecocokan}}"
   },
   "select": {

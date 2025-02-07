@@ -3,6 +3,7 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
+import TestI18nProvider from '../../../../lib/components/i18n/testing';
 import { ObjectsTable } from '../../../../lib/components/s3-resource-selector/s3-modal/objects-table';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 import { getIconHTML } from '../../../icon/__tests__/utils';
@@ -102,6 +103,32 @@ test('renders separate icons for folder and file', async () => {
   expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toHaveAccessibleName('Folder');
   expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('folder'));
   expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toHaveAccessibleName('Object');
+  expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('file'));
+});
+
+test('uses I18nProvider for folder and file icons', async () => {
+  const wrapper = await renderTable(
+    <TestI18nProvider
+      messages={{
+        's3-resource-selector': {
+          'i18nStrings.labelIconFolder': 'Custom folder',
+          'i18nStrings.labelIconObject': 'Custom object',
+        },
+      }}
+    >
+      <ObjectsTable
+        {...defaultProps}
+        i18nStrings={{
+          ...defaultProps.i18nStrings,
+          labelIconFolder: undefined,
+          labelIconObject: undefined,
+        }}
+      />
+    </TestI18nProvider>
+  );
+  expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toHaveAccessibleName('Custom folder');
+  expect(wrapper.findBodyCell(1, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('folder'));
+  expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toHaveAccessibleName('Custom object');
   expect(wrapper.findBodyCell(2, 2)!.findIcon()!.getElement()).toContainHTML(getIconHTML('file'));
 });
 
