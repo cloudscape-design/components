@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useState } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -72,17 +72,10 @@ export default function Tabs({
     changeHandler: 'onChange',
   });
 
-  const [viewedTabs, setViewedTabs] = useState(new Set(activeTabId));
-
-  useEffect(() => {
-    if (activeTabId) {
-      setViewedTabs(prevViewedTabs => {
-        const newViewedTabs = new Set(prevViewedTabs);
-        newViewedTabs.add(activeTabId);
-        return newViewedTabs;
-      });
-    }
-  }, [activeTabId]);
+  const viewedTabs = useRef(new Set<string>());
+  if (activeTabId !== undefined) {
+    viewedTabs.current.add(activeTabId);
+  }
 
   const baseProps = getBaseProps(rest);
 
@@ -119,7 +112,7 @@ export default function Tabs({
         'aria-labelledby': getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       };
 
-      const isContentShown = !tab.disabled && (isTabSelected || shouldRenderTabContent(tab, viewedTabs));
+      const isContentShown = !tab.disabled && (isTabSelected || shouldRenderTabContent(tab, viewedTabs.current));
 
       return <div {...contentAttributes}>{isContentShown && tab.content}</div>;
     };
