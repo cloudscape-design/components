@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "Bestätigen",
     "i18nStrings.preferencesModalWrapLines": "Zeilenumbruch",
     "i18nStrings.preferencesModalTheme": "Themen",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Themen filtern",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Themen filtern",
     "i18nStrings.preferencesModalLightThemes": "Hellere Themen",
     "i18nStrings.preferencesModalDarkThemes": "Dunkles Design",
     "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}"

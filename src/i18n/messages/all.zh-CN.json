@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "确认",
     "i18nStrings.preferencesModalWrapLines": "换行",
     "i18nStrings.preferencesModalTheme": "主题",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "筛选主题",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "筛选主题",
     "i18nStrings.preferencesModalLightThemes": "浅色主题",
     "i18nStrings.preferencesModalDarkThemes": "深色主题",
     "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行"
