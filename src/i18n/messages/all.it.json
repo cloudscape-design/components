@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "Conferma",
     "i18nStrings.preferencesModalWrapLines": "Righe a capo",
     "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Filtra i temi",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filtra i temi",
     "i18nStrings.preferencesModalLightThemes": "Temi chiari",
     "i18nStrings.preferencesModalDarkThemes": "Temi scuri",
     "i18nStrings.cursorPositionAriaLabel": "Cursore sulla riga {row}"

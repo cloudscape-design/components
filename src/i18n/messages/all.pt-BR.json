@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "Confirmar",
     "i18nStrings.preferencesModalWrapLines": "Quebrar linhas",
     "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Filtrar temas",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filtrar temas",
     "i18nStrings.preferencesModalLightThemes": "Temas claros",
     "i18nStrings.preferencesModalDarkThemes": "Temas escuros",
     "i18nStrings.cursorPositionAriaLabel": "Cursor na linha {row}"

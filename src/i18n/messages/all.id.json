@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "Konfirmasikan",
     "i18nStrings.preferencesModalWrapLines": "Bungkus baris",
     "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Filter tema",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filter tema",
     "i18nStrings.preferencesModalLightThemes": "Tema terang",
     "i18nStrings.preferencesModalDarkThemes": "Tema gelap",
     "i18nStrings.cursorPositionAriaLabel": "Kursor pada baris {row}"
