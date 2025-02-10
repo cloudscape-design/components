@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "尋找 {itemsType}",
     "i18nStrings.labelRefresh": "重新整理資料",
     "i18nStrings.labelBreadcrumbs": "S3 導覽",
+    "i18nStrings.labelIconFolder": "資料夾",
+    "i18nStrings.labelIconObject": "物件",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 個符合} other {{count} 個符合}}"
   },
   "select": {

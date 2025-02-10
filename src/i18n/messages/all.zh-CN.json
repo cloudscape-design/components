@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "查找 {itemsType}",
     "i18nStrings.labelRefresh": "刷新数据",
     "i18nStrings.labelBreadcrumbs": "S3 导航",
+    "i18nStrings.labelIconFolder": "文件夹",
+    "i18nStrings.labelIconObject": "对象",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 个匹配项} other {{count} 个匹配项}}"
   },
   "select": {

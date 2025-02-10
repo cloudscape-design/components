@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "Encontrar {itemsType}",
     "i18nStrings.labelRefresh": "Atualizar os dados",
     "i18nStrings.labelBreadcrumbs": "Navegação no S3",
+    "i18nStrings.labelIconFolder": "Pasta",
+    "i18nStrings.labelIconObject": "Objeto",
     "i18nStrings.filteringCounterText": "{count, plural, one {Uma correspondência} other {{count} correspondências}}"
   },
   "select": {
