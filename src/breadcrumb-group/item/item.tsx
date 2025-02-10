@@ -54,7 +54,6 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         }}
         onMouseLeave={() => setShowPopover(false)}
         anchorAttributes={anchorAttributes}
-        {...(isLast ? { tabIndex: 0 } : {})}
       >
         {children}
       </Item>
@@ -68,16 +67,25 @@ type ItemProps = React.HTMLAttributes<HTMLElement> & {
   isLast: boolean;
 };
 const Item = React.forwardRef<HTMLElement, ItemProps>(
-  ({ anchorAttributes, children, isLast, ...itemAttributes }, ref) =>
-    isLast ? (
-      <span ref={ref} className={styles.anchor} {...itemAttributes}>
+  ({ anchorAttributes, children, isLast, ...itemAttributes }, ref) => {
+    return isLast ? (
+      <span
+        ref={ref}
+        className={styles.anchor}
+        role="link"
+        aria-disabled={true}
+        aria-current="page"
+        tabIndex={0}
+        {...itemAttributes}
+      >
         {children}
       </span>
     ) : (
       <a ref={ref as React.Ref<HTMLAnchorElement>} className={styles.anchor} {...itemAttributes} {...anchorAttributes}>
         {children}
       </a>
-    )
+    );
+  }
 );
 
 export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
@@ -103,14 +111,9 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     onClick: isLast ? preventDefault : onClickHandler,
     tabIndex: 0,
   };
+
   if (isGhost) {
     anchorAttributes.tabIndex = -1;
-  }
-
-  if (isLast) {
-    anchorAttributes.role = 'link';
-    anchorAttributes['aria-disabled'] = true;
-    anchorAttributes['aria-current'] = 'page';
   }
 
   const breadcrumbItem = (
