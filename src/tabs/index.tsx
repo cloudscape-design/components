@@ -40,6 +40,7 @@ export default function Tabs({
   disableContentPaddings = false,
   i18nStrings,
   fitHeight,
+  keyboardActivationMode = 'automatic',
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -128,6 +129,7 @@ export default function Tabs({
         fireNonCancelableEvent(onChange, changeDetail);
       }}
       i18nStrings={i18nStrings}
+      keyboardActivationMode={keyboardActivationMode}
     />
   );
 

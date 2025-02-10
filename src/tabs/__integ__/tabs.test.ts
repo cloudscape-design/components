@@ -68,11 +68,17 @@ class TabsPage extends BasePageObject {
 
 const setupTest = (
   testFn: (page: TabsPage) => Promise<void>,
-  { smallViewport = false, pagePath = 'responsive-integ' }: { smallViewport?: boolean; pagePath?: string } = {}
+  {
+    smallViewport = false,
+    pagePath = 'responsive-integ',
+    keyboardActivationMode,
+  }: { smallViewport?: boolean; pagePath?: string; keyboardActivationMode?: 'manual' | 'automatic' } = {}
 ) => {
   return useBrowser(async browser => {
     const page = new TabsPage(browser);
-    await browser.url(`#/light/tabs/${pagePath}`);
+    await browser.url(
+      `#/light/tabs/${pagePath}${keyboardActivationMode ? `?keyboardActivationMode=${keyboardActivationMode}` : ''}`
+    );
     await page.waitForVisible(wrapper.findTabContent().toSelector());
     if (smallViewport) {
       await page.setWindowSize({ width: 400, height: 1000 });
@@ -512,3 +518,93 @@ test(
     await expect(page.isFocused(wrapper.findTabLinkByIndex(3).toSelector())).resolves.toBe(true);
   })
 );
+
+describe('activation mode', () => {
+  test(
+    'automatic mode - activates tab on arrow navigation',
+    setupTest(
+      async page => {
+        await page.focusTabHeader();
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+
+        await page.keys(['ArrowRight']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(1);
+
+        await page.keys(['ArrowLeft']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+      },
+      { keyboardActivationMode: 'automatic' }
+    )
+  );
+
+  test(
+    'manual mode - does not activate tab on arrow navigation',
+    setupTest(
+      async page => {
+        await page.focusTabHeader();
+        const initialActiveTab = await page.findActiveTabIndex();
+
+        await page.keys(['ArrowRight']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(initialActiveTab);
+
+        await page.keys(['ArrowLeft']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(initialActiveTab);
+      },
+      { keyboardActivationMode: 'manual' }
+    )
+  );
+
+  test(
+    'manual mode - activates tab on Space/Enter',
+    setupTest(
+      async page => {
+        await page.focusTabHeader();
+        await page.keys(['ArrowRight']);
+        await page.keys(['Enter']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(1);
+
+        await page.keys(['ArrowRight']);
+        await page.keys(['Space']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(2);
+      },
+      { keyboardActivationMode: 'manual' }
+    )
+  );
+
+  test(
+    'manual mode - allows full keyboard navigation without activation',
+    setupTest(
+      async page => {
+        await page.focusTabHeader();
+        const initialActiveTab = await page.findActiveTabIndex();
+
+        await page.keys(['End']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(initialActiveTab);
+
+        await page.keys(['Home']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(initialActiveTab);
+
+        await page.navigateTabList(3);
+        await expect(page.findActiveTabIndex()).resolves.toBe(initialActiveTab);
+      },
+      { keyboardActivationMode: 'manual' }
+    )
+  );
+
+  test(
+    'automatic mode - activates tab on Home/End keys',
+    setupTest(
+      async page => {
+        await page.focusTabHeader();
+
+        await page.keys(['End']);
+        await page.navigateTabList(-2);
+        await expect(page.findActiveTabIndex()).resolves.toBe(5);
+
+        await page.keys(['Home']);
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+      },
+      { keyboardActivationMode: 'automatic' }
+    )
+  );
+});

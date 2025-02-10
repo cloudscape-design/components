@@ -16587,6 +16587,27 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": ""automatic"",
+      "description": "Determines how the active tab is switched when navigating using
+the keyboard. The options are:
+- 'automatic' (default): the active tab is switched using the arrow keys.
+- 'manual': a tab must be explicitly activated using the enter/space key.
+We recommend using 'automatic' in most situations to provide consistent
+and quick switching between tabs. Use 'manual' only if there is a specific
+need to introduce friction to the switching of tabs.",
+      "inlineType": {
+        "name": "",
+        "type": "union",
+        "values": [
+          "automatic",
+          "manual",
+        ],
+      },
+      "name": "keyboardActivationMode",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies the tabs to display. Each tab object has the following properties:
 - \`id\` (string) - The tab identifier. This value needs to be passed to the Tabs component as \`activeTabId\` to select this tab.
 - \`label\` (ReactNode) - Tab label shown in the UI.

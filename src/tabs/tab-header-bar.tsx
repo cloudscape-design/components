@@ -79,6 +79,7 @@ interface TabHeaderBarProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   i18nStrings?: TabsProps.I18nStrings;
+  keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
 }
 
 export function TabHeaderBar({
@@ -90,6 +91,7 @@ export function TabHeaderBar({
   ariaLabel,
   ariaLabelledby,
   i18nStrings,
+  keyboardActivationMode,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -222,7 +224,15 @@ export function TabHeaderBar({
 
   function onKeyDown(event: React.KeyboardEvent) {
     const focusTarget = document.activeElement;
-    const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
+    const specialKeys = [
+      KeyCode.right,
+      KeyCode.left,
+      KeyCode.end,
+      KeyCode.home,
+      KeyCode.pageUp,
+      KeyCode.pageDown,
+      KeyCode.space,
+    ];
     const isActionOpen = document.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
     const isDismissOrActionFocused = !focusTarget?.classList.contains(styles['tabs-tab-link']);
 
@@ -252,6 +262,9 @@ export function TabHeaderBar({
       onInlineEnd: () => focusElement(focusables[circleIndex(activeIndex + 1, [0, focusables.length - 1])]),
       onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
       onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
+      onActivate: () =>
+        focusedTabId &&
+        onChange({ activeTabId: focusedTabId, activeTabHref: tabs.find(tab => tab.id === focusedTabId)?.href }),
     });
   }
   function focusElement(element: HTMLElement) {
@@ -264,7 +277,7 @@ export function TabHeaderBar({
         setPreviousActiveTabId(tabId);
         setFocusedTabId(tabId);
 
-        if (!tabsById.get(tabId)?.disabled) {
+        if (!tabsById.get(tabId)?.disabled && keyboardActivationMode === 'automatic') {
           onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
         }
         break;
