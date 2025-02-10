@@ -1593,24 +1593,12 @@ Map {
       },
       "hasBreadcrumbsPortal": true,
       "hasNavigation": true,
-      "hasSplitPanel": true,
       "navigationFocusRef": {
         "current": null,
       },
       "navigationOpen": true,
       "onActiveDrawerChange": [Function],
       "onNavigationToggle": [Function],
-      "onSplitPanelToggle": [Function],
-      "splitPanelFocusRef": {
-        "current": null,
-      },
-      "splitPanelToggleProps": {
-        "active": false,
-        "ariaLabel": undefined,
-        "controlId": "split-panel6",
-        "displayed": false,
-        "position": "bottom",
-      },
     },
   },
 }
