@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "Find {itemsType}",
     "i18nStrings.labelRefresh": "Refresh the data",
     "i18nStrings.labelBreadcrumbs": "S3 navigation",
+    "i18nStrings.labelIconFolder": "Folder",
+    "i18nStrings.labelIconObject": "Object",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 match} other {{count} matches}}"
   },
   "select": {

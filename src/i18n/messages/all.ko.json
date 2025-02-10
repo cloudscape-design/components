@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "{itemsType} 찾기",
     "i18nStrings.labelRefresh": "데이터 새로고침",
     "i18nStrings.labelBreadcrumbs": "S3 탐색",
+    "i18nStrings.labelIconFolder": "폴더",
+    "i18nStrings.labelIconObject": "객체",
     "i18nStrings.filteringCounterText": "{count, plural, one {1개 일치} other {{count}개 일치}}"
   },
   "select": {

@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "{itemsType} finden",
     "i18nStrings.labelRefresh": "Die Daten aktualisieren",
     "i18nStrings.labelBreadcrumbs": "S3-Navigation",
+    "i18nStrings.labelIconFolder": "Ordner",
+    "i18nStrings.labelIconObject": "Objekt",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 Übereinstimmung} other {{count} Übereinstimmungen}}"
   },
   "select": {

@@ -412,6 +412,8 @@ export interface I18nFormatArgTypes {
     }
     "i18nStrings.labelRefresh": never;
     "i18nStrings.labelBreadcrumbs": never;
+    "i18nStrings.labelIconFolder": never;
+    "i18nStrings.labelIconObject": never;
     "i18nStrings.filteringCounterText": {
       "count": number;
     }

@@ -221,6 +221,8 @@ describe('i18n', () => {
             'i18nStrings.labelNotSorted': 'Custom {columnName} not sorted',
             'i18nStrings.labelSortedAscending': 'Custom {columnName} sorted ascending',
             'i18nStrings.labelSortedDescending': 'Custom {columnName} sorted descending',
+            'i18nStrings.labelFolderIcon': 'Custom folder',
+            'i18nStrings.labelObjectIcon': 'Custom object',
           },
         }}
       >

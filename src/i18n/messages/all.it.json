@@ -309,6 +309,8 @@
     "i18nStrings.labelFiltering": "Trova {itemsType}",
     "i18nStrings.labelRefresh": "Aggiorna i dati",
     "i18nStrings.labelBreadcrumbs": "Navigazione S3",
+    "i18nStrings.labelIconFolder": "Cartella",
+    "i18nStrings.labelIconObject": "Oggetto",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 corrispondenza} other {{count} corrispondenze}}"
   },
   "select": {
