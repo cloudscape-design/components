@@ -18,12 +18,14 @@ interface BreadcrumbItemWithPopoverProps<T extends BreadcrumbGroupProps.Item> {
   isLast: boolean;
   anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement>;
   children: React.ReactNode;
+  itemAttributes: React.HTMLAttributes<HTMLElement>;
 }
 
 const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
   item,
   isLast,
   anchorAttributes,
+  itemAttributes,
   children,
 }: BreadcrumbItemWithPopoverProps<T>) => {
   const [showPopover, setShowPopover] = useState(false);
@@ -54,6 +56,7 @@ const BreadcrumbItemWithPopover = <T extends BreadcrumbGroupProps.Item>({
         }}
         onMouseLeave={() => setShowPopover(false)}
         anchorAttributes={anchorAttributes}
+        {...itemAttributes}
       >
         {children}
       </Item>
@@ -69,15 +72,7 @@ type ItemProps = React.HTMLAttributes<HTMLElement> & {
 const Item = React.forwardRef<HTMLElement, ItemProps>(
   ({ anchorAttributes, children, isLast, ...itemAttributes }, ref) => {
     return isLast ? (
-      <span
-        ref={ref}
-        className={styles.anchor}
-        role="link"
-        aria-disabled={true}
-        aria-current="page"
-        tabIndex={0}
-        {...itemAttributes}
-      >
+      <span ref={ref} className={styles.anchor} {...itemAttributes}>
         {children}
       </span>
     ) : (
@@ -112,8 +107,16 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
     tabIndex: 0,
   };
 
+  const itemAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement> = {};
   if (isGhost) {
     anchorAttributes.tabIndex = -1;
+  }
+
+  if (isLast && !isGhost) {
+    itemAttributes['aria-current'] = 'page';
+    itemAttributes['aria-disabled'] = true;
+    itemAttributes.tabIndex = 0;
+    itemAttributes.role = 'link';
   }
 
   const breadcrumbItem = (
@@ -129,11 +132,16 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   return (
     <div className={clsx(!isGhost && styles.breadcrumb, isGhost && styles['ghost-breadcrumb'], isLast && styles.last)}>
       {isTruncated && !isGhost ? (
-        <BreadcrumbItemWithPopover item={item} isLast={isLast} anchorAttributes={anchorAttributes}>
+        <BreadcrumbItemWithPopover
+          item={item}
+          isLast={isLast}
+          anchorAttributes={anchorAttributes}
+          itemAttributes={itemAttributes}
+        >
           {breadcrumbItem}
         </BreadcrumbItemWithPopover>
       ) : (
-        <Item isLast={isLast} anchorAttributes={anchorAttributes}>
+        <Item isLast={isLast} anchorAttributes={anchorAttributes} {...itemAttributes}>
           {breadcrumbItem}
         </Item>
       )}
