@@ -51,7 +51,7 @@ export default function InlineEditorPermutations() {
     <Box margin="m">
       <h1>Table cell permutations</h1>
 
-      <ScreenshotArea gutters={false}>
+      <ScreenshotArea gutters={false} disableAnimations={true}>
         <ExpandableSection variant="stacked" headerText="Settings" headingTagOverride="h2" defaultExpanded={true}>
           <SpaceBetween size="m">
             <SpaceBetween size="m" direction="horizontal" alignItems="center">
