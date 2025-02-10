@@ -127,7 +127,7 @@ $selected-color: awsui.$color-text-segment-active;
   &:not(:last-child)::after {
     content: '';
     position: absolute;
-    inset-inline-end: -6px;
+    inset-inline-end: -5px;
     inset-block-start: 6px;
     block-size: calc(100% - 12px);
     inline-size: 1px;
