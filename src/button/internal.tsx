@@ -165,7 +165,7 @@ export const InternalButton = React.forwardRef(
 
       const { altKey, button, ctrlKey, metaKey, shiftKey } = event;
       fireCancelableEvent(onClick, { altKey, button, ctrlKey, metaKey, shiftKey }, event);
-      buttonContext.onClick({ variant });
+      buttonContext.onClick({ variant, formAction });
     };
 
     const buttonClass = clsx(props.className, styles.button, styles[`variant-${variant}`], {
