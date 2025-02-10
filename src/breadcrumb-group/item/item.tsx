@@ -101,9 +101,16 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   const anchorAttributes: React.AnchorHTMLAttributes<HTMLAnchorElement> = {
     href: item.href || '#',
     onClick: isLast ? preventDefault : onClickHandler,
+    tabIndex: 0,
   };
   if (isGhost) {
     anchorAttributes.tabIndex = -1;
+  }
+
+  if (isLast) {
+    anchorAttributes.role = 'link';
+    anchorAttributes['aria-disabled'] = true;
+    anchorAttributes['aria-current'] = 'page';
   }
 
   const breadcrumbItem = (
