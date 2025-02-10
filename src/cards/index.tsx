@@ -15,7 +15,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import useMouseDownTarget from '../internal/hooks/use-mouse-down-target';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalLiveRegion from '../live-region/internal';
 import InternalStatusIndicator from '../status-indicator/internal';
@@ -71,10 +70,9 @@ const Cards = React.forwardRef(function <T = any>(
     metadata: { usesVisibleSections: !!visibleSections },
   });
   const baseProps = getBaseProps(rest);
-  const isRefresh = useVisualRefresh();
   const isMobile = useMobile();
 
-  const computedVariant = isRefresh ? variant : 'container';
+  const computedVariant = variant;
 
   const headerIdRef = useRef<string | undefined>(undefined);
   const setHeaderRef = useCallback((id: string) => {
@@ -149,11 +147,7 @@ const Cards = React.forwardRef(function <T = any>(
             header={
               hasToolsHeader && (
                 <div
-                  className={clsx(
-                    styles.header,
-                    isRefresh && styles['header-refresh'],
-                    styles[`header-variant-${computedVariant}`]
-                  )}
+                  className={clsx(styles.header, styles['header-refresh'], styles[`header-variant-${computedVariant}`])}
                 >
                   <CollectionLabelContext.Provider value={{ assignId: setHeaderRef }}>
                     <ToolsHeader header={header} filter={filter} pagination={pagination} preferences={preferences} />
@@ -174,7 +168,7 @@ const Cards = React.forwardRef(function <T = any>(
             <div
               className={clsx(
                 hasToolsHeader && styles['has-header'],
-                isRefresh && styles.refresh,
+                styles.refresh,
                 styles[`header-variant-${computedVariant}`]
               )}
             >
@@ -238,7 +232,6 @@ const CardsList = <T,>({
 }) => {
   const selectable = !!selectionType;
   const canClickEntireCard = selectable && entireCardClickable;
-  const isRefresh = useVisualRefresh();
 
   const { moveFocusDown, moveFocusUp } = useSelectionFocusMove(selectionType, items.length);
 
@@ -277,7 +270,7 @@ const CardsList = <T,>({
           role={listItemRole}
         >
           <div
-            className={clsx(styles['card-inner'], isRefresh && styles.refresh)}
+            className={clsx(styles['card-inner'], styles.refresh)}
             onClick={
               canClickEntireCard
                 ? event => {

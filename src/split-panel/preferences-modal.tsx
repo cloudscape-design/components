@@ -9,9 +9,7 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import InternalModal from '../modal/internal';
 import InternalSpaceBetween from '../space-between/internal';
 import InternalTiles from '../tiles/internal';
-import bottomPositionIconClassic from './icons/bottom-icon';
 import bottomPositionIconRefresh from './icons/bottom-icon-refresh';
-import sidePositionIconClassic from './icons/side-position';
 import sidePositionIconRefresh from './icons/side-position-refresh';
 
 interface PreferencesModali18nStrings {
@@ -32,7 +30,6 @@ interface PreferencesModalProps extends InternalBaseComponentProps {
   i18nStrings: PreferencesModali18nStrings;
 
   disabledSidePosition?: boolean;
-  isRefresh: boolean;
 
   onConfirm: (preferences: { position: 'side' | 'bottom' }) => void;
   onDismiss: () => void;
@@ -79,12 +76,12 @@ export default (props: PreferencesModalProps) => {
           items={[
             {
               label: props.i18nStrings.positionBottom,
-              image: props.isRefresh ? bottomPositionIconRefresh : bottomPositionIconClassic,
+              image: bottomPositionIconRefresh,
               value: 'bottom',
             },
             {
               label: props.i18nStrings.positionSide,
-              image: props.isRefresh ? sidePositionIconRefresh : sidePositionIconClassic,
+              image: sidePositionIconRefresh,
               value: 'side',
               disabled: props.disabledSidePosition,
             },

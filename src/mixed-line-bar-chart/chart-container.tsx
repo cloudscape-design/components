@@ -19,7 +19,6 @@ import VerticalMarker from '../internal/components/cartesian-chart/vertical-mark
 import ChartPlot, { ChartPlotRef } from '../internal/components/chart-plot';
 import { useHeightMeasure } from '../internal/hooks/container-queries/use-height-measure';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { nodeBelongs } from '../internal/utils/node-belongs';
 import useContainerWidth from '../internal/utils/use-container-width';
 import BarGroups from './bar-groups';
@@ -501,8 +500,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
 
   const isLineXKeyboardFocused = !highlightedPoint && verticalMarkerX;
 
-  const isRefresh = useVisualRefresh();
-
   return (
     <CartesianChartContainer
       ref={containerRef}
@@ -614,7 +611,6 @@ export default function ChartContainer<T extends ChartDataTypes>({
           {isGroupNavigation && xAxisProps.scale.isCategorical() && (
             <BarGroups
               ariaLabel={activeAriaLabel}
-              isRefresh={isRefresh}
               isPopoverPinned={isPopoverPinned}
               barGroups={barGroups}
               highlightedGroupIndex={highlightedGroupIndex}

@@ -3,9 +3,6 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../box/internal';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import InternalLink from '../link/internal';
 import { getNavigationActionDetail } from './analytics-metadata/utils';
 import { WizardProps } from './interfaces';
 
@@ -51,36 +48,23 @@ export default function Navigation({
   onSkipToClick,
   steps,
 }: NavigationProps) {
-  const isVisualRefresh = useVisualRefresh();
   return (
     <nav
-      className={clsx(styles.navigation, hidden && styles.hidden, isVisualRefresh && styles.refresh)}
+      className={clsx(styles.navigation, hidden && styles.hidden, styles.refresh)}
       aria-label={i18nStrings.navigationAriaLabel}
     >
-      <ul className={clsx(isVisualRefresh && styles.refresh)}>
-        {steps.map((step, index: number) =>
-          isVisualRefresh ? (
-            <NavigationStepVisualRefresh
-              i18nStrings={i18nStrings}
-              index={index}
-              key={index}
-              onStepClick={onStepClick}
-              onSkipToClick={onSkipToClick}
-              status={getStatus(index)}
-              step={step}
-            />
-          ) : (
-            <NavigationStepClassic
-              i18nStrings={i18nStrings}
-              index={index}
-              key={index}
-              onStepClick={onStepClick}
-              onSkipToClick={onSkipToClick}
-              status={getStatus(index)}
-              step={step}
-            />
-          )
-        )}
+      <ul className={styles.refresh}>
+        {steps.map((step, index: number) => (
+          <NavigationStepVisualRefresh
+            i18nStrings={i18nStrings}
+            index={index}
+            key={index}
+            onStepClick={onStepClick}
+            onSkipToClick={onSkipToClick}
+            status={getStatus(index)}
+            step={step}
+          />
+        ))}
       </ul>
     </nav>
   );
@@ -184,54 +168,6 @@ function NavigationStepVisualRefresh({
 
         <span className={clsx(styles.title, analyticsSelectors['step-title'])}>{step.title}</span>
       </a>
-    </li>
-  );
-}
-
-function NavigationStepClassic({ i18nStrings, index, onStepClick, onSkipToClick, status, step }: NavigationStepProps) {
-  const spanClassName = clsx(
-    styles['navigation-link'],
-    status === Statuses.Active ? styles['navigation-link-active'] : styles['navigation-link-disabled']
-  );
-
-  return (
-    <li
-      className={styles['navigation-link-item']}
-      {...(status === Statuses.Unvisited
-        ? {}
-        : getNavigationActionDetail(index, 'step', true, `.${analyticsSelectors['step-title']}`))}
-    >
-      <InternalBox
-        variant="small"
-        className={styles['navigation-link-label']}
-        display="block"
-        margin={{ bottom: 'xxs' }}
-      >
-        {i18nStrings.stepNumberLabel && i18nStrings.stepNumberLabel(index + 1)}
-        {step.isOptional && <i>{` - ${i18nStrings.optional}`}</i>}
-      </InternalBox>
-      <div>
-        {status === Statuses.Visited || status === Statuses.Next ? (
-          <InternalLink
-            className={clsx(styles['navigation-link'], analyticsSelectors['step-title'])}
-            onFollow={evt => {
-              evt.preventDefault();
-              status === Statuses.Visited ? onStepClick(index) : onSkipToClick(index);
-            }}
-            variant="primary"
-          >
-            {step.title}
-          </InternalLink>
-        ) : (
-          <span
-            className={clsx(spanClassName, analyticsSelectors['step-title'])}
-            aria-current={status === Statuses.Active ? 'step' : undefined}
-            aria-disabled={status === Statuses.Active ? undefined : 'true'}
-          >
-            {step.title}
-          </span>
-        )}
-      </div>
     </li>
   );
 }

@@ -5,7 +5,6 @@ import clsx from 'clsx';
 
 import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
 import { useStickyScrollbar } from './use-sticky-scrollbar';
 
@@ -24,7 +23,6 @@ function StickyScrollbar(
   { wrapperRef, tableRef, onScroll, hasStickyColumns }: StickyScrollbarProps,
   ref: React.Ref<HTMLDivElement>
 ) {
-  const isVisualRefresh = useVisualRefresh();
   const scrollbarRef = React.useRef<HTMLDivElement>(null);
   const scrollbarContentRef = React.useRef<HTMLDivElement>(null);
   const mergedRef = useMergeRefs(ref, scrollbarRef);
@@ -46,7 +44,7 @@ function StickyScrollbar(
         className={clsx(
           styles['sticky-scrollbar'],
           offsetScrollbar && styles['sticky-scrollbar-offset'],
-          isVisualRefresh && styles['is-visual-refresh']
+          styles['is-visual-refresh']
         )}
         onScroll={onScroll}
         data-stuck={!isStickyDetectionVisible}

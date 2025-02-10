@@ -13,7 +13,6 @@ import { InternalBaseComponentProps } from '../internal/hooks/use-base-component
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { ContainerProps } from './interfaces';
 import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
 
@@ -80,7 +79,6 @@ export default function InternalContainer({
   ...restProps
 }: InternalContainerProps) {
   const isMobile = useMobile();
-  const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
@@ -91,11 +89,11 @@ export default function InternalContainer({
     __stickyOffset,
     __mobileStickyOffset,
     __disableStickyMobile,
-    __fullPage && isRefresh && !isMobile
+    __fullPage && !isMobile
   );
   const contentId = useUniqueId();
 
-  const hasDynamicHeight = isRefresh && variant === 'full-page';
+  const hasDynamicHeight = variant === 'full-page';
 
   const mergedRef = useMergeRefs(rootRef, __internalRootRef);
   const headerMergedRef = useMergeRefs(headerRef, __headerRef);
@@ -117,7 +115,7 @@ export default function InternalContainer({
         fitHeight && styles['fit-height'],
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']],
-        isRefresh && styles.refresh
+        styles.refresh
       )}
       ref={mergedRef}
       {...getAnalyticsLabelAttribute(
@@ -142,7 +140,7 @@ export default function InternalContainer({
             <StickyHeaderContext.Provider value={{ isStuck }}>
               <div
                 className={clsx(
-                  isRefresh && styles.refresh,
+                  styles.refresh,
                   styles.header,
                   analyticsSelectors.header,
                   styles[`header-variant-${variant}`],
@@ -154,13 +152,13 @@ export default function InternalContainer({
                     [styles['with-paddings']]: !disableHeaderPaddings,
                     [styles['with-hidden-content']]: !children || __hiddenContent,
                     [styles['header-with-media']]: hasMedia,
-                    [styles['header-full-page']]: __fullPage && isRefresh,
+                    [styles['header-full-page']]: __fullPage,
                   }
                 )}
                 {...stickyStyles}
                 ref={headerMergedRef}
               >
-                {isStuck && !isMobile && isRefresh && __fullPage && <div className={styles['header-cover']}></div>}
+                {isStuck && !isMobile && __fullPage && <div className={styles['header-cover']}></div>}
                 {header}
               </div>
             </StickyHeaderContext.Provider>

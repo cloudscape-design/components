@@ -11,7 +11,6 @@ import customCssProps from '../internal/generated/custom-css-properties';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useDynamicOverlap } from '../internal/hooks/use-dynamic-overlap';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { highContrastHeaderClassName } from '../internal/utils/content-header-utils';
 import { ContentLayoutProps } from './interfaces';
 
@@ -43,22 +42,19 @@ export default function InternalContentLayout({
 
   const baseProps = getBaseProps(rest);
 
-  const isVisualRefresh = useVisualRefresh();
   const mode = useCurrentMode(mainRef);
 
   const overlapElement = useDynamicOverlap();
 
   const isOverlapDisabled = !children || disableOverlap;
 
-  const contentHeaderClassName =
-    headerVariant === 'high-contrast' && isVisualRefresh ? highContrastHeaderClassName : '';
+  const contentHeaderClassName = headerVariant === 'high-contrast' ? highContrastHeaderClassName : '';
 
   return (
     <div
       {...baseProps}
-      className={clsx(baseProps.className, styles.layout, {
+      className={clsx(baseProps.className, styles.layout, styles['is-visual-refresh'], {
         [styles['is-overlap-disabled']]: isOverlapDisabled,
-        [styles['is-visual-refresh']]: isVisualRefresh,
         [styles['has-header']]: !!header,
         [styles['default-padding']]: !!defaultPadding,
         [styles['has-notifications']]: !!notifications,

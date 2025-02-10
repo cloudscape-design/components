@@ -6,7 +6,6 @@ import { HotspotContext } from '../../../annotation-context/context';
 import InternalBox from '../../../box/internal';
 import { InternalButton } from '../../../button/internal';
 import { fireNonCancelableEvent } from '../../../internal/events/index';
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import InternalSpaceBetween from '../../../space-between/internal';
 import { TutorialPanelProps } from '../../interfaces';
 import { CongratulationScreen } from './congratulation-screen';
@@ -27,8 +26,6 @@ export default function TutorialDetailView({
   onFeedbackClick: TutorialPanelProps['onFeedbackClick'];
   i18nStrings: TutorialPanelProps['i18nStrings'];
 }) {
-  const isRefresh = useVisualRefresh();
-
   const onExitTutorial = useCallback(() => {
     fireNonCancelableEvent(onExitTutorialHandler, { tutorial });
   }, [onExitTutorialHandler, tutorial]);
@@ -50,12 +47,7 @@ export default function TutorialDetailView({
             iconName="arrow-left"
           />
 
-          <InternalBox
-            variant="h2"
-            fontSize={isRefresh ? 'heading-m' : 'heading-l'}
-            padding={{ top: 'xxs' }}
-            margin={{ left: 's' }}
-          >
+          <InternalBox variant="h2" fontSize={'heading-m'} padding={{ top: 'xxs' }} margin={{ left: 's' }}>
             {tutorial.title}
           </InternalBox>
         </div>

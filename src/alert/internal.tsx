@@ -18,7 +18,6 @@ import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
@@ -84,13 +83,7 @@ const InternalAlert = React.forwardRef(
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
 
-    const isRefresh = useVisualRefresh();
-    const size = isRefresh
-      ? 'normal'
-      : headerReplacementType !== 'remove' && header && contentReplacementType !== 'remove' && children
-        ? 'big'
-        : 'normal';
-
+    const size = 'normal';
     const hasAction = Boolean(action || buttonText || discoveredActions.length);
 
     const analyticsAttributes = {

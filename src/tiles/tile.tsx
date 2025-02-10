@@ -8,7 +8,6 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 import { fireNonCancelableEvent } from '../internal/events';
 import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import RadioButton from '../radio-group/radio-button';
 import { TilesProps } from './interfaces';
 
@@ -30,7 +29,6 @@ export const Tile = React.forwardRef(
     forwardedRef: React.Ref<HTMLInputElement>
   ) => {
     const internalRef = useRef<HTMLInputElement>(null);
-    const isVisualRefresh = useVisualRefresh();
 
     const mergedRef = useMergeRefs(internalRef, forwardedRef);
 
@@ -42,7 +40,7 @@ export const Tile = React.forwardRef(
           { [styles.selected]: selected },
           { [styles.disabled]: !!item.disabled },
           { [styles.readonly]: readOnly },
-          { [styles.refresh]: isVisualRefresh },
+          { [styles.refresh]: true },
           styles[`breakpoint-${breakpoint}`]
         )}
         data-value={item.value}

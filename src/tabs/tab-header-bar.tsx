@@ -19,7 +19,6 @@ import {
 import { hasModifierKeys, isPlainLeftClick } from '../internal/events';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { circleIndex } from '../internal/utils/circle-index';
 import handleKey from '../internal/utils/handle-key';
@@ -95,8 +94,6 @@ export function TabHeaderBar({
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
   const inlineStartOverflowButton = useRef<HTMLElement>(null);
   const i18n = useInternalI18n('tabs');
-
-  const isVisualRefresh = useVisualRefresh();
 
   const containerObjectRef = useRef<HTMLDivElement>(null);
   const [widthChange, containerMeasureRef] = useContainerQuery<number>(rect => rect.contentBoxWidth);
@@ -176,7 +173,7 @@ export function TabHeaderBar({
 
   const classes = clsx({
     [styles['tabs-header']]: true,
-    [styles['tabs-header-with-divider']]: variant === 'default' || isVisualRefresh,
+    [styles['tabs-header-with-divider']]: variant === 'default',
   });
 
   const leftButtonClasses = clsx({
@@ -378,7 +375,7 @@ export function TabHeaderBar({
 
     const classes = clsx({
       [styles['tabs-tab-link']]: true,
-      [styles.refresh]: isVisualRefresh,
+      [styles.refresh]: true,
       [styles['tabs-tab-active']]: activeTabId === tab.id && !tab.disabled,
       [styles['tabs-tab-focused']]: focusedTabId === tab.id,
       [styles['tabs-tab-active']]: isActive,
@@ -389,7 +386,7 @@ export function TabHeaderBar({
 
     const tabHeaderContainerClasses = clsx({
       [styles['tabs-tab-header-container']]: true,
-      [styles.refresh]: isVisualRefresh,
+      [styles.refresh]: true,
       [styles['tabs-tab-active']]: isActive,
       [styles['tabs-tab-disabled']]: tab.disabled,
       [styles['tabs-tab-focusable']]: !tab.disabled || (tab.disabled && !!tab.disabledReason),

@@ -6,7 +6,6 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { InternalPosition, PopoverProps } from './interfaces';
 import usePopoverPosition from './use-popover-position.js';
 
@@ -65,8 +64,6 @@ export default function PopoverContainer({
   const contentRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
   const arrowRef = useRef<HTMLDivElement | null>(null);
-
-  const isRefresh = useVisualRefresh();
 
   // Updates the position handler.
   const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling } =
@@ -136,7 +133,7 @@ export default function PopoverContainer({
     <div
       ref={popoverRef}
       style={{ ...popoverStyle, zIndex }}
-      className={clsx(styles.container, isRefresh && styles.refresh, className)}
+      className={clsx(styles.container, styles.refresh, className)}
     >
       <div
         ref={arrowRef}

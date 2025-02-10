@@ -13,7 +13,6 @@ import { fireNonCancelableEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import createCategoryColorScale from '../internal/utils/create-category-color-scale';
 import { nodeBelongs } from '../internal/utils/node-belongs';
@@ -163,8 +162,7 @@ const PieChart = function PieChart<T extends PieChartProps.Datum = PieChartProps
   const reserveFilterSpace = statusType !== 'finished' && !isNoMatch && (!hideFilter || additionalFilters);
   const hasLabels = !(hideTitles && hideDescriptions);
 
-  const isRefresh = useVisualRefresh();
-  const defaultDimensions = getDimensionsBySize({ size, hasLabels, visualRefresh: isRefresh });
+  const defaultDimensions = getDimensionsBySize({ size, hasLabels });
   const radius = defaultDimensions.outerRadius;
   const height = 2 * (radius + defaultDimensions.padding + (hasLabels ? defaultDimensions.paddingLabels : 0));
 

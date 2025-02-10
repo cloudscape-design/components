@@ -21,10 +21,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   background-color: awsui.$color-background-layout-panel-content;
   // should be above tools and navigation panels to avoid their shadows
   z-index: 840;
-  &-closed:not(.refresh) {
-    cursor: pointer;
-    min-inline-size: constants.$sidebar-size-closed;
-  }
 }
 
 .drawer-content-side {
@@ -35,12 +31,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   & > [aria-hidden='true'],
   .drawer-closed.refresh > & {
     display: none;
-  }
-  .drawer-closed:not(.refresh) > & {
-    inline-size: constants.$sidebar-size-closed;
-    &:hover {
-      background: awsui.$color-background-layout-panel-hover;
-    }
   }
 }
 
@@ -59,12 +49,6 @@ $app-layout-drawer-width: calc(#{awsui.$space-layout-toggle-diameter} + 2 * #{aw
   overflow-y: auto;
   border-block-start: awsui.$border-panel-top-width solid awsui.$color-border-divider-panel-bottom;
 
-  &:not(.refresh) {
-    // custom shadow because the existing one does not have shadow on top
-    box-shadow: awsui.$shadow-split-bottom;
-    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
-    border-inline-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-panel-bottom;
-  }
   &.drawer-closed {
     overflow: hidden;
   }

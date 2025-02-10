@@ -48,7 +48,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     setInitialAnimationState(rects);
   }, [getElementsToAnimate]);
 
-  const { baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef, ref } = useFlashbar({
+  const { baseProps, breakpoint, isReducedMotion, mergedRef, ref } = useFlashbar({
     items,
     ...restProps,
     onItemsAdded: newItems => {
@@ -214,10 +214,10 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
       ref={listElementRef}
       className={clsx(
         styles['flash-list'],
+        styles['visual-refresh'],
         isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
         transitioning && styles['animation-running'],
-        initialAnimationState && styles['animation-ready'],
-        isVisualRefresh && styles['visual-refresh']
+        initialAnimationState && styles['animation-ready']
       )}
       id={flashbarElementId}
       aria-label={ariaLabel}
@@ -276,10 +276,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
                 {showInnerContent(item) && (
                   <Flash
                     // eslint-disable-next-line react/forbid-component-props
-                    className={clsx(
-                      animateFlash && styles['flash-with-motion'],
-                      isVisualRefresh && styles['flash-refresh']
-                    )}
+                    className={clsx(animateFlash && styles['flash-with-motion'], styles['flash-refresh'])}
                     key={getItemId(item)}
                     ref={shouldUseStandardAnimation(item, index) ? transitionRootElement : undefined}
                     transitionState={shouldUseStandardAnimation(item, index) ? state : undefined}
@@ -306,7 +303,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         isCollapsible && styles.collapsible,
         items.length === 2 && styles['short-list'],
         isFlashbarStackExpanded && styles.expanded,
-        isVisualRefresh && styles['visual-refresh']
+        styles['visual-refresh']
       )}
       ref={mergedRef}
       {...getAnalyticsMetadataAttribute(getComponentsAnalyticsMetadata(items.length, true, isFlashbarStackExpanded))}
@@ -316,7 +313,7 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
         <div
           className={clsx(
             styles['notification-bar'],
-            isVisualRefresh && styles['visual-refresh'],
+            styles['visual-refresh'],
             isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
             transitioning && styles['animation-running'],
             items.length === 2 && styles['short-list'],

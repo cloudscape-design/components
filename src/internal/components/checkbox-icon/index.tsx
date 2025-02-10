@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
 
 import styles from './styles.css.js';
 
@@ -51,7 +50,7 @@ const CheckboxIcon = ({
   ...restProps
 }: CheckboxIconProps) => {
   const baseProps = getBaseProps(restProps);
-  const theme = useVisualRefresh() ? 'refresh' : 'default';
+  const theme = 'refresh';
   const dimensions = dimensionsByTheme[theme];
   return (
     <svg className={styles.root} viewBox={dimensions.viewBox} aria-hidden="true" focusable="false" {...baseProps}>

@@ -7,7 +7,6 @@ import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
 import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
@@ -29,10 +28,6 @@ const fakeComputedStyle: Window['getComputedStyle'] = (...args) => {
   result.width = '600px';
   return result;
 };
-
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(false),
-}));
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
@@ -262,13 +257,6 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
 });
 
 describe('Visual refresh only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(true);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-  });
-
   function isDrawersBarDisplayed(wrapper: AppLayoutWrapper) {
     return !!wrapper.findByClassName(applayoutTools['has-tools-form']);
   }

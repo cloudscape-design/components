@@ -18,7 +18,6 @@ interface VersionsTableProps {
   isItemDisabled: TableProps.IsItemDisabled<S3ResourceSelectorProps.Version> | undefined;
   fetchData: S3ResourceSelectorProps['fetchVersions'];
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
-  isVisualRefresh?: boolean;
   onSelect: (versionId: string) => void;
 }
 
@@ -26,7 +25,6 @@ export function VersionsTable({
   forwardFocusRef,
   pathSegments,
   i18nStrings,
-  isVisualRefresh,
   isItemDisabled,
   fetchData,
   visibleColumns,
@@ -69,7 +67,6 @@ export function VersionsTable({
           ),
         },
       }}
-      isVisualRefresh={isVisualRefresh}
       visibleColumns={visibleColumns}
       isItemDisabled={isItemDisabled}
       columnDefinitions={[

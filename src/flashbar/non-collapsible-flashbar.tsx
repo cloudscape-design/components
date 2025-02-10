@@ -17,7 +17,7 @@ import { FlashbarProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, mergedRef } = useFlashbar({
     items,
     ...restProps,
   });
@@ -37,9 +37,9 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
    * removed from the DOM to animate it. Motion will be disabled if any of the provided
    * flash messages does not contain an `id`.
    */
-  const motionDisabled = isReducedMotion || !isVisualRefresh || !allItemsHaveId;
+  const motionDisabled = isReducedMotion || !allItemsHaveId;
 
-  const animateFlash = !isReducedMotion && isVisualRefresh;
+  const animateFlash = !isReducedMotion;
   /**
    * If the flashbar is flat and motion is `enabled` then the adding and removing of items
    * from the flashbar will render with visual transitions.
@@ -111,7 +111,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
     return (
       <Flash
         // eslint-disable-next-line react/forbid-component-props
-        className={clsx(animateFlash && styles['flash-with-motion'], isVisualRefresh && styles['flash-refresh'])}
+        className={clsx(animateFlash && styles['flash-with-motion'], styles['flash-refresh'])}
         key={key}
         ref={transitionRootElement}
         transitionState={transitionState}

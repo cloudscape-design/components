@@ -11,7 +11,6 @@ import { InternalButton } from '../../../button/internal';
 import InternalIcon from '../../../icon/internal';
 import { fireNonCancelableEvent } from '../../../internal/events/index.js';
 import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
-import { useVisualRefresh } from '../../../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../../../internal/utils/check-safe-url';
 import InternalLink from '../../../link/internal';
 import InternalLiveRegion from '../../../live-region/internal';
@@ -38,13 +37,11 @@ export default function TutorialList({
 }: TutorialListProps) {
   checkSafeUrl('TutorialPanel', downloadUrl);
 
-  const isRefresh = useVisualRefresh();
-
   return (
     <>
       <InternalSpaceBetween size="s">
         <InternalSpaceBetween size="m">
-          <InternalBox variant="h2" fontSize={isRefresh ? 'heading-m' : 'heading-l'} padding={{ bottom: 'n' }}>
+          <InternalBox variant="h2" fontSize={'heading-m'} padding={{ bottom: 'n' }}>
             {i18nStrings.tutorialListTitle}
           </InternalBox>
           <InternalBox variant="p" color="text-body-secondary" padding="n">
@@ -97,8 +94,6 @@ function Tutorial({
   const triggerControldId = useUniqueId();
   const headerId = useUniqueId();
 
-  const isRefresh = useVisualRefresh();
-
   const onStartTutorial = useCallback(() => {
     fireNonCancelableEvent(onStartTutorialEventHandler, { tutorial });
   }, [onStartTutorialEventHandler, tutorial]);
@@ -115,7 +110,7 @@ function Tutorial({
         <div className={styles['tutorial-box-title']}>
           <InternalBox
             variant="h3"
-            fontSize={isRefresh ? 'heading-s' : 'heading-m'}
+            fontSize={'heading-s'}
             id={headerId}
             margin={{ right: 'xs' }}
             padding="n"

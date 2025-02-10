@@ -7,7 +7,6 @@ import { InternalButton } from '../../button/internal';
 import { useInternalI18n } from '../../i18n/context';
 import { ForwardFocusRef } from '../../internal/hooks/forward-focus';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import InternalModal from '../../modal/internal';
 import InternalSpaceBetween from '../../space-between/internal';
 import { S3ResourceSelectorProps } from '../interfaces';
@@ -117,8 +116,6 @@ export function S3Modal({
   const forwardFocusRef = useRef<ForwardFocusRef>(null);
   const i18n = useInternalI18n('s3-resource-selector');
 
-  const isVisualRefresh = useVisualRefresh();
-
   useEffectOnUpdate(() => {
     forwardFocusRef.current?.focus();
   }, [breadcrumbs]);
@@ -151,7 +148,7 @@ export function S3Modal({
           </InternalSpaceBetween>
         }
       >
-        <InternalSpaceBetween size={isVisualRefresh ? 'xxs' : 'xs'}>
+        <InternalSpaceBetween size={'xxs'}>
           <BreadcrumbGroupImplementation
             ariaLabel={i18n('i18nStrings.labelBreadcrumbs', i18nStrings?.labelBreadcrumbs)}
             expandAriaLabel={i18nStrings?.labelExpandBreadcrumbs}
@@ -187,7 +184,6 @@ export function S3Modal({
               isItemDisabled={bucketsIsItemDisabled}
               selectableItemsTypes={selectableItemsTypes}
               i18nStrings={i18nStrings}
-              isVisualRefresh={isVisualRefresh}
               onDrilldown={path =>
                 dispatch({
                   type: 'browse-objects',
@@ -205,7 +201,6 @@ export function S3Modal({
               isItemDisabled={objectsIsItemDisabled}
               selectableItemsTypes={selectableItemsTypes}
               i18nStrings={i18nStrings}
-              isVisualRefresh={isVisualRefresh}
               onDrilldown={item => {
                 dispatch({
                   type: item.IsFolder ? 'browse-objects' : 'browse-versions',
@@ -222,7 +217,6 @@ export function S3Modal({
               visibleColumns={versionsVisibleColumns}
               isItemDisabled={versionsIsItemDisabled}
               i18nStrings={i18nStrings}
-              isVisualRefresh={isVisualRefresh}
               onSelect={item => dispatch({ type: 'select-item', item })}
             />
           ) : (

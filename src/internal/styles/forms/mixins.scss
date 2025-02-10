@@ -197,27 +197,6 @@
     border-block: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
     border-inline: solid awsui.$border-divider-section-width awsui.$color-border-divider-default;
   }
-
-  &:not(.refresh)::before {
-    @include utils.base-pseudo-element;
-    // Reset border color to prevent it from flashing black during card selection animation
-    border-color: transparent;
-    border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
-    z-index: 1;
-  }
-
-  &:not(.refresh)::after {
-    @include utils.base-pseudo-element;
-    border-start-start-radius: awsui.$border-radius-container;
-    border-start-end-radius: awsui.$border-radius-container;
-    border-end-start-radius: awsui.$border-radius-container;
-    border-end-end-radius: awsui.$border-radius-container;
-    box-shadow: awsui.$shadow-container;
-  }
 }
 
 @mixin dropdown-shadow {

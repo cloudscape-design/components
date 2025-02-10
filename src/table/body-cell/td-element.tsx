@@ -7,7 +7,6 @@ import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-too
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { ColumnWidthStyle } from '../column-widths-utils';
 import { ExpandToggleButton } from '../expandable-rows/expand-toggle-button';
 import { TableProps } from '../interfaces.js';
@@ -100,7 +99,6 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
     ref
   ) => {
     const Element = isRowHeader ? 'th' : 'td';
-    const isVisualRefresh = useVisualRefresh();
 
     resizableStyle = resizableColumns ? {} : resizableStyle;
 
@@ -129,7 +127,7 @@ export const TableTdElement = React.forwardRef<HTMLTableCellElement, TableTdElem
           isPrevSelected && styles['body-cell-prev-selected'],
           !isEvenRow && stripedRows && styles['body-cell-shaded'],
           stripedRows && styles['has-striped-rows'],
-          isVisualRefresh && styles['is-visual-refresh'],
+          styles['is-visual-refresh'],
           isSelection && tableStyles['selection-control'],
           hasSelection && styles['has-selection'],
           hasFooter && styles['has-footer'],

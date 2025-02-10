@@ -11,7 +11,6 @@ import { useDynamicOverlap } from '../../../lib/components/internal/hooks/use-dy
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),
-  useVisualRefresh: jest.fn().mockReturnValue(true),
 }));
 
 let positiveHeight = true;

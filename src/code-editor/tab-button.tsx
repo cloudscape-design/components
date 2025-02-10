@@ -18,7 +18,6 @@ interface TabButtonProps {
   ariaHidden?: boolean;
   ariaLabel?: string;
   paneId?: string;
-  isRefresh: boolean;
 
   className: string;
   id?: string;
@@ -41,7 +40,6 @@ export const TabButton = React.forwardRef(
       ariaHidden,
       ariaLabel,
       paneId,
-      isRefresh,
       count,
       text,
       className,
@@ -51,10 +49,9 @@ export const TabButton = React.forwardRef(
   ) => {
     return (
       <button
-        className={clsx([styles['tab-button'], className], {
+        className={clsx([styles['tab-button'], className], styles['tab-button--refresh'], {
           [styles['tab-button--active']]: active,
           [styles['tab-button--disabled']]: disabled,
-          [styles['tab-button--refresh']]: isRefresh,
         })}
         id={id}
         type="button"

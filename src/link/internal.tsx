@@ -22,7 +22,6 @@ import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { LinkProps } from './interfaces';
@@ -152,11 +151,10 @@ const InternalLink = React.forwardRef(
     };
 
     const linkRef = useRef<HTMLElement>(null);
-    const isVisualRefresh = useVisualRefresh();
     useForwardFocus(ref, linkRef);
 
     // Visual refresh should only add styles to buttons that don't already have unique styles (e.g. primary/secondary variants)
-    const applyButtonStyles = isButton && isVisualRefresh && !hasSpecialStyle;
+    const applyButtonStyles = isButton && !hasSpecialStyle;
 
     const sharedProps = {
       id: linkId,

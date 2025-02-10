@@ -136,12 +136,6 @@ the grid layout will be:
 .stack.collapsible {
   &:not(.expanded) {
     &:not(.short-list) {
-      &:not(.visual-refresh) {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'classic')
-        );
-      }
       &.visual-refresh {
         @include vertical-spacing(
           map.get($notification-bar-top-overlap, 'collapsed'),
@@ -155,14 +149,6 @@ the grid layout will be:
     missing third item when there are only 2 items in the stack.
      */
     &.short-list {
-      &:not(.visual-refresh) {
-        @include vertical-spacing(
-          map.get($notification-bar-top-overlap, 'collapsed'),
-          map.get($notification-bar-border-width, 'classic'),
-          0px,
-          map.get($notification-bar-collapsed-item-overflow, 'y')
-        );
-      }
       &.visual-refresh {
         @include vertical-spacing(
           map.get($notification-bar-top-overlap, 'collapsed'),
@@ -175,17 +161,6 @@ the grid layout will be:
   }
 
   &.expanded {
-    &:not(.visual-refresh) {
-      /*
-      Give a bit more bottom margin when expanded, but only in Classic because in Visual Refresh the margin around the
-      notifications slot already gives it enough space.
-       */
-      @include vertical-spacing(
-        map.get($notification-bar-top-overlap, 'expanded'),
-        map.get($notification-bar-border-width, 'classic'),
-        awsui.$space-scaled-m
-      );
-    }
     &.visual-refresh {
       @include vertical-spacing(
         map.get($notification-bar-top-overlap, 'expanded'),
@@ -273,21 +248,6 @@ the grid layout will be:
     border-block-width: $border-width;
     border-inline-width: $border-width;
     padding-inline: awsui.$space-l;
-  }
-
-  &:not(.visual-refresh) {
-    $border-width: map.get($notification-bar-border-width, 'classic');
-    border-block-width: $border-width;
-    border-inline-width: $border-width;
-    padding-inline: awsui.$space-s;
-
-    &:focus {
-      text-decoration: none;
-    }
-
-    &:hover {
-      text-decoration: none;
-    }
   }
 
   > .button {

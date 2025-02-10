@@ -9,7 +9,6 @@ import { OptionDefinition } from '../../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../../internal/context/form-field-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
 import { joinStrings } from '../../internal/utils/strings';
 import { MultiselectProps } from '../../multiselect/interfaces';
 import { SelectProps } from '../interfaces';
@@ -51,7 +50,6 @@ const Trigger = React.forwardRef(
     }: TriggerProps,
     ref: React.Ref<HTMLButtonElement>
   ) => {
-    const isVisualRefresh = useVisualRefresh();
     const generatedId = useUniqueId();
     const id = controlId ?? generatedId;
     const triggerContentId = useUniqueId('trigger-content-');
@@ -66,7 +64,7 @@ const Trigger = React.forwardRef(
             className={clsx(
               styles['inline-token-trigger'],
               disabled && styles['inline-token-trigger--disabled'],
-              isVisualRefresh && styles['visual-refresh']
+              styles['visual-refresh']
             )}
           >
             <span className={styles['inline-token-list']}>

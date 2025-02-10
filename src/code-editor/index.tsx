@@ -16,7 +16,6 @@ import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import { applyDisplayName } from '../internal/utils/apply-display-name';
 import InternalLiveRegion from '../live-region/internal';
@@ -69,7 +68,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
     controlledProp: 'editorContentHeight',
   });
   const mode = useCurrentMode(__internalRootRef);
-  const isRefresh = useVisualRefresh();
   const baseProps = getBaseProps(rest);
   const i18n = useInternalI18n('code-editor');
 
@@ -191,7 +189,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
   return (
     <div
       {...baseProps}
-      className={clsx(styles['code-editor'], baseProps.className, { [styles['code-editor-refresh']]: isRefresh })}
+      className={clsx(styles['code-editor'], baseProps.className, styles['code-editor-refresh'])}
       ref={mergedRef}
     >
       {loading && (
@@ -224,7 +222,7 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
           >
             <div
               ref={editorRef}
-              className={clsx(styles.editor, styles.ace, isRefresh && styles['editor-refresh'])}
+              className={clsx(styles.editor, styles.ace, styles['editor-refresh'])}
               onKeyDown={onEditorKeydown}
               tabIndex={0}
               role="group"
@@ -255,7 +253,6 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               isTabFocused={isTabFocused}
               paneId={isPaneVisible ? paneId : undefined}
               onPreferencesOpen={onPreferencesOpen}
-              isRefresh={isRefresh}
             />
             <Pane
               id={paneId}

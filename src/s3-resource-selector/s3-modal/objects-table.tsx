@@ -22,7 +22,6 @@ interface ObjectsTableProps {
   selectableItemsTypes: S3ResourceSelectorProps['selectableItemsTypes'];
   fetchData: S3ResourceSelectorProps['fetchObjects'];
   i18nStrings: S3ResourceSelectorProps.I18nStrings | undefined;
-  isVisualRefresh?: boolean;
   onDrilldown: (path: S3ResourceSelectorProps.Object) => void;
   onSelect: (uri: string) => void;
 }
@@ -31,7 +30,6 @@ export function ObjectsTable({
   forwardFocusRef,
   pathSegments,
   i18nStrings,
-  isVisualRefresh,
   isItemDisabled,
   selectableItemsTypes,
   fetchData,
@@ -78,7 +76,6 @@ export function ObjectsTable({
           ),
         },
       }}
-      isVisualRefresh={isVisualRefresh}
       visibleColumns={visibleColumns}
       isItemDisabled={isItemDisabled || (() => !includes(selectableItemsTypes, 'objects'))}
       columnDefinitions={[

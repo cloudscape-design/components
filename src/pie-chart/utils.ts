@@ -69,17 +69,15 @@ export const refreshDimensionsBySize: Record<NonNullable<PieChartProps['size']>,
 export function getDimensionsBySize({
   size,
   hasLabels,
-  visualRefresh,
 }: {
   size: NonNullable<PieChartProps['size']> | number;
   hasLabels: boolean;
-  visualRefresh?: boolean;
 }): Dimension & { size: NonNullable<PieChartProps['size']> } {
   if (typeof size === 'string') {
-    const dimensions = visualRefresh ? refreshDimensionsBySize[size] : dimensionsBySize[size];
+    const dimensions = refreshDimensionsBySize[size];
     return { ...dimensions, size };
   }
-  const sizeSpec = visualRefresh ? refreshDimensionsBySize : dimensionsBySize;
+  const sizeSpec = refreshDimensionsBySize;
   const getPixelSize = (d: Dimension) => d.outerRadius * 2 + d.padding * 2 + (hasLabels ? d.paddingLabels : 0) * 2;
 
   let matchedSize: NonNullable<PieChartProps['size']> = 'small';

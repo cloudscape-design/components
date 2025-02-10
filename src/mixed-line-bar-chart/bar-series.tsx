@@ -4,7 +4,6 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { ScaleContinuousNumeric, ScaleTime } from '../internal/vendor/d3-scale';
 import { createOneSideRoundedRectPath } from './create-one-side-rounded-rect-path';
 import { ChartDataTypes, MixedLineBarChartProps } from './interfaces';
@@ -53,7 +52,6 @@ export default function BarSeries<T extends ChartDataTypes>({
   stackedBarValues,
   isRtl,
 }: BarSeriesProps<T>) {
-  const isRefresh = useVisualRefresh();
   const isStacked = !!stackedBarValues;
   const isVertical = axis === 'x';
 
@@ -138,7 +136,7 @@ export default function BarSeries<T extends ChartDataTypes>({
         const heightOffset = isSmallBar ? 0 : baseHeightOffset;
         const widthOffset = 2;
 
-        const rx = isRefresh ? (isSmallBar ? 2 : 4) : 0;
+        const rx = isSmallBar ? 2 : 4;
         const placement = isVertical
           ? {
               x: x + widthOffset / 2,

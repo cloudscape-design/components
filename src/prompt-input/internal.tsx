@@ -12,7 +12,6 @@ import { useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import * as tokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { PromptInputProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -61,11 +60,9 @@ const InternalPromptInput = React.forwardRef(
     const baseProps = getBaseProps(rest);
 
     const textareaRef = useRef<HTMLTextAreaElement>(null);
-
-    const isRefresh = useVisualRefresh();
     const isCompactMode = useDensityMode(textareaRef) === 'compact';
 
-    const PADDING = isRefresh ? tokens.spaceXxs : tokens.spaceXxxs;
+    const PADDING = tokens.spaceXxs;
     const LINE_HEIGHT = tokens.lineHeightBodyM;
 
     useImperativeHandle(

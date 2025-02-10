@@ -90,13 +90,3 @@
     }
   }
 }
-
-.layout:not(.is-visual-refresh) {
-  &.has-notifications {
-    #{custom-props.$contentLayoutMainGap}: 0px;
-  }
-
-  > .notifications {
-    grid-column: 1 / 8;
-  }
-}

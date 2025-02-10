@@ -10,7 +10,6 @@ import { ExpandableSectionProps } from '../expandable-section/interfaces';
 import InternalExpandableSection from '../expandable-section/internal';
 import InternalIcon from '../icon/internal';
 import { isPlainLeftClick, NonCancelableCustomEvent } from '../internal/events';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { checkSafeUrl } from '../internal/utils/check-safe-url';
 import { GeneratedAnalyticsMetadataSideNavigationClick } from './analytics-metadata/interfaces';
 import { SideNavigationProps } from './interfaces';
@@ -324,7 +323,6 @@ interface SectionProps extends BaseItemComponentProps {
 
 function Section({ definition, activeHref, fireFollow, fireChange, variant, position }: SectionProps) {
   const [expanded, setExpanded] = useState<boolean>(definition.defaultExpanded ?? true);
-  const isVisualRefresh = useVisualRefresh();
 
   const onExpandedChange = useCallback(
     (e: NonCancelableCustomEvent<ExpandableSectionProps.ChangeDetail>) => {
@@ -343,11 +341,7 @@ function Section({ definition, activeHref, fireFollow, fireChange, variant, posi
       variant="footer"
       expanded={expanded}
       onChange={onExpandedChange}
-      className={clsx(
-        styles.section,
-        variant === 'section-group' && styles['section--no-ident'],
-        isVisualRefresh && styles.refresh
-      )}
+      className={clsx(styles.section, variant === 'section-group' && styles['section--no-ident'], styles.refresh)}
       headerText={definition.text}
     >
       <NavigationItemsList

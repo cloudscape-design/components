@@ -4,8 +4,6 @@ import React from 'react';
 
 import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../hooks/use-visual-mode';
-
 // Built-in React.FunctionComponent has always present `children` property which is not desired
 export type FunctionComponent<Props> = (props: Props) => JSX.Element;
 type PropsType<Component extends FunctionComponent<any>> =
@@ -17,8 +15,7 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
 ) {
   return (Loader?: Component): Component => {
     return (props => {
-      const isRefresh = useVisualRefresh();
-      if (isRefresh && getGlobalFlag('appLayoutWidget') && Loader) {
+      if (getGlobalFlag('appLayoutWidget') && Loader) {
         return <Loader Skeleton={Skeleton} {...(props as any)} />;
       }
 

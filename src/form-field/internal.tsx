@@ -22,7 +22,6 @@ import { getBaseProps } from '../internal/base-component';
 import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
 import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
 import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { joinStrings } from '../internal/utils/strings';
 import InternalLiveRegion from '../live-region/internal';
 import { InternalFormFieldProps } from './interfaces';
@@ -125,7 +124,6 @@ export default function InternalFormField({
   ...rest
 }: InternalFormFieldProps) {
   const baseProps = getBaseProps(rest);
-  const isRefresh = useVisualRefresh();
 
   const instanceUniqueId = useUniqueId('formField');
   const generatedControlId = controlId || instanceUniqueId;
@@ -152,7 +150,7 @@ export default function InternalFormField({
 
   const ariaDescribedBy = getAriaDescribedBy(slotIds);
 
-  const gridDefinition = getGridDefinition(stretch, !!secondaryControl, isRefresh);
+  const gridDefinition = getGridDefinition(stretch, !!secondaryControl);
 
   const {
     ariaLabelledby: parentAriaLabelledby,
