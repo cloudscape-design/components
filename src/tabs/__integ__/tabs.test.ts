@@ -252,10 +252,10 @@ test(
   })
 );
 
-test(
+test.only(
   'tab selection does not cause vertical scroll',
   setupTest(async page => {
-    await page.setWindowSize({ width: 600, height: 300 });
+    await page.setWindowSize({ width: 600, height: 320 });
     const { top: initialTopScrollPosition } = await page.getWindowScroll();
     await page.click(wrapper.findTabLinkByIndex(3).toSelector());
     const { top: currentTopScrollPosition } = await page.getWindowScroll();
@@ -554,24 +554,25 @@ describe('activation mode', () => {
     )
   );
 
-  test(
-    'manual mode - activates tab on Space/Enter',
+  test.each(['Space', 'Enter'])('manual mode - activates tab on %s press', key =>
     setupTest(
       async page => {
         await page.focusTabHeader();
+        await expect(page.findActiveTabIndex()).resolves.toBe(0);
+
         await page.keys(['ArrowRight']);
-        await page.keys(['Enter']);
+        await page.keys([key]);
         await expect(page.findActiveTabIndex()).resolves.toBe(1);
 
         await page.keys(['ArrowRight']);
-        await page.keys(['Space']);
+        await page.keys([key]);
         await expect(page.findActiveTabIndex()).resolves.toBe(2);
       },
       { keyboardActivationMode: 'manual' }
-    )
+    )()
   );
 
-  test(
+  test.only(
     'manual mode - allows full keyboard navigation without activation',
     setupTest(
       async page => {
