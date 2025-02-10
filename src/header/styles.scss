@@ -23,19 +23,6 @@
     row-gap: awsui.$space-scaled-xxs;
   }
 
-  &-no-actions,
-  &-has-description {
-    &.root-variant-h2:not(.refresh),
-    &.root-variant-h3:not(.refresh) {
-      padding-block-end: awsui.$space-scaled-xxs;
-    }
-  }
-
-  &-no-actions:not(.root-has-description):not(.refresh) {
-    // Make sure the header is just as high without actions
-    padding-block-end: calc(#{awsui.$space-scaled-xs} + #{awsui.$space-xxxs});
-  }
-
   &-no-actions.refresh {
     &.root-variant-h2,
     &.root-variant-h3 {
@@ -43,18 +30,10 @@
     }
   }
 
-  &.root-variant-h1:not(.refresh) {
-    row-gap: awsui.$space-scaled-xxs;
-  }
-
   // H3s are most often used inside containers, so minimal headings have extra padding below
   // to prevent info links from having overlapping touch targets with surrounding elements.
   &-no-actions:not(.root-has-description).refresh.root-variant-h3 {
     padding-block-end: awsui.$space-scaled-xs;
-  }
-
-  &.root-variant-h1.root-has-description:not(.refresh) {
-    padding-block-end: awsui.$space-scaled-2x-xxs;
   }
 }
 
@@ -113,16 +92,6 @@
     padding-inline: 0;
   }
 
-  &-variant-h1:not(.refresh) {
-    padding-block: awsui.$space-scaled-xs;
-    padding-inline: 0;
-  }
-  &-variant-h2:not(.refresh),
-  &-variant-h3:not(.refresh) {
-    padding-block: awsui.$space-scaled-xxs;
-    padding-inline: 0;
-  }
-
   .root-has-description > .main > & {
     padding-block-end: 0;
   }
@@ -154,26 +123,6 @@
       padding-block-start: space-heading-button-diff(awsui.$line-height-heading-m);
     }
   }
-  &-variant-h2:not(.refresh),
-  &-variant-h3:not(.refresh) {
-    padding-block-start: awsui.$space-scaled-xs;
-  }
-
-  .no-wrap > &:not(.refresh) {
-    // Additional padding to make it the same height as a header with wrapping
-    padding-block-end: calc(#{awsui.$space-scaled-xxs} + #{awsui.$space-scaled-xxxs});
-  }
-}
-
-.root-no-actions.root-has-description > .main > :not(.refresh) {
-  &.title-variant-h2,
-  &.title-variant-h3 {
-    padding-block-end: awsui.$space-scaled-xxs;
-  }
-}
-
-.root-variant-h1.root-no-actions:not(.root-has-description):not(.refresh) {
-  padding-block-end: awsui.$space-scaled-2x-xxs;
 }
 
 .virtual-space {
@@ -199,15 +148,9 @@
   &-variant-h2 {
     font-size: awsui.$font-header-h2-description-size;
     line-height: awsui.$font-header-h2-description-line-height;
-    &:not(.refresh) {
-      padding-block-end: awsui.$space-scaled-xxs;
-    }
   }
   &-variant-h3 {
     @include styles.font-body-s;
-    &:not(.refresh) {
-      padding-block-end: awsui.$space-scaled-xxs;
-    }
   }
 }
 
