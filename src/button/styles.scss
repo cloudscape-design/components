@@ -89,7 +89,8 @@
       );
     }
 
-    &.variant-inline-icon {
+    &.variant-inline-icon,
+    &.variant-inline-icon-pointer-target {
       @include styles.focus-highlight(awsui.$space-button-inline-icon-focus-outline-gutter);
     }
   }
@@ -110,11 +111,11 @@
 
   &.variant-icon,
   &.variant-inline-icon,
+  &.variant-inline-icon-pointer-target,
   &.variant-flashbar-icon {
     // Icon has vertical padding, but no horizontal, we need to conpensate this
     // in order to have equal height and width
-    padding-inline-start: awsui.$space-xxs;
-    padding-inline-end: awsui.$space-xxs;
+    padding-inline: awsui.$space-xxs;
   }
 
   &.variant-modal-dismiss {
@@ -124,8 +125,13 @@
   }
 
   &.variant-inline-icon {
-    padding-block-start: 0;
-    padding-block-end: 0;
+    padding-block: 0;
+    border-block: 0;
+    border-inline: 0;
+  }
+
+  &.variant-inline-icon-pointer-target {
+    padding-block: awsui.$space-xxxs;
     border-block: 0;
     border-inline: 0;
   }

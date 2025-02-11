@@ -203,7 +203,7 @@ function InternalInput(
             // Used for test utils
             // eslint-disable-next-line react/forbid-component-props
             className={styles['input-button-right']}
-            variant="inline-icon"
+            variant="inline-icon-pointer-target"
             formAction="none"
             iconName={__rightIcon}
             onClick={__onRightIconClick}
