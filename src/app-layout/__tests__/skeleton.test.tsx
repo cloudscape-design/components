@@ -1,12 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable simple-import-sort/imports */
 import React from 'react';
 
-import { describeEachAppLayout, renderComponent } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 import { getFunnelKeySelector } from '../../internal/analytics/selectors';
+import { describeEachAppLayout, renderComponent } from './utils';
 
 let widgetMockEnabled = false;
 function createWidgetizedComponentMock(Implementation: React.ComponentType, Skeleton: React.ComponentType) {

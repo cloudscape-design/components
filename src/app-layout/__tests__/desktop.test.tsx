@@ -1,27 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { act, fireEvent, screen, within } from '@testing-library/react';
 
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
+import { KeyCode } from '../../internal/keycode';
 import {
   describeEachAppLayout,
+  getActiveDrawerWidth,
+  manyDrawers,
   renderComponent,
   testDrawer,
-  manyDrawers,
-  getActiveDrawerWidth,
   testDrawerWithoutLabels,
 } from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import styles from '../../../lib/components/app-layout/styles.css.js';
+
+import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
+import styles from '../../../lib/components/app-layout/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import visualRefreshToolbarNotificationStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
-import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { KeyCode } from '../../internal/keycode';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
@@ -252,14 +251,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   });
 });
 
-describe('Classic only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(false);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-  });
-
+describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
   test(`should toggle single drawer on click of container`, () => {
     const { wrapper } = renderComponent(
       <AppLayout toolsHide={true} drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />

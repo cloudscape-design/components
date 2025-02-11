@@ -1,27 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React from 'react';
-import { act, render, fireEvent } from '@testing-library/react';
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import { act, fireEvent, render } from '@testing-library/react';
 
-import {
-  describeEachAppLayout,
-  renderComponent,
-  testDrawer,
-  manyDrawers,
-  manyDrawersWithBadges,
-  findActiveDrawerLandmark,
-} from './utils';
+import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
-import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import {
+  describeEachAppLayout,
+  findActiveDrawerLandmark,
+  manyDrawers,
+  manyDrawersWithBadges,
+  renderComponent,
+  testDrawer,
+} from './utils';
 
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(true),
-}));
+import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 
 const testIf = (condition: boolean) => (condition ? test : test.skip);
 

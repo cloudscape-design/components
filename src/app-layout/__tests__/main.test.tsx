@@ -1,24 +1,19 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import * as React from 'react';
 import { waitFor } from '@testing-library/react';
-import { describeEachAppLayout, renderComponent, testDrawer } from './utils';
+
+import '../../__a11y__/to-validate-a11y';
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import { describeEachAppLayout, renderComponent, testDrawer } from './utils';
+
 import mobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import sharedStyles from '../../../lib/components/app-layout/styles.css.js';
-import '../../__a11y__/to-validate-a11y';
 
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  isMotionDisabled: jest.fn().mockReturnValue(true),
-}));
-
-// in our ResizeObserver mock resolves into mobile mode
-test('should render mobile mode by default', () => {
+test('does not render mobile mode by default', () => {
   const { wrapper } = renderComponent(<AppLayout />);
-  expect(wrapper.findByClassName(mobileStyles['mobile-bar'])).toBeTruthy();
+  expect(wrapper.findByClassName(mobileStyles['mobile-bar'])).toBeFalsy();
 });
 
 test('should not create a new stacking context by default', () => {

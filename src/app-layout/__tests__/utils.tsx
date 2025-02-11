@@ -3,35 +3,18 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import { setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
+import { clearVisualRefreshState, setGlobalFlag } from '@cloudscape-design/component-toolkit/internal/testing';
 import { ComponentWrapper } from '@cloudscape-design/test-utils-core/dom';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
+import { forceMobileModeSymbol } from '../../internal/hooks/use-mobile';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
-
-// Mock element queries result. Note that in order to work, this mock should be applied first, before the AppLayout is required
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn().mockReturnValue(true),
-}));
-
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(false),
-}));
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  isMotionDisabled: jest.fn().mockReturnValue(true),
-  useDensityMode: jest.fn().mockReturnValue('comfortable'),
-  useReducedMotion: jest.fn().mockReturnValue(true),
-}));
 
 export function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -57,6 +40,8 @@ const defaultTestConfig: AppLayoutTestConfig = {
   sizes: ['desktop', 'mobile'],
 };
 
+const globalWithFlags = globalThis as any;
+
 export function describeEachAppLayout(callback: AppLayoutTestSuite): void;
 export function describeEachAppLayout(config: Partial<AppLayoutTestConfig>, callback: AppLayoutTestSuite): void;
 export function describeEachAppLayout(
@@ -69,14 +54,17 @@ export function describeEachAppLayout(
     for (const size of config.sizes) {
       describe(`Theme=${theme}, Size=${size}`, () => {
         beforeEach(() => {
-          (useMobile as jest.Mock).mockReturnValue(size === 'mobile');
-          (useVisualRefresh as jest.Mock).mockReturnValue(theme !== 'classic');
+          globalWithFlags[forceMobileModeSymbol] = size === 'mobile';
+          globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => theme !== 'classic';
           setGlobalFlag('appLayoutWidget', theme === 'refresh-toolbar');
         });
         afterEach(() => {
-          (useMobile as jest.Mock).mockReset();
-          (useVisualRefresh as jest.Mock).mockReset();
+          delete globalWithFlags[forceMobileModeSymbol];
+          delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
           setGlobalFlag('appLayoutWidget', undefined);
+          clearVisualRefreshState();
+          // remove after this is released: https://github.com/cloudscape-design/component-toolkit/pull/118
+          document.body.classList.remove('awsui-visual-refresh');
         });
         test('mocks applied correctly', () => {
           const { wrapper } = renderComponent(<AppLayout />);

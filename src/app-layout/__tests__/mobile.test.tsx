@@ -1,37 +1,33 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { act, within } from '@testing-library/react';
-import {
-  describeEachAppLayout,
-  renderComponent,
-  testDrawer,
-  manyDrawers,
-  splitPanelI18nStrings,
-  testDrawerWithoutLabels,
-} from './utils';
+
+import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
+
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import SideNavigation from '../../../lib/components/side-navigation';
 import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import styles from '../../../lib/components/app-layout/styles.css.js';
+import {
+  describeEachAppLayout,
+  manyDrawers,
+  renderComponent,
+  splitPanelI18nStrings,
+  testDrawer,
+  testDrawerWithoutLabels,
+} from './utils';
+
 import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import mobileToolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
-import iconStyles from '../../../lib/components/icon/styles.css.js';
+import styles from '../../../lib/components/app-layout/styles.css.js';
 import testUtilsStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
-import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
-import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import toolbarNotificationsStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
 import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
-
-import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
-import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import SideNavigation from '../../../lib/components/side-navigation';
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  isMotionDisabled: jest.fn().mockReturnValue(true),
-}));
+import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
+import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
+import iconStyles from '../../../lib/components/icon/styles.css.js';
 
 function AppLayoutWithControlledNavigation({
   initialNavigationOpen,

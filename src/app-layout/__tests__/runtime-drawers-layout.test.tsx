@@ -1,16 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React, { RefObject } from 'react';
 import { act, render, waitFor } from '@testing-library/react';
-import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
+
 import AppLayout from '../../../lib/components/app-layout';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement';
 import { computeHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
-import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement';
+import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();

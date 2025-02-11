@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable simple-import-sort/imports */
 import React from 'react';
-
-import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
 
 import AppLayout from '../../../lib/components/app-layout';
 import SplitPanel from '../../../lib/components/split-panel';
+import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
 
 // no-op function to suppress controllability warnings
 function noop() {}

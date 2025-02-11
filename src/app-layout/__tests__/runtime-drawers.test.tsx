@@ -1,8 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { act, fireEvent, render } from '@testing-library/react';
+
+import { Button } from '../../../lib/components';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -10,16 +16,11 @@ import {
   getGlobalDrawersTestUtils,
   testDrawer,
 } from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
-import createWrapper from '../../../lib/components/test-utils/dom';
+
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
-import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
+import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
-import { Button } from '../../../lib/components';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();
