@@ -39,11 +39,8 @@ $selected-color: awsui.$color-text-segment-active;
   @include styles.text-flex-wrapping;
   @include styles.font-button;
   letter-spacing: 0.25px;
-  // border-block: styles.$control-border-width solid $default-border-color;
-  // border-inline: styles.$control-border-width solid $default-border-color;
   padding-block: 2px;
   padding-inline: calc(awsui.$space-button-horizontal - 4px);
-  //border-inline-end-width: 0;
   background: $default-background;
   color: $default-color;
   border-inline: none;
@@ -73,45 +70,19 @@ $selected-color: awsui.$color-text-segment-active;
     @include styles.focus-highlight(awsui.$space-segmented-control-focus-outline-gutter);
   }
 
-  // &:last-child {
-  //   border-inline-end-width: styles.$control-border-width;
-  //   border-start-start-radius: 4px;
-  //   border-start-end-radius: 20px;
-  //   border-end-start-radius: 4px;
-  //   border-end-end-radius: 20px;
-  // }
-  // &:first-child {
-  //   border-start-start-radius: 20px;
-  //   border-start-end-radius: 4px;
-  //   border-end-start-radius: 20px;
-  //   border-end-end-radius: 4px;
-  // }
-
   &.disabled {
     background: $disabled-background;
-    //border-color: $disabled-border-color;
     color: $disabled-color;
-  }
-
-  &:not(.disabled) + .segment.disabled {
-    //border-inline-start-color: $default-border-color;
   }
 
   &.selected {
     background: $selected-background;
-    //border-color: $selected-border-color;
     color: $selected-color;
-
-    & + .segment,
-    & + .segment.disabled {
-      //border-inline-start-color: $selected-border-color;
-    }
   }
 
   &:hover:not(.selected):not(.disabled):not(:focus) {
     background: $hover-background;
     color: $hover-color;
-    //border-color: $hover-border-color;
     cursor: pointer;
 
     & + .segment:not(.selected) {
@@ -119,11 +90,6 @@ $selected-color: awsui.$color-text-segment-active;
     }
   }
 
-  &.selected + .segment:hover:not(.selected):not(.disabled):not(:focus) {
-    //border-inline-start-color: $selected-border-color;
-  }
-
-  // Add dividers after each button except the last one
   &:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -134,14 +100,6 @@ $selected-color: awsui.$color-text-segment-active;
     background: awsui.$color-border-input-default;
     z-index: 1;
   }
-
-  // &:has(+ .selected)::after {
-  //   content: none;
-  // }
-
-  // &.selected::after {
-  //   content: none;
-  // }
 }
 
 .icon {
