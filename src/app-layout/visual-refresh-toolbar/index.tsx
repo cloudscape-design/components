@@ -240,7 +240,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusToolsClose: () => drawersFocusControl.setFocus(true),
       focusActiveDrawer: () => drawersFocusControl.setFocus(true),
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
-      focusNavigation: () => navigationFocusControl.setFocus(true),
     }));
 
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
