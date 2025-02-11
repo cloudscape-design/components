@@ -7,21 +7,20 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
-  const original = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
-  return { ...original, useVisualRefresh: jest.fn() };
-});
+const globalWithFlags = globalThis as any;
 
 beforeEach(() => {
-  (useVisualRefresh as jest.Mock).mockReturnValue(true);
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
 });
 
 afterEach(() => {
-  (useVisualRefresh as jest.Mock).mockReset();
+  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+  clearVisualRefreshState();
 });
 
 const vrOnlyComponents = ['app-layout-toolbar'];
@@ -47,7 +46,7 @@ for (const componentName of getAllComponents().filter(component => vrOnlyCompone
 
 describe.each(vrOnlyComponents)('VR only component %s', componentName => {
   beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(false);
+    globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => false;
   });
 
   test('should throw an error in classic', () => {

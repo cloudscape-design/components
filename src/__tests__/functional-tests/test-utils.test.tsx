@@ -9,25 +9,24 @@ import { render } from 'react-dom';
 import { render as renderTestingLibrary } from '@testing-library/react';
 import { pascalCase } from 'change-case';
 
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => {
-  const original = jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode');
-  return { ...original, useVisualRefresh: jest.fn() };
-});
+const globalWithFlags = globalThis as any;
 
 beforeEach(() => {
-  (useVisualRefresh as jest.Mock).mockReturnValue(true);
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
 });
 
 afterEach(() => {
-  (useVisualRefresh as jest.Mock).mockReset();
+  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+  clearVisualRefreshState();
 });
 
 const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-layout-toolbar'];
