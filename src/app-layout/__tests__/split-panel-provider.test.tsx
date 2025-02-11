@@ -3,9 +3,9 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { SplitPanelProvider, SplitPanelProviderProps } from '../../../lib/components/app-layout/split-panel';
-import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel';
-import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom';
+import { SplitPanelProvider, SplitPanelProviderProps } from '../../../lib/components/app-layout/split-panel/index.js';
+import SplitPanel, { SplitPanelProps } from '../../../lib/components/split-panel/index.js';
+import createWrapper, { SplitPanelWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 const defaultSplitPanelProps: SplitPanelProps = {
   header: '',

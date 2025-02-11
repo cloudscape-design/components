@@ -6,19 +6,19 @@ import clsx from 'clsx';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalButton from '../button/internal';
-import { useFormFieldContext } from '../contexts/form-field';
+import InternalButton from '../button/internal.js';
+import { useFormFieldContext } from '../contexts/form-field.js';
 import { getBaseProps } from '../internal/base-component/index.js';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireNonCancelableEvent } from '../internal/events';
-import checkControlled from '../internal/hooks/check-controlled';
-import useForwardFocus from '../internal/hooks/forward-focus';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import checkControlled from '../internal/hooks/check-controlled/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { joinStrings } from '../internal/utils/strings';
-import { FileInputProps } from './interfaces';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { joinStrings } from '../internal/utils/strings/index.js';
+import { FileInputProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

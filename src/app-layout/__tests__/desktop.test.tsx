@@ -11,17 +11,17 @@ import {
   manyDrawers,
   getActiveDrawerWidth,
   testDrawerWithoutLabels,
-} from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+} from './utils.js';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import visualRefreshToolbarNotificationStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/notifications/styles.css.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.css.js';
 import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { KeyCode } from '../../internal/keycode';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties/index.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),

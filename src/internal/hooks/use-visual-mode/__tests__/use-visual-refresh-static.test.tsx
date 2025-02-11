@@ -3,7 +3,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode/index.js';
 
 jest.mock('../../../../../lib/components/internal/environment', () => ({ ALWAYS_VISUAL_REFRESH: true }));
 

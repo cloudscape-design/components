@@ -9,10 +9,10 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Pagination, { PaginationProps } from '../../../lib/components/pagination';
-import InternalPagination from '../../../lib/components/pagination/internal';
-import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import Pagination, { PaginationProps } from '../../../lib/components/pagination/index.js';
+import InternalPagination from '../../../lib/components/pagination/internal.js';
+import createWrapper, { PaginationWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 const ariaLabels = {
   paginationLabel: 'Pagination label',

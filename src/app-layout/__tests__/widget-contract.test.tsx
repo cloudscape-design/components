@@ -4,8 +4,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { describeEachAppLayout, testDrawer } from './utils';
-import AppLayout from '../../../lib/components/app-layout';
+import { describeEachAppLayout, testDrawer } from './utils.js';
+import AppLayout from '../../../lib/components/app-layout/index.js';
 
 const renderedProps = new Map();
 function createWidgetizedComponentMock(Implementation: React.ComponentType) {

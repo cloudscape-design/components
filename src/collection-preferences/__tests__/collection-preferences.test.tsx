@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import CollectionPreferences from '../../../lib/components/collection-preferences';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom';
+import CollectionPreferences from '../../../lib/components/collection-preferences/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { CollectionPreferencesWrapper } from '../../../lib/components/test-utils/dom/index.js';
 import {
   contentDisplayPreference,
   pageSizePreference,
@@ -14,7 +14,7 @@ import {
   stripedRowsPreference,
   visibleContentPreference,
   wrapLinesPreference,
-} from './shared';
+} from './shared.js';
 
 const expectVisibleModal = (wrapper: CollectionPreferencesWrapper, visible = true) => {
   if (visible) {

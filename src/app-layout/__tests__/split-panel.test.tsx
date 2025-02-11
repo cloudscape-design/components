@@ -3,14 +3,14 @@
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { screen } from '@testing-library/react';
-import AppLayout from '../../../lib/components/app-layout';
-import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
-import SplitPanel from '../../../lib/components/split-panel';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils.js';
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import testUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';
 

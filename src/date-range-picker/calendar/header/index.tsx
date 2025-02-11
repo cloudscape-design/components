@@ -4,11 +4,11 @@ import React from 'react';
 import clsx from 'clsx';
 import { add } from 'date-fns';
 
-import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl';
+import { renderMonthAndYear, renderYear } from '../../../calendar/utils/intl.js';
 import { useInternalI18n } from '../../../i18n/context.js';
-import InternalLiveRegion from '../../../live-region/internal';
-import { DateRangePickerProps } from '../../interfaces';
-import { NextPageButton, PrevPageButton } from './header-button';
+import InternalLiveRegion from '../../../live-region/internal.js';
+import { DateRangePickerProps } from '../../interfaces.js';
+import { NextPageButton, PrevPageButton } from './header-button.js';
 
 import styles from '../../styles.css.js';
 import testutilStyles from '../../test-classes/styles.css.js';

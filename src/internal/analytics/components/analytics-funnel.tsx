@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { PACKAGE_VERSION } from '../../environment';
-import { useDebounceCallback } from '../../hooks/use-debounce-callback';
-import { useUniqueId } from '../../hooks/use-unique-id';
-import { useVisualRefresh } from '../../hooks/use-visual-mode';
-import { nodeBelongs } from '../../utils/node-belongs';
+import { PACKAGE_VERSION } from '../../environment.js';
+import { useDebounceCallback } from '../../hooks/use-debounce-callback/index.js';
+import { useUniqueId } from '../../hooks/use-unique-id/index.js';
+import { useVisualRefresh } from '../../hooks/use-visual-mode/index.js';
+import { nodeBelongs } from '../../utils/node-belongs.js';
 import {
   FunnelContext,
   FunnelContextValue,
@@ -15,9 +15,9 @@ import {
   FunnelStepContextValue,
   FunnelSubStepContext,
   FunnelSubStepContextValue,
-} from '../context/analytics-context';
-import { useFunnel, useFunnelStep } from '../hooks/use-funnel';
-import { FunnelMetrics, PerformanceMetrics } from '../index';
+} from '../context/analytics-context.js';
+import { useFunnel, useFunnelStep } from '../hooks/use-funnel.js';
+import { FunnelMetrics, PerformanceMetrics } from '../index.js';
 import {
   AnalyticsMetadata,
   FunnelStartProps,
@@ -25,7 +25,8 @@ import {
   StepConfiguration,
   SubStepConfiguration,
   TaskCompletionDataProps,
-} from '../interfaces';
+} from '../interfaces.js';
+
 import {
   DATA_ATTR_FUNNEL_STEP,
   DATA_ATTR_RESOURCE_TYPE,
@@ -34,7 +35,7 @@ import {
   getSubStepNameSelector,
   getSubStepSelector,
   getTextFromSelector,
-} from '../selectors';
+} from '../selectors.js';
 
 const FUNNEL_VERSION = '1.4';
 

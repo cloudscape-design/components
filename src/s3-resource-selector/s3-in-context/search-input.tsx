@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalInput, { InternalInputProps } from '../../input/internal';
-import { useFormFieldContext } from '../../internal/context/form-field-context';
+import InternalInput, { InternalInputProps } from '../../input/internal.js';
+import { useFormFieldContext } from '../../internal/context/form-field-context.js';
 
 export const SearchInput = React.forwardRef((props: InternalInputProps, ref: React.Ref<HTMLInputElement>) => {
   const formFieldContext = useFormFieldContext(props);

@@ -9,12 +9,12 @@ import { render } from 'react-dom';
 import { render as renderTestingLibrary } from '@testing-library/react';
 import { pascalCase } from 'change-case';
 
-import { Modal } from '../../../lib/components';
-import Button from '../../../lib/components/button';
-import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
-import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
-import { getRequiredPropsForComponent } from '../required-props-for-components';
-import { getAllComponents, requireComponent } from '../utils';
+import Button from '../../../lib/components/button/index.js';
+import { Modal } from '../../../lib/components/index.js';
+import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import createWrapperSelectors from '../../../lib/components/test-utils/selectors/index.js';
+import { getRequiredPropsForComponent } from '../required-props-for-components.js';
+import { getAllComponents, requireComponent } from '../utils.js';
 
 const componentWithMultipleRootElements = ['top-navigation', 'app-layout'];
 const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];

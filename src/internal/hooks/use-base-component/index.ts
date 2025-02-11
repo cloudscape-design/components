@@ -8,9 +8,9 @@ import {
   useFocusVisible,
 } from '@cloudscape-design/component-toolkit/internal';
 
-import { AnalyticsMetadata } from '../../analytics/interfaces';
-import { PACKAGE_VERSION } from '../../environment';
-import { useTelemetry } from '../use-telemetry';
+import { AnalyticsMetadata } from '../../analytics/interfaces.js';
+import { PACKAGE_VERSION } from '../../environment.js';
+import { useTelemetry } from '../use-telemetry/index.js';
 
 export interface InternalBaseComponentProps<T = any> {
   __internalRootRef?: MutableRefObject<T | null> | null;

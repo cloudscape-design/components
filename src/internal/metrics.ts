@@ -2,6 +2,6 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Metrics } from '@cloudscape-design/component-toolkit/internal';
 
-import { PACKAGE_SOURCE, PACKAGE_VERSION } from './environment';
+import { PACKAGE_SOURCE, PACKAGE_VERSION } from './environment.js';
 
 export const metrics = new Metrics(PACKAGE_SOURCE, PACKAGE_VERSION);

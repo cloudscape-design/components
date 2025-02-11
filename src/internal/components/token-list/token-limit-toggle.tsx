@@ -5,11 +5,11 @@ import React, { useCallback } from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useInternalI18n } from '../../../i18n/context';
-import InternalIcon from '../../../icon/internal';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
-import { GeneratedAnalyticsMetadataTokenListShowMore } from './analytics-metadata/interfaces';
-import { I18nStrings } from './interfaces';
+import { useInternalI18n } from '../../../i18n/context.js';
+import InternalIcon from '../../../icon/internal.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events/index.js';
+import { GeneratedAnalyticsMetadataTokenListShowMore } from './analytics-metadata/interfaces.js';
+import { I18nStrings } from './interfaces.js';
 
 import styles from './styles.css.js';
 interface TokenLimitToggleProps {

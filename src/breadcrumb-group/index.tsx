@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useSetGlobalBreadcrumbs } from '../internal/plugins/helpers/use-global-breadcrumbs';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useSetGlobalBreadcrumbs } from '../internal/plugins/helpers/use-global-breadcrumbs.js';
 import { applyDisplayName } from '../internal/utils/apply-display-name.js';
-import { BreadcrumbGroupProps } from './interfaces';
-import { InternalBreadcrumbGroup } from './internal';
-import { BreadcrumbGroupSkeleton } from './skeleton';
+import { BreadcrumbGroupProps } from './interfaces.js';
+import { InternalBreadcrumbGroup } from './internal.js';
+import { BreadcrumbGroupSkeleton } from './skeleton.js';
 
 export { BreadcrumbGroupProps };
 

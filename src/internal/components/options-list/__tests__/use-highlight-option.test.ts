@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, renderHook } from '../../../../__tests__/render-hook';
-import { DropdownOption } from '../../option/interfaces';
-import { flattenOptions } from '../../option/utils/flatten-options';
-import { useHighlightedOption } from '../utils/use-highlight-option';
+import { act, renderHook } from '../../../../__tests__/render-hook.js';
+import { DropdownOption } from '../../option/interfaces.js';
+import { flattenOptions } from '../../option/utils/flatten-options.js';
+import { useHighlightedOption } from '../utils/use-highlight-option.js';
 
 const isHighlightable = (option: DropdownOption) => option && option.type !== 'parent';
 

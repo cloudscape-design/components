@@ -4,13 +4,13 @@ import React, { useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import useForwardFocus from '../internal/hooks/forward-focus';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { isDevelopment } from '../internal/is-development';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { PopoverProps } from './interfaces';
-import InternalPopover, { InternalPopoverRef } from './internal';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { PopoverProps } from './interfaces.js';
+import InternalPopover, { InternalPopoverRef } from './internal.js';
 
 export { PopoverProps };
 

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, renderHook } from '../../../../__tests__/render-hook';
-import { KeyCode } from '../../../keycode';
-import { useMenuKeyboard, useTriggerKeyboard } from '../utils/use-keyboard';
+import { act, renderHook } from '../../../../__tests__/render-hook.js';
+import { KeyCode } from '../../../keycode.js';
+import { useMenuKeyboard, useTriggerKeyboard } from '../utils/use-keyboard.js';
 
 const createKeyEventDetail = ([name, keyCode]: any) => {
   return { name, eventDetail: { detail: { keyCode }, preventDefault: jest.fn() } };

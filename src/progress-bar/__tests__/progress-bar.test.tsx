@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { act, render, screen } from '@testing-library/react';
 
-import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar';
+import ProgressBar, { ProgressBarProps } from '../../../lib/components/progress-bar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import ProgressBarWrapper from '../../../lib/components/test-utils/dom/progress-bar/index.js';
 
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 import styles from '../../../lib/components/progress-bar/styles.css.js';

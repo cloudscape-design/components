@@ -9,11 +9,11 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Form, { FormProps } from '../../../lib/components/form';
-import InternalForm from '../../../lib/components/form/internal';
-import Header, { HeaderProps } from '../../../lib/components/header';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import Form, { FormProps } from '../../../lib/components/form/index.js';
+import InternalForm from '../../../lib/components/form/internal.js';
+import Header, { HeaderProps } from '../../../lib/components/header/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/form/analytics-metadata/styles.css.js';
 

@@ -3,8 +3,8 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { GridCell } from '../../../../lib/components/date-range-picker/calendar/grids/grid-cell';
-import createWrapper from '../../../../lib/components/test-utils/dom';
+import { GridCell } from '../../../../lib/components/date-range-picker/calendar/grids/grid-cell.js';
+import createWrapper from '../../../../lib/components/test-utils/dom/index.js';
 
 import testutilStyles from '../../../../lib/components/date-range-picker/test-classes/styles.selectors.js';
 

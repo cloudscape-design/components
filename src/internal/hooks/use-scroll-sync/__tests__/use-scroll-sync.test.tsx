@@ -3,7 +3,7 @@
 import React, { useRef } from 'react';
 import { act, render } from '@testing-library/react';
 
-import { useScrollSync } from '../index';
+import { useScrollSync } from '../index.js';
 
 function Demo() {
   const ref1 = useRef<HTMLDivElement>(null);

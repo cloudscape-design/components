@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Trigger, { TriggerProps } from '../../../lib/components/select/parts/trigger';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Trigger, { TriggerProps } from '../../../lib/components/select/parts/trigger.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import buttonTriggerStyles from '../../../lib/components/internal/components/button-trigger/styles.css.js';
 

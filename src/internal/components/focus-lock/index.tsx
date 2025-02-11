@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 
-import { useMergeRefs } from '../../hooks/use-merge-refs';
-import TabTrap from '../tab-trap/index';
-import { getFirstFocusable, getLastFocusable } from './utils';
+import { useMergeRefs } from '../../hooks/use-merge-refs/index.js';
+import TabTrap from '../tab-trap/index.js';
+import { getFirstFocusable, getLastFocusable } from './utils.js';
 
 export interface FocusLockProps {
   className?: string;

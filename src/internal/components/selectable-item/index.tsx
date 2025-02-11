@@ -5,9 +5,9 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { getBaseProps } from '../../base-component';
-import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils';
-import { SelectableItemProps } from './interfaces';
+import { getBaseProps } from '../../base-component/index.js';
+import { getAnalyticsSelectActionMetadata } from './analytics-metadata/utils.js';
+import { SelectableItemProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

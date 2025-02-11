@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { TableProps } from '../interfaces';
-import { getTrackableValue } from '../utils';
+import { TableProps } from '../interfaces.js';
+import { getTrackableValue } from '../utils.js';
 
 export const SELECTION_ITEM = 'selection-item';
 const SELECTION_ROOT = 'selection-root';

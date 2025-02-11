@@ -4,7 +4,7 @@
 import { useRef } from 'react';
 import { DragEndEvent, DragOverEvent, DragStartEvent } from '@dnd-kit/core';
 
-import { SortableAreaProps } from './interfaces';
+import { SortableAreaProps } from './interfaces.js';
 
 export default function useLiveAnnouncements<Item>({
   items,

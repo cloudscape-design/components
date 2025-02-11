@@ -3,17 +3,18 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import ExpandableSection from '../../../lib/components/expandable-section';
-import FormField from '../../../lib/components/form-field';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import ExpandableSection from '../../../lib/components/expandable-section/index.js';
+import FormField from '../../../lib/components/form-field/index.js';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
   AnalyticsFunnelSubStep,
-} from '../../../lib/components/internal/analytics/components/analytics-funnel';
-import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel';
-import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL } from '../../../lib/components/internal/analytics/selectors';
-import { mockFunnelMetrics, mockGetBoundingClientRect } from '../../internal/analytics/__tests__/mocks';
+} from '../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { useFunnel } from '../../../lib/components/internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import { mockFunnelMetrics, mockGetBoundingClientRect } from '../../internal/analytics/__tests__/mocks.js';
+
+import { DATA_ATTR_FIELD_ERROR, DATA_ATTR_FIELD_LABEL } from '../../../lib/components/internal/analytics/selectors.js';
 
 mockGetBoundingClientRect();
 

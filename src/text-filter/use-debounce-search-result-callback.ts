@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useEffect, useRef } from 'react';
 
-import { useDebounceCallback } from '../internal/hooks/use-debounce-callback';
+import { useDebounceCallback } from '../internal/hooks/use-debounce-callback/index.js';
 
 export interface DebouncedLiveAnnouncementProps {
   searchQuery: any;

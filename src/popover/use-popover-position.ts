@@ -6,14 +6,14 @@ import React, { useCallback, useRef, useState } from 'react';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { findUpUntilMultiple, isContainingBlock } from '../internal/utils/dom';
+import { findUpUntilMultiple, isContainingBlock } from '../internal/utils/dom.js';
 import {
   calculateScroll,
   getFirstScrollableParent,
   scrollRectangleIntoView,
-} from '../internal/utils/scrollable-containers';
-import { BoundingBox, InternalPosition, Offset, PopoverProps, Rect } from './interfaces';
-import { calculatePosition, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions';
+} from '../internal/utils/scrollable-containers.js';
+import { BoundingBox, InternalPosition, Offset, PopoverProps, Rect } from './interfaces.js';
+import { calculatePosition, getDimensions, getOffsetDimensions, isCenterOutside } from './utils/positions.js';
 
 export default function usePopoverPosition({
   popoverRef,

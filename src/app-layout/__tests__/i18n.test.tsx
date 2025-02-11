@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { renderComponent } from './utils.js';
 
 const i18nMessages = {
   'app-layout': {

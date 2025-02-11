@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef } from 'react';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events/index.js';
 import {
   DrawerConfig as RuntimeDrawerConfig,
   DrawerStateChangeParams,
-} from '../../internal/plugins/controllers/drawers';
-import { sortByPriority } from '../../internal/plugins/helpers/utils';
-import { AppLayoutProps } from '../interfaces';
-import { ActiveDrawersContext } from '../utils/visibility-context';
+} from '../../internal/plugins/controllers/drawers.js';
+import { sortByPriority } from '../../internal/plugins/helpers/utils.js';
+import { AppLayoutProps } from '../interfaces.js';
+import { ActiveDrawersContext } from '../utils/visibility-context.js';
 
 import styles from './styles.css.js';
 

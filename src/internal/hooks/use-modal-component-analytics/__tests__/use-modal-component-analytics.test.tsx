@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import * as useModalContext from '../../../context/modal-context';
-import { useModalContextLoadingButtonComponent, useModalContextLoadingComponent } from '../index';
+import * as useModalContext from '../../../context/modal-context.js';
+import { useModalContextLoadingButtonComponent, useModalContextLoadingComponent } from '../index.js';
 let mockModalContext: useModalContext.ModalContextProps, mockLoadTime: number;
 beforeEach(() => {
   mockLoadTime = 0;

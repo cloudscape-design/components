@@ -4,11 +4,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Ace } from 'ace-builds';
 import clsx from 'clsx';
 
-import { InternalButton } from '../button/internal';
-import FocusLock from '../internal/components/focus-lock';
-import { KeyCode } from '../internal/keycode';
-import { ResizableBox } from './resizable-box';
-import { getStatusButtonId, PaneStatus } from './util';
+import { InternalButton } from '../button/internal.js';
+import FocusLock from '../internal/components/focus-lock/index.js';
+import { KeyCode } from '../internal/keycode.js';
+import { ResizableBox } from './resizable-box/index.js';
+import { getStatusButtonId, PaneStatus } from './util.js';
 
 import styles from './styles.css.js';
 

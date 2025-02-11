@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback, useMemo, useState } from 'react';
 
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
-import { KeyCode } from '../../internal/keycode';
-import { circleIndex } from '../../internal/utils/circle-index';
-import { ChartContainerProps } from '../chart-container';
-import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerX } from '../interfaces';
-import { ScaledBarGroup } from '../make-scaled-bar-groups';
-import { ScaledPoint } from '../make-scaled-series';
-import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils';
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { circleIndex } from '../../internal/utils/circle-index.js';
+import { ChartContainerProps } from '../chart-container.js';
+import { ChartDataTypes, MixedLineBarChartProps, VerticalMarkerX } from '../interfaces.js';
+import { ScaledBarGroup } from '../make-scaled-bar-groups.js';
+import { ScaledPoint } from '../make-scaled-series.js';
+import { findNavigableSeries, isXThreshold, isYThreshold, nextValidDomainIndex } from '../utils.js';
 
 export type UseNavigationProps<T extends ChartDataTypes> = Pick<
   ChartContainerProps<T>,

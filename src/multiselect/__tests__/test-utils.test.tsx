@@ -4,9 +4,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Multiselect from '../../../lib/components/multiselect';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { MultiselectProps } from '../interfaces';
+import Multiselect from '../../../lib/components/multiselect/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { MultiselectProps } from '../interfaces.js';
 
 const options: MultiselectProps.Options = [
   { label: 'First option', value: '1' },

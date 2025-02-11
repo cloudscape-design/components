@@ -3,11 +3,11 @@
 /* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { act, render, cleanup, waitFor } from '@testing-library/react';
-import { describeEachAppLayout } from './utils';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import AppLayout from '../../../lib/components/app-layout';
-import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
+import { describeEachAppLayout } from './utils.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/index.js';
+import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
 import { activateAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 

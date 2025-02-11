@@ -5,15 +5,15 @@ import { act, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import PropertyFilter from '../../../lib/components/property-filter';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
 import {
   FilteringOption,
   FilteringProperty,
   PropertyFilterProps,
   Ref,
-} from '../../../lib/components/property-filter/interfaces';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { createDefaultProps } from './common';
+} from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps } from './common.js';
 
 const states: Record<string, string> = {
   0: 'Stopped',

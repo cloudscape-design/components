@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import BarChart from '../../../lib/components/bar-chart';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import BarChart from '../../../lib/components/bar-chart/index.js';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 function renderBarChart(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);

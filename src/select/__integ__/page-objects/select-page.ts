@@ -4,7 +4,7 @@ import { strict as assert } from 'assert';
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import { MultiselectWrapper, SelectWrapper } from '../../../../lib/components/test-utils/selectors';
+import { MultiselectWrapper, SelectWrapper } from '../../../../lib/components/test-utils/selectors/index.js';
 
 export default class SelectPageObject<
   Wrapper extends SelectWrapper | MultiselectWrapper = SelectWrapper,

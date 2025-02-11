@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Select from '../../../lib/components/select';
-import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Select from '../../../lib/components/select/index.js';
+import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/side-navigation/styles.css.js';
 

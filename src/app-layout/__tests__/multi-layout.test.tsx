@@ -6,12 +6,12 @@ import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import { describeEachAppLayout, testDrawer } from './utils';
+import { describeEachAppLayout, testDrawer } from './utils.js';
 
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import SplitPanel from '../../../lib/components/split-panel';
-import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 

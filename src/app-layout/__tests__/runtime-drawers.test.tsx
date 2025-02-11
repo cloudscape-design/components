@@ -9,17 +9,17 @@ import {
   getActiveDrawerWidth,
   getGlobalDrawersTestUtils,
   testDrawer,
-} from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
-import createWrapper from '../../../lib/components/test-utils/dom';
+} from './utils.js';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import { TOOLS_DRAWER_ID } from '../../../lib/components/app-layout/utils/use-drawers.js';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 import triggerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.selectors.js';
 import toolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/styles.selectors.js';
 import iconStyles from '../../../lib/components/icon/styles.selectors.js';
-import { Button } from '../../../lib/components';
+import { Button } from '../../../lib/components/index.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();

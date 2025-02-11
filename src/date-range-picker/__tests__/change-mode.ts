@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { act } from '@testing-library/react';
 
-import { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom';
+import { DateRangePickerWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 export function changeMode(wrapper: DateRangePickerWrapper, mode: 'relative' | 'absolute') {
   const select = wrapper.findDropdown()!.findSelectionModeSwitch().findModesAsSelect();

@@ -9,11 +9,11 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import FormField from '../../../lib/components/form-field';
-import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect';
-import InternalMultiselect from '../../../lib/components/multiselect/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import FormField from '../../../lib/components/form-field/index.js';
+import Multiselect, { MultiselectProps } from '../../../lib/components/multiselect/index.js';
+import InternalMultiselect from '../../../lib/components/multiselect/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import buttonTriggerLabels from '../../../lib/components/internal/components/button-trigger/analytics-metadata/styles.css.js';
 import optionLabels from '../../../lib/components/internal/components/option/analytics-metadata/styles.css.js';

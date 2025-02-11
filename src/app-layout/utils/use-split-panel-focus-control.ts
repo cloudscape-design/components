@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { DependencyList, RefObject, useEffect, useRef } from 'react';
 
-import { Focusable } from './use-focus-control';
+import { Focusable } from './use-focus-control.js';
 
 type SplitPanelLastInteraction = { type: 'open' } | { type: 'close' } | { type: 'position' };
 

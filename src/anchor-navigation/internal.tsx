@@ -4,10 +4,10 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component/index.js';
-import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
+import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index.js';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { AnchorNavigationProps } from './interfaces';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import { AnchorNavigationProps } from './interfaces.js';
 import useScrollSpy from './use-scroll-spy.js';
 
 import styles from './styles.css.js';

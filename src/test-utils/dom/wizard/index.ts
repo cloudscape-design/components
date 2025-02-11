@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import ButtonWrapper from '../button';
-import FormWrapper from '../form';
-import HeaderWrapper from '../header';
+import ButtonWrapper from '../button/index.js';
+import FormWrapper from '../form/index.js';
+import HeaderWrapper from '../header/index.js';
 
 import formStyles from '../../../form/styles.selectors.js';
 import styles from '../../../wizard/styles.selectors.js';

@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import Box from '../box/internal';
-import ColumnLayout from '../column-layout/internal';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { KeyValuePairsProps } from './interfaces';
+import Box from '../box/internal.js';
+import ColumnLayout from '../column-layout/internal.js';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { KeyValuePairsProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

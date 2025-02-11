@@ -3,10 +3,10 @@
 /* eslint-disable simple-import-sort/imports */
 import React from 'react';
 
-import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
+import { describeEachAppLayout, manyDrawers, renderComponent } from './utils.js';
 
-import AppLayout from '../../../lib/components/app-layout';
-import SplitPanel from '../../../lib/components/split-panel';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
 
 // no-op function to suppress controllability warnings
 function noop() {}

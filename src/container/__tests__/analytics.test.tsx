@@ -3,15 +3,16 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import Container from '../../../lib/components/container';
-import { FunnelMetrics } from '../../../lib/components/internal/analytics';
+import Container from '../../../lib/components/container/index.js';
 import {
   AnalyticsFunnel,
   AnalyticsFunnelStep,
-} from '../../../lib/components/internal/analytics/components/analytics-funnel';
-import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors';
-import Modal from '../../../lib/components/modal';
-import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks';
+} from '../../../lib/components/internal/analytics/components/analytics-funnel.js';
+import { FunnelMetrics } from '../../../lib/components/internal/analytics/index.js';
+import Modal from '../../../lib/components/modal/index.js';
+import { mockFunnelMetrics } from '../../internal/analytics/__tests__/mocks.js';
+
+import { DATA_ATTR_FUNNEL_SUBSTEP } from '../../../lib/components/internal/analytics/selectors.js';
 
 describe('Funnel Analytics', () => {
   beforeEach(() => {

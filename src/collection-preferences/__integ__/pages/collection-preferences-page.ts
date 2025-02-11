@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { CollectionPreferencesWrapper } from '../../../../lib/components/test-utils/selectors';
-import DndPageObject from '../../content-display/__integ__/pages/dnd-page-object';
+import { CollectionPreferencesWrapper } from '../../../../lib/components/test-utils/selectors/index.js';
+import DndPageObject from '../../content-display/__integ__/pages/dnd-page-object.js';
 
 export default class CollectionPreferencesPageObject extends DndPageObject {
   protected _wrapper?: CollectionPreferencesWrapper;

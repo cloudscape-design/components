@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { padLeftZeros } from '../../../../../lib/components/internal/utils/strings/pad-left-zeros';
+import { padLeftZeros } from '../../../../../lib/components/internal/utils/strings/pad-left-zeros.js';
 
 describe('padLeftZeros', () => {
   test('pads empty string', () => {

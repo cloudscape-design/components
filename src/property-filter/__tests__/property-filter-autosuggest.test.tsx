@@ -5,10 +5,10 @@ import { render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces';
-import PropertyFilterAutosuggest from '../../../lib/components/property-filter/property-filter-autosuggest';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest';
+import { AutosuggestProps } from '../../../lib/components/autosuggest/interfaces.js';
+import PropertyFilterAutosuggest from '../../../lib/components/property-filter/property-filter-autosuggest.js';
+import AutosuggestWrapper from '../../../lib/components/test-utils/dom/autosuggest/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import tabTrapStyles from '../../../lib/components/internal/components/tab-trap/styles.selectors.js';
 

@@ -3,8 +3,8 @@
 import {
   ChartScale,
   NumericChartScale,
-} from '../../../../../lib/components/internal/components/cartesian-chart/scales';
-import { createXTicks, createYTicks } from '../../../../../lib/components/internal/components/cartesian-chart/ticks';
+} from '../../../../../lib/components/internal/components/cartesian-chart/scales.js';
+import { createXTicks, createYTicks } from '../../../../../lib/components/internal/components/cartesian-chart/ticks.js';
 
 describe('createXTicks', () => {
   it('creates uniformly-spaced time intervals for 1-day intervals', () => {

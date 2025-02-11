@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import SpaceBetween from '../../../lib/components/space-between';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import SpaceBetween from '../../../lib/components/space-between/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/space-between/styles.css.js';
 

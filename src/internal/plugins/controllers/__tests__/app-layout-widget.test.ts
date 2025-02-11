@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AppLayoutWidgetController } from '../../../../../lib/components/internal/plugins/controllers/app-layout-widget';
+import { AppLayoutWidgetController } from '../../../../../lib/components/internal/plugins/controllers/app-layout-widget.js';
 
 function delay() {
   return new Promise(resolve => setTimeout(resolve));

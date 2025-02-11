@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import FocusLock, { FocusLockProps } from '../../../../../lib/components/internal/components/focus-lock';
+import FocusLock, { FocusLockProps } from '../../../../../lib/components/internal/components/focus-lock/index.js';
 
 type TestFixtureProps = Omit<FocusLockProps, 'children'> & { unmount?: boolean };
 function TestFixture({ unmount = false, ...props }: TestFixtureProps) {

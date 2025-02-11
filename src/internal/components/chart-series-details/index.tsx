@@ -3,11 +3,11 @@
 import React, { forwardRef, memo, ReactNode, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
-import InternalExpandableSection from '../../../expandable-section/internal';
-import { BaseComponentProps, getBaseProps } from '../../base-component';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
-import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
-import getSeriesDetailsText from './series-details-text';
+import InternalExpandableSection from '../../../expandable-section/internal.js';
+import { BaseComponentProps, getBaseProps } from '../../base-component/index.js';
+import { useMergeRefs } from '../../hooks/use-merge-refs/index.js';
+import ChartSeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker/index.js';
+import getSeriesDetailsText from './series-details-text.js';
 
 import styles from './styles.css.js';
 

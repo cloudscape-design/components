@@ -9,11 +9,11 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import FormField from '../../../lib/components/form-field';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Tiles, { TilesProps } from '../../../lib/components/tiles';
-import InternalTiles from '../../../lib/components/tiles/internal';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import FormField from '../../../lib/components/form-field/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import Tiles, { TilesProps } from '../../../lib/components/tiles/index.js';
+import InternalTiles from '../../../lib/components/tiles/internal.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import tilesLabels from '../../../lib//components/tiles/analytics-metadata/styles.css.js';
 import abstractSwitchlabels from '../../../lib/components/internal/components/abstract-switch/analytics-metadata/styles.css.js';

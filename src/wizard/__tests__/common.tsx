@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Container from '../../../lib/components/container';
-import Header from '../../../lib/components/header';
-import { WizardProps } from '../interfaces';
+import Container from '../../../lib/components/container/index.js';
+import Header from '../../../lib/components/header/index.js';
+import { WizardProps } from '../interfaces.js';
 
 export const DEFAULT_I18N_SETS = [
   {

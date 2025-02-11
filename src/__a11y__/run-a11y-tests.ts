@@ -3,8 +3,8 @@
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { findAllPages } from '../__integ__/utils';
-import A11yPageObject from './a11y-page-object';
+import { findAllPages } from '../__integ__/utils.js';
+import A11yPageObject from './a11y-page-object.js';
 
 type Theme = 'default' | 'visual-refresh';
 type Mode = 'light' | 'dark';

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef, useState } from 'react';
 
-import { ActionButtonsController, ActionConfig, ActionContext } from '../controllers/action-buttons';
+import { ActionButtonsController, ActionConfig, ActionContext } from '../controllers/action-buttons.js';
 
 interface RuntimeActionWrapperProps {
   context: ActionContext;

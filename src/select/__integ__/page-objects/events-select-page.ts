@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import SelectPage from './select-page';
+import SelectPage from './select-page.js';
 
 interface ExtendedWindow extends Window {
   __eventsLog?: string[];

@@ -3,9 +3,9 @@
 
 import { useRef } from 'react';
 
-import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces';
-import { AutosuggestProps } from './interfaces';
+import { OptionsLoadItemsDetail } from '../internal/components/dropdown/interfaces.js';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/interfaces.js';
+import { AutosuggestProps } from './interfaces.js';
 
 interface UseAutosuggestLoadMoreProps {
   options?: AutosuggestProps.Options;

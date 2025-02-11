@@ -3,15 +3,15 @@
 import React, { useCallback } from 'react';
 import clsx from 'clsx';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import InternalFormField from '../form-field/internal';
-import { useInternalI18n } from '../i18n/context';
-import { Breakpoint } from '../internal/breakpoints';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { AttributeEditorProps } from './interfaces';
-import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSameLine } from './utils';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import InternalFormField from '../form-field/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { Breakpoint } from '../internal/breakpoints.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { AttributeEditorProps } from './interfaces.js';
+import { getItemGridColumns, getRemoveButtonGridColumns, isRemoveButtonOnSameLine } from './utils.js';
 
 import styles from './styles.css.js';
 

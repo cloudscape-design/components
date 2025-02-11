@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback, useEffect } from 'react';
 
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events';
-import { useControllable } from '../../internal/hooks/use-controllable';
-import { AreaChartProps } from '../interfaces';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../internal/events/index.js';
+import { useControllable } from '../../internal/hooks/use-controllable/index.js';
+import { AreaChartProps } from '../interfaces.js';
 
 type HighlightProps<T> = [null | AreaChartProps.Series<T>, (s: null | AreaChartProps.Series<T>) => void];
 

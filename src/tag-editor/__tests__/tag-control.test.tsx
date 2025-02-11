@@ -3,8 +3,8 @@
 import React from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
-import { TagControl, TagControlProps } from '../../../lib/components/tag-editor/internal';
-import createWrapper, { AutosuggestWrapper } from '../../../lib/components/test-utils/dom';
+import { TagControl, TagControlProps } from '../../../lib/components/tag-editor/internal.js';
+import createWrapper, { AutosuggestWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 const i18n = {
   placeholder: 'placeholder',

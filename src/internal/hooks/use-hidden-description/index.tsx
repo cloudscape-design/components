@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useUniqueId } from '../use-unique-id';
+import { useUniqueId } from '../use-unique-id/index.js';
 
 export default function useHiddenDescription(description?: string) {
   const id = useUniqueId();

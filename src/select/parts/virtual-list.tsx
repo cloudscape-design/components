@@ -4,11 +4,11 @@ import React, { forwardRef, useCallback, useImperativeHandle, useRef } from 'rea
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
-import OptionsList from '../../internal/components/options-list';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useVirtual } from '../../internal/hooks/use-virtual';
-import { renderOptions } from '../utils/render-options';
-import { SelectListProps } from './plain-list';
+import OptionsList from '../../internal/components/options-list/index.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
+import { useVirtual } from '../../internal/hooks/use-virtual/index.js';
+import { renderOptions } from '../utils/render-options.js';
+import { SelectListProps } from './plain-list.js';
 
 import styles from './styles.css.js';
 

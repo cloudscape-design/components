@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import AutosuggestPage from './page-objects/autosuggest-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import AutosuggestPage from './page-objects/autosuggest-page.js';
 
 function setupTest(testFn: (page: AutosuggestPage) => Promise<void>, url = '/#/light/autosuggest/simple') {
   return useBrowser(async browser => {

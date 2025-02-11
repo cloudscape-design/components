@@ -2,14 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { Ref, useLayoutEffect, useState } from 'react';
 
-import InternalInput from '../../../input/internal';
-import { getBaseProps } from '../../base-component';
-import { useFormFieldContext } from '../../context/form-field-context';
-import { fireCancelableEvent, fireNonCancelableEvent } from '../../events';
-import { useMergeRefs } from '../../hooks/use-merge-refs';
-import { MaskedInputProps } from './interfaces';
-import useMask from './use-mask';
-import MaskFormat from './utils/mask-format';
+import InternalInput from '../../../input/internal.js';
+import { getBaseProps } from '../../base-component/index.js';
+import { useFormFieldContext } from '../../context/form-field-context.js';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../../events/index.js';
+import { useMergeRefs } from '../../hooks/use-merge-refs/index.js';
+import { MaskedInputProps } from './interfaces.js';
+import useMask from './use-mask.js';
+import MaskFormat from './utils/mask-format.js';
 
 const MaskedInput = React.forwardRef(
   (

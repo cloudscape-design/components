@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { MultiselectWrapper } from '../../../lib/components/test-utils/selectors';
-import MultiselectPageObject from './page-objects/multiselect-page';
+import createWrapper, { MultiselectWrapper } from '../../../lib/components/test-utils/selectors/index.js';
+import MultiselectPageObject from './page-objects/multiselect-page.js';
 
 const createSetupTest = (wrapper: MultiselectWrapper) => (testFn: (page: MultiselectPageObject) => Promise<void>) => {
   return useBrowser(async browser => {

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { KeyCode } from '../../../keycode';
+import { KeyCode } from '../../../keycode.js';
 
 const isSpecialCommand = (keyCode: number): boolean => {
   return keyCode > 7 && keyCode < 47 && keyCode !== KeyCode.space;

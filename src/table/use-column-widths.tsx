@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 import { useResizeObserver, useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { ColumnWidthStyle, setElementWidths } from './column-widths-utils';
+import { ColumnWidthStyle, setElementWidths } from './column-widths-utils.js';
 
 export const DEFAULT_COLUMN_WIDTH = 120;
 

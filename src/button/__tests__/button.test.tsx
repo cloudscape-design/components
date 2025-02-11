@@ -5,12 +5,12 @@ import { act, fireEvent, render } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import Button, { ButtonProps } from '../../../lib/components/button';
-import InternalButton from '../../../lib/components/button/internal';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom';
-import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
+import Button, { ButtonProps } from '../../../lib/components/button/index.js';
+import InternalButton from '../../../lib/components/button/internal.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper, { ButtonWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { buttonRelExpectations, buttonTargetExpectations } from '../../__tests__/target-rel-test-helper.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils.js';
 
 import styles from '../../../lib/components/button/styles.css.js';
 import testUtilStyles from '../../../lib/components/button/test-classes/styles.css.js';

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useState } from 'react';
 
-import { SplitPanelContextBaseProps, SplitPanelContextProvider } from '../../internal/context/split-panel-context';
-import { getLimitedValue } from '../../split-panel/utils/size-utils';
-import { SPLIT_PANEL_MIN_HEIGHT, SPLIT_PANEL_MIN_WIDTH } from './constants';
+import { SplitPanelContextBaseProps, SplitPanelContextProvider } from '../../internal/context/split-panel-context.js';
+import { getLimitedValue } from '../../split-panel/utils/size-utils.js';
+import { SPLIT_PANEL_MIN_HEIGHT, SPLIT_PANEL_MIN_WIDTH } from './constants.js';
 
 export interface SplitPanelProviderProps extends SplitPanelContextBaseProps {
   maxWidth: number;

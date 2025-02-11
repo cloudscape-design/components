@@ -3,11 +3,11 @@
 import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import InternalIcon from '../icon/internal';
-import Tooltip from '../internal/components/tooltip';
-import useHiddenDescription from '../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SegmentedControlProps } from './interfaces';
+import InternalIcon from '../icon/internal.js';
+import Tooltip from '../internal/components/tooltip/index.js';
+import useHiddenDescription from '../internal/hooks/use-hidden-description/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { SegmentedControlProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

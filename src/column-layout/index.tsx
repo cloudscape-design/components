@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { ColumnLayoutProps } from './interfaces';
-import InternalColumnLayout from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { ColumnLayoutProps } from './interfaces.js';
+import InternalColumnLayout from './internal.js';
 
 export { ColumnLayoutProps };
 

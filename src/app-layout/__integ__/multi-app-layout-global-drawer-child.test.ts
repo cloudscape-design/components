@@ -3,7 +3,7 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/selectors';
+import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/selectors/index.js';
 
 const iframeId = '#inner-iframe';
 const wrapper = createWrapper().findAppLayout();

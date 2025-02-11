@@ -5,7 +5,7 @@ import { createPortal } from 'react-dom';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { isDevelopment } from '../../is-development';
+import { isDevelopment } from '../../is-development.js';
 
 export interface PortalProps {
   container?: null | Element;

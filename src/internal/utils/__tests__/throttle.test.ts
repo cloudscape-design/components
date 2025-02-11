@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { throttle } from '../throttle';
+import { throttle } from '../throttle.js';
 
 describe('throttle', () => {
   let dateNowSpy: jest.SpyInstance<number>;

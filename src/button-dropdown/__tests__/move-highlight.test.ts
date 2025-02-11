@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonDropdownProps } from '../interfaces';
-import moveHighlight from '../utils/move-highlight';
+import { ButtonDropdownProps } from '../interfaces.js';
+import moveHighlight from '../utils/move-highlight.js';
 
 const items: { index: number[]; item: ButtonDropdownProps.ItemOrGroup; parent?: ButtonDropdownProps.ItemOrGroup }[] = [
   { index: [0], item: { id: '00', text: 'item-00' } },

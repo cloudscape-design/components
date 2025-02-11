@@ -3,17 +3,17 @@
 import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../box/internal';
-import { useFormFieldContext } from '../contexts/form-field';
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
-import { S3ResourceSelectorProps } from './interfaces';
-import { S3InContext, S3InContextRef } from './s3-in-context';
-import { S3Modal, S3ModalProps } from './s3-modal';
+import InternalBox from '../box/internal.js';
+import { useFormFieldContext } from '../contexts/form-field.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { checkSafeUrl } from '../internal/utils/check-safe-url.js';
+import { S3ResourceSelectorProps } from './interfaces.js';
+import { S3InContext, S3InContextRef } from './s3-in-context/index.js';
+import { S3Modal, S3ModalProps } from './s3-modal/index.js';
 
 import styles from './styles.css.js';
 

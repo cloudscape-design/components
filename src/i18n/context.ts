@@ -3,7 +3,7 @@
 
 import React, { useContext } from 'react';
 
-import { I18nFormatArgTypes } from './messages-types';
+import { I18nFormatArgTypes } from './messages-types.js';
 
 export type CustomHandler<ReturnValue, FormatFnArgs> = (formatFn: (args: FormatFnArgs) => string) => ReturnValue;
 

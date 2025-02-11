@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { act, renderHook } from '../../__tests__/render-hook';
-import type { DropdownOption } from '../../internal/components/option/interfaces';
-import { useNativeSearch } from '../utils/use-native-search';
+import { act, renderHook } from '../../__tests__/render-hook.js';
+import type { DropdownOption } from '../../internal/components/option/interfaces.js';
+import { useNativeSearch } from '../utils/use-native-search.js';
 
 const options: DropdownOption[] = [
   { option: { label: 'option 1', value: 'option1' } },

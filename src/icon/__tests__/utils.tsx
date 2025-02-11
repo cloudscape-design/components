@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import icons from '../../../lib/components/icon/generated/icons';
+import icons from '../../../lib/components/icon/generated/icons.js';
 export function getIconHTML(iconName: keyof typeof icons) {
   return renderToStaticMarkup(icons[iconName]);
 }

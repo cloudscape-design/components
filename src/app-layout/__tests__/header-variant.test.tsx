@@ -4,9 +4,9 @@ import React from 'react';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils';
-import { describeEachAppLayout, renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { highContrastHeaderClassName } from '../../../lib/components/internal/utils/content-header-utils.js';
+import { describeEachAppLayout, renderComponent } from './utils.js';
 
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';

@@ -6,16 +6,16 @@ import {
   XScaleType,
   YDomain,
   YScaleType,
-} from '../../internal/components/cartesian-chart/interfaces';
-import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales';
+} from '../../internal/components/cartesian-chart/interfaces.js';
+import { ChartScale, NumericChartScale } from '../../internal/components/cartesian-chart/scales.js';
 import {
   createXTicks,
   createYTicks,
   getXTickCount,
   getYTickCount,
-} from '../../internal/components/cartesian-chart/ticks';
-import { AreaChartProps } from '../interfaces';
-import { computeDomainX, computeDomainY, computePlotPoints } from './utils';
+} from '../../internal/components/cartesian-chart/ticks.js';
+import { AreaChartProps } from '../interfaces.js';
+import { computeDomainX, computeDomainY, computePlotPoints } from './utils.js';
 
 export default function computeChartProps<T extends AreaChartProps.DataTypes>({
   isRtl,

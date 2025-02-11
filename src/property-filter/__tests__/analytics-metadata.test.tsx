@@ -9,10 +9,10 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import PropertyFilter, { PropertyFilterProps } from '../../../lib/components/property-filter';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
-import { createDefaultProps } from './common';
+import PropertyFilter, { PropertyFilterProps } from '../../../lib/components/property-filter/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
+import { createDefaultProps } from './common.js';
 
 import optionLabels from '../../../lib/components/internal/components/option/analytics-metadata/styles.css.js';
 import selectableItemsLabels from '../../../lib/components/internal/components/selectable-item/analytics-metadata/styles.css.js';

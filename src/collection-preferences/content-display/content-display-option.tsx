@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef } from 'react';
 
-import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import InternalToggle from '../../toggle/internal';
-import { OptionWithVisibility } from './utils';
+import DragHandle, { DragHandleProps } from '../../internal/components/drag-handle/index.js';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import InternalToggle from '../../toggle/internal.js';
+import { OptionWithVisibility } from './utils.js';
 
 import styles from '../styles.css.js';
 

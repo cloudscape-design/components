@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import AbstractSwitchWrapper from '../internal/abstract-switch';
+import AbstractSwitchWrapper from '../internal/abstract-switch.js';
 
 export default class RadioButtonWrapper extends ElementWrapper {
   private findAbstractSwitch(): AbstractSwitchWrapper {

@@ -4,10 +4,10 @@ import React, { forwardRef } from 'react';
 import flattenChildren from 'react-keyed-flatten-children';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { SpaceBetweenProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { SpaceBetweenProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

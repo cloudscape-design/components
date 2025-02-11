@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { getBaseProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { getExternalProps } from '../internal/utils/external-props';
-import { StepsProps } from './interfaces';
-import InternalSteps from './internal';
+import { getBaseProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { getExternalProps } from '../internal/utils/external-props.js';
+import { StepsProps } from './interfaces.js';
+import InternalSteps from './internal.js';
 
 export { StepsProps };
 

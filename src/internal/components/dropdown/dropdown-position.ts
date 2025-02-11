@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { DropdownPosition } from './dropdown-fit-handler';
+import { DropdownPosition } from './dropdown-fit-handler.js';
 
 export interface LogicalDOMRect {
   blockSize: number;

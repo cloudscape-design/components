@@ -9,10 +9,10 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Toggle, { ToggleProps } from '../../../lib/components/toggle';
-import InternalToggle from '../../../lib/components/toggle/internal';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import Toggle, { ToggleProps } from '../../../lib/components/toggle/index.js';
+import InternalToggle from '../../../lib/components/toggle/internal.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/internal/components/abstract-switch/analytics-metadata/styles.css.js';
 

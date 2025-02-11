@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { TableComponentsContextProvider, useTableComponentsContext } from '../table-component-context';
+import { TableComponentsContextProvider, useTableComponentsContext } from '../table-component-context.js';
 
 describe('Verify TableComponentsContext', () => {
   test('returns the correct tableComponentsContext context value to child component', () => {

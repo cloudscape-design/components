@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalInput, { InternalInputProps } from '../../input/internal';
-import { SelectProps } from '../interfaces';
+import InternalInput, { InternalInputProps } from '../../input/internal.js';
+import { SelectProps } from '../interfaces.js';
 
 import styles from './styles.css.js';
 

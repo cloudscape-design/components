@@ -4,8 +4,8 @@ import * as React from 'react';
 import { render } from '@testing-library/react';
 import clone from 'lodash/clone';
 
-import Cards, { CardsProps } from '../../../lib/components/cards';
-import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/dom';
+import Cards, { CardsProps } from '../../../lib/components/cards/index.js';
+import createWrapper, { CardsWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 interface Item {
   id: number;

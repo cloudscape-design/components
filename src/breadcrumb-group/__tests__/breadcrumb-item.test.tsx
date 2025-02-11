@@ -5,9 +5,9 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import { BreadcrumbItem } from '../../../lib/components/breadcrumb-group/item/item';
-import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom';
+import BreadcrumbGroup, { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/index.js';
+import { BreadcrumbItem } from '../../../lib/components/breadcrumb-group/item/item.js';
+import createWrapper, { BreadcrumbGroupWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import breadcrumbItemStyles from '../../../lib/components/breadcrumb-group/item/styles.selectors.js';
 import tooltipStyles from '../../../lib/components/internal/components/tooltip/styles.selectors.js';

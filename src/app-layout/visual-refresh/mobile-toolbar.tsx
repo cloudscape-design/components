@@ -3,10 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalButton } from '../../button/internal';
-import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
-import { useAppLayoutInternals } from './context';
-import { MobileTriggers as DrawersMobileTriggers } from './drawers';
+import { InternalButton } from '../../button/internal.js';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils.js';
+import { useAppLayoutInternals } from './context.js';
+import { MobileTriggers as DrawersMobileTriggers } from './drawers.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

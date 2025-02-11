@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect } from 'react';
 
-import PopoverArrow from '../../../popover/arrow';
-import PopoverBody from '../../../popover/body';
-import PopoverContainer from '../../../popover/container';
-import { PopoverProps } from '../../../popover/interfaces';
-import Portal from '../portal';
-import { Transition } from '../transition';
+import PopoverArrow from '../../../popover/arrow.js';
+import PopoverBody from '../../../popover/body.js';
+import PopoverContainer from '../../../popover/container.js';
+import { PopoverProps } from '../../../popover/interfaces.js';
+import Portal from '../portal/index.js';
+import { Transition } from '../transition/index.js';
 
 import styles from './styles.css.js';
 

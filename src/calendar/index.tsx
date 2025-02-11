@@ -3,10 +3,10 @@
 
 import React from 'react';
 
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { CalendarProps } from './interfaces';
-import InternalCalendar from './internal';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { CalendarProps } from './interfaces.js';
+import InternalCalendar from './internal.js';
 
 export { CalendarProps };
 

@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { getLimitedValue } from '../../../split-panel/utils/size-utils';
-import { SizeControlProps } from '../../utils/interfaces';
-import { useKeyboardEvents } from '../../utils/use-keyboard-events';
-import { usePointerEvents } from '../../utils/use-pointer-events';
+import { getLimitedValue } from '../../../split-panel/utils/size-utils.js';
+import { SizeControlProps } from '../../utils/interfaces.js';
+import { useKeyboardEvents } from '../../utils/use-keyboard-events.js';
+import { usePointerEvents } from '../../utils/use-pointer-events.js';
 
 interface ResizeProps {
   currentWidth: number;

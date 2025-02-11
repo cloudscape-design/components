@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createSingletonState } from '@cloudscape-design/component-toolkit/internal';
 
-import { getMatchingBreakpoint, mobileBreakpoint } from '../../breakpoints';
+import { getMatchingBreakpoint, mobileBreakpoint } from '../../breakpoints.js';
 
 function getIsMobile() {
   if (typeof window === 'undefined') {

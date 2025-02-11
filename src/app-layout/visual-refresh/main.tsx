@@ -3,10 +3,10 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import customCssProps from '../../internal/generated/custom-css-properties';
-import * as tokens from '../../internal/generated/styles/tokens';
-import { getStickyOffsetVars } from '../utils/sticky-offsets';
-import { useAppLayoutInternals } from './context';
+import customCssProps from '../../internal/generated/custom-css-properties/index.js';
+import * as tokens from '../../internal/generated/styles/tokens.js';
+import { getStickyOffsetVars } from '../utils/sticky-offsets.js';
+import { useAppLayoutInternals } from './context.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

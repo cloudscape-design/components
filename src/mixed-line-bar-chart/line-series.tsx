@@ -3,9 +3,9 @@
 import React from 'react';
 import { line } from 'd3-shape';
 
-import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales';
-import { MixedLineBarChartProps } from './interfaces';
-import { isXThreshold, isYThreshold } from './utils';
+import { ChartScale, NumericChartScale } from '../internal/components/cartesian-chart/scales.js';
+import { MixedLineBarChartProps } from './interfaces.js';
+import { isXThreshold, isYThreshold } from './utils.js';
 
 interface LineSeriesProps<T> {
   axis: 'x' | 'y';

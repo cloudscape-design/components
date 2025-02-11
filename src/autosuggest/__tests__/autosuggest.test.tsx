@@ -6,10 +6,10 @@ import { render } from '@testing-library/react';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import '../../__a11y__/to-validate-a11y';
-import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
-import { documentHasFocus } from '../../../lib/components/internal/utils/dom';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import '../../__a11y__/to-validate-a11y.js';
+import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest/index.js';
+import { documentHasFocus } from '../../../lib/components/internal/utils/dom.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
 

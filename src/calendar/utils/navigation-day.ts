@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { addDays, differenceInYears, isSameMonth, startOfMonth } from 'date-fns';
 
-import { CalendarProps } from '../interfaces';
+import { CalendarProps } from '../interfaces.js';
 
 export function moveNextDay(startDate: Date, isDateFocusable: CalendarProps.IsDateEnabledFunction) {
   return moveDay(startDate, isDateFocusable, 1);

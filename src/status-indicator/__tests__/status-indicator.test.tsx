@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import StatusIndicator from '../../../lib/components/status-indicator';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import StatusIndicator from '../../../lib/components/status-indicator/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/status-indicator/styles.css.js';
 

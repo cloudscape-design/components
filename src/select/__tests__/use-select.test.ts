@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import { createRef } from 'react';
 
-import { act, renderHook } from '../../__tests__/render-hook';
-import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
-import { getOptionId } from '../../internal/components/options-list/utils/use-ids';
-import { BaseKeyDetail, createCustomEvent } from '../../internal/events';
-import { KeyCode } from '../../internal/keycode';
-import { useSelect } from '../utils/use-select';
+import { act, renderHook } from '../../__tests__/render-hook.js';
+import { flattenOptions } from '../../internal/components/option/utils/flatten-options.js';
+import { getOptionId } from '../../internal/components/options-list/utils/use-ids.js';
+import { BaseKeyDetail, createCustomEvent } from '../../internal/events/index.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { useSelect } from '../utils/use-select.js';
 
 const createTestEvent = (keyCode: KeyCode): CustomEvent<BaseKeyDetail> =>
   createCustomEvent({

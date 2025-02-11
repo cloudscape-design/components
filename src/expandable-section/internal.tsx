@@ -4,16 +4,16 @@ import React, { KeyboardEvent, useCallback, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { fireNonCancelableEvent } from '../internal/events';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { KeyCode } from '../internal/keycode';
-import { ExpandableSectionContainer } from './expandable-section-container';
-import { ExpandableSectionHeader } from './expandable-section-header';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
-import { variantSupportsDescription } from './utils';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { KeyCode } from '../internal/keycode.js';
+import { ExpandableSectionContainer } from './expandable-section-container.js';
+import { ExpandableSectionHeader } from './expandable-section-header.js';
+import { ExpandableSectionProps, InternalVariant } from './interfaces.js';
+import { variantSupportsDescription } from './utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

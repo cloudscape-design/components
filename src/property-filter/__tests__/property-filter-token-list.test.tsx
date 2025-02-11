@@ -4,10 +4,10 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import PropertyFilter from '../../../lib/components/property-filter';
-import { PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces';
-import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom';
-import { createDefaultProps, i18nStrings, StatefulPropertyFilter } from './common';
+import PropertyFilter from '../../../lib/components/property-filter/index.js';
+import { PropertyFilterProps, Ref } from '../../../lib/components/property-filter/interfaces.js';
+import createWrapper, { PropertyFilterWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { createDefaultProps, i18nStrings, StatefulPropertyFilter } from './common.js';
 
 const defaultProps = createDefaultProps(
   [

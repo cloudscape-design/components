@@ -9,7 +9,7 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { InternalBaseComponentProps } from '../../hooks/use-base-component/index.js';
-import { useUniqueId } from '../../hooks/use-unique-id';
+import { useUniqueId } from '../../hooks/use-unique-id/index.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

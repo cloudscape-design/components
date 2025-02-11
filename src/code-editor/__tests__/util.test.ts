@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { getStatusButtonId, supportsKeyboardAccessibility } from '../../../lib/components/code-editor/util';
+import { getStatusButtonId, supportsKeyboardAccessibility } from '../../../lib/components/code-editor/util.js';
 
 describe('supportsKeyboardAccessibility', () => {
   it('returns false for old versions of ace', () => {

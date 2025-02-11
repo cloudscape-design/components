@@ -4,10 +4,10 @@ import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { arc, PieArcDatum } from 'd3-shape';
 
-import { useInternalI18n } from '../i18n/context';
-import { PieChartProps } from './interfaces';
-import { InternalChartDatum } from './pie-chart';
-import { Dimension } from './utils';
+import { useInternalI18n } from '../i18n/context.js';
+import { PieChartProps } from './interfaces.js';
+import { InternalChartDatum } from './pie-chart.js';
+import { Dimension } from './utils.js';
 
 import styles from './styles.css.js';
 

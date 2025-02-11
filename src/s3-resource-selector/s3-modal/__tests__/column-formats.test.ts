@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { formatDefault, formatSize } from '../column-formats';
+import { formatDefault, formatSize } from '../column-formats.js';
 
 describe('formatDefault', () => {
   test('shows placeholder when value is undefined', () => {

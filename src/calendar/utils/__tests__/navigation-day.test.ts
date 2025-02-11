@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { addYears, startOfMonth, subYears } from 'date-fns';
 
-import { getBaseDay, moveDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../navigation-day';
+import { getBaseDay, moveDay, moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../navigation-day.js';
 
 //mocked to avoid complications with timezones in the 'date-fns' package
 jest.mock('date-fns', () => ({ ...jest.requireActual('date-fns'), startOfMonth: () => new Date('2025-01-01') }));

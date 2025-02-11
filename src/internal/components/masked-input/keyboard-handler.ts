@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import MaskFormat from './utils/mask-format';
+import MaskFormat from './utils/mask-format.js';
 
 export interface HandlerResult {
   position: number;

@@ -3,11 +3,11 @@
 import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
-import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
-import { useStickyScrollbar } from './use-sticky-scrollbar';
+import { useIntersectionObserver } from '../../internal/hooks/use-intersection-observer/index.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size.js';
+import { useStickyScrollbar } from './use-sticky-scrollbar.js';
 
 import styles from './styles.css.js';
 

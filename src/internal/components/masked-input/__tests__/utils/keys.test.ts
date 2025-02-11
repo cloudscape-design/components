@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { isCommand, isDigit } from '../../../../../../lib/components/internal/components/masked-input/utils/keys';
+import { isCommand, isDigit } from '../../../../../../lib/components/internal/components/masked-input/utils/keys.js';
 
 const KEYCODE_SPACE = 32;
 

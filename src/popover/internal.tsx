@@ -3,23 +3,23 @@
 import React, { useCallback, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useInternalI18n } from '../i18n/context';
-import { getBaseProps } from '../internal/base-component';
-import { getFirstFocusable } from '../internal/components/focus-lock/utils';
-import Portal from '../internal/components/portal';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import ResetContextsForModal from '../internal/context/reset-contexts-for-modal';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { KeyCode } from '../internal/keycode';
-import Arrow from './arrow';
-import PopoverBody from './body';
-import PopoverContainer from './container';
-import { PopoverProps } from './interfaces';
+import { useInternalI18n } from '../i18n/context.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { getFirstFocusable } from '../internal/components/focus-lock/utils.js';
+import Portal from '../internal/components/portal/index.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import ResetContextsForModal from '../internal/context/reset-contexts-for-modal.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { usePortalModeClasses } from '../internal/hooks/use-portal-mode-classes/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { KeyCode } from '../internal/keycode.js';
+import Arrow from './arrow.js';
+import PopoverBody from './body.js';
+import PopoverContainer from './container.js';
+import { PopoverProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

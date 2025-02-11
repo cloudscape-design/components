@@ -3,7 +3,7 @@
 import React, { useImperativeHandle } from 'react';
 import { act, render } from '@testing-library/react';
 
-import { useControllable } from '../index';
+import { useControllable } from '../index.js';
 
 interface Props {
   value: string | undefined;

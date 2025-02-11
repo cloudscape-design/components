@@ -3,11 +3,11 @@
 import React, { useRef } from 'react';
 import clsx from 'clsx';
 
-import { fireNonCancelableEvent } from '../internal/events';
-import { KeyCode } from '../internal/keycode';
-import handleKey from '../internal/utils/handle-key';
-import { SegmentedControlProps } from './interfaces';
-import { Segment } from './segment';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { KeyCode } from '../internal/keycode.js';
+import handleKey from '../internal/utils/handle-key.js';
+import { SegmentedControlProps } from './interfaces.js';
+import { Segment } from './segment.js';
 
 import styles from './styles.css.js';
 

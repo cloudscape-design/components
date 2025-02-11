@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { CategoryProps } from '../interfaces';
-import ItemsList from '../items-list';
+import { CategoryProps } from '../interfaces.js';
+import ItemsList from '../items-list.js';
 
 import styles from './styles.css.js';
 

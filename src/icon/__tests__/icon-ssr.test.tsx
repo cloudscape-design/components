@@ -7,7 +7,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import Icon from '../../../lib/components/icon';
+import Icon from '../../../lib/components/icon/index.js';
 
 import styles from '../../../lib/components/icon/styles.css.js';
 

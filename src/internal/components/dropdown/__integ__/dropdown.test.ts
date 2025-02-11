@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { DropdownPageObject } from './dropdown-page-object';
+import { DropdownPageObject } from './dropdown-page-object.js';
 
 function setupTest(url: string, dropdownId: string, testFn: (page: DropdownPageObject) => Promise<void>) {
   return useBrowser(async browser => {

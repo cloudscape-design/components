@@ -4,7 +4,7 @@
 import React from 'react';
 import { act, render, fireEvent } from '@testing-library/react';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import {
   describeEachAppLayout,
@@ -13,9 +13,9 @@ import {
   manyDrawers,
   manyDrawersWithBadges,
   findActiveDrawerLandmark,
-} from './utils';
+} from './utils.js';
 
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 

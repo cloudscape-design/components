@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 
-import { useInternalI18n } from '../../../i18n/context';
-import InternalLink from '../../../link/internal';
-import InternalLiveRegion from '../../../live-region/internal';
-import InternalStatusIndicator from '../../../status-indicator/internal';
-import { BaseComponentProps } from '../../base-component';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events';
+import { useInternalI18n } from '../../../i18n/context.js';
+import InternalLink from '../../../link/internal.js';
+import InternalLiveRegion from '../../../live-region/internal.js';
+import InternalStatusIndicator from '../../../status-indicator/internal.js';
+import { BaseComponentProps } from '../../base-component/index.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../events/index.js';
 
 import styles from './styles.css.js';
 

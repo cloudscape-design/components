@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-page';
+import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-page.js';
 
 const setupTest = (
   expandToViewport: boolean,

@@ -7,29 +7,29 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useMobile } from '../internal/hooks/use-mobile';
+import { SplitPanelSideToggleProps } from '../internal/context/split-panel-context.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
 import {
   CONSTRAINED_MAIN_PANEL_MIN_HEIGHT,
   CONSTRAINED_PAGE_HEIGHT,
   getSplitPanelDefaultSize,
   MAIN_PANEL_MIN_HEIGHT,
-} from '../split-panel/utils/size-utils';
-import ContentWrapper, { ContentWrapperProps } from './content-wrapper';
-import { Drawer, DrawerTriggersBar } from './drawer';
-import { ResizableDrawer } from './drawer/resizable-drawer';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces';
-import { MobileToolbar } from './mobile-toolbar';
-import { Notifications } from './notifications';
-import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel';
-import { shouldSplitPanelBeForcedToBottom } from './split-panel/split-panel-forced-position';
-import { togglesConfig } from './toggles';
-import { getStickyOffsetVars } from './utils/sticky-offsets';
-import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers';
-import { useFocusControl } from './utils/use-focus-control';
-import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control';
+} from '../split-panel/utils/size-utils.js';
+import ContentWrapper, { ContentWrapperProps } from './content-wrapper/index.js';
+import { Drawer, DrawerTriggersBar } from './drawer/index.js';
+import { ResizableDrawer } from './drawer/resizable-drawer.js';
+import { AppLayoutProps, AppLayoutPropsWithDefaults } from './interfaces.js';
+import { MobileToolbar } from './mobile-toolbar/index.js';
+import { Notifications } from './notifications/index.js';
+import { SideSplitPanelDrawer, SplitPanelProvider, SplitPanelProviderProps } from './split-panel/index.js';
+import { shouldSplitPanelBeForcedToBottom } from './split-panel/split-panel-forced-position.js';
+import { togglesConfig } from './toggles/index.js';
+import { getStickyOffsetVars } from './utils/sticky-offsets.js';
+import { TOOLS_DRAWER_ID, useDrawers } from './utils/use-drawers.js';
+import { useFocusControl } from './utils/use-focus-control.js';
+import { useSplitPanelFocusControl } from './utils/use-split-panel-focus-control.js';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';

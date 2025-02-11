@@ -3,8 +3,8 @@
 /* eslint simple-import-sort/imports: 0 */
 import React from 'react';
 import { act, waitFor } from '@testing-library/react';
-import { describeEachAppLayout, renderComponent } from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
+import { describeEachAppLayout, renderComponent } from './utils.js';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
 
 describeEachAppLayout({ themes: ['classic', 'refresh', 'refresh-toolbar'] }, () => {
   test('opens tools drawer', () => {

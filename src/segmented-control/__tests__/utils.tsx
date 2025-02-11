@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 export function renderSegmentedControl(element: React.ReactElement) {
   const { container } = render(element);

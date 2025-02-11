@@ -3,8 +3,8 @@
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index';
-import { TableProps } from './interfaces';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index.js';
+import { TableProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

@@ -5,10 +5,10 @@ import { fireEvent, render as testingLibraryRender, screen } from '@testing-libr
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import '../../__a11y__/to-validate-a11y';
-import InternalFileInput, { FileInputProps } from '../../../lib/components/file-input';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import FileInputWrapper from '../../../lib/components/test-utils/dom/file-input';
+import '../../__a11y__/to-validate-a11y.js';
+import InternalFileInput, { FileInputProps } from '../../../lib/components/file-input/index.js';
+import FileInputWrapper from '../../../lib/components/test-utils/dom/file-input/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

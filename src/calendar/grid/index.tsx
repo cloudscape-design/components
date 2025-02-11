@@ -3,14 +3,14 @@
 import React, { forwardRef, TdHTMLAttributes, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { DatePickerProps } from '../../date-picker/interfaces';
+import { DatePickerProps } from '../../date-picker/interfaces.js';
 import ScreenreaderOnly from '../../internal/components/screenreader-only/index.js';
-import Tooltip from '../../internal/components/tooltip';
+import Tooltip from '../../internal/components/tooltip/index.js';
 import { useEffectOnUpdate } from '../../internal/hooks/use-effect-on-update.js';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { applyDisplayName } from '../../internal/utils/apply-display-name';
-import { CalendarProps } from '../interfaces';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
+import { applyDisplayName } from '../../internal/utils/apply-display-name.js';
+import { CalendarProps } from '../interfaces.js';
 
 import styles from '../styles.css.js';
 

@@ -2,15 +2,15 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useFormFieldContext } from '../contexts/form-field';
-import DropdownFooter from '../internal/components/dropdown-footer';
-import ScreenreaderOnly from '../internal/components/screenreader-only';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { SomeRequired } from '../internal/types';
-import PlainList from '../select/parts/plain-list';
-import VirtualList from '../select/parts/virtual-list';
-import { MultiselectProps } from './interfaces';
-import { useMultiselect } from './use-multiselect';
+import { useFormFieldContext } from '../contexts/form-field.js';
+import DropdownFooter from '../internal/components/dropdown-footer/index.js';
+import ScreenreaderOnly from '../internal/components/screenreader-only/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { SomeRequired } from '../internal/types.js';
+import PlainList from '../select/parts/plain-list.js';
+import VirtualList from '../select/parts/virtual-list.js';
+import { MultiselectProps } from './interfaces.js';
+import { useMultiselect } from './use-multiselect.js';
 
 import styles from './styles.css.js';
 

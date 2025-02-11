@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useCallback } from 'react';
 
-import { AnnotationContextProps } from '../interfaces';
-import { AnnotationIcon } from './annotation-icon';
+import { AnnotationContextProps } from '../interfaces.js';
+import { AnnotationIcon } from './annotation-icon.js';
 
 import styles from './styles.css.js';
 

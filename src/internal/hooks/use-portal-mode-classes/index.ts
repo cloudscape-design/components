@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { useCurrentMode, useDensityMode } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualContext } from '../../components/visual-context';
-import { useVisualRefresh } from '../use-visual-mode';
+import { useVisualContext } from '../../components/visual-context/index.js';
+import { useVisualRefresh } from '../use-visual-mode/index.js';
 
 export function usePortalModeClasses(ref: React.RefObject<HTMLElement>) {
   const colorMode = useCurrentMode(ref);

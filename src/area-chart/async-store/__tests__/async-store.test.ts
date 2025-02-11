@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { act, renderHook } from '../../../__tests__/render-hook';
-import AsyncStore, { useReaction, useSelector } from '../index';
+import { act, renderHook } from '../../../__tests__/render-hook.js';
+import AsyncStore, { useReaction, useSelector } from '../index.js';
 
 describe('AreaChart AsyncStore', () => {
   it('notifies listeners when selected state is updated', () => {

@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useMemo } from 'react';
 
-import { ChartFilterProps } from '../internal/components/chart-filter';
-import ChartLegend from '../internal/components/chart-legend';
-import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces';
-import { chartLegendMap } from './utils';
+import { ChartFilterProps } from '../internal/components/chart-filter/index.js';
+import ChartLegend from '../internal/components/chart-legend/index.js';
+import { ChartDataTypes, InternalChartSeries, MixedLineBarChartProps } from './interfaces.js';
+import { chartLegendMap } from './utils.js';
 
 interface InternalChartLegendProps<T extends ChartDataTypes> {
   series: ReadonlyArray<InternalChartSeries<T>>;

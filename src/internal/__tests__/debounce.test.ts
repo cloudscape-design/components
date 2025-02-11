@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import debounce from '../debounce';
+import debounce from '../debounce.js';
 
 describe('debounce utility', () => {
   const wait = (delay: number) => new Promise(resolve => setTimeout(resolve, delay));

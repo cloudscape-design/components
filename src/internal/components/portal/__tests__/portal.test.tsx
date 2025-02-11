@@ -5,7 +5,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import Portal, { PortalProps } from '../../../../../lib/components/internal/components/portal';
+import Portal, { PortalProps } from '../../../../../lib/components/internal/components/portal/index.js';
 
 function renderPortal(props: PortalProps) {
   const { rerender, unmount } = render(<Portal {...props} />);

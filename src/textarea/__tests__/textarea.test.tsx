@@ -3,8 +3,8 @@
 import React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import Textarea, { TextareaProps } from '../../../lib/components/textarea';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import Textarea, { TextareaProps } from '../../../lib/components/textarea/index.js';
 
 import styles from '../../../lib/components/textarea/styles.css.js';
 

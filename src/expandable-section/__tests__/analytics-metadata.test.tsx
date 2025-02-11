@@ -9,12 +9,12 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Button from '../../../lib/components/button';
-import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section';
-import InternalExpandableSection from '../../../lib/components/expandable-section/internal';
-import Link from '../../../lib/components/link';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import Button from '../../../lib/components/button/index.js';
+import ExpandableSection, { ExpandableSectionProps } from '../../../lib/components/expandable-section/index.js';
+import InternalExpandableSection from '../../../lib/components/expandable-section/internal.js';
+import Link from '../../../lib/components/link/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import labels from '../../../lib/components/expandable-section/analytics-metadata/styles.css.js';
 

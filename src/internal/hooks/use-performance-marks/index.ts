@@ -3,10 +3,10 @@
 
 import { useEffect, useState } from 'react';
 
-import { useModalContext } from '../../context/modal-context';
-import { useDOMAttribute } from '../use-dom-attribute';
-import { useEffectOnUpdate } from '../use-effect-on-update';
-import { useRandomId } from '../use-unique-id';
+import { useModalContext } from '../../context/modal-context.js';
+import { useDOMAttribute } from '../use-dom-attribute/index.js';
+import { useEffectOnUpdate } from '../use-effect-on-update.js';
+import { useRandomId } from '../use-unique-id/index.js';
 
 const EVALUATE_COMPONENT_VISIBILITY_EVENT = 'awsui-evaluate-component-visibility';
 

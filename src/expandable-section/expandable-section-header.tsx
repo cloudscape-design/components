@@ -6,17 +6,17 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalHeader, { Description as HeaderDescription } from '../header/internal';
-import InternalIcon from '../icon/internal';
-import { isDevelopment } from '../internal/is-development';
-import { GeneratedAnalyticsMetadataExpandableSectionExpand } from './analytics-metadata/interfaces';
-import { ExpandableSectionProps, InternalVariant } from './interfaces';
+import InternalHeader, { Description as HeaderDescription } from '../header/internal.js';
+import InternalIcon from '../icon/internal.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { GeneratedAnalyticsMetadataExpandableSectionExpand } from './analytics-metadata/interfaces.js';
+import { ExpandableSectionProps, InternalVariant } from './interfaces.js';
 import {
   variantRequiresActionsDivider,
   variantSupportsActions,
   variantSupportsDescription,
   variantSupportsInfoLink,
-} from './utils';
+} from './utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

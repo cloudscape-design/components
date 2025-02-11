@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
-import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
+import { useVisualRefresh } from '../../internal/hooks/use-visual-mode/index.js';
 
 export const useAppLayoutToolbarEnabled = () => {
   const isRefresh = useVisualRefresh();

@@ -10,10 +10,10 @@ import {
   manyDrawers,
   splitPanelI18nStrings,
   testDrawerWithoutLabels,
-} from './utils';
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import SplitPanel from '../../../lib/components/split-panel';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+} from './utils.js';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
 import styles from '../../../lib/components/app-layout/styles.css.js';
 import drawersMobileStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
 import mobileToolbarStyles from '../../../lib/components/app-layout/mobile-toolbar/styles.css.js';
@@ -26,7 +26,7 @@ import toolbarSkeletonStyles from '../../../lib/components/app-layout/visual-ref
 
 import visualRefreshRefactoredStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
-import SideNavigation from '../../../lib/components/side-navigation';
+import SideNavigation from '../../../lib/components/side-navigation/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

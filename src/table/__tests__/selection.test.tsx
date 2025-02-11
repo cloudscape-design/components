@@ -5,8 +5,8 @@ import { render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import Table, { TableProps } from '../../../lib/components/table';
-import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom';
+import Table, { TableProps } from '../../../lib/components/table/index.js';
+import createWrapper, { TableWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';
 

@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
-import FocusLock from '../internal/components/focus-lock';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { KeyCode } from '../internal/keycode';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import FocusLock from '../internal/components/focus-lock/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { KeyCode } from '../internal/keycode.js';
 
 import styles from './styles.css.js';
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import AppLayout from '../../../lib/components/app-layout';
+import AppLayout from '../../../lib/components/app-layout/index.js';
 
 let consoleWarnSpy: jest.SpyInstance;
 beforeEach(() => {

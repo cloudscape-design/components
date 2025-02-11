@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { extractBucketName, validate } from '../validation';
+import { extractBucketName, validate } from '../validation.js';
 
 test('extractBucketName', () => {
   expect(extractBucketName('s3://bucket-1/folder-1/object-1')).toEqual(['bucket-1', 'folder-1/object-1']);

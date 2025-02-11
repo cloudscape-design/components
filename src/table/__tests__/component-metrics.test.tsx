@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Table from '../../../lib/components/table';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { mockComponentMetrics } from '../../internal/analytics/__tests__/mocks';
+import Table from '../../../lib/components/table/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { mockComponentMetrics } from '../../internal/analytics/__tests__/mocks.js';
 
 beforeEach(() => {
   jest.resetAllMocks();

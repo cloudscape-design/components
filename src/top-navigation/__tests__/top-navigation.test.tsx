@@ -5,14 +5,14 @@ import { act, render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import Input from '../../../lib/components/input';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import Input from '../../../lib/components/input/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 import TopNavigationWrapper, {
   OverflowMenu as OverflowMenuWrapper,
-} from '../../../lib/components/test-utils/dom/top-navigation';
-import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation';
-import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu';
+} from '../../../lib/components/test-utils/dom/top-navigation/index.js';
+import TopNavigation, { TopNavigationProps } from '../../../lib/components/top-navigation/index.js';
+import OverflowMenu from '../../../lib/components/top-navigation/parts/overflow-menu/index.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

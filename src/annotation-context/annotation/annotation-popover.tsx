@@ -3,18 +3,18 @@
 import React, { useEffect } from 'react';
 import clsx from 'clsx';
 
-import InternalAlert from '../../alert/internal';
-import InternalBox from '../../box/internal';
-import { InternalButton } from '../../button/internal';
-import { HotspotProps } from '../../hotspot/interfaces';
+import InternalAlert from '../../alert/internal.js';
+import InternalBox from '../../box/internal.js';
+import { InternalButton } from '../../button/internal.js';
+import { HotspotProps } from '../../hotspot/interfaces.js';
 import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
-import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import { scrollElementIntoView } from '../../internal/utils/scrollable-containers.js';
 import { joinStrings } from '../../internal/utils/strings/join-strings.js';
-import PopoverBody from '../../popover/body';
-import PopoverContainer from '../../popover/container';
-import { InternalPosition } from '../../popover/interfaces';
-import InternalSpaceBetween from '../../space-between/internal';
-import { AnnotationContextProps } from '../interfaces';
+import PopoverBody from '../../popover/body.js';
+import PopoverContainer from '../../popover/container.js';
+import { InternalPosition } from '../../popover/interfaces.js';
+import InternalSpaceBetween from '../../space-between/internal.js';
+import { AnnotationContextProps } from '../interfaces.js';
 
 import styles from './styles.css.js';
 

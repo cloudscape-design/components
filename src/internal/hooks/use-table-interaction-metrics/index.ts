@@ -3,12 +3,12 @@
 
 import { useEffect, useRef } from 'react';
 
-import { ComponentMetrics, PerformanceMetrics } from '../../analytics';
-import { useFunnel } from '../../analytics/hooks/use-funnel';
-import { JSONObject } from '../../analytics/interfaces';
-import { useDOMAttribute } from '../use-dom-attribute';
-import { useEffectOnUpdate } from '../use-effect-on-update';
-import { useRandomId } from '../use-unique-id';
+import { useFunnel } from '../../analytics/hooks/use-funnel.js';
+import { ComponentMetrics, PerformanceMetrics } from '../../analytics/index.js';
+import { JSONObject } from '../../analytics/interfaces.js';
+import { useDOMAttribute } from '../use-dom-attribute/index.js';
+import { useEffectOnUpdate } from '../use-effect-on-update.js';
+import { useRandomId } from '../use-unique-id/index.js';
 
 /*
 If the last user interaction is more than this time ago, it is not considered

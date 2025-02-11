@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { joinObjectPath } from '../../../lib/components/s3-resource-selector/utils';
+import { joinObjectPath } from '../../../lib/components/s3-resource-selector/utils.js';
 
 test('does not crash on empty items', () => {
   expect(joinObjectPath([])).toEqual('');

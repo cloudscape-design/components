@@ -6,30 +6,30 @@ import clsx from 'clsx';
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalGrid from '../grid/internal';
-import { useInternalI18n } from '../i18n/context';
-import InternalIcon from '../icon/internal';
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
+import InternalGrid from '../grid/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import InternalIcon from '../icon/internal.js';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context.js';
+import { InfoLinkLabelContext } from '../internal/context/info-link-label-context.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { joinStrings } from '../internal/utils/strings/index.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { InternalFormFieldProps } from './interfaces.js';
+import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util.js';
+
+import analyticsSelectors from './analytics-metadata/styles.css.js';
+import styles from './styles.css.js';
 import {
   DATA_ATTR_FIELD_ERROR,
   DATA_ATTR_FIELD_LABEL,
   getFieldSlotSeletor,
   getSubStepAllSelector,
   getTextFromSelector,
-} from '../internal/analytics/selectors';
-import { getBaseProps } from '../internal/base-component';
-import { FormFieldContext, useFormFieldContext } from '../internal/context/form-field-context';
-import { InfoLinkLabelContext } from '../internal/context/info-link-label-context';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { joinStrings } from '../internal/utils/strings';
-import InternalLiveRegion from '../live-region/internal';
-import { InternalFormFieldProps } from './interfaces';
-import { getAriaDescribedBy, getGridDefinition, getSlotIds } from './util';
-
-import analyticsSelectors from './analytics-metadata/styles.css.js';
-import styles from './styles.css.js';
+} from '../internal/analytics/selectors.js';
 
 interface FormFieldErrorProps {
   id?: string;

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { parseTimezoneOffset } from '../../../../../lib/components/internal/utils/date-time/parse-timezone-offset';
+import { parseTimezoneOffset } from '../../../../../lib/components/internal/utils/date-time/parse-timezone-offset.js';
 
 describe('parseTimezoneOffset', () => {
   test.each([

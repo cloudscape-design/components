@@ -3,11 +3,11 @@
 import React, { Ref, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { ButtonProps } from '../../../../button/interfaces';
-import { IconProps } from '../../../../icon/interfaces';
-import Icon from '../../../../icon/internal';
-import Tooltip from '../../../../internal/components/tooltip';
-import { registerTooltip } from '../../../../internal/components/tooltip/registry';
+import { ButtonProps } from '../../../../button/interfaces.js';
+import { IconProps } from '../../../../icon/interfaces.js';
+import Icon from '../../../../icon/internal.js';
+import Tooltip from '../../../../internal/components/tooltip/index.js';
+import { registerTooltip } from '../../../../internal/components/tooltip/registry.js';
 
 import testutilStyles from '../../../test-classes/styles.css.js';
 import styles from './styles.css.js';

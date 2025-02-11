@@ -1,8 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import createWrapper, { BarChartWrapper, MixedLineBarChartWrapper } from '../../../lib/components/test-utils/selectors';
-import { setupTest } from './common';
-import { setupPopoverPositionTest } from './popover-position-page';
+import createWrapper, {
+  BarChartWrapper,
+  MixedLineBarChartWrapper,
+} from '../../../lib/components/test-utils/selectors/index.js';
+import { setupTest } from './common.js';
+import { setupPopoverPositionTest } from './popover-position-page.js';
 
 import chartPlotStyles from '../../../lib/components/internal/components/chart-plot/styles.selectors.js';
 import mixedChartStyles from '../../../lib/components/mixed-line-bar-chart/styles.selectors.js';

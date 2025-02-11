@@ -5,15 +5,15 @@ import { useMemo, useState } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { useInternalI18n } from '../i18n/context';
-import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes';
+import { useInternalI18n } from '../i18n/context.js';
+import { generateTestIndexes } from '../internal/components/options-list/utils/test-indexes.js';
 import {
   HighlightedOptionHandlers,
   HighlightedOptionState,
   useHighlightedOption,
-} from '../internal/components/options-list/utils/use-highlight-option';
-import { AutosuggestItem, AutosuggestProps } from './interfaces';
-import { filterOptions } from './utils/utils';
+} from '../internal/components/options-list/utils/use-highlight-option.js';
+import { AutosuggestItem, AutosuggestProps } from './interfaces.js';
+import { filterOptions } from './utils/utils.js';
 
 type Options = AutosuggestProps.Options;
 
