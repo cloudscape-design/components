@@ -1,11 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable simple-import-sort/imports */
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { describeEachAppLayout, testDrawer } from './utils';
 import AppLayout from '../../../lib/components/app-layout';
+import { describeEachAppLayout, testDrawer } from './utils';
 
 const renderedProps = new Map();
 function createWidgetizedComponentMock(Implementation: React.ComponentType) {
