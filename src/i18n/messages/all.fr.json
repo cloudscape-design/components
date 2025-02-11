@@ -111,7 +111,7 @@
     "stickyColumnsPreference.lastColumns.options[0].label": "Aucun",
     "stickyColumnsPreference.lastColumns.options[1].label": "Dernière colonne",
     "contentDisplayPreference.title": "Préférences de colonne",
-    "contentDisplayPreference.description": "Personnalisez la visibilité et l'ordre des colonnes.",
+    "contentDisplayPreference.description": "Personnalisez la visibilité et l’ordre des colonnes.",
     "contentDisplayPreference.dragHandleAriaLabel": "Faire glisser",
     "contentDisplayPreference.dragHandleAriaDescription": "Utilisez Espace ou Entrée pour activer le glissement pour un élément, puis utilisez les touches fléchées pour déplacer la position de l'élément. Pour terminer le déplacement de la position, utilisez Espace ou Entrée. Pour ignorer le déplacement, utilisez Échap.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Élément sélectionné à la position {position} de {total}",

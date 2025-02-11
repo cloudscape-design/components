@@ -111,7 +111,7 @@
     "stickyColumnsPreference.lastColumns.options[0].label": "なし",
     "stickyColumnsPreference.lastColumns.options[1].label": "最後の列",
     "contentDisplayPreference.title": "列の詳細設定",
-    "contentDisplayPreference.description": "列の可視性と順序をカスタマイズします。",
+    "contentDisplayPreference.description": "列の表示設定と順序をカスタマイズします。",
     "contentDisplayPreference.dragHandleAriaLabel": "ドラッグハンドル",
     "contentDisplayPreference.dragHandleAriaDescription": "Space または Enter を使用して項目のドラッグをアクティブ化し、矢印キーを使用して項目の位置を移動します。位置の移動を完了するには、Space または Enter を使用します。移動を取り消すには、Escape を使用します。",
     "contentDisplayPreference.liveAnnouncementDndStarted": "{position}/{total} の位置で項目をピックアップしました",

@@ -111,7 +111,7 @@
     "stickyColumnsPreference.lastColumns.options[0].label": "None",
     "stickyColumnsPreference.lastColumns.options[1].label": "Last column",
     "contentDisplayPreference.title": "Column preferences",
-    "contentDisplayPreference.description": "Customise the columns visibility and order.",
+    "contentDisplayPreference.description": "Customise the visibility and order of the columns.",
     "contentDisplayPreference.dragHandleAriaLabel": "Drag handle",
     "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Picked up item at position {position} of {total}",
