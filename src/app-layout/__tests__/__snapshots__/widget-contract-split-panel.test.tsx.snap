@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Theme=refresh-toolbar, Size=desktop contract with split panel (the trigger is hidden) 1`] = `
+exports[`Theme=refresh-toolbar, Size=desktop contract with split panel (trigger is hidden) 1`] = `
 Map {
   [Function] => {
     "appLayoutInternals": {
@@ -130,7 +130,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel18-1739274825642-6228",
+      "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -289,7 +289,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel18-1739274825642-6228",
+      "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -509,7 +509,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel18-1739274825642-6228",
+      "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -668,7 +668,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel18-1739274825642-6228",
+      "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -827,7 +827,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel18-1739274825642-6228",
+      "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1058,7 +1058,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel7-1739274825623-7874",
+      "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1219,7 +1219,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel7-1739274825623-7874",
+      "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1298,7 +1298,7 @@ Map {
         style="inset-block-end: 0; inset-inline-start: 0; inset-inline-end: 0; block-size: calc(0px + var(--border-panel-top-width-r884k5, 0px));"
       >
         <div
-          aria-labelledby="split-panel-header11-1739274825624-2757"
+          aria-labelledby="split-panel-header31"
           class="awsui_drawer-content-bottom_1r9lg_1e4yy_211"
           role="region"
         >
@@ -1310,7 +1310,7 @@ Map {
             >
               <h2
                 class="awsui_header-text_1r9lg_1e4yy_396 awsui_header-text_rjqu5_zu8o5_6"
-                id="split-panel-header11-1739274825624-2757"
+                id="split-panel-header31"
               >
                 Split panel header
               </h2>
@@ -1320,8 +1320,8 @@ Map {
                 <button
                   aria-expanded="false"
                   class="awsui_open-button_rjqu5_zu8o5_7 awsui_button_vjswe_1opon_157 awsui_variant-icon_vjswe_1opon_280 awsui_button-no-text_vjswe_1opon_531"
-                  data-analytics-funnel-value="button12-1739274825625-3448"
-                  data-analytics-performance-mark="13-1739274825625-7183"
+                  data-analytics-funnel-value="button32"
+                  data-analytics-performance-mark="undefined33"
                   type="button"
                 >
                   <span
@@ -1505,7 +1505,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel7-1739274825623-7874",
+      "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1666,7 +1666,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel7-1739274825623-7874",
+      "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1827,7 +1827,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel7-1739274825623-7874",
+      "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -1935,7 +1935,7 @@ Map {
       "splitPanelToggleProps": {
         "active": false,
         "ariaLabel": undefined,
-        "controlId": "split-panel7-1739274825623-7874",
+        "controlId": "split-panel27",
         "displayed": true,
         "position": "bottom",
       },

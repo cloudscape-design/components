@@ -22,6 +22,13 @@ function createWidgetizedComponentMock(Implementation: React.ComponentType) {
 jest.mock('../../../lib/components/internal/widgets', () => ({
   createWidgetizedComponent: createWidgetizedComponentMock,
 }));
+jest.mock('../../../lib/components/internal/hooks/use-unique-id', () => {
+  let counter = 0;
+  return {
+    useUniqueId: (prefix: string) => `${prefix}${++counter}`,
+    useRandomId: (prefix: string) => `${prefix}${++counter}`,
+  };
+});
 
 describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () => {
   beforeEach(() => {
