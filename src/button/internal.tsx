@@ -41,7 +41,13 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
-  variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
+  variant?:
+    | ButtonProps['variant']
+    | 'flashbar-icon'
+    | 'breadcrumb-group'
+    | 'menu-trigger'
+    | 'modal-dismiss'
+    | 'inline-icon-pointer-target';
   badge?: boolean;
   analyticsAction?: string;
   __nativeAttributes?:
@@ -105,7 +111,8 @@ export const InternalButton = React.forwardRef(
     const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
-      children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
+      children &&
+      ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss', 'inline-icon-pointer-target'].indexOf(variant) === -1;
 
     if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
       warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
