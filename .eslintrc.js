@@ -24,6 +24,7 @@ module.exports = {
     'no-unsanitized',
     'header',
     'simple-import-sort',
+    'no-only-tests',
   ],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
@@ -89,6 +90,7 @@ module.exports = {
     ],
     'no-warning-comments': 'warn',
     'simple-import-sort/imports': 'error',
+    'no-only-tests/no-only-tests': 'error',
   },
   settings: {
     react: {
