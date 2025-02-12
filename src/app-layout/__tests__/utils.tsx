@@ -63,8 +63,6 @@ export function describeEachAppLayout(
           delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
           setGlobalFlag('appLayoutWidget', undefined);
           clearVisualRefreshState();
-          // remove after this is released: https://github.com/cloudscape-design/component-toolkit/pull/118
-          document.body.classList.remove('awsui-visual-refresh');
         });
         test('mocks applied correctly', () => {
           const { wrapper } = renderComponent(<AppLayout />);
