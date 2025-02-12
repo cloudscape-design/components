@@ -21,6 +21,7 @@ function getComponentsExports() {
     // TypeScript interfaces, can be imported separately from components
     './interfaces': './interfaces.js',
     './contexts/form-field': './contexts/form-field.js',
+    './internal/analytics-metadata/interfaces': './internal/analytics-metadata/interfaces.js',
     // Public internal components
     './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
     './internal/widget-exports': './internal/widget-exports.js',
