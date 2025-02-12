@@ -426,6 +426,23 @@ describe('Tabs', () => {
             })
           );
         });
+
+        test('does not call change when re-activating current tag', () => {
+          const changeSpy = jest.fn();
+          const wrapper = renderTabs(
+            <Tabs
+              tabs={defaultTabs}
+              activeTabId="first"
+              onChange={changeSpy}
+              keyboardActivationMode={keyboardActivationMode}
+            />
+          ).wrapper;
+          wrapper.findActiveTab()!.getElement().focus();
+
+          pressSpace(wrapper);
+
+          expect(changeSpy).not.toHaveBeenCalled();
+        });
       }
     );
 

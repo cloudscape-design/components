@@ -264,6 +264,7 @@ export function TabHeaderBar({
       onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
       onActivate: () =>
         focusedTabId &&
+        focusedTabId !== activeTabId &&
         onChange({ activeTabId: focusedTabId, activeTabHref: tabs.find(tab => tab.id === focusedTabId)?.href }),
     });
   }
