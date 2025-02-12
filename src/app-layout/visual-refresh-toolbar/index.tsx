@@ -277,7 +277,6 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         navigationOpen: resolvedNavigationOpen,
         onNavigationToggle,
         navigationFocusRef: navigationFocusControl.refs.toggle,
-        navigationTriggerHide,
         breadcrumbs,
         activeDrawerId: activeDrawer?.id ?? null,
         // only pass it down if there are non-empty drawers or tools
