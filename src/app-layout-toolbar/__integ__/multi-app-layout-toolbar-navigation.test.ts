@@ -13,6 +13,7 @@ class PageObject extends BasePageObject {
 
 describe('Multi page layout navigation', () => {
   const mainLayout = createWrapper().find('[data-testid="main-layout"]').findAppLayout();
+  const secondaryLayout = createWrapper().find('[data-testid="secondary-layout"]').findAppLayout();
   const setupTest = (testFn: (page: PageObject) => Promise<void>) =>
     useBrowser(async browser => {
       const page = new PageObject(browser);
@@ -21,19 +22,30 @@ describe('Multi page layout navigation', () => {
     });
 
   test(
-    'should clean up and restore previous breadcrumb state, specific for a page',
+    'should keep toolbars and breadcrumbs state independently in both layouts',
     setupTest(async page => {
-      await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
+      expect(await page.isExisting(mainLayout.findBreadcrumbs().toSelector())).toBeFalsy();
+      await page.runInsideIframe('#page1', true, async () => {
+        await expect(page.getText(secondaryLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
+      });
 
       await page.clickHref('page2');
       expect(await page.isExisting(mainLayout.findBreadcrumbs().toSelector())).toBeFalsy();
+      await page.runInsideIframe('#page1', true, async () => {
+        await expect(page.getText(secondaryLayout.findBreadcrumbs().toSelector())).resolves.toBeFalsy();
+      });
 
       await page.clickHref('page3');
-      await page.waitForVisible(mainLayout.findBreadcrumbs().toSelector());
-      await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page3');
+      expect(await page.isExisting(mainLayout.findBreadcrumbs().toSelector())).toBeFalsy();
+      await page.runInsideIframe('#page3', true, async () => {
+        await expect(page.getText(secondaryLayout.findBreadcrumbs().toSelector())).resolves.toContain('page3');
+      });
 
       await page.clickHref('page1');
-      await expect(page.getText(mainLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
+      expect(await page.isExisting(mainLayout.findBreadcrumbs().toSelector())).toBeFalsy();
+      await page.runInsideIframe('#page1', true, async () => {
+        await expect(page.getText(secondaryLayout.findBreadcrumbs().toSelector())).resolves.toContain('page1');
+      });
     })
   );
 });
