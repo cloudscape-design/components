@@ -17,7 +17,7 @@ export default function WrappedI18nPerformancePage() {
 }
 
 function I18nPerformancePage() {
-  const [itemCount, setItemCount] = useState(10_000);
+  const [itemCount, setItemCount] = useState(1000);
 
   const items = useMemo(
     () =>
