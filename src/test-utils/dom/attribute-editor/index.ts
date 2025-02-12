@@ -7,7 +7,7 @@ import FormFieldWrapper from '../form-field';
 
 import styles from '../../../attribute-editor/styles.selectors.js';
 
-export class AttributeEditorRowWrapper extends ElementWrapper {
+export class AttributeEditorRowWrapper extends ComponentWrapper {
   /**
    * Returns all fields. Fields are supplied in the `definition` property of the component.
    */
