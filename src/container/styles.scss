@@ -59,6 +59,13 @@
       inset-block-start: calc(-1 * #{awsui.$border-divider-section-width});
     }
   }
+
+  &.with-stuck-sticky-header {
+    &.with-stuck-sticky-header-at-bottom {
+      border-end-end-radius: 0;
+      border-end-start-radius: 0;
+    }
+  }
 }
 
 .with-side-media {
