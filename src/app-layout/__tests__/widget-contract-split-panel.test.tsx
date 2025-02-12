@@ -10,23 +10,12 @@ import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper from '../../../lib/components/test-utils/selectors';
 
 const isObject = (value: any) => Object.prototype.toString.call(value) === '[object Object]';
-const isRef = (value: any) => {
-  if (!isObject(value)) {
-    return false;
-  }
-  if ('current' in value && Object.keys(value).length === 1) {
-    return true;
-  }
-};
 
 function sanitizeProps(props: any): any {
   if (!isObject(props)) {
     return props;
   }
-  if (isRef(props)) {
-    return '__REF__';
-  }
-  if (React.isValidElement(props)) {
+  if (React.isValidElement(props) || props?.current instanceof Element) {
     return '__JSX__';
   }
   return Object.fromEntries(
