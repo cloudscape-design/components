@@ -28,7 +28,7 @@ export interface SharedProps {
   activeGlobalDrawersIds?: Array<string> | undefined;
   onActiveGlobalDrawersChange?: ((newDrawerId: string, params: OnChangeParams) => void) | undefined;
   splitPanel: React.ReactNode;
-  splitPanelToggleProps: SplitPanelToggleProps;
+  splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: () => void;
 }
@@ -51,7 +51,11 @@ export function mergeProps(
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
-    if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
+    if (
+      props.drawers &&
+      props.drawers.some(drawer => drawer.trigger) &&
+      !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')
+    ) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
       toolbar.drawersFocusRef = props.drawersFocusRef;
@@ -64,14 +68,16 @@ export function mergeProps(
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
-      // there is never a case where navigation will exist and a toggle will not so toolbar
-      // can use the hasNavigation here to conditionally render the navigationToggle button
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;
       toolbar.onNavigationToggle = props.onNavigationToggle;
     }
-    if (props.splitPanel && !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')) {
+    if (
+      props.splitPanel &&
+      props.splitPanelToggleProps?.displayed &&
+      !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')
+    ) {
       toolbar.hasSplitPanel = true;
       toolbar.splitPanelFocusRef = props.splitPanelFocusRef;
       toolbar.splitPanelToggleProps = props.splitPanelToggleProps;
