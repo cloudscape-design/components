@@ -41,17 +41,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -68,48 +60,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -133,15 +90,9 @@ Map {
       "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -200,17 +151,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -227,48 +170,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -292,15 +200,9 @@ Map {
       "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -319,14 +221,7 @@ Map {
         "toolbar": 0,
       },
     },
-    "children": <SplitPanel
-      closeBehavior="hide"
-      header="Split panel header"
-    >
-      <div>
-        split panel content
-      </div>
-    </SplitPanel>,
+    "children": "__JSX__",
     "splitPanelInternals": {
       "bottomOffset": 0,
       "getMaxHeight": [Function],
@@ -340,15 +235,9 @@ Map {
       "onToggle": [Function],
       "position": "bottom",
       "refs": {
-        "preferences": {
-          "current": null,
-        },
-        "slider": {
-          "current": null,
-        },
-        "toggle": {
-          "current": null,
-        },
+        "preferences": "__REF__",
+        "slider": "__REF__",
+        "toggle": "__REF__",
       },
       "reportHeaderHeight": [Function],
       "reportSize": [Function],
@@ -359,12 +248,8 @@ Map {
     },
   },
   [Function] => {
-    "__internalRootRef": {
-      "current": null,
-    },
-    "children": <div>
-      split panel content
-    </div>,
+    "__internalRootRef": "__REF__",
+    "children": "__JSX__",
     "closeBehavior": "hide",
     "header": "Split panel header",
     "hidePreferencesButton": false,
@@ -420,17 +305,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -447,48 +324,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -512,15 +354,9 @@ Map {
       "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -579,17 +415,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -606,48 +434,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -671,15 +464,9 @@ Map {
       "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -738,17 +525,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -765,48 +544,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -830,15 +574,9 @@ Map {
       "splitPanelControlId": "split-panel64",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -886,40 +624,9 @@ Map {
           },
         },
       ],
-      "drawersFocusRef": {
-        "current": null,
-      },
+      "drawersFocusRef": "__REF__",
       "hasNavigation": true,
-      "navigationFocusRef": {
-        "current": <button
-          aria-disabled="false"
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-          data-shift-focus="awsui-layout-drawer-trigger"
-          type="button"
-        >
-          <span
-            class=""
-          >
-            <span
-              class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-            >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                viewBox="0 0 16 16"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  class="stroke-linejoin-round"
-                  d="M15 3H1M15 8H1M15 13H1"
-                />
-              </svg>
-            </span>
-          </span>
-        </button>,
-      },
+      "navigationFocusRef": "__REF__",
       "navigationOpen": true,
       "onActiveDrawerChange": [Function],
       "onNavigationToggle": [Function],
@@ -969,17 +676,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -996,48 +695,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1061,17 +725,9 @@ Map {
       "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": {
-              "focus": [Function],
-            },
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -1130,17 +786,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1157,48 +805,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1222,17 +835,9 @@ Map {
       "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": {
-              "focus": [Function],
-            },
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -1251,13 +856,7 @@ Map {
         "toolbar": 0,
       },
     },
-    "children": <SplitPanel
-      header="Split panel header"
-    >
-      <div>
-        split panel content
-      </div>
-    </SplitPanel>,
+    "children": "__JSX__",
     "splitPanelInternals": {
       "bottomOffset": 0,
       "getMaxHeight": [Function],
@@ -1271,17 +870,9 @@ Map {
       "onToggle": [Function],
       "position": "bottom",
       "refs": {
-        "preferences": {
-          "current": null,
-        },
-        "slider": {
-          "current": null,
-        },
-        "toggle": {
-          "current": {
-            "focus": [Function],
-          },
-        },
+        "preferences": "__REF__",
+        "slider": "__REF__",
+        "toggle": "__REF__",
       },
       "reportHeaderHeight": [Function],
       "reportSize": [Function],
@@ -1292,75 +883,8 @@ Map {
     },
   },
   [Function] => {
-    "__internalRootRef": {
-      "current": <div
-        class="awsui_drawer_1r9lg_1e4yy_153 awsui_position-bottom_1r9lg_1e4yy_218 awsui_root_rjqu5_zu8o5_5 awsui_drawer-closed_1r9lg_1e4yy_190 awsui_refresh_1r9lg_1e4yy_190 awsui_with-toolbar_1r9lg_1e4yy_250"
-        style="inset-block-end: 0; inset-inline-start: 0; inset-inline-end: 0; block-size: calc(0px + var(--border-panel-top-width-r884k5, 0px));"
-      >
-        <div
-          aria-labelledby="split-panel-header31"
-          class="awsui_drawer-content-bottom_1r9lg_1e4yy_211"
-          role="region"
-        >
-          <div
-            class="awsui_pane-header-wrapper-bottom_1r9lg_1e4yy_288 awsui_pane-bottom-center-align_1r9lg_1e4yy_333"
-          >
-            <div
-              class="awsui_header_1r9lg_1e4yy_383 awsui_with-toolbar_1r9lg_1e4yy_250"
-            >
-              <h2
-                class="awsui_header-text_1r9lg_1e4yy_396 awsui_header-text_rjqu5_zu8o5_6"
-                id="split-panel-header31"
-              >
-                Split panel header
-              </h2>
-              <div
-                class="awsui_header-actions_1r9lg_1e4yy_409"
-              >
-                <button
-                  aria-expanded="false"
-                  class="awsui_open-button_rjqu5_zu8o5_7 awsui_button_vjswe_1opon_157 awsui_variant-icon_vjswe_1opon_280 awsui_button-no-text_vjswe_1opon_531"
-                  data-analytics-funnel-value="button32"
-                  data-analytics-performance-mark="undefined33"
-                  type="button"
-                >
-                  <span
-                    class="awsui_icon_vjswe_1opon_557 awsui_icon-left_vjswe_1opon_557 awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      focusable="false"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        class="stroke-linejoin-round"
-                        d="m2 11 6-6 6 6"
-                      />
-                    </svg>
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            aria-hidden="true"
-            class="awsui_content-bottom_1r9lg_1e4yy_314 awsui_pane-bottom-center-align_1r9lg_1e4yy_333"
-          >
-            <div
-              class="awsui_content-bottom-max-width_1r9lg_1e4yy_346"
-            >
-              <div>
-                split panel content
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>,
-    },
-    "children": <div>
-      split panel content
-    </div>,
+    "__internalRootRef": "__REF__",
+    "children": "__JSX__",
     "closeBehavior": "collapse",
     "header": "Split panel header",
     "hidePreferencesButton": false,
@@ -1416,17 +940,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1443,48 +959,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1508,17 +989,9 @@ Map {
       "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": {
-              "focus": [Function],
-            },
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -1577,17 +1050,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1604,48 +1069,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1669,17 +1099,9 @@ Map {
       "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": {
-              "focus": [Function],
-            },
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -1738,17 +1160,9 @@ Map {
       "drawersFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": null,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1765,48 +1179,13 @@ Map {
       "maxGlobalDrawersSizes": {},
       "minDrawerSize": 290,
       "minGlobalDrawersSizes": {},
-      "navigation": <React.Fragment />,
+      "navigation": "__JSX__",
       "navigationFocusControl": {
         "loseFocus": [Function],
         "refs": {
-          "close": {
-            "current": {
-              "focus": [Function],
-            },
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": <button
-              aria-disabled="false"
-              aria-expanded="false"
-              aria-haspopup="true"
-              class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-              data-shift-focus="awsui-layout-drawer-trigger"
-              type="button"
-            >
-              <span
-                class=""
-              >
-                <span
-                  class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-                >
-                  <svg
-                    aria-hidden="true"
-                    focusable="false"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      class="stroke-linejoin-round"
-                      d="M15 3H1M15 8H1M15 13H1"
-                    />
-                  </svg>
-                </span>
-              </span>
-            </button>,
-          },
+          "close": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setFocus": [Function],
       },
@@ -1830,17 +1209,9 @@ Map {
       "splitPanelControlId": "split-panel27",
       "splitPanelFocusControl": {
         "refs": {
-          "preferences": {
-            "current": null,
-          },
-          "slider": {
-            "current": null,
-          },
-          "toggle": {
-            "current": {
-              "focus": [Function],
-            },
-          },
+          "preferences": "__REF__",
+          "slider": "__REF__",
+          "toggle": "__REF__",
         },
         "setLastInteraction": [Function],
       },
@@ -1888,50 +1259,15 @@ Map {
           },
         },
       ],
-      "drawersFocusRef": {
-        "current": null,
-      },
+      "drawersFocusRef": "__REF__",
       "hasNavigation": true,
       "hasSplitPanel": true,
-      "navigationFocusRef": {
-        "current": <button
-          aria-disabled="false"
-          aria-expanded="false"
-          aria-haspopup="true"
-          class="awsui_trigger_lpshu_13vrw_145 awsui_trigger-button-styles_lpshu_13vrw_145 awsui_selected_lpshu_13vrw_212 awsui_navigation-toggle_1fj9k_z5zo8_7"
-          data-shift-focus="awsui-layout-drawer-trigger"
-          type="button"
-        >
-          <span
-            class=""
-          >
-            <span
-              class="awsui_icon_h11ix_tsgp4_189 awsui_size-normal-mapped-height_h11ix_tsgp4_248 awsui_size-normal_h11ix_tsgp4_244 awsui_variant-normal_h11ix_tsgp4_320"
-            >
-              <svg
-                aria-hidden="true"
-                focusable="false"
-                viewBox="0 0 16 16"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  class="stroke-linejoin-round"
-                  d="M15 3H1M15 8H1M15 13H1"
-                />
-              </svg>
-            </span>
-          </span>
-        </button>,
-      },
+      "navigationFocusRef": "__REF__",
       "navigationOpen": true,
       "onActiveDrawerChange": [Function],
       "onNavigationToggle": [Function],
       "onSplitPanelToggle": [Function],
-      "splitPanelFocusRef": {
-        "current": {
-          "focus": [Function],
-        },
-      },
+      "splitPanelFocusRef": "__REF__",
       "splitPanelToggleProps": {
         "active": false,
         "ariaLabel": undefined,
