@@ -19,7 +19,6 @@ export interface SharedProps {
   navigationOpen: boolean;
   onNavigationToggle: (open: boolean) => void;
   navigationFocusRef: React.Ref<Focusable> | undefined;
-  navigationTriggerHide?: boolean;
   breadcrumbs: React.ReactNode;
   activeDrawerId: string | null;
   drawers: ReadonlyArray<AppLayoutProps.Drawer> | undefined;
@@ -30,7 +29,7 @@ export interface SharedProps {
   activeGlobalDrawersIds?: Array<string> | undefined;
   onActiveGlobalDrawersChange?: ((newDrawerId: string, params: OnChangeParams) => void) | undefined;
   splitPanel: React.ReactNode;
-  splitPanelToggleProps: SplitPanelToggleProps;
+  splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: () => void;
 }
@@ -69,18 +68,11 @@ export function mergeProps(
       toolbar.activeGlobalDrawersIds = props.activeGlobalDrawersIds;
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
-    if (
-      props.navigation &&
-      !props.navigationTriggerHide &&
-      !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')
-    ) {
+    if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;
       toolbar.onNavigationToggle = props.onNavigationToggle;
-    }
-    if (props.navigationTriggerHide) {
-      toolbar.hasNavigation = false;
     }
     if (
       props.splitPanel &&
@@ -97,7 +89,7 @@ export function mergeProps(
     }
   }
   // do not render toolbar if no fields are defined, except ariaLabels, which are always there
-  return Object.keys(toolbar).filter(key => !['ariaLabels', 'hasNavigation'].includes(key)).length > 0 ? toolbar : null;
+  return Object.keys(toolbar).filter(key => key !== 'ariaLabels').length > 0 ? toolbar : null;
 }
 
 export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
@@ -135,7 +127,6 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
 
   return {
     registered: !!registration?.type,
-    toolbarProps:
-      registration?.type === 'primary' ? (isToolbar ? mergeProps(props, registration.discoveredProps) : props) : null,
+    toolbarProps: registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
   };
 }
