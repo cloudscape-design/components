@@ -250,7 +250,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextPaginationPageNumberDefault: { light: '{colorTextInteractiveDefault}', dark: '{colorGrey400}' },
   colorTextSegmentActive: { light: '{colorWhite}', dark: '{colorGrey900}' },
   colorTextSegmentDefault: { light: '{colorGrey600}', dark: '{colorGrey300}' },
-  colorTextSegmentHover: { light: '{colorBlue600}', dark: '{colorBlue500}' },
+  colorTextSegmentHover: '{colorTextButtonNormalHover}',
   colorTextSmall: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorTextStatusError: { light: '{colorRed600}', dark: '{colorRed500}' },
   colorTextStatusInactive: { light: '{colorGrey550}', dark: '{colorGrey450}' },
