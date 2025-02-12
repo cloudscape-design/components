@@ -28,4 +28,18 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
   });
+
+  test('hide navigation trigger when navigationTriggerHide is set to true', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout
+        {...{ navigationTriggerHide: true }}
+        navigationOpen={true}
+        navigation={<>Mock Navigation</>}
+        content={<>Content</>}
+      />
+    );
+
+    expect(wrapper.findNavigation()).toBeTruthy();
+    expect(wrapper.findNavigationToggle()).toBeFalsy();
+  });
 });

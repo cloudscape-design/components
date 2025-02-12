@@ -11,6 +11,10 @@ import { FocusControlMultipleStates, FocusControlState } from '../utils/use-focu
 import { SplitPanelFocusControlState } from '../utils/use-split-panel-focus-control';
 import { VerticalLayoutOutput } from './compute-layout';
 
+export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
+  navigationTriggerHide?: boolean;
+}
+
 export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.

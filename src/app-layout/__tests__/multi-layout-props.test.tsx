@@ -26,13 +26,16 @@ describe('mergeMultiAppLayoutProps', () => {
         id: 'drawer1',
         ariaLabels: { drawerName: 'Drawer 1' },
         content: <div>Drawer 1 Content</div>,
+        trigger: {
+          iconName: 'add-plus',
+        },
       },
     ],
     onActiveDrawerChange: mockParentActiveDrawerChange,
     drawersFocusRef: React.createRef(),
     splitPanel: <div>Split Panel</div>,
     splitPanelToggleProps: {
-      displayed: false,
+      displayed: true,
       active: false,
       position: 'bottom',
       controlId: 'test',
@@ -92,7 +95,7 @@ describe('mergeMultiAppLayoutProps', () => {
       hasBreadcrumbsPortal: true,
       hasSplitPanel: true,
       splitPanelToggleProps: {
-        displayed: false,
+        displayed: true,
         active: false,
         position: 'bottom',
         controlId: 'test',
