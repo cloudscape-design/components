@@ -37,8 +37,8 @@ export function SplitPanelContentSide({
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
   const isToolbarPrivate = useAppLayoutToolbarEnabled();
-  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
-  const isToolbar = isPublicToolbar || isToolbarPrivate;
+  const isToolbarPublic = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isToolbarPublic || isToolbarPrivate;
   return (
     <div
       {...baseProps}

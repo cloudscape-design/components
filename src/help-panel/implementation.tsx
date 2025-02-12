@@ -29,8 +29,8 @@ export function HelpPanelImplementation({
 }: HelpPanelInternalProps) {
   const baseProps = getBaseProps(restProps);
   const isToolbarPrivate = useAppLayoutToolbarEnabled();
-  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
-  const isToolbar = isPublicToolbar || isToolbarPrivate;
+  const isToolbarPublic = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isToolbarPublic || isToolbarPrivate;
   const i18n = useInternalI18n('help-panel');
   const containerProps = {
     ...baseProps,

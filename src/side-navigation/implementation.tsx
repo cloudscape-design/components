@@ -30,8 +30,8 @@ export function SideNavigationImplementation({
 }: SideNavigationInternalProps) {
   const baseProps = getBaseProps(props);
   const isToolbarPrivate = useAppLayoutToolbarEnabled();
-  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
-  const isToolbar = isPublicToolbar || isToolbarPrivate;
+  const isToolbarPublic = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isToolbarPublic || isToolbarPrivate;
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
 
   if (isDevelopment) {

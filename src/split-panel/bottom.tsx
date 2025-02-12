@@ -35,8 +35,8 @@ export function SplitPanelContentBottom({
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
   const isToolbarPrivate = useAppLayoutToolbarEnabled();
-  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
-  const isToolbar = isPublicToolbar || isToolbarPrivate;
+  const isToolbarPublic = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isToolbarPublic || isToolbarPrivate;
   const {
     bottomOffset,
     leftOffset,
