@@ -3,14 +3,10 @@
 /* eslint simple-import-sort/imports: 0 */
 import React, { useRef, useState } from 'react';
 import { render } from '@testing-library/react';
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
-
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(false),
-}));
 
 export function renderComponent(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -20,15 +16,19 @@ export function renderComponent(jsx: React.ReactElement) {
 }
 
 describe('AppLayoutToolbar component', () => {
+  const globalWithFlags = globalThis as any;
+
   beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(true);
+    globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
   });
+
   afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
+    delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+    clearVisualRefreshState();
   });
 
   test('throws an error when use in classic theme', () => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(false);
+    globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => false;
 
     expect(() => render(<AppLayoutToolbar content={<div></div>} />)).toThrowError(
       'AppLayoutToolbar component is not supported in the Classic theme. Please switch to the Refresh theme. For more details, refer to the documentation.'
