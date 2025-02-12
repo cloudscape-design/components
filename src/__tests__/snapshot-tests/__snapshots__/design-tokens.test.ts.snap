@@ -18097,8 +18097,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(255, 255, 255, 0.1)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-status-error": {
@@ -20622,8 +20622,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(255, 255, 255, 0.1)",
+            "light": "rgba(255, 255, 255, 0.1)",
           },
         },
         "color-background-status-error": {
@@ -23147,8 +23147,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
+            "dark": "#1b232d",
+            "light": "#f0fbff",
           },
         },
         "color-background-status-error": {
@@ -25672,8 +25672,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-status-error": {
@@ -28197,8 +28197,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-status-error": {
@@ -30722,8 +30722,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
+            "dark": "#1b232d",
+            "light": "#1b232d",
           },
         },
         "color-background-status-error": {
@@ -33247,8 +33247,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#161d26",
+            "dark": "#1b232d",
+            "light": "#1b232d",
           },
         },
         "color-background-status-error": {
@@ -35772,8 +35772,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-segment-hover": {
       "$description": "The background color of inactive segments in a segmented control on hover.",
       "$value": {
-        "dark": "#161d26",
-        "light": "#ffffff",
+        "dark": "#1b232d",
+        "light": "#f0fbff",
       },
     },
     "color-background-status-error": {
