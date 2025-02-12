@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { getBaseProps } from '../internal/base-component';
 import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -28,7 +29,9 @@ export function SideNavigationImplementation({
   ...props
 }: SideNavigationInternalProps) {
   const baseProps = getBaseProps(props);
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbarPrivate = useAppLayoutToolbarEnabled();
+  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isPublicToolbar || isToolbarPrivate;
   const parentMap = useMemo(() => generateExpandableItemsMapping(items), [items]);
 
   if (isDevelopment) {

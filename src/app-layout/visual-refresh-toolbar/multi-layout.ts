@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
+import { useAppLayoutToolbarEnabled } from '../utils/feature-flags';
 import { OnChangeParams } from '../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
@@ -102,9 +103,10 @@ export function mergeProps(
 export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
+  const isToolbar = useAppLayoutToolbarEnabled();
 
   useLayoutEffect(() => {
-    if (!isEnabled || forceDeduplicationType === 'suspended') {
+    if (!isEnabled || forceDeduplicationType === 'suspended' || !isToolbar) {
       return;
     }
     if (forceDeduplicationType === 'off') {
@@ -114,7 +116,7 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
     return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
       setRegistration(props as RegistrationState<SharedProps>)
     );
-  }, [forceDeduplicationType, isEnabled]);
+  }, [forceDeduplicationType, isEnabled, isToolbar]);
 
   useLayoutEffect(() => {
     if (registration?.type === 'secondary') {
@@ -122,8 +124,18 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
     }
   });
 
+  if (!isToolbar) {
+    return {
+      registered: 'primary',
+      // mergeProps is needed here because the toolbar's behavior depends on reconciliation logic
+      // in this function. For example, navigation trigger visibility
+      toolbarProps: mergeProps(props, []),
+    };
+  }
+
   return {
     registered: !!registration?.type,
-    toolbarProps: registration?.type === 'primary' ? mergeProps(props, registration.discoveredProps) : null,
+    toolbarProps:
+      registration?.type === 'primary' ? (isToolbar ? mergeProps(props, registration.discoveredProps) : props) : null,
   };
 }

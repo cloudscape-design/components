@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
@@ -35,7 +36,9 @@ export function SplitPanelContentSide({
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbarPrivate = useAppLayoutToolbarEnabled();
+  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isPublicToolbar || isToolbarPrivate;
   return (
     <div
       {...baseProps}

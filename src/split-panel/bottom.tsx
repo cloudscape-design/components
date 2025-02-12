@@ -1,11 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -33,7 +34,9 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbarPrivate = useAppLayoutToolbarEnabled();
+  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isPublicToolbar || isToolbarPrivate;
   const {
     bottomOffset,
     leftOffset,

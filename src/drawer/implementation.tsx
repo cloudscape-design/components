@@ -1,9 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useContext } from 'react';
 import clsx from 'clsx';
 
 import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -25,7 +26,9 @@ export function DrawerImplementation({
   ...restProps
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbarPrivate = useAppLayoutToolbarEnabled();
+  const isPublicToolbar = useContext(AppLayoutToolbarPublicContext) ?? false;
+  const isToolbar = isPublicToolbar || isToolbarPrivate;
   const i18n = useInternalI18n('drawer');
   const containerProps = {
     ...baseProps,

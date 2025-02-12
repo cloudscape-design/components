@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import AppLayoutToolbar, { AppLayoutToolbarProps } from '../../../lib/components/app-layout-toolbar';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import BreadcrumbGroup from '../../../lib/components/breadcrumb-group';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
@@ -144,5 +145,31 @@ describe('AppLayoutToolbar component', () => {
     );
 
     expect(wrapper.findToolbar()).toBeFalsy();
+  });
+
+  test('should not deduplicate toolbar props in nested components', () => {
+    const { container } = render(
+      <AppLayoutToolbar
+        navigation={<>Mock Navigation</>}
+        toolsHide={true}
+        breadcrumbs={<BreadcrumbGroup items={[{ text: 'HomeOuter', href: '#' }]} />}
+        content={
+          <AppLayoutToolbar
+            navigationHide={true}
+            breadcrumbs={<BreadcrumbGroup items={[{ text: 'HomeInner', href: '#' }]} />}
+            content={<div>Content</div>}
+          />
+        }
+      />
+    );
+
+    const layouts = createWrapper(container).findAllAppLayoutToolbars();
+    const [outer, inner] = layouts;
+
+    expect(layouts).toHaveLength(2);
+    expect(outer.findToolbar()).toBeTruthy();
+    expect(inner.findToolbar()).toBeTruthy();
+    expect(outer.findBreadcrumbs()!.getElement()).toHaveTextContent('HomeOuter');
+    expect(inner.findBreadcrumbs()!.getElement()).toHaveTextContent('HomeInner');
   });
 });
