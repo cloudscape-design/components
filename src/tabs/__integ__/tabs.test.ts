@@ -252,7 +252,7 @@ test(
   })
 );
 
-test.only(
+test(
   'tab selection does not cause vertical scroll',
   setupTest(async page => {
     await page.setWindowSize({ width: 600, height: 320 });
