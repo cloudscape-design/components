@@ -125,7 +125,15 @@ describe('Form Analytics', () => {
   });
 
   test('does not send a funnelComplete when the form is unmounted after clicking a non-primary button in the actions slot', () => {
-    const { container, unmount } = render(<Form actions={<Button data-testid="cancel">Cancel</Button>} />);
+    const { container, unmount } = render(
+      <Form
+        actions={
+          <Button formAction="none" data-testid="cancel">
+            Cancel
+          </Button>
+        }
+      />
+    );
     act(() => void jest.runAllTimers());
     const formWrapper = createWrapper(container).findForm();
     const cancelButton = formWrapper!.findActions()!.findButton('[data-testid="cancel"]');

@@ -30,8 +30,8 @@ const FormWithAnalytics = ({ variant = 'full-page', actions, errorText, ...props
   } = useFunnel();
   const { funnelStepProps } = useFunnelStep();
 
-  const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
-    if (variant === 'primary') {
+  const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant, formAction }) => {
+    if (variant === 'primary' || (formAction === 'submit' && variant === 'normal')) {
       funnelNextOrSubmitAttempt();
       funnelSubmit();
     }
