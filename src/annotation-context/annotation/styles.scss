@@ -49,10 +49,18 @@
   padding-inline: 0;
   cursor: pointer;
   scroll-margin: var(#{custom-props.$contentScrollMargin}, 40px 0 0 0);
+  position: relative;
 
   // These dimensions match the dimensions of the contained SVG icon.
   inline-size: 16px;
   block-size: 16px;
+
+  // Extends the clickable area beyond the actual size of the button
+  &:before {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * #{awsui.$space-xxs});
+  }
 
   &:focus {
     outline: none;
