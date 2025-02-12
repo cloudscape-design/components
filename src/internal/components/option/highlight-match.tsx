@@ -7,7 +7,7 @@ import styles from './styles.css.js';
 const splitOnFiltering = (str: string, highlightText: string) => {
   // We match by creating a regex using user-provided strings, so we skip
   // highlighting if the generated regex would be too memory intensive.
-  if (highlightText.length > 100000) {
+  if (highlightText.length > 10_000) {
     return { noMatches: [str], matches: null };
   }
 

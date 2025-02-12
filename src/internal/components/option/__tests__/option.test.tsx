@@ -305,10 +305,10 @@ describe('Option component', () => {
     test('skips highlighting if the label text is too long', () => {
       const optionWrapper = renderOption({
         option: {
-          label: 'a'.repeat(1000000),
+          label: 'a'.repeat(100000),
           value: '1',
         },
-        highlightText: 'a'.repeat(500000),
+        highlightText: 'a'.repeat(50000),
       });
       checkMatches(optionWrapper, 0, '');
     });
