@@ -14,6 +14,7 @@ import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../in
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
@@ -73,7 +74,14 @@ export const focusFlashById = throttle(
 interface FlashProps extends FlashbarProps.MessageDefinition {
   className: string;
   transitionState?: string;
-  i18nStrings?: FlashbarProps.I18nStrings;
+  i18nStrings?: {
+    ariaLabel?: string;
+    errorIconAriaLabel: FlashbarProps.I18nStrings['errorIconAriaLabel'];
+    inProgressIconAriaLabel: FlashbarProps.I18nStrings['inProgressIconAriaLabel'];
+    infoIconAriaLabel: FlashbarProps.I18nStrings['infoIconAriaLabel'];
+    successIconAriaLabel: FlashbarProps.I18nStrings['successIconAriaLabel'];
+    warningIconAriaLabel: FlashbarProps.I18nStrings['warningIconAriaLabel'];
+  };
 }
 
 export const Flash = React.forwardRef(
@@ -117,6 +125,8 @@ export const Flash = React.forwardRef(
     const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
     const mergedRef = useMergeRefs(ref, elementRef);
+    const flashIconId = useUniqueId('flash-icon');
+    const flashMessageId = useUniqueId('flash-message');
 
     const headerRefObject = useRef<HTMLDivElement>(null);
     const contentRefObject = useRef<HTMLDivElement>(null);
@@ -179,9 +189,16 @@ export const Flash = React.forwardRef(
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
-          <div className={styles['flash-focus-container']} tabIndex={-1}>
-            <div className={clsx(styles['flash-icon'], styles['flash-text'])}>{icon}</div>
-            <div className={clsx(styles['flash-message'], styles['flash-text'])}>
+          <div
+            className={styles['flash-focus-container']}
+            tabIndex={-1}
+            role="group"
+            aria-labelledby={`${flashIconId} ${flashMessageId}`}
+          >
+            <div className={clsx(styles['flash-icon'], styles['flash-text'])} id={flashIconId}>
+              {icon}
+            </div>
+            <div className={clsx(styles['flash-message'], styles['flash-text'])} id={flashMessageId}>
               <div
                 className={clsx(
                   styles['flash-header'],
