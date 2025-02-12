@@ -1,17 +1,15 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint-disable simple-import-sort/imports */
 import React, { useState } from 'react';
 import { act, cleanup, render, waitFor } from '@testing-library/react';
 
 import { clearMessageCache } from '@cloudscape-design/component-toolkit/internal';
 
-import { describeEachAppLayout, testDrawer } from './utils';
-
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import { awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
 import SplitPanel from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import { describeEachAppLayout, testDrawer } from './utils';
 
 import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 

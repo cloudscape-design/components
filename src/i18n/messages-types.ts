@@ -104,6 +104,8 @@ export interface I18nFormatArgTypes {
     "i18nStrings.preferencesModalConfirm": never;
     "i18nStrings.preferencesModalWrapLines": never;
     "i18nStrings.preferencesModalTheme": never;
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": never;
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": never;
     "i18nStrings.preferencesModalLightThemes": never;
     "i18nStrings.preferencesModalDarkThemes": never;
     "i18nStrings.cursorPositionAriaLabel": {
@@ -410,6 +412,8 @@ export interface I18nFormatArgTypes {
     }
     "i18nStrings.labelRefresh": never;
     "i18nStrings.labelBreadcrumbs": never;
+    "i18nStrings.labelIconFolder": never;
+    "i18nStrings.labelIconObject": never;
     "i18nStrings.filteringCounterText": {
       "count": number;
     }

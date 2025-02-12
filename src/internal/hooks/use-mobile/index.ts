@@ -4,7 +4,15 @@ import { createSingletonState } from '@cloudscape-design/component-toolkit/inter
 
 import { getMatchingBreakpoint, mobileBreakpoint } from '../../breakpoints';
 
+export const forceMobileModeSymbol = Symbol.for('awsui-force-mobile-mode');
+
 function getIsMobile() {
+  // allow overriding the mobile mode in tests
+  // any is needed because of this https://github.com/microsoft/TypeScript/issues/36813
+  const forceMobileMode = (globalThis as any)[forceMobileModeSymbol];
+  if (typeof forceMobileMode !== 'undefined') {
+    return forceMobileMode;
+  }
   if (typeof window === 'undefined') {
     // assume desktop in server-rendering
     return false;

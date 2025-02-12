@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { act, renderHook } from '../../__tests__/render-hook';
 import { useStickyHeader } from '../use-sticky-header';
+
 jest.mock('../../../lib/components/container/use-sticky-header', () => ({
   useStickyHeader: () => ({ isSticky: true }),
 }));
@@ -19,6 +20,101 @@ jest.mock('@cloudscape-design/component-toolkit/dom', () => ({
 
 beforeEach(() => {
   jest.resetAllMocks();
+});
+
+test('should set isStuck to false when __stickyHeader is false', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: -200 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, false, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
+});
+
+test('should set isStuck to false when __disableMobile is false', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: -200 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, true));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
+});
+
+test('should set isStuck to false when rootTop headerTop are equal and headerTop is not 0', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
+});
+
+test('should set isStuck to true when rootTop less than a headerTop at 0', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: -100 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 0 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(true);
+});
+
+test('should set isStuck to false when rootTop and headerTop are equal at 0', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 0 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 0 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
 });
 
 test('should set isStuck to true when rootTop is less than headerTop', () => {
@@ -40,7 +136,7 @@ test('should set isStuck to true when rootTop is less than headerTop', () => {
   expect(result.current.isStuck).toBe(true);
 });
 
-test('should set isStuck to false when rootTop is larger than than headerTop', () => {
+test('should set isStuck to false when rootTop is larger than than nonZero headerTop', () => {
   const rootRef = {
     current: document.createElement('div'),
   };
@@ -50,6 +146,25 @@ test('should set isStuck to false when rootTop is larger than than headerTop', (
     current: document.createElement('div'),
   };
   headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 100 });
+
+  const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
+  act(() => {
+    window.dispatchEvent(new Event('scroll'));
+  });
+
+  expect(result.current.isStuck).toBe(false);
+});
+
+test('should set isStuck to false when rootTop is larger than than zero headerTop', () => {
+  const rootRef = {
+    current: document.createElement('div'),
+  };
+  rootRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 200 });
+
+  const headerRef = {
+    current: document.createElement('div'),
+  };
+  headerRef.current.getBoundingClientRect = jest.fn().mockReturnValue({ top: 0 });
 
   const { result } = renderHook(() => useStickyHeader(rootRef, headerRef, true, 0, 0, false));
   act(() => {

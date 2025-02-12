@@ -45,6 +45,7 @@ const Table = React.forwardRef(
           wrapLines: props.wrapLines,
           enableKeyboardNavigation: props.enableKeyboardNavigation,
           totalItemsCount: props.totalItemsCount,
+          flowType: analyticsMetadata.flowType,
         },
         metadata: {
           expandableRows: !!props.expandableRows,

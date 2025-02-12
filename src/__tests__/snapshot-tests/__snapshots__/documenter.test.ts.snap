@@ -14551,6 +14551,16 @@ The function will be called when a user clicks on the trigger button.",
             "type": "(itemsType: string) => string",
           },
           {
+            "name": "labelIconFolder",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "labelIconObject",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "labelModalDismiss",
             "optional": true,
             "type": "string",

@@ -136,14 +136,12 @@ $cell-negative-space-vertical: 2px;
   @include cell-padding-block-start($cell-vertical-padding);
   @include cell-padding-block-end($cell-vertical-padding-w-border);
 
+  &-align-top {
+    vertical-align: top;
+  }
+
   &-content {
     box-sizing: border-box;
-    block-size: 100%;
-    align-content: center;
-
-    &.body-cell-align-top {
-      align-content: baseline;
-    }
 
     &:not(.body-cell-wrap) {
       white-space: nowrap;

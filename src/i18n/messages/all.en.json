@@ -84,6 +84,8 @@
     "i18nStrings.preferencesModalConfirm": "Confirm",
     "i18nStrings.preferencesModalWrapLines": "Wrap lines",
     "i18nStrings.preferencesModalTheme": "Theme",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Filter themes",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filter themes",
     "i18nStrings.preferencesModalLightThemes": "Light themes",
     "i18nStrings.preferencesModalDarkThemes": "Dark themes",
     "i18nStrings.cursorPositionAriaLabel": "Cursor on row {row}"
@@ -109,7 +111,7 @@
     "stickyColumnsPreference.lastColumns.options[0].label": "None",
     "stickyColumnsPreference.lastColumns.options[1].label": "Last column",
     "contentDisplayPreference.title": "Column preferences",
-    "contentDisplayPreference.description": "Customize the columns visibility and order.",
+    "contentDisplayPreference.description": "Customize the visibility and order of the columns.",
     "contentDisplayPreference.dragHandleAriaLabel": "Drag handle",
     "contentDisplayPreference.dragHandleAriaDescription": "Use Space or Enter to activate drag for an item, then use the arrow keys to move the item's position. To complete the position move, use Space or Enter, or to discard the move, use Escape.",
     "contentDisplayPreference.liveAnnouncementDndStarted": "Picked up item at position {position} of {total}",
@@ -316,6 +318,8 @@
     "i18nStrings.labelFiltering": "Find {itemsType}",
     "i18nStrings.labelRefresh": "Refresh the data",
     "i18nStrings.labelBreadcrumbs": "S3 navigation",
+    "i18nStrings.labelIconFolder": "Folder",
+    "i18nStrings.labelIconObject": "Object",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 match} other {{count} matches}}"
   },
   "select": {
