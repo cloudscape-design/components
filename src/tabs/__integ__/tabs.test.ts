@@ -572,7 +572,7 @@ describe('activation mode', () => {
     )()
   );
 
-  test.only(
+  test(
     'manual mode - allows full keyboard navigation without activation',
     setupTest(
       async page => {
