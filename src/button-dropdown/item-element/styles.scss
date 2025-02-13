@@ -70,6 +70,10 @@
       font-weight: styles.$font-weight-bold;
       text-decoration: none;
     }
+
+    &.link-style-highlighted {
+      color: awsui.$color-text-link-hover;
+    }
   }
 
   &:focus {
