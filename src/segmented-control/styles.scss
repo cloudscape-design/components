@@ -8,6 +8,8 @@
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
 
+$segment-gap: calc(#{segment.$segment-divider-gap} * 2 + 1px);
+
 @function repeatValue($value, $times) {
   $result: ();
 
@@ -31,7 +33,7 @@
   }
 
   &.refresh {
-    gap: 9px;
+    gap: $segment-gap;
     border-inline: solid 2px awsui.$color-border-input-default;
     border-block: solid 2px awsui.$color-border-input-default;
     border-start-start-radius: calc(awsui.$border-radius-button + awsui.$space-static-xxs);
