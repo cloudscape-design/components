@@ -584,6 +584,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_wrapper_wih1l",
   ],
   "tabs": [
+    "awsui_actions-container_14rmt",
     "awsui_disabled-reason-tooltip_14rmt",
     "awsui_root_14rmt",
     "awsui_tab-dismiss-button_1nq1i",

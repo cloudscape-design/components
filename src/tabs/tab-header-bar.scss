@@ -66,6 +66,12 @@ $label-horizontal-spacing: awsui.$space-xs;
   }
 }
 
+.actions-container {
+  flex-shrink: 0;
+  align-self: center;
+  padding-inline: awsui.$space-xxs;
+}
+
 .tabs-tab {
   // Clear list formatting that comes with list item
   list-style: none;

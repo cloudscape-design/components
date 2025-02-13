@@ -40,6 +40,7 @@ export default function Tabs({
   disableContentPaddings = false,
   i18nStrings,
   fitHeight,
+  actions,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -123,6 +124,7 @@ export default function Tabs({
       ariaLabel={ariaLabel}
       ariaLabelledby={ariaLabelledby}
       tabs={tabs}
+      actions={actions}
       onChange={changeDetail => {
         setActiveTabId(changeDetail.activeTabId);
         fireNonCancelableEvent(onChange, changeDetail);
