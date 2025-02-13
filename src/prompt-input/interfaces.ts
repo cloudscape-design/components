@@ -122,6 +122,9 @@ export namespace PromptInputProps {
 
     /**
      * Selects a range of text in the textarea control.
+     *
+     * See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
+     * for more details on this method.
      */
     setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
   }

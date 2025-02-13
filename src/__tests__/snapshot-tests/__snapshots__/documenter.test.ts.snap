@@ -12605,7 +12605,10 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "returnType": "void",
     },
     {
-      "description": "Selects a range of text in the textarea control.",
+      "description": "Selects a range of text in the textarea control.
+See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
+for more details on this method.
+",
       "name": "setSelectionRange",
       "parameters": [
         {
