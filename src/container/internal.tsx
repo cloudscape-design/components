@@ -84,7 +84,7 @@ export default function InternalContainer({
   const baseProps = getBaseProps(restProps);
   const rootRef = useRef<HTMLDivElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
-  const { isSticky, isStuck, stickyStyles } = useStickyHeader(
+  const { isSticky, isStuck, isStuckAtBottom, stickyStyles } = useStickyHeader(
     rootRef,
     headerRef,
     __stickyHeader,
@@ -117,6 +117,7 @@ export default function InternalContainer({
         fitHeight && styles['fit-height'],
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']],
+        shouldHaveStickyStyles && isStuck && isStuckAtBottom && [styles['with-stuck-sticky-header-at-bottom']],
         isRefresh && styles.refresh
       )}
       ref={mergedRef}
@@ -139,7 +140,7 @@ export default function InternalContainer({
       >
         {header && (
           <ContainerHeaderContextProvider>
-            <StickyHeaderContext.Provider value={{ isStuck }}>
+            <StickyHeaderContext.Provider value={{ isStuck, isStuckAtBottom }}>
               <div
                 className={clsx(
                   isRefresh && styles.refresh,
