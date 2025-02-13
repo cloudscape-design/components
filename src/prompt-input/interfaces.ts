@@ -124,7 +124,8 @@ export namespace PromptInputProps {
      * Selects a range of text in the textarea control.
      *
      * See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
-     * for more details on this method.
+     * for more details on this method. Be aware that using this method in React has some
+     * common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-setselectionrange-incompatible-with-react-hooks
      */
     setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
   }
