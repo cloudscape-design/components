@@ -78,6 +78,16 @@ export interface TabsProps extends BaseComponentProps {
    * If the tab content is too short, it will stretch. If the tab content is too long, a vertical scrollbar will be shown.
    */
   fitHeight?: boolean;
+  /**
+   * Determines how the active tab is switched when navigating using
+   * the keyboard. The options are:
+   * - 'automatic' (default): the active tab is switched using the arrow keys.
+   * - 'manual': a tab must be explicitly activated using the enter/space key.
+   * We recommend using 'automatic' in most situations to provide consistent
+   * and quick switching between tabs. Use 'manual' only if there is a specific
+   * need to introduce friction to the switching of tabs.
+   */
+  keyboardActivationMode?: 'automatic' | 'manual';
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
