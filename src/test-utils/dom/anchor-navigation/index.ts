@@ -34,7 +34,7 @@ export default class AnchorNavigationWrapper extends ComponentWrapper {
   }
 }
 
-class AnchorItemWrapper extends ElementWrapper {
+class AnchorItemWrapper extends ComponentWrapper {
   findLink(): ElementWrapper<HTMLAnchorElement> | null {
     return this.findByClassName(testUtilStyles['anchor-link']);
   }
