@@ -62,6 +62,8 @@ export default function Tabs({
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
       hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
+      hasEagerLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'eager'),
+      hasLazyLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'lazy'),
     },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
