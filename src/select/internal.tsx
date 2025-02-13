@@ -78,9 +78,7 @@ const InternalSelect = React.forwardRef(
     const formFieldContext = useFormFieldContext(restProps);
 
     const i18n = useInternalI18n('select');
-    const errorIconAriaLabel = i18n('errorIconAriaLabel', restProps.errorIconAriaLabel);
     const selectedAriaLabel = i18n('selectedAriaLabel', restProps.selectedAriaLabel);
-    const recoveryText = i18n('recoveryText', restProps.recoveryText);
 
     if (restProps.recoveryText && !onLoadItems) {
       warnOnce('Select', '`onLoadItems` must be provided for `recoveryText` to be displayed.');
@@ -193,13 +191,13 @@ const InternalSelect = React.forwardRef(
       loadingText,
       finishedText,
       errorText,
-      recoveryText,
+      getRecoveryText: () => i18n('recoveryText', restProps.recoveryText),
       isEmpty,
       isNoMatch,
       noMatch,
       isFiltered,
       filteringResultsText: filteredText,
-      errorIconAriaLabel,
+      getErrorIconAriaLabel: () => i18n('errorIconAriaLabel', restProps.errorIconAriaLabel),
       onRecoveryClick: handleRecoveryClick,
       hasRecoveryCallback: !!onLoadItems,
     });

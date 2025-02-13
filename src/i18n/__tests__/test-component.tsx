@@ -60,3 +60,9 @@ export function TestComponent(props: TestComponentProps) {
     </ul>
   );
 }
+
+export function SimpleTestComponent(props: TestComponentProps) {
+  const i18n = useInternalI18n('test-component');
+
+  return <span id="top-level-string">{i18n('topLevelString', props.topLevelString)}</span>;
+}

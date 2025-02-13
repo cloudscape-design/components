@@ -69,7 +69,7 @@ function InternalPopover(
   const clickFrameId = useRef<number | null>(null);
 
   const i18n = useInternalI18n('popover');
-  const dismissAriaLabel = i18n('dismissAriaLabel', restProps.dismissAriaLabel);
+  const dismissAriaLabel = dismissButton ? i18n('dismissAriaLabel', restProps.dismissAriaLabel) : undefined;
 
   const [visible, setVisible] = useState(false);
 

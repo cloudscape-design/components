@@ -98,10 +98,12 @@ const Cards = React.forwardRef(function <T = any>(
     selectionType,
     isItemDisabled,
     onSelectionChange,
-    ariaLabels: {
-      itemSelectionLabel: ariaLabels?.itemSelectionLabel,
-      selectionGroupLabel: i18n('ariaLabels.selectionGroupLabel', ariaLabels?.selectionGroupLabel),
-    },
+    ariaLabels: selectionType
+      ? {
+          itemSelectionLabel: ariaLabels?.itemSelectionLabel,
+          selectionGroupLabel: i18n('ariaLabels.selectionGroupLabel', ariaLabels?.selectionGroupLabel),
+        }
+      : {},
   });
   const hasToolsHeader = header || filter || pagination || preferences;
   const hasFooterPagination = isMobile && variant === 'full-page' && !!pagination;

@@ -44,7 +44,6 @@ const EmbeddedMultiselect = React.forwardRef(
       filteringType,
       ariaLabel,
       selectedOptions,
-      deselectAriaLabel,
       virtualScroll,
       filteringText = '',
       ...restProps
@@ -58,8 +57,6 @@ const EmbeddedMultiselect = React.forwardRef(
       options,
       selectedOptions,
       filteringType,
-      disabled: false,
-      deselectAriaLabel,
       controlId: formFieldContext.controlId,
       ariaLabelId,
       footerId,

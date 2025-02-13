@@ -87,8 +87,12 @@ export function useExpandableTableProps<T>({
       isExpanded: expandedSet.has(item),
       onExpandableItemToggle: () =>
         fireNonCancelableEvent(expandableRows?.onExpandableItemToggle, { item, expanded: !expandedSet.has(item) }),
-      expandButtonLabel: i18n('ariaLabels.expandButtonLabel', ariaLabels?.expandButtonLabel?.(item)),
-      collapseButtonLabel: i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item)),
+      expandButtonLabel: isExpandable
+        ? i18n('ariaLabels.expandButtonLabel', ariaLabels?.expandButtonLabel?.(item))
+        : undefined,
+      collapseButtonLabel: isExpandable
+        ? i18n('ariaLabels.collapseButtonLabel', ariaLabels?.collapseButtonLabel?.(item))
+        : undefined,
       parent,
       children,
     };

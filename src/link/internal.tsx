@@ -180,7 +180,7 @@ const InternalLink = React.forwardRef(
       sharedProps['aria-labelledby'] = `${sharedProps.id} ${infoId} ${infoLinkLabelFromContext}`;
     }
 
-    const renderedExternalIconAriaLabel = i18n('externalIconAriaLabel', externalIconAriaLabel);
+    const renderedExternalIconAriaLabel = external ? i18n('externalIconAriaLabel', externalIconAriaLabel) : undefined;
     const content = (
       <>
         {children}
