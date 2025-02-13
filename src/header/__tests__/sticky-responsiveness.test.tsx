@@ -21,7 +21,7 @@ function renderHeader(jsx: React.ReactElement) {
 
 test('renders constant header without visual refresh', () => {
   const wrapper = renderHeader(
-    <StickyHeaderContext.Provider value={{ isStuck: false }}>
+    <StickyHeaderContext.Provider value={{ isStuck: false, isStuckAtBottom: false }}>
       <Header variant="awsui-h1-sticky">test</Header>
     </StickyHeaderContext.Provider>
   );
@@ -39,7 +39,7 @@ describe('in visual refresh', () => {
 
   test('renders h1 variant when header is not stuck', () => {
     const wrapper = renderHeader(
-      <StickyHeaderContext.Provider value={{ isStuck: false }}>
+      <StickyHeaderContext.Provider value={{ isStuck: false, isStuckAtBottom: false }}>
         <Header variant="awsui-h1-sticky">test</Header>
       </StickyHeaderContext.Provider>
     );
@@ -48,7 +48,7 @@ describe('in visual refresh', () => {
   });
   test('renders h2 variant when header is stuck', () => {
     const wrapper = renderHeader(
-      <StickyHeaderContext.Provider value={{ isStuck: true }}>
+      <StickyHeaderContext.Provider value={{ isStuck: true, isStuckAtBottom: false }}>
         <Header variant="awsui-h1-sticky">test</Header>
       </StickyHeaderContext.Provider>
     );
