@@ -60,11 +60,9 @@
     }
   }
 
-  &.with-stuck-sticky-header {
-    &.with-stuck-sticky-header-at-bottom {
-      border-end-end-radius: 0;
-      border-end-start-radius: 0;
-    }
+  &.with-stuck-sticky-header-at-bottom {
+    border-end-end-radius: 0;
+    border-end-start-radius: 0;
   }
 }
 

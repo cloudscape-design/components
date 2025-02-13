@@ -117,7 +117,6 @@ export default function InternalContainer({
         fitHeight && styles['fit-height'],
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']],
-        shouldHaveStickyStyles && isStuck && [styles['with-stuck-sticky-header']],
         shouldHaveStickyStyles && isStuck && isStuckAtBottom && [styles['with-stuck-sticky-header-at-bottom']],
         isRefresh && styles.refresh
       )}

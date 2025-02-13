@@ -50,7 +50,7 @@ function StickyHeader(
 ) {
   const secondaryTheadRef = useRef<HTMLTableRowElement>(null);
   const secondaryTableRef = useRef<HTMLTableElement>(null);
-  const { isStuck, isStuckAtBottom } = useContext(StickyHeaderContext);
+  const { isStuck } = useContext(StickyHeaderContext);
 
   const [focusedComponent, setFocusedComponent] = useState<null | string>(null);
   const { scrollToRow, scrollToTop } = useStickyHeader(
@@ -78,7 +78,6 @@ function StickyHeader(
       tabIndex={-1}
       ref={secondaryWrapperRef}
       onScroll={onScroll}
-      data-stuck-at-bottom={isStuckAtBottom}
     >
       <table
         className={clsx(
