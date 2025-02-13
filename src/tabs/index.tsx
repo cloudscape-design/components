@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -30,6 +30,18 @@ function firstEnabledTab(tabs: ReadonlyArray<TabsProps.Tab>) {
   return null;
 }
 
+function shouldRenderTabContent(tab: TabsProps.Tab, viewedTabs: Set<string>) {
+  switch (tab.contentRenderStrategy) {
+    case 'active':
+      return false; // rendering active tab is handled directly in component
+    case 'eager':
+      return true;
+    case 'lazy':
+      return viewedTabs.has(tab.id);
+  }
+  return false;
+}
+
 export default function Tabs({
   tabs,
   variant = 'default',
@@ -50,6 +62,8 @@ export default function Tabs({
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
       hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
+      hasEagerLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'eager'),
+      hasLazyLoadedTabs: tabs.some(tab => tab.contentRenderStrategy === 'lazy'),
     },
   });
   const idNamespace = useUniqueId('awsui-tabs-');
@@ -59,6 +73,11 @@ export default function Tabs({
     controlledProp: 'activeTabId',
     changeHandler: 'onChange',
   });
+
+  const viewedTabs = useRef(new Set<string>());
+  if (activeTabId !== undefined) {
+    viewedTabs.current.add(activeTabId);
+  }
 
   const baseProps = getBaseProps(rest);
 
@@ -95,8 +114,9 @@ export default function Tabs({
         'aria-labelledby': getTabElementId({ namespace: idNamespace, tabId: tab.id }),
       };
 
-      const isContentShown = isTabSelected && !selectedTab.disabled;
-      return <div {...contentAttributes}>{isContentShown && selectedTab.content}</div>;
+      const isContentShown = !tab.disabled && (isTabSelected || shouldRenderTabContent(tab, viewedTabs.current));
+
+      return <div {...contentAttributes}>{isContentShown && tab.content}</div>;
     };
 
     return (
