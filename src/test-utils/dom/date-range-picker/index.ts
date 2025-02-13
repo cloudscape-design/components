@@ -50,7 +50,7 @@ export default class DateRangePickerWrapper extends ComponentWrapper {
   }
 }
 
-export class SelectionModeSwitchWrapper extends ElementWrapper {
+export class SelectionModeSwitchWrapper extends ComponentWrapper {
   /**
    * Returns the mode selector as a SegmentedControl wrapper.
    *

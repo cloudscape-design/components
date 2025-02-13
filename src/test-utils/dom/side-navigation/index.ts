@@ -37,7 +37,7 @@ export default class SideNavigationWrapper extends ComponentWrapper {
   }
 }
 
-export class SideNavigationItemWrapper extends ElementWrapper {
+export class SideNavigationItemWrapper extends ComponentWrapper {
   findSection(): ExpandableSectionWrapper | null {
     return this.findComponent(`.${styles.section}`, ExpandableSectionWrapper);
   }

@@ -9,7 +9,7 @@ import styles from '../../../internal/components/chart-popover/styles.selectors.
 import chartSeriesDetailsStyles from '../../../internal/components/chart-series-details/styles.selectors.js';
 import popoverStyles from '../../../popover/styles.selectors.js';
 
-export class ChartPopoverSeriesItemWrapper extends ElementWrapper {
+export class ChartPopoverSeriesItemWrapper extends ComponentWrapper {
   findKey(): ElementWrapper {
     // If a series has sub-items and is expandable, the key will be inside the header of an expandable section.
     return (this.findByClassName(expandableSectionHeaderStyles['header-text']) ||

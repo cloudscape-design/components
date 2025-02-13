@@ -150,7 +150,9 @@ export default class TagEditorPage extends BasePageObject {
   }
 
   getRowHeaders(row: number) {
-    return this.getElementsText(tagEditorWrapper.findRow(row).findFormField().findLabel().toSelector());
+    return this.getElementsText(
+      createWrapper(tagEditorWrapper.findRow(row).getElement()).findFormField().findLabel().toSelector()
+    );
   }
 
   hasKeyError(row: number) {
