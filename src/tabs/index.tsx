@@ -50,6 +50,7 @@ export default function Tabs({
     props: { disableContentPaddings, variant, fitHeight },
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
+      hasHeaderActions: !!actions,
       hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
     },
   });
