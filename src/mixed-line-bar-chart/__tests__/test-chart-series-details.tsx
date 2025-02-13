@@ -9,7 +9,7 @@ import { BarChartProps } from '../../../lib/components/bar-chart/interfaces.js';
 import { LineChartProps } from '../../../lib/components/line-chart/interfaces.js';
 import Link from '../../../lib/components/link';
 import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import { BarChartWrapper, LineChartWrapper } from '../../../lib/components/test-utils/dom';
+import createWrapper, { BarChartWrapper, LineChartWrapper } from '../../../lib/components/test-utils/dom';
 import { MixedLineBarChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import chartSeriesDetailsStyles from '../../../lib/components/internal/components/chart-series-details/styles.css.js';
@@ -121,7 +121,9 @@ export default function testChartSeriesDetails({
           }),
         });
 
-        const findExpandableSection = () => wrapper.findDetailPopover()!.findSeries()![0].findExpandableSection()!;
+        // access to expandable section which is an implementation detail, not exposed via public test-utils API
+        const findExpandableSection = () =>
+          createWrapper(wrapper.findDetailPopover()!.findSeries()![0].getElement()).findExpandableSection()!;
         const toggleState = () => findExpandableSection().findExpandButton().click();
         const expectExpanded = (expectedState: boolean) => {
           expect(!!findExpandableSection().findExpandedContent()).toBe(expectedState);
