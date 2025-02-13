@@ -113,6 +113,50 @@ test(
 );
 
 test(
+  'Selected item should scroll into view, but container not scroll, when open dropdown',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    await page.setWindowSize({ height: 1000, width: 1100 });
+    await browser.url('/#/light/select/select.test');
+    const select = createWrapper().findSelect('#select_overflow');
+    const triggerSelector = select.findTrigger().toSelector();
+    const optionsSelector = select.findDropdown().findOpenDropdown().toSelector();
+    const selectedItem = select.findDropdown().findHighlightedOption().toSelector();
+    const { top: containerScrollTopBefore } = await page.getBoundingBox('#select_overflow');
+    await page.click(triggerSelector);
+    const { top: containerScrollTopAfter } = await page.getBoundingBox('#select_overflow');
+    const { height: dropdownHeight, top: dropdownTop } = await page.getBoundingBox(optionsSelector);
+    const { bottom: selectedItemBottom } = await page.getBoundingBox(selectedItem);
+    expect(selectedItemBottom).toEqual(dropdownTop + dropdownHeight);
+    expect(containerScrollTopBefore).toEqual(containerScrollTopAfter);
+  })
+);
+
+test(
+  'should not scroll the parent container when open dropdown in tiny space[inside containers with overflow:hidden]',
+  useBrowser(async browser => {
+    const page = new BasePageObject(browser);
+    // The issue AWSUI-60318 can be reproduced with viewport height 700
+    // Set the window height as 500 + other browser UI(e.g header ...)
+    const browserUIHeight = await browser.execute(() => {
+      return window.outerHeight - window.innerHeight;
+    });
+    await page.setWindowSize({ height: 500 + browserUIHeight, width: 1100 });
+    await browser.url('/#/light/select/select.test');
+    const select = createWrapper().findSelect('#select_overflow');
+    const triggerSelector = select.findTrigger().toSelector();
+    const optionsSelector = select.findDropdown().findOpenDropdown().toSelector();
+    const { top: containerScrollTopBefore } = await page.getBoundingBox('#select_overflow');
+    await page.click(triggerSelector);
+    const { top: containerScrollTopAfter } = await page.getBoundingBox('#select_overflow');
+    const { height: dropdownHeight } = await page.getBoundingBox(optionsSelector);
+    // Dropdown still has the minimun height, even the space is very tiny
+    expect(dropdownHeight).toEqual(15);
+    expect(containerScrollTopBefore).toEqual(containerScrollTopAfter);
+  })
+);
+
+test(
   'allows the select to be opened and closed using space',
   useBrowser(async browser => {
     await browser.url('/#/light/select/select.test');
