@@ -32,6 +32,7 @@ $disabled-color: map.get($segment-properties, 'disabled-color');
 $selected-background: map.get($segment-properties, 'active-background');
 $selected-border-color: awsui.$color-border-segment-active;
 $selected-color: awsui.$color-text-segment-active;
+$segment-divider-gap: awsui.$space-static-xxs;
 
 .segment {
   @include styles.font-body-m;
@@ -65,16 +66,16 @@ $selected-color: awsui.$color-text-segment-active;
     border-start-end-radius: awsui.$border-radius-button;
     border-end-start-radius: awsui.$border-radius-button;
     border-end-end-radius: awsui.$border-radius-button;
-    padding-block: awsui.$space-scaled-xxs;
-    padding-inline: awsui.$space-scaled-m;
+    padding-block: styles.$control-padding-vertical;
+    padding-inline: calc(awsui.$space-button-horizontal - $segment-divider-gap);
     position: relative;
-    block-size: calc(100% - 4px);
+    block-size: calc(100% - $segment-divider-gap);
     display: flex;
     align-items: center;
     &:not(:last-child)::after {
       content: '';
       position: absolute;
-      inset-inline-end: -5px;
+      inset-inline-end: calc(-1 * (#{$segment-divider-gap} + 1px));
       inset-block-start: 6px;
       block-size: calc(100% - 12px);
       inline-size: 1px;
