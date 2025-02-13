@@ -119,5 +119,10 @@ export namespace PromptInputProps {
      * Selects all text in the textarea control.
      */
     select(): void;
+
+    /**
+     * Selects a range of text in the textarea control.
+     */
+    setSelectionRange(start: number | null, end: number | null, direction?: 'forward' | 'backward' | 'none'): void;
   }
 }

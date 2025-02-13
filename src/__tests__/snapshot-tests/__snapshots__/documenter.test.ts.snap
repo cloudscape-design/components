@@ -12604,6 +12604,25 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "parameters": [],
       "returnType": "void",
     },
+    {
+      "description": "Selects a range of text in the textarea control.",
+      "name": "setSelectionRange",
+      "parameters": [
+        {
+          "name": "start",
+          "type": "null | number",
+        },
+        {
+          "name": "end",
+          "type": "null | number",
+        },
+        {
+          "name": "direction",
+          "type": ""backward" | "forward" | "none"",
+        },
+      ],
+      "returnType": "void",
+    },
   ],
   "name": "PromptInput",
   "properties": [
