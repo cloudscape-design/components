@@ -10,10 +10,10 @@ import Link from '~components/link';
 import SideNavigation, { SideNavigationProps } from '~components/side-navigation';
 import SpaceBetween from '~components/space-between';
 
+import { Tools } from '../app-layout/utils/content-blocks';
+import labels from '../app-layout/utils/labels';
 import { IframeWrapper } from '../utils/iframe-wrapper';
 import ScreenshotArea from '../utils/screenshot-area';
-import { Tools } from './utils/content-blocks';
-import labels from './utils/labels';
 
 function createView(name: string) {
   return function View() {

@@ -5,9 +5,9 @@ import React, { useRef, useState } from 'react';
 import { AppLayoutToolbar, Button, ContentLayout, Header, HelpPanel, Link, SpaceBetween } from '~components';
 import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 
-import { Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
-import { drawerLabels } from './utils/drawers';
-import appLayoutLabels from './utils/labels';
+import { Containers, CustomDrawerContent, Navigation } from '../app-layout/utils/content-blocks';
+import { drawerLabels } from '../app-layout/utils/drawers';
+import appLayoutLabels from '../app-layout/utils/labels';
 
 export default function WithDrawers() {
   const [activeDrawerId, setActiveDrawerId] = useState<string | null>(null);

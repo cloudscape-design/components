@@ -16,9 +16,9 @@ import {
 import { AppLayoutToolbarProps } from '~components/app-layout-toolbar';
 
 import AppContext, { AppContextType } from '../app/app-context';
-import { Breadcrumbs, Containers, CustomDrawerContent, Navigation } from './utils/content-blocks';
-import { drawerLabels } from './utils/drawers';
-import appLayoutLabels from './utils/labels';
+import { Breadcrumbs, Containers, CustomDrawerContent, Navigation } from '../app-layout/utils/content-blocks';
+import { drawerLabels } from '../app-layout/utils/drawers';
+import appLayoutLabels from '../app-layout/utils/labels';
 
 type DemoContext = React.Context<
   AppContextType<{
