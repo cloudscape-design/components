@@ -79,6 +79,7 @@ interface TabHeaderBarProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   i18nStrings?: TabsProps.I18nStrings;
+  actions?: TabsProps['actions'];
 }
 
 export function TabHeaderBar({
@@ -90,6 +91,7 @@ export function TabHeaderBar({
   ariaLabel,
   ariaLabelledby,
   i18nStrings,
+  actions,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -337,6 +339,7 @@ export function TabHeaderBar({
           />
         </span>
       )}
+      {actions && <div className={styles['actions-container']}>{actions}</div>}
     </div>
   );
 
