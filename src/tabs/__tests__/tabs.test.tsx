@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
-import { fireEvent, render } from '@testing-library/react';
+import React, { useEffect, useState } from 'react';
+import { act, fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
@@ -1258,6 +1258,128 @@ describe('Tabs', () => {
       verifyTabContentLabelledBy(firstTabId);
       rerender(<Tabs tabs={defaultTabs} activeTabId={secondTabId} onChange={() => void 0} />);
       verifyTabContentLabelledBy(secondTabId);
+    });
+  });
+
+  describe('Optional inactive tab persistence', () => {
+    /**
+     * Finds all tab content and returns them.
+     */
+    function findTabContents(wrapper: TabsWrapper): ElementWrapper<HTMLDivElement>[] {
+      return wrapper.findAll(`.${styles['tabs-content']}`);
+    }
+
+    /**
+     * Finds the tab content by using the tab index
+     * @param index 1-based index of the tab content element to return
+     */
+    function findContentByTabIndex(wrapper: TabsWrapper, index: number): ElementWrapper | null {
+      return wrapper.find(`.${styles['tabs-content']}:nth-child(${index})`);
+    }
+
+    it('only renders content of active tab by default', () => {
+      const { wrapper } = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={() => void 0} />);
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('First content');
+
+      wrapper
+        .findTabContents()
+        .slice(1)
+        .forEach(tab => {
+          expect(tab.getElement()!).toBeEmptyDOMElement();
+        });
+    });
+
+    it('renders all tab contents given truthy `preserveInactiveTabs` flag', () => {
+      const { wrapper } = renderTabs(
+        <Tabs tabs={defaultTabs} activeTabId="first" preserveInactiveTabs={true} onChange={() => void 0} />
+      );
+
+      const tabContents = findTabContents(wrapper);
+
+      expect(tabContents[0].getElement()!).toHaveTextContent('First content');
+      expect(tabContents[1].getElement()!).toHaveTextContent('Second content');
+    });
+
+    it('hides inactive tabs given truthy `preserveInactiveTabs` flag', () => {
+      const { wrapper } = renderTabs(
+        <Tabs tabs={defaultTabs} activeTabId="first" preserveInactiveTabs={true} onChange={() => void 0} />
+      );
+
+      const tabContents = findTabContents(wrapper);
+      expect(wrapper.findTabContent()!.getElement()!).toBeVisible();
+
+      tabContents.slice(1).forEach(tab => {
+        expect(tab.getElement()!).not.toHaveClass(styles['tabs-content-active']);
+        expect(tab.getElement()!).not.toBeVisible();
+      });
+    });
+
+    function TimedMessage({ message }: { message: string }) {
+      const [loading, setLoading] = useState(true);
+
+      useEffect(() => {
+        setTimeout(() => setLoading(false), 4000);
+      }, []);
+
+      return <>{loading ? 'Loading...' : message}</>;
+    }
+
+    const statefulTabs: Array<TabsProps.Tab> = [
+      {
+        id: 'first',
+        label: 'First tab',
+        content: <TimedMessage message="First content" />,
+        href: '#first',
+      },
+      {
+        id: 'second',
+        label: 'Second tab',
+        content: 'Second content',
+        href: '#second',
+      },
+    ];
+
+    it('preserves deselected tab DOM state given truthy `preserveInactiveTabs` flag', () => {
+      jest.useFakeTimers();
+
+      const { wrapper, rerender } = renderTabs(
+        <Tabs tabs={statefulTabs} activeTabId="first" preserveInactiveTabs={true} onChange={() => void 0} />
+      );
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('Loading...');
+
+      act(() => {
+        jest.advanceTimersByTime(4000);
+      });
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('First content');
+
+      rerender(<Tabs tabs={statefulTabs} activeTabId="second" preserveInactiveTabs={true} onChange={() => void 0} />);
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('Second content');
+      expect(findContentByTabIndex(wrapper, 1)!.getElement()).toHaveTextContent('First content');
+    });
+
+    it('does not preserve deselected tab DOM state by default', () => {
+      jest.useFakeTimers();
+
+      const { wrapper, rerender } = renderTabs(
+        <Tabs tabs={statefulTabs} activeTabId="first" preserveInactiveTabs={false} onChange={() => void 0} />
+      );
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('Loading...');
+
+      act(() => {
+        jest.advanceTimersByTime(4000);
+      });
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('First content');
+
+      rerender(<Tabs tabs={statefulTabs} activeTabId="second" preserveInactiveTabs={false} onChange={() => void 0} />);
+      rerender(<Tabs tabs={statefulTabs} activeTabId="first" preserveInactiveTabs={false} onChange={() => void 0} />);
+
+      expect(wrapper.findTabContent()!.getElement()).toHaveTextContent('Loading...');
     });
   });
 });
