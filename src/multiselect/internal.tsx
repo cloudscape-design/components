@@ -73,8 +73,6 @@ const InternalMultiselect = React.forwardRef(
       options,
       selectedOptions,
       filteringType,
-      disabled,
-      deselectAriaLabel,
       controlId,
       ariaLabelId,
       footerId,
@@ -122,9 +120,11 @@ const InternalMultiselect = React.forwardRef(
       iconUrl: option.iconUrl,
       iconSvg: option.iconSvg,
       tags: option.tags,
-      dismissLabel: i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
-        format({ option__label: option.label ?? '' })
-      ),
+      dismissLabel: hideTokens
+        ? undefined
+        : i18n('deselectAriaLabel', deselectAriaLabel?.(option), format =>
+            format({ option__label: option.label ?? '' })
+          ),
     }));
 
     const ListComponent = virtualScroll ? VirtualList : PlainList;

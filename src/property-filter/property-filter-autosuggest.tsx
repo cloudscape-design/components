@@ -164,6 +164,8 @@ const PropertyFilterAutosuggest = React.forwardRef(
       isEmpty,
       onRecoveryClick: handleRecoveryClick,
       hasRecoveryCallback: !!onLoadItems,
+      getErrorIconAriaLabel: () => undefined,
+      getRecoveryText: () => props.recoveryText,
     });
 
     let content = null;

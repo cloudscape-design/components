@@ -35,7 +35,7 @@ export default function InternalForm({
 }: InternalFormProps) {
   const baseProps = getBaseProps(props);
   const i18n = useInternalI18n('form');
-  const errorIconAriaLabel = i18n('errorIconAriaLabel', errorIconAriaLabelOverride);
+  const errorIconAriaLabel = errorText ? i18n('errorIconAriaLabel', errorIconAriaLabelOverride) : undefined;
   const analyticsComponentMetadata: GeneratedAnalyticsMetadataFormFragment = {
     component: {
       name: 'awsui.Form',

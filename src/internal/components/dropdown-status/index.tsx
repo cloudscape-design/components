@@ -12,7 +12,7 @@ import styles from './styles.css.js';
 
 export { DropdownStatusProps };
 
-export interface DropdownStatusPropsExtended extends DropdownStatusProps {
+export interface DropdownStatusPropsExtended extends Omit<DropdownStatusProps, 'recoveryText' | 'errorIconAriaLabel'> {
   isEmpty?: boolean;
   isNoMatch?: boolean;
   isFiltered?: boolean;
@@ -30,27 +30,16 @@ export interface DropdownStatusPropsExtended extends DropdownStatusProps {
    * in case recoveryText was automatically provided by i18n.
    */
   hasRecoveryCallback?: boolean;
+
+  getErrorIconAriaLabel: () => string | undefined;
+  getRecoveryText: () => string | undefined;
 }
 
 function DropdownStatus({ children }: { children: React.ReactNode }) {
   return <div className={styles.root}>{children}</div>;
 }
 
-type UseDropdownStatus = ({
-  statusType,
-  empty,
-  loadingText,
-  finishedText,
-  filteringResultsText,
-  errorText,
-  recoveryText,
-  isEmpty,
-  isNoMatch,
-  isFiltered,
-  noMatch,
-  hasRecoveryCallback,
-  onRecoveryClick,
-}: DropdownStatusPropsExtended) => DropdownStatusResult;
+type UseDropdownStatus = (statusProps: DropdownStatusPropsExtended) => DropdownStatusResult;
 
 export interface DropdownStatusResult {
   isSticky: boolean;
@@ -65,14 +54,14 @@ export const useDropdownStatus: UseDropdownStatus = ({
   finishedText,
   filteringResultsText,
   errorText,
-  recoveryText,
+  getRecoveryText,
   isEmpty,
   isNoMatch,
   isFiltered,
   noMatch,
   onRecoveryClick,
   hasRecoveryCallback = false,
-  errorIconAriaLabel,
+  getErrorIconAriaLabel,
 }): DropdownStatusResult => {
   const previousStatusType = usePrevious(statusType);
   const statusResult: DropdownStatusResult = { isSticky: true, content: null, hasRecoveryButton: false };
@@ -80,6 +69,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
   if (statusType === 'loading') {
     statusResult.content = <InternalStatusIndicator type={'loading'}>{loadingText}</InternalStatusIndicator>;
   } else if (statusType === 'error') {
+    const recoveryText = getRecoveryText();
     statusResult.hasRecoveryButton = !!recoveryText && hasRecoveryCallback;
     statusResult.content = (
       <span>
@@ -87,7 +77,7 @@ export const useDropdownStatus: UseDropdownStatus = ({
           type="error"
           __display="inline"
           __animate={previousStatusType !== 'error'}
-          iconAriaLabel={errorIconAriaLabel}
+          iconAriaLabel={getErrorIconAriaLabel()}
         >
           {errorText}
         </InternalStatusIndicator>{' '}
