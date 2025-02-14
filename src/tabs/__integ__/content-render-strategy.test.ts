@@ -44,6 +44,22 @@ test(
   })
 );
 test(
+  'strategy:eager (iframe) tab state is retained when switching away and back',
+  setupTest(async page => {
+    const iframeInput = wrapper.findInput().findNativeInput().toSelector();
+    await page.click(wrapper.findTabs().findTabLinkByIndex(5).toSelector());
+    await page.runInsideIframe('iframe', true, async () => {
+      await page.setValue(iframeInput, 'new value');
+      await expect(page.getValue(iframeInput)).resolves.toBe('new value');
+    });
+    await page.click(wrapper.findTabs().findTabLinkByIndex(3).toSelector());
+    await page.click(wrapper.findTabs().findTabLinkByIndex(5).toSelector());
+    await page.runInsideIframe('iframe', true, async () => {
+      await expect(page.getValue(iframeInput)).resolves.toBe('new value');
+    });
+  })
+);
+test(
   'strategy:active tab state is not retained when switching away and back',
   setupTest(async page => {
     const input = wrapper.findTabs().findTabContent().findInput().findNativeInput().toSelector();

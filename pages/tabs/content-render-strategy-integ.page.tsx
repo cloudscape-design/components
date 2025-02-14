@@ -6,6 +6,8 @@ import { FormField, Input } from '~components';
 import SpaceBetween from '~components/space-between';
 import Tabs, { TabsProps } from '~components/tabs';
 
+import { IframeWrapper } from '../utils/iframe-wrapper';
+
 const TabWithState = () => {
   const [value, setValue] = useState('');
   return (
@@ -47,6 +49,12 @@ export default function TabsDemoPage() {
       label: 'Eager loading',
       id: 'eager',
       content: <TabWithLoading id="loading-eager" />,
+      contentRenderStrategy: 'eager',
+    },
+    {
+      label: 'Eager loading iframe',
+      id: 'eager-iframe',
+      content: <IframeWrapper id="iframe" AppComponent={() => <TabWithState />} />,
       contentRenderStrategy: 'eager',
     },
   ];
