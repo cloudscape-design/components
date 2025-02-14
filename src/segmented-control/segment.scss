@@ -77,7 +77,6 @@ $segment-divider-width: 1px;
       content: '';
       position: absolute;
       inset-inline-end: calc(-1 * ($segment-gap + $segment-divider-width));
-      inset-block-start: 6px;
       block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
       inline-size: $segment-divider-width;
       background: awsui.$color-border-input-default;

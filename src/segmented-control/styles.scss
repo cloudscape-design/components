@@ -34,15 +34,15 @@ $segment-space: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
 
   &.refresh {
     gap: $segment-space;
-    border-inline: solid 2px awsui.$color-border-input-default;
-    border-block: solid 2px awsui.$color-border-input-default;
+    border-inline: solid awsui.$border-width-field awsui.$color-border-input-default;
+    border-block: solid awsui.$border-width-field awsui.$color-border-input-default;
     border-start-start-radius: calc(awsui.$border-radius-button + awsui.$space-static-xxs);
     border-start-end-radius: calc(awsui.$border-radius-button + awsui.$space-static-xxs);
     border-end-start-radius: calc(awsui.$border-radius-button + awsui.$space-static-xxs);
     border-end-end-radius: calc(awsui.$border-radius-button + awsui.$space-static-xxs);
     align-items: center;
-    min-block-size: 24px;
-    padding-inline: 2px;
+    min-block-size: calc(awsui.$line-height-body-m + awsui.$space-static-xxs);
+    padding-inline: awsui.$space-static-xxxs;
   }
 }
 
