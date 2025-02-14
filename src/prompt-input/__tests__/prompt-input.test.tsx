@@ -55,6 +55,23 @@ describe('ref', () => {
     expect(textarea.selectionStart).toBe(0);
     expect(textarea.selectionEnd).toBe(4);
   });
+
+  test('can be used to select a range', () => {
+    const ref = React.createRef<HTMLTextAreaElement>();
+    const { wrapper } = renderPromptInput({ value: 'Test', ref });
+    const textarea = wrapper.findNativeTextarea().getElement();
+
+    // Make sure no text is selected
+    textarea.selectionStart = textarea.selectionEnd = 0;
+    textarea.blur();
+    expect(textarea.selectionStart).toBe(0);
+    expect(textarea.selectionEnd).toBe(0);
+
+    // Select all text
+    ref.current!.setSelectionRange(1, 3);
+    expect(textarea.selectionStart).toBe(1);
+    expect(textarea.selectionEnd).toBe(3);
+  });
 });
 
 describe('disableBrowserAutocorrect', () => {

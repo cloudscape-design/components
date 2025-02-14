@@ -12604,6 +12604,29 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "parameters": [],
       "returnType": "void",
     },
+    {
+      "description": "Selects a range of text in the textarea control.
+See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
+for more details on this method. Be aware that using this method in React has some
+common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-setselectionrange-incompatible-with-react-hooks
+",
+      "name": "setSelectionRange",
+      "parameters": [
+        {
+          "name": "start",
+          "type": "null | number",
+        },
+        {
+          "name": "end",
+          "type": "null | number",
+        },
+        {
+          "name": "direction",
+          "type": ""backward" | "forward" | "none"",
+        },
+      ],
+      "returnType": "void",
+    },
   ],
   "name": "PromptInput",
   "properties": [
