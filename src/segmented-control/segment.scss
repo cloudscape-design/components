@@ -32,7 +32,8 @@ $disabled-color: map.get($segment-properties, 'disabled-color');
 $selected-background: map.get($segment-properties, 'active-background');
 $selected-border-color: awsui.$color-border-segment-active;
 $selected-color: awsui.$color-text-segment-active;
-$segment-divider-gap: awsui.$space-static-xxs;
+$segment-gap: awsui.$space-static-xxs;
+$segment-divider-width: 1px;
 
 .segment {
   @include styles.font-body-m;
@@ -67,18 +68,18 @@ $segment-divider-gap: awsui.$space-static-xxs;
     border-end-start-radius: awsui.$border-radius-button;
     border-end-end-radius: awsui.$border-radius-button;
     padding-block: styles.$control-padding-vertical;
-    padding-inline: calc(awsui.$space-button-horizontal - $segment-divider-gap);
+    padding-inline: calc(awsui.$space-button-horizontal - $segment-gap);
     position: relative;
-    block-size: calc(100% - $segment-divider-gap);
+    block-size: calc(100% - $segment-gap);
     display: flex;
     align-items: center;
     &:not(:last-child)::after {
       content: '';
       position: absolute;
-      inset-inline-end: calc(-1 * (#{$segment-divider-gap} + 1px));
+      inset-inline-end: calc(-1 * ($segment-gap + $segment-divider-width));
       inset-block-start: 6px;
-      block-size: calc(100% - 12px);
-      inline-size: 1px;
+      block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
+      inline-size: $segment-divider-width;
       background: awsui.$color-border-input-default;
       z-index: 1;
     }

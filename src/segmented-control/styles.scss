@@ -4,11 +4,11 @@
 */
 
 @use '../internal/styles/' as styles;
-@use 'segment';
+@use 'segment' as seg;
 @use 'sass:list' as list;
 @use '../internal/styles/tokens' as awsui;
 
-$segment-gap: calc(#{segment.$segment-divider-gap} * 2 + 1px);
+$segment-space: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
 
 @function repeatValue($value, $times) {
   $result: ();
@@ -33,7 +33,7 @@ $segment-gap: calc(#{segment.$segment-divider-gap} * 2 + 1px);
   }
 
   &.refresh {
-    gap: $segment-gap;
+    gap: $segment-space;
     border-inline: solid 2px awsui.$color-border-input-default;
     border-block: solid 2px awsui.$color-border-input-default;
     border-start-start-radius: calc(awsui.$border-radius-button + awsui.$space-static-xxs);
