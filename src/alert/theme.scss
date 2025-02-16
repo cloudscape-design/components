@@ -1,0 +1,14 @@
+.theme {
+  &.theme-border-radius-none { --theme-border-radius-alert: 0px; }
+  &.theme-border-radius-small { --theme-border-radius-alert: 8px; }
+  &.theme-border-radius-medium { --theme-border-radius-alert: 16px; }
+  &.theme-border-radius-large { --theme-border-radius-alert: 24px; }
+  &.theme-border-width-none { --theme-border-width-alert: 0px; }
+  &.theme-border-width-small { --theme-border-width-alert: 1px; }
+  &.theme-border-width-medium { --theme-border-width-alert: 2px; }
+  &.theme-border-width-large { --theme-border-width-alert: 3px; }
+  //
+  &.theme-background-color { 
+    --theme-background-color-alert: transparent;
+   }
+}

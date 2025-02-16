@@ -25,15 +25,15 @@
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  border-block: awsui.$border-width-alert solid;
-  border-inline: awsui.$border-width-alert solid;
-  border-start-start-radius: awsui.$border-radius-alert;
-  border-start-end-radius: awsui.$border-radius-alert;
-  border-end-start-radius: awsui.$border-radius-alert;
-  border-end-end-radius: awsui.$border-radius-alert;
+  border-block: var(--theme-border-width-alert, awsui.$border-width-alert) solid;
+  border-inline: var(--theme-border-width-alert, awsui.$border-width-alert) solid;
+  border-start-start-radius: var(--theme-border-radius-alert, awsui.$border-radius-alert);
+  border-start-end-radius: var(--theme-border-radius-alert, awsui.$border-radius-alert);
+  border-end-start-radius: var(--theme-border-radius-alert, awsui.$border-radius-alert);
+  border-end-end-radius: var(--theme-border-radius-alert, awsui.$border-radius-alert);
   padding-block: awsui.$space-alert-vertical;
   padding-inline: awsui.$space-alert-horizontal;
-  background-color: awsui.$color-background-container-content;
+  background-color: var(--theme-background-color-alert, awsui.$color-background-container-content);
 
   &.with-dismiss,
   &.with-action {
@@ -159,7 +159,7 @@ $_text-colors: (
 @each $type in map.keys($_text-colors) {
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};
-    background-color: #{map.get($_background-colors, $type)};
+    background-color: var(--theme-background-color-alert, #{map.get($_background-colors, $type)});
     > .alert-focus-wrapper > .icon {
       color: #{map.get($_text-colors, $type)};
     }
