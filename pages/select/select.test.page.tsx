@@ -76,6 +76,7 @@ export default function SelectPage() {
       <ScreenshotArea>
         <Box padding="l">
           <Box padding="s">
+            <div style={{ height: '300px' }}>300px space above the select</div>
             <Box variant="h1">Overflow test</Box>
             <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>
             <div id="smallest_container" style={{ overflow: 'hidden', blockSize: '500px', padding: 0 }}>
