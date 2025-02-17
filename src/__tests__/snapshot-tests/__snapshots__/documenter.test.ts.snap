@@ -12604,6 +12604,29 @@ about modifiers (that is, CTRL, ALT, SHIFT, META, etc.).",
       "parameters": [],
       "returnType": "void",
     },
+    {
+      "description": "Selects a range of text in the textarea control.
+See https://developer.mozilla.org/en-US/docs/Web/API/HTMLTextAreaElement/setSelectionRange
+for more details on this method. Be aware that using this method in React has some
+common pitfalls: https://stackoverflow.com/questions/60129605/is-javascripts-setselectionrange-incompatible-with-react-hooks
+",
+      "name": "setSelectionRange",
+      "parameters": [
+        {
+          "name": "start",
+          "type": "null | number",
+        },
+        {
+          "name": "end",
+          "type": "null | number",
+        },
+        {
+          "name": "direction",
+          "type": ""backward" | "forward" | "none"",
+        },
+      ],
+      "returnType": "void",
+    },
   ],
   "name": "PromptInput",
   "properties": [
@@ -14025,6 +14048,16 @@ The function will be called when a user clicks on the trigger button.",
             "name": "labelFiltering",
             "optional": true,
             "type": "(itemsType: string) => string",
+          },
+          {
+            "name": "labelIconFolder",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "labelIconObject",
+            "optional": true,
+            "type": "string",
           },
           {
             "name": "labelModalDismiss",
@@ -16652,7 +16685,16 @@ need to introduce friction to the switching of tabs.",
       "visualRefreshTag": "\`stacked\` variant",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Actions for the tabs header, displayed next to the list of tabs.
+Use this to add a button or button dropdown that performs actions on the
+entire tab list. We recommend a maximum of one interactive element to
+minimize the number of keyboard tab stops between the tab list and content.",
+      "isDefault": false,
+      "name": "actions",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;

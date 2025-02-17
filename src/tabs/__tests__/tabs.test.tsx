@@ -1330,4 +1330,8 @@ describe('Tabs', () => {
       verifyTabContentLabelledBy(secondTabId);
     });
   });
+  test('renders actions', () => {
+    const wrapper = renderTabs(<Tabs tabs={defaultTabs} actions={<div>Actions content</div>} />).wrapper;
+    expect(wrapper.findActions()!.getElement()).toHaveTextContent('Actions content');
+  });
 });

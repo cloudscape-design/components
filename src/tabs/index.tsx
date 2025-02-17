@@ -41,6 +41,7 @@ export default function Tabs({
   i18nStrings,
   fitHeight,
   keyboardActivationMode = 'automatic',
+  actions,
   ...rest
 }: TabsProps) {
   for (const tab of tabs) {
@@ -50,6 +51,7 @@ export default function Tabs({
     props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode },
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
+      hasHeaderActions: !!actions,
       hasDisabledReasons: tabs.some(tab => !!tab.disabledReason),
     },
   });
@@ -124,6 +126,7 @@ export default function Tabs({
       ariaLabel={ariaLabel}
       ariaLabelledby={ariaLabelledby}
       tabs={tabs}
+      actions={actions}
       onChange={changeDetail => {
         setActiveTabId(changeDetail.activeTabId);
         fireNonCancelableEvent(onChange, changeDetail);

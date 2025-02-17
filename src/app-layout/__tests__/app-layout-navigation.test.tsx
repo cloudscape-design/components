@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React from 'react';
-import { describeEachAppLayout, renderComponent } from './utils';
+
 import AppLayout from '../../../lib/components/app-layout';
+import { describeEachAppLayout, renderComponent } from './utils';
 
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
@@ -27,5 +27,19 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop', 'mobile'
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['main-landmark'])).not.toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles['unfocusable-mobile'])).toBeNull();
     expect(wrapper.findByClassName(visualRefreshToolbarStyles.content)?.getElement()).toBeVisible();
+  });
+
+  test('hide navigation trigger when navigationTriggerHide is set to true', () => {
+    const { wrapper } = renderComponent(
+      <AppLayout
+        {...{ navigationTriggerHide: true }}
+        navigationOpen={true}
+        navigation={<>Mock Navigation</>}
+        content={<>Content</>}
+      />
+    );
+
+    expect(wrapper.findNavigation()).toBeTruthy();
+    expect(wrapper.findNavigationToggle()).toBeFalsy();
   });
 });

@@ -29,6 +29,14 @@ export interface TabsProps extends BaseComponentProps {
   tabs: ReadonlyArray<TabsProps.Tab>;
 
   /**
+   * Actions for the tabs header, displayed next to the list of tabs.
+   * Use this to add a button or button dropdown that performs actions on the
+   * entire tab list. We recommend a maximum of one interactive element to
+   * minimize the number of keyboard tab stops between the tab list and content.
+   */
+  actions?: React.ReactNode;
+
+  /**
    * The possible visual variants of tabs are the following:
    * * `default` - Use in any context.
    * * `container` - Use this variant to have the tabs displayed within a container header.
