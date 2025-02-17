@@ -1,13 +1,26 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
-import { ButtonDropdown } from '~components';
+import { ButtonDropdown, Select } from '~components';
 import Tabs, { TabsProps } from '~components/tabs';
+
+import AppContext, { AppContextType } from '../app/app-context';
 
 import styles from './responsive.scss';
 
+type TabsContext = React.Context<
+  AppContextType<{
+    keyboardActivationMode: TabsProps['keyboardActivationMode'];
+  }>
+>;
+
 export default function TabsDemoPage() {
+  const {
+    urlParams: { keyboardActivationMode = 'automatic' },
+    setUrlParams,
+  } = useContext(AppContext as TabsContext);
+
   const defaultTabs: Array<TabsProps.Tab> = [
     {
       label: 'First tab',
@@ -18,6 +31,7 @@ export default function TabsDemoPage() {
     {
       label: 'Second tab',
       id: 'second',
+      href: '/second',
       content:
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.',
     },
@@ -135,6 +149,14 @@ export default function TabsDemoPage() {
   return (
     <div id="container" className={small ? styles.small : ''}>
       <h1>Tabs</h1>
+      <Select
+        options={[{ value: 'automatic' }, { value: 'manual' }]}
+        selectedOption={{ value: keyboardActivationMode }}
+        onChange={e =>
+          setUrlParams({ keyboardActivationMode: e.detail.selectedOption.value as TabsProps['keyboardActivationMode'] })
+        }
+        inlineLabelText="Activation mode"
+      />
       <input type="text" id="before" aria-label="before" />
       <form action="/">
         <Tabs
@@ -142,6 +164,7 @@ export default function TabsDemoPage() {
           tabs={tabs}
           activeTabId={selectedTab}
           onChange={event => setSelectedTab(event.detail.activeTabId)}
+          keyboardActivationMode={keyboardActivationMode}
           i18nStrings={{ scrollLeftAriaLabel: 'Scroll left', scrollRightAriaLabel: 'Scroll right' }}
         />
       </form>
@@ -156,6 +179,7 @@ export default function TabsDemoPage() {
         id="dismiss-tabs"
         ariaLabel="Dismissible Tabs"
         tabs={tabsDismissibles}
+        keyboardActivationMode={keyboardActivationMode}
         i18nStrings={{
           scrollLeftAriaLabel: 'Scroll left (Dismissible Tabs)',
           scrollRightAriaLabel: 'Scroll right (Dismissible Tabs)',

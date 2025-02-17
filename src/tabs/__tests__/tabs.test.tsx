@@ -43,6 +43,10 @@ function pressLeft(wrapper: TabsWrapper) {
   wrapper.findActiveTab()!.keydown(KeyCode.left);
 }
 
+function pressSpace(wrapper: TabsWrapper) {
+  wrapper.findActiveTab()!.keydown(KeyCode.space);
+}
+
 function pressHome(wrapper: TabsWrapper) {
   wrapper.findActiveTab()!.keydown(KeyCode.home);
 }
@@ -341,73 +345,139 @@ describe('Tabs', () => {
       expect(changeSpy).not.toHaveBeenCalled();
     });
 
-    test('fires a change event on right arrow key press', () => {
-      const changeSpy = jest.fn();
-      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={changeSpy} />).wrapper;
-      wrapper.findActiveTab()!.getElement().focus();
+    describe.each(['automatic', 'manual'] as TabsProps['keyboardActivationMode'][])(
+      'keyboard events with %s activation',
+      keyboardActivationMode => {
+        const isManual = keyboardActivationMode === 'manual';
+        test('navigating using right arrow', () => {
+          const changeSpy = jest.fn();
+          const wrapper = renderTabs(
+            <Tabs
+              tabs={defaultTabs}
+              activeTabId="first"
+              onChange={changeSpy}
+              keyboardActivationMode={keyboardActivationMode}
+            />
+          ).wrapper;
+          wrapper.findActiveTab()!.getElement().focus();
 
-      expect(changeSpy).not.toHaveBeenCalled();
+          expect(changeSpy).not.toHaveBeenCalled();
 
-      pressRight(wrapper);
+          pressRight(wrapper);
 
-      expect(changeSpy).toHaveBeenCalledTimes(1);
-      expect(changeSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            activeTabId: 'second',
-            activeTabHref: '#second',
-          },
-        })
-      );
-    });
+          if (isManual) {
+            expect(changeSpy).not.toHaveBeenCalled();
+            // We only test using space here, because in real browsers pressing enter triggers a click:
+            // this behavior can't easily be replicated in jsdom. But we test enter behavior in integ tests :)
+            pressSpace(wrapper);
+          }
 
-    test('fires a change event on left arrow key press', () => {
-      const changeSpy = jest.fn();
-      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="first" onChange={changeSpy} />).wrapper;
-      expect(changeSpy).not.toHaveBeenCalled();
+          expect(changeSpy).toHaveBeenCalledTimes(1);
+          expect(changeSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              detail: {
+                activeTabId: 'second',
+                activeTabHref: '#second',
+              },
+            })
+          );
+        });
 
-      pressLeft(wrapper);
+        test('navigating using left arrow', () => {
+          const changeSpy = jest.fn();
+          const wrapper = renderTabs(
+            <Tabs
+              tabs={defaultTabs}
+              activeTabId="first"
+              onChange={changeSpy}
+              keyboardActivationMode={keyboardActivationMode}
+            />
+          ).wrapper;
+          expect(changeSpy).not.toHaveBeenCalled();
 
-      expect(changeSpy).toHaveBeenCalledTimes(1);
-      expect(changeSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            activeTabId: 'fourth',
-            activeTabHref: undefined,
-          },
-        })
-      );
-    });
+          pressLeft(wrapper);
 
-    test('fires a change event on home and end key press', () => {
-      const changeSpy = jest.fn();
-      const wrapper = renderTabs(<Tabs tabs={defaultTabs} activeTabId="second" onChange={changeSpy} />).wrapper;
-      expect(changeSpy).not.toHaveBeenCalled();
+          if (isManual) {
+            expect(changeSpy).not.toHaveBeenCalled();
+            pressSpace(wrapper);
+          }
 
-      pressEnd(wrapper);
+          expect(changeSpy).toHaveBeenCalledTimes(1);
+          expect(changeSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              detail: {
+                activeTabId: 'fourth',
+                activeTabHref: undefined,
+              },
+            })
+          );
+        });
 
-      expect(changeSpy).toHaveBeenCalledTimes(1);
-      expect(changeSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            activeTabId: 'fourth',
-            activeTabHref: undefined,
-          },
-        })
-      );
+        test('navigating using home and end key press', () => {
+          const changeSpy = jest.fn();
+          const wrapper = renderTabs(
+            <Tabs
+              tabs={defaultTabs}
+              activeTabId="second"
+              onChange={changeSpy}
+              keyboardActivationMode={keyboardActivationMode}
+            />
+          ).wrapper;
+          expect(changeSpy).not.toHaveBeenCalled();
 
-      pressHome(wrapper);
+          pressEnd(wrapper);
 
-      expect(changeSpy).toHaveBeenCalledTimes(2);
-      expect(changeSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          detail: {
-            activeTabId: 'first',
-            activeTabHref: '#first',
-          },
-        })
-      );
-    });
+          if (isManual) {
+            expect(changeSpy).not.toHaveBeenCalled();
+            pressSpace(wrapper);
+          }
+
+          expect(changeSpy).toHaveBeenCalledTimes(1);
+          expect(changeSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              detail: {
+                activeTabId: 'fourth',
+                activeTabHref: undefined,
+              },
+            })
+          );
+
+          pressHome(wrapper);
+
+          if (isManual) {
+            expect(changeSpy).toHaveBeenCalledTimes(1);
+            pressSpace(wrapper);
+          }
+
+          expect(changeSpy).toHaveBeenCalledTimes(2);
+          expect(changeSpy).toHaveBeenCalledWith(
+            expect.objectContaining({
+              detail: {
+                activeTabId: 'first',
+                activeTabHref: '#first',
+              },
+            })
+          );
+        });
+
+        test('does not call change when re-activating current tag', () => {
+          const changeSpy = jest.fn();
+          const wrapper = renderTabs(
+            <Tabs
+              tabs={defaultTabs}
+              activeTabId="first"
+              onChange={changeSpy}
+              keyboardActivationMode={keyboardActivationMode}
+            />
+          ).wrapper;
+          wrapper.findActiveTab()!.getElement().focus();
+
+          pressSpace(wrapper);
+
+          expect(changeSpy).not.toHaveBeenCalled();
+        });
+      }
+    );
 
     test('does not fire an event on arrow navigation when a modifier key is used', () => {
       const changeSpy = jest.fn();
