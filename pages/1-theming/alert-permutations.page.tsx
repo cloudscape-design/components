@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, SpaceBetween, TextContent } from '~components';
 import Theme from '~components/theming/component/index';
 
-export default function AlertTheme() {
+export default function AlertThemePermutations() {
   return (
     <div style={{ margin: '40px' }}>
       <SpaceBetween direction='vertical' size='m'>
@@ -64,57 +64,7 @@ export default function AlertTheme() {
             </Alert>
           </Theme>
         </Theme>
-
-        <hr />
-
-        <TextContent>
-          <h3>Custom Component</h3>
-        </TextContent>
-
-        <MyCustomAlert>
-          Review the documentation to learn about potential compatibility issues with specific database versions.
-        </MyCustomAlert>
       </SpaceBetween>
     </div>
   );
 }
-
-// custom variants, states, subtrees, exceptions and specific values
-
-function MyCustomAlert({children}:any) {
-  return (
-    <Theme backgroundColor="pink">
-      {/*
-      <Theme.Hover />
-      <Theme.Focus />
-      <Theme.Active />
-      <Theme.Disabled />
-      */}
-
-      <Alert>
-        {children}
-      </Alert>
-    </Theme>
-  );
-}
-
-/*
-function MyCustomAlert({children}:any) {
-  return (
-    <>
-      <Alert className="my-custom-alert">
-        {children}
-      </Alert>
-
-      <style>
-        {`
-          .my-custom-alert {
-            background-color: pink;
-          } 
-        `
-        }
-      </style>
-    </>
-  );
-}
-  */
