@@ -17,6 +17,13 @@ $label-horizontal-spacing: awsui.$space-xs;
   padding-block: 0;
   padding-inline: 0;
   display: flex;
+  flex-wrap: wrap;
+}
+
+.tab-header-scroll-container {
+  display: flex;
+  flex-grow: 1;
+  max-inline-size: 100%;
 }
 
 .tabs-header-list {
@@ -64,6 +71,14 @@ $label-horizontal-spacing: awsui.$space-xs;
         -1px 0px 0px 0 awsui.$color-border-tabs-shadow;
     }
   }
+}
+
+.actions-container {
+  flex-shrink: 0;
+  align-self: center;
+  padding-block: awsui.$space-xs;
+  padding-inline: awsui.$space-xs;
+  margin-inline-start: auto;
 }
 
 .tabs-tab {

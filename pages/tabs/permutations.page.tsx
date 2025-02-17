@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
 
+import Button from '~components/button';
 import ButtonDropdown from '~components/button-dropdown';
+import SpaceBetween from '~components/space-between';
 import Tabs, { TabsProps } from '~components/tabs';
 
 import createPermutations from '../utils/permutations';
@@ -106,6 +108,14 @@ const tabActionPermutations = createPermutations<TabsProps>([
   {
     activeTabId: ['first', 'second'],
     variant: ['default', 'container'],
+    actions: [
+      undefined,
+      <Button key="button">Add</Button>,
+      <SpaceBetween key="space-between" size="s" direction="horizontal">
+        <Button>Add</Button>
+        <Button>Add2</Button>
+      </SpaceBetween>,
+    ],
     tabs: [
       [
         {
