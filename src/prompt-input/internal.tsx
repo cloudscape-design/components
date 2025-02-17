@@ -77,6 +77,9 @@ const InternalPromptInput = React.forwardRef(
         select() {
           textareaRef.current?.select();
         },
+        setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
+          textareaRef.current?.setSelectionRange(...args);
+        },
       }),
       [textareaRef]
     );
