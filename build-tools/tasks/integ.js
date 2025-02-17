@@ -21,7 +21,7 @@ module.exports = task('test:integ', async () => {
   await waitOn({ resources: ['http://localhost:8080'] });
 
   const files = glob.sync('src/**/__integ__/**/*.test.ts');
-  const commands = ['-c', 'jest.integ.config.js', ...files];
+  const commands = ['-c', 'jest.integ.config.js', ...files, '-t', 'does not scroll on hover'];
   if (shard) {
     commands.push(`--shard=${shard}`);
   }

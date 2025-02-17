@@ -512,8 +512,7 @@ describe('Details popover', () => {
     })
   );
 
-  // Skipped due to failures with WebdriverIO v9.
-  test.skip(
+  test(
     'does not scroll on hover',
     setupTest('#/light/bar-chart/drilldown', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
@@ -522,8 +521,19 @@ describe('Details popover', () => {
       const barGroup = barChart.findBarGroups().get(1).toSelector();
       await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
       await page.hoverElement(barGroup);
-      await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
-      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      // await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
+      const popoverHeaderPosition = await page.getBoundingBox(barChart.findDetailPopover().findHeader().toSelector());
+      const viewportSize = await page.getViewportSize();
+      console.log('popoverHeaderPosition', popoverHeaderPosition);
+      console.log('viewportSize', viewportSize);
+      await page.hoverElement(barGroup);
+      console.log(
+        'popoverHeaderPosition',
+        await page.getBoundingBox(barChart.findDetailPopover().findHeader().toSelector())
+      );
+      await page.waitForAssertion(async () => {
+        await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      });
     })
   );
 

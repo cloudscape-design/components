@@ -44,10 +44,10 @@ export class MixedChartPage extends BasePageObject {
   }
 }
 
-export function setupTest(url: string, testFn: (page: MixedChartPage) => Promise<void>) {
+export function setupTest(url: string, testFn: (page: MixedChartPage, browser: WebdriverIO.Browser) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new MixedChartPage(browser);
     await browser.url(url);
-    await testFn(page);
+    await testFn(page, browser);
   });
 }
