@@ -79,6 +79,7 @@ interface TabHeaderBarProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   i18nStrings?: TabsProps.I18nStrings;
+  actions?: TabsProps['actions'];
 }
 
 export function TabHeaderBar({
@@ -90,6 +91,7 @@ export function TabHeaderBar({
   ariaLabel,
   ariaLabelledby,
   i18nStrings,
+  actions,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -289,54 +291,56 @@ export function TabHeaderBar({
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
 
   return (
-    //converted span to div as list should not be a child of span for HTML validation
-    <div className={classes} ref={containerRef}>
-      {horizontalOverflow && (
-        <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
-          <InternalButton
-            formAction="none"
-            variant="icon"
-            iconName="angle-left"
-            disabled={!inlineStartOverflow}
-            __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 'backward')}
-            ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
-          />
-        </span>
-      )}
-      <SingleTabStopNavigationProvider
-        ref={navigationAPI}
-        navigationActive={true}
-        getNextFocusTarget={getNextFocusTarget}
-        onUnregisterActive={onUnregisterActive}
-      >
-        <TabList
-          {...tabActionAttributes}
-          className={clsx(styles['tabs-header-list'], analyticsSelectors['tabs-header-list'])}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledby}
-          ref={headerBarRef as never}
-          onScroll={onScroll}
-          onKeyDown={onKeyDown}
-          onFocus={onFocus}
-          onBlur={onBlur}
+    <div className={classes}>
+      <div className={styles['tab-header-scroll-container']} ref={containerRef}>
+        {horizontalOverflow && (
+          <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="angle-left"
+              disabled={!inlineStartOverflow}
+              __focusable={true}
+              onClick={() => onPaginationClick(headerBarRef, 'backward')}
+              ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
+            />
+          </span>
+        )}
+        <SingleTabStopNavigationProvider
+          ref={navigationAPI}
+          navigationActive={true}
+          getNextFocusTarget={getNextFocusTarget}
+          onUnregisterActive={onUnregisterActive}
         >
-          {tabs.map(renderTabHeader)}
-        </TabList>
-      </SingleTabStopNavigationProvider>
-      {horizontalOverflow && (
-        <span className={rightButtonClasses}>
-          <InternalButton
-            formAction="none"
-            variant="icon"
-            iconName="angle-right"
-            disabled={!inlineEndOverflow}
-            __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 'forward')}
-            ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
-          />
-        </span>
-      )}
+          <TabList
+            {...tabActionAttributes}
+            className={clsx(styles['tabs-header-list'], analyticsSelectors['tabs-header-list'])}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
+            ref={headerBarRef as never}
+            onScroll={onScroll}
+            onKeyDown={onKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          >
+            {tabs.map(renderTabHeader)}
+          </TabList>
+        </SingleTabStopNavigationProvider>
+        {horizontalOverflow && (
+          <span className={rightButtonClasses}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="angle-right"
+              disabled={!inlineEndOverflow}
+              __focusable={true}
+              onClick={() => onPaginationClick(headerBarRef, 'forward')}
+              ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
+            />
+          </span>
+        )}
+      </div>
+      {actions && <div className={styles['actions-container']}>{actions}</div>}
     </div>
   );
 
