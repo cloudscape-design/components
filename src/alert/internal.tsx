@@ -118,7 +118,7 @@ const InternalAlert = React.forwardRef(
         className={clsx(
           styles.root,
           { [styles.hidden]: !visible, [styles['initial-hidden']]: initialHidden },
-          baseProps.className
+          baseProps.className,
         )}
         ref={containerRef}
       >

@@ -1,14 +1,38 @@
 .theme {
+  // backgroundColor
+  &.theme-background-color { 
+    --theme-background-color-alert: var(--theme-background-color);
+  }
+
+  // borderColor
+  &.theme-border-color { 
+    --theme-border-color-alert: var(--theme-border-color);
+  }
+
+  // borderRadius
   &.theme-border-radius-none { --theme-border-radius-alert: 0px; }
   &.theme-border-radius-small { --theme-border-radius-alert: 8px; }
   &.theme-border-radius-medium { --theme-border-radius-alert: 16px; }
   &.theme-border-radius-large { --theme-border-radius-alert: 24px; }
+
+  // borderWidth
   &.theme-border-width-none { --theme-border-width-alert: 0px; }
   &.theme-border-width-small { --theme-border-width-alert: 1px; }
   &.theme-border-width-medium { --theme-border-width-alert: 2px; }
   &.theme-border-width-large { --theme-border-width-alert: 3px; }
-  //
-  &.theme-background-color { 
-    --theme-background-color-alert: transparent;
-   }
+
+  // color
+  &.theme-color { 
+    --theme-color-alert: var(--theme-color);
+  }
+
+  // fontFamily
+  &.theme-font-family { 
+    --theme-font-family-alert: var(--theme-font-family);
+  }
+
+  // fontSize
+  &.theme-font-size { 
+    --theme-font-size-alert: var(--theme-font-size);
+  }
 }
