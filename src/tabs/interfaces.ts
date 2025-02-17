@@ -25,6 +25,10 @@ export interface TabsProps extends BaseComponentProps {
    *    ALT, SHIFT, META). This enables the user to open new browser tabs with an initially selected component tab,
    *    if your application routing can handle such deep links. You can manually update routing on the current page
    *    using the `activeTabHref` property of the `change` event's detail.
+   * - `contentRenderStrategy` (string) - (Optional) Determines when tab content is rendered:
+       - `'active'`: (Default) Only render content when the tab is active.
+   *   - `'eager'`: Always render tab content (hidden when the tab is not active).
+   *   - `'lazy'`: Like 'eager', but content is only rendered after the tab is first activated.
    */
   tabs: ReadonlyArray<TabsProps.Tab>;
 
@@ -142,6 +146,13 @@ export namespace TabsProps {
      * using the `activeTabHref` property of the `change` event's detail.
      */
     href?: string;
+    /**
+     * Determines when tab content is rendered:
+     * - 'active' (default): Only render content when the tab is active.
+     * - 'eager': Always render tab content (hidden when the tab is not active).
+     * - 'lazy': Like 'eager', but content is only rendered after the tab is first activated.
+     */
+    contentRenderStrategy?: 'active' | 'eager' | 'lazy';
   }
 
   export interface ChangeDetail {

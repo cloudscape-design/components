@@ -194,6 +194,39 @@ describe('Tabs', () => {
     });
   });
 
+  test('renders tabs with contentRenderStrategy: eager', () => {
+    const tabs = renderTabs(
+      <Tabs tabs={defaultTabs.map(tab => ({ ...tab, contentRenderStrategy: 'eager' }))} />
+    ).wrapper;
+    const tabContents = tabs.findAllByClassName(styles['tabs-content']);
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).not.toBeEmptyDOMElement();
+  });
+
+  test('renders tabs with contentRenderStrategy: lazy', () => {
+    const tabs = renderTabs(
+      <Tabs tabs={defaultTabs.map(tab => ({ ...tab, contentRenderStrategy: 'lazy' }))} />
+    ).wrapper;
+    const tabContents = tabs.findAllByClassName(styles['tabs-content']);
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).toBeEmptyDOMElement();
+    tabs.findTabLinkByIndex(2)!.click();
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).not.toBeEmptyDOMElement();
+  });
+
+  test('renders tabs with contentRenderStrategy: active', () => {
+    const tabs = renderTabs(
+      <Tabs tabs={defaultTabs.map(tab => ({ ...tab, contentRenderStrategy: 'active' }))} />
+    ).wrapper;
+    const tabContents = tabs.findAllByClassName(styles['tabs-content']);
+    expect(tabContents[0].getElement()).not.toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).toBeEmptyDOMElement();
+    tabs.findTabLinkByIndex(2)!.click();
+    expect(tabContents[0].getElement()).toBeEmptyDOMElement();
+    expect(tabContents[1].getElement()).not.toBeEmptyDOMElement();
+  });
+
   describe('Active tab', () => {
     test('does not render any tab as active if active tab id is set on a disabled tab', () => {
       const tabs = renderTabs(<Tabs tabs={defaultTabs} activeTabId="third" onChange={() => void 0} />).wrapper;
