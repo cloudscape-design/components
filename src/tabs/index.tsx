@@ -52,6 +52,7 @@ export default function Tabs({
   disableContentPaddings = false,
   i18nStrings,
   fitHeight,
+  keyboardActivationMode = 'automatic',
   actions,
   ...rest
 }: TabsProps) {
@@ -59,7 +60,7 @@ export default function Tabs({
     checkSafeUrl('Tabs', tab.href);
   }
   const { __internalRootRef } = useBaseComponent('Tabs', {
-    props: { disableContentPaddings, variant, fitHeight },
+    props: { disableContentPaddings, variant, fitHeight, keyboardActivationMode },
     metadata: {
       hasActions: tabs.some(tab => !!tab.action),
       hasHeaderActions: !!actions,
@@ -151,6 +152,7 @@ export default function Tabs({
         fireNonCancelableEvent(onChange, changeDetail);
       }}
       i18nStrings={i18nStrings}
+      keyboardActivationMode={keyboardActivationMode}
     />
   );
 
