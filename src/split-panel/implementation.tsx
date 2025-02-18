@@ -1,13 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarPublicEnabled } from '../app-layout/utils/feature-flags';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
-import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { InternalButton } from '../button/internal';
 import { getBaseProps } from '../internal/base-component';
 import PanelResizeHandle from '../internal/components/panel-resize-handle';
@@ -40,9 +39,7 @@ export function SplitPanelImplementation({
   ...restProps
 }: SplitPanelImplementationProps) {
   const isRefresh = useVisualRefresh();
-  const isToolbarPrivate = useAppLayoutToolbarEnabled();
-  const isToolbarPublic = useContext(AppLayoutToolbarPublicContext) ?? false;
-  const isToolbar = isToolbarPublic || isToolbarPrivate;
+  const isToolbar = useAppLayoutToolbarPublicEnabled();
 
   const {
     position,
