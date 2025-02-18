@@ -11,12 +11,25 @@ import { pascalCase } from 'change-case';
 
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-const componentWithMultipleRootElements = ['top-navigation', 'app-layout'];
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
+  useVisualRefresh: jest.fn().mockReturnValue(true),
+}));
+
+beforeEach(() => {
+  jest.mocked(useVisualRefresh).mockReturnValue(true);
+});
+
+afterEach(() => {
+  jest.mocked(useVisualRefresh).mockReset();
+});
+
+const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-layout-toolbar'];
 const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));
 
