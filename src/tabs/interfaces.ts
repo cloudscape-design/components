@@ -25,8 +25,20 @@ export interface TabsProps extends BaseComponentProps {
    *    ALT, SHIFT, META). This enables the user to open new browser tabs with an initially selected component tab,
    *    if your application routing can handle such deep links. You can manually update routing on the current page
    *    using the `activeTabHref` property of the `change` event's detail.
+   * - `contentRenderStrategy` (string) - (Optional) Determines when tab content is rendered:
+       - `'active'`: (Default) Only render content when the tab is active.
+   *   - `'eager'`: Always render tab content (hidden when the tab is not active).
+   *   - `'lazy'`: Like 'eager', but content is only rendered after the tab is first activated.
    */
   tabs: ReadonlyArray<TabsProps.Tab>;
+
+  /**
+   * Actions for the tabs header, displayed next to the list of tabs.
+   * Use this to add a button or button dropdown that performs actions on the
+   * entire tab list. We recommend a maximum of one interactive element to
+   * minimize the number of keyboard tab stops between the tab list and content.
+   */
+  actions?: React.ReactNode;
 
   /**
    * The possible visual variants of tabs are the following:
@@ -78,6 +90,16 @@ export interface TabsProps extends BaseComponentProps {
    * If the tab content is too short, it will stretch. If the tab content is too long, a vertical scrollbar will be shown.
    */
   fitHeight?: boolean;
+  /**
+   * Determines how the active tab is switched when navigating using
+   * the keyboard. The options are:
+   * - 'automatic' (default): the active tab is switched using the arrow keys.
+   * - 'manual': a tab must be explicitly activated using the enter/space key.
+   * We recommend using 'automatic' in most situations to provide consistent
+   * and quick switching between tabs. Use 'manual' only if there is a specific
+   * need to introduce friction to the switching of tabs.
+   */
+  keyboardActivationMode?: 'automatic' | 'manual';
 }
 export namespace TabsProps {
   export type Variant = 'default' | 'container' | 'stacked';
@@ -134,6 +156,13 @@ export namespace TabsProps {
      * using the `activeTabHref` property of the `change` event's detail.
      */
     href?: string;
+    /**
+     * Determines when tab content is rendered:
+     * - 'active' (default): Only render content when the tab is active.
+     * - 'eager': Always render tab content (hidden when the tab is not active).
+     * - 'lazy': Like 'eager', but content is only rendered after the tab is first activated.
+     */
+    contentRenderStrategy?: 'active' | 'eager' | 'lazy';
   }
 
   export interface ChangeDetail {
