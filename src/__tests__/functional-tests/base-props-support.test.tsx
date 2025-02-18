@@ -3,20 +3,20 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent, supportsDOMProperties } from '../utils';
 
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(true),
-}));
+const globalWithFlags = globalThis as any;
 
 beforeEach(() => {
-  jest.mocked(useVisualRefresh).mockReturnValue(true);
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
 });
 
 afterEach(() => {
-  jest.mocked(useVisualRefresh).mockReset();
+  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+  clearVisualRefreshState();
 });
 
 describe('Base props support', () => {
