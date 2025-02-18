@@ -9,24 +9,24 @@ import { render } from 'react-dom';
 import { render as renderTestingLibrary } from '@testing-library/react';
 import { pascalCase } from 'change-case';
 
-import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
-
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
 import createWrapperSelectors from '../../../lib/components/test-utils/selectors';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-const globalWithFlags = globalThis as any;
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
+  useVisualRefresh: jest.fn().mockReturnValue(true),
+}));
 
 beforeEach(() => {
-  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+  jest.mocked(useVisualRefresh).mockReturnValue(true);
 });
 
 afterEach(() => {
-  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
-  clearVisualRefreshState();
+  jest.mocked(useVisualRefresh).mockReset();
 });
 
 const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-layout-toolbar'];

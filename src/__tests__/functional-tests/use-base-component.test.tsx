@@ -5,21 +5,22 @@ import { render } from '@testing-library/react';
 import { pascalCase } from 'change-case';
 
 import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
-import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
 
 import { PACKAGE_VERSION } from '../../../lib/components/internal/environment';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent, supportsDOMProperties } from '../utils';
 
-const globalWithFlags = globalThis as any;
+jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
+  useVisualRefresh: jest.fn().mockReturnValue(true),
+}));
 
 beforeEach(() => {
-  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+  jest.mocked(useVisualRefresh).mockReturnValue(true);
 });
 
 afterEach(() => {
-  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
-  clearVisualRefreshState();
+  jest.mocked(useVisualRefresh).mockReset();
 });
 
 describe('useBaseComponent hook is used in all allowlisted public components', () => {
