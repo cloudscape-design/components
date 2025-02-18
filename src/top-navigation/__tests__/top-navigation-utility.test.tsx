@@ -99,7 +99,7 @@ describe('TopNavigation Utility part', () => {
       const buttonWrapper = renderUtility({ definition: { type: 'button', onClick } }).findButtonLinkType()!;
       buttonWrapper.click();
 
-      expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
+      expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: {} }));
     });
   });
 

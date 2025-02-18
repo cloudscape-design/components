@@ -95,7 +95,7 @@ describe('createWrapper', () => {
 
     createWrapperDom(container);
 
-    expect(spy).not.toBeCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 
   test('given detached node when creating a wrapper then a warning is printed', () => {
@@ -104,7 +104,7 @@ describe('createWrapper', () => {
 
     createWrapperDom(container);
 
-    expect(spy).toBeCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(1);
   });
 
   test('given node rendered with "@testing-library/react" when creating a wrapper then no warning is printed', () => {
@@ -112,7 +112,7 @@ describe('createWrapper', () => {
 
     createWrapperDom(container);
 
-    expect(spy).not.toBeCalled();
+    expect(spy).not.toHaveBeenCalled();
   });
 });
 

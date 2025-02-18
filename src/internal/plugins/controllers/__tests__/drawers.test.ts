@@ -88,7 +88,7 @@ describe('update drawer', () => {
 
   test('throw error if the update drawer is not registered', () => {
     const drawers = new DrawersController();
-    expect(() => drawers.updateDrawer({ id: 'test-drawer' } as UpdateDrawerConfig)).toThrowError(
+    expect(() => drawers.updateDrawer({ id: 'test-drawer' } as UpdateDrawerConfig)).toThrow(
       '[AwsUi] [runtime drawers] drawer with id test-drawer not found'
     );
   });

@@ -161,7 +161,7 @@ describe('Series', () => {
       );
     });
 
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   test('supports time-based line series', () => {
@@ -183,7 +183,7 @@ describe('Series', () => {
       );
     });
 
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   it('excludes invalid categorical data points from a line chart', () => {
@@ -227,7 +227,7 @@ describe('Series', () => {
           );
         });
 
-        expect(consoleSpy).not.toBeCalled();
+        expect(consoleSpy).not.toHaveBeenCalled();
       });
 
       test('with time data', () => {
@@ -255,7 +255,7 @@ describe('Series', () => {
           );
         });
 
-        expect(consoleSpy).not.toBeCalled();
+        expect(consoleSpy).not.toHaveBeenCalled();
       });
 
       test('with number data', () => {
@@ -283,7 +283,7 @@ describe('Series', () => {
           );
         });
 
-        expect(consoleSpy).not.toBeCalled();
+        expect(consoleSpy).not.toHaveBeenCalled();
       });
     })
   );
@@ -317,7 +317,7 @@ describe('Series', () => {
               expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
             );
 
-            expect(consoleSpy).not.toBeCalled();
+            expect(consoleSpy).not.toHaveBeenCalled();
           });
 
           test(`${testDescription} with negative values`, () => {
@@ -344,7 +344,7 @@ describe('Series', () => {
               expect(wrapper.findSeries()[i].getElement()).toHaveAttribute('aria-label', chartSeries.title)
             );
 
-            expect(consoleSpy).not.toBeCalled();
+            expect(consoleSpy).not.toHaveBeenCalled();
           });
         })
       )
@@ -355,7 +355,7 @@ describe('Series', () => {
     renderMixedChart(
       <MixedLineBarChart series={[barSeries, thresholdSeries]} xScaleType="categorical" horizontalBars={true} />
     );
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     renderMixedChart(
       <MixedLineBarChart
@@ -364,7 +364,7 @@ describe('Series', () => {
         horizontalBars={true}
       />
     );
-    expect(consoleSpy).lastCalledWith(
+    expect(consoleSpy).toHaveBeenLastCalledWith(
       '[AwsUi] [MixedLineBarChart] Property horizontalBars can only be used with charts that contain only bar or threshold series.'
     );
   });
@@ -448,10 +448,10 @@ describe('Series', () => {
 
   test('should warn when `series` changes with uncontrolled `visibleSeries`', () => {
     const { rerender } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     rerender(<MixedLineBarChart series={[lineSeries]} />);
-    expect(consoleSpy).lastCalledWith(
+    expect(consoleSpy).toHaveBeenLastCalledWith(
       '[AwsUi] [MixedLineBarChart] The `series` value passed into the component changed. ' +
         'This may cause problems with filtering - we recommend that you make the `series` value constant, ' +
         'or provide a `visibleSeries` value that derives from the current `series` value.'
@@ -461,44 +461,44 @@ describe('Series', () => {
   test('should not warn when `series` is constant with uncontrolled `visibleSeries`', () => {
     const series = [lineSeries];
     const { rerender } = renderMixedChart(<MixedLineBarChart series={series} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     rerender(<MixedLineBarChart series={series} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   test('should not warn about `series` changes when `visibleSeries` is controlled', () => {
     const { rerender } = renderMixedChart(
       <MixedLineBarChart series={[lineSeries]} visibleSeries={[lineSeries]} onFilterChange={() => {}} />
     );
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     rerender(<MixedLineBarChart series={[lineSeries]} visibleSeries={[lineSeries]} onFilterChange={() => {}} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   test('should not warn about `series` changes when filter is hidden', () => {
     const { rerender } = renderMixedChart(<MixedLineBarChart series={[lineSeries]} hideFilter={true} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     rerender(<MixedLineBarChart series={[lineSeries]} hideFilter={true} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
   });
 
   test('should warn when threshold series definition is incorrect', () => {
     renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold', x: 0 }]} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold', y: 0 }]} />);
-    expect(consoleSpy).not.toBeCalled();
+    expect(consoleSpy).not.toHaveBeenCalled();
 
     renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold', x: 0, y: 0 }]} />);
-    expect(consoleSpy).lastCalledWith(
+    expect(consoleSpy).toHaveBeenLastCalledWith(
       '[AwsUi] [MixedLineBarChart] Series of type "threshold" must contain either x or y property.'
     );
 
     renderMixedChart(<MixedLineBarChart series={[{ type: 'threshold', title: 'Threshold' }]} />);
-    expect(consoleSpy).lastCalledWith(
+    expect(consoleSpy).toHaveBeenLastCalledWith(
       '[AwsUi] [MixedLineBarChart] Series of type "threshold" must contain either x or y property.'
     );
   });
@@ -519,7 +519,7 @@ describe('Scales', () => {
     (['linear', 'time'] as const).forEach(scaleType => {
       renderMixedChart(<MixedLineBarChart series={[barSeries]} xScaleType={scaleType} />);
 
-      expect(consoleSpy).lastCalledWith(
+      expect(consoleSpy).toHaveBeenLastCalledWith(
         `[AwsUi] [MixedLineBarChart] Bar series cannot be used with a ${scaleType} scale. Use a categorical x axis instead.`
       );
     });

@@ -887,7 +887,7 @@ describe('Tabs', () => {
       wrapper.findActiveTab()!.getElement().focus();
       pressRight(wrapper);
 
-      expect(requestAnimationFrameSpy).not.toBeCalledTimes(0);
+      expect(requestAnimationFrameSpy).not.toHaveBeenCalledTimes(0);
       requestAnimationFrameSpy.mockRestore();
     });
 
