@@ -16620,6 +16620,27 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": ""automatic"",
+      "description": "Determines how the active tab is switched when navigating using
+the keyboard. The options are:
+- 'automatic' (default): the active tab is switched using the arrow keys.
+- 'manual': a tab must be explicitly activated using the enter/space key.
+We recommend using 'automatic' in most situations to provide consistent
+and quick switching between tabs. Use 'manual' only if there is a specific
+need to introduce friction to the switching of tabs.",
+      "inlineType": {
+        "name": "",
+        "type": "union",
+        "values": [
+          "automatic",
+          "manual",
+        ],
+      },
+      "name": "keyboardActivationMode",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "description": "Specifies the tabs to display. Each tab object has the following properties:
 - \`id\` (string) - The tab identifier. This value needs to be passed to the Tabs component as \`activeTabId\` to select this tab.
 - \`label\` (ReactNode) - Tab label shown in the UI.
@@ -16638,6 +16659,10 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
    ALT, SHIFT, META). This enables the user to open new browser tabs with an initially selected component tab,
    if your application routing can handle such deep links. You can manually update routing on the current page
    using the \`activeTabHref\` property of the \`change\` event's detail.
+- \`contentRenderStrategy\` (string) - (Optional) Determines when tab content is rendered:
+- \`'active'\`: (Default) Only render content when the tab is active.
+  - \`'eager'\`: Always render tab content (hidden when the tab is not active).
+  - \`'lazy'\`: Like 'eager', but content is only rendered after the tab is first activated.
 ",
       "name": "tabs",
       "optional": false,
@@ -16664,7 +16689,16 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "visualRefreshTag": "\`stacked\` variant",
     },
   ],
-  "regions": [],
+  "regions": [
+    {
+      "description": "Actions for the tabs header, displayed next to the list of tabs.
+Use this to add a button or button dropdown that performs actions on the
+entire tab list. We recommend a maximum of one interactive element to
+minimize the number of keyboard tab stops between the tab list and content.",
+      "isDefault": false,
+      "name": "actions",
+    },
+  ],
   "releaseStatus": "stable",
 }
 `;

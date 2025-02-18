@@ -124,4 +124,8 @@ export default class TabsWrapper extends ComponentWrapper<HTMLButtonElement> {
   findActiveTabAction(): ElementWrapper | null {
     return this.find(`.${styles['tabs-tab-active']} .${styles['tabs-tab-action']}`);
   }
+
+  findActions(): ElementWrapper | null {
+    return this.find(`.${styles['actions-container']}`);
+  }
 }

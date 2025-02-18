@@ -79,6 +79,8 @@ interface TabHeaderBarProps {
   ariaLabel?: string;
   ariaLabelledby?: string;
   i18nStrings?: TabsProps.I18nStrings;
+  keyboardActivationMode: Required<TabsProps['keyboardActivationMode']>;
+  actions?: TabsProps['actions'];
 }
 
 export function TabHeaderBar({
@@ -90,6 +92,8 @@ export function TabHeaderBar({
   ariaLabel,
   ariaLabelledby,
   i18nStrings,
+  keyboardActivationMode,
+  actions,
 }: TabHeaderBarProps) {
   const headerBarRef = useRef<HTMLUListElement>(null);
   const activeTabHeaderRef = useRef<null | HTMLElement>(null);
@@ -222,7 +226,15 @@ export function TabHeaderBar({
 
   function onKeyDown(event: React.KeyboardEvent) {
     const focusTarget = document.activeElement;
-    const specialKeys = [KeyCode.right, KeyCode.left, KeyCode.end, KeyCode.home, KeyCode.pageUp, KeyCode.pageDown];
+    const specialKeys = [
+      KeyCode.right,
+      KeyCode.left,
+      KeyCode.end,
+      KeyCode.home,
+      KeyCode.pageUp,
+      KeyCode.pageDown,
+      KeyCode.space,
+    ];
     const isActionOpen = document.querySelector(`.${styles['tabs-tab-action']} [aria-expanded="true"]`);
     const isDismissOrActionFocused = !focusTarget?.classList.contains(styles['tabs-tab-link']);
 
@@ -252,6 +264,10 @@ export function TabHeaderBar({
       onInlineEnd: () => focusElement(focusables[circleIndex(activeIndex + 1, [0, focusables.length - 1])]),
       onPageDown: () => inlineEndOverflow && onPaginationClick(headerBarRef, 'forward'),
       onPageUp: () => inlineStartOverflow && onPaginationClick(headerBarRef, 'backward'),
+      onActivate: () =>
+        focusedTabId &&
+        focusedTabId !== activeTabId &&
+        onChange({ activeTabId: focusedTabId, activeTabHref: tabs.find(tab => tab.id === focusedTabId)?.href }),
     });
   }
   function focusElement(element: HTMLElement) {
@@ -264,7 +280,7 @@ export function TabHeaderBar({
         setPreviousActiveTabId(tabId);
         setFocusedTabId(tabId);
 
-        if (!tabsById.get(tabId)?.disabled) {
+        if (!tabsById.get(tabId)?.disabled && keyboardActivationMode === 'automatic') {
           onChange({ activeTabId: tabId, activeTabHref: tabsById.get(tabId)?.href });
         }
         break;
@@ -289,54 +305,56 @@ export function TabHeaderBar({
   const TabList = hasActionOrDismissible ? 'div' : 'ul';
 
   return (
-    //converted span to div as list should not be a child of span for HTML validation
-    <div className={classes} ref={containerRef}>
-      {horizontalOverflow && (
-        <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
-          <InternalButton
-            formAction="none"
-            variant="icon"
-            iconName="angle-left"
-            disabled={!inlineStartOverflow}
-            __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 'backward')}
-            ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
-          />
-        </span>
-      )}
-      <SingleTabStopNavigationProvider
-        ref={navigationAPI}
-        navigationActive={true}
-        getNextFocusTarget={getNextFocusTarget}
-        onUnregisterActive={onUnregisterActive}
-      >
-        <TabList
-          {...tabActionAttributes}
-          className={clsx(styles['tabs-header-list'], analyticsSelectors['tabs-header-list'])}
-          aria-label={ariaLabel}
-          aria-labelledby={ariaLabelledby}
-          ref={headerBarRef as never}
-          onScroll={onScroll}
-          onKeyDown={onKeyDown}
-          onFocus={onFocus}
-          onBlur={onBlur}
+    <div className={classes}>
+      <div className={styles['tab-header-scroll-container']} ref={containerRef}>
+        {horizontalOverflow && (
+          <span ref={inlineStartOverflowButton} className={leftButtonClasses}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="angle-left"
+              disabled={!inlineStartOverflow}
+              __focusable={true}
+              onClick={() => onPaginationClick(headerBarRef, 'backward')}
+              ariaLabel={i18n('i18nStrings.scrollLeftAriaLabel', i18nStrings?.scrollLeftAriaLabel)}
+            />
+          </span>
+        )}
+        <SingleTabStopNavigationProvider
+          ref={navigationAPI}
+          navigationActive={true}
+          getNextFocusTarget={getNextFocusTarget}
+          onUnregisterActive={onUnregisterActive}
         >
-          {tabs.map(renderTabHeader)}
-        </TabList>
-      </SingleTabStopNavigationProvider>
-      {horizontalOverflow && (
-        <span className={rightButtonClasses}>
-          <InternalButton
-            formAction="none"
-            variant="icon"
-            iconName="angle-right"
-            disabled={!inlineEndOverflow}
-            __focusable={true}
-            onClick={() => onPaginationClick(headerBarRef, 'forward')}
-            ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
-          />
-        </span>
-      )}
+          <TabList
+            {...tabActionAttributes}
+            className={clsx(styles['tabs-header-list'], analyticsSelectors['tabs-header-list'])}
+            aria-label={ariaLabel}
+            aria-labelledby={ariaLabelledby}
+            ref={headerBarRef as never}
+            onScroll={onScroll}
+            onKeyDown={onKeyDown}
+            onFocus={onFocus}
+            onBlur={onBlur}
+          >
+            {tabs.map(renderTabHeader)}
+          </TabList>
+        </SingleTabStopNavigationProvider>
+        {horizontalOverflow && (
+          <span className={rightButtonClasses}>
+            <InternalButton
+              formAction="none"
+              variant="icon"
+              iconName="angle-right"
+              disabled={!inlineEndOverflow}
+              __focusable={true}
+              onClick={() => onPaginationClick(headerBarRef, 'forward')}
+              ariaLabel={i18n('i18nStrings.scrollRightAriaLabel', i18nStrings?.scrollRightAriaLabel)}
+            />
+          </span>
+        )}
+      </div>
+      {actions && <div className={styles['actions-container']}>{actions}</div>}
     </div>
   );
 
