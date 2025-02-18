@@ -240,7 +240,7 @@ describe('Code editor component', () => {
     const textarea = editorMock.renderer.textarea;
     editorMock.renderer.textarea = null as any;
 
-    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrowError();
+    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrow();
 
     editorMock.renderer.textarea = textarea;
 
@@ -425,7 +425,7 @@ describe('Code editor component', () => {
 
     wrapper.findErrorsTab()!.click();
 
-    expect(onSubmit).not.toBeCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('closes the Pane on ESC', () => {
@@ -514,16 +514,16 @@ describe('Code editor component', () => {
     editorMock.resize.mockClear();
     fireEvent.mouseDown(wrapper.findByClassName(resizableStyles['resizable-box-handle'])!.getElement());
     fireEvent.mouseMove(document.body, { clientY: 100 });
-    expect(editorMock.resize).toBeCalledTimes(1);
+    expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
 
   it('calls resize on initial render', () => {
     renderCodeEditor();
-    expect(editorMock.resize).toBeCalledTimes(1);
+    expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
   it('calls resize on initial render when editorHeight is set', () => {
     renderCodeEditor({ editorContentHeight: 240 });
-    expect(editorMock.resize).toBeCalledTimes(1);
+    expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
   it('should log a warning when no onEditorContentResize is undefined', () => {
     render(<CodeEditor {...defaultProps} editorContentHeight={240} />);

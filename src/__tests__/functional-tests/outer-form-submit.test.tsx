@@ -33,7 +33,7 @@ describe('Check outer form submission', () => {
           .querySelectorAll('button')
           .forEach(button => button.click());
 
-        expect(onSubmit).not.toBeCalled();
+        expect(onSubmit).not.toHaveBeenCalled();
       });
     });
 });

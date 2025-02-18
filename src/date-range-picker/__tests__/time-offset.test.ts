@@ -117,7 +117,7 @@ describe('Date range picker', () => {
       expect(
         normalizeTimeOffset({ type: 'absolute', startDate: '2020-06-01', endDate: '2021-06-01' }, getTimeOffset, 3)
       ).toEqual({ startDate: 2, endDate: 1 });
-      expect(getTimeOffset).toBeCalledTimes(2);
+      expect(getTimeOffset).toHaveBeenCalledTimes(2);
     });
 
     test('converts getTimeOffset argument to UTC', () => {
@@ -128,24 +128,24 @@ describe('Date range picker', () => {
         getTimeOffset
       );
 
-      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
-      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
+      expect(getTimeOffset).toHaveBeenCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
+      expect(getTimeOffset).toHaveBeenCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
 
       normalizeTimeOffset(
         { type: 'absolute', startDate: '2020-01-01T00:00:00Z', endDate: '2020-06-01T23:59:59Z' },
         getTimeOffset
       );
 
-      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
-      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
+      expect(getTimeOffset).toHaveBeenCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
+      expect(getTimeOffset).toHaveBeenCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
 
       normalizeTimeOffset(
         { type: 'absolute', startDate: '2020-01-01T00:00:00+01:00', endDate: '2020-06-01T23:59:59+02:00' },
         getTimeOffset
       );
 
-      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
-      expect(getTimeOffset).toBeCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
+      expect(getTimeOffset).toHaveBeenCalledWith(new Date(Date.UTC(2020, 0, 1, 0, 0, 0)));
+      expect(getTimeOffset).toHaveBeenCalledWith(new Date(Date.UTC(2020, 5, 1, 23, 59, 59)));
     });
   });
 });

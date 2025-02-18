@@ -60,7 +60,7 @@ describe('Dropdown Component', () => {
       await runPendingEvents();
 
       act(() => outsideElement.click());
-      expect(handleCloseDropdown).toBeCalled();
+      expect(handleCloseDropdown).toHaveBeenCalled();
     });
 
     test('does not fire close event when a portaled element inside dropdown is clicked', async () => {
@@ -75,7 +75,7 @@ describe('Dropdown Component', () => {
       await runPendingEvents();
 
       act(() => screen.getByTestId('inside').click());
-      expect(handleCloseDropdown).not.toBeCalled();
+      expect(handleCloseDropdown).not.toHaveBeenCalled();
     });
 
     test('does not fire close event when a self-destructible element inside dropdown was clicked', async () => {
@@ -100,7 +100,7 @@ describe('Dropdown Component', () => {
       // NB: this should NOT be wrapped into act or React re-render will happen too late to reproduce the issue
       wrapper.find('[data-testid="dismiss"]')!.click();
 
-      expect(handleCloseDropdown).not.toBeCalled();
+      expect(handleCloseDropdown).not.toHaveBeenCalled();
       expect(screen.getByTestId('after-dismiss')).toBeTruthy();
     });
   });
@@ -115,9 +115,9 @@ describe('Dropdown Component', () => {
       await runPendingEvents();
 
       screen.getByTestId('trigger').focus();
-      expect(handleFocus).toBeCalled();
+      expect(handleFocus).toHaveBeenCalled();
       outsideElement.focus();
-      expect(handleBlur).toBeCalled();
+      expect(handleBlur).toHaveBeenCalled();
     });
 
     test('does not fire focus and event when focus transitions from and to a element in the dropdown, even if portaled', async () => {
@@ -137,8 +137,8 @@ describe('Dropdown Component', () => {
       handleFocus.mockClear();
       screen.getByTestId('inside').focus();
       screen.getByTestId('trigger').focus();
-      expect(handleFocus).not.toBeCalled();
-      expect(handleBlur).not.toBeCalled();
+      expect(handleFocus).not.toHaveBeenCalled();
+      expect(handleBlur).not.toHaveBeenCalled();
     });
   });
 

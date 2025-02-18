@@ -213,10 +213,10 @@ test('calls unmount callback', () => {
   const { unmount } = render(<Alert>Alert content</Alert>);
   const alertWrapper = createWrapper().findAlert()!;
   expectContent(alertWrapper, stylesCss, { content: 'New content', contentReplaced: true });
-  expect(unmountCallback).not.toBeCalled();
+  expect(unmountCallback).not.toHaveBeenCalled();
 
   unmount();
-  expect(unmountCallback).toBeCalled();
+  expect(unmountCallback).toHaveBeenCalled();
 });
 
 test('calls update callback', () => {
@@ -227,12 +227,12 @@ test('calls update callback', () => {
   };
   awsuiPlugins.alertContent.registerContentReplacer(plugin);
   const { rerender } = render(<Alert>Alert content</Alert>);
-  expect(update).toBeCalledTimes(1);
-  expect(plugin.runReplacer).toBeCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(1);
+  expect(plugin.runReplacer).toHaveBeenCalledTimes(1);
 
   rerender(<Alert>Alert new content</Alert>);
-  expect(update).toBeCalledTimes(2);
-  expect(plugin.runReplacer).toBeCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(2);
+  expect(plugin.runReplacer).toHaveBeenCalledTimes(1);
 });
 
 describe('asynchronous rendering', () => {
@@ -303,8 +303,8 @@ describe('asynchronous rendering', () => {
     await waitFor(() => {
       const assertWarningLogged = (method: string) => {
         const message = `"${method}" called after component unmounted`;
-        expect(consoleWarnSpy).toBeCalledWith('[AwsUi]', '[alert-content-replacer]', message);
-        expect(sendPanoramaMetricSpy).toBeCalledWith({
+        expect(consoleWarnSpy).toHaveBeenCalledWith('[AwsUi]', '[alert-content-replacer]', message);
+        expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
           eventContext: 'awsui-runtime-api-warning',
           eventDetail: {
             component: 'alert-content-replacer',
@@ -319,8 +319,8 @@ describe('asynchronous rendering', () => {
       assertWarningLogged('hideContent');
       assertWarningLogged('restoreContent');
       assertWarningLogged('replaceContent');
-      expect(headerFn).not.toBeCalled();
-      expect(contentFn).not.toBeCalled();
+      expect(headerFn).not.toHaveBeenCalled();
+      expect(contentFn).not.toHaveBeenCalled();
     });
   });
 });
