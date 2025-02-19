@@ -239,7 +239,7 @@ describe('Popover', () => {
       await expect(page.hasPopover()).resolves.toBe(true);
       const popover = page.getPopover();
       const buttonDropdown = popover.findContent().findButtonDropdown();
-      expect(page.getElementsCount(buttonDropdown.toSelector())).resolves.toBe(1);
+      await expect(page.getElementsCount(buttonDropdown.toSelector())).resolves.toBe(1);
       await page.keys(['Tab']);
       expect(await page.getFocusedElementText()).toBe('Actions');
       await page.keys(['Tab']);

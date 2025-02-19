@@ -46,8 +46,8 @@ describe('create-items-tree util', () => {
   test('throws if item is not present', () => {
     const tree = createItemsTree(items);
 
-    expect(() => tree.getItemIndex({ id: 'i4', text: 'item4' })).toThrowError();
-    expect(() => tree.getParentIndex({ id: 'i4', text: 'item4' })).toThrowError();
+    expect(() => tree.getItemIndex({ id: 'i4', text: 'item4' })).toThrow();
+    expect(() => tree.getParentIndex({ id: 'i4', text: 'item4' })).toThrow();
   });
 
   test('increments index', () => {

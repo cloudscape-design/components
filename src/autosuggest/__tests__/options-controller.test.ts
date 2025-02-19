@@ -165,12 +165,12 @@ describe('useAutosuggestItems', () => {
     });
 
     result.current[1].selectHighlightedOptionWithKeyboard();
-    expect(onSelectItem).toBeCalledWith({ value: '1', type: 'use-entered', option: { value: '1' } });
+    expect(onSelectItem).toHaveBeenCalledWith({ value: '1', type: 'use-entered', option: { value: '1' } });
     jest.mocked(onSelectItem).mockClear();
 
     result.current[1].moveHighlightWithKeyboard(1);
     result.current[1].selectHighlightedOptionWithKeyboard();
-    expect(onSelectItem).toBeCalledWith(result.current[0].items[0]);
+    expect(onSelectItem).toHaveBeenCalledWith(result.current[0].items[0]);
   });
 
   test('handles large amount of nested options', () => {
@@ -207,19 +207,19 @@ describe('useAutosuggestItems', () => {
       const selectOption = jest.fn();
       const { result } = render(selectOption);
       act(() => result.current[1].selectVisibleOptionWithMouse(2));
-      expect(selectOption).toBeCalledWith(result.current[0].items[2]);
+      expect(selectOption).toHaveBeenCalledWith(result.current[0].items[2]);
     });
     test('does not invoke the callback if the selected index is not in the options array', () => {
       const selectOption = jest.fn();
       const { result } = render(selectOption);
       act(() => result.current[1].selectVisibleOptionWithMouse(5));
-      expect(selectOption).not.toBeCalled();
+      expect(selectOption).not.toHaveBeenCalled();
     });
     test('does not invoke the callback if the corresponding option is not interactive', () => {
       const selectOption = jest.fn();
       const { result } = render(selectOption);
       act(() => result.current[1].selectVisibleOptionWithMouse(1));
-      expect(selectOption).not.toBeCalled();
+      expect(selectOption).not.toHaveBeenCalled();
     });
   });
 });

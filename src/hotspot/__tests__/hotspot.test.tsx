@@ -31,13 +31,13 @@ test('registers and unregisters at the correct times', () => {
     </HotspotContext.Provider>
   );
 
-  expect(context.registerHotspot).toBeCalledTimes(1);
-  expect(context.unregisterHotspot).not.toBeCalled();
+  expect(context.registerHotspot).toHaveBeenCalledTimes(1);
+  expect(context.unregisterHotspot).not.toHaveBeenCalled();
 
   unmount();
 
-  expect(context.registerHotspot).toBeCalledTimes(1);
-  expect(context.unregisterHotspot).toBeCalledTimes(1);
+  expect(context.registerHotspot).toHaveBeenCalledTimes(1);
+  expect(context.unregisterHotspot).toHaveBeenCalledTimes(1);
 });
 
 test('renders content from the context', () => {

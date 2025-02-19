@@ -72,7 +72,7 @@ describe('Legend', () => {
 
       // Verify that no legend is highlighted
       await page.hoverElement(chartWrapper.findFilterContainer().toSelector());
-      await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrowError();
+      await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrow();
     })
   );
 });
@@ -552,7 +552,7 @@ describe('Details popover', () => {
         await page.setWindowSize({ width: 900, height: 550 });
         await page.openPopoverOnBarGroup(1, interactionType);
         const popover = page.findDetailPopover();
-        expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
+        await expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
         const initialRect = await page.getPopoverRect();
         await page.click(popover.findContent().findExpandableSection().toSelector());
         const newRect = await page.getPopoverRect();

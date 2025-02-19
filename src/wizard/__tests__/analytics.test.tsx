@@ -269,8 +269,8 @@ describe('Wizard Analytics', () => {
     rerender(<Wizard steps={DEFAULT_STEPS} i18nStrings={DEFAULT_I18N_SETS[0]} />);
     act(() => void jest.runAllTimers());
 
-    expect(FunnelMetrics.funnelStart).toBeCalledTimes(1);
-    expect(FunnelMetrics.funnelStepStart).toBeCalledTimes(1);
+    expect(FunnelMetrics.funnelStart).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepStart).toHaveBeenCalledTimes(1);
   });
 
   test('sends a funnelComplete metric clicking the submit button', () => {
@@ -286,7 +286,7 @@ describe('Wizard Analytics', () => {
     // funnelComplete is called in the next tick after unmounting
     unmount();
 
-    expect(FunnelMetrics.funnelComplete).toBeCalledTimes(1);
+    expect(FunnelMetrics.funnelComplete).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelComplete).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
@@ -305,7 +305,7 @@ describe('Wizard Analytics', () => {
     // funnelCancel is called in the next tick after unmounting
     unmount();
 
-    expect(FunnelMetrics.funnelCancelled).toBeCalledTimes(1);
+    expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelCancelled).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
@@ -324,7 +324,7 @@ describe('Wizard Analytics', () => {
     render(<Wizard steps={steps} i18nStrings={DEFAULT_I18N_SETS[0]} />);
     act(() => void jest.runAllTimers());
 
-    expect(FunnelMetrics.funnelError).toBeCalledTimes(1);
+    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
     expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),

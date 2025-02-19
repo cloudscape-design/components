@@ -208,7 +208,7 @@ describe('Visual refresh trigger-button (not in appLayoutWidget toolbar)', () =>
         const button = wrapper.find('button')!;
         expect(getByTestId(mockTestId)).toBeTruthy();
         button.click();
-        expect(mockClickSpy).toBeCalledTimes(disabledValue ? 0 : 1);
+        expect(mockClickSpy).toHaveBeenCalledTimes(disabledValue ? 0 : 1);
       });
 
       test('renders an empty button when no iconName and iconSVG prop', () => {
@@ -328,7 +328,7 @@ describe('Visual Refresh Toolbar trigger-button', () => {
     const button = wrapper.find('button')!;
     expect(getByTestId(mockTestId)).toBeTruthy();
     button.click();
-    expect(mockClickSpy).toBeCalledTimes(disabledValue ? 0 : 1);
+    expect(mockClickSpy).toHaveBeenCalledTimes(disabledValue ? 0 : 1);
   });
 
   test('renders an empty button when no iconName and iconSVG prop', () => {

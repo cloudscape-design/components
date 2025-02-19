@@ -215,6 +215,7 @@ const InternalPromptInput = React.forwardRef(
             })}
           >
             {secondaryActions}
+            <div className={styles.buffer} onClick={() => textareaRef.current?.focus()} />
             {hasActionButton && action}
           </div>
         )}

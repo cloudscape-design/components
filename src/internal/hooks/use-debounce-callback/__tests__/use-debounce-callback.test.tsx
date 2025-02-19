@@ -27,9 +27,9 @@ test('calls function with debounce', async () => {
   render(<TestComponent ref={value => (component = value!)} callback={callback} />);
   component!.debounced('one');
   component!.debounced('two');
-  expect(callback).toBeCalledTimes(0);
+  expect(callback).toHaveBeenCalledTimes(0);
   await wait(0);
-  expect(callback).toBeCalledTimes(1);
+  expect(callback).toHaveBeenCalledTimes(1);
   expect(callback).toHaveBeenCalledWith('two');
 });
 
@@ -41,10 +41,10 @@ test('calls the latest function instance', async () => {
   component!.debounced('one');
   rerender(<TestComponent ref={value => (component = value!)} callback={callback2} />);
   component!.debounced('two');
-  expect(callback1).toBeCalledTimes(0);
-  expect(callback2).toBeCalledTimes(0);
+  expect(callback1).toHaveBeenCalledTimes(0);
+  expect(callback2).toHaveBeenCalledTimes(0);
   await wait(0);
-  expect(callback1).toBeCalledTimes(0);
-  expect(callback2).toBeCalledTimes(1);
+  expect(callback1).toHaveBeenCalledTimes(0);
+  expect(callback2).toHaveBeenCalledTimes(1);
   expect(callback2).toHaveBeenCalledWith('two');
 });

@@ -39,7 +39,7 @@ test(
   'Header cover is displayed in full-page variant',
   setupTest({}, async page => {
     await page.windowScrollTo({ top: 300 });
-    expect(page.hasHeaderCover()).resolves.toBe(true);
+    await expect(page.hasHeaderCover()).resolves.toBe(true);
   })
 );
 
@@ -47,7 +47,7 @@ test(
   'Header cover is not displayed in container variant',
   setupTest({ search: 'tableVariant=container' }, async page => {
     await page.windowScrollTo({ top: 300 });
-    expect(page.hasHeaderCover()).resolves.toBe(false);
+    await expect(page.hasHeaderCover()).resolves.toBe(false);
   })
 );
 
@@ -55,7 +55,7 @@ test(
   'Header cover is not displayed in mobile',
   setupTest({ viewport: viewports.mobile }, async page => {
     await page.windowScrollTo({ top: 300 });
-    expect(page.hasHeaderCover()).resolves.toBe(false);
+    await expect(page.hasHeaderCover()).resolves.toBe(false);
   })
 );
 
@@ -64,7 +64,7 @@ test(
   setupTest({}, async page => {
     await page.windowScrollTo({ top: 300 });
     await page.windowScrollTo({ top: 0 });
-    expect(page.hasHeaderCover()).resolves.toBe(false);
+    await expect(page.hasHeaderCover()).resolves.toBe(false);
   })
 );
 
@@ -72,6 +72,6 @@ test(
   'Header cover is not displayed in classic',
   setupTest({ visualRefresh: false }, async page => {
     await page.windowScrollTo({ top: 300 });
-    expect(page.hasHeaderCover()).resolves.toBe(false);
+    await expect(page.hasHeaderCover()).resolves.toBe(false);
   })
 );

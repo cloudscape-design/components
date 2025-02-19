@@ -24,7 +24,7 @@ module.exports = {
     'no-unsanitized',
     'header',
     'simple-import-sort',
-    'no-only-tests',
+    'jest',
   ],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
@@ -90,7 +90,16 @@ module.exports = {
     ],
     'no-warning-comments': 'warn',
     'simple-import-sort/imports': 'error',
-    'no-only-tests/no-only-tests': 'error',
+    'jest/no-alias-methods': 'error',
+    'jest/no-deprecated-functions': 'error',
+    'jest/no-focused-tests': 'error',
+    'jest/no-identical-title': 'error',
+    'jest/no-interpolation-in-snapshots': 'error',
+    'jest/no-jasmine-globals': 'error',
+    'jest/no-test-prefixes': 'error',
+    'jest/valid-describe-callback': 'error',
+    'jest/valid-expect': 'error',
+    'jest/valid-expect-in-promise': 'error',
   },
   settings: {
     react: {

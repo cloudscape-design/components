@@ -98,10 +98,10 @@ describe('Submenu', () => {
     ).find('a')!;
 
     act(() => wrapper.click());
-    expect(onFollow).toBeCalledTimes(1);
+    expect(onFollow).toHaveBeenCalledTimes(1);
 
     act(() => wrapper.click({ ctrlKey: true }));
-    expect(onFollow).toBeCalledTimes(1);
+    expect(onFollow).toHaveBeenCalledTimes(1);
   });
 
   test('onFollow event is not fired when an href is not set', () => {
@@ -119,10 +119,10 @@ describe('Submenu', () => {
     ).find('a')!;
 
     act(() => wrapper.click());
-    expect(onFollow).toBeCalledTimes(0);
+    expect(onFollow).toHaveBeenCalledTimes(0);
 
     act(() => wrapper.click({ ctrlKey: true }));
-    expect(onFollow).toBeCalledTimes(0);
+    expect(onFollow).toHaveBeenCalledTimes(0);
   });
 
   test('onClick is fired on every click when an href is set', () => {
@@ -141,10 +141,10 @@ describe('Submenu', () => {
     ).find('a')!;
 
     act(() => wrapper.click());
-    expect(onClick).toBeCalledTimes(1);
+    expect(onClick).toHaveBeenCalledTimes(1);
 
     act(() => wrapper.click({ ctrlKey: true }));
-    expect(onClick).toBeCalledTimes(2);
+    expect(onClick).toHaveBeenCalledTimes(2);
   });
 
   test('onClick is fired on every click when an href is not set', () => {
@@ -163,10 +163,10 @@ describe('Submenu', () => {
     ).find('a')!;
 
     act(() => wrapper.click());
-    expect(onClick).toBeCalledTimes(1);
+    expect(onClick).toHaveBeenCalledTimes(1);
 
     act(() => wrapper.click({ ctrlKey: true }));
-    expect(onClick).toBeCalledTimes(2);
+    expect(onClick).toHaveBeenCalledTimes(2);
   });
 
   test('onClose is fired when clicking on submenuItem', () => {
@@ -185,7 +185,7 @@ describe('Submenu', () => {
     ).find('a')!;
 
     act(() => wrapper.click());
-    expect(onClose).toBeCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
   });
 
   test('renders menu items with role `button` if no href provided', () => {
@@ -210,18 +210,22 @@ describe('UtilityMenuItem', () => {
     const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
     const linkWrapper = createWrapper(container).find(`a, button`)!;
 
-    expectation
-      ? expect(linkWrapper.getElement()).toHaveAttribute('target', expectation)
-      : expect(linkWrapper.getElement()).not.toHaveAttribute('target');
+    if (expectation) {
+      expect(linkWrapper.getElement()).toHaveAttribute('target', expectation);
+    } else {
+      expect(linkWrapper.getElement()).not.toHaveAttribute('target');
+    }
   });
 
   test.each(linkRelExpectations)('"rel" property %s', (props, expectation) => {
     const { container } = render(<UtilityMenuItem type="button" index={0} {...props} />);
     const linkWrapper = createWrapper(container).find('a, button')!;
 
-    expectation
-      ? expect(linkWrapper.getElement()).toHaveAttribute('rel', expectation)
-      : expect(linkWrapper.getElement()).not.toHaveAttribute('rel');
+    if (expectation) {
+      expect(linkWrapper.getElement()).toHaveAttribute('rel', expectation);
+    } else {
+      expect(linkWrapper.getElement()).not.toHaveAttribute('rel');
+    }
   });
 
   test.each([undefined, 'link', 'primary-button'] as const)(
@@ -234,7 +238,7 @@ describe('UtilityMenuItem', () => {
       const linkWrapper = createWrapper(container).find('a')!;
       linkWrapper.click();
 
-      expect(onClick).toBeCalledWith(expect.objectContaining({ detail: {} }));
+      expect(onClick).toHaveBeenCalledWith(expect.objectContaining({ detail: {} }));
     }
   );
 
@@ -261,9 +265,9 @@ describe('UtilityMenuItem', () => {
     );
 
     act(() => wrapper.find('button')!.click());
-    expect(onClose).toBeCalledTimes(1);
+    expect(onClose).toHaveBeenCalledTimes(1);
 
     act(() => wrapper.find('a')!.click());
-    expect(onClose).toBeCalledTimes(2);
+    expect(onClose).toHaveBeenCalledTimes(2);
   });
 });

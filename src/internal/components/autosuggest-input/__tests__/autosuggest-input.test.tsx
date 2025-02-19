@@ -104,18 +104,18 @@ describe('keyboard interactions', () => {
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(0);
+    expect(onChange).toHaveBeenCalledTimes(0);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(1);
-    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '' } }));
 
     rerender(<AutosuggestInput value="" onChange={onChange} dropdownContent="..." />);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   test('calls respective keyboard handlers on keypress', () => {
@@ -136,29 +136,29 @@ describe('keyboard interactions', () => {
     );
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.down);
-    expect(onPressArrowDown).toBeCalledTimes(1);
-    expect(onKeyDown).toBeCalledTimes(0);
+    expect(onPressArrowDown).toHaveBeenCalledTimes(1);
+    expect(onKeyDown).toHaveBeenCalledTimes(0);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.up);
-    expect(onPressArrowUp).toBeCalledTimes(1);
-    expect(onKeyDown).toBeCalledTimes(0);
+    expect(onPressArrowUp).toHaveBeenCalledTimes(1);
+    expect(onKeyDown).toHaveBeenCalledTimes(0);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.enter);
-    expect(onPressEnter).toBeCalledTimes(1);
-    expect(onKeyDown).toBeCalledTimes(1);
+    expect(onPressEnter).toHaveBeenCalledTimes(1);
+    expect(onKeyDown).toHaveBeenCalledTimes(1);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.escape);
-    expect(onKeyDown).toBeCalledTimes(2);
+    expect(onKeyDown).toHaveBeenCalledTimes(2);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.left);
-    expect(onKeyDown).toBeCalledTimes(3);
+    expect(onKeyDown).toHaveBeenCalledTimes(3);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.enter);
-    expect(onPressEnter).toBeCalledTimes(1);
-    expect(onKeyDown).toBeCalledTimes(4);
+    expect(onPressEnter).toHaveBeenCalledTimes(1);
+    expect(onKeyDown).toHaveBeenCalledTimes(4);
 
     wrapper.findInput().findNativeInput().keydown(KeyCode.right);
-    expect(onKeyDown).toBeCalledTimes(5);
+    expect(onKeyDown).toHaveBeenCalledTimes(5);
   });
 });
 
@@ -249,7 +249,7 @@ describe('blur handling', () => {
     );
     wrapper.findInput().findNativeInput().focus();
     getByTestId('target').focus();
-    expect(onBlur).toBeCalledTimes(1);
+    expect(onBlur).toHaveBeenCalledTimes(1);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
   });
 
@@ -267,7 +267,7 @@ describe('blur handling', () => {
     );
     wrapper.findInput().findNativeInput().focus();
     getByTestId('target').focus();
-    expect(onBlur).not.toBeCalled();
+    expect(onBlur).not.toHaveBeenCalled();
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
   });
 
@@ -286,7 +286,7 @@ describe('blur handling', () => {
     );
     wrapper.findInput().findNativeInput().focus();
     getByTestId('target').focus();
-    expect(onBlur).not.toBeCalled();
+    expect(onBlur).not.toHaveBeenCalled();
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
   });
 
@@ -308,7 +308,7 @@ describe('blur handling', () => {
     );
     wrapper.findInput().findNativeInput().focus();
     fireEvent.mouseDown(getByTestId('target'));
-    expect(onClose).not.toBeCalled();
+    expect(onClose).not.toHaveBeenCalled();
     expect(wrapper.findDropdown()!.findOpenDropdown()).not.toBe(null);
   });
 });

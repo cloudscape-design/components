@@ -830,7 +830,7 @@ describe('Date range picker', () => {
             )
           );
 
-          expect(getTimeOffset).toBeCalledTimes(granularity === 'day' ? 2 : 0);
+          expect(getTimeOffset).toHaveBeenCalledTimes(granularity === 'day' ? 2 : 0);
         });
       });
 

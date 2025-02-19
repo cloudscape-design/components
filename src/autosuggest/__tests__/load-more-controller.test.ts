@@ -12,7 +12,7 @@ describe('Autosuggest load-more-controller', () => {
       initialProps: { options: [], statusType: 'error', onLoadItems },
     });
     act(() => result.current.fireLoadMoreOnInputFocus());
-    expect(onLoadItems).toBeCalledWith({ firstPage: true, samePage: false, filteringText: '' });
+    expect(onLoadItems).toHaveBeenCalledWith({ firstPage: true, samePage: false, filteringText: '' });
   });
 
   test('calls onLoadItems on input change', () => {
@@ -23,9 +23,9 @@ describe('Autosuggest load-more-controller', () => {
     act(() => result.current.fireLoadMoreOnInputChange('a'));
     act(() => result.current.fireLoadMoreOnInputChange('ab'));
     act(() => result.current.fireLoadMoreOnInputChange('ab'));
-    expect(onLoadItems).toBeCalledTimes(2);
-    expect(onLoadItems).toBeCalledWith({ firstPage: true, samePage: false, filteringText: 'a' });
-    expect(onLoadItems).toBeCalledWith({ firstPage: true, samePage: false, filteringText: 'ab' });
+    expect(onLoadItems).toHaveBeenCalledTimes(2);
+    expect(onLoadItems).toHaveBeenCalledWith({ firstPage: true, samePage: false, filteringText: 'a' });
+    expect(onLoadItems).toHaveBeenCalledWith({ firstPage: true, samePage: false, filteringText: 'ab' });
   });
 
   test('calls onLoadItems on recovery click', () => {
@@ -34,7 +34,7 @@ describe('Autosuggest load-more-controller', () => {
       initialProps: { options: [], statusType: 'error', onLoadItems },
     });
     act(() => result.current.fireLoadMoreOnRecoveryClick());
-    expect(onLoadItems).toBeCalledWith({ firstPage: false, samePage: true, filteringText: '' });
+    expect(onLoadItems).toHaveBeenCalledWith({ firstPage: false, samePage: true, filteringText: '' });
   });
 
   test('only calls onLoadItems on scroll when options are not empty and status is pending', () => {
@@ -43,7 +43,7 @@ describe('Autosuggest load-more-controller', () => {
       initialProps: { options: [{ value: 'Option 0' }], statusType: 'pending', onLoadItems },
     });
     act(() => result.current.fireLoadMoreOnScroll());
-    expect(onLoadItems).toBeCalledWith({ firstPage: false, samePage: false, filteringText: '' });
+    expect(onLoadItems).toHaveBeenCalledWith({ firstPage: false, samePage: false, filteringText: '' });
 
     rerender({ options: [], statusType: 'pending', onLoadItems });
     act(() => result.current.fireLoadMoreOnScroll());
@@ -57,7 +57,7 @@ describe('Autosuggest load-more-controller', () => {
     rerender({ options: [{ value: 'Option 0' }], statusType: 'error', onLoadItems });
     act(() => result.current.fireLoadMoreOnScroll());
 
-    expect(onLoadItems).toBeCalledTimes(1);
+    expect(onLoadItems).toHaveBeenCalledTimes(1);
   });
 
   test('returns current filtering text when called on input focus', () => {

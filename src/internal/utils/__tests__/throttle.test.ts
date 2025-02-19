@@ -32,10 +32,10 @@ describe('throttle', () => {
 
     throttled('arg1', 'arg2');
 
-    expect(funcMock).toBeCalledTimes(1);
-    expect(funcMock).toBeCalledWith('arg1', 'arg2');
-    expect(dateNowSpy).toBeCalledTimes(1);
-    expect(requestAnimationFrameSpy).toBeCalledTimes(0);
+    expect(funcMock).toHaveBeenCalledTimes(1);
+    expect(funcMock).toHaveBeenCalledWith('arg1', 'arg2');
+    expect(dateNowSpy).toHaveBeenCalledTimes(1);
+    expect(requestAnimationFrameSpy).toHaveBeenCalledTimes(0);
   });
 
   it('should run the client function three times only', () => {
@@ -50,9 +50,9 @@ describe('throttle', () => {
       tick();
     }
 
-    expect(funcMock).toBeCalledTimes(3);
-    expect(funcMock).toBeCalledWith('arg-0');
-    expect(funcMock).toBeCalledWith('arg-25');
-    expect(funcMock).toBeCalledWith('arg-50');
+    expect(funcMock).toHaveBeenCalledTimes(3);
+    expect(funcMock).toHaveBeenCalledWith('arg-0');
+    expect(funcMock).toHaveBeenCalledWith('arg-25');
+    expect(funcMock).toHaveBeenCalledWith('arg-50');
   });
 });

@@ -366,7 +366,7 @@ describe('grouped token', () => {
     wrapper.findTokens()[0].findGroupTokens()[1].findTokenOperation()!.selectOption(2);
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: {
           operation: 'and',
@@ -391,7 +391,7 @@ describe('grouped token', () => {
     wrapper.findTokens()[0].findGroupTokens()[0].findRemoveButton()!.click();
 
     expect(onChange).toHaveBeenCalledTimes(1);
-    expect(onChange).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: {
           operation: 'and',
@@ -404,7 +404,7 @@ describe('grouped token', () => {
     wrapper.findTokens()[0].findGroupTokens()[1].findRemoveButton()!.click();
 
     expect(onChange).toHaveBeenCalledTimes(2);
-    expect(onChange).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: {
           operation: 'and',
@@ -417,7 +417,7 @@ describe('grouped token', () => {
     wrapper.findTokens()[0].findGroupTokens()[2].findRemoveButton()!.click();
 
     expect(onChange).toHaveBeenCalledTimes(3);
-    expect(onChange).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: {
           operation: 'and',
