@@ -30,11 +30,11 @@ class AppLayoutRefreshNotoficationsPage extends BasePageObject {
   async assertNotificationsWidth(comparison = 0) {
     const contentWidth = await this.getContentWidth();
     if (comparison < 0) {
-      expect(this.getNotificationsWidth()).resolves.toBeLessThan(contentWidth);
+      await expect(this.getNotificationsWidth()).resolves.toBeLessThan(contentWidth);
     } else if (comparison > 0) {
-      expect(this.getNotificationsWidth()).resolves.toBeGreaterThan(contentWidth);
+      await expect(this.getNotificationsWidth()).resolves.toBeGreaterThan(contentWidth);
     } else {
-      expect(this.getNotificationsWidth()).resolves.toEqual(contentWidth);
+      await expect(this.getNotificationsWidth()).resolves.toEqual(contentWidth);
     }
   }
 }

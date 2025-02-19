@@ -78,7 +78,7 @@ describe('Cards Sticky Header', () => {
 
       await page.click(scrollTopToBtn);
 
-      expect(page.getElementScroll(overflowParent)).resolves.toEqual(
+      await expect(page.getElementScroll(overflowParent)).resolves.toEqual(
         expect.objectContaining({ top: 2 * overflowParentPageHeight })
       );
     })
@@ -91,7 +91,9 @@ describe('Cards Sticky Header', () => {
 
       await page.click(scrollTopToBtn);
 
-      expect(page.getElementScroll(overflowParent)).resolves.toEqual(expect.objectContaining({ top: verticalOffset }));
+      await expect(page.getElementScroll(overflowParent)).resolves.toEqual(
+        expect.objectContaining({ top: verticalOffset })
+      );
     })
   );
 
@@ -103,7 +105,9 @@ describe('Cards Sticky Header', () => {
 
       await page.click(scrollTopToBtn);
 
-      expect(page.getElementScroll(overflowParent)).resolves.toEqual(expect.objectContaining({ top: verticalOffset }));
+      await expect(page.getElementScroll(overflowParent)).resolves.toEqual(
+        expect.objectContaining({ top: verticalOffset })
+      );
     })
   );
 
