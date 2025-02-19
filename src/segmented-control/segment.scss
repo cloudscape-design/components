@@ -60,6 +60,10 @@ $segment-divider-width: 1px;
   border-inline: none;
   border-block: none;
 
+  &:not(.refresh) {
+    block-size: calc(100% - $segment-gap - (2 * awsui.$border-width-field));
+  }
+
   &:focus {
     outline: none;
   }
@@ -82,10 +86,6 @@ $segment-divider-width: 1px;
     inline-size: $segment-divider-width;
     background: awsui.$color-border-input-default;
     z-index: 1;
-  }
-
-  &:not(.refresh):not(:last-child)::after {
-    inset-inline-end: calc(-1 * ($segment-gap - $segment-divider-width));
   }
 
   @for $i from 1 through 6 {
