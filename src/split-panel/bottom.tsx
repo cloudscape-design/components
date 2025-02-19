@@ -5,7 +5,7 @@ import clsx from 'clsx';
 
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
-import { useAppLayoutToolbarPublicEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
@@ -33,7 +33,7 @@ export function SplitPanelContentBottom({
   onToggle,
 }: SplitPanelContentBottomProps) {
   const isRefresh = useVisualRefresh();
-  const isToolbar = useAppLayoutToolbarPublicEnabled();
+  const isToolbar = useAppLayoutToolbarDesignEnabled();
   const {
     bottomOffset,
     leftOffset,

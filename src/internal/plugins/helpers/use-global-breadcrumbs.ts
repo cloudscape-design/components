@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
 
-import { useAppLayoutToolbarEnabled } from '../../../app-layout/utils/feature-flags';
+import { useAppLayoutFlagEnabled } from '../../../app-layout/utils/feature-flags';
 import {
   AppLayoutVisibilityContext,
   BreadcrumbsSlotContext,
@@ -45,7 +45,7 @@ function useSetGlobalBreadcrumbsImplementation({
 
 export function useSetGlobalBreadcrumbs<T extends BreadcrumbGroupProps.Item>(props: BreadcrumbGroupProps<T>) {
   // avoid additional side effects when this feature is not active
-  if (!useAppLayoutToolbarEnabled()) {
+  if (!useAppLayoutFlagEnabled()) {
     return false;
   }
   // getGlobalFlag() value does not change without full page reload

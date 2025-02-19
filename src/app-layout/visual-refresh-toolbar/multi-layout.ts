@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
-import { useAppLayoutToolbarEnabled } from '../utils/feature-flags';
+import { useAppLayoutFlagEnabled } from '../utils/feature-flags';
 import { OnChangeParams } from '../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
@@ -95,7 +95,7 @@ export function mergeProps(
 export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbar = useAppLayoutFlagEnabled();
 
   useLayoutEffect(() => {
     if (!isEnabled || forceDeduplicationType === 'suspended' || !isToolbar) {

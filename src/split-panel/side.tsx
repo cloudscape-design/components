@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useAppLayoutToolbarPublicEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
@@ -35,7 +35,7 @@ export function SplitPanelContentSide({
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
-  const isToolbar = useAppLayoutToolbarPublicEnabled();
+  const isToolbar = useAppLayoutToolbarDesignEnabled();
   return (
     <div
       {...baseProps}
