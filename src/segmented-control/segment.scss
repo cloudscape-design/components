@@ -85,7 +85,7 @@ $segment-divider-width: 1px;
   }
 
   &:not(.refresh):not(:last-child)::after {
-    inset-inline-end: calc(-1 * ($segment-gap - 1px));
+    inset-inline-end: calc(-1 * ($segment-gap - $segment-divider-width));
   }
 
   @for $i from 1 through 6 {

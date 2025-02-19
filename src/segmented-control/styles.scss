@@ -38,7 +38,7 @@ $segment-space: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
   padding-inline: awsui.$space-static-xxxs;
   gap: $segment-space;
   &:not(.refresh) {
-    gap: calc(seg.$segment-gap + 1px);
+    gap: calc(seg.$segment-gap + seg.$segment-divider-width);
   }
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
@@ -57,11 +57,7 @@ $segment-space: calc(#{seg.$segment-gap} * 2 + #{seg.$segment-divider-width});
 @for $i from 2 through 6 {
   .segment-count-#{$i} {
     // The repeat syntax is not used since it is broken when using with SASS together
-    grid-template-columns: repeatValue(1fr, $i);
-
-    &.refresh {
-      grid-template-columns: repeat(#{$i}, auto);
-    }
+    grid-template-columns: repeat(#{$i}, auto);
   }
 }
 
