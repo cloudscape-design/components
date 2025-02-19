@@ -207,10 +207,10 @@ test('calls unmount callback', () => {
   const { unmount } = render(<Flashbar items={[{}]} />);
   const flashbarWrapper = createWrapper().findFlashbar()!;
   expectContent(flashbarWrapper.findItems()[0], stylesCss, { content: 'New content', contentReplaced: true });
-  expect(unmountCallback).not.toBeCalled();
+  expect(unmountCallback).not.toHaveBeenCalled();
 
   unmount();
-  expect(unmountCallback).toBeCalled();
+  expect(unmountCallback).toHaveBeenCalled();
 });
 
 test('calls update callback', () => {
@@ -221,12 +221,12 @@ test('calls update callback', () => {
   };
   awsuiPlugins.flashContent.registerContentReplacer(plugin);
   const { rerender } = render(<Flashbar items={[{}]} />);
-  expect(update).toBeCalledTimes(1);
-  expect(plugin.runReplacer).toBeCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(1);
+  expect(plugin.runReplacer).toHaveBeenCalledTimes(1);
 
   rerender(<Flashbar items={[{ content: 'New content' }]} />);
-  expect(update).toBeCalledTimes(2);
-  expect(plugin.runReplacer).toBeCalledTimes(1);
+  expect(update).toHaveBeenCalledTimes(2);
+  expect(plugin.runReplacer).toHaveBeenCalledTimes(1);
 });
 
 describe('asynchronous rendering', () => {
@@ -298,8 +298,8 @@ describe('asynchronous rendering', () => {
     await waitFor(() => {
       const assertWarningLogged = (method: string) => {
         const message = `"${method}" called after component unmounted`;
-        expect(consoleWarnSpy).toBeCalledWith('[AwsUi]', '[flash-content-replacer]', message);
-        expect(sendPanoramaMetricSpy).toBeCalledWith({
+        expect(consoleWarnSpy).toHaveBeenCalledWith('[AwsUi]', '[flash-content-replacer]', message);
+        expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
           eventContext: 'awsui-runtime-api-warning',
           eventDetail: {
             component: 'flash-content-replacer',
@@ -314,8 +314,8 @@ describe('asynchronous rendering', () => {
       assertWarningLogged('hideContent');
       assertWarningLogged('restoreContent');
       assertWarningLogged('replaceContent');
-      expect(headerFn).not.toBeCalled();
-      expect(contentFn).not.toBeCalled();
+      expect(headerFn).not.toHaveBeenCalled();
+      expect(contentFn).not.toHaveBeenCalled();
     });
   });
 });

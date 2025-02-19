@@ -9,6 +9,8 @@ import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-in
 import createWrapper from '../../../lib/components/test-utils/dom';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
 
+import styles from '../../../lib/components/prompt-input/styles.selectors.js';
+
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [800, () => {}],
@@ -303,6 +305,17 @@ describe('secondary actions', () => {
 
     expect(wrapper.findSecondaryActions()?.getElement()).toHaveTextContent('secondary actions');
   });
+});
+
+test('clicking the area between secondary actions and action button should focus the component', () => {
+  const { wrapper } = renderPromptInput({
+    value: '',
+    secondaryActions: 'secondary actions',
+  });
+
+  wrapper.find(`.${styles.buffer}`)!.click();
+
+  expect(wrapper.findNativeTextarea().getElement()).toHaveFocus();
 });
 
 describe('secondary content', () => {

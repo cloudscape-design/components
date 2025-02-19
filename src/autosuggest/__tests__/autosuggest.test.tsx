@@ -117,7 +117,7 @@ test('should display entered text option/label', () => {
     <Autosuggest enteredTextLabel={enteredTextLabel} value="1" options={defaultOptions} />
   );
   wrapper.setInputValue('1');
-  expect(enteredTextLabel).toBeCalledWith('1');
+  expect(enteredTextLabel).toHaveBeenCalledWith('1');
   expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
 });
 
@@ -297,8 +297,8 @@ describe('keyboard interactions', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
     wrapper.findNativeInput().keydown(KeyCode.down);
     wrapper.findNativeInput().keydown(KeyCode.enter);
-    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
-    expect(onSelect).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { value: '1', selectedOption: defaultOptions[0] } })
     );
   });
@@ -327,18 +327,18 @@ describe('keyboard interactions', () => {
 
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(0);
+    expect(onChange).toHaveBeenCalledTimes(0);
 
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(1);
-    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '' } }));
 
     rerender(<Autosuggest {...defaultProps} value="" onChange={onChange} />);
 
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   test('arrow up key on first option should highlight last option', () => {

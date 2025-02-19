@@ -199,3 +199,9 @@ $invalid-border-offset: constants.$invalid-control-left-padding;
     padding-block-end: awsui.$space-scaled-xxs;
   }
 }
+
+.buffer {
+  flex: 1;
+  align-self: stretch;
+  cursor: text;
+}

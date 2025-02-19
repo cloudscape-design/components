@@ -209,14 +209,14 @@ describe('Expandable rows', () => {
     });
 
     table.findExpandToggle(1)!.click();
-    expect(onExpandableItemToggle).toBeCalledTimes(1);
-    expect(onExpandableItemToggle).toBeCalledWith(
+    expect(onExpandableItemToggle).toHaveBeenCalledTimes(1);
+    expect(onExpandableItemToggle).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { item: simpleItems[0], expanded: false } })
     );
 
     table.findExpandToggle(3)!.click();
-    expect(onExpandableItemToggle).toBeCalledTimes(2);
-    expect(onExpandableItemToggle).toBeCalledWith(
+    expect(onExpandableItemToggle).toHaveBeenCalledTimes(2);
+    expect(onExpandableItemToggle).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { item: simpleItems[2], expanded: true } })
     );
   });
