@@ -16,7 +16,7 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
-import './styles.scss';
+import styles from './styles.scss';
 
 interface GlobalFlags {
   appLayoutWidget?: boolean;
@@ -57,6 +57,7 @@ function App() {
   // Also, AppLayout pages should resemble the ConsoleNav 2.0 styles
   const isAppLayout = isAppLayoutPage(pageId);
   const ContentTag = isAppLayout ? 'div' : 'main';
+  const isMacOS = navigator.userAgent.toLowerCase().indexOf('macintosh') > -1;
 
   useEffect(() => {
     applyMode(mode ?? null);
@@ -69,6 +70,14 @@ function App() {
   useEffect(() => {
     disableMotion(motionDisabled);
   }, [motionDisabled]);
+
+  useEffect(() => {
+    if (isMacOS) {
+      document.body.classList.add(styles.macos);
+    } else {
+      document.body.classList.remove(styles.macos);
+    }
+  }, [isMacOS]);
 
   if (!mode) {
     return <Redirect to="/light/" />;
