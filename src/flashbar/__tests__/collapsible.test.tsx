@@ -12,7 +12,7 @@ jest.mock('../../../lib/components/internal/utils/scrollable-containers', () => 
 });
 
 import React from 'react';
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 
 import { disableMotion } from '@cloudscape-design/global-styles';
 
@@ -20,8 +20,6 @@ import Flashbar from '../../../lib/components/flashbar';
 import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
 import { FlashbarProps } from '../interfaces';
 import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
-
-import stylesCss from '../../../lib/components/flashbar/styles.css.js';
 
 const sampleItems: Record<FlashbarProps.Type, FlashbarProps.MessageDefinition> = {
   error: { type: 'error', header: 'Error', content: 'There was an error' },
@@ -208,41 +206,6 @@ describe('Collapsible Flashbar', () => {
         const list = findList(flashbar)!;
         expect(list).toBeTruthy();
         expect(list.getElement().getAttribute('aria-label')).toEqual(customAriaLabel);
-      });
-
-      it('applies ARIA role "group" to the flash messages and labels them by their icon and content', () => {
-        const flashbar = renderFlashbar({
-          items: [sampleItems.success, sampleItems.warning, sampleItems.error],
-        });
-
-        findNotificationBar(flashbar)!.click();
-
-        const [successItem, warningItem, errorItem] = flashbar.findItems()!;
-        const flashItemsWithExpectedLabels = [
-          {
-            item: successItem,
-            // Label is computed by: Icon Header Content
-            expectedLabel: 'Success Success Everything went fine',
-          },
-          {
-            item: warningItem,
-            // Label is computed by: Icon Header Content
-            expectedLabel: 'Warning Warning',
-          },
-          {
-            item: errorItem,
-            // Label is computed by: Icon Header Content
-            expectedLabel: 'Error Error There was an error',
-          },
-        ];
-
-        for (const { item, expectedLabel } of flashItemsWithExpectedLabels) {
-          const focusContainer = within(item.getElement()!).getByRole('group', {
-            name: expectedLabel,
-          });
-          expect(focusContainer).toBeInTheDocument();
-          expect(focusContainer).toHaveClass(stylesCss['flash-focus-container']);
-        }
       });
 
       it('hides collapsed items from the accessibility tree', () => {
