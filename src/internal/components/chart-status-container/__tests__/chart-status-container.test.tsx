@@ -61,6 +61,6 @@ describe('Chart status container', () => {
     );
 
     wrapper.findLink()?.click();
-    expect(cb).toBeCalledTimes(1);
+    expect(cb).toHaveBeenCalledTimes(1);
   });
 });

@@ -103,7 +103,7 @@ describe('Date Input component', () => {
         });
 
         wrapper.findNativeInput().keydown({ key: separatorKey });
-        expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2001-' } }));
+        expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2001-' } }));
       });
     });
 
@@ -113,7 +113,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '3' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-02-03' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-02-03' } }));
     });
 
     test('should correct "2" to "2002/01/01" on enter', () => {
@@ -122,7 +122,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: 'Enter', keyCode: KeyCode.enter });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2002-01-01' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2002-01-01' } }));
     });
 
     test('should correct "21" to "2021/01/01" on enter', () => {
@@ -131,7 +131,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: 'Enter', keyCode: KeyCode.enter });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2021-01-01' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2021-01-01' } }));
     });
   });
 
@@ -142,7 +142,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '/' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2001-' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2001-' } }));
     });
 
     test('should correct "2018/1/" to "2018/01/"', () => {
@@ -151,7 +151,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '/' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-01-' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-01-' } }));
     });
 
     test('should correct "2018/0/" to "2018/01/"', () => {
@@ -160,7 +160,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '/' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-01-' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-01-' } }));
     });
 
     test('should correct "2018/1/2" to "2018/01/02"', () => {
@@ -169,7 +169,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '/' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-01-02' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-01-02' } }));
     });
 
     test('should allow entry of day 31 in January', () => {
@@ -178,7 +178,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '1' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-01-31' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-01-31' } }));
     });
 
     test('should allow entry of day 30 in March', () => {
@@ -187,7 +187,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '0' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-03-30' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-03-30' } }));
     });
 
     test('should disallow entry of day 31 in April', () => {
@@ -195,7 +195,7 @@ describe('Date Input component', () => {
         value: '2018/04/3',
       });
       wrapper.findNativeInput().keydown({ key: '1' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-04-30' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-04-30' } }));
     });
 
     test('should disallow entry of day 29 in february', () => {
@@ -204,7 +204,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '9' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-02-28' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-02-28' } }));
     });
 
     test('should allow entry of day 29 in february, in a leap year', () => {
@@ -213,7 +213,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '9' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2020-02-29' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2020-02-29' } }));
     });
   }); // End limiting range
 
@@ -224,7 +224,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '8' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-' } }));
     });
 
     test('should automatically append colon after 6 digits entered', () => {
@@ -233,7 +233,7 @@ describe('Date Input component', () => {
       });
 
       wrapper.findNativeInput().keydown({ key: '1' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-11-' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-11-' } }));
     });
   }); // End appending separator
 
@@ -245,7 +245,7 @@ describe('Date Input component', () => {
 
       wrapper.findNativeInput().getElement().setSelectionRange(3, 3);
       wrapper.findNativeInput().keydown({ key: '9' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2019-01-02' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-01-02' } }));
     });
 
     test('should autocorrect if value is over limit', () => {
@@ -255,7 +255,7 @@ describe('Date Input component', () => {
 
       wrapper.findNativeInput().getElement().setSelectionRange(5, 5);
       wrapper.findNativeInput().keydown({ key: '5' });
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2018-12-02' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2018-12-02' } }));
     });
 
     test('should swallow keys at separator - /', () => {
@@ -290,7 +290,7 @@ describe('Date Input component', () => {
       wrapper.findNativeInput().getElement().setSelectionRange(3, 7);
       wrapper.findNativeInput().keydown({ key: '9' });
 
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2019-01-02' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-01-02' } }));
     });
 
     test('should autocorrect day if month is changed to one with fewer days - 30', () => {
@@ -301,7 +301,7 @@ describe('Date Input component', () => {
       wrapper.findNativeInput().getElement().setSelectionRange(6, 6);
       wrapper.findNativeInput().keydown({ key: '4' });
 
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2019-04-30' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-04-30' } }));
     });
 
     test('should autocorrect day if month is changed to one with fewer days - 28', () => {
@@ -311,7 +311,7 @@ describe('Date Input component', () => {
       wrapper.findNativeInput().getElement().setSelectionRange(6, 6);
       wrapper.findNativeInput().keydown({ key: '2' });
 
-      expect(onChangeSpy).toBeCalledWith(expect.objectContaining({ detail: { value: '2019-02-28' } }));
+      expect(onChangeSpy).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '2019-02-28' } }));
     });
   }); // end entering value in middle of input
 });

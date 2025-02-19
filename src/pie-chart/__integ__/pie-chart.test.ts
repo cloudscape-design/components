@@ -242,7 +242,7 @@ describe('Legend', () => {
 
       // Verify that no legend is highlighted
       await page.hoverElement(pieWrapper.findFilterContainer().toSelector());
-      expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrow();
+      await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrow();
     })
   );
 });
