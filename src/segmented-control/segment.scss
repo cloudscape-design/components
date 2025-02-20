@@ -83,9 +83,13 @@ $segment-divider-width: 1px;
     position: absolute;
     inset-inline-end: calc(-1 * ($segment-gap + $segment-divider-width));
     block-size: calc(100% - (($segment-gap + awsui.$space-static-xxxs) * 2));
+    min-block-size: calc(awsui.$line-height-body-m - $segment-gap * 2);
     inline-size: $segment-divider-width;
     background: awsui.$color-border-input-default;
     z-index: 1;
+  }
+  &:not(.refresh):not(:last-child)::after {
+    inset-inline-end: calc(-1 * $segment-gap);
   }
 
   @for $i from 1 through 6 {
