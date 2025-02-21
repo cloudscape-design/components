@@ -1,0 +1,77 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use './motion';
+
+$drag-button-size: awsui.$space-static-xl;
+
+.drag-handle-wrapper {
+  position: relative;
+}
+
+// Prevents accidental click-through on the spaces between the button cluster.
+.drag-handle-wrapper-open::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * (#{$drag-button-size} + #{awsui.$space-xs}));
+}
+
+.drag-button {
+  position: absolute;
+  border-width: 0;
+  cursor: pointer;
+
+  inline-size: $drag-button-size;
+  block-size: $drag-button-size;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xxs;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  background-color: awsui.$color-background-drag-button-default;
+  color: awsui.$color-text-drag-button-default;
+  box-shadow: awsui.$shadow-dropdown;
+
+  &:not(.drag-button-disabled):hover {
+    background-color: awsui.$color-background-drag-button-hover;
+  }
+
+  &:not(.drag-button-disabled):active {
+    background-color: awsui.$color-background-drag-button-active;
+  }
+}
+
+.drag-button-disabled {
+  cursor: default;
+  background-color: awsui.$color-background-drag-button-disabled;
+  color: awsui.$color-text-drag-button-disabled;
+}
+
+.drag-button-hidden {
+  display: none;
+}
+
+.drag-button-block-start {
+  inset-block-start: calc(-1 * (#{$drag-button-size} + #{awsui.$space-xxs}));
+  inset-inline-start: calc(50% - #{$drag-button-size} / 2);
+}
+
+.drag-button-block-end {
+  inset-block-end: calc(-1 * (#{$drag-button-size} + #{awsui.$space-xxs}));
+  inset-inline-start: calc(50% - #{$drag-button-size} / 2);
+}
+
+.drag-button-inline-start {
+  inset-inline-start: calc(-1 * (#{$drag-button-size} + #{awsui.$space-xxs}));
+  inset-block-start: calc(50% - #{$drag-button-size} / 2);
+}
+
+.drag-button-inline-end {
+  inset-inline-end: calc(-1 * (#{$drag-button-size} + #{awsui.$space-xxs}));
+  inset-block-start: calc(50% - #{$drag-button-size} / 2);
+}
