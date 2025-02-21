@@ -21,8 +21,8 @@ body {
   }
   // stylelint-enable @cloudscape-design/no-implicit-descendant, selector-max-type
 
-  html:has(&.macos) {
-    // override scrollbars in macos for stable screenshot tests
+  html:has(&.safari) {
+    // Hide scrollbars in Safari for stable screenshot tests
     // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
     ::-webkit-scrollbar {
       inline-size: 0;

@@ -57,7 +57,9 @@ function App() {
   // Also, AppLayout pages should resemble the ConsoleNav 2.0 styles
   const isAppLayout = isAppLayoutPage(pageId);
   const ContentTag = isAppLayout ? 'div' : 'main';
-  const isMacOS = navigator.userAgent.toLowerCase().indexOf('macintosh') > -1;
+
+  const lowerCaseUserAgent = navigator.userAgent.toLowerCase();
+  const isSafari = lowerCaseUserAgent.indexOf('safari') > -1 && lowerCaseUserAgent.indexOf('chrome') === -1;
 
   useEffect(() => {
     applyMode(mode ?? null);
@@ -72,12 +74,12 @@ function App() {
   }, [motionDisabled]);
 
   useEffect(() => {
-    if (isMacOS) {
-      document.body.classList.add(styles.macos);
+    if (isSafari) {
+      document.body.classList.add(styles.safari);
     } else {
-      document.body.classList.remove(styles.macos);
+      document.body.classList.remove(styles.safari);
     }
-  }, [isMacOS]);
+  }, [isSafari]);
 
   if (!mode) {
     return <Redirect to="/light/" />;
