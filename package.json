@@ -62,7 +62,7 @@
     "@cloudscape-design/theming-build": "^1.0.0",
     "@formatjs/icu-messageformat-parser": "^2.3.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@size-limit/preset-small-lib": "^11.1.6",
+    "@size-limit/preset-small-lib": "^11.2.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@tsconfig/node16": "^16.1.1",
