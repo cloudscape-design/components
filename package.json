@@ -131,7 +131,7 @@
     "size-limit": "^11.1.6",
     "stylelint": "^16.6.1",
     "stylelint-config-recommended-scss": "^14.0.0",
-    "stylelint-no-unsupported-browser-features": "^8.0.1",
+    "stylelint-no-unsupported-browser-features": "^8.0.2",
     "stylelint-order": "^6.0.4",
     "stylelint-prettier": "^5.0.0",
     "stylelint-scss": "^6.3.1",
