@@ -16,7 +16,7 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
-import './styles.scss';
+import styles from './styles.scss';
 
 interface GlobalFlags {
   appLayoutWidget?: boolean;
@@ -58,6 +58,9 @@ function App() {
   const isAppLayout = isAppLayoutPage(pageId);
   const ContentTag = isAppLayout ? 'div' : 'main';
 
+  const lowerCaseUserAgent = navigator.userAgent.toLowerCase();
+  const isSafari = lowerCaseUserAgent.indexOf('safari') > -1 && lowerCaseUserAgent.indexOf('chrome') === -1;
+
   useEffect(() => {
     applyMode(mode ?? null);
   }, [mode]);
@@ -69,6 +72,14 @@ function App() {
   useEffect(() => {
     disableMotion(motionDisabled);
   }, [motionDisabled]);
+
+  useEffect(() => {
+    if (isSafari) {
+      document.body.classList.add(styles.safari);
+    } else {
+      document.body.classList.remove(styles.safari);
+    }
+  }, [isSafari]);
 
   if (!mode) {
     return <Redirect to="/light/" />;
