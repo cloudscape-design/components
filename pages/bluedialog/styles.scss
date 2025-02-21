@@ -1,0 +1,28 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+.blue-dialog-box {
+  border-block: 1px solid awsui.$color-border-status-info;
+  border-inline: 1px solid awsui.$color-border-status-info;
+  background-color: awsui.$color-background-status-info;
+  border-start-start-radius: 16px;
+  border-start-end-radius: 16px;
+  border-end-start-radius: 16px;
+  border-end-end-radius: 16px;
+}
+
+.blue-dialog-box__close {
+  float: right;
+}
+
+.blue-dialog-box__footer {
+  border-block-start: 1px solid awsui.$color-border-divider-default;
+  padding-block: 10px;
+  padding-inline: 20px;
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 20px;
+}
