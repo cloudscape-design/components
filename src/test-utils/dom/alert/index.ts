@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
+import { unionSelectors } from '@cloudscape-design/test-utils-core/utils';
 
 import ButtonWrapper from '../button';
 
@@ -22,7 +23,9 @@ export default class AlertWrapper extends ComponentWrapper {
    * The dismiss button is only rendered when the `dismissible` property is set to `true`.
    */
   findDismissButton(): ButtonWrapper | null {
-    return this.findComponent(`.${styles['dismiss-button']}`, ButtonWrapper);
+    const oldSelector = `.${styles['dismiss-button']}`;
+    const newSelector = `.${styles['dismiss-button-new']}`;
+    return this.findComponent(unionSelectors(oldSelector, newSelector), ButtonWrapper);
   }
 
   /**
