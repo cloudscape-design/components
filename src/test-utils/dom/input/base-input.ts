@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Simulate } from 'react-dom/test-utils';
 
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import { act } from '@cloudscape-design/test-utils-core/utils-dom';
+import { act, setNativeValue } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import inputSelectors from '../../../input/styles.selectors.js';
 
@@ -45,7 +44,9 @@ export default abstract class BaseInputWrapper extends ComponentWrapper {
   @usesDom setInputValue(value: string): void {
     const element = this.findNativeInput().getElement();
     act(() => {
-      Simulate.change(element, { target: { value } as unknown as EventTarget });
+      const event = new Event('change', { bubbles: true, cancelable: false });
+      setNativeValue(element, value);
+      element.dispatchEvent(event);
     });
   }
 

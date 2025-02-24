@@ -4,6 +4,7 @@ import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { fireNonCancelableEvent } from '../internal/events';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { KeyCode } from '../internal/keycode';
 import handleKey from '../internal/utils/handle-key';
 import { SegmentedControlProps } from './interfaces';
@@ -42,10 +43,13 @@ export default function InternalSegmentedControl({
     const nextSegmentId = focusableSegments[nextIndex].id;
     segmentByIdRef.current[nextSegmentId]?.focus();
   };
+  const isVisualRefresh = useVisualRefresh();
 
   return (
     <div
-      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`])}
+      className={clsx(styles['segment-part'], styles[`segment-count-${options?.length}`], {
+        [styles.refresh]: isVisualRefresh,
+      })}
       aria-label={label}
       aria-labelledby={ariaLabelledby}
       role="toolbar"

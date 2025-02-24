@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -27,6 +27,20 @@ const defaultProps: AutosuggestProps = {
   onChange: () => {},
   options: defaultOptions,
 };
+
+function StatefulAutosuggest(props: AutosuggestProps) {
+  const [value, setValue] = useState(props.value);
+  return (
+    <Autosuggest
+      {...props}
+      value={value}
+      onChange={event => {
+        props.onChange?.(event);
+        setValue(event.detail.value);
+      }}
+    />
+  );
+}
 
 function renderAutosuggest(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
@@ -114,7 +128,7 @@ test('option with special characters can be selected by value', () => {
 test('should display entered text option/label', () => {
   const enteredTextLabel = jest.fn(value => `Custom function with ${value} placeholder`);
   const { wrapper } = renderAutosuggest(
-    <Autosuggest enteredTextLabel={enteredTextLabel} value="1" options={defaultOptions} />
+    <StatefulAutosuggest enteredTextLabel={enteredTextLabel} value="" options={defaultOptions} />
   );
   wrapper.setInputValue('1');
   expect(enteredTextLabel).toHaveBeenCalledWith('1');
