@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
 import { useInternalI18n } from '../../../i18n/context';
 import { TopNavigationProps } from '../../interfaces';
 import { HeaderProps } from './header';
@@ -20,6 +21,45 @@ interface OverflowMenuProps {
 
 export interface View extends Omit<OverflowMenuProps, 'items'> {
   headerSecondaryText?: HeaderProps['secondaryText'];
+}
+
+function transformButtonDropdownItems(items: ButtonDropdownProps.Items, index: number): ButtonDropdownProps.Items {
+  return items.map(item => {
+    const itemCopy = { ...item, id: `${index}__${item.id || ''}` };
+    if ('items' in itemCopy) {
+      itemCopy.items = transformButtonDropdownItems(itemCopy.items, index);
+    }
+    return itemCopy;
+  });
+}
+
+export function transformUtility(utility: TopNavigationProps.Utility, index: number): ButtonDropdownProps.ItemOrGroup {
+  const title = utility.title || utility.text || '';
+
+  const commonProps: Partial<ButtonDropdownProps.ItemOrGroup> = {
+    // Encode index into the ID, so we can pick out the right handler.
+    id: `${index}__`,
+    text: title,
+    iconName: utility.iconName,
+    iconUrl: utility.iconUrl,
+    iconAlt: utility.iconAlt,
+    iconSvg: utility.iconSvg,
+  };
+
+  if (utility.type === 'menu-dropdown') {
+    return {
+      ...commonProps,
+      items: transformButtonDropdownItems(utility.items, index),
+      description: utility.description,
+    } as ButtonDropdownProps.ItemGroup;
+  } else {
+    return {
+      ...commonProps,
+      href: utility.href,
+      external: utility.external,
+      externalIconAriaLabel: utility.externalIconAriaLabel,
+    } as ButtonDropdownProps.Item;
+  }
 }
 
 const OverflowMenu = ({

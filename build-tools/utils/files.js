@@ -1,15 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const fs = require('fs');
-const path = require('path');
+import fs from 'node:fs';
+import path from 'node:path';
 
 function writeFile(filepath, content) {
   fs.mkdirSync(path.dirname(filepath), { recursive: true });
   fs.writeFileSync(filepath, content);
-}
-
-function listBetaVersions(baseDir) {
-  return fs.readdirSync(baseDir).filter(elem => /^\d+\.\d+-beta$/.test(elem));
 }
 
 function listPublicItems(baseDir) {
@@ -30,4 +26,4 @@ function listPublicItems(baseDir) {
     );
 }
 
-module.exports = { writeFile, listPublicItems, listBetaVersions };
+module.exports = { writeFile, listPublicItems };

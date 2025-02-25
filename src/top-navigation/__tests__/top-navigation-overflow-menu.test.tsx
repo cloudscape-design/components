@@ -4,8 +4,8 @@ import React from 'react';
 import { act, render } from '@testing-library/react';
 
 import createWrapper from '../../../lib/components/test-utils/dom';
-import { transformUtility } from '../../../lib/components/top-navigation/1.0-beta/parts/overflow-menu';
 import { TopNavigationProps } from '../../../lib/components/top-navigation/interfaces';
+import { transformUtility } from '../../../lib/components/top-navigation/parts/overflow-menu';
 import { UtilityMenuItem } from '../../../lib/components/top-navigation/parts/overflow-menu/menu-item';
 import SubmenuView from '../../../lib/components/top-navigation/parts/overflow-menu/views/submenu';
 import UtilitiesView from '../../../lib/components/top-navigation/parts/overflow-menu/views/utilities';

@@ -1,13 +1,14 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-const { parallel } = require('gulp');
-const path = require('path');
-const fs = require('fs');
-const { writeFile, listPublicItems, listBetaVersions } = require('../utils/files');
-const themes = require('../utils/themes');
-const { task, copyTask } = require('../utils/gulp-utils');
-const workspace = require('../utils/workspace');
-const pkg = require('../../package.json');
+import fs from 'fs';
+import { parallel } from 'gulp';
+import path from 'path';
+
+import pkg from '../../package.json';
+import { listPublicItems, writeFile } from '../utils/files';
+import { copyTask, task } from '../utils/gulp-utils';
+import themes from '../utils/themes';
+import workspace from '../utils/workspace';
 
 function getComponentsExports() {
   const result = {
@@ -27,17 +28,8 @@ function getComponentsExports() {
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
   };
-  let components = listPublicItems('src');
 
-  // Also target nested beta versions of components by naming convention.
-  for (const component of components) {
-    const betaVersions = listBetaVersions(path.join('src', component));
-    if (betaVersions.length > 0) {
-      const betaComponents = betaVersions.map(subComponent => `${component}/${subComponent}`);
-      components = components.concat(betaComponents);
-    }
-  }
-
+  const components = listPublicItems('src');
   for (const component of components) {
     result[`./${component}`] = `./${component}/index.js`;
   }

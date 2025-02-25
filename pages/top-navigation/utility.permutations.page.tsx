@@ -3,7 +3,7 @@
 import React from 'react';
 
 import VisualContext from '~components/internal/components/visual-context';
-import Utility, { UtilityProps } from '~components/top-navigation/1.0-beta/parts/utility';
+import Utility, { UtilityProps } from '~components/top-navigation/parts/utility';
 
 import img from '../icon/custom-icon.png';
 import createPermutations from '../utils/permutations';
@@ -76,7 +76,6 @@ const permutations = createPermutations<UtilityProps>([
       { type: 'button', text: 'Button', iconName: 'undo', disableUtilityCollapse: true },
     ],
     hideText: [false, true],
-    isNarrowViewport: [false, true],
   },
 ]);
 
