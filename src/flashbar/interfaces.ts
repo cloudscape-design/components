@@ -20,6 +20,9 @@ export namespace FlashbarProps {
     buttonText?: ButtonProps['children'];
     onButtonClick?: ButtonProps['onClick'];
     onDismiss?: ButtonProps['onClick'];
+    analyticsMetadata?: {
+      suppressFlowMetricEvents?: boolean;
+    };
   }
 
   export interface I18nStrings {
