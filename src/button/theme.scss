@@ -1,0 +1,59 @@
+.theme {
+  &.theme-background-color { 
+    --theme-background-color-button: var(--theme-background-color);
+  }
+
+  &.theme-border-color { 
+    --theme-border-color-button: var(--theme-border-color);
+  }
+
+  &.theme-border-radius-custom { 
+    --theme-border-radius-button: var(--theme-border-radius);
+  }
+
+  &.theme-border-width-none { --theme-border-width-button: 0px; }
+  &.theme-border-width-small { --theme-border-width-button: 1px; }
+  &.theme-border-width-medium { --theme-border-width-button: 2px; }
+  &.theme-border-width-large { --theme-border-width-button: 3px; }
+  &.theme-border-width-custom { 
+    --theme-border-width-button: var(--theme-border-width);
+  }
+
+  &.theme-color { 
+    --theme-color-button: var(--theme-color);
+  }
+
+  &.theme-font-family { 
+    --theme-font-family-button: var(--theme-font-family);
+  }
+
+  &.theme-font-size { 
+    --theme-font-size-button: var(--theme-font-size);
+  }
+
+  &.theme-line-height { 
+    --theme-line-height-button: var(--theme-line-height);
+  }
+
+  &.theme-padding-block { 
+    --theme-padding-block-button: var(--theme-padding-block);
+  }
+
+  &.theme-padding-inline { 
+    --theme-padding-inline-button: var(--theme-padding-inline);
+  }
+}
+
+:global(.awsui-dark-mode) .theme {
+  &.theme-background-color { 
+    --theme-background-color-button: var(--theme-background-color-dark-mode);
+  }
+
+  &.theme-border-color { 
+    --theme-border-color-button: var(--theme-border-color-dark-mode);
+  }
+
+  &.theme-color { 
+    --theme-color-button: var(--theme-color-dark-mode);
+  }
+}
