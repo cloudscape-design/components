@@ -8357,6 +8357,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "analyticsTag": "",
       "description": "Specifies flash messages that appear in the same order that they are listed.
 The value is an array of flash message definition objects.
 A flash message object contains the following properties:
@@ -8382,7 +8383,8 @@ If the \`action\` property is set, this property is ignored. **Deprecated**, rep
 * \`id\` (string) - Specifies a unique flash message identifier. This property is used in two ways:
   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
-",
+* \`analyticsMetadata\` (FlashbarProps.ItemAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
+  * \`suppressFlowMetricEvents\` - Prevent this item from generating events related to flow metrics.",
       "name": "items",
       "optional": false,
       "type": "ReadonlyArray<FlashbarProps.MessageDefinition>",
