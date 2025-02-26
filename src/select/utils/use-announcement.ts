@@ -17,12 +17,14 @@ interface OptionHolder {
  * If the testing reveals no issues with the native announcements the live-region can be removed.
  */
 export function useAnnouncement<Option extends OptionHolder>({
+  highlightText,
   announceSelected,
   highlightedOption,
   getParent,
   selectedAriaLabel,
   renderHighlightedAriaLive,
 }: {
+  highlightText?: string;
   announceSelected: boolean;
   highlightedOption?: Option;
   getParent: (option: Option) => undefined | OptionGroup;
@@ -57,6 +59,6 @@ export function useAnnouncement<Option extends OptionHolder>({
 
   // Use default renderer with selected ARIA label if defined and relevant.
   const selectedAnnouncement = announceSelected && selectedAriaLabel ? selectedAriaLabel : '';
-  const defaultDescription = defaultOptionDescription(option, group);
+  const defaultDescription = defaultOptionDescription({ option, parentGroup: group, highlightText });
   return [selectedAnnouncement, defaultDescription].filter(Boolean).join(' ');
 }

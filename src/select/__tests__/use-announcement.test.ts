@@ -5,7 +5,7 @@ import { DropdownOption, OptionDefinition, OptionGroup } from '../../internal/co
 import { flattenOptions } from '../../internal/components/option/utils/flatten-options';
 import { useAnnouncement } from '../utils/use-announcement';
 
-const options = [
+const options: DropdownOption['option'][] = [
   {
     label: 'Group 1',
     options: [
@@ -37,6 +37,11 @@ const options = [
         disabled: true,
       },
     ],
+  },
+  {
+    label: 'Option 2',
+    tags: ['tag-1', 'tag-2'],
+    filteringTags: ['filtering-tag-1', 'filtering-tag-2'],
   },
 ];
 
@@ -79,6 +84,41 @@ describe('useAnnouncement', () => {
       initialProps: { getParent, highlightedOption: flatOptions[1], announceSelected: false },
     });
     expect(hook.result.current).toEqual('Group 1 Child 1');
+  });
+
+  test('should return announcement string with tags', () => {
+    const hook = renderHook(useAnnouncement, {
+      initialProps: {
+        getParent,
+        highlightedOption: flatOptions[7],
+        announceSelected: false,
+      },
+    });
+    expect(hook.result.current).toEqual('Option 2 tag-1 tag-2');
+  });
+
+  test('should return announcement string with all of the matching filtering tags', () => {
+    const hook = renderHook(useAnnouncement, {
+      initialProps: {
+        getParent,
+        highlightedOption: flatOptions[7],
+        announceSelected: false,
+        highlightText: 'filtering',
+      },
+    });
+    expect(hook.result.current).toEqual('Option 2 tag-1 tag-2 filtering-tag-1 filtering-tag-2');
+  });
+
+  test('should return announcement string without non-matching filtering tags', () => {
+    const hook = renderHook(useAnnouncement, {
+      initialProps: {
+        getParent,
+        highlightedOption: flatOptions[7],
+        announceSelected: false,
+        highlightText: 'filtering-tag-2',
+      },
+    });
+    expect(hook.result.current).toEqual('Option 2 tag-1 tag-2 filtering-tag-2');
   });
 
   test('announcement should be prepended with selected label, if highlighted item is selected', () => {

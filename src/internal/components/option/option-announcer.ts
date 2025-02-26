@@ -1,8 +1,23 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { OptionDefinition, OptionGroup } from './interfaces';
+import { matchesString } from './utils/filter-options';
 
-function defaultOptionDescription(option: OptionDefinition, parentGroup: OptionGroup | undefined) {
+interface DefaultOptionDescriptionProps {
+  option: OptionDefinition;
+  parentGroup?: OptionGroup;
+  highlightText?: string;
+}
+
+function getMatchingFilteringTags(filteringTags?: readonly string[], highlightText?: string): string[] {
+  if (!highlightText || !filteringTags) {
+    return [];
+  }
+
+  return filteringTags.filter(filteringTag => matchesString(filteringTag, highlightText, false));
+}
+
+function defaultOptionDescription({ option, parentGroup, highlightText }: DefaultOptionDescriptionProps) {
   return [
     parentGroup && parentGroup.label,
     option.__labelPrefix,
@@ -11,6 +26,7 @@ function defaultOptionDescription(option: OptionDefinition, parentGroup: OptionG
     option.labelTag,
   ]
     .concat(option.tags)
+    .concat(getMatchingFilteringTags(option.filteringTags, highlightText))
     .filter(el => !!el)
     .join(' ');
 }
