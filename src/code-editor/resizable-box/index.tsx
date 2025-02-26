@@ -4,7 +4,11 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
+import DragHandleWrapper from '../../internal/components/drag-handle-wrapper/index.js';
+
 import styles from './styles.css.js';
+
+const KEYBOARD_STEP_SIZE = 20;
 
 export interface ResizeBoxProps {
   children: React.ReactNode;
@@ -18,12 +22,23 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
   const onResizeStable = useStableCallback(onResize);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const onMouseDown: React.MouseEventHandler = event => {
+  const onPointerDown: React.MouseEventHandler = event => {
     if (event.button !== 0 || !containerRef.current) {
       return;
     }
     const containerBottom = containerRef.current.getBoundingClientRect().bottom;
     setDragOffset(containerBottom - event.clientY);
+  };
+
+  const onKeyDown: React.KeyboardEventHandler = event => {
+    switch (event.key) {
+      case 'ArrowDown':
+        onResizeStable(height + KEYBOARD_STEP_SIZE);
+        break;
+      case 'ArrowUp':
+        onResizeStable(Math.max(height - KEYBOARD_STEP_SIZE, minHeight));
+        break;
+    }
   };
 
   useEffect(() => {
@@ -32,28 +47,60 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
     }
     const container = containerRef.current;
 
-    const onMouseMove = (event: MouseEvent) => {
+    const onPointerMove = (event: MouseEvent) => {
       const { top } = container.getBoundingClientRect();
       const cursor = event.clientY;
       onResizeStable(Math.max(cursor + dragOffset - top, minHeight));
     };
-    const onMouseUp = () => {
+    const onPointerUp = () => {
       setDragOffset(null);
     };
     const controller = new AbortController();
     document.body.classList.add(styles['resize-active']);
-    document.addEventListener('mousemove', onMouseMove, { signal: controller.signal });
-    document.addEventListener('mouseup', onMouseUp, { signal: controller.signal });
+    container.classList.add(styles['cursor-active']);
+    document.addEventListener('pointermove', onPointerMove, { signal: controller.signal });
+    document.addEventListener('pointerup', onPointerUp, { signal: controller.signal });
     return () => {
       controller.abort();
       document.body.classList.remove(styles['resize-active']);
+      container.classList.remove(styles['cursor-active']);
     };
   }, [dragOffset, minHeight, onResizeStable]);
 
   return (
     <div ref={containerRef} className={styles['resizable-box']} style={{ height }}>
       {children}
-      <span className={styles['resizable-box-handle']} onMouseDown={onMouseDown} />
+
+      <span className={styles['resizable-box-handle']}>
+        <DragHandleWrapper
+          onPress={direction => {
+            onResizeStable(
+              Math.max(height + (direction === 'block-start' ? -1 * KEYBOARD_STEP_SIZE : KEYBOARD_STEP_SIZE), minHeight)
+            );
+          }}
+          resizeTooltipText="Drag or select to move" // TODO: fixme!
+          buttonLabels={{
+            'block-start': 'Reduce size',
+            'block-end': 'Increase size',
+          }} // TODO: fixme!
+          directions={{
+            'block-start': height > minHeight ? 'active' : 'disabled',
+            'block-end': 'active',
+          }}
+        >
+          <span
+            className={styles['resizable-box-button']}
+            role="slider"
+            tabIndex={0}
+            aria-label="Resize handle" // TODO: fixme!
+            aria-valuemin={minHeight}
+            aria-valuemax={9999999999} // TODO: Is this fine? VO doesn't announce without valuemax (because it's inherently set to 100)
+            aria-valuenow={height}
+            onPointerDown={onPointerDown}
+            onKeyDown={onKeyDown}
+          />
+        </DragHandleWrapper>
+      </span>
     </div>
   );
 }
