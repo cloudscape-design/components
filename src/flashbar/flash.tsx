@@ -114,7 +114,9 @@ export const Flash = React.forwardRef(
       }
     }
 
-    const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+    const analyticsMetadata = getAnalyticsMetadataProps(
+      props as BasePropsWithAnalyticsMetadata & FlashbarProps.MessageDefinition
+    );
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
     const mergedRef = useMergeRefs(ref, elementRef);
 
@@ -176,7 +178,7 @@ export const Flash = React.forwardRef(
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}
-        {...analyticsAttributes}
+        {...(analyticsMetadata.suppressFlowMetricEvents ? undefined : analyticsAttributes)}
       >
         <div className={styles['flash-body']}>
           <div className={styles['flash-focus-container']} tabIndex={-1}>

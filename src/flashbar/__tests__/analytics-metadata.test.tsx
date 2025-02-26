@@ -216,5 +216,12 @@ describe('Flashbar renders correct analytics metadata', () => {
       const wrapper = renderFlashbar({ items: [{ id: '0', type: 'success', loading: true }] });
       expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="info"]`)!.getElement()).toBeInTheDocument();
     });
+
+    test('adds no attribute if suppressFlowMetricEvents is set', () => {
+      const wrapper = renderFlashbar({
+        items: [{ id: '0', type: 'success', analyticsMetadata: { suppressFlowMetricEvents: true } }],
+      });
+      expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_FLASHBAR}]`)).toBeNull();
+    });
   });
 });
