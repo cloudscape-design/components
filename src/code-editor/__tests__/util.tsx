@@ -91,3 +91,12 @@ export function renderCodeEditor(props: Partial<CodeEditorProps> = {}, ref?: Rea
     unmount,
   };
 }
+
+class PointerEventMockImpl extends MouseEvent {
+  readonly pointerType: string;
+  constructor(type: string, props: PointerEventInit) {
+    super(type, props);
+    this.pointerType = props.pointerType ?? 'mouse';
+  }
+}
+export const PointerEventMock = PointerEventMockImpl as typeof PointerEvent;

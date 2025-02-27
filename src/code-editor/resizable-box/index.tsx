@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
+import InternalDragHandle from '../../internal/components/drag-handle/index.js';
 import DragHandleWrapper from '../../internal/components/drag-handle-wrapper/index.js';
 
 import styles from './styles.css.js';
@@ -22,8 +23,8 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
   const onResizeStable = useStableCallback(onResize);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  const onPointerDown: React.MouseEventHandler = event => {
-    if (event.button !== 0 || !containerRef.current) {
+  const onPointerDown: React.PointerEventHandler = event => {
+    if ((event.pointerType === 'mouse' && event.button !== 0) || !containerRef.current) {
       return;
     }
     const containerBottom = containerRef.current.getBoundingClientRect().bottom;
@@ -47,7 +48,7 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
     }
     const container = containerRef.current;
 
-    const onPointerMove = (event: MouseEvent) => {
+    const onPointerMove = (event: PointerEvent) => {
       const { top } = container.getBoundingClientRect();
       const cursor = event.clientY;
       onResizeStable(Math.max(cursor + dragOffset - top, minHeight));
@@ -71,7 +72,7 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
     <div ref={containerRef} className={styles['resizable-box']} style={{ height }}>
       {children}
 
-      <span className={styles['resizable-box-handle']}>
+      <div className={styles['resizable-box-handle']}>
         <DragHandleWrapper
           onPress={direction => {
             onResizeStable(
@@ -88,19 +89,15 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
             'block-end': 'active',
           }}
         >
-          <span
-            className={styles['resizable-box-button']}
-            role="slider"
-            tabIndex={0}
-            aria-label="Resize handle" // TODO: fixme!
-            aria-valuemin={minHeight}
-            aria-valuemax={9999999999} // TODO: Is this fine? VO doesn't announce without valuemax (because it's inherently set to 100)
-            aria-valuenow={height}
+          <InternalDragHandle
+            ariaLabel="Resize handle"
+            variant="resize-area"
+            ariaValue={{ valueMin: minHeight, valueMax: 999999999, valueNow: height }}
             onPointerDown={onPointerDown}
             onKeyDown={onKeyDown}
           />
         </DragHandleWrapper>
-      </span>
+      </div>
     </div>
   );
 }

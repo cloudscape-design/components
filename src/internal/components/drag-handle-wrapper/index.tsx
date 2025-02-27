@@ -50,10 +50,10 @@ export default function DragHandleWrapper({
   // FIXME: Buttons close when disabled button is clicked because of focusout handler
   //   Move focus from buttons back to main handle? This would mess with SR navigation if those buttons aren't inert
 
-  const wrapperRef = useRef<HTMLSpanElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   const rtl = getIsRtl(wrapperRef.current);
 
-  const dragHandleRef = useRef<HTMLSpanElement | null>(null);
+  const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
 
@@ -157,32 +157,32 @@ export default function DragHandleWrapper({
   const dragButtonProps = { rtl, directions, buttonLabels, onPress, show: showButtons };
 
   return (
-    <span
+    <div
       className={clsx(styles['drag-handle-wrapper'], showButtons && styles['drag-handle-wrapper-open'])}
       ref={wrapperRef}
       onFocus={onWrapperFocusIn}
       onBlur={onWrapperFocusOut}
     >
-      <span onPointerEnter={onTooltipGroupPointerEnter} onPointerLeave={onTooltipGroupPointerLeave}>
-        <span
+      <div onPointerEnter={onTooltipGroupPointerEnter} onPointerLeave={onTooltipGroupPointerLeave}>
+        <div
           className={styles['drag-handle']}
           ref={dragHandleRef}
           onPointerDown={onHandlePointerDown}
           onKeyDown={onHandleKeyDown}
         >
           {children}
-        </span>
+        </div>
 
         {!showButtons && showTooltip && resizeTooltipText && (
           <Tooltip trackRef={dragHandleRef} value={resizeTooltipText} onDismiss={() => setShowTooltip(false)} />
         )}
-      </span>
+      </div>
 
       <DragButton {...dragButtonProps} direction="block-start" />
       <DragButton {...dragButtonProps} direction="block-end" />
       <DragButton {...dragButtonProps} direction="inline-start" />
       <DragButton {...dragButtonProps} direction="inline-end" />
-    </span>
+    </div>
   );
 }
 
@@ -207,6 +207,7 @@ function DragButton({ directions, buttonLabels, direction, show, rtl, onPress }:
     <Transition in={show}>
       {(transitionState, ref) => (
         <button
+          type="button"
           ref={ref}
           tabIndex={-1}
           className={clsx(
