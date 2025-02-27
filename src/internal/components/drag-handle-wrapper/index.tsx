@@ -218,7 +218,7 @@ function DragButton({ directions, buttonLabels, direction, show, rtl, onPress }:
             transitionState === 'exited' && styles['drag-button-hidden'],
             styles[`drag-button-motion-${transitionState}`]
           )}
-          disabled={state === 'disabled'}
+          aria-disabled={state === 'disabled'}
           aria-label={buttonLabels[direction]}
           onClick={() => onPress(direction)}
         >
