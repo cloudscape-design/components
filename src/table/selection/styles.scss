@@ -24,6 +24,11 @@
   border-inline-end: 0.1 * styles.$base-size solid transparent;
 }
 
+.label-top {
+  align-items: baseline;
+  padding-block-start: awsui.$space-xs;
+}
+
 .stud {
   visibility: hidden;
 }
