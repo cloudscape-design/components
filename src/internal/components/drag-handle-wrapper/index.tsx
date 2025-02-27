@@ -65,7 +65,7 @@ export default function DragHandleWrapper({
   };
 
   const onWrapperFocusOut = (event: React.FocusEvent) => {
-    if (!nodeContains(wrapperRef.current, event.relatedTarget)) {
+    if (document.hasFocus() && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowButtons(false);
     }
   };
