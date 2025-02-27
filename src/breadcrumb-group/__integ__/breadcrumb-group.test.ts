@@ -163,6 +163,7 @@ describe('BreadcrumbGroup', () => {
         await page.keys('Tab');
         await page.keys('Tab');
         await page.keys('Tab');
+        await page.keys('Tab');
         await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
       },
       { width: 1200, height: 800 }
@@ -171,7 +172,7 @@ describe('BreadcrumbGroup', () => {
 
   test.each([
     [{ width: 770, height: 800 }, 'when truncated'],
-    [{ width: 1200, height: 800 }, 'default state'],
+    [{ width: 1100, height: 800 }, 'default state'],
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   ])('Last item should be focusable %s', (viewportSize, scenario) =>
     setupTest(async page => {
@@ -184,6 +185,7 @@ describe('BreadcrumbGroup', () => {
       await page.keys('Tab');
       await expect(page.isTooltipDisplayed()).resolves.toBe(true);
       await page.keys('Tab');
+
       await expect(page.isTooltipDisplayed()).resolves.toBe(false);
       await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
     }, viewportSize)()
