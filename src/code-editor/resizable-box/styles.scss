@@ -24,43 +24,8 @@
   inset-block-end: 0;
   z-index: 10; // above editor, when editor is overflowing
 
-  inline-size: awsui.$space-xl;
-  block-size: awsui.$space-xl;
-}
-
-.resizable-box-button {
-  padding-block: 0;
-  padding-inline: 0;
-  border-block: none;
-  border-inline: none;
-
-  box-sizing: border-box;
-  inline-size: awsui.$space-xl;
-  block-size: awsui.$space-xl;
-
-  cursor: ns-resize;
-  background-color: transparent;
-  background-repeat: no-repeat;
-  background-origin: content-box;
-  background-position: bottom right;
-  background-size: awsui.$space-l;
-
-  // False positive - this isn't supported in Safari Desktop but is supported on iOS.
-  // stylelint-disable-next-line plugin/no-unsupported-browser-features
-  touch-action: none;
-
-  @include utils.background-inline-svg(
-    $path: '../assets/resize-handler.svg',
-    $stroke: 'colorStrokeCodeEditorResizeHandler'
-  );
-
-  @include styles.with-direction('rtl') {
-    transform: scaleX(-1);
-  }
-
-  @include focus-visible.when-visible {
-    @include styles.focus-highlight(0px);
-  }
+  inline-size: awsui.$space-l;
+  block-size: awsui.$space-l;
 }
 
 .resize-active {
