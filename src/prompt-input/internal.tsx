@@ -13,12 +13,15 @@ import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import * as tokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { SomeRequired } from '../internal/types';
 import { PromptInputProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
-interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
+interface InternalPromptInputProps
+  extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
+    InternalBaseComponentProps {}
 
 const InternalPromptInput = React.forwardRef(
   (
@@ -35,7 +38,7 @@ const InternalPromptInput = React.forwardRef(
       disableActionButton,
       disableBrowserAutocorrect,
       disabled,
-      maxRows = 3,
+      maxRows,
       minRows,
       name,
       onAction,
