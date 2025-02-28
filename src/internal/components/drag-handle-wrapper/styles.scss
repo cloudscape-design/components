@@ -1,0 +1,93 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use './motion';
+
+$drag-handle-size: awsui.$space-static-xxl;
+$drag-button-size: awsui.$space-static-xl;
+$drag-button-offset: awsui.$space-static-xxs;
+
+.drag-handle-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.drag-handle {
+  position: relative;
+  display: flex;
+}
+
+// Prevents accidental click-through on the spaces between the button cluster.
+// FIXME: this has the potential to overflow the page if it's placed near the edge of the screen
+//   move this to the individual buttons?
+.drag-handle-wrapper-open::before {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * (#{$drag-button-size} + #{$drag-button-offset} + #{awsui.$space-xs}));
+}
+
+.drag-button {
+  z-index: 2000;
+  position: absolute;
+  border-width: 0;
+  cursor: pointer;
+
+  // This skips the browser waiting for a double-tap interaction before activating.
+  // False positive - this isn't supported in Safari Desktop but is supported on iOS.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: manipulation;
+
+  inline-size: $drag-button-size;
+  block-size: $drag-button-size;
+  padding-block: 0;
+  padding-inline: 0;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  background-color: awsui.$color-background-drag-button-default;
+  color: awsui.$color-text-drag-button-default;
+  box-shadow: awsui.$shadow-dropdown;
+
+  &:not(.drag-button-disabled):hover {
+    background-color: awsui.$color-background-drag-button-hover;
+  }
+
+  &:not(.drag-button-disabled):active {
+    background-color: awsui.$color-background-drag-button-active;
+  }
+}
+
+.drag-button-disabled {
+  cursor: default;
+  background-color: awsui.$color-background-drag-button-disabled;
+  color: awsui.$color-text-drag-button-disabled;
+}
+
+.drag-button-hidden {
+  display: none;
+}
+
+.drag-button-block-start {
+  inset-block-start: calc(-1 * (#{$drag-button-size} + #{$drag-button-offset}));
+  inset-inline-start: calc(50% - #{$drag-button-size} / 2);
+}
+
+.drag-button-block-end {
+  inset-block-end: calc(-1 * (#{$drag-button-size} + #{$drag-button-offset}));
+  inset-inline-start: calc(50% - #{$drag-button-size} / 2);
+}
+
+.drag-button-inline-start {
+  inset-inline-start: calc(-1 * (#{$drag-button-size} + #{$drag-button-offset}));
+  inset-block-start: calc(50% - #{$drag-button-size} / 2);
+}
+
+.drag-button-inline-end {
+  inset-inline-end: calc(-1 * (#{$drag-button-size} + #{$drag-button-offset}));
+  inset-block-start: calc(50% - #{$drag-button-size} / 2);
+}
