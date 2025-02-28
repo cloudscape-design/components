@@ -52,6 +52,7 @@ export default function AutosuggestOptionsList({
   const ListComponent = virtualScroll ? VirtualList : PlainList;
 
   const announcement = useAnnouncement({
+    highlightText,
     announceSelected: autosuggestItemsState.highlightedOption?.value === highlightText,
     highlightedOption: autosuggestItemsState.highlightedOption,
     getParent: option => autosuggestItemsState.getItemGroup(option),

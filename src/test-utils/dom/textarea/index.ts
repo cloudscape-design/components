@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { Simulate } from 'react-dom/test-utils';
 
 import { ComponentWrapper, ElementWrapper, usesDom } from '@cloudscape-design/test-utils-core/dom';
-import { act } from '@cloudscape-design/test-utils-core/utils-dom';
+import { act, setNativeValue } from '@cloudscape-design/test-utils-core/utils-dom';
 
 import selectors from '../../../textarea/styles.selectors.js';
 
@@ -29,9 +28,11 @@ export default class TextareaWrapper extends ComponentWrapper<HTMLTextAreaElemen
    * @param value value to set the textarea to.
    */
   @usesDom setTextareaValue(value: string): void {
-    const element: HTMLTextAreaElement = this.findNativeTextarea().getElement();
+    const element = this.findNativeTextarea().getElement();
     act(() => {
-      Simulate.change(element, { target: { value } as unknown as EventTarget });
+      const event = new Event('change', { bubbles: true, cancelable: false });
+      setNativeValue(element, value);
+      element.dispatchEvent(event);
     });
   }
 }

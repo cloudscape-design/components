@@ -163,7 +163,7 @@ describe('extended operators', () => {
     expect(wrapper.findDropdown()?.findOpenDropdown()).toBeFalsy();
 
     // Reopen dropdown
-    wrapper.setInputValue('index >');
+    wrapper.setInputValue('index > ');
     expect(wrapper.find('[data-testid="change+"]')!.getElement()).toHaveTextContent('0');
   });
 
