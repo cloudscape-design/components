@@ -16,7 +16,7 @@ import StrictModeWrapper from './components/strict-mode-wrapper';
 // import font-size reset and Ember font
 import '@cloudscape-design/global-styles/index.css';
 // screenshot test overrides
-import './styles.scss';
+import styles from './styles.scss';
 
 interface GlobalFlags {
   appLayoutWidget?: boolean;
@@ -98,6 +98,15 @@ window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
+
+// Apply Safari-specific class to hide flaky scrollbars in tests
+const lowerCaseUserAgent = navigator.userAgent.toLowerCase();
+const isSafari = lowerCaseUserAgent.indexOf('safari') > -1 && lowerCaseUserAgent.indexOf('chrome') === -1;
+if (isSafari) {
+  document.body.classList.add(styles.safari);
+} else {
+  document.body.classList.remove(styles.safari);
+}
 
 render(
   <HashRouter>
