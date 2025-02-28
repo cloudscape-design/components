@@ -4,7 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { getFirstScrollableParent, scrollRectangleIntoView } from '../scrollable-containers';
+import { getFirstScrollableParent, scrollRectangleIntoView } from '../scrollable-containers.js';
 
 const originalScrollBy = window.scrollBy;
 

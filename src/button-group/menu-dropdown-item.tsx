@@ -3,12 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalButton from '../button/internal';
-import { ButtonDropdownProps } from '../button-dropdown/interfaces';
-import ButtonDropdown from '../button-dropdown/internal';
-import Tooltip from '../internal/components/tooltip';
-import { CancelableEventHandler, fireCancelableEvent } from '../internal/events';
-import { ButtonGroupProps } from './interfaces';
+import InternalButton from '../button/internal.js';
+import { ButtonDropdownProps } from '../button-dropdown/interfaces.js';
+import ButtonDropdown from '../button-dropdown/internal.js';
+import Tooltip from '../internal/components/tooltip/index.js';
+import { CancelableEventHandler, fireCancelableEvent } from '../internal/events/index.js';
+import { ButtonGroupProps } from './interfaces.js';
 
 import testUtilStyles from './test-classes/styles.css.js';
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { act } from '@testing-library/react';
 
-import { S3ResourceSelectorProps } from '../../../lib/components/s3-resource-selector';
+import { S3ResourceSelectorProps } from '../../../lib/components/s3-resource-selector/index.js';
 
 export async function waitForFetch() {
   // wait out a tick to make the fetch promise resolved

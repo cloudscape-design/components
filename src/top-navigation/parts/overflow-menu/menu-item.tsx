@@ -3,15 +3,15 @@
 import React, { forwardRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { ButtonDropdownProps } from '../../../button-dropdown/interfaces';
-import { isLinkItem } from '../../../button-dropdown/utils/utils';
-import InternalIcon from '../../../icon/internal';
-import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events';
-import { useUniqueId } from '../../../internal/hooks/use-unique-id';
-import { spinWhenOpen } from '../../../internal/styles/motion/utils';
-import { LinkProps } from '../../../link/interfaces';
-import { TopNavigationProps } from '../../interfaces';
-import { useNavigate } from './router';
+import { ButtonDropdownProps } from '../../../button-dropdown/interfaces.js';
+import { isLinkItem } from '../../../button-dropdown/utils/utils.js';
+import InternalIcon from '../../../icon/internal.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../internal/events/index.js';
+import { useUniqueId } from '../../../internal/hooks/use-unique-id/index.js';
+import { spinWhenOpen } from '../../../internal/styles/motion/utils.js';
+import { LinkProps } from '../../../link/interfaces.js';
+import { TopNavigationProps } from '../../interfaces.js';
+import { useNavigate } from './router.js';
 
 import styles from '../../styles.css.js';
 

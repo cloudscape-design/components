@@ -4,10 +4,10 @@
 import React from 'react';
 import { render, waitFor } from '@testing-library/react';
 
-import { describeEachAppLayout } from './utils';
-import AppLayout from '../../../lib/components/app-layout';
-import SplitPanel from '../../../lib/components/split-panel';
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import { describeEachAppLayout } from './utils.js';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 
 const isObject = (value: any) => Object.prototype.toString.call(value) === '[object Object]';
 

@@ -5,9 +5,9 @@ import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import Select, { SelectProps } from '../../../lib/components/select';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { defaultOptions, defaultProps } from './common';
+import Select, { SelectProps } from '../../../lib/components/select/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { defaultOptions, defaultProps } from './common.js';
 
 // Mocks for the disabled reason tooltip popover
 jest.mock('../../../lib/components/popover/utils/positions', () => {

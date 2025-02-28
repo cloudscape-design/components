@@ -4,15 +4,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import InternalIcon from '../../icon/internal.js';
-import { getBaseProps } from '../../internal/base-component';
-import CheckboxIcon from '../../internal/components/checkbox-icon';
-import Option from '../../internal/components/option';
-import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces';
+import { getBaseProps } from '../../internal/base-component/index.js';
+import CheckboxIcon from '../../internal/components/checkbox-icon/index.js';
+import Option from '../../internal/components/option/index.js';
+import { DropdownOption, OptionDefinition } from '../../internal/components/option/interfaces.js';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option.js';
-import SelectableItem from '../../internal/components/selectable-item';
-import Tooltip from '../../internal/components/tooltip';
-import useHiddenDescription from '../../internal/hooks/use-hidden-description';
-import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
+import SelectableItem from '../../internal/components/selectable-item/index.js';
+import Tooltip from '../../internal/components/tooltip/index.js';
+import useHiddenDescription from '../../internal/hooks/use-hidden-description/index.js';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs/index.js';
 
 import styles from './styles.css.js';
 

@@ -16,10 +16,10 @@ import { render, within } from '@testing-library/react';
 
 import { disableMotion } from '@cloudscape-design/global-styles';
 
-import Flashbar from '../../../lib/components/flashbar';
-import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom';
-import { FlashbarProps } from '../interfaces';
-import { createFlashbarWrapper, findList, testFlashDismissal } from './common';
+import Flashbar from '../../../lib/components/flashbar/index.js';
+import createWrapper, { FlashbarWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { FlashbarProps } from '../interfaces.js';
+import { createFlashbarWrapper, findList, testFlashDismissal } from './common.js';
 
 import stylesCss from '../../../lib/components/flashbar/styles.css.js';
 

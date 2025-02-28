@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-editor/resizable-box';
+import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-editor/resizable-box/index.js';
 
 import styles from '../../../../lib/components/code-editor/resizable-box/styles.selectors.js';
 

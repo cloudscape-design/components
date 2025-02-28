@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-export { TableRole } from './interfaces';
+export { TableRole } from './interfaces.js';
 
 export {
   getTableCellRoleProps,
@@ -10,6 +10,6 @@ export {
   getTableRoleProps,
   getTableRowRoleProps,
   getTableWrapperRoleProps,
-} from './table-role-helper';
+} from './table-role-helper.js';
 
-export { GridNavigationProvider } from './grid-navigation';
+export { GridNavigationProvider } from './grid-navigation.js';

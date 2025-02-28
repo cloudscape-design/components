@@ -3,7 +3,7 @@
 
 import { GeneratedAnalyticsMetadataFragment } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { GeneratedAnalyticsMetadataFlashbarComponent } from './interfaces';
+import { GeneratedAnalyticsMetadataFlashbarComponent } from './interfaces.js';
 
 import analyticsSelectors from './styles.css.js';
 

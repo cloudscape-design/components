@@ -4,8 +4,8 @@ import { strict as assert } from 'assert';
 
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import DatePickerPage from './page-objects/date-picker-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import DatePickerPage from './page-objects/date-picker-page.js';
 
 class DatePickerDropdownTestPage extends DatePickerPage {
   async getDropdownDirection() {

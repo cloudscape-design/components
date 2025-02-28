@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import DropdownWrapper from '../../../../../lib/components/test-utils/selectors/internal/dropdown';
+import DropdownWrapper from '../../../../../lib/components/test-utils/selectors/internal/dropdown.js';
 
 export class DropdownPageObject extends BasePageObject {
   private dropdownWrapper: DropdownWrapper;

@@ -5,8 +5,8 @@ import { render } from '@testing-library/react';
 
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import ResponsiveText from '../../../../../lib/components/internal/components/responsive-text';
-import { getTextWidth } from '../../../../../lib/components/internal/components/responsive-text/responsive-text-utils';
+import ResponsiveText from '../../../../../lib/components/internal/components/responsive-text/index.js';
+import { getTextWidth } from '../../../../../lib/components/internal/components/responsive-text/responsive-text-utils.js';
 
 jest.mock('../../../../../lib/components/internal/components/responsive-text/responsive-text-utils', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/components/responsive-text/responsive-text-utils'),

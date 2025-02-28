@@ -4,9 +4,9 @@
 import React, { useState } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '../../hooks/use-unique-id';
-import { TokenListProps } from './interfaces';
-import TokenLimitToggle from './token-limit-toggle';
+import { useUniqueId } from '../../hooks/use-unique-id/index.js';
+import { TokenListProps } from './interfaces.js';
+import TokenLimitToggle from './token-limit-toggle.js';
 
 import styles from './styles.css.js';
 

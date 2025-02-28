@@ -6,11 +6,11 @@ import { fireEvent, render } from '@testing-library/react';
 import { ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import { useReaction } from '../../../lib/components/area-chart/async-store';
-import { AreaChartProps } from '../../../lib/components/area-chart/interfaces';
-import { ChartModel } from '../../../lib/components/area-chart/model';
-import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model';
-import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces';
+import { useReaction } from '../../../lib/components/area-chart/async-store/index.js';
+import { AreaChartProps } from '../../../lib/components/area-chart/interfaces.js';
+import { ChartModel } from '../../../lib/components/area-chart/model/index.js';
+import useChartModel, { UseChartModelProps } from '../../../lib/components/area-chart/model/use-chart-model.js';
+import { ChartDataTypes } from '../../../lib/components/internal/components/cartesian-chart/interfaces.js';
 import PlotPoint = ChartModel.PlotPoint;
 
 class UseChartModelWrapper extends ElementWrapper {

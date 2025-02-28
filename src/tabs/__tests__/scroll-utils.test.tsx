@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { onPaginationClick } from '../../../lib/components/tabs/scroll-utils';
-import smoothScroll from '../../../lib/components/tabs/smooth-scroll';
+import { onPaginationClick } from '../../../lib/components/tabs/scroll-utils.js';
+import smoothScroll from '../../../lib/components/tabs/smooth-scroll.js';
 jest.mock('../../../lib/components/tabs/smooth-scroll', () => {
   return jest.fn();
 });

@@ -4,10 +4,10 @@ import { useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { makeCancellable, PromiseCancelledSignal } from '../../internal/utils/promises';
-import { SelectProps } from '../../select/interfaces';
-import { S3ResourceSelectorProps } from '../interfaces';
-import { extractBucketName, validate } from './validation';
+import { makeCancellable, PromiseCancelledSignal } from '../../internal/utils/promises.js';
+import { SelectProps } from '../../select/interfaces.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
+import { extractBucketName, validate } from './validation.js';
 
 export function useVersionsFetch(fetchVersions: S3ResourceSelectorProps['fetchVersions']) {
   const [loading, setLoading] = useState(false);

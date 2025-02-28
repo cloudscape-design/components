@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useState } from 'react';
 
-import { fireNonCancelableEvent } from '../../internal/events';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { joinStrings } from '../../internal/utils/strings';
-import { TableProps } from '../interfaces';
-import { getTrackableValue } from '../utils';
-import { SelectionProps } from './interfaces';
-import { ItemSet } from './utils';
+import { fireNonCancelableEvent } from '../../internal/events/index.js';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { joinStrings } from '../../internal/utils/strings/index.js';
+import { TableProps } from '../interfaces.js';
+import { getTrackableValue } from '../utils.js';
+import { SelectionProps } from './interfaces.js';
+import { ItemSet } from './utils.js';
 
 type SelectionOptions<T> = Pick<
   TableProps<T>,

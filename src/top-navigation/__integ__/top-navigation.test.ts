@@ -4,7 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { createWrapper } from '@cloudscape-design/test-utils-core/selectors';
 
-import '../../../lib/components/test-utils/selectors';
+import '../../../lib/components/test-utils/selectors/index.js';
 
 const wrapper = createWrapper().findTopNavigation();
 

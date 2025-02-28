@@ -3,11 +3,11 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import FormField from '../../../lib/components/form-field';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import S3ResourceSelector, { S3ResourceSelectorProps } from '../../../lib/components/s3-resource-selector';
-import createWrapper, { S3ResourceSelectorWrapper } from '../../../lib/components/test-utils/dom';
-import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures';
+import FormField from '../../../lib/components/form-field/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import S3ResourceSelector, { S3ResourceSelectorProps } from '../../../lib/components/s3-resource-selector/index.js';
+import createWrapper, { S3ResourceSelectorWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { buckets, i18nStrings, objects, versions, waitForFetch } from './fixtures.js';
 
 import styles from '../../../lib/components/s3-resource-selector/s3-modal/styles.css.js';
 

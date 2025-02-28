@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import debounce from '../../debounce';
+import debounce from '../../debounce.js';
 
 type ChangeCallback<T> = (props: T | null) => void;
 type RegistrationCallback = (isRegistered: boolean) => void;

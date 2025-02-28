@@ -5,9 +5,9 @@ import { fireEvent, render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import Tabs, { TabsProps } from '../../../lib/components/tabs';
-import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import Tabs, { TabsProps } from '../../../lib/components/tabs/index.js';
+import createWrapper, { TabsWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/tabs/styles.css.js';
 

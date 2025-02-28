@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ButtonDropdownProps } from '../interfaces';
-import createItemsTree from '../utils/create-items-tree';
+import { ButtonDropdownProps } from '../interfaces.js';
+import createItemsTree from '../utils/create-items-tree.js';
 
 const itemGroup1: ButtonDropdownProps.ItemGroup = {
   text: 'category1',

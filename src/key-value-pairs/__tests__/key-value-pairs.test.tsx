@@ -3,9 +3,9 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import KeyValuePairs from '../../../lib/components/key-value-pairs';
-import Link from '../../../lib/components/link';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import KeyValuePairs from '../../../lib/components/key-value-pairs/index.js';
+import Link from '../../../lib/components/link/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 function renderKeyValuePairs(jsx: React.ReactElement) {
   const { container, ...rest } = render(jsx);

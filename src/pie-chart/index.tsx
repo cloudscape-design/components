@@ -4,23 +4,23 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import clsx from 'clsx';
 import { pie } from 'd3-shape';
 
-import { getBaseProps } from '../internal/base-component';
-import Filter, { ChartFilterProps } from '../internal/components/chart-filter';
-import Legend, { ChartLegendProps } from '../internal/components/chart-legend';
-import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container';
-import { ChartWrapper } from '../internal/components/chart-wrapper';
-import { fireNonCancelableEvent } from '../internal/events';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useControllable } from '../internal/hooks/use-controllable';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import createCategoryColorScale from '../internal/utils/create-category-color-scale';
-import { nodeBelongs } from '../internal/utils/node-belongs';
-import useContainerWidth from '../internal/utils/use-container-width';
-import { PieChartProps } from './interfaces';
-import InternalPieChart, { InternalChartDatum } from './pie-chart';
-import { getDimensionsBySize } from './utils';
+import { getBaseProps } from '../internal/base-component/index.js';
+import Filter, { ChartFilterProps } from '../internal/components/chart-filter/index.js';
+import Legend, { ChartLegendProps } from '../internal/components/chart-legend/index.js';
+import ChartStatusContainer, { getChartStatus } from '../internal/components/chart-status-container/index.js';
+import { ChartWrapper } from '../internal/components/chart-wrapper/index.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useControllable } from '../internal/hooks/use-controllable/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import createCategoryColorScale from '../internal/utils/create-category-color-scale.js';
+import { nodeBelongs } from '../internal/utils/node-belongs.js';
+import useContainerWidth from '../internal/utils/use-container-width.js';
+import { PieChartProps } from './interfaces.js';
+import InternalPieChart, { InternalChartDatum } from './pie-chart.js';
+import { getDimensionsBySize } from './utils.js';
 
 import styles from './styles.css.js';
 

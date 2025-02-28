@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import InternalSpaceBetween from '../space-between/internal';
-import InternalToggle from '../toggle/internal';
-import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils';
-import { CollectionPreferencesProps } from './interfaces';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import InternalSpaceBetween from '../space-between/internal.js';
+import InternalToggle from '../toggle/internal.js';
+import { getAnalyticsInnerContextAttribute } from './analytics-metadata/utils.js';
+import { CollectionPreferencesProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

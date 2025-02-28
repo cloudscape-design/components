@@ -5,12 +5,12 @@ import clsx from 'clsx';
 
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import AbstractSwitch from '../internal/components/abstract-switch';
-import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context';
-import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { RadioGroupProps } from './interfaces';
+import AbstractSwitch from '../internal/components/abstract-switch/index.js';
+import { useSingleTabStopNavigation } from '../internal/context/single-tab-stop-navigation-context.js';
+import { fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { RadioGroupProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

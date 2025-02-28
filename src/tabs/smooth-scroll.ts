@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { isMotionDisabled } from '@cloudscape-design/component-toolkit/internal';
 
-import isNativeSmoothScrollingSupported from './native-smooth-scroll-supported';
+import isNativeSmoothScrollingSupported from './native-smooth-scroll-supported.js';
 
 interface ScrollContext {
   scrollable: HTMLElement;

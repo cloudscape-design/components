@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ChartDataTypes } from './interfaces';
-import { ChartScale, NumericChartScale } from './scales';
+import { ChartDataTypes } from './interfaces.js';
+import { ChartScale, NumericChartScale } from './scales.js';
 
 const SPACE_BETWEEN = 4;
 

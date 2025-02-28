@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AppLayoutProps } from './interfaces';
+import { AppLayoutProps } from './interfaces.js';
 
 const defaultContentTypeState: AppLayoutState = {
   navigationOpen: true,

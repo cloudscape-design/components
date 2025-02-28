@@ -3,9 +3,9 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { BoxProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { BoxProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

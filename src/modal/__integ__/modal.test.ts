@@ -3,8 +3,8 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import { ModalPerformanceDataProps } from '../../../lib/components/internal/analytics/interfaces';
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import { ModalPerformanceDataProps } from '../../../lib/components/internal/analytics/interfaces.js';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 
 test(
   'Should focus input after opening the modal',

@@ -4,11 +4,11 @@
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import clsx from 'clsx';
 
-import { getBaseProps } from '../internal/base-component';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { LiveRegionController } from './controller';
-import { LiveRegionProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { LiveRegionController } from './controller.js';
+import { LiveRegionProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';

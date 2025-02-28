@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { circleIndex } from '../../../../lib/components/internal/utils/circle-index';
+import { circleIndex } from '../../../../lib/components/internal/utils/circle-index.js';
 
 it('returns same index if in range', () => {
   expect(circleIndex(1, [1, 5])).toBe(1);

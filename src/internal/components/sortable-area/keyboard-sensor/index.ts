@@ -12,11 +12,11 @@ import {
   subtract as getCoordinatesDelta,
 } from '@dnd-kit/utilities';
 
-import { scrollElementIntoView } from '../../../utils/scrollable-containers';
-import { defaultKeyboardCodes } from './defaults';
-import { EventName } from './utilities/events';
-import { Listeners } from './utilities/listeners';
-import { applyScroll } from './utilities/scroll';
+import { scrollElementIntoView } from '../../../utils/scrollable-containers.js';
+import { defaultKeyboardCodes } from './defaults.js';
+import { EventName } from './utilities/events.js';
+import { Listeners } from './utilities/listeners.js';
+import { applyScroll } from './utilities/scroll.js';
 
 // Slightly modified version of @dnd-kit's KeyboardSensor:
 // https://github.com/clauderic/dnd-kit/blob/master/packages/core/src/sensors/keyboard/KeyboardSensor.ts

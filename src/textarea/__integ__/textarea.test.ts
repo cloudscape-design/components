@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import TextareaPage from './page-objects/textarea';
+import TextareaPage from './page-objects/textarea.js';
 
 describe('Textarea', () => {
   const setupTest = (testFn: (page: TextareaPage) => Promise<void>) => {

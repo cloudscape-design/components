@@ -3,13 +3,12 @@
 import React from 'react';
 import clsx from 'clsx';
 
+import analyticsSelectors from '../analytics-metadata/styles.css.js';
 import {
   DATA_ATTR_FUNNEL_KEY,
   DATA_ATTR_RESOURCE_TYPE,
   FUNNEL_KEY_FUNNEL_NAME,
-} from '../../internal/analytics/selectors';
-
-import analyticsSelectors from '../analytics-metadata/styles.css.js';
+} from '../../internal/analytics/selectors.js';
 
 interface FunnelBreadcrumbItemProps {
   className?: string;

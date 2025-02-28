@@ -4,7 +4,7 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 import { createWrapper } from '@cloudscape-design/test-utils-core/selectors';
 
-import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-page';
+import ButtonDropdownPage from '../../__integ__/page-objects/button-dropdown-page.js';
 
 const setupTest = (itemId: string, testFn: (page: ButtonDropdownPage, itemId: string) => Promise<void>) => {
   return useBrowser(async browser => {

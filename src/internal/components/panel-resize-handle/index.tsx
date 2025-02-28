@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import ResizeHandleIcon from './icon';
+import ResizeHandleIcon from './icon.js';
 
 import styles from './styles.css.js';
 

@@ -7,10 +7,10 @@ import addMonths from 'date-fns/addMonths';
 import range from 'lodash/range';
 import MockDate from 'mockdate';
 
-import '../../__a11y__/to-validate-a11y';
-import Calendar, { CalendarProps } from '../../../lib/components/calendar';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom';
+import '../../__a11y__/to-validate-a11y.js';
+import Calendar, { CalendarProps } from '../../../lib/components/calendar/index.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import createWrapper, { CalendarWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/calendar/styles.selectors.js';
 import screenreaderOnlyStyles from '../../../lib/components/internal/components/screenreader-only/styles.selectors.js';

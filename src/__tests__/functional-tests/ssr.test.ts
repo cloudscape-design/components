@@ -7,8 +7,8 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import { getRequiredPropsForComponent } from '../required-props-for-components';
-import { getAllComponents, requireComponent } from '../utils';
+import { getRequiredPropsForComponent } from '../required-props-for-components.js';
+import { getAllComponents, requireComponent } from '../utils.js';
 
 test('ensure is it not DOM', () => {
   expect(typeof window).toBe('undefined');

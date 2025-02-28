@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { screen } from '@testing-library/react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
-import { KeyCode } from '../../../lib/components/internal/keycode';
-import SplitPanel from '../../../lib/components/split-panel';
-import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
-import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces.js';
+import { KeyCode } from '../../../lib/components/internal/keycode.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils.js';
 
 import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import testUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';

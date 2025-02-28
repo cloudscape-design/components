@@ -5,17 +5,17 @@ import clsx from 'clsx';
 
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getBaseProps } from '../internal/base-component';
-import { ContainerHeaderContextProvider } from '../internal/context/container-header';
-import { useModalContext } from '../internal/context/modal-context';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useMobile } from '../internal/hooks/use-mobile';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { ContainerProps } from './interfaces';
-import { StickyHeaderContext, useStickyHeader } from './use-sticky-header';
+import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { ContainerHeaderContextProvider } from '../internal/context/container-header.js';
+import { useModalContext } from '../internal/context/modal-context.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { ContainerProps } from './interfaces.js';
+import { StickyHeaderContext, useStickyHeader } from './use-sticky-header.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';

@@ -3,12 +3,12 @@
 import React from 'react';
 import { act, render } from '@testing-library/react';
 
-import { KeyCode } from '../../internal/keycode';
+import { KeyCode } from '../../internal/keycode.js';
 import Mock = jest.Mock;
 
-import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom';
+import ButtonDropdown, { ButtonDropdownProps } from '../../../lib/components/button-dropdown/index.js';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import createWrapper, { ButtonDropdownWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
   useMobile: jest.fn().mockReturnValue(false),

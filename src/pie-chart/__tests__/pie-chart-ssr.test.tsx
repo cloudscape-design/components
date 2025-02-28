@@ -8,7 +8,7 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-import PieChart, { PieChartProps } from '../../../lib/components/pie-chart';
+import PieChart, { PieChartProps } from '../../../lib/components/pie-chart/index.js';
 
 const defaultData: Array<PieChartProps.Datum> = [
   {

@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import { Ace } from 'ace-builds';
 
-import { AceModes } from './ace-modes';
-import { DarkThemes, LightThemes } from './ace-themes';
-import { CodeEditorProps } from './interfaces';
+import { AceModes } from './ace-modes.js';
+import { DarkThemes, LightThemes } from './ace-themes.js';
+import { CodeEditorProps } from './interfaces.js';
 
 export type PaneStatus = 'error' | 'warning' | 'hidden';
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import { Ace } from 'ace-builds';
 
-import { PaneStatus, supportsKeyboardAccessibility } from './util';
+import { PaneStatus, supportsKeyboardAccessibility } from './util.js';
 
 export function setupEditor(
   ace: any,

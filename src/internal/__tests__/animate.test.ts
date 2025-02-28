@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { animate } from '../animate';
+import { animate } from '../animate.js';
 
 describe('animate', () => {
   const originalFn = window.requestAnimationFrame;

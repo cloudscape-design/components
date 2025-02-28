@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { useCallback, useMemo, useState } from 'react';
 
-import { ButtonDropdownProps, HighlightProps } from '../interfaces';
-import createItemsTree, { TreeIndex } from './create-items-tree';
-import moveHighlightOneStep from './move-highlight';
-import { indexEquals, indexIncludes } from './utils';
+import { ButtonDropdownProps, HighlightProps } from '../interfaces.js';
+import createItemsTree, { TreeIndex } from './create-items-tree.js';
+import moveHighlightOneStep from './move-highlight.js';
+import { indexEquals, indexIncludes } from './utils.js';
 
 interface UseHighlightedMenuOptions {
   items: ButtonDropdownProps.Items;

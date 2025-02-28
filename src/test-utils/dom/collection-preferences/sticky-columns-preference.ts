@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import FormFieldWrapper from '../form-field';
-import RadioGroupWrapper from '../radio-group';
+import FormFieldWrapper from '../form-field/index.js';
+import RadioGroupWrapper from '../radio-group/index.js';
 
 import styles from '../../../collection-preferences/styles.selectors.js';
 

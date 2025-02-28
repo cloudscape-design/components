@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Form, { FormProps } from '../../../lib/components/form';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Form, { FormProps } from '../../../lib/components/form/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import alertStyles from '../../../lib/components/alert/styles.selectors.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.selectors.js';

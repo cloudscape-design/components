@@ -3,14 +3,14 @@
 import React, { Ref, useRef } from 'react';
 import clsx from 'clsx';
 
-import { convertAutoComplete } from '../input/utils';
-import { getBaseProps } from '../internal/base-component';
-import { useFormFieldContext } from '../internal/context/form-field-context';
-import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { TextareaProps } from './interfaces';
+import { convertAutoComplete } from '../input/utils.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { useFormFieldContext } from '../internal/context/form-field-context.js';
+import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { TextareaProps } from './interfaces.js';
 
 import styles from './styles.css.js';
 

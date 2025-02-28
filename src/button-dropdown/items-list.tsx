@@ -2,13 +2,13 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { useMobile } from '../internal/hooks/use-mobile';
-import CategoryElement from './category-elements/category-element';
-import ExpandableCategoryElement from './category-elements/expandable-category-element';
-import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element';
-import { ItemListProps } from './interfaces';
-import ItemElement from './item-element';
-import { isItemGroup } from './utils/utils';
+import { useMobile } from '../internal/hooks/use-mobile/index.js';
+import CategoryElement from './category-elements/category-element.js';
+import ExpandableCategoryElement from './category-elements/expandable-category-element.js';
+import MobileExpandableCategoryElement from './category-elements/mobile-expandable-category-element.js';
+import { ItemListProps } from './interfaces.js';
+import ItemElement from './item-element/index.js';
+import { isItemGroup } from './utils/utils.js';
 
 export default function ItemsList({
   items,

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { createContext, useContext } from 'react';
 
-import { SplitPanelFocusControlRefs } from '../../app-layout/utils/use-split-panel-focus-control';
+import { SplitPanelFocusControlRefs } from '../../app-layout/utils/use-split-panel-focus-control.js';
 
 export interface SplitPanelSideToggleProps {
   displayed: boolean;

@@ -2,12 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
-import FocusLock from '../../../../internal/components/focus-lock';
-import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
-import { TopNavigationProps } from '../../../interfaces';
-import { View } from '..';
-import Header from '../header';
-import { UtilityMenuItem } from '../menu-item';
+import FocusLock from '../../../../internal/components/focus-lock/index.js';
+import { useUniqueId } from '../../../../internal/hooks/use-unique-id/index.js';
+import { TopNavigationProps } from '../../../interfaces.js';
+import Header from '../header.js';
+import { View } from '../index.js';
+import { UtilityMenuItem } from '../menu-item.js';
 
 import styles from '../../../styles.css.js';
 

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getIsRtl, getScrollInlineStart } from '@cloudscape-design/component-toolkit/internal';
 
-import smoothScroll from './smooth-scroll';
+import smoothScroll from './smooth-scroll.js';
 
 export const onPaginationClick = (
   headerBarRef: React.RefObject<HTMLUListElement>,

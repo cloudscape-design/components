@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { gridDefaults } from '../grid-defaults';
+import { gridDefaults } from '../grid-defaults.js';
 
 describe('grid-defaults', () => {
   describe.each(Object.entries(gridDefaults))('Has right number of entries for %i items', (attributes, layouts) => {

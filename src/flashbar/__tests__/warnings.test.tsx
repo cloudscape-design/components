@@ -3,8 +3,8 @@
 import React from 'react';
 import { render as reactRender } from '@testing-library/react';
 
-import Flashbar from '../../../lib/components/flashbar';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Flashbar from '../../../lib/components/flashbar/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 function render(element: React.ReactElement) {
   return createWrapper(reactRender(element).container).findFlashbar()!;

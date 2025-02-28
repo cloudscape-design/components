@@ -3,8 +3,8 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
 
-import { TICK_LENGTH, TICK_MARGIN } from './constants';
-import { NumericChartScale } from './scales';
+import { TICK_LENGTH, TICK_MARGIN } from './constants.js';
+import { NumericChartScale } from './scales.js';
 
 import styles from './styles.css.js';
 

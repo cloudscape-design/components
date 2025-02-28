@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size';
-import { SPLIT_PANEL_MIN_WIDTH } from './constants';
+import { browserScrollbarSize } from '../../internal/utils/browser-scrollbar-size.js';
+import { SPLIT_PANEL_MIN_WIDTH } from './constants.js';
 
 /**
  * Even if the Split Panel is set to be displayed on the side, it will be forced to the bottom

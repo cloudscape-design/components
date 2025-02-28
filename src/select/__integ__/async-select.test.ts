@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
 import AsyncDropdownComponentPage, {
   DEBOUNCE_FILTERING_DELAY,
   RESPONSE_PAGE_SIZE,
-} from '../../__integ__/page-objects/async-dropdown-page';
+} from '../../__integ__/page-objects/async-dropdown-page.js';
 
 const select = createWrapper().findSelect();
 

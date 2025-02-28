@@ -3,7 +3,7 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
 
-import { BaseComponentProps } from '../../base-component';
+import { BaseComponentProps } from '../../base-component/index.js';
 
 import styles from './styles.css.js';
 

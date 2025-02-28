@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import RadioButtonWrapper from '../radio-group/radio-button';
+import RadioButtonWrapper from '../radio-group/radio-button.js';
 
 import styles from '../../../tiles/styles.selectors.js';
 

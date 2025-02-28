@@ -2,9 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import SplitPanel from '../../../lib/components/split-panel';
-import { describeEachAppLayout, manyDrawers, renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import SplitPanel from '../../../lib/components/split-panel/index.js';
+import { describeEachAppLayout, manyDrawers, renderComponent } from './utils.js';
 
 // no-op function to suppress controllability warnings
 function noop() {}

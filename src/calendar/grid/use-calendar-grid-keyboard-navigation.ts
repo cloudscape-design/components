@@ -4,11 +4,11 @@
 import React from 'react';
 import { isSameMonth, isSameYear } from 'date-fns';
 
-import { KeyCode } from '../../internal/keycode';
-import handleKey from '../../internal/utils/handle-key';
-import { CalendarProps } from '../interfaces';
-import { moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../utils/navigation-day';
-import { moveMonthDown, moveMonthUp, moveNextMonth, movePrevMonth } from '../utils/navigation-month';
+import { KeyCode } from '../../internal/keycode.js';
+import handleKey from '../../internal/utils/handle-key.js';
+import { CalendarProps } from '../interfaces.js';
+import { moveNextDay, moveNextWeek, movePrevDay, movePrevWeek } from '../utils/navigation-day.js';
+import { moveMonthDown, moveMonthUp, moveNextMonth, movePrevMonth } from '../utils/navigation-month.js';
 
 export default function useCalendarGridKeyboardNavigation({
   baseDate,

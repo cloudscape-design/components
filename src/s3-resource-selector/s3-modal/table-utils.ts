@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { ComponentFormatFunction } from '../../i18n/context';
-import { TableProps } from '../../table/interfaces';
-import { S3ResourceSelectorProps } from '../interfaces';
+import { ComponentFormatFunction } from '../../i18n/context.js';
+import { TableProps } from '../../table/interfaces.js';
+import { S3ResourceSelectorProps } from '../interfaces.js';
 
 export function includes<T>(array: ReadonlyArray<T> | undefined, item: T) {
   return !!array && array.indexOf(item) > -1;

@@ -4,17 +4,17 @@ import React, { useEffect } from 'react';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { FunnelMetrics } from '../internal/analytics';
-import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
-import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { applyDisplayName } from '../internal/utils/apply-display-name';
-import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces';
-import { AlertProps } from './interfaces';
-import InternalAlert from './internal';
+import { useFunnel, useFunnelStep, useFunnelSubStep } from '../internal/analytics/hooks/use-funnel.js';
+import { FunnelMetrics } from '../internal/analytics/index.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { applyDisplayName } from '../internal/utils/apply-display-name.js';
+import { GeneratedAnalyticsMetadataAlertComponent } from './analytics-metadata/interfaces.js';
+import { AlertProps } from './interfaces.js';
+import InternalAlert from './internal.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
+import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors.js';
 
 export { AlertProps };
 

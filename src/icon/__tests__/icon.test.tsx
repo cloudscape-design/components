@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Icon, { IconProps } from '../../../lib/components/icon';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Icon, { IconProps } from '../../../lib/components/icon/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/icon/styles.css.js';
 

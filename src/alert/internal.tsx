@@ -5,29 +5,29 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { InternalButton } from '../button/internal';
-import { useInternalI18n } from '../i18n/context';
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors';
-import { getBaseProps } from '../internal/base-component';
-import VisualContext from '../internal/components/visual-context';
-import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
-import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import useForwardFocus from '../internal/hooks/forward-focus';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { awsuiPluginsInternal } from '../internal/plugins/api';
-import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
-import { SomeRequired } from '../internal/types';
-import { ActionsWrapper } from './actions-wrapper';
-import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
-import { AlertProps } from './interfaces';
+import { InternalButton } from '../button/internal.js';
+import { useInternalI18n } from '../i18n/context.js';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import VisualContext from '../internal/components/visual-context/index.js';
+import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context.js';
+import { fireNonCancelableEvent } from '../internal/events/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import useForwardFocus from '../internal/hooks/forward-focus/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { awsuiPluginsInternal } from '../internal/plugins/api.js';
+import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers/index.js';
+import { SomeRequired } from '../internal/types.js';
+import { ActionsWrapper } from './actions-wrapper/index.js';
+import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces.js';
+import { AlertProps } from './interfaces.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import { DATA_ATTR_ANALYTICS_ALERT } from '../internal/analytics/selectors.js';
 
 const typeToIcon: Record<AlertProps.Type, IconProps['name']> = {
   error: 'status-negative',

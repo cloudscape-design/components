@@ -3,8 +3,8 @@
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { CollectionPreferencesProps } from '../interfaces';
-import { GeneratedAnalyticsMetadataCollectionPreferencesComponent } from './interfaces';
+import { CollectionPreferencesProps } from '../interfaces.js';
+import { GeneratedAnalyticsMetadataCollectionPreferencesComponent } from './interfaces.js';
 
 import analyticsSelectors from './styles.css.js';
 

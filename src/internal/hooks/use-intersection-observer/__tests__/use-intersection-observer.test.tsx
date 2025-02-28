@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { useIntersectionObserver } from '..';
+import { useIntersectionObserver } from '../index.js';
 
 declare global {
   interface Window {

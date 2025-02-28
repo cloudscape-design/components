@@ -3,14 +3,14 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import FocusLock from '../../../../internal/components/focus-lock';
-import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events';
-import { useUniqueId } from '../../../../internal/hooks/use-unique-id';
-import { TopNavigationProps } from '../../../interfaces';
-import { View } from '..';
-import Header from '../header';
-import { SubmenuItem } from '../menu-item';
-import { useNavigate } from '../router';
+import FocusLock from '../../../../internal/components/focus-lock/index.js';
+import { fireCancelableEvent, isPlainLeftClick } from '../../../../internal/events/index.js';
+import { useUniqueId } from '../../../../internal/hooks/use-unique-id/index.js';
+import { TopNavigationProps } from '../../../interfaces.js';
+import Header from '../header.js';
+import { View } from '../index.js';
+import { SubmenuItem } from '../menu-item.js';
+import { useNavigate } from '../router.js';
 
 import styles from '../../../styles.css.js';
 

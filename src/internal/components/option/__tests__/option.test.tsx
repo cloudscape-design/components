@@ -3,10 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Option, { OptionProps } from '../../../../../lib/components/internal/components/option';
-import { OptionDefinition } from '../../../../../lib/components/internal/components/option/interfaces';
-import CheckboxWrapper from '../../../../../lib/components/test-utils/dom/checkbox';
-import OptionWrapper from '../../../../../lib/components/test-utils/dom/internal/option';
+import Option, { OptionProps } from '../../../../../lib/components/internal/components/option/index.js';
+import { OptionDefinition } from '../../../../../lib/components/internal/components/option/interfaces.js';
+import CheckboxWrapper from '../../../../../lib/components/test-utils/dom/checkbox/index.js';
+import OptionWrapper from '../../../../../lib/components/test-utils/dom/internal/option.js';
 
 import iconStyles from '../../../../../lib/components/icon/styles.selectors.js';
 import styles from '../../../../../lib/components/internal/components/option/styles.selectors.js';

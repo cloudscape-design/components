@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { DropdownOption, OptionDefinition, OptionGroup } from '../interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../interfaces.js';
 
 type SearchableField = 'value' | 'label' | 'description' | 'labelTag';
 type SearchableTagField = 'tags' | 'filteringTags';

@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../icon/interfaces';
-import InternalIcon from '../icon/internal';
+import { IconProps } from '../icon/interfaces.js';
+import InternalIcon from '../icon/internal.js';
 
 import styles from './styles.css.js';
 

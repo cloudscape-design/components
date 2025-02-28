@@ -3,9 +3,9 @@
 import React from 'react';
 import { act, fireEvent, screen, within } from '@testing-library/react';
 
-import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
-import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
-import { KeyCode } from '../../internal/keycode';
+import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout/index.js';
+import customCssProps from '../../../lib/components/internal/generated/custom-css-properties/index.js';
+import { KeyCode } from '../../internal/keycode.js';
 import {
   describeEachAppLayout,
   getActiveDrawerWidth,
@@ -13,7 +13,7 @@ import {
   renderComponent,
   testDrawer,
   testDrawerWithoutLabels,
-} from './utils';
+} from './utils.js';
 
 import drawerStyles from '../../../lib/components/app-layout/drawer/styles.css.js';
 import notificationStyles from '../../../lib/components/app-layout/notifications/styles.css.js';

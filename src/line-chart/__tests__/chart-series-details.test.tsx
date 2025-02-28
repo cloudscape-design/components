@@ -4,10 +4,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import LineChart, { LineChartProps } from '../../../lib/components/line-chart';
-import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart';
-import { LineChartWrapper } from '../../../lib/components/test-utils/dom';
-import testChartSeriesDetails from '../../mixed-line-bar-chart/__tests__/test-chart-series-details';
+import LineChart, { LineChartProps } from '../../../lib/components/line-chart/index.js';
+import { MixedLineBarChartProps } from '../../../lib/components/mixed-line-bar-chart/index.js';
+import { LineChartWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import testChartSeriesDetails from '../../mixed-line-bar-chart/__tests__/test-chart-series-details.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),

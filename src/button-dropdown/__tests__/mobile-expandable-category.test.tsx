@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import MobileExpandableGroup from '../../../lib/components/button-dropdown/mobile-expandable-group/mobile-expandable-group';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import MobileExpandableGroup from '../../../lib/components/button-dropdown/mobile-expandable-group/mobile-expandable-group.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const renderComponent = (component: React.ReactElement) => {
   const renderResult = render(component);

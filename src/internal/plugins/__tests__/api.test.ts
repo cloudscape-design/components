@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { metrics } from '../../../../lib/components/internal/metrics';
-import { loadApi } from '../../../../lib/components/internal/plugins/api';
-import { DrawerConfig, UpdateDrawerConfig } from '../../../../lib/components/internal/plugins/controllers/drawers';
+import { metrics } from '../../../../lib/components/internal/metrics.js';
+import { loadApi } from '../../../../lib/components/internal/plugins/api.js';
+import { DrawerConfig, UpdateDrawerConfig } from '../../../../lib/components/internal/plugins/controllers/drawers.js';
 
 jest.mock('../../../../lib/components/internal/metrics', () => ({ metrics: { sendPanoramaMetric: () => {} } }));
 

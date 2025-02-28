@@ -3,12 +3,12 @@
 import React, { memo } from 'react';
 import clsx from 'clsx';
 
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { useSelector } from '../async-store';
-import { AreaChartProps } from '../interfaces';
-import { ChartModel } from '../model';
-import AreaSeries from './area-series';
-import ThresholdSeries from './threshold-series';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { useSelector } from '../async-store/index.js';
+import { AreaChartProps } from '../interfaces.js';
+import { ChartModel } from '../model/index.js';
+import AreaSeries from './area-series.js';
+import ThresholdSeries from './threshold-series.js';
 
 import styles from '../styles.css.js';
 

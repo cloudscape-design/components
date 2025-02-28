@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { describeEachAppLayout, renderComponent } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { describeEachAppLayout, renderComponent } from './utils.js';
 
 describeEachAppLayout(() => {
   describe.each([true, false])('stickyNotifications=%s', stickyNotifications => {

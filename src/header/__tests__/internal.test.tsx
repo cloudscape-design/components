@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import InternalHeader from '../../../lib/components/header/internal';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import InternalHeader from '../../../lib/components/header/internal.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 describe('InternalHeader', () => {
   test('tabindex attribute is not set when not provided', () => {

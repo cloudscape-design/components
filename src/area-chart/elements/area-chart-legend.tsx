@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { memo, useMemo } from 'react';
 
-import ChartLegend from '../../internal/components/chart-legend';
-import { useSelector } from '../async-store';
-import { AreaChartProps } from '../interfaces';
-import { ChartModel } from '../model';
+import ChartLegend from '../../internal/components/chart-legend/index.js';
+import { useSelector } from '../async-store/index.js';
+import { AreaChartProps } from '../interfaces.js';
+import { ChartModel } from '../model/index.js';
 
 export default memo(AreaChartLegend) as typeof AreaChartLegend;
 

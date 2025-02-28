@@ -3,22 +3,22 @@
 import React, { useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { ButtonProps } from '../button/interfaces';
-import { InternalButton } from '../button/internal';
-import { getBaseProps } from '../internal/base-component';
-import { matchBreakpointMapping } from '../internal/breakpoints';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { usePrevious } from '../internal/hooks/use-previous';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { SomeRequired } from '../internal/types';
-import InternalLiveRegion from '../live-region/internal';
-import { AdditionalInfo } from './additional-info';
-import { gridDefaults } from './grid-defaults';
-import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces';
-import { Row } from './row';
-import { getGridTemplateColumns } from './utils';
+import { ButtonProps } from '../button/interfaces.js';
+import { InternalButton } from '../button/internal.js';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { matchBreakpointMapping } from '../internal/breakpoints.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { usePrevious } from '../internal/hooks/use-previous/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { SomeRequired } from '../internal/types.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import { AdditionalInfo } from './additional-info.js';
+import { gridDefaults } from './grid-defaults.js';
+import { AttributeEditorForwardRefType, AttributeEditorProps } from './interfaces.js';
+import { Row } from './row.js';
+import { getGridTemplateColumns } from './utils.js';
 
 import styles from './styles.css.js';
 

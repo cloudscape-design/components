@@ -3,9 +3,9 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import { viewports } from './constants';
-import { getUrlParams, testIf, Theme } from './utils';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import { viewports } from './constants.js';
+import { getUrlParams, testIf, Theme } from './utils.js';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.selectors.js';
 

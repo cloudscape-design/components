@@ -4,14 +4,14 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useReducedMotion, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
-import { getBaseProps } from '../internal/base-component';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import useBaseComponent from '../internal/hooks/use-base-component';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { isDevelopment } from '../internal/is-development';
-import { focusFlashById } from './flash';
-import { FlashbarProps } from './interfaces';
+import { getBaseProps } from '../internal/base-component/index.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import useBaseComponent from '../internal/hooks/use-base-component/index.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode/index.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { focusFlashById } from './flash.js';
+import { FlashbarProps } from './interfaces.js';
 
 // Common logic for collapsible and non-collapsible Flashbar
 export function useFlashbar({

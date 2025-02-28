@@ -4,9 +4,9 @@
 import * as React from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { renderHook } from '../../__tests__/render-hook';
-import useTableFocusNavigation from '../use-table-focus-navigation';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { renderHook } from '../../__tests__/render-hook.js';
+import useTableFocusNavigation from '../use-table-focus-navigation.js';
 
 const focusFn = jest.fn();
 const rootRemoveEventListener = jest.fn();

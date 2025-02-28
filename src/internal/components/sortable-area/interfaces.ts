@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { NonCancelableEventHandler } from '../../events';
-import { DragHandleProps } from '../drag-handle/interfaces';
+import { NonCancelableEventHandler } from '../../events/index.js';
+import { DragHandleProps } from '../drag-handle/interfaces.js';
 
 export interface SortableAreaProps<Item> {
   items: readonly Item[];

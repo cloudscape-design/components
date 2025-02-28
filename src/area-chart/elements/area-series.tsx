@@ -3,7 +3,7 @@
 import React, { memo } from 'react';
 import { area, line } from 'd3-shape';
 
-import { ChartModel } from '../model';
+import { ChartModel } from '../model/index.js';
 
 interface AreaSeriesProps<T> {
   data: readonly ChartModel.PlotPoint<T>[];

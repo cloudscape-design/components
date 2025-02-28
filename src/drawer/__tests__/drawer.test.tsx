@@ -3,9 +3,9 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Drawer from '../../../lib/components/drawer';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import Drawer from '../../../lib/components/drawer/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 function renderDrawer(jsx: React.ReactElement) {
   const { container } = render(jsx);

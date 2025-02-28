@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { padLeftZeros } from '../strings';
+import { padLeftZeros } from '../strings/index.js';
 
 /**
  * Transforms Date's object time part to a string.

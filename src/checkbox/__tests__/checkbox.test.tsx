@@ -3,12 +3,12 @@
 import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
-import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox';
-import InternalCheckbox from '../../../lib/components/checkbox/internal';
-import FormField from '../../../lib/components/form-field';
-import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom';
-import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils';
-import { createCommonTests } from './common-tests';
+import Checkbox, { CheckboxProps } from '../../../lib/components/checkbox/index.js';
+import InternalCheckbox from '../../../lib/components/checkbox/internal.js';
+import FormField from '../../../lib/components/form-field/index.js';
+import createWrapper, { CheckboxWrapper } from '../../../lib/components/test-utils/dom/index.js';
+import { renderWithSingleTabStopNavigation } from '../../internal/context/__tests__/utils.js';
+import { createCommonTests } from './common-tests.js';
 
 import abstractSwitchStyles from '../../../lib/components/internal/components/abstract-switch/styles.css.js';
 import styles from '../../../lib/components/internal/components/checkbox-icon/styles.selectors.js';

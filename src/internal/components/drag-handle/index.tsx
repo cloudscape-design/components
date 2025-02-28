@@ -3,12 +3,12 @@
 import React, { forwardRef, useRef } from 'react';
 import clsx from 'clsx';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
-import { getBaseProps } from '../../base-component';
-import useForwardFocus from '../../hooks/forward-focus';
-import { DragHandleProps } from './interfaces';
-import { ResizeIcon } from './resize-icon';
+import { IconProps } from '../../../icon/interfaces.js';
+import InternalIcon from '../../../icon/internal.js';
+import { getBaseProps } from '../../base-component/index.js';
+import useForwardFocus from '../../hooks/forward-focus/index.js';
+import { DragHandleProps } from './interfaces.js';
+import { ResizeIcon } from './resize-icon.js';
 
 import styles from './styles.css.js';
 

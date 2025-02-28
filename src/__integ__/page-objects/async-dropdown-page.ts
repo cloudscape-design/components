@@ -2,8 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 
-import AutosuggestWrapper from '../../../lib/components/test-utils/selectors/autosuggest';
-import SelectWrapper from '../../../lib/components/test-utils/selectors/select';
+import AutosuggestWrapper from '../../../lib/components/test-utils/selectors/autosuggest/index.js';
+import SelectWrapper from '../../../lib/components/test-utils/selectors/select/index.js';
 
 interface APIResponse {
   items: NonNullable<Array<any>>;

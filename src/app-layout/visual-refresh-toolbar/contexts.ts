@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import { awsuiPluginsInternal } from '../../internal/plugins/api';
+import { awsuiPluginsInternal } from '../../internal/plugins/api.js';
 
 interface BreadcrumbsSlotContextType {
   isInToolbar: boolean;

@@ -3,8 +3,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Icon, { IconProps } from '../../../lib/components/icon';
-import InternalIcon from '../../../lib/components/icon/internal';
+import Icon, { IconProps } from '../../../lib/components/icon/index.js';
+import InternalIcon from '../../../lib/components/icon/internal.js';
 
 jest.mock('../../../lib/components/icon/internal', () => {
   return jest.fn(() => null);

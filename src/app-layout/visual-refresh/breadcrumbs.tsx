@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils';
-import { useAppLayoutInternals } from './context';
+import { highContrastHeaderClassName } from '../../internal/utils/content-header-utils.js';
+import { useAppLayoutInternals } from './context.js';
 
 import testutilStyles from '../test-classes/styles.css.js';
 import styles from './styles.css.js';

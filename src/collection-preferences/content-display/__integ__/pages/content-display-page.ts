@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import CollectionPreferencesPageObject from '../../../__integ__/pages/collection-preferences-page';
+import CollectionPreferencesPageObject from '../../../__integ__/pages/collection-preferences-page.js';
 
 export default class ContentDisplayPageObject extends CollectionPreferencesPageObject {
   async containsOptionsInOrder(options: string[]) {

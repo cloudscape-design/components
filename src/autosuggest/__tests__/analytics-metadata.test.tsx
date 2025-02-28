@@ -9,11 +9,11 @@ import {
 } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-toolkit/internal/analytics-metadata/utils';
 
-import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
-import InternalAutosuggest from '../../../lib/components/autosuggest/internal';
-import FormField from '../../../lib/components/form-field';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
+import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest/index.js';
+import InternalAutosuggest from '../../../lib/components/autosuggest/internal.js';
+import FormField from '../../../lib/components/form-field/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils.js';
 
 import optionLabels from '../../../lib/components/internal/components/option/analytics-metadata/styles.css.js';
 import selectableItemsLabels from '../../../lib/components/internal/components/selectable-item/analytics-metadata/styles.css.js';

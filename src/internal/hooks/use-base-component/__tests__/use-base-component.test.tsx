@@ -5,14 +5,14 @@ import { render } from '@testing-library/react';
 
 import { COMPONENT_METADATA_KEY } from '@cloudscape-design/component-toolkit/internal';
 
-import { Button } from '../../../../../lib/components';
-import Portal from '../../../../../lib/components/internal/components/portal';
-import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment';
+import { Button } from '../../../../../lib/components/index.js';
+import Portal from '../../../../../lib/components/internal/components/portal/index.js';
+import { PACKAGE_VERSION } from '../../../../../lib/components/internal/environment.js';
 import useBaseComponent, {
   InternalBaseComponentProps,
-} from '../../../../../lib/components/internal/hooks/use-base-component';
-import { useTelemetry } from '../../../../../lib/components/internal/hooks/use-telemetry';
-import createWrapper from '../../../../../lib/components/test-utils/dom';
+} from '../../../../../lib/components/internal/hooks/use-base-component/index.js';
+import { useTelemetry } from '../../../../../lib/components/internal/hooks/use-telemetry/index.js';
+import createWrapper from '../../../../../lib/components/test-utils/dom/index.js';
 
 jest.mock('../../../../../lib/components/internal/hooks/use-telemetry', () => {
   return { useTelemetry: jest.fn(() => null) };

@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { FOCUS_THROTTLE_DELAY } from '../utils';
-import { setupTest } from './pages/interactive-page';
-import { setupTest as setupStickyFlashbarTest } from './pages/sticky-page';
+import { FOCUS_THROTTLE_DELAY } from '../utils.js';
+import { setupTest } from './pages/interactive-page.js';
+import { setupTest as setupStickyFlashbarTest } from './pages/sticky-page.js';
 
 describe('Collapsible Flashbar', () => {
   describe('Keyboard navigation', () => {

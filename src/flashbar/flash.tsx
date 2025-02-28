@@ -6,27 +6,27 @@ import clsx from 'clsx';
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ActionsWrapper } from '../alert/actions-wrapper';
-import { InternalButton } from '../button/internal';
-import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
-import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
-import { getVisualContextClassname } from '../internal/components/visual-context';
-import { PACKAGE_VERSION } from '../internal/environment';
-import { useMergeRefs } from '../internal/hooks/use-merge-refs';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import { isDevelopment } from '../internal/is-development';
-import { awsuiPluginsInternal } from '../internal/plugins/api';
-import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
-import { throttle } from '../internal/utils/throttle';
-import InternalLiveRegion from '../live-region/internal';
-import InternalSpinner from '../spinner/internal';
-import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
-import { FlashbarProps } from './interfaces';
-import { FOCUS_THROTTLE_DELAY } from './utils';
+import { ActionsWrapper } from '../alert/actions-wrapper/index.js';
+import { InternalButton } from '../button/internal.js';
+import InternalIcon from '../icon/internal.js';
+import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component/index.js';
+import { getVisualContextClassname } from '../internal/components/visual-context/index.js';
+import { PACKAGE_VERSION } from '../internal/environment.js';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import { isDevelopment } from '../internal/is-development.js';
+import { awsuiPluginsInternal } from '../internal/plugins/api.js';
+import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers/index.js';
+import { throttle } from '../internal/utils/throttle.js';
+import InternalLiveRegion from '../live-region/internal.js';
+import InternalSpinner from '../spinner/internal.js';
+import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces.js';
+import { FlashbarProps } from './interfaces.js';
+import { FOCUS_THROTTLE_DELAY } from './utils.js';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors.js';
 
 const ICON_TYPES = {
   success: 'status-positive',

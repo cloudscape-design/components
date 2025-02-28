@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker';
-import FormField from '../../../lib/components/form-field';
-import { NonCancelableEventHandler } from '../../../lib/components/internal/events';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker';
+import DatePicker, { DatePickerProps } from '../../../lib/components/date-picker/index.js';
+import FormField from '../../../lib/components/form-field/index.js';
+import { NonCancelableEventHandler } from '../../../lib/components/internal/events/index.js';
+import DatePickerWrapper from '../../../lib/components/test-utils/dom/date-picker/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 const defaultProps: DatePickerProps = {
   todayAriaLabel: 'Today',

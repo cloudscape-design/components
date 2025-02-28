@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { AttributeEditorProps } from '../interfaces';
+import { AttributeEditorProps } from '../interfaces.js';
 import {
   getGridTemplateColumns,
   getItemGridColumns,
   getRemoveButtonGridColumns,
   isRemoveButtonOnSameLine,
-} from '../utils';
+} from '../utils.js';
 
 describe('utils', () => {
   const sampleLayout: AttributeEditorProps.GridLayout = {

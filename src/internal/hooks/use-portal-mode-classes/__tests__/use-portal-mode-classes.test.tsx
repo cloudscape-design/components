@@ -3,9 +3,9 @@
 import React, { useRef } from 'react';
 import { render, screen } from '@testing-library/react';
 
-import VisualContext from '../../../../../lib/components/internal/components/visual-context';
-import { usePortalModeClasses } from '../../../../../lib/components/internal/hooks/use-portal-mode-classes';
-import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
+import VisualContext from '../../../../../lib/components/internal/components/visual-context/index.js';
+import { usePortalModeClasses } from '../../../../../lib/components/internal/hooks/use-portal-mode-classes/index.js';
+import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode/index.js';
 
 jest.mock('../../../../../lib/components/internal/hooks/use-visual-mode', () => {
   const original = jest.requireActual('../../../../../lib/components/internal/hooks/use-visual-mode');

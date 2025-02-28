@@ -4,13 +4,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalDateInput from '../../date-input/internal';
-import InternalFormField from '../../form-field/internal';
+import InternalDateInput from '../../date-input/internal.js';
+import InternalFormField from '../../form-field/internal.js';
 import { useInternalI18n } from '../../i18n/context.js';
-import { BaseComponentProps } from '../../internal/base-component';
-import { TimeInputProps } from '../../time-input/interfaces';
-import InternalTimeInput from '../../time-input/internal';
-import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces';
+import { BaseComponentProps } from '../../internal/base-component/index.js';
+import { TimeInputProps } from '../../time-input/interfaces.js';
+import InternalTimeInput from '../../time-input/internal.js';
+import { DateRangePickerProps, RangeCalendarI18nStrings } from '../interfaces.js';
 
 import styles from '../styles.css.js';
 import testutilStyles from '../test-classes/styles.css.js';

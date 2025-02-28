@@ -4,7 +4,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import DragHandle from '../../../../../lib/components/internal/components/drag-handle';
+import DragHandle from '../../../../../lib/components/internal/components/drag-handle/index.js';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle/styles.css.js';
 

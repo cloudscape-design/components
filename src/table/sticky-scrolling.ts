@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { getOverflowParents } from '../internal/utils/scrollable-containers';
+import { getOverflowParents } from '../internal/utils/scrollable-containers.js';
 
 /**
  * @param containerRef ref to surrounding container with sticky element

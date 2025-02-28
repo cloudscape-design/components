@@ -3,7 +3,7 @@
 import {
   ActionButtonsController,
   ActionConfig,
-} from '../../../../../lib/components/internal/plugins/controllers/action-buttons';
+} from '../../../../../lib/components/internal/plugins/controllers/action-buttons.js';
 
 const testAction: ActionConfig = { id: 'test-action', mountContent: () => {}, unmountContent: () => {} };
 

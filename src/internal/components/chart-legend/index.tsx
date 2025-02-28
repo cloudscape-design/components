@@ -3,11 +3,11 @@
 import React, { memo, useRef } from 'react';
 import clsx from 'clsx';
 
-import InternalBox from '../../../box/internal';
-import { useInternalI18n } from '../../../i18n/context';
-import { KeyCode } from '../../keycode';
-import handleKey from '../../utils/handle-key';
-import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker';
+import InternalBox from '../../../box/internal.js';
+import { useInternalI18n } from '../../../i18n/context.js';
+import { KeyCode } from '../../keycode.js';
+import handleKey from '../../utils/handle-key.js';
+import SeriesMarker, { ChartSeriesMarkerType } from '../chart-series-marker/index.js';
 
 import styles from './styles.css.js';
 

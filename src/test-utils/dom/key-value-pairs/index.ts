@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import BoxWrapper from '../box';
+import BoxWrapper from '../box/index.js';
 
 import columnLayoutStyles from '../../../column-layout/flexible-column-layout/styles.selectors.js';
 import styles from '../../../key-value-pairs/styles.selectors.js';

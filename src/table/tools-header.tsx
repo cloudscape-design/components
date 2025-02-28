@@ -3,9 +3,9 @@
 import React, { useContext } from 'react';
 import clsx from 'clsx';
 
-import { CollectionLabelContext } from '../internal/context/collection-label-context';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
+import { CollectionLabelContext } from '../internal/context/collection-label-context.js';
+import { useContainerBreakpoints } from '../internal/hooks/container-queries/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
 
 import styles from './styles.css.js';
 

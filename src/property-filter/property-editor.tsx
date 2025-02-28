@@ -4,15 +4,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import InternalButton from '../button/internal';
-import InternalCheckbox from '../checkbox/internal';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { FormFieldContext } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
-import { useUniqueId } from '../internal/hooks/use-unique-id';
-import EmbeddedMultiselect from '../multiselect/embedded';
-import { filterOptions } from './filter-options';
-import { I18nStringsInternal } from './i18n-utils';
+import InternalButton from '../button/internal.js';
+import InternalCheckbox from '../checkbox/internal.js';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/index.js';
+import { FormFieldContext } from '../internal/context/form-field-context.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
+import { useUniqueId } from '../internal/hooks/use-unique-id/index.js';
+import EmbeddedMultiselect from '../multiselect/embedded.js';
+import { filterOptions } from './filter-options.js';
+import { I18nStringsInternal } from './i18n-utils.js';
 import {
   ComparisonOperator,
   ExtendedOperatorForm,
@@ -20,8 +20,8 @@ import {
   InternalFilteringProperty,
   InternalToken,
   LoadItemsDetail,
-} from './interfaces';
-import { useLoadItems } from './use-load-items';
+} from './interfaces.js';
+import { useLoadItems } from './use-load-items.js';
 
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';

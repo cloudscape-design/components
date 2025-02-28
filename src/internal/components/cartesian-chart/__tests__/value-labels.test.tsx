@@ -3,12 +3,12 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import InlineStartLabels from '../../../../../lib/components/internal/components/cartesian-chart/inline-start-labels';
+import InlineStartLabels from '../../../../../lib/components/internal/components/cartesian-chart/inline-start-labels.js';
 import {
   getSVGTextSize,
   getVisibleTicks,
-} from '../../../../../lib/components/internal/components/cartesian-chart/label-utils';
-import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales';
+} from '../../../../../lib/components/internal/components/cartesian-chart/label-utils.js';
+import { NumericChartScale } from '../../../../../lib/components/internal/components/cartesian-chart/scales.js';
 
 jest.mock('../../../../../lib/components/internal/components/cartesian-chart/label-utils', () => ({
   ...jest.requireActual('../../../../../lib/components/internal/components/cartesian-chart/label-utils'),

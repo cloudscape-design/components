@@ -3,8 +3,8 @@
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
-import createWrapper from '../../../lib/components/test-utils/selectors';
-import SelectPageObject from './page-objects/select-page';
+import createWrapper from '../../../lib/components/test-utils/selectors/index.js';
+import SelectPageObject from './page-objects/select-page.js';
 
 test(
   'allows filtering for options which have labels with spaces',

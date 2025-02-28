@@ -9,23 +9,23 @@ import {
   moveNextWeek,
   movePrevDay,
   movePrevWeek,
-} from '../../../calendar/utils/navigation-day';
+} from '../../../calendar/utils/navigation-day.js';
 import {
   getBaseMonth,
   moveMonthDown,
   moveMonthUp,
   moveNextMonth,
   movePrevMonth,
-} from '../../../calendar/utils/navigation-month';
-import { useDateCache } from '../../../internal/hooks/use-date-cache';
-import { KeyCode } from '../../../internal/keycode';
-import handleKey from '../../../internal/utils/handle-key';
-import { hasValue } from '../../../internal/utils/has-value';
-import InternalSpaceBetween from '../../../space-between/internal';
-import { DateRangePickerProps } from '../../interfaces';
-import { findDateToFocus } from '../utils';
-import { Grid } from './grid';
-import { SelectGridProps } from './interfaces';
+} from '../../../calendar/utils/navigation-month.js';
+import { useDateCache } from '../../../internal/hooks/use-date-cache/index.js';
+import { KeyCode } from '../../../internal/keycode.js';
+import handleKey from '../../../internal/utils/handle-key.js';
+import { hasValue } from '../../../internal/utils/has-value.js';
+import InternalSpaceBetween from '../../../space-between/internal.js';
+import { DateRangePickerProps } from '../../interfaces.js';
+import { findDateToFocus } from '../utils.js';
+import { Grid } from './grid.js';
+import { SelectGridProps } from './interfaces.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 

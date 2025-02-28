@@ -3,7 +3,7 @@
 import { useLayoutEffect, useState } from 'react';
 import { unstable_batchedUpdates } from 'react-dom';
 
-import { usePrevious } from '../../internal/hooks/use-previous';
+import { usePrevious } from '../../internal/hooks/use-previous/index.js';
 
 type Selector<S, R> = (state: S) => R;
 type Listener<S> = (state: S, prevState: S) => void;

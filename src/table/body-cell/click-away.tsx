@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import { nodeBelongs } from '../../internal/utils/node-belongs';
+import { nodeBelongs } from '../../internal/utils/node-belongs.js';
 
 export function useClickAway(onClick: () => void) {
   const awayRef = useRef<any>(null);

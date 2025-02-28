@@ -3,11 +3,11 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
-import Cards, { CardsProps } from '../../../lib/components/cards';
-import Header from '../../../lib/components/header';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
-import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom';
+import Cards, { CardsProps } from '../../../lib/components/cards/index.js';
+import Header from '../../../lib/components/header/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { useMobile } from '../../../lib/components/internal/hooks/use-mobile/index.js';
+import { CardsWrapper, PaginationWrapper } from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/cards/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';

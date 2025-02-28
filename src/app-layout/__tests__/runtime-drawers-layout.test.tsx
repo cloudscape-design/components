@@ -3,14 +3,14 @@
 import React, { RefObject } from 'react';
 import { act, render, waitFor } from '@testing-library/react';
 
-import AppLayout from '../../../lib/components/app-layout';
-import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement';
-import { computeHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout';
-import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api';
-import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { KeyCode } from '../../internal/keycode';
-import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils';
+import AppLayout from '../../../lib/components/app-layout/index.js';
+import { useAppLayoutPlacement } from '../../../lib/components/app-layout/utils/use-app-layout-placement.js';
+import { computeHorizontalLayout } from '../../../lib/components/app-layout/visual-refresh-toolbar/compute-layout.js';
+import { awsuiPlugins, awsuiPluginsInternal } from '../../../lib/components/internal/plugins/api.js';
+import { DrawerConfig } from '../../../lib/components/internal/plugins/controllers/drawers.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { KeyCode } from '../../internal/keycode.js';
+import { describeEachAppLayout, getGlobalDrawersTestUtils, testDrawer } from './utils.js';
 
 beforeEach(() => {
   awsuiPluginsInternal.appLayout.clearRegisteredDrawers();

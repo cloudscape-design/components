@@ -3,9 +3,10 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { FunnelContext } from '../../../../../lib/components/internal/analytics/context/analytics-context';
-import { useFunnel } from '../../../../../lib/components/internal/analytics/hooks/use-funnel';
-import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors';
+import { FunnelContext } from '../../../../../lib/components/internal/analytics/context/analytics-context.js';
+import { useFunnel } from '../../../../../lib/components/internal/analytics/hooks/use-funnel.js';
+
+import { DATA_ATTR_FUNNEL_INTERACTION_ID } from '../../../../../lib/components/internal/analytics/selectors.js';
 
 describe('useFunnel hook', () => {
   test('adds the correct data attributes', () => {

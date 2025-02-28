@@ -3,8 +3,8 @@
 
 import { ReactNode } from 'react';
 
-import debounce from '../../debounce';
-import { reportRuntimeApiWarning } from '../helpers/metrics';
+import debounce from '../../debounce.js';
+import { reportRuntimeApiWarning } from '../helpers/metrics.js';
 
 // this code should not depend on React typings, because it is portable between major versions
 interface RefShim<T> {

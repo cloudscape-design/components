@@ -2,10 +2,10 @@
 // SPDX-License-Identifier: Apache-2.0
 import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-core/dom';
 
-import CollectionPreferencesWrapper from '../collection-preferences';
-import ContainerWrapper from '../container';
-import PaginationWrapper from '../pagination';
-import TextFilterWrapper from '../text-filter';
+import CollectionPreferencesWrapper from '../collection-preferences/index.js';
+import ContainerWrapper from '../container/index.js';
+import PaginationWrapper from '../pagination/index.js';
+import TextFilterWrapper from '../text-filter/index.js';
 
 import styles from '../../../cards/styles.selectors.js';
 import tableStyles from '../../../table/styles.selectors.js';

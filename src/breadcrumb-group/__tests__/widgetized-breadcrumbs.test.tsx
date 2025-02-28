@@ -3,15 +3,19 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group';
-import { createWidgetizedBreadcrumbGroup } from '../../../lib/components/breadcrumb-group/implementation';
-import { InternalBreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/interfaces';
-import { BreadcrumbGroupSkeleton } from '../../../lib/components/breadcrumb-group/skeleton';
-import { DATA_ATTR_RESOURCE_TYPE, getFunnelNameSelector } from '../../../lib/components/internal/analytics/selectors';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { FunctionComponent } from '../../../lib/components/internal/widgets';
-import createWrapper from '../../../lib/components/test-utils/dom';
-import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils';
+import { createWidgetizedBreadcrumbGroup } from '../../../lib/components/breadcrumb-group/implementation.js';
+import { BreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/index.js';
+import { InternalBreadcrumbGroupProps } from '../../../lib/components/breadcrumb-group/interfaces.js';
+import { BreadcrumbGroupSkeleton } from '../../../lib/components/breadcrumb-group/skeleton.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import { FunctionComponent } from '../../../lib/components/internal/widgets/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
+import { describeWithAppLayoutFeatureFlagEnabled } from '../../internal/widgets/__tests__/utils.js';
+
+import {
+  DATA_ATTR_RESOURCE_TYPE,
+  getFunnelNameSelector,
+} from '../../../lib/components/internal/analytics/selectors.js';
 
 function renderComponent(jsx: React.ReactElement) {
   const { container } = render(jsx);

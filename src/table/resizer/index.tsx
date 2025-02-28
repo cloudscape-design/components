@@ -7,11 +7,11 @@ import { useStableCallback } from '@cloudscape-design/component-toolkit/internal
 import { getIsRtl, getLogicalBoundingClientRect, getLogicalPageX } from '@cloudscape-design/component-toolkit/internal';
 
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context.js';
-import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { KeyCode } from '../../internal/keycode';
-import handleKey, { isEventLike } from '../../internal/utils/handle-key';
-import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths';
-import { getHeaderWidth, getResizerElements } from './resizer-lookup';
+import { useUniqueId } from '../../internal/hooks/use-unique-id/index.js';
+import { KeyCode } from '../../internal/keycode.js';
+import handleKey, { isEventLike } from '../../internal/utils/handle-key.js';
+import { DEFAULT_COLUMN_WIDTH } from '../use-column-widths.js';
+import { getHeaderWidth, getResizerElements } from './resizer-lookup.js';
 
 import styles from './styles.css.js';
 

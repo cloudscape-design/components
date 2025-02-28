@@ -19,12 +19,12 @@ import {
   PropertyFilterTokenType,
 } from '@cloudscape-design/collection-hooks';
 
-import { AutosuggestProps } from '../autosuggest/interfaces';
-import { BaseComponentProps } from '../internal/base-component';
-import { ExpandToViewport } from '../internal/components/dropdown/interfaces';
-import { DropdownStatusProps } from '../internal/components/dropdown-status';
-import { FormFieldControlProps } from '../internal/context/form-field-context';
-import { NonCancelableEventHandler } from '../internal/events';
+import { AutosuggestProps } from '../autosuggest/interfaces.js';
+import { BaseComponentProps } from '../internal/base-component/index.js';
+import { ExpandToViewport } from '../internal/components/dropdown/interfaces.js';
+import { DropdownStatusProps } from '../internal/components/dropdown-status/index.js';
+import { FormFieldControlProps } from '../internal/context/form-field-context.js';
+import { NonCancelableEventHandler } from '../internal/events/index.js';
 
 export interface PropertyFilterProps extends BaseComponentProps, ExpandToViewport, FormFieldControlProps {
   /**

@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import InternalSpinner from '../spinner/internal';
+import InternalSpinner from '../spinner/internal.js';
 
 import styles from './styles.css.js';
 

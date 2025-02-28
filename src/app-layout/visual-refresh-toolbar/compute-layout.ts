@@ -1,8 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { AppLayoutPropsWithDefaults } from '../interfaces';
-import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position';
+import { AppLayoutPropsWithDefaults } from '../interfaces.js';
+import { shouldSplitPanelBeForcedToBottom } from '../split-panel/split-panel-forced-position.js';
 
 interface HorizontalLayoutInput {
   navigationOpen: boolean;

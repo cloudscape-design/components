@@ -3,8 +3,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { InternalButton } from '../../../button/internal';
-import { DateRangePickerProps } from '../../interfaces';
+import { InternalButton } from '../../../button/internal.js';
+import { DateRangePickerProps } from '../../interfaces.js';
 
 import testutilStyles from '../../test-classes/styles.css.js';
 

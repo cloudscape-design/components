@@ -3,7 +3,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { useMergeRefs } from '../index';
+import { useMergeRefs } from '../index.js';
 
 const Demo = React.forwardRef((props, ref) => {
   const ref2 = React.createRef<HTMLDivElement>();
