@@ -85,6 +85,8 @@ export namespace IconProps {
     | 'angle-down'
     | 'arrow-left'
     | 'arrow-right'
+    | 'arrow-up'
+    | 'arrow-down'
     | 'audio-full'
     | 'audio-half'
     | 'audio-off'

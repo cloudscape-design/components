@@ -48,6 +48,8 @@ export interface BasePropsWithAnalyticsMetadata {
  * Helper function to merge beta analytics metadata with the public analytics metadata api.
  * Beta analytics metadata will override the public values to allow for safe migration.
  */
-export function getAnalyticsMetadataProps(props?: BasePropsWithAnalyticsMetadata) {
+export function getAnalyticsMetadataProps<T extends BasePropsWithAnalyticsMetadata>(
+  props?: T
+): NonNullable<T['analyticsMetadata'] & T['__analyticsMetadata']> {
   return { ...props?.analyticsMetadata, ...props?.__analyticsMetadata };
 }
