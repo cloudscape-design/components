@@ -244,6 +244,22 @@ test('trigger should have aria-label with steps information', () => {
   expect(hotspot.findTrigger().getElement().getAttribute('aria-label')).toBe('CLOSE_HOTSPOT_TEST_FOR_STEP_1_OF_2_TEST');
 });
 
+test('trigger should have aria-expanded depending on open state', () => {
+  const { wrapper } = renderAnnotationContext(
+    <>
+      <Hotspot hotspotId="first-hotspot" data-testid="first-hotspot" />
+      <Hotspot hotspotId="second-hotspot" data-testid="second-hotspot" />
+    </>
+  );
+
+  // First hotspot is open by default.
+  const hotspot = wrapper.findHotspot('[data-testid="first-hotspot"]')!;
+  expect(hotspot.findTrigger().getElement().getAttribute('aria-expanded')).toBe('true');
+  // Switching to the second hotspot which closes the first one.
+  hotspot.findTrigger().click();
+  expect(hotspot.findTrigger().getElement().getAttribute('aria-expanded')).toBe('false');
+});
+
 test('annotation should have be labeled by header and step counter', () => {
   const { wrapper } = renderAnnotationContext(
     <>
