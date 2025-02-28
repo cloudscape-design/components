@@ -101,7 +101,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel64",
+      "splitPanelControlId": "split-panel73",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -111,7 +111,9 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": null,
+            "current": {
+              "focus": [Function],
+            },
           },
         },
         "setLastInteraction": [Function],
@@ -231,7 +233,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel64",
+      "splitPanelControlId": "split-panel73",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -241,7 +243,9 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": null,
+            "current": {
+              "focus": [Function],
+            },
           },
         },
         "setLastInteraction": [Function],
@@ -282,7 +286,9 @@ Map {
           "current": null,
         },
         "toggle": {
-          "current": null,
+          "current": {
+            "focus": [Function],
+          },
         },
       },
       "reportHeaderHeight": [Function],
@@ -413,7 +419,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel64",
+      "splitPanelControlId": "split-panel73",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -423,7 +429,9 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": null,
+            "current": {
+              "focus": [Function],
+            },
           },
         },
         "setLastInteraction": [Function],
@@ -543,7 +551,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel64",
+      "splitPanelControlId": "split-panel73",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -553,7 +561,9 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": null,
+            "current": {
+              "focus": [Function],
+            },
           },
         },
         "setLastInteraction": [Function],
@@ -673,7 +683,7 @@ Map {
       "setToolbarHeight": [Function],
       "setToolbarState": [Function],
       "splitPanelAnimationDisabled": true,
-      "splitPanelControlId": "split-panel64",
+      "splitPanelControlId": "split-panel73",
       "splitPanelFocusControl": {
         "refs": {
           "preferences": {
@@ -683,7 +693,9 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": null,
+            "current": {
+              "focus": [Function],
+            },
           },
         },
         "setLastInteraction": [Function],
