@@ -9,6 +9,7 @@ module.exports = {
     'plugin:react/recommended',
     'plugin:prettier/recommended',
     'plugin:no-unsanitized/DOM',
+    'plugin:require-extensions/recommended',
   ],
   parserOptions: {
     ecmaVersion: 2018,
@@ -25,6 +26,7 @@ module.exports = {
     'header',
     'simple-import-sort',
     'jest',
+    'require-extensions',
   ],
   rules: {
     '@typescript-eslint/no-empty-function': 'off',
@@ -147,6 +149,12 @@ module.exports = {
       },
     },
     {
+      files: ['src-themeable/**'],
+      rules: {
+        'require-extensions/require-extensions': 'off',
+      },
+    },
+    {
       files: ['src/test-utils/**/*.ts'],
       rules: {
         '@typescript-eslint/explicit-function-return-type': 'error',
@@ -159,6 +167,7 @@ module.exports = {
         Promise: true,
       },
       rules: {
+        'require-extensions/require-extensions': 'off',
         '@cloudscape-design/ban-files': [
           'error',
           [
