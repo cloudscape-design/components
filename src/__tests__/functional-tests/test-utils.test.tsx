@@ -9,6 +9,8 @@ import { render } from 'react-dom';
 import { render as renderTestingLibrary } from '@testing-library/react';
 import { pascalCase } from 'change-case';
 
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { Modal } from '../../../lib/components';
 import Button from '../../../lib/components/button';
 import createWrapperDom, { ElementWrapper as DomElementWrapper } from '../../../lib/components/test-utils/dom';
@@ -16,7 +18,18 @@ import createWrapperSelectors from '../../../lib/components/test-utils/selectors
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
 
-const componentWithMultipleRootElements = ['top-navigation', 'app-layout'];
+const globalWithFlags = globalThis as any;
+
+beforeEach(() => {
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+});
+
+afterEach(() => {
+  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+  clearVisualRefreshState();
+});
+
+const componentWithMultipleRootElements = ['top-navigation', 'app-layout', 'app-layout-toolbar'];
 const componentsWithExceptions = ['annotation-context', ...componentWithMultipleRootElements];
 const components = getAllComponents().filter(component => !componentsWithExceptions.includes(component));
 
