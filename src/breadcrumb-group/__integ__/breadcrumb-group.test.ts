@@ -170,24 +170,22 @@ describe('BreadcrumbGroup', () => {
     )
   );
 
-  test.each([
-    [{ width: 770, height: 800 }, 'when truncated'],
-    [{ width: 1100, height: 800 }, 'default state'],
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  ])('Last item should be focusable %s', (viewportSize, scenario) =>
-    setupTest(async page => {
-      await page.click('#focus-target-long-text');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await page.keys('Tab');
-      await expect(page.isTooltipDisplayed()).resolves.toBe(true);
-      await page.keys('Tab');
+  test.each([[{ width: 770, height: 800 }], [{ width: 1100, height: 800 }]])(
+    'Last item should be focusable %s',
+    viewportSize =>
+      setupTest(async page => {
+        await page.click('#focus-target-long-text');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await page.keys('Tab');
+        await expect(page.isTooltipDisplayed()).resolves.toBe(true);
+        await page.keys('Tab');
 
-      await expect(page.isTooltipDisplayed()).resolves.toBe(false);
-      await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
-    }, viewportSize)()
+        await expect(page.isTooltipDisplayed()).resolves.toBe(false);
+        await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
+      }, viewportSize)()
   );
 });

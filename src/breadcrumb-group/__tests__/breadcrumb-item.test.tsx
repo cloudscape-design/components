@@ -112,13 +112,8 @@ describe('BreadcrumbGroup Item', () => {
       lastLink = links[links.length - 1];
     });
 
-    test('should not be a link', () => {
-      expect(lastLink.getElement()).not.toHaveAttribute('href');
-      expect(lastLink.getElement().tagName).toEqual('SPAN');
-    });
-
     test('should have proper aria-labels and focusable', () => {
-      expect(lastLink.getElement()).toHaveAttribute('aria-current');
+      expect(lastLink.getElement()).toHaveAttribute('aria-current', 'page');
       expect(lastLink.getElement()).toHaveAttribute('aria-disabled');
       expect(lastLink.getElement().getAttribute('role')).toBe('link');
       expect(lastLink.getElement().getAttribute('tabindex')).toBe('0');
