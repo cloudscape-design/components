@@ -149,7 +149,7 @@ const InternalPromptInput = React.forwardRef(
       spellCheck: spellcheck,
       disabled,
       readOnly: readOnly ? true : undefined,
-      rows: minRows || 1,
+      rows: minRows,
       onKeyDown: handleKeyDown,
       onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
       // We set a default value on the component in order to force it into the controlled mode.
