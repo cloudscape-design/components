@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "주석 무시",
     "i18nStrings.stepCounterText": "{stepNumber}/{totalStepCount}단계",
     "i18nStrings.taskTitle": "작업 {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {{stepNumber}/{totalStepCount}단계에 대한 주석 닫기} false {{stepNumber}/{totalStepCount}단계에 대한 주석 열기} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {{stepNumber}/{totalStepCount}단계에 대한 주석} false {{stepNumber}/{totalStepCount}단계에 대한 주석} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "드로어",
