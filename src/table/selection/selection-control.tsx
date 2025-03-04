@@ -24,6 +24,7 @@ export interface SelectionControlProps extends SelectionProps {
   focusedComponent?: null | string;
   rowIndex?: number;
   itemKey?: string;
+  verticalAlign?: 'middle' | 'top';
 }
 
 export function SelectionControl({
@@ -37,6 +38,7 @@ export function SelectionControl({
   focusedComponent,
   rowIndex,
   itemKey,
+  verticalAlign = 'middle',
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -45,7 +47,7 @@ export function SelectionControl({
 
   const setShiftState = (event: KeyboardEvent | MouseEvent) => {
     if (isMultiSelection) {
-      onShiftToggle && onShiftToggle(event.shiftKey);
+      onShiftToggle?.(event.shiftKey);
     }
   };
 
@@ -65,11 +67,11 @@ export function SelectionControl({
     if (isMultiSelection && !navigationActive) {
       if (event.keyCode === KeyCode.up) {
         event.preventDefault();
-        onFocusUp && onFocusUp(event);
+        onFocusUp?.(event);
       }
       if (event.keyCode === KeyCode.down) {
         event.preventDefault();
-        onFocusDown && onFocusDown(event);
+        onFocusDown?.(event);
       }
     }
   };
@@ -102,7 +104,7 @@ export function SelectionControl({
         onMouseUp={setShiftState}
         onClick={handleClick}
         htmlFor={controlId}
-        className={clsx(styles.label, styles.root)}
+        className={clsx(styles.label, styles.root, verticalAlign === 'top' && styles['label-top'])}
         aria-label={ariaLabel}
         title={ariaLabel}
         {...(rowIndex !== undefined && !sharedProps.disabled

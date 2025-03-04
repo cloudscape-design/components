@@ -16035,6 +16035,23 @@ add a meaningful description to the whole selection.
       "type": "TableProps.AriaLabels<T>",
     },
     {
+      "defaultValue": "'middle'",
+      "description": "Determines the alignment of the content inside table cells.
+This property affects all cells, including the ones in the selection column.
+To target individual cells use \`columnDefinitions.verticalAlign\`.",
+      "inlineType": {
+        "name": "",
+        "type": "union",
+        "values": [
+          "middle",
+          "top",
+        ],
+      },
+      "name": "cellVerticalAlign",
+      "optional": true,
+      "type": "string",
+    },
+    {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",
       "description": "Adds the specified classes to the root element of the component.",
       "name": "className",
