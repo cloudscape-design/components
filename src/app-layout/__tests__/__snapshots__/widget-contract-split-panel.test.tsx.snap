@@ -111,9 +111,7 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": {
-              "focus": [Function],
-            },
+            "current": null,
           },
         },
         "setLastInteraction": [Function],
@@ -243,9 +241,7 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": {
-              "focus": [Function],
-            },
+            "current": null,
           },
         },
         "setLastInteraction": [Function],
@@ -286,9 +282,7 @@ Map {
           "current": null,
         },
         "toggle": {
-          "current": {
-            "focus": [Function],
-          },
+          "current": null,
         },
       },
       "reportHeaderHeight": [Function],
@@ -429,9 +423,7 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": {
-              "focus": [Function],
-            },
+            "current": null,
           },
         },
         "setLastInteraction": [Function],
@@ -561,9 +553,7 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": {
-              "focus": [Function],
-            },
+            "current": null,
           },
         },
         "setLastInteraction": [Function],
@@ -693,9 +683,7 @@ Map {
             "current": null,
           },
           "toggle": {
-            "current": {
-              "focus": [Function],
-            },
+            "current": null,
           },
         },
         "setLastInteraction": [Function],
