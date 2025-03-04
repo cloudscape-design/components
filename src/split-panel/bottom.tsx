@@ -86,7 +86,7 @@ export function SplitPanelContentBottom({
         insetInlineEnd: rightOffset,
         blockSize: isOpen
           ? cappedSize
-          : isToolbar && closeBehavior === 'hide'
+          : closeBehavior === 'hide'
             ? 0
             : isToolbar && headerBlockSize !== undefined
               ? `calc(${headerBlockSize}px + ${tokens.borderPanelTopWidth})`
