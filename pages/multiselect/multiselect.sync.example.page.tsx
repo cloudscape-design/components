@@ -4,13 +4,12 @@ import * as React from 'react';
 
 import Box from '~components/box';
 import { NonCancelableCustomEvent } from '~components/interfaces';
+import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import { SelectProps } from '~components/select';
 
 import { generateOptions } from '../select/generate-options';
 import { i18nStrings } from './constants';
-
-const { options } = generateOptions(50);
 
 const deselectAriaLabel: MultiselectProps['deselectAriaLabel'] = option => {
   const label = option?.value || option?.label;
@@ -29,7 +28,26 @@ const onBlur = () => {
   console.log('onBlur');
 };
 
+const initialOptions = generateOptions(50).options;
+
+const childOptions: OptionDefinition[] = initialOptions.reduce(
+  (previous: OptionDefinition[], current: OptionDefinition | OptionGroup) => {
+    if ('options' in current) {
+      for (const option of current.options) {
+        previous.push(option);
+      }
+    } else {
+      previous.push(current);
+    }
+    return previous;
+  },
+  []
+);
+
 export default function MultiselectPage() {
+  const selectAllOption = { label: 'Select all', value: 'all', disabled: false };
+  const options = [selectAllOption, ...initialOptions];
+
   const selectableOptions = options.filter(o => !o.disabled && !('options' in o));
   const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>([
     selectableOptions[10],
@@ -66,7 +84,15 @@ export default function MultiselectPage() {
             deselectAriaLabel={deselectAriaLabel}
             i18nStrings={i18nStrings}
             onChange={event => {
-              setSelectedOptions1(event.detail.selectedOptions);
+              const isAllPreviouslySelected = selectedOptions1.some(option => option.value === 'all');
+              const isAllCurrentlySelected = event.detail.selectedOptions.some(option => option.value === 'all');
+              if (!isAllPreviouslySelected && isAllCurrentlySelected) {
+                setSelectedOptions1([selectAllOption, ...childOptions]);
+              } else if (isAllPreviouslySelected && !isAllCurrentlySelected) {
+                setSelectedOptions1([]);
+              } else {
+                setSelectedOptions1(event.detail.selectedOptions);
+              }
             }}
           />
         </Box>
