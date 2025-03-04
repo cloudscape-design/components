@@ -110,7 +110,7 @@ export function SplitPanelImplementation({
           </>
         )}
 
-        {isOpen ? (
+        {isOpen || closeBehavior === 'hide' ? (
           <InternalButton
             className={testUtilStyles['close-button']}
             iconName={
@@ -221,6 +221,7 @@ export function SplitPanelImplementation({
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}
+          closeBehavior={closeBehavior}
         >
           {children}
         </SplitPanelContentBottom>
