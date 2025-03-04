@@ -204,6 +204,7 @@ export function SplitPanelImplementation({
           toggleRef={refs.toggle}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
+          closeBehavior={closeBehavior}
         >
           {children}
         </SplitPanelContentSide>
