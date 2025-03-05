@@ -56,6 +56,7 @@ export function SplitPanelImplementation({
     relativeSize,
     setSplitPanelToggle,
     refs,
+    animationDisabled,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
@@ -186,6 +187,10 @@ export function SplitPanelImplementation({
   }, [rightOffset, __internalRootRef]);
 
   const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
+
+  if (closeBehavior === 'hide' && !isOpen && animationDisabled) {
+    return <></>;
+  }
 
   /**
    * The AppLayout factor moved the circular buttons out of the
