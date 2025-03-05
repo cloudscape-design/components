@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "關閉註釋",
     "i18nStrings.stepCounterText": "步驟 {stepNumber}，共 {totalStepCount} 步",
     "i18nStrings.taskTitle": "任務 {taskNumber}：{taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {關閉步驟 {totalStepCount} 之 {stepNumber} 的註釋} false {開啟步驟 {totalStepCount} 之 {stepNumber} 的註釋} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {步驟 {stepNumber} (共 {totalStepCount} 步) 的註釋} false {步驟 {stepNumber} (共 {totalStepCount} 步) 的註釋} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "抽屜",

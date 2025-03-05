@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Ignorer l'annotation",
     "i18nStrings.stepCounterText": "Étape {stepNumber} de {totalStepCount}",
     "i18nStrings.taskTitle": "Tâche {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Fermer l'annotation pour l'étape {stepNumber} de {totalStepCount}} false {Ouvrir l'annotation pour l'étape {stepNumber} de {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Annotation pour l’étape {stepNumber} de {totalStepCount}} false {Annotation pour l’étape {stepNumber} de {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Tiroirs",

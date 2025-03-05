@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Anmerkung ablehnen",
     "i18nStrings.stepCounterText": "Schritt {stepNumber} von {totalStepCount}",
     "i18nStrings.taskTitle": "Aufgabe {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Anmerkung schließen für Schritt {stepNumber} von {totalStepCount}} false {Anmerkung öffnen für Schritt {stepNumber} von {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Anmerkung für Schritt {stepNumber} von {totalStepCount}} false {Anmerkung für Schritt {stepNumber} von {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Schubladen",

@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Ek açıklamayı kapat",
     "i18nStrings.stepCounterText": "Adım {stepNumber}/{totalStepCount}",
     "i18nStrings.taskTitle": "{taskNumber}. Görev: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Adım {stepNumber}/{totalStepCount} için ek açıklamayı kapat} false {Adım {stepNumber}/{totalStepCount} için ek açıklamayı aç} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Adım {stepNumber}/{totalStepCount} için ek açıklama} false {Adım {stepNumber}/{totalStepCount} için ek açıklama} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Çekmeceler",

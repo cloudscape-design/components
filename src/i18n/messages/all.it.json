@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Ignora annotazione",
     "i18nStrings.stepCounterText": "Fase {stepNumber} di {totalStepCount}",
     "i18nStrings.taskTitle": "Attività {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Chiudi l'annotazione per la fase {stepNumber} di {totalStepCount}} false {Apri l'annotazione per la fase {stepNumber} di {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Annotazione per la fase {stepNumber} di {totalStepCount}} false {Annotazione per la fase {stepNumber} di {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Cassetti",
