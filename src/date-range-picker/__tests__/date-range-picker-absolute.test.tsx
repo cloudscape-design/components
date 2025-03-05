@@ -8,6 +8,7 @@ import DateRangePicker, { DateRangePickerProps } from '../../../lib/components/d
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import { KeyCode } from '../../../lib/components/internal/keycode';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { testIf } from '../../__tests__/utils';
 import { i18nStrings } from './i18n-strings';
 import { isValidRange } from './is-valid-range';
 
@@ -21,8 +22,6 @@ const defaultProps: DateRangePickerProps = {
   relativeOptions: [],
   isValidRange,
 };
-
-const testIf = (isTrue: boolean) => (isTrue ? test : test.skip);
 
 const outsideId = 'outside';
 function renderDateRangePicker(props: DateRangePickerProps = defaultProps) {

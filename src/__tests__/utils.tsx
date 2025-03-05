@@ -62,16 +62,21 @@ function wrap({ default: Component }: { default: React.ComponentType }, Wrapper:
 
 export function requireComponent(componentName: string): any {
   if (componentName === 'split-panel') {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    // eslint-disable-next-line @typescript-eslint/no-var-requires, @typescript-eslint/no-require-imports
     return wrap(require(path.join(componentsDir, 'split-panel')), WrappedSplitPanel);
   }
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require(path.join(componentsDir, componentName));
 }
 
 export function requireComponentDefinition(componentName: string): any {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require(path.join(definitionsDir, componentName));
 }
 
 export function requireDesignTokensFile(fileName: string): any {
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require(path.join(designTokensDir, fileName));
 }
+
+export const testIf = (condition: boolean) => (condition ? test : test.skip);
