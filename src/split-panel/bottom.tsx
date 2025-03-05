@@ -51,8 +51,8 @@ export function SplitPanelContentBottom({
   const headerRef = useRef<HTMLDivElement>(null);
 
   useResizeObserver(headerRef, entry => {
-    const { borderBoxHeight } = entry;
-    reportHeaderHeight(closeBehavior === 'hide' && !isOpen ? 0 : borderBoxHeight);
+    const visibleHeaderSize = closeBehavior === 'hide' && !isOpen ? 0 : entry.borderBoxHeight;
+    reportHeaderHeight(visibleHeaderSize);
   });
 
   useEffect(() => {
