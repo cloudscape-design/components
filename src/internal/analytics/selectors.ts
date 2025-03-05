@@ -14,6 +14,7 @@ export const DATA_ATTR_FIELD_ERROR = 'data-analytics-field-error';
 
 export const DATA_ATTR_ANALYTICS_ALERT = 'data-analytics-alert';
 export const DATA_ATTR_ANALYTICS_FLASHBAR = 'data-analytics-flashbar';
+export const DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS = 'data-analytics-suppress-flow-events';
 
 export const FUNNEL_KEY_FUNNEL_NAME = 'funnel-name';
 export const FUNNEL_KEY_STEP_NAME = 'step-name';
