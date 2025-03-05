@@ -65,9 +65,9 @@ export function SplitPanelContentSide({
         aria-labelledby={panelHeaderId}
         role="region"
       >
-        {isOpen || closeBehavior === 'hide' ? (
+        {isOpen ? (
           <div className={clsx(styles['slider-wrapper-side'], isToolbar && styles['with-toolbar'])}>{resizeHandle}</div>
-        ) : (
+        ) : closeBehavior === 'hide' ? null : (
           <InternalButton
             className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"

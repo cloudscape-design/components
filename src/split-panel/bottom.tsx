@@ -94,17 +94,21 @@ export function SplitPanelContentBottom({
       }}
       ref={splitPanelRef}
     >
-      {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
-      <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
-        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
-          {header}
-        </div>
-        <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>
-          <div className={clsx({ [styles['content-bottom-max-width']]: isRefresh })} style={appLayoutMaxWidth}>
-            {children}
+      {closeBehavior === 'hide' && !isOpen ? null : (
+        <>
+          {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
+          <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
+            <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
+              {header}
+            </div>
+            <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>
+              <div className={clsx({ [styles['content-bottom-max-width']]: isRefresh })} style={appLayoutMaxWidth}>
+                {children}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

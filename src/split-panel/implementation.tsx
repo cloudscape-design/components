@@ -111,37 +111,29 @@ export function SplitPanelImplementation({
           </>
         )}
 
-        {
-          // If closeBehavior is 'hide', none of the buttons will be visible anyway when the split panel is hidden.
-          // Keep the close button present at all times to minimize changes during animations.
-          isOpen || closeBehavior === 'hide' ? (
-            <InternalButton
-              className={testUtilStyles['close-button']}
-              iconName={
-                isRefresh && closeBehavior === 'collapse'
-                  ? position === 'side'
-                    ? 'angle-right'
-                    : 'angle-down'
-                  : 'close'
-              }
-              variant="icon"
-              onClick={onToggle}
-              formAction="none"
-              ariaLabel={i18nStrings.closeButtonAriaLabel}
-              ariaExpanded={isOpen}
-            />
-          ) : position === 'side' ? null : (
-            <InternalButton
-              className={testUtilStyles['open-button']}
-              iconName="angle-up"
-              variant="icon"
-              formAction="none"
-              ariaLabel={i18nStrings.openButtonAriaLabel}
-              ref={refs.toggle}
-              ariaExpanded={isOpen}
-            />
-          )
-        }
+        {isOpen ? (
+          <InternalButton
+            className={testUtilStyles['close-button']}
+            iconName={
+              isRefresh && closeBehavior === 'collapse' ? (position === 'side' ? 'angle-right' : 'angle-down') : 'close'
+            }
+            variant="icon"
+            onClick={onToggle}
+            formAction="none"
+            ariaLabel={i18nStrings.closeButtonAriaLabel}
+            ariaExpanded={isOpen}
+          />
+        ) : position === 'side' || closeBehavior === 'hide' ? null : (
+          <InternalButton
+            className={testUtilStyles['open-button']}
+            iconName="angle-up"
+            variant="icon"
+            formAction="none"
+            ariaLabel={i18nStrings.openButtonAriaLabel}
+            ref={refs.toggle}
+            ariaExpanded={isOpen}
+          />
+        )}
       </div>
     </div>
   );
