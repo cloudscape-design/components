@@ -8,16 +8,24 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 
 import { useInternalI18n } from '../i18n/context';
 import { Transition } from '../internal/components/transition';
+import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './analytics-metadata/utils';
 import { useFlashbar } from './common';
 import { TIMEOUT_FOR_ENTERING_ANIMATION } from './constant';
 import { Flash } from './flash';
-import { FlashbarProps } from './interfaces';
+import { FlashbarProps, InternalFlashbarProps } from './interfaces';
 
 import styles from './styles.css.js';
 
-export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProps }: FlashbarProps) {
-  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, isVisualRefresh, mergedRef } = useFlashbar({
+export default function NonCollapsibleFlashbar({
+  __internalRootRef,
+  items,
+  i18nStrings,
+  ...restProps
+}: InternalFlashbarProps) {
+  const isVisualRefresh = useVisualRefresh();
+  const { allItemsHaveId, baseProps, breakpoint, isReducedMotion, mergedRef } = useFlashbar({
     items,
     ...restProps,
   });
@@ -125,7 +133,7 @@ export default function NonCollapsibleFlashbar({ items, i18nStrings, ...restProp
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.flashbar, styles[`breakpoint-${breakpoint}`])}
-      ref={mergedRef}
+      ref={useMergeRefs(mergedRef, __internalRootRef)}
     >
       {renderFlatItemsWithTransitions()}
       {renderFlatItemsWithoutTransitions()}
