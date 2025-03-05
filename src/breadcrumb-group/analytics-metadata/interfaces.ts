@@ -12,6 +12,14 @@ export interface GeneratedAnalyticsMetadataBreadcrumbGroupClick {
   };
 }
 
+export interface GeneratedAnalyticsMetadataBreadcrumbGroupExpand {
+  action: 'expand';
+  detail: {
+    label: string;
+    expanded: string;
+  };
+}
+
 export interface GeneratedAnalyticsMetadataBreadcrumbGroupComponent {
   name: 'awsui.BreadcrumbGroup';
   label: string | LabelIdentifier;
