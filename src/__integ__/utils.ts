@@ -5,3 +5,6 @@ import * as glob from 'glob';
 export function findAllPages(): string[] {
   return glob.sync('**/*.page.tsx', { cwd: 'pages' }).map(file => file.replace(/\.page\.tsx$/, ''));
 }
+
+export type Theme = 'classic' | 'refresh' | 'refresh-toolbar';
+export type Size = 'desktop' | 'mobile';

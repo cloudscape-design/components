@@ -1,21 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
-import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { viewports } from './constants';
+import { Theme } from '../../__integ__/utils';
 
 export const testIf = (condition: boolean) => (condition ? test : test.skip);
-
-export type Theme = 'classic' | 'refresh' | 'refresh-toolbar';
-
-interface SetupTestOptions {
-  splitPanelPosition?: string;
-  size?: 'desktop' | 'mobile';
-  disableContentPaddings?: string;
-  theme?: 'refresh' | 'refresh-toolbar' | 'classic';
-}
 
 export function getUrlParams(theme: Theme, other?: Record<string, string>) {
   const params = new URLSearchParams({
@@ -65,23 +55,6 @@ export class AppLayoutDrawersPage extends BasePageObject {
     ]);
   }
 }
-
-export const setupTest = (
-  { size = 'desktop', theme = 'refresh', splitPanelPosition = '' }: SetupTestOptions,
-  testFn: (page: AppLayoutDrawersPage) => Promise<void>
-) =>
-  useBrowser(size === 'desktop' ? viewports.desktop : viewports.mobile, async browser => {
-    const wrapper = createWrapper().findAppLayout();
-    const page = new AppLayoutDrawersPage(browser);
-    const params = new URLSearchParams({
-      visualRefresh: `${theme !== 'classic'}`,
-      appLayoutWidget: `${theme === 'refresh-toolbar'}`,
-      ...(splitPanelPosition ? { splitPanelPosition } : {}),
-    }).toString();
-    await browser.url(`#/light/app-layout/with-drawers?${params}`);
-    await page.waitForVisible(wrapper.findContentRegion().toSelector());
-    await testFn(page);
-  });
 
 const wrapper = createWrapper().findAppLayout();
 export class AppLayoutSplitViewPage extends BasePageObject {
