@@ -4,10 +4,13 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { Size, Theme } from '../../__integ__/utils';
+import { Size, Theme, times } from '../../__integ__/utils';
 import { viewports } from '../../app-layout/__integ__/constants';
 
 const appLayout = createWrapper().findAppLayout();
+const splitPanel = appLayout.findSplitPanel();
+const openButtonSelector = appLayout.findContentRegion().findHeader().findActions().findButton().toSelector();
+const closeButtonSelector = splitPanel.findCloseButton().toSelector();
 
 interface SetupTestOptions {
   screenSize?: (typeof viewports)['desktop' | 'mobile'];
@@ -35,9 +38,6 @@ describe('Discreet split panel', () => {
       it(
         'opens and closes',
         setupTest({ screenSize: viewports[size], theme }, async page => {
-          const splitPanel = appLayout.findSplitPanel();
-          const openButtonSelector = appLayout.findContentRegion().findHeader().findActions().findButton().toSelector();
-          const closeButtonSelector = splitPanel.findCloseButton().toSelector();
           const openSplitPanelSelector =
             size === 'mobile'
               ? splitPanel.findOpenPanelBottom().toSelector()
@@ -47,13 +47,15 @@ describe('Discreet split panel', () => {
 
           // The first time the split panel opens, animations are disabled. The second time they should be enabled.
           // Test both cases by opening and closing twice.
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          for (const _ of new Array(2)) {
+          await times(2, async () => {
             await page.click(openButtonSelector);
             await page.waitForVisible(openSplitPanelSelector);
+            // Wait for a reasonable time for animations to finish, to avoid trying to click a moving target
+            // (the close button is inside the split panel itself, which might be expanding at ths point)
+            await new Promise(resolve => setTimeout(resolve, 500));
             await page.click(closeButtonSelector);
             await page.waitForVisible(openSplitPanelSelector, false);
-          }
+          });
         })
       );
     });
