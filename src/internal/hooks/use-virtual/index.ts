@@ -46,10 +46,12 @@ export function useVirtual<Item extends object>({
     measuresCache.current = new WeakMap();
   }, [indicesKey, items, estimateSize]);
 
+  console.log('debug', rowVirtualizer.virtualItems);
   const virtualItems = useMemo(
     () =>
       rowVirtualizer.virtualItems.map(virtualItem => ({
         ...virtualItem,
+        size: Math.floor(virtualItem.size),
         measureRef: (node: null | HTMLElement) => {
           const mountedCount = measuresCache.current.get(items[virtualItem.index]) ?? 0;
           if (mountedCount < MAX_ITEM_MOUNTS) {
