@@ -19,6 +19,10 @@ const metadata: StyleDictionary.MetadataIndex = {
     description: 'Adjustment to the panel shadow so it does not bleed onto adjacent panels to the right of it.',
   },
   shadowSticky: { description: 'Shadow for sticky elements or inner elements that already have shadow around.' },
+  shadowPopover: {
+    description: 'Popover and annotation context shadow',
+    public: true,
+  },
 };
 
 export default metadata;
