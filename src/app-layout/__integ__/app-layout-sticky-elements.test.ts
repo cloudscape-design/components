@@ -19,10 +19,29 @@ class AppLayoutStickyPage extends BasePageObject {
     return wrapper.findContentRegion().findTable().findHeaderSlot();
   }
 
+  findToolbar() {
+    return wrapper.findToolbar();
+  }
+
+  findAllNotifications() {
+    return wrapper.findNotifications().findFlashbar().findItems();
+  }
+
+  findNotificationDismissButtonByIndex(index: number) {
+    return this.findNotificationByIndex(index).findDismissButton();
+  }
+
   async getAlertTextAndDismiss() {
     const alertText = await this.browser.getAlertText();
     await this.browser.dismissAlert();
     return alertText;
+  }
+
+  async dismissAllNotifications() {
+    const flashItemsCount = await this.getElementsCount(this.findAllNotifications().toSelector());
+    for (let index = 0; index < flashItemsCount; index++) {
+      await this.click(this.findNotificationDismissButtonByIndex(1).toSelector());
+    }
   }
 }
 describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
@@ -46,6 +65,23 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as Theme[])('%s', theme 
       );
       const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
       expect(tableHeaderTop - secondNotificationBottom).toEqual(0);
+    })
+  );
+
+  test(
+    'correctly offsets the table header after dismissing the sticky notifications',
+    setupTest({ url: `#/light/app-layout/with-sticky-notifications-and-header?${getUrlParams(theme)}` }, async page => {
+      await page.dismissAllNotifications();
+      await page.windowScrollTo({ top: viewports.desktop.height });
+
+      let { bottom: contentTopOffset } = await page.getBoundingBox('header');
+      if (theme === 'refresh-toolbar') {
+        const toolbarBoundingBox = await page.getBoundingBox(page.findToolbar().toSelector());
+        contentTopOffset = toolbarBoundingBox.bottom;
+      }
+
+      const { top: tableHeaderTop } = await page.getBoundingBox(page.findStickyTableHeader().toSelector());
+      expect(contentTopOffset - tableHeaderTop).toEqual(0);
     })
   );
 
