@@ -10,7 +10,6 @@ import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import { SplitPanelProps } from '../../../lib/components/split-panel';
 import createWrapper, { AppLayoutWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
-import { Size, Theme } from '../../__integ__/utils.js';
 import { forceMobileModeSymbol } from '../../internal/hooks/use-mobile';
 
 import testutilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
@@ -25,6 +24,9 @@ export function renderComponent(jsx: React.ReactElement) {
 
   return { wrapper, rerender, isUsingGridLayout, container };
 }
+
+type Theme = 'refresh' | 'refresh-toolbar' | 'classic';
+type Size = 'desktop' | 'mobile';
 
 interface AppLayoutTestConfig {
   themes: Array<Theme>;
