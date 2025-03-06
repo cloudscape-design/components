@@ -169,4 +169,3 @@ export class AppLayoutSplitViewPage extends BasePageObject {
       : this.isExisting(wrapper.findSplitPanel().findOpenPanelBottom().toSelector());
   }
 }
-export { Theme };
