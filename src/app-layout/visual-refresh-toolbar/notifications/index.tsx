@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
@@ -25,9 +24,12 @@ export function AppLayoutNotificationsImplementation({
   children,
 }: AppLayoutNotificationsImplementationProps) {
   const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
-  const [hasNotificationsContent, contentRef] = useContainerQuery(rect => rect.borderBoxHeight > 0);
-  const rootRef = useRef<HTMLDivElement>(null);
-  useResizeObserver(rootRef, entry => setNotificationsHeight(entry.borderBoxHeight));
+  const [hasNotificationsContent, setHasNotificationsContent] = useState(false);
+  const contentRef = useRef<HTMLDivElement>(null);
+  useResizeObserver(contentRef, entry => {
+    setNotificationsHeight(entry.borderBoxHeight);
+    setHasNotificationsContent(entry.borderBoxHeight > 0);
+  });
   useEffect(() => {
     return () => {
       setNotificationsHeight(0);
@@ -37,7 +39,6 @@ export function AppLayoutNotificationsImplementation({
   }, []);
   return (
     <NotificationsSlot
-      ref={rootRef}
       className={clsx(
         appLayoutInternals.headerVariant === 'high-contrast' && highContrastHeaderClassName,
         stickyNotifications && styles['sticky-notifications'],
