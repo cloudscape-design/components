@@ -51,7 +51,7 @@ describe('Discreet split panel', () => {
             await page.click(openButtonSelector);
             await page.waitForVisible(openSplitPanelSelector);
             // Wait for a reasonable time for animations to finish, to avoid trying to click a moving target
-            // (the close button is inside the split panel itself, which might be expanding at ths point)
+            // (the close button is inside the split panel itself, which might be expanding at this point)
             await new Promise(resolve => setTimeout(resolve, 500));
             await page.click(closeButtonSelector);
             await page.waitForVisible(openSplitPanelSelector, false);
