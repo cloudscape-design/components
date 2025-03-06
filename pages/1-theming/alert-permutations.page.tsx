@@ -242,7 +242,7 @@ function SynthesisAlert(props:any) {
   return (
     <Theme 
       backgroundColor={backgroundColors[props.severity as keyof typeof backgroundColors]}
-      borderRadius="4px"
+      borderRadius="8px"
       borderWidth="none"
       color="rgba(0, 0, 0, 0.87)"
     >
