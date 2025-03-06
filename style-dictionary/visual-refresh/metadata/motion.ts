@@ -73,6 +73,27 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: false,
     visualRefreshOnly: true,
   },
+
+  motionDurationExpandableSection: {
+    description: 'The duration for expanding a section.',
+    public: true,
+    themeable: false,
+  },
+  motionEasingExpandableSection: {
+    description: 'The easing curve for expanding a section',
+    public: true,
+    themeable: false,
+  },
+  motionDurationExpandToggle: {
+    description: 'The duration for expand toggle animation.',
+    public: true,
+    themeable: false,
+  },
+  motionEasingExpandToggle: {
+    description: 'The easing curve expand toggle animation',
+    public: true,
+    themeable: false,
+  },
 };
 
 export default metadata;
