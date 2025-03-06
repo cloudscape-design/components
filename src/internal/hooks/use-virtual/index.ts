@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useRef } from 'react';
 
 import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual';
 
-const MAX_ITEM_MOUNTS = 50;
+const MAX_ITEM_MOUNTS = 100;
 
 interface UseVirtualProps<Item> {
   items: readonly Item[];
