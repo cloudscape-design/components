@@ -4,7 +4,6 @@ import * as React from 'react';
 
 import Box from '~components/box';
 import Calendar, { DateRangePickerCalendarProps } from '~components/date-range-picker/calendar';
-import Dropdown from '~components/internal/components/dropdown';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
@@ -47,36 +46,18 @@ const permutations = createPermutations<DateRangePickerCalendarProps>([
 ]);
 
 export default function DateRangePickerCalendarPage() {
-  let i = -1;
   return (
     <Box padding="s">
       <h1>Date-range-picker month calendar page for screenshot tests</h1>
       <ScreenshotArea>
-        <div style={{ blockSize: `${intervals.length * 400}px` }}>
-          <PermutationsView
-            permutations={permutations}
-            render={permutation => {
-              i++;
-              return (
-                <div style={{ insetBlockStart: `${i * 400}px`, position: 'relative' }}>
-                  <Dropdown
-                    stretchWidth={true}
-                    stretchHeight={true}
-                    stretchToTriggerWidth={false}
-                    open={true}
-                    onDropdownClose={() => {}}
-                    onMouseDown={() => {}}
-                    trigger={null}
-                  >
-                    <Box padding="m">
-                      <Calendar {...permutation} />
-                    </Box>
-                  </Dropdown>
-                </div>
-              );
-            }}
-          />
-        </div>
+        <PermutationsView
+          permutations={permutations}
+          render={permutation => (
+            <Box margin={{ top: 'm', bottom: 'm' }}>
+              <Calendar {...permutation} />
+            </Box>
+          )}
+        />
       </ScreenshotArea>
     </Box>
   );
