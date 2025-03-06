@@ -59,6 +59,10 @@ export interface MultiselectProps extends BaseSelectProps {
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
+  /**
+   * Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.
+   */
+  enableSelectAll?: boolean;
 }
 
 export namespace MultiselectProps {
