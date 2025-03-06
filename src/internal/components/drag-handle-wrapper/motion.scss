@@ -5,31 +5,31 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
-.drag-button {
+.direction-button {
   @include styles.with-motion {
     @include styles.animation-fade-in;
     @include styles.animation-fade-out-0;
   }
 }
 
-.drag-button-motion-enter,
-.drag-button-motion-entering,
-.drag-button-motion-exit,
-.drag-button-motion-exiting {
+.direction-button-motion-enter,
+.direction-button-motion-entering,
+.direction-button-motion-exit,
+.direction-button-motion-exiting {
   @include styles.with-motion {
     pointer-events: none;
   }
 }
 
-.drag-button-block-start {
-  &.drag-button-motion-entering {
+.direction-button-block-start {
+  &.direction-button-motion-entering {
     @include styles.with-motion {
       animation:
         slide-up awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-motion-exiting {
+  &.direction-button-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-up-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
@@ -38,15 +38,15 @@
   }
 }
 
-.drag-button-block-end {
-  &.drag-button-motion-entering {
+.direction-button-block-end {
+  &.direction-button-motion-entering {
     @include styles.with-motion {
       animation:
         slide-down awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-motion-exiting {
+  &.direction-button-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-down-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
@@ -55,29 +55,29 @@
   }
 }
 
-.drag-button-inline-start {
-  &.drag-button-motion-entering {
+.direction-button-inline-start {
+  &.direction-button-motion-entering {
     @include styles.with-motion {
       animation:
         slide-left awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-rtl.drag-button-motion-entering {
+  &.direction-button-rtl.direction-button-motion-entering {
     @include styles.with-motion {
       animation:
         slide-right awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-motion-exiting {
+  &.direction-button-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-left-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-rtl.drag-button-motion-exiting {
+  &.direction-button-rtl.direction-button-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-right-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
@@ -86,29 +86,29 @@
   }
 }
 
-.drag-button-inline-end {
-  &.drag-button-motion-entering {
+.direction-button-inline-end {
+  &.direction-button-motion-entering {
     @include styles.with-motion {
       animation:
         slide-right awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-rtl.drag-button-motion-entering {
+  &.direction-button-rtl.direction-button-motion-entering {
     @include styles.with-motion {
       animation:
         slide-left awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-motion-exiting {
+  &.direction-button-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-right-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.drag-button-rtl.drag-button-motion-exiting {
+  &.direction-button-rtl.direction-button-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-left-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,

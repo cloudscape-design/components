@@ -1,6 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+import {
+  Direction as WrapperDirection,
+  DirectionState as WrapperDirectionState,
+} from '../drag-handle-wrapper/interfaces';
+
 export interface DragHandleProps {
   variant?: DragHandleProps.Variant;
   size?: DragHandleProps.Size;
@@ -11,10 +16,17 @@ export interface DragHandleProps {
   className?: string;
   onPointerDown?: React.PointerEventHandler;
   onKeyDown?: React.KeyboardEventHandler;
+
+  resizeTooltipText?: string;
+  directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
+  onDirectionClick?: (direction: DragHandleProps.Direction) => void;
 }
 
 export namespace DragHandleProps {
   export type Variant = 'drag-indicator' | 'resize-area' | 'resize-horizontal' | 'resize-vertical';
+
+  export type Direction = WrapperDirection;
+  export type DirectionState = WrapperDirectionState;
 
   export type Size = 'small' | 'normal';
 
