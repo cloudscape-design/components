@@ -608,6 +608,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -1784,6 +1791,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.5)",
+            "light": "rgba(0, 28, 36, 0.5)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -2342,6 +2356,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -2361,6 +2389,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -2417,6 +2459,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+            "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -3166,6 +3243,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -4342,6 +4426,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.5)",
+            "light": "rgba(0, 28, 36, 0.5)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -4900,6 +4991,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -4919,6 +5024,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -4975,6 +5094,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+            "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -5724,6 +5878,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -6900,6 +7061,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.5)",
+            "light": "rgba(0, 28, 36, 0.5)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -7458,6 +7626,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -7477,6 +7659,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -7533,6 +7729,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+            "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -8282,6 +8513,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -9458,6 +9696,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.5)",
+            "light": "rgba(0, 28, 36, 0.5)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -10016,6 +10261,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -10035,6 +10294,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -10091,6 +10364,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+            "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -10840,6 +11148,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#0073bb",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#d5dbdb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -12016,6 +12331,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#687078",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.5)",
+            "light": "rgba(0, 28, 36, 0.5)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -12574,6 +12896,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -12593,6 +12929,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -12649,6 +12999,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+            "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -13398,6 +13783,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#00a1c9",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#545b64",
+            "light": "#545b64",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -14574,6 +14966,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "#95a5a6",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(0, 0, 0, 0.5)",
+            "light": "rgba(0, 0, 0, 0.5)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -15132,6 +15531,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -15151,6 +15564,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -15207,6 +15634,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
             "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+            "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -15954,6 +16416,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "#00a1c9",
         "light": "#0073bb",
+      },
+    },
+    "color-border-popover": {
+      "$description": "The border color used in popover and annotation context",
+      "$value": {
+        "dark": "#545b64",
+        "light": "#d5dbdb",
       },
     },
     "color-border-segment-active": {
@@ -17132,6 +17601,13 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "light": "#687078",
       },
     },
+    "color-shadow-default": {
+      "$description": "The shadow color used in popover and annotation context",
+      "$value": {
+        "dark": "rgba(0, 0, 0, 0.5)",
+        "light": "rgba(0, 28, 36, 0.5)",
+      },
+    },
     "color-text-accent": {
       "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
       "$value": {
@@ -17690,6 +18166,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "disabled": "0ms",
       },
     },
+    "motion-duration-expand-toggle": {
+      "$description": "The duration for expand toggle animation.",
+      "$value": {
+        "default": "135ms",
+        "disabled": "0ms",
+      },
+    },
+    "motion-duration-expandable-section": {
+      "$description": "The duration for expanding a section.",
+      "$value": {
+        "default": "180ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-duration-expressive": {
       "$description": "The duration for accommodating the motion with more expressiveness.",
       "$value": {
@@ -17709,6 +18199,20 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "default": "cubic-bezier(0.7, 0, 0.3, 1)",
         "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+      },
+    },
+    "motion-easing-expand-toggle": {
+      "$description": "The easing curve expand toggle animation",
+      "$value": {
+        "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+        "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+      },
+    },
+    "motion-easing-expandable-section": {
+      "$description": "The easing curve for expanding a section",
+      "$value": {
+        "default": "ease-out",
+        "disabled": "ease-out",
       },
     },
     "motion-easing-expressive": {
@@ -17765,6 +18269,41 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "0px 4px 8px rgba(0, 28, 36, 0.45)",
         "light": "0px 4px 8px rgba(0, 28, 36, 0.45)",
+      },
+    },
+    "shadow-popover": {
+      "$description": "Popover and annotation context shadow",
+      "$value": {
+        "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
+        "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
+      },
+    },
+    "size-icon-big": {
+      "$description": "Big icon size",
+      "$value": {
+        "comfortable": "32px",
+        "compact": "32px",
+      },
+    },
+    "size-icon-large": {
+      "$description": "Large icon size",
+      "$value": {
+        "comfortable": "48px",
+        "compact": "48px",
+      },
+    },
+    "size-icon-medium": {
+      "$description": "Medium icon size",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "16px",
+      },
+    },
+    "size-icon-normal": {
+      "$description": "Normal icon size",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "16px",
       },
     },
     "space-container-horizontal": {
@@ -18519,6 +19058,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -19695,6 +20241,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 0.12)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -20253,6 +20806,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -20272,6 +20839,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -20328,6 +20909,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -21077,6 +21693,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -22253,6 +22876,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 1)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -22811,6 +23441,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -22830,6 +23474,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -22886,6 +23544,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -23635,6 +24328,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -24811,6 +25511,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 0.12)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -25369,6 +26076,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -25388,6 +26109,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -25444,6 +26179,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -26193,6 +26963,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -27369,6 +28146,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 0.12)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -27927,6 +28711,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -27946,6 +28744,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -28002,6 +28814,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -28751,6 +29598,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#006ce0",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#b4b4bb",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -29927,6 +30781,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#656871",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 0.12)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -30485,6 +31346,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -30504,6 +31379,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -30560,6 +31449,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -31309,6 +32233,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -32485,6 +33416,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 1)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -33043,6 +33981,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -33062,6 +34014,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -33118,6 +34084,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -33867,6 +34868,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#42b4ff",
           },
         },
+        "color-border-popover": {
+          "$description": "The border color used in popover and annotation context",
+          "$value": {
+            "dark": "#656871",
+            "light": "#656871",
+          },
+        },
         "color-border-segment-active": {
           "$description": "The border color of the active segment in a segmented control.",
           "$value": {
@@ -35043,6 +36051,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "#a4a4ad",
           },
         },
+        "color-shadow-default": {
+          "$description": "The shadow color used in popover and annotation context",
+          "$value": {
+            "dark": "rgba(15, 20, 26, 1)",
+            "light": "rgba(15, 20, 26, 1)",
+          },
+        },
         "color-text-accent": {
           "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
           "$value": {
@@ -35601,6 +36616,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "disabled": "0ms",
           },
         },
+        "motion-duration-expand-toggle": {
+          "$description": "The duration for expand toggle animation.",
+          "$value": {
+            "default": "135ms",
+            "disabled": "0ms",
+          },
+        },
+        "motion-duration-expandable-section": {
+          "$description": "The duration for expanding a section.",
+          "$value": {
+            "default": "180ms",
+            "disabled": "0ms",
+          },
+        },
         "motion-duration-expressive": {
           "$description": "The duration for accommodating the motion with more expressiveness.",
           "$value": {
@@ -35620,6 +36649,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "default": "cubic-bezier(0.7, 0, 0.3, 1)",
             "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+          },
+        },
+        "motion-easing-expand-toggle": {
+          "$description": "The easing curve expand toggle animation",
+          "$value": {
+            "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+            "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+          },
+        },
+        "motion-easing-expandable-section": {
+          "$description": "The easing curve for expanding a section",
+          "$value": {
+            "default": "ease-out",
+            "disabled": "ease-out",
           },
         },
         "motion-easing-expressive": {
@@ -35676,6 +36719,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
             "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+          },
+        },
+        "shadow-popover": {
+          "$description": "Popover and annotation context shadow",
+          "$value": {
+            "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+            "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+          },
+        },
+        "size-icon-big": {
+          "$description": "Big icon size",
+          "$value": {
+            "comfortable": "32px",
+            "compact": "32px",
+          },
+        },
+        "size-icon-large": {
+          "$description": "Large icon size",
+          "$value": {
+            "comfortable": "48px",
+            "compact": "48px",
+          },
+        },
+        "size-icon-medium": {
+          "$description": "Medium icon size",
+          "$value": {
+            "comfortable": "20px",
+            "compact": "20px",
+          },
+        },
+        "size-icon-normal": {
+          "$description": "Normal icon size",
+          "$value": {
+            "comfortable": "16px",
+            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -36423,6 +37501,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "#42b4ff",
         "light": "#006ce0",
+      },
+    },
+    "color-border-popover": {
+      "$description": "The border color used in popover and annotation context",
+      "$value": {
+        "dark": "#656871",
+        "light": "#b4b4bb",
       },
     },
     "color-border-segment-active": {
@@ -37601,6 +38686,13 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "light": "#656871",
       },
     },
+    "color-shadow-default": {
+      "$description": "The shadow color used in popover and annotation context",
+      "$value": {
+        "dark": "rgba(15, 20, 26, 1)",
+        "light": "rgba(15, 20, 26, 0.12)",
+      },
+    },
     "color-text-accent": {
       "$description": "The accent color used to guide a user. *For example: the highlighted page in the side navigation and active tab text.*",
       "$value": {
@@ -38159,6 +39251,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "disabled": "0ms",
       },
     },
+    "motion-duration-expand-toggle": {
+      "$description": "The duration for expand toggle animation.",
+      "$value": {
+        "default": "135ms",
+        "disabled": "0ms",
+      },
+    },
+    "motion-duration-expandable-section": {
+      "$description": "The duration for expanding a section.",
+      "$value": {
+        "default": "180ms",
+        "disabled": "0ms",
+      },
+    },
     "motion-duration-expressive": {
       "$description": "The duration for accommodating the motion with more expressiveness.",
       "$value": {
@@ -38178,6 +39284,20 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "default": "cubic-bezier(0.7, 0, 0.3, 1)",
         "disabled": "cubic-bezier(0.7, 0, 0.3, 1)",
+      },
+    },
+    "motion-easing-expand-toggle": {
+      "$description": "The easing curve expand toggle animation",
+      "$value": {
+        "default": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+        "disabled": "cubic-bezier(0.165, 0.84, 0.44, 1)",
+      },
+    },
+    "motion-easing-expandable-section": {
+      "$description": "The easing curve for expanding a section",
+      "$value": {
+        "default": "ease-out",
+        "disabled": "ease-out",
       },
     },
     "motion-easing-expressive": {
@@ -38234,6 +39354,41 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 1px 1px 1px #192534, 0px 6px 36px #00040c",
         "light": "0px 1px 1px 1px #e9ebed, 0px 6px 36px #0007161a",
+      },
+    },
+    "shadow-popover": {
+      "$description": "Popover and annotation context shadow",
+      "$value": {
+        "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
+        "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
+      },
+    },
+    "size-icon-big": {
+      "$description": "Big icon size",
+      "$value": {
+        "comfortable": "32px",
+        "compact": "32px",
+      },
+    },
+    "size-icon-large": {
+      "$description": "Large icon size",
+      "$value": {
+        "comfortable": "48px",
+        "compact": "48px",
+      },
+    },
+    "size-icon-medium": {
+      "$description": "Medium icon size",
+      "$value": {
+        "comfortable": "20px",
+        "compact": "20px",
+      },
+    },
+    "size-icon-normal": {
+      "$description": "Normal icon size",
+      "$value": {
+        "comfortable": "16px",
+        "compact": "16px",
       },
     },
     "space-container-horizontal": {
