@@ -22,7 +22,8 @@
     "start:watch": "gulp watch",
     "start:dev": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.js",
     "start:integ": "cross-env NODE_ENV=development webpack serve --config pages/webpack.config.integ.js",
-    "prepare": "husky"
+    "prepare": "husky",
+    "postinstall": "node ./scripts/install-peer-dependency.js theming-core:expose-size-tokens"
   },
   "dependencies": {
     "@cloudscape-design/collection-hooks": "^1.0.0",
