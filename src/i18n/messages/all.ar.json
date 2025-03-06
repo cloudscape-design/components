@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "إغلاق الشرح",
     "i18nStrings.stepCounterText": "الخطوة رقم {stepNumber} من أصل {totalStepCount}",
     "i18nStrings.taskTitle": "المهمة رقم {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {إغلاق الشرح للخطوة رقم {stepNumber} من أصل {totalStepCount}} false {فتح الشرح للخطوة رقم {stepNumber} من أصل {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {فتح الشرح للخطوة رقم {stepNumber} من أصل {totalStepCount}} false {فتح الشرح للخطوة رقم {stepNumber} من أصل {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "القوائم الجانبية",

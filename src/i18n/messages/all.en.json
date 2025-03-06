@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Dismiss annotation",
     "i18nStrings.stepCounterText": "Step {stepNumber} of {totalStepCount}",
     "i18nStrings.taskTitle": "Task {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Close annotation for step {stepNumber} of {totalStepCount}} false {Open annotation for step {stepNumber} of {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Annotation for step {stepNumber} of {totalStepCount}} false {Annotation for step {stepNumber} of {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Drawers",

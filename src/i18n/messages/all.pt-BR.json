@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Descartar anotação",
     "i18nStrings.stepCounterText": "Etapa {stepNumber} de {totalStepCount}",
     "i18nStrings.taskTitle": "Tarefa {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Fechar anotação para a etapa {stepNumber} de {totalStepCount}} false {Abrir anotação para a etapa {stepNumber} de {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Anotação para a etapa {stepNumber} de {totalStepCount}} false {Anotação para a etapa {stepNumber} de {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Gavetas",
