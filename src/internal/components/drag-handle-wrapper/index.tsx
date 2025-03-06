@@ -7,49 +7,26 @@ import clsx from 'clsx';
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
-import { IconProps } from '../../../icon/interfaces';
-import InternalIcon from '../../../icon/internal';
+import { getFirstFocusable } from '../focus-lock/utils';
 import Tooltip from '../tooltip';
-import { Transition } from '../transition';
+import DirectionButton from './direction-button';
+import { Direction, DragHandleWrapperProps } from './interfaces';
+import PortalOverlay from './portal-overlay';
 
 import styles from './styles.css.js';
 
 // The amount of distance after pointer down that the cursor is allowed to
 // jitter for a subsequent mouseup to still register as a "press" instead of
-// a drag. A little allowance is needed, but the number isn't set in stone.
+// a drag. A little allowance is needed for usability reasons, but this number
+// isn't set in stone.
 const PRESS_DELTA_MAX = 3;
-
-// Mapping from CSS logical property direction to icon name. The icon component
-// already flips the left/right icons automatically based on RTL, so we don't
-// need to do anything special.
-const ICON_LOGICAL_PROPERTY_MAP: Record<Direction, IconProps.Name> = {
-  'block-start': 'arrow-up',
-  'block-end': 'arrow-down',
-  'inline-start': 'arrow-left',
-  'inline-end': 'arrow-right',
-};
-
-type Direction = 'block-start' | 'block-end' | 'inline-start' | 'inline-end';
-type DirectionState = 'active' | 'disabled';
-
-interface DragHandleWrapperProps {
-  directions: Partial<Record<Direction, DirectionState>>;
-  buttonLabels: Partial<Record<Direction, string>>;
-  resizeTooltipText?: string;
-  onPress: (direction: Direction) => void;
-  children: React.ReactNode;
-}
 
 export default function DragHandleWrapper({
   directions,
-  buttonLabels,
   resizeTooltipText,
   children,
-  onPress,
+  onDirectionClick,
 }: DragHandleWrapperProps) {
-  // FIXME: Buttons close when disabled button is clicked because of focusout handler
-  //   Move focus from buttons back to main handle? This would mess with SR navigation if those buttons aren't inert
-
   const wrapperRef = useRef<HTMLDivElement | null>(null);
   const rtl = getIsRtl(wrapperRef.current);
 
@@ -57,14 +34,32 @@ export default function DragHandleWrapper({
   const [showTooltip, setShowTooltip] = useState(false);
   const [showButtons, setShowButtons] = useState(false);
 
-  const onWrapperFocusIn = (event: React.FocusEvent) => {
+  // The tooltip ("Drag or select to move/resize") shouldn't show if clicking
+  // on the handle wouldn't do anything. And the directional buttons shouldn't
+  // show if all of them are going to be disabled (which implies the drag
+  // control should be visually/semantically disabled as well).
+  const isDisabled =
+    directions['block-start'] !== 'active' &&
+    directions['block-end'] !== 'active' &&
+    directions['inline-start'] !== 'active' &&
+    directions['inline-end'] !== 'active';
+
+  const onWrapperFocusIn: React.FocusEventHandler = event => {
+    // The drag handle is focused when it's either tabbed to, or the pointer
+    // is pressed on it. We exclude handling the pointer press in this handler,
+    // since it could be the start of a drag event - the pointer stuff is
+    // handled in the "pointerup" listener instead.
     if (!isPointerDown.current && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowTooltip(false);
       setShowButtons(true);
     }
   };
 
-  const onWrapperFocusOut = (event: React.FocusEvent) => {
+  const onWrapperFocusOut: React.FocusEventHandler = event => {
+    // Close the directional buttons when the focus leaves the drag handle.
+    // "focusout" is also triggered when the user leaves the current tab, but
+    // since it'll be returned when they switch back anyway, we exclude that
+    // case by checking for `document.hasFocus()`.
     if (document.hasFocus() && !nodeContains(wrapperRef.current, event.relatedTarget)) {
       setShowButtons(false);
     }
@@ -77,6 +72,13 @@ export default function DragHandleWrapper({
   useEffect(() => {
     const controller = new AbortController();
 
+    // See `PRESS_DELTA_MAX` above. We need to differentiate between a "click"
+    // and a "drag" action. We can say a "click" happens when a "pointerdown"
+    // is followed by a "pointerup" with no "pointermove" between the two.
+    // However, it would be a poor usability experience if a "click" isn't
+    // registered because, while pressing my mouse, I moved it by just one
+    // pixel, making it a "drag" instead. So we allow the pointer to move by
+    // `PRESS_DELTA_MAX` pixels before setting `didPointerDrag` to true.
     document.addEventListener(
       'pointermove',
       event => {
@@ -94,11 +96,17 @@ export default function DragHandleWrapper({
       { signal: controller.signal }
     );
 
+    // Shared behavior when a "pointerdown" state ends. This is shared so it
+    // can be called for both "pointercancel" and "pointerup" events.
+    const resetPointerDownState = () => {
+      isPointerDown.current = false;
+      initialPointerPosition.current = undefined;
+    };
+
     document.addEventListener(
       'pointercancel',
       () => {
-        isPointerDown.current = false;
-        initialPointerPosition.current = undefined;
+        resetPointerDownState();
       },
       { signal: controller.signal }
     );
@@ -107,10 +115,11 @@ export default function DragHandleWrapper({
       'pointerup',
       () => {
         if (isPointerDown.current && !didPointerDrag.current) {
+          // The cursor didn't move much between "pointerdown" and "pointerup".
+          // Handle this as a "click" instead of a "drag".
           setShowButtons(true);
         }
-        isPointerDown.current = false;
-        initialPointerPosition.current = undefined;
+        resetPointerDownState();
       },
       { signal: controller.signal }
     );
@@ -118,43 +127,54 @@ export default function DragHandleWrapper({
     return () => controller.abort();
   }, []);
 
-  const onHandlePointerDown = (event: React.MouseEvent) => {
+  const onHandlePointerDown: React.PointerEventHandler = event => {
+    // Tooltip behavior: the tooltip should appear on hover, but disappear when
+    // the pointer starts dragging (having the tooltip get in the way while
+    // you're trying to drag upwards is annoying). Additionally, the tooltip
+    // shouldn't reappear when dragging ends, but only when the pointer leaves
+    // the drag handle and comes back.
+
     isPointerDown.current = true;
     didPointerDrag.current = false;
     initialPointerPosition.current = { x: event.clientX, y: event.clientY };
     setShowTooltip(false);
   };
 
-  const onTooltipGroupPointerEnter = () => {
+  // Tooltip behavior: the tooltip should stay open when the cursor moves
+  // from the drag handle into the tooltip content itself. This is why the
+  // handler is set on the wrapper for both the drag handle and the tooltip.
+  const onTooltipGroupPointerEnter: React.PointerEventHandler = () => {
     if (!isPointerDown.current) {
       setShowTooltip(true);
     }
   };
-
-  const onTooltipGroupPointerLeave = () => {
+  const onTooltipGroupPointerLeave: React.PointerEventHandler = () => {
     setShowTooltip(false);
   };
 
-  const onHandleKeyDown = (event: React.KeyboardEvent) => {
-    // Handles case when arrow keys are pressed after mouse resizing, and the
-    // "usage mode" switches from mouse to keyboard while the handle is in focus.
-    if (
-      event.key === 'ArrowUp' ||
-      event.key === 'ArrowDown' ||
-      event.key === 'ArrowLeft' ||
-      event.key === 'ArrowRight'
-    ) {
-      setShowButtons(true);
-    }
-
-    // For accessibility reasons, pressing escape should should close the controls
-    // even when the buttons are in focus.
+  const onDragHandleKeyDown: React.KeyboardEventHandler = event => {
+    // For accessibility reasons, pressing escape should should always close
+    // the floating controls.
     if (event.key === 'Escape') {
       setShowButtons(false);
+    } else {
+      // Pressing any other key will display the focus-visible ring around the
+      // drag handle if it's in focus, so we should also show the buttons now.
+      setShowButtons(true);
     }
   };
 
-  const dragButtonProps = { rtl, directions, buttonLabels, onPress, show: showButtons };
+  const onInternalDirectionClick = (direction: Direction) => {
+    // Move focus back to the wrapper on click. This prevents focus from staying
+    // on an aria-hidden control, and allows future keyboard events to be handled
+    // cleanly using the drag handle's own handlers.
+    if (dragHandleRef.current) {
+      getFirstFocusable(dragHandleRef.current)?.focus();
+    }
+    onDirectionClick?.(direction);
+  };
+
+  const directionButtonProps = { rtl, directions, show: showButtons };
 
   return (
     <div
@@ -168,63 +188,50 @@ export default function DragHandleWrapper({
           className={styles['drag-handle']}
           ref={dragHandleRef}
           onPointerDown={onHandlePointerDown}
-          onKeyDown={onHandleKeyDown}
+          onKeyDown={onDragHandleKeyDown}
         >
           {children}
         </div>
 
-        {!showButtons && showTooltip && resizeTooltipText && (
+        {!isDisabled && !showButtons && showTooltip && resizeTooltipText && (
           <Tooltip trackRef={dragHandleRef} value={resizeTooltipText} onDismiss={() => setShowTooltip(false)} />
         )}
       </div>
 
-      <DragButton {...dragButtonProps} direction="block-start" />
-      <DragButton {...dragButtonProps} direction="block-end" />
-      <DragButton {...dragButtonProps} direction="inline-start" />
-      <DragButton {...dragButtonProps} direction="inline-end" />
+      <PortalOverlay track={dragHandleRef.current}>
+        {directions['block-start'] && (
+          <DirectionButton
+            {...directionButtonProps}
+            direction="block-start"
+            state={!isDisabled ? directions['block-start'] : undefined}
+            onClick={() => onInternalDirectionClick('block-start')}
+          />
+        )}
+        {directions['block-end'] && (
+          <DirectionButton
+            {...directionButtonProps}
+            direction="block-end"
+            state={!isDisabled ? directions['block-end'] : undefined}
+            onClick={() => onInternalDirectionClick('block-end')}
+          />
+        )}
+        {directions['inline-start'] && (
+          <DirectionButton
+            {...directionButtonProps}
+            direction="inline-start"
+            state={!isDisabled ? directions['inline-start'] : undefined}
+            onClick={() => onInternalDirectionClick('inline-start')}
+          />
+        )}
+        {directions['inline-end'] && (
+          <DirectionButton
+            {...directionButtonProps}
+            direction="inline-end"
+            state={!isDisabled ? directions['inline-end'] : undefined}
+            onClick={() => onInternalDirectionClick('inline-end')}
+          />
+        )}
+      </PortalOverlay>
     </div>
-  );
-}
-
-interface DragButtonProps {
-  directions: DragHandleWrapperProps['directions'];
-  buttonLabels: DragHandleWrapperProps['buttonLabels'];
-  onPress: DragHandleWrapperProps['onPress'];
-  direction: Direction;
-  show: boolean;
-  rtl: boolean;
-}
-
-function DragButton({ directions, buttonLabels, direction, show, rtl, onPress }: DragButtonProps) {
-  // TODO: focus state? even if not keyboard accessible through tab, it's still keyboard activateable after mouse click
-
-  const state = directions[direction];
-  if (!state) {
-    return null;
-  }
-
-  return (
-    <Transition in={show}>
-      {(transitionState, ref) => (
-        <button
-          type="button"
-          ref={ref}
-          tabIndex={-1}
-          className={clsx(
-            styles['drag-button'],
-            styles[`drag-button-${direction}`],
-            rtl && styles[`drag-button-rtl`],
-            state === 'disabled' && styles['drag-button-disabled'],
-            transitionState === 'exited' && styles['drag-button-hidden'],
-            styles[`drag-button-motion-${transitionState}`]
-          )}
-          aria-disabled={state === 'disabled'}
-          aria-label={buttonLabels[direction]}
-          onClick={() => onPress(direction)}
-        >
-          <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
-        </button>
-      )}
-    </Transition>
   );
 }

@@ -4,8 +4,7 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { useStableCallback } from '@cloudscape-design/component-toolkit/internal';
 
-import InternalDragHandle from '../../internal/components/drag-handle/index.js';
-import DragHandleWrapper from '../../internal/components/drag-handle-wrapper/index.js';
+import InternalDragHandle from '../../internal/components/drag-handle';
 
 import styles from './styles.css.js';
 
@@ -34,9 +33,11 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
   const onKeyDown: React.KeyboardEventHandler = event => {
     switch (event.key) {
       case 'ArrowDown':
+      case 'ArrowRight':
         onResizeStable(height + KEYBOARD_STEP_SIZE);
         break;
       case 'ArrowUp':
+      case 'ArrowLeft':
         onResizeStable(Math.max(height - KEYBOARD_STEP_SIZE, minHeight));
         break;
     }
@@ -73,30 +74,28 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
       {children}
 
       <div className={styles['resizable-box-handle']}>
-        <DragHandleWrapper
-          onPress={direction => {
-            onResizeStable(
-              Math.max(height + (direction === 'block-start' ? -1 * KEYBOARD_STEP_SIZE : KEYBOARD_STEP_SIZE), minHeight)
-            );
-          }}
+        <InternalDragHandle
+          ariaLabel="Resize handle"
+          variant="resize-area"
+          ariaValue={{ valueMin: minHeight, valueMax: 999999999, valueNow: height }}
+          onPointerDown={onPointerDown}
+          onKeyDown={onKeyDown}
           resizeTooltipText="Drag or select to move" // TODO: fixme!
-          buttonLabels={{
-            'block-start': 'Reduce size',
-            'block-end': 'Increase size',
-          }} // TODO: fixme!
           directions={{
             'block-start': height > minHeight ? 'active' : 'disabled',
             'block-end': 'active',
           }}
-        >
-          <InternalDragHandle
-            ariaLabel="Resize handle"
-            variant="resize-area"
-            ariaValue={{ valueMin: minHeight, valueMax: 999999999, valueNow: height }}
-            onPointerDown={onPointerDown}
-            onKeyDown={onKeyDown}
-          />
-        </DragHandleWrapper>
+          onDirectionClick={direction => {
+            switch (direction) {
+              case 'block-end':
+                onResizeStable(height + KEYBOARD_STEP_SIZE);
+                break;
+              case 'block-start':
+                onResizeStable(Math.max(height - KEYBOARD_STEP_SIZE, minHeight));
+                break;
+            }
+          }}
+        />
       </div>
     </div>
   );

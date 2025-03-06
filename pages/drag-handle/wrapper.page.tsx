@@ -21,13 +21,7 @@ export default function GridPage() {
               'inline-start': 'disabled',
               'inline-end': undefined,
             }}
-            buttonLabels={{
-              'block-start': 'Up',
-              'block-end': 'Down',
-              'inline-start': 'Before',
-              'inline-end': undefined,
-            }}
-            onPress={direction => {
+            onDirectionClick={direction => {
               console.log(direction);
             }}
             resizeTooltipText="Drag or select to move"
