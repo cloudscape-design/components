@@ -40,6 +40,7 @@ type UseMultiselectOptions = SomeRequired<
     | 'onLoadItems'
     | 'onChange'
     | 'selectedAriaLabel'
+    | 'enableSelectAll'
   > &
     DropdownStatusProps & {
       controlId?: string;
@@ -78,6 +79,7 @@ export function useMultiselect({
   setFilteringValue,
   externalRef,
   embedded,
+  enableSelectAll,
   ...restProps
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
@@ -101,12 +103,26 @@ export function useMultiselect({
   const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
-    filteringValue
+    filteringValue,
+    enableSelectAll
   );
 
+  const allNonParentOptions = filteredOptions
+    .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
+    .map(option => option.option);
+  const allSelectableOptions = filteredOptions
+    .filter(option => option.type !== 'toggle-all' && !option.option.disabled)
+    .map(option => option.option);
+  const selectedValues = new Set(selectedOptions.map(option => option.value));
+  const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.value));
+  const isAllSelectableSelected = allSelectableOptions.every(option => selectedValues.has(option.value));
+  const isSomeSelected = selectedOptions.length > 0;
+
   const updateSelectedOption = useCallback(
-    (option: OptionDefinition | OptionGroup) => {
-      const filtered = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
+    (option: OptionDefinition | OptionGroup, isToggleAll = false) => {
+      const nonParentOptions = filteredOptions
+        .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
+        .map(item => item.option);
 
       // switch between selection and deselection behavior, ignores disabled options to prevent
       // getting stuck on one behavior when an option is disabled and its state cannot be changed
@@ -125,10 +141,12 @@ export function useMultiselect({
       let newSelectedOptions = [...selectedOptions];
 
       if (isGroup(option)) {
-        const visibleOptions = intersection([...option.options], filtered);
+        const visibleOptions = intersection([...option.options], nonParentOptions);
         newSelectedOptions = isAllChildrenSelected(visibleOptions)
           ? unselect(visibleOptions, newSelectedOptions)
           : select(visibleOptions, newSelectedOptions);
+      } else if (isToggleAll) {
+        newSelectedOptions = isAllSelectableSelected ? [] : allSelectableOptions;
       } else {
         newSelectedOptions = isAllChildrenSelected([option])
           ? unselect([option], newSelectedOptions)
@@ -139,7 +157,7 @@ export function useMultiselect({
         selectedOptions: newSelectedOptions,
       });
     },
-    [onChange, selectedOptions, filteredOptions]
+    [filteredOptions, selectedOptions, onChange, isAllSelectableSelected, allSelectableOptions]
   );
 
   const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
@@ -169,6 +187,8 @@ export function useMultiselect({
     useInteractiveGroups,
     statusType,
     embedded,
+    isAllSelected,
+    isSomeSelected,
   });
 
   const wrapperOnKeyDown = useNativeSearch({
@@ -268,5 +288,7 @@ export function useMultiselect({
     getTokenProps: () => ({ onDismiss: tokenOnDismiss }),
     getDropdownProps: () => ({ ...getDropdownProps(), onMouseDown: dropdownOnMouseDown }),
     getWrapperProps: () => ({ onKeyDown: wrapperOnKeyDown }),
+    isAllSelected,
+    isSomeSelected,
   };
 }

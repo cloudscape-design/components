@@ -55,6 +55,7 @@ const InternalMultiselect = React.forwardRef(
       tokenLimitShowMoreAriaLabel,
       __internalRootRef = null,
       autoFocus,
+      enableSelectAll,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -81,6 +82,7 @@ const InternalMultiselect = React.forwardRef(
       filteringValue,
       setFilteringValue,
       externalRef,
+      enableSelectAll,
       ...restProps,
     });
 
