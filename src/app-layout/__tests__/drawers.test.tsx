@@ -7,6 +7,7 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils.js';
 
 import AppLayout, { AppLayoutProps } from '../../../lib/components/app-layout';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { testIf } from '../../__tests__/utils';
 import {
   describeEachAppLayout,
   findActiveDrawerLandmark,
@@ -18,8 +19,6 @@ import {
 
 import toolbarTriggerButtonStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/toolbar/trigger-button/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
-
-const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const mockEventBubble = {
   bubbles: true,

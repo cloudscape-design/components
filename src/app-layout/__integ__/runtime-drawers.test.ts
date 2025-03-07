@@ -4,8 +4,9 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper, { AppLayoutWrapper } from '../../../lib/components/test-utils/selectors';
+import { Theme } from '../../__integ__/utils.js';
 import { viewports } from './constants';
-import { getUrlParams, Theme } from './utils';
+import { getUrlParams } from './utils';
 
 import vrDrawerStyles from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import vrToolbarDrawerStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/drawer/styles.selectors.js';
