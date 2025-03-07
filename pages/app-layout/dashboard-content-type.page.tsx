@@ -5,7 +5,6 @@ import React, { useState } from 'react';
 import AppLayout from '~components/app-layout';
 import Button from '~components/button';
 import Header from '~components/header';
-import SpaceBetween from '~components/space-between';
 import SplitPanel from '~components/split-panel';
 
 import ScreenshotArea from '../utils/screenshot-area';
@@ -24,14 +23,12 @@ export default function () {
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
         tools={<Tools>{toolsContent.long}</Tools>}
-        content={
-          <SpaceBetween size="m">
-            <Header variant="h1" actions={<Button onClick={() => setSplitPanelOpen(true)}>Add widget</Button>}>
-              Dashboard page
-            </Header>
-            <Containers />
-          </SpaceBetween>
+        contentHeader={
+          <Header variant="h1" actions={<Button onClick={() => setSplitPanelOpen(true)}>Add widget</Button>}>
+            Dashboard page
+          </Header>
         }
+        content={<Containers />}
         splitPanelPreferences={{ position: 'side' }}
         splitPanelOpen={splitPanelOpen}
         splitPanel={

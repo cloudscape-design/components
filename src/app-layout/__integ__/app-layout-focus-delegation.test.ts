@@ -4,9 +4,8 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { Theme } from '../../__integ__/utils.js';
 import { viewports } from './constants';
-import { getUrlParams, testIf } from './utils';
+import { getUrlParams, testIf, Theme } from './utils';
 
 import splitPanelTestUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';
 
@@ -132,9 +131,7 @@ describe.each(['classic', 'refresh', 'refresh-toolbar'] as const)('%s', theme =>
         setupTest(
           async page => {
             // Mobile nav is closed on page load
-            if (mobile) {
-              await page.click(wrapper.findNavigationToggle().toSelector());
-            }
+            mobile && (await page.click(wrapper.findNavigationToggle().toSelector()));
             await page.setWindowSize({ width: 1100, height: 800 });
             await page.click(wrapper.findSplitPanel().findOpenButton().toSelector());
             await expect(page.isExisting(wrapper.findSplitPanel().findOpenPanelSide().toSelector())).resolves.toBe(
