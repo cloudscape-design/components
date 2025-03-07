@@ -155,7 +155,7 @@ $_text-colors: (
   .type-#{$type} {
     border-color: #{map.get($_border-colors, $type)};
     background-color: #{map.get($_background-colors, $type)};
-    > .alert-focus-wrapper > .icon {
+    > .alert-wrapper > .alert-focus-wrapper > .icon {
       color: #{map.get($_text-colors, $type)};
     }
   }
