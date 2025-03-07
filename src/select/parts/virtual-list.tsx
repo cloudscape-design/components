@@ -33,7 +33,10 @@ const VirtualListOpen = forwardRef(
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
     // update component, when it gets wider or narrower to reposition items
-    const [width, menuMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
+    const [width, menuMeasureRef] = useContainerQuery(rect => {
+      console.log({ width: rect.contentBoxWidth });
+      return Math.round(rect.contentBoxWidth);
+    }, []);
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
 
