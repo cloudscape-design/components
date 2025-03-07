@@ -65,7 +65,7 @@ export function useVirtual<Item extends object>({
 
   return {
     virtualItems,
-    totalSize: Math.ceil(rowVirtualizer.totalSize),
+    totalSize: Math.floor(rowVirtualizer.totalSize),
     scrollToIndex: rowVirtualizer.scrollToIndex,
   };
 }
