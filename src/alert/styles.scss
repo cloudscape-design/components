@@ -59,8 +59,28 @@
 
 .action {
   white-space: nowrap;
-  padding-inline-start: awsui.$space-alert-action-left;
-  margin-inline-start: auto;
+}
+
+$medium-icon-gap: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
+.icon-size-medium > .alert-wrapper {
+  column-gap: calc(#{awsui.$space-alert-action-left} - #{$medium-icon-gap});
+  > .action {
+    margin-inline-start: $medium-icon-gap;
+  }
+}
+$big-icon-gap: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
+.icon-size-big > .alert-wrapper {
+  column-gap: calc(#{awsui.$space-alert-action-left} - #{$big-icon-gap});
+  > .action {
+    margin-inline-start: $big-icon-gap;
+  }
+}
+$normal-icon-gap: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
+.icon-size-normal > .alert-wrapper {
+  column-gap: calc(#{awsui.$space-alert-action-left} - #{$normal-icon-gap});
+  > .action {
+    margin-inline-start: $normal-icon-gap;
+  }
 }
 
 .action-slot,
