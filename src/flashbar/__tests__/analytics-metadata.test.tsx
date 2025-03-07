@@ -11,7 +11,10 @@ import { getGeneratedAnalyticsMetadata } from '@cloudscape-design/component-tool
 
 import Button from '../../../lib/components/button';
 import Flashbar, { FlashbarProps } from '../../../lib/components/flashbar';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../../../lib/components/internal/analytics/selectors';
+import {
+  DATA_ATTR_ANALYTICS_FLASHBAR,
+  DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
+} from '../../../lib/components/internal/analytics/selectors';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { validateComponentNameAndLabels } from '../../internal/__tests__/analytics-metadata-test-utils';
 
@@ -217,11 +220,11 @@ describe('Flashbar renders correct analytics metadata', () => {
       expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_FLASHBAR}="info"]`)!.getElement()).toBeInTheDocument();
     });
 
-    test('adds no attribute if suppressFlowMetricEvents is set', () => {
+    test('adds a data suppress attribute if suppressFlowMetricEvents is set', () => {
       const wrapper = renderFlashbar({
         items: [{ id: '0', type: 'success', analyticsMetadata: { suppressFlowMetricEvents: true } }],
       });
-      expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_FLASHBAR}]`)).toBeNull();
+      expect(wrapper.find(`[${DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS}]`)).not.toBeNull();
     });
   });
 });

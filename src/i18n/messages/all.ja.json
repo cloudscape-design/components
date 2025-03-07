@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "注釈を閉じる",
     "i18nStrings.stepCounterText": "ステップ {stepNumber}/{totalStepCount}",
     "i18nStrings.taskTitle": "タスク {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {ステップ {stepNumber}/{totalStepCount} の注釈を閉じる} false {ステップ {stepNumber}/{totalStepCount} の注釈を開く} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {ステップ {stepNumber}/{totalStepCount} の注釈} false {ステップ {stepNumber}/{totalStepCount} の注釈} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "ドロワー",

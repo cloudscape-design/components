@@ -46,8 +46,15 @@ export interface AnnotationContextProps {
   children: React.ReactNode;
 
   /**
-   * An object containing all the necessary localized strings required by
-   * the component.
+   * An object containing all the necessary localized strings required by the component. The object should contain:
+   *
+   * * `finishButtonText` - Specifies the text that's displayed in the finish button.
+   * * `labelDismissAnnotation` - Specifies the aria-label for the dismiss button.
+   * * `labelHotspot` - Specifies the aria-label for the hotspot button. The `openState` argument is deprecated, it's handled by the hotspot button aria-expanded attribute.
+   * * `nextButtonText` - Specifies the text that's displayed in the next button.
+   * * `previousButtonText` - Specifies the text that's displayed in the previous button.
+   * * `stepCounterText` - Specifies the step counter text that's displayed in the annotation popover.
+   * * `taskTitle` - Specifies the title text that's displayed in the annotation popover.
    */
   i18nStrings: AnnotationContextProps.I18nStrings;
 }

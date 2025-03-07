@@ -29,10 +29,7 @@ export const tutorialPanelStrings: TutorialPanelProps.I18nStrings = {
 export const annotationContextStrings: AnnotationContextProps.I18nStrings = {
   stepCounterText: (stepIndex, totalStepCount) => `Step ${stepIndex + 1}/${totalStepCount}`,
   taskTitle: (taskIndex, taskTitle) => `Task ${taskIndex + 1}: ${taskTitle}`,
-  labelHotspot: (openState, stepIndex, totalStepCount) =>
-    openState
-      ? `close annotation for step ${stepIndex + 1}/${totalStepCount}`
-      : `open annotation for step ${stepIndex + 1}/${totalStepCount}`,
+  labelHotspot: (openState, stepIndex, totalStepCount) => `Annotation for step ${stepIndex + 1}/${totalStepCount}`,
   nextButtonText: 'Next',
   previousButtonText: 'Previous',
   finishButtonText: 'Finish',

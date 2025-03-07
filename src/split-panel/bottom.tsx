@@ -10,7 +10,7 @@ import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import * as tokens from '../internal/generated/styles/tokens';
 import { useMobile } from '../internal/hooks/use-mobile';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelContentProps } from './interfaces';
+import { SplitPanelContentProps, SplitPanelProps } from './interfaces';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';
@@ -18,9 +18,11 @@ import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentBottomProps extends SplitPanelContentProps {
   appLayoutMaxWidth: React.CSSProperties | undefined;
+  closeBehavior: SplitPanelProps['closeBehavior'];
 }
 
 export function SplitPanelContentBottom({
+  closeBehavior,
   baseProps,
   isOpen,
   splitPanelRef,
@@ -49,8 +51,8 @@ export function SplitPanelContentBottom({
   const headerRef = useRef<HTMLDivElement>(null);
 
   useResizeObserver(headerRef, entry => {
-    const { borderBoxHeight } = entry;
-    reportHeaderHeight(borderBoxHeight);
+    const visibleHeaderSize = closeBehavior === 'hide' && !isOpen ? 0 : entry.borderBoxHeight;
+    reportHeaderHeight(visibleHeaderSize);
   });
 
   useEffect(() => {
@@ -84,23 +86,29 @@ export function SplitPanelContentBottom({
         insetInlineEnd: rightOffset,
         blockSize: isOpen
           ? cappedSize
-          : isToolbar && headerBlockSize !== undefined
-            ? `calc(${headerBlockSize}px + ${tokens.borderPanelTopWidth})`
-            : undefined,
+          : closeBehavior === 'hide'
+            ? 0
+            : isToolbar && headerBlockSize !== undefined
+              ? `calc(${headerBlockSize}px + ${tokens.borderPanelTopWidth})`
+              : undefined,
       }}
       ref={splitPanelRef}
     >
-      {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
-      <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
-        <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
-          {header}
-        </div>
-        <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>
-          <div className={clsx({ [styles['content-bottom-max-width']]: isRefresh })} style={appLayoutMaxWidth}>
-            {children}
+      {closeBehavior === 'hide' && !isOpen ? null : (
+        <>
+          {isOpen && <div className={styles['slider-wrapper-bottom']}>{resizeHandle}</div>}
+          <div className={styles['drawer-content-bottom']} aria-labelledby={panelHeaderId} role="region">
+            <div className={clsx(styles['pane-header-wrapper-bottom'], centeredMaxWidthClasses)} ref={headerRef}>
+              {header}
+            </div>
+            <div className={clsx(styles['content-bottom'], centeredMaxWidthClasses)} aria-hidden={!isOpen}>
+              <div className={clsx({ [styles['content-bottom-max-width']]: isRefresh })} style={appLayoutMaxWidth}>
+                {children}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
