@@ -8,14 +8,13 @@ import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelContentProps, SplitPanelProps } from './interfaces';
+import { SplitPanelContentProps } from './interfaces';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentSideProps extends SplitPanelContentProps {
-  closeBehavior: SplitPanelProps['closeBehavior'];
   openButtonAriaLabel?: string;
   toggleRef: React.RefObject<ButtonProps.Ref>;
 }
@@ -33,7 +32,6 @@ export function SplitPanelContentSide({
   openButtonAriaLabel,
   panelHeaderId,
   onToggle,
-  closeBehavior,
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
@@ -67,7 +65,7 @@ export function SplitPanelContentSide({
       >
         {isOpen ? (
           <div className={clsx(styles['slider-wrapper-side'], isToolbar && styles['with-toolbar'])}>{resizeHandle}</div>
-        ) : closeBehavior === 'hide' ? null : (
+        ) : (
           <InternalButton
             className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"

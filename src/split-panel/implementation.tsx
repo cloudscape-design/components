@@ -56,7 +56,6 @@ export function SplitPanelImplementation({
     relativeSize,
     setSplitPanelToggle,
     refs,
-    animationDisabled,
   } = useSplitPanelContext();
   const baseProps = getBaseProps(restProps);
   const [isPreferencesOpen, setPreferencesOpen] = useState<boolean>(false);
@@ -123,7 +122,7 @@ export function SplitPanelImplementation({
             ariaLabel={i18nStrings.closeButtonAriaLabel}
             ariaExpanded={isOpen}
           />
-        ) : position === 'side' || closeBehavior === 'hide' ? null : (
+        ) : position === 'side' ? null : (
           <InternalButton
             className={testUtilStyles['open-button']}
             iconName="angle-up"
@@ -180,7 +179,7 @@ export function SplitPanelImplementation({
 
   const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
 
-  if (closeBehavior === 'hide' && !isOpen && animationDisabled) {
+  if (closeBehavior === 'hide' && !isOpen) {
     return <></>;
   }
 
@@ -209,7 +208,6 @@ export function SplitPanelImplementation({
           toggleRef={refs.toggle}
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
-          closeBehavior={closeBehavior}
         >
           {children}
         </SplitPanelContentSide>
@@ -227,7 +225,6 @@ export function SplitPanelImplementation({
           header={wrappedHeader}
           panelHeaderId={panelHeaderId}
           appLayoutMaxWidth={appLayoutMaxWidth}
-          closeBehavior={closeBehavior}
         >
           {children}
         </SplitPanelContentBottom>
