@@ -29,7 +29,7 @@ $direction-button-offset: awsui.$space-static-xxs;
 }
 
 .portal-overlay-contents {
-  pointer-events: all;
+  pointer-events: auto;
 }
 
 .drag-handle {
@@ -49,7 +49,6 @@ $direction-button-offset: awsui.$space-static-xxs;
 .direction-button {
   position: absolute;
   border-width: 0;
-  pointer-events: all;
   cursor: pointer;
   display: inline-block;
   box-sizing: border-box;
