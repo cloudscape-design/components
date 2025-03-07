@@ -18,7 +18,7 @@ export interface AppLayoutInternalProps extends AppLayoutPropsWithDefaults {
 export type InternalDrawer = AppLayoutProps.Drawer & { defaultActive?: boolean };
 
 // Widgetization notice: structures in this file are shared multiple app layout instances, possibly different minor versions.
-// Treat these structures as an API and do not make incompatible changes.
+// Treat thsese structures as an API and do not make incompatible changes.
 export interface AppLayoutInternals {
   ariaLabels: AppLayoutPropsWithDefaults['ariaLabels'];
   headerVariant: AppLayoutPropsWithDefaults['headerVariant'];
