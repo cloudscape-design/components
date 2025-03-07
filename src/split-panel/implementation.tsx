@@ -180,7 +180,7 @@ export function SplitPanelImplementation({
 
   const mergedRef = useMergeRefs(splitPanelRefObject, __internalRootRef);
 
-  if (closeBehavior === 'hide' && !isOpen && animationDisabled) {
+  if (closeBehavior === 'hide' && !isOpen && (animationDisabled || !isRefresh)) {
     return <></>;
   }
 
