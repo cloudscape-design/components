@@ -1,9 +1,8 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import { useResizeObserver } from '@cloudscape-design/component-toolkit/internal';
 
 import { highContrastHeaderClassName } from '../../../internal/utils/content-header-utils';
@@ -25,9 +24,14 @@ export function AppLayoutNotificationsImplementation({
   children,
 }: AppLayoutNotificationsImplementationProps) {
   const { ariaLabels, stickyNotifications, setNotificationsHeight, verticalOffsets } = appLayoutInternals;
-  const [hasNotificationsContent, contentRef] = useContainerQuery(rect => rect.borderBoxHeight > 0);
+  const [hasNotificationsContent, setHasNotificationsContent] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
-  useResizeObserver(rootRef, entry => setNotificationsHeight(entry.borderBoxHeight));
+
+  useResizeObserver(rootRef, entry => {
+    const hasContent = entry.contentBoxHeight > 0;
+    setNotificationsHeight(hasContent ? entry.borderBoxHeight : 0);
+    setHasNotificationsContent(hasContent);
+  });
   useEffect(() => {
     return () => {
       setNotificationsHeight(0);
@@ -48,12 +52,7 @@ export function AppLayoutNotificationsImplementation({
         insetBlockStart: stickyNotifications ? verticalOffsets.notifications : undefined,
       }}
     >
-      <div
-        ref={contentRef}
-        className={testutilStyles.notifications}
-        role="region"
-        aria-label={ariaLabels?.notifications}
-      >
+      <div className={testutilStyles.notifications} role="region" aria-label={ariaLabels?.notifications}>
         {children}
       </div>
     </NotificationsSlot>
