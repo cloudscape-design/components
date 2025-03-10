@@ -314,10 +314,13 @@ describe('useSelect', () => {
     const { getFilterProps } = hook.result.current;
     act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter)));
     expect(hook.result.current.isOpen).toBe(false);
-    expect(updateSelectedOption).toHaveBeenCalledWith({
-      label: 'Child 1',
-      value: 'child1',
-    });
+    expect(updateSelectedOption).toHaveBeenCalledWith(
+      {
+        label: 'Child 1',
+        value: 'child1',
+      },
+      false
+    );
   });
 
   test('should open and navigate to the first option and select and keep open', () => {
@@ -331,10 +334,13 @@ describe('useSelect', () => {
     const { getFilterProps } = hook.result.current;
     act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter)));
     expect(hook.result.current.isOpen).toBe(true);
-    expect(updateSelectedOption).toHaveBeenCalledWith({
-      label: 'Child 1',
-      value: 'child1',
-    });
+    expect(updateSelectedOption).toHaveBeenCalledWith(
+      {
+        label: 'Child 1',
+        value: 'child1',
+      },
+      false
+    );
   });
 
   test('should open and navigate to the second disabled option', () => {
@@ -357,11 +363,15 @@ describe('useSelect', () => {
     });
     act(() => {
       const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      if (onKeyDown) {
+        onKeyDown(createTestEvent(KeyCode.down));
+      }
     });
     act(() => {
       const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      if (onKeyDown) {
+        onKeyDown(createTestEvent(KeyCode.down));
+      }
     });
     expect(hook.result.current.highlightedOption).toEqual({
       disabled: true,
@@ -430,7 +440,9 @@ describe('useSelect', () => {
       });
       act(() => {
         const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        if (onKeyDown) {
+          onKeyDown(createTestEvent(KeyCode.down));
+        }
       });
       expect(hook.result.current.announceSelected).toEqual(true);
     });
@@ -440,7 +452,9 @@ describe('useSelect', () => {
       });
       act(() => {
         const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        if (onKeyDown) {
+          onKeyDown(createTestEvent(KeyCode.down));
+        }
       });
       expect(hook.result.current.announceSelected).toEqual(false);
     });
