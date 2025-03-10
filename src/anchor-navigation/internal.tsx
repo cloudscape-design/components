@@ -47,6 +47,44 @@ export default function InternalAnchorNavigation({
     }
   }, [onActiveHrefChange, anchors, currentActiveHref]);
 
+  const renderNestedAnchors = (items: AnchorNavigationProps.Anchor[], startIndex: number = 0): React.ReactNode => {
+    if (items.length === 0) {
+      return null;
+    }
+
+    const result: React.ReactNode[] = [];
+    let currentIndex = 0;
+
+    while (currentIndex < items.length) {
+      const currentItem = items[currentIndex];
+      const childItems: AnchorNavigationProps.Anchor[] = [];
+
+      let nextIndex = currentIndex + 1;
+      while (nextIndex < items.length && items[nextIndex].level > currentItem.level) {
+        childItems.push(items[nextIndex]);
+        nextIndex++;
+      }
+
+      result.push(
+        <AnchorItem
+          onFollow={onFollowHandler}
+          isActive={currentItem.href === currentActiveHref}
+          key={startIndex + currentIndex}
+          index={startIndex + currentIndex}
+          anchor={currentItem}
+        >
+          {childItems.length > 0 && (
+            <ol className={styles['anchor-list']}>{renderNestedAnchors(childItems, startIndex + currentIndex + 1)}</ol>
+          )}
+        </AnchorItem>
+      );
+
+      currentIndex = nextIndex;
+    }
+
+    return result;
+  };
+
   return (
     <nav
       {...baseProps}
@@ -54,31 +92,20 @@ export default function InternalAnchorNavigation({
       aria-labelledby={ariaLabelledby}
       className={clsx(baseProps.className, styles.root, testUtilsStyles.root)}
     >
-      <ol className={clsx(styles['anchor-list'], testUtilsStyles['anchor-list'])}>
-        {anchors.map((anchor, index) => {
-          return (
-            <Anchor
-              onFollow={onFollowHandler}
-              isActive={anchor.href === currentActiveHref}
-              key={index}
-              index={index}
-              anchor={anchor}
-            />
-          );
-        })}
-      </ol>
+      <ol className={clsx(styles['anchor-list'], testUtilsStyles['anchor-list'])}>{renderNestedAnchors(anchors)}</ol>
     </nav>
   );
 }
 
-interface AnchorProps {
+interface AnchorItemProps {
   anchor: AnchorNavigationProps.Anchor;
   onFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
   isActive: boolean;
   index: number;
+  children: React.ReactNode;
 }
 
-const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
+const AnchorItem = ({ anchor, onFollow, isActive, index, children }: AnchorItemProps) => {
   checkSafeUrl('AnchorNavigation', anchor.href);
 
   const onClick = useCallback(
@@ -114,6 +141,7 @@ const Anchor = ({ anchor, onFollow, isActive, index }: AnchorProps) => {
           <span className={clsx(styles['anchor-link-info'], testUtilsStyles['anchor-link-info'])}>{anchor.info}</span>
         )}
       </a>
+      {children}
     </li>
   );
 };
