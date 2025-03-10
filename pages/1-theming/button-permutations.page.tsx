@@ -125,7 +125,7 @@ function AmplifyButton(props:any) {
     <Theme 
       backgroundColor={isPrimary ? backgroundColors[props.colorTheme as keyof typeof backgroundColors] : '#fff'}
       borderRadius="4px"
-      borderWidth="small"
+      borderWidth="1px"
       borderColor={isPrimary ? 'transparent' : backgroundColors[props.colorTheme as keyof typeof backgroundColors]}
       color={isPrimary ? "#fff" : colors[props.colorTheme as keyof typeof colors]}
       fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
