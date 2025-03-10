@@ -59,7 +59,9 @@ export function TableHeaderSelectionCell({
 export function TableBodySelectionCell({ selectionControlProps, ...props }: TableBodySelectionCellProps) {
   return (
     <TableTdElement {...props} isSelection={true} wrapLines={false} isEditable={false} isEditing={false} colIndex={0}>
-      {selectionControlProps ? <SelectionControl {...selectionControlProps} /> : null}
+      {selectionControlProps ? (
+        <SelectionControl {...selectionControlProps} verticalAlign={props.verticalAlign} />
+      ) : null}
     </TableTdElement>
   );
 }
