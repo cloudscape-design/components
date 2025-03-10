@@ -1,12 +1,12 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ThemeProps } from './interfaces';
+import { ThemeProps, DarkModeProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function Theme({
   backgroundColor, 
-  borderColor,
   backgroundImage,
+  borderColor,
   borderRadius,
   borderWidth,
   boxShadow,
@@ -48,3 +48,39 @@ export default function Theme({
     </div>
   );
 }
+
+function DarkMode({
+  backgroundColor,
+  backgroundImage, 
+  borderColor,
+  boxShadow,
+  children,
+  color,
+  fill,
+}:DarkModeProps) {
+  return (
+    <div className={clsx(styles['theme-dark-mode'])}
+      style={{
+        ...(backgroundColor && { ['--theme-background-color-dark-mode']: `${backgroundColor}` }),
+        ...(backgroundImage && { ['--theme-background-image-dark-mode']: `${backgroundImage}` }),
+        ...(borderColor && { ['--theme-border-color-dark-mode']: `${borderColor}` }),
+        ...(boxShadow && { ['--theme-box-shadow-dark-mode']: `${boxShadow}` }),
+        ...(color && { ['--theme-color-dark-mode']: `${color}` }),
+        ...(fill && { ['--theme-fill-dark-mode']: `${fill}` }),
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+
+function Reset({children}:any) {
+  return (
+    <div className={clsx(styles['theme-reset'])}>
+      {children}
+    </div>
+  );
+}
+
+Theme.DarkMode = DarkMode;
+Theme.Reset = Reset;

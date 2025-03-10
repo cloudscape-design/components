@@ -1,4 +1,19 @@
 .theme {
+    display: contents;
+}
+
+:global(.awsui-dark-mode) .theme-dark-mode {
+    --theme-background-color: var(--theme-background-color-dark-mode);
+    --theme-background-image: var(--theme-background-image-dark-mode);
+    --theme-border-color: var(--theme-border-color-dark-mode);
+    --theme-box-shadow: var(--theme-box-shadow-dark-mode);
+    --theme-color: var(--theme-color-dark-mode);
+    --theme-fill: var(--theme-fill-dark-mode);
+    display: contents;
+}
+
+.theme-reset,
+:global(.awsui-dark-mode) .theme-reset {
     --theme-background-color: initial;
     --theme-background-image: initial;
     --theme-border-color: initial;
@@ -15,15 +30,5 @@
     --theme-line-height: initial;
     --theme-padding-block: initial;
     --theme-padding-inline: initial;
-    display: contents;
-}
-
-:global(.awsui-dark-mode) .theme-dark-mode {
-    --theme-background-color: initial;
-    --theme-background-image: initial;
-    --theme-border-color: initial;
-    --theme-box-shadow: initial;
-    --theme-color: initial;
-    --theme-fill: initial;
     display: contents;
 }
