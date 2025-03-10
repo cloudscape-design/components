@@ -6,6 +6,7 @@ import { PACKAGE_SOURCE, PACKAGE_VERSION, THEME } from '../../environment';
 import { useVisualRefresh } from '../use-visual-mode';
 
 export function useTelemetry(componentName: string, config?: ComponentConfiguration) {
-  const theme = useVisualRefresh() ? 'vr' : THEME;
+  const isVisualRefresh = useVisualRefresh();
+  const theme = THEME === 'polaris' && isVisualRefresh ? 'vr' : THEME;
   useComponentMetrics(componentName, { packageSource: PACKAGE_SOURCE, packageVersion: PACKAGE_VERSION, theme }, config);
 }
