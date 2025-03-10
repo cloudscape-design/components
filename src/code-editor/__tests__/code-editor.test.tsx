@@ -17,17 +17,23 @@ import {
   annotationCallback as emulateAceAnnotationEvent,
   defaultProps,
   editorMock,
+  PointerEventMock,
   renderCodeEditor,
 } from './util';
 
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
 import styles from '../../../lib/components/code-editor/styles.css.js';
+import dragHandleStyles from '../../../lib/components/internal/components/drag-handle/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
+
+beforeAll(() => {
+  (window as any).PointerEvent ??= PointerEventMock;
+});
 
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
@@ -512,8 +518,8 @@ describe('Code editor component', () => {
   it('updates size when resize handle is dragged', () => {
     const { wrapper } = renderCodeEditor({ editorContentHeight: 10 });
     editorMock.resize.mockClear();
-    fireEvent.mouseDown(wrapper.findByClassName(resizableStyles['resizable-box-handle'])!.getElement());
-    fireEvent.mouseMove(document.body, { clientY: 100 });
+    fireEvent.pointerDown(wrapper.findByClassName(dragHandleStyles.handle)!.getElement());
+    fireEvent.pointerMove(document, { clientY: 100 });
     expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
 
