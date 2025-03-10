@@ -11228,6 +11228,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "description": "Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.",
+      "name": "enableSelectAll",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Provides a text alternative for the error icon in the error message.",
       "i18nTag": true,
       "name": "errorIconAriaLabel",
