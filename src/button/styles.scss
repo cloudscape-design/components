@@ -10,9 +10,9 @@
 @use './constants' as constants;
 
 @mixin adjust-for-variant($variant) {
-  background: var(--theme-background-color-button, #{map.get($variant, 'default-background')});
-  color: var(--theme-color-button, #{map.get($variant, 'default-color')});
-  border-color: var(--theme-border-color-button, #{map.get($variant, 'default-border-color')});
+  background: var(--theme-background-color, #{map.get($variant, 'default-background')});
+  color: var(--theme-color, #{map.get($variant, 'default-color')});
+  border-color: var(--theme-border-color, #{map.get($variant, 'default-border-color')});
   border-block-width: map.get($variant, 'border-width');
   border-inline-width: map.get($variant, 'border-width');
   position: relative;
@@ -52,19 +52,19 @@
   @include styles.text-wrapping;
   @include styles.font-button;
   letter-spacing: awsui.$font-button-letter-spacing;
-  border-start-start-radius: var(--theme-border-radius-button, awsui.$border-radius-button);
-  border-start-end-radius: var(--theme-border-radius-button, awsui.$border-radius-button);
-  border-end-start-radius: var(--theme-border-radius-button, awsui.$border-radius-button);
-  border-end-end-radius: var(--theme-border-radius-button, awsui.$border-radius-button);
-  border-block: var(--theme-border-width-button, styles.$control-border-width) solid;
-  border-inline: var(--theme-border-width-button, styles.$control-border-width) solid;
-  padding-block: var(--theme-padding-block-button, styles.$control-padding-vertical);
-  padding-inline: var(--theme-padding-inline-button, awsui.$space-button-horizontal);
-  line-height: var(--theme-line-height-button);
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-block: var(--theme-border-width, styles.$control-border-width) solid;
+  border-inline: var(--theme-border-width, styles.$control-border-width) solid;
+  padding-block: var(--theme-padding-block, styles.$control-padding-vertical);
+  padding-inline: var(--theme-padding-inline, awsui.$space-button-horizontal);
+  line-height: var(--theme-line-height);
   display: inline-block; // for <a> as a button
   text-decoration: none;
   cursor: pointer;
-  font-size: var(--theme-font-size-button, awsui.$font-size-body-m);
+  font-size: var(--theme-font-size, awsui.$font-size-body-m);
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
