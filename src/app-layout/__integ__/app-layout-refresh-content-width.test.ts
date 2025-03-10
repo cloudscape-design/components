@@ -5,9 +5,8 @@ import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
 import { scrollbarThickness } from '../../__integ__/scrollbars';
-import { Theme } from '../../__integ__/utils';
 import { viewports } from './constants';
-import { getUrlParams } from './utils';
+import { getUrlParams, Theme } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 
