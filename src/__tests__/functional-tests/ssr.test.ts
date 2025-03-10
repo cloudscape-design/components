@@ -25,6 +25,7 @@ for (const componentName of getAllComponents()) {
       expect(content.length).toEqual(0);
     } else {
       expect(content.length).toBeGreaterThan(0);
+      expect(content).not.toContain('style="');
     }
   });
 }
