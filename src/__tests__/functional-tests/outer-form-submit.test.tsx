@@ -3,8 +3,21 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import { getRequiredPropsForComponent } from '../required-props-for-components';
 import { getAllComponents, requireComponent } from '../utils';
+
+const globalWithFlags = globalThis as any;
+
+beforeEach(() => {
+  globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+});
+
+afterEach(() => {
+  delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+  clearVisualRefreshState();
+});
 
 const skippedComponents = ['button'];
 
