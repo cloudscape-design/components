@@ -10,6 +10,7 @@ import {
 
 import { AnalyticsMetadata } from '../../analytics/interfaces';
 import { PACKAGE_VERSION } from '../../environment';
+import { useComponentTracking } from '../use-component-tracking';
 import { useTelemetry } from '../use-telemetry';
 
 export interface InternalBaseComponentProps<T = any> {
@@ -28,6 +29,8 @@ export default function useBaseComponent<T = any>(
 ) {
   useTelemetry(componentName, config);
   useFocusVisible();
+
   const elementRef = useComponentMetadata<T>(componentName, PACKAGE_VERSION, { ...analyticsMetadata });
+  useComponentTracking(elementRef, componentName, config, analyticsMetadata);
   return { __internalRootRef: elementRef };
 }

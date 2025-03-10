@@ -9,6 +9,7 @@ import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
+import { trackEvent } from '../internal/analytics/v2';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';
@@ -142,10 +143,27 @@ function InternalInput(
     value: value ?? '',
     onChange: onChange && (event => handleChange(event.target.value)),
     onBlur: e => {
-      onBlur && fireNonCancelableEvent(onBlur);
-      __onBlurWithDetail && fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
+      if (inputRef && inputRef.current) {
+        trackEvent(inputRef.current, 'blur', { componentName: 'Input' });
+      }
+
+      if (onBlur) {
+        fireNonCancelableEvent(onBlur);
+      }
+
+      if (__onBlurWithDetail) {
+        fireNonCancelableEvent(__onBlurWithDetail, { relatedTarget: e.relatedTarget });
+      }
     },
-    onFocus: onFocus && (() => fireNonCancelableEvent(onFocus)),
+    onFocus: () => {
+      if (inputRef && inputRef.current) {
+        trackEvent(inputRef.current, 'focus', { componentName: 'Input' });
+      }
+
+      if (onFocus) {
+        fireNonCancelableEvent(onFocus);
+      }
+    },
     ...__nativeAttributes,
   };
 

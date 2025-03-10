@@ -5587,7 +5587,7 @@ is provided by its parent form field component.
 The function will be called when a user clicks on the trigger button.",
       "name": "getModalRoot",
       "optional": true,
-      "type": "() => Promise<HTMLElement>",
+      "type": "() => Promise<AwsUiNode.HTMLElement>",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.
@@ -5764,7 +5764,7 @@ element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "name": "removeModalRoot",
       "optional": true,
-      "type": "(rootElement: HTMLElement) => void",
+      "type": "(rootElement: AwsUiNode.HTMLElement) => void",
     },
     {
       "description": "List of Ace themes available for selection in preferences dialog. Make sure you include at least one light and at
@@ -6057,7 +6057,7 @@ the custom content is displayed at the bottom of the left column within the moda
 The function will be called when a user clicks on the trigger button.",
       "name": "getModalRoot",
       "optional": true,
-      "type": "() => Promise<HTMLElement>",
+      "type": "() => Promise<AwsUiNode.HTMLElement>",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -6165,7 +6165,7 @@ element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "name": "removeModalRoot",
       "optional": true,
-      "type": "(rootElement: HTMLElement) => void",
+      "type": "(rootElement: AwsUiNode.HTMLElement) => void",
     },
     {
       "description": "Configures the sticky columns preference that can be set for both left and right columns.
@@ -11515,7 +11515,7 @@ The event detail contains the \`reason\`, which can be any of the following:
 The function will be called when a user clicks on the trigger button.",
       "name": "getModalRoot",
       "optional": true,
-      "type": "() => Promise<HTMLElement>",
+      "type": "() => Promise<AwsUiNode.HTMLElement>",
     },
     {
       "deprecatedTag": "The usage of the \`id\` attribute is reserved for internal use cases. For testing and other use cases,
@@ -11530,9 +11530,25 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Specifies the HTML element where the modal is rendered.
 If neither \`modalRoot\` or \`getModalRoot\` properties are provided, the modal will
 render to an element under \`document.body\`.",
+      "inlineType": Object {
+        "name": "AwsUiNode.HTMLElement",
+        "properties": Array [
+          Object {
+            "name": "constructor",
+            "optional": false,
+            "type": "() => AwsUiNode.HTMLElement",
+          },
+          Object {
+            "name": "prototype",
+            "optional": false,
+            "type": "AwsUiNode.HTMLElement",
+          },
+        ],
+        "type": "object",
+      },
       "name": "modalRoot",
       "optional": true,
-      "type": "HTMLElement",
+      "type": "AwsUiNode.HTMLElement",
     },
     {
       "description": "Use this property when \`getModalRoot\` is used to clean up the modal root
@@ -11540,7 +11556,7 @@ element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "name": "removeModalRoot",
       "optional": true,
-      "type": "(rootElement: HTMLElement) => void",
+      "type": "(rootElement: AwsUiNode.HTMLElement) => void",
     },
     {
       "defaultValue": ""medium"",
@@ -14452,7 +14468,7 @@ The return type of the function should be a promise that resolves to a list of v
 The function will be called when a user clicks on the trigger button.",
       "name": "getModalRoot",
       "optional": true,
-      "type": "() => Promise<HTMLElement>",
+      "type": "() => Promise<AwsUiNode.HTMLElement>",
     },
     {
       "description": "An object containing all the necessary localized strings required by the component.",
@@ -14816,7 +14832,7 @@ element after a user closes the dialog. The function receives the return value
 of the most recent getModalRoot call as an argument.",
       "name": "removeModalRoot",
       "optional": true,
-      "type": "(rootElement: HTMLElement) => void",
+      "type": "(rootElement: AwsUiNode.HTMLElement) => void",
     },
     {
       "description": "The current selected resource. Resource has the following properties:
