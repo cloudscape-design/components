@@ -8,13 +8,16 @@ import { flattenOptions } from './flatten-options';
 export function prepareOptions(
   options: SelectProps.Options,
   filteringType: SelectProps.FilteringType,
-  filteringText: string
+  filteringText: string,
+  enableSelectAll = false
 ) {
   const { flatOptions, parentMap } = flattenOptions(options);
   const filteredOptions = filteringType !== 'auto' ? flatOptions : filterOptions(flatOptions, filteringText);
   generateTestIndexes(filteredOptions, parentMap.get.bind(parentMap));
   return {
-    filteredOptions,
+    filteredOptions: enableSelectAll
+      ? [{ option: { label: 'Select all' }, type: 'toggle-all' }, ...filteredOptions]
+      : filteredOptions,
     parentMap,
     totalCount: flatOptions.length,
     matchesCount: filteredOptions.length,
