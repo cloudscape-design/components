@@ -15,6 +15,7 @@ import VisualRefreshToolbarTriggerButton, {
 import { ButtonProps } from '../../../lib/components/button';
 import { IconProps } from '../../../lib/components/icon/interfaces.js';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { testIf } from '../../__tests__/utils';
 
 import testUtilStyles from '../../../lib/components/app-layout/test-classes/styles.css.js';
 import visualRefreshStyles from '../../../lib/components/app-layout/visual-refresh/styles.css.js';
@@ -61,8 +62,6 @@ const mockEventBubbleWithRelatedTarget = {
 };
 
 const triggerButtoonTooltipClass = testUtilStyles['trigger-tooltip'];
-
-const testIf = (condition: boolean) => (condition ? test : test.skip);
 
 const renderVisualRefreshTriggerButton = (
   props: Partial<VisualRefreshTriggerButtonProps> = {},
