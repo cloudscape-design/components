@@ -7,6 +7,26 @@ export default function AlertPermutations() {
     <div style={{ margin: '40px' }}>
       <SpaceBetween direction='vertical' size='m'>
         <TextContent>
+          <h3>Cloudscape Alerts</h3>
+        </TextContent>
+
+        <Alert header="Header message" type="success">
+          Alert desription
+        </Alert>
+
+        <Alert header="Header message" type="warning">
+          Alert desription
+        </Alert>
+
+        <Alert header="Header message" type="error">
+          Alert desription
+        </Alert>
+
+        <Alert header="Header message" type="info">
+          Alert desription
+        </Alert>
+
+        <TextContent>
           <h3>Amplify Alerts</h3>
         </TextContent>
 
@@ -103,6 +123,60 @@ export default function AlertPermutations() {
         <SynthesisAlert severity="error" titleText="Alert title text">
           This is an error Alert.
         </SynthesisAlert>
+
+        <hr />
+
+        <TextContent>
+          <h3>Katal Alerts</h3>
+        </TextContent>
+
+        <KatalAlert 
+          description="Used to give users context."
+          header="Informational Alert"
+          variant="info"
+        />
+
+        <KatalAlert 
+          description="Used to give users context."
+          header="Informational Alert"
+          variant="success"
+        />
+
+        <KatalAlert 
+          description="Used to give users context."
+          header="Informational Alert"
+          variant="danger"
+        />
+
+        <KatalAlert 
+          description="Used to give users context."
+          header="Informational Alert"
+          variant="warning"
+        />
+
+        <hr />
+
+        <TextContent>
+          <h3>Fintech Alerts</h3>
+        </TextContent>
+
+        <FintechAlert header="Header message" type="success">
+          Alert desription
+        </FintechAlert>
+
+
+        <FintechAlert header="Header message" type="warning">
+          Alert desription
+        </FintechAlert>
+
+
+        <FintechAlert header="Header message" type="error">
+          Alert desription
+        </FintechAlert>
+
+        <FintechAlert header="Header message" type="info">
+          Alert desription
+        </FintechAlert>
       </SpaceBetween>
     </div>
   );
@@ -144,14 +218,11 @@ function AmplifyAlert(props:any) {
   return (
     <Theme 
       backgroundColor={backgroundColors[props.variation as keyof typeof backgroundColors]}
-      borderRadius="none"
-      borderWidth="none"
+      borderRadius="0px"
+      borderWidth="0px"
       color={colors[props.variation as keyof typeof colors]}
+      fill={colors[props.variation as keyof typeof colors]}
       fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
-      onDarkMode={{
-        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
-        color: darkModeColors[props.variation as keyof typeof darkModeColors],
-      }}
     >
       <Alert header={props.heading} type={props.variation === 'default' ? 'info' : props.variation}>
         {props.children}
@@ -175,6 +246,13 @@ function MaterialUIAlert(props:any) {
     warning: 'rgb(102, 60, 0)',
   }
 
+  const fills = {
+    error: 'rgb(211, 47, 47)',
+    info: 'rgb(2, 136, 209)',
+    success: 'rgb(46, 125, 50)',
+    warning: 'rgb(237, 108, 2)',
+  }
+
   const darkModeBackgroundColors = {
     error: 'rgb(22, 11, 11)',
     info: 'rgb(7, 19, 24)',
@@ -193,13 +271,10 @@ function MaterialUIAlert(props:any) {
     <Theme 
       backgroundColor={backgroundColors[props.severity as keyof typeof backgroundColors]}
       borderRadius="4px"
-      borderWidth="none"
+      borderWidth="0px"
       color={colors[props.severity as keyof typeof colors]}
+      fill={fills[props.severity as keyof typeof fills]}
       fontFamily='Roboto, Helvetica, Arial, sans-serif'
-      onDarkMode={{
-        backgroundColor: darkModeBackgroundColors[props.severity as keyof typeof darkModeBackgroundColors],
-        color: darkModeColors[props.severity as keyof typeof darkModeColors],
-      }}
     >
       <Alert header={props.heading} type={props.severity}>
         {props.children}
@@ -209,17 +284,21 @@ function MaterialUIAlert(props:any) {
 }
 
 function AuraAlert(props:any) {
+  const fills = {
+    error: 'rgb(209, 70, 0)',
+    info: 'rgb(0, 108, 224)',
+    success: 'rgb(0, 138, 46)',
+    warn: 'rgb(209, 70, 0)',
+  };
+
   return (
     <Theme 
       backgroundColor="#ffffff"
       borderColor="#161d26"
-      borderRadius="small"
-      borderWidth="small"
+      borderRadius="8px"
+      borderWidth="1px"
       fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'
-      onDarkMode={{
-        backgroundColor: 'rgb(6, 8, 10)',
-        borderColor: '#ffffff'
-      }}
+      fill={fills[props.variant as keyof typeof fills]}
     >
       <Alert 
         header={props.title} 
@@ -243,10 +322,84 @@ function SynthesisAlert(props:any) {
     <Theme 
       backgroundColor={backgroundColors[props.severity as keyof typeof backgroundColors]}
       borderRadius="8px"
-      borderWidth="none"
+      borderWidth="0px"
       color="rgba(0, 0, 0, 0.87)"
+      fill="rgba(0, 0, 0, 0.87)"
     >
       <Alert header={props.titleText} type={props.severity}>
+        {props.children}
+      </Alert>
+    </Theme>
+  );
+}
+
+function KatalAlert(props:any) {
+  const backgroundColors = {
+    danger: '#ffe5df',
+    info: '#ebf7ff',
+    success: '#f2f6e1',
+    warning: '#fdf4d8',
+  }
+
+  const fills = {
+    danger: '#cf2900',
+    info: '#0a6fc2',
+    success: '#387000',
+    warning: '#ebac00',
+  };
+
+  return (
+    <Theme 
+      backgroundColor={backgroundColors[props.variant as keyof typeof backgroundColors]}
+      borderRadius="0px"
+      borderWidth="0px"
+      color="rgb(35, 47, 62)"
+      fill={fills[props.variant as keyof typeof fills]}
+      paddingBlock='12px'
+      paddingInline="20px"
+      gapBlock='4px'
+      gapInline="14px"
+    >
+      <div style={{ borderLeft: `4px solid ${fills[props.variant as keyof typeof fills]}`}}>
+        <Alert header={props.header} type={props.variant === 'danger' ? 'error' : props.variant}>
+          {props.description}
+        </Alert>
+      </div>
+    </Theme>
+  );
+}
+
+function FintechAlert(props:any) {
+  const backgroundColors = {
+    error: '#FFF3F2',
+    info: '#F5F7FF',
+    success: '#F6FFEC',
+    warning: '#FFFBE3',
+  }
+
+  const borderColors = {
+    error: '#EA4C4C',
+    info: '#0972D3',
+    success: '#46900B',
+    warning: '#A28700',
+  }
+
+  const fills = {
+    error: '#DC5B50',
+    info: '#5278D9',
+    success: '#558E23',
+    warning: '#B2A044',
+  };
+
+  return (
+    <Theme 
+      backgroundColor={backgroundColors[props.type as keyof typeof backgroundColors]}
+      borderColor={borderColors[props.type as keyof typeof borderColors]}
+      borderRadius="8px"
+      borderWidth="1px"
+      fill={fills[props.type as keyof typeof fills]}
+    >
+      <Alert header={props.header} type={props.type}>
         {props.children}
       </Alert>
     </Theme>

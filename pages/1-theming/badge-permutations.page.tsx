@@ -91,7 +91,7 @@ function AmplifyBadge(props:any) {
     <Theme 
       backgroundColor={backgroundColors[props.variation as keyof typeof backgroundColors]}
       borderRadius="32px"
-      borderWidth="none"
+      borderWidth="0px"
       color={colors[props.variation as keyof typeof colors]}
       fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
       fontWeight="600"
@@ -139,8 +139,8 @@ function MaterialUIChip(props:any) {
     <Theme 
       backgroundColor={props.variant === 'outlined' ? '#ffffff' : backgroundColors[props.color as keyof typeof backgroundColors]}
       borderColor={props.variant === 'outlined' ? outlinedColors[props.color as keyof typeof colors] : 'transparent' }
-      borderRadius="medium"
-      borderWidth="small"
+      borderRadius="16px"
+      borderWidth="1px"
       color={props.variant === 'outlined' ? outlinedColors[props.color as keyof typeof outlinedColors] : colors[props.color as keyof typeof colors]}
       fontFamily='Roboto, Helvetica, Arial, sans-serif'
       fontWeight="400"
@@ -186,7 +186,7 @@ function SyntesisChip(props:any) {
       backgroundColor={outlined ? '#ffffff' : colors[props.color as keyof typeof colors]}
       borderColor={outlined ? colors[props.color as keyof typeof colors] : 'transparent' }
       borderRadius="4px"
-      borderWidth="small"
+      borderWidth="1px"
       color={outlined ? colors[props.color as keyof typeof colors] : props.color === 'default' ? '#fff' : 'rgb(19, 29, 38)'}
       paddingBlock='5px'
       paddingInline="10px"
