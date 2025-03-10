@@ -26,3 +26,13 @@ export interface ThemeProps {
   paddingBlock?: string;
   paddingInline? : string;
 }
+
+export interface DarkModeProps {
+    backgroundColor?: string;
+    backgroundImage?: string;
+    borderColor?: string;
+    boxShadow?: string;
+    children?: React.ReactNode;
+    color?: string;
+    fill?: string;
+  }
