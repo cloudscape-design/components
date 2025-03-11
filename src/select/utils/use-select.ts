@@ -26,7 +26,7 @@ export type GetOptionProps = (option: DropdownOption, index: number) => ItemProp
 
 interface UseSelectProps {
   selectedOptions: ReadonlyArray<OptionDefinition>;
-  updateSelectedOption: (option: OptionDefinition, isToggleAll?: boolean) => void;
+  updateSelectedOption: (option: OptionDefinition) => void;
   options: ReadonlyArray<DropdownOption>;
   filteringType: string;
   keepOpen?: boolean;
@@ -38,8 +38,6 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  isAllSelected?: boolean;
-  isSomeSelected?: boolean;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -60,8 +58,6 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
-  isAllSelected,
-  isSomeSelected,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -263,12 +259,9 @@ export function useSelect({
   };
 
   const getOptionProps = (option: DropdownOption, index: number) => {
-    const isToggleAll = option.type === 'toggle-all';
-    const highlighted = !isToggleAll && option === highlightedOption;
+    const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected =
-      !!groupState?.selected || (isToggleAll && isSomeSelected) || __selectedOptions.indexOf(option) > -1;
-    const indeterminate = !!groupState?.indeterminate || (isToggleAll && isSomeSelected && !isAllSelected);
+    const selected = __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
     const nextOption = options[index + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
@@ -280,7 +273,7 @@ export function useSelect({
       highlighted,
       selected,
       isNextSelected,
-      indeterminate,
+      indeterminate: !!groupState?.indeterminate,
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),
     };

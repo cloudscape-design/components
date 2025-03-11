@@ -188,8 +188,6 @@ export function useMultiselect({
     useInteractiveGroups,
     statusType,
     embedded,
-    isAllSelected,
-    isSomeSelected,
   });
 
   const wrapperOnKeyDown = useNativeSearch({
