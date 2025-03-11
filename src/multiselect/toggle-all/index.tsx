@@ -21,7 +21,7 @@ export default function ToggleAll({ onToggle, selected }: { onToggle: () => void
       <div className={selectableItemStyles['option-content']}>
         <div className={multiSelectItemStyles.item}>
           <div className={multiSelectItemStyles.checkbox}>
-            <CheckboxIcon checked={selected === true} indeterminate={selected !== false} />
+            <CheckboxIcon checked={selected === true} indeterminate={selected === undefined} />
           </div>
           <span className={optionStyles.option}>
             <span className={optionStyles.content}>
