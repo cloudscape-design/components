@@ -7,6 +7,7 @@
 @use '../../styles/tokens' as awsui;
 @use './motion';
 
+$direction-button-wrapper-size: calc(#{awsui.$space-static-xl} + 2 * #{awsui.$space-static-xxs});
 $direction-button-size: awsui.$space-static-xl;
 $direction-button-offset: awsui.$space-static-xxs;
 
@@ -37,13 +38,36 @@ $direction-button-offset: awsui.$space-static-xxs;
   display: flex;
 }
 
-// Prevents accidental click-through on the spaces between the button cluster.
-// FIXME: this has the potential to overflow the page if it's placed near the edge of the screen
-//   move this to the individual buttons?
-.drag-handle-wrapper-open::before {
-  content: '';
+.direction-button-wrapper {
   position: absolute;
-  inset: calc(-1 * (#{$direction-button-size} + #{$direction-button-offset} + #{awsui.$space-xs}));
+  block-size: $direction-button-size;
+  inline-size: $direction-button-size;
+  padding-block: $direction-button-offset;
+  padding-inline: $direction-button-offset;
+}
+
+.direction-button-wrapper-hidden {
+  display: none;
+}
+
+.direction-button-wrapper-block-start {
+  inset-block-start: calc(-1 * $direction-button-wrapper-size);
+  inset-inline-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button-wrapper-block-end {
+  inset-block-end: calc(-1 * $direction-button-wrapper-size);
+  inset-inline-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button-wrapper-inline-start {
+  inset-inline-start: calc(-1 * $direction-button-wrapper-size);
+  inset-block-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button-wrapper-inline-end {
+  inset-inline-end: calc(-1 * $direction-button-wrapper-size);
+  inset-block-start: calc(50% - $direction-button-wrapper-size / 2);
 }
 
 .direction-button {
@@ -83,28 +107,4 @@ $direction-button-offset: awsui.$space-static-xxs;
   cursor: default;
   background-color: awsui.$color-background-direction-button-disabled;
   color: awsui.$color-text-direction-button-disabled;
-}
-
-.direction-button-hidden {
-  display: none;
-}
-
-.direction-button-block-start {
-  inset-block-start: calc(-1 * (#{$direction-button-size} + #{$direction-button-offset}));
-  inset-inline-start: calc(50% - #{$direction-button-size} / 2);
-}
-
-.direction-button-block-end {
-  inset-block-end: calc(-1 * (#{$direction-button-size} + #{$direction-button-offset}));
-  inset-inline-start: calc(50% - #{$direction-button-size} / 2);
-}
-
-.direction-button-inline-start {
-  inset-inline-start: calc(-1 * (#{$direction-button-size} + #{$direction-button-offset}));
-  inset-block-start: calc(50% - #{$direction-button-size} / 2);
-}
-
-.direction-button-inline-end {
-  inset-inline-end: calc(-1 * (#{$direction-button-size} + #{$direction-button-offset}));
-  inset-block-start: calc(50% - #{$direction-button-size} / 2);
 }

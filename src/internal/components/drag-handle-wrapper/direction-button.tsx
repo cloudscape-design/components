@@ -26,30 +26,34 @@ interface DirectionButtonProps {
   state: DirectionState | undefined;
   onClick: React.MouseEventHandler;
   show: boolean;
-  rtl: boolean;
 }
 
-export default function DirectionButton({ direction, state, show, rtl, onClick }: DirectionButtonProps) {
+export default function DirectionButton({ direction, state, show, onClick }: DirectionButtonProps) {
   return (
     <Transition in={show}>
       {(transitionState, ref) => (
+        // The wrapper exists to provide a padding around each direction button that
+        // prevents any accidental presses around the button from propagating to any
+        // interactive elements behind the button
         <span
           ref={ref}
           className={clsx(
-            styles['direction-button'],
-            styles[`direction-button-${direction}`],
-            rtl && styles[`direction-button-rtl`],
-            state === 'disabled' && styles['direction-button-disabled'],
-            transitionState === 'exited' && styles['direction-button-hidden'],
-            styles[`direction-button-motion-${transitionState}`]
+            styles['direction-button-wrapper'],
+            styles[`direction-button-wrapper-${direction}`],
+            transitionState === 'exited' && styles['direction-button-wrapper-hidden'],
+            styles[`direction-button-wrapper-motion-${transitionState}`]
           )}
-          onClick={onClick}
-          // This prevents focus from being lost to `document.body` on
-          // mouse/pointer press. This allows us to listen to onClick while
-          // keeping this button pointer-accessible only.
-          onPointerDown={event => event.preventDefault()}
         >
-          <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
+          <span
+            className={clsx(styles['direction-button'], state === 'disabled' && styles['direction-button-disabled'])}
+            onClick={onClick}
+            // This prevents focus from being lost to `document.body` on
+            // mouse/pointer press. This allows us to listen to onClick while
+            // keeping this button pointer-accessible only.
+            onPointerDown={event => event.preventDefault()}
+          >
+            <InternalIcon name={ICON_LOGICAL_PROPERTY_MAP[direction]} size="small" />
+          </span>
         </span>
       )}
     </Transition>

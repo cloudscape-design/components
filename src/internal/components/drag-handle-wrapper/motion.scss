@@ -5,31 +5,31 @@
 @use '../../styles' as styles;
 @use '../../styles/tokens' as awsui;
 
-.direction-button {
+.direction-button-wrapper {
   @include styles.with-motion {
     @include styles.animation-fade-in;
     @include styles.animation-fade-out-0;
   }
 }
 
-.direction-button-motion-enter,
-.direction-button-motion-entering,
-.direction-button-motion-exit,
-.direction-button-motion-exiting {
+.direction-button-wrapper-motion-enter,
+.direction-button-wrapper-motion-entering,
+.direction-button-wrapper-motion-exit,
+.direction-button-wrapper-motion-exiting {
   @include styles.with-motion {
     pointer-events: none;
   }
 }
 
-.direction-button-block-start {
-  &.direction-button-motion-entering {
+.direction-button-wrapper-block-start {
+  &.direction-button-wrapper-motion-entering {
     @include styles.with-motion {
       animation:
         slide-up awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-motion-exiting {
+  &.direction-button-wrapper-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-up-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
@@ -38,15 +38,15 @@
   }
 }
 
-.direction-button-block-end {
-  &.direction-button-motion-entering {
+.direction-button-wrapper-block-end {
+  &.direction-button-wrapper-motion-entering {
     @include styles.with-motion {
       animation:
         slide-down awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-motion-exiting {
+  &.direction-button-wrapper-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-down-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
@@ -55,29 +55,29 @@
   }
 }
 
-.direction-button-inline-start {
-  &.direction-button-motion-entering {
+.direction-button-wrapper-inline-start {
+  &.direction-button-wrapper-motion-entering {
     @include styles.with-motion {
       animation:
         slide-left awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-rtl.direction-button-motion-entering {
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-entering {
     @include styles.with-motion {
       animation:
         slide-right awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-motion-exiting {
+  &.direction-button-wrapper-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-left-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-rtl.direction-button-motion-exiting {
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-right-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
@@ -86,29 +86,29 @@
   }
 }
 
-.direction-button-inline-end {
-  &.direction-button-motion-entering {
+.direction-button-wrapper-inline-end {
+  &.direction-button-wrapper-motion-entering {
     @include styles.with-motion {
       animation:
         slide-right awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-rtl.direction-button-motion-entering {
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-entering {
     @include styles.with-motion {
       animation:
         slide-left awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-motion-exiting {
+  &.direction-button-wrapper-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-right-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
         awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
     }
   }
-  &.direction-button-rtl.direction-button-motion-exiting {
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-exiting {
     @include styles.with-motion {
       animation:
         slide-left-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,

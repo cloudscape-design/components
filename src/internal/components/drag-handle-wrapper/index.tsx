@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
 import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
-import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 
 import { getFirstFocusable } from '../focus-lock/utils';
 import Tooltip from '../tooltip';
@@ -28,7 +27,6 @@ export default function DragHandleWrapper({
   onDirectionClick,
 }: DragHandleWrapperProps) {
   const wrapperRef = useRef<HTMLDivElement | null>(null);
-  const rtl = getIsRtl(wrapperRef.current);
 
   const dragHandleRef = useRef<HTMLDivElement | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -174,7 +172,7 @@ export default function DragHandleWrapper({
     onDirectionClick?.(direction);
   };
 
-  const directionButtonProps = { rtl, directions, show: showButtons };
+  const directionButtonProps = { directions, show: showButtons };
 
   return (
     <div
