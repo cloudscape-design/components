@@ -45,6 +45,7 @@ const createAnchorItem = (
 ) => {
   const childList: React.ReactNode[] = [];
   const hasChildren = childItems.length > 0;
+  const olClassNAme = clsx(styles['anchor-list'], testUtilsStyles['anchor-list']);
 
   if (hasChildren) {
     renderQueue.push({
@@ -62,7 +63,7 @@ const createAnchorItem = (
       index={index}
       anchor={currentItem}
     >
-      {hasChildren && <ol className={clsx(styles['anchor-list'], testUtilsStyles['anchor-list'])}>{childList}</ol>}
+      {hasChildren && <ol className={olClassNAme}>{childList}</ol>}
     </AnchorItem>
   );
 };
@@ -80,11 +81,11 @@ const processQueueItem = (
     const childItems = collectChildItems(items, currentIndex, currentItem.level);
 
     parentList.push(createAnchorItem(currentItem, startIndex + currentIndex, childItems, renderQueue, context));
-
     currentIndex += childItems.length + 1;
   }
 };
 
+// Perform a queue-based breadth-first traversal that groups child items under their parents based on level hierarchy.
 export const renderNestedAnchors = (items: AnchorNavigationProps.Anchor[], context: RenderContext): React.ReactNode => {
   const rootList: React.ReactNode[] = [];
   const renderQueue: AnchorRenderQueueItem[] = [];
