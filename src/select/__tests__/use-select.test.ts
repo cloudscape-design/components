@@ -314,13 +314,10 @@ describe('useSelect', () => {
     const { getFilterProps } = hook.result.current;
     act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter)));
     expect(hook.result.current.isOpen).toBe(false);
-    expect(updateSelectedOption).toHaveBeenCalledWith(
-      {
-        label: 'Child 1',
-        value: 'child1',
-      },
-      false
-    );
+    expect(updateSelectedOption).toHaveBeenCalledWith({
+      label: 'Child 1',
+      value: 'child1',
+    });
   });
 
   test('should open and navigate to the first option and select and keep open', () => {
@@ -334,13 +331,10 @@ describe('useSelect', () => {
     const { getFilterProps } = hook.result.current;
     act(() => getFilterProps().onKeyDown!(createTestEvent(KeyCode.enter)));
     expect(hook.result.current.isOpen).toBe(true);
-    expect(updateSelectedOption).toHaveBeenCalledWith(
-      {
-        label: 'Child 1',
-        value: 'child1',
-      },
-      false
-    );
+    expect(updateSelectedOption).toHaveBeenCalledWith({
+      label: 'Child 1',
+      value: 'child1',
+    });
   });
 
   test('should open and navigate to the second disabled option', () => {

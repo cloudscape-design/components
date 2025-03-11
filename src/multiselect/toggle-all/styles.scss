@@ -1,0 +1,22 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../internal/styles' as styles;
+@use '../../internal/styles/tokens' as awsui;
+
+.toggle-all {
+  @include styles.default-text-style;
+  position: relative;
+  z-index: 1;
+  cursor: pointer;
+
+  border-block: awsui.$border-divider-list-width solid transparent;
+  color: awsui.$color-text-dropdown-item-default;
+
+  // to compensate for the loss of padding due to the removal of the left and right borders
+  // and differences in default divider + selected border widths (visual refresh)
+  padding-block: styles.$option-padding-with-border-placeholder-vertical;
+  padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+}

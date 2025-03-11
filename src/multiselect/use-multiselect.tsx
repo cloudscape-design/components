@@ -40,7 +40,6 @@ type UseMultiselectOptions = SomeRequired<
     | 'onLoadItems'
     | 'onChange'
     | 'selectedAriaLabel'
-    | 'enableSelectAll'
   > &
     DropdownStatusProps & {
       controlId?: string;
@@ -79,7 +78,6 @@ export function useMultiselect({
   setFilteringValue,
   externalRef,
   embedded,
-  enableSelectAll,
   ...restProps
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
@@ -103,8 +101,7 @@ export function useMultiselect({
   const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
-    filteringValue,
-    enableSelectAll
+    filteringValue
   );
 
   const allNonParentOptions = filteredOptions
@@ -119,7 +116,7 @@ export function useMultiselect({
   const isSomeSelected = selectedOptions.length > 0;
 
   const updateSelectedOption = useCallback(
-    (option: OptionDefinition | OptionGroup, isToggleAll = false) => {
+    (option: OptionDefinition | OptionGroup) => {
       const nonParentOptions = filteredOptions
         .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
         .map(item => item.option);
@@ -145,8 +142,6 @@ export function useMultiselect({
         newSelectedOptions = isAllChildrenSelected(visibleOptions)
           ? unselect(visibleOptions, newSelectedOptions)
           : select(visibleOptions, newSelectedOptions);
-      } else if (isToggleAll) {
-        newSelectedOptions = isAllSelectableSelected ? [] : allSelectableOptions;
       } else {
         newSelectedOptions = isAllChildrenSelected([option])
           ? unselect([option], newSelectedOptions)
@@ -157,8 +152,14 @@ export function useMultiselect({
         selectedOptions: newSelectedOptions,
       });
     },
-    [filteredOptions, selectedOptions, onChange, isAllSelectableSelected, allSelectableOptions]
+    [filteredOptions, selectedOptions, onChange]
   );
+
+  const toggleAll = () => {
+    fireNonCancelableEvent(onChange, {
+      selectedOptions: isAllSelectableSelected ? [] : allSelectableOptions,
+    });
+  };
 
   const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
   const {
@@ -290,5 +291,6 @@ export function useMultiselect({
     getWrapperProps: () => ({ onKeyDown: wrapperOnKeyDown }),
     isAllSelected,
     isSomeSelected,
+    toggleAll,
   };
 }

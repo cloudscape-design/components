@@ -20,6 +20,7 @@ import VirtualList from '../select/parts/virtual-list';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
+import ToggleAll from './toggle-all';
 import { useMultiselect } from './use-multiselect';
 
 import styles from './styles.css.js';
@@ -82,7 +83,6 @@ const InternalMultiselect = React.forwardRef(
       filteringValue,
       setFilteringValue,
       externalRef,
-      enableSelectAll,
       ...restProps,
     });
 
@@ -156,7 +156,12 @@ const InternalMultiselect = React.forwardRef(
           }
           open={multiselectProps.isOpen}
           trigger={trigger}
-          header={filter}
+          header={
+            <>
+              {filter}
+              {enableSelectAll && <ToggleAll onToggle={multiselectProps.toggleAll} />}
+            </>
+          }
           footer={
             dropdownStatus.isSticky ? (
               <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
@@ -171,7 +176,7 @@ const InternalMultiselect = React.forwardRef(
                 <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
               ) : null
             }
-            menuProps={multiselectProps.getMenuProps()}
+            menuProps={{ ...multiselectProps.getMenuProps(), withHeader: enableSelectAll }}
             getOptionProps={multiselectProps.getOptionProps}
             filteredOptions={multiselectProps.filteredOptions}
             filteringValue={filteringValue}

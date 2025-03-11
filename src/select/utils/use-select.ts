@@ -119,7 +119,7 @@ export function useSelect({
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
     }
-    updateSelectedOption(optionToSelect.option, optionToSelect.type === 'toggle-all');
+    updateSelectedOption(optionToSelect.option);
     if (!keepOpen) {
       triggerRef.current?.focus();
       closeDropdown();
