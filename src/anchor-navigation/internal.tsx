@@ -4,9 +4,9 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import clsx from 'clsx';
 
 import { getBaseProps } from '../internal/base-component/index.js';
-import { fireCancelableEvent, fireNonCancelableEvent, isPlainLeftClick } from '../internal/events/index';
+import { fireCancelableEvent, fireNonCancelableEvent } from '../internal/events/index';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component/index.js';
-import { checkSafeUrl } from '../internal/utils/check-safe-url';
+import { AnchorItem } from './anchor-item';
 import { AnchorNavigationProps } from './interfaces';
 import useScrollSpy from './use-scroll-spy.js';
 
@@ -96,52 +96,3 @@ export default function InternalAnchorNavigation({
     </nav>
   );
 }
-
-interface AnchorItemProps {
-  anchor: AnchorNavigationProps.Anchor;
-  onFollow: (anchor: AnchorNavigationProps.Anchor, event: React.SyntheticEvent | Event) => void;
-  isActive: boolean;
-  index: number;
-  children: React.ReactNode;
-}
-
-const AnchorItem = ({ anchor, onFollow, isActive, index, children }: AnchorItemProps) => {
-  checkSafeUrl('AnchorNavigation', anchor.href);
-
-  const onClick = useCallback(
-    (event: React.MouseEvent) => {
-      if (isPlainLeftClick(event)) {
-        onFollow(anchor, event);
-      }
-    },
-    [onFollow, anchor]
-  );
-
-  const activeItemClasses = clsx(styles['anchor-item--active'], testUtilsStyles['anchor-item--active']);
-
-  return (
-    <li data-itemid={`anchor-item-${index + 1}`} className={clsx(styles['anchor-item'], isActive && activeItemClasses)}>
-      <a
-        onClick={onClick}
-        className={clsx(
-          styles['anchor-link'],
-          testUtilsStyles['anchor-link'],
-          isActive && styles['anchor-link--active']
-        )}
-        {...(isActive ? { 'aria-current': true } : {})}
-        href={anchor.href}
-      >
-        <span
-          className={clsx(styles['anchor-link-text'], testUtilsStyles['anchor-link-text'])}
-          style={{ paddingInlineStart: `${anchor.level * 16 + 2}px` }}
-        >
-          {anchor.text}
-        </span>
-        {anchor.info && (
-          <span className={clsx(styles['anchor-link-info'], testUtilsStyles['anchor-link-info'])}>{anchor.info}</span>
-        )}
-      </a>
-      {children}
-    </li>
-  );
-};
