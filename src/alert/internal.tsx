@@ -14,7 +14,6 @@ import { getBaseProps } from '../internal/base-component';
 import VisualContext from '../internal/components/visual-context';
 import { LinkDefaultVariantContext } from '../internal/context/link-default-variant-context';
 import { fireNonCancelableEvent } from '../internal/events';
-import { useContainerBreakpoints } from '../internal/hooks/container-queries';
 import useForwardFocus from '../internal/hooks/forward-focus';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
@@ -67,9 +66,6 @@ const InternalAlert = React.forwardRef(
     const focusRef = useRef<HTMLDivElement>(null);
     useForwardFocus(ref, focusRef);
 
-    const [breakpoint, breakpointRef] = useContainerBreakpoints(['xs']);
-    const mergedRef = useMergeRefs(breakpointRef, __internalRootRef);
-
     const { discoveredActions, headerRef: headerRefAction, contentRef: contentRefAction } = useDiscoveredAction(type);
     const {
       initialHidden,
@@ -117,7 +113,7 @@ const InternalAlert = React.forwardRef(
           { [styles.hidden]: !visible, [styles['initial-hidden']]: initialHidden },
           baseProps.className
         )}
-        ref={mergedRef}
+        ref={__internalRootRef}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <VisualContext contextName="alert">
@@ -127,57 +123,58 @@ const InternalAlert = React.forwardRef(
                 styles[`type-${type}`],
                 styles[`icon-size-${size}`],
                 hasAction && styles['with-action'],
-                dismissible && styles['with-dismiss'],
-                styles[`breakpoint-${breakpoint}`]
+                dismissible && styles['with-dismiss']
               )}
             >
-              <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
-                <div className={clsx(styles.icon, styles.text)}>
-                  <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
-                </div>
-                <div className={clsx(styles.message, styles.text)}>
-                  <div
-                    className={clsx(
-                      header && styles.header,
-                      headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
-                    )}
-                    ref={headerRef}
-                  >
-                    {header}
+              <div className={styles['alert-wrapper']}>
+                <div className={styles['alert-focus-wrapper']} tabIndex={-1} ref={focusRef}>
+                  <div className={clsx(styles.icon, styles.text)}>
+                    <InternalIcon name={typeToIcon[type]} size={size} ariaLabel={statusIconAriaLabel} />
                   </div>
-                  <div
-                    className={clsx(
-                      styles['header-replacement'],
-                      headerReplacementType !== 'replaced' ? styles.hidden : analyticsSelectors.header
-                    )}
-                    ref={replacementHeaderRef}
-                  ></div>
-                  <div
-                    className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
-                    ref={contentRef}
-                  >
-                    {children}
+                  <div className={clsx(styles.message, styles.text)}>
+                    <div
+                      className={clsx(
+                        header && styles.header,
+                        headerReplacementType !== 'original' ? styles.hidden : analyticsSelectors.header
+                      )}
+                      ref={headerRef}
+                    >
+                      {header}
+                    </div>
+                    <div
+                      className={clsx(
+                        styles['header-replacement'],
+                        headerReplacementType !== 'replaced' ? styles.hidden : analyticsSelectors.header
+                      )}
+                      ref={replacementHeaderRef}
+                    ></div>
+                    <div
+                      className={clsx(styles.content, contentReplacementType !== 'original' && styles.hidden)}
+                      ref={contentRef}
+                    >
+                      {children}
+                    </div>
+                    <div
+                      className={clsx(
+                        styles['content-replacement'],
+                        contentReplacementType !== 'replaced' && styles.hidden
+                      )}
+                      ref={replacementContentRef}
+                    ></div>
                   </div>
-                  <div
-                    className={clsx(
-                      styles['content-replacement'],
-                      contentReplacementType !== 'replaced' && styles.hidden
-                    )}
-                    ref={replacementContentRef}
-                  ></div>
                 </div>
+                <ActionsWrapper
+                  className={styles.action}
+                  testUtilClasses={{
+                    actionSlot: styles['action-slot'],
+                    actionButton: styles['action-button'],
+                  }}
+                  action={action}
+                  discoveredActions={discoveredActions}
+                  buttonText={buttonText}
+                  onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
+                />
               </div>
-              <ActionsWrapper
-                className={styles.action}
-                testUtilClasses={{
-                  actionSlot: styles['action-slot'],
-                  actionButton: styles['action-button'],
-                }}
-                action={action}
-                discoveredActions={discoveredActions}
-                buttonText={buttonText}
-                onButtonClick={() => fireNonCancelableEvent(onButtonClick)}
-              />
               {dismissible && (
                 <div
                   className={styles.dismiss}
