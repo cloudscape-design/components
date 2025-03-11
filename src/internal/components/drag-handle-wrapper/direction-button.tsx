@@ -23,7 +23,7 @@ const ICON_LOGICAL_PROPERTY_MAP: Record<Direction, IconProps.Name> = {
 
 interface DirectionButtonProps {
   direction: Direction;
-  state: DirectionState | undefined;
+  state: DirectionState;
   onClick: React.MouseEventHandler;
   show: boolean;
 }
@@ -34,7 +34,7 @@ export default function DirectionButton({ direction, state, show, onClick }: Dir
       {(transitionState, ref) => (
         // The wrapper exists to provide a padding around each direction button that
         // prevents any accidental presses around the button from propagating to any
-        // interactive elements behind the button
+        // interactive elements behind the button.
         <span
           ref={ref}
           className={clsx(
@@ -46,7 +46,7 @@ export default function DirectionButton({ direction, state, show, onClick }: Dir
         >
           <span
             className={clsx(styles['direction-button'], state === 'disabled' && styles['direction-button-disabled'])}
-            onClick={onClick}
+            onClick={state !== 'disabled' ? onClick : undefined}
             // This prevents focus from being lost to `document.body` on
             // mouse/pointer press. This allows us to listen to onClick while
             // keeping this button pointer-accessible only.

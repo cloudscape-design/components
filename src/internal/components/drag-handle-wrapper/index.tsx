@@ -22,7 +22,7 @@ const PRESS_DELTA_MAX = 3;
 
 export default function DragHandleWrapper({
   directions,
-  resizeTooltipText,
+  tooltipText,
   children,
   onDirectionClick,
 }: DragHandleWrapperProps) {
@@ -37,10 +37,7 @@ export default function DragHandleWrapper({
   // show if all of them are going to be disabled (which implies the drag
   // control should be visually/semantically disabled as well).
   const isDisabled =
-    directions['block-start'] !== 'active' &&
-    directions['block-end'] !== 'active' &&
-    directions['inline-start'] !== 'active' &&
-    directions['inline-end'] !== 'active';
+    !directions['block-start'] && !directions['block-end'] && !directions['inline-start'] && !directions['inline-end'];
 
   const onWrapperFocusIn: React.FocusEventHandler = event => {
     // The drag handle is focused when it's either tabbed to, or the pointer
@@ -172,8 +169,6 @@ export default function DragHandleWrapper({
     onDirectionClick?.(direction);
   };
 
-  const directionButtonProps = { directions, show: showButtons };
-
   return (
     <div
       className={clsx(styles['drag-handle-wrapper'], showButtons && styles['drag-handle-wrapper-open'])}
@@ -191,41 +186,41 @@ export default function DragHandleWrapper({
           {children}
         </div>
 
-        {!isDisabled && !showButtons && showTooltip && resizeTooltipText && (
-          <Tooltip trackRef={dragHandleRef} value={resizeTooltipText} onDismiss={() => setShowTooltip(false)} />
+        {!isDisabled && !showButtons && showTooltip && tooltipText && (
+          <Tooltip trackRef={dragHandleRef} value={tooltipText} onDismiss={() => setShowTooltip(false)} />
         )}
       </div>
 
       <PortalOverlay track={dragHandleRef.current}>
         {directions['block-start'] && (
           <DirectionButton
-            {...directionButtonProps}
+            show={!isDisabled && showButtons}
             direction="block-start"
-            state={!isDisabled ? directions['block-start'] : undefined}
+            state={directions['block-start']}
             onClick={() => onInternalDirectionClick('block-start')}
           />
         )}
         {directions['block-end'] && (
           <DirectionButton
-            {...directionButtonProps}
+            show={!isDisabled && showButtons}
             direction="block-end"
-            state={!isDisabled ? directions['block-end'] : undefined}
+            state={directions['block-end']}
             onClick={() => onInternalDirectionClick('block-end')}
           />
         )}
         {directions['inline-start'] && (
           <DirectionButton
-            {...directionButtonProps}
+            show={!isDisabled && showButtons}
             direction="inline-start"
-            state={!isDisabled ? directions['inline-start'] : undefined}
+            state={directions['inline-start']}
             onClick={() => onInternalDirectionClick('inline-start')}
           />
         )}
         {directions['inline-end'] && (
           <DirectionButton
-            {...directionButtonProps}
+            show={!isDisabled && showButtons}
             direction="inline-end"
-            state={!isDisabled ? directions['inline-end'] : undefined}
+            state={directions['inline-end']}
             onClick={() => onInternalDirectionClick('inline-end')}
           />
         )}

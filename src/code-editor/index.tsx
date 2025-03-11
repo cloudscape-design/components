@@ -221,6 +221,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onResize();
               fireNonCancelableEvent(onEditorContentResize, { height });
             }}
+            handleAriaLabel={i18nStrings?.resizeHandleAriaLabel}
+            handleTooltipText={i18nStrings?.resizeHandleTooltipText}
           >
             <div
               ref={editorRef}

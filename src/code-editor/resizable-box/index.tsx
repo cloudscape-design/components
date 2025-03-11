@@ -15,9 +15,19 @@ export interface ResizeBoxProps {
   height: number;
   minHeight: number;
   onResize: (newHeight: number) => void;
+
+  handleAriaLabel?: string;
+  handleTooltipText?: string;
 }
 
-export function ResizableBox({ children, height, minHeight, onResize }: ResizeBoxProps) {
+export function ResizableBox({
+  children,
+  height,
+  minHeight,
+  onResize,
+  handleAriaLabel,
+  handleTooltipText,
+}: ResizeBoxProps) {
   const [dragOffset, setDragOffset] = useState<null | number>(null);
   const onResizeStable = useStableCallback(onResize);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -75,12 +85,12 @@ export function ResizableBox({ children, height, minHeight, onResize }: ResizeBo
 
       <div className={styles['resizable-box-handle']}>
         <InternalDragHandle
-          ariaLabel="Resize handle"
+          ariaLabel={handleAriaLabel}
           variant="resize-area"
-          ariaValue={{ valueMin: minHeight, valueMax: 999999999, valueNow: height }}
+          ariaValue={{ valueMin: minHeight, valueMax: 1000000, valueNow: height }}
+          tooltipText={handleTooltipText}
           onPointerDown={onPointerDown}
           onKeyDown={onKeyDown}
-          resizeTooltipText="Drag or select to move" // TODO: fixme!
           directions={{
             'block-start': height > minHeight ? 'active' : 'disabled',
             'block-end': 'active',

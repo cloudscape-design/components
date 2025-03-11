@@ -7,6 +7,6 @@ export type DirectionState = 'active' | 'disabled';
 export interface DragHandleWrapperProps {
   directions: Partial<Record<Direction, DirectionState>>;
   onDirectionClick?: (direction: Direction) => void;
-  resizeTooltipText?: string;
+  tooltipText?: string;
   children: React.ReactNode;
 }

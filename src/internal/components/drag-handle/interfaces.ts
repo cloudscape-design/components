@@ -9,7 +9,7 @@ import {
 export interface DragHandleProps {
   variant?: DragHandleProps.Variant;
   size?: DragHandleProps.Size;
-  ariaLabel: string;
+  ariaLabel?: string;
   ariaDescribedby?: string;
   ariaValue?: DragHandleProps.AriaValue;
   disabled?: boolean;
@@ -17,7 +17,7 @@ export interface DragHandleProps {
   onPointerDown?: React.PointerEventHandler;
   onKeyDown?: React.KeyboardEventHandler;
 
-  resizeTooltipText?: string;
+  tooltipText?: string;
   directions?: Partial<Record<DragHandleProps.Direction, DragHandleProps.DirectionState>>;
   onDirectionClick?: (direction: DragHandleProps.Direction) => void;
 }

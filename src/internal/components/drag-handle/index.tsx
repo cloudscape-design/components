@@ -16,7 +16,7 @@ const InternalDragHandle = forwardRef(
       size,
       ariaLabel,
       ariaDescribedby,
-      resizeTooltipText,
+      tooltipText,
       ariaValue,
       disabled,
       directions = {},
@@ -32,7 +32,7 @@ const InternalDragHandle = forwardRef(
     return (
       <DragHandleWrapper
         directions={!disabled ? directions : {}}
-        resizeTooltipText={resizeTooltipText}
+        tooltipText={tooltipText}
         onDirectionClick={onDirectionClick}
       >
         <DragHandleButton

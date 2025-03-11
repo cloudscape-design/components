@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-editor/resizable-box';
-import { PointerEventMock } from '../../__tests__/util';
+import { PointerEventMock } from '../../../../lib/components/internal/utils/pointer-events';
 
 import dragHandleStyles from '../../../../lib/components/internal/components/drag-handle/styles.css.js';
 import styles from '../../../../lib/components/code-editor/resizable-box/styles.selectors.js';
@@ -26,6 +26,11 @@ function findHandle() {
 
 beforeAll(() => {
   (window as any).PointerEvent ??= PointerEventMock;
+});
+
+test('Provides ariaLabel to the handle', () => {
+  render(<ResizableBox {...defaultProps} handleAriaLabel="Resize handle" />);
+  expect(findHandle()).toHaveAccessibleName('Resize handle');
 });
 
 test('Height is controlled', () => {

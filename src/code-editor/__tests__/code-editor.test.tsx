@@ -10,6 +10,7 @@ import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { PointerEventMock } from '../../../lib/components/internal/utils/pointer-events';
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import {
@@ -17,7 +18,6 @@ import {
   annotationCallback as emulateAceAnnotationEvent,
   defaultProps,
   editorMock,
-  PointerEventMock,
   renderCodeEditor,
 } from './util';
 
