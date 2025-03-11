@@ -1,11 +1,30 @@
+// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+// SPDX-License-Identifier: Apache-2.0
 import React from 'react';
+
 import { Badge, SpaceBetween, TextContent } from '~components';
 import Theme from '~components/theming/component/index';
 
 export default function BadgePermutations() {
   return (
     <div style={{ margin: '40px' }}>
-      <SpaceBetween direction='vertical' size='m'>
+      <SpaceBetween direction="vertical" size="m">
+        <TextContent>
+          <h3>Cloudscape Badges</h3>
+        </TextContent>
+
+        <Badge>Badge</Badge>
+        <Badge color="blue">Badge</Badge>
+        <Badge color="red">Badge</Badge>
+        <Badge color="green">Badge</Badge>
+        <Badge color="severity-critical">Badge</Badge>
+        <Badge color="severity-high">Badge</Badge>
+        <Badge color="severity-medium">Badge</Badge>
+        <Badge color="severity-low">Badge</Badge>
+        <Badge color="severity-neutral">Badge</Badge>
+
+        <hr />
+
         <TextContent>
           <h3>Amplify Badges</h3>
         </TextContent>
@@ -29,14 +48,28 @@ export default function BadgePermutations() {
         <MaterialUIChip color="info">Chip Component</MaterialUIChip>
         <MaterialUIChip color="success">Chip Component</MaterialUIChip>
         <MaterialUIChip color="warning">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="default" variant="outlined">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="primary" variant="outlined">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="secondary" variant="outlined">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="error" variant="outlined">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="info" variant="outlined">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="success" variant="outlined">Chip Component</MaterialUIChip>
-        <MaterialUIChip color="warning" variant="outlined">Chip Component</MaterialUIChip>
-        
+        <MaterialUIChip color="default" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+        <MaterialUIChip color="primary" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+        <MaterialUIChip color="secondary" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+        <MaterialUIChip color="error" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+        <MaterialUIChip color="info" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+        <MaterialUIChip color="success" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+        <MaterialUIChip color="warning" variant="outlined">
+          Chip Component
+        </MaterialUIChip>
+
         <hr />
 
         <TextContent>
@@ -58,26 +91,40 @@ export default function BadgePermutations() {
         <SyntesisChip color="info">Chip text</SyntesisChip>
         <SyntesisChip color="success">Chip text</SyntesisChip>
         <SyntesisChip color="warning">Chip text</SyntesisChip>
-        <SyntesisChip color="default" variant="outlined">Chip text</SyntesisChip>
-        <SyntesisChip color="primary" variant="outlined">Chip text</SyntesisChip>
-        <SyntesisChip color="secondary" variant="outlined">Chip text</SyntesisChip>
-        <SyntesisChip color="error" variant="outlined">Chip text</SyntesisChip>
-        <SyntesisChip color="info" variant="outlined">Chip text</SyntesisChip>
-        <SyntesisChip color="success" variant="outlined">Chip text</SyntesisChip>
-        <SyntesisChip color="warning" variant="outlined">Chip text</SyntesisChip>
+        <SyntesisChip color="default" variant="outlined">
+          Chip text
+        </SyntesisChip>
+        <SyntesisChip color="primary" variant="outlined">
+          Chip text
+        </SyntesisChip>
+        <SyntesisChip color="secondary" variant="outlined">
+          Chip text
+        </SyntesisChip>
+        <SyntesisChip color="error" variant="outlined">
+          Chip text
+        </SyntesisChip>
+        <SyntesisChip color="info" variant="outlined">
+          Chip text
+        </SyntesisChip>
+        <SyntesisChip color="success" variant="outlined">
+          Chip text
+        </SyntesisChip>
+        <SyntesisChip color="warning" variant="outlined">
+          Chip text
+        </SyntesisChip>
       </SpaceBetween>
     </div>
   );
 }
 
-function AmplifyBadge(props:any) {
+function AmplifyBadge(props: any) {
   const backgroundColors = {
     default: '#eff0f0',
     error: '#fce9e9',
     info: '#e6eefe',
     success: '#ebfaed',
     warning: '#fcf2e9',
-  }
+  };
 
   const colors = {
     default: '#0d1926',
@@ -85,10 +132,26 @@ function AmplifyBadge(props:any) {
     info: '#002266',
     success: '#365e3d',
     warning: '#660000',
-  }
+  };
+
+  const darkModeBackgroundColors = {
+    default: '#5c6670',
+    info: '#00194d',
+    error: '#4d0000',
+    warning: '#4d2600',
+    success: '#2e4832',
+  };
+
+  const darkModeColors = {
+    default: '#fff',
+    error: '#f5bcbc',
+    info: '#b8cef9',
+    success: '#d6f5db',
+    warning: '#f5d9bc',
+  };
 
   return (
-    <Theme 
+    <Theme
       backgroundColor={backgroundColors[props.variation as keyof typeof backgroundColors]}
       borderRadius="32px"
       borderWidth="0px"
@@ -99,12 +162,17 @@ function AmplifyBadge(props:any) {
       paddingBlock="8px"
       paddingInline="12px"
     >
-      <Badge>{props.children}</Badge>
+      <Theme.DarkMode
+        backgroundColor={darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors]}
+        color={darkModeColors[props.variation as keyof typeof darkModeColors]}
+      >
+        <Badge>{props.children}</Badge>
+      </Theme.DarkMode>
     </Theme>
   );
 }
 
-function MaterialUIChip(props:any) {
+function MaterialUIChip(props: any) {
   const backgroundColors = {
     default: 'rgba(0, 0, 0, 0.08)',
     primary: 'rgb(25, 118, 210)',
@@ -112,7 +180,7 @@ function MaterialUIChip(props:any) {
     error: 'rgb(211, 47, 47)',
     info: 'rgb(2, 136, 209)',
     success: 'rgb(46, 125, 50)',
-    warning: 'rgb(237, 108, 2)'
+    warning: 'rgb(237, 108, 2)',
   };
 
   const colors = {
@@ -122,8 +190,8 @@ function MaterialUIChip(props:any) {
     error: '#ffffff',
     info: '#ffffff',
     success: '#ffffff',
-    warning: '#ffffff'
-  }
+    warning: '#ffffff',
+  };
 
   const outlinedColors = {
     default: 'rgba(0, 0, 0, 0.87)',
@@ -132,43 +200,99 @@ function MaterialUIChip(props:any) {
     error: 'rgb(211, 47, 47)',
     info: 'rgb(2, 136, 209)',
     success: 'rgb(46, 125, 50)',
-    warning: 'rgb(237, 108, 2)'
-  }
+    warning: 'rgb(237, 108, 2)',
+  };
+
+  const darkModeBackgroundColors = {
+    default: 'rgba(255, 255, 255, 0.16)',
+    primary: 'rgb(144, 202, 249)',
+    secondary: 'rgb(206, 147, 216)',
+    error: 'rgb(244, 67, 54)',
+    info: 'rgb(41, 182, 246)',
+    success: 'rgb(102, 187, 106)',
+    warning: 'rgb(255, 167, 38)',
+  };
+
+  const darkModeOutlinedColors = {
+    default: 'rgb(97, 97, 97)',
+    primary: 'rgba(144, 202, 249, 0.7)',
+    secondary: 'rgba(206, 147, 216, 0.7)',
+    error: 'rgba(244, 67, 54, 0.7)',
+    info: 'rgba(41, 182, 246, 0.7)',
+    success: 'rgba(102, 187, 106, 0.7)',
+    warning: 'rgba(255, 167, 38, 0.7)',
+  };
+
+  const darkModeColors = {
+    default: '#fff',
+    primary: 'rgba(144, 202, 249, 0.7)',
+    secondary: 'rgba(206, 147, 216, 0.7)',
+    error: 'rgba(244, 67, 54, 0.7)',
+    info: 'rgba(41, 182, 246, 0.7)',
+    success: 'rgba(102, 187, 106, 0.7)',
+    warning: 'rgba(255, 167, 38, 0.7)',
+  };
 
   return (
-    <Theme 
-      backgroundColor={props.variant === 'outlined' ? '#ffffff' : backgroundColors[props.color as keyof typeof backgroundColors]}
-      borderColor={props.variant === 'outlined' ? outlinedColors[props.color as keyof typeof colors] : 'transparent' }
+    <Theme
+      backgroundColor={
+        props.variant === 'outlined' ? '#ffffff' : backgroundColors[props.color as keyof typeof backgroundColors]
+      }
+      borderColor={props.variant === 'outlined' ? outlinedColors[props.color as keyof typeof colors] : 'transparent'}
       borderRadius="16px"
       borderWidth="1px"
-      color={props.variant === 'outlined' ? outlinedColors[props.color as keyof typeof outlinedColors] : colors[props.color as keyof typeof colors]}
-      fontFamily='Roboto, Helvetica, Arial, sans-serif'
+      color={
+        props.variant === 'outlined'
+          ? outlinedColors[props.color as keyof typeof outlinedColors]
+          : colors[props.color as keyof typeof colors]
+      }
+      fontFamily="Roboto, Helvetica, Arial, sans-serif"
       fontWeight="400"
       paddingBlock="6px"
       paddingInline="12px"
     >
-      <Badge>{props.children}</Badge>
+      <Theme.DarkMode
+        backgroundColor={
+          props.variant === 'outlined'
+            ? 'rgb(15, 18, 20)'
+            : darkModeBackgroundColors[props.color as keyof typeof darkModeBackgroundColors]
+        }
+        borderColor={
+          props.variant === 'outlined'
+            ? darkModeOutlinedColors[props.color as keyof typeof darkModeOutlinedColors]
+            : 'transparent'
+        }
+        color={
+          props.variant === 'outlined'
+            ? darkModeColors[props.color as keyof typeof darkModeColors]
+            : 'rgba(0, 0, 0, 0.87)'
+        }
+      >
+        <Badge>{props.children}</Badge>
+      </Theme.DarkMode>
     </Theme>
   );
 }
 
-function AuraBadge(props:any) {
+function AuraBadge(props: any) {
   return (
-    <Theme 
-      backgroundImage='linear-gradient(120deg, #f8c7ff 20.08%, #d2ccff 75.81%)'
+    <Theme
+      backgroundImage="linear-gradient(120deg, #f8c7ff 20.08%, #d2ccff 75.81%)"
       borderRadius="4px"
       color="#161d26"
       fontSize="16px"
       fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'
       fontWeight="500"
-      paddingBlock='4px'
+      paddingBlock="4px"
     >
-      <Badge>{props.text}</Badge>
+      <Theme.DarkMode backgroundImage="linear-gradient(120deg, #78008a 24.25%, #b2008f 69.56%)" color="#fff">
+        <Badge>{props.text}</Badge>
+      </Theme.DarkMode>
     </Theme>
   );
 }
 
-function SyntesisChip(props:any) {
+function SyntesisChip(props: any) {
   const outlined = props.variant === 'outlined';
 
   const colors = {
@@ -178,17 +302,19 @@ function SyntesisChip(props:any) {
     error: 'rgb(255, 143, 143)',
     info: 'rgb(117, 207, 255)',
     success: 'rgb(98, 255, 87)',
-    warning: 'rgb(254, 235, 62)'
+    warning: 'rgb(254, 235, 62)',
   };
 
   return (
-    <Theme 
-      backgroundColor={outlined ? '#ffffff' : colors[props.color as keyof typeof colors]}
-      borderColor={outlined ? colors[props.color as keyof typeof colors] : 'transparent' }
+    <Theme
+      backgroundColor={outlined ? 'rgb(27, 35, 45)' : colors[props.color as keyof typeof colors]}
+      borderColor={outlined ? colors[props.color as keyof typeof colors] : 'transparent'}
       borderRadius="4px"
       borderWidth="1px"
-      color={outlined ? colors[props.color as keyof typeof colors] : props.color === 'default' ? '#fff' : 'rgb(19, 29, 38)'}
-      paddingBlock='5px'
+      color={
+        props.color === 'default' ? '#fff' : outlined ? colors[props.color as keyof typeof colors] : 'rgb(19, 29, 38)'
+      }
+      paddingBlock="5px"
       paddingInline="10px"
     >
       <Badge>{props.children}</Badge>
