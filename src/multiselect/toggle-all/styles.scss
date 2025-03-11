@@ -9,14 +9,18 @@
 .toggle-all {
   @include styles.default-text-style;
   position: relative;
-  z-index: 1;
+  z-index: 4;
   cursor: pointer;
 
   border-block: awsui.$border-divider-list-width solid transparent;
+  border-block-end-color: awsui.$color-border-dropdown-item-default;
+
   color: awsui.$color-text-dropdown-item-default;
 
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding-block: styles.$option-padding-with-border-placeholder-vertical;
   padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+
+  margin-block-end: calc(-1 * #{awsui.$border-divider-list-width});
 }
