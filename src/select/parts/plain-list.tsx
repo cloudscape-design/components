@@ -49,11 +49,7 @@ const PlainList = (
     () => (index: number) => {
       const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
       if (highlightType.moveFocus && item) {
-        // In edge case dropdown can be very small, scrolling can cause side effect AWSUI-60318
-        if (menuRef.current?.clientHeight !== undefined && menuRef.current?.clientHeight > 15) {
-          /* istanbul ignore next: clientHeight always returns 0 in JSDOM, the line is covered by integ tests */
-          scrollElementIntoView(item);
-        }
+        scrollElementIntoView(item);
       }
     },
     [highlightType, menuRef]
