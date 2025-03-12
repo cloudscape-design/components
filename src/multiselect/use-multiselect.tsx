@@ -118,7 +118,7 @@ export function useMultiselect({
 
   const updateSelectedOption = useCallback(
     (option: OptionDefinition | OptionGroup) => {
-      const nonParentOptions = filteredOptions
+      const nonParentFilteredOptions = filteredOptions
         .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
         .map(item => item.option);
 
@@ -139,7 +139,7 @@ export function useMultiselect({
       let newSelectedOptions = [...selectedOptions];
 
       if (isGroup(option)) {
-        const visibleOptions = intersection([...option.options], nonParentOptions);
+        const visibleOptions = intersection([...option.options], nonParentFilteredOptions);
         newSelectedOptions = isAllChildrenSelected(visibleOptions)
           ? unselect(visibleOptions, newSelectedOptions)
           : select(visibleOptions, newSelectedOptions);
@@ -153,7 +153,7 @@ export function useMultiselect({
         selectedOptions: newSelectedOptions,
       });
     },
-    [filteredOptions, selectedOptions, onChange]
+    [onChange, selectedOptions, filteredOptions]
   );
 
   const toggleAll = () => {
