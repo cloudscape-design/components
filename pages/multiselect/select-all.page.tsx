@@ -11,26 +11,12 @@ import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants'
 
 type DemoContext = React.Context<
   AppContextType<{
-    withGroups: boolean | undefined;
+    withDisabledOptions?: boolean;
+    withGroups?: boolean;
   }>
 >;
 
-const initialSelectedOptions = [
-  {
-    value: 'option3',
-    label: 'option3',
-    description: 'option3',
-    tags: ['2-CPU', '2Gb RAM'],
-  },
-  {
-    value: 'option4',
-    label: 'option4',
-    description: 'option4',
-    tags: ['2-CPU', '2Gb RAM'],
-  },
-];
-
-const groupedOptions = [
+const groupedOptionsWithDisabledOptions: OptionGroup[] = [
   {
     label: 'First category',
     options: [
@@ -79,16 +65,28 @@ const groupedOptions = [
   },
 ];
 
-const nonGroupedOptions: OptionDefinition[] = groupedOptions.reduce(
-  (previousValue: OptionDefinition[], currentValue: OptionGroup) => [...previousValue, ...currentValue.options],
-  []
-);
+const initialSelectedOptions = [
+  groupedOptionsWithDisabledOptions[0].options[2],
+  groupedOptionsWithDisabledOptions[1].options[0],
+];
 
 function InternalMultiselect(props: Partial<MultiselectProps>) {
   const [selectedOptions, setSelectedOptions] = useState<MultiselectProps.Options>(initialSelectedOptions);
   const { urlParams } = useContext(AppContext as DemoContext);
 
-  const options = urlParams.withGroups ? groupedOptions : nonGroupedOptions;
+  const groupedOptions = urlParams.withDisabledOptions
+    ? groupedOptionsWithDisabledOptions
+    : groupedOptionsWithDisabledOptions.map(group => ({
+        ...group,
+        options: group.options.map(option => ({ ...option, disabled: false })),
+      }));
+
+  const options: OptionDefinition[] = urlParams.withGroups
+    ? groupedOptions
+    : groupedOptions.reduce(
+        (previousValue: OptionDefinition[], currentValue: OptionGroup) => [...previousValue, ...currentValue.options],
+        []
+      );
 
   return (
     <Multiselect
