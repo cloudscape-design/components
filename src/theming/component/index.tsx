@@ -18,30 +18,36 @@ export default function Theme({
   fontWeight,
   gapBlock,
   gapInline,
+  height,
   lineHeight,
+  outline,
   paddingBlock,
   paddingInline,
+  width,
 }:ThemeProps) {
   return (
     <div 
       className={clsx(styles.theme)}
       style={{
-        ...(backgroundColor && { ['--theme-background-color']: `${backgroundColor}` }),
-        ...(backgroundImage && { ['--theme-background-image']: `${backgroundImage}` }),
-        ...(borderColor && { ['--theme-border-color']: `${borderColor}` }),
+        ...(backgroundColor && getValues('--theme-background-color', backgroundColor)),
+        ...(backgroundImage && getValues('--theme-background-image', backgroundImage)),
+        ...(borderColor && getValues('--theme-border-color', borderColor)),
         ...(borderRadius && { ['--theme-border-radius']: `${borderRadius}` }),
         ...(borderWidth && { ['--theme-border-width']: `${borderWidth}` }),
-        ...(boxShadow && { ['--theme-box-shadow']: `${boxShadow}` }),
-        ...(color && { ['--theme-color']: `${color}` }),
-        ...(fill && { ['--theme-fill']: `${fill}` }),
+        ...(boxShadow && getValues('--theme-box-shadow', boxShadow)),
+        ...(color && getValues('--theme-color', color)),
+        ...(fill && getValues('--theme-fill', fill)),
         ...(fontFamily && { ['--theme-font-family']: `${fontFamily}` }),
         ...(fontSize && { ['--theme-font-size']: `${fontSize}` }),
         ...(fontWeight && { ['--theme-font-weight']: `${fontWeight}` }),
         ...(gapBlock && { ['--theme-gap-block']: `${gapBlock}` }),
         ...(gapInline && { ['--theme-gap-inline']: `${gapInline}` }),
+        ...(height && { ['--theme-height']: `${height}` }),
         ...(lineHeight && { ['--theme-line-height']: `${lineHeight}` }),
+        ...(outline && getValues('--theme-outline', outline)),
         ...(paddingBlock && { ['--theme-padding-block']: `${paddingBlock}` }),
         ...(paddingInline && { ['--theme-padding-inline']: `${paddingInline}` }),
+        ...(width && { ['--theme-width']: `${width}` }),
       }}
     >
       {children}
@@ -82,5 +88,24 @@ function Reset({children}:any) {
   );
 }
 
+function getValues(name: string, property: any) {
+  let values;
+
+  if (typeof property === 'string') {
+    values = { [name]: `${property}` }
+  } else {
+    values = {
+      [`${name}-checked`]: property?.checked,
+      [`${name}-default`]: property?.default,
+      [`${name}-disabled`]: property?.disabled,
+      [`${name}-indeterminate`]: property?.indeterminate,
+      [`${name}-read-only`]: property?.readOnly,
+    }
+  }
+
+  return values;
+}
+
 Theme.DarkMode = DarkMode;
 Theme.Reset = Reset;
+

@@ -57,13 +57,19 @@ export function Tools({ children }: { children: React.ReactNode }) {
 
 export function Navigation() {
   return (
-    <SideNavigation
-      header={{
-        href: '#',
-        text: 'Service name',
-      }}
-      items={range(30).map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
-    />
+    <div>
+      <SideNavigation
+        header={{
+          href: '#',
+          text: 'Service name',
+        }}
+        items={range(30).map(i => ({ type: 'link', text: `Navigation #${i + 1}`, href: `#item-${i}` }))}
+      />
+
+      <div style={{ backgroundColor: '#fff', borderTop: '1px solid #ccc', position: 'sticky', padding: '20px', bottom: 0}}>
+        hi do stuff
+      </div>
+    </div>
   );
 }
 
