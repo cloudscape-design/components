@@ -40,7 +40,6 @@ const MultiSelectItem = (
 
   const isParent = option.type === 'parent';
   const isChild = option.type === 'child';
-  const isToggleAll = option.type === 'toggle-all';
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
   const disabledReason =
@@ -58,7 +57,7 @@ const MultiSelectItem = (
 
   return (
     <SelectableItem
-      ariaChecked={(isParent || isToggleAll) && indeterminate ? 'mixed' : Boolean(selected)}
+      ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
       highlighted={highlighted}
@@ -80,11 +79,7 @@ const MultiSelectItem = (
       <div className={className}>
         {hasCheckbox && (
           <div className={styles.checkbox}>
-            <CheckboxIcon
-              checked={selected}
-              indeterminate={(isParent || isToggleAll) && indeterminate}
-              disabled={option.disabled}
-            />
+            <CheckboxIcon checked={selected} indeterminate={isParent && indeterminate} disabled={option.disabled} />
           </div>
         )}
         <Option
