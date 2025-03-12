@@ -1,13 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useContext, useState } from 'react';
 
 import Box from '~components/box';
+import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 
+import AppContext, { AppContextType } from '../app/app-context';
 import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants';
 
-const _selectedOptions = [
+type DemoContext = React.Context<
+  AppContextType<{
+    withGroups: boolean | undefined;
+  }>
+>;
+
+const initialSelectedOptions = [
   {
     value: 'option3',
     label: 'option3',
@@ -21,7 +29,8 @@ const _selectedOptions = [
     tags: ['2-CPU', '2Gb RAM'],
   },
 ];
-const options = [
+
+const groupedOptions = [
   {
     label: 'First category',
     options: [
@@ -70,8 +79,17 @@ const options = [
   },
 ];
 
+const nonGroupedOptions: OptionDefinition[] = groupedOptions.reduce(
+  (previousValue: OptionDefinition[], currentValue: OptionGroup) => [...previousValue, ...currentValue.options],
+  []
+);
+
 function InternalMultiselect(props: Partial<MultiselectProps>) {
-  const [selectedOptions, setSelectedOptions] = React.useState<MultiselectProps.Options>(_selectedOptions);
+  const [selectedOptions, setSelectedOptions] = useState<MultiselectProps.Options>(initialSelectedOptions);
+  const { urlParams } = useContext(AppContext as DemoContext);
+
+  const options = urlParams.withGroups ? groupedOptions : nonGroupedOptions;
+
   return (
     <Multiselect
       selectedOptions={selectedOptions}
