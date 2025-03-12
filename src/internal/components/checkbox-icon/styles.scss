@@ -15,22 +15,28 @@
 
   > .styled-box {
     fill: awsui.$color-background-control-default;
-    stroke: awsui.$color-border-control-default;
+    stroke: var(--theme-border-color-default, awsui.$color-border-control-default);
     stroke-width: styles.$control-border-width;
     @include styles.with-motion {
       transition:
         fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
         stroke awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick;
     }
-    &-checked,
-    &-indeterminate {
-      fill: awsui.$color-background-control-checked;
-      stroke: awsui.$color-border-control-checked;
+    &-checked{
+      fill: var(--theme-background-color-checked, awsui.$color-background-control-checked);
+      stroke: var(--theme-border-color-checked, awsui.$color-border-control-checked);
     }
-    &-disabled,
+    &-indeterminate {
+      fill: var(--theme-background-color-indeterminate, awsui.$color-background-control-checked);
+      stroke: var(--theme-border-color-indeterminate, awsui.$color-border-control-checked);
+    }
+    &-disabled {
+      fill: var(--theme-background-color-disabled, awsui.$color-background-control-disabled);
+      stroke: var(--theme-border-color-disabled, awsui.$color-border-control-disabled);
+    }
     &-readonly {
-      fill: awsui.$color-background-control-disabled;
-      stroke: awsui.$color-border-control-disabled;
+      fill: var(--theme-background-color-read-only, awsui.$color-background-control-disabled);
+      stroke: var(--theme-border-color-read-only, awsui.$color-border-control-disabled);
     }
   }
 
@@ -39,10 +45,10 @@
     stroke-width: 2;
     fill: none;
     &-disabled {
-      stroke: awsui.$color-foreground-control-disabled;
+      stroke: var(--theme-fill-disabled, awsui.$color-foreground-control-disabled);
     }
     &-readonly {
-      stroke: awsui.$color-foreground-control-read-only;
+      stroke: var(--theme-filled-read-only, awsui.$color-foreground-control-read-only);
     }
   }
 }

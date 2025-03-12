@@ -59,9 +59,12 @@
 
 .label,
 .description {
-  padding-inline-start: awsui.$space-xs;
+  color: var(--theme-color);
+  font-family: var(--theme-font-family, awsui.$font-family-base);
+  font-size: var(--theme-font-size);
+  padding-inline-start: var(--theme-gap-inline, awsui.$space-xs);
   &-disabled {
-    color: awsui.$color-text-control-disabled;
+    color: var(--theme-color-disabled, awsui.$color-text-control-disabled);
   }
 }
 
