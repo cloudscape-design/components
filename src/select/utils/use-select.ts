@@ -27,7 +27,7 @@ export type GetOptionProps = (option: DropdownOption, index: number) => ItemProp
 interface UseSelectProps {
   selectedOptions: ReadonlyArray<OptionDefinition>;
   updateSelectedOption: (option: OptionDefinition) => void;
-  options: ReadonlyArray<DropdownOption>;
+  items: ReadonlyArray<DropdownOption>;
   filteringType: string;
   keepOpen?: boolean;
   embedded?: boolean;
@@ -38,6 +38,9 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
+  toggleAll?: () => void;
+  enableSelectAll?: boolean;
+  isAllSelected?: boolean;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -47,7 +50,7 @@ export interface SelectTriggerProps extends ButtonTriggerProps {
 export function useSelect({
   selectedOptions,
   updateSelectedOption,
-  options,
+  items,
   filteringType,
   onBlur,
   onFocus,
@@ -58,6 +61,9 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
+  toggleAll,
+  enableSelectAll,
+  isAllSelected,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -68,7 +74,7 @@ export function useSelect({
   const menuRef = useRef<HTMLUListElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
-  const __selectedOptions = connectOptionsByValue(options, selectedOptions);
+  const __selectedOptions = connectOptionsByValue(items, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
       selectedValuesSet.add(item.value);
@@ -85,7 +91,7 @@ export function useSelect({
       goHomeWithKeyboard,
       goEndWithKeyboard,
     },
-  ] = useHighlightedOption({ options, isHighlightable });
+  ] = useHighlightedOption({ options: items, isHighlightable });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     defaultOpen: embedded,
@@ -112,6 +118,10 @@ export function useSelect({
 
   const selectOption = (option?: DropdownOption) => {
     const optionToSelect = option || highlightedOption;
+    if (optionToSelect?.type === 'toggle-all') {
+      toggleAll?.();
+      return;
+    }
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
     }
@@ -135,7 +145,7 @@ export function useSelect({
       moveHighlightWithKeyboard(-1);
     },
     goDown: () => {
-      if (highlightedIndex === options.length - 1) {
+      if (highlightedIndex === items.length - 1) {
         goHomeWithKeyboard();
         return;
       }
@@ -220,7 +230,7 @@ export function useSelect({
       open: isOpen,
       onMouseUp: itemIndex => {
         if (itemIndex > -1) {
-          selectOption(options[itemIndex]);
+          selectOption(items[itemIndex]);
         }
       },
       onMouseMove: itemIndex => {
@@ -258,24 +268,26 @@ export function useSelect({
     };
   };
 
-  const getOptionProps = (option: DropdownOption, index: number) => {
+  const getOptionProps = (option: DropdownOption, optionIndex: number) => {
+    const itemIndex = enableSelectAll ? optionIndex + 1 : optionIndex;
     const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
     const selected = __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
-    const nextOption = options[index + 1]?.option;
+    const nextOption = items[itemIndex + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
-        : __selectedOptions.indexOf(options[index + 1]) > -1;
+        : __selectedOptions.indexOf(items[itemIndex + 1]) > -1;
     const optionProps: any = {
-      key: index,
+      key: optionIndex,
       option,
       highlighted,
       selected,
       isNextSelected,
+      isAfterHeader: optionIndex === 0 && isAllSelected && enableSelectAll,
       indeterminate: !!groupState?.indeterminate,
-      ['data-mouse-target']: isHighlightable(option) ? index : -1,
-      id: getOptionId(menuId, index),
+      ['data-mouse-target']: isHighlightable(option) ? itemIndex : -1,
+      id: getOptionId(menuId, optionIndex),
     };
 
     return optionProps;
@@ -289,7 +301,7 @@ export function useSelect({
       if (openedWithKeyboard) {
         highlightOptionWithKeyboard(__selectedOptions[0]);
       } else {
-        setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]), true);
+        setHighlightedIndexWithMouse(items.indexOf(__selectedOptions[0]), true);
       }
     }
   }, [
@@ -299,7 +311,7 @@ export function useSelect({
     setHighlightedIndexWithMouse,
     highlightOptionWithKeyboard,
     openedWithKeyboard,
-    options,
+    items,
     prevOpen,
     hasFilter,
   ]);

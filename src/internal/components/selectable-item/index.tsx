@@ -34,6 +34,7 @@ const SelectableItem = (
     ariaSetsize,
     highlightType,
     value,
+    isAfterHeader,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -51,6 +52,7 @@ const SelectableItem = (
     [styles.virtual]: virtualPosition !== undefined,
     [styles['pad-bottom']]: padBottom,
     [styles['next-item-selected']]: isNextSelected,
+    [styles['after-header']]: isAfterHeader,
     [styles.interactiveGroups]: useInteractiveGroups,
   });
 

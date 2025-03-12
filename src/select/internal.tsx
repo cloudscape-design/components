@@ -127,7 +127,7 @@ const InternalSelect = React.forwardRef(
     } = useSelect({
       selectedOptions: selectedOption ? [selectedOption] : [],
       updateSelectedOption: option => fireNonCancelableEvent(onChange, { selectedOption: option }),
-      options: filteredOptions,
+      items: filteredOptions,
       filteringType,
       onBlur,
       onFocus,

@@ -4,20 +4,26 @@ import React from 'react';
 import clsx from 'clsx';
 
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 
 import selectableItemStyles from '../../internal/components/selectable-item/styles.css.js';
 import multiSelectItemStyles from '../../select/parts/styles.css.js';
 import styles from './styles.css.js';
 
 export default function ToggleAll({
+  highlighted,
+  highlightType,
   onToggle,
   state,
 }: {
+  highlighted: boolean;
+  highlightType: HighlightType;
   onToggle: () => void;
   state: 'all' | 'none' | 'some' | 'disabled';
 }) {
   const classNames = clsx(styles['toggle-all'], {
-    [selectableItemStyles.selected]: state === 'all',
+    [styles.selected]: state === 'all',
+    [styles.highlighted]: state !== 'disabled' && highlighted && highlightType.type === 'keyboard',
     [styles.disabled]: state === 'disabled',
   });
 

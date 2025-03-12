@@ -8,14 +8,17 @@
 @use '../../internal/styles/typography/constants' as constants;
 
 .toggle-all {
-  z-index: 4;
-
-  border-block: awsui.$border-divider-list-width solid transparent;
-  border-block-end-color: awsui.$color-border-dropdown-item-default;
-
-  color: awsui.$color-text-dropdown-item-default;
+  @include styles.default-text-style;
   font-weight: constants.$font-weight-bold;
 
+  border-block: awsui.$border-divider-list-width solid transparent;
+  border-inline: awsui.$border-divider-list-width solid transparent;
+  border-block-end-color: awsui.$color-border-dropdown-item-default;
+  color: awsui.$color-text-dropdown-item-default;
+
+  // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
+  border-inline-start-width: 0;
+  border-inline-end-width: 0;
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
   padding-block: styles.$option-padding-with-border-placeholder-vertical;
@@ -23,11 +26,41 @@
 
   margin-block-end: calc(-1 * #{awsui.$border-divider-list-width});
 
-  &:not(.disabled) {
-    cursor: pointer;
-  }
+  z-index: 4;
+
   &.disabled {
     color: awsui.$color-text-dropdown-item-disabled;
     pointer-events: none;
+  }
+  &:not(.disabled) {
+    cursor: pointer;
+
+    &.highlighted,
+    &.selected {
+      color: awsui.$color-text-dropdown-item-highlighted;
+      border-width: awsui.$border-item-width;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      padding-block: styles.$option-padding-vertical;
+      padding-inline: styles.$control-padding-horizontal;
+    }
+
+    &.highlighted {
+      background-color: awsui.$color-background-dropdown-item-hover;
+      border-color: awsui.$color-border-dropdown-item-hover;
+      border-end-start-radius: awsui.$border-radius-item;
+      border-end-end-radius: awsui.$border-radius-item;
+    }
+    &.selected {
+      background-color: awsui.$color-background-dropdown-item-selected;
+      border-color: awsui.$color-border-dropdown-item-selected;
+      margin-block-end: calc(-1 * #{awsui.$border-item-width});
+      padding-block-end: styles.$option-padding-with-border-placeholder-vertical;
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+      &.highlighted {
+        border-color: awsui.$color-border-dropdown-item-hover;
+      }
+    }
   }
 }

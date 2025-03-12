@@ -41,6 +41,7 @@ type UseMultiselectOptions = SomeRequired<
     | 'onLoadItems'
     | 'onChange'
     | 'selectedAriaLabel'
+    | 'enableSelectAll'
   > &
     DropdownStatusProps & {
       controlId?: string;
@@ -79,6 +80,7 @@ export function useMultiselect({
   setFilteringValue,
   externalRef,
   embedded,
+  enableSelectAll,
   ...restProps
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
@@ -178,7 +180,7 @@ export function useMultiselect({
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
-    options: filteredOptions,
+    items: enableSelectAll ? [{ type: 'toggle-all', option: {} }, ...filteredOptions] : filteredOptions,
     filteringType,
     onFocus,
     onBlur,
@@ -189,6 +191,9 @@ export function useMultiselect({
     useInteractiveGroups,
     statusType,
     embedded,
+    toggleAll,
+    enableSelectAll,
+    isAllSelected,
   });
 
   const wrapperOnKeyDown = useNativeSearch({
@@ -291,5 +296,6 @@ export function useMultiselect({
     isAllSelected,
     isSomeSelected,
     toggleAll,
+    highlightedIndex,
   };
 }
