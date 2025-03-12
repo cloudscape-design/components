@@ -5,9 +5,9 @@
 
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
+@use '../../internal/styles/typography/constants' as constants;
 
 .toggle-all {
-  @include styles.default-text-style;
   position: relative;
   z-index: 4;
   cursor: pointer;
@@ -16,6 +16,7 @@
   border-block-end-color: awsui.$color-border-dropdown-item-default;
 
   color: awsui.$color-text-dropdown-item-default;
+  font-weight: constants.$font-weight-bold;
 
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)

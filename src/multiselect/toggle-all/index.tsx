@@ -4,9 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import CheckboxIcon from '../../internal/components/checkbox-icon';
-import { Label } from '../../internal/components/option/option-parts';
 
-import optionStyles from '../../internal/components/option/styles.css.js';
 import selectableItemStyles from '../../internal/components/selectable-item/styles.css.js';
 import multiSelectItemStyles from '../../select/parts/styles.css.js';
 import styles from './styles.css.js';
@@ -23,13 +21,7 @@ export default function ToggleAll({ onToggle, selected }: { onToggle: () => void
           <div className={multiSelectItemStyles.checkbox}>
             <CheckboxIcon checked={selected === true} indeterminate={selected === undefined} />
           </div>
-          <span className={optionStyles.option}>
-            <span className={optionStyles.content}>
-              <span className={optionStyles['label-content']}>
-                <Label label="Select all" triggerVariant={false} />
-              </span>
-            </span>
-          </span>
+          <span>Select all</span>
         </div>
       </div>
     </div>
