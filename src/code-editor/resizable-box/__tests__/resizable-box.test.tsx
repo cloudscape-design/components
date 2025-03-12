@@ -7,6 +7,7 @@ import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-ed
 import { PointerEventMock } from '../../../../lib/components/internal/utils/pointer-events';
 
 import dragHandleStyles from '../../../../lib/components/internal/components/drag-handle/styles.css.js';
+import dragHandleWrapperStyles from '../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
 import styles from '../../../../lib/components/code-editor/resizable-box/styles.selectors.js';
 
 const defaultProps: ResizeBoxProps = {
@@ -22,6 +23,12 @@ function findBox() {
 
 function findHandle() {
   return document.querySelector(`.${dragHandleStyles.handle}`)!;
+}
+
+function findDirectionButton(direction: 'block-start' | 'block-end') {
+  return document.querySelector(
+    `.${dragHandleWrapperStyles[`direction-button-wrapper-${direction}`]} .${dragHandleWrapperStyles['direction-button']}`
+  )!;
 }
 
 beforeAll(() => {
@@ -40,7 +47,7 @@ test('Height is controlled', () => {
   expect(findBox()).toHaveStyle({ height: '200px' });
 });
 
-test('Emits resize events', () => {
+test('Emits resize events on mouse resizing', () => {
   const onResize = jest.fn();
   render(<ResizableBox {...defaultProps} onResize={onResize} />);
   fireEvent.pointerDown(findHandle());
@@ -49,6 +56,41 @@ test('Emits resize events', () => {
   onResize.mockClear();
   fireEvent.pointerMove(document.body, { clientY: 150 });
   expect(onResize).toHaveBeenCalledWith(150);
+});
+
+test('Emits resize events on keyboard resizing', () => {
+  const onResize = jest.fn();
+  render(<ResizableBox {...defaultProps} height={100} onResize={onResize} />);
+  // Arrow keys resize by 20px
+  fireEvent.keyDown(findHandle(), { key: 'ArrowDown' });
+  expect(onResize).toHaveBeenCalledWith(120);
+
+  onResize.mockClear();
+  fireEvent.keyDown(findHandle(), { key: 'ArrowRight' });
+  expect(onResize).toHaveBeenCalledWith(120);
+
+  onResize.mockClear();
+  fireEvent.keyDown(findHandle(), { key: 'ArrowUp' });
+  expect(onResize).toHaveBeenCalledWith(80);
+
+  onResize.mockClear();
+  fireEvent.keyDown(findHandle(), { key: 'ArrowLeft' });
+  expect(onResize).toHaveBeenCalledWith(80);
+});
+
+test('Emits resize events when direction buttons are pressed', () => {
+  const onResize = jest.fn();
+  render(<ResizableBox {...defaultProps} height={100} onResize={onResize} />);
+  // Open direction buttons
+  fireEvent.pointerDown(findHandle());
+  fireEvent.pointerUp(findHandle());
+
+  fireEvent.click(findDirectionButton('block-start'));
+  expect(onResize).toHaveBeenCalledWith(80);
+
+  onResize.mockClear();
+  fireEvent.click(findDirectionButton('block-end'));
+  expect(onResize).toHaveBeenCalledWith(120);
 });
 
 test('Includes offsets into size calculation', () => {
