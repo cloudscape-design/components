@@ -133,7 +133,7 @@ describe('AnchorNavigation', () => {
     });
   });
 
-  describe('nested items', () => {
+  describe('nested anchors', () => {
     const getParentTagChainUntilLastOL = (element: HTMLElement): string[] => {
       const parentChain: string[] = [];
       let currentElement = element;
@@ -162,11 +162,13 @@ describe('AnchorNavigation', () => {
           { text: 'Section 2', href: '#section2', level: 1 },
           { text: 'Section 3', href: '#section3', level: 1 },
           { text: 'Section 3.1', href: '#section3.1', level: 2 },
+          { text: 'Section 4', href: '#section4', level: 1 },
+          { text: 'Section 4.1.1.1', href: '#section4.1.1.1', level: 4 },
         ],
       });
 
       const olElements = wrapper.findAnchorNavigation()!.getElement().querySelectorAll('ol');
-      expect(olElements).toHaveLength(5);
+      expect(olElements).toHaveLength(6);
 
       const expectedNestings: { [key: number]: string[] } = {
         1: ['OL'],
@@ -177,6 +179,8 @@ describe('AnchorNavigation', () => {
         6: ['OL'],
         7: ['OL'],
         8: ['OL', 'LI', 'OL'],
+        9: ['OL'],
+        10: ['OL', 'LI', 'OL'],
       };
 
       Object.keys(expectedNestings).forEach(i => {
