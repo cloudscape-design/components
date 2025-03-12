@@ -3,7 +3,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 
-import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { SizeControlProps } from '../app-layout/utils/interfaces';
 import { useKeyboardEvents } from '../app-layout/utils/use-keyboard-events';
 import { usePointerEvents } from '../app-layout/utils/use-pointer-events';
@@ -39,7 +39,7 @@ export function SplitPanelImplementation({
   ...restProps
 }: SplitPanelImplementationProps) {
   const isRefresh = useVisualRefresh();
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbar = useAppLayoutToolbarDesignEnabled();
 
   const {
     position,
