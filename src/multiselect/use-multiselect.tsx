@@ -9,7 +9,6 @@ import { useInternalI18n } from '../i18n/context';
 import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { isGroup } from '../internal/components/option/utils/filter-options';
-import { flattenOptions } from '../internal/components/option/utils/flatten-options';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
 import { SomeRequired } from '../internal/types';
@@ -101,29 +100,33 @@ export function useMultiselect({
     statusType,
   });
   const useInteractiveGroups = true;
-  const { filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+  const { allOptions, filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
     filteringValue
   );
 
-  const allNonParentOptions = flattenOptions(options)
-    .flatOptions.filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
-    .map(option => option);
+  const allNonParentOptions = allOptions.filter(item => item.type !== 'parent' && item.type !== 'toggle-all');
+
   const allSelectableOptions = allNonParentOptions
-    .filter(option => option.type !== 'toggle-all' && !option.option.disabled)
+    .filter(option => !option.option.disabled)
     .map(option => option.option);
+
+  const filteredNonParentOptions = filteredOptions
+    .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
+    .map(item => item.option);
+
   const selectedValues = new Set(selectedOptions.map(option => option.value));
-  const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.option.value));
-  const isAllSelectableSelected = allSelectableOptions.every(option => selectedValues.has(option.value));
   const isSomeSelected = selectedOptions.length > 0;
+  const isAllVisibleSelected =
+    isSomeSelected && filteredNonParentOptions.every(option => selectedValues.has(option.value));
+  const isAllSelectableSelected =
+    isAllVisibleSelected && allSelectableOptions.every(option => selectedValues.has(option.value));
+  const isAllSelected =
+    isAllSelectableSelected && allNonParentOptions.every(option => selectedValues.has(option.option.value));
 
   const updateSelectedOption = useCallback(
     (option: OptionDefinition | OptionGroup) => {
-      const nonParentFilteredOptions = filteredOptions
-        .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
-        .map(item => item.option);
-
       // switch between selection and deselection behavior, ignores disabled options to prevent
       // getting stuck on one behavior when an option is disabled and its state cannot be changed
       const isAllChildrenSelected = (optionsArray: OptionDefinition[]) =>
@@ -141,7 +144,7 @@ export function useMultiselect({
       let newSelectedOptions = [...selectedOptions];
 
       if (isGroup(option)) {
-        const visibleOptions = intersection([...option.options], nonParentFilteredOptions);
+        const visibleOptions = intersection([...option.options], filteredNonParentOptions);
         newSelectedOptions = isAllChildrenSelected(visibleOptions)
           ? unselect(visibleOptions, newSelectedOptions)
           : select(visibleOptions, newSelectedOptions);
@@ -155,12 +158,17 @@ export function useMultiselect({
         selectedOptions: newSelectedOptions,
       });
     },
-    [onChange, selectedOptions, filteredOptions]
+    [selectedOptions, onChange, filteredNonParentOptions]
   );
 
   const toggleAll = () => {
+    const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
     fireNonCancelableEvent(onChange, {
-      selectedOptions: isAllSelectableSelected ? [] : allSelectableOptions,
+      selectedOptions: isAllVisibleSelected
+        ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
+        : allNonParentOptions
+            .filter(({ option: { value } }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value))
+            .map(option => option.option),
     });
   };
 
