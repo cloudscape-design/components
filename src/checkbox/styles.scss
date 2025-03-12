@@ -7,7 +7,8 @@
 @use '../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-$checkbox-size: awsui.$size-control;
+$checkbox-height: var(--theme-height, awsui.$size-control);
+$checkbox-width: var(--theme-width, awsui.$size-control);
 
 // double selector bumps specificity of this rule above the rule in the abstract switch styles applied to the same element
 .root.root {
@@ -16,7 +17,7 @@ $checkbox-size: awsui.$size-control;
 }
 
 .checkbox-control {
-  @include styles.make-control-size($checkbox-size);
+  @include styles.make-control-size($checkbox-height, $checkbox-width);
 }
 
 .outline {
