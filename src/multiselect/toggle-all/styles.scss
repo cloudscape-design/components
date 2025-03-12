@@ -8,9 +8,7 @@
 @use '../../internal/styles/typography/constants' as constants;
 
 .toggle-all {
-  position: relative;
   z-index: 4;
-  cursor: pointer;
 
   border-block: awsui.$border-divider-list-width solid transparent;
   border-block-end-color: awsui.$color-border-dropdown-item-default;
@@ -24,4 +22,12 @@
   padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
 
   margin-block-end: calc(-1 * #{awsui.$border-divider-list-width});
+
+  &:not(.disabled) {
+    cursor: pointer;
+  }
+  &.disabled {
+    color: awsui.$color-text-dropdown-item-disabled;
+    pointer-events: none;
+  }
 }

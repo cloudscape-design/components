@@ -9,6 +9,7 @@ import { useInternalI18n } from '../i18n/context';
 import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status';
 import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { isGroup } from '../internal/components/option/utils/filter-options';
+import { flattenOptions } from '../internal/components/option/utils/flatten-options';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
 import { SomeRequired } from '../internal/types';
@@ -104,14 +105,14 @@ export function useMultiselect({
     filteringValue
   );
 
-  const allNonParentOptions = filteredOptions
-    .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
-    .map(option => option.option);
-  const allSelectableOptions = filteredOptions
+  const allNonParentOptions = flattenOptions(options)
+    .flatOptions.filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
+    .map(option => option);
+  const allSelectableOptions = allNonParentOptions
     .filter(option => option.type !== 'toggle-all' && !option.option.disabled)
     .map(option => option.option);
   const selectedValues = new Set(selectedOptions.map(option => option.value));
-  const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.value));
+  const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.option.value));
   const isAllSelectableSelected = allSelectableOptions.every(option => selectedValues.has(option.value));
   const isSomeSelected = selectedOptions.length > 0;
 

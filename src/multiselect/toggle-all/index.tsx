@@ -9,9 +9,16 @@ import selectableItemStyles from '../../internal/components/selectable-item/styl
 import multiSelectItemStyles from '../../select/parts/styles.css.js';
 import styles from './styles.css.js';
 
-export default function ToggleAll({ onToggle, selected }: { onToggle: () => void; selected?: boolean }) {
+export default function ToggleAll({
+  onToggle,
+  state,
+}: {
+  onToggle: () => void;
+  state: 'all' | 'none' | 'some' | 'disabled';
+}) {
   const classNames = clsx(styles['toggle-all'], {
-    [selectableItemStyles.selected]: selected,
+    [selectableItemStyles.selected]: state === 'all',
+    [styles.disabled]: state === 'disabled',
   });
 
   return (
@@ -19,9 +26,9 @@ export default function ToggleAll({ onToggle, selected }: { onToggle: () => void
       <div className={selectableItemStyles['option-content']}>
         <div className={multiSelectItemStyles.item}>
           <div className={multiSelectItemStyles.checkbox}>
-            <CheckboxIcon checked={selected === true} indeterminate={selected === undefined} />
+            <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={state === 'disabled'} />
           </div>
-          <span>Select all</span>
+          <span aria-disabled={state === 'disabled'}>Select all</span>
         </div>
       </div>
     </div>

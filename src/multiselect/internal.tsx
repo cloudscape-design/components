@@ -162,7 +162,15 @@ const InternalMultiselect = React.forwardRef(
               {enableSelectAll && (
                 <ToggleAll
                   onToggle={multiselectProps.toggleAll}
-                  selected={multiselectProps.isAllSelected || (multiselectProps.isSomeSelected ? undefined : false)}
+                  state={
+                    !options.length || (!multiselectProps.isSomeSelected && !multiselectProps.filteredOptions.length)
+                      ? 'disabled'
+                      : multiselectProps.isAllSelected
+                        ? 'all'
+                        : multiselectProps.isSomeSelected
+                          ? 'some'
+                          : 'none'
+                  }
                 />
               )}
             </>
