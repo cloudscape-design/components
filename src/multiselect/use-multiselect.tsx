@@ -185,6 +185,7 @@ export function useMultiselect({
     getOptionProps,
     highlightOption,
     announceSelected,
+    setHighlightedIndexWithMouse,
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
@@ -305,5 +306,6 @@ export function useMultiselect({
     isSomeSelected,
     toggleAll,
     highlightedIndex,
+    setHighlightedIndexWithMouse,
   };
 }

@@ -345,5 +345,6 @@ export function useSelect({
     selectOption,
     announceSelected,
     dialogId,
+    setHighlightedIndexWithMouse,
   };
 }
