@@ -40,6 +40,7 @@ for (const componentName of getAllComponents().filter(component => vrOnlyCompone
       expect(content.length).toEqual(0);
     } else {
       expect(content.length).toBeGreaterThan(0);
+      expect(content).not.toContain('style="');
     }
   });
 }
