@@ -70,7 +70,7 @@ const initialSelectedOptions = [
   groupedOptionsWithDisabledOptions[1].options[0],
 ];
 
-function InternalMultiselect(props: Partial<MultiselectProps>) {
+function TestMultiselect({ inlineTokens, label, ...rest }: Partial<MultiselectProps> & { label: string }) {
   const [selectedOptions, setSelectedOptions] = useState<MultiselectProps.Options>(initialSelectedOptions);
   const { urlParams } = useContext(AppContext as DemoContext);
 
@@ -89,21 +89,27 @@ function InternalMultiselect(props: Partial<MultiselectProps>) {
       );
 
   return (
-    <Multiselect
-      selectedOptions={selectedOptions}
-      deselectAriaLabel={deselectAriaLabel}
-      statusType="pending"
-      filteringType="none"
-      options={options}
-      i18nStrings={i18nStrings}
-      enableSelectAll={true}
-      placeholder={'Choose option'}
-      onChange={event => {
-        setSelectedOptions(event.detail.selectedOptions);
-      }}
-      ariaLabel={props.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
-      {...props}
-    />
+    <Box padding="m">
+      <Box variant="awsui-key-label" margin={{ bottom: 'xxs' }}>
+        {label}
+      </Box>
+      <Multiselect
+        selectedOptions={selectedOptions}
+        deselectAriaLabel={deselectAriaLabel}
+        statusType="pending"
+        filteringType="none"
+        options={options}
+        i18nStrings={i18nStrings}
+        enableSelectAll={true}
+        placeholder={'Choose option'}
+        onChange={event => {
+          setSelectedOptions(event.detail.selectedOptions);
+        }}
+        ariaLabel={inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
+        inlineTokens={inlineTokens}
+        {...rest}
+      />
+    </Box>
   );
 }
 
@@ -111,40 +117,12 @@ export default function MultiselectPage() {
   return (
     <article>
       <Box padding="l">
-        <Box padding="s">
-          <Box variant="h1">Test: Close after</Box>
-          <InternalMultiselect id="close_after" tokenLimit={3} keepOpen={false} enableSelectAll={true} />
-        </Box>
-        <Box padding="s">
-          <Box variant="h1">Test: Keep open</Box>
-          <InternalMultiselect id="keep_open" tokenLimit={3} enableSelectAll={true} />
-        </Box>
-        <Box padding="s">
-          <Box variant="h1">Test: With Filtering</Box>
-          <InternalMultiselect id="with_filtering" filteringType="auto" />
-        </Box>
-
-        <Box padding="s">
-          <Box variant="h1">Test: With token limit</Box>
-          <InternalMultiselect id="with_token_limit" placeholder={'Choose option'} tokenLimit={1} />
-        </Box>
-
-        <Box padding="s">
-          <Box variant="h1">Test: Group selection</Box>
-          <InternalMultiselect id="group_selection" />
-        </Box>
-
-        <Box padding="s">
-          <Box variant="h1">Test: Expand to viewport</Box>
-          <InternalMultiselect id="expand_to_viewport" expandToViewport={true} />
-        </Box>
-
-        <Box padding="s">
-          <Box variant="h1">Test: Inline tokens</Box>
-          <div style={{ width: 200 }}>
-            <InternalMultiselect inlineTokens={true} enableSelectAll={true} />
-          </div>
-        </Box>
+        <TestMultiselect label="Keep open" tokenLimit={3} />
+        <TestMultiselect label="Close after" tokenLimit={3} keepOpen={false} />
+        <TestMultiselect label="With Filtering" filteringType="auto" />
+        <TestMultiselect label="With token limit" placeholder={'Choose option'} tokenLimit={1} />
+        <TestMultiselect label="Expand to viewport" expandToViewport={true} />
+        <TestMultiselect label="Inline tokens" inlineTokens={true} />
       </Box>
     </article>
   );
