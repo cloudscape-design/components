@@ -36,7 +36,12 @@ export default function ToggleAll({
   });
 
   return (
-    <div className={classNames} onClick={onToggle} onMouseMove={onMouseMove}>
+    <div
+      className={classNames}
+      onClick={onToggle}
+      onMouseMove={onMouseMove}
+      aria-checked={state === 'all' ? true : state === 'some' ? 'mixed' : false}
+    >
       <div className={multiSelectItemStyles.item}>
         <div className={multiSelectItemStyles.checkbox}>
           <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={disabled} />
