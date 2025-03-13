@@ -24,8 +24,7 @@ const renderButtonDropdown = (props: ButtonDropdownProps) => {
 const checkRenderedGroup = (
   renderedItem: ElementWrapper,
   group: ButtonDropdownProps.ItemGroup,
-  parentIsDisabled: boolean,
-  renderedCategoryGroup: ElementWrapper
+  parentIsDisabled: boolean
 ) => {
   const element = renderedItem.getElement();
 
@@ -40,7 +39,10 @@ const checkRenderedGroup = (
   if (parentIsDisabled || group.disabled) {
     expect(element).toHaveClass(`${categoryStyles.disabled}`);
     if (group.disabled) {
-      expect(renderedCategoryGroup?.getElement()).toHaveAttribute('aria-disabled', 'true');
+      expect(element.querySelector(`.${categoryItemStyles['items-list-container']}`)).toHaveAttribute(
+        'aria-disabled',
+        'true'
+      );
     }
   }
 };
@@ -92,15 +94,11 @@ const checkRenderedItems = (
 
   expect(renderedItems.length).toBe(items.length);
 
-  const categoryGroups = wrapper.findAllByClassName(`${categoryItemStyles['items-list-container']}`);
-
-  let categoryGroup = 0;
   renderedItems.forEach((renderedItem: ElementWrapper, index: number) => {
     const item = items[index];
 
     if (isItemGroup(item)) {
-      checkRenderedGroup(renderedItem, item, parentIsDisabled, categoryGroups[categoryGroup]!);
-      categoryGroup++;
+      checkRenderedGroup(renderedItem, item, parentIsDisabled);
     } else {
       checkElementItem(renderedItem, item, parentIsDisabled);
     }
