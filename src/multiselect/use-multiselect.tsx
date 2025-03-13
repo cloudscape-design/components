@@ -161,17 +161,6 @@ export function useMultiselect({
     [selectedOptions, onChange, filteredNonParentOptions]
   );
 
-  const toggleAll = () => {
-    const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
-    fireNonCancelableEvent(onChange, {
-      selectedOptions: isAllVisibleSelected
-        ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
-        : allNonParentOptions
-            .filter(({ option: { value } }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value))
-            .map(option => option.option),
-    });
-  };
-
   const scrollToIndex = useRef<SelectListProps.SelectListRef>(null);
   const {
     isOpen,
@@ -187,6 +176,7 @@ export function useMultiselect({
     announceSelected,
     setHighlightedIndexWithMouse,
     menuId,
+    closeDropdownIfNecessary,
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
@@ -201,10 +191,21 @@ export function useMultiselect({
     useInteractiveGroups,
     statusType,
     embedded,
-    toggleAll,
     enableSelectAll,
     isAllSelected,
   });
+
+  const toggleAll = () => {
+    const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
+    fireNonCancelableEvent(onChange, {
+      selectedOptions: isAllVisibleSelected
+        ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
+        : allNonParentOptions
+            .filter(({ option: { value } }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value))
+            .map(option => option.option),
+    });
+    closeDropdownIfNecessary();
+  };
 
   const wrapperOnKeyDown = useNativeSearch({
     isEnabled: filteringType === 'none' && isOpen,

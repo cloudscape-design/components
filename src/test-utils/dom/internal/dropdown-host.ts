@@ -8,6 +8,7 @@ import DropdownWrapper from './dropdown';
 import OptionWrapper from './option';
 import OptionsListWrapper from './options-list';
 
+import selectAllStyles from '../../../multiselect/select-all/styles.css.js';
 import dropdownStyles from '../../../internal/components/dropdown/styles.selectors.js';
 import footerStyles from '../../../internal/components/dropdown-status/styles.selectors.js';
 import optionStyles from '../../../internal/components/option/styles.selectors.js';
@@ -217,6 +218,13 @@ export class DropdownContentWrapper extends ComponentWrapper {
    */
   findGroups(): Array<ElementWrapper> {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-group-index]:not([data-test-index])`);
+  }
+
+  /*
+   * Returns the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
+   */
+  findSelectAll(): ElementWrapper | null {
+    return this.find(`.${selectAllStyles['select-all']}`);
   }
 }
 

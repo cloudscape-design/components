@@ -38,7 +38,6 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  toggleAll?: () => void;
   enableSelectAll?: boolean;
   isAllSelected?: boolean;
 }
@@ -61,7 +60,6 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
-  toggleAll,
   enableSelectAll,
   isAllSelected,
 }: UseSelectProps) {
@@ -116,20 +114,20 @@ export function useSelect({
   const dialogId = useUniqueId('dialog');
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
-  const selectOption = (option?: DropdownOption) => {
-    const optionToSelect = option || highlightedOption;
-    if (optionToSelect?.type === 'toggle-all') {
-      toggleAll?.();
-      return;
-    }
-    if (!optionToSelect || !interactivityCheck(optionToSelect)) {
-      return;
-    }
-    updateSelectedOption(optionToSelect.option);
+  const closeDropdownIfNecessary = () => {
     if (!keepOpen) {
       triggerRef.current?.focus();
       closeDropdown();
     }
+  };
+
+  const selectOption = (option?: DropdownOption) => {
+    const optionToSelect = option || highlightedOption;
+    if (!optionToSelect || !interactivityCheck(optionToSelect)) {
+      return;
+    }
+    updateSelectedOption(optionToSelect.option);
+    closeDropdownIfNecessary();
   };
 
   const activeKeyDownHandler = useMenuKeyboard({
@@ -347,5 +345,6 @@ export function useSelect({
     dialogId,
     menuId,
     setHighlightedIndexWithMouse,
+    closeDropdownIfNecessary,
   };
 }
