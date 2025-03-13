@@ -9,7 +9,7 @@ import {
   Direction,
   DragHandleWrapperProps,
 } from '../../../../../lib/components/internal/components/drag-handle-wrapper/interfaces';
-import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events';
+import { PointerEventMock } from '../../../../../lib/components/internal/utils/pointer-events-mock';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';
 import tooltipStyles from '../../../../../lib/components/internal/components/tooltip/styles.css.js';

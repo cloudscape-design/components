@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { fireEvent, render } from '@testing-library/react';
 
 import { ResizableBox, ResizeBoxProps } from '../../../../lib/components/code-editor/resizable-box';
-import { PointerEventMock } from '../../../../lib/components/internal/utils/pointer-events';
+import { PointerEventMock } from '../../../../lib/components/internal/utils/pointer-events-mock';
 
 import dragHandleStyles from '../../../../lib/components/internal/components/drag-handle/styles.css.js';
 import dragHandleWrapperStyles from '../../../../lib/components/internal/components/drag-handle-wrapper/styles.css.js';

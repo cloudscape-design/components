@@ -10,7 +10,7 @@ import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { PointerEventMock } from '../../../lib/components/internal/utils/pointer-events';
+import { PointerEventMock } from '../../../lib/components/internal/utils/pointer-events-mock.js';
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import {

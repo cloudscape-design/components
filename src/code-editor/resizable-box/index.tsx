@@ -87,6 +87,8 @@ export function ResizableBox({
         <InternalDragHandle
           ariaLabel={handleAriaLabel}
           variant="resize-area"
+          // Provide an arbitrary large value to valueMax since the editor can be
+          // resized to be infinitely large.
           ariaValue={{ valueMin: minHeight, valueMax: 1000000, valueNow: height }}
           tooltipText={handleTooltipText}
           onPointerDown={onPointerDown}
