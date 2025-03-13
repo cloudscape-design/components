@@ -22,7 +22,10 @@ export default function ToggleAll({
   onToggle: () => void;
   state: 'all' | 'none' | 'some';
 }) {
-  const classNames = clsx(styles['toggle-all'], {
+  const classNames = clsx(styles['select-all'], selectableItemStyles['selectable-item'], {
+    [selectableItemStyles.selected]: state === 'all',
+    [selectableItemStyles.highlighted]: highlighted,
+    [selectableItemStyles.disabled]: disabled,
     [styles.selected]: state === 'all',
     [styles.highlighted]: highlighted,
     [styles.disabled]: disabled,
@@ -30,13 +33,11 @@ export default function ToggleAll({
 
   return (
     <div className={classNames} onClick={onToggle} onMouseMove={onMouseMove}>
-      <div className={selectableItemStyles['option-content']}>
-        <div className={multiSelectItemStyles.item}>
-          <div className={multiSelectItemStyles.checkbox}>
-            <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={disabled} />
-          </div>
-          <span aria-disabled={disabled}>Select all</span>
+      <div className={multiSelectItemStyles.item}>
+        <div className={multiSelectItemStyles.checkbox}>
+          <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={disabled} />
         </div>
+        <span aria-disabled={disabled}>Select all</span>
       </div>
     </div>
   );
