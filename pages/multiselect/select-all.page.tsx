@@ -98,34 +98,8 @@ export default function MultiselectPage() {
     <article>
       <h1>Multiselect with &quot;Select all&quot;</h1>
       <Box padding={{ horizontal: 'l' }}>
-        <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
-          <div style={{ flexGrow: 1 }}>
-            <SpaceBetween size="xxl">
-              <SpaceBetween size="xxs">
-                <Box variant="awsui-key-label">Select an option</Box>
-                <Multiselect
-                  selectedOptions={selectedOptions}
-                  deselectAriaLabel={deselectAriaLabel}
-                  statusType="pending"
-                  filteringType={urlParams.withFiltering ? 'auto' : 'none'}
-                  options={options}
-                  i18nStrings={i18nStrings}
-                  enableSelectAll={true}
-                  placeholder={'Choose option'}
-                  onChange={event => {
-                    setSelectedOptions(event.detail.selectedOptions);
-                  }}
-                  ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
-                  inlineTokens={urlParams.inlineTokens}
-                  tokenLimit={urlParams.tokenLimit}
-                  expandToViewport={urlParams.expandToViewport}
-                  keepOpen={!urlParams.closeAfter}
-                />
-              </SpaceBetween>
-            </SpaceBetween>
-          </div>
-
-          <SpaceBetween size="l">
+        <SpaceBetween size="xxl">
+          <SpaceBetween direction="horizontal" size="l">
             <label>
               <input
                 type="checkbox"
@@ -183,7 +157,29 @@ export default function MultiselectPage() {
               />
             </label>
           </SpaceBetween>
-        </div>
+
+          <SpaceBetween size="xxs">
+            <Box variant="awsui-key-label">Select an option</Box>
+            <Multiselect
+              selectedOptions={selectedOptions}
+              deselectAriaLabel={deselectAriaLabel}
+              statusType="pending"
+              filteringType={urlParams.withFiltering ? 'auto' : 'none'}
+              options={options}
+              i18nStrings={i18nStrings}
+              enableSelectAll={true}
+              placeholder={'Choose option'}
+              onChange={event => {
+                setSelectedOptions(event.detail.selectedOptions);
+              }}
+              ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
+              inlineTokens={urlParams.inlineTokens}
+              tokenLimit={urlParams.tokenLimit}
+              expandToViewport={urlParams.expandToViewport}
+              keepOpen={!urlParams.closeAfter}
+            />
+          </SpaceBetween>
+        </SpaceBetween>
       </Box>
     </article>
   );
