@@ -59,6 +59,10 @@
     display: none;
   }
 
+  &.drawer-expanded {
+    order: -1;
+  }
+
   > .drawer-content-container {
     grid-column: 1 / span 2;
     grid-row: 1;

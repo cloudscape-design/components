@@ -199,6 +199,7 @@ export function useDrawers(
   });
   const [activeGlobalDrawersIds, setActiveGlobalDrawersIds] = useState<Array<string>>([]);
   const [drawerSizes, setDrawerSizes] = useState<Record<string, number>>({});
+  const [expandedDrawerId, setExpandedDrawerId] = useState<string | undefined>(undefined);
   // FIFO queue that keeps track of open drawers, where the first element is the most recently opened drawer
   const drawersOpenQueue = useRef<Array<string>>([]);
 
@@ -335,5 +336,7 @@ export function useDrawers(
     onActiveDrawerChange,
     onActiveDrawerResize,
     onActiveGlobalDrawersChange,
+    expandedDrawerId,
+    setExpandedDrawerId,
   };
 }

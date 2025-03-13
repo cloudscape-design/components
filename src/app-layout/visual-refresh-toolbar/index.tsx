@@ -151,6 +151,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveDrawerChange,
       onActiveDrawerResize,
       onActiveGlobalDrawersChange,
+      expandedDrawerId,
+      setExpandedDrawerId,
     } = useDrawers({ ...rest, onGlobalDrawerFocus, onAddNewActiveDrawer }, ariaLabels, {
       ariaLabels,
       toolsHide,
@@ -266,6 +268,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       splitPanelPosition: splitPanelPreferences?.position,
       isMobile,
       activeGlobalDrawersSizes,
+      expandedDrawerId,
     });
 
     const { ref: intersectionObserverRef, isIntersecting } = useIntersectionObserver({ initialState: true });
@@ -352,6 +355,8 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       onActiveDrawerChange: onActiveDrawerChangeHandler,
       onActiveDrawerResize,
       splitPanelAnimationDisabled,
+      expandedDrawerId,
+      setExpandedDrawerId,
     };
 
     const splitPanelInternals: SplitPanelProviderProps = {
@@ -484,6 +489,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
         <SkeletonLayout
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
+          drawerFocusMode={!!expandedDrawerId}
           style={{
             paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
             ...(hasToolbar || !isNested

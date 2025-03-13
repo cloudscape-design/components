@@ -41,6 +41,7 @@ interface SkeletonLayoutProps
   globalToolsOpen?: boolean;
   navigationAnimationDisabled?: boolean;
   isNested?: boolean;
+  drawerFocusMode: boolean;
 }
 
 export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutProps>(
@@ -69,6 +70,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
       globalToolsOpen,
       navigationAnimationDisabled,
       isNested,
+      drawerFocusMode,
     },
     ref
   ) => {
@@ -81,6 +83,7 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
         className={clsx(styles.root, testutilStyles.root, {
           [styles['has-adaptive-widths-default']]: !contentTypeCustomWidths.includes(contentType),
           [styles['has-adaptive-widths-dashboard']]: contentType === 'dashboard',
+          [styles['drawer-focus-mode']]: drawerFocusMode,
         })}
         style={{
           minBlockSize: isNested ? '100%' : `calc(100vh - ${placement.insetBlockStart + placement.insetBlockEnd}px)`,
@@ -96,13 +99,20 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
               styles.navigation,
               !navigationOpen && styles['panel-hidden'],
               toolsOpen && styles['unfocusable-mobile'],
-              !navigationAnimationDisabled && sharedStyles['with-motion-horizontal']
+              !navigationAnimationDisabled && sharedStyles['with-motion-horizontal'],
+              drawerFocusMode && styles.hidden
             )}
           >
             {navigation}
           </div>
         )}
-        <main className={clsx(styles['main-landmark'], isMobile && anyPanelOpen && styles['unfocusable-mobile'])}>
+        <main
+          className={clsx(
+            styles['main-landmark'],
+            isMobile && anyPanelOpen && styles['unfocusable-mobile'],
+            drawerFocusMode && styles.hidden
+          )}
+        >
           {notifications && (
             <div
               className={clsx(
