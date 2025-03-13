@@ -424,6 +424,7 @@ exports[`test-utils selectors 1`] = `
   ],
   "multiselect": [
     "awsui_root_f8g6q",
+    "awsui_select-all_spzfn",
   ],
   "pagination": [
     "awsui_button-current_fvjdu",
