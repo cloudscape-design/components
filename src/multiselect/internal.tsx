@@ -20,7 +20,7 @@ import VirtualList from '../select/parts/virtual-list';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
-import ToggleAll from './select-all';
+import SelectAll from './select-all';
 import { useMultiselect } from './use-multiselect';
 
 import styles from './styles.css.js';
@@ -161,10 +161,11 @@ const InternalMultiselect = React.forwardRef(
             <>
               {filter}
               {enableSelectAll && (
-                <ToggleAll
+                <SelectAll
                   disabled={!multiselectProps.filteredOptions.length}
                   highlighted={enableSelectAll && multiselectProps.highlightedIndex === 0}
                   highlightType={multiselectProps.highlightType}
+                  menuId={multiselectProps.menuId}
                   onMouseMove={() => multiselectProps.setHighlightedIndexWithMouse(0)}
                   onToggle={multiselectProps.toggleAll}
                   state={

@@ -14,6 +14,7 @@ export default function ToggleAll({
   disabled,
   highlighted,
   highlightType,
+  menuId,
   onMouseMove,
   onToggle,
   state,
@@ -21,6 +22,7 @@ export default function ToggleAll({
   disabled: boolean;
   highlighted: boolean;
   highlightType: HighlightType;
+  menuId: string;
   onMouseMove: () => void;
   onToggle: () => void;
   state: 'all' | 'none' | 'some';
@@ -40,7 +42,9 @@ export default function ToggleAll({
       className={classNames}
       onClick={onToggle}
       onMouseMove={onMouseMove}
+      role="checkbox"
       aria-checked={state === 'all' ? true : state === 'some' ? 'mixed' : false}
+      aria-controls={menuId}
     >
       <div className={multiSelectItemStyles.item}>
         <div className={multiSelectItemStyles.checkbox}>
