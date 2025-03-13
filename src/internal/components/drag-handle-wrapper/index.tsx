@@ -33,9 +33,7 @@ export default function DragHandleWrapper({
   const [showButtons, setShowButtons] = useState(false);
 
   // The tooltip ("Drag or select to move/resize") shouldn't show if clicking
-  // on the handle wouldn't do anything. And the directional buttons shouldn't
-  // show if all of them are going to be disabled (which implies the drag
-  // control should be visually/semantically disabled as well).
+  // on the handle wouldn't do anything.
   const isDisabled =
     !directions['block-start'] && !directions['block-end'] && !directions['inline-start'] && !directions['inline-end'];
 
