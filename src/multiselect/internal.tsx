@@ -20,7 +20,7 @@ import VirtualList from '../select/parts/virtual-list';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
-import ToggleAll from './toggle-all';
+import ToggleAll from './select-all';
 import { useMultiselect } from './use-multiselect';
 
 import styles from './styles.css.js';
