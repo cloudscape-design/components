@@ -5,6 +5,7 @@ import React, { useContext, useState } from 'react';
 import Box from '~components/box';
 import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
+import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants';
@@ -89,10 +90,8 @@ function TestMultiselect({ inlineTokens, label, ...rest }: Partial<MultiselectPr
       );
 
   return (
-    <Box padding="m">
-      <Box variant="awsui-key-label" margin={{ bottom: 'xxs' }}>
-        {label}
-      </Box>
+    <SpaceBetween size="xxs">
+      <Box variant="awsui-key-label">{label}</Box>
       <Multiselect
         selectedOptions={selectedOptions}
         deselectAriaLabel={deselectAriaLabel}
@@ -109,20 +108,23 @@ function TestMultiselect({ inlineTokens, label, ...rest }: Partial<MultiselectPr
         inlineTokens={inlineTokens}
         {...rest}
       />
-    </Box>
+    </SpaceBetween>
   );
 }
 
 export default function MultiselectPage() {
   return (
     <article>
-      <Box padding="l">
-        <TestMultiselect label="Keep open" tokenLimit={3} />
-        <TestMultiselect label="Close after" tokenLimit={3} keepOpen={false} />
-        <TestMultiselect label="With Filtering" filteringType="auto" />
-        <TestMultiselect label="With token limit" placeholder={'Choose option'} tokenLimit={1} />
-        <TestMultiselect label="Expand to viewport" expandToViewport={true} />
-        <TestMultiselect label="Inline tokens" inlineTokens={true} />
+      <h1>Multiselect with &quot;Select all&quot;</h1>
+      <Box padding={{ horizontal: 'l' }}>
+        <SpaceBetween size="xxl">
+          <TestMultiselect label="Keep open" tokenLimit={3} />
+          <TestMultiselect label="Close after" tokenLimit={3} keepOpen={false} />
+          <TestMultiselect label="With Filtering" filteringType="auto" />
+          <TestMultiselect label="With token limit" placeholder={'Choose option'} tokenLimit={1} />
+          <TestMultiselect label="Expand to viewport" expandToViewport={true} />
+          <TestMultiselect label="Inline tokens" inlineTokens={true} />
+        </SpaceBetween>
       </Box>
     </article>
   );
