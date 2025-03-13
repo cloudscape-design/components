@@ -643,6 +643,7 @@ describe('Code editor component', () => {
         messages={{
           'code-editor': {
             'i18nStrings.paneCloseButtonAriaLabel': 'Custom close',
+            'i18nStrings.resizeHandleAriaLabel': 'Custom resize handle',
           },
         }}
       >
@@ -653,6 +654,10 @@ describe('Code editor component', () => {
     act(() => emulateAceAnnotationEvent!());
     wrapper.findErrorsTab()!.click();
     expect(wrapper.findPane()!.findButton()!.getElement()).toHaveAttribute('aria-label', 'Custom close');
+    expect(wrapper.findPane()!.find('[role=slider]')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom resize handle'
+    );
   });
 
   test('supports using preferences modal strings from i18n provider', () => {

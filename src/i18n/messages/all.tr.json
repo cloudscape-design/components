@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Temaları filtrele",
     "i18nStrings.preferencesModalLightThemes": "Açık temalar",
     "i18nStrings.preferencesModalDarkThemes": "Koyu temalar",
-    "i18nStrings.cursorPositionAriaLabel": "İmleç {row}. satırda"
+    "i18nStrings.cursorPositionAriaLabel": "İmleç {row}. satırda",
+    "i18nStrings.resizeHandleAriaLabel": "Yeniden boyutlandırma tutamacı",
+    "i18nStrings.resizeHandleTooltipText": "Yeniden boyutlandırmak için sürükleyin veya seçin"
   },
   "collection-preferences": {
     "title": "Tercihler",
