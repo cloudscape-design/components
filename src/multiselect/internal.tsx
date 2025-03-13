@@ -164,6 +164,7 @@ const InternalMultiselect = React.forwardRef(
                 <ToggleAll
                   disabled={!multiselectProps.filteredOptions.length}
                   highlighted={enableSelectAll && multiselectProps.highlightedIndex === 0}
+                  highlightType={multiselectProps.highlightType}
                   onMouseMove={() => multiselectProps.setHighlightedIndexWithMouse(0)}
                   onToggle={multiselectProps.toggleAll}
                   state={

@@ -4,6 +4,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import CheckboxIcon from '../../internal/components/checkbox-icon';
+import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 
 import selectableItemStyles from '../../internal/components/selectable-item/styles.css.js';
 import multiSelectItemStyles from '../../select/parts/styles.css.js';
@@ -12,12 +13,14 @@ import styles from './styles.css.js';
 export default function ToggleAll({
   disabled,
   highlighted,
+  highlightType,
   onMouseMove,
   onToggle,
   state,
 }: {
   disabled: boolean;
   highlighted: boolean;
+  highlightType: HighlightType;
   onMouseMove: () => void;
   onToggle: () => void;
   state: 'all' | 'none' | 'some';
@@ -25,6 +28,7 @@ export default function ToggleAll({
   const classNames = clsx(styles['select-all'], selectableItemStyles['selectable-item'], {
     [selectableItemStyles.selected]: state === 'all',
     [selectableItemStyles.highlighted]: highlighted,
+    [selectableItemStyles['is-keyboard']]: highlightType.type === 'keyboard',
     [selectableItemStyles.disabled]: disabled,
     [styles.selected]: state === 'all',
     [styles.highlighted]: highlighted,
