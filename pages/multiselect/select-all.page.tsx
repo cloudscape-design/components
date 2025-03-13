@@ -12,10 +12,13 @@ import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants'
 
 type DemoContext = React.Context<
   AppContextType<{
+    closeAfter?: boolean;
     expandToViewport?: boolean;
     withDisabledOptions?: boolean;
     withFiltering?: boolean;
     withGroups?: boolean;
+    tokenLimit?: number;
+    inlineTokens?: boolean;
   }>
 >;
 
@@ -73,9 +76,9 @@ const initialSelectedOptions = [
   groupedOptionsWithDisabledOptions[1].options[0],
 ];
 
-function TestMultiselect({ inlineTokens, label, ...rest }: Partial<MultiselectProps> & { label: string }) {
+export default function MultiselectPage() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [selectedOptions, setSelectedOptions] = useState<MultiselectProps.Options>(initialSelectedOptions);
-  const { urlParams } = useContext(AppContext as DemoContext);
 
   const groupedOptions = urlParams.withDisabledOptions
     ? groupedOptionsWithDisabledOptions
@@ -92,38 +95,37 @@ function TestMultiselect({ inlineTokens, label, ...rest }: Partial<MultiselectPr
       );
 
   return (
-    <SpaceBetween size="xxs">
-      <Box variant="awsui-key-label">{label}</Box>
-      <Multiselect
-        selectedOptions={selectedOptions}
-        deselectAriaLabel={deselectAriaLabel}
-        statusType="pending"
-        filteringType={urlParams.withFiltering ? 'auto' : 'none'}
-        options={options}
-        i18nStrings={i18nStrings}
-        enableSelectAll={true}
-        placeholder={'Choose option'}
-        onChange={event => {
-          setSelectedOptions(event.detail.selectedOptions);
-        }}
-        ariaLabel={inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
-        inlineTokens={inlineTokens}
-        expandToViewport={urlParams.expandToViewport}
-        {...rest}
-      />
-    </SpaceBetween>
-  );
-}
-
-export default function MultiselectPage() {
-  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
-
-  return (
     <article>
       <h1>Multiselect with &quot;Select all&quot;</h1>
       <Box padding={{ horizontal: 'l' }}>
-        <SpaceBetween size="l">
-          <SpaceBetween direction="horizontal" size="l">
+        <div style={{ display: 'flex', gap: 40, flexWrap: 'wrap' }}>
+          <div style={{ flexGrow: 1 }}>
+            <SpaceBetween size="xxl">
+              <SpaceBetween size="xxs">
+                <Box variant="awsui-key-label">Select an option</Box>
+                <Multiselect
+                  selectedOptions={selectedOptions}
+                  deselectAriaLabel={deselectAriaLabel}
+                  statusType="pending"
+                  filteringType={urlParams.withFiltering ? 'auto' : 'none'}
+                  options={options}
+                  i18nStrings={i18nStrings}
+                  enableSelectAll={true}
+                  placeholder={'Choose option'}
+                  onChange={event => {
+                    setSelectedOptions(event.detail.selectedOptions);
+                  }}
+                  ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
+                  inlineTokens={urlParams.inlineTokens}
+                  tokenLimit={urlParams.tokenLimit}
+                  expandToViewport={urlParams.expandToViewport}
+                  keepOpen={!urlParams.closeAfter}
+                />
+              </SpaceBetween>
+            </SpaceBetween>
+          </div>
+
+          <SpaceBetween size="l">
             <label>
               <input
                 type="checkbox"
@@ -156,14 +158,32 @@ export default function MultiselectPage() {
               />{' '}
               Expand to viewport
             </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={urlParams.inlineTokens}
+                onChange={e => setUrlParams({ inlineTokens: e.target.checked })}
+              />{' '}
+              Inline tokens
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={urlParams.closeAfter}
+                onChange={e => setUrlParams({ closeAfter: e.target.checked })}
+              />{' '}
+              Close after selection
+            </label>
+            <label>
+              Token limit{' '}
+              <input
+                type="number"
+                value={urlParams.tokenLimit}
+                onChange={e => setUrlParams({ tokenLimit: parseInt(e.target.value) })}
+              />
+            </label>
           </SpaceBetween>
-          <SpaceBetween size="xxl">
-            <TestMultiselect label="Keep open" tokenLimit={3} />
-            <TestMultiselect label="Close after" tokenLimit={3} keepOpen={false} />
-            <TestMultiselect label="With token limit" placeholder={'Choose option'} tokenLimit={1} />
-            <TestMultiselect label="Inline tokens" inlineTokens={true} />
-          </SpaceBetween>
-        </SpaceBetween>
+        </div>
       </Box>
     </article>
   );
