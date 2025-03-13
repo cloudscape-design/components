@@ -113,17 +113,39 @@ function TestMultiselect({ inlineTokens, label, ...rest }: Partial<MultiselectPr
 }
 
 export default function MultiselectPage() {
+  const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
+
   return (
     <article>
       <h1>Multiselect with &quot;Select all&quot;</h1>
       <Box padding={{ horizontal: 'l' }}>
-        <SpaceBetween size="xxl">
-          <TestMultiselect label="Keep open" tokenLimit={3} />
-          <TestMultiselect label="Close after" tokenLimit={3} keepOpen={false} />
-          <TestMultiselect label="With Filtering" filteringType="auto" />
-          <TestMultiselect label="With token limit" placeholder={'Choose option'} tokenLimit={1} />
-          <TestMultiselect label="Expand to viewport" expandToViewport={true} />
-          <TestMultiselect label="Inline tokens" inlineTokens={true} />
+        <SpaceBetween size="l">
+          <SpaceBetween direction="horizontal" size="l">
+            <label>
+              <input
+                type="checkbox"
+                checked={urlParams.withGroups}
+                onChange={e => setUrlParams({ withGroups: e.target.checked })}
+              />{' '}
+              With groups
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={urlParams.withDisabledOptions}
+                onChange={e => setUrlParams({ withDisabledOptions: e.target.checked })}
+              />{' '}
+              With disabled options
+            </label>
+          </SpaceBetween>
+          <SpaceBetween size="xxl">
+            <TestMultiselect label="Keep open" tokenLimit={3} />
+            <TestMultiselect label="Close after" tokenLimit={3} keepOpen={false} />
+            <TestMultiselect label="With Filtering" filteringType="auto" />
+            <TestMultiselect label="With token limit" placeholder={'Choose option'} tokenLimit={1} />
+            <TestMultiselect label="Expand to viewport" expandToViewport={true} />
+            <TestMultiselect label="Inline tokens" inlineTokens={true} />
+          </SpaceBetween>
         </SpaceBetween>
       </Box>
     </article>
