@@ -9,7 +9,10 @@ import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-tool
 import { ActionsWrapper } from '../alert/actions-wrapper';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_ANALYTICS_FLASHBAR,
+  DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
+} from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
@@ -154,9 +157,13 @@ export const Flash = React.forwardRef(
 
     const effectiveType = loading ? 'info' : type;
 
-    const analyticsAttributes = {
+    const analyticsAttributes: Record<string, string> = {
       [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
     };
+
+    if (analyticsMetadata.suppressFlowMetricEvents) {
+      analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
+    }
 
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
@@ -181,7 +188,7 @@ export const Flash = React.forwardRef(
           getVisualContextClassname(type === 'warning' && !loading ? 'flashbar-warning' : 'flashbar'),
           initialHidden && styles['initial-hidden']
         )}
-        {...(analyticsMetadata.suppressFlowMetricEvents ? undefined : analyticsAttributes)}
+        {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
           <div
