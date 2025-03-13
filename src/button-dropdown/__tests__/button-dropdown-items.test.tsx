@@ -95,7 +95,7 @@ const checkRenderedItems = (
   const categoryGroups = wrapper.findAllByClassName(`${categoryItemStyles['items-list-container']}`);
 
   let categoryGroup = 0;
-  Array.prototype.forEach.call(renderedItems, (renderedItem: ElementWrapper, index: number) => {
+  renderedItems.forEach((renderedItem: ElementWrapper, index: number) => {
     const item = items[index];
 
     if (isItemGroup(item)) {

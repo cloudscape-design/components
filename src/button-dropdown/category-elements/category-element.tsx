@@ -34,12 +34,7 @@ const CategoryElement = ({
           {item.text}
         </p>
       )}
-      <ul
-        className={styles['items-list-container']}
-        role="group"
-        aria-label={item.text}
-        aria-disabled={disabled ? 'true' : undefined}
-      >
+      <ul className={styles['items-list-container']} role="group" aria-label={item.text} aria-disabled={disabled}>
         {item.items && (
           <ItemsList
             items={item.items}
