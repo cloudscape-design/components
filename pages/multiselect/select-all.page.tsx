@@ -14,11 +14,12 @@ type DemoContext = React.Context<
   AppContextType<{
     closeAfter?: boolean;
     expandToViewport?: boolean;
+    inlineTokens?: boolean;
+    tokenLimit?: number;
+    virtualScroll?: boolean;
     withDisabledOptions?: boolean;
     withFiltering?: boolean;
     withGroups?: boolean;
-    tokenLimit?: number;
-    inlineTokens?: boolean;
   }>
 >;
 
@@ -149,6 +150,14 @@ export default function MultiselectPage() {
               Close after selection
             </label>
             <label>
+              <input
+                type="checkbox"
+                checked={urlParams.virtualScroll}
+                onChange={e => setUrlParams({ virtualScroll: e.target.checked })}
+              />{' '}
+              Virtual scroll
+            </label>
+            <label>
               Token limit{' '}
               <input
                 type="number"
@@ -163,7 +172,6 @@ export default function MultiselectPage() {
             <Multiselect
               selectedOptions={selectedOptions}
               deselectAriaLabel={deselectAriaLabel}
-              statusType="pending"
               filteringType={urlParams.withFiltering ? 'auto' : 'none'}
               options={options}
               i18nStrings={i18nStrings}
@@ -177,6 +185,7 @@ export default function MultiselectPage() {
               tokenLimit={urlParams.tokenLimit}
               expandToViewport={urlParams.expandToViewport}
               keepOpen={!urlParams.closeAfter}
+              virtualScroll={urlParams.virtualScroll}
             />
           </SpaceBetween>
         </SpaceBetween>
