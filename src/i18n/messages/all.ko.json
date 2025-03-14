@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "테마 필터링",
     "i18nStrings.preferencesModalLightThemes": "밝은 테마",
     "i18nStrings.preferencesModalDarkThemes": "다크 테마",
-    "i18nStrings.cursorPositionAriaLabel": "{row}행 위의 커서"
+    "i18nStrings.cursorPositionAriaLabel": "{row}행 위의 커서",
+    "i18nStrings.resizeHandleAriaLabel": "크기 조정 핸들",
+    "i18nStrings.resizeHandleTooltipText": "드래그하거나 선택하여 크기 조정"
   },
   "collection-preferences": {
     "title": "기본 설정",
@@ -209,7 +211,8 @@
     "closeAriaLabel": "모달 닫기"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} 제거"
+    "deselectAriaLabel": "{option__label} 제거",
+    "i18nStrings.selectAllText": "모두 선택"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "다음 페이지",

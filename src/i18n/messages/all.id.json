@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filter tema",
     "i18nStrings.preferencesModalLightThemes": "Tema terang",
     "i18nStrings.preferencesModalDarkThemes": "Tema gelap",
-    "i18nStrings.cursorPositionAriaLabel": "Kursor pada baris {row}"
+    "i18nStrings.cursorPositionAriaLabel": "Kursor pada baris {row}",
+    "i18nStrings.resizeHandleAriaLabel": "Tuas pengubah ukuran",
+    "i18nStrings.resizeHandleTooltipText": "Seret atau pilih untuk mengubah ukuran"
   },
   "collection-preferences": {
     "title": "Preferensi",
@@ -209,7 +211,8 @@
     "closeAriaLabel": "Tutup modal"
   },
   "multiselect": {
-    "deselectAriaLabel": "Hapus {option__label}"
+    "deselectAriaLabel": "Hapus {option__label}",
+    "i18nStrings.selectAllText": "Pilih semua"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
