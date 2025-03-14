@@ -66,7 +66,7 @@ const updateSelectedOption = jest.fn();
 const initialProps = {
   selectedOptions: [],
   updateSelectedOption,
-  options: flatOptions,
+  items: flatOptions,
   rootRef: createRef() as any,
   externalRef: createRef() as any,
   filteringType: 'auto',
@@ -137,8 +137,9 @@ describe('useSelect', () => {
         option: { type: 'child', option: { label: 'Child 1', value: 'child1' } },
         selected: false,
         isNextSelected: false,
-        indeterminate: false,
+        isAfterHeader: false,
         id: getOptionId(menuId!, 1),
+        indeterminate: false,
       });
     });
   });
@@ -158,6 +159,7 @@ describe('useSelect', () => {
       isNextSelected: true,
       indeterminate: false,
       id: getOptionId(menuId!, 7),
+      isAfterHeader: false,
     });
 
     const optionProps = getOptionProps(flatOptions[8], 8);
@@ -170,6 +172,7 @@ describe('useSelect', () => {
       isNextSelected: false,
       indeterminate: false,
       id: getOptionId(menuId!, 8),
+      isAfterHeader: false,
     });
   });
 
@@ -265,7 +268,7 @@ describe('useSelect', () => {
 
   test('should open and highlight the selected option (keyboard:enter)', () => {
     const hook = renderHook(useSelect, {
-      initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.options[1].option] },
+      initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.items[1].option] },
     });
 
     const { getTriggerProps } = hook.result.current;
@@ -285,7 +288,7 @@ describe('useSelect', () => {
 
   test('should open and highlight the selected option (mouse)', () => {
     const hook = renderHook(useSelect, {
-      initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.options[1].option] },
+      initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [initialProps.items[1].option] },
     });
 
     const { getTriggerProps } = hook.result.current;
@@ -357,11 +360,15 @@ describe('useSelect', () => {
     });
     act(() => {
       const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      if (onKeyDown) {
+        onKeyDown(createTestEvent(KeyCode.down));
+      }
     });
     act(() => {
       const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      if (onKeyDown) {
+        onKeyDown(createTestEvent(KeyCode.down));
+      }
     });
     expect(hook.result.current.highlightedOption).toEqual({
       disabled: true,
@@ -430,7 +437,9 @@ describe('useSelect', () => {
       });
       act(() => {
         const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        if (onKeyDown) {
+          onKeyDown(createTestEvent(KeyCode.down));
+        }
       });
       expect(hook.result.current.announceSelected).toEqual(true);
     });
@@ -440,7 +449,9 @@ describe('useSelect', () => {
       });
       act(() => {
         const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        if (onKeyDown) {
+          onKeyDown(createTestEvent(KeyCode.down));
+        }
       });
       expect(hook.result.current.announceSelected).toEqual(false);
     });

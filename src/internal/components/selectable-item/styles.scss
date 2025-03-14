@@ -84,7 +84,8 @@
     }
   }
 
-  &.selected + &.selected {
+  &.selected + &.selected,
+  &.selected.after-header {
     border-start-start-radius: 0;
     border-start-end-radius: 0;
   }

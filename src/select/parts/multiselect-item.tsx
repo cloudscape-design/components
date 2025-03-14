@@ -15,6 +15,7 @@ import { ItemProps } from './item';
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
   indeterminate?: boolean;
+  isAfterHeader?: boolean;
 }
 
 const MultiSelectItem = (
@@ -32,6 +33,7 @@ const MultiSelectItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
+    isAfterHeader,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -60,6 +62,7 @@ const MultiSelectItem = (
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
+      isAfterHeader={isAfterHeader}
       highlighted={highlighted}
       disabled={disabled}
       isParent={isParent}

@@ -14,6 +14,7 @@ export function prepareOptions(
   const filteredOptions = filteringType !== 'auto' ? flatOptions : filterOptions(flatOptions, filteringText);
   generateTestIndexes(filteredOptions, parentMap.get.bind(parentMap));
   return {
+    allOptions: flatOptions,
     filteredOptions,
     parentMap,
     totalCount: flatOptions.length,

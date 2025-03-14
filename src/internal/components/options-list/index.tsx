@@ -43,6 +43,7 @@ export interface OptionsListProps extends BaseComponentProps {
   ariaDescribedby?: string;
   decreaseBlockMargin?: boolean;
   embedded?: boolean;
+  withHeader?: boolean;
 }
 
 const BOTTOM_TRIGGER_OFFSET = 80;
@@ -75,6 +76,7 @@ const OptionsList = (
     ariaLabelledby,
     ariaDescribedby,
     embedded,
+    withHeader,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLUListElement>
@@ -102,6 +104,7 @@ const OptionsList = (
   const className = clsx(styles['options-list'], {
     [styles['decrease-block-margin']]: decreaseBlockMargin,
     [styles['options-list-embedded']]: embedded,
+    [styles['options-list-with-header']]: withHeader,
   });
 
   const mergedRef = useMergeRefs(ref, menuRef);

@@ -20,6 +20,7 @@ import VirtualList from '../select/parts/virtual-list';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
+import SelectAll from './select-all';
 import { useMultiselect } from './use-multiselect';
 
 import styles from './styles.css.js';
@@ -55,6 +56,7 @@ const InternalMultiselect = React.forwardRef(
       tokenLimitShowMoreAriaLabel,
       __internalRootRef = null,
       autoFocus,
+      enableSelectAll,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -81,6 +83,7 @@ const InternalMultiselect = React.forwardRef(
       filteringValue,
       setFilteringValue,
       externalRef,
+      enableSelectAll,
       ...restProps,
     });
 
@@ -154,7 +157,30 @@ const InternalMultiselect = React.forwardRef(
           }
           open={multiselectProps.isOpen}
           trigger={trigger}
-          header={filter}
+          header={
+            <>
+              {filter}
+              {enableSelectAll && (
+                <SelectAll
+                  disabled={!multiselectProps.filteredOptions.length}
+                  highlighted={enableSelectAll && multiselectProps.highlightedIndex === 0}
+                  highlightType={multiselectProps.highlightType}
+                  menuId={multiselectProps.menuId}
+                  onKeyDown={multiselectProps.getSelectAllProps().onKeyDown}
+                  onMouseMove={() => multiselectProps.setHighlightedIndexWithMouse(0)}
+                  onToggle={multiselectProps.toggleAll}
+                  ref={multiselectProps.selectAllRef}
+                  state={
+                    options.length && multiselectProps.isAllSelected
+                      ? 'all'
+                      : options.length && multiselectProps.isSomeSelected
+                        ? 'some'
+                        : 'none'
+                  }
+                />
+              )}
+            </>
+          }
           footer={
             dropdownStatus.isSticky ? (
               <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
@@ -169,7 +195,7 @@ const InternalMultiselect = React.forwardRef(
                 <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />
               ) : null
             }
-            menuProps={multiselectProps.getMenuProps()}
+            menuProps={{ ...multiselectProps.getMenuProps(), withHeader: enableSelectAll }}
             getOptionProps={multiselectProps.getOptionProps}
             filteredOptions={multiselectProps.filteredOptions}
             filteringValue={filteringValue}
