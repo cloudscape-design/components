@@ -11,56 +11,60 @@ import selectableItemStyles from '../../internal/components/selectable-item/styl
 import multiSelectItemStyles from '../../select/parts/styles.css.js';
 import styles from './styles.css.js';
 
-export default forwardRef(function ToggleAll(
-  {
-    disabled,
-    highlighted,
-    highlightType,
-    menuId,
-    onMouseMove,
-    onKeyDown,
-    onToggle,
-    state,
-  }: {
-    disabled: boolean;
-    highlighted: boolean;
-    highlightType: HighlightType;
-    menuId: string;
-    onKeyDown: CancelableEventHandler<BaseKeyDetail>;
-    onMouseMove: () => void;
-    onToggle: () => void;
-    state: 'all' | 'none' | 'some';
-  },
-  ref: React.Ref<HTMLDivElement>
-) {
-  const classNames = clsx(styles['select-all'], selectableItemStyles['selectable-item'], {
-    [selectableItemStyles.selected]: state === 'all',
-    [selectableItemStyles.highlighted]: highlighted,
-    [selectableItemStyles['is-keyboard']]: highlightType.type === 'keyboard',
-    [selectableItemStyles.disabled]: disabled,
-    [styles.selected]: state === 'all',
-    [styles.highlighted]: highlighted,
-    [styles.disabled]: disabled,
-  });
+const ToggleAll = forwardRef(
+  (
+    {
+      disabled,
+      highlighted,
+      highlightType,
+      menuId,
+      onMouseMove,
+      onKeyDown,
+      onToggle,
+      state,
+    }: {
+      disabled: boolean;
+      highlighted: boolean;
+      highlightType: HighlightType;
+      menuId: string;
+      onKeyDown: CancelableEventHandler<BaseKeyDetail>;
+      onMouseMove: () => void;
+      onToggle: () => void;
+      state: 'all' | 'none' | 'some';
+    },
+    ref: React.Ref<HTMLDivElement>
+  ) => {
+    const classNames = clsx(styles['select-all'], selectableItemStyles['selectable-item'], {
+      [selectableItemStyles.selected]: state === 'all',
+      [selectableItemStyles.highlighted]: highlighted,
+      [selectableItemStyles['is-keyboard']]: highlightType.type === 'keyboard',
+      [selectableItemStyles.disabled]: disabled,
+      [styles.selected]: state === 'all',
+      [styles.highlighted]: highlighted,
+      [styles.disabled]: disabled,
+    });
 
-  return (
-    <div
-      className={classNames}
-      onClick={onToggle}
-      onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}
-      onMouseMove={onMouseMove}
-      role="checkbox"
-      aria-checked={state === 'all' ? true : state === 'some' ? 'mixed' : false}
-      aria-controls={menuId}
-      tabIndex={-1}
-      ref={ref}
-    >
-      <div className={multiSelectItemStyles.item}>
-        <div className={multiSelectItemStyles.checkbox}>
-          <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={disabled} />
+    return (
+      <div
+        className={classNames}
+        onClick={onToggle}
+        onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}
+        onMouseMove={onMouseMove}
+        role="checkbox"
+        aria-checked={state === 'all' ? true : state === 'some' ? 'mixed' : false}
+        aria-controls={menuId}
+        tabIndex={-1}
+        ref={ref}
+      >
+        <div className={multiSelectItemStyles.item}>
+          <div className={multiSelectItemStyles.checkbox}>
+            <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={disabled} />
+          </div>
+          <span aria-disabled={disabled}>Select all</span>
         </div>
-        <span aria-disabled={disabled}>Select all</span>
       </div>
-    </div>
-  );
-});
+    );
+  }
+);
+
+export default ToggleAll;
