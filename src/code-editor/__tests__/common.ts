@@ -28,7 +28,4 @@ export const i18nStrings: CodeEditorProps.I18nStrings = {
   preferencesModalThemeFilteringAriaLabel: 'Filter themes aria',
   preferencesModalThemeFilteringClearAriaLabel: 'Clear',
   preferencesModalThemeFilteringPlaceholder: 'Filter themes',
-
-  resizeHandleAriaLabel: 'Resize handle',
-  resizeHandleTooltipText: 'Drag or select to resize',
 };

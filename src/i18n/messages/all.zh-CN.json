@@ -88,9 +88,7 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "筛选主题",
     "i18nStrings.preferencesModalLightThemes": "浅色主题",
     "i18nStrings.preferencesModalDarkThemes": "深色主题",
-    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行",
-    "i18nStrings.resizeHandleAriaLabel": "调整手柄的大小",
-    "i18nStrings.resizeHandleTooltipText": "通过拖动或选择来调整大小"
+    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行"
   },
   "collection-preferences": {
     "title": "首选项",

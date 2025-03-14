@@ -5691,16 +5691,6 @@ The object should contain, among others:
             "type": "string",
           },
           {
-            "name": "resizeHandleAriaLabel",
-            "optional": true,
-            "type": "string",
-          },
-          {
-            "name": "resizeHandleTooltipText",
-            "optional": true,
-            "type": "string",
-          },
-          {
             "name": "statusBarGroupAriaLabel",
             "optional": true,
             "type": "string",

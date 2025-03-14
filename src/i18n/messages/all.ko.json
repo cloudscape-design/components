@@ -88,9 +88,7 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "테마 필터링",
     "i18nStrings.preferencesModalLightThemes": "밝은 테마",
     "i18nStrings.preferencesModalDarkThemes": "다크 테마",
-    "i18nStrings.cursorPositionAriaLabel": "{row}행 위의 커서",
-    "i18nStrings.resizeHandleAriaLabel": "크기 조정 핸들",
-    "i18nStrings.resizeHandleTooltipText": "드래그하거나 선택하여 크기 조정"
+    "i18nStrings.cursorPositionAriaLabel": "{row}행 위의 커서"
   },
   "collection-preferences": {
     "title": "기본 설정",
