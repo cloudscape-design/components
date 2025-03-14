@@ -7,12 +7,8 @@ import glob from 'glob';
 import { flatten, zip } from 'lodash';
 import path from 'path';
 
-const defaultPlugins: any[] = [];
-
-beforeAll(async () => {
-  const babelPlugin = await import('@babel/plugin-syntax-typescript');
-  defaultPlugins.push(babelPlugin);
-});
+// eslint-disable-next-line @typescript-eslint/no-require-imports
+const defaultPlugins = [require('@babel/plugin-syntax-typescript')] as const;
 
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
 test('test-utils selectors', () => {
@@ -90,15 +86,8 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
       },
     } as PluginObj;
   }
-
   const source = fs.readFileSync(file, 'utf-8');
-  expect(
-    transformSync(source, {
-      babelrc: false,
-      configFile: false,
-      plugins: [...defaultPlugins, extractor],
-    })
-  ).not.toThrow();
+  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] });
 }
 
 function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
