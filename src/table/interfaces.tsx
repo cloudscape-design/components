@@ -121,7 +121,7 @@ export interface TableProps<T = any> extends BaseComponentProps {
   /**
    * Determines the alignment of the content inside table cells.
    * This property affects all cells, including the ones in the selection column.
-   * To target individual cells use `columnDefinitions.verticalAlign`.
+   * To target individual cells use `columnDefinitions.verticalAlign`, that takes precedence over `cellVerticalAlign`.
    */
   cellVerticalAlign?: 'middle' | 'top';
 
