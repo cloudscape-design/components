@@ -11,73 +11,41 @@ export default function ButtonPermutations() {
         </TextContent>
         
         <SpaceBetween direction='horizontal' size='m'>
-          <AmplifyButton
-            variation="primary"
-            loadingText=""
-            colorTheme="default"
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <SuccessButton variant="primary">Success</SuccessButton>
+          <SuccessButton>Success</SuccessButton>
+          {/*
+          <AmplifyButton colorTheme="success" variation="primary">
+            Success
           </AmplifyButton>
 
-          <AmplifyButton
-            variation="primary"
-            colorTheme="error"
-            loadingText=""
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="error" variation="primary">
+            Error
           </AmplifyButton>
 
-          <AmplifyButton
-            variation="primary"
-            colorTheme="info"
-            loadingText=""
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="info" variation="primary">
+            Info
           </AmplifyButton>
 
-          <AmplifyButton
-            variation="primary"
-            colorTheme="success"
-            loadingText=""
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="warning" variation="primary">
+            Warning
           </AmplifyButton>
 
-          <AmplifyButton
-            loadingText=""
-            colorTheme="default"
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="success">
+            Success
           </AmplifyButton>
 
-          <AmplifyButton
-            colorTheme="error"
-            loadingText=""
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="error">
+            Error
           </AmplifyButton>
 
-          <AmplifyButton
-            colorTheme="info"
-            loadingText=""
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="info">
+            Info
           </AmplifyButton>
 
-          <AmplifyButton
-            colorTheme="success"
-            loadingText=""
-            onClick={() => alert('hello')}
-          >
-            Click me!
+          <AmplifyButton colorTheme="warning">
+            Warning
           </AmplifyButton>
+          */}
         </SpaceBetween>
 
         <hr />
@@ -102,32 +70,83 @@ export default function ButtonPermutations() {
   );
 }
 
-function AmplifyButton(props:any) {
-  const backgroundColors = {
-    default: 'rgb(4, 125, 149)',
-    error: 'rgb(149, 4, 4)',
-    info: 'rgb(4, 52, 149)',
-    success: 'rgb(63, 125, 74)',
-    warning: 'rgb(149, 77, 4)',
-  }
+function SuccessButton(props:any) {
+  const green60 = 'hsl(130, 43%, 46%)';
+  const green80 = 'hsl(130, 33%, 37%)';
+  const green90 = 'hsl(130, 27%, 29%)';
+  const green100 = 'hsl(130, 22%, 23%)';
 
-  const colors = {
-    default: 'rgb(4, 125, 149)',
-    error: 'rgb(149, 4, 4)',
-    info: 'rgb(4, 52, 149)',
-    success: 'rgb(63, 125, 74)',
-    warning: 'rgb(149, 77, 4)',
+  const isPrimary = props.variant === 'primary';
+
+  const primary = {
+    backgroundColor: {
+      active: green100,
+      default: green80,
+      hover: green90,
+    }, 
+    borderColor: 'transparent',
+    color: '#fff',
+  };
+
+  const normal = {
+    backgroundColor: 'transparent', 
+    borderColor: {
+      default: green60,
+      hover: green90,
+    },
+    color: green90,
+  };
+
+  return (
+    <Theme 
+      //backgroundColor={isPrimary }
+      //borderColor={borderColors}
+      borderRadius="4px"
+      borderWidth="1px"
+      //color={colors}
+      fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
+      fontSize='16px'
+      lineHeight='24px'
+      paddingBlock='8px'
+      paddingInline='16px'
+    >
+      <Button onClick={props.onClick} variant={props.variant}>
+        {props.children}
+      </Button>
+    </Theme>
+  );
+}
+
+/*
+function AmplifyButton(props:any) {
+  const colorThemes = {
+    success: {
+      default: 'rgb(63, 125, 74)',
+      hover: 'rgb(54, 94, 61)'
+    },
+    error: {
+      default: 'rgb(149, 4, 4)',
+      hover: 'rgb(102, 0, 0)',
+    },
+    info: {
+      default: 'rgb(4, 52, 149)',
+      hover: 'rgb(0, 34, 102)',
+    },
+    warning: {
+      default: 'rgb(149, 77, 4)',
+      hover: 'rgb(102, 51, 0)',
+    }
   }
 
   const isPrimary = props.variation === 'primary';
 
   return (
     <Theme 
-      backgroundColor={isPrimary ? backgroundColors[props.colorTheme as keyof typeof backgroundColors] : '#fff'}
+      backgroundColor={isPrimary ? colorThemes[props.colorTheme as keyof typeof colorThemes] : 'transparent'}
+      borderColor={colorThemes[props.colorTheme as keyof typeof colorThemes]}
+      color={isPrimary ? '#fff' : colorThemes[props.colorTheme as keyof typeof colorThemes]}
       borderRadius="4px"
       borderWidth="1px"
-      borderColor={isPrimary ? 'transparent' : backgroundColors[props.colorTheme as keyof typeof backgroundColors]}
-      color={isPrimary ? "#fff" : colors[props.colorTheme as keyof typeof colors]}
       fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
       fontSize='16px'
       lineHeight='24px'
@@ -140,6 +159,7 @@ function AmplifyButton(props:any) {
     </Theme>
   );
 }
+*/
 
 function MaterialUIButton(props:any) {
   return (

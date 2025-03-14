@@ -4,8 +4,10 @@ type LiteralUnion<LiteralType, BaseType extends string> = LiteralType | (BaseTyp
 type SizeKey = typeof Sizes[number];
 
 interface States {
+  active?: string;
   default?: string;
   checked?: string;
+  hover?: string;
   indeterminate?: string;
   disabled?: string;
   readOnly?: string;
@@ -47,4 +49,28 @@ export interface DarkModeProps {
     color?: string | States;
     fill?: string | States;
     outline?: string | States;
+  }
+
+  export interface ResetProps {
+    all?: boolean;
+    backgroundColor?: boolean;
+    backgroundImage?: boolean;
+    borderColor?: boolean;
+    borderRadius?: boolean;
+    borderWidth?:boolean;
+    boxShadow?: boolean;
+    children?: React.ReactNode;
+    color?: boolean;
+    fill?: boolean;
+    fontFamily?: boolean;
+    fontSize?: boolean;
+    fontWeight?: boolean;
+    gapBlock?: boolean;
+    gapInline?: boolean;
+    height?: boolean;
+    lineHeight?: boolean;
+    outline?: boolean;
+    paddingBlock?: boolean;
+    paddingInline? : boolean;
+    width?: boolean;
   }

@@ -5,6 +5,7 @@ import React from 'react';
 import { FlowType } from '../internal/analytics/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
+import { ThemeProps } from '../theming/component/interfaces';
 
 export interface BaseModalProps {
   /**
@@ -76,6 +77,11 @@ export interface ModalProps extends BaseComponentProps, BaseModalProps {
    * @analytics
    */
   analyticsMetadata?: ModalProps.AnalyticsMetadata;
+
+  theme?: {
+    backdrop?: ThemeProps,
+    container?: ThemeProps,
+  };
 }
 
 export namespace ModalProps {
