@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "テーマをフィルタリング",
     "i18nStrings.preferencesModalLightThemes": "明るいテーマ",
     "i18nStrings.preferencesModalDarkThemes": "暗いテーマ",
-    "i18nStrings.cursorPositionAriaLabel": "カーソルは行 {row}"
+    "i18nStrings.cursorPositionAriaLabel": "カーソルは行 {row}",
+    "i18nStrings.resizeHandleAriaLabel": "リサイズハンドル",
+    "i18nStrings.resizeHandleTooltipText": "ドラッグまたは選択してリサイズする"
   },
   "collection-preferences": {
     "title": "詳細設定",

@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "تصفية الموضوعات",
     "i18nStrings.preferencesModalLightThemes": "الأشكال فاتحة اللون",
     "i18nStrings.preferencesModalDarkThemes": "الأشكال قاتمة اللون",
-    "i18nStrings.cursorPositionAriaLabel": "المؤشر على السطر رقم {row}"
+    "i18nStrings.cursorPositionAriaLabel": "المؤشر على السطر رقم {row}",
+    "i18nStrings.resizeHandleAriaLabel": "أيقونة تغيير الحجم",
+    "i18nStrings.resizeHandleTooltipText": "قم بالسحب أو التحديد لتغيير الحجم"
   },
   "collection-preferences": {
     "title": "التفضيلات",

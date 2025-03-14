@@ -3,6 +3,7 @@
 import * as React from 'react';
 import { render } from '@testing-library/react';
 
+import Badge from '../../../lib/components/badge';
 import Select from '../../../lib/components/select';
 import SideNavigation, { SideNavigationProps } from '../../../lib/components/side-navigation';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -274,13 +275,9 @@ describe('SideNavigation', () => {
 
     it('has an additional info when "info" property is specified', () => {
       const wrapper = renderSideNavigation({
-        items: [
-          { type: 'link', text: 'Page 1', href: '#something', info: <span data-testid="info">Additional info</span> },
-        ],
+        items: [{ type: 'link', text: 'Page 1', href: '#something', info: <Badge>Additional info</Badge> }],
       });
-      expect(wrapper.findItemByIndex(1)?.find('[data-testid="info"]')?.getElement()).toHaveTextContent(
-        'Additional info'
-      );
+      expect(wrapper.findItemByIndex(1)!.findInfo()!.findBadge()!.getElement()).toHaveTextContent('Additional info');
     });
 
     it('still renders the component if multiple links with info have the same href', () => {

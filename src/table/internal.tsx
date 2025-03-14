@@ -68,7 +68,10 @@ const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
-type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
+type InternalTableProps<T> = SomeRequired<
+  TableProps<T>,
+  'items' | 'selectedItems' | 'variant' | 'firstIndex' | 'cellVerticalAlign'
+> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
@@ -135,6 +138,7 @@ const InternalTable = React.forwardRef(
       renderLoaderLoading,
       renderLoaderError,
       renderLoaderEmpty,
+      cellVerticalAlign,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -595,6 +599,7 @@ const InternalTable = React.forwardRef(
                                       rowIndex,
                                       itemKey: `${getTableItemKey(row.item)}`,
                                     }}
+                                    verticalAlign={cellVerticalAlign}
                                   />
                                 )}
 
@@ -644,7 +649,7 @@ const InternalTable = React.forwardRef(
                                       submitEdit={cellEditing.submitEdit}
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
-                                      verticalAlign={column.verticalAlign}
+                                      verticalAlign={column.verticalAlign ?? cellVerticalAlign}
                                       {...cellExpandableProps}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
@@ -670,7 +675,11 @@ const InternalTable = React.forwardRef(
                                 {...rowRoleProps}
                               >
                                 {getItemSelectionProps && (
-                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
+                                  <TableBodySelectionCell
+                                    {...sharedCellProps}
+                                    columnId={selectionColumnId}
+                                    verticalAlign={cellVerticalAlign}
+                                  />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
                                   <TableLoaderCell
