@@ -27,12 +27,12 @@ describe('Wrap lines', () => {
       'Wrap lines description'
     );
   });
-  test('displays as checked when value specified in preferences property is true', () => {
+  test('lines are wrapped when value specified in preferences property is true', () => {
     const wrapper = renderwithWrapLines({ preferences: { wrapLines: true }, onConfirm: () => {} });
     wrapper.findTriggerButton().click();
     isChecked(wrapper);
   });
-  test('displays as checked when value specified in preferences property is true', () => {
+  test('lines are not wrapped when value specified in preferences property is false', () => {
     const wrapper = renderwithWrapLines({ preferences: { wrapLines: false }, onConfirm: () => {} });
     wrapper.findTriggerButton().click();
     isChecked(wrapper, false);

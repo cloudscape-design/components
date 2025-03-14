@@ -295,7 +295,7 @@ describe('value', () => {
       check(wrapper.findItems()[1], 'control-id-2');
     });
 
-    test('generates a own unique ids for setting up label relations when controlId is not set', () => {
+    test('generates own unique ids for setting up label relations when controlId is not set', () => {
       const { wrapper } = renderTiles(<Tiles value="val2" items={defaultItems} />);
 
       const button1 = wrapper.findItems()[0];
@@ -309,7 +309,7 @@ describe('value', () => {
       expect(id1).not.toBe(id2);
     });
 
-    test('generates a own unique ids for setting up label relations when controlId is not set', () => {
+    test('generates own unique ids for setting up label relations when controlId is partially set', () => {
       const id1 = 'control-id-1';
 
       const { wrapper } = renderTiles(

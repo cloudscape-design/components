@@ -336,7 +336,7 @@ describe('Slider a11y', () => {
       ariaLabel: 'aria label',
     });
 
-    expect(wrapper.getElement()).toValidateA11y;
+    expect(wrapper.getElement()).toValidateA11y();
   });
 
   test('Renders correct aria label', () => {

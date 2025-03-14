@@ -7,7 +7,12 @@ import glob from 'glob';
 import { flatten, zip } from 'lodash';
 import path from 'path';
 
-const defaultPlugins = [require('@babel/plugin-syntax-typescript')] as const;
+const defaultPlugins: any[] = [];
+
+beforeAll(async () => {
+  const babelPlugin = await import('@babel/plugin-syntax-typescript');
+  defaultPlugins.push(babelPlugin);
+});
 
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
 test('test-utils selectors', () => {
@@ -85,12 +90,19 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
       },
     } as PluginObj;
   }
+
   const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] })?.code;
+  expect(
+    transformSync(source, {
+      babelrc: false,
+      configFile: false,
+      plugins: [...defaultPlugins, extractor],
+    })
+  ).not.toThrow();
 }
 
 function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const source = require(file);
   if (typeof source.default !== 'object') {
     throw new Error(`Unexpected selectors file format at ${file}.`);

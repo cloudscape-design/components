@@ -69,6 +69,9 @@ export function InlineEditor<ItemType>({
       await submitEdit(item, column, currentEditValue);
       setCurrentEditLoading(false);
       finishEdit();
+
+      // Consumers in the past have not always been able to support not specifiying the value so we keep and ignore
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (e) {
       setCurrentEditLoading(false);
       focusLockRef.current?.focusFirst();

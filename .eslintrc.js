@@ -27,6 +27,7 @@ module.exports = {
     'jest',
   ],
   rules: {
+    '@typescript-eslint/no-unused-expressions': 'off',
     '@typescript-eslint/no-empty-function': 'off',
     '@typescript-eslint/no-namespace': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
@@ -113,7 +114,7 @@ module.exports = {
     {
       files: ['*.js', 'build-tools/**'],
       rules: {
-        '@typescript-eslint/no-var-requires': 'off',
+        '@typescript-eslint/no-require-imports': 'off',
       },
       env: {
         browser: false,

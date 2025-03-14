@@ -77,7 +77,7 @@ function renderContentLayout(props: ContentLayoutProps = {}) {
         expect(wrapper.findNotifications()!.getElement()).toHaveTextContent('Notifications');
       });
 
-      test('renders notifications slot', () => {
+      test('renders breadcrumbs slot', () => {
         const { wrapper } = renderContentLayout({
           breadcrumbs: <>Breadcrumbs</>,
         });

@@ -256,7 +256,7 @@ describe('Table renders correct analytics metadata', () => {
         )
       );
     });
-    test('with sortingField', () => {
+    test('with sortingDisabled', () => {
       const wrapper = renderTable({ sortingDisabled: true });
       const columnHeaders = wrapper.findColumnHeaders();
       const element = columnHeaders[0]!.getElement();
