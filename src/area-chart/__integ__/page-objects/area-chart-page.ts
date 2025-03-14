@@ -43,7 +43,7 @@ export default class AreaChartPageObject extends BasePageObject {
     try {
       const label = await this.getElementAttribute(selector, 'aria-label');
       return label;
-    } catch (ignore) {
+    } catch {
       return null;
     }
   }

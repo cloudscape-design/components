@@ -101,7 +101,7 @@ export default class App extends React.Component {
         status: hasNextPage ? 'pending' : 'finished',
         options: this.pageNumber === 0 ? items : this.state.options.concat(items),
       });
-    } catch (error) {
+    } catch {
       this.setState({
         status: 'error',
       });

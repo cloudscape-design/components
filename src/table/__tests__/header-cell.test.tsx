@@ -27,6 +27,7 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
 
 const tableRole = 'table';
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const testItem = {
   test: 'test',
 };
