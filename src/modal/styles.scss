@@ -12,8 +12,7 @@ $modal-z-index: 5000;
 
 .root {
   @include styles.styles-reset;
-  background-color: awsui.$color-background-modal-overlay;
-
+  background-color: var(--theme-background-color, awsui.$color-background-modal-overlay);
   display: flex;
   align-items: center;
   justify-items: center;
@@ -55,20 +54,20 @@ $modal-z-index: 5000;
   pointer-events: all;
 
   &.small {
-    max-inline-size: 320px;
+    max-inline-size: var(--theme-width, 320px);
   }
 
   &.medium {
-    max-inline-size: 600px;
+    max-inline-size: var(--theme-width, 600px);
   }
 
   &.large {
-    max-inline-size: 820px;
+    max-inline-size: var(--theme-width, 820px);
   }
 
   &.max.breakpoint-xs {
     // viewport - (closed app layout panel widths + 20px on each side)
-    max-inline-size: calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl}));
+    max-inline-size: var(--theme-width, calc(100vw - (2 * 4 * #{styles.$base-size} + #{awsui.$space-xxxl})));
     margin-block: auto;
     margin-inline: auto;
   }
@@ -77,13 +76,14 @@ $modal-z-index: 5000;
 .container {
   @include styles.styles-reset;
   display: block;
-  background-color: awsui.$color-background-container-content;
+  background-color: var(--theme-background-color, awsui.$color-background-container-content);
+  color: var(--theme-color);
   word-wrap: break-word;
   border-block-start: awsui.$border-container-top-width solid awsui.$color-border-container-top;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
-  border-end-start-radius: awsui.$border-radius-container;
-  border-end-end-radius: awsui.$border-radius-container;
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-container);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-container);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-container);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-container);
   box-shadow: awsui.$shadow-modal;
 }
 
@@ -99,10 +99,11 @@ $modal-z-index: 5000;
 }
 
 .header {
+  color: var(--theme-color);
   padding-block-start: awsui.$space-container-header-top;
   padding-block-end: awsui.$space-container-header-bottom;
   padding-inline: awsui.$space-modal-horizontal;
-  background-color: awsui.$color-background-container-header;
+  background-color: var(--theme-background-color, awsui.$color-background-container-header);
   border-block-end: 1px solid awsui.$color-border-container-divider;
   border-start-start-radius: awsui.$border-radius-container;
   border-start-end-radius: awsui.$border-radius-container;
@@ -118,7 +119,7 @@ $modal-z-index: 5000;
   @include container.divider;
   padding-block: awsui.$space-scaled-s;
   padding-inline: awsui.$space-container-horizontal;
-  background-color: awsui.$color-background-container-content;
+  background-color: var(--theme-background-color, awsui.$color-background-container-content);
 
   // Make sure that the footer is always visible
   position: sticky;

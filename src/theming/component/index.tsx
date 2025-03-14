@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ThemeProps, DarkModeProps } from './interfaces';
+import { ThemeProps, DarkModeProps, ResetProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function Theme({
@@ -63,16 +63,19 @@ function DarkMode({
   children,
   color,
   fill,
+  outline,
 }:DarkModeProps) {
+  console.log(backgroundColor);
   return (
     <div className={clsx(styles['theme-dark-mode'])}
       style={{
-        ...(backgroundColor && { ['--theme-background-color-dark-mode']: `${backgroundColor}` }),
-        ...(backgroundImage && { ['--theme-background-image-dark-mode']: `${backgroundImage}` }),
-        ...(borderColor && { ['--theme-border-color-dark-mode']: `${borderColor}` }),
-        ...(boxShadow && { ['--theme-box-shadow-dark-mode']: `${boxShadow}` }),
-        ...(color && { ['--theme-color-dark-mode']: `${color}` }),
-        ...(fill && { ['--theme-fill-dark-mode']: `${fill}` }),
+        ...(backgroundColor && getValues('--theme-background-color-dark-mode', backgroundColor)),
+        ...(backgroundImage && getValues('--theme-background-image-dark-mode', backgroundImage)),
+        ...(borderColor && getValues('--theme-border-color-dark-mode', borderColor)),
+        ...(boxShadow && getValues('--theme-box-shadow-dark-mode', boxShadow)),
+        ...(color && getValues('--theme-color-dark-mode', color)),
+        ...(fill && getValues('--theme-fill-dark-mode', fill)),
+        ...(outline && getValues('--theme-outline-dark-mode', outline)),
       }}
     >
       {children}
@@ -80,9 +83,54 @@ function DarkMode({
   );
 }
 
-function Reset({children}:any) {
+function Reset({
+  all,
+  backgroundColor, 
+  backgroundImage,
+  borderColor,
+  borderRadius,
+  borderWidth,
+  boxShadow,
+  children,
+  color,
+  fill,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  gapBlock,
+  gapInline,
+  height,
+  lineHeight,
+  outline,
+  paddingBlock,
+  paddingInline,
+  width,
+}:ResetProps) {
   return (
-    <div className={clsx(styles['theme-reset'])}>
+    <div 
+      className={clsx(styles['theme-reset'])}
+      style={{
+        ...((all || backgroundColor) && getResetValues('--theme-background-color')),
+        ...((all || backgroundImage) && getResetValues('--theme-background-image')),
+        ...((all || borderColor) && getResetValues('--theme-border-color')),
+        ...((all || borderRadius) && { ['--theme-border-radius']: 'initial' }),
+        ...((all || borderWidth) && { ['--theme-border-width']: 'initial' }),
+        ...((all || boxShadow) && getResetValues('--theme-box-shadow')),
+        ...((all || color) && getResetValues('--theme-color')),
+        ...((all || fill) && getResetValues('--theme-fill')),
+        ...((all || fontFamily) && { ['--theme-font-family']: 'initial' }),
+        ...((all || fontSize) && { ['--theme-font-size']: 'initial' }),
+        ...((all || fontWeight) && { ['--theme-font-weight']: 'initial' }),
+        ...((all || gapBlock) && { ['--theme-gap-block']: 'initial' }),
+        ...((all || gapInline) && { ['--theme-gap-inline']: 'initial' }),
+        ...((all || height) && { ['--theme-height']: 'initial' }),
+        ...((all || lineHeight) && { ['--theme-line-height']: 'initial' }),
+        ...((all || outline) && { ['--theme-outline']: 'initial' }),
+        ...((all || paddingBlock) && { ['--theme-padding-block']: 'initial' }),
+        ...((all || paddingInline) && { ['--theme-padding-inline']: 'initial' }),
+        ...((all || width) && { ['--theme-width']: 'initial' }),
+      }}
+    >
       {children}
     </div>
   );
@@ -95,12 +143,27 @@ function getValues(name: string, property: any) {
     values = { [name]: `${property}` }
   } else {
     values = {
+      [`${name}`]: property?.default,
+      [`${name}-active`]: property?.active,
       [`${name}-checked`]: property?.checked,
-      [`${name}-default`]: property?.default,
       [`${name}-disabled`]: property?.disabled,
+      [`${name}-hover`]: property?.hover,
       [`${name}-indeterminate`]: property?.indeterminate,
       [`${name}-read-only`]: property?.readOnly,
     }
+  }
+
+  return values;
+}
+
+function getResetValues(name: string) {
+  const values = {
+    [name]: 'initial',
+    [`${name}-active`]: 'initial',
+    [`${name}-checked`]: 'initial',
+    [`${name}-disabled`]: 'initial',
+    [`${name}-indeterminate`]: 'initial',
+    [`${name}-read-only`]: 'initial',
   }
 
   return values;

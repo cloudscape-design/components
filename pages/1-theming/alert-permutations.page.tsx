@@ -175,10 +175,11 @@ export default function AlertPermutations() {
 
         <FintechAlert 
           action={
-            <Theme.Reset>
+            <Theme.Reset all>
               <Button>Button text</Button>
             </Theme.Reset>
           }
+          dismissible
           header="Header message" 
           type="info"
         >
@@ -466,6 +467,7 @@ function FintechAlert(props:any) {
       >
         <Alert 
           action={props.action}
+          dismissible={props.dismissible}
           header={props.header} 
           type={props.type}
         >

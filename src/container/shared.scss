@@ -14,5 +14,5 @@ $header-focus-visible-padding: calc(#{awsui.$space-scaled-s} - #{awsui.$border-d
   calc(#{awsui.$space-l} - #{awsui.$border-divider-section-width});
 
 @mixin divider {
-  border-block-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-start: var(--theme-border-width, awsui.$border-divider-section-width) solid var(--theme-border-color, awsui.$color-border-divider-default);
 }

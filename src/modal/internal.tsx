@@ -41,6 +41,8 @@ import { ModalProps } from './interfaces';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
+import Theme from '../theming/component';
+
 export function InternalModalAsFunnel(props: InternalModalProps) {
   const { funnelProps, funnelSubmit, funnelNextOrSubmitAttempt } = useFunnel();
   const { funnelStepProps } = useFunnelStep();
@@ -96,6 +98,7 @@ function PortaledModal({
   disableContentPaddings,
   onButtonClick = () => {},
   onDismiss,
+  theme,
   __internalRootRef = null,
   __injectAnalyticsComponentMetadata,
   __funnelProps,
@@ -219,6 +222,8 @@ function PortaledModal({
   const headerRef = useRef<HTMLDivElement>(null);
   const { subStepRef } = useFunnelSubStep();
 
+  console.log(theme);
+
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
       <ResetContextsForModal>
@@ -229,81 +234,87 @@ function PortaledModal({
             emitTimeToContentReadyInModal,
           }}
         >
-          <div
-            {...baseProps}
-            {...__funnelProps}
-            {...__funnelStepProps}
-            className={clsx(
-              styles.root,
-              { [styles.hidden]: !visible },
-              baseProps.className,
-              isRefresh && styles.refresh
-            )}
-            role="dialog"
-            aria-labelledby={headerId}
-            onMouseDown={onOverlayMouseDown}
-            onClick={onOverlayClick}
-            ref={mergedRef}
-            style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
-            data-awsui-referrer-id={subStepRef.current?.id || referrerId}
-          >
-            <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
-              <div
-                className={clsx(
-                  styles.dialog,
-                  styles[size],
-                  styles[`breakpoint-${breakpoint}`],
-                  isRefresh && styles.refresh
-                )}
-                onKeyDown={escKeyHandler}
-                {...metadataAttribute}
-              >
-                <div className={styles.container}>
-                  <div className={clsx(styles.header, analyticsSelectors.header)}>
-                    <InternalHeader
-                      variant="h2"
-                      __disableActionsWrapping={true}
-                      actions={
-                        <div
-                          {...getAnalyticsMetadataAttribute({
-                            action: 'dismiss',
-                          } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
-                        >
-                          <InternalButton
-                            ariaLabel={closeAriaLabel}
-                            className={styles['dismiss-control']}
-                            variant="modal-dismiss"
-                            iconName="close"
-                            formAction="none"
-                            onClick={onCloseButtonClick}
-                          />
-                        </div>
-                      }
-                    >
-                      <span ref={headerRef} id={headerId} className={styles['header--text']}>
-                        {header}
-                      </span>
-                    </InternalHeader>
-                  </div>
+          <Theme {...theme?.backdrop}>
+            <div
+              {...baseProps}
+              {...__funnelProps}
+              {...__funnelStepProps}
+              className={clsx(
+                styles.root,
+                { [styles.hidden]: !visible },
+                baseProps.className,
+                isRefresh && styles.refresh
+              )}
+              role="dialog"
+              aria-labelledby={headerId}
+              onMouseDown={onOverlayMouseDown}
+              onClick={onOverlayClick}
+              ref={mergedRef}
+              style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
+              data-awsui-referrer-id={subStepRef.current?.id || referrerId}
+            >
+              <Theme {...theme?.container}>
+                <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
                   <div
-                    ref={__subStepRef}
-                    {...__subStepFunnelProps}
-                    className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
+                    className={clsx(
+                      styles.dialog,
+                      styles[size],
+                      styles[`breakpoint-${breakpoint}`],
+                      isRefresh && styles.refresh
+                    )}
+                    onKeyDown={escKeyHandler}
+                    {...metadataAttribute}
                   >
-                    {children}
-                    <div ref={stickySentinelRef} />
-                  </div>
-                  {footer && (
-                    <ButtonContext.Provider value={{ onClick: onButtonClick }}>
-                      <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
-                        {footer}
+                    <div className={styles.container}>
+                      <div className={clsx(styles.header, analyticsSelectors.header)}>
+                        <InternalHeader
+                          variant="h2"
+                          __disableActionsWrapping={true}
+                          actions={
+                            <Theme.Reset borderColor>
+                              <div
+                                {...getAnalyticsMetadataAttribute({
+                                  action: 'dismiss',
+                                } as Partial<GeneratedAnalyticsMetadataModalDismiss>)}
+                              >
+                                <InternalButton
+                                  ariaLabel={closeAriaLabel}
+                                  className={styles['dismiss-control']}
+                                  variant="modal-dismiss"
+                                  iconName="close"
+                                  formAction="none"
+                                  onClick={onCloseButtonClick}
+                                />
+                              </div>
+                            </Theme.Reset>
+                          }
+                        >
+                          <span ref={headerRef} id={headerId} className={styles['header--text']}>
+                            {header}
+                          </span>
+                        </InternalHeader>
                       </div>
-                    </ButtonContext.Provider>
-                  )}
-                </div>
-              </div>
-            </FocusLock>
-          </div>
+                      <div
+                        ref={__subStepRef}
+                        {...__subStepFunnelProps}
+                        className={clsx(styles.content, { [styles['no-paddings']]: disableContentPaddings })}
+                      >
+                        {children}
+                        <div ref={stickySentinelRef} />
+                      </div>
+                      {footer && (
+                        <ButtonContext.Provider value={{ onClick: onButtonClick }}>
+                          <div ref={footerRef} className={clsx(styles.footer, footerStuck && styles['footer--stuck'])}>
+                            {footer}
+                          </div>
+                        </ButtonContext.Provider>
+                      )}
+                    </div>
+                  </div>
+                </FocusLock>
+              </Theme>
+            </div>
+          </Theme>
         </ModalContext.Provider>
       </ResetContextsForModal>
     </FunnelNameSelectorContext.Provider>
