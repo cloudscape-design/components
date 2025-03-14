@@ -1,34 +1,66 @@
 .theme {
-    display: contents;
+  display: contents;
 }
 
 :global(.awsui-dark-mode) .theme-dark-mode {
-    --theme-background-color: var(--theme-background-color-dark-mode);
-    --theme-background-image: var(--theme-background-image-dark-mode);
-    --theme-border-color: var(--theme-border-color-dark-mode);
-    --theme-box-shadow: var(--theme-box-shadow-dark-mode);
-    --theme-color: var(--theme-color-dark-mode);
-    --theme-fill: var(--theme-fill-dark-mode);
-    display: contents;
+  --theme-background-color: var(--theme-background-color-dark-mode);
+  --theme-background-color-active: var(--theme-background-color-dark-mode-active);
+  --theme-background-color-checked: var(--theme-background-color-dark-mode-checked);
+  --theme-background-color-disabled: var(--theme-background-color-dark-mode-disabled);
+  --theme-background-color-hover: var(--theme-background-color-dark-mode-hover);
+  --theme-background-color-indeterminate: var(--theme-background-color-dark-mode-indeterminate);
+  --theme-background-color-read-only: var(--theme-background-color-dark-mode-read-only);
+
+  --theme-background-image-active: var(--theme-background-image-dark-mode-active);
+  --theme-background-image-checked: var(--theme-background-image-dark-mode-checked);
+  --theme-background-image-disabled: var(--theme-background-image-dark-mode-disabled);
+  --theme-background-image-hover: var(--theme-background-image-dark-mode-hover);
+  --theme-background-image-indeterminate: var(--theme-background-image-dark-mode-indeterminate);
+  --theme-background-image-read-only: var(--theme-background-image-dark-mode-read-only);
+
+  --theme-border-color: var(--theme-border-color-dark-mode);
+  --theme-border-color-active: var(--theme-border-color-dark-mode-active);
+  --theme-border-color-checked: var(--theme-border-color-dark-mode-checked);
+  --theme-border-color-disabled: var(--theme-border-color-dark-mode-disabled);
+  --theme-border-color-hover: var(--theme-border-color-dark-mode-hover);
+  --theme-border-color-indeterminate: var(--theme-border-color-dark-mode-indeterminate);
+  --theme-border-color-read-only: var(--theme-border-color-dark-mode-read-only);
+
+  --theme-box-shadow: var(--theme-box-shadow-dark-mode);
+  --theme-box-shadow-active: var(--theme-box-shadow-dark-mode-active);
+  --theme-box-shadow-checked: var(--theme-box-shadow-dark-mode-checked);
+  --theme-box-shadow-disabled: var(--theme-box-shadow-dark-mode-disabled);
+  --theme-box-shadow-hover: var(--theme-box-shadow-dark-mode-hover);
+  --theme-box-shadow-indeterminate: var(--theme-box-shadow-dark-mode-indeterminate);
+  --theme-box-shadow-read-only: var(--theme-box-shadow-dark-mode-read-only);
+
+  --theme-color: var(--theme-color-dark-mode);
+  --theme-color-active: var(--theme-color-dark-mode-active);
+  --theme-color-checked: var(--theme-color-dark-mode-checked);
+  --theme-color-disabled: var(--theme-color-dark-mode-disabled);
+  --theme-color-hover: var(--theme-color-dark-mode-hover);
+  --theme-color-indeterminate: var(--theme-color-dark-mode-indeterminate);
+  --theme-color-read-only: var(--theme-color-dark-mode-read-only);
+
+  --theme-fill: var(--theme-fill-dark-mode);
+  --theme-fill-active: var(--theme-fill-dark-mode-active);
+  --theme-fill-checked: var(--theme-fill-dark-mode-checked);
+  --theme-fill-disabled: var(--theme-fill-dark-mode-disabled);
+  --theme-fill-hover: var(--theme-fill-dark-mode-hover);
+  --theme-fill-indeterminate: var(--theme-fill-dark-mode-indeterminate);
+  --theme-fill-read-only: var(--theme-fill-dark-mode-read-only);
+
+  --theme-outline: var(--theme-outline-dark-mode);
+  --theme-outline-active: var(--theme-outline-dark-mode-active);
+  --theme-outline-checked: var(--theme-outline-dark-mode-checked);
+  --theme-outline-disabled: var(--theme-outline-dark-mode-disabled);
+  --theme-outline-hover: var(--theme-outline-dark-mode-hover);
+  --theme-outline-indeterminate: var(--theme-outline-dark-mode-indeterminate);
+  --theme-outline-read-only: var(--theme-outline-dark-mode-read-only);
+  display: contents;
 }
 
 .theme-reset,
 :global(.awsui-dark-mode) .theme-reset {
-    --theme-background-color: initial;
-    --theme-background-image: initial;
-    --theme-border-color: initial;
-    --theme-border-radius: initial;
-    --theme-border-width: initial;
-    --theme-box-shadow: initial;
-    --theme-color: initial;
-    --theme-fill: initial;
-    --theme-font-family: initial;
-    --theme-font-size: initial;
-    --theme-font-weight: initial;
-    --theme-gap-block: initial;
-    --theme-gap-inline: initial;
-    --theme-line-height: initial;
-    --theme-padding-block: initial;
-    --theme-padding-inline: initial;
-    display: contents;
+  display: contents;
 }
