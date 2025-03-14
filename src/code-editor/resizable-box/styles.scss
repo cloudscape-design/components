@@ -5,17 +5,10 @@
 @use '../../internal/styles' as styles;
 @use '../../internal/styles/tokens' as awsui;
 @use '../background-inline-svg.scss' as utils;
-@use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
 .resizable-box {
   position: relative;
   inline-size: 100%;
-
-  &:not(.cursor-active) {
-    @include styles.with-motion {
-      transition: height awsui.$motion-duration-complex awsui.$motion-easing-responsive;
-    }
-  }
 }
 
 .resizable-box-handle {
@@ -26,6 +19,21 @@
 
   inline-size: awsui.$space-l;
   block-size: awsui.$space-l;
+
+  background-repeat: no-repeat;
+  background-origin: content-box;
+  box-sizing: border-box;
+  background-position: bottom right;
+  background-size: awsui.$space-l;
+  cursor: ns-resize;
+  @include utils.background-inline-svg(
+    $path: '../assets/resize-handler.svg',
+    $stroke: 'colorStrokeCodeEditorResizeHandler'
+  );
+
+  @include styles.with-direction('rtl') {
+    transform: scaleX(-1);
+  }
 }
 
 .resize-active {

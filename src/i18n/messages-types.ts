@@ -111,8 +111,6 @@ export interface I18nFormatArgTypes {
     "i18nStrings.cursorPositionAriaLabel": {
       "row": string | number;
     }
-    "i18nStrings.resizeHandleAriaLabel": never;
-    "i18nStrings.resizeHandleTooltipText": never;
   }
   "collection-preferences": {
     "title": never;
