@@ -1,0 +1,190 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+
+.direction-button-wrapper {
+  @include styles.with-motion {
+    @include styles.animation-fade-in;
+    @include styles.animation-fade-out-0;
+  }
+}
+
+.direction-button-wrapper-motion-enter,
+.direction-button-wrapper-motion-entering,
+.direction-button-wrapper-motion-exit,
+.direction-button-wrapper-motion-exiting {
+  @include styles.with-motion {
+    pointer-events: none;
+  }
+}
+
+.direction-button-wrapper-block-start {
+  &.direction-button-wrapper-motion-entering {
+    @include styles.with-motion {
+      animation:
+        slide-up awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-motion-exiting {
+    @include styles.with-motion {
+      animation:
+        slide-up-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+}
+
+.direction-button-wrapper-block-end {
+  &.direction-button-wrapper-motion-entering {
+    @include styles.with-motion {
+      animation:
+        slide-down awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-motion-exiting {
+    @include styles.with-motion {
+      animation:
+        slide-down-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+}
+
+.direction-button-wrapper-inline-start {
+  &.direction-button-wrapper-motion-entering {
+    @include styles.with-motion {
+      animation:
+        slide-left awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-entering {
+    @include styles.with-motion {
+      animation:
+        slide-right awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-motion-exiting {
+    @include styles.with-motion {
+      animation:
+        slide-left-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-exiting {
+    @include styles.with-motion {
+      animation:
+        slide-right-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+}
+
+.direction-button-wrapper-inline-end {
+  &.direction-button-wrapper-motion-entering {
+    @include styles.with-motion {
+      animation:
+        slide-right awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-entering {
+    @include styles.with-motion {
+      animation:
+        slide-left awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-in awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-motion-exiting {
+    @include styles.with-motion {
+      animation:
+        slide-right-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+  &.direction-button-wrapper-rtl.direction-button-wrapper-motion-exiting {
+    @include styles.with-motion {
+      animation:
+        slide-left-exit awsui.$motion-duration-complex awsui.$motion-easing-responsive,
+        awsui-motion-fade-out-0 awsui.$motion-duration-complex awsui.$motion-easing-responsive;
+    }
+  }
+}
+
+@keyframes slide-up {
+  0% {
+    transform: translate(0, 20px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slide-up-exit {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, 20px);
+  }
+}
+
+@keyframes slide-down {
+  0% {
+    transform: translate(0, -20px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slide-down-exit {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(0, -20px);
+  }
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translate(20px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slide-left-exit {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(20px, 0);
+  }
+}
+
+@keyframes slide-right {
+  0% {
+    transform: translate(-20px, 0);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes slide-right-exit {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-20px, 0);
+  }
+}

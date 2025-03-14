@@ -221,6 +221,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onResize();
               fireNonCancelableEvent(onEditorContentResize, { height });
             }}
+            handleAriaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
+            handleTooltipText={i18n('i18nStrings.resizeHandleTooltipText', i18nStrings?.resizeHandleTooltipText)}
           >
             <div
               ref={editorRef}
@@ -272,6 +274,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 format => (row, column) => format({ row, column })
               )}
               closeButtonAriaLabel={i18n('i18nStrings.paneCloseButtonAriaLabel', i18nStrings?.paneCloseButtonAriaLabel)}
+              handleAriaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
+              handleTooltipText={i18n('i18nStrings.resizeHandleTooltipText', i18nStrings?.resizeHandleTooltipText)}
             />
           </div>
           {isPreferencesModalVisible && (
