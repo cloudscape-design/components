@@ -8,10 +8,6 @@ import Table from '../../../lib/components/table';
 
 const useBaseComponentSpy = jest.spyOn(baseComponentHooks, 'default');
 
-jest.mock('../../../lib/components/internal/hooks/use-mobile', () => ({
-  useMobile: jest.fn(),
-}));
-
 test('reports cellVerticalAlign and columnDefinitionsVerticalAlign correctly', () => {
   const def = (id: string, verticalAlign: 'middle' | 'top') => ({ id, header: '', cell: () => null, verticalAlign });
 
