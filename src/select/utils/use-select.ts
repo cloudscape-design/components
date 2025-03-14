@@ -72,6 +72,7 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
+  const selectAllRef = useRef<HTMLDivElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(items, selectedOptions);
@@ -114,7 +115,8 @@ export function useSelect({
   const hasSelectedOption = __selectedOptions.length > 0;
   const menuId = useUniqueId('option-list');
   const dialogId = useUniqueId('dialog');
-  const highlightedOptionId = getOptionId(menuId, highlightedIndex);
+  const highlightedOptionId = getOptionId(menuId, enableSelectAll ? highlightedIndex - 1 : highlightedIndex);
+  const activeDescendantId = enableSelectAll && highlightedIndex === 0 ? undefined : highlightedOptionId;
 
   const closeDropdownIfNecessary = () => {
     if (!keepOpen) {
@@ -138,6 +140,7 @@ export function useSelect({
 
   const activeKeyDownHandler = useMenuKeyboard({
     goUp: () => {
+      console.log('goUp');
       if (
         (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
         highlightedIndex === 0
@@ -145,7 +148,7 @@ export function useSelect({
         goEndWithKeyboard();
         return;
       }
-
+      console.log('goUp');
       moveHighlightWithKeyboard(-1);
     },
     goDown: () => {
@@ -220,7 +223,7 @@ export function useSelect({
         fireLoadItems(event.detail.value);
       },
       __nativeAttributes: {
-        'aria-activedescendant': highlightedOptionId,
+        'aria-activedescendant': activeDescendantId,
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,
       },
@@ -247,7 +250,7 @@ export function useSelect({
     if (!hasFilter) {
       menuProps.onKeyDown = activeKeyDownHandler;
       menuProps.nativeAttributes = {
-        'aria-activedescendant': highlightedOptionId,
+        'aria-activedescendant': activeDescendantId,
       };
     }
     if (embedded) {
@@ -262,6 +265,11 @@ export function useSelect({
     }
     return menuProps;
   };
+
+  const getSelectAllProps = () => ({
+    onKeyDown: activeKeyDownHandler,
+  });
+
   const getGroupState = (option: OptionGroup) => {
     const totalSelected = option.options.filter(item => !!item.value && __selectedValuesSet.has(item.value)).length;
     const hasSelected = totalSelected > 0;
@@ -329,6 +337,14 @@ export function useSelect({
     }
   }, [isOpen, activeRef, embedded]);
 
+  useEffect(() => {
+    if (activeDescendantId) {
+      menuRef.current?.focus();
+    } else {
+      selectAllRef.current?.focus();
+    }
+  }, [activeDescendantId]);
+
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =
     !!highlightedOption && isGroup(highlightedOption.option) && getGroupState(highlightedOption.option).selected;
@@ -345,6 +361,7 @@ export function useSelect({
     getMenuProps,
     getFilterProps,
     getOptionProps,
+    getSelectAllProps,
     highlightOption: highlightOptionWithKeyboard,
     selectOption,
     announceSelected,
@@ -352,5 +369,6 @@ export function useSelect({
     menuId,
     setHighlightedIndexWithMouse,
     closeDropdownIfNecessary,
+    selectAllRef,
   };
 }
