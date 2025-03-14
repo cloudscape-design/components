@@ -8,7 +8,7 @@ import Multiselect from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';
 
-export const options: MultiselectProps.Options = [
+export const optionsWithGroups: MultiselectProps.Options = [
   { label: 'First option', value: '1' },
   {
     label: 'First group',
@@ -39,8 +39,20 @@ export const options: MultiselectProps.Options = [
   },
 ];
 
+export const optionsWithoutGroups = optionsWithGroups.reduce(
+  (previousValue: MultiselectProps.Option[], currentValue: MultiselectProps.Option) => {
+    if ('options' in currentValue) {
+      return [...previousValue, ...(currentValue as MultiselectProps.OptionGroup).options];
+    }
+    return [...previousValue, currentValue];
+  },
+  []
+);
+
 export function renderMultiselect(props?: Partial<MultiselectProps>) {
-  const { container } = render(<Multiselect options={options} selectedOptions={[]} onChange={() => null} {...props} />);
+  const { container } = render(
+    <Multiselect options={optionsWithGroups} selectedOptions={[]} onChange={() => null} {...props} />
+  );
   const wrapper = createWrapper(container).findMultiselect()!;
   return { wrapper };
 }

@@ -40,6 +40,7 @@ interface UseSelectProps {
   statusType: DropdownStatusProps.StatusType;
   enableSelectAll?: boolean;
   isAllSelected?: boolean;
+  toggleAll?: () => void;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -62,6 +63,7 @@ export function useSelect({
   statusType,
   enableSelectAll,
   isAllSelected,
+  toggleAll,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -126,7 +128,11 @@ export function useSelect({
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
     }
-    updateSelectedOption(optionToSelect.option);
+    if (optionToSelect.type === 'toggle-all' && toggleAll) {
+      toggleAll();
+    } else {
+      updateSelectedOption(optionToSelect.option);
+    }
     closeDropdownIfNecessary();
   };
 

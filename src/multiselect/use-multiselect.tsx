@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
@@ -116,7 +116,7 @@ export function useMultiselect({
     .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
     .map(item => item.option);
 
-  const selectedValues = new Set(selectedOptions.map(option => option.value));
+  const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
   const isSomeSelected = selectedOptions.length > 0;
   const isAllVisibleSelected =
     isSomeSelected && filteredNonParentOptions.every(option => selectedValues.has(option.value));
@@ -124,6 +124,17 @@ export function useMultiselect({
     isAllVisibleSelected && allSelectableOptions.every(option => selectedValues.has(option.value));
   const isAllSelected =
     isAllSelectableSelected && allNonParentOptions.every(option => selectedValues.has(option.option.value));
+
+  const toggleAll = useCallback(() => {
+    const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
+    fireNonCancelableEvent(onChange, {
+      selectedOptions: isAllVisibleSelected
+        ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
+        : allNonParentOptions
+            .filter(({ option: { value } }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value))
+            .map(option => option.option),
+    });
+  }, [allNonParentOptions, filteredNonParentOptions, isAllVisibleSelected, onChange, selectedOptions, selectedValues]);
 
   const updateSelectedOption = useCallback(
     (option: OptionDefinition | OptionGroup) => {
@@ -193,19 +204,8 @@ export function useMultiselect({
     embedded,
     enableSelectAll,
     isAllSelected,
+    toggleAll,
   });
-
-  const toggleAll = () => {
-    const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
-    fireNonCancelableEvent(onChange, {
-      selectedOptions: isAllVisibleSelected
-        ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
-        : allNonParentOptions
-            .filter(({ option: { value } }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value))
-            .map(option => option.option),
-    });
-    closeDropdownIfNecessary();
-  };
 
   const wrapperOnKeyDown = useNativeSearch({
     isEnabled: filteringType === 'none' && isOpen,
@@ -306,7 +306,10 @@ export function useMultiselect({
     getWrapperProps: () => ({ onKeyDown: wrapperOnKeyDown }),
     isAllSelected,
     isSomeSelected,
-    toggleAll,
+    toggleAll: () => {
+      toggleAll();
+      closeDropdownIfNecessary();
+    },
     highlightedIndex,
     setHighlightedIndexWithMouse,
     menuId,
