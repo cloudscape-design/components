@@ -140,7 +140,6 @@ export function useSelect({
 
   const activeKeyDownHandler = useMenuKeyboard({
     goUp: () => {
-      console.log('goUp');
       if (
         (!useInteractiveGroups && highlightedOption?.type === 'child' && highlightedIndex === 1) ||
         highlightedIndex === 0
@@ -148,7 +147,6 @@ export function useSelect({
         goEndWithKeyboard();
         return;
       }
-      console.log('goUp');
       moveHighlightWithKeyboard(-1);
     },
     goDown: () => {
