@@ -142,7 +142,6 @@ test(
 
     await page.keys('Tab'); // Tab into gutter
     await page.keys('Tab'); // Tab into editor area
-    await page.keys('Tab'); // Tab into drag handle
     await page.keys('Tab');
     await expect(page.isFocused(codeEditorWrapper.findSettingsButton().toSelector())).resolves.toBe(true);
 

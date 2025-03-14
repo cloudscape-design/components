@@ -88,9 +88,7 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Themen filtern",
     "i18nStrings.preferencesModalLightThemes": "Hellere Themen",
     "i18nStrings.preferencesModalDarkThemes": "Dunkles Design",
-    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}",
-    "i18nStrings.resizeHandleAriaLabel": "Größe des Punktes ändern",
-    "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
+    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}"
   },
   "collection-preferences": {
     "title": "Präferenzen",

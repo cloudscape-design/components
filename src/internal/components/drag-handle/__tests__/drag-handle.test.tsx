@@ -4,7 +4,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import DragHandleButton from '../../../../../lib/components/internal/components/drag-handle/button.js';
+import DragHandle from '../../../../../lib/components/internal/components/drag-handle';
 
 import styles from '../../../../../lib/components/internal/components/drag-handle/styles.css.js';
 
@@ -12,7 +12,7 @@ const allVariants = ['drag-indicator', 'resize-area', 'resize-horizontal', 'resi
 const allSizes = ['small', 'normal'] as const;
 
 test('renders default variant and size', () => {
-  render(<DragHandleButton ariaLabel="drag handle" />);
+  render(<DragHandle ariaLabel="drag handle" />);
 
   expect(document.querySelector(`.${styles.handle}`)).toBeInTheDocument();
   expect(document.querySelector(`.${styles['handle-drag-indicator']}`)).toBeInTheDocument();
@@ -22,7 +22,7 @@ test('renders default variant and size', () => {
 test('renders all variants and sizes', () => {
   for (const variant of allVariants) {
     for (const size of allSizes) {
-      render(<DragHandleButton ariaLabel="drag handle" variant={variant} size={size} />);
+      render(<DragHandle ariaLabel="drag handle" variant={variant} size={size} />);
 
       expect(document.querySelector(`.${styles.handle}`)).toBeInTheDocument();
       expect(document.querySelector(`.${styles[`handle-${variant}`]}`)).toBeInTheDocument();
@@ -34,7 +34,7 @@ test('renders all variants and sizes', () => {
 test('assigns aria label and aria description', () => {
   render(
     <div>
-      <DragHandleButton ariaLabel="drag" ariaDescribedby="description" />
+      <DragHandle ariaLabel="drag" ariaDescribedby="description" />
       <div id="description">handle</div>
     </div>
   );
@@ -43,13 +43,13 @@ test('assigns aria label and aria description', () => {
 });
 
 test('has role="button" by default', () => {
-  render(<DragHandleButton ariaLabel="drag handle" />);
+  render(<DragHandle ariaLabel="drag handle" />);
 
   expect(screen.getByRole('button')).toHaveAccessibleName('drag handle');
 });
 
 test('has role="slider" and aria-value attributes when ariaValue is set', () => {
-  render(<DragHandleButton ariaLabel="drag handle" ariaValue={{ valueMin: -1, valueMax: 1, valueNow: 0 }} />);
+  render(<DragHandle ariaLabel="drag handle" ariaValue={{ valueMin: -1, valueMax: 1, valueNow: 0 }} />);
 
   const handle = screen.getByRole('slider');
   expect(handle).toHaveAccessibleName('drag handle');
@@ -59,12 +59,12 @@ test('has role="slider" and aria-value attributes when ariaValue is set', () => 
 });
 
 test('sets aria-disabled when disabled', () => {
-  const { rerender } = render(<DragHandleButton ariaLabel="drag handle" disabled={false} />);
+  const { rerender } = render(<DragHandle ariaLabel="drag handle" disabled={false} />);
 
   expect(document.querySelector(`.${styles.handle}`)).toHaveAttribute('aria-disabled', 'false');
   expect(document.querySelector(`.${styles['handle-disabled']}`)).not.toBeInTheDocument();
 
-  rerender(<DragHandleButton ariaLabel="drag handle" disabled={true} />);
+  rerender(<DragHandle ariaLabel="drag handle" disabled={true} />);
 
   expect(document.querySelector(`.${styles.handle}`)).toHaveAttribute('aria-disabled');
   expect(document.querySelector(`.${styles['handle-disabled']}`)).toBeInTheDocument();
