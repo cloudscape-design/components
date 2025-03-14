@@ -14,6 +14,7 @@
   grid-template-columns: 0 0 1fr minmax(0, var(#{custom-props.$contentLayoutMaxContentWidth})) 1fr 0 0;
   grid-template-rows: var(#{custom-props.$contentLayoutMainGap}) min-content min-content auto awsui.$space-dark-header-overlap-distance 1fr;
   min-block-size: 100%;
+  background-color: awsui.$color-background-content-layout;
 
   @include styles.media-breakpoint-down(styles.$breakpoint-x-small) {
     #{custom-props.$contentLayoutDefaultHorizontalPadding}: awsui.$space-l;
@@ -86,7 +87,7 @@
 .layout.is-visual-refresh {
   > .background {
     &.has-default-background {
-      background-color: awsui.$color-background-layout-main;
+      background-color: awsui.$color-background-content-layout;
     }
   }
 }

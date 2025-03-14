@@ -75,6 +75,10 @@ explicitly set in script.
   min-block-size: var(#{custom-props.$contentHeight});
   position: relative;
 
+  &.content-type-table {
+    background-color: awsui.$color-background-layout-main-full-page;
+  }
+
   /*
   Add unified max-width for AppLayout content based on breakpoints. Only use the max content 
   width custom property for the middle column definition if the maxContentWidth property 
