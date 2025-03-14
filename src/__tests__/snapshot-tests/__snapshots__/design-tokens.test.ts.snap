@@ -17943,8 +17943,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
+            "dark": "#131920",
+            "light": "#fcfcfd",
           },
         },
         "color-background-layout-toggle-active": {
@@ -20468,8 +20468,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#161d26",
+            "dark": "#131920",
+            "light": "#131920",
           },
         },
         "color-background-layout-toggle-active": {
@@ -22993,8 +22993,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
+            "dark": "#131920",
+            "light": "#fcfcfd",
           },
         },
         "color-background-layout-toggle-active": {
@@ -25518,8 +25518,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
+            "dark": "#131920",
+            "light": "#fcfcfd",
           },
         },
         "color-background-layout-toggle-active": {
@@ -28043,8 +28043,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
+            "dark": "#131920",
+            "light": "#fcfcfd",
           },
         },
         "color-background-layout-toggle-active": {
@@ -33093,8 +33093,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-layout-main": {
           "$description": "The background color of the main content area on a page. For example: content area in app layout.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#161d26",
+            "dark": "#131920",
+            "light": "#131920",
           },
         },
         "color-background-layout-toggle-active": {
@@ -35618,8 +35618,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-layout-main": {
       "$description": "The background color of the main content area on a page. For example: content area in app layout.",
       "$value": {
-        "dark": "#161d26",
-        "light": "#ffffff",
+        "dark": "#131920",
+        "light": "#fcfcfd",
       },
     },
     "color-background-layout-toggle-active": {
