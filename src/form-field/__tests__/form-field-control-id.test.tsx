@@ -65,7 +65,7 @@ describe('controlId', () => {
       expect(wrapper.findLabel()?.getElement()).toHaveAttribute('for', formFieldControlId);
       expect(wrapper.findDescription()?.getElement().id).toBe(`${formFieldControlId}-description`);
       expect(wrapper.find(errorSelector)?.getElement().id).toBe(`${formFieldControlId}-error`);
-      expect(wrapper.find(warningSelector)).toBeUndefined;
+      expect(wrapper.find(warningSelector)).toBeNull();
       expect(wrapper.findConstraint()?.getElement().id).toBe(`${formFieldControlId}-constraint`);
     });
 

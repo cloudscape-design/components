@@ -304,7 +304,7 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
 
 describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop'] }, ({ theme }) => {
   const styles = theme === 'refresh' ? visualRefreshStyles : toolbarStyles;
-  test('renders roles only when aria labels are not provided', () => {
+  test(`${theme} - renders roles only when aria labels are not provided`, () => {
     const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
 
     expect(wrapper.findDrawerTriggerById(testDrawer.id)!.getElement()).not.toHaveAttribute('aria-label');
@@ -314,7 +314,7 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop
     expect(wrapper.findByClassName(styles['drawers-trigger-content'])!.getElement()).toHaveAttribute('role', 'toolbar');
   });
 
-  test('renders roles and aria labels when provided', () => {
+  test(`${theme} - renders roles and aria labels when provided`, () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
 
     expect(wrapper.findDrawerTriggerById('security')!.getElement()).toHaveAttribute(

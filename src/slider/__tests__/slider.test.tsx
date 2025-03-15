@@ -5,6 +5,7 @@ import { fireEvent, render, screen } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
+import '../../__a11y__/to-validate-a11y';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import customCssProps from '../../../lib/components/internal/generated/custom-css-properties';
 import Slider, { SliderProps } from '../../../lib/components/slider';
@@ -325,7 +326,7 @@ describe('Slider i18n', () => {
 });
 
 describe('Slider a11y', () => {
-  test('Valides a11y', () => {
+  test('Validatees a11y', () => {
     const wrapper = renderSlider({
       min: 0,
       max: 100,
@@ -336,7 +337,7 @@ describe('Slider a11y', () => {
       ariaLabel: 'aria label',
     });
 
-    expect(wrapper.getElement()).toValidateA11y;
+    expect(wrapper.getElement()).toValidateA11y();
   });
 
   test('Renders correct aria label', () => {

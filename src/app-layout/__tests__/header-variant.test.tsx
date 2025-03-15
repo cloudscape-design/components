@@ -54,7 +54,7 @@ describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['desktop
 });
 
 describeEachAppLayout({ themes: ['refresh', 'refresh-toolbar'], sizes: ['mobile'] }, ({ theme }) => {
-  describe('headerVariant', () => {
+  describe(`${theme} - headerVariant`, () => {
     test('default', () => {
       const { wrapper } = renderComponent(
         <AppLayout notifications="Notifications" breadcrumbs="Breadcrumbs" content="aaa" />

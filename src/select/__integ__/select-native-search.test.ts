@@ -136,7 +136,7 @@ describe(`Select (Native Search)`, () => {
     );
 
     test(
-      'selects the match with dropdown closed -- extended option with missing properties, searches entire option',
+      'selects the partial match with dropdown closed -- extended option with missing properties, searches entire option',
       setupTest(optionsType, async page => {
         await page.focusSelect();
         await page.keys(['a', 'n', 'o']);

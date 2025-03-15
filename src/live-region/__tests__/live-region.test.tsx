@@ -9,7 +9,7 @@ import styles from '../../../lib/components/live-region/test-classes/styles.css.
 
 const renderLiveRegion = async (jsx: React.ReactElement) => {
   const { container } = render(jsx);
-  await waitFor(() => expect(document.querySelector('[aria-live=polite]')));
+  await waitFor(() => document.querySelector('[aria-live=polite]'));
   jest.runAllTimers();
 
   return {

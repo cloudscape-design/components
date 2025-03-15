@@ -43,7 +43,7 @@ describe('AnchorNavigation', () => {
     setupTest(async page => {
       // Get element position in page
       const targetAnchorLink = wrapper.findAnchorLinkByHref('#section-1-1-1');
-      expect(await page.getElementAttribute(targetAnchorLink.toSelector(), 'aria-current')).toBeNull;
+      expect(await page.getElementAttribute(targetAnchorLink.toSelector(), 'aria-current')).toBeNull();
       await page.click(targetAnchorLink.toSelector());
       await page.waitForVisible('#section-1-1-1');
       return expect(await page.getElementAttribute(targetAnchorLink.toSelector(), 'aria-current')).toBe('true');

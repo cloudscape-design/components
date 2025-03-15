@@ -7,6 +7,7 @@ import glob from 'glob';
 import { flatten, zip } from 'lodash';
 import path from 'path';
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const defaultPlugins = [require('@babel/plugin-syntax-typescript')] as const;
 
 // The test extracts generated selectors from the compiled output and matches those against the snapshot.
@@ -86,11 +87,11 @@ function extractSelectorProperties(file: string, onExtract: (filePath: string, p
     } as PluginObj;
   }
   const source = fs.readFileSync(file, 'utf-8');
-  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] })?.code;
+  transformSync(source, { babelrc: false, configFile: false, plugins: [...defaultPlugins, extractor] });
 }
 
 function extractComponentSelectors(file: string, usedProperties: string[], onExtract: (selector: string) => void) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const source = require(file);
   if (typeof source.default !== 'object') {
     throw new Error(`Unexpected selectors file format at ${file}.`);
