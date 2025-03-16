@@ -1,3 +1,5 @@
+export const fontFamily =  'InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif';
+
 export const palette = {
   blue10: 'hsl(220, 95%, 95%)',
   blue20: 'hsl(220, 85%, 85%)',

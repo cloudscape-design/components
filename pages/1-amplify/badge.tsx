@@ -1,7 +1,7 @@
 import React from 'react';
 import { Badge as CloudscapeBadge } from '~components';
 import Theme from '~components/theming/component/index';
-import { palette } from './palette';
+import { palette } from './theme';
 
 export default function Badge(props: any) {
   return (
@@ -12,15 +12,14 @@ export default function Badge(props: any) {
       color={colors[props.variation as keyof typeof colors]}
       fontWeight="600"
       lineHeight="14px"
+      onDarkMode={{
+        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
+        color: darkModeColors[props.variation as keyof typeof darkModeColors],
+      }}
       paddingBlock="8px"
       paddingInline="12px"
     >
-      <Theme.DarkMode
-        backgroundColor={darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors]}
-        color={darkModeColors[props.variation as keyof typeof darkModeColors]}
-      >
-        <CloudscapeBadge>{props.children}</CloudscapeBadge>
-      </Theme.DarkMode>
+      <CloudscapeBadge>{props.children}</CloudscapeBadge>
     </Theme>
   );
 }
