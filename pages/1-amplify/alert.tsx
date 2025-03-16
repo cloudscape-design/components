@@ -1,7 +1,7 @@
 import React from 'react';
 import Theme from '~components/theming/component/index';
 import { Alert as CloudscapeAlert } from '~components';
-import { palette } from './palette';
+import { palette } from './theme';
 
 export default function Alert(props:any) {
   return (
@@ -11,20 +11,19 @@ export default function Alert(props:any) {
       borderWidth="0px"
       color={colors[props.variation as keyof typeof colors]}
       fill={colors[props.variation as keyof typeof colors]}
+      onDarkMode={{
+        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
+        color: darkModeColors[props.variation as keyof typeof darkModeColors],
+        fill: darkModeColors[props.variation as keyof typeof darkModeColors],
+      }}
     >
-      <Theme.DarkMode
-        backgroundColor={darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors]}
-        color={darkModeColors[props.variation as keyof typeof darkModeColors]}
-        fill={darkModeColors[props.variation as keyof typeof darkModeColors]}   
+      <CloudscapeAlert 
+        action={props.action}
+        header={props.heading} 
+        type={props.variation === 'default' ? 'info' : props.variation}
       >
-        <CloudscapeAlert 
-          action={props.action}
-          header={props.heading} 
-          type={props.variation === 'default' ? 'info' : props.variation}
-        >
-          {props.children}
-        </CloudscapeAlert>
-      </Theme.DarkMode>
+        {props.children}
+      </CloudscapeAlert>
     </Theme>
   );
 };
