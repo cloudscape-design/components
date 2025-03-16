@@ -231,20 +231,19 @@ function AmplifyAlert(props:any) {
       color={colors[props.variation as keyof typeof colors]}
       fill={colors[props.variation as keyof typeof colors]}
       fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
+      onDarkMode={{
+        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
+        color: darkModeColors[props.variation as keyof typeof darkModeColors],
+        fill: darkModeColors[props.variation as keyof typeof darkModeColors],
+      }}
     >
-      <Theme.DarkMode
-        backgroundColor={darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors]}
-        color={darkModeColors[props.variation as keyof typeof darkModeColors]}
-        fill={darkModeColors[props.variation as keyof typeof darkModeColors]}   
+      <Alert 
+        action={props.action}
+        header={props.heading} 
+        type={props.variation === 'default' ? 'info' : props.variation}
       >
-        <Alert 
-          action={props.action}
-          header={props.heading} 
-          type={props.variation === 'default' ? 'info' : props.variation}
-        >
-          {props.children}
-        </Alert>
-      </Theme.DarkMode>
+        {props.children}
+      </Alert>
     </Theme>
   );
 }
@@ -300,15 +299,14 @@ function MaterialUIAlert(props:any) {
       color={colors[props.severity as keyof typeof colors]}
       fill={fills[props.severity as keyof typeof fills]}
       fontFamily='Roboto, Helvetica, Arial, sans-serif'
+      onDarkMode={{
+        backgroundColor: darkModeBackgroundColors[props.severity as keyof typeof darkModeBackgroundColors],
+        color: darkModeColors[props.severity as keyof typeof darkModeColors],
+      }}
     >
-      <Theme.DarkMode
-        backgroundColor={darkModeBackgroundColors[props.severity as keyof typeof darkModeBackgroundColors]}
-        color={darkModeColors[props.severity as keyof typeof darkModeColors]}
-      >
-        <Alert header={props.heading} type={props.severity}>
-          {props.children}
-        </Alert>
-      </Theme.DarkMode>
+      <Alert header={props.heading} type={props.severity}>
+        {props.children}
+      </Alert>
     </Theme>
   );
 }
@@ -336,16 +334,15 @@ function AuraAlert(props:any) {
       borderWidth="1px"
       fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'
       fill={fills[props.variant as keyof typeof fills]}
+      onDarkMode={{
+        backgroundColor: "#161d26",
+        borderColor: "#fff",
+        fill: darkModeFills[props.variant as keyof typeof darkModeFills],
+      }}
     >
-      <Theme.DarkMode
-        backgroundColor="#161d26"
-        borderColor="#fff"
-        fill={darkModeFills[props.variant as keyof typeof darkModeFills]}
-      >
-        <Alert header={props.title} type={props.variant === 'warn' ? 'warning' : props.variant}>
-          {props.message}
-        </Alert>
-      </Theme.DarkMode>
+      <Alert header={props.title} type={props.variant === 'warn' ? 'warning' : props.variant}>
+        {props.message}
+      </Alert>
     </Theme>
   );
 }
@@ -413,18 +410,17 @@ function KatalAlert(props:any) {
       paddingInline="20px"
       gapBlock='4px'
       gapInline="14px"
+      onDarkMode={{
+        backgroundColor: darkModeBackgroundColors[props.variant as keyof typeof darkModeBackgroundColors],
+        color: "#fff",
+        fill: darkModeFills[props.variant as keyof typeof darkModeFills],
+      }}
     >
-      <Theme.DarkMode
-        backgroundColor={darkModeBackgroundColors[props.variant as keyof typeof darkModeBackgroundColors]}
-        color="#fff"
-        fill={darkModeFills[props.variant as keyof typeof darkModeFills]}
-      >
-        <div style={{ borderLeft: `4px solid ${fills[props.variant as keyof typeof fills]}`}}>
-          <Alert header={props.header} type={props.variant === 'danger' ? 'error' : props.variant}>
-            {props.description}
-          </Alert>
-        </div>
-      </Theme.DarkMode>
+      <div style={{ borderLeft: `4px solid ${fills[props.variant as keyof typeof fills]}`}}>
+        <Alert header={props.header} type={props.variant === 'danger' ? 'error' : props.variant}>
+          {props.description}
+        </Alert>
+      </div>
     </Theme>
   );
 }
@@ -458,22 +454,21 @@ function FintechAlert(props:any) {
       borderRadius="8px"
       borderWidth="1px"
       fill={fills[props.type as keyof typeof fills]}
+      onDarkMode={{
+        backgroundColor: borderColors[props.type as keyof typeof borderColors],
+        borderColor: "transparent",
+        color: "#fff",
+        fill: "#fff",
+      }}
     >
-      <Theme.DarkMode
-        backgroundColor={borderColors[props.type as keyof typeof borderColors]}
-        borderColor="transparent"
-        color="#fff"
-        fill="#fff"
+      <Alert 
+        action={props.action}
+        dismissible={props.dismissible}
+        header={props.header} 
+        type={props.type}
       >
-        <Alert 
-          action={props.action}
-          dismissible={props.dismissible}
-          header={props.header} 
-          type={props.type}
-        >
-          {props.children}
-        </Alert>
-      </Theme.DarkMode>
+        {props.children}
+      </Alert>
     </Theme>
   );
 }

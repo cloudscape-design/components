@@ -159,15 +159,14 @@ function AmplifyBadge(props: any) {
       fontFamily='InterVariable, "Inter var", Inter, -apple-system, "system-ui", "Helvetica Neue", "Segoe UI", Oxygen, Ubuntu, Cantarell, "Open Sans", sans-serif'
       fontWeight="600"
       lineHeight="14px"
+      onDarkMode={{
+        backgroundColor: darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors],
+        color: darkModeColors[props.variation as keyof typeof darkModeColors],
+      }}
       paddingBlock="8px"
       paddingInline="12px"
     >
-      <Theme.DarkMode
-        backgroundColor={darkModeBackgroundColors[props.variation as keyof typeof darkModeBackgroundColors]}
-        color={darkModeColors[props.variation as keyof typeof darkModeColors]}
-      >
-        <Badge>{props.children}</Badge>
-      </Theme.DarkMode>
+      <Badge>{props.children}</Badge>
     </Theme>
   );
 }
@@ -248,28 +247,24 @@ function MaterialUIChip(props: any) {
       }
       fontFamily="Roboto, Helvetica, Arial, sans-serif"
       fontWeight="400"
+      onDarkMode={{
+        backgroundColor:
+          props.variant === 'outlined'
+            ? 'rgb(15, 18, 20)'
+            : darkModeBackgroundColors[props.color as keyof typeof darkModeBackgroundColors],
+        borderColor:
+          props.variant === 'outlined'
+            ? darkModeOutlinedColors[props.color as keyof typeof darkModeOutlinedColors]
+            : 'transparent',
+        color:
+          props.variant === 'outlined'
+            ? darkModeColors[props.color as keyof typeof darkModeColors]
+            : 'rgba(0, 0, 0, 0.87)',
+      }}
       paddingBlock="6px"
       paddingInline="12px"
     >
-      <Theme.DarkMode
-        backgroundColor={
-          props.variant === 'outlined'
-            ? 'rgb(15, 18, 20)'
-            : darkModeBackgroundColors[props.color as keyof typeof darkModeBackgroundColors]
-        }
-        borderColor={
-          props.variant === 'outlined'
-            ? darkModeOutlinedColors[props.color as keyof typeof darkModeOutlinedColors]
-            : 'transparent'
-        }
-        color={
-          props.variant === 'outlined'
-            ? darkModeColors[props.color as keyof typeof darkModeColors]
-            : 'rgba(0, 0, 0, 0.87)'
-        }
-      >
-        <Badge>{props.children}</Badge>
-      </Theme.DarkMode>
+      <Badge>{props.children}</Badge>
     </Theme>
   );
 }
@@ -283,11 +278,13 @@ function AuraBadge(props: any) {
       fontSize="16px"
       fontFamily='"Amazon Ember Display", "Helvetica Neue", Helvetica, Arial, sans-serif'
       fontWeight="500"
+      onDarkMode={{
+        backgroundImage: "linear-gradient(120deg, #78008a 24.25%, #b2008f 69.56%)", 
+        color: "#fff",
+      }}
       paddingBlock="4px"
     >
-      <Theme.DarkMode backgroundImage="linear-gradient(120deg, #78008a 24.25%, #b2008f 69.56%)" color="#fff">
-        <Badge>{props.text}</Badge>
-      </Theme.DarkMode>
+      <Badge>{props.text}</Badge>
     </Theme>
   );
 }

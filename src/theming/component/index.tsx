@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ThemeProps, DarkModeProps, ResetProps } from './interfaces';
+import { ThemeProps, ResetProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function Theme({
@@ -64,34 +64,6 @@ export default function Theme({
       >
         {children}
       </div>
-    </div>
-  );
-}
-
-function DarkMode({
-  backgroundColor,
-  backgroundImage, 
-  borderColor,
-  boxShadow,
-  children,
-  color,
-  fill,
-  outline,
-}:DarkModeProps) {
-  console.log(backgroundColor);
-  return (
-    <div className={clsx(styles['theme-dark-mode'])}
-      style={{
-        ...(backgroundColor && getValues('--theme-background-color-dark-mode', backgroundColor)),
-        ...(backgroundImage && getValues('--theme-background-image-dark-mode', backgroundImage)),
-        ...(borderColor && getValues('--theme-border-color-dark-mode', borderColor)),
-        ...(boxShadow && getValues('--theme-box-shadow-dark-mode', boxShadow)),
-        ...(color && getValues('--theme-color-dark-mode', color)),
-        ...(fill && getValues('--theme-fill-dark-mode', fill)),
-        ...(outline && getValues('--theme-outline-dark-mode', outline)),
-      }}
-    >
-      {children}
     </div>
   );
 }
@@ -187,6 +159,5 @@ function getResetValues(name: string) {
   return values;
 }
 
-Theme.DarkMode = DarkMode;
 Theme.Reset = Reset;
 
