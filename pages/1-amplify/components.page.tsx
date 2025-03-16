@@ -2,13 +2,14 @@ import React from 'react';
 import { SpaceBetween, TextContent } from '~components';
 import Alert from './alert';
 import Badge from './badge';
+import Button from './button';
 import CheckboxField from './checkbox-field';
-import { fontFamily } from './typography';
+import { fontFamily, palette } from './theme';
 import Theme from '~components/theming/component';
 
 export default function AmplifyDemo() {
   return (
-    <Theme fontFamily={fontFamily}>
+    <Theme fontFamily={fontFamily} outline={palette.neutral90}>
       <div style={{ margin: '40px' }}>
         <SpaceBetween direction='vertical' size='m'>
           <TextContent>
@@ -59,6 +60,21 @@ export default function AmplifyDemo() {
           <CheckboxField checked={true} isIndeterminate isDisabled label="Subscribe" />
           <CheckboxField checked={false} label="Subscribe" />
           <CheckboxField checked={false} isDisabled label="Subscribe" />
+
+          <hr />
+
+          <TextContent>
+            <h3>Button</h3>
+          </TextContent>
+
+
+          <Button colorTheme="default" variation="primary">Default</Button>
+          <Button colorTheme="success" variation="primary">Success</Button>
+          <Button colorTheme="error" variation="primary">Error</Button>
+          <Button colorTheme="info" variation="primary">Info</Button>
+          <Button colorTheme="warning" variation="primary">Warning</Button>
+          <Button colorTheme="success" variation="primary" isDisabled>isDisabled</Button>
+          <Button colorTheme="success" variation="primary" isLoading>isLoading</Button>
         </SpaceBetween>
       </div>
     </Theme>

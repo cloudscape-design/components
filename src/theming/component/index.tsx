@@ -20,6 +20,7 @@ export default function Theme({
   gapInline,
   height,
   lineHeight,
+  onDarkMode,
   outline,
   paddingBlock,
   paddingInline,
@@ -29,28 +30,40 @@ export default function Theme({
     <div 
       className={clsx(styles.theme)}
       style={{
-        ...(backgroundColor && getValues('--theme-background-color', backgroundColor)),
-        ...(backgroundImage && getValues('--theme-background-image', backgroundImage)),
-        ...(borderColor && getValues('--theme-border-color', borderColor)),
-        ...(borderRadius && { ['--theme-border-radius']: `${borderRadius}` }),
-        ...(borderWidth && { ['--theme-border-width']: `${borderWidth}` }),
-        ...(boxShadow && getValues('--theme-box-shadow', boxShadow)),
-        ...(color && getValues('--theme-color', color)),
-        ...(fill && getValues('--theme-fill', fill)),
-        ...(fontFamily && { ['--theme-font-family']: `${fontFamily}` }),
-        ...(fontSize && { ['--theme-font-size']: `${fontSize}` }),
-        ...(fontWeight && { ['--theme-font-weight']: `${fontWeight}` }),
-        ...(gapBlock && { ['--theme-gap-block']: `${gapBlock}` }),
-        ...(gapInline && { ['--theme-gap-inline']: `${gapInline}` }),
-        ...(height && { ['--theme-height']: `${height}` }),
-        ...(lineHeight && { ['--theme-line-height']: `${lineHeight}` }),
-        ...(outline && getValues('--theme-outline', outline)),
-        ...(paddingBlock && { ['--theme-padding-block']: `${paddingBlock}` }),
-        ...(paddingInline && { ['--theme-padding-inline']: `${paddingInline}` }),
-        ...(width && { ['--theme-width']: `${width}` }),
+        ...(backgroundColor && getValues('background-color', backgroundColor)),
+        ...(backgroundImage && getValues('background-image', backgroundImage)),
+        ...(borderColor && getValues('border-color', borderColor)),
+        ...(borderRadius && getValues('border-radius', borderRadius)),
+        ...(borderWidth && getValues('border-width', borderWidth)),
+        ...(boxShadow && getValues('box-shadow', boxShadow)),
+        ...(color && getValues('color', color)),
+        ...(fill && getValues('fill', fill)),
+        ...(fontFamily && getValues('font-family', fontFamily)),
+        ...(fontSize && getValues('font-size', fontSize)),
+        ...(fontWeight && getValues('font-weight', fontWeight)),
+        ...(gapBlock && getValues('gap-block', gapBlock)),
+        ...(gapInline && getValues('gap-inline', gapInline)),
+        ...(height && getValues('height', height)),
+        ...(lineHeight && getValues('line-height', lineHeight)),
+        ...(outline && getValues('outline', outline)),
+        ...(paddingBlock && getValues('padding-block', paddingBlock)),
+        ...(paddingInline && getValues('padding-inline', paddingInline)),
+        ...(width && getValues('width', width)),
       }}
     >
-      {children}
+      <div className={clsx(styles['theme-dark-mode'])}
+        style={{
+          ...(onDarkMode?.backgroundColor && getValues('background-color', onDarkMode.backgroundColor, true)),
+          ...(onDarkMode?.backgroundImage && getValues('background-image', onDarkMode.backgroundImage, true)),
+          ...(onDarkMode?.borderColor && getValues('border-color', onDarkMode.borderColor, true)),
+          ...(onDarkMode?.boxShadow && getValues('box-shadow', onDarkMode.boxShadow, true)),
+          ...(onDarkMode?.color && getValues('color', onDarkMode.color, true)),
+          ...(onDarkMode?.fill && getValues('fill', onDarkMode.fill, true)),
+          ...(onDarkMode?.outline && getValues('outline', onDarkMode.outline, true)),
+        }}
+      >
+        {children}
+      </div>
     </div>
   );
 }
@@ -136,24 +149,29 @@ function Reset({
   );
 }
 
-function getValues(name: string, property: any) {
-  let values;
+function getValues(name: string, property: any, darkMode?: boolean) {
+  const valuesWithState = [
+    'background-color',
+    'background-image',
+    'border-color',
+    'box-shadow',
+    'color',
+    'fill',
+    'outline'
+  ];
 
-  if (typeof property === 'string') {
-    values = { [name]: `${property}` }
-  } else {
-    values = {
-      [`${name}`]: property?.default,
-      [`${name}-active`]: property?.active,
-      [`${name}-checked`]: property?.checked,
-      [`${name}-disabled`]: property?.disabled,
-      [`${name}-hover`]: property?.hover,
-      [`${name}-indeterminate`]: property?.indeterminate,
-      [`${name}-read-only`]: property?.readOnly,
-    }
-  }
+  const mode = darkMode ? '-dark-mode' : '';
+  const hasState = valuesWithState.indexOf(name) >= 0;
 
-  return values;
+  return {
+    [`--theme-${name}${mode}`]: typeof property === 'string' ? property : property?.default,
+    ...(hasState && { [`--theme-${name}${mode}-active`]: property?.active ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-checked`]: property?.checked ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-disabled`]: property?.disabled ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-hover`]: property?.hover ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-indeterminate`]: property?.indeterminate ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-read-only`]: property?.readOnly ?? property?.default ?? property }),
+  };
 }
 
 function getResetValues(name: string) {

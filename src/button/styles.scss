@@ -29,15 +29,15 @@
   }
 
   &:active {
-    background: map.get($variant, 'active-background');
-    color: map.get($variant, 'active-color');
-    border-color: map.get($variant, 'active-border-color');
+    background: var(--theme-background-color-active, map.get($variant, 'active-background'));
+    color: var(--theme-color-active, map.get($variant, 'active-color'));
+    border-color: var(--theme-border-color-active, map.get($variant, 'active-border-color'));
   }
 
   &.disabled {
-    background: map.get($variant, 'disabled-background');
-    border-color: map.get($variant, 'disabled-border-color');
-    color: map.get($variant, 'disabled-color');
+    background: var(--theme-background-color-disabled, map.get($variant, 'disabled-background'));
+    border-color: var(--theme-border-color-disabled, map.get($variant, 'disabled-border-color'));
+    color: var(--theme-color-disabled, map.get($variant, 'disabled-color'));
     text-decoration: none;
     cursor: auto;
   }
@@ -140,6 +140,7 @@
   }
 
   > .icon-left {
+    color: var(--theme-fill);
     position: relative;
     // margin-left was breaking layout on firefox
     inset-inline-start: calc(-1 * #{awsui.$space-xxs});
@@ -147,6 +148,7 @@
   }
 
   > .icon-right {
+    color: var(--theme-fill);
     position: relative;
     // margin-right was breaking layout on firefox
     inset-inline-end: calc(-1 * #{awsui.$space-xxs});

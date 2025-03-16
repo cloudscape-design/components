@@ -7,10 +7,16 @@ interface States {
   active?: string;
   default?: string;
   checked?: string;
+  disabled?: string;
+  focus?: string;
   hover?: string;
   indeterminate?: string;
-  disabled?: string;
+  invalid?: string;
+  loading?: string;
   readOnly?: string;
+  selected?: string;
+  valid?: string;
+  visited?: string;
 }
 
 export function isCustomValue(sizeKey: string): sizeKey is SizeKey {
@@ -34,6 +40,15 @@ export interface ThemeProps {
   gapInline?: string;
   height?: string;
   lineHeight?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
+  onDarkMode?: {
+    backgroundColor?: string | States;
+    backgroundImage?: string | States;
+    borderColor?: string | States;
+    boxShadow?: string | States;
+    color?: string | States;
+    fill?: string | States;
+    outline?: string | States;
+  };
   outline?: string | States;
   paddingBlock?: string;
   paddingInline? : string;
