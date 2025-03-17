@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filtrer les thèmes",
     "i18nStrings.preferencesModalLightThemes": "Thèmes clairs",
     "i18nStrings.preferencesModalDarkThemes": "Thèmes sombres",
-    "i18nStrings.cursorPositionAriaLabel": "Curseur sur la ligne {row}"
+    "i18nStrings.cursorPositionAriaLabel": "Curseur sur la ligne {row}",
+    "i18nStrings.resizeHandleAriaLabel": "Poignée de redimensionnement",
+    "i18nStrings.resizeHandleTooltipText": "Faites glisser ou sélectionnez pour redimensionner"
   },
   "collection-preferences": {
     "title": "Préférences",
