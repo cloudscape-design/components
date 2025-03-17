@@ -56,6 +56,7 @@ import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
@@ -266,7 +267,7 @@ const InternalTable = React.forwardRef(
       [cancelEdit]
     );
 
-    const wrapperRefObject = useRef(null);
+    const wrapperRefObject = useRef<HTMLDivElement>(null);
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
@@ -378,6 +379,8 @@ const InternalTable = React.forwardRef(
       isExpandable,
       setLastUserAction,
     };
+
+    usePreventStickyClickScroll(wrapperRefObject);
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
