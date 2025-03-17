@@ -18,6 +18,7 @@ import { hasActiveLink } from './util';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
+import testUtilStyles from './test-classes/styles.css.js';
 
 interface BaseItemComponentProps {
   activeHref?: string;
@@ -312,7 +313,7 @@ function Link({ definition, expanded, activeHref, fireFollow, position }: LinkPr
           </span>
         )}
       </a>
-      {definition.info && <span className={styles.info}>{definition.info}</span>}
+      {definition.info && <span className={clsx(styles.info, testUtilStyles.info)}>{definition.info}</span>}
     </>
   );
 }

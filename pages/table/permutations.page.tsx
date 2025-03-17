@@ -81,10 +81,16 @@ const VERTICAL_ALIGN_COLUMNS: TableProps.ColumnDefinition<any>[] = [
     verticalAlign: 'top',
   },
   {
-    id: 'type-2',
-    header: 'Value',
+    id: 'value-top',
+    header: 'Value (top)',
     cell: item => item.text,
     verticalAlign: 'top',
+  },
+  {
+    id: 'value-middle',
+    header: 'Value (middle)',
+    cell: item => item.text,
+    verticalAlign: 'middle',
   },
 ];
 
@@ -314,9 +320,12 @@ const permutations = createPermutations<TableProps>([
     items: [createSimpleItems(3)],
   },
   {
+    header: ['Vertical align'],
     columnDefinitions: [VERTICAL_ALIGN_COLUMNS],
+    cellVerticalAlign: ['top'],
     items: [createSimpleItems(3)],
     variant: [undefined, 'full-page'],
+    selectionType: ['multi'],
   },
   {
     columnDefinitions: [
