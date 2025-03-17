@@ -226,7 +226,7 @@ export function useSelect({
       __nativeAttributes: {
         'aria-activedescendant': activeDescendantId,
         ['aria-owns']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
-        ['aria-controls']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
+        ['aria-controls']: menuId,
       },
     };
   };
@@ -252,6 +252,7 @@ export function useSelect({
       menuProps.onKeyDown = activeKeyDownHandler;
       menuProps.nativeAttributes = {
         'aria-activedescendant': activeDescendantId,
+        ['aria-owns']: enableSelectAll ? `${menuId} ${selectAllId}` : undefined,
       };
     }
     if (embedded) {
