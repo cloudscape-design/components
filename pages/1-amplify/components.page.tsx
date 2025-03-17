@@ -4,13 +4,15 @@ import Alert from './alert';
 import Badge from './badge';
 import Button from './button';
 import CheckboxField from './checkbox-field';
+import Input from './input';
 import { fontFamily, palette } from './theme';
 import Theme from '~components/theming/component';
+import styles from './styles.scss';
 
 export default function AmplifyDemo() {
   return (
-    <Theme fontFamily={fontFamily} outline={palette.neutral90}>
-      <div style={{ margin: '40px' }}>
+    <div className={styles.amplify}>
+      <Theme fontFamily={fontFamily} outline={palette.neutral90}>
         <SpaceBetween direction='vertical' size='m'>
           <TextContent>
             <h3>Alert</h3>
@@ -51,6 +53,21 @@ export default function AmplifyDemo() {
           <hr />
 
           <TextContent>
+            <h3>Button</h3>
+          </TextContent>
+
+
+          <Button colorTheme="default" variation="primary">Default</Button>
+          <Button colorTheme="success" variation="primary">Success</Button>
+          <Button colorTheme="error" variation="primary">Error</Button>
+          <Button colorTheme="info" variation="primary">Info</Button>
+          <Button colorTheme="warning" variation="primary">Warning</Button>
+          <Button colorTheme="success" variation="primary" isDisabled>isDisabled</Button>
+          <Button colorTheme="success" variation="primary" isLoading>isLoading</Button>
+
+          <hr />
+
+          <TextContent>
             <h3>Checkbox Field</h3>
           </TextContent>
 
@@ -64,19 +81,15 @@ export default function AmplifyDemo() {
           <hr />
 
           <TextContent>
-            <h3>Button</h3>
+            <h3>Input</h3>
           </TextContent>
 
-
-          <Button colorTheme="default" variation="primary">Default</Button>
-          <Button colorTheme="success" variation="primary">Success</Button>
-          <Button colorTheme="error" variation="primary">Error</Button>
-          <Button colorTheme="info" variation="primary">Info</Button>
-          <Button colorTheme="warning" variation="primary">Warning</Button>
-          <Button colorTheme="success" variation="primary" isDisabled>isDisabled</Button>
-          <Button colorTheme="success" variation="primary" isLoading>isLoading</Button>
+          <Input value="Bilbo Baggins" />
+          <Input placeholder="Baggins" />
+          <Input value="Bilbo Baggins" isDisabled />
+          <Input placeholder="Baggins" isDisabled />
         </SpaceBetween>
-      </div>
-    </Theme>
+      </Theme>
+    </div>
   );
 }
