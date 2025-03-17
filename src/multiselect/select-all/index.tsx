@@ -6,12 +6,13 @@ import clsx from 'clsx';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { BaseKeyDetail, CancelableEventHandler, fireKeyboardEvent } from '../../internal/events';
+import { getId } from './utils';
 
 import selectableItemStyles from '../../internal/components/selectable-item/styles.css.js';
 import multiSelectItemStyles from '../../select/parts/styles.css.js';
 import styles from './styles.css.js';
 
-const ToggleAll = forwardRef(
+const SelectAll = forwardRef(
   (
     {
       disabled,
@@ -47,6 +48,7 @@ const ToggleAll = forwardRef(
     return (
       <div
         className={classNames}
+        id={getId(menuId)}
         onClick={onToggle}
         onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}
         onMouseMove={onMouseMove}
@@ -67,4 +69,4 @@ const ToggleAll = forwardRef(
   }
 );
 
-export default ToggleAll;
+export default SelectAll;

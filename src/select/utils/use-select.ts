@@ -17,6 +17,7 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../interna
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
+import { getId as getSelectAllId } from '../../multiselect/select-all/utils';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
@@ -115,8 +116,10 @@ export function useSelect({
   const hasSelectedOption = __selectedOptions.length > 0;
   const menuId = useUniqueId('option-list');
   const dialogId = useUniqueId('dialog');
+  const selectAllId = getSelectAllId(menuId);
   const highlightedOptionId = getOptionId(menuId, enableSelectAll ? highlightedIndex - 1 : highlightedIndex);
-  const activeDescendantId = enableSelectAll && highlightedIndex === 0 ? undefined : highlightedOptionId;
+  const isSelectAllFocused = enableSelectAll && highlightedIndex === 0;
+  const activeDescendantId = isSelectAllFocused ? selectAllId : highlightedOptionId;
 
   const closeDropdownIfNecessary = () => {
     if (!keepOpen) {
@@ -222,8 +225,8 @@ export function useSelect({
       },
       __nativeAttributes: {
         'aria-activedescendant': activeDescendantId,
-        ['aria-owns']: menuId,
-        ['aria-controls']: menuId,
+        ['aria-owns']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
+        ['aria-controls']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
       },
     };
   };
@@ -334,14 +337,6 @@ export function useSelect({
       activeRef.current?.focus({ preventScroll: true });
     }
   }, [isOpen, activeRef, embedded]);
-
-  useEffect(() => {
-    if (activeDescendantId) {
-      menuRef.current?.focus();
-    } else {
-      selectAllRef.current?.focus();
-    }
-  }, [activeDescendantId]);
 
   useForwardFocus(externalRef, triggerRef as React.RefObject<HTMLElement>);
   const highlightedGroupSelected =

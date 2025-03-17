@@ -22,11 +22,6 @@
       z-index: 4;
     }
 
-    &.highlighted:focus-visible {
-      // The focus state is already visually conveyed by the colored border
-      outline: none;
-    }
-
     &.selected {
       margin-block-end: calc(-1 * #{awsui.$border-item-width});
       padding-block-end: styles.$option-padding-with-border-placeholder-vertical;
