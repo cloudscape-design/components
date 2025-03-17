@@ -1,0 +1,8 @@
+.amplify {
+  background-color: rgb(255, 255, 255);
+  padding: 40px;
+}
+
+:global(.awsui-dark-mode) .amplify {
+  background-color: rgb(13, 26, 38);
+}
