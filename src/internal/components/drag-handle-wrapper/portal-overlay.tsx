@@ -2,6 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useEffect, useRef } from 'react';
 
+import {
+  getIsRtl,
+  getLogicalBoundingClientRect,
+  getScrollInlineStart,
+} from '@cloudscape-design/component-toolkit/internal';
+
 import Portal from '../portal';
 
 import styles from './styles.css.js';
@@ -15,25 +21,30 @@ export default function PortalOverlay({ track, children }: { track: HTMLElement 
     }
 
     let cleanedUp = false;
-    let lastX = -1;
-    let lastY = -1;
-    let lastWidth = -1;
-    let lastHeight = -1;
+    let lastX: number | undefined;
+    let lastY: number | undefined;
+    let lastInlineSize: number | undefined;
+    let lastBlockSize: number | undefined;
     const updateElement = () => {
       if (ref.current) {
-        const { x, y, width: newWidth, height: newHeight } = track.getBoundingClientRect();
-        const newX = x + window.scrollX;
-        const newY = y + window.scrollY;
+        const isRtl = getIsRtl(ref.current);
+        const { insetInlineStart, insetBlockStart, inlineSize, blockSize } = getLogicalBoundingClientRect(track);
+        // For simplicity, we just make all our calculations independent of
+        // the browser's scrolling edge. When it comes to applying the changes,
+        // translate is independent of writing direction, so we need to invert
+        // the X coordinate ourselves just before applying the values.
+        const newX = (insetInlineStart + getScrollInlineStart(document.documentElement)) * (isRtl ? -1 : 1);
+        const newY = insetBlockStart + document.documentElement.scrollTop;
         if (lastX !== newX || lastY !== newY) {
           ref.current.style.translate = `${newX}px ${newY}px`;
           lastX = newX;
           lastY = newY;
         }
-        if (lastWidth !== newWidth || lastHeight !== newHeight) {
-          ref.current.style.width = `${newWidth}px`;
-          ref.current.style.height = `${newHeight}px`;
-          lastWidth = newWidth;
-          lastHeight = newHeight;
+        if (lastInlineSize !== inlineSize || lastBlockSize !== blockSize) {
+          ref.current.style.width = `${inlineSize}px`;
+          ref.current.style.height = `${blockSize}px`;
+          lastInlineSize = inlineSize;
+          lastBlockSize = blockSize;
         }
       }
       if (!cleanedUp) {
