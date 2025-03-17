@@ -183,7 +183,6 @@ export function useMultiselect({
     getFilterProps,
     getMenuProps,
     getOptionProps,
-    getSelectAllProps,
     highlightOption,
     announceSelected,
     setHighlightedIndexWithMouse,
@@ -306,7 +305,6 @@ export function useMultiselect({
     getTokenProps: () => ({ onDismiss: tokenOnDismiss }),
     getDropdownProps: () => ({ ...getDropdownProps(), onMouseDown: dropdownOnMouseDown }),
     getWrapperProps: () => ({ onKeyDown: wrapperOnKeyDown }),
-    getSelectAllProps,
     isAllSelected,
     isSomeSelected,
     toggleAll: () => {

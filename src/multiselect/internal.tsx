@@ -166,7 +166,6 @@ const InternalMultiselect = React.forwardRef(
                   highlighted={enableSelectAll && multiselectProps.highlightedIndex === 0}
                   highlightType={multiselectProps.highlightType}
                   menuId={multiselectProps.menuId}
-                  onKeyDown={multiselectProps.getSelectAllProps().onKeyDown}
                   onMouseMove={() => multiselectProps.setHighlightedIndexWithMouse(0)}
                   onToggle={multiselectProps.toggleAll}
                   ref={multiselectProps.selectAllRef}

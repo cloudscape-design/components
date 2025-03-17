@@ -268,10 +268,6 @@ export function useSelect({
     return menuProps;
   };
 
-  const getSelectAllProps = () => ({
-    onKeyDown: activeKeyDownHandler,
-  });
-
   const getGroupState = (option: OptionGroup) => {
     const totalSelected = option.options.filter(item => !!item.value && __selectedValuesSet.has(item.value)).length;
     const hasSelected = totalSelected > 0;
@@ -355,7 +351,6 @@ export function useSelect({
     getMenuProps,
     getFilterProps,
     getOptionProps,
-    getSelectAllProps,
     highlightOption: highlightOptionWithKeyboard,
     selectOption,
     announceSelected,
