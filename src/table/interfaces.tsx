@@ -117,6 +117,14 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `verticalAlign` ('middle' | 'top') - Determines the alignment of the content in the table cell.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+
+  /**
+   * Determines the alignment of the content inside table cells.
+   * This property affects all cells, including the ones in the selection column.
+   * To target individual cells use `columnDefinitions.verticalAlign`, that takes precedence over `cellVerticalAlign`.
+   */
+  cellVerticalAlign?: 'middle' | 'top';
+
   /**
    * Specifies the selection type (`'single' | 'multi'`).
    */
