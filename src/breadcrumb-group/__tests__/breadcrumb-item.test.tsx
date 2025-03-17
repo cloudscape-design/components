@@ -137,6 +137,7 @@ describe('BreadcrumbGroup Item', () => {
         totalCount={1}
         item={{ text: 'Long Breadcrumb text', href: '#' }}
         isTruncated={true}
+        separator="arrow-right"
       />
     );
     const elementAnchor = createWrapper(container).find(`.${breadcrumbItemStyles.anchor}`)!.getElement();

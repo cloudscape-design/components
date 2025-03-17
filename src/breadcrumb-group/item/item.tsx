@@ -89,6 +89,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
   totalCount,
   onClick,
   onFollow,
+  separator,
   isGhost = false,
   isTruncated = false,
 }: BreadcrumbItemProps<T>) {
@@ -147,7 +148,7 @@ export function BreadcrumbItem<T extends BreadcrumbGroupProps.Item>({
       )}
       {!isLast ? (
         <span className={styles.icon}>
-          <InternalIcon name="angle-right" />
+          <InternalIcon name={separator} />
         </span>
       ) : null}
     </div>

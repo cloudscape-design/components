@@ -1,6 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { LinkItem } from '../button-dropdown/interfaces';
+import { IconProps } from '../icon/interfaces';
 import { BaseComponentProps } from '../internal/base-component';
 import { BaseNavigationDetail, CancelableEventHandler } from '../internal/events';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -20,6 +21,13 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
    * not a link.
    */
   items: ReadonlyArray<T>;
+
+  /**
+   * Provide a custom version of a separator between items
+   * @awsuiSystems core
+   */
+  itemSeparator?: IconProps.Name;
+
   /**
    * Provides an `aria-label` to the breadcrumb group that screen readers can read (for accessibility).
    */
@@ -67,6 +75,7 @@ export interface BreadcrumbItemProps<T extends BreadcrumbGroupProps.Item> {
   totalCount: number;
   isTruncated?: boolean;
   isGhost?: boolean;
+  separator: IconProps.Name;
   onClick?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
   onFollow?: CancelableEventHandler<BreadcrumbGroupProps.ClickDetail<T>>;
 }
