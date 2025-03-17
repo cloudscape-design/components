@@ -1,0 +1,110 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+
+@use '../../styles' as styles;
+@use '../../styles/tokens' as awsui;
+@use './motion';
+
+$direction-button-wrapper-size: calc(#{awsui.$space-static-xl} + 2 * #{awsui.$space-static-xxs});
+$direction-button-size: awsui.$space-static-xl;
+$direction-button-offset: awsui.$space-static-xxs;
+
+.drag-handle-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.portal-overlay {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+
+  // Since the overlay takes up the exact width/height of the element below it, this prevents
+  // any clicks on this element from occluding clicks on the element below.
+  pointer-events: none;
+
+  // Similar to the expandToViewport dropdown, this needs to be higher than modal's z-index.
+  z-index: 7000;
+}
+
+.portal-overlay-contents {
+  pointer-events: auto;
+}
+
+.drag-handle {
+  position: relative;
+  display: flex;
+}
+
+.direction-button-wrapper {
+  position: absolute;
+  block-size: $direction-button-size;
+  inline-size: $direction-button-size;
+  padding-block: $direction-button-offset;
+  padding-inline: $direction-button-offset;
+}
+
+.direction-button-wrapper-hidden {
+  display: none;
+}
+
+.direction-button-wrapper-block-start {
+  inset-block-start: calc(-1 * $direction-button-wrapper-size);
+  inset-inline-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button-wrapper-block-end {
+  inset-block-end: calc(-1 * $direction-button-wrapper-size);
+  inset-inline-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button-wrapper-inline-start {
+  inset-inline-start: calc(-1 * $direction-button-wrapper-size);
+  inset-block-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button-wrapper-inline-end {
+  inset-inline-end: calc(-1 * $direction-button-wrapper-size);
+  inset-block-start: calc(50% - $direction-button-wrapper-size / 2);
+}
+
+.direction-button {
+  position: absolute;
+  border-width: 0;
+  cursor: pointer;
+  display: inline-block;
+  box-sizing: border-box;
+
+  // This skips the browser waiting for a double-tap interaction before activating.
+  // False positive - this isn't supported in Safari Desktop but is supported on iOS.
+  // stylelint-disable-next-line plugin/no-unsupported-browser-features
+  touch-action: manipulation;
+
+  inline-size: $direction-button-size;
+  block-size: $direction-button-size;
+  padding-block: awsui.$space-xxs;
+  padding-inline: awsui.$space-xxs;
+  border-start-start-radius: 50%;
+  border-start-end-radius: 50%;
+  border-end-start-radius: 50%;
+  border-end-end-radius: 50%;
+  background-color: awsui.$color-background-direction-button-default;
+  color: awsui.$color-text-direction-button-default;
+  box-shadow: awsui.$shadow-dropdown;
+
+  &:not(.direction-button-disabled):hover {
+    background-color: awsui.$color-background-direction-button-hover;
+  }
+
+  &:not(.direction-button-disabled):active {
+    background-color: awsui.$color-background-direction-button-active;
+  }
+}
+
+.direction-button-disabled {
+  cursor: default;
+  background-color: awsui.$color-background-direction-button-disabled;
+  color: awsui.$color-text-direction-button-disabled;
+}

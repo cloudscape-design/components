@@ -26,6 +26,8 @@ interface PaneProps {
 
   cursorPositionLabel?: (row: number, column: number) => string;
   closeButtonAriaLabel?: string;
+  handleAriaLabel?: string;
+  handleTooltipText?: string;
 
   onClose: () => void;
   onAnnotationClick: (annotation: Ace.Annotation) => void;
@@ -43,6 +45,8 @@ export const Pane = ({
   onAnnotationClear,
   cursorPositionLabel,
   closeButtonAriaLabel,
+  handleAriaLabel,
+  handleTooltipText,
 }: PaneProps) => {
   const [paneHeight, setPaneHeight] = useState(MIN_HEIGHT);
   const listRef = useRef<HTMLTableSectionElement>(null);
@@ -88,7 +92,13 @@ export const Pane = ({
 
   return (
     <div id={id} className={styles.pane} onKeyDown={onEscKeyDown} role="tabpanel" aria-labelledby={ariaLabelledBy}>
-      <ResizableBox height={paneHeight} minHeight={MIN_HEIGHT} onResize={newHeight => setPaneHeight(newHeight)}>
+      <ResizableBox
+        height={paneHeight}
+        minHeight={MIN_HEIGHT}
+        onResize={newHeight => setPaneHeight(newHeight)}
+        handleAriaLabel={handleAriaLabel}
+        handleTooltipText={handleTooltipText}
+      >
         <FocusLock className={styles['focus-lock']} autoFocus={true} restoreFocus={true}>
           <div className={styles.pane__list} tabIndex={-1}>
             <table className={styles.pane__table} role="presentation">
