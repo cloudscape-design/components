@@ -3,6 +3,7 @@
 import { MultiselectProps } from '~components/multiselect';
 
 export const i18nStrings = {
+  selectAllText: 'Select all',
   tokenLimitShowFewer: 'Show fewer chosen options',
   tokenLimitShowMore: 'Show more chosen options',
 };

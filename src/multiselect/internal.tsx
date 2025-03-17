@@ -176,6 +176,7 @@ const InternalMultiselect = React.forwardRef(
                         ? 'some'
                         : 'none'
                   }
+                  text={i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText)}
                 />
               )}
             </>

@@ -21,6 +21,7 @@ const SelectAll = forwardRef(
       onMouseMove,
       onToggle,
       state,
+      text,
     }: {
       disabled: boolean;
       highlighted: boolean;
@@ -29,6 +30,7 @@ const SelectAll = forwardRef(
       onMouseMove: () => void;
       onToggle: () => void;
       state: 'all' | 'none' | 'some';
+      text?: string;
     },
     ref: React.Ref<HTMLDivElement>
   ) => {
@@ -58,7 +60,7 @@ const SelectAll = forwardRef(
           <div className={multiSelectItemStyles.checkbox}>
             <CheckboxIcon checked={state === 'all'} indeterminate={state === 'some'} disabled={disabled} />
           </div>
-          <span aria-disabled={disabled}>Select all</span>
+          <span aria-disabled={disabled}>{text}</span>
         </div>
       </div>
     );
