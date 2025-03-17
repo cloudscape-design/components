@@ -15,6 +15,7 @@ export default function Theme({
   fill,
   fontFamily,
   fontSize,
+  fontStyle,
   fontWeight,
   gapBlock,
   gapInline,
@@ -40,6 +41,7 @@ export default function Theme({
         ...(fill && getValues('fill', fill)),
         ...(fontFamily && getValues('font-family', fontFamily)),
         ...(fontSize && getValues('font-size', fontSize)),
+        ...(fontStyle && getValues('font-style', fontStyle)),
         ...(fontWeight && getValues('font-weight', fontWeight)),
         ...(gapBlock && getValues('gap-block', gapBlock)),
         ...(gapInline && getValues('gap-inline', gapInline)),
@@ -129,6 +131,7 @@ function getValues(name: string, property: any, darkMode?: boolean) {
     'box-shadow',
     'color',
     'fill',
+    'font-style',
     'outline'
   ];
 
@@ -140,6 +143,8 @@ function getValues(name: string, property: any, darkMode?: boolean) {
     ...(hasState && { [`--theme-${name}${mode}-active`]: property?.active ?? property?.default ?? property }),
     ...(hasState && { [`--theme-${name}${mode}-checked`]: property?.checked ?? property?.default ?? property }),
     ...(hasState && { [`--theme-${name}${mode}-disabled`]: property?.disabled ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-empty`]: property?.empty ?? property?.default ?? property }),
+    ...(hasState && { [`--theme-${name}${mode}-focus`]: property?.focus ?? property?.default ?? property }),
     ...(hasState && { [`--theme-${name}${mode}-hover`]: property?.hover ?? property?.default ?? property }),
     ...(hasState && { [`--theme-${name}${mode}-indeterminate`]: property?.indeterminate ?? property?.default ?? property }),
     ...(hasState && { [`--theme-${name}${mode}-read-only`]: property?.readOnly ?? property?.default ?? property }),

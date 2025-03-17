@@ -114,21 +114,21 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: constants.$control-border-width solid awsui.$color-border-input-focused;
-  border-inline: constants.$control-border-width solid awsui.$color-border-input-focused;
-  border-start-start-radius: $border-radius;
-  border-start-end-radius: $border-radius;
-  border-end-start-radius: $border-radius;
-  border-end-end-radius: $border-radius;
+  border-block: var(--theme-border-width, constants.$control-border-width) solid var(--theme-border-color-focus, awsui.$color-border-input-focused);
+  border-inline: var(--theme-border-width, constants.$control-border-width) solid var(--theme-border-color-focus, awsui.$color-border-input-focused);
+  border-start-start-radius: var(--theme-border-radius, $border-radius);
+  border-start-end-radius: var(--theme-border-radius, $border-radius);
+  border-end-start-radius: var(--theme-border-radius, $border-radius);
+  border-end-end-radius: var(--theme-border-radius, $border-radius);
 
-  box-shadow: foundation.$box-shadow-focused-light;
+  box-shadow: var(--theme-box-shadow-focus, foundation.$box-shadow-focused-light);
 }
 
 @mixin form-disabled-element {
-  background-color: awsui.$color-background-input-disabled;
+  background-color: var(--theme-background-color-disabled, awsui.$color-background-input-disabled);
   border-block: constants.$control-border-width solid awsui.$color-border-input-disabled;
   border-inline: constants.$control-border-width solid awsui.$color-border-input-disabled;
-  color: awsui.$color-text-input-disabled;
+  color: var(--theme-color-disabled, awsui.$color-text-input-disabled);
   cursor: auto;
 }
 
@@ -139,12 +139,13 @@
 }
 
 @mixin form-placeholder {
-  color: awsui.$color-text-input-placeholder;
-  font-style: italic;
+  color: var(--theme-color-empty, awsui.$color-text-input-placeholder);
+  font-style: var(--theme-font-style-empty, italic);
 }
 
 @mixin form-placeholder-disabled {
-  color: awsui.$color-text-input-placeholder-disabled;
+  color: var(--theme-color-disabled, awsui.$color-text-input-placeholder-disabled);
+  font-style: var(--theme-font-style-empty, italic);
 }
 
 @mixin form-control-description {

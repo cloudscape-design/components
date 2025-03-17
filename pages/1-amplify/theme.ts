@@ -44,5 +44,6 @@ export const palette = {
   teal80: 'hsl(190, 95%, 30%)',
   teal90: 'hsl(190, 100%, 20%)',
   teal100: 'hsl(190, 100%, 15%)',
+  white: 'rgb(255, 255, 255)',
 };
 

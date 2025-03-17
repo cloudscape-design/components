@@ -11,6 +11,7 @@ export interface ThemeProps {
   fill?: string | States;
   fontFamily?: string;
   fontSize?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
+  fontStyle?: string | States;
   fontWeight?: string;
   gapBlock?: string;
   gapInline?: string;
@@ -45,6 +46,7 @@ export interface ResetProps {
   fontFamily?: boolean;
   fontSize?: boolean;
   fontWeight?: boolean;
+  fontStyle?: boolean;
   gapBlock?: boolean;
   gapInline?: boolean;
   height?: boolean;
@@ -60,6 +62,7 @@ interface States {
   default?: string;
   checked?: string;
   disabled?: string;
+  empty?: string;
   focus?: string;
   hover?: string;
   indeterminate?: string;
