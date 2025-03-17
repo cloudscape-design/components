@@ -109,6 +109,7 @@ const areArrayEqual = (first: Array<number>, second: Array<number>) => {
 
 export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Item = BreadcrumbGroupProps.Item>({
   items = [],
+  itemSeparator = 'angle-right',
   ariaLabel,
   expandAriaLabel,
   onClick,
@@ -186,6 +187,7 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
           onFollow={onFollow}
           itemIndex={index}
           totalCount={items.length}
+          separator={itemSeparator}
           isTruncated={itemsWidths.ghost[index] - itemsWidths.real[index] > 0}
         />
       </li>
@@ -194,7 +196,13 @@ export function BreadcrumbGroupImplementation<T extends BreadcrumbGroupProps.Ite
 
   const hiddenBreadcrumbItems = items.map((item, index) => (
     <li className={styles['ghost-item']} key={index} ref={node => setBreadcrumb('ghost', `${index}`, node)}>
-      <BreadcrumbItem item={item} itemIndex={index} totalCount={items.length} isGhost={true} />
+      <BreadcrumbItem
+        item={item}
+        itemIndex={index}
+        totalCount={items.length}
+        separator={itemSeparator}
+        isGhost={true}
+      />
     </li>
   ));
 

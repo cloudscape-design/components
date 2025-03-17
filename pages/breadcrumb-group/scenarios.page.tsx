@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import BreadcrumbGroup from '~components/breadcrumb-group';
+import BreadcrumbGroupConsole from '~components/breadcrumb-group/index-console';
 
 import ScreenshotArea from '../utils/screenshot-area';
 const testCases = [
@@ -36,6 +37,21 @@ export default function ButtonDropdownPage() {
             items={testcase.map((text, i) => ({ text, href: `#item-${index}-${i}` }))}
           />
         ))}
+        <BreadcrumbGroup
+          ariaLabel="With custom separator"
+          data-testid="breadcrumbs-with-custom-separator"
+          expandAriaLabel="Show path"
+          items={['First', 'Second', 'Third'].map((text, i) => ({ text, href: `#item-${i}` }))}
+          itemSeparator="caret-right-filled"
+        />
+        <BreadcrumbGroupConsole
+          ariaLabel="With custom separator"
+          data-testid="breadcrumbs-with-custom-separator"
+          expandAriaLabel="Show path"
+          items={['First', 'Second', 'Third'].map((text, i) => ({ text, href: `#item-${i}` }))}
+          // @ts-expect-error not working on console version
+          itemSeparator="caret-right-filled"
+        />
       </article>
     </ScreenshotArea>
   );
