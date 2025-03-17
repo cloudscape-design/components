@@ -226,7 +226,7 @@ export function useSelect({
       __nativeAttributes: {
         'aria-activedescendant': activeDescendantId,
         ['aria-owns']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
-        ['aria-controls']: menuId,
+        ['aria-controls']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
       },
     };
   };
