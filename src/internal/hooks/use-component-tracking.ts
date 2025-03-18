@@ -6,7 +6,7 @@ import { RefObject, useEffect } from 'react';
 import { ComponentConfiguration } from '@cloudscape-design/component-toolkit/internal';
 
 import { AnalyticsMetadata } from '../analytics/interfaces';
-import { trackEvent } from '../analytics/v2';
+import { trackEvent } from '../analytics-v2';
 
 function toKebabCase(str: string) {
   return str

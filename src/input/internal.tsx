@@ -9,7 +9,7 @@ import InternalButton from '../button/internal';
 import { useInternalI18n } from '../i18n/context';
 import { IconProps } from '../icon/interfaces';
 import InternalIcon from '../icon/internal';
-import { trackEvent } from '../internal/analytics/v2';
+import { trackEvent } from '../internal/analytics-v2';
 import { BaseComponentProps, getBaseProps } from '../internal/base-component';
 import { FormFieldValidationControlProps, useFormFieldContext } from '../internal/context/form-field-context';
 import { fireKeyboardEvent, fireNonCancelableEvent, NonCancelableEventHandler } from '../internal/events';

@@ -7,7 +7,7 @@ import { getFunnel, getSubstepConfig } from '../utils/funnel';
 import { requestNextTick } from '../utils/handler';
 
 export const render: Handler = ({ detail, target }) => {
-  if (!detail?.configuration.analytics) {
+  if (!detail?.configuration?.analytics) {
     return;
   }
 
