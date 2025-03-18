@@ -4191,13 +4191,7 @@ This property only applies when an \`href\` is provided.",
     },
     {
       "defaultValue": "'normal'",
-      "description": "Determines the general styling of the button as follows:
-* \`primary\` for primary buttons.
-* \`normal\` for secondary buttons.
-* \`link\` for tertiary buttons.
-* \`icon\` to display an icon only (no text).
-* \`inline-icon\` to display an icon-only (no text) button within a text context.
-* \`inline-link\` to display a tertiary button with no outer padding.",
+      "description": "Determines the general styling of the button",
       "inlineType": {
         "name": "ButtonProps.Variant",
         "type": "union",
@@ -4208,6 +4202,7 @@ This property only applies when an \`href\` is provided.",
           "icon",
           "inline-icon",
           "inline-link",
+          "fire",
         ],
       },
       "name": "variant",
