@@ -221,9 +221,7 @@ function PortaledModal({
   const [footerHeight, footerRef] = useContainerQuery(rect => rect.borderBoxHeight);
   const headerRef = useRef<HTMLDivElement>(null);
   const { subStepRef } = useFunnelSubStep();
-
-  console.log(theme);
-
+  
   return (
     <FunnelNameSelectorContext.Provider value={`.${styles['header--text']}`}>
       <ResetContextsForModal>
@@ -253,18 +251,19 @@ function PortaledModal({
               style={footerHeight ? { scrollPaddingBottom: footerHeight } : undefined}
               data-awsui-referrer-id={subStepRef.current?.id || referrerId}
             >
-              <Theme {...theme?.container}>
-                <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
-                  <div
-                    className={clsx(
-                      styles.dialog,
-                      styles[size],
-                      styles[`breakpoint-${breakpoint}`],
-                      isRefresh && styles.refresh
-                    )}
-                    onKeyDown={escKeyHandler}
-                    {...metadataAttribute}
-                  >
+              
+              <FocusLock disabled={!visible} autoFocus={true} restoreFocus={true} className={styles['focus-lock']}>
+                <div
+                  className={clsx(
+                    styles.dialog,
+                    styles[size],
+                    styles[`breakpoint-${breakpoint}`],
+                    isRefresh && styles.refresh
+                  )}
+                  onKeyDown={escKeyHandler}
+                  {...metadataAttribute}
+                >
+                  <Theme {...theme?.container}>
                     <div className={styles.container}>
                       <div className={clsx(styles.header, analyticsSelectors.header)}>
                         <InternalHeader
@@ -310,11 +309,11 @@ function PortaledModal({
                         </ButtonContext.Provider>
                       )}
                     </div>
-                  </div>
-                </FocusLock>
-              </Theme>
+                  </Theme>
+                </div>
+              </FocusLock>
             </div>
-          </Theme>
+            </Theme>
         </ModalContext.Provider>
       </ResetContextsForModal>
     </FunnelNameSelectorContext.Provider>
