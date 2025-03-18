@@ -73,7 +73,7 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
-  const selectAllRef = useRef<HTMLDivElement>(null);
+  const selectAllRef = useRef<HTMLLIElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(items, selectedOptions);
@@ -225,8 +225,8 @@ export function useSelect({
       },
       __nativeAttributes: {
         'aria-activedescendant': activeDescendantId,
-        ['aria-owns']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
-        ['aria-controls']: enableSelectAll ? `${menuId} ${selectAllId}` : menuId,
+        ['aria-owns']: menuId,
+        ['aria-controls']: menuId,
       },
     };
   };

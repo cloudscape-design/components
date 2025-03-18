@@ -32,7 +32,7 @@ const SelectAll = forwardRef(
       state: 'all' | 'none' | 'some';
       text?: string;
     },
-    ref: React.Ref<HTMLDivElement>
+    ref: React.Ref<HTMLLIElement>
   ) => {
     const classNames = clsx(styles['select-all'], selectableItemStyles['selectable-item'], {
       [selectableItemStyles.selected]: state === 'all',
@@ -45,7 +45,7 @@ const SelectAll = forwardRef(
     });
 
     return (
-      <div
+      <li
         className={classNames}
         id={getId(menuId)}
         onClick={onToggle}
@@ -62,7 +62,7 @@ const SelectAll = forwardRef(
           </div>
           <span aria-disabled={disabled}>{text}</span>
         </div>
-      </div>
+      </li>
     );
   }
 );
