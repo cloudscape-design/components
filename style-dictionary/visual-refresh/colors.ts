@@ -97,11 +97,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundToggleCheckedDisabled: { light: '{colorBlue300}', dark: '{colorBlue800}' },
   colorBackgroundToggleDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBackgroundAvatarGenAi:
-    'radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)',
+    'radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)',
   colorBackgroundAvatarDefault: '{colorGrey600}',
   colorTextAvatar: '{colorWhite}',
   colorBackgroundLoadingBarGenAi:
-    'linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)',
+    'linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)',
   colorBackgroundChatBubbleOutgoing: 'transparent',
   colorBackgroundChatBubbleIncoming: { light: '{colorGrey125}', dark: '{colorGrey900}' },
   colorTextChatBubbleOutgoing: '{colorTextBodyDefault}',
