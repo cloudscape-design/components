@@ -1,14 +1,14 @@
 
 export interface ThemeProps {
-  backgroundColor?: string | States;
-  backgroundImage?: string | States;
+  backgroundColor?: string | States | Semantics;
+  backgroundImage?: string | States | Semantics;
   borderColor?: string | States;
   borderRadius?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
   borderWidth?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
   boxShadow?: string | States;
   children?: React.ReactNode;
-  color?: string | States;
-  fill?: string | States;
+  color?: string | States | Semantics;
+  fill?: string | States | Semantics;
   fontFamily?: string;
   fontSize?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
   fontStyle?: string | States;
@@ -18,11 +18,11 @@ export interface ThemeProps {
   height?: string;
   lineHeight?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
   onDarkMode?: {
-    backgroundColor?: string | States;
+    backgroundColor?: string | States | Semantics;
     backgroundImage?: string | States;
     borderColor?: string | States;
     boxShadow?: string | States;
-    color?: string | States;
+    color?: string | States | Semantics;
     fill?: string | States;
     outline?: string | States;
   };
@@ -72,6 +72,19 @@ interface States {
   selected?: string;
   valid?: string;
   visited?: string;
+};
+
+interface Semantics {
+  critical?: string;
+  error?: string;
+  high?: string;
+  info?: string;
+  low?: string;
+  normal?: string;
+  medium?: string;
+  neutral?: string;
+  success?: string;
+  warning?: string;
 };
 
 const Sizes = ['none', 'small', 'medium', 'large'] as const;

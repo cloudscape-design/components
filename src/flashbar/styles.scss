@@ -31,14 +31,14 @@
   align-items: flex-start;
   padding-block: awsui.$space-scaled-xs;
   padding-inline: awsui.$space-flashbar-horizontal;
-  border-start-start-radius: awsui.$border-radius-flashbar;
-  border-start-end-radius: awsui.$border-radius-flashbar;
-  border-end-start-radius: awsui.$border-radius-flashbar;
-  border-end-end-radius: awsui.$border-radius-flashbar;
-  color: awsui.$color-text-notification-default;
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-flashbar);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-flashbar);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-flashbar);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-flashbar);
+  color: var(--theme-color-default, awsui.$color-text-notification-default);
   overflow-wrap: break-word;
   word-wrap: break-word;
-  box-shadow: awsui.$shadow-flash-sticky;
+  box-shadow: var(--theme-box-shadow, awsui.$shadow-flash-sticky);
 }
 
 .initial-hidden {
@@ -55,7 +55,7 @@
 
   &:not(.collapsed) {
     > li:not(:last-child) {
-      margin-block-end: awsui.$space-xxxs;
+      margin-block-end: var(--theme-gap-block, awsui.$space-xxxs);
     }
   }
 }
@@ -140,19 +140,38 @@
 }
 
 .flash-type-success {
-  background-color: awsui.$color-background-notification-green;
+  background-color: var(--theme-background-color-success, awsui.$color-background-notification-green);
+  color: var(--theme-color-success, awsui.$color-text-notification-default);
+
+  .flash-icon {
+    color: var(--theme-fill-success);
+  }
 }
 
 .flash-type-error {
-  background-color: awsui.$color-background-notification-red;
+  background-color: var(--theme-background-color-error, awsui.$color-background-notification-red);
+  color: var(--theme-color-error, awsui.$color-text-notification-default);
+
+  .flash-icon {
+    color: var(--theme-fill-error);
+  }
 }
 
 .flash-type-info,
 .flash-type-in-progress {
-  background-color: awsui.$color-background-notification-blue;
+  background-color: var(--theme-background-color-info, awsui.$color-background-notification-blue);
+  color: var(--theme-color-info, awsui.$color-text-notification-default);
+
+  .flash-icon {
+    color: var(--theme-fill-info);
+  }
 }
 
 .flash-type-warning {
-  color: awsui.$color-text-notification-yellow;
-  background-color: awsui.$color-background-notification-yellow;
+  background-color: var(--theme-background-color-warning, awsui.$color-background-notification-yellow);
+  color: var(--theme-color-warning, awsui.$color-text-notification-yellow);
+
+  .flash-icon {
+    color: var(--theme-fill-warning);
+  }
 }

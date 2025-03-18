@@ -60,7 +60,6 @@
 .label,
 .description {
   color: var(--theme-color);
-  font-family: var(--theme-font-family, awsui.$font-family-base);
   font-size: var(--theme-font-size);
   padding-inline-start: var(--theme-gap-inline, awsui.$space-xs);
   &-disabled {
