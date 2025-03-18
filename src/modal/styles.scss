@@ -105,8 +105,8 @@ $modal-z-index: 5000;
   padding-inline: awsui.$space-modal-horizontal;
   background-color: var(--theme-background-color, awsui.$color-background-container-header);
   border-block-end: 1px solid awsui.$color-border-container-divider;
-  border-start-start-radius: awsui.$border-radius-container;
-  border-start-end-radius: awsui.$border-radius-container;
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-container);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-container);
   border-end-start-radius: 0;
   border-end-end-radius: 0;
 }
@@ -120,7 +120,7 @@ $modal-z-index: 5000;
   padding-block: awsui.$space-scaled-s;
   padding-inline: awsui.$space-container-horizontal;
   background-color: var(--theme-background-color, awsui.$color-background-container-content);
-
+  
   // Make sure that the footer is always visible
   position: sticky;
   inset-block-end: 0;

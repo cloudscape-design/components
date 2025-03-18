@@ -65,7 +65,6 @@
   text-decoration: none;
   cursor: pointer;
   font-size: var(--theme-font-size, awsui.$font-size-body-m);
-  font-family: var(--theme-font-family, awsui.$font-family-base);
 
   @each $variant in map.keys(constants.$variants) {
     &.variant-#{$variant} {
@@ -153,6 +152,14 @@
     // margin-right was breaking layout on firefox
     inset-inline-end: calc(-1 * #{awsui.$space-xxs});
     margin-inline-start: awsui.$space-xxs;
+  }
+
+  &:hover > :is(.icon-left, .icon-right) {
+    color: var(--theme-fill-hover);
+  }
+
+  &:active > :is(.icon-left, .icon-right) {
+    color: var(--theme-fill-active);
   }
 
   &.variant-inline-link {

@@ -24,6 +24,7 @@ export default function Button(props:any) {
       <CloudscapeButton 
         disabled={props.isDisabled} 
         loading={props.isLoading}
+        onClick={props.onClick}
         variant={props.variation}
       >
         {props.children}

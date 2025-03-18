@@ -8,9 +8,13 @@
   --theme-background-color-checked: var(--theme-background-color-dark-mode-checked);
   --theme-background-color-disabled: var(--theme-background-color-dark-mode-disabled);
   --theme-background-color-empty: var(--theme-background-color-dark-mode-empty);
+  --theme-background-color-error: var(--theme-background-color-dark-mode-error);
   --theme-background-color-hover: var(--theme-background-color-dark-mode-hover);
+  --theme-background-color-info: var(--theme-background-color-dark-mode-info);
   --theme-background-color-indeterminate: var(--theme-background-color-dark-mode-indeterminate);
   --theme-background-color-read-only: var(--theme-background-color-dark-mode-read-only);
+  --theme-background-color-success: var(--theme-background-color-dark-mode-success);
+  --theme-background-color-warning: var(--theme-background-color-dark-mode-warning);
 
   --theme-background-image-active: var(--theme-background-image-dark-mode-active);
   --theme-background-image-checked: var(--theme-background-image-dark-mode-checked);
@@ -43,18 +47,26 @@
   --theme-color-checked: var(--theme-color-dark-mode-checked);
   --theme-color-disabled: var(--theme-color-dark-mode-disabled);
   --theme-color-empty: var(--theme-color-dark-mode-empty);
+  --theme-color-error: var(--theme-color-dark-mode-error);
   --theme-color-hover: var(--theme-color-dark-mode-hover);
+  --theme-color-info: var(--theme-color-dark-mode-info);
   --theme-color-indeterminate: var(--theme-color-dark-mode-indeterminate);
   --theme-color-read-only: var(--theme-color-dark-mode-read-only);
+  --theme-color-success: var(--theme-color-dark-mode-success);
+  --theme-color-warning: var(--theme-color-dark-mode-warning);
 
   --theme-fill: var(--theme-fill-dark-mode);
   --theme-fill-active: var(--theme-fill-dark-mode-active);
   --theme-fill-checked: var(--theme-fill-dark-mode-checked);
   --theme-fill-disabled: var(--theme-fill-dark-mode-disabled);
   --theme-fill-empty: var(--theme-fill-dark-mode-empty);
+  --theme-fill-error: var(--theme-fill-dark-mode-error);
   --theme-fill-hover: var(--theme-fill-dark-mode-hover);
+  --theme-fill-info: var(--theme-fill-dark-mode-info);
   --theme-fill-indeterminate: var(--theme-fill-dark-mode-indeterminate);
   --theme-fill-read-only: var(--theme-fill-dark-mode-read-only);
+  --theme-fill-success: var(--theme-fill-dark-mode-success);
+  --theme-fill-warning: var(--theme-fill-dark-mode-warning);
 
   --theme-outline: var(--theme-outline-dark-mode);
   --theme-outline-active: var(--theme-outline-dark-mode-active);

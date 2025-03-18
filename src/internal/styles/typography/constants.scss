@@ -9,7 +9,7 @@
 $base-size: 10px;
 
 // Font families
-$font-family-base: awsui.$font-family-base;
+$font-family-base: var(--theme-font-family, awsui.$font-family-base);
 $font-family-monospace: awsui.$font-family-monospace;
 
 // Font weights

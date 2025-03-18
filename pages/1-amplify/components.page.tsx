@@ -4,12 +4,64 @@ import Alert from './alert';
 import Badge from './badge';
 import Button from './button';
 import CheckboxField from './checkbox-field';
+import Flashbar from './flashbar';
 import Input from './input';
+import Modal from './modal';
 import { fontFamily, palette } from './theme';
 import Theme from '~components/theming/component';
 import styles from './styles.scss';
 
 export default function AmplifyDemo() {
+  const [isModalVisible, setIsModalVisible] = React.useState(false);
+  
+  const [flashbarItems, setFlashbarItems]:any = React.useState([
+    {
+      type: "success",
+      dismissible: true,
+      dismissLabel: "Dismiss message",
+      content: "This is a success flash message",
+      id: "message_5",
+      onDismiss: () =>
+        setFlashbarItems((items:any) =>
+          items.filter((item:any) => item.id !== "message_5")
+        )
+    },
+    {
+      type: "warning",
+      dismissible: true,
+      dismissLabel: "Dismiss message",
+      content: "This is a warning flash message",
+      id: "message_4",
+      onDismiss: () =>
+        setFlashbarItems((items:any) =>
+          items.filter((item:any) => item.id !== "message_4")
+        )
+    },
+    {
+      type: "error",
+      dismissible: true,
+      dismissLabel: "Dismiss message",
+      header: "Failed to update instance id-4890f893e",
+      content: "This is a dismissible error message",
+      id: "message_3",
+      onDismiss: () =>
+        setFlashbarItems((items:any) =>
+          items.filter((item:any) => item.id !== "message_3")
+        )
+    },
+    {
+      type: "info",
+      dismissible: true,
+      dismissLabel: "Dismiss message",
+      content: "This is an info flash message",
+      id: "message_2",
+      onDismiss: () =>
+        setFlashbarItems((items:any) =>
+          items.filter((item:any) => item.id !== "message_2")
+        )
+    },
+  ]);
+
   return (
     <div className={styles.amplify}>
       <Theme fontFamily={fontFamily} outline={palette.neutral90}>
@@ -88,6 +140,50 @@ export default function AmplifyDemo() {
           <Input placeholder="Baggins" />
           <Input value="Bilbo Baggins" isDisabled />
           <Input placeholder="Baggins" isDisabled />
+
+          <hr />
+
+          <TextContent>
+            <h3>Modal</h3>
+          </TextContent>
+
+          <Button 
+            colorTheme="default" 
+            onClick={() => setIsModalVisible(true)}
+            variation="primary"
+          >
+            Open Modal
+          </Button>
+
+          <Modal
+            footer={<span>Modal footer.</span>}
+            onDismiss={() => setIsModalVisible(false)}
+            visible={isModalVisible}
+            header="Modal title"
+          >
+            <p style={{margin: 0}}>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo magnam 
+              eligendi magni accusamus quidem autem soluta quas minus a. Omnis, id 
+              reprehenderit quis voluptatibus ea ab illo dolores dolore nostrum.
+            </p>
+
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo magnam 
+              eligendi magni accusamus quidem autem soluta quas minus a. Omnis, id 
+              reprehenderit quis voluptatibus ea ab illo dolores dolore nostrum.
+            </p>
+          </Modal>
+
+          <hr />
+
+          <TextContent>
+            <h3>Flashbar</h3>
+          </TextContent>
+
+          <Flashbar
+            items={flashbarItems}
+            stackItems={false}
+          />
         </SpaceBetween>
       </Theme>
     </div>
