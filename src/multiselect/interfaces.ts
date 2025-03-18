@@ -38,7 +38,7 @@ export interface MultiselectProps extends BaseSelectProps {
    * * `selectAllText` (string) - Specifies the text to be displayed next to the checkbox that selects or deselects all options.
    * * `tokenLimitShowFewer` (string) - Specifies the text to be displayed in the "Show fewer" button for the token group control.
    * * `tokenLimitShowMore` (string) - Specifies the text to be displayed in the "Show more" button for the token group control. This string should not contain the number of hidden tokens
-   * because it will be added by the component automatically.
+   * because this will be added by the component automatically.
    * @i18n
    */
   i18nStrings?: MultiselectProps.I18nStrings;
