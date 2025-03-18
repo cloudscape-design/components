@@ -3,6 +3,7 @@
 import React from 'react';
 
 import Button from '~components/button';
+import ConsoleButton from '~components/button/index-console';
 
 import ScreenshotArea from '../utils/screenshot-area';
 
@@ -23,6 +24,14 @@ export default function WrappingButtonScenario() {
         <div className={styles.buttonWrapper}>
           <Button wrapText={false}>Too shy to wrap!</Button>
         </div>
+        <Button variant="fire">I burn</Button>
+
+        <ConsoleButton
+          // @ts-expect-error not supported in console design
+          variant="fire"
+        >
+          I burn
+        </ConsoleButton>
       </ScreenshotArea>
     </article>
   );

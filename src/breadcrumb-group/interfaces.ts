@@ -24,7 +24,7 @@ export interface BreadcrumbGroupProps<T extends BreadcrumbGroupProps.Item = Brea
 
   /**
    * Provide a custom version of a separator between items
-   * @awsuiSystems core
+   * @awsuiSystem core
    */
   itemSeparator?: IconProps.Name;
 

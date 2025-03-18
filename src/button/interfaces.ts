@@ -164,13 +164,8 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
    */
   fullWidth?: boolean;
 
-  /** Determines the general styling of the button as follows:
-   * * `primary` for primary buttons.
-   * * `normal` for secondary buttons.
-   * * `link` for tertiary buttons.
-   * * `icon` to display an icon only (no text).
-   * * `inline-icon` to display an icon-only (no text) button within a text context.
-   * * `inline-link` to display a tertiary button with no outer padding.
+  /**
+   * Determines the general styling of the button
    */
   variant?: ButtonProps.Variant;
 
@@ -182,7 +177,21 @@ export interface ButtonProps extends BaseComponentProps, BaseButtonProps {
 }
 
 export namespace ButtonProps {
-  export type Variant = 'normal' | 'primary' | 'link' | 'icon' | 'inline-icon' | 'inline-link';
+  export type Variant =
+    /** for secondary buttons */
+    | 'normal'
+    /** for primary buttons */
+    | 'primary'
+    /** for tertiary buttons */
+    | 'link'
+    /** to display an icon only (no text) */
+    | 'icon'
+    /** to display an icon-only (no text) button within a text context */
+    | 'inline-icon'
+    /**  to display a tertiary button with no outer padding */
+    | 'inline-link'
+    /** for ultra special buttons @awsuiSystem core */
+    | 'fire';
   export type ClickDetail = _ClickDetail;
   export type FollowDetail = BaseNavigationDetail;
 

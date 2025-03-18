@@ -243,7 +243,11 @@ export const InternalButton = React.forwardRef(
         <LeftIcon {...iconProps} />
         {shouldHaveContent && (
           <>
-            <span className={clsx(styles.content, analyticsSelectors.label)}>{children}</span>
+            <span className={clsx(styles.content, analyticsSelectors.label)}>
+              {variant === 'fire' && '🔥'}
+              {children}
+              {variant === 'fire' && '🔥'}
+            </span>
             {external && (
               <>
                 &nbsp;
