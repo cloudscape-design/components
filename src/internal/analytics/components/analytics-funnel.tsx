@@ -157,7 +157,12 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         },
       ];
 
-      const componentTheme = THEME === 'polaris' && isVisualRefresh ? 'vr' : THEME;
+      let componentTheme = THEME;
+      if (THEME === 'polaris') {
+        // This is the only place we specify the theme as classic so we cannot reuse the getVisualTheme function :(
+        componentTheme = isVisualRefresh ? 'vr' : 'classic';
+      }
+
       funnelInteractionId = FunnelMetrics.funnelStart({
         funnelName,
         funnelIdentifier: props.funnelIdentifier,
@@ -167,7 +172,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,
         componentVersion: PACKAGE_VERSION,
-        componentTheme,
+        componentTheme: componentTheme,
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
         resourceType: props.funnelResourceType || getTextFromSelector(`[${DATA_ATTR_RESOURCE_TYPE}]`),
