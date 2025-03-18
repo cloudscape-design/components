@@ -17,15 +17,7 @@ export interface ThemeProps {
   gapInline?: string;
   height?: string;
   lineHeight?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
-  onDarkMode?: {
-    backgroundColor?: string | States | Semantics;
-    backgroundImage?: string | States;
-    borderColor?: string | States;
-    boxShadow?: string | States;
-    color?: string | States | Semantics;
-    fill?: string | States;
-    outline?: string | States;
-  };
+  onDarkMode?: DarkModeProps;
   outline?: string | States;
   paddingBlock?: string;
   paddingInline? : string;
@@ -56,6 +48,16 @@ export interface ResetProps {
   paddingInline? : boolean;
   width?: boolean;
 };
+
+export interface DarkModeProps {
+  backgroundColor?: string | States | Semantics;
+  backgroundImage?: string | States;
+  borderColor?: string | States;
+  boxShadow?: string | States;
+  color?: string | States | Semantics;
+  fill?: string | States;
+  outline?: string | States;
+}
 
 interface States {
   active?: string;
