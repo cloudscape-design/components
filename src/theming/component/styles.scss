@@ -1,82 +1,40 @@
+$darkModeProperties: (
+  'background-color',
+  'background-image',
+  'border-color',
+  'box-shadow',
+  'color',
+  'fill',
+  'outline',
+);
+
+@mixin dark-mode-permutations($property) {
+  --theme-#{$property}: var(--theme-#{$property}-dark-mode);
+  --theme-#{$property}-active: var(--theme-#{$property}-dark-mode-active);
+  --theme-#{$property}-checked: var(--theme-#{$property}-dark-mode-checked);
+  --theme-#{$property}-disabled: var(--theme-#{$property}-dark-mode-disabled);
+  --theme-#{$property}-empty: var(--theme-#{$property}-dark-mode-empty);
+  --theme-#{$property}-error: var(--theme-#{$property}-dark-mode-error);
+  --theme-#{$property}-hover: var(--theme-#{$property}-dark-mode-hover);
+  --theme-#{$property}-info: var(--theme-#{$property}-dark-mode-info);
+  --theme-#{$property}-indeterminate: var(--theme-#{$property}-dark-mode-indeterminate);
+  --theme-#{$property}-read-only: var(--theme-#{$property}-dark-mode-read-only);
+  --theme-#{$property}-success: var(--theme-#{$property}-dark-mode-success);
+  --theme-#{$property}-warning: var(--theme-#{$property}-dark-mode-warning);
+}
+
 .theme {
   display: contents;
 }
 
 :global(.awsui-dark-mode) .theme-dark-mode {
-  --theme-background-color: var(--theme-background-color-dark-mode);
-  --theme-background-color-active: var(--theme-background-color-dark-mode-active);
-  --theme-background-color-checked: var(--theme-background-color-dark-mode-checked);
-  --theme-background-color-disabled: var(--theme-background-color-dark-mode-disabled);
-  --theme-background-color-empty: var(--theme-background-color-dark-mode-empty);
-  --theme-background-color-error: var(--theme-background-color-dark-mode-error);
-  --theme-background-color-hover: var(--theme-background-color-dark-mode-hover);
-  --theme-background-color-info: var(--theme-background-color-dark-mode-info);
-  --theme-background-color-indeterminate: var(--theme-background-color-dark-mode-indeterminate);
-  --theme-background-color-read-only: var(--theme-background-color-dark-mode-read-only);
-  --theme-background-color-success: var(--theme-background-color-dark-mode-success);
-  --theme-background-color-warning: var(--theme-background-color-dark-mode-warning);
-
-  --theme-background-image-active: var(--theme-background-image-dark-mode-active);
-  --theme-background-image-checked: var(--theme-background-image-dark-mode-checked);
-  --theme-background-image-disabled: var(--theme-background-image-dark-mode-disabled);
-  --theme-background-image-empty: var(--theme-background-image-dark-mode-empty);
-  --theme-background-image-hover: var(--theme-background-image-dark-mode-hover);
-  --theme-background-image-indeterminate: var(--theme-background-image-dark-mode-indeterminate);
-  --theme-background-image-read-only: var(--theme-background-image-dark-mode-read-only);
-
-  --theme-border-color: var(--theme-border-color-dark-mode);
-  --theme-border-color-active: var(--theme-border-color-dark-mode-active);
-  --theme-border-color-checked: var(--theme-border-color-dark-mode-checked);
-  --theme-border-color-disabled: var(--theme-border-color-dark-mode-disabled);
-  --theme-border-color-empty: var(--theme-border-color-dark-mode-empty);
-  --theme-border-color-hover: var(--theme-border-color-dark-mode-hover);
-  --theme-border-color-indeterminate: var(--theme-border-color-dark-mode-indeterminate);
-  --theme-border-color-read-only: var(--theme-border-color-dark-mode-read-only);
-
-  --theme-box-shadow: var(--theme-box-shadow-dark-mode);
-  --theme-box-shadow-active: var(--theme-box-shadow-dark-mode-active);
-  --theme-box-shadow-checked: var(--theme-box-shadow-dark-mode-checked);
-  --theme-box-shadow-disabled: var(--theme-box-shadow-dark-mode-disabled);
-  --theme-box-shadow-empty: var(--theme-box-shadow-dark-mode-empty);
-  --theme-box-shadow-hover: var(--theme-box-shadow-dark-mode-hover);
-  --theme-box-shadow-indeterminate: var(--theme-box-shadow-dark-mode-indeterminate);
-  --theme-box-shadow-read-only: var(--theme-box-shadow-dark-mode-read-only);
-
-  --theme-color: var(--theme-color-dark-mode);
-  --theme-color-active: var(--theme-color-dark-mode-active);
-  --theme-color-checked: var(--theme-color-dark-mode-checked);
-  --theme-color-disabled: var(--theme-color-dark-mode-disabled);
-  --theme-color-empty: var(--theme-color-dark-mode-empty);
-  --theme-color-error: var(--theme-color-dark-mode-error);
-  --theme-color-hover: var(--theme-color-dark-mode-hover);
-  --theme-color-info: var(--theme-color-dark-mode-info);
-  --theme-color-indeterminate: var(--theme-color-dark-mode-indeterminate);
-  --theme-color-read-only: var(--theme-color-dark-mode-read-only);
-  --theme-color-success: var(--theme-color-dark-mode-success);
-  --theme-color-warning: var(--theme-color-dark-mode-warning);
-
-  --theme-fill: var(--theme-fill-dark-mode);
-  --theme-fill-active: var(--theme-fill-dark-mode-active);
-  --theme-fill-checked: var(--theme-fill-dark-mode-checked);
-  --theme-fill-disabled: var(--theme-fill-dark-mode-disabled);
-  --theme-fill-empty: var(--theme-fill-dark-mode-empty);
-  --theme-fill-error: var(--theme-fill-dark-mode-error);
-  --theme-fill-hover: var(--theme-fill-dark-mode-hover);
-  --theme-fill-info: var(--theme-fill-dark-mode-info);
-  --theme-fill-indeterminate: var(--theme-fill-dark-mode-indeterminate);
-  --theme-fill-read-only: var(--theme-fill-dark-mode-read-only);
-  --theme-fill-success: var(--theme-fill-dark-mode-success);
-  --theme-fill-warning: var(--theme-fill-dark-mode-warning);
-
-  --theme-outline: var(--theme-outline-dark-mode);
-  --theme-outline-active: var(--theme-outline-dark-mode-active);
-  --theme-outline-checked: var(--theme-outline-dark-mode-checked);
-  --theme-outline-disabled: var(--theme-outline-dark-mode-disabled);
-  --theme-outline-empty: var(--theme-outline-dark-mode-empty);
-  --theme-outline-hover: var(--theme-outline-dark-mode-hover);
-  --theme-outline-indeterminate: var(--theme-outline-dark-mode-indeterminate);
-  --theme-outline-read-only: var(--theme-outline-dark-mode-read-only);
   display: contents;
+
+  @each $property in $darkModeProperties {
+    &.has-#{$property} {
+      @include dark-mode-permutations($property);
+    }
+  }
 }
 
 .theme-reset,

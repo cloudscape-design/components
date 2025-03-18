@@ -1,6 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
-import { ThemeProps, ResetProps } from './interfaces';
+import { ThemeProps, ResetProps, DarkModeProps } from './interfaces';
 import styles from './styles.css.js';
 
 export default function Theme({
@@ -53,25 +53,56 @@ export default function Theme({
         ...(width && getValues('width', width)),
       }}
     >
-      {onDarkMode ? 
-        (
-          <div className={clsx(styles['theme-dark-mode'])}
-            style={{
-              ...(onDarkMode?.backgroundColor && getValues('background-color', onDarkMode.backgroundColor, true)),
-              ...(onDarkMode?.backgroundImage && getValues('background-image', onDarkMode.backgroundImage, true)),
-              ...(onDarkMode?.borderColor && getValues('border-color', onDarkMode.borderColor, true)),
-              ...(onDarkMode?.boxShadow && getValues('box-shadow', onDarkMode.boxShadow, true)),
-              ...(onDarkMode?.color && getValues('color', onDarkMode.color, true)),
-              ...(onDarkMode?.fill && getValues('fill', onDarkMode.fill, true)),
-              ...(onDarkMode?.outline && getValues('outline', onDarkMode.outline, true)),
-            }}
-          >
-            {children}
-          </div>
-        ) : (
-          <>{children}</>
-        )
-      }
+      <DarkMode 
+        backgroundColor={onDarkMode?.backgroundColor}
+        backgroundImage={onDarkMode?.backgroundImage}
+        borderColor={onDarkMode?.borderColor}
+        boxShadow={onDarkMode?.boxShadow}
+        color={onDarkMode?.color}
+        fill={onDarkMode?.fill}
+        outline={onDarkMode?.outline}
+      >
+        {children}
+      </DarkMode>
+    </div>
+  );
+}
+
+function DarkMode({
+  backgroundColor,
+  backgroundImage,
+  borderColor,
+  boxShadow,
+  children,
+  color,
+  fill,
+  outline,
+}:any) {
+  return (
+    <div 
+      className={clsx(
+        styles['theme-dark-mode'], 
+        {
+          [styles['has-background-color']]: backgroundColor,
+          [styles['has-background-image']]: backgroundImage,
+          [styles['has-border-color']]: borderColor,
+          [styles['has-box-shadow']]: boxShadow,
+          [styles['has-color']]: color,
+          [styles['has-fill']]: fill,
+          [styles['has-outline']]: outline,
+        },
+      )}
+      style={{
+        ...(backgroundColor && getValues('background-color', backgroundColor, true)),
+        ...(backgroundImage && getValues('background-image', backgroundImage, true)),
+        ...(borderColor && getValues('border-color', borderColor, true)),
+        ...(boxShadow && getValues('box-shadow', boxShadow, true)),
+        ...(color && getValues('color', color, true)),
+        ...(fill && getValues('fill', fill, true)),
+        ...(outline && getValues('outline', outline, true)),
+      }}
+    >
+      {children}
     </div>
   );
 }
@@ -89,6 +120,7 @@ function Reset({
   fill,
   fontFamily,
   fontSize,
+  fontStyle,
   fontWeight,
   gapBlock,
   gapInline,
@@ -113,6 +145,7 @@ function Reset({
         ...((all || fill) && getValues('fill', null, false, true)),
         ...((all || fontFamily) && getValues('font-family', null, false, true)),
         ...((all || fontSize) && getValues('font-size', null, false, true)),
+        ...((all || fontStyle) && getValues('font-style', null, false, true)),
         ...((all || fontWeight) && getValues('font-weight', null, false, true)),
         ...((all || gapBlock) && getValues('gap-block', null, false, true)),
         ...((all || gapInline) && getValues('gap-inline', null, false, true)),
