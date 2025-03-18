@@ -45,7 +45,7 @@ export default function ButtonDropdownPage() {
           itemSeparator="caret-right-filled"
         />
         <BreadcrumbGroupConsole
-          ariaLabel="With custom separator"
+          ariaLabel="With custom separator (console)"
           data-testid="breadcrumbs-with-custom-separator"
           expandAriaLabel="Show path"
           items={['First', 'Second', 'Third'].map((text, i) => ({ text, href: `#item-${i}` }))}
