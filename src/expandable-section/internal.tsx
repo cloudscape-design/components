@@ -18,7 +18,7 @@ import { variantSupportsDescription } from './utils';
 import analyticsSelectors from './analytics-metadata/styles.css.js';
 import styles from './styles.css.js';
 
-type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
+export type InternalExpandableSectionProps = Omit<ExpandableSectionProps, 'variant'> &
   InternalBaseComponentProps & {
     variant?: InternalVariant;
     __injectAnalyticsComponentMetadata?: boolean;
