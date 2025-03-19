@@ -6,12 +6,60 @@
 @use '../internal/styles' as styles;
 @use '../internal/styles/tokens' as awsui;
 
+$arrow-height: 10px;
+
 .container {
   display: inline-block;
   position: fixed;
   inset-block-start: -9999px;
   inset-inline-start: -9999px;
   z-index: 2000;
+
+  // A little pseudoelement to extend the container to the space between the
+  // popover and the trigger to avoid hover-based popovers/tooltips from
+  // closing too eagerly when the cursor goes between them.
+  &::before {
+    content: '';
+    position: absolute;
+  }
+
+  &:has(&-arrow-position-bottom-left),
+  &:has(&-arrow-position-bottom-center),
+  &:has(&-arrow-position-bottom-right) {
+    &::before {
+      inset-inline: 0;
+      inset-block-start: -$arrow-height;
+      block-size: $arrow-height;
+    }
+  }
+
+  &:has(&-arrow-position-top-left),
+  &:has(&-arrow-position-top-center),
+  &:has(&-arrow-position-top-right) {
+    &::before {
+      inset-inline: 0;
+      inset-block-end: -$arrow-height;
+      block-size: $arrow-height;
+    }
+  }
+
+  &:has(&-arrow-position-right-top),
+  &:has(&-arrow-position-right-bottom) {
+    &::before {
+      inset-block: 0;
+      inset-inline-start: -$arrow-height;
+      block-size: $arrow-height;
+    }
+  }
+
+  &:has(&-arrow-position-left-top),
+  &:has(&-arrow-position-left-bottom) {
+    &::before {
+      inset-block: 0;
+      inset-inline-end: -$arrow-height;
+      block-size: $arrow-height;
+    }
+  }
 }
 
 .container-body {
