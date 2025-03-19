@@ -14,7 +14,8 @@ import styles from './styles.css.js';
 
 interface PopoverContainerProps {
   /** References the element the container is positioned against. */
-  trackRef: React.RefObject<HTMLElement | SVGElement>;
+  trackRef?: React.RefObject<HTMLElement | SVGElement>;
+  getTrack?: () => null | HTMLElement | SVGElement;
   /**
     Used to update the container position in case track or track position changes:
     
@@ -47,6 +48,7 @@ interface PopoverContainerProps {
 export default function PopoverContainer({
   position,
   trackRef,
+  getTrack: externalGetTrack,
   trackKey,
   arrow,
   children,
@@ -68,13 +70,23 @@ export default function PopoverContainer({
 
   const isRefresh = useVisualRefresh();
 
+  const getTrack = useRef(() => {
+    if (trackRef) {
+      return trackRef.current;
+    }
+    if (externalGetTrack) {
+      return externalGetTrack();
+    }
+    throw new Error('Invariant violation: must provide either trackRef or getTrack.');
+  });
+
   // Updates the position handler.
   const { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling } =
     usePopoverPosition({
       popoverRef,
       bodyRef,
       arrowRef,
-      trackRef,
+      getTrack: getTrack.current,
       contentRef,
       allowScrollToFit,
       allowVerticalOverflow,
@@ -109,7 +121,7 @@ export default function PopoverContainer({
         keepPosition ||
         // If the click was on the trigger, this will make the popover appear or disappear,
         // so no need to update its position either in this case.
-        nodeContains(trackRef.current, event.target)
+        nodeContains(getTrack.current(), event.target)
       ) {
         return;
       }
