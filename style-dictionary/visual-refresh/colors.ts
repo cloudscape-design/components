@@ -97,7 +97,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundToggleCheckedDisabled: { light: '{colorBlue300}', dark: '{colorBlue800}' },
   colorBackgroundToggleDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBackgroundAvatarGenAi:
-    'radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)',
+    'radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)',
   colorBackgroundAvatarDefault: '{colorGrey600}',
   colorTextAvatar: '{colorWhite}',
   colorBackgroundLoadingBarGenAi:
