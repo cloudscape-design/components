@@ -17,7 +17,6 @@ import { fireNonCancelableEvent, NonCancelableEventHandler } from '../../interna
 import useForwardFocus from '../../internal/hooks/forward-focus';
 import { usePrevious } from '../../internal/hooks/use-previous';
 import { useUniqueId } from '../../internal/hooks/use-unique-id';
-import { getId as getSelectAllId } from '../../multiselect/select-all/utils';
 import { FilterProps } from '../parts/filter';
 import { ItemProps } from '../parts/item';
 import { connectOptionsByValue } from './connect-options';
@@ -28,7 +27,7 @@ export type GetOptionProps = (option: DropdownOption, index: number) => ItemProp
 interface UseSelectProps {
   selectedOptions: ReadonlyArray<OptionDefinition>;
   updateSelectedOption: (option: OptionDefinition) => void;
-  items: ReadonlyArray<DropdownOption>;
+  options: ReadonlyArray<DropdownOption>;
   filteringType: string;
   keepOpen?: boolean;
   embedded?: boolean;
@@ -39,8 +38,8 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
-  enableSelectAll?: boolean;
   isAllSelected?: boolean;
+  isSomeSelected?: boolean;
   toggleAll?: () => void;
 }
 
@@ -51,7 +50,7 @@ export interface SelectTriggerProps extends ButtonTriggerProps {
 export function useSelect({
   selectedOptions,
   updateSelectedOption,
-  items,
+  options: items,
   filteringType,
   onBlur,
   onFocus,
@@ -62,8 +61,8 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
-  enableSelectAll,
   isAllSelected,
+  isSomeSelected,
   toggleAll,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
@@ -73,7 +72,6 @@ export function useSelect({
   const filterRef = useRef<HTMLInputElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLUListElement>(null);
-  const selectAllRef = useRef<HTMLLIElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
   const __selectedOptions = connectOptionsByValue(items, selectedOptions);
@@ -116,10 +114,7 @@ export function useSelect({
   const hasSelectedOption = __selectedOptions.length > 0;
   const menuId = useUniqueId('option-list');
   const dialogId = useUniqueId('dialog');
-  const selectAllId = getSelectAllId(menuId);
-  const highlightedOptionId = getOptionId(menuId, enableSelectAll ? highlightedIndex - 1 : highlightedIndex);
-  const isSelectAllFocused = enableSelectAll && highlightedIndex === 0;
-  const activeDescendantId = isSelectAllFocused ? selectAllId : highlightedOptionId;
+  const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
   const closeDropdownIfNecessary = () => {
     if (!keepOpen) {
@@ -133,7 +128,7 @@ export function useSelect({
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
     }
-    if (optionToSelect.type === 'toggle-all' && toggleAll) {
+    if (optionToSelect.type === 'select-all' && toggleAll) {
       toggleAll();
     } else {
       updateSelectedOption(optionToSelect.option);
@@ -224,7 +219,7 @@ export function useSelect({
         fireLoadItems(event.detail.value);
       },
       __nativeAttributes: {
-        'aria-activedescendant': activeDescendantId,
+        'aria-activedescendant': highlightedOptionId,
         ['aria-owns']: menuId,
         ['aria-controls']: menuId,
       },
@@ -251,8 +246,7 @@ export function useSelect({
     if (!hasFilter) {
       menuProps.onKeyDown = activeKeyDownHandler;
       menuProps.nativeAttributes = {
-        'aria-activedescendant': activeDescendantId,
-        ['aria-owns']: enableSelectAll ? `${menuId} ${selectAllId}` : undefined,
+        'aria-activedescendant': highlightedOptionId,
       };
     }
     if (embedded) {
@@ -267,7 +261,6 @@ export function useSelect({
     }
     return menuProps;
   };
-
   const getGroupState = (option: OptionGroup) => {
     const totalSelected = option.options.filter(item => !!item.value && __selectedValuesSet.has(item.value)).length;
     const hasSelected = totalSelected > 0;
@@ -278,26 +271,26 @@ export function useSelect({
     };
   };
 
-  const getOptionProps = (option: DropdownOption, optionIndex: number) => {
-    const itemIndex = enableSelectAll ? optionIndex + 1 : optionIndex;
+  const getOptionProps = (option: DropdownOption, index: number) => {
+    const isSelectAll = option.type === 'select-all';
     const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected = __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
-    const nextOption = items[itemIndex + 1]?.option;
+    const selected = isSelectAll ? isAllSelected : __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
+    const nextOption = items[index + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
-        : __selectedOptions.indexOf(items[itemIndex + 1]) > -1;
+        : __selectedOptions.indexOf(items[index + 1]) > -1;
     const optionProps: any = {
-      key: optionIndex,
+      key: index,
       option,
       highlighted,
       selected,
       isNextSelected,
-      isAfterHeader: optionIndex === 0 && isAllSelected && enableSelectAll,
-      indeterminate: !!groupState?.indeterminate,
-      ['data-mouse-target']: isHighlightable(option) ? itemIndex : -1,
-      id: getOptionId(menuId, optionIndex),
+      indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
+      ['data-mouse-target']: isHighlightable(option) ? index : -1,
+      id: getOptionId(menuId, index),
+      disabled: isSelectAll ? items.length === 1 : undefined,
     };
 
     return optionProps;
@@ -355,9 +348,5 @@ export function useSelect({
     selectOption,
     announceSelected,
     dialogId,
-    menuId,
-    setHighlightedIndexWithMouse,
-    closeDropdownIfNecessary,
-    selectAllRef,
   };
 }

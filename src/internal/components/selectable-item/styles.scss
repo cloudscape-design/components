@@ -124,6 +124,25 @@
     }
   }
 
+  &.select-all {
+    position: sticky;
+    inset-block-start: 0;
+
+    // Stay on top of the other options when they are scrolled up
+    z-index: 4;
+
+    &:not(.highlighted):not(.selected) {
+      // Prevent covering the list border despite the higher z-index
+      border-inline-start-color: awsui.$color-border-dropdown-item-default;
+      border-inline-start-width: awsui.$border-item-width;
+      border-inline-end-color: awsui.$color-border-dropdown-item-default;
+      border-inline-end-width: awsui.$border-item-width;
+      border-start-start-radius: awsui.$border-radius-item;
+      border-start-end-radius: awsui.$border-radius-item;
+      padding-inline: styles.$control-padding-horizontal;
+    }
+  }
+
   &.disabled {
     color: awsui.$color-text-dropdown-item-disabled;
   }

@@ -41,6 +41,7 @@ type UseMultiselectOptions = SomeRequired<
     | 'onChange'
     | 'selectedAriaLabel'
     | 'enableSelectAll'
+    | 'i18nStrings'
   > &
     DropdownStatusProps & {
       controlId?: string;
@@ -80,6 +81,7 @@ export function useMultiselect({
   externalRef,
   embedded,
   enableSelectAll,
+  i18nStrings,
   ...restProps
 }: UseMultiselectOptions) {
   checkOptionValueField('Multiselect', 'options', options);
@@ -103,17 +105,20 @@ export function useMultiselect({
   const { allOptions, filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
-    filteringValue
+    filteringValue,
+    enableSelectAll
+      ? [{ type: 'select-all', option: { label: i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText) } }]
+      : undefined
   );
 
-  const allNonParentOptions = allOptions.filter(item => item.type !== 'parent' && item.type !== 'toggle-all');
+  const allNonParentOptions = allOptions.filter(item => item.type !== 'parent' && item.type !== 'select-all');
 
   const allSelectableOptions = allNonParentOptions
     .filter(option => !option.option.disabled)
     .map(option => option.option);
 
   const filteredNonParentOptions = filteredOptions
-    .filter(item => item.type !== 'parent' && item.type !== 'toggle-all')
+    .filter(item => item.type !== 'parent' && item.type !== 'select-all')
     .map(item => item.option);
 
   const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
@@ -185,14 +190,10 @@ export function useMultiselect({
     getOptionProps,
     highlightOption,
     announceSelected,
-    setHighlightedIndexWithMouse,
-    menuId,
-    closeDropdownIfNecessary,
-    selectAllRef,
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
-    items: enableSelectAll ? [{ type: 'toggle-all', option: {} }, ...filteredOptions] : filteredOptions,
+    options: filteredOptions,
     filteringType,
     onFocus,
     onBlur,
@@ -203,8 +204,8 @@ export function useMultiselect({
     useInteractiveGroups,
     statusType,
     embedded,
-    enableSelectAll,
     isAllSelected,
+    isSomeSelected,
     toggleAll,
   });
 
@@ -305,15 +306,6 @@ export function useMultiselect({
     getTokenProps: () => ({ onDismiss: tokenOnDismiss }),
     getDropdownProps: () => ({ ...getDropdownProps(), onMouseDown: dropdownOnMouseDown }),
     getWrapperProps: () => ({ onKeyDown: wrapperOnKeyDown }),
-    isAllSelected,
-    isSomeSelected,
-    toggleAll: () => {
-      toggleAll();
-      closeDropdownIfNecessary();
-    },
     highlightedIndex,
-    setHighlightedIndexWithMouse,
-    menuId,
-    selectAllRef,
   };
 }

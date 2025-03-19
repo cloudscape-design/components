@@ -11,7 +11,7 @@ describe('Multiselect with "Select all" control', () => {
       const onChange = jest.fn();
       const { wrapper } = renderMultiselect({ enableSelectAll: true, onChange });
       wrapper.openDropdown();
-      wrapper.findDropdown().findSelectAll()!.click();
+      wrapper.selectOption(1);
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
       );
@@ -20,7 +20,7 @@ describe('Multiselect with "Select all" control', () => {
       const onChange = jest.fn();
       const { wrapper } = renderMultiselect({ enableSelectAll: true, selectedOptions: optionsWithoutGroups, onChange });
       wrapper.openDropdown();
-      wrapper.findDropdown().findSelectAll()!.click();
+      wrapper.selectOption(1);
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
     });
     test('closes the dropdown after clicking when `keepOpen` is false', () => {
@@ -28,7 +28,7 @@ describe('Multiselect with "Select all" control', () => {
       wrapper.openDropdown();
       const dropdown = wrapper.findDropdown();
       expect(dropdown.findOptionByValue('1')).not.toBeNull();
-      dropdown.findSelectAll()!.click();
+      wrapper.selectOption(1);
       expect(dropdown.findOptionByValue('1')).toBeNull();
     });
   });

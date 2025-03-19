@@ -35,7 +35,7 @@ export const generateTestIndexes = <T extends ListItem, Group extends object>(
         groupIndex,
         inGroupIndex: inGroupIndex++,
       });
-    } else if (item.type === 'child' || !item.type) {
+    } else {
       testIndexMap.set(item, { throughIndex: throughIndex++ });
     }
   });

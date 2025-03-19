@@ -20,7 +20,6 @@ import VirtualList from '../select/parts/virtual-list';
 import { TokenGroupProps } from '../token-group/interfaces';
 import InternalTokenGroup from '../token-group/internal';
 import { MultiselectProps } from './interfaces';
-import SelectAll from './select-all';
 import { useMultiselect } from './use-multiselect';
 
 import styles from './styles.css.js';
@@ -84,6 +83,7 @@ const InternalMultiselect = React.forwardRef(
       setFilteringValue,
       externalRef,
       enableSelectAll,
+      i18nStrings,
       ...restProps,
     });
 
@@ -157,30 +157,7 @@ const InternalMultiselect = React.forwardRef(
           }
           open={multiselectProps.isOpen}
           trigger={trigger}
-          header={
-            <>
-              {filter}
-              {enableSelectAll && (
-                <SelectAll
-                  disabled={!multiselectProps.filteredOptions.length}
-                  highlighted={enableSelectAll && multiselectProps.highlightedIndex === 0}
-                  highlightType={multiselectProps.highlightType}
-                  menuId={multiselectProps.menuId}
-                  onMouseMove={() => multiselectProps.setHighlightedIndexWithMouse(0)}
-                  onToggle={multiselectProps.toggleAll}
-                  ref={multiselectProps.selectAllRef}
-                  state={
-                    options.length && multiselectProps.isAllSelected
-                      ? 'all'
-                      : options.length && multiselectProps.isSomeSelected
-                        ? 'some'
-                        : 'none'
-                  }
-                  text={i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText)}
-                />
-              )}
-            </>
-          }
+          header={filter}
           footer={
             dropdownStatus.isSticky ? (
               <DropdownFooter content={multiselectProps.isOpen ? dropdownStatus.content : null} id={footerId} />

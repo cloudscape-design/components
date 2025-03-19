@@ -14,8 +14,8 @@ import { ItemProps } from './item';
 
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
+  disabled?: boolean;
   indeterminate?: boolean;
-  isAfterHeader?: boolean;
 }
 
 const MultiSelectItem = (
@@ -33,7 +33,7 @@ const MultiSelectItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
-    isAfterHeader,
+    disabled,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -42,10 +42,11 @@ const MultiSelectItem = (
 
   const isParent = option.type === 'parent';
   const isChild = option.type === 'child';
+  const isSelectAll = option.type === 'select-all';
   const wrappedOption: OptionDefinition = option.option;
-  const disabled = option.disabled || wrappedOption.disabled;
+  const isDisabled = option.disabled || wrappedOption.disabled || disabled;
   const disabledReason =
-    disabled && (option.disabledReason || wrappedOption.disabledReason)
+    isDisabled && (option.disabledReason || wrappedOption.disabledReason)
       ? option.disabledReason || wrappedOption.disabledReason
       : '';
   const isDisabledWithReason = !!disabledReason;
@@ -56,17 +57,16 @@ const MultiSelectItem = (
 
   const [canShowTooltip, setCanShowTooltip] = useState(true);
   useEffect(() => setCanShowTooltip(true), [highlighted]);
-
   return (
     <SelectableItem
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
       selected={selected}
       isNextSelected={isNextSelected}
-      isAfterHeader={isAfterHeader}
       highlighted={highlighted}
-      disabled={disabled}
+      disabled={isDisabled}
       isParent={isParent}
       isChild={isChild}
+      isSelectAll={isSelectAll}
       highlightType={highlightType}
       ref={useMergeRefs(ref, internalRef)}
       virtualPosition={virtualPosition}
@@ -82,11 +82,15 @@ const MultiSelectItem = (
       <div className={className}>
         {hasCheckbox && (
           <div className={styles.checkbox}>
-            <CheckboxIcon checked={selected} indeterminate={isParent && indeterminate} disabled={option.disabled} />
+            <CheckboxIcon
+              checked={selected}
+              indeterminate={(isParent || isSelectAll) && indeterminate}
+              disabled={isDisabled}
+            />
           </div>
         )}
         <Option
-          option={{ ...wrappedOption, disabled }}
+          option={{ ...wrappedOption, disabled: isDisabled }}
           highlightedOption={highlighted}
           selectedOption={selected}
           highlightText={filteringValue}

@@ -383,6 +383,7 @@ exports[`test-utils selectors 1`] = `
     "awsui_root_1t44z",
     "awsui_root_qwoo0",
     "awsui_root_vrgzu",
+    "awsui_select-all_15o6u",
     "awsui_selectable-item_15o6u",
     "awsui_selected_15o6u",
     "awsui_tag_1p2cx",
@@ -424,7 +425,6 @@ exports[`test-utils selectors 1`] = `
   ],
   "multiselect": [
     "awsui_root_f8g6q",
-    "awsui_select-all_spzfn",
   ],
   "pagination": [
     "awsui_button-current_fvjdu",
