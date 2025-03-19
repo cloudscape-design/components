@@ -21,6 +21,15 @@ describe('Multiselect with "Select all" control', () => {
         expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
       );
     });
+    test('selects all options when some but not all are selected', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({ onChange, selectedOptions: [optionsWithoutGroups[0]] });
+      wrapper.openDropdown();
+      wrapper.selectOption(1);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
+      );
+    });
     test('deselects all options when all are selected', () => {
       const onChange = jest.fn();
       const wrapper = renderMultiselectWithSelectAll({ selectedOptions: optionsWithoutGroups, onChange });
@@ -46,6 +55,18 @@ describe('Multiselect with "Select all" control', () => {
       const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
       // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
       optionsContainer.keydown(KeyCode.down);
+      optionsContainer.keydown(KeyCode.space);
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
+      );
+    });
+    test('selects all options when some but not all are selected', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({ onChange, selectedOptions: [optionsWithoutGroups[0]] });
+      wrapper.openDropdown();
+      const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
+      // When opening the dropdown the first selected option is highlighted. Move one position up to highlight the "Select all" control.
+      optionsContainer.keydown(KeyCode.up);
       optionsContainer.keydown(KeyCode.space);
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
