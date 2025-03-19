@@ -137,8 +137,8 @@ describe('useSelect', () => {
         option: { type: 'child', option: { label: 'Child 1', value: 'child1' } },
         selected: false,
         isNextSelected: false,
-        id: getOptionId(menuId!, 1),
         indeterminate: false,
+        id: getOptionId(menuId!, 1),
       });
     });
   });

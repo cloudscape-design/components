@@ -50,7 +50,7 @@ export interface SelectTriggerProps extends ButtonTriggerProps {
 export function useSelect({
   selectedOptions,
   updateSelectedOption,
-  options: items,
+  options,
   filteringType,
   onBlur,
   onFocus,
@@ -74,7 +74,7 @@ export function useSelect({
   const menuRef = useRef<HTMLUListElement>(null);
   const hasFilter = filteringType !== 'none' && !embedded;
   const activeRef = hasFilter ? filterRef : menuRef;
-  const __selectedOptions = connectOptionsByValue(items, selectedOptions);
+  const __selectedOptions = connectOptionsByValue(options, selectedOptions);
   const __selectedValuesSet = selectedOptions.reduce((selectedValuesSet: Set<string>, item: OptionDefinition) => {
     if (item.value) {
       selectedValuesSet.add(item.value);
@@ -91,7 +91,7 @@ export function useSelect({
       goHomeWithKeyboard,
       goEndWithKeyboard,
     },
-  ] = useHighlightedOption({ options: items, isHighlightable });
+  ] = useHighlightedOption({ options: options, isHighlightable });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     defaultOpen: embedded,
@@ -148,7 +148,7 @@ export function useSelect({
       moveHighlightWithKeyboard(-1);
     },
     goDown: () => {
-      if (highlightedIndex === items.length - 1) {
+      if (highlightedIndex === options.length - 1) {
         goHomeWithKeyboard();
         return;
       }
@@ -233,7 +233,7 @@ export function useSelect({
       open: isOpen,
       onMouseUp: itemIndex => {
         if (itemIndex > -1) {
-          selectOption(items[itemIndex]);
+          selectOption(options[itemIndex]);
         }
       },
       onMouseMove: itemIndex => {
@@ -276,11 +276,11 @@ export function useSelect({
     const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
     const selected = isSelectAll ? isAllSelected : __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
-    const nextOption = items[index + 1]?.option;
+    const nextOption = options[index + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
         ? getGroupState(nextOption).selected
-        : __selectedOptions.indexOf(items[index + 1]) > -1;
+        : __selectedOptions.indexOf(options[index + 1]) > -1;
     const optionProps: any = {
       key: index,
       option,
@@ -290,7 +290,7 @@ export function useSelect({
       indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),
-      disabled: isSelectAll ? items.length === 1 : undefined,
+      disabled: isSelectAll ? options.length === 1 : undefined,
     };
 
     return optionProps;
@@ -304,7 +304,7 @@ export function useSelect({
       if (openedWithKeyboard) {
         highlightOptionWithKeyboard(__selectedOptions[0]);
       } else {
-        setHighlightedIndexWithMouse(items.indexOf(__selectedOptions[0]), true);
+        setHighlightedIndexWithMouse(options.indexOf(__selectedOptions[0]), true);
       }
     }
   }, [
@@ -314,7 +314,7 @@ export function useSelect({
     setHighlightedIndexWithMouse,
     highlightOptionWithKeyboard,
     openedWithKeyboard,
-    items,
+    options,
     prevOpen,
     hasFilter,
   ]);

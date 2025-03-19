@@ -34,7 +34,7 @@ export interface OptionGroup extends BaseOption {
 }
 
 export interface DropdownOption {
-  type?: 'child' | 'parent' | 'select-all';
+  type?: 'child' | 'parent' | 'select-all' | 'use-entered';
   disabled?: boolean;
   disabledReason?: string;
   option: OptionDefinition | OptionGroup;
