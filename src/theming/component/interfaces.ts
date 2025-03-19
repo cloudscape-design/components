@@ -1,24 +1,23 @@
-
 export interface ThemeProps {
   backgroundColor?: string | States | Semantics;
   backgroundImage?: string | States | Semantics;
-  borderColor?: string | States;
+  borderColor?: string | States | Semantics;
   borderRadius?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
   borderWidth?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
-  boxShadow?: string | States;
+  boxShadow?: string | States | Semantics;
   children?: React.ReactNode;
   color?: string | States | Semantics;
   fill?: string | States | Semantics;
   fontFamily?: string;
   fontSize?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
-  fontStyle?: string | States;
+  fontStyle?: string | States | Semantics;
   fontWeight?: string;
   gapBlock?: string;
   gapInline?: string;
   height?: string;
   lineHeight?: LiteralUnion<'none' | 'small' | 'medium' | 'large', string>;
   onDarkMode?: DarkModeProps;
-  outline?: string | States;
+  outline?: string | States | Semantics;
   paddingBlock?: string;
   paddingInline? : string;
   width?: string;
@@ -51,12 +50,12 @@ export interface ResetProps {
 
 export interface DarkModeProps {
   backgroundColor?: string | States | Semantics;
-  backgroundImage?: string | States;
-  borderColor?: string | States;
-  boxShadow?: string | States;
+  backgroundImage?: string | States | Semantics;
+  borderColor?: string | States | Semantics;
+  boxShadow?: string | States | Semantics;
   color?: string | States | Semantics;
-  fill?: string | States;
-  outline?: string | States;
+  fill?: string | States | Semantics;
+  outline?: string | States | Semantics;
 }
 
 interface States {
