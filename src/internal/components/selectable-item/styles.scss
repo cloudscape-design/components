@@ -141,6 +141,14 @@
       border-start-end-radius: awsui.$border-radius-item;
       padding-inline: styles.$control-padding-horizontal;
     }
+
+    &.disabled.highlighted,
+    &.disabled.selected {
+      border-block-end-color: transparent;
+      border-block-start-color: transparent;
+      border-inline-start-color: transparent;
+      border-inline-end-color: transparent;
+    }
   }
 
   &.disabled {
