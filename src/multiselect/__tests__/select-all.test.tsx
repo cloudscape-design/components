@@ -1,8 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import React from 'react';
+import { render } from '@testing-library/react';
 
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
+import TestI18nProvider from '../../../lib/components/i18n/testing';
+import Multiselect from '../../../lib/components/multiselect';
+import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';
 import { optionsWithoutGroups, renderMultiselect } from './common';
 
@@ -101,5 +106,47 @@ describe('Multiselect with "Select all" control', () => {
     const options = wrapper.findDropdown().findOptions();
     expect(options.length).toBe(1);
     expect(options[0].getElement().getAttribute('aria-disabled')).toBe('true');
+  });
+
+  describe('i18n', () => {
+    test('uses i18nStrings.selectAllText from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text' } }}>
+          <Multiselect enableSelectAll={true} options={[]} selectedOptions={[]} />
+        </TestI18nProvider>
+      );
+
+      const wrapper = createWrapper(container).findMultiselect()!;
+      wrapper.openDropdown();
+      const selectAll = wrapper.findDropdown().findOption(1)!;
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
+    });
+
+    test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
+      const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
+      wrapper.openDropdown();
+      const selectAll = wrapper.findDropdown().findOption(1)!;
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
+    });
+
+    test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text from i18n provider' } }}
+        >
+          <Multiselect
+            enableSelectAll={true}
+            options={[]}
+            selectedOptions={[]}
+            i18nStrings={{ selectAllText: 'Custom Select all text from i18nStrings' }}
+          />
+        </TestI18nProvider>
+      );
+
+      const wrapper = createWrapper(container).findMultiselect()!;
+      wrapper.openDropdown();
+      const selectAll = wrapper.findDropdown().findOption(1)!;
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
+    });
   });
 });
