@@ -3,7 +3,7 @@
 import React, { useContext, useState } from 'react';
 
 import Box from '~components/box';
-import { OptionDefinition, OptionGroup } from '~components/internal/components/option/interfaces';
+import { OptionGroup } from '~components/internal/components/option/interfaces';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 import SpaceBetween from '~components/space-between';
 
@@ -23,7 +23,7 @@ type DemoContext = React.Context<
   }>
 >;
 
-const groupedOptionsWithDisabledOptions: OptionGroup[] = [
+const groupedOptionsWithDisabledOptions: MultiselectProps.Options = [
   {
     label: 'First category',
     options: [
@@ -70,28 +70,54 @@ const groupedOptionsWithDisabledOptions: OptionGroup[] = [
       },
     ],
   },
+  {
+    value: 'option7',
+    label: 'option7',
+    description: 'option7',
+    tags: ['2-CPU', '2Gb RAM'],
+  },
+  {
+    value: 'option8',
+    label: 'option8',
+    description: 'option8',
+    tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
+    disabled: true,
+  },
+  {
+    value: 'option9',
+    label: 'option9',
+    description: 'option9',
+    tags: ['2-CPU', '2Gb RAM'],
+  },
 ];
 
 const initialSelectedOptions = [
-  groupedOptionsWithDisabledOptions[0].options[2],
-  groupedOptionsWithDisabledOptions[1].options[0],
+  (groupedOptionsWithDisabledOptions[0] as OptionGroup).options[2],
+  (groupedOptionsWithDisabledOptions[1] as OptionGroup).options[0],
 ];
 
 export default function MultiselectPage() {
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
   const [selectedOptions, setSelectedOptions] = useState<MultiselectProps.Options>(initialSelectedOptions);
 
-  const groupedOptions = urlParams.withDisabledOptions
+  const groupedOptions: MultiselectProps.Options = urlParams.withDisabledOptions
     ? groupedOptionsWithDisabledOptions
-    : groupedOptionsWithDisabledOptions.map(group => ({
-        ...group,
-        options: group.options.map(option => ({ ...option, disabled: false })),
+    : groupedOptionsWithDisabledOptions.map(option => ({
+        ...option,
+        disabled: false,
+        options:
+          'options' in option && option.options.length
+            ? option.options.map(childOption => ({ ...childOption, disabled: false }))
+            : undefined,
       }));
 
-  const options: OptionDefinition[] = urlParams.withGroups
+  const options: MultiselectProps.Options = urlParams.withGroups
     ? groupedOptions
     : groupedOptions.reduce(
-        (previousValue: OptionDefinition[], currentValue: OptionGroup) => [...previousValue, ...currentValue.options],
+        (previousValue: MultiselectProps.Options, currentValue: MultiselectProps.Option) =>
+          'options' in currentValue && (currentValue as OptionGroup).options?.length
+            ? [...previousValue, ...(currentValue as OptionGroup).options]
+            : [...previousValue, currentValue],
         []
       );
 
@@ -104,7 +130,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.withGroups}
+                checked={!!urlParams.withGroups}
                 onChange={e => setUrlParams({ withGroups: e.target.checked })}
               />{' '}
               With groups
@@ -112,7 +138,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.withDisabledOptions}
+                checked={!!urlParams.withDisabledOptions}
                 onChange={e => setUrlParams({ withDisabledOptions: e.target.checked })}
               />{' '}
               With disabled options
@@ -120,7 +146,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.withFiltering}
+                checked={!!urlParams.withFiltering}
                 onChange={e => setUrlParams({ withFiltering: e.target.checked })}
               />{' '}
               With filtering
@@ -128,7 +154,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.expandToViewport}
+                checked={!!urlParams.expandToViewport}
                 onChange={e => setUrlParams({ expandToViewport: e.target.checked })}
               />{' '}
               Expand to viewport
@@ -136,7 +162,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.inlineTokens}
+                checked={!!urlParams.inlineTokens}
                 onChange={e => setUrlParams({ inlineTokens: e.target.checked })}
               />{' '}
               Inline tokens
@@ -144,7 +170,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.closeAfter}
+                checked={!!urlParams.closeAfter}
                 onChange={e => setUrlParams({ closeAfter: e.target.checked })}
               />{' '}
               Close after selection
@@ -152,7 +178,7 @@ export default function MultiselectPage() {
             <label>
               <input
                 type="checkbox"
-                checked={urlParams.virtualScroll}
+                checked={!!urlParams.virtualScroll}
                 onChange={e => setUrlParams({ virtualScroll: e.target.checked })}
               />{' '}
               Virtual scroll
