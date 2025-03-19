@@ -10,6 +10,7 @@
   @include styles.styles-reset;
   position: absolute;
 }
+
 .hover-area {
   pointer-events: none;
   padding-block: awsui.$space-static-s;
@@ -20,4 +21,17 @@
 
 .popover-body {
   pointer-events: auto;
+}
+
+.footer {
+  margin-block-start: awsui.$space-static-xs;
+
+  /* stylelint-disable-next-line selector-max-type */
+  >hr {
+    border-block: none;
+    border-inline: none;
+    border-block-start: 1px solid awsui.$color-border-divider-default;
+    margin-block: awsui.$space-static-xs;
+    margin-inline: 0;
+  }
 }
