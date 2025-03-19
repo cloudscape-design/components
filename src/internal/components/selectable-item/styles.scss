@@ -128,6 +128,9 @@
     position: sticky;
     inset-block-start: 0;
 
+    // Push the next option down to prevent its border in highlighted or selected state from being partially covered by the "select all" control
+    margin-block-end: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+
     // Stay on top of the other options when they are scrolled up
     z-index: 4;
 
