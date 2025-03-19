@@ -174,11 +174,6 @@ export default function AlertPermutations() {
         </FintechAlert>
 
         <FintechAlert 
-          action={
-            <Theme.Reset all>
-              <Button>Button text</Button>
-            </Theme.Reset>
-          }
           dismissible
           header="Header message" 
           type="info"

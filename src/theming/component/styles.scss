@@ -1,3 +1,17 @@
+.theme,
+.theme-dark-mode,
+.theme-reset {
+  display: contents;
+}
+
+:global(.awsui-dark-mode) .theme-dark-mode {
+  @each $property in $darkModeProperties {
+    &.has-#{$property} {
+      @include dark-mode-permutations($property);
+    }
+  }
+}
+
 $darkModeProperties: (
   'background-color',
   'background-image',
@@ -21,23 +35,4 @@ $darkModeProperties: (
   --theme-#{$property}-read-only: var(--theme-#{$property}-dark-mode-read-only);
   --theme-#{$property}-success: var(--theme-#{$property}-dark-mode-success);
   --theme-#{$property}-warning: var(--theme-#{$property}-dark-mode-warning);
-}
-
-.theme {
-  display: contents;
-}
-
-:global(.awsui-dark-mode) .theme-dark-mode {
-  display: contents;
-
-  @each $property in $darkModeProperties {
-    &.has-#{$property} {
-      @include dark-mode-permutations($property);
-    }
-  }
-}
-
-.theme-reset,
-:global(.awsui-dark-mode) .theme-reset {
-  display: contents;
 }
