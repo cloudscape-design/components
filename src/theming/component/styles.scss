@@ -1,3 +1,13 @@
+@use './constants.scss' as constants;
+
+@mixin dark-mode-permutations($property) {
+  --theme-#{$property}: var(--theme-#{$property}-dark-mode);
+
+  @each $state in constants.$allStatesAndSemantics {
+    --theme-#{$property}-#{$state}: var(--theme-#{$property}-dark-mode-#{$state});
+  }
+}
+
 .theme,
 .theme-dark-mode,
 .theme-reset {
@@ -5,34 +15,9 @@
 }
 
 :global(.awsui-dark-mode) .theme-dark-mode {
-  @each $property in $darkModeProperties {
+  @each $property in constants.$darkModeProperties {
     &.has-#{$property} {
       @include dark-mode-permutations($property);
     }
   }
-}
-
-$darkModeProperties: (
-  'background-color',
-  'background-image',
-  'border-color',
-  'box-shadow',
-  'color',
-  'fill',
-  'outline',
-);
-
-@mixin dark-mode-permutations($property) {
-  --theme-#{$property}: var(--theme-#{$property}-dark-mode);
-  --theme-#{$property}-active: var(--theme-#{$property}-dark-mode-active);
-  --theme-#{$property}-checked: var(--theme-#{$property}-dark-mode-checked);
-  --theme-#{$property}-disabled: var(--theme-#{$property}-dark-mode-disabled);
-  --theme-#{$property}-empty: var(--theme-#{$property}-dark-mode-empty);
-  --theme-#{$property}-error: var(--theme-#{$property}-dark-mode-error);
-  --theme-#{$property}-hover: var(--theme-#{$property}-dark-mode-hover);
-  --theme-#{$property}-info: var(--theme-#{$property}-dark-mode-info);
-  --theme-#{$property}-indeterminate: var(--theme-#{$property}-dark-mode-indeterminate);
-  --theme-#{$property}-read-only: var(--theme-#{$property}-dark-mode-read-only);
-  --theme-#{$property}-success: var(--theme-#{$property}-dark-mode-success);
-  --theme-#{$property}-warning: var(--theme-#{$property}-dark-mode-warning);
 }
