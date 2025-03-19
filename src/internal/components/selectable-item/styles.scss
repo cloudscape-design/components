@@ -42,6 +42,22 @@
     background-color: awsui.$color-background-dropdown-item-hover;
   }
 
+  &.highlighted,
+  &.selected {
+    color: awsui.$color-text-dropdown-item-highlighted;
+    border-width: awsui.$border-item-width;
+    border-start-start-radius: awsui.$border-radius-item;
+    border-start-end-radius: awsui.$border-radius-item;
+    border-end-start-radius: awsui.$border-radius-item;
+    border-end-end-radius: awsui.$border-radius-item;
+    padding-block: styles.$option-padding-vertical;
+    padding-inline: styles.$control-padding-horizontal;
+
+    &.pad-bottom {
+      padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+    }
+  }
+
   &.highlighted {
     z-index: 3;
     background-color: awsui.$color-background-dropdown-item-hover;
@@ -71,24 +87,6 @@
   &.selected + &.selected {
     border-start-start-radius: 0;
     border-start-end-radius: 0;
-  }
-
-  &:not(.select-all.disabled) {
-    &.highlighted,
-    &.selected {
-      color: awsui.$color-text-dropdown-item-highlighted;
-      border-width: awsui.$border-item-width;
-      border-start-start-radius: awsui.$border-radius-item;
-      border-start-end-radius: awsui.$border-radius-item;
-      border-end-start-radius: awsui.$border-radius-item;
-      border-end-end-radius: awsui.$border-radius-item;
-      padding-block: styles.$option-padding-vertical;
-      padding-inline: styles.$control-padding-horizontal;
-
-      &.pad-bottom {
-        padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
-      }
-    }
   }
 
   &.highlighted.is-keyboard {
@@ -142,7 +140,6 @@
       border-start-start-radius: awsui.$border-radius-item;
       border-start-end-radius: awsui.$border-radius-item;
       padding-inline: styles.$control-padding-horizontal;
-      inline-size: calc(100% - 2 * (#{styles.$control-padding-horizontal} + #{awsui.$border-item-width}));
     }
   }
 
