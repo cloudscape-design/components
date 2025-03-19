@@ -22,6 +22,13 @@ import Modal from '../../../../../lib/components/modal';
 import Table from '../../../../../lib/components/table';
 import { mockedFunnelInteractionId, mockFunnelMetrics, mockInnerText, mockPerformanceMetrics } from '../mocks';
 
+jest.mock('../../../../../lib/components/internal/environment', () => ({
+  THEME: 'polaris',
+  ALWAYS_VISUAL_REFRESH: true,
+  PACKAGE_SOURCE: '',
+  PACKAGE_VERSION: '',
+}));
+
 describe('AnalyticsFunnel', () => {
   beforeEach(() => {
     jest.clearAllMocks();
