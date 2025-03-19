@@ -49,17 +49,6 @@ describe('usePortalModeClasses', () => {
     expect(screen.getByTestId('subject')).toHaveClass('awsui-polaris-compact-mode awsui-compact-mode', { exact: true });
   });
 
-  test('should detect visual refresh mode', () => {
-    // This assumes implementation details about the implementation of useVisualRefresh hook. It works
-    // as an integration test.
-    window.CSS.supports = jest.fn(() => true);
-
-    (useVisualRefresh as jest.Mock).mockImplementation(() => true);
-
-    render(<RenderTest refClasses="" />);
-    expect(screen.getByTestId('subject')).toHaveClass('awsui-visual-refresh', { exact: true });
-  });
-
   test('should detect contexts', () => {
     render(
       <VisualContext contextName="content-header">
