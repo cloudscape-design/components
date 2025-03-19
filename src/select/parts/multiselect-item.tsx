@@ -77,6 +77,7 @@ const MultiSelectItem = (
       ariaSetsize={ariaSetsize}
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
+      afterHeader={option.afterHeader}
       {...baseProps}
     >
       <div className={className}>

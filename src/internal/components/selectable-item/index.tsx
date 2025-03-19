@@ -35,6 +35,7 @@ const SelectableItem = (
     ariaSetsize,
     highlightType,
     value,
+    afterHeader,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -48,6 +49,7 @@ const SelectableItem = (
     [analyticsSelectors.parent]: isParent,
     [styles.child]: isChild,
     [styles['select-all']]: isSelectAll,
+    [styles['after-header']]: !!afterHeader,
     [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
     [styles.virtual]: virtualPosition !== undefined,

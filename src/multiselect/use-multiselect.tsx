@@ -107,7 +107,13 @@ export function useMultiselect({
     filteringType,
     filteringValue,
     enableSelectAll
-      ? [{ type: 'select-all', option: { label: i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText) } }]
+      ? [
+          {
+            type: 'select-all',
+            afterHeader: filteringType !== 'none',
+            option: { label: i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText) },
+          },
+        ]
       : undefined
   );
 
