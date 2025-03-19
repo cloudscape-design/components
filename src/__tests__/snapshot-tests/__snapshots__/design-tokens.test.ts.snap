@@ -95,8 +95,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -2620,8 +2620,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -5145,8 +5145,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -7670,8 +7670,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -10195,8 +10195,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -12720,8 +12720,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -15245,8 +15245,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-background-avatar-gen-ai": {
       "$description": "The gen-ai background color of avatars.",
       "$value": {
-        "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-        "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+        "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+        "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
       },
     },
     "color-background-button-normal-active": {
@@ -17775,8 +17775,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -20300,8 +20300,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -22825,8 +22825,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -25350,8 +25350,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -27875,8 +27875,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -30400,8 +30400,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -32925,8 +32925,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+            "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
           },
         },
         "color-background-button-normal-active": {
@@ -35450,8 +35450,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-avatar-gen-ai": {
       "$description": "The gen-ai background color of avatars.",
       "$value": {
-        "dark": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
-        "light": "radial-gradient(circle farthest-corner at top left,rgba(92, 127, 255, 1) -5%,rgba(92, 127, 255, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) -5%, rgba(0, 153, 255, 1) 15%, rgba(150, 46, 255, 1) 65%, rgba(133, 117, 255, 1) 100%)",
+        "dark": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
+        "light": "radial-gradient(circle farthest-corner at top right, rgba(184, 231, 255, 1) 0%, rgba(0, 153, 255, 1) 20%, rgba(92, 127, 255) 40% , rgba(133, 117, 255, 1) 60%, rgba(150, 46, 255, 1) 85%)",
       },
     },
     "color-background-button-normal-active": {
