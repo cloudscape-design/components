@@ -211,7 +211,8 @@
     "closeAriaLabel": "モーダルを閉じる"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} を削除"
+    "deselectAriaLabel": "{option__label} を削除",
+    "i18nStrings.selectAllText": "すべて選択"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "次のページ",

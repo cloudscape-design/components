@@ -211,7 +211,8 @@
     "closeAriaLabel": "모달 닫기"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} 제거"
+    "deselectAriaLabel": "{option__label} 제거",
+    "i18nStrings.selectAllText": "모두 선택"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "다음 페이지",

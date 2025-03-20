@@ -267,6 +267,7 @@ export interface I18nFormatArgTypes {
     "deselectAriaLabel": {
       "option__label": string | number;
     }
+    "i18nStrings.selectAllText": never;
   }
   "pagination": {
     "ariaLabels.nextPageLabel": never;
