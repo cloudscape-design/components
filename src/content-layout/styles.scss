@@ -91,6 +91,14 @@
   }
 }
 
+.layout.has-toolbar {
+  > .background {
+    &.has-default-background {
+      background-color: awsui.$color-background-toolbar-layout-main;
+    }
+  }
+}
+
 .layout:not(.is-visual-refresh) {
   &.has-notifications {
     #{custom-props.$contentLayoutMainGap}: 0px;

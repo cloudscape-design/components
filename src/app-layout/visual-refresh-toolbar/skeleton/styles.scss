@@ -30,7 +30,7 @@
 .root {
   @include styles.styles-reset;
   color: awsui.$color-text-body-default;
-  background-color: awsui.$color-background-layout-main;
+  background-color: awsui.$color-background-toolbar-layout-main;
 
   #{custom-props.$maxContentWidth}: 100%;
   display: grid;
@@ -162,7 +162,7 @@
 }
 
 .notifications-background {
-  background: awsui.$color-background-layout-main;
+  background: awsui.$color-background-toolbar-layout-main;
   grid-area: notifications;
   @include grid-column-full-content-width;
 }

@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useCurrentMode } from '@cloudscape-design/component-toolkit/internal';
 
+import { AppLayoutVisibilityContext } from '../app-layout/visual-refresh-toolbar/contexts'; // Import the context
 import InternalGrid from '../grid/internal';
 import { getBaseProps } from '../internal/base-component';
 import customCssProps from '../internal/generated/custom-css-properties';
@@ -53,6 +54,9 @@ export default function InternalContentLayout({
   const contentHeaderClassName =
     headerVariant === 'high-contrast' && isVisualRefresh ? highContrastHeaderClassName : '';
 
+  // Consume the AppLayoutVisibilityContext
+  const { isToolbarLayout } = useContext(AppLayoutVisibilityContext);
+
   return (
     <div
       {...baseProps}
@@ -62,6 +66,7 @@ export default function InternalContentLayout({
         [styles['has-header']]: !!header,
         [styles['default-padding']]: !!defaultPadding,
         [styles['has-notifications']]: !!notifications,
+        [styles['has-toolbar']]: isToolbarLayout, // Apply a specific style when in toolbar layout
       })}
       style={{
         [customCssProps.contentLayoutMaxContentWidth]:

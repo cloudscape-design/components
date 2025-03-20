@@ -478,7 +478,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
     });
 
     return (
-      <AppLayoutVisibilityContext.Provider value={isIntersecting}>
+      <AppLayoutVisibilityContext.Provider value={{ isIntersecting, isToolbarLayout: true }}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
         {!hasToolbar && breadcrumbs ? <ScreenreaderOnly>{breadcrumbs}</ScreenreaderOnly> : null}
         <SkeletonLayout
