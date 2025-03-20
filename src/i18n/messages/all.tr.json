@@ -211,7 +211,8 @@
     "closeAriaLabel": "Kalıcı iletişim kutusunu kapat"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} öğesini kaldır"
+    "deselectAriaLabel": "{option__label} öğesini kaldır",
+    "i18nStrings.selectAllText": "Tümünü seç"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Sonraki sayfa",
