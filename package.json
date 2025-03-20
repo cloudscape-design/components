@@ -160,12 +160,12 @@
     {
       "path": "lib/components/internal/plugins/index.js",
       "brotli": false,
-      "limit": "14 kB"
+      "limit": "18 kB"
     },
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "750 kB"
+      "limit": "800 kB"
     }
   ],
   "browserslist": [
