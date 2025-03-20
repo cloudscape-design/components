@@ -28,7 +28,7 @@ const permutations = createPermutations<BarChartProps<string>>([
 export default function () {
   return (
     <>
-      <h1>Bar chart permutations</h1>
+      <h1>Bar chart permutations - thresholds</h1>
       <ScreenshotArea disableAnimations={true}>
         <PermutationsView permutations={permutations} render={permutation => <BarChart<any> {...permutation} />} />
       </ScreenshotArea>
