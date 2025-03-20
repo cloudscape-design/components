@@ -34,7 +34,8 @@
     border-block-end-color: transparent;
   }
 
-  &:not(:first-child) {
+  &:not(:first-child),
+  &.virtual {
     margin-block-start: calc(-1 * #{awsui.$border-item-width});
   }
 
