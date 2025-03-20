@@ -12,7 +12,6 @@ import {
   dateTimeFormatter,
   latencyData,
   multipleNegativeBarsData,
-  multipleNegativeBarsDataWithThreshold,
   negativeData,
 } from '../mixed-line-bar-chart/common';
 import createPermutations from '../utils/permutations';
@@ -99,22 +98,6 @@ const numberPermutations = createPermutations<BarChartProps<number>>([
   },
 ]);
 
-const thresholdPermutations = createPermutations<BarChartProps<string>>([
-  {
-    i18nStrings: [commonProps.i18nStrings],
-    ariaLabel: ['Test chart'],
-    height: [200],
-    series: [multipleNegativeBarsDataWithThreshold],
-    xScaleType: ['categorical'],
-    xDomain: [['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']],
-    yDomain: [[-6, 10]],
-    horizontalBars: [true, false],
-    stackedBars: [true, false],
-    xTitle: ['X Title'],
-    yTitle: ['Y Title'],
-  },
-]);
-
 const smallGroupsPermutations = createPermutations<BarChartProps<string>>([
   {
     i18nStrings: [commonProps.i18nStrings],
@@ -131,13 +114,7 @@ const smallGroupsPermutations = createPermutations<BarChartProps<string>>([
   },
 ]);
 
-const permutations = [
-  ...stringPermutations,
-  ...timePermutations,
-  ...numberPermutations,
-  ...thresholdPermutations,
-  ...smallGroupsPermutations,
-];
+const permutations = [...stringPermutations, ...timePermutations, ...numberPermutations, ...smallGroupsPermutations];
 
 export default function () {
   return (
