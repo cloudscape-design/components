@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
 import { copyAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { AppLayoutVisibilityContext } from '../../app-layout/visual-refresh-toolbar/contexts'; // Import the context
 import { useSingleTabStopNavigation } from '../../internal/context/single-tab-stop-navigation-context';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVisualRefresh } from '../../internal/hooks/use-visual-mode';
@@ -70,6 +71,9 @@ export function TableThElement({
   const mergedRef = useMergeRefs(stickyStyles.ref, cellRef, cellRefObject);
   const { tabIndex: cellTabIndex } = useSingleTabStopNavigation(cellRefObject);
 
+  // Consume the AppLayoutVisibilityContext
+  const { isToolbarLayout } = useContext(AppLayoutVisibilityContext);
+
   return (
     <th
       data-focus-id={`header-${String(columnId)}`}
@@ -89,6 +93,7 @@ export function TableThElement({
           [styles['header-cell-ascending']]: sortingStatus === 'ascending',
           [styles['header-cell-descending']]: sortingStatus === 'descending',
           [styles['header-cell-hidden']]: hidden,
+          [styles['has-toolbar']]: isToolbarLayout,
         },
         stickyStyles.className
       )}

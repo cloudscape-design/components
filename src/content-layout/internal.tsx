@@ -66,7 +66,7 @@ export default function InternalContentLayout({
         [styles['has-header']]: !!header,
         [styles['default-padding']]: !!defaultPadding,
         [styles['has-notifications']]: !!notifications,
-        [styles['has-toolbar']]: isToolbarLayout, // Apply a specific style when in toolbar layout
+        [styles['has-toolbar']]: isToolbarLayout,
       })}
       style={{
         [customCssProps.contentLayoutMaxContentWidth]:

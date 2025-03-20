@@ -1,10 +1,11 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
+import { AppLayoutVisibilityContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { useFunnelSubStep } from '../internal/analytics/hooks/use-funnel';
 import { getBaseProps } from '../internal/base-component';
 import { ContainerHeaderContextProvider } from '../internal/context/container-header';
@@ -106,6 +107,9 @@ export default function InternalContainer({
 
   const hasMedia = !!media?.content;
   const mediaPosition = media?.position ?? 'top';
+
+  // Consume the AppLayoutVisibilityContext
+  const { isToolbarLayout } = useContext(AppLayoutVisibilityContext);
   return (
     <div
       {...baseProps}
@@ -118,7 +122,8 @@ export default function InternalContainer({
         hasMedia && (mediaPosition === 'side' ? styles['with-side-media'] : styles['with-top-media']),
         shouldHaveStickyStyles && [styles['sticky-enabled']],
         shouldHaveStickyStyles && isStuck && isStuckAtBottom && [styles['with-stuck-sticky-header-at-bottom']],
-        isRefresh && styles.refresh
+        isRefresh && styles.refresh,
+        isToolbarLayout && styles['has-toolbar']
       )}
       ref={mergedRef}
       {...getAnalyticsLabelAttribute(
@@ -156,6 +161,7 @@ export default function InternalContainer({
                     [styles['with-hidden-content']]: !children || __hiddenContent,
                     [styles['header-with-media']]: hasMedia,
                     [styles['header-full-page']]: __fullPage && isRefresh,
+                    [styles['has-toolbar']]: isToolbarLayout,
                   }
                 )}
                 {...stickyStyles}

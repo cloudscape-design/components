@@ -3,6 +3,7 @@
 import React, { forwardRef, useContext, useImperativeHandle, useRef, useState } from 'react';
 import clsx from 'clsx';
 
+import { AppLayoutVisibilityContext } from '../app-layout/visual-refresh-toolbar/contexts'; // Import the context
 import { StickyHeaderContext } from '../container/use-sticky-header';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { TableProps } from './interfaces';
@@ -52,6 +53,9 @@ function StickyHeader(
   const secondaryTableRef = useRef<HTMLTableElement>(null);
   const { isStuck } = useContext(StickyHeaderContext);
 
+  // Consume the AppLayoutVisibilityContext
+  const { isToolbarLayout } = useContext(AppLayoutVisibilityContext);
+
   const [focusedComponent, setFocusedComponent] = useState<null | string>(null);
   const { scrollToRow, scrollToTop } = useStickyHeader(
     tableRef,
@@ -71,6 +75,7 @@ function StickyHeader(
     <div
       className={clsx(styles['header-secondary'], styles[`variant-${variant}`], {
         [styles['table-has-header']]: tableHasHeader,
+        [styles['has-toolbar']]: isToolbarLayout,
       })}
       aria-hidden={true}
       // Prevents receiving focus in Firefox. Focus on the overflowing table is sufficient
