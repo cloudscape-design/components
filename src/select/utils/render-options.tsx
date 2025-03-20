@@ -20,6 +20,7 @@ interface RenderOptionProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;
+  withScrollbar?: boolean;
 }
 
 export const renderOptions = ({
@@ -33,6 +34,7 @@ export const renderOptions = ({
   useInteractiveGroups,
   screenReaderContent,
   ariaSetsize,
+  withScrollbar,
 }: RenderOptionProps) => {
   return options.map((option, index) => {
     const virtualItem = virtualItems && virtualItems[index];
@@ -60,6 +62,7 @@ export const renderOptions = ({
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
+        hasScrollbar={withScrollbar}
       />
     );
   });

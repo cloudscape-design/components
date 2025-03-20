@@ -34,7 +34,10 @@ const VirtualListOpen = forwardRef(
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
     // update component, when it gets wider or narrower to reposition items
-    const [width, menuMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
+    const [width, menuMeasureRef] = useContainerQuery(
+      rect => ({ inner: rect.contentBoxWidth, outer: rect.borderBoxWidth }),
+      []
+    );
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
@@ -45,7 +48,7 @@ const VirtualListOpen = forwardRef(
       // 1: because the component got resized (width property got updated)
       // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      estimateSize: useCallback(() => 31, [width, filteringValue]),
+      estimateSize: useCallback(() => 31, [width?.inner, filteringValue]),
       stickyIndices,
     });
 
@@ -62,6 +65,9 @@ const VirtualListOpen = forwardRef(
       },
       [highlightType, scrollToIndex, stickyIndices]
     );
+
+    const hasScrollbar = !!width && width.inner < width.outer;
+
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
       getOptionProps,
@@ -73,6 +79,7 @@ const VirtualListOpen = forwardRef(
       useInteractiveGroups,
       screenReaderContent,
       ariaSetsize: filteredOptions.length,
+      withScrollbar: hasScrollbar,
     });
 
     return (

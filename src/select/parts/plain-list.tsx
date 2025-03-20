@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useImperativeHandle } from 'react';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { renderOptions } from '../utils/render-options';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
@@ -44,24 +47,33 @@ const PlainList = (
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
-  const menuRef = menuProps.ref;
+  const [width, menuMeasureRef] = useContainerQuery(
+    rect => ({ inner: rect.contentBoxWidth, outer: rect.borderBoxWidth }),
+    []
+  );
+
+  const menuRef = useMergeRefs(menuMeasureRef, menuProps.ref);
   useImperativeHandle(
     ref,
     () => (index: number) => {
-      const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
-      if (highlightType.moveFocus && item) {
-        // In edge case dropdown can be very small, scrolling can cause side effect AWSUI-60318
-        if (menuRef.current?.clientHeight !== undefined && menuRef.current?.clientHeight > 15) {
-          /* istanbul ignore next: clientHeight always returns 0 in JSDOM, the line is covered by integ tests */
-          scrollElementIntoView(item);
+      if (menuRef && 'current' in menuRef && menuRef.current instanceof HTMLElement) {
+        const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
+        if (highlightType.moveFocus && item) {
+          // In edge case dropdown can be very small, scrolling can cause side effect AWSUI-60318
+          if (menuRef.current?.clientHeight !== undefined && menuRef.current?.clientHeight > 15) {
+            /* istanbul ignore next: clientHeight always returns 0 in JSDOM, the line is covered by integ tests */
+            scrollElementIntoView(item);
+          }
         }
       }
     },
     [highlightType, menuRef]
   );
 
+  const hasScrollbar = !!width && width.inner < width.outer;
+
   return (
-    <OptionsList {...menuProps}>
+    <OptionsList {...menuProps} ref={menuRef}>
       {renderOptions({
         options: filteredOptions,
         getOptionProps,
@@ -71,6 +83,7 @@ const PlainList = (
         hasDropdownStatus,
         useInteractiveGroups,
         screenReaderContent,
+        withScrollbar: hasScrollbar,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>

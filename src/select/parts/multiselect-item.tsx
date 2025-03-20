@@ -34,6 +34,7 @@ const MultiSelectItem = (
     ariaSetsize,
     highlightType,
     disabled,
+    hasScrollbar,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -78,6 +79,7 @@ const MultiSelectItem = (
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
       afterHeader={option.afterHeader}
+      hasScrollbar={hasScrollbar}
       {...baseProps}
     >
       <div className={className}>
