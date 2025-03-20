@@ -121,7 +121,7 @@ the grid layout will be:
       ) + #{$buffer-bottom} + #{$offset-bottom}
   );
 
-  > .notification-bar {
+  .notification-bar {
     margin-block-start: calc(-1 * #{$top-overlap} + #{$offset-bottom});
     /* $notification-bar-line-height + 2 * $notification-bar-padding-vertical + 2 * $border-width
     is the full height of the notification bar */
@@ -195,18 +195,18 @@ the grid layout will be:
   }
 }
 
-.stack > .notification-bar {
+.stack .notification-bar {
   @include styles.text-wrapping;
-  background: awsui.$color-background-notification-stack-bar;
-  border-color: awsui.$color-border-notification-stack-bar;
-  border-start-start-radius: awsui.$border-radius-button;
-  border-start-end-radius: awsui.$border-radius-button;
-  border-end-start-radius: awsui.$border-radius-button;
-  border-end-end-radius: awsui.$border-radius-button;
+  background: var(--theme-background-color, awsui.$color-background-notification-stack-bar);
+  border-color: var(--theme-border-color, awsui.$color-border-notification-stack-bar);
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-button);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-button);
   border-block-style: solid;
   border-inline-style: solid;
-  box-shadow: awsui.$shadow-panel-toggle;
-  color: awsui.$color-text-notification-stack-bar;
+  box-shadow: var(--theme-box-shadow, awsui.$shadow-panel-toggle);
+  color: var(--theme-color, awsui.$color-text-notification-stack-bar);
   cursor: pointer;
   display: flex;
   flex-direction: row;
@@ -253,19 +253,25 @@ the grid layout will be:
       justify-content: center;
       row-gap: 0;
 
+      > .type-count {
+        color: var(--theme-fill);
+      }
+
       > .type-count > .count-number {
+        color: var(--theme-color);
         margin-inline-start: awsui.$space-xxs;
       }
     }
   }
 
   &:hover {
-    background: awsui.$color-background-notification-stack-bar-hover;
-    border-color: awsui.$color-background-notification-stack-bar-hover;
+    background: var(--theme-background-color-hover, awsui.$color-background-notification-stack-bar-hover);
+    border-color: var(--theme-border-color-hover, awsui.$color-background-notification-stack-bar-hover);
   }
 
   &:active {
-    background: awsui.$color-background-notification-stack-bar-active;
+    background: var(--theme-background-color-active, awsui.$color-background-notification-stack-bar-active);
+    border-color: var(--theme-border-color-active);
   }
 
   &.visual-refresh {
@@ -291,6 +297,7 @@ the grid layout will be:
   }
 
   > .button {
+    color: var(--theme-fill);
     display: inline-block;
     flex-grow: 1;
     background: none;

@@ -26,6 +26,7 @@ import { FlashbarProps } from './interfaces';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
+import Theme from '../theming/component';
 
 // If the number of items is equal or less than this value,
 // the toggle element will not be displayed and the Flashbar will look like a regular single-item Flashbar.
@@ -33,7 +34,7 @@ const maxNonCollapsibleItems = 1;
 
 const resizeListenerThrottleDelay = 100;
 
-export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarProps) {
+export default function CollapsibleFlashbar({ items, theme, ...restProps }: FlashbarProps) {
   const [enteringItems, setEnteringItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [exitingItems, setExitingItems] = useState<ReadonlyArray<FlashbarProps.MessageDefinition>>([]);
   const [isFlashbarStackExpanded, setIsFlashbarStackExpanded] = useState(false);
@@ -313,48 +314,50 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
     >
       {isFlashbarStackExpanded && renderList()}
       {isCollapsible && (
-        <div
-          className={clsx(
-            styles['notification-bar'],
-            isVisualRefresh && styles['visual-refresh'],
-            isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
-            transitioning && styles['animation-running'],
-            items.length === 2 && styles['short-list'],
-            getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
-          )}
-          onClick={toggleCollapseExpand}
-          ref={notificationBarRef}
-          {...getAnalyticsMetadataAttribute({
-            action: 'expand',
-            detail: {
-              label: 'h2',
-              expanded: `${!isFlashbarStackExpanded}`,
-            },
-          } as GeneratedAnalyticsMetadataFlashbarExpand)}
-        >
-          <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
-            {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
-            <span className={styles['item-count']}>
-              {counterTypes.map(({ type, labelName, iconName }) => (
-                <NotificationTypeCount
-                  key={type}
-                  iconName={iconName}
-                  label={iconAriaLabels[labelName]}
-                  count={countByType[type]}
-                />
-              ))}
-            </span>
-          </span>
-          <button
-            aria-controls={flashbarElementId}
-            aria-describedby={itemCountElementId}
-            aria-expanded={isFlashbarStackExpanded}
-            aria-label={notificationBarAriaLabel}
-            className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
+        <Theme {...theme?.notificationBar}>
+          <div
+            className={clsx(
+              styles['notification-bar'],
+              isVisualRefresh && styles['visual-refresh'],
+              isFlashbarStackExpanded ? styles.expanded : styles.collapsed,
+              transitioning && styles['animation-running'],
+              items.length === 2 && styles['short-list'],
+              getVisualContextClassname('flashbar') // Visual context is needed for focus ring to be white
+            )}
+            onClick={toggleCollapseExpand}
+            ref={notificationBarRef}
+            {...getAnalyticsMetadataAttribute({
+              action: 'expand',
+              detail: {
+                label: 'h2',
+                expanded: `${!isFlashbarStackExpanded}`,
+              },
+            } as GeneratedAnalyticsMetadataFlashbarExpand)}
           >
-            <InternalIcon className={styles.icon} size="normal" name="angle-down" />
-          </button>
-        </div>
+            <span aria-live="polite" className={styles.status} role="status" id={itemCountElementId}>
+              {notificationBarText && <h2 className={styles.header}>{notificationBarText}</h2>}
+              <span className={styles['item-count']}>
+                {counterTypes.map(({ type, labelName, iconName }) => (
+                  <NotificationTypeCount
+                    key={type}
+                    iconName={iconName}
+                    label={iconAriaLabels[labelName]}
+                    count={countByType[type]}
+                  />
+                ))}
+              </span>
+            </span>
+            <button
+              aria-controls={flashbarElementId}
+              aria-describedby={itemCountElementId}
+              aria-expanded={isFlashbarStackExpanded}
+              aria-label={notificationBarAriaLabel}
+              className={clsx(styles.button, isFlashbarStackExpanded && styles.expanded)}
+            >
+              <InternalIcon className={styles.icon} size="normal" name="angle-down" />
+            </button>
+          </div>
+        </Theme>
       )}
       {!isFlashbarStackExpanded && renderList()}
     </div>
