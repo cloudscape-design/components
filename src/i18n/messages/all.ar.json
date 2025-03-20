@@ -211,7 +211,8 @@
     "closeAriaLabel": "إغلاق النموذج"
   },
   "multiselect": {
-    "deselectAriaLabel": "إزالة {option__label}"
+    "deselectAriaLabel": "إزالة {option__label}",
+    "i18nStrings.selectAllText": "حدد الكل"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "الصفحة التالية",

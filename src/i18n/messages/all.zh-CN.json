@@ -211,7 +211,8 @@
     "closeAriaLabel": "关闭模态"
   },
   "multiselect": {
-    "deselectAriaLabel": "删除 {option__label}"
+    "deselectAriaLabel": "删除 {option__label}",
+    "i18nStrings.selectAllText": "选择全部"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "下一页",
