@@ -35,9 +35,17 @@ export function getResetPropertyVariables(name: string) {
 };
 
 /**
- * Create a CSS custom property name from a camelCase property string 
+ * Create a Theme variable name from a camelCase property string 
  * and optional dark mode value.
  */
 export function getVariableName(property: string, darkMode?: boolean) {
-  return `--theme-${property.replace(/([a-z]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase()}${darkMode ? '-dark-mode' : ''}`;
+  return `--theme-${cameltoSnake(property)}${darkMode ? '-dark-mode' : ''}`;
+}
+
+/**
+ * Helper function that transforms camel case properties to a 
+ * CSS compatible snake case value.
+ */
+export function cameltoSnake(property: string) {
+  return property.replace(/([a-z]|(?=[A-Z]))([A-Z])/g, '$1-$2').toLowerCase();
 }

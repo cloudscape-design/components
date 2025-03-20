@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 import { ThemeProps, ResetProps, DarkModeProps } from './interfaces';
 import { allProperties } from './constants';
-import { getPropertyVariables, getResetPropertyVariables, getVariableName } from './utils';
+import { cameltoSnake, getPropertyVariables, getResetPropertyVariables, getVariableName } from './utils';
 import styles from './styles.css.js';
 
 /**
@@ -35,25 +35,17 @@ export default function Theme(props:ThemeProps) {
  */
 function DarkMode({ children, properties }:{ children: React.ReactNode, properties: DarkModeProps}) {
   let darkModeVariables: Record<string, string> = {};
+  let darkModeClasses: Array<string> = [];
   
   Object.entries(properties).forEach(([name, value]) => {
     Object.assign(darkModeVariables, getPropertyVariables(name, value, true));
+    darkModeClasses.push(styles[`has-${cameltoSnake(name)}`]);
+    typeof value === 'object' && darkModeClasses.push(styles[`has-${cameltoSnake(name)}-state`]);
   });
 
   return (
     <div 
-      className={clsx(
-        styles['theme-dark-mode'], 
-        {
-          [styles['has-background-color']]: properties.backgroundColor,
-          [styles['has-background-image']]: properties.backgroundImage,
-          [styles['has-border-color']]: properties.borderColor,
-          [styles['has-box-shadow']]: properties.boxShadow,
-          [styles['has-color']]: properties.color,
-          [styles['has-fill']]: properties.fill,
-          [styles['has-outline']]: properties.outline,
-        },
-      )}
+      className={clsx(styles['theme-dark-mode'], ...darkModeClasses)}
       style={darkModeVariables}
     >
       {children}
