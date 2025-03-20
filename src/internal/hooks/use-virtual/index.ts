@@ -42,21 +42,23 @@ export function useVirtual<Item extends object>({
     parentRef,
     estimateSize,
     overscan: 5,
-    rangeExtractor: range => {
-      const arr: number[] = stickyIndices ? [...stickyIndices] : [];
-      const set = new Set(arr);
-      const start = Math.max(range.start - range.overscan, 0);
-      const end = Math.min(range.end + range.overscan, range.size - 1);
+    rangeExtractor: stickyIndices
+      ? range => {
+          const arr: number[] = [...stickyIndices];
+          const set = new Set(arr);
+          const start = Math.max(range.start - range.overscan, 0);
+          const end = Math.min(range.end + range.overscan, range.size - 1);
 
-      for (let i = start; i <= end; i++) {
-        if (!set.has(i)) {
-          set.add(i);
-          arr.push(i);
+          for (let i = start; i <= end; i++) {
+            if (!set.has(i)) {
+              set.add(i);
+              arr.push(i);
+            }
+          }
+
+          return arr;
         }
-      }
-
-      return arr;
-    },
+      : undefined,
   });
 
   // Cache virtual item mounts to limit the amount of mounts per item.

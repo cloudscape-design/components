@@ -20,8 +20,7 @@ const VirtualList = ({
   highlightText,
   listBottom,
   screenReaderContent,
-  stickyIndices,
-}: ListProps & { stickyIndices?: number[] }) => {
+}: ListProps) => {
   const scrollRef = useRef<HTMLUListElement>(null);
   // update component, when it gets wider or narrower to reposition items
   const [width, strutRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
@@ -36,7 +35,6 @@ const VirtualList = ({
     // 2: because the option changed its content (highlightText property controls the highlight and the visibility of hidden tags)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     estimateSize: useCallback(() => 31, [width, highlightText]),
-    stickyIndices,
   });
 
   useEffect(() => {
