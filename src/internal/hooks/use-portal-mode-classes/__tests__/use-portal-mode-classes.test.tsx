@@ -1,35 +1,20 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 
+import { clearVisualRefreshState } from '@cloudscape-design/component-toolkit/internal/testing';
+
 import VisualContext from '../../../../../lib/components/internal/components/visual-context';
-import { usePortalModeClasses } from '../../../../../lib/components/internal/hooks/use-portal-mode-classes';
-import { useVisualRefresh } from '../../../../../lib/components/internal/hooks/use-visual-mode';
+import { RenderTest } from './helpers';
 
-jest.mock('../../../../../lib/components/internal/hooks/use-visual-mode', () => {
-  const original = jest.requireActual('../../../../../lib/components/internal/hooks/use-visual-mode');
-  return { ...original, useVisualRefresh: jest.fn() };
-});
-
-afterEach(() => {
-  (useVisualRefresh as jest.Mock).mockReset();
-});
+const globalWithFlags = globalThis as any;
 
 describe('usePortalModeClasses', () => {
-  function RenderTest({ refClasses }: { refClasses: string }) {
-    const ref = useRef(null);
-    const classes = usePortalModeClasses(ref);
-    return (
-      <div>
-        <div ref={ref} className={refClasses} />
-        <div data-testid="subject" className={classes} />
-      </div>
-    );
-  }
-
   afterEach(() => {
     jest.clearAllMocks();
+    delete globalWithFlags[Symbol.for('awsui-visual-refresh-flag')];
+    clearVisualRefreshState();
   });
 
   test('should not add any classes by default', () => {
@@ -47,6 +32,14 @@ describe('usePortalModeClasses', () => {
   test('should detect compact mode', () => {
     render(<RenderTest refClasses="awsui-polaris-compact-mode" />);
     expect(screen.getByTestId('subject')).toHaveClass('awsui-polaris-compact-mode awsui-compact-mode', { exact: true });
+  });
+
+  test('should detect visual refresh mode', () => {
+    globalWithFlags[Symbol.for('awsui-visual-refresh-flag')] = () => true;
+
+    render(<RenderTest refClasses="" />);
+    expect(document.body).toHaveClass('awsui-visual-refresh', { exact: true });
+    expect(screen.getByTestId('subject')).toHaveClass('awsui-visual-refresh', { exact: true });
   });
 
   test('should detect contexts', () => {
