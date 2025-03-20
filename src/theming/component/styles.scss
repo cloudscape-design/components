@@ -1,12 +1,5 @@
 @use './constants.scss' as constants;
-
-@mixin dark-mode-permutations($property) {
-  --theme-#{$property}: var(--theme-#{$property}-dark-mode);
-
-  @each $state in constants.$allStatesAndSemantics {
-    --theme-#{$property}-#{$state}: var(--theme-#{$property}-dark-mode-#{$state});
-  }
-}
+@use './utils.scss' as utils;
 
 .theme,
 .theme-dark-mode,
@@ -17,7 +10,8 @@
 :global(.awsui-dark-mode) .theme-dark-mode {
   @each $property in constants.$darkModeProperties {
     &.has-#{$property} {
-      @include dark-mode-permutations($property);
+      --theme-#{$property}: var(--theme-#{$property}-dark-mode);
+      @include utils.dark-mode-permutations($property);
     }
   }
 }

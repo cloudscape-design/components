@@ -1,6 +1,7 @@
 import React from 'react';
 import { Alert, SpaceBetween, TextContent } from '~components';
 import Theme from '~components/theming/component/index';
+import Button from '../1-amplify/button';
 
 export default function AlertThemePermutations() {
   return (
@@ -59,9 +60,11 @@ export default function AlertThemePermutations() {
           <br/> 
 
           <Theme borderRadius="24px">
-            <Alert>
-              Review the documentation to learn about potential compatibility issues with specific database versions.
-            </Alert>
+            <Theme.Reset all fontFamily={false}>
+              <Alert>
+                Review the documentation to learn about potential compatibility issues with specific database versions.
+              </Alert>
+            </Theme.Reset>
           </Theme>
         </Theme>
       </SpaceBetween>

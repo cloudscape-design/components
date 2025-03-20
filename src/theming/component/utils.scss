@@ -1,0 +1,7 @@
+@use './constants.scss' as constants;
+
+@mixin dark-mode-permutations($property) {
+  @each $state in constants.$allStatesAndSemantics {
+    --theme-#{$property}-#{$state}: var(--theme-#{$property}-dark-mode-#{$state});
+  }
+}
