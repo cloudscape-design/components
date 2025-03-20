@@ -211,7 +211,8 @@
     "closeAriaLabel": "關閉強制回應"
   },
   "multiselect": {
-    "deselectAriaLabel": "移除 {option__label}"
+    "deselectAriaLabel": "移除 {option__label}",
+    "i18nStrings.selectAllText": "選取全部"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "下一頁",

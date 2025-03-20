@@ -211,7 +211,8 @@
     "closeAriaLabel": "Close modal"
   },
   "multiselect": {
-    "deselectAriaLabel": "Remove {option__label}"
+    "deselectAriaLabel": "Remove {option__label}",
+    "i18nStrings.selectAllText": "Select all"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Next page",
