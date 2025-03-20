@@ -29,6 +29,7 @@ const VirtualListOpen = forwardRef(
       listBottom,
       useInteractiveGroups,
       screenReaderContent,
+      stickyIndices,
     }: SelectListProps,
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
@@ -36,7 +37,6 @@ const VirtualListOpen = forwardRef(
     const [width, menuMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
-
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,
@@ -46,16 +46,17 @@ const VirtualListOpen = forwardRef(
       // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
       // eslint-disable-next-line react-hooks/exhaustive-deps
       estimateSize: useCallback(() => 31, [width, filteringValue]),
+      stickyIndices,
     });
 
     useImperativeHandle(
       ref,
       () => (index: number) => {
-        if (highlightType.moveFocus) {
+        if (highlightType.moveFocus && !stickyIndices?.includes(index)) {
           scrollToIndex(index);
         }
       },
-      [highlightType, scrollToIndex]
+      [highlightType, scrollToIndex, stickyIndices]
     );
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
@@ -72,13 +73,14 @@ const VirtualListOpen = forwardRef(
 
     return (
       <OptionsList {...menuProps} ref={menuRef}>
-        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
-        {finalOptions}
-        {listBottom ? (
-          <li role="option" className={styles['list-bottom']}>
-            {listBottom}
-          </li>
-        ) : null}
+        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }}>
+          {finalOptions}
+          {listBottom ? (
+            <li role="option" className={styles['list-bottom']}>
+              {listBottom}
+            </li>
+          ) : null}
+        </div>
       </OptionsList>
     );
   }

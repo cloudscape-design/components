@@ -22,6 +22,7 @@ export interface SelectListProps {
   listBottom?: React.ReactNode;
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
+  stickyIndices?: number[];
 }
 
 export namespace SelectListProps {

@@ -16,6 +16,7 @@ type DemoContext = React.Context<
     closeAfter?: boolean;
     expandToViewport?: boolean;
     inlineTokens?: boolean;
+    manyOptions?: boolean;
     tokenLimit?: number;
     virtualScroll?: boolean;
     withDisabledOptions?: boolean;
@@ -112,7 +113,7 @@ export default function MultiselectPage() {
             : undefined,
       }));
 
-  const options: MultiselectProps.Options = urlParams.withGroups
+  const baseOptions: MultiselectProps.Options = urlParams.withGroups
     ? groupedOptions
     : groupedOptions.reduce(
         (previousValue: MultiselectProps.Options, currentValue: MultiselectProps.Option) =>
@@ -121,6 +122,20 @@ export default function MultiselectPage() {
             : [...previousValue, currentValue],
         []
       );
+
+  const options = urlParams.manyOptions
+    ? [
+        ...baseOptions,
+        ...Array(100)
+          .fill(undefined)
+          .map((_, index) => ({
+            value: `option${index + 10}`,
+            label: `option${index + 10}`,
+            description: `option${index + 10}`,
+            tags: ['2-CPU', '2Gb RAM'],
+          })),
+      ]
+    : baseOptions;
 
   return (
     <article>
@@ -183,6 +198,14 @@ export default function MultiselectPage() {
                 onChange={e => setUrlParams({ virtualScroll: e.target.checked })}
               />{' '}
               Virtual scroll
+            </label>
+            <label>
+              <input
+                type="checkbox"
+                checked={!!urlParams.manyOptions}
+                onChange={e => setUrlParams({ manyOptions: e.target.checked })}
+              />{' '}
+              Many options
             </label>
             <label>
               Token limit{' '}

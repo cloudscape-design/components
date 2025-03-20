@@ -10,6 +10,7 @@ interface UseVirtualProps<Item> {
   items: readonly Item[];
   parentRef: React.RefObject<HTMLElement>;
   estimateSize: () => number;
+  stickyIndices?: number[];
 }
 
 interface RowVirtualizer {
@@ -34,8 +35,29 @@ export function useVirtual<Item extends object>({
   items,
   parentRef,
   estimateSize,
+  stickyIndices,
 }: UseVirtualProps<Item>): RowVirtualizer {
-  const rowVirtualizer = useVirtualDefault({ size: items.length, parentRef, estimateSize, overscan: 5 });
+  const rowVirtualizer = useVirtualDefault({
+    size: items.length,
+    parentRef,
+    estimateSize,
+    overscan: 5,
+    rangeExtractor: range => {
+      const arr: number[] = stickyIndices ? [...stickyIndices] : [];
+      const set = new Set(arr);
+      const start = Math.max(range.start - range.overscan, 0);
+      const end = Math.min(range.end + range.overscan, range.size - 1);
+
+      for (let i = start; i <= end; i++) {
+        if (!set.has(i)) {
+          set.add(i);
+          arr.push(i);
+        }
+      }
+
+      return arr;
+    },
+  });
 
   // Cache virtual item mounts to limit the amount of mounts per item.
   const measuresCache = useRef(new WeakMap<Item, number>());

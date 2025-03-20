@@ -53,7 +53,7 @@ export const renderOptions = ({
       <ListItem
         key={globalIndex}
         {...props}
-        virtualPosition={virtualItem && virtualItem.start}
+        virtualPosition={option.type !== 'select-all' && virtualItem && virtualItem.start}
         ref={virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
