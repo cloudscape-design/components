@@ -64,7 +64,13 @@ export default function AmplifyDemo() {
 
   return (
     <div className={styles.amplify}>
-      <Theme fontFamily={fontFamily} outline={palette.neutral90}>
+      <Theme 
+        fontFamily={fontFamily} 
+        outline={palette.neutral90}
+        onDarkMode={{
+          outline: palette.neutral10
+        }}
+      >
         <SpaceBetween direction='vertical' size='m'>
           <TextContent>
             <h3>Alert</h3>
@@ -182,7 +188,7 @@ export default function AmplifyDemo() {
 
           <Flashbar
             items={flashbarItems}
-            stackItems={false}
+            stackItems={true}
           />
         </SpaceBetween>
       </Theme>

@@ -22,6 +22,15 @@ export default function Flashbar(props: any) {
       <CloudscapeFlashbar
         items={props.items}
         stackItems={props.stackItems}
+        theme={{
+          notificationBar: {
+            backgroundColor: notificationBarBackgroundColors,
+            borderColor: notificationBarBorderColors,
+            borderRadius: '16px',
+            color: palette.white,
+            fill: palette.white,
+          }
+        }}
       />
     </Theme>
   );
@@ -69,3 +78,12 @@ const darkModeFills = {
   hover: palette.neutral40,
 };
 
+const notificationBarBackgroundColors = {
+  active: palette.neutral100,
+  default: palette.neutral90,
+  hover: palette.neutral90,
+};
+
+const notificationBarBorderColors = {
+  ...notificationBarBackgroundColors
+};
