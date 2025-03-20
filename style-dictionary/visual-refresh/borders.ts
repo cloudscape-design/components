@@ -7,7 +7,7 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderCodeEditorStatusDividerWidth: '{borderDividerSectionWidth}',
   borderContainerStickyWidth: '0px',
   borderContainerTopWidth: '0px',
-  borderControlFocusRingShadowSpread: '0px',
+  borderControlFocusRingShadowSpread: '1px',
   borderControlInvalidFocusRingShadowSpread: '2px',
   borderDividerListWidth: '1px',
   borderDividerSectionWidth: '1px',
@@ -42,6 +42,8 @@ export const tokens: StyleDictionary.BordersDictionary = {
   borderLinkFocusRingOutline: '0',
   borderLinkFocusRingShadowSpread: '2px',
   borderWidthAlert: '2px',
-  borderWidthField: '2px',
+  borderWidthField: '1px',
+  borderWidthToken: '2px',
+  borderWidthButton: '2px',
   borderWidthPopover: '2px',
 };

@@ -587,6 +587,8 @@ export type BordersTokenName =
   | 'borderLinkFocusRingShadowSpread'
   | 'borderWidthAlert'
   | 'borderWidthField'
+  | 'borderWidthToken'
+  | 'borderWidthButton'
   | 'borderWidthPopover';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
