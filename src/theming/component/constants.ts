@@ -48,6 +48,16 @@ export const allStatesAndSemantics = [
   'warning',
 ];
 
+export const darkModeProperties = [
+  'backgroundColor',
+  'backgroundImage',
+  'borderColor',
+  'boxShadow',
+  'color',
+  'fill',
+  'outline',
+];
+
 export const propertiesWithState = [
   'backgroundColor',
   'backgroundImage',
