@@ -75,17 +75,17 @@ const VirtualList = ({
           />
         );
       })}
-      {listBottom ? (
-        <li role="option" className={styles['list-bottom']}>
-          {listBottom}
-        </li>
-      ) : null}
       <div
         aria-hidden="true"
         key="total-size"
         className={styles['layout-strut']}
         style={{ height: rowVirtualizer.totalSize + (autosuggestItemsState.items.length === 1 ? 1 : 0) }}
       />
+      {listBottom ? (
+        <li role="option" className={styles['list-bottom']}>
+          {listBottom}
+        </li>
+      ) : null}
     </OptionsList>
   );
 };

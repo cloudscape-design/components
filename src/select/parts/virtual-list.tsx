@@ -85,17 +85,17 @@ const VirtualListOpen = forwardRef(
     return (
       <OptionsList {...menuProps} ref={menuRef}>
         {finalOptions}
-        {listBottom ? (
-          <li role="option" className={styles['list-bottom']}>
-            {listBottom}
-          </li>
-        ) : null}
         <div
           aria-hidden="true"
           key="total-size"
           className={styles['layout-strut']}
           style={{ height: totalSize - stickySizes }}
         />
+        {listBottom ? (
+          <li role="option" className={styles['list-bottom']}>
+            {listBottom}
+          </li>
+        ) : null}
       </OptionsList>
     );
   }
