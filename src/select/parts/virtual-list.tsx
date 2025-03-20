@@ -49,6 +49,10 @@ const VirtualListOpen = forwardRef(
       stickyIndices,
     });
 
+    const stickySizes = stickyIndices
+      ? stickyIndices.reduce((previousValue, index) => previousValue + virtualItems[index].size, 0)
+      : 0;
+
     useImperativeHandle(
       ref,
       () => (index: number) => {
@@ -73,14 +77,18 @@ const VirtualListOpen = forwardRef(
 
     return (
       <OptionsList {...menuProps} ref={menuRef}>
-        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }}>
-          {finalOptions}
-          {listBottom ? (
-            <li role="option" className={styles['list-bottom']}>
-              {listBottom}
-            </li>
-          ) : null}
-        </div>
+        {finalOptions}
+        {listBottom ? (
+          <li role="option" className={styles['list-bottom']}>
+            {listBottom}
+          </li>
+        ) : null}
+        <div
+          aria-hidden="true"
+          key="total-size"
+          className={styles['layout-strut']}
+          style={{ height: totalSize - stickySizes }}
+        />
       </OptionsList>
     );
   }
