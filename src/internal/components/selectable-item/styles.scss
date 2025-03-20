@@ -124,7 +124,7 @@
     }
   }
 
-  &.select-all {
+  &.sticky {
     position: sticky;
     inset-block-start: 0;
 
@@ -201,5 +201,9 @@
 }
 
 .option-content {
+  /* used in test-utils */
+}
+
+.select-all {
   /* used in test-utils */
 }

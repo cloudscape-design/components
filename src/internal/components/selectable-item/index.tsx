@@ -49,6 +49,7 @@ const SelectableItem = (
     [analyticsSelectors.parent]: isParent,
     [styles.child]: isChild,
     [styles['select-all']]: isSelectAll,
+    [styles.sticky]: isSelectAll,
     [styles['after-header']]: !!afterHeader,
     [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
