@@ -121,7 +121,7 @@
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  box-shadow: foundation.$box-shadow-focused-light;
+  box-shadow: inset foundation.$box-shadow-focused-light;
 }
 
 @mixin form-disabled-element {
@@ -238,8 +238,8 @@
     inset-inline-start: 0px;
     inset-inline-end: 0px;
     background-color: transparent;
-    border-block: awsui.$border-width-field solid awsui.$color-border-dropdown-container;
-    border-inline: awsui.$border-width-field solid awsui.$color-border-dropdown-container;
+    border-block: awsui.$border-width-dropdown solid awsui.$color-border-dropdown-container;
+    border-inline: awsui.$border-width-dropdown solid awsui.$color-border-dropdown-container;
     border-start-start-radius: awsui.$border-radius-dropdown;
     border-start-end-radius: awsui.$border-radius-dropdown;
     border-end-start-radius: awsui.$border-radius-dropdown;
