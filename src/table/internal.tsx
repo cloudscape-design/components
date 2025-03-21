@@ -146,6 +146,7 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       cellVerticalAlign,
       __funnelSubStepProps,
+      theme,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -397,6 +398,7 @@ const InternalTable = React.forwardRef(
       tableRole,
       isExpandable,
       setLastUserAction,
+      theme,
     };
 
     usePreventStickyClickScroll(wrapperRefObject);
@@ -623,6 +625,7 @@ const InternalTable = React.forwardRef(
                                       itemKey: rowId,
                                     }}
                                     verticalAlign={cellVerticalAlign}
+                                    theme={theme}
                                   />
                                 )}
 
@@ -702,6 +705,7 @@ const InternalTable = React.forwardRef(
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
+                                    theme={theme}
                                   />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
