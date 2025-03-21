@@ -93,7 +93,7 @@ export default function MultiselectPage() {
                 getOptionProps={(option, index) => ({ option: { ...option }, key: index, open })}
                 filteredOptions={options}
                 filteringValue={''}
-                stickyIndices={[0]}
+                firstOptionSticky={true}
                 highlightType={{ type: 'mouse', moveFocus: false }}
                 useInteractiveGroups={true}
               />

@@ -29,7 +29,7 @@ const VirtualListOpen = forwardRef(
       listBottom,
       useInteractiveGroups,
       screenReaderContent,
-      stickyIndices,
+      firstOptionSticky,
     }: SelectListProps,
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
@@ -49,23 +49,21 @@ const VirtualListOpen = forwardRef(
       // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
       // eslint-disable-next-line react-hooks/exhaustive-deps
       estimateSize: useCallback(() => 31, [width?.inner, filteringValue]),
-      stickyIndices,
+      firstItemSticky: firstOptionSticky,
     });
-
-    const stickySizes = stickyIndices
-      ? stickyIndices.reduce((previousValue, index) => previousValue + virtualItems[index].size, 0)
-      : 0;
 
     useImperativeHandle(
       ref,
       () => (index: number) => {
-        if (highlightType.moveFocus && !stickyIndices?.includes(index)) {
+        const isSticky = index === 0 && firstOptionSticky;
+        if (highlightType.moveFocus && !isSticky) {
           scrollToIndex(index);
         }
       },
-      [highlightType, scrollToIndex, stickyIndices]
+      [highlightType, scrollToIndex, firstOptionSticky]
     );
 
+    const stickySize = firstOptionSticky ? virtualItems[0].size : 0;
     const hasScrollbar = !!width && width.inner < width.outer;
 
     const finalOptions = renderOptions({
@@ -80,7 +78,7 @@ const VirtualListOpen = forwardRef(
       screenReaderContent,
       ariaSetsize: filteredOptions.length,
       withScrollbar: hasScrollbar,
-      stickyIndices,
+      firstOptionSticky,
     });
 
     return (
@@ -90,7 +88,7 @@ const VirtualListOpen = forwardRef(
           aria-hidden="true"
           key="total-size"
           className={styles['layout-strut']}
-          style={{ height: totalSize - stickySizes }}
+          style={{ height: totalSize - stickySize }}
         />
         {listBottom ? (
           <li role="option" className={styles['list-bottom']}>

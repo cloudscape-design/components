@@ -25,7 +25,7 @@ export interface SelectListProps {
   listBottom?: React.ReactNode;
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
-  stickyIndices?: number[];
+  firstOptionSticky?: boolean;
 }
 
 export namespace SelectListProps {
@@ -44,7 +44,7 @@ const PlainList = (
     listBottom,
     useInteractiveGroups,
     screenReaderContent,
-    stickyIndices,
+    firstOptionSticky,
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
@@ -86,7 +86,7 @@ const PlainList = (
         useInteractiveGroups,
         screenReaderContent,
         withScrollbar: hasScrollbar,
-        stickyIndices,
+        firstOptionSticky,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>
