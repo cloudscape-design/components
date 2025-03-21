@@ -80,6 +80,7 @@ const VirtualListOpen = forwardRef(
       screenReaderContent,
       ariaSetsize: filteredOptions.length,
       withScrollbar: hasScrollbar,
+      stickyIndices,
     });
 
     return (

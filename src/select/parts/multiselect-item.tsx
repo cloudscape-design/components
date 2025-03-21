@@ -35,6 +35,7 @@ const MultiSelectItem = (
     highlightType,
     disabled,
     hasScrollbar,
+    sticky,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -80,6 +81,7 @@ const MultiSelectItem = (
       value={option.option.value}
       afterHeader={option.afterHeader}
       hasScrollbar={hasScrollbar}
+      sticky={sticky}
       {...baseProps}
     >
       <div className={className}>

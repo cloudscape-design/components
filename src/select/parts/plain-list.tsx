@@ -44,6 +44,7 @@ const PlainList = (
     listBottom,
     useInteractiveGroups,
     screenReaderContent,
+    stickyIndices,
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
@@ -85,6 +86,7 @@ const PlainList = (
         useInteractiveGroups,
         screenReaderContent,
         withScrollbar: hasScrollbar,
+        stickyIndices,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>

@@ -30,6 +30,7 @@ export interface ItemProps {
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
   hasScrollbar?: boolean;
+  sticky?: boolean;
 }
 
 const Item = (
@@ -47,6 +48,7 @@ const Item = (
     ariaSetsize,
     highlightType,
     hasScrollbar,
+    sticky,
     ...restProps
   }: ItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -85,6 +87,7 @@ const Item = (
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
       hasScrollbar={hasScrollbar}
+      sticky={sticky}
       {...baseProps}
     >
       <div className={clsx(styles.item, !isParent && wrappedOption.labelTag && styles['show-label-tag'])}>

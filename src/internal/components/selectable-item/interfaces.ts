@@ -23,6 +23,7 @@ export type SelectableItemProps = BaseComponentProps & {
   highlightType?: HighlightType['type'];
   ariaDescribedby?: string;
   value?: string;
+  sticky?: boolean;
   afterHeader?: boolean;
   hasScrollbar?: boolean;
 } & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
