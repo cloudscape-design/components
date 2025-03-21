@@ -20,6 +20,8 @@ interface RenderOptionProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;
+  withScrollbar?: boolean;
+  firstOptionSticky?: boolean;
 }
 
 export const renderOptions = ({
@@ -33,6 +35,8 @@ export const renderOptions = ({
   useInteractiveGroups,
   screenReaderContent,
   ariaSetsize,
+  withScrollbar,
+  firstOptionSticky,
 }: RenderOptionProps) => {
   return options.map((option, index) => {
     const virtualItem = virtualItems && virtualItems[index];
@@ -48,18 +52,21 @@ export const renderOptions = ({
     const isLastItem = index === options.length - 1;
     const padBottom = !hasDropdownStatus && isLastItem;
     const ListItem = useInteractiveGroups ? MutliselectItem : Item;
+    const isSticky = firstOptionSticky && globalIndex === 0;
 
     return (
       <ListItem
         key={globalIndex}
         {...props}
-        virtualPosition={virtualItem && virtualItem.start}
+        virtualPosition={!isSticky && virtualItem && virtualItem.start}
         ref={virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
+        withScrollbar={withScrollbar}
+        sticky={isSticky}
       />
     );
   });

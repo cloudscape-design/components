@@ -12,6 +12,7 @@ export type SelectableItemProps = BaseComponentProps & {
   hasBackground?: boolean;
   isParent?: boolean;
   isChild?: boolean;
+  isSelectAll?: boolean;
   virtualPosition?: number;
   padBottom?: boolean;
   isNextSelected?: boolean;
@@ -22,6 +23,9 @@ export type SelectableItemProps = BaseComponentProps & {
   highlightType?: HighlightType['type'];
   ariaDescribedby?: string;
   value?: string;
+  sticky?: boolean;
+  afterHeader?: boolean;
+  withScrollbar?: boolean;
 } & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
 
 export interface ItemDataAttributes {

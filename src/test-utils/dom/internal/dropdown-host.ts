@@ -218,6 +218,13 @@ export class DropdownContentWrapper extends ComponentWrapper {
   findGroups(): Array<ElementWrapper> {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-group-index]:not([data-test-index])`);
   }
+
+  /*
+   * Returns the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
+   */
+  findSelectAll(): ElementWrapper | null {
+    return this.find(`.${selectableStyles['select-all']} .${OptionWrapper.rootSelector}`);
+  }
 }
 
 export class PortalDropdownContentWrapper extends DropdownContentWrapper {

@@ -1,12 +1,13 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import { DropdownOption, OptionDefinition, OptionGroup } from '../interfaces';
+import { isGroup } from './filter-options';
 
 export const flattenOptions = (options: ReadonlyArray<OptionDefinition | OptionGroup>) => {
   const parentMap = new Map<DropdownOption, DropdownOption>();
 
   const flatOptions = options.reduce<DropdownOption[]>((acc, option) => {
-    if ('options' in option) {
+    if (isGroup(option)) {
       const { options, ...rest } = option;
       const parentDropdownOption: DropdownOption = { type: 'parent', option };
       const allOptionsDisabled = options.every(option => option.disabled);

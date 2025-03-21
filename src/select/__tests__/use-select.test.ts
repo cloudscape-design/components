@@ -357,11 +357,15 @@ describe('useSelect', () => {
     });
     act(() => {
       const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      if (onKeyDown) {
+        onKeyDown(createTestEvent(KeyCode.down));
+      }
     });
     act(() => {
       const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      if (onKeyDown) {
+        onKeyDown(createTestEvent(KeyCode.down));
+      }
     });
     expect(hook.result.current.highlightedOption).toEqual({
       disabled: true,
@@ -430,7 +434,9 @@ describe('useSelect', () => {
       });
       act(() => {
         const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        if (onKeyDown) {
+          onKeyDown(createTestEvent(KeyCode.down));
+        }
       });
       expect(hook.result.current.announceSelected).toEqual(true);
     });
@@ -440,7 +446,9 @@ describe('useSelect', () => {
       });
       act(() => {
         const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        if (onKeyDown) {
+          onKeyDown(createTestEvent(KeyCode.down));
+        }
       });
       expect(hook.result.current.announceSelected).toEqual(false);
     });
