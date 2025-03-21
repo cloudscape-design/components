@@ -34,6 +34,9 @@ const SelectableItem = (
     ariaSetsize,
     highlightType,
     value,
+    sticky,
+    afterHeader,
+    hasScrollbar,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -48,10 +51,13 @@ const SelectableItem = (
     [styles.child]: isChild,
     [styles['is-keyboard']]: highlightType === 'keyboard',
     [styles.disabled]: disabled,
-    [styles.virtual]: virtualPosition !== undefined,
+    [styles.virtual]: virtualPosition !== undefined && !sticky,
     [styles['pad-bottom']]: padBottom,
     [styles['next-item-selected']]: isNextSelected,
     [styles.interactiveGroups]: useInteractiveGroups,
+    [styles.sticky]: sticky,
+    [styles['after-header']]: !!afterHeader,
+    [styles['has-scrollbar']]: hasScrollbar,
   });
 
   const contentRef = useRef<HTMLDivElement>(null);

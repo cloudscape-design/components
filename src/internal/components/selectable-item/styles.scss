@@ -34,7 +34,8 @@
     border-block-end-color: transparent;
   }
 
-  &:not(:first-child) {
+  &:not(:first-child),
+  &.virtual {
     margin-block-start: calc(-1 * #{awsui.$border-item-width});
   }
 
@@ -121,6 +122,52 @@
     &.highlighted,
     &.selected {
       padding-inline-start: awsui.$space-xxl;
+    }
+  }
+
+  &.sticky {
+    position: sticky;
+    inset-block-start: 0;
+
+    // Push the next option down to prevent its border in highlighted or selected state from being partially covered by the "select all" control
+    margin-block-end: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
+
+    // Stay on top of the other options when they are scrolled up
+    z-index: 4;
+
+    &:not(.highlighted):not(.selected) {
+      // Prevent covering the list border despite the higher z-index
+      border-inline-start-width: awsui.$border-item-width;
+      border-inline-start-color: awsui.$color-border-dropdown-container;
+      border-inline-end-color: awsui.$color-border-dropdown-container;
+      padding-inline: styles.$control-padding-horizontal;
+
+      &:not(.has-scrollbar) {
+        border-inline-end-width: awsui.$border-item-width;
+      }
+
+      &.has-scrollbar {
+        border-inline-end-width: 0;
+      }
+
+      // Only display top border when not being rendered after the filter
+      &:not(.after-header) {
+        border-start-start-radius: awsui.$border-radius-item;
+        &:not(&.has-scrollbar) {
+          border-start-end-radius: awsui.$border-radius-item;
+        }
+      }
+      &.after-header {
+        border-block-start-color: awsui.$color-background-dropdown-item-default;
+      }
+    }
+
+    &.disabled.highlighted,
+    &.disabled.selected {
+      border-block-end-color: transparent;
+      border-block-start-color: transparent;
+      border-inline-start-color: transparent;
+      border-inline-end-color: transparent;
     }
   }
 

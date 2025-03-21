@@ -2,9 +2,12 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { forwardRef, useImperativeHandle } from 'react';
 
+import { useContainerQuery } from '@cloudscape-design/component-toolkit';
+
 import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
+import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 import { renderOptions } from '../utils/render-options';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
@@ -22,6 +25,7 @@ export interface SelectListProps {
   listBottom?: React.ReactNode;
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
+  stickyIndices?: number[];
 }
 
 export namespace SelectListProps {
@@ -40,10 +44,19 @@ const PlainList = (
     listBottom,
     useInteractiveGroups,
     screenReaderContent,
+    stickyIndices,
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
+  const [width, menuMeasureRef] = useContainerQuery(
+    rect => ({ inner: rect.contentBoxWidth, outer: rect.borderBoxWidth }),
+    []
+  );
+
   const menuRef = menuProps.ref;
+
+  const mergedRef = useMergeRefs(menuMeasureRef, menuRef);
+
   useImperativeHandle(
     ref,
     () => (index: number) => {
@@ -59,8 +72,10 @@ const PlainList = (
     [highlightType, menuRef]
   );
 
+  const hasScrollbar = !!width && width.inner < width.outer;
+
   return (
-    <OptionsList {...menuProps}>
+    <OptionsList {...menuProps} ref={mergedRef}>
       {renderOptions({
         options: filteredOptions,
         getOptionProps,
@@ -70,6 +85,8 @@ const PlainList = (
         hasDropdownStatus,
         useInteractiveGroups,
         screenReaderContent,
+        withScrollbar: hasScrollbar,
+        stickyIndices,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>
