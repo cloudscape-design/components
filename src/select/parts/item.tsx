@@ -29,7 +29,7 @@ export interface ItemProps {
   ariaPosinset?: number;
   ariaSetsize?: number;
   highlightType?: HighlightType['type'];
-  hasScrollbar?: boolean;
+  withScrollbar?: boolean;
   sticky?: boolean;
 }
 
@@ -47,7 +47,7 @@ const Item = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
-    hasScrollbar,
+    withScrollbar,
     sticky,
     ...restProps
   }: ItemProps,
@@ -86,7 +86,7 @@ const Item = (
       highlightType={highlightType}
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
-      hasScrollbar={hasScrollbar}
+      withScrollbar={withScrollbar}
       sticky={sticky}
       {...baseProps}
     >

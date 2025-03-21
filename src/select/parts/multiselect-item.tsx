@@ -32,7 +32,7 @@ const MultiSelectItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
-    hasScrollbar,
+    withScrollbar,
     sticky,
     ...restProps
   }: MultiselectItemProps,
@@ -77,7 +77,7 @@ const MultiSelectItem = (
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
       afterHeader={option.afterHeader}
-      hasScrollbar={hasScrollbar}
+      withScrollbar={withScrollbar}
       sticky={sticky}
       {...baseProps}
     >

@@ -129,7 +129,7 @@
     position: sticky;
     inset-block-start: 0;
 
-    // Push the next option down to prevent its border in highlighted or selected state from being partially covered by the "select all" control
+    // Push the next option down to prevent its border in highlighted or selected state from being partially covered by the sticky option
     margin-block-end: calc(#{awsui.$border-item-width} - #{awsui.$border-divider-list-width});
 
     // Stay on top of the other options when they are scrolled up
@@ -142,18 +142,18 @@
       border-inline-end-color: awsui.$color-border-dropdown-container;
       padding-inline: styles.$control-padding-horizontal;
 
-      &:not(.has-scrollbar) {
+      &:not(.with-scrollbar) {
         border-inline-end-width: awsui.$border-item-width;
       }
 
-      &.has-scrollbar {
+      &.with-scrollbar {
         border-inline-end-width: 0;
       }
 
       // Only display top border when not being rendered after the filter
       &:not(.after-header) {
         border-start-start-radius: awsui.$border-radius-item;
-        &:not(&.has-scrollbar) {
+        &:not(&.with-scrollbar) {
           border-start-end-radius: awsui.$border-radius-item;
         }
       }
