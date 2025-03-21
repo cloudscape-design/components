@@ -38,6 +38,7 @@ export interface DropdownOption {
   disabled?: boolean;
   disabledReason?: string;
   option: OptionDefinition | OptionGroup;
+  afterHeader?: boolean;
 }
 
 export interface OptionProps extends BaseComponentProps {
