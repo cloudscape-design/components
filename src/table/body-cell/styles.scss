@@ -31,12 +31,22 @@ $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
 // Ensuring enough space for absolute-positioned focus outlines of focus-able cell content elements.
 $cell-negative-space-vertical: 2px;
 
+@mixin safe-focus-highlight($params) {
+  @include styles.focus-highlight($params);
+
+  // @mixin focus-highlight sets cell's position to "relative".
+  // Reinforcing sticky position for it to take precedence.
+  &.sticky-cell {
+    position: sticky;
+  }
+}
+
 @mixin cell-focus-outline {
-  @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+  @include safe-focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
 
   // Give extra space on the left (inline start) to compensate for missing body cell padding.
   &.is-visual-refresh:first-child {
-    @include styles.focus-highlight(
+    @include safe-focus-highlight(
       (
         'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
         'horizontal': (
@@ -45,12 +55,6 @@ $cell-negative-space-vertical: 2px;
         ),
       )
     );
-  }
-
-  // @mixin focus-highlight sets cell's position to "relative".
-  // Reinforcing sticky position for it to take precedence.
-  &.sticky-cell {
-    position: sticky;
   }
 }
 
@@ -396,7 +400,7 @@ $cell-negative-space-vertical: 2px;
     &-focusable {
       @include focus-visible.when-visible {
         // Making focus outline slightly smaller to not intersect with the success indicator.
-        @include styles.focus-highlight(-1px);
+        @include safe-focus-highlight(-1px);
       }
     }
   }
