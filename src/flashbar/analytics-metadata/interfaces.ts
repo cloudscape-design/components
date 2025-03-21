@@ -10,6 +10,13 @@ export interface GeneratedAnalyticsMetadataFlashbarDismiss {
   };
 }
 
+export interface GeneratedAnalyticsMetadataFlashbarButtonClick {
+  action: 'buttonClick';
+  detail: {
+    label: string;
+  };
+}
+
 export interface GeneratedAnalyticsMetadataFlashbarExpand {
   action: 'expand';
   detail: {
