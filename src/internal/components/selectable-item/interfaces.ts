@@ -25,7 +25,7 @@ export type SelectableItemProps = BaseComponentProps & {
   value?: string;
   sticky?: boolean;
   afterHeader?: boolean;
-  hasScrollbar?: boolean;
+  withScrollbar?: boolean;
 } & ({ ariaSelected?: boolean; ariaChecked?: never } | { ariaSelected?: never; ariaChecked?: boolean | 'mixed' });
 
 export interface ItemDataAttributes {

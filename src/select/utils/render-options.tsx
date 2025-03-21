@@ -65,7 +65,7 @@ export const renderOptions = ({
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
-        hasScrollbar={withScrollbar}
+        withScrollbar={withScrollbar}
         sticky={isSticky}
       />
     );

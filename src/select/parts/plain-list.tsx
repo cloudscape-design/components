@@ -72,7 +72,7 @@ const PlainList = (
     [highlightType, menuRef]
   );
 
-  const hasScrollbar = !!width && width.inner < width.outer;
+  const withScrollbar = !!width && width.inner < width.outer;
 
   return (
     <OptionsList {...menuProps} ref={mergedRef}>
@@ -85,7 +85,7 @@ const PlainList = (
         hasDropdownStatus,
         useInteractiveGroups,
         screenReaderContent,
-        withScrollbar: hasScrollbar,
+        withScrollbar: withScrollbar,
         firstOptionSticky,
       })}
       {listBottom ? (

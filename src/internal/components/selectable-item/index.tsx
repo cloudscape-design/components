@@ -37,7 +37,7 @@ const SelectableItem = (
     value,
     sticky,
     afterHeader,
-    hasScrollbar,
+    withScrollbar,
     ...restProps
   }: SelectableItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -61,7 +61,7 @@ const SelectableItem = (
     [styles.interactiveGroups]: useInteractiveGroups,
     [styles.sticky]: sticky,
     [styles['after-header']]: !!afterHeader,
-    [styles['has-scrollbar']]: hasScrollbar,
+    [styles['with-scrollbar']]: withScrollbar,
   });
 
   const contentRef = useRef<HTMLDivElement>(null);
