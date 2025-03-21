@@ -12,6 +12,7 @@ import { DropdownStatusProps } from '../internal/components/dropdown-status/inte
 import { OptionDefinition, OptionGroup as OptionGroupDefinition } from '../internal/components/option/interfaces';
 import { FormFieldValidationControlProps } from '../internal/context/form-field-context';
 import { NonCancelableEventHandler } from '../internal/events';
+import { ThemeProps } from '../theming/component/interfaces';
 
 export interface BaseSelectProps
   extends BaseDropdownHostProps,
@@ -151,6 +152,10 @@ export interface BaseSelectProps
    * user from both modifying the value and opening the dropdown. A read-only control is still focusable.
    */
   readOnly?: boolean;
+
+  theme?: {
+    dropdown?: ThemeProps,
+  };
 }
 
 export interface SelectProps extends BaseSelectProps {

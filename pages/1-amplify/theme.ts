@@ -8,6 +8,7 @@ export const palette = {
   blue80: 'hsl(220, 95%, 30%)',
   blue90: 'hsl(220, 100%, 20%)',
   blue100: 'hsl(220, 100%, 15%)',
+  body: 'rgb(13, 26, 38)',
   green10: 'hsl(130, 60%, 95%)',
   green20: 'hsl(130, 60%, 90%)',
   green30: 'hsl(130, 44%, 63%)',

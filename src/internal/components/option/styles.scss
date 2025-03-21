@@ -17,6 +17,7 @@
   min-inline-size: 0;
   box-sizing: border-box;
   color: inherit;
+  font-size: var(--theme-font-size);
 
   &:not(.disabled) {
     cursor: inherit;

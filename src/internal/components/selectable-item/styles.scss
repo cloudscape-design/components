@@ -14,72 +14,75 @@
   list-style: none;
   z-index: 1;
 
-  border-block: awsui.$border-divider-list-width solid transparent;
-  border-inline: awsui.$border-divider-list-width solid transparent;
-  border-block-start-color: awsui.$color-border-dropdown-item-default;
-  border-block-end-color: awsui.$color-border-dropdown-item-default;
-  background-color: awsui.$color-background-dropdown-item-default;
-  color: awsui.$color-text-dropdown-item-default;
+  border-block: var(--theme-border-width, awsui.$border-divider-list-width) solid transparent;
+  border-inline: var(--theme-border-width, awsui.$border-divider-list-width) solid transparent;
+  border-block-start-color: var(--theme-border-color, awsui.$color-border-dropdown-item-default);
+  border-block-end-color: var(--theme-border-color, awsui.$color-border-dropdown-item-default);
+  background-color: var(--theme-background-color, awsui.$color-background-dropdown-item-default);
+  color: var(--theme-color, awsui.$color-text-dropdown-item-default);
 
+  font-size: var(--theme-font-size);
+  
   // remove the borders completely to avoid the slating effect at the border ends (AWSUI-10545)
-  border-inline-start-width: 0;
-  border-inline-end-width: 0;
+  border-inline-start-width: var(--theme-border-width, 0);
+  border-inline-end-width: var(--theme-border-width, 0);
   // to compensate for the loss of padding due to the removal of the left and right borders
   // and differences in default divider + selected border widths (visual refresh)
-  padding-block: styles.$option-padding-with-border-placeholder-vertical;
-  padding-inline: calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width});
+  padding-block: var(--theme-padding-block, styles.$option-padding-with-border-placeholder-vertical);
+  padding-inline: var(--theme-padding-inline, calc(#{styles.$control-padding-horizontal} + #{awsui.$border-item-width}));
 
   &.pad-bottom {
-    padding-block-end: calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs});
+    padding-block-end: var(--theme-padding-block, calc(#{styles.$option-padding-with-border-placeholder-vertical} + #{awsui.$space-xxxs}));
     border-block-end-color: transparent;
   }
 
   &:not(:first-child) {
-    margin-block-start: calc(-1 * #{awsui.$border-item-width});
+    margin-block-start: calc(-1 * var(--theme-border-width, #{awsui.$border-item-width}));
   }
 
   &.has-background {
-    background-color: awsui.$color-background-dropdown-item-hover;
+    background-color: var(--theme-background-color-hover, awsui.$color-background-dropdown-item-hover);
   }
 
   &.highlighted,
   &.selected {
-    color: awsui.$color-text-dropdown-item-highlighted;
-    border-width: awsui.$border-item-width;
-    border-start-start-radius: awsui.$border-radius-item;
-    border-start-end-radius: awsui.$border-radius-item;
-    border-end-start-radius: awsui.$border-radius-item;
-    border-end-end-radius: awsui.$border-radius-item;
-    padding-block: styles.$option-padding-vertical;
-    padding-inline: styles.$control-padding-horizontal;
+    color: var(--theme-color-selected, awsui.$color-text-dropdown-item-highlighted);
+    border-width: var(--theme-border-width, awsui.$border-item-width);
+    border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-item);
+    border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-item);
+    border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-item);
+    border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-item);
+    padding-block: var(--theme-padding-block, styles.$option-padding-vertical);
+    padding-inline: var(--theme-padding-inline, styles.$control-padding-horizontal);
 
     &.pad-bottom {
-      padding-block-end: (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs}));
+      padding-block-end: var(--theme-padding-block, (calc(#{styles.$option-padding-vertical} + #{awsui.$space-xxxs})));
     }
   }
 
   &.highlighted {
     z-index: 3;
-    background-color: awsui.$color-background-dropdown-item-hover;
-    border-color: awsui.$color-border-dropdown-item-hover;
+    background-color: var(--theme-background-color-hover, awsui.$color-background-dropdown-item-hover);
+    border-color: var(--theme-border-color-hover, awsui.$color-border-dropdown-item-hover);
+    color: var(--theme-color-hover, awsui.$color-text-dropdown-item-highlighted);
     &.disabled {
-      color: awsui.$color-text-dropdown-item-dimmed;
-      border-color: awsui.$color-border-dropdown-item-dimmed-hover;
-      background-color: awsui.$color-background-dropdown-item-dimmed;
+      color: var(--theme-color-disabled, awsui.$color-text-dropdown-item-dimmed);
+      border-color: var(--theme-border-color-disabled, awsui.$color-border-dropdown-item-dimmed-hover);
+      background-color: var(--theme-background-color-disabled, awsui.$color-background-dropdown-item-dimmed);
     }
   }
 
   &.selected {
     z-index: 2;
-    background-color: awsui.$color-background-dropdown-item-selected;
-    border-color: awsui.$color-border-dropdown-item-selected;
+    background-color: var(--theme-background-color-selected, awsui.$color-background-dropdown-item-selected);
+    border-color: var(--theme-border-color-selected, awsui.$color-border-dropdown-item-selected);
     // smooth adjacent selected borders to avoid bubble effect (visual refresh)
     &.next-item-selected {
       border-end-start-radius: 0;
       border-end-end-radius: 0;
     }
     &.highlighted {
-      border-color: awsui.$color-border-dropdown-item-hover;
+      border-color: var(--theme-border-color-selected, awsui.$color-border-dropdown-item-hover);
       z-index: 3;
     }
   }

@@ -32,6 +32,7 @@ import { useNativeSearch } from './utils/use-native-search';
 import { useSelect } from './utils/use-select';
 
 import styles from './styles.css.js';
+import Theme from '../theming/component/index.js';
 
 export interface InternalSelectProps extends SomeRequired<SelectProps, 'options'>, InternalBaseComponentProps {
   __inFilteringToken?: 'root' | 'nested';
@@ -68,6 +69,7 @@ const InternalSelect = React.forwardRef(
       virtualScroll,
       expandToViewport,
       autoFocus,
+      theme,
       __inFilteringToken,
       __internalRootRef = null,
       ...restProps
@@ -241,41 +243,43 @@ const InternalSelect = React.forwardRef(
         className={clsx(styles.root, baseProps.className)}
         onKeyDown={handleNativeSearch}
       >
-        <Dropdown
-          {...dropdownProps}
-          ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
-          ariaDescribedby={
-            dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
-          }
-          open={isOpen}
-          stretchTriggerHeight={!!__inFilteringToken}
-          stretchBeyondTriggerWidth={true}
-          trigger={trigger}
-          header={filter}
-          onMouseDown={handleMouseDown}
-          footer={
-            dropdownStatus.isSticky ? (
-              <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
-            ) : null
-          }
-          expandToViewport={expandToViewport}
-        >
-          <ListComponent
-            listBottom={
-              !dropdownStatus.isSticky ? (
+        <Theme {...theme?.dropdown}>
+          <Dropdown
+            {...dropdownProps}
+            ariaLabelledby={dropdownProps.dropdownContentRole ? joinStrings(selectAriaLabelId, controlId) : undefined}
+            ariaDescribedby={
+              dropdownProps.dropdownContentRole ? (dropdownStatus.content ? footerId : undefined) : undefined
+            }
+            open={isOpen}
+            stretchTriggerHeight={!!__inFilteringToken}
+            stretchBeyondTriggerWidth={true}
+            trigger={trigger}
+            header={filter}
+            onMouseDown={handleMouseDown}
+            footer={
+              dropdownStatus.isSticky ? (
                 <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
               ) : null
             }
-            menuProps={menuProps}
-            getOptionProps={getOptionProps}
-            filteredOptions={filteredOptions}
-            filteringValue={filteringValue}
-            ref={scrollToIndex}
-            hasDropdownStatus={dropdownStatus.content !== null}
-            screenReaderContent={announcement}
-            highlightType={highlightType}
-          />
-        </Dropdown>
+            expandToViewport={expandToViewport}
+          >
+            <ListComponent
+              listBottom={
+                !dropdownStatus.isSticky ? (
+                  <DropdownFooter content={isOpen ? dropdownStatus.content : null} id={footerId} />
+                ) : null
+              }
+              menuProps={menuProps}
+              getOptionProps={getOptionProps}
+              filteredOptions={filteredOptions}
+              filteringValue={filteringValue}
+              ref={scrollToIndex}
+              hasDropdownStatus={dropdownStatus.content !== null}
+              screenReaderContent={announcement}
+              highlightType={highlightType}
+            />
+          </Dropdown>
+        </Theme>
         <div hidden={true} id={selectAriaLabelId}>
           {ariaLabel || inlineLabelText}
         </div>

@@ -39,7 +39,7 @@
 
   &-content-wrapper {
     position: relative;
-    background-color: awsui.$color-background-dropdown-item-default;
+    background-color: var(--theme-background-color, awsui.$color-background-dropdown-item-default);
     outline: none;
     @include styles.dropdown-shadow;
 
@@ -50,8 +50,8 @@
   }
 
   > .dropdown-content-wrapper {
-    border-block-start: awsui.$border-divider-list-width solid awsui.$color-border-container-top;
-    border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-dropdown-group;
+    border-block-start: var(--theme-border-width, awsui.$border-divider-list-width) solid awsui.$color-border-container-top;
+    border-block-end: var(--theme-border-width, awsui.$border-divider-list-width) solid awsui.$color-border-dropdown-group;
   }
 
   &-drop-up {
@@ -111,6 +111,7 @@
   display: flex;
   flex-direction: column;
   inline-size: 100%;
+  border-radius: var(--theme-border-radius);
 }
 
 .stretch-trigger-height {

@@ -19,10 +19,10 @@
   overflow-y: auto;
   flex: 1 1 auto;
   min-block-size: 0;
-  border-start-start-radius: awsui.$border-radius-dropdown;
-  border-start-end-radius: awsui.$border-radius-dropdown;
-  border-end-start-radius: awsui.$border-radius-dropdown;
-  border-end-end-radius: awsui.$border-radius-dropdown;
+  border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-dropdown);
+  border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-dropdown);
+  border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-dropdown);
+  border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-dropdown);
   user-select: none;
 
   &-embedded {

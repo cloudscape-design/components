@@ -53,7 +53,7 @@ $inlineLabel-border-radius: 2px;
 }
 
 .selected-icon {
-  color: awsui.$color-border-item-focused;
+  color: var(--theme-fill-selected, awsui.$color-border-item-focused);
 }
 
 .show-label-tag > .selected-icon {
