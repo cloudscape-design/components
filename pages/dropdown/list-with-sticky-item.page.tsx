@@ -18,7 +18,6 @@ type DemoContext = React.Context<
     manyOptions?: boolean;
     virtualScroll?: boolean;
     withHeader?: boolean;
-    withGroups?: boolean;
   }>
 >;
 
