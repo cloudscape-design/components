@@ -107,7 +107,7 @@ $dropdown-trigger-icon-offset: 2px;
     }
 
     &:not(:first-child) > .trigger-button {
-      margin-inline-start: calc(#{styles.$control-border-width} * -1);
+      margin-inline-start: calc(#{styles.$button-border-width} * -1);
     }
   }
 }
