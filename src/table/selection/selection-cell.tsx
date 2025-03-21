@@ -10,17 +10,20 @@ import { SelectionProps } from './interfaces';
 import { SelectionControl, SelectionControlProps } from './selection-control';
 
 import styles from '../styles.css.js';
+import { ThemeProps } from '../../theming/component/interfaces';
 
 interface TableHeaderSelectionCellProps extends Omit<TableThElementProps, 'children' | 'colIndex'> {
   focusedComponent?: null | string;
   singleSelectionHeaderAriaLabel?: string;
   getSelectAllProps?: () => SelectionProps;
   onFocusMove: ((sourceElement: HTMLElement, fromIndex: number, direction: -1 | 1) => void) | undefined;
+  theme?: any,
 }
 
 interface TableBodySelectionCellProps
   extends Omit<TableTdElementProps, 'children' | 'colIndex' | 'wrapLines' | 'isEditable' | 'isEditing'> {
   selectionControlProps?: SelectionControlProps;
+  theme?: any,
 }
 
 export function TableHeaderSelectionCell({
@@ -28,6 +31,7 @@ export function TableHeaderSelectionCell({
   singleSelectionHeaderAriaLabel,
   getSelectAllProps,
   onFocusMove,
+  theme,
   ...props
 }: TableHeaderSelectionCellProps) {
   const selectAllProps = getSelectAllProps ? getSelectAllProps() : undefined;
@@ -47,6 +51,7 @@ export function TableHeaderSelectionCell({
           focusedComponent={focusedComponent}
           {...selectAllProps}
           {...(props.sticky ? { tabIndex: -1 } : {})}
+          theme={theme}
         />
       ) : (
         <ScreenreaderOnly>{singleSelectionHeaderAriaLabel}</ScreenreaderOnly>
@@ -56,11 +61,11 @@ export function TableHeaderSelectionCell({
   );
 }
 
-export function TableBodySelectionCell({ selectionControlProps, ...props }: TableBodySelectionCellProps) {
+export function TableBodySelectionCell({ selectionControlProps, theme, ...props }: TableBodySelectionCellProps) {
   return (
     <TableTdElement {...props} isSelection={true} wrapLines={false} isEditable={false} isEditing={false} colIndex={0}>
       {selectionControlProps ? (
-        <SelectionControl {...selectionControlProps} verticalAlign={props.verticalAlign} />
+        <SelectionControl {...selectionControlProps} verticalAlign={props.verticalAlign} theme={theme} />
       ) : null}
     </TableTdElement>
   );

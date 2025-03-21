@@ -30,4 +30,4 @@ export default function Modal(props: any) {
       {props.children}
     </CloudscapeModal>
   );
-}
+};

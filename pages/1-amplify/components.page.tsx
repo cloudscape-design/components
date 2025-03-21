@@ -1,5 +1,5 @@
 import React from 'react';
-import { SpaceBetween, TextContent } from '~components';
+import { Link, SpaceBetween, TextContent } from '~components';
 import Alert from './alert';
 import Badge from './badge';
 import Button from './button';
@@ -8,6 +8,7 @@ import Flashbar from './flashbar';
 import Input from './input';
 import Modal from './modal';
 import Select from './select';
+import Table from './table';
 import { fontFamily, palette } from './theme';
 import Theme from '~components/theming/component';
 import styles from './styles.scss';
@@ -67,6 +68,11 @@ export default function AmplifyDemo() {
     selectedOption,
     setSelectedOption
   ] = React.useState({ label: "Option 1", value: "1" });
+
+  const [
+    selectedItems,
+    setSelectedItems
+  ] = React.useState([]);
 
   return (
     <div className={styles.amplify}>
@@ -215,6 +221,97 @@ export default function AmplifyDemo() {
               { label: "Option 4", value: "4" },
               { label: "Option 5", value: "5" }
             ]}
+          />
+
+          <hr />
+          
+          <TextContent>
+            <h3>Table</h3>
+          </TextContent>
+
+          <Table 
+            columnDefinitions={[
+              {
+                id: "variable",
+                header: "Variable name",
+                cell: (item:any) => <Link href="#">{item.name}</Link>,
+                sortingField: "name",
+                isRowHeader: true
+              },
+              {
+                id: "value",
+                header: "Text value",
+                cell: (item:any) => item.alt,
+                sortingField: "alt"
+              },
+              {
+                id: "type",
+                header: "Type",
+                cell: (item:any) => item.type,
+              },
+              {
+                id: "description",
+                header: "Description",
+                cell: (item:any) => item.description
+              }
+            ]}
+            columnDisplay={[
+              { id: "variable", visible: true },
+              { id: "value", visible: true },
+              { id: "type", visible: true },
+              { id: "description", visible: true }
+            ]}
+            items={[
+              {
+                name: "Item 1",
+                description: "This is the first item",
+                type: "1A",
+                size: "Small"
+              },
+              {
+                name: "Item 2",
+                alt: "Second",
+                description: "This is the second item",
+                type: "1B",
+                size: "Large"
+              },
+              {
+                name: "Item 3",
+                alt: "Third",
+                description: "-",
+                type: "1A",
+                size: "Large"
+              },
+              {
+                name: "Item 4",
+                alt: "Fourth",
+                description: "This is the fourth item",
+                type: "2A",
+                size: "Small"
+              },
+              {
+                name: "Item 5",
+                alt: "-",
+                description:
+                  "This is the fifth item with a longer description",
+                type: "2A",
+                size: "Large"
+              },
+              {
+                name: "Item 6",
+                alt: "Sixth",
+                description: "This is the sixth item",
+                type: "1A",
+                size: "Small"
+              }
+            ]}
+            onSelectionChange={({ detail }:any) =>
+              setSelectedItems(detail.selectedItems)
+            }
+            selectedItems={selectedItems}
+            selectionType="multi"
+            trackBy="name"
+            variant="embedded"
           />
         </SpaceBetween>
       </Theme>

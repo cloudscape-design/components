@@ -6,6 +6,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { CancelableEventHandler, NonCancelableEventHandler } from '../internal/events';
 import { Optional } from '../internal/types';
 import ColumnDisplayProperties = TableProps.ColumnDisplayProperties;
+import { ThemeProps } from '../theming/component/interfaces';
 
 /*
  * HACK: Cast the component to a named parametrized interface.
@@ -394,6 +395,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * the table items array is empty.
    */
   renderLoaderEmpty?: (detail: TableProps.RenderLoaderEmptyDetail<T>) => React.ReactNode;
+
+  theme?: {
+    selectionControl?: ThemeProps
+  };
 }
 
 export namespace TableProps {

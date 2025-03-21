@@ -14,9 +14,7 @@ export default function Selection(props: any) {
       height="42px"
       fill={fills}
       fontSize="16px"
-      onDarkMode={{
-        fill: darkModeFills
-      }}
+      onDarkMode={{fill: darkModeFills}}
       paddingInline="16px"
       width="300px"
     >
@@ -24,9 +22,7 @@ export default function Selection(props: any) {
         onChange={props.onChange}
         options={props.options}
         selectedOption={props.selectedOption}
-        theme={{
-          dropdown: Dropdown
-        }}
+        theme={{dropdown: Dropdown}}
       />
     </Theme>
   );

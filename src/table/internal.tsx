@@ -140,6 +140,7 @@ const InternalTable = React.forwardRef(
       renderLoaderEmpty,
       cellVerticalAlign,
       __funnelSubStepProps,
+      theme,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -377,6 +378,7 @@ const InternalTable = React.forwardRef(
       tableRole,
       isExpandable,
       setLastUserAction,
+      theme,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -600,6 +602,7 @@ const InternalTable = React.forwardRef(
                                       itemKey: `${getTableItemKey(row.item)}`,
                                     }}
                                     verticalAlign={cellVerticalAlign}
+                                    theme={theme}
                                   />
                                 )}
 
@@ -679,6 +682,7 @@ const InternalTable = React.forwardRef(
                                     {...sharedCellProps}
                                     columnId={selectionColumnId}
                                     verticalAlign={cellVerticalAlign}
+                                    theme={theme}
                                   />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (

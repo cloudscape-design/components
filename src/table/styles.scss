@@ -38,7 +38,7 @@
   }
 
   &-pagination + &-preferences {
-    border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-inline-start: awsui.$border-divider-section-width solid var(--theme-border-color, awsui.$color-border-divider-default);
     box-sizing: border-box;
     margin-inline-start: awsui.$space-xs;
     padding-inline-start: awsui.$space-xs;
@@ -101,7 +101,7 @@
     Add a bottom border to the body cell of an empty table as a separator between the
     table and the footer
     */
-    border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-divider-section-width solid var(--theme-border-color, awsui.$color-border-divider-default);
   }
   &-content {
     box-sizing: border-box;
@@ -142,7 +142,7 @@ filter search icon.
   &.selection-control-header {
     padding-block: awsui.$space-scaled-xs;
     padding-inline: awsui.$space-scaled-l;
-    border-inline-start: awsui.$border-item-width solid transparent;
+    border-inline-start: var(--theme-border-width, awsui.$border-item-width) solid transparent;
   }
 }
 

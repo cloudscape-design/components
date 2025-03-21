@@ -5,49 +5,54 @@ import { palette } from './theme';
 
 export default function CheckboxField(props: any) {
   return (
-    <Theme
-      backgroundColor={backgroundColors}
-      borderColor={backgroundColors}
-      color={colors}
-      fontSize="16px"
-      onDarkMode={{
-        backgroundColor: darkModeBackgroundColors,
-        borderColor: darkModeBackgroundColors,
-        color: darkModeColors,
-        outline: palette.neutral10,  
-      }}
-    >
+    <Theme {...theme}>
       <CloudscapeCheckbox 
         checked={props.checked}
         disabled={props.isDisabled}
         indeterminate={props.isIndeterminate}
         onChange={props.onChange} 
         readOnly={props.readOnly}
-      >
+      > 
         {props.label}
       </CloudscapeCheckbox>
     </Theme>
   );
 };
 
-const backgroundColors = {
-  checked: palette.teal80,
-  indeterminate: palette.teal80,
-  disabled: palette.neutral20,
-};
-
-const colors = {
-  default: palette.neutral100,
-  disabled: palette.neutral60,
-};
-
-const darkModeBackgroundColors = {
-  checked: palette.teal40,
-  indeterminate: palette.teal40,
-  disabled: palette.neutral80,
-};
-
-const darkModeColors = {
-  default: palette.neutral10,
-  disabled: palette.neutral60,
+export const theme = {
+  backgroundColor: {
+    checked: palette.teal80,
+    indeterminate: palette.teal80,
+    disabled: palette.neutral20,
+  },
+  borderColor: {
+    default: palette.neutral60,
+    checked: palette.teal80,
+    indeterminate: palette.teal80,
+    disabled: palette.neutral20,
+  },
+  borderWidth: "2px",
+  color: {
+    default: palette.neutral100,
+    disabled: palette.neutral60,
+  },
+  fontSize: "16px",
+  onDarkMode: {
+    backgroundColor: {
+      checked: palette.teal40,
+      indeterminate: palette.teal40,
+      disabled: palette.neutral80,
+    },
+    borderColor: {
+      checked: palette.teal40,
+      default: palette.neutral10,
+      disabled: palette.neutral80,
+      indeterminate: palette.teal40,
+    },
+    color: {
+      default: palette.neutral10,
+      disabled: palette.neutral60,
+    },
+    outline: palette.neutral10,  
+  }
 };

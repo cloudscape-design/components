@@ -53,18 +53,18 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   position: relative;
   text-align: start;
   box-sizing: border-box;
-  border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+  border-block-end: awsui.$border-divider-section-width solid var(--theme-border-color, awsui.$color-border-divider-default);
   background: awsui.$color-background-table-header;
   color: awsui.$color-text-column-header;
   font-weight: awsui.$font-weight-heading-s;
   @include styles.font-smoothing;
   padding-block: awsui.$space-scaled-xxs;
-  padding-inline: awsui.$space-scaled-xs;
+  padding-inline: var(--theme-padding-inline, awsui.$space-scaled-xs);
 
   @include header-cell-focus-outline(awsui.$space-scaled-xxs);
 
   &-sticky {
-    border-block-end: awsui.$border-table-sticky-width solid awsui.$color-border-divider-default;
+    border-block-end: awsui.$border-table-sticky-width solid var(--theme-border-color, awsui.$color-border-divider-default);
   }
   &-stuck:not(.header-cell-variant-full-page) {
     border-block-end-color: transparent;
@@ -136,7 +136,7 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
 
 .header-cell-content {
   position: relative;
-  padding-block: awsui.$space-scaled-xxs;
+  padding-block: var(--theme-padding-block, awsui.$space-scaled-xxs);
   padding-inline-end: awsui.$space-s;
   @include cell-offset(awsui.$space-s);
 
