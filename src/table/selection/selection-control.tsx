@@ -14,6 +14,8 @@ import { GeneratedAnalyticsMetadataTableSelect } from '../analytics-metadata/int
 import { SelectionProps } from './interfaces';
 
 import styles from './styles.css.js';
+import Theme from '../../theming/component';
+import { ThemeProps } from '../../theming/component/interfaces';
 
 export interface SelectionControlProps extends SelectionProps {
   onShiftToggle?(shiftPressed: boolean): void;
@@ -24,6 +26,7 @@ export interface SelectionControlProps extends SelectionProps {
   focusedComponent?: null | string;
   rowIndex?: number;
   itemKey?: string;
+  theme?: any;
 }
 
 export function SelectionControl({
@@ -37,6 +40,7 @@ export function SelectionControl({
   focusedComponent,
   rowIndex,
   itemKey,
+  theme,
   ...sharedProps
 }: SelectionControlProps) {
   const controlId = useUniqueId();
@@ -82,13 +86,15 @@ export function SelectionControl({
   };
 
   const selector = isMultiSelection ? (
-    <InternalCheckbox
-      {...sharedProps}
-      showOutline={focusedComponent === 'selection-control'}
-      controlId={controlId}
-      data-focus-id="selection-control"
-      indeterminate={indeterminate}
-    />
+    <Theme {...theme?.selectionControl}>
+      <InternalCheckbox
+        {...sharedProps}
+        showOutline={focusedComponent === 'selection-control'}
+        controlId={controlId}
+        data-focus-id="selection-control"
+        indeterminate={indeterminate}
+      />
+    </Theme>
   ) : (
     <RadioButton {...sharedProps} controlId={controlId} name={name} value={''} label={''} />
   );

@@ -29,14 +29,14 @@ th:not(:last-child) > .divider {
   max-block-size: calc(100% - #{$gap});
   margin-block: auto;
   margin-inline: auto;
-  border-inline-start: awsui.$border-item-width solid awsui.$color-border-divider-interactive-default;
+  border-inline-start: var(--theme-border-width, awsui.$border-item-width) solid var(--theme-border-color-active, awsui.$color-border-divider-interactive-default);
   box-sizing: border-box;
 
   &-disabled {
-    border-inline-start-color: awsui.$color-border-divider-default;
+    border-inline-start-color: var(--theme-border-color-disabled, awsui.$color-border-divider-default);
   }
   &-active {
-    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
+    border-inline-start: $active-separator-width solid var(--theme-border-color-active, awsui.$color-border-divider-active);
   }
 }
 
@@ -64,7 +64,7 @@ th:not(:last-child) > .divider {
     inset-inline-end: 0;
   }
   &:hover + .divider {
-    border-inline-start: $active-separator-width solid awsui.$color-border-divider-active;
+    border-inline-start: $active-separator-width solid var(--theme-border-color-hover, awsui.$color-border-divider-active);
   }
   &.has-focus {
     @include focus-visible.when-visible-unfocused {
@@ -79,7 +79,7 @@ th:not(:last-child) > .divider {
 .tracker {
   display: none;
   position: absolute;
-  border-inline-start: awsui.$border-divider-list-width dashed awsui.$color-border-divider-active;
+  border-inline-start: awsui.$border-divider-list-width dashed var(--theme-border-color-active, awsui.$color-border-divider-active);
   inline-size: 0;
   inset-block: 0;
   //stylelint-disable-next-line selector-combinator-disallowed-list

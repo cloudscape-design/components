@@ -45,6 +45,7 @@ export interface TheadProps {
   tableRole: TableRole;
   isExpandable?: boolean;
   setLastUserAction: (name: string) => void;
+  theme: any;
 }
 
 const Thead = React.forwardRef(
@@ -75,6 +76,7 @@ const Thead = React.forwardRef(
       resizerRoleDescription,
       isExpandable,
       setLastUserAction,
+      theme,
     }: TheadProps,
     outerRef: React.Ref<HTMLTableRowElement>
   ) => {
@@ -112,6 +114,7 @@ const Thead = React.forwardRef(
               getSelectAllProps={getSelectAllProps}
               onFocusMove={onFocusMove}
               singleSelectionHeaderAriaLabel={singleSelectionHeaderAriaLabel}
+              theme={theme}
               {...getAnalyticsMetadataAttribute({
                 action: 'selectAll',
               } as Partial<GeneratedAnalyticsMetadataTableSelectAll>)}

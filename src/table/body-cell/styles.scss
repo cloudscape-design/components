@@ -7,18 +7,18 @@
 @use '../../internal/styles/tokens' as awsui;
 @use '@cloudscape-design/component-toolkit/internal/focus-visible' as focus-visible;
 
-$cell-vertical-padding: awsui.$space-scaled-xs;
+$cell-vertical-padding: var(--theme-padding-block, awsui.$space-scaled-xs);
 // Calculate padding to prevent a shift in content after selection due to the difference
 // between selected border widths and normal row divider widths (visual refresh).
 $cell-vertical-padding-w-border: calc(
-  #{$cell-vertical-padding} + (#{awsui.$border-item-width} - #{awsui.$border-divider-list-width})
+  #{$cell-vertical-padding} + (var(--theme-border-width, #{awsui.$border-item-width}) - #{awsui.$border-divider-list-width})
 );
-$cell-horizontal-padding: awsui.$space-scaled-l;
-$cell-edge-horizontal-padding: calc(#{awsui.$space-l} - #{awsui.$border-item-width});
-$cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + #{awsui.$border-item-width});
-$selected-border: awsui.$border-item-width solid awsui.$color-border-item-selected;
-$selected-border-placeholder: awsui.$border-divider-list-width solid awsui.$color-border-item-placeholder;
-$border-placeholder: awsui.$border-item-width solid transparent;
+$cell-horizontal-padding: var(--theme-padding-inline, awsui.$space-scaled-l);
+$cell-edge-horizontal-padding: calc(#{awsui.$space-l} - var(--theme-border-width, #{awsui.$border-item-width}));
+$cell-horizontal-padding-w-border: calc(#{$cell-edge-horizontal-padding} + var(--theme-border-width, #{awsui.$border-item-width}));
+$selected-border: var(--theme-border-width, awsui.$border-item-width) solid var(--theme-border-color-selected, awsui.$color-border-item-selected);
+$selected-border-placeholder: var(--theme-border-width, awsui.$border-divider-list-width) solid var(--theme-border-color-selected, awsui.$color-border-item-placeholder);
+$border-placeholder: var(--theme-border-width, awsui.$border-item-width) solid transparent;
 $icon-width-with-spacing: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 // Right paddings of the absolute positioned icons (success icon is shown next to the edit icon)
 $edit-button-padding-right: calc(#{awsui.$space-xs} + #{awsui.$space-xxs});
@@ -125,7 +125,7 @@ $cell-negative-space-vertical: 2px;
 .body-cell {
   box-sizing: border-box;
   border-block-start: awsui.$border-divider-list-width solid transparent;
-  border-block-end: awsui.$border-divider-list-width solid awsui.$color-border-divider-secondary;
+  border-block-end: awsui.$border-divider-list-width solid var(--theme-border-color, awsui.$color-border-divider-secondary);
   word-wrap: break-word;
   font-weight: inherit;
   text-align: start;
@@ -203,14 +203,14 @@ $cell-negative-space-vertical: 2px;
       Add a bottom border to the body cells of the last row as a separator between the
       table and the footer
       */
-      border-block-end: awsui.$border-divider-section-width solid awsui.$color-border-divider-default;
+      border-block-end: awsui.$border-divider-section-width solid var(--theme-border-color, awsui.$color-border-divider-default);
     }
   }
   &-shaded {
     background: awsui.$color-background-cell-shaded;
   }
   &-selected {
-    background-color: awsui.$color-background-item-selected;
+    background-color: var(--theme-background-color-selected, awsui.$color-background-item-selected);
     border-block-start: $selected-border;
     border-block-end: $selected-border;
     @include cell-padding-block-end($cell-vertical-padding);
@@ -223,17 +223,17 @@ $cell-negative-space-vertical: 2px;
 
     &:first-child {
       border-inline-start: $selected-border;
-      border-start-start-radius: awsui.$border-radius-item;
+      border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-item);
       border-start-end-radius: 0;
-      border-end-start-radius: awsui.$border-radius-item;
+      border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-item);
       border-end-end-radius: 0;
     }
     &:last-child {
       border-inline-end: $selected-border;
       border-start-start-radius: 0;
-      border-start-end-radius: awsui.$border-radius-item;
+      border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-item);
       border-end-start-radius: 0;
-      border-end-end-radius: awsui.$border-radius-item;
+      border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-item);
     }
   }
 
@@ -250,7 +250,7 @@ $cell-negative-space-vertical: 2px;
       background: awsui.$color-background-cell-shaded;
     }
     &.body-cell-selected {
-      background-color: awsui.$color-background-item-selected;
+      background-color: var(--theme-background-color-selected, awsui.$color-background-item-selected);
 
       // Create a background using box-shadow and clip path to hide underlying elements
       &:first-child {
@@ -499,12 +499,12 @@ $cell-negative-space-vertical: 2px;
 
         &:first-child {
           inset-inline: 0;
-          border-start-start-radius: awsui.$border-radius-item;
-          border-end-start-radius: awsui.$border-radius-item;
+          border-start-start-radius: var(--theme-border-radius, awsui.$border-radius-item);
+          border-end-start-radius: var(--theme-border-radius, awsui.$border-radius-item);
         }
         &:last-child {
-          border-start-end-radius: awsui.$border-radius-item;
-          border-end-end-radius: awsui.$border-radius-item;
+          border-start-end-radius: var(--theme-border-radius, awsui.$border-radius-item);
+          border-end-end-radius: var(--theme-border-radius, awsui.$border-radius-item);
         }
 
         & > .body-cell-editor-wrapper,

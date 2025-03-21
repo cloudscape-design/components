@@ -136,6 +136,7 @@ const InternalTable = React.forwardRef(
       renderLoaderError,
       renderLoaderEmpty,
       __funnelSubStepProps,
+      theme,
       ...rest
     }: InternalTableProps<T>,
     ref: React.Ref<TableProps.Ref>
@@ -373,6 +374,7 @@ const InternalTable = React.forwardRef(
       tableRole,
       isExpandable,
       setLastUserAction,
+      theme,
     };
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
@@ -595,6 +597,7 @@ const InternalTable = React.forwardRef(
                                       rowIndex,
                                       itemKey: `${getTableItemKey(row.item)}`,
                                     }}
+                                    theme={theme}
                                   />
                                 )}
 
@@ -670,7 +673,7 @@ const InternalTable = React.forwardRef(
                                 {...rowRoleProps}
                               >
                                 {getItemSelectionProps && (
-                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
+                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} theme={theme} />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
                                   <TableLoaderCell
