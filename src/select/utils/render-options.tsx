@@ -21,7 +21,7 @@ interface RenderOptionProps {
   screenReaderContent?: string;
   ariaSetsize?: number;
   withScrollbar?: boolean;
-  stickyIndices?: number[];
+  firstOptionSticky?: boolean;
 }
 
 export const renderOptions = ({
@@ -36,10 +36,8 @@ export const renderOptions = ({
   screenReaderContent,
   ariaSetsize,
   withScrollbar,
-  stickyIndices = [],
+  firstOptionSticky,
 }: RenderOptionProps) => {
-  const stickyIndicesSet = new Set(stickyIndices);
-
   return options.map((option, index) => {
     const virtualItem = virtualItems && virtualItems[index];
     const globalIndex = virtualItem ? virtualItem.index : index;
@@ -54,7 +52,7 @@ export const renderOptions = ({
     const isLastItem = index === options.length - 1;
     const padBottom = !hasDropdownStatus && isLastItem;
     const ListItem = useInteractiveGroups ? MutliselectItem : Item;
-    const isSticky = stickyIndicesSet.has(globalIndex);
+    const isSticky = firstOptionSticky && globalIndex === 0;
 
     return (
       <ListItem

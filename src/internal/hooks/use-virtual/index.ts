@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
 import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual';
+import stickyRangeExtractor from './sticky-range-extractor';
 
 const MAX_ITEM_MOUNTS = 100;
 
@@ -10,7 +11,7 @@ interface UseVirtualProps<Item> {
   items: readonly Item[];
   parentRef: React.RefObject<HTMLElement>;
   estimateSize: () => number;
-  stickyIndices?: number[];
+  firstItemSticky?: boolean;
 }
 
 interface RowVirtualizer {
@@ -35,30 +36,14 @@ export function useVirtual<Item extends object>({
   items,
   parentRef,
   estimateSize,
-  stickyIndices,
+  firstItemSticky,
 }: UseVirtualProps<Item>): RowVirtualizer {
   const rowVirtualizer = useVirtualDefault({
     size: items.length,
     parentRef,
     estimateSize,
     overscan: 5,
-    rangeExtractor: stickyIndices
-      ? range => {
-          const arr: number[] = [...stickyIndices];
-          const set = new Set(arr);
-          const start = Math.max(range.start - range.overscan, 0);
-          const end = Math.min(range.end + range.overscan, range.size - 1);
-
-          for (let i = start; i <= end; i++) {
-            if (!set.has(i)) {
-              set.add(i);
-              arr.push(i);
-            }
-          }
-
-          return arr;
-        }
-      : undefined,
+    rangeExtractor: firstItemSticky ? stickyRangeExtractor : undefined,
   });
 
   // Cache virtual item mounts to limit the amount of mounts per item.
