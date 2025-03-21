@@ -6,8 +6,8 @@
 @use '../utils/theming' as theming;
 @use '../tokens' as awsui;
 
-$control-border-width: awsui.$border-width-field;
-$control-border-radius: awsui.$border-radius-input;
+$control-border-width: var(--theme-border-width, awsui.$border-width-field);
+$control-border-radius: var(--theme-border-radius, awsui.$border-radius-input);
 
 // Use for options in dropdowns
 $option-padding-vertical: awsui.$space-xxs;

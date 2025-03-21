@@ -26,7 +26,7 @@ export default function Flashbar(props: any) {
           notificationBar: {
             backgroundColor: notificationBarBackgroundColors,
             borderColor: notificationBarBorderColors,
-            borderRadius: '16px',
+            borderRadius: '4px',
             color: palette.white,
             fill: palette.white,
           }

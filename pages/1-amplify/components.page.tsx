@@ -7,6 +7,7 @@ import CheckboxField from './checkbox-field';
 import Flashbar from './flashbar';
 import Input from './input';
 import Modal from './modal';
+import Select from './select';
 import { fontFamily, palette } from './theme';
 import Theme from '~components/theming/component';
 import styles from './styles.scss';
@@ -61,6 +62,11 @@ export default function AmplifyDemo() {
         )
     },
   ]);
+
+  const [
+    selectedOption,
+    setSelectedOption
+  ] = React.useState({ label: "Option 1", value: "1" });
 
   return (
     <div className={styles.amplify}>
@@ -189,6 +195,26 @@ export default function AmplifyDemo() {
           <Flashbar
             items={flashbarItems}
             stackItems={true}
+          />
+          
+          <hr />
+          
+          <TextContent>
+            <h3>Select</h3>
+          </TextContent>
+
+          <Select
+            selectedOption={selectedOption}
+            onChange={({ detail }:any) =>
+              setSelectedOption(detail.selectedOption)
+            }
+            options={[
+              { label: "Option 1", value: "1" },
+              { label: "Option 2", value: "2" },
+              { label: "Option 3", value: "3" },
+              { label: "Option 4", value: "4" },
+              { label: "Option 5", value: "5" }
+            ]}
           />
         </SpaceBetween>
       </Theme>

@@ -21,17 +21,18 @@ $padding-block-inner-filtering-token: 0px;
   inline-size: 100%;
   justify-content: space-between;
   align-items: center;
-  padding-block: styles.$control-padding-vertical;
-  padding-inline: styles.$control-padding-horizontal;
+  padding-block: var(--theme-padding-block, styles.$control-padding-vertical);
+  padding-inline: var(--theme-padding-inline, styles.$control-padding-horizontal);
+  font-size: var(--theme-font-size);
 
-  background-color: awsui.$color-background-input-default;
+  background-color: var(--theme-background-color, awsui.$color-background-input-default);
   border-start-start-radius: styles.$control-border-radius;
   border-start-end-radius: styles.$control-border-radius;
   border-end-start-radius: styles.$control-border-radius;
   border-end-end-radius: styles.$control-border-radius;
   border-block: styles.$control-border-width solid awsui.$color-border-input-default;
   border-inline: styles.$control-border-width solid awsui.$color-border-input-default;
-  min-block-size: awsui.$size-vertical-input;
+  min-block-size: var(--theme-height, awsui.$size-vertical-input);
 
   &.in-filtering-token-root,
   &.in-filtering-token-nested {
@@ -66,12 +67,12 @@ $padding-block-inner-filtering-token: 0px;
     position: absolute;
     inset-inline-end: styles.$control-icon-horizontal-offset;
     inset-block-start: styles.$control-icon-vertical-offset;
-    color: awsui.$color-text-button-inline-icon-default;
+    color: var(--theme-fill, awsui.$color-text-button-inline-icon-default);
   }
 
   &:hover {
     > .arrow {
-      color: awsui.$color-text-button-inline-icon-hover;
+      color: var(--theme-fill-hover, awsui.$color-text-button-inline-icon-hover);
     }
   }
 
@@ -85,7 +86,7 @@ $padding-block-inner-filtering-token: 0px;
     @include styles.form-disabled-element;
 
     > .arrow {
-      color: awsui.$color-text-button-inline-icon-disabled;
+      color: var(--theme-fill-disabled, awsui.$color-text-button-inline-icon-disabled);
     }
 
     &.in-filtering-token {

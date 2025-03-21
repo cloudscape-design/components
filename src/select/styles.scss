@@ -8,4 +8,5 @@
 
 .root {
   @include styles.styles-reset;
+  width: var(--theme-width);
 }
