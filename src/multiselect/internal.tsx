@@ -182,7 +182,7 @@ const InternalMultiselect = React.forwardRef(
             useInteractiveGroups={true}
             screenReaderContent={multiselectProps.announcement}
             highlightType={multiselectProps.highlightType}
-            stickyIndices={enableSelectAll ? [0] : undefined}
+            firstOptionSticky={enableSelectAll}
           />
         </Dropdown>
 
