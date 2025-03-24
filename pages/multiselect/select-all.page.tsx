@@ -217,29 +217,26 @@ export default function MultiselectPage() {
             </label>
           </SpaceBetween>
 
-          <SpaceBetween size="xxs">
-            <Box variant="awsui-key-label">Select an option</Box>
-            <ScreenshotArea>
-              <Multiselect
-                selectedOptions={selectedOptions}
-                deselectAriaLabel={deselectAriaLabel}
-                filteringType={urlParams.withFiltering ? 'auto' : 'none'}
-                options={options}
-                i18nStrings={i18nStrings}
-                enableSelectAll={true}
-                placeholder={'Choose option'}
-                onChange={event => {
-                  setSelectedOptions(event.detail.selectedOptions);
-                }}
-                ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
-                inlineTokens={urlParams.inlineTokens}
-                tokenLimit={urlParams.tokenLimit}
-                expandToViewport={urlParams.expandToViewport}
-                keepOpen={!urlParams.closeAfter}
-                virtualScroll={urlParams.virtualScroll}
-              />
-            </ScreenshotArea>
-          </SpaceBetween>
+          <ScreenshotArea>
+            <Multiselect
+              selectedOptions={selectedOptions}
+              deselectAriaLabel={deselectAriaLabel}
+              filteringType={urlParams.withFiltering ? 'auto' : 'none'}
+              options={options}
+              i18nStrings={i18nStrings}
+              enableSelectAll={true}
+              placeholder={'Choose option'}
+              onChange={event => {
+                setSelectedOptions(event.detail.selectedOptions);
+              }}
+              ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
+              inlineTokens={urlParams.inlineTokens}
+              tokenLimit={urlParams.tokenLimit}
+              expandToViewport={urlParams.expandToViewport}
+              keepOpen={!urlParams.closeAfter}
+              virtualScroll={urlParams.virtualScroll}
+            />
+          </ScreenshotArea>
         </SpaceBetween>
       </Box>
     </article>
