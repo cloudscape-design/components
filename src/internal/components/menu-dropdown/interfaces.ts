@@ -5,6 +5,7 @@ import { IconProps } from '../../../icon/interfaces';
 
 export interface ButtonTriggerProps {
   testUtilsClass?: string;
+  internalClass?: string;
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconAlt?: string;
@@ -19,7 +20,8 @@ export interface ButtonTriggerProps {
   expanded?: boolean;
 }
 
-export interface MenuDropdownProps extends InternalButtonDropdownProps {
+export interface MenuDropdownProps extends Omit<InternalButtonDropdownProps, 'items'> {
+  items: InternalButtonDropdownProps['items'];
   iconName?: IconProps.Name;
   iconUrl?: string;
   iconAlt?: string;
@@ -27,4 +29,5 @@ export interface MenuDropdownProps extends InternalButtonDropdownProps {
   badge?: boolean;
   description?: string;
   offsetRight?: 'l' | 'xxl';
+  internalClass?: string;
 }

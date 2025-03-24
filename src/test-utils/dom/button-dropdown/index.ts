@@ -40,20 +40,30 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * Finds an item in the open dropdown by item id. Returns null if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findItemById(id: string): ElementWrapper | null {
+  findItemById(id: string, options = { expandToViewport: false }): ElementWrapper | null {
     const itemSelector = `.${itemStyles['item-element']}[data-testid="${id}"]`;
-    return this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
+    return options.expandToViewport
+      ? createWrapper().find(itemSelector)
+      : this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
   }
 
   /**
    * Finds `checked` value of item in the open dropdown by item id. Returns null if there is no open dropdown or the item is not a checkbox item.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  @usesDom findItemCheckedById(id: string): string | null {
+  @usesDom findItemCheckedById(id: string, options = { expandToViewport: false }): string | null {
     const itemSelector = `.${itemStyles['item-element']}[data-testid="${id}"]`;
-    const item = this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
+    const item = options.expandToViewport
+      ? createWrapper().find(itemSelector)
+      : this.findOpenDropdown()?.find(itemSelector) || this.find(itemSelector);
     if (!item) {
       return null;
     }
@@ -68,36 +78,56 @@ export default class ButtonDropdownWrapper extends ComponentWrapper {
    * Finds an expandable category in the open dropdown by category id. Returns null if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findExpandableCategoryById(id: string): ElementWrapper | null {
+  findExpandableCategoryById(id: string, options = { expandToViewport: false }): ElementWrapper | null {
     const expandableCategorySelector = `.${categoryStyles.expandable}[data-testid="${id}"]`;
-    return this.findOpenDropdown()?.find(expandableCategorySelector) || this.find(expandableCategorySelector);
+    return options.expandToViewport
+      ? createWrapper().find(expandableCategorySelector)
+      : this.findOpenDropdown()?.find(expandableCategorySelector) || this.find(expandableCategorySelector);
   }
 
   /**
    * Finds the highlighted item in the open dropdown. Returns null if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findHighlightedItem(): ElementWrapper | null {
+  findHighlightedItem(options = { expandToViewport: false }): ElementWrapper | null {
     const highlightedItemSelector = `.${itemStyles['item-element']}.${itemStyles.highlighted}`;
-    return this.findOpenDropdown()?.find(highlightedItemSelector) || this.find(highlightedItemSelector);
+    return options.expandToViewport
+      ? createWrapper().find(highlightedItemSelector)
+      : this.findOpenDropdown()?.find(highlightedItemSelector) || this.find(highlightedItemSelector);
   }
 
   /**
    * Finds all the items in the open dropdown. Returns empty array if there is no open dropdown.
    *
    * This utility does not open the dropdown. To find dropdown items, call `openDropdown()` first.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findItems(): Array<ElementWrapper> {
-    return this.findOpenDropdown()?.findAll(`.${itemStyles['item-element']}`) || [];
+  findItems(options = { expandToViewport: false }): Array<ElementWrapper> {
+    return options.expandToViewport
+      ? createWrapper().findAll(`.${itemStyles['item-element']}`)
+      : this.findOpenDropdown()?.findAll(`.${itemStyles['item-element']}`) || [];
   }
 
   /**
    * Finds the disabled reason tooltip for a dropdown item. Returns null if no disabled item with `disabledReason` is highlighted.
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
-  findDisabledReason(): ElementWrapper | null {
-    return createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`);
+  findDisabledReason(options = { expandToViewport: false }): ElementWrapper | null {
+    return options.expandToViewport
+      ? createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`)
+      : createWrapper().find(`[data-testid="button-dropdown-disabled-reason"]`);
   }
 
   @usesDom
