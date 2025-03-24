@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import stickyRangeExtractor from '../sticky-range-extractor';
+import stickyRangeExtractor from '.././../../../../lib/components/internal/hooks/use-virtual/sticky-range-extractor';
 
 describe('stickyRangeExtractor', () => {
   test('prepends 0 to the range if it does not start with 0', () => {
