@@ -18,7 +18,6 @@ type DemoContext = React.Context<
     manyOptions?: boolean;
     virtualScroll?: boolean;
     withHeader?: boolean;
-    withGroups?: boolean;
   }>
 >;
 
@@ -37,7 +36,7 @@ export default function MultiselectPage() {
 
   return (
     <article>
-      <h1>Multiselect with &quot;Select all&quot;</h1>
+      <h1>List with sticky first item</h1>
       <Box padding={{ horizontal: 'l' }}>
         <SpaceBetween size="xxl">
           <SpaceBetween direction="horizontal" size="l">
