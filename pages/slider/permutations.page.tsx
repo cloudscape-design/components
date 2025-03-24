@@ -179,8 +179,8 @@ export default function SliderPermutations() {
           permutations={permutations}
           render={(permutation, index) => (
             <Box>
-              <label id={`label-${index}`}>{permutation.label}</label>
-              <Slider ariaLabelledby={`#label-${index}`} i18nStrings={i18nStrings} {...permutation} />
+              <label htmlFor={`label-${index}`}>{permutation.label}</label>
+              <Slider controlId={`slider-${index}`} i18nStrings={i18nStrings} {...permutation} />
             </Box>
           )}
         />
