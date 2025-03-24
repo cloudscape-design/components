@@ -6,7 +6,7 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { VirtualItem } from '../../internal/vendor/react-virtual';
 import Item from '../parts/item';
-import MutliselectItem from '../parts/multiselect-item';
+import MultiselectItem from '../parts/multiselect-item';
 import { getItemProps } from './get-item-props';
 
 interface RenderOptionProps {
@@ -20,8 +20,7 @@ interface RenderOptionProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;
-  withScrollbar?: boolean;
-  firstOptionSticky?: boolean;
+  indexStartAt?: number;
 }
 
 export const renderOptions = ({
@@ -35,12 +34,12 @@ export const renderOptions = ({
   useInteractiveGroups,
   screenReaderContent,
   ariaSetsize,
-  withScrollbar,
-  firstOptionSticky,
+  indexStartAt = 0,
 }: RenderOptionProps) => {
   return options.map((option, index) => {
-    const virtualItem = virtualItems && virtualItems[index];
-    const globalIndex = virtualItem ? virtualItem.index : index;
+    const fullListIndex = index + indexStartAt;
+    const virtualItem = virtualItems && virtualItems[fullListIndex];
+    const globalIndex = virtualItem ? virtualItem.index : fullListIndex;
     const props = getItemProps({
       option,
       index: globalIndex,
@@ -51,22 +50,19 @@ export const renderOptions = ({
 
     const isLastItem = index === options.length - 1;
     const padBottom = !hasDropdownStatus && isLastItem;
-    const ListItem = useInteractiveGroups ? MutliselectItem : Item;
-    const isSticky = firstOptionSticky && globalIndex === 0;
+    const ListItem = useInteractiveGroups ? MultiselectItem : Item;
 
     return (
       <ListItem
         key={globalIndex}
         {...props}
-        virtualPosition={!isSticky && virtualItem && virtualItem.start}
+        virtualPosition={virtualItem && virtualItem.start}
         ref={virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
-        withScrollbar={withScrollbar}
-        sticky={isSticky}
       />
     );
   });

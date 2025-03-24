@@ -8,8 +8,10 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
+import MultiselectItem from '../parts/multiselect-item';
+import { getItemProps } from '../utils/get-item-props';
 import { renderOptions } from '../utils/render-options';
+import scrollToIndex from '../utils/scroll-to-index';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
 
 import styles from './styles.css.js';
@@ -53,6 +55,8 @@ const PlainList = (
     []
   );
 
+  const [stickyOptionBlockSize, stickyItemRef] = useContainerQuery(rect => rect.borderBoxHeight);
+
   const menuRef = menuProps.ref;
 
   const mergedRef = useMergeRefs(menuMeasureRef, menuRef);
@@ -60,24 +64,41 @@ const PlainList = (
   useImperativeHandle(
     ref,
     () => (index: number) => {
-      const item = menuRef.current?.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
-      if (highlightType.moveFocus && item) {
-        // In edge case dropdown can be very small, scrolling can cause side effect AWSUI-60318
-        if (menuRef.current?.clientHeight !== undefined && menuRef.current?.clientHeight > 15) {
-          /* istanbul ignore next: clientHeight always returns 0 in JSDOM, the line is covered by integ tests */
-          scrollElementIntoView(item);
-        }
+      const isSticky = firstOptionSticky && index === 0;
+      if (highlightType.moveFocus && menuRef.current && !isSticky) {
+        scrollToIndex({ index, menuEl: menuRef.current });
       }
     },
-    [highlightType, menuRef]
+    [firstOptionSticky, highlightType.moveFocus, menuRef]
   );
 
   const withScrollbar = !!width && width.inner < width.outer;
 
+  const stickyOption = firstOptionSticky ? filteredOptions[0] : null;
+  const nonStickyFilteredOptions = firstOptionSticky ? filteredOptions.slice(1) : filteredOptions;
+
   return (
-    <OptionsList {...menuProps} ref={mergedRef}>
+    <OptionsList {...menuProps} ref={mergedRef} stickyItemBlockSize={stickyOptionBlockSize}>
+      {stickyOption ? (
+        <MultiselectItem
+          key={0}
+          {...getItemProps({
+            option: stickyOption,
+            index: 0,
+            getOptionProps,
+            filteringValue: '',
+            checkboxes: !!checkboxes,
+          })}
+          ref={stickyItemRef}
+          option={stickyOption}
+          screenReaderContent={screenReaderContent}
+          highlightType={highlightType.type}
+          withScrollbar={withScrollbar}
+          sticky={true}
+        />
+      ) : null}
       {renderOptions({
-        options: filteredOptions,
+        options: nonStickyFilteredOptions,
         getOptionProps,
         filteringValue,
         highlightType,
@@ -85,8 +106,7 @@ const PlainList = (
         hasDropdownStatus,
         useInteractiveGroups,
         screenReaderContent,
-        withScrollbar: withScrollbar,
-        firstOptionSticky,
+        indexStartAt: firstOptionSticky ? 1 : 0,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>
