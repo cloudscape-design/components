@@ -21,7 +21,8 @@ describe('Multiselect with "Select all" control', () => {
       const onChange = jest.fn();
       const wrapper = renderMultiselectWithSelectAll({ onChange });
       wrapper.openDropdown();
-      wrapper.selectOption(1);
+
+      wrapper.selectAll();
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
       );
@@ -30,7 +31,7 @@ describe('Multiselect with "Select all" control', () => {
       const onChange = jest.fn();
       const wrapper = renderMultiselectWithSelectAll({ onChange, selectedOptions: [optionsWithoutGroups[0]] });
       wrapper.openDropdown();
-      wrapper.selectOption(1);
+      wrapper.selectAll();
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
       );
@@ -39,7 +40,7 @@ describe('Multiselect with "Select all" control', () => {
       const onChange = jest.fn();
       const wrapper = renderMultiselectWithSelectAll({ selectedOptions: optionsWithoutGroups, onChange });
       wrapper.openDropdown();
-      wrapper.selectOption(1);
+      wrapper.selectAll();
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
     });
     test('closes the dropdown after clicking when `keepOpen` is false', () => {
@@ -47,7 +48,7 @@ describe('Multiselect with "Select all" control', () => {
       wrapper.openDropdown();
       const dropdown = wrapper.findDropdown();
       expect(dropdown.findOptionByValue('1')).not.toBeNull();
-      wrapper.selectOption(1);
+      wrapper.selectAll();
       expect(dropdown.findOptionByValue('1')).toBeNull();
     });
   });
@@ -103,9 +104,10 @@ describe('Multiselect with "Select all" control', () => {
   test('is disabled when there are no options to select', () => {
     const wrapper = renderMultiselectWithSelectAll({ options: [] });
     wrapper.openDropdown();
-    const options = wrapper.findDropdown().findOptions();
-    expect(options.length).toBe(1);
-    expect(options[0].getElement().getAttribute('aria-disabled')).toBe('true');
+    const dropdown = wrapper.findDropdown();
+    const options = dropdown.findOptions();
+    expect(options.length).toBe(0);
+    expect(dropdown.findSelectAll()!.getElement().getAttribute('aria-disabled')).toBe('true');
   });
 
   describe('i18n', () => {
@@ -118,14 +120,14 @@ describe('Multiselect with "Select all" control', () => {
 
       const wrapper = createWrapper(container).findMultiselect()!;
       wrapper.openDropdown();
-      const selectAll = wrapper.findDropdown().findOption(1)!;
+      const selectAll = wrapper.findDropdown().findSelectAll()!;
       expect(selectAll.getElement().textContent).toBe('Custom Select all text');
     });
 
     test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
       const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
       wrapper.openDropdown();
-      const selectAll = wrapper.findDropdown().findOption(1)!;
+      const selectAll = wrapper.findDropdown().findSelectAll()!;
       expect(selectAll.getElement().textContent).toBe('Custom Select all text');
     });
 
@@ -145,7 +147,7 @@ describe('Multiselect with "Select all" control', () => {
 
       const wrapper = createWrapper(container).findMultiselect()!;
       wrapper.openDropdown();
-      const selectAll = wrapper.findDropdown().findOption(1)!;
+      const selectAll = wrapper.findDropdown().findSelectAll()!;
       expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
     });
   });

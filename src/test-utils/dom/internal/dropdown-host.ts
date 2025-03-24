@@ -121,6 +121,30 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
       option.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
   }
+
+  /**
+   * Selects all options by triggering corresponding events on the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
+   *
+   * This utility does not open the dropdown of the given select and it will need to be called explicitly in your test.
+   *
+   * Example:
+   * ```
+   * wrapper.openDropdown();
+   * wrapper.selectAll();
+   * ```
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  @usesDom
+  selectAll(options = { expandToViewport: false }): void {
+    this.assertOpenDropdown(options);
+    const selectAll = this.findDropdown().findSelectAll();
+    if (!selectAll) {
+      throw new Error(`Can't select all options, because there is no "select all" option.`);
+    }
+    selectAll.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
+  }
 }
 
 export class DropdownContentWrapper extends ComponentWrapper {
@@ -223,7 +247,7 @@ export class DropdownContentWrapper extends ComponentWrapper {
    * Returns the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
    */
   findSelectAll(): ElementWrapper | null {
-    return this.find(`.${selectableStyles['select-all']} .${OptionWrapper.rootSelector}`);
+    return this.find(`.${selectableStyles['select-all']}`);
   }
 }
 
