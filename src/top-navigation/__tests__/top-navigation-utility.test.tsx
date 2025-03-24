@@ -196,7 +196,9 @@ describe('TopNavigation Utility part', () => {
       }).findMenuDropdownType()!;
       menuWrapper.openDropdown();
 
-      items.forEach((item, i) => expect(menuWrapper.findItems()[i].getElement()).toHaveTextContent(item.text));
+      items.forEach((item, i) =>
+        expect(menuWrapper.findItems({ expandToViewport: true })[i].getElement()).toHaveTextContent(item.text)
+      );
     });
 
     it('does not show title in the dropdown if there is visible text', () => {

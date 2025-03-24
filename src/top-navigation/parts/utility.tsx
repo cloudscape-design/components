@@ -1,7 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import clsx from 'clsx';
 
 import { InternalButton } from '../../button/internal';
 import { isLinkItem } from '../../button-dropdown/utils/utils';
@@ -33,7 +32,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     checkSafeUrl('TopNavigation', definition.href);
     if (definition.variant === 'primary-button') {
       return (
-        <span className={styles[`offset-right-${offsetRight}`]}>
+        <span>
           <InternalButton
             variant="primary"
             href={definition.href}
@@ -53,7 +52,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
                   <>
                     {' '}
                     <span
-                      className={clsx(styles['utility-button-external-icon'], styles[`offset-right-${offsetRight}`])}
+                      className={styles['utility-button-external-icon']}
                       aria-label={definition.externalIconAriaLabel}
                       role={definition.externalIconAriaLabel ? 'img' : undefined}
                     >
@@ -69,7 +68,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
     } else {
       // Link
       return (
-        <span className={styles[`offset-right-${offsetRight}`]}>
+        <span>
           <InternalLink
             variant="top-navigation"
             href={definition.href}
@@ -120,7 +119,9 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
         items={items}
         title={shouldShowTitle ? title : ''}
         ariaLabel={ariaLabel}
+        expandToViewport={true}
         offsetRight={offsetRight}
+        internalClass={styles['utility-menu-dropdown-button']}
       >
         {!shouldHideText && definition.text}
       </MenuDropdown>

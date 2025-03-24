@@ -20,6 +20,7 @@ export const ButtonTrigger = React.forwardRef(
   (
     {
       testUtilsClass,
+      internalClass,
       iconName,
       iconUrl,
       iconAlt,
@@ -40,7 +41,7 @@ export const ButtonTrigger = React.forwardRef(
       <button
         ref={ref}
         type="button"
-        className={clsx(styles.button, styles[`offset-right-${offsetRight}`], testUtilsClass, {
+        className={clsx(styles.button, styles[`offset-right-${offsetRight}`], testUtilsClass, internalClass, {
           [styles.expanded]: expanded,
         })}
         aria-label={ariaLabel}
@@ -49,7 +50,7 @@ export const ButtonTrigger = React.forwardRef(
         disabled={disabled}
         onClick={event => {
           event.preventDefault();
-          onClick && onClick();
+          onClick?.();
         }}
       >
         {hasIcon && (
@@ -79,6 +80,7 @@ const MenuDropdown = ({
   badge,
   offsetRight,
   children,
+  internalClass,
   ...props
 }: MenuDropdownProps) => {
   const baseProps = getBaseProps(props);
@@ -94,6 +96,7 @@ const MenuDropdown = ({
     return (
       <ButtonTrigger
         testUtilsClass={testUtilsClass}
+        internalClass={internalClass}
         ref={triggerRef}
         disabled={disabled}
         expanded={isOpen}

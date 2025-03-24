@@ -213,7 +213,7 @@ describe('default href navigation', () => {
   test(`allows event propagation ${props.expandToViewport ? 'with portal' : 'without portal'}`, () => {
     const { onClickSpy, wrapper } = renderWrappedButtonDropdown({ ...props, items });
     act(() => wrapper.openDropdown());
-    act(() => wrapper.findItemById('i1')!.click());
+    act(() => wrapper.findItemById('i1', { expandToViewport: props.expandToViewport })!.click());
     expect(onClickSpy).toHaveBeenCalled();
   });
 
