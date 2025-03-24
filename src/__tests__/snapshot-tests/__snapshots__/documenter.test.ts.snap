@@ -5691,6 +5691,16 @@ The object should contain, among others:
             "type": "string",
           },
           {
+            "name": "resizeHandleAriaLabel",
+            "optional": true,
+            "type": "string",
+          },
+          {
+            "name": "resizeHandleTooltipText",
+            "optional": true,
+            "type": "string",
+          },
+          {
             "name": "statusBarGroupAriaLabel",
             "optional": true,
             "type": "string",
@@ -16557,6 +16567,23 @@ add a meaningful description to the whole selection.
       "name": "ariaLabels",
       "optional": true,
       "type": "TableProps.AriaLabels<T>",
+    },
+    {
+      "defaultValue": "'middle'",
+      "description": "Determines the alignment of the content inside table cells.
+This property affects all cells, including the ones in the selection column.
+To target individual cells use \`columnDefinitions.verticalAlign\`, that takes precedence over \`cellVerticalAlign\`.",
+      "inlineType": {
+        "name": "",
+        "type": "union",
+        "values": [
+          "middle",
+          "top",
+        ],
+      },
+      "name": "cellVerticalAlign",
+      "optional": true,
+      "type": "string",
     },
     {
       "deprecatedTag": "Custom CSS is not supported. For testing and other use cases, use [data attributes](https://developer.mozilla.org/en-US/docs/Learn/HTML/Howto/Use_data_attributes).",

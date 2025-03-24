@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Themen filtern",
     "i18nStrings.preferencesModalLightThemes": "Hellere Themen",
     "i18nStrings.preferencesModalDarkThemes": "Dunkles Design",
-    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}"
+    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}",
+    "i18nStrings.resizeHandleAriaLabel": "Größe des Punktes ändern",
+    "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
   },
   "collection-preferences": {
     "title": "Präferenzen",
@@ -209,7 +211,8 @@
     "closeAriaLabel": "Modal schließen"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} entfernen"
+    "deselectAriaLabel": "{option__label} entfernen",
+    "i18nStrings.selectAllText": "Alles auswählen"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Nächste Seite",

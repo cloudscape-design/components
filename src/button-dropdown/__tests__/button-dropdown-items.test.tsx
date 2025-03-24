@@ -11,6 +11,7 @@ import createWrapper from '../../../lib/components/test-utils/dom';
 import { isItemGroup, isLinkItem } from '../utils/utils';
 
 import categoryStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
+import categoryItemStyles from '../../../lib/components/button-dropdown/category-elements/styles.css.js';
 import itemStyles from '../../../lib/components/button-dropdown/item-element/styles.css.js';
 import iconStyles from '../../../lib/components/icon/styles.css.js';
 import optionsListStyles from '../../../lib/components/internal/components/options-list/styles.css.js';
@@ -23,7 +24,7 @@ const renderButtonDropdown = (props: ButtonDropdownProps) => {
 const checkRenderedGroup = (
   renderedItem: ElementWrapper,
   group: ButtonDropdownProps.ItemGroup,
-  parentIsDisabled = false
+  parentIsDisabled: boolean
 ) => {
   const element = renderedItem.getElement();
 
@@ -37,7 +38,12 @@ const checkRenderedGroup = (
 
   if (parentIsDisabled || group.disabled) {
     expect(element).toHaveClass(`${categoryStyles.disabled}`);
-    expect(element).toHaveAttribute('aria-disabled', 'true');
+    if (group.disabled) {
+      expect(element.querySelector(`.${categoryItemStyles['items-list-container']}`)).toHaveAttribute(
+        'aria-disabled',
+        'true'
+      );
+    }
   }
 };
 
@@ -88,7 +94,7 @@ const checkRenderedItems = (
 
   expect(renderedItems.length).toBe(items.length);
 
-  Array.prototype.forEach.call(renderedItems, (renderedItem, index) => {
+  renderedItems.forEach((renderedItem: ElementWrapper, index: number) => {
     const item = items[index];
 
     if (isItemGroup(item)) {

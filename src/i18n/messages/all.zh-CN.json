@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "筛选主题",
     "i18nStrings.preferencesModalLightThemes": "浅色主题",
     "i18nStrings.preferencesModalDarkThemes": "深色主题",
-    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行"
+    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行",
+    "i18nStrings.resizeHandleAriaLabel": "调整手柄的大小",
+    "i18nStrings.resizeHandleTooltipText": "通过拖动或选择来调整大小"
   },
   "collection-preferences": {
     "title": "首选项",
@@ -209,7 +211,8 @@
     "closeAriaLabel": "关闭模态"
   },
   "multiselect": {
-    "deselectAriaLabel": "删除 {option__label}"
+    "deselectAriaLabel": "删除 {option__label}",
+    "i18nStrings.selectAllText": "选择全部"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "下一页",

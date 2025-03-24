@@ -28,14 +28,13 @@ const CategoryElement = ({
     <li
       className={clsx(styles.category, styles[`variant-${variant}`], disabled && styles.disabled)}
       role="presentation"
-      aria-disabled={disabled ? 'true' : undefined}
     >
       {item.text && (
         <p className={clsx(styles.header, { [styles.disabled]: disabled })} aria-hidden="true">
           {item.text}
         </p>
       )}
-      <ul className={styles['items-list-container']} role="group" aria-label={item.text}>
+      <ul className={styles['items-list-container']} role="group" aria-label={item.text} aria-disabled={disabled}>
         {item.items && (
           <ItemsList
             items={item.items}

@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "篩選主題",
     "i18nStrings.preferencesModalLightThemes": "淺色佈景主題",
     "i18nStrings.preferencesModalDarkThemes": "深色佈景主題",
-    "i18nStrings.cursorPositionAriaLabel": "列 {row} 上的游標"
+    "i18nStrings.cursorPositionAriaLabel": "列 {row} 上的游標",
+    "i18nStrings.resizeHandleAriaLabel": "調整大小控點",
+    "i18nStrings.resizeHandleTooltipText": "拖曳或選取以調整大小"
   },
   "collection-preferences": {
     "title": "偏好設定",
@@ -209,7 +211,8 @@
     "closeAriaLabel": "關閉強制回應"
   },
   "multiselect": {
-    "deselectAriaLabel": "移除 {option__label}"
+    "deselectAriaLabel": "移除 {option__label}",
+    "i18nStrings.selectAllText": "選取全部"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "下一頁",

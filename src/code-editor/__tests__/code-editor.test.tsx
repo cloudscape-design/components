@@ -10,6 +10,7 @@ import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { PointerEventMock } from '../../../lib/components/internal/utils/pointer-events-mock.js';
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import {
@@ -22,12 +23,17 @@ import {
 
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
 import styles from '../../../lib/components/code-editor/styles.css.js';
+import dragHandleStyles from '../../../lib/components/internal/components/drag-handle/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
+
+beforeAll(() => {
+  (window as any).PointerEvent ??= PointerEventMock;
+});
 
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
@@ -512,8 +518,8 @@ describe('Code editor component', () => {
   it('updates size when resize handle is dragged', () => {
     const { wrapper } = renderCodeEditor({ editorContentHeight: 10 });
     editorMock.resize.mockClear();
-    fireEvent.mouseDown(wrapper.findByClassName(resizableStyles['resizable-box-handle'])!.getElement());
-    fireEvent.mouseMove(document.body, { clientY: 100 });
+    fireEvent.pointerDown(wrapper.findByClassName(dragHandleStyles.handle)!.getElement());
+    fireEvent.pointerMove(document, { clientY: 100 });
     expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
 
@@ -637,6 +643,7 @@ describe('Code editor component', () => {
         messages={{
           'code-editor': {
             'i18nStrings.paneCloseButtonAriaLabel': 'Custom close',
+            'i18nStrings.resizeHandleAriaLabel': 'Custom resize handle',
           },
         }}
       >
@@ -647,6 +654,10 @@ describe('Code editor component', () => {
     act(() => emulateAceAnnotationEvent!());
     wrapper.findErrorsTab()!.click();
     expect(wrapper.findPane()!.findButton()!.getElement()).toHaveAttribute('aria-label', 'Custom close');
+    expect(wrapper.findPane()!.find('[role=slider]')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom resize handle'
+    );
   });
 
   test('supports using preferences modal strings from i18n provider', () => {

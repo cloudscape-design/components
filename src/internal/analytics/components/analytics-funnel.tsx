@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { useContext, useEffect, useRef, useState } from 'react';
 
-import { PACKAGE_VERSION } from '../../environment';
+import { PACKAGE_VERSION, THEME } from '../../environment';
 import { useDebounceCallback } from '../../hooks/use-debounce-callback';
 import { useUniqueId } from '../../hooks/use-unique-id';
 import { useVisualRefresh } from '../../hooks/use-visual-mode';
@@ -157,6 +157,12 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         },
       ];
 
+      let componentTheme = THEME;
+      if (THEME === 'polaris') {
+        // This is the only place we specify the theme as classic so we cannot reuse the getVisualTheme function :(
+        componentTheme = isVisualRefresh ? 'vr' : 'classic';
+      }
+
       funnelInteractionId = FunnelMetrics.funnelStart({
         funnelName,
         funnelIdentifier: props.funnelIdentifier,
@@ -166,7 +172,7 @@ const InnerAnalyticsFunnel = ({ mounted = true, children, stepConfiguration, ...
         funnelType: props.funnelType,
         totalFunnelSteps: props.totalFunnelSteps,
         componentVersion: PACKAGE_VERSION,
-        componentTheme: isVisualRefresh ? 'vr' : 'classic',
+        componentTheme: componentTheme,
         funnelVersion: FUNNEL_VERSION,
         stepConfiguration: stepConfiguration ?? singleStepFlowStepConfiguration,
         resourceType: props.funnelResourceType || getTextFromSelector(`[${DATA_ATTR_RESOURCE_TYPE}]`),
