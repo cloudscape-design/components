@@ -180,7 +180,7 @@ export default function SliderPermutations() {
           render={(permutation, index) => (
             <Box>
               <label htmlFor={`label-${index}`}>{permutation.label}</label>
-              <Slider controlId={`slider-${index}`} i18nStrings={i18nStrings} {...permutation} />
+              <Slider ariaLabel="Slider" controlId={`slider-${index}`} i18nStrings={i18nStrings} {...permutation} />
             </Box>
           )}
         />
