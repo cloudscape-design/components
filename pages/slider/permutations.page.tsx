@@ -26,6 +26,14 @@ const permutations = createPermutations<SliderProps & { label: string }>([
     step: [1],
   },
   {
+    label: ['Ticks, value, smaller step'],
+    value: [-10, -9, 0, 9, 10],
+    min: [-10],
+    max: [10],
+    tickMarks: [true],
+    step: [0.5],
+  },
+  {
     label: ['Ticks, value, larger step'],
     value: [-10, -9, 0, 9, 10],
     min: [-10],
