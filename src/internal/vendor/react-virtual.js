@@ -2,4 +2,4 @@
 // SPDX-License-Identifier: Apache-2.0
 
 // eslint-disable-next-line no-restricted-imports
-export { defaultRangeExtractor, Range, useVirtual } from 'react-virtual';
+export { defaultRangeExtractor, useVirtual } from 'react-virtual';
