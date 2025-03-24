@@ -19,6 +19,7 @@ export type ColorPaletteTokenName =
   | 'colorGreen600'
   | 'colorGreen700'
   | 'colorGreen900'
+  | 'colorGrey50'
   | 'colorGrey100'
   | 'colorGrey125'
   | 'colorGrey150'
@@ -276,6 +277,7 @@ export type ColorsTokenName =
   | 'colorBackgroundInputDisabled'
   | 'colorBackgroundItemSelected'
   | 'colorBackgroundLayoutMain'
+  | 'colorBackgroundToolbarLayoutMain'
   | 'colorBackgroundLayoutMobilePanel'
   | 'colorBackgroundLayoutPanelContent'
   | 'colorBackgroundLayoutPanelHover'
@@ -585,7 +587,10 @@ export type BordersTokenName =
   | 'borderLinkFocusRingShadowSpread'
   | 'borderWidthAlert'
   | 'borderWidthField'
-  | 'borderWidthPopover';
+  | 'borderWidthToken'
+  | 'borderWidthButton'
+  | 'borderWidthPopover'
+  | 'borderWidthDropdown';
 export type MotionTokenName =
   | 'motionDurationExtraFast'
   | 'motionDurationExtraSlow'

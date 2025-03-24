@@ -6,6 +6,7 @@
 @use '../utils/theming' as theming;
 @use '../tokens' as awsui;
 
+$button-border-width: awsui.$border-width-button;
 $control-border-width: awsui.$border-width-field;
 $control-border-radius: awsui.$border-radius-input;
 

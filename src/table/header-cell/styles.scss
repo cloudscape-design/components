@@ -71,6 +71,9 @@ $cell-horizontal-padding: awsui.$space-scaled-l;
   }
   &-variant-full-page {
     background: awsui.$color-background-layout-main;
+    &.has-toolbar {
+      background: awsui.$color-background-toolbar-layout-main;
+    }
   }
   &-variant-full-page.header-cell-hidden {
     border-block-end-color: transparent;
