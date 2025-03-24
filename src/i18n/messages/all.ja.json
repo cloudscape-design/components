@@ -88,7 +88,9 @@
     "i18nStrings.preferencesModalThemeFilteringPlaceholder": "テーマをフィルタリング",
     "i18nStrings.preferencesModalLightThemes": "明るいテーマ",
     "i18nStrings.preferencesModalDarkThemes": "暗いテーマ",
-    "i18nStrings.cursorPositionAriaLabel": "カーソルは行 {row}"
+    "i18nStrings.cursorPositionAriaLabel": "カーソルは行 {row}",
+    "i18nStrings.resizeHandleAriaLabel": "リサイズハンドル",
+    "i18nStrings.resizeHandleTooltipText": "ドラッグまたは選択してリサイズする"
   },
   "collection-preferences": {
     "title": "詳細設定",
@@ -209,7 +211,8 @@
     "closeAriaLabel": "モーダルを閉じる"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} を削除"
+    "deselectAriaLabel": "{option__label} を削除",
+    "i18nStrings.selectAllText": "すべて選択"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "次のページ",

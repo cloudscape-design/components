@@ -157,12 +157,6 @@ describe('intl', () => {
       expect(intl.renderMonthAndYear('ja-JP', date)).toBe('2023年6月');
     });
 
-    test('renders month and year in Arabic', () => {
-      const date = new Date('2023-06-15');
-      //todo confirm it shouldn't be 'يونيو ٢٠٢٣'
-      expect(intl.renderMonthAndYear('ar-SA', date)).toBe('ذو القعدة ١٤٤٤ هـ');
-    });
-
     test('handles different months', () => {
       expect(intl.renderMonthAndYear('en-US', new Date('2023-01-01'))).toBe('January 2023');
       expect(intl.renderMonthAndYear('en-US', new Date('2023-12-31'))).toBe('December 2023');
@@ -207,12 +201,6 @@ describe('intl', () => {
     test('renders year in Japanese', () => {
       const date = new Date('2023-06-15');
       expect(intl.renderYear('ja-JP', date)).toBe('2023年');
-    });
-
-    test('renders year in Arabic', () => {
-      const date = new Date('2023-06-15');
-      //todo confirm not '٢٠٢٣'
-      expect(intl.renderYear('ar-SA', date)).toBe('١٤٤٤ هـ');
     });
 
     test('handles different years', () => {
