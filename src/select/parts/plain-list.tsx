@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef, useImperativeHandle } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 
 import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 
@@ -50,12 +50,15 @@ const PlainList = (
   }: SelectListProps,
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
-  const [width, menuMeasureRef] = useContainerQuery(
-    rect => ({ inner: rect.contentBoxWidth, outer: rect.borderBoxWidth }),
-    []
-  );
+  const stickyOptionRef = useRef<HTMLDivElement>(null);
+  const [stickyOptionBlockSize, setStickyOptionBlockSize] = useState<number | null>(null);
 
-  const [stickyOptionBlockSize, stickyItemRef] = useContainerQuery(rect => rect.borderBoxHeight);
+  const [width, menuMeasureRef] = useContainerQuery(rect => {
+    if (stickyOptionRef.current) {
+      setStickyOptionBlockSize(stickyOptionRef.current.clientHeight);
+    }
+    return { inner: rect.contentBoxWidth, outer: rect.borderBoxWidth };
+  });
 
   const menuRef = menuProps.ref;
 
@@ -89,7 +92,7 @@ const PlainList = (
             filteringValue: '',
             checkboxes: !!checkboxes,
           })}
-          ref={stickyItemRef}
+          ref={stickyOptionRef}
           option={stickyOption}
           screenReaderContent={screenReaderContent}
           highlightType={highlightType.type}

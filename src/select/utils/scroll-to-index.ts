@@ -4,12 +4,8 @@
 import { scrollElementIntoView } from '../../internal/utils/scrollable-containers';
 
 export default function ({ index, menuEl }: { index: number; menuEl: HTMLElement }) {
-  const stickyItem = menuEl.querySelector<HTMLElement>(`[data-mouse-target="0"]`);
   const item = menuEl.querySelector<HTMLElement>(`[data-mouse-target="${index}"]`);
 
-  if (stickyItem) {
-    menuEl.style.scrollPaddingBlockStart = stickyItem.clientHeight + 'px';
-  }
   if (item) {
     // In edge case dropdown can be very small, scrolling can cause side effect AWSUI-60318
     if (menuEl.clientHeight !== undefined && menuEl.clientHeight > 15) {
