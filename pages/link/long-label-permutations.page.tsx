@@ -13,25 +13,21 @@ import styles from './styles.scss';
 
 const permutations = createPermutations<LinkProps>([
   {
-    variant: ['info'],
-    external: [false, true],
-    href: ['#', undefined],
-    children: ['Info'],
-  },
-  {
     variant: ['primary', 'secondary'],
     fontSize: ['body-s', 'body-m', 'heading-xs', 'heading-s', 'heading-m', 'heading-l', 'heading-xl', 'display-l'],
     color: ['normal', 'inverted'],
     external: [false, true],
     href: ['#', undefined],
-    children: ['This is a link.'],
+    children: [
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    ],
   },
 ]);
 
 export default function LinkPermutations() {
   return (
     <>
-      <h1>Link permutations</h1>
+      <h1>Long-label link permutations</h1>
       <ScreenshotArea style={{ maxWidth: 600 }}>
         <PermutationsView
           permutations={permutations}

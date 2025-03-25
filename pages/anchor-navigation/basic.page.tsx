@@ -2,11 +2,11 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
+import { Box } from '~components';
 import AnchorNavigation from '~components/anchor-navigation';
 import Header from '~components/header';
 import SpaceBetween from '~components/space-between';
 
-import ScreenshotArea from '../utils/screenshot-area';
 import { navigateToItem, TextSample } from './utils';
 
 import styles from './styles.scss';
@@ -36,38 +36,36 @@ const TextContent = () => {
 
 export default function BasicAnchorNavigation() {
   return (
-    <article>
+    <Box margin="m">
       <h1>Anchor navigation</h1>
-      <ScreenshotArea>
-        <SpaceBetween size="l">
-          <div className={styles['content-grid']}>
-            <TextContent />
-            <div>
-              <div className={styles['anchor-navigation']}>
-                <Header id="anchor-nav-heading" variant="h3">
-                  On this page
-                </Header>
-                <AnchorNavigation
-                  ariaLabelledby="anchor-nav-heading"
-                  onFollow={e => {
-                    e.preventDefault();
-                    navigateToItem(e.detail.href);
-                  }}
-                  anchors={[
-                    { href: '#section-1', text: 'Section 1', level: 1 },
-                    { href: '#section-1-1', text: 'Section 1.1', level: 2, info: 'Updated' },
-                    { href: '#section-1-1-1', text: 'Section 1.1.1', level: 3 },
-                    { href: '#section-1-1-2', text: 'Section 1.1.2', level: 3 },
-                    { href: '#section-1-2', text: 'Section 1.2', level: 2, info: 'New' },
-                    { href: '#section-1-2-1', text: 'Section 1.2.1', level: 3 },
-                    { href: '#section-1-2-1-1', text: 'Section 1.2.1.1', level: 4 },
-                  ]}
-                />
-              </div>
+      <SpaceBetween size="l">
+        <div className={styles['content-grid']}>
+          <TextContent />
+          <div>
+            <div className={styles['anchor-navigation']}>
+              <Header id="anchor-nav-heading" variant="h3">
+                On this page
+              </Header>
+              <AnchorNavigation
+                ariaLabelledby="anchor-nav-heading"
+                onFollow={e => {
+                  e.preventDefault();
+                  navigateToItem(e.detail.href);
+                }}
+                anchors={[
+                  { href: '#section-1', text: 'Section 1', level: 1 },
+                  { href: '#section-1-1', text: 'Section 1.1', level: 2, info: 'Updated' },
+                  { href: '#section-1-1-1', text: 'Section 1.1.1', level: 3 },
+                  { href: '#section-1-1-2', text: 'Section 1.1.2', level: 3 },
+                  { href: '#section-1-2', text: 'Section 1.2', level: 2, info: 'New' },
+                  { href: '#section-1-2-1', text: 'Section 1.2.1', level: 3 },
+                  { href: '#section-1-2-1-1', text: 'Section 1.2.1.1', level: 4 },
+                ]}
+              />
             </div>
           </div>
-        </SpaceBetween>
-      </ScreenshotArea>
-    </article>
+        </div>
+      </SpaceBetween>
+    </Box>
   );
 }
