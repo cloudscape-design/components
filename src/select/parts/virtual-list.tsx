@@ -10,6 +10,7 @@ import { useVirtual } from '../../internal/hooks/use-virtual';
 import { getItemProps } from '../utils/get-item-props';
 import { renderOptions } from '../utils/render-options';
 import customScrollToIndex from '../utils/scroll-to-index';
+import { fallbackItemHeight } from './common';
 import MultiselectItem from './multiselect-item';
 import { SelectListProps } from './plain-list';
 
@@ -52,7 +53,7 @@ const VirtualListOpen = forwardRef(
       // 1: because the component got resized (width property got updated)
       // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      estimateSize: useCallback(() => 31, [width?.inner, filteringValue]),
+      estimateSize: useCallback(() => fallbackItemHeight, [width?.inner, filteringValue]),
       firstItemSticky: firstOptionSticky,
     });
 

@@ -13,6 +13,7 @@ import { getItemProps } from '../utils/get-item-props';
 import { renderOptions } from '../utils/render-options';
 import scrollToIndex from '../utils/scroll-to-index';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
+import { fallbackItemHeight } from './common';
 
 import styles from './styles.css.js';
 
@@ -51,7 +52,7 @@ const PlainList = (
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
   const stickyOptionRef = useRef<HTMLDivElement>(null);
-  const [stickyOptionBlockSize, setStickyOptionBlockSize] = useState<number | null>(null);
+  const [stickyOptionBlockSize, setStickyOptionBlockSize] = useState(fallbackItemHeight);
 
   const [width, menuMeasureRef] = useContainerQuery(rect => {
     if (stickyOptionRef.current) {
