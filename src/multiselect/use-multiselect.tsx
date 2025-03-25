@@ -302,7 +302,7 @@ export function useMultiselect({
     announcement,
     dropdownStatus,
     filteringValue,
-    visibleOptions,
+    filteredOptions: visibleOptions,
     highlightType,
     scrollToIndex,
     getFilterProps,
