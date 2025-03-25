@@ -9,7 +9,7 @@ import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants';
+import { deselectAriaLabel, getInlineAriaLabel, i18nStrings, optionGroupsLong } from './constants';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -24,53 +24,9 @@ type DemoContext = React.Context<
   }>
 >;
 
+// Mix of groups and top-level options
 const groupedOptionsWithDisabledOptions: MultiselectProps.Options = [
-  {
-    label: 'First category',
-    options: [
-      {
-        value: 'option1',
-        label: 'option1',
-      },
-      {
-        value: 'option2',
-        label: 'option2',
-        description: 'option2',
-        tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
-        disabled: true,
-      },
-      {
-        value: 'option3',
-        label: 'option3',
-        description: 'option3',
-        tags: ['2-CPU', '2Gb RAM'],
-      },
-    ],
-  },
-  {
-    label: 'Second category',
-    options: [
-      {
-        value: 'option4',
-        label: 'option4',
-        description: 'option4',
-        tags: ['2-CPU', '2Gb RAM'],
-      },
-      {
-        value: 'option5',
-        label: 'option5',
-        description: 'option5',
-        tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
-        disabled: true,
-      },
-      {
-        value: 'option6',
-        label: 'option6',
-        description: 'option6',
-        tags: ['2-CPU', '2Gb RAM'],
-      },
-    ],
-  },
+  ...optionGroupsLong,
   {
     value: 'option7',
     label: 'option7',

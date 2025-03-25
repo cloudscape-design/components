@@ -5,7 +5,7 @@ import * as React from 'react';
 import Box from '~components/box';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 
-import { deselectAriaLabel, getInlineAriaLabel, i18nStrings } from './constants';
+import { deselectAriaLabel, getInlineAriaLabel, i18nStrings, optionGroupsLong, optionGroupsShort } from './constants';
 
 const _selectedOptions1 = [
   {
@@ -36,83 +36,8 @@ const _selectedOptions2 = [
     disabled: true,
   },
 ];
-const options1 = [
-  {
-    label: 'First category',
-    options: [
-      {
-        value: 'option1',
-        label: 'option1',
-      },
-      {
-        value: 'option2',
-        label: 'option2',
-        description: 'option2',
-        tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
-        disabled: true,
-      },
-      {
-        value: 'option3',
-        label: 'option3',
-        description: 'option3',
-        tags: ['2-CPU', '2Gb RAM'],
-      },
-    ],
-  },
-  {
-    label: 'Second category',
-    options: [
-      {
-        value: 'option4',
-        label: 'option4',
-        description: 'option4',
-        tags: ['2-CPU', '2Gb RAM'],
-      },
-      {
-        value: 'option5',
-        label: 'option5',
-        description: 'option5',
-        tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
-        disabled: true,
-      },
-      {
-        value: 'option6',
-        label: 'option6',
-        description: 'option6',
-        tags: ['2-CPU', '2Gb RAM'],
-      },
-    ],
-  },
-];
-const options2 = [
-  ...options1,
-  {
-    label: 'Third category',
-    options: [
-      {
-        value: 'option7',
-        label: 'option7',
-        description: 'option7',
-        tags: ['2-CPU', '2Gb RAM'],
-        disabled: true,
-      },
-      {
-        value: 'option8',
-        label: 'option8',
-        description: 'option8',
-        tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
-        disabled: true,
-      },
-      {
-        value: 'option9',
-        label: 'option9',
-        description: 'option9',
-        tags: ['2-CPU', '2Gb RAM'],
-        disabled: true,
-      },
-    ],
-  },
-];
+const options1 = optionGroupsShort;
+const options2 = optionGroupsLong;
 
 export default function MultiselectPage() {
   const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>(_selectedOptions1);
