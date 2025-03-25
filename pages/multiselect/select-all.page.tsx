@@ -172,7 +172,7 @@ export default function MultiselectPage() {
               options={options}
               i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
               enableSelectAll={true}
-              placeholder={'Choose option'}
+              placeholder={'Choose options'}
               onChange={event => {
                 setSelectedOptions(event.detail.selectedOptions);
               }}
