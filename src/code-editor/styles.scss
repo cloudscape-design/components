@@ -13,8 +13,8 @@
 .code-editor {
   @include styles.styles-reset;
   display: block;
-  border-block: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
-  border-inline: awsui.$border-item-width solid awsui.$color-border-code-editor-default;
+  border-block: awsui.$border-width-form-control solid awsui.$color-border-code-editor-default;
+  border-inline: awsui.$border-width-form-control solid awsui.$color-border-code-editor-default;
   border-start-start-radius: awsui.$border-radius-code-editor;
   border-start-end-radius: awsui.$border-radius-code-editor;
   border-end-start-radius: awsui.$border-radius-code-editor;

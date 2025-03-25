@@ -114,14 +114,14 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: constants.$control-border-width solid awsui.$color-border-input-focused;
-  border-inline: constants.$control-border-width solid awsui.$color-border-input-focused;
+  border-block: awsui.$border-width-form-control solid awsui.$color-border-input-focused;
+  border-inline: awsui.$border-width-form-control solid awsui.$color-border-input-focused;
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
   border-end-end-radius: $border-radius;
 
-  box-shadow: foundation.$box-shadow-focused-light;
+  box-shadow: inset foundation.$box-shadow-focused-light;
 }
 
 @mixin form-disabled-element {
