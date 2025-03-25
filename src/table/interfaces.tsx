@@ -64,7 +64,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
    *
-   * It's also used to connect `items` and `selectedItems` or `expandableRows.expandedItems` values when they reference different objects.
+   * It is also used in the following situations:
+   * - to connect `items` and `selectedItems` values when they reference different objects.
+   * - to connect `items` and `expandableRows.expandedItems` values when they reference different objects.
+   * - to attach successful edit state to the correct item if its row index changes after editing.
    */
   trackBy?: TableProps.TrackBy<T>;
 
