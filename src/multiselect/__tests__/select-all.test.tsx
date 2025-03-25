@@ -175,4 +175,13 @@ describe('Multiselect with "select all" control', () => {
       expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
     });
   });
+
+  describe('Test utils', () => {
+    test('`selectAll` throws an error if the dropdown is not open', () => {
+      const wrapper = renderMultiselectWithSelectAll();
+      expect(() => {
+        wrapper.selectAll();
+      }).toThrow();
+    });
+  });
 });
