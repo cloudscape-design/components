@@ -9,12 +9,31 @@ import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Multiselect from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';
-import { optionsWithoutGroups, renderMultiselect } from './common';
+import { optionsWithGroups } from './common';
+
+const optionsWithoutGroups = optionsWithGroups.reduce(
+  (previousValue: MultiselectProps.Option[], currentValue: MultiselectProps.Option) => {
+    if ('options' in currentValue) {
+      return [...previousValue, ...(currentValue as MultiselectProps.OptionGroup).options];
+    }
+    return [...previousValue, currentValue];
+  },
+  []
+);
 
 const renderMultiselectWithSelectAll = (props?: Partial<MultiselectProps>) => {
-  const { wrapper } = renderMultiselect({ ...(props || {}), enableSelectAll: true });
-  return wrapper;
+  const { container } = render(
+    <Multiselect
+      options={optionsWithGroups}
+      selectedOptions={[]}
+      onChange={() => null}
+      enableSelectAll={true}
+      {...props}
+    />
+  );
+  return createWrapper(container).findMultiselect()!;
 };
+
 describe('Multiselect with "select all" control', () => {
   describe.each([false, true])('virtualScroll=%s', virtualScroll => {
     describe('Mouse interactions', () => {

@@ -1,7 +1,21 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import { renderMultiselect } from './common';
+import * as React from 'react';
+import { render } from '@testing-library/react';
+
+import Multiselect from '../../../lib/components/multiselect';
+import createWrapper from '../../../lib/components/test-utils/dom';
+import { MultiselectProps } from '../interfaces';
+import { optionsWithGroups } from './common';
+
+function renderMultiselect(props?: Partial<MultiselectProps>) {
+  const { container } = render(
+    <Multiselect options={optionsWithGroups} selectedOptions={[]} onChange={() => null} {...props} />
+  );
+  const wrapper = createWrapper(container).findMultiselect()!;
+  return { container, wrapper };
+}
 
 describe('test utils', () => {
   describe('findGroups', () => {
