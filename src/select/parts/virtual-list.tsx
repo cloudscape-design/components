@@ -42,6 +42,7 @@ const VirtualListOpen = forwardRef(
     );
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
+    const previousHighlightedIndex = useRef<number>();
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,
@@ -58,17 +59,21 @@ const VirtualListOpen = forwardRef(
       ref,
       () => (index: number) => {
         if (highlightType.moveFocus) {
-          if (!firstOptionSticky) {
-            scrollToIndex(index);
-          } else if (index !== 0 && menuRefObject?.current) {
-            // React-Virtual v2 does not offer a proper way to handle sticky elements,
-            // so until we upgrade to v3, use our own scroll implementation.
+          const movingUp = previousHighlightedIndex.current !== undefined && index < previousHighlightedIndex.current;
+          if (firstOptionSticky && movingUp && index !== 0 && menuRefObject.current) {
+            // React-Virtual v2 does not offer a proper way to handle sticky elements when scrolling,
+            // so until we upgrade to v3, use our own scroll implementation
+            // to prevent newly highlighted element from being covered by the sticky element
+            // when moving the highlight upwards in the list.
             customScrollToIndex({
               index,
               menuEl: menuRefObject?.current,
             });
+          } else {
+            scrollToIndex(index);
           }
         }
+        previousHighlightedIndex.current = index;
       },
       [firstOptionSticky, highlightType.moveFocus, scrollToIndex]
     );

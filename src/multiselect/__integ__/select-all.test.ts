@@ -1,5 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+import { range } from 'lodash';
+
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
@@ -48,15 +50,33 @@ describe('Scrolling with "Select all"', () => {
         'the bottom of the highlighted option lines up with the bottom of the dropdown menu when going down the list',
         setup({ visualRefresh, virtualScroll }, async page => {
           await page.keys(['ArrowDown']);
-          const optionBottom = (await page.getBoundingBox(highlightedOptionSelector)).bottom;
+          const highlightedOptionBottom = (await page.getBoundingBox(highlightedOptionSelector)).bottom;
           const dropdownMenuBottom = (await page.getBoundingBox(optionsContainerSelector)).bottom;
-          expect(Math.abs(optionBottom - dropdownMenuBottom)).toBeLessThanOrEqual(borderTolerance);
+          expect(Math.abs(highlightedOptionBottom - dropdownMenuBottom)).toBeLessThanOrEqual(borderTolerance);
         })
       );
       test(
         'the top of the highlighted option lines up with the bottom of the "select all" option when going up the list',
         setup({ visualRefresh, virtualScroll }, async page => {
           await page.keys(['ArrowUp', 'ArrowUp']);
+          const highlightedOptionTop = (await page.getBoundingBox(highlightedOptionSelector)).top;
+          const selectAllBottom = (await page.getBoundingBox(selectAllSelector)).bottom;
+          expect(Math.abs(highlightedOptionTop - selectAllBottom)).toBeLessThanOrEqual(borderTolerance);
+        })
+      );
+      test(
+        'scrolls to the last option when cycling back from the first one',
+        setup({ visualRefresh, virtualScroll }, async page => {
+          await page.keys(['ArrowUp', 'ArrowUp', 'ArrowUp', 'ArrowUp']);
+          const highlightedOptionBottom = (await page.getBoundingBox(highlightedOptionSelector)).bottom;
+          const dropdownMenuBottom = (await page.getBoundingBox(optionsContainerSelector)).bottom;
+          expect(Math.abs(highlightedOptionBottom - dropdownMenuBottom)).toBeLessThanOrEqual(borderTolerance);
+        })
+      );
+      test(
+        'scrolls to the first non-sticky option when cycling back from the last one',
+        setup({ visualRefresh, virtualScroll }, async page => {
+          await page.keys(range(8).map(() => 'ArrowDown'));
           const highlightedOptionTop = (await page.getBoundingBox(highlightedOptionSelector)).top;
           const selectAllBottom = (await page.getBoundingBox(selectAllSelector)).bottom;
           expect(Math.abs(highlightedOptionTop - selectAllBottom)).toBeLessThanOrEqual(borderTolerance);
