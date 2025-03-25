@@ -65,6 +65,9 @@ const VirtualListOpen = forwardRef(
             // so until we upgrade to v3, use our own scroll implementation
             // to prevent newly highlighted element from being covered by the sticky element
             // when moving the highlight upwards in the list.
+
+            // Scrolling behavior is covered by integration tests.
+            // istanbul ignore next
             customScrollToIndex({
               index,
               menuEl: menuRefObject?.current,
