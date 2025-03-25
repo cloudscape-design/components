@@ -5,7 +5,7 @@ import * as React from 'react';
 import Box from '~components/box';
 import Multiselect, { MultiselectProps } from '~components/multiselect';
 
-import { deselectAriaLabel, getInlineAriaLabel, i18nStrings, optionGroupsLong, optionGroupsShort } from './constants';
+import { deselectAriaLabel, getInlineAriaLabel, groupedOptions, i18nStrings } from './constants';
 
 const _selectedOptions1 = [
   {
@@ -36,8 +36,8 @@ const _selectedOptions2 = [
     disabled: true,
   },
 ];
-const options1 = optionGroupsShort;
-const options2 = optionGroupsLong;
+const options1 = groupedOptions.slice(0, 2); // First 2 option groups
+const options2 = groupedOptions; // All 3 option groups
 
 export default function MultiselectPage() {
   const [selectedOptions1, setSelectedOptions1] = React.useState<MultiselectProps.Options>(_selectedOptions1);

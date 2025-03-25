@@ -9,7 +9,7 @@ import SpaceBetween from '~components/space-between';
 
 import AppContext, { AppContextType } from '../app/app-context';
 import ScreenshotArea from '../utils/screenshot-area';
-import { deselectAriaLabel, getInlineAriaLabel, i18nStrings, optionGroupsLong } from './constants';
+import { deselectAriaLabel, getInlineAriaLabel, groupedOptions, i18nStrings } from './constants';
 
 type DemoContext = React.Context<
   AppContextType<{
@@ -24,28 +24,10 @@ type DemoContext = React.Context<
   }>
 >;
 
-// Mix of groups and top-level options
+// Mix of grouped and top-level options
 const groupedOptionsWithDisabledOptions: MultiselectProps.Options = [
-  ...optionGroupsLong,
-  {
-    value: 'option7',
-    label: 'option7',
-    description: 'option7',
-    tags: ['2-CPU', '2Gb RAM'],
-  },
-  {
-    value: 'option8',
-    label: 'option8',
-    description: 'option8',
-    tags: ['2-CPU', '2Gb RAM', 'Stuff', 'More stuff', 'A lot'],
-    disabled: true,
-  },
-  {
-    value: 'option9',
-    label: 'option9',
-    description: 'option9',
-    tags: ['2-CPU', '2Gb RAM'],
-  },
+  ...groupedOptions.slice(0, 2), // First 2 groups
+  ...groupedOptions[2].options, // children of the 2rd group
 ];
 
 const initialSelectedOptions = [

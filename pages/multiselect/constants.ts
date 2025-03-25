@@ -34,7 +34,7 @@ export const getInlineAriaLabel = (selectedOptions: MultiselectProps.Options) =>
   return label + ' selected';
 };
 
-export const optionGroupsShort = [
+export const groupedOptions = [
   {
     label: 'First category',
     options: [
@@ -81,10 +81,6 @@ export const optionGroupsShort = [
       },
     ],
   },
-];
-
-export const optionGroupsLong = [
-  ...optionGroupsShort,
   {
     label: 'Third category',
     options: [
