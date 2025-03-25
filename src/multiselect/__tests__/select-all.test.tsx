@@ -71,6 +71,20 @@ describe('Multiselect with "select all" control', () => {
         expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
       });
 
+      test('does not select disabled options', () => {
+        const onChange = jest.fn();
+        const options = [{ value: '1', disabled: true }, { value: '2' }];
+        const wrapper = renderMultiselectWithSelectAll({
+          options,
+          selectedOptions: [],
+          onChange,
+          virtualScroll,
+        });
+        wrapper.openDropdown();
+        wrapper.clickSelectAll();
+        expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [options[1]] } }));
+      });
+
       test('closes the dropdown after clicking when `keepOpen` is false', () => {
         const wrapper = renderMultiselectWithSelectAll({ keepOpen: false, virtualScroll });
         wrapper.openDropdown();

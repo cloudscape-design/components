@@ -102,7 +102,7 @@ export function useMultiselect({
     statusType,
   });
   const useInteractiveGroups = true;
-  const { allOptions, filteredOptions, visibleOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+  const { flatOptions, filteredOptions, visibleOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
     filteringValue,
@@ -117,9 +117,8 @@ export function useMultiselect({
       : undefined
   );
 
-  const allNonParentOptions = allOptions
-    .filter(item => item.type !== 'parent' && item.type !== 'select-all')
-    .map(option => option.option);
+  // Includes visible and non-visible (filtered out) options
+  const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
 
   const allSelectableOptions = allNonParentOptions.filter(option => !option.disabled);
 
@@ -127,23 +126,32 @@ export function useMultiselect({
 
   const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
   const isSomeSelected = selectedOptions.length > 0;
-  const isAllVisibleSelected =
-    isSomeSelected && filteredNonParentOptions.every(option => selectedValues.has(option.value));
+
+  const isAllVisibleSelectableSelected =
+    isSomeSelected && filteredNonParentOptions.every(option => option.disabled || selectedValues.has(option.value));
   const isAllSelectableSelected =
-    isAllVisibleSelected && allSelectableOptions.every(option => selectedValues.has(option.value));
+    isAllVisibleSelectableSelected && allSelectableOptions.every(option => selectedValues.has(option.value));
   const isAllSelected =
     isAllSelectableSelected && allNonParentOptions.every(option => selectedValues.has(option.value));
 
   const toggleAll = useCallback(() => {
     const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
     fireNonCancelableEvent(onChange, {
-      selectedOptions: isAllVisibleSelected
+      selectedOptions: isAllVisibleSelectableSelected
         ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
         : allNonParentOptions.filter(
-            ({ value }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value)
+            ({ disabled, value }) =>
+              selectedValues.has(value) || (!disabled && filteredNonParentOptionValues.has(value))
           ),
     });
-  }, [allNonParentOptions, filteredNonParentOptions, isAllVisibleSelected, onChange, selectedOptions, selectedValues]);
+  }, [
+    allNonParentOptions,
+    filteredNonParentOptions,
+    isAllVisibleSelectableSelected,
+    onChange,
+    selectedOptions,
+    selectedValues,
+  ]);
 
   const updateSelectedOption = useCallback(
     (option: OptionDefinition | OptionGroup) => {

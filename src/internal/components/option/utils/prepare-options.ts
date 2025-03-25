@@ -17,11 +17,10 @@ export function prepareOptions(
 ) {
   const { flatOptions, parentMap } = flattenOptions(options);
   const filteredOptions = filteringType !== 'auto' ? flatOptions : filterOptions(flatOptions, filteringText);
-  const allOptions = metaOptions ? [...metaOptions, ...flatOptions] : flatOptions;
   const visibleOptions = metaOptions ? [...metaOptions, ...filteredOptions] : filteredOptions;
   generateTestIndexes(visibleOptions, parentMap.get.bind(parentMap));
   return {
-    allOptions,
+    flatOptions,
     filteredOptions,
     visibleOptions,
     parentMap,
