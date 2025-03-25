@@ -60,7 +60,7 @@ const PlainList = (
       // Not expecting the sticky option to change size without the dropdown also changing size.
 
       // The effects of using the sticky option block size to set the menu scroll padding are covered by integration tests.
-      // eslint-disable-next-line
+      // istanbul ignore next
       setStickyOptionBlockSize(stickyOptionRef.current.clientHeight);
     }
     return { inner: rect.contentBoxWidth, outer: rect.borderBoxWidth };
