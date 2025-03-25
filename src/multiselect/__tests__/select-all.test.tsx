@@ -21,18 +21,15 @@ const optionsWithoutGroups = optionsWithGroups.reduce(
   []
 );
 
-const renderMultiselectWithSelectAll = (props?: Partial<MultiselectProps>) => {
+const renderMultiselect = (props?: Partial<MultiselectProps>) => {
   const { container } = render(
-    <Multiselect
-      options={optionsWithGroups}
-      selectedOptions={[]}
-      onChange={() => null}
-      enableSelectAll={true}
-      {...props}
-    />
+    <Multiselect options={optionsWithGroups} selectedOptions={[]} onChange={() => null} {...props} />
   );
   return createWrapper(container).findMultiselect()!;
 };
+
+const renderMultiselectWithSelectAll = (props?: Partial<MultiselectProps>) =>
+  renderMultiselect({ ...props, enableSelectAll: true });
 
 describe('Multiselect with "select all" control', () => {
   describe.each([false, true])('virtualScroll=%s', virtualScroll => {
@@ -198,6 +195,14 @@ describe('Multiselect with "select all" control', () => {
   describe('Test utils', () => {
     test('`selectAll` throws an error if the dropdown is not open', () => {
       const wrapper = renderMultiselectWithSelectAll();
+      expect(() => {
+        wrapper.selectAll();
+      }).toThrow();
+    });
+
+    test('`selectAll` throws an error if the "select all" element is not present', () => {
+      const wrapper = renderMultiselect();
+      wrapper.openDropdown();
       expect(() => {
         wrapper.selectAll();
       }).toThrow();
