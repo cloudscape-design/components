@@ -20,7 +20,9 @@ interface RenderOptionProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;
-  startIndexAt: number;
+  firstOptionSticky?: boolean;
+  stickyOptionRef?: React.Ref<HTMLDivElement>;
+  withScrollbar: boolean;
 }
 
 export const renderOptions = ({
@@ -34,21 +36,23 @@ export const renderOptions = ({
   useInteractiveGroups,
   screenReaderContent,
   ariaSetsize,
-  startIndexAt,
+  firstOptionSticky,
+  stickyOptionRef,
+  withScrollbar,
 }: RenderOptionProps) => {
   return options.map((option, index) => {
-    const fullListIndex = index + startIndexAt;
-    const virtualItem = virtualItems && virtualItems[fullListIndex];
-    const globalIndex = virtualItem ? virtualItem.index : fullListIndex;
+    const virtualItem = virtualItems && virtualItems[index];
+    const globalIndex = virtualItem ? virtualItem.index : index;
     const props = getItemProps({
       option,
       index: globalIndex,
       getOptionProps,
-      filteringValue,
+      filteringValue: option.type === 'select-all' ? '' : filteringValue,
       checkboxes,
     });
 
     const isLastItem = index === options.length - 1;
+    const isSticky = firstOptionSticky && index === 0;
     const padBottom = !hasDropdownStatus && isLastItem;
     const ListItem = useInteractiveGroups ? MultiselectItem : Item;
 
@@ -57,12 +61,14 @@ export const renderOptions = ({
         key={globalIndex}
         {...props}
         virtualPosition={virtualItem && virtualItem.start}
-        ref={virtualItem && virtualItem.measureRef}
+        ref={isSticky && stickyOptionRef ? stickyOptionRef : virtualItem && virtualItem.measureRef}
         padBottom={padBottom}
         screenReaderContent={screenReaderContent}
         ariaPosinset={globalIndex + 1}
         ariaSetsize={ariaSetsize}
         highlightType={highlightType.type}
+        sticky={isSticky}
+        withScrollbar={withScrollbar}
       />
     );
   });

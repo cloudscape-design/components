@@ -7,11 +7,9 @@ import { useContainerQuery } from '@cloudscape-design/component-toolkit';
 import OptionsList from '../../internal/components/options-list';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVirtual } from '../../internal/hooks/use-virtual';
-import { getItemProps } from '../utils/get-item-props';
 import { renderOptions } from '../utils/render-options';
 import customScrollToIndex from '../utils/scroll-to-index';
 import { fallbackItemHeight } from './common';
-import MultiselectItem from './multiselect-item';
 import { SelectListProps } from './plain-list';
 
 import styles from './styles.css.js';
@@ -76,13 +74,10 @@ const VirtualListOpen = forwardRef(
     );
 
     const stickySize = firstOptionSticky ? virtualItems[0].size : 0;
-    const hasScrollbar = !!width && width.inner < width.outer;
+    const withScrollbar = !!width && width.inner < width.outer;
 
-    const stickyOption = firstOptionSticky ? filteredOptions[0] : null;
-    const nonStickyVirtualItems = firstOptionSticky ? virtualItems.slice(1) : virtualItems;
-
-    const nonStickyOptions = renderOptions({
-      options: nonStickyVirtualItems.map(({ index }) => filteredOptions[index]),
+    const finalOptions = renderOptions({
+      options: virtualItems.map(({ index }) => filteredOptions[index]),
       getOptionProps,
       filteringValue,
       highlightType,
@@ -91,30 +86,13 @@ const VirtualListOpen = forwardRef(
       virtualItems,
       useInteractiveGroups,
       screenReaderContent,
-      ariaSetsize: filteredOptions.length,
-      startIndexAt: firstOptionSticky ? 1 : 0,
+      firstOptionSticky,
+      withScrollbar,
     });
 
     return (
       <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
-        {stickyOption ? (
-          <MultiselectItem
-            key={0}
-            {...getItemProps({
-              option: stickyOption,
-              index: 0,
-              getOptionProps,
-              filteringValue: '',
-              checkboxes: !!checkboxes,
-            })}
-            option={stickyOption}
-            screenReaderContent={screenReaderContent}
-            highlightType={highlightType.type}
-            withScrollbar={hasScrollbar}
-            sticky={true}
-          />
-        ) : null}
-        {nonStickyOptions}
+        {finalOptions}
         <div
           aria-hidden="true"
           key="total-size"

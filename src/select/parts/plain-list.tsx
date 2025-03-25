@@ -8,8 +8,6 @@ import { DropdownOption } from '../../internal/components/option/interfaces';
 import OptionsList from '../../internal/components/options-list';
 import { HighlightType } from '../../internal/components/options-list/utils/use-highlight-option';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
-import MultiselectItem from '../parts/multiselect-item';
-import { getItemProps } from '../utils/get-item-props';
 import { renderOptions } from '../utils/render-options';
 import scrollToIndex from '../utils/scroll-to-index';
 import { GetOptionProps, MenuProps } from '../utils/use-select';
@@ -83,31 +81,10 @@ const PlainList = (
 
   const withScrollbar = !!width && width.inner < width.outer;
 
-  const stickyOption = firstOptionSticky ? filteredOptions[0] : null;
-  const nonStickyFilteredOptions = firstOptionSticky ? filteredOptions.slice(1) : filteredOptions;
-
   return (
     <OptionsList {...menuProps} ref={mergedRef} stickyItemBlockSize={stickyOptionBlockSize}>
-      {stickyOption ? (
-        <MultiselectItem
-          key={0}
-          {...getItemProps({
-            option: stickyOption,
-            index: 0,
-            getOptionProps,
-            filteringValue: '',
-            checkboxes: !!checkboxes,
-          })}
-          ref={stickyOptionRef}
-          option={stickyOption}
-          screenReaderContent={screenReaderContent}
-          highlightType={highlightType.type}
-          withScrollbar={withScrollbar}
-          sticky={true}
-        />
-      ) : null}
       {renderOptions({
-        options: nonStickyFilteredOptions,
+        options: filteredOptions,
         getOptionProps,
         filteringValue,
         highlightType,
@@ -115,7 +92,9 @@ const PlainList = (
         hasDropdownStatus,
         useInteractiveGroups,
         screenReaderContent,
-        startIndexAt: firstOptionSticky ? 1 : 0,
+        firstOptionSticky,
+        stickyOptionRef,
+        withScrollbar,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>
