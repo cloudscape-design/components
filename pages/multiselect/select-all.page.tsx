@@ -68,8 +68,6 @@ export default function MultiselectPage() {
           .map((_, index) => ({
             value: `option${index + 10}`,
             label: `option${index + 10}`,
-            description: `option${index + 10}`,
-            tags: ['2-CPU', '2Gb RAM'],
           })),
       ]
     : baseOptions;
