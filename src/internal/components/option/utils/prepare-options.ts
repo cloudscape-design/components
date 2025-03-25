@@ -10,16 +10,20 @@ export function prepareOptions(
   options: SelectProps.Options,
   filteringType: SelectProps.FilteringType,
   filteringText: string,
-  extraOptions?: ReadonlyArray<DropdownOption>
+  // Options that are injected by the component, such as "select all".
+  // Not defined by the customer as an option but we treat it as such
+  // e.g, regarding keyboard navigation and accessibility.
+  metaOptions?: ReadonlyArray<DropdownOption>
 ) {
   const { flatOptions, parentMap } = flattenOptions(options);
   const filteredOptions = filteringType !== 'auto' ? flatOptions : filterOptions(flatOptions, filteringText);
-  const allOptions = extraOptions ? [...extraOptions, ...flatOptions] : flatOptions;
-  const allFilteredOptions = extraOptions ? [...extraOptions, ...filteredOptions] : filteredOptions;
-  generateTestIndexes(allFilteredOptions, parentMap.get.bind(parentMap));
+  const allOptions = metaOptions ? [...metaOptions, ...flatOptions] : flatOptions;
+  const visibleOptions = metaOptions ? [...metaOptions, ...filteredOptions] : filteredOptions;
+  generateTestIndexes(visibleOptions, parentMap.get.bind(parentMap));
   return {
     allOptions,
-    filteredOptions: allFilteredOptions,
+    filteredOptions,
+    visibleOptions,
     parentMap,
     totalCount: flatOptions.length,
     matchesCount: filteredOptions.length,

@@ -102,7 +102,7 @@ export function useMultiselect({
     statusType,
   });
   const useInteractiveGroups = true;
-  const { allOptions, filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+  const { allOptions, filteredOptions, visibleOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
     filteringValue,
@@ -123,9 +123,7 @@ export function useMultiselect({
     .filter(option => !option.option.disabled)
     .map(option => option.option);
 
-  const filteredNonParentOptions = filteredOptions
-    .filter(item => item.type !== 'parent' && item.type !== 'select-all')
-    .map(item => item.option);
+  const filteredNonParentOptions = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
 
   const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
   const isSomeSelected = selectedOptions.length > 0;
@@ -199,7 +197,7 @@ export function useMultiselect({
   } = useSelect({
     selectedOptions,
     updateSelectedOption,
-    options: filteredOptions,
+    options: visibleOptions,
     filteringType,
     onFocus,
     onBlur,
@@ -217,7 +215,7 @@ export function useMultiselect({
 
   const wrapperOnKeyDown = useNativeSearch({
     isEnabled: filteringType === 'none' && isOpen,
-    options: filteredOptions,
+    options: visibleOptions,
     highlightOption: highlightOption,
     highlightedOption: highlightedOption?.option,
     useInteractiveGroups,
@@ -296,7 +294,7 @@ export function useMultiselect({
     announcement,
     dropdownStatus,
     filteringValue,
-    filteredOptions,
+    visibleOptions,
     highlightType,
     scrollToIndex,
     getFilterProps,

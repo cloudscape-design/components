@@ -174,7 +174,7 @@ const InternalMultiselect = React.forwardRef(
             }
             menuProps={multiselectProps.getMenuProps()}
             getOptionProps={multiselectProps.getOptionProps}
-            filteredOptions={multiselectProps.filteredOptions}
+            filteredOptions={multiselectProps.visibleOptions}
             filteringValue={filteringValue}
             ref={multiselectProps.scrollToIndex}
             hasDropdownStatus={dropdownStatus.content !== null}
