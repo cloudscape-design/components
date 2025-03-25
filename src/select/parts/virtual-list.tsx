@@ -44,7 +44,6 @@ const VirtualListOpen = forwardRef(
     );
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
-
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,

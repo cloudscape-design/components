@@ -165,7 +165,7 @@ describe.each([false, true])('enableKeyboardNavigation=%s', enableKeyboardNaviga
         await page.keys(['Tab', 'Tab']);
         await page.keys(['ArrowDown', 'ArrowRight']);
       } else {
-        await page.keys(range(11).map(() => 'Tab'));
+        await page.keys(range(12).map(() => 'Tab'));
       }
       const targetRow = (expandableRows ? distributionIdRow1 : domainNameRow1) as [number, number];
       await expect(page.isFocused(cellEditButton$(...targetRow))).resolves.toBe(true);

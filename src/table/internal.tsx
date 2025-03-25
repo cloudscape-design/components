@@ -569,9 +569,10 @@ const InternalTable = React.forwardRef(
                             tableRole,
                           };
                           if (row.type === 'data') {
+                            const rowId = `${getTableItemKey(row.item)}`;
                             return (
                               <tr
-                                key={getTableItemKey(row.item)}
+                                key={rowId}
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
@@ -597,15 +598,17 @@ const InternalTable = React.forwardRef(
                                       onFocusDown: moveFocusDown,
                                       onFocusUp: moveFocusUp,
                                       rowIndex,
-                                      itemKey: `${getTableItemKey(row.item)}`,
+                                      itemKey: rowId,
                                     }}
                                     verticalAlign={cellVerticalAlign}
                                   />
                                 )}
 
                                 {visibleColumnDefinitions.map((column, colIndex) => {
-                                  const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                                  const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
+                                  const colId = `${getColumnKey(column, colIndex)}`;
+                                  const cellId = { row: rowId, col: colId };
+                                  const isEditing = cellEditing.checkEditing(cellId);
+                                  const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
                                   const isEditable = !!column.editConfig && !cellEditing.isLoading;
                                   const cellExpandableProps =
                                     isExpandable && colIndex === 0 ? expandableProps : undefined;
@@ -619,14 +622,14 @@ const InternalTable = React.forwardRef(
                                           selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
                                           root: 'component',
                                         },
-                                        item: `${getTableItemKey(row.item)}`,
+                                        item: rowId,
                                       } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
                                     },
                                   };
 
                                   return (
                                     <TableBodyCell
-                                      key={getColumnKey(column, colIndex)}
+                                      key={colId}
                                       {...sharedCellProps}
                                       resizableStyle={{
                                         width: column.width,
@@ -642,10 +645,8 @@ const InternalTable = React.forwardRef(
                                       isRowHeader={column.isRowHeader}
                                       successfulEdit={successfulEdit}
                                       resizableColumns={resizableColumns}
-                                      onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                                      onEditEnd={editCancelled =>
-                                        cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                                      }
+                                      onEditStart={() => cellEditing.startEdit(cellId)}
+                                      onEditEnd={editCancelled => cellEditing.completeEdit(cellId, editCancelled)}
                                       submitEdit={cellEditing.submitEdit}
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
