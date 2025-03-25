@@ -79,6 +79,19 @@ describe('Multiselect with "select all" control', () => {
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [options[1]] } }));
     });
 
+    test('does not deselect disabled options', () => {
+      const onChange = jest.fn();
+      const options = [{ value: '1', disabled: true }, { value: '2' }];
+      const wrapper = renderMultiselectWithSelectAll({
+        options,
+        selectedOptions: [options[0]],
+        onChange,
+      });
+      wrapper.openDropdown();
+      wrapper.clickSelectAll();
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: options } }));
+    });
+
     test('closes the dropdown after clicking when `keepOpen` is false', () => {
       const wrapper = renderMultiselectWithSelectAll({ keepOpen: false });
       wrapper.openDropdown();
@@ -97,67 +110,95 @@ describe('Multiselect with "select all" control', () => {
     expect(options.length).toBe(0);
     expect(dropdown.findSelectAll()!.getElement().getAttribute('aria-disabled')).toBe('true');
   });
-});
 
-describe('with filtering', () => {
-  test('does not change the selected state of non-visible options', () => {});
-});
-
-describe('i18n', () => {
-  test('uses i18nStrings.selectAllText from i18n provider', () => {
-    const { container } = render(
-      <TestI18nProvider messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text' } }}>
-        <Multiselect enableSelectAll={true} options={[]} selectedOptions={[]} />
-      </TestI18nProvider>
-    );
-
-    const wrapper = createWrapper(container).findMultiselect()!;
-    wrapper.openDropdown();
-    const selectAll = wrapper.findDropdown().findSelectAll()!;
-    expect(selectAll.getElement().textContent).toBe('Custom Select all text');
-  });
-
-  test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
-    const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
-    wrapper.openDropdown();
-    const selectAll = wrapper.findDropdown().findSelectAll()!;
-    expect(selectAll.getElement().textContent).toBe('Custom Select all text');
-  });
-
-  test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
-    const { container } = render(
-      <TestI18nProvider
-        messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text from i18n provider' } }}
-      >
-        <Multiselect
-          enableSelectAll={true}
-          options={[]}
-          selectedOptions={[]}
-          i18nStrings={{ selectAllText: 'Custom Select all text from i18nStrings' }}
-        />
-      </TestI18nProvider>
-    );
-
-    const wrapper = createWrapper(container).findMultiselect()!;
-    wrapper.openDropdown();
-    const selectAll = wrapper.findDropdown().findSelectAll()!;
-    expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
-  });
-});
-
-describe('Test utils', () => {
-  test('`selectAll` throws an error if the dropdown is not open', () => {
-    const wrapper = renderMultiselectWithSelectAll();
-    expect(() => {
+  describe('with filtering', () => {
+    test('does not select non-visible options', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({
+        filteringType: 'auto',
+        onChange,
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('First option');
       wrapper.clickSelectAll();
-    }).toThrow();
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { selectedOptions: [optionsWithGroups[0]] } })
+      );
+    });
+
+    test('does not deselect non-visible options', () => {
+      const onChange = jest.fn();
+      const selectedOptions = [optionsWithGroups[0]];
+      const wrapper = renderMultiselectWithSelectAll({
+        filteringType: 'auto',
+        onChange,
+        selectedOptions,
+      });
+      wrapper.openDropdown();
+      wrapper.findFilteringInput()!.setInputValue('Fourth option');
+      wrapper.clickSelectAll();
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { selectedOptions: [...selectedOptions, optionsWithGroups[2]] } })
+      );
+    });
   });
 
-  test('`selectAll` throws an error if the "select all" element is not present', () => {
-    const wrapper = renderMultiselect();
-    wrapper.openDropdown();
-    expect(() => {
-      wrapper.clickSelectAll();
-    }).toThrow();
+  describe('i18n', () => {
+    test('uses i18nStrings.selectAllText from i18n provider', () => {
+      const { container } = render(
+        <TestI18nProvider messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text' } }}>
+          <Multiselect enableSelectAll={true} options={[]} selectedOptions={[]} />
+        </TestI18nProvider>
+      );
+
+      const wrapper = createWrapper(container).findMultiselect()!;
+      wrapper.openDropdown();
+      const selectAll = wrapper.findDropdown().findSelectAll()!;
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
+    });
+
+    test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
+      const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
+      wrapper.openDropdown();
+      const selectAll = wrapper.findDropdown().findSelectAll()!;
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
+    });
+
+    test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
+      const { container } = render(
+        <TestI18nProvider
+          messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text from i18n provider' } }}
+        >
+          <Multiselect
+            enableSelectAll={true}
+            options={[]}
+            selectedOptions={[]}
+            i18nStrings={{ selectAllText: 'Custom Select all text from i18nStrings' }}
+          />
+        </TestI18nProvider>
+      );
+
+      const wrapper = createWrapper(container).findMultiselect()!;
+      wrapper.openDropdown();
+      const selectAll = wrapper.findDropdown().findSelectAll()!;
+      expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
+    });
+  });
+
+  describe('Test utils', () => {
+    test('`selectAll` throws an error if the dropdown is not open', () => {
+      const wrapper = renderMultiselectWithSelectAll();
+      expect(() => {
+        wrapper.clickSelectAll();
+      }).toThrow();
+    });
+
+    test('`selectAll` throws an error if the "select all" element is not present', () => {
+      const wrapper = renderMultiselect();
+      wrapper.openDropdown();
+      expect(() => {
+        wrapper.clickSelectAll();
+      }).toThrow();
+    });
   });
 });
