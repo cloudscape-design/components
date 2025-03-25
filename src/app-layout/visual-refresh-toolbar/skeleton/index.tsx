@@ -146,7 +146,8 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
             !toolsOpen && styles['panel-hidden'],
             sharedStyles['with-motion-horizontal'],
             navigationOpen && !toolsOpen && styles['unfocusable-mobile'],
-            toolsOpen && styles['tools-open']
+            toolsOpen && styles['tools-open'],
+            drawerFocusMode && styles.hidden
           )}
         >
           {tools}

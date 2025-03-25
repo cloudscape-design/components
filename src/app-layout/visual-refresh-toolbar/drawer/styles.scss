@@ -78,6 +78,15 @@
       align-self: start;
     }
 
+    > .drawer-focus-mode-button {
+      grid-column: 2;
+      grid-row: 2;
+      z-index: 1;
+      align-self: start;
+      display: flex;
+      justify-content: end;
+    }
+
     > .drawer-content {
       grid-column: 1 / span 4;
       grid-row: 1 / span 2;

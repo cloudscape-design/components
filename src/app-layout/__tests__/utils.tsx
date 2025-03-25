@@ -195,5 +195,11 @@ export const getGlobalDrawersTestUtils = (wrapper: AppLayoutWrapper) => {
         `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-close-button']}`
       );
     },
+
+    findFocusModeButtonByActiveDrawerId(id: string): ElementWrapper | null {
+      return wrapper.find(
+        `.${testutilStyles['active-drawer']}[data-testid="awsui-app-layout-drawer-${id}"] .${testutilStyles['active-drawer-focus-mode-button']}`
+      );
+    },
   };
 };

@@ -135,6 +135,19 @@ function AppLayoutGlobalDrawerImplementation({
               className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
               data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
             >
+              {activeGlobalDrawer?.isExpandable && (
+                <div className={styles['drawer-focus-mode-button']}>
+                  <InternalButton
+                    ariaLabel={activeGlobalDrawer?.ariaLabels?.focusModeButton}
+                    className={testutilStyles['active-drawer-focus-mode-button']}
+                    formAction="none"
+                    ariaExpanded={isExpanded}
+                    iconName={isExpanded ? 'shrink' : 'expand'}
+                    onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
+                    variant="icon"
+                  />
+                </div>
+              )}
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}
@@ -149,16 +162,6 @@ function AppLayoutGlobalDrawerImplementation({
                 />
               </div>
               <div className={styles['drawer-content']} style={{ blockSize: drawerHeight }}>
-                {activeGlobalDrawer?.isExpandable && expandedDrawerId !== activeDrawerId && (
-                  <button
-                    onClick={() => {
-                      setExpandedDrawerId(activeDrawerId);
-                    }}
-                  >
-                    expand to focus mode
-                  </button>
-                )}
-                {isExpanded && <button onClick={() => setExpandedDrawerId(undefined)}>quit focus mode</button>}
                 {activeGlobalDrawer?.content}
               </div>
             </div>
