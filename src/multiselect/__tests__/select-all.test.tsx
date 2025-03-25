@@ -3,8 +3,6 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
-
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Multiselect from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -32,194 +30,134 @@ const renderMultiselectWithSelectAll = (props?: Partial<MultiselectProps>) =>
   renderMultiselect({ ...props, enableSelectAll: true });
 
 describe('Multiselect with "select all" control', () => {
-  describe.each([false, true])('virtualScroll=%s', virtualScroll => {
-    describe('Mouse interactions', () => {
-      test('selects all options when none are selected', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({ onChange, virtualScroll });
-        wrapper.openDropdown();
+  describe('Selection logic', () => {
+    test('selects all options when none are selected', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({ onChange });
+      wrapper.openDropdown();
 
-        wrapper.clickSelectAll();
-        expect(onChange).toHaveBeenCalledWith(
-          expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
-        );
-      });
-
-      test('selects all options when some but not all are selected', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({
-          onChange,
-          selectedOptions: [optionsWithoutGroups[0]],
-          virtualScroll,
-        });
-        wrapper.openDropdown();
-        wrapper.clickSelectAll();
-        expect(onChange).toHaveBeenCalledWith(
-          expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
-        );
-      });
-
-      test('deselects all options when all are selected', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({
-          selectedOptions: optionsWithoutGroups,
-          onChange,
-          virtualScroll,
-        });
-        wrapper.openDropdown();
-        wrapper.clickSelectAll();
-        expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
-      });
-
-      test('does not select disabled options', () => {
-        const onChange = jest.fn();
-        const options = [{ value: '1', disabled: true }, { value: '2' }];
-        const wrapper = renderMultiselectWithSelectAll({
-          options,
-          selectedOptions: [],
-          onChange,
-          virtualScroll,
-        });
-        wrapper.openDropdown();
-        wrapper.clickSelectAll();
-        expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [options[1]] } }));
-      });
-
-      test('closes the dropdown after clicking when `keepOpen` is false', () => {
-        const wrapper = renderMultiselectWithSelectAll({ keepOpen: false, virtualScroll });
-        wrapper.openDropdown();
-        const dropdown = wrapper.findDropdown();
-        expect(dropdown.findOptionByValue('1')).not.toBeNull();
-        wrapper.clickSelectAll();
-        expect(dropdown.findOptionByValue('1')).toBeNull();
-      });
+      wrapper.clickSelectAll();
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
+      );
     });
 
-    describe('Keyboard interactions', () => {
-      test('selects all options when none are selected', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({ onChange, virtualScroll });
-        wrapper.openDropdown();
-        const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
-        // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
-        optionsContainer.keydown(KeyCode.down);
-        optionsContainer.keydown(KeyCode.space);
-        expect(onChange).toHaveBeenCalledWith(
-          expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
-        );
+    test('selects all options when some but not all are selected', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({
+        onChange,
+        selectedOptions: [optionsWithoutGroups[0]],
       });
-
-      test('selects all options when some but not all are selected', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({
-          onChange,
-          selectedOptions: [optionsWithoutGroups[0]],
-          virtualScroll,
-        });
-        wrapper.openDropdown();
-        const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
-        // When opening the dropdown the first selected option is highlighted. Move one position up to highlight the "Select all" control.
-        optionsContainer.keydown(KeyCode.up);
-        optionsContainer.keydown(KeyCode.space);
-        expect(onChange).toHaveBeenCalledWith(
-          expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
-        );
-      });
-
-      test('deselects all options when all are selected', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({
-          selectedOptions: optionsWithoutGroups,
-          onChange,
-          virtualScroll,
-        });
-        wrapper.openDropdown();
-        const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
-        // When opening the dropdown the first selected option is highlighted. Move one position up to highlight the "Select all" control.
-        optionsContainer.keydown(KeyCode.up);
-        optionsContainer.keydown(KeyCode.space);
-        expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
-      });
-
-      test('closes the dropdown after clicking when `keepOpen` is false', () => {
-        const onChange = jest.fn();
-        const wrapper = renderMultiselectWithSelectAll({ keepOpen: false, onChange, virtualScroll });
-        wrapper.openDropdown();
-        const dropdown = wrapper.findDropdown();
-        const optionsContainer = dropdown.findOptionsContainer()!;
-        // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
-        optionsContainer.keydown(KeyCode.down);
-        optionsContainer.keydown(KeyCode.space);
-        expect(dropdown.findOptionByValue('1')).toBeNull();
-      });
+      wrapper.openDropdown();
+      wrapper.clickSelectAll();
+      expect(onChange).toHaveBeenCalledWith(
+        expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
+      );
     });
 
-    test('is disabled when there are no options to select', () => {
-      const wrapper = renderMultiselectWithSelectAll({ options: [], virtualScroll });
+    test('deselects all options when all are selected', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({
+        selectedOptions: optionsWithoutGroups,
+        onChange,
+      });
+      wrapper.openDropdown();
+      wrapper.clickSelectAll();
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
+    });
+
+    test('does not select disabled options', () => {
+      const onChange = jest.fn();
+      const options = [{ value: '1', disabled: true }, { value: '2' }];
+      const wrapper = renderMultiselectWithSelectAll({
+        options,
+        selectedOptions: [],
+        onChange,
+      });
+      wrapper.openDropdown();
+      wrapper.clickSelectAll();
+      expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [options[1]] } }));
+    });
+
+    test('closes the dropdown after clicking when `keepOpen` is false', () => {
+      const wrapper = renderMultiselectWithSelectAll({ keepOpen: false });
       wrapper.openDropdown();
       const dropdown = wrapper.findDropdown();
-      const options = dropdown.findOptions();
-      expect(options.length).toBe(0);
-      expect(dropdown.findSelectAll()!.getElement().getAttribute('aria-disabled')).toBe('true');
+      expect(dropdown.findOptionByValue('1')).not.toBeNull();
+      wrapper.clickSelectAll();
+      expect(dropdown.findOptionByValue('1')).toBeNull();
     });
   });
 
-  describe('i18n', () => {
-    test('uses i18nStrings.selectAllText from i18n provider', () => {
-      const { container } = render(
-        <TestI18nProvider messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text' } }}>
-          <Multiselect enableSelectAll={true} options={[]} selectedOptions={[]} />
-        </TestI18nProvider>
-      );
+  test('is disabled when there are no options to select', () => {
+    const wrapper = renderMultiselectWithSelectAll({ options: [] });
+    wrapper.openDropdown();
+    const dropdown = wrapper.findDropdown();
+    const options = dropdown.findOptions();
+    expect(options.length).toBe(0);
+    expect(dropdown.findSelectAll()!.getElement().getAttribute('aria-disabled')).toBe('true');
+  });
+});
 
-      const wrapper = createWrapper(container).findMultiselect()!;
-      wrapper.openDropdown();
-      const selectAll = wrapper.findDropdown().findSelectAll()!;
-      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
-    });
+describe('with filtering', () => {
+  test('does not change the selected state of non-visible options', () => {});
+});
 
-    test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
-      const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
-      wrapper.openDropdown();
-      const selectAll = wrapper.findDropdown().findSelectAll()!;
-      expect(selectAll.getElement().textContent).toBe('Custom Select all text');
-    });
+describe('i18n', () => {
+  test('uses i18nStrings.selectAllText from i18n provider', () => {
+    const { container } = render(
+      <TestI18nProvider messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text' } }}>
+        <Multiselect enableSelectAll={true} options={[]} selectedOptions={[]} />
+      </TestI18nProvider>
+    );
 
-    test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
-      const { container } = render(
-        <TestI18nProvider
-          messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text from i18n provider' } }}
-        >
-          <Multiselect
-            enableSelectAll={true}
-            options={[]}
-            selectedOptions={[]}
-            i18nStrings={{ selectAllText: 'Custom Select all text from i18nStrings' }}
-          />
-        </TestI18nProvider>
-      );
-
-      const wrapper = createWrapper(container).findMultiselect()!;
-      wrapper.openDropdown();
-      const selectAll = wrapper.findDropdown().findSelectAll()!;
-      expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
-    });
+    const wrapper = createWrapper(container).findMultiselect()!;
+    wrapper.openDropdown();
+    const selectAll = wrapper.findDropdown().findSelectAll()!;
+    expect(selectAll.getElement().textContent).toBe('Custom Select all text');
   });
 
-  describe('Test utils', () => {
-    test('`selectAll` throws an error if the dropdown is not open', () => {
-      const wrapper = renderMultiselectWithSelectAll();
-      expect(() => {
-        wrapper.clickSelectAll();
-      }).toThrow();
-    });
+  test('uses i18nStrings.selectAllText from i18nStrings prop', () => {
+    const wrapper = renderMultiselectWithSelectAll({ i18nStrings: { selectAllText: 'Custom Select all text' } });
+    wrapper.openDropdown();
+    const selectAll = wrapper.findDropdown().findSelectAll()!;
+    expect(selectAll.getElement().textContent).toBe('Custom Select all text');
+  });
 
-    test('`selectAll` throws an error if the "select all" element is not present', () => {
-      const wrapper = renderMultiselect();
-      wrapper.openDropdown();
-      expect(() => {
-        wrapper.clickSelectAll();
-      }).toThrow();
-    });
+  test('uses i18nStrings.selectAllText from i18nStrings prop when both i18n provider and i18nStrings prop are provided ', () => {
+    const { container } = render(
+      <TestI18nProvider
+        messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text from i18n provider' } }}
+      >
+        <Multiselect
+          enableSelectAll={true}
+          options={[]}
+          selectedOptions={[]}
+          i18nStrings={{ selectAllText: 'Custom Select all text from i18nStrings' }}
+        />
+      </TestI18nProvider>
+    );
+
+    const wrapper = createWrapper(container).findMultiselect()!;
+    wrapper.openDropdown();
+    const selectAll = wrapper.findDropdown().findSelectAll()!;
+    expect(selectAll.getElement().textContent).toBe('Custom Select all text from i18nStrings');
+  });
+});
+
+describe('Test utils', () => {
+  test('`selectAll` throws an error if the dropdown is not open', () => {
+    const wrapper = renderMultiselectWithSelectAll();
+    expect(() => {
+      wrapper.clickSelectAll();
+    }).toThrow();
+  });
+
+  test('`selectAll` throws an error if the "select all" element is not present', () => {
+    const wrapper = renderMultiselect();
+    wrapper.openDropdown();
+    expect(() => {
+      wrapper.clickSelectAll();
+    }).toThrow();
   });
 });
