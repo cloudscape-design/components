@@ -200,5 +200,11 @@ describe('Multiselect with "select all" control', () => {
         wrapper.clickSelectAll();
       }).toThrow();
     });
+
+    test('does not alter option test indices', () => {
+      const wrapper = renderMultiselectWithSelectAll();
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown().findOption(1)!.findLabel().getElement().textContent).toBe('First option');
+    });
   });
 });

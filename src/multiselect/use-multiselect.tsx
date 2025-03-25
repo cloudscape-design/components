@@ -7,7 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 
 import { useInternalI18n } from '../i18n/context';
 import { DropdownStatusProps, useDropdownStatus } from '../internal/components/dropdown-status';
-import { OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
+import { DropdownOption, OptionDefinition, OptionGroup } from '../internal/components/option/interfaces';
 import { isGroup } from '../internal/components/option/utils/filter-options';
 import { prepareOptions } from '../internal/components/option/utils/prepare-options';
 import { fireNonCancelableEvent } from '../internal/events';
@@ -102,20 +102,19 @@ export function useMultiselect({
     statusType,
   });
   const useInteractiveGroups = true;
-  const { flatOptions, filteredOptions, visibleOptions, parentMap, totalCount, matchesCount } = prepareOptions(
+  const { flatOptions, filteredOptions, parentMap, totalCount, matchesCount } = prepareOptions(
     options,
     filteringType,
-    filteringValue,
-    enableSelectAll
-      ? [
-          {
-            type: 'select-all',
-            afterHeader: filteringType !== 'none',
-            option: { label: i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText) },
-          },
-        ]
-      : undefined
+    filteringValue
   );
+
+  const selectAllOption: DropdownOption = {
+    type: 'select-all',
+    afterHeader: filteringType !== 'none',
+    option: { label: i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText) },
+  };
+
+  const visibleOptions = enableSelectAll ? [selectAllOption, ...filteredOptions] : filteredOptions;
 
   // Includes visible and non-visible (filtered out) options
   const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
