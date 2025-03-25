@@ -17,7 +17,6 @@ type DemoContext = React.Context<
     expandToViewport?: boolean;
     inlineTokens?: boolean;
     manyOptions?: boolean;
-    tokenLimit?: number;
     virtualScroll?: boolean;
     withDisabledOptions?: boolean;
     withFiltering?: boolean;
@@ -207,14 +206,6 @@ export default function MultiselectPage() {
               />{' '}
               Many options
             </label>
-            <label>
-              Token limit{' '}
-              <input
-                type="number"
-                value={urlParams.tokenLimit}
-                onChange={e => setUrlParams({ tokenLimit: parseInt(e.target.value) })}
-              />
-            </label>
           </SpaceBetween>
 
           <ScreenshotArea>
@@ -231,7 +222,6 @@ export default function MultiselectPage() {
               }}
               ariaLabel={urlParams.inlineTokens ? getInlineAriaLabel(selectedOptions) : undefined}
               inlineTokens={urlParams.inlineTokens}
-              tokenLimit={urlParams.tokenLimit}
               expandToViewport={urlParams.expandToViewport}
               keepOpen={!urlParams.closeAfter}
               virtualScroll={urlParams.virtualScroll}
