@@ -39,7 +39,7 @@ describe('Multiselect with "select all" control', () => {
         const wrapper = renderMultiselectWithSelectAll({ onChange, virtualScroll });
         wrapper.openDropdown();
 
-        wrapper.selectAll();
+        wrapper.clickSelectAll();
         expect(onChange).toHaveBeenCalledWith(
           expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
         );
@@ -53,7 +53,7 @@ describe('Multiselect with "select all" control', () => {
           virtualScroll,
         });
         wrapper.openDropdown();
-        wrapper.selectAll();
+        wrapper.clickSelectAll();
         expect(onChange).toHaveBeenCalledWith(
           expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
         );
@@ -67,7 +67,7 @@ describe('Multiselect with "select all" control', () => {
           virtualScroll,
         });
         wrapper.openDropdown();
-        wrapper.selectAll();
+        wrapper.clickSelectAll();
         expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: [] } }));
       });
 
@@ -76,7 +76,7 @@ describe('Multiselect with "select all" control', () => {
         wrapper.openDropdown();
         const dropdown = wrapper.findDropdown();
         expect(dropdown.findOptionByValue('1')).not.toBeNull();
-        wrapper.selectAll();
+        wrapper.clickSelectAll();
         expect(dropdown.findOptionByValue('1')).toBeNull();
       });
     });
@@ -196,7 +196,7 @@ describe('Multiselect with "select all" control', () => {
     test('`selectAll` throws an error if the dropdown is not open', () => {
       const wrapper = renderMultiselectWithSelectAll();
       expect(() => {
-        wrapper.selectAll();
+        wrapper.clickSelectAll();
       }).toThrow();
     });
 
@@ -204,7 +204,7 @@ describe('Multiselect with "select all" control', () => {
       const wrapper = renderMultiselect();
       wrapper.openDropdown();
       expect(() => {
-        wrapper.selectAll();
+        wrapper.clickSelectAll();
       }).toThrow();
     });
   });

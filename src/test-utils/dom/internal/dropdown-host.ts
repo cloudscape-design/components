@@ -130,18 +130,20 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
    * Example:
    * ```
    * wrapper.openDropdown();
-   * wrapper.selectAll();
+   * wrapper.clickSelectAll();
    * ```
    *
    * @param options
    * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
    */
   @usesDom
-  selectAll(options = { expandToViewport: false }): void {
+  clickSelectAll(options = { expandToViewport: false }): void {
     this.assertOpenDropdown(options);
     const selectAll = this.findDropdown().findSelectAll();
     if (!selectAll) {
-      throw new Error(`Can't select all options, because there is no "select all" option.`);
+      throw new Error(
+        'Can\'t select all options, because there is no "select all" option. Make sure that this Multiselect has the `enableSelectAll` property set to true.'
+      );
     }
     selectAll.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
   }
