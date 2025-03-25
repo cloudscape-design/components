@@ -6,6 +6,7 @@ import { render } from '@testing-library/react';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
 import Multiselect from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
+import { KeyCode } from '../../internal/keycode';
 import { MultiselectProps } from '../interfaces';
 import { optionsWithGroups } from './common';
 
@@ -91,15 +92,15 @@ describe('Multiselect with "select all" control', () => {
       wrapper.clickSelectAll();
       expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { selectedOptions: options } }));
     });
+  });
 
-    test('closes the dropdown after clicking when `keepOpen` is false', () => {
-      const wrapper = renderMultiselectWithSelectAll({ keepOpen: false });
-      wrapper.openDropdown();
-      const dropdown = wrapper.findDropdown();
-      expect(dropdown.findOptionByValue('1')).not.toBeNull();
-      wrapper.clickSelectAll();
-      expect(dropdown.findOptionByValue('1')).toBeNull();
-    });
+  test('closes the dropdown after clicking when `keepOpen` is false', () => {
+    const wrapper = renderMultiselectWithSelectAll({ keepOpen: false });
+    wrapper.openDropdown();
+    const dropdown = wrapper.findDropdown();
+    expect(dropdown.findOptionByValue('1')).not.toBeNull();
+    wrapper.clickSelectAll();
+    expect(dropdown.findOptionByValue('1')).toBeNull();
   });
 
   test('is disabled when there are no options to select', () => {
@@ -140,6 +141,35 @@ describe('Multiselect with "select all" control', () => {
       expect(onChange).toHaveBeenCalledWith(
         expect.objectContaining({ detail: { selectedOptions: [...selectedOptions, optionsWithGroups[2]] } })
       );
+    });
+  });
+
+  describe('Keyboard interactions', () => {
+    test('closes the dropdown after clicking when `keepOpen` is false', () => {
+      const onChange = jest.fn();
+      const wrapper = renderMultiselectWithSelectAll({ keepOpen: false, onChange });
+      wrapper.openDropdown();
+      const dropdown = wrapper.findDropdown();
+      const optionsContainer = dropdown.findOptionsContainer()!;
+      // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
+      optionsContainer.keydown(KeyCode.down);
+      optionsContainer.keydown(KeyCode.space);
+      expect(dropdown.findOptionByValue('1')).toBeNull();
+    });
+
+    describe.each([false, true])('virtuaScroll=%s', virtualScroll => {
+      test('selects all options when none are selected', () => {
+        const onChange = jest.fn();
+        const wrapper = renderMultiselectWithSelectAll({ onChange, virtualScroll });
+        wrapper.openDropdown();
+        const optionsContainer = wrapper.findDropdown().findOptionsContainer()!;
+        // When opening the dropdown no option gets highlighted if none is selected. Move one position down to highlight the "Select all" control.
+        optionsContainer.keydown(KeyCode.down);
+        optionsContainer.keydown(KeyCode.space);
+        expect(onChange).toHaveBeenCalledWith(
+          expect.objectContaining({ detail: { selectedOptions: optionsWithoutGroups } })
+        );
+      });
     });
   });
 
