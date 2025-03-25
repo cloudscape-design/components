@@ -20,7 +20,7 @@ interface RenderOptionProps {
   useInteractiveGroups?: boolean;
   screenReaderContent?: string;
   ariaSetsize?: number;
-  indexStartAt?: number;
+  startIndexAt?: number;
 }
 
 export const renderOptions = ({
@@ -34,10 +34,10 @@ export const renderOptions = ({
   useInteractiveGroups,
   screenReaderContent,
   ariaSetsize,
-  indexStartAt = 0,
+  startIndexAt = 0,
 }: RenderOptionProps) => {
   return options.map((option, index) => {
-    const fullListIndex = index + indexStartAt;
+    const fullListIndex = index + startIndexAt;
     const virtualItem = virtualItems && virtualItems[fullListIndex];
     const globalIndex = virtualItem ? virtualItem.index : fullListIndex;
     const props = getItemProps({

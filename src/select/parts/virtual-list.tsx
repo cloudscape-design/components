@@ -92,7 +92,7 @@ const VirtualListOpen = forwardRef(
       useInteractiveGroups,
       screenReaderContent,
       ariaSetsize: filteredOptions.length,
-      indexStartAt: firstOptionSticky ? 1 : 0,
+      startIndexAt: firstOptionSticky ? 1 : 0,
     });
 
     return (

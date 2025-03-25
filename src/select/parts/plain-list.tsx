@@ -109,7 +109,7 @@ const PlainList = (
         hasDropdownStatus,
         useInteractiveGroups,
         screenReaderContent,
-        indexStartAt: firstOptionSticky ? 1 : 0,
+        startIndexAt: firstOptionSticky ? 1 : 0,
       })}
       {listBottom ? (
         <li role="option" className={styles['list-bottom']}>
