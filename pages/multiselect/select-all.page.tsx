@@ -223,7 +223,7 @@ export default function MultiselectPage() {
               deselectAriaLabel={deselectAriaLabel}
               filteringType={urlParams.withFiltering ? 'auto' : 'none'}
               options={options}
-              i18nStrings={i18nStrings}
+              i18nStrings={{ ...i18nStrings, selectAllText: 'Select all' }}
               enableSelectAll={true}
               placeholder={'Choose option'}
               onChange={event => {
