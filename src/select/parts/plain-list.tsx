@@ -52,7 +52,7 @@ const PlainList = (
   ref: React.Ref<SelectListProps.SelectListRef>
 ) => {
   const stickyOptionRef = useRef<HTMLDivElement>(null);
-  const [stickyOptionBlockSize, setStickyOptionBlockSize] = useState(fallbackItemHeight);
+  const [stickyOptionBlockSize, setStickyOptionBlockSize] = useState(firstOptionSticky ? fallbackItemHeight : 0);
 
   const [width, menuMeasureRef] = useContainerQuery(rect => {
     if (stickyOptionRef.current) {
