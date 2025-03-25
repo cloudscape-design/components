@@ -56,6 +56,11 @@ const PlainList = (
 
   const [width, menuMeasureRef] = useContainerQuery(rect => {
     if (stickyOptionRef.current) {
+      // Cannot use container query on the sticky option individually because it is not rendered until the dropdown is open.
+      // Not expecting the sticky option to change size without the dropdown also changing size.
+
+      // The effects of using the sticky option block size to set the menu scroll padding are covered by integration tests.
+      // eslint-disable-next-line
       setStickyOptionBlockSize(stickyOptionRef.current.clientHeight);
     }
     return { inner: rect.contentBoxWidth, outer: rect.borderBoxWidth };
