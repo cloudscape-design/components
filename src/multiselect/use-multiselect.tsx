@@ -117,11 +117,11 @@ export function useMultiselect({
       : undefined
   );
 
-  const allNonParentOptions = allOptions.filter(item => item.type !== 'parent' && item.type !== 'select-all');
-
-  const allSelectableOptions = allNonParentOptions
-    .filter(option => !option.option.disabled)
+  const allNonParentOptions = allOptions
+    .filter(item => item.type !== 'parent' && item.type !== 'select-all')
     .map(option => option.option);
+
+  const allSelectableOptions = allNonParentOptions.filter(option => !option.disabled);
 
   const filteredNonParentOptions = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
 
@@ -132,16 +132,16 @@ export function useMultiselect({
   const isAllSelectableSelected =
     isAllVisibleSelected && allSelectableOptions.every(option => selectedValues.has(option.value));
   const isAllSelected =
-    isAllSelectableSelected && allNonParentOptions.every(option => selectedValues.has(option.option.value));
+    isAllSelectableSelected && allNonParentOptions.every(option => selectedValues.has(option.value));
 
   const toggleAll = useCallback(() => {
     const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
     fireNonCancelableEvent(onChange, {
       selectedOptions: isAllVisibleSelected
         ? selectedOptions.filter(option => !filteredNonParentOptionValues.has(option.value))
-        : allNonParentOptions
-            .filter(({ option: { value } }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value))
-            .map(option => option.option),
+        : allNonParentOptions.filter(
+            ({ value }) => selectedValues.has(value) || filteredNonParentOptionValues.has(value)
+          ),
     });
   }, [allNonParentOptions, filteredNonParentOptions, isAllVisibleSelected, onChange, selectedOptions, selectedValues]);
 
