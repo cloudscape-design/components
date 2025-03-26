@@ -50,8 +50,8 @@
   border-start-end-radius: styles.$control-border-radius;
   border-end-start-radius: styles.$control-border-radius;
   border-end-end-radius: styles.$control-border-radius;
-  border-block: awsui.$border-width-form-control solid awsui.$color-border-input-default;
-  border-inline: awsui.$border-width-form-control solid awsui.$color-border-input-default;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-default;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-default;
   @include styles.font-body-m;
   block-size: awsui.$size-vertical-input;
 

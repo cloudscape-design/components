@@ -17759,7 +17759,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -20284,7 +20284,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -22809,7 +22809,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -25334,7 +25334,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -27859,7 +27859,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -30384,7 +30384,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -32909,7 +32909,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -35434,7 +35434,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         },
         "border-width-field": {
           "$description": "The border width of form fields.",
-          "$value": "2px",
+          "$value": "1px",
         },
         "border-width-popover": {
           "$description": "The border width of popovers.",
@@ -37959,7 +37959,7 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     },
     "border-width-field": {
       "$description": "The border width of form fields.",
-      "$value": "2px",
+      "$value": "1px",
     },
     "border-width-popover": {
       "$description": "The border width of popovers.",

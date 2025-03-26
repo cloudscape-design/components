@@ -114,8 +114,8 @@
   // See focus-highlight above.
   outline: 2px dotted transparent;
 
-  border-block: awsui.$border-width-form-control solid awsui.$color-border-input-focused;
-  border-inline: awsui.$border-width-form-control solid awsui.$color-border-input-focused;
+  border-block: awsui.$border-width-field solid awsui.$color-border-input-focused;
+  border-inline: awsui.$border-width-field solid awsui.$color-border-input-focused;
   border-start-start-radius: $border-radius;
   border-start-end-radius: $border-radius;
   border-end-start-radius: $border-radius;
@@ -238,8 +238,8 @@
     inset-inline-start: 0px;
     inset-inline-end: 0px;
     background-color: transparent;
-    border-block: awsui.$border-width-field solid awsui.$color-border-dropdown-container;
-    border-inline: awsui.$border-width-field solid awsui.$color-border-dropdown-container;
+    border-block: awsui.$border-width-popover solid awsui.$color-border-dropdown-container;
+    border-inline: awsui.$border-width-popover solid awsui.$color-border-dropdown-container;
     border-start-start-radius: awsui.$border-radius-dropdown;
     border-start-end-radius: awsui.$border-radius-dropdown;
     border-end-start-radius: awsui.$border-radius-dropdown;
