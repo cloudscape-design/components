@@ -132,7 +132,11 @@ $inlineLabel-border-radius: 2px;
 }
 
 .inline-label {
-  background: awsui.$color-background-input-default;
+  background: awsui.$color-background-container-header;
+  border-start-start-radius: $inlineLabel-border-radius;
+  border-start-end-radius: $inlineLabel-border-radius;
+  border-end-start-radius: $inlineLabel-border-radius;
+  border-end-end-radius: $inlineLabel-border-radius;
   box-sizing: border-box;
   display: inline-block;
   color: awsui.$color-text-form-label;
@@ -147,14 +151,6 @@ $inlineLabel-border-radius: 2px;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
   z-index: 1;
-
-  &.inline-label-disabled {
-    background: awsui.$color-background-container-header;
-    border-start-start-radius: $inlineLabel-border-radius;
-    border-start-end-radius: $inlineLabel-border-radius;
-    border-end-start-radius: $inlineLabel-border-radius;
-    border-end-end-radius: $inlineLabel-border-radius;
-  }
 }
 
 .disabled-reason-tooltip {
