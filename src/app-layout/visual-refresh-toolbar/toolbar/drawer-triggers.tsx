@@ -119,7 +119,12 @@ export function DrawerTriggers({
       ref={triggersContainerRef}
       role="region"
     >
-      <div className={styles['drawers-trigger-content']} role="toolbar" aria-orientation="horizontal">
+      <div
+        className={styles['drawers-trigger-content']}
+        aria-label={ariaLabels?.drawers}
+        role="toolbar"
+        aria-orientation="horizontal"
+      >
         {splitPanelToggleProps && (
           <>
             <TriggerButton
@@ -193,7 +198,7 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
-                onActiveGlobalDrawersChange && onActiveGlobalDrawersChange(item.id, { initiatedByUserAction: true });
+                onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
               }}
               ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
               selected={activeGlobalDrawersIds.includes(item.id)}

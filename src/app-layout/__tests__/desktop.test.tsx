@@ -256,9 +256,9 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
     const { wrapper } = renderComponent(
       <AppLayout toolsHide={true} drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />
     );
-    fireEvent.click(screen.getByLabelText('Drawers'));
+    fireEvent.click(screen.getByLabelText('Drawers', { selector: '[role=region]' }));
     expect(wrapper.findActiveDrawer()).toBeTruthy();
-    fireEvent.click(screen.getByLabelText('Drawers'));
+    fireEvent.click(screen.getByLabelText('Drawers', { selector: '[role=region]' }));
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
@@ -266,11 +266,11 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
     const { wrapper } = renderComponent(
       <AppLayout toolsHide={true} drawers={manyDrawers} ariaLabels={{ drawers: 'Drawers' }} />
     );
-    fireEvent.click(screen.getByLabelText('Drawers'));
+    fireEvent.click(screen.getByLabelText('Drawers', { selector: '[role=region]' }));
     expect(wrapper.findActiveDrawer()).toBeFalsy();
   });
 
-  test('renders roles only when aria labels are not provided', () => {
+  test('renders roles only when aria labels are not provided (classic)', () => {
     const { wrapper } = renderComponent(<AppLayout navigationHide={true} drawers={[testDrawerWithoutLabels]} />);
     const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
       'region'
@@ -284,7 +284,7 @@ describeEachAppLayout({ themes: ['classic'], sizes: ['desktop'] }, () => {
     );
   });
 
-  test('renders roles and aria labels when provided', () => {
+  test('renders roles and aria labels when provided (classic)', () => {
     const { wrapper } = renderComponent(<AppLayout drawers={[testDrawer]} ariaLabels={{ drawers: 'Drawers' }} />);
     const drawersAside = within(wrapper.findByClassName(drawerStyles['drawer-closed'])!.getElement()).getByRole(
       'region'
