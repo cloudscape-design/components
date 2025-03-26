@@ -2,6 +2,8 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
 import { Box, Button, Checkbox, Modal, SpaceBetween } from '~components';
 import Alert from '~components/alert';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
@@ -88,6 +90,7 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
   {
     id: 'DomainName',
     header: 'Domain name',
+    sortingField: 'DomainName',
     minWidth: 180,
     editConfig: {
       ariaLabel: 'Domain name',
@@ -241,10 +244,12 @@ const Demo = forwardRef(
     { setModalVisible }: { setModalVisible: React.Dispatch<React.SetStateAction<boolean>> },
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
-    const [items, setItems] = useState(initialItems);
+    const [allItems, setItems] = useState(initialItems);
     const {
       urlParams: { resizableColumns = true, enableKeyboardNavigation = false, expandableRows = false },
     } = useContext(AppContext as PageContext);
+
+    const { items, collectionProps } = useCollection(allItems, { sorting: {} });
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
@@ -276,6 +281,8 @@ const Demo = forwardRef(
 
     return (
       <Table
+        {...collectionProps}
+        trackBy="Id"
         ref={tableRef}
         header={
           <Header headingTagOverride="h1" counter={`(${items.length})`}>

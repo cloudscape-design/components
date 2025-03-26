@@ -132,13 +132,11 @@ $inlineLabel-border-radius: 2px;
 }
 
 .inline-label {
-  // Stepped gradient background for inline label overlap between input and background.
-  background-image: linear-gradient(
-    to bottom,
-    transparent calc(100% - (awsui.$border-width-field + awsui.$border-control-focus-ring-shadow-spread + 5px)),
-    awsui.$color-background-input-default 1px
-  );
-  background-position: bottom;
+  background: awsui.$color-background-container-header;
+  border-start-start-radius: $inlineLabel-border-radius;
+  border-start-end-radius: $inlineLabel-border-radius;
+  border-end-start-radius: $inlineLabel-border-radius;
+  border-end-end-radius: $inlineLabel-border-radius;
   box-sizing: border-box;
   display: inline-block;
   color: awsui.$color-text-form-label;
@@ -153,14 +151,6 @@ $inlineLabel-border-radius: 2px;
   padding-inline: awsui.$space-scaled-xxs;
   max-inline-size: calc(100% - (2 * awsui.$space-field-horizontal));
   z-index: 1;
-
-  &.inline-label-disabled {
-    background: awsui.$color-background-container-header;
-    border-start-start-radius: $inlineLabel-border-radius;
-    border-start-end-radius: $inlineLabel-border-radius;
-    border-end-start-radius: $inlineLabel-border-radius;
-    border-end-end-radius: $inlineLabel-border-radius;
-  }
 }
 
 .disabled-reason-tooltip {

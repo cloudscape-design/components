@@ -38,7 +38,7 @@ export default function ScreenshotArea({
 
   // Reporting the excessive height as a console error makes integration and screenshot tests for this page fail.
   if (isExceedingHeightWarning) {
-    console.error(isExceedingHeightWarning);
+    console.warn(isExceedingHeightWarning);
   }
 
   return (

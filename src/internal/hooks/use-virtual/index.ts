@@ -3,6 +3,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
 import { useVirtual as useVirtualDefault, VirtualItem } from '../../vendor/react-virtual';
+import stickyRangeExtractor from './sticky-range-extractor';
 
 const MAX_ITEM_MOUNTS = 100;
 
@@ -10,6 +11,7 @@ interface UseVirtualProps<Item> {
   items: readonly Item[];
   parentRef: React.RefObject<HTMLElement>;
   estimateSize: () => number;
+  firstItemSticky?: boolean;
 }
 
 interface RowVirtualizer {
@@ -34,8 +36,15 @@ export function useVirtual<Item extends object>({
   items,
   parentRef,
   estimateSize,
+  firstItemSticky,
 }: UseVirtualProps<Item>): RowVirtualizer {
-  const rowVirtualizer = useVirtualDefault({ size: items.length, parentRef, estimateSize, overscan: 5 });
+  const rowVirtualizer = useVirtualDefault({
+    size: items.length,
+    parentRef,
+    estimateSize,
+    overscan: 5,
+    rangeExtractor: firstItemSticky ? stickyRangeExtractor : undefined,
+  });
 
   // Cache virtual item mounts to limit the amount of mounts per item.
   const measuresCache = useRef(new WeakMap<Item, number>());
