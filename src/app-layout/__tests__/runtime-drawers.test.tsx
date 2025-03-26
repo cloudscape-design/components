@@ -1348,6 +1348,82 @@ describe('toolbar mode only features', () => {
         expect(globalDrawersWrapper.findDrawerById('global3')).toBeFalsy();
       });
     });
+
+    describe('focus mode for global drawers', () => {
+      test('should set a drawer to focus mode by clicking on "focus mode" button', async () => {
+        const drawerId = 'global-drawer';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId,
+          type: 'global',
+          isExpandable: true,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        await delay();
+
+        wrapper.findDrawerTriggerById(drawerId)!.click();
+        expect(globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId)!.getElement()).toBeInTheDocument();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInFocusMode()).toBe(false);
+        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInFocusMode()).toBe(true);
+      });
+
+      test('should switch focus mode between two global drawers', async () => {
+        const drawerId1 = 'global-drawer1';
+        const drawerId2 = 'global-drawer2';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId1,
+          type: 'global',
+          isExpandable: true,
+        });
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId2,
+          type: 'global',
+          isExpandable: true,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        await delay();
+
+        wrapper.findDrawerTriggerById(drawerId1)!.click();
+        wrapper.findDrawerTriggerById(drawerId2)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isActive()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInFocusMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInFocusMode()).toBe(false);
+        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId1)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInFocusMode()).toBe(true);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInFocusMode()).toBe(false);
+        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId2)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId1)!.isDrawerInFocusMode()).toBe(false);
+        expect(globalDrawersWrapper.findDrawerById(drawerId2)!.isDrawerInFocusMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(true);
+      });
+
+      test('should quit focus mode when a drawer in focus mode is closed', async () => {
+        const drawerId = 'global-drawer';
+        awsuiPlugins.appLayout.registerDrawer({
+          ...drawerDefaults,
+          id: drawerId,
+          type: 'global',
+          isExpandable: true,
+        });
+        const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+        await delay();
+
+        wrapper.findDrawerTriggerById(drawerId)!.click();
+        globalDrawersWrapper.findFocusModeButtonByActiveDrawerId(drawerId)!.click();
+        expect(globalDrawersWrapper.findDrawerById(drawerId)!.isDrawerInFocusMode()).toBe(true);
+        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(true);
+        wrapper.findDrawerTriggerById(drawerId)!.click();
+        expect(globalDrawersWrapper.isLayoutInFocusMode()).toBe(false);
+      });
+    });
   });
 
   describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['mobile'] }, () => {

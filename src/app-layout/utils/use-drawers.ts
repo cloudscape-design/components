@@ -251,6 +251,9 @@ export function useDrawers(
       onGlobalDrawerFocus?.(drawerId, false);
       drawersOpenQueue.current = drawersOpenQueue.current.filter(id => id !== drawerId);
       fireNonCancelableEvent(drawer?.onToggle, { isOpen: false, initiatedByUserAction });
+      if (drawerId === expandedDrawerId) {
+        setExpandedDrawerId(undefined);
+      }
     } else if (drawerId) {
       onAddNewActiveDrawer?.(drawerId);
       setActiveGlobalDrawersIds(currentState => [drawerId, ...currentState].slice(0, DRAWERS_LIMIT!));
