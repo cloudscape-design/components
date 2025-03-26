@@ -96,7 +96,13 @@
     )
     3fr;
   grid-auto-rows: 100%;
+
+  list-style: none;
+  padding-block: 0;
   padding-block-start: awsui.$space-m;
+  padding-inline: 0;
+  margin-block: 0;
+  margin-inline: 0;
 
   &-noref {
     grid-template-columns: 1fr 1fr;
