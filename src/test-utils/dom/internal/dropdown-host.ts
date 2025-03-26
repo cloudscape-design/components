@@ -66,7 +66,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   /**
    * Selects an option for the given index by triggering corresponding events.
    *
-   * This utility does not open the dropdown of the given select and it will need to be called explicitly in your test.
+   * This utility does not open the dropdown of the given select. You will need to call `openDropdown` first in your test.
    * On selection the dropdown will close automatically.
    *
    * Example:
@@ -97,7 +97,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   /**
    * Selects an option for the given value by triggering corresponding events.
    *
-   * This utility does not open the dropdown of the given select and it will need to be called explicitly in your test.
+   * This utility does not open the dropdown of the given select. You will need to call `openDropdown` first in your test.
    * On selection the dropdown will close automatically.
    *
    * Example:
@@ -125,7 +125,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   /**
    * Selects all options by triggering corresponding events on the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
    *
-   * This utility does not open the dropdown of the given select and it will need to be called explicitly in your test.
+   * This utility does not open the dropdown of the given select. You will need to call `openDropdown` first in your test.
    *
    * Example:
    * ```
