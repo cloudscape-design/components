@@ -10,11 +10,15 @@ export function isContainingBlock(element: HTMLElement): boolean {
   return (
     (!!computedStyle.transform && computedStyle.transform !== 'none') ||
     (!!computedStyle.perspective && computedStyle.perspective !== 'none') ||
-    (!!computedStyle.containerType &&
-      computedStyle.containerType !== 'normal' &&
-      computedStyle.containerType !== 'inline-size') ||
+    ![undefined, 'normal', 'inline-size'].includes(computedStyle.containerType) ||
+    // In Safari, container-type: "inline-size" creates a containing block
+    (isSafari() && ![undefined, 'normal'].includes(computedStyle.containerType)) ||
     computedStyle.contain?.split(' ').some(s => ['layout', 'paint', 'strict', 'content'].includes(s))
   );
+}
+
+function isSafari() {
+  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
 }
 
 /**
