@@ -123,8 +123,8 @@ export function useMultiselect({
   const filteredNonParentOptions = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
 
   const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
-  const isSomeSelected = selectedOptions.length > 0;
 
+  const isSomeSelected = selectedOptions.length > 0;
   const isAllVisibleSelectableSelected =
     isSomeSelected && filteredNonParentOptions.every(option => option.disabled || selectedValues.has(option.value));
   const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.value));
