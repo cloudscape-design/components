@@ -74,4 +74,4 @@ export const isInteractive = (option?: DropdownOption) => !!option && !option.di
 export const isGroupInteractive = (option?: DropdownOption) => !!option && !option.disabled;
 
 export const isGroup = (option?: OptionDefinition | OptionGroup): option is OptionGroup =>
-  !!option && 'options' in option;
+  !!option && 'options' in option && !!option.options;
