@@ -14,7 +14,6 @@ import { ItemProps } from './item';
 
 import styles from './styles.css.js';
 interface MultiselectItemProps extends ItemProps {
-  disabled?: boolean;
   indeterminate?: boolean;
 }
 
@@ -33,7 +32,6 @@ const MultiSelectItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
-    disabled,
     withScrollbar,
     sticky,
     ...restProps
@@ -46,9 +44,9 @@ const MultiSelectItem = (
   const isChild = option.type === 'child';
   const isSelectAll = option.type === 'select-all';
   const wrappedOption: OptionDefinition = option.option;
-  const isDisabled = disabled || option.disabled || wrappedOption.disabled;
+  const disabled = option.disabled || wrappedOption.disabled;
   const disabledReason =
-    isDisabled && (option.disabledReason || wrappedOption.disabledReason)
+    disabled && (option.disabledReason || wrappedOption.disabledReason)
       ? option.disabledReason || wrappedOption.disabledReason
       : '';
   const isDisabledWithReason = !!disabledReason;
@@ -65,7 +63,7 @@ const MultiSelectItem = (
       selected={selected}
       isNextSelected={isNextSelected}
       highlighted={highlighted}
-      disabled={isDisabled}
+      disabled={disabled}
       isParent={isParent}
       isChild={isChild}
       isSelectAll={isSelectAll}
@@ -90,12 +88,12 @@ const MultiSelectItem = (
             <CheckboxIcon
               checked={selected}
               indeterminate={(isParent || isSelectAll) && indeterminate}
-              disabled={isDisabled}
+              disabled={disabled}
             />
           </div>
         )}
         <Option
-          option={{ ...wrappedOption, disabled: isDisabled }}
+          option={{ ...wrappedOption, disabled }}
           highlightedOption={highlighted}
           selectedOption={selected}
           highlightText={filteringValue}

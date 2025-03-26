@@ -290,7 +290,6 @@ export function useSelect({
       indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),
-      disabled: isSelectAll ? options.length === 1 : undefined,
     };
 
     return optionProps;

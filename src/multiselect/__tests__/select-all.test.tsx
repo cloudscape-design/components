@@ -103,13 +103,13 @@ describe('Multiselect with "select all" control', () => {
     expect(dropdown.findOptionByValue('1')).toBeNull();
   });
 
-  test('is disabled when there are no options to select', () => {
+  test('is hidden when there are no options to select', () => {
     const wrapper = renderMultiselectWithSelectAll({ options: [] });
     wrapper.openDropdown();
     const dropdown = wrapper.findDropdown();
     const options = dropdown.findOptions();
     expect(options.length).toBe(0);
-    expect(dropdown.findSelectAll()!.getElement().getAttribute('aria-disabled')).toBe('true');
+    expect(dropdown.findSelectAll()).toBe(null);
   });
 
   describe('with filtering', () => {
@@ -177,7 +177,7 @@ describe('Multiselect with "select all" control', () => {
     test('uses i18nStrings.selectAllText from i18n provider', () => {
       const { container } = render(
         <TestI18nProvider messages={{ multiselect: { 'i18nStrings.selectAllText': 'Custom Select all text' } }}>
-          <Multiselect enableSelectAll={true} options={[]} selectedOptions={[]} />
+          <Multiselect enableSelectAll={true} options={optionsWithGroups} selectedOptions={[]} />
         </TestI18nProvider>
       );
 
@@ -201,7 +201,7 @@ describe('Multiselect with "select all" control', () => {
         >
           <Multiselect
             enableSelectAll={true}
-            options={[]}
+            options={optionsWithGroups}
             selectedOptions={[]}
             i18nStrings={{ selectAllText: 'Custom Select all text from i18nStrings' }}
           />

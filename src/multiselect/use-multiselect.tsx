@@ -114,7 +114,8 @@ export function useMultiselect({
     option: { label: i18n('i18nStrings.selectAllText', i18nStrings?.selectAllText) },
   };
 
-  const visibleOptions = enableSelectAll ? [selectAllOption, ...filteredOptions] : filteredOptions;
+  const visibleOptions =
+    enableSelectAll && filteredOptions.length ? [selectAllOption, ...filteredOptions] : filteredOptions;
 
   // Includes visible and non-visible (filtered out) options
   const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
