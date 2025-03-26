@@ -129,7 +129,7 @@ export function useMultiselect({
     isSomeSelected && filteredNonParentOptions.every(option => option.disabled || selectedValues.has(option.value));
   const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.value));
 
-  const toggleAll = useCallback(() => {
+  const toggleAll = () => {
     const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
     fireNonCancelableEvent(onChange, {
       selectedOptions: isAllVisibleSelectableSelected
@@ -139,14 +139,7 @@ export function useMultiselect({
               selectedValues.has(value) || (!disabled && filteredNonParentOptionValues.has(value))
           ),
     });
-  }, [
-    allNonParentOptions,
-    filteredNonParentOptions,
-    isAllVisibleSelectableSelected,
-    onChange,
-    selectedOptions,
-    selectedValues,
-  ]);
+  };
 
   const updateSelectedOption = useCallback(
     (option: OptionDefinition | OptionGroup) => {
