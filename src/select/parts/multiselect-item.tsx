@@ -46,7 +46,7 @@ const MultiSelectItem = (
   const isChild = option.type === 'child';
   const isSelectAll = option.type === 'select-all';
   const wrappedOption: OptionDefinition = option.option;
-  const isDisabled = option.disabled || wrappedOption.disabled || disabled;
+  const isDisabled = disabled || option.disabled || wrappedOption.disabled;
   const disabledReason =
     isDisabled && (option.disabledReason || wrappedOption.disabledReason)
       ? option.disabledReason || wrappedOption.disabledReason
