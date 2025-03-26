@@ -120,8 +120,6 @@ export function useMultiselect({
   // Includes visible and non-visible (filtered out) options
   const allNonParentOptions = flatOptions.filter(item => item.type !== 'parent').map(option => option.option);
 
-  const allSelectableOptions = allNonParentOptions.filter(option => !option.disabled);
-
   const filteredNonParentOptions = filteredOptions.filter(item => item.type !== 'parent').map(item => item.option);
 
   const selectedValues = useMemo(() => new Set(selectedOptions.map(option => option.value)), [selectedOptions]);
@@ -129,10 +127,7 @@ export function useMultiselect({
 
   const isAllVisibleSelectableSelected =
     isSomeSelected && filteredNonParentOptions.every(option => option.disabled || selectedValues.has(option.value));
-  const isAllSelectableSelected =
-    isAllVisibleSelectableSelected && allSelectableOptions.every(option => selectedValues.has(option.value));
-  const isAllSelected =
-    isAllSelectableSelected && allNonParentOptions.every(option => selectedValues.has(option.value));
+  const isAllSelected = allNonParentOptions.every(option => selectedValues.has(option.value));
 
   const toggleAll = useCallback(() => {
     const filteredNonParentOptionValues = new Set(filteredNonParentOptions.map(option => option.value));
