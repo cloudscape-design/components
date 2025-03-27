@@ -38,11 +38,12 @@ export function SplitPanelContentSide({
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarDesignEnabled();
+  const disableAnimation = animationDisabled || (closeBehavior === 'hide' && !isOpen);
   return (
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
-        [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+        [sharedStyles['with-motion-horizontal']]: !disableAnimation,
         [testUtilStyles['open-position-side']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
         [styles['with-toolbar']]: isToolbar,
