@@ -11762,6 +11762,12 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "description": "Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.",
+      "name": "enableSelectAll",
+      "optional": true,
+      "type": "boolean",
+    },
+    {
       "description": "Provides a text alternative for the error icon in the error message.",
       "i18nTag": true,
       "name": "errorIconAriaLabel",
@@ -11859,11 +11865,19 @@ Only use this if the selected options are displayed elsewhere on the page.",
     },
     {
       "description": "An object containing all the localized strings required by the component.
-Note that the string for \`tokenLimitShowMore\` should not contain the number of hidden tokens
-because it will be added by the component automatically.",
+* \`selectAllText\` (string) - Specifies the text to be displayed next to the checkbox that selects or deselects all options.
+* \`tokenLimitShowFewer\` (string) - Specifies the text to be displayed in the "Show fewer" button for the token group control.
+* \`tokenLimitShowMore\` (string) - Specifies the text to be displayed in the "Show more" button for the token group control. This string should not contain the number of hidden tokens
+because this will be added by the component automatically.",
+      "i18nTag": true,
       "inlineType": {
         "name": "MultiselectProps.I18nStrings",
         "properties": [
+          {
+            "name": "selectAllText",
+            "optional": true,
+            "type": "string",
+          },
           {
             "name": "tokenLimitShowFewer",
             "optional": true,

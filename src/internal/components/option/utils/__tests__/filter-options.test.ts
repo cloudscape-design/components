@@ -56,7 +56,7 @@ describe('filterOptions - non-strict matching', () => {
         tags: ['x'],
       },
     },
-  ];
+  ] as const;
 
   test('should return all items when an empty search text provided', () => {
     expect(filterOptions(options, '')).toEqual(options);
@@ -134,7 +134,7 @@ describe('filterOptions - Group matching', () => {
         tags: ['x'],
       },
     },
-  ];
+  ] as const;
 
   test('should return all items when an empty search text provided', () => {
     expect(filterOptions(options, '')).toEqual(options);

@@ -43,6 +43,7 @@ export interface OptionsListProps extends BaseComponentProps {
   ariaDescribedby?: string;
   decreaseBlockMargin?: boolean;
   embedded?: boolean;
+  stickyItemBlockSize?: number | null;
 }
 
 const BOTTOM_TRIGGER_OFFSET = 80;
@@ -75,6 +76,7 @@ const OptionsList = (
     ariaLabelledby,
     ariaDescribedby,
     embedded,
+    stickyItemBlockSize,
     ...restProps
   }: OptionsListProps,
   ref: React.Ref<HTMLUListElement>
@@ -112,7 +114,7 @@ const OptionsList = (
       {...nativeAttributes}
       className={className}
       ref={mergedRef}
-      style={{ position }}
+      style={{ position, scrollPaddingBlockStart: stickyItemBlockSize ?? undefined }}
       role={role}
       onScroll={handleScroll}
       onKeyDown={event => fireKeyboardEvent(onKeyDown, event)}

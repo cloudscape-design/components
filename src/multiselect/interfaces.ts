@@ -34,8 +34,12 @@ export interface MultiselectProps extends BaseSelectProps {
   deselectAriaLabel?: MultiselectProps.DeselectAriaLabelFunction;
   /**
    * An object containing all the localized strings required by the component.
-   * Note that the string for `tokenLimitShowMore` should not contain the number of hidden tokens
-   * because it will be added by the component automatically.
+   *
+   * * `selectAllText` (string) - Specifies the text to be displayed next to the checkbox that selects or deselects all options.
+   * * `tokenLimitShowFewer` (string) - Specifies the text to be displayed in the "Show fewer" button for the token group control.
+   * * `tokenLimitShowMore` (string) - Specifies the text to be displayed in the "Show more" button for the token group control. This string should not contain the number of hidden tokens
+   * because this will be added by the component automatically.
+   * @i18n
    */
   i18nStrings?: MultiselectProps.I18nStrings;
   /**
@@ -59,6 +63,10 @@ export interface MultiselectProps extends BaseSelectProps {
    * Use to assign unique labels when there are multiple token groups with the same `tokenLimitShowMore` label on one page.
    */
   tokenLimitShowMoreAriaLabel?: string;
+  /**
+   * Enables users to select and deselect all options with a special extra checkbox which is displayed at the start of the dropdown.
+   */
+  enableSelectAll?: boolean;
 }
 
 export namespace MultiselectProps {
@@ -69,6 +77,7 @@ export namespace MultiselectProps {
   export type TriggerVariant = 'placeholder' | 'tokens';
 
   export interface I18nStrings {
+    selectAllText?: string;
     tokenLimitShowFewer?: string;
     tokenLimitShowMore?: string;
   }

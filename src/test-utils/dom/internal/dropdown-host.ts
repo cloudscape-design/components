@@ -66,7 +66,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   /**
    * Selects an option for the given index by triggering corresponding events.
    *
-   * This utility does not open the dropdown of the given select and it will need to be called explicitly in your test.
+   * This utility does not open the dropdown of the given select. You will need to call `openDropdown` first in your test.
    * On selection the dropdown will close automatically.
    *
    * Example:
@@ -97,7 +97,7 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
   /**
    * Selects an option for the given value by triggering corresponding events.
    *
-   * This utility does not open the dropdown of the given select and it will need to be called explicitly in your test.
+   * This utility does not open the dropdown of the given select. You will need to call `openDropdown` first in your test.
    * On selection the dropdown will close automatically.
    *
    * Example:
@@ -120,6 +120,32 @@ export default abstract class DropdownHostComponentWrapper extends ComponentWrap
     act(() => {
       option.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
     });
+  }
+
+  /**
+   * Selects all options by triggering corresponding events on the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
+   *
+   * This utility does not open the dropdown of the given select. You will need to call `openDropdown` first in your test.
+   *
+   * Example:
+   * ```
+   * wrapper.openDropdown();
+   * wrapper.clickSelectAll();
+   * ```
+   *
+   * @param options
+   * * expandToViewport (boolean) - Use this when the component under test is rendered with an `expandToViewport` flag.
+   */
+  @usesDom
+  clickSelectAll(options = { expandToViewport: false }): void {
+    this.assertOpenDropdown(options);
+    const selectAll = this.findDropdown().findSelectAll();
+    if (!selectAll) {
+      throw new Error(
+        'Can\'t select all options, because there is no "select all" option. Make sure that this Multiselect has the `enableSelectAll` property set to true.'
+      );
+    }
+    selectAll.fireEvent(new MouseEvent('mouseup', { bubbles: true }));
   }
 }
 
@@ -217,6 +243,13 @@ export class DropdownContentWrapper extends ComponentWrapper {
    */
   findGroups(): Array<ElementWrapper> {
     return this.findAll(`.${selectableStyles['selectable-item']}[data-group-index]:not([data-test-index])`);
+  }
+
+  /*
+   * Returns the element that selects or deselects all options in Multiselect when using the `enableSelectAll` flag.
+   */
+  findSelectAll(): ElementWrapper | null {
+    return this.find(`.${selectableStyles['select-all']}`);
   }
 }
 
