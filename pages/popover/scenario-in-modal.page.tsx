@@ -13,7 +13,7 @@ export default function () {
 
   return (
     <article>
-      <h1>Popover inside table</h1>
+      <h1>Popover inside modal</h1>
       <Button formAction="none" onClick={() => setVisible(true)}>
         Show modal
       </Button>
