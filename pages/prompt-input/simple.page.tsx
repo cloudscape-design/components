@@ -32,7 +32,6 @@ type DemoContext = React.Context<
     hasSecondaryContent: boolean;
     hasSecondaryActions: boolean;
     hasInfiniteMaxRows: boolean;
-    hasParentMaxHeightRestriction: boolean;
   }>
 >;
 
@@ -54,7 +53,6 @@ export default function PromptInputPage() {
     hasSecondaryActions,
     hasSecondaryContent,
     hasInfiniteMaxRows,
-    hasParentMaxHeightRestriction,
   } = urlParams;
 
   const [items, setItems] = React.useState([
@@ -153,16 +151,6 @@ export default function PromptInputPage() {
               >
                 Infinite max rows
               </Checkbox>
-              <Checkbox
-                checked={hasParentMaxHeightRestriction}
-                onChange={() =>
-                  setUrlParams({
-                    hasParentMaxHeightRestriction: !hasParentMaxHeightRestriction,
-                  })
-                }
-              >
-                Restrict parent container maxHeight
-              </Checkbox>
             </FormField>
             <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
               Fill with placeholder text
@@ -187,72 +175,70 @@ export default function PromptInputPage() {
                 label={<span>User prompt</span>}
                 i18nStrings={{ errorIconAriaLabel: 'Error' }}
               >
-                <div style={{ maxHeight: hasParentMaxHeightRestriction ? '180px' : undefined }}>
-                  <PromptInput
-                    data-testid="prompt-input"
-                    ariaLabel="Chat input"
-                    actionButtonIconName="send"
-                    actionButtonAriaLabel="Submit prompt"
-                    value={textareaValue}
-                    onChange={(event: any) => setTextareaValue(event.detail.value)}
-                    onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-                    placeholder="Ask a question"
-                    maxRows={hasInfiniteMaxRows ? -1 : 4}
-                    disabled={isDisabled}
-                    readOnly={isReadOnly}
-                    invalid={isInvalid || textareaValue.length > MAX_CHARS}
-                    warning={hasWarning}
-                    ref={ref}
-                    disableSecondaryActionsPaddings={true}
-                    secondaryActions={
-                      hasSecondaryActions ? (
-                        <Box padding={{ left: 'xxs', top: 'xs' }}>
-                          <ButtonGroup
-                            ref={buttonGroupRef}
-                            ariaLabel="Chat actions"
-                            onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
-                            items={[
-                              {
-                                type: 'icon-file-input',
-                                id: 'files',
-                                text: 'Upload files',
-                                multiple: true,
-                              },
-                              {
-                                type: 'icon-button',
-                                id: 'expand',
-                                iconName: 'expand',
-                                text: 'Go full page',
-                                disabled: isDisabled || isReadOnly,
-                              },
-                              {
-                                type: 'icon-button',
-                                id: 'remove',
-                                iconName: 'remove',
-                                text: 'Remove',
-                                disabled: isDisabled || isReadOnly,
-                              },
-                            ]}
-                            variant="icon"
-                          />
-                        </Box>
-                      ) : undefined
-                    }
-                    secondaryContent={
-                      hasSecondaryContent && files.length > 0 ? (
-                        <FileTokenGroup
-                          items={files.map(file => ({
-                            file,
-                          }))}
-                          showFileThumbnail={true}
-                          onDismiss={onDismiss}
-                          i18nStrings={i18nStrings}
-                          alignment="horizontal"
+                <PromptInput
+                  data-testid="prompt-input"
+                  ariaLabel="Chat input"
+                  actionButtonIconName="send"
+                  actionButtonAriaLabel="Submit prompt"
+                  value={textareaValue}
+                  onChange={(event: any) => setTextareaValue(event.detail.value)}
+                  onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+                  placeholder="Ask a question"
+                  maxRows={hasInfiniteMaxRows ? -1 : 4}
+                  disabled={isDisabled}
+                  readOnly={isReadOnly}
+                  invalid={isInvalid || textareaValue.length > MAX_CHARS}
+                  warning={hasWarning}
+                  ref={ref}
+                  disableSecondaryActionsPaddings={true}
+                  secondaryActions={
+                    hasSecondaryActions ? (
+                      <Box padding={{ left: 'xxs', top: 'xs' }}>
+                        <ButtonGroup
+                          ref={buttonGroupRef}
+                          ariaLabel="Chat actions"
+                          onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
+                          items={[
+                            {
+                              type: 'icon-file-input',
+                              id: 'files',
+                              text: 'Upload files',
+                              multiple: true,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'expand',
+                              iconName: 'expand',
+                              text: 'Go full page',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                            {
+                              type: 'icon-button',
+                              id: 'remove',
+                              iconName: 'remove',
+                              text: 'Remove',
+                              disabled: isDisabled || isReadOnly,
+                            },
+                          ]}
+                          variant="icon"
                         />
-                      ) : undefined
-                    }
-                  />
-                </div>
+                      </Box>
+                    ) : undefined
+                  }
+                  secondaryContent={
+                    hasSecondaryContent && files.length > 0 ? (
+                      <FileTokenGroup
+                        items={files.map(file => ({
+                          file,
+                        }))}
+                        showFileThumbnail={true}
+                        onDismiss={onDismiss}
+                        i18nStrings={i18nStrings}
+                        alignment="horizontal"
+                      />
+                    ) : undefined
+                  }
+                />
               </FormField>
               <div />
             </ColumnLayout>
