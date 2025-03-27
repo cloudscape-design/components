@@ -126,7 +126,7 @@ function SubmittedAPI() {
           iconName: 'thumbs-down',
           text: feedback === 'not-helpful' ? 'Helpful. Feedback submitted.' : 'Not helpful',
           disabled: feedback === 'helpful' || feedbackSubmitting === 'not-helpful',
-          disabledReason: 'Not helpful. Unavailable after feedback is submitted.',
+          disabledReason: feedbackSubmitting.length ? '' : 'Not helpful. Unavailable after feedback is submitted.',
           loading: feedbackSubmitting === 'not-helpful',
           // submitted: feedback === 'not-helpful',
           popoverFeedback: popoverFeedback,
