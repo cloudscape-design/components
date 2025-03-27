@@ -3,10 +3,10 @@
 
 import React, { useCallback, useRef, useState } from 'react';
 
-import { nodeContains } from '@cloudscape-design/component-toolkit/dom';
+import { findUpUntil, nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { findUpUntilMultiple, isContainingBlock } from '../internal/utils/dom';
+import { isContainingBlock } from '../internal/utils/dom';
 import {
   calculateScroll,
   getFirstScrollableParent,
@@ -24,7 +24,7 @@ export default function usePopoverPosition({
   allowScrollToFit,
   allowVerticalOverflow,
   preferredPosition,
-  renderWithPortal,
+  renderWithPortal = false,
   keepPosition,
   hideOnOverscroll,
 }: {
@@ -88,16 +88,10 @@ export default function usePopoverPosition({
       const viewportRect = getViewportRect(document.defaultView!);
       const trackRect = getLogicalBoundingClientRect(track);
       const arrowRect = getDimensions(arrow);
-      const { containingBlock, boundary } = findUpUntilMultiple({
-        startElement: popover,
-        tests: {
-          containingBlock: isContainingBlock,
-          boundary: (element: HTMLElement) => isContainingBlock(element) || isBoundary(element),
-        },
-      });
-
-      // Rectangle for the containing block, which provides the reference frame for the popover coordinates.
-      const containingBlockRect = containingBlock ? getLogicalBoundingClientRect(containingBlock) : viewportRect;
+      const boundary = findUpUntil(
+        popover,
+        (element: HTMLElement) => isContainingBlock(element) || isBoundary(element)
+      );
 
       // Rectangle outside of which the popover should not be positioned, because it would be clipped.
       const boundaryRect = boundary ? getLogicalBoundingClientRect(boundary) : getDocumentRect(document);
@@ -132,12 +126,15 @@ export default function usePopoverPosition({
         allowVerticalOverflow,
       });
 
-      // Get the position of the popover relative to the containing block.
-      const popoverOffset = toRelativePosition(rect, containingBlockRect);
+      const probeOffset = getProbeOffset(track, renderWithPortal);
+      const popoverOffset = {
+        insetBlockStart: probeOffset.insetBlockStart - trackRect.insetBlockStart + rect.insetBlockStart,
+        insetInlineStart: probeOffset.insetInlineStart - trackRect.insetInlineStart + rect.insetInlineStart,
+      };
 
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
       // and use that to recalculate the new popover position.
-      const trackRelativeOffset = toRelativePosition(popoverOffset, toRelativePosition(trackRect, containingBlockRect));
+      const trackRelativeOffset = toRelativePosition(popoverOffset, probeOffset);
 
       // Bring back the container to its original position to prevent any flashing.
       popover.style.insetBlockStart = prevInsetBlockStart;
@@ -178,10 +175,7 @@ export default function usePopoverPosition({
       positionHandlerRef.current = () => {
         const trackRect = getLogicalBoundingClientRect(track);
 
-        const newTrackOffset = toRelativePosition(
-          trackRect,
-          containingBlock ? getLogicalBoundingClientRect(containingBlock) : viewportRect
-        );
+        const newTrackOffset = getProbeOffset(track, renderWithPortal);
 
         setPopoverStyle({
           insetBlockStart: newTrackOffset.insetBlockStart + trackRelativeOffset.insetBlockStart,
@@ -211,6 +205,39 @@ export default function usePopoverPosition({
     ]
   );
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling };
+}
+
+function getProbeOffset(element: HTMLElement | SVGElement, renderWithPortal: boolean) {
+  const probe = document.createElement('div');
+  probe.style.position = 'fixed';
+  probe.style.top = '0';
+  probe.style.left = '0';
+  probe.style.width = '1px';
+  probe.style.height = '1px';
+  probe.style.pointerEvents = 'none';
+  probe.style.opacity = '0';
+
+  if (renderWithPortal) {
+    document.body.appendChild(probe);
+  } else {
+    element.appendChild(probe);
+  }
+
+  const elementRect = getLogicalBoundingClientRect(element);
+  const probeRect = getLogicalBoundingClientRect(probe);
+
+  const offset = {
+    insetBlockStart: elementRect.insetBlockStart - probeRect.insetBlockStart,
+    insetInlineStart: elementRect.insetInlineStart - probeRect.insetInlineStart,
+  };
+
+  if (renderWithPortal) {
+    document.body.removeChild(probe);
+  } else {
+    element.removeChild(probe);
+  }
+
+  return offset;
 }
 
 function getBorderWidth(element: HTMLElement) {

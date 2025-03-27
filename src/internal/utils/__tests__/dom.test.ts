@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  findUpUntilMultiple,
+  isContainingBlock,
   isHTMLElement,
   isNode,
   isSVGElement,
@@ -74,42 +74,70 @@ test('an object is recognized as SVGElement', () => {
   expect(isSVGElement({ ...node, style: {}, ownerDocument: {}, ownerSVGElement: {} })).toBe(true);
 });
 
-describe('findUpUntilMultiple', () => {
-  test('returns the expected element for each key', () => {
-    const div = document.createElement('div');
-    div.innerHTML = `
-      <div id="first" class="match">
-        <div id="second" class="match"><div id="target"></div></div>
-      </div>
-    `;
-    expect(
-      findUpUntilMultiple({
-        startElement: div.querySelector<HTMLElement>('#target')!,
-        tests: { first: node => node.id === 'first', second: node => node.id === 'second' },
-      })
-    ).toEqual({ first: expect.objectContaining({ id: 'first' }), second: expect.objectContaining({ id: 'second' }) });
+describe('isContainingBlock', () => {
+  let element: HTMLElement;
+
+  beforeEach(() => {
+    element = document.createElement('div');
+    document.body.appendChild(element);
   });
 
-  test('skips non-HTMLElement parents', () => {
-    const div = document.createElement('div');
-    const testFn = (node: HTMLElement) => {
-      expect(node.tagName).not.toBe('foreignObject');
-      return !!node.className.match(/match/);
-    };
-    div.innerHTML = `
-      <div class="match" id="match">
-        <svg>
-          <foreignObject>
-            <div id="target"></div>
-          </foreignObject>
-        </svg>
-      </div>
-    `;
-    expect(
-      findUpUntilMultiple({
-        startElement: div.querySelector<HTMLElement>('#target')!,
-        tests: { first: testFn, second: testFn },
-      })
-    ).toEqual({ first: expect.objectContaining({ id: 'match' }), second: expect.objectContaining({ id: 'match' }) });
+  afterEach(() => {
+    document.body.removeChild(element);
+    jest.restoreAllMocks();
+  });
+
+  test('returns false for element without styles', () => {
+    jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(false);
+  });
+
+  test('returns false for element with transform=none style', () => {
+    jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '', transform: 'none' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(false);
+  });
+
+  test('returns true for element with custom transform style', () => {
+    jest
+      .spyOn(window, 'getComputedStyle')
+      .mockReturnValue({ contain: '', transform: 'translate(0, 0)' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(true);
+  });
+
+  test('returns false for element with perspective=none style', () => {
+    jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '', perspective: 'none' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(false);
+  });
+
+  test('returns true for element with custom perspective style', () => {
+    jest
+      .spyOn(window, 'getComputedStyle')
+      .mockReturnValue({ contain: '', perspective: '100px' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(true);
+  });
+
+  test('returns false for element with containerType=normal style', () => {
+    jest
+      .spyOn(window, 'getComputedStyle')
+      .mockReturnValue({ contain: '', containerType: 'normal' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(false);
+  });
+
+  test.each(['size', 'inline-size', 'scroll-state'])(
+    'returns true for element with containerType=%s style',
+    containerType => {
+      jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '', containerType } as CSSStyleDeclaration);
+      expect(isContainingBlock(element)).toBe(true);
+    }
+  );
+
+  test('returns false for element with contain=none style', () => {
+    jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: 'none' } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(false);
+  });
+
+  test.each(['layout', 'paint', 'strict', 'content'])('returns true for element with contain=%s style', contain => {
+    jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain } as CSSStyleDeclaration);
+    expect(isContainingBlock(element)).toBe(true);
   });
 });

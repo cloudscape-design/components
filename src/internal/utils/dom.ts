@@ -27,38 +27,6 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
   return findUpUntil(startElement.parentElement, isContainingBlock) as HTMLElement;
 }
 
-/*
- * Allows to find multiple elements in the page each according to a specific test function,
- * but traversing the DOM only once.
- */
-
-export function findUpUntilMultiple({
-  startElement,
-  tests,
-}: {
-  startElement: HTMLElement;
-  tests: Record<string, (el: HTMLElement) => boolean>;
-}) {
-  const keys = Object.keys(tests);
-  const elements: Record<string, HTMLElement> = {};
-  let current: HTMLElement | null = startElement;
-  while (current && Object.keys(elements).length < keys.length) {
-    current = current.parentElement;
-    // If a component is used within an svg (i.e. as foreignObject), then it will
-    // have some ancestor nodes that are SVGElement. We want to skip those,
-    // as they have very different properties to HTMLElements.
-    while (current && !isHTMLElement(current)) {
-      current = (current as Element).parentElement;
-    }
-    for (const key of keys) {
-      if (!elements[key] && current && tests[key](current)) {
-        elements[key] = current;
-      }
-    }
-  }
-  return elements;
-}
-
 const cssVariableExpression = /--.+?\s*,\s*(.+)/;
 
 /**
