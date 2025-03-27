@@ -43,6 +43,7 @@ const IconButtonItem = forwardRef(
           loading={item.loading}
           loadingText={item.loadingText}
           disabled={item.disabled}
+          disabledReason={item.disabledReason}
           __focusable={canShowFeedback}
           iconName={hasIcon ? item.iconName : 'close'}
           iconUrl={item.iconUrl}
