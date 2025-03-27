@@ -138,7 +138,7 @@ const InternalSelect = React.forwardRef(
     });
 
     const handleNativeSearch = useNativeSearch({
-      isEnabled: filteringType === 'none',
+      isEnabled: filteringType === 'none' && !readOnly,
       options: filteredOptions,
       highlightOption: !isOpen ? selectOption : highlightOption,
       highlightedOption: !isOpen ? selectedOption : highlightedOption?.option,

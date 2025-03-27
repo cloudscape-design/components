@@ -136,7 +136,7 @@ describe(`Select (Native Search)`, () => {
     );
 
     test(
-      'selects the match with dropdown closed -- extended option with missing properties, searches entire option',
+      'selects the match with dropdown closed -- extended option with missing properties, searches entire option - "ano"',
       setupTest(optionsType, async page => {
         await page.focusSelect();
         await page.keys(['a', 'n', 'o']);
@@ -154,12 +154,28 @@ describe(`Select (Native Search)`, () => {
     );
 
     test(
-      'selects the match with dropdown closed -- extended option with missing properties, searches entire option',
+      'selects the match with dropdown closed -- extended option with missing properties, searches entire option - "third"',
       setupTest(optionsType, async page => {
         await page.focusSelect();
         await page.keys(['t', 'h', 'i', 'r', 'd']);
         await expect(page.getTriggerLabel()).resolves.toMatch('Third thing');
       })
     );
+  });
+
+  describe('Options - Read-only', () => {
+    test('cannot use native search on read-only select', async () => {
+      await setupTest('simple', async page => {
+        await page.focusSelect();
+        await page.keys(['o']);
+        await expect(page.getTriggerLabel()).resolves.toBe('Option 1');
+      })();
+
+      await setupTest('readonly', async page => {
+        await page.focusSelect();
+        await page.keys(['o']);
+        await expect(page.getTriggerLabel()).resolves.toBe('Choose option');
+      })();
+    });
   });
 });
