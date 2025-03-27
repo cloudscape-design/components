@@ -64,7 +64,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         funnelType: 'single-page',
         resourceType: 'Components',
         optionalStepNumbers: [],
-        componentTheme: 'vr',
+        componentTheme: 'default',
         totalFunnelSteps: 1,
         stepConfiguration: [
           {
@@ -455,7 +455,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         funnelVersion: expect.any(String),
         funnelType: 'single-page',
         optionalStepNumbers: [],
-        componentTheme: 'vr',
+        componentTheme: 'default',
         totalFunnelSteps: 1,
         stepConfiguration: [
           {

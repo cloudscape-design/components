@@ -65,7 +65,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         funnelType: 'multi-page',
         resourceType: 'Components',
         optionalStepNumbers: [2],
-        componentTheme: 'vr',
+        componentTheme: 'default',
         totalFunnelSteps: 3,
         stepConfiguration: [
           {

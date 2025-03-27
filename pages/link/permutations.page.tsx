@@ -24,10 +24,7 @@ const permutations = createPermutations<LinkProps>([
     color: ['normal', 'inverted'],
     external: [false, true],
     href: ['#', undefined],
-    children: [
-      'This is a link.',
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    ],
+    children: ['This is a link.'],
   },
 ]);
 

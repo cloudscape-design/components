@@ -111,6 +111,8 @@ export interface I18nFormatArgTypes {
     "i18nStrings.cursorPositionAriaLabel": {
       "row": string | number;
     }
+    "i18nStrings.resizeHandleAriaLabel": never;
+    "i18nStrings.resizeHandleTooltipText": never;
   }
   "collection-preferences": {
     "title": never;
@@ -265,6 +267,7 @@ export interface I18nFormatArgTypes {
     "deselectAriaLabel": {
       "option__label": string | number;
     }
+    "i18nStrings.selectAllText": never;
   }
   "pagination": {
     "ariaLabels.nextPageLabel": never;

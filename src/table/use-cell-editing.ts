@@ -7,8 +7,8 @@ import { CancelableEventHandler, fireCancelableEvent } from '../internal/events'
 import { TableProps } from './interfaces';
 
 interface CellId {
-  rowIndex: number;
-  colIndex: number;
+  row: string; // Item ID (from trackBy) or row index
+  col: string; // Column ID or column index
 }
 
 interface CellEditingProps {
@@ -38,11 +38,10 @@ export function useCellEditing({ onCancel, onSubmit }: CellEditingProps) {
     }
   };
 
-  const checkEditing = ({ rowIndex, colIndex }: CellId) =>
-    rowIndex === currentEditCell?.rowIndex && colIndex === currentEditCell.colIndex;
+  const checkEditing = ({ row, col }: CellId) => row === currentEditCell?.row && col === currentEditCell.col;
 
-  const checkLastSuccessfulEdit = ({ rowIndex, colIndex }: CellId) =>
-    rowIndex === lastSuccessfulEditCell?.rowIndex && colIndex === lastSuccessfulEditCell.colIndex;
+  const checkLastSuccessfulEdit = ({ row, col }: CellId) =>
+    row === lastSuccessfulEditCell?.row && col === lastSuccessfulEditCell.col;
 
   const submitEdit = onSubmit
     ? async (...args: Parameters<typeof onSubmit>) => {

@@ -68,13 +68,15 @@ describe('refresh-toolbar', () => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           // Focus split panel trigger
           await page.click(wrapper.findToolbar().toSelector());
-          await page.keys(['Tab', 'Tab']);
+          await page.keys(['Tab', 'Tab', 'Tab']);
           await assertSplitPanelTriggerFocusedWithTooltip(page);
           // Focus breadcrumbs
           await page.keys(['Shift', 'Tab']);
+          await page.keys(['Shift', 'Tab']);
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           // Navigate back to split panel trigger
-          await page.keys(['Tab']);
+          await page.keys(['Tab', 'Tab']);
+
           await assertSplitPanelTriggerFocusedWithTooltip(page);
           // Open the split panel
           await page.keys('Enter');
@@ -88,7 +90,7 @@ describe('refresh-toolbar', () => {
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);
           // Focus split panel trigger
           await page.click(wrapper.findToolbar().toSelector());
-          await page.keys(['Tab', 'Tab']);
+          await page.keys(['Tab', 'Tab', 'Tab']);
           await assertSplitPanelTriggerFocusedWithTooltip(page);
           await page.keys('Escape');
           await expect(page.isExisting(tooltipSelector)).resolves.toBe(false);

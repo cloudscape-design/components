@@ -8,7 +8,7 @@ import { BaseComponentProps } from '../internal/base-component';
 import { NonCancelableEventHandler } from '../internal/events';
 import { SomeRequired } from '../internal/types';
 
-export interface AppLayoutProps extends BaseComponentProps {
+export interface BaseLayoutProps extends BaseComponentProps {
   /**
    * Specifies additional analytics-related metadata.
    * * `instanceIdentifier` - A unique string that identifies this component instance in your application.
@@ -63,12 +63,6 @@ export interface AppLayoutProps extends BaseComponentProps {
    * If `true`, disables outer paddings for the content slot.
    */
   disableContentPaddings?: boolean;
-
-  /**
-   * Activates a backwards-compatibility mode for applications with non-fixed headers and footers.
-   * @deprecated This layout is being phased out and may miss some features.
-   */
-  disableBodyScroll?: boolean;
 
   /**
    * State of the navigation drawer.
@@ -254,6 +248,14 @@ export interface AppLayoutProps extends BaseComponentProps {
    * Fired when the split panel preferences change.
    */
   onSplitPanelPreferencesChange?: NonCancelableEventHandler<AppLayoutProps.SplitPanelPreferences>;
+}
+
+export interface AppLayoutProps extends BaseLayoutProps {
+  /**
+   * Activates a backwards-compatibility mode for applications with non-fixed headers and footers.
+   * @deprecated This layout is being phased out and may miss some features.
+   */
+  disableBodyScroll?: boolean;
 }
 
 export namespace AppLayoutProps {

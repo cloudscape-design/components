@@ -50,6 +50,7 @@ const pluralizationMap = {
   Modal: 'Modals',
   Multiselect: 'Multiselects',
   Pagination: 'Paginations',
+  AppLayoutToolbar: 'AppLayoutToolbars',
   PieChart: 'PieCharts',
   Popover: 'Popovers',
   ProgressBar: 'ProgressBars',

@@ -64,7 +64,10 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * When it's set, it's used to provide [keys for React](https://reactjs.org/docs/lists-and-keys.html#keys)
    * for performance optimizations.
    *
-   * It's also used to connect `items` and `selectedItems` or `expandableRows.expandedItems` values when they reference different objects.
+   * It is also used in the following situations:
+   * - to connect `items` and `selectedItems` values when they reference different objects.
+   * - to connect `items` and `expandableRows.expandedItems` values when they reference different objects.
+   * - to attach successful edit state to the correct item if its row index changes after editing.
    */
   trackBy?: TableProps.TrackBy<T>;
 
@@ -117,6 +120,14 @@ export interface TableProps<T = any> extends BaseComponentProps {
    * * `verticalAlign` ('middle' | 'top') - Determines the alignment of the content in the table cell.
    */
   columnDefinitions: ReadonlyArray<TableProps.ColumnDefinition<T>>;
+
+  /**
+   * Determines the alignment of the content inside table cells.
+   * This property affects all cells, including the ones in the selection column.
+   * To target individual cells use `columnDefinitions.verticalAlign`, that takes precedence over `cellVerticalAlign`.
+   */
+  cellVerticalAlign?: 'middle' | 'top';
+
   /**
    * Specifies the selection type (`'single' | 'multi'`).
    */

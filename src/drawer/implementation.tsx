@@ -3,7 +3,7 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import { useAppLayoutToolbarEnabled } from '../app-layout/utils/feature-flags';
+import { useAppLayoutToolbarDesignEnabled } from '../app-layout/utils/feature-flags';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
@@ -25,7 +25,7 @@ export function DrawerImplementation({
   ...restProps
 }: DrawerInternalProps) {
   const baseProps = getBaseProps(restProps);
-  const isToolbar = useAppLayoutToolbarEnabled();
+  const isToolbar = useAppLayoutToolbarDesignEnabled();
   const i18n = useInternalI18n('drawer');
   const containerProps = {
     ...baseProps,
