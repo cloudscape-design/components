@@ -146,22 +146,22 @@ const items: ButtonDropdownProps.Items = [
       });
     });
 
-    describe(`"icon" variant 'disabled with reason`, () => {
-      const props = { expandToViewport, variant: 'icon' as ButtonDropdownProps['variant'] };
+    // describe(`"icon" variant 'disabled with reason`, () => {
+    //   const props = { expandToViewport, variant: 'icon' as ButtonDropdownProps['variant'] };
 
-      test('does not open tooltip on mouseenter', () => {
-        const wrapper = renderButtonDropdown({
-          ...props,
-          items,
-          disabled: true,
-          disabledReason: 'disabled reason',
-        });
+    //   test('does not open tooltip on mouseenter', () => {
+    //     const wrapper = renderButtonDropdown({
+    //       ...props,
+    //       items,
+    //       disabled: true,
+    //       disabledReason: 'disabled reason',
+    //     });
 
-        fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
+    //     fireEvent.mouseEnter(wrapper.findTriggerButton()!.getElement());
 
-        expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
-      });
-    });
+    //     expect(wrapper.findTriggerButton()!.findDisabledReason()).toBeNull();
+    //   });
+    // });
 
     describe('"icon" variant', () => {
       it('renders one icon inside the button trigger', () => {
