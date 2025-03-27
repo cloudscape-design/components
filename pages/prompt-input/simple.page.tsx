@@ -31,6 +31,8 @@ type DemoContext = React.Context<
     hasText: boolean;
     hasSecondaryContent: boolean;
     hasSecondaryActions: boolean;
+    hasInfiniteMaxRows: boolean;
+    hasParentMaxHeightRestriction: boolean;
   }>
 >;
 
@@ -43,8 +45,18 @@ export default function PromptInputPage() {
   const [files, setFiles] = useState<File[]>([]);
   const { urlParams, setUrlParams } = useContext(AppContext as DemoContext);
 
-  const { isDisabled, isReadOnly, isInvalid, hasWarning, hasText, hasSecondaryActions, hasSecondaryContent } =
-    urlParams;
+  const {
+    isDisabled,
+    isReadOnly,
+    isInvalid,
+    hasWarning,
+    hasText,
+    hasSecondaryActions,
+    hasSecondaryContent,
+    hasInfiniteMaxRows,
+    hasParentMaxHeightRestriction,
+  } = urlParams;
+
   const [items, setItems] = React.useState([
     { label: 'Item 1', dismissLabel: 'Remove item 1', disabled: isDisabled },
     { label: 'Item 2', dismissLabel: 'Remove item 2', disabled: isDisabled },
@@ -131,6 +143,26 @@ export default function PromptInputPage() {
               >
                 Secondary actions
               </Checkbox>
+              <Checkbox
+                checked={hasInfiniteMaxRows}
+                onChange={() =>
+                  setUrlParams({
+                    hasInfiniteMaxRows: !hasInfiniteMaxRows,
+                  })
+                }
+              >
+                Infinite max rows
+              </Checkbox>
+              <Checkbox
+                checked={hasParentMaxHeightRestriction}
+                onChange={() =>
+                  setUrlParams({
+                    hasParentMaxHeightRestriction: !hasParentMaxHeightRestriction,
+                  })
+                }
+              >
+                Restrict parent container maxHeight
+              </Checkbox>
             </FormField>
             <button id="placeholder-text-button" onClick={() => setUrlParams({ hasText: true })}>
               Fill with placeholder text
@@ -155,70 +187,72 @@ export default function PromptInputPage() {
                 label={<span>User prompt</span>}
                 i18nStrings={{ errorIconAriaLabel: 'Error' }}
               >
-                <PromptInput
-                  data-testid="prompt-input"
-                  ariaLabel="Chat input"
-                  actionButtonIconName="send"
-                  actionButtonAriaLabel="Submit prompt"
-                  value={textareaValue}
-                  onChange={(event: any) => setTextareaValue(event.detail.value)}
-                  onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
-                  placeholder="Ask a question"
-                  maxRows={4}
-                  disabled={isDisabled}
-                  readOnly={isReadOnly}
-                  invalid={isInvalid || textareaValue.length > MAX_CHARS}
-                  warning={hasWarning}
-                  ref={ref}
-                  disableSecondaryActionsPaddings={true}
-                  secondaryActions={
-                    hasSecondaryActions ? (
-                      <Box padding={{ left: 'xxs', top: 'xs' }}>
-                        <ButtonGroup
-                          ref={buttonGroupRef}
-                          ariaLabel="Chat actions"
-                          onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
-                          items={[
-                            {
-                              type: 'icon-file-input',
-                              id: 'files',
-                              text: 'Upload files',
-                              multiple: true,
-                            },
-                            {
-                              type: 'icon-button',
-                              id: 'expand',
-                              iconName: 'expand',
-                              text: 'Go full page',
-                              disabled: isDisabled || isReadOnly,
-                            },
-                            {
-                              type: 'icon-button',
-                              id: 'remove',
-                              iconName: 'remove',
-                              text: 'Remove',
-                              disabled: isDisabled || isReadOnly,
-                            },
-                          ]}
-                          variant="icon"
+                <div style={{ maxHeight: hasParentMaxHeightRestriction ? '180px' : undefined }}>
+                  <PromptInput
+                    data-testid="prompt-input"
+                    ariaLabel="Chat input"
+                    actionButtonIconName="send"
+                    actionButtonAriaLabel="Submit prompt"
+                    value={textareaValue}
+                    onChange={(event: any) => setTextareaValue(event.detail.value)}
+                    onAction={event => window.alert(`Submitted the following: ${event.detail.value}`)}
+                    placeholder="Ask a question"
+                    maxRows={hasInfiniteMaxRows ? -1 : 4}
+                    disabled={isDisabled}
+                    readOnly={isReadOnly}
+                    invalid={isInvalid || textareaValue.length > MAX_CHARS}
+                    warning={hasWarning}
+                    ref={ref}
+                    disableSecondaryActionsPaddings={true}
+                    secondaryActions={
+                      hasSecondaryActions ? (
+                        <Box padding={{ left: 'xxs', top: 'xs' }}>
+                          <ButtonGroup
+                            ref={buttonGroupRef}
+                            ariaLabel="Chat actions"
+                            onFilesChange={({ detail }) => detail.id.includes('files') && setFiles(detail.files)}
+                            items={[
+                              {
+                                type: 'icon-file-input',
+                                id: 'files',
+                                text: 'Upload files',
+                                multiple: true,
+                              },
+                              {
+                                type: 'icon-button',
+                                id: 'expand',
+                                iconName: 'expand',
+                                text: 'Go full page',
+                                disabled: isDisabled || isReadOnly,
+                              },
+                              {
+                                type: 'icon-button',
+                                id: 'remove',
+                                iconName: 'remove',
+                                text: 'Remove',
+                                disabled: isDisabled || isReadOnly,
+                              },
+                            ]}
+                            variant="icon"
+                          />
+                        </Box>
+                      ) : undefined
+                    }
+                    secondaryContent={
+                      hasSecondaryContent && files.length > 0 ? (
+                        <FileTokenGroup
+                          items={files.map(file => ({
+                            file,
+                          }))}
+                          showFileThumbnail={true}
+                          onDismiss={onDismiss}
+                          i18nStrings={i18nStrings}
+                          alignment="horizontal"
                         />
-                      </Box>
-                    ) : undefined
-                  }
-                  secondaryContent={
-                    hasSecondaryContent && files.length > 0 ? (
-                      <FileTokenGroup
-                        items={files.map(file => ({
-                          file,
-                        }))}
-                        showFileThumbnail={true}
-                        onDismiss={onDismiss}
-                        i18nStrings={i18nStrings}
-                        alignment="horizontal"
-                      />
-                    ) : undefined
-                  }
-                />
+                      ) : undefined
+                    }
+                  />
+                </div>
               </FormField>
               <div />
             </ColumnLayout>
