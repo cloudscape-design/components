@@ -113,6 +113,7 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     iconName?: IconProps.Name;
@@ -128,6 +129,7 @@ export namespace ButtonGroupProps {
     text: string;
     pressed: boolean;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     iconName?: IconProps.Name;
@@ -153,6 +155,7 @@ export namespace ButtonGroupProps {
     id: string;
     text: string;
     disabled?: boolean;
+    disabledReason?: string;
     loading?: boolean;
     loadingText?: string;
     items: ReadonlyArray<ButtonDropdownProps.ItemOrGroup>;
