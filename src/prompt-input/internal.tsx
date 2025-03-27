@@ -113,25 +113,14 @@ const InternalPromptInput = React.forwardRef(
         // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
         textareaRef.current.style.height = 'auto';
 
+        const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
+
         if (maxRows === -1) {
           const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
-
-          // Respect the maxHeight of the parent container
-          let maxHeightPx = `calc(${Number.MAX_SAFE_INTEGER}px)`;
-          const parentElementMaxHeight =
-            textareaRef.current.parentElement?.parentElement?.parentElement?.style.maxHeight; // There are a few internal parent containers to jump through to get the maxHeight
-          // maxHeight is a string which is empty if not defined or contains px if it is
-          if (parentElementMaxHeight && parentElementMaxHeight.length > 0) {
-            maxHeightPx = parentElementMaxHeight;
-          }
-
-          const maxRowsHeight = `min(${scrollHeight}, ${maxHeightPx})`; // the min between the scrollable area and the parent element maxHeight
-          const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
-          textareaRef.current.style.height = `max(${maxRowsHeight}, ${minTextareaHeight})`;
+          textareaRef.current.style.height = `max(${scrollHeight}, ${minTextareaHeight})`;
         } else {
           const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
           const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
-          const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
           textareaRef.current.style.height = `min(max(${scrollHeight}, ${minTextareaHeight}), ${maxRowsHeight})`;
         }
       }
