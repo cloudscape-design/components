@@ -26,18 +26,34 @@ const intervals = [
 ];
 
 const permutations = createPermutations<DateRangePickerCalendarProps>([
+  // Selection range
   ...intervals.map(([startDate, endDate]) => ({
     value: [{ start: { date: startDate, time: '' }, end: { date: endDate, time: '' } }],
     setValue: [() => {}],
     locale: ['en-GB'],
     startOfWeek: [1],
-    isDateEnabled: [() => true, () => false, (date: Date) => date.getDate() % 2 !== 0],
     onChange: [() => {}],
     timeInputFormat: ['hh:mm:ss'] as const,
     i18nStrings: [i18nStrings],
-    dateOnly: [false, true],
     customAbsoluteRangeControl: [undefined],
   })),
+  // Disabled dates
+  {
+    value: [{ start: { date: '2021-08-30', time: '' }, end: { date: '2021-09-03', time: '' } }],
+    setValue: [() => {}],
+    i18nStrings: [i18nStrings],
+    isDateEnabled: [() => false, (date: Date) => date.getDate() % 2 !== 0],
+    customAbsoluteRangeControl: [undefined],
+  },
+  // Date-only
+  {
+    value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
+    setValue: [() => {}],
+    i18nStrings: [i18nStrings],
+    dateOnly: [true],
+    customAbsoluteRangeControl: [undefined],
+  },
+  // Custom control
   {
     value: [{ start: { date: '', time: '' }, end: { date: '', time: '' } }],
     setValue: [() => {}],
@@ -52,7 +68,7 @@ export default function DateRangePickerCalendarPage() {
     <Box padding="s">
       <h1>Date-range-picker month calendar page for screenshot tests</h1>
       <ScreenshotArea>
-        <div style={{ blockSize: `${intervals.length * 400}px` }}>
+        <div style={{ blockSize: `${(1 + permutations.length) * 400}px` }}>
           <PermutationsView
             permutations={permutations}
             render={permutation => {

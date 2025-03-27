@@ -249,7 +249,12 @@ export const DrawerTriggersBar = ({
       >
         {!isMobile && (
           <aside aria-label={ariaLabels?.drawers} role="region">
-            <div className={styles['drawer-triggers-wrapper']} role="toolbar" aria-orientation="vertical">
+            <div
+              className={styles['drawer-triggers-wrapper']}
+              aria-label={ariaLabels?.drawers}
+              role="toolbar"
+              aria-orientation="vertical"
+            >
               {visibleItems.map((item, index) => {
                 return (
                   <DrawerTrigger

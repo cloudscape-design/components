@@ -2,13 +2,14 @@
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
 
-import Trigger from '~components/select/parts/trigger';
+import { Box, SelectProps } from '~components';
+import Trigger, { TriggerProps } from '~components/select/parts/trigger';
 
 import createPermutations from '../utils/permutations';
 import PermutationsView from '../utils/permutations-view';
 import ScreenshotArea from '../utils/screenshot-area';
 
-const complexOption = {
+const complexOption: SelectProps.Option = {
   label: 'Complex option',
   labelTag: 'tag',
   description: 'description',
@@ -43,44 +44,48 @@ const complexOptionWithCustomSvg = {
   filteringTags: ['tag 1', 'tag 2'],
 };
 
-const permutations = createPermutations<any>([
+const permutations = createPermutations<TriggerProps>([
   {
     placeholder: ['Select an item'],
     triggerVariant: ['label'],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [null, complexOption],
+    disabled: [false],
   },
   {
     placeholder: ['Select an item'],
     disabled: [true],
     triggerVariant: ['option'],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [complexOption],
   },
   {
     placeholder: ['Select an item'],
     triggerVariant: ['label'],
     invalid: [true],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [complexOption],
     isOpen: [false, true],
+    disabled: [false],
   },
   {
     placeholder: ['Select an item'],
     triggerVariant: ['label'],
     warning: [true],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [complexOption],
     isOpen: [false, true],
+    disabled: [false],
   },
   {
     placeholder: ['Select an item'],
     triggerVariant: ['label'],
     warning: [true],
     invalid: [true],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [complexOption],
     isOpen: [false],
+    disabled: [false],
   },
   {
     placeholder: [
@@ -88,14 +93,14 @@ const permutations = createPermutations<any>([
     ],
     disabled: [false],
     triggerVariant: ['label', 'option'],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [null, longOption],
   },
   {
     placeholder: ['Select an item'],
     disabled: [true, false],
     triggerVariant: ['option'],
-    triggerProps: [{}],
+    triggerProps: [{ ref: React.createRef() }],
     selectedOption: [complexOptionWithCustomSvg],
   },
   {
@@ -103,18 +108,57 @@ const permutations = createPermutations<any>([
     disabled: [false, true],
     readOnly: [true],
     triggerVariant: ['label'],
-    triggerProps: [{}],
-    selectedOption: [complexOption, undefined],
+    triggerProps: [{ ref: React.createRef() }],
+    selectedOption: [complexOption, null],
+  },
+  // Inline label
+  {
+    placeholder: ['Select an item'],
+    triggerProps: [{ ref: React.createRef() }],
+    readOnly: [false],
+    disabled: [false],
+    triggerVariant: ['label', 'option'],
+    selectedOption: [complexOption, null],
+    inlineLabelText: [
+      'Inline label',
+      'Very long inline label that should wrap into multiple lines on narrow enough viewports',
+    ],
+  },
+  // Inline label, read only
+  {
+    placeholder: ['Select an item'],
+    triggerProps: [{ ref: React.createRef() }],
+    readOnly: [true],
+    disabled: [false],
+    triggerVariant: ['label', 'option'],
+    selectedOption: [complexOption, null],
+    inlineLabelText: [
+      'Inline label',
+      'Very long inline label that should wrap into multiple lines on narrow enough viewports',
+    ],
+  },
+  // Inline label, disabled
+  {
+    placeholder: ['Select an item'],
+    triggerProps: [{ ref: React.createRef() }],
+    readOnly: [false],
+    disabled: [true],
+    triggerVariant: ['label', 'option'],
+    selectedOption: [complexOption, null],
+    inlineLabelText: [
+      'Inline label',
+      'Very long inline label that should wrap into multiple lines on narrow enough viewports',
+    ],
   },
 ]);
 
 export default function InputPermutations() {
   return (
-    <>
+    <Box>
       <h1>Select trigger permutations</h1>
       <ScreenshotArea>
         <PermutationsView permutations={permutations} render={permutation => <Trigger {...permutation} />} />
       </ScreenshotArea>
-    </>
+    </Box>
   );
 }

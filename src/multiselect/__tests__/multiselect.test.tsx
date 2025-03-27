@@ -835,3 +835,11 @@ test('group options can have description, label tag, tags, disabled reason', () 
   expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
   expect(groupOption.findDisabledReason()!.getElement().textContent).toBe('Disabled reason');
 });
+
+test('tolerates options with { options: undefined }, and considers them to not be groups', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect options={[{ value: 'option1', options: undefined }]} selectedOptions={[]} />
+  );
+  wrapper.openDropdown();
+  expect(wrapper.findDropdown().findOptionByValue('option1')).not.toBeNull();
+});
