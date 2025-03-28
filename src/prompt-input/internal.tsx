@@ -70,6 +70,7 @@ const InternalPromptInput = React.forwardRef(
 
     const PADDING = isRefresh ? tokens.spaceXxs : tokens.spaceXxxs;
     const LINE_HEIGHT = tokens.lineHeightBodyM;
+    const DEFAULT_MAX_ROWS = 3;
 
     useImperativeHandle(
       ref,
@@ -109,11 +110,19 @@ const InternalPromptInput = React.forwardRef(
 
     const adjustTextareaHeight = useCallback(() => {
       if (textareaRef.current) {
+        // this is required so the scrollHeight becomes dynamic, otherwise it will be locked at the highest value for the size it reached e.g. 500px
         textareaRef.current.style.height = 'auto';
-        const maxRowsHeight = `calc(${maxRows <= 0 ? 3 : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
-        const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
+
         const minTextareaHeight = `calc(${LINE_HEIGHT} +  ${tokens.spaceScaledXxs} * 2)`; // the min height of Textarea with 1 row
-        textareaRef.current.style.height = `min(max(${scrollHeight}, ${minTextareaHeight}), ${maxRowsHeight})`;
+
+        if (maxRows === -1) {
+          const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
+          textareaRef.current.style.height = `max(${scrollHeight}, ${minTextareaHeight})`;
+        } else {
+          const maxRowsHeight = `calc(${maxRows <= 0 ? DEFAULT_MAX_ROWS : maxRows} * (${LINE_HEIGHT} + ${PADDING} / 2) + ${PADDING})`;
+          const scrollHeight = `calc(${textareaRef.current.scrollHeight}px)`;
+          textareaRef.current.style.height = `min(max(${scrollHeight}, ${minTextareaHeight}), ${maxRowsHeight})`;
+        }
       }
     }, [maxRows, LINE_HEIGHT, PADDING]);
 
