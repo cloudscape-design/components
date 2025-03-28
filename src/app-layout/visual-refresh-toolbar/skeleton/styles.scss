@@ -72,6 +72,14 @@
         }
       }
     }
+
+    &.drawer-focus-mode {
+      grid-template-areas:
+        'toolbar      toolbar      toolbar       toolbar      toolbar     '
+        'global-tools global-tools global-tools  global-tools global-tools'
+        'global-tools global-tools global-tools  global-tools global-tools';
+      grid-template-rows: 1fr;
+    }
   }
 }
 
@@ -195,4 +203,8 @@
   @include mobile-only {
     visibility: hidden;
   }
+}
+
+.hidden {
+  display: none;
 }

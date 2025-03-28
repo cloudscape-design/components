@@ -39,6 +39,8 @@ function AppLayoutGlobalDrawerImplementation({
     activeGlobalDrawersSizes,
     verticalOffsets,
     drawersOpenQueue,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = appLayoutInternals;
   const drawerRef = useRef<HTMLDivElement>(null);
   const activeDrawerId = activeGlobalDrawer?.id ?? '';
@@ -65,6 +67,7 @@ function AppLayoutGlobalDrawerImplementation({
   const lastOpenedDrawerId = drawersOpenQueue.length ? drawersOpenQueue[0] : null;
   const hasTriggerButton = !!activeGlobalDrawer?.trigger;
   const animationDisabled = activeGlobalDrawer?.defaultActive && !drawersOpenQueue.includes(activeGlobalDrawer.id);
+  const isExpanded = activeGlobalDrawer?.isExpandable && expandedDrawerId === activeDrawerId;
 
   return (
     <Transition nodeRef={drawerRef} in={show} appear={show} timeout={0}>
@@ -83,6 +86,7 @@ function AppLayoutGlobalDrawerImplementation({
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
                 [testutilStyles['active-drawer']]: show,
+                [styles['drawer-expanded']]: isExpanded,
               }
             )}
             ref={drawerRef}
@@ -106,10 +110,15 @@ function AppLayoutGlobalDrawerImplementation({
               ...(!isMobile && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
+              ...(isExpanded && {
+                inlineSize: `calc(100% - ${Object.keys(activeGlobalDrawersSizes)
+                  .filter(drawerId => drawerId !== activeDrawerId)
+                  .reduce((acc, drawerId) => acc + activeGlobalDrawersSizes[drawerId], 0)}px)`,
+              }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
-            {!isMobile && activeGlobalDrawer?.resizable && (
+            {!isMobile && activeGlobalDrawer?.resizable && !isExpanded && (
               <div className={styles['drawer-slider']}>
                 <PanelResizeHandle
                   ref={refs?.slider}
@@ -126,6 +135,19 @@ function AppLayoutGlobalDrawerImplementation({
               className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
               data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
             >
+              {activeGlobalDrawer?.isExpandable && (
+                <div className={styles['drawer-focus-mode-button']}>
+                  <InternalButton
+                    ariaLabel={activeGlobalDrawer?.ariaLabels?.focusModeButton}
+                    className={testutilStyles['active-drawer-focus-mode-button']}
+                    formAction="none"
+                    ariaExpanded={isExpanded}
+                    iconName={isExpanded ? 'shrink' : 'expand'}
+                    onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
+                    variant="icon"
+                  />
+                </div>
+              )}
               <div className={clsx(styles['drawer-close-button'])}>
                 <InternalButton
                   ariaLabel={computedAriaLabels.closeButton}
