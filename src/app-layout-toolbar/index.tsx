@@ -11,7 +11,6 @@ import AppLayoutToolbarInternal from '../app-layout/visual-refresh-toolbar';
 import { AppLayoutToolbarPublicContext } from '../app-layout/visual-refresh-toolbar/contexts';
 import { useInternalI18n } from '../i18n/context';
 import { getBaseProps } from '../internal/base-component';
-import VisualContext from '../internal/components/visual-context';
 import { NonCancelableCustomEvent } from '../internal/events';
 import useBaseComponent from '../internal/hooks/use-base-component';
 import { useControllable } from '../internal/hooks/use-controllable';
@@ -130,9 +129,7 @@ const AppLayoutToolbar = React.forwardRef(
     return (
       <AppLayoutToolbarPublicContext.Provider value={true}>
         <div ref={useMergeRefs(__internalRootRef, rootRef)} {...baseProps}>
-          <VisualContext contextName="app-layout-toolbar">
-            <AppLayoutToolbarInternal ref={ref} {...props} />
-          </VisualContext>
+          <AppLayoutToolbarInternal ref={ref} {...props} />
         </div>
       </AppLayoutToolbarPublicContext.Provider>
     );

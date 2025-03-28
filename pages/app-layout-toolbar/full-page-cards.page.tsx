@@ -1,25 +1,68 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import range from 'lodash/range';
 
-import { AppLayoutToolbar, Button, Header, Link, Table } from '~components';
+import { AppLayoutToolbar } from '~components';
+import Button from '~components/button';
+import Cards, { CardsProps } from '~components/cards';
+import Header from '~components/header';
+import Link from '~components/link';
 
-import AppContext, { AppContextType } from '../app/app-context';
+import * as toolsContent from '../app-layout//utils/tools-content';
 import { Breadcrumbs, Footer, Navigation, Notifications, Tools } from '../app-layout/utils/content-blocks';
 import labels from '../app-layout/utils/labels';
-import * as toolsContent from '../app-layout/utils/tools-content';
-import { generateItems, Instance } from '../table/generate-data';
-import { columnsConfig } from '../table/shared-configs';
 import ScreenshotArea from '../utils/screenshot-area';
 
-type PageContext = React.Context<AppContextType<{ stickyNotifications: boolean }>>;
+interface Item {
+  number: number;
+  text: string;
+}
 
-const items = generateItems(20);
+function createSimpleItems(count: number) {
+  const texts = ['One', 'Two', 'Three', 'Four', 'Five'];
+  return range(count).map(number => ({ number, text: texts[number % texts.length] }));
+}
+
+const cardDefinition: CardsProps.CardDefinition<Item> = {
+  header: item => item.text,
+  sections: [
+    {
+      id: 'description',
+      header: 'Number',
+      content: item => item.number,
+    },
+    {
+      id: 'type',
+      header: 'Text',
+      content: item => item.text,
+    },
+  ],
+};
+
+const config: CardsProps['cardsPerRow'] = [
+  {
+    cards: 1,
+  },
+  {
+    minWidth: 400,
+    cards: 2,
+  },
+  {
+    cards: 3,
+    minWidth: 700,
+  },
+  {
+    cards: 4,
+    minWidth: 1000,
+  },
+];
+
+const items = createSimpleItems(16);
 
 export default function () {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [selectedTool, setSelectedTool] = useState<keyof typeof toolsContent>('long');
-  const { urlParams } = useContext(AppContext as PageContext);
 
   function openHelp(article: keyof typeof toolsContent) {
     setToolsOpen(true);
@@ -32,14 +75,17 @@ export default function () {
         ariaLabels={labels}
         breadcrumbs={<Breadcrumbs />}
         navigation={<Navigation />}
-        contentType="table"
+        contentType="cards"
         tools={<Tools>{toolsContent[selectedTool]}</Tools>}
         toolsOpen={toolsOpen}
         onToolsChange={({ detail }) => setToolsOpen(detail.open)}
         notifications={<Notifications />}
-        stickyNotifications={urlParams.stickyNotifications}
         content={
-          <Table<Instance>
+          <Cards<Item>
+            items={items}
+            cardDefinition={cardDefinition}
+            stickyHeader={true}
+            variant="full-page"
             header={
               <Header
                 variant="awsui-h1-sticky"
@@ -54,11 +100,7 @@ export default function () {
                 Sticky Scrollbar Example
               </Header>
             }
-            stickyHeader={true}
-            variant="full-page"
-            columnDefinitions={columnsConfig}
-            items={items}
-            stripedRows={true}
+            cardsPerRow={config}
           />
         }
       />
