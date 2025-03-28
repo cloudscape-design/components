@@ -175,7 +175,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => {
                 setExpandedDrawerId(undefined);
-                if (activeDrawerId === item.id) {
+                if (drawerFocusMode && activeDrawerId === item.id) {
                   return;
                 }
                 onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
