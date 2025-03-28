@@ -14,10 +14,12 @@ class PromptInputPage extends BasePageObject {
   }
 }
 
-const setupTest = (testFn: (page: PromptInputPage) => Promise<void>) => {
+const setupTest = (testFn: (page: PromptInputPage) => Promise<void>, additionalUrlParams?: string[]) => {
   return useBrowser(async browser => {
     const page = new PromptInputPage(browser);
-    await browser.url(`#/light/prompt-input/simple/?isReadOnly=true`);
+    await browser.url(
+      `#/light/prompt-input/simple/?isReadOnly=true${additionalUrlParams ? '&' + additionalUrlParams.join('&') : ''}`
+    );
     await page.waitForVisible(getPromptInputWrapper().toSelector());
     await testFn(page);
   });
@@ -30,6 +32,18 @@ describe('Prompt input', () => {
       await page.click('#placeholder-text-button');
       await expect(page.getPromptInputHeight()).resolves.toEqual(96);
     })
+  );
+
+  test(
+    'Height should update infinitely based on maxRows property being set to -1',
+    setupTest(
+      async page => {
+        await expect(page.getPromptInputHeight()).resolves.toEqual(32);
+        await page.click('#placeholder-text-button');
+        await expect(page.getPromptInputHeight()).resolves.toEqual(192);
+      },
+      ['hasInfiniteMaxRows=true']
+    )
   );
 
   test(
