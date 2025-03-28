@@ -13,7 +13,7 @@ interface AppLayoutGlobalDrawersImplementationProps {
 export function AppLayoutGlobalDrawersImplementation({
   appLayoutInternals,
 }: AppLayoutGlobalDrawersImplementationProps) {
-  const { globalDrawers, activeGlobalDrawersIds } = appLayoutInternals;
+  const { globalDrawers, activeGlobalDrawersIds, expandedDrawerId } = appLayoutInternals;
   const openDrawersHistory = useRef<Set<string>>(new Set());
 
   if (!globalDrawers.length) {
@@ -33,7 +33,7 @@ export function AppLayoutGlobalDrawersImplementation({
           return (
             <AppLayoutGlobalDrawer
               key={drawer.id}
-              show={activeGlobalDrawersIds.includes(drawer.id)}
+              show={expandedDrawerId ? drawer.id === expandedDrawerId : activeGlobalDrawersIds.includes(drawer.id)}
               activeGlobalDrawer={drawer}
               appLayoutInternals={appLayoutInternals}
             />
