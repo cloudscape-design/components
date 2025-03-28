@@ -78,6 +78,7 @@ export function SplitPanelContentBottom({
         [styles['drawer-disable-content-paddings']]: disableContentPaddings,
         [styles.refresh]: isRefresh,
         [styles['with-toolbar']]: isToolbar,
+        [styles.hidden]: closeBehavior === 'hide' && !isOpen,
       })}
       onClick={() => !isOpen && onToggle()}
       style={{
