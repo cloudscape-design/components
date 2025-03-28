@@ -4,7 +4,8 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
-import { getUrlParams, Theme } from './utils';
+import { Theme } from '../../__integ__/utils';
+import { getUrlParams } from './utils';
 
 const wrapper = createWrapper().findAppLayout();
 

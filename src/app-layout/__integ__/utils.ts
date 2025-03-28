@@ -4,17 +4,16 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../lib/components/test-utils/selectors';
+import { Size, Theme } from '../../__integ__/utils';
 import { viewports } from './constants';
 
 export const testIf = (condition: boolean) => (condition ? test : test.skip);
 
-export type Theme = 'classic' | 'refresh' | 'refresh-toolbar';
-
 interface SetupTestOptions {
   splitPanelPosition?: string;
-  size?: 'desktop' | 'mobile';
+  size?: Size;
   disableContentPaddings?: string;
-  theme?: 'refresh' | 'refresh-toolbar' | 'classic';
+  theme?: Theme;
 }
 
 export function getUrlParams(theme: Theme, other?: Record<string, string>) {
