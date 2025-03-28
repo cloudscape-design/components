@@ -31,6 +31,17 @@ describe('Prompt input', () => {
       await expect(page.getPromptInputHeight()).resolves.toEqual(32);
       await page.click('#placeholder-text-button');
       await expect(page.getPromptInputHeight()).resolves.toEqual(96);
+
+      const clientHeight = await page.getElementProperty(
+        getPromptInputWrapper().findNativeTextarea().toSelector(),
+        'clientHeight'
+      );
+      const scrollHeight = await page.getElementProperty(
+        getPromptInputWrapper().findNativeTextarea().toSelector(),
+        'scrollHeight'
+      );
+
+      await expect(Number(clientHeight)).toBeLessThan(Number(scrollHeight));
     })
   );
 
@@ -40,7 +51,17 @@ describe('Prompt input', () => {
       async page => {
         await expect(page.getPromptInputHeight()).resolves.toEqual(32);
         await page.click('#placeholder-text-button');
-        await expect(page.getPromptInputHeight()).resolves.toEqual(192);
+
+        const clientHeight = await page.getElementProperty(
+          getPromptInputWrapper().findNativeTextarea().toSelector(),
+          'clientHeight'
+        );
+        const scrollHeight = await page.getElementProperty(
+          getPromptInputWrapper().findNativeTextarea().toSelector(),
+          'scrollHeight'
+        );
+
+        await expect(Number(clientHeight)).toEqual(Number(scrollHeight));
       },
       ['hasInfiniteMaxRows=true']
     )
