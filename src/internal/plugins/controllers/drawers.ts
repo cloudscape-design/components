@@ -24,6 +24,7 @@ export interface DrawerConfig {
     triggerButton?: string;
     resizeHandle?: string;
   };
+  isExpandable?: boolean;
   badge?: boolean;
   resizable?: boolean;
   defaultSize?: number;
