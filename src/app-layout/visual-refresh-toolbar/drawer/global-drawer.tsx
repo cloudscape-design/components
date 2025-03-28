@@ -37,6 +37,7 @@ function AppLayoutGlobalDrawerImplementation({
     minGlobalDrawersSizes,
     maxGlobalDrawersSizes,
     activeGlobalDrawersSizes,
+    activeGlobalDrawersIds,
     verticalOffsets,
     drawersOpenQueue,
     expandedDrawerId,
@@ -143,7 +144,15 @@ function AppLayoutGlobalDrawerImplementation({
                     formAction="none"
                     ariaExpanded={isExpanded}
                     iconName={isExpanded ? 'shrink' : 'expand'}
-                    onClick={() => setExpandedDrawerId(isExpanded ? undefined : activeDrawerId)}
+                    onClick={() => {
+                      setExpandedDrawerId(isExpanded ? undefined : activeDrawerId);
+                      // close all other global drawers when entering to focus mode
+                      activeGlobalDrawersIds
+                        .filter(id => id !== activeDrawerId)
+                        .forEach(drawerId => {
+                          onActiveGlobalDrawersChange(drawerId, { initiatedByUserAction: true });
+                        });
+                    }}
                     variant="icon"
                   />
                 </div>
