@@ -142,7 +142,9 @@ export function DrawerTriggers({
               )}
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => {
-                setExpandedDrawerId(undefined);
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
                 onSplitPanelToggle?.();
               }}
               selected={!drawerFocusMode && splitPanelToggleProps.active}
@@ -173,7 +175,7 @@ export function DrawerTriggers({
               key={item.id}
               onClick={() => {
                 setExpandedDrawerId(undefined);
-                if (activeDrawerId === item.id) {
+                if (drawerFocusMode && activeDrawerId === item.id) {
                   return;
                 }
                 onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });

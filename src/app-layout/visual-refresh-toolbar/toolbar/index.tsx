@@ -165,7 +165,9 @@ export function AppLayoutToolbarImplementation({
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
               onClick={() => {
-                setExpandedDrawerId(undefined);
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
                 if (navigationOpen) {
                   return;
                 }
