@@ -100,11 +100,15 @@ export class TopNavigationMenuDropdownWrapper extends ButtonDropdownWrapper {
     return this.find<HTMLButtonElement>(`.${menuDropdownStyles.button}`)!;
   }
 
-  findTitle(): ElementWrapper | null {
-    return this.findByClassName(buttonDropdownStyles.title);
+  findTitle(options = { expandToViewport: false }): ElementWrapper | null {
+    return options?.expandToViewport
+      ? createWrapper().findComponent(`.${buttonDropdownStyles.title}`, ElementWrapper)
+      : this.findByClassName(buttonDropdownStyles.title);
   }
 
-  findDescription(): ElementWrapper | null {
-    return this.findByClassName(buttonDropdownStyles.description);
+  findDescription(options?: { expandToViewport?: boolean }): ElementWrapper | null {
+    return options?.expandToViewport
+      ? createWrapper().findComponent(`.${buttonDropdownStyles.description}`, ElementWrapper)
+      : this.findByClassName(buttonDropdownStyles.description);
   }
 }

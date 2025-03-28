@@ -120,6 +120,7 @@ export default function Utility({ hideText, definition, offsetRight }: UtilityPr
         items={items}
         title={shouldShowTitle ? title : ''}
         ariaLabel={ariaLabel}
+        expandToViewport={true}
         offsetRight={offsetRight}
       >
         {!shouldHideText && definition.text}

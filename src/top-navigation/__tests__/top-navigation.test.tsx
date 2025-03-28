@@ -203,7 +203,9 @@ describe('TopNavigation Component', () => {
       menuDropdown.openDropdown();
 
       expect(menuDropdown.findNativeButton()!.getElement()).toHaveTextContent('Menu dropdown');
-      expect(menuDropdown.findDescription()!.getElement()).toHaveTextContent('jane.doe@example.com');
+      expect(menuDropdown.findDescription({ expandToViewport: true })!.getElement()).toHaveTextContent(
+        'jane.doe@example.com'
+      );
     });
 
     test('calls onItemClick when an item is selected', () => {

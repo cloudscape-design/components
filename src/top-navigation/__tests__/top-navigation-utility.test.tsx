@@ -167,7 +167,7 @@ describe('TopNavigation Utility part', () => {
       }).findMenuDropdownType()!;
 
       menuWrapper.openDropdown();
-      expect(menuWrapper.findTitle()!.getElement()).toHaveTextContent('Title');
+      expect(menuWrapper.findTitle({ expandToViewport: true })!.getElement()).toHaveTextContent('Title');
     });
 
     it('uses text as a fallback for the title', () => {
@@ -177,7 +177,7 @@ describe('TopNavigation Utility part', () => {
       }).findMenuDropdownType()!;
 
       menuWrapper.openDropdown();
-      expect(menuWrapper.findTitle()!.getElement()).toHaveTextContent('Menu');
+      expect(menuWrapper.findTitle({ expandToViewport: true })!.getElement()).toHaveTextContent('Menu');
     });
 
     it('renders options', () => {
@@ -196,7 +196,9 @@ describe('TopNavigation Utility part', () => {
       }).findMenuDropdownType()!;
       menuWrapper.openDropdown();
 
-      items.forEach((item, i) => expect(menuWrapper.findItems()[i].getElement()).toHaveTextContent(item.text));
+      items.forEach((item, i) =>
+        expect(menuWrapper.findItems({ expandToViewport: true })[i].getElement()).toHaveTextContent(item.text)
+      );
     });
 
     it('does not show title in the dropdown if there is visible text', () => {
@@ -212,8 +214,8 @@ describe('TopNavigation Utility part', () => {
       }).findMenuDropdownType()!;
 
       menuWrapper.openDropdown();
-      expect(menuWrapper.findTitle()).toBeFalsy();
-      expect(menuWrapper.findDescription()!.getElement()).toHaveTextContent('Description');
+      expect(menuWrapper.findTitle({ expandToViewport: true })).toBeFalsy();
+      expect(menuWrapper.findDescription({ expandToViewport: true })!.getElement()).toHaveTextContent('Description');
     });
 
     it('supports iconUrl', () => {
