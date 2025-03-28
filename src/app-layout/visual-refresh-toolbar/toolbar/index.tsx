@@ -68,6 +68,8 @@ export function AppLayoutToolbarImplementation({
     toolbarState,
     setToolbarState,
     setToolbarHeight,
+    expandedDrawerId,
+    setExpandedDrawerId,
   } = appLayoutInternals;
   const {
     ariaLabels,
@@ -90,6 +92,7 @@ export function AppLayoutToolbarImplementation({
   } = toolbarProps;
   // TODO: expose configuration property
   const pinnedToolbar = true;
+  const drawerFocusMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
   useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
   useEffect(() => {
@@ -161,9 +164,15 @@ export function AppLayoutToolbarImplementation({
               ariaExpanded={false}
               iconName="menu"
               className={testutilStyles['navigation-toggle']}
-              onClick={() => onNavigationToggle?.(!navigationOpen)}
+              onClick={() => {
+                setExpandedDrawerId(undefined);
+                if (navigationOpen) {
+                  return;
+                }
+                onNavigationToggle?.(!navigationOpen);
+              }}
               ref={navigationFocusRef}
-              selected={navigationOpen}
+              selected={!drawerFocusMode && navigationOpen}
               disabled={anyPanelOpenInMobile}
             />
           </nav>
@@ -192,6 +201,8 @@ export function AppLayoutToolbarImplementation({
               globalDrawers={globalDrawers?.filter(item => !!item.trigger) ?? []}
               activeGlobalDrawersIds={activeGlobalDrawersIds ?? []}
               onActiveGlobalDrawersChange={onActiveGlobalDrawersChange}
+              drawerFocusMode={drawerFocusMode}
+              setExpandedDrawerId={setExpandedDrawerId}
             />
           </div>
         )}

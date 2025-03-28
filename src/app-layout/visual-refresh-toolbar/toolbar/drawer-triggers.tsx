@@ -37,6 +37,8 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
+  drawerFocusMode?: boolean;
+  setExpandedDrawerId: (value: string | undefined) => void;
 
   splitPanelOpen?: boolean;
   splitPanelPosition?: AppLayoutProps.SplitPanelPreferences['position'];
@@ -62,6 +64,8 @@ export function DrawerTriggers({
   globalDrawers,
   globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
+  drawerFocusMode,
+  setExpandedDrawerId,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
   const hasMultipleTriggers = drawers.length > 1;
@@ -130,15 +134,18 @@ export function DrawerTriggers({
             <TriggerButton
               ariaLabel={splitPanelToggleProps.ariaLabel}
               ariaControls={splitPanelToggleProps.controlId}
-              ariaExpanded={splitPanelToggleProps.active}
+              ariaExpanded={!drawerFocusMode && splitPanelToggleProps.active}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
                 splitPanelTestUtilStyles['open-button']
               )}
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
-              onClick={() => onSplitPanelToggle?.()}
-              selected={splitPanelToggleProps.active}
+              onClick={() => {
+                setExpandedDrawerId(undefined);
+                onSplitPanelToggle?.();
+              }}
+              selected={!drawerFocusMode && splitPanelToggleProps.active}
               ref={splitPanelResolvedPosition === 'side' ? splitPanelFocusRef : undefined}
               hasTooltip={true}
               isMobile={isMobile}
@@ -150,10 +157,11 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(0, globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveLocalDrawerId?.current === item.id;
+          const selected = !drawerFocusMode && item.id === activeDrawerId;
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={item.id === activeDrawerId}
+              ariaExpanded={selected}
               ariaControls={activeDrawerId === item.id ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
@@ -163,11 +171,15 @@ export function DrawerTriggers({
               iconName={item.trigger!.iconName}
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
-              onClick={() =>
-                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true })
-              }
+              onClick={() => {
+                setExpandedDrawerId(undefined);
+                if (activeDrawerId === item.id) {
+                  return;
+                }
+                onActiveDrawerChange?.(activeDrawerId !== item.id ? item.id : null, { initiatedByUserAction: true });
+              }}
               ref={item.id === previousActiveLocalDrawerId.current ? drawersFocusRef : undefined}
-              selected={item.id === activeDrawerId}
+              selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}
