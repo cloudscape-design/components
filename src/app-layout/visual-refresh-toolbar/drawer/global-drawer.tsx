@@ -147,11 +147,13 @@ function AppLayoutGlobalDrawerImplementation({
                     onClick={() => {
                       setExpandedDrawerId(isExpanded ? undefined : activeDrawerId);
                       // close all other global drawers when entering to focus mode
-                      activeGlobalDrawersIds
-                        .filter(id => id !== activeDrawerId)
-                        .forEach(drawerId => {
-                          onActiveGlobalDrawersChange(drawerId, { initiatedByUserAction: true });
-                        });
+                      setTimeout(() => {
+                        activeGlobalDrawersIds
+                          .filter(id => id !== activeDrawerId)
+                          .forEach(drawerId => {
+                            onActiveGlobalDrawersChange(drawerId, { initiatedByUserAction: true });
+                          });
+                      }, 100);
                     }}
                     variant="icon"
                   />
