@@ -16,7 +16,7 @@
   > .styled-box {
     fill: awsui.$color-background-control-default;
     stroke: awsui.$color-border-control-default;
-    stroke-width: styles.$control-border-width;
+    stroke-width: awsui.$border-width-field;
     @include styles.with-motion {
       transition:
         fill awsui.$motion-duration-transition-quick awsui.$motion-easing-transition-quick,
