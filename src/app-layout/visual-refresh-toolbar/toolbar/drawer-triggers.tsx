@@ -142,7 +142,9 @@ export function DrawerTriggers({
               )}
               iconName={splitPanelResolvedPosition === 'side' ? 'view-vertical' : 'view-horizontal'}
               onClick={() => {
-                setExpandedDrawerId(undefined);
+                if (setExpandedDrawerId) {
+                  setExpandedDrawerId(undefined);
+                }
                 onSplitPanelToggle?.();
               }}
               selected={!drawerFocusMode && splitPanelToggleProps.active}

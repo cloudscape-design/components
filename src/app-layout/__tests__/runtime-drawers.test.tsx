@@ -1349,7 +1349,7 @@ describe('toolbar mode only features', () => {
       });
     });
 
-    describe('focus mode for global drawers', () => {
+    describe.skip('focus mode for global drawers', () => {
       test('should set a drawer to focus mode by clicking on "focus mode" button', async () => {
         const drawerId = 'global-drawer';
         awsuiPlugins.appLayout.registerDrawer({

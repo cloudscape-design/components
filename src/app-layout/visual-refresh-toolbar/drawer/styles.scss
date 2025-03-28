@@ -60,7 +60,7 @@
   }
 
   &.drawer-expanded {
-    order: -1;
+    inline-size: 100%;
   }
 
   > .drawer-content-container {

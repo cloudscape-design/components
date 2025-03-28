@@ -110,11 +110,6 @@ function AppLayoutGlobalDrawerImplementation({
               ...(!isMobile && {
                 [customCssProps.drawerSize]: `${['entering', 'entered'].includes(state) ? size : 0}px`,
               }),
-              ...(isExpanded && {
-                inlineSize: `calc(100% - ${Object.keys(activeGlobalDrawersSizes)
-                  .filter(drawerId => drawerId !== activeDrawerId)
-                  .reduce((acc, drawerId) => acc + activeGlobalDrawersSizes[drawerId], 0)}px)`,
-              }),
             }}
             data-testid={`awsui-app-layout-drawer-${activeDrawerId}`}
           >
