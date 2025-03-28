@@ -7,40 +7,12 @@ import { render } from '@testing-library/react';
 import Multiselect from '../../../lib/components/multiselect';
 import createWrapper from '../../../lib/components/test-utils/dom';
 import { MultiselectProps } from '../interfaces';
-
-const options: MultiselectProps.Options = [
-  { label: 'First option', value: '1' },
-  {
-    label: 'First group',
-    options: [
-      {
-        label: 'Second option',
-        value: '2',
-      },
-      {
-        label: 'Third option',
-        value: '3',
-      },
-    ],
-  },
-  { label: 'Fourth option', value: '4' },
-  {
-    label: 'Second group',
-    options: [
-      {
-        label: 'Fifth option',
-        value: '5',
-      },
-      {
-        label: 'Sixth option',
-        value: '6',
-      },
-    ],
-  },
-];
+import { optionsWithGroups } from './common';
 
 function renderMultiselect(props?: Partial<MultiselectProps>) {
-  const { container } = render(<Multiselect options={options} selectedOptions={[]} onChange={() => null} {...props} />);
+  const { container } = render(
+    <Multiselect options={optionsWithGroups} selectedOptions={[]} onChange={() => null} {...props} />
+  );
   const wrapper = createWrapper(container).findMultiselect()!;
   return { container, wrapper };
 }
