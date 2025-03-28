@@ -6,7 +6,6 @@ import React, { useCallback, useRef, useState } from 'react';
 import { findUpUntil, nodeContains } from '@cloudscape-design/component-toolkit/dom';
 import { getLogicalBoundingClientRect } from '@cloudscape-design/component-toolkit/internal';
 
-import { isContainingBlock } from '../internal/utils/dom';
 import {
   calculateScroll,
   getFirstScrollableParent,
@@ -88,10 +87,7 @@ export default function usePopoverPosition({
       const viewportRect = getViewportRect(document.defaultView!);
       const trackRect = getLogicalBoundingClientRect(track);
       const arrowRect = getDimensions(arrow);
-      const boundary = findUpUntil(
-        popover,
-        (element: HTMLElement) => isContainingBlock(element) || isBoundary(element)
-      );
+      const boundary = findUpUntil(popover, (element: HTMLElement) => isBoundary(element));
 
       // Rectangle outside of which the popover should not be positioned, because it would be clipped.
       const boundaryRect = boundary ? getLogicalBoundingClientRect(boundary) : getDocumentRect(document);
@@ -126,15 +122,9 @@ export default function usePopoverPosition({
         allowVerticalOverflow,
       });
 
-      const probeOffset = getProbeOffset(track, renderWithPortal);
-      const popoverOffset = {
-        insetBlockStart: probeOffset.insetBlockStart - trackRect.insetBlockStart + rect.insetBlockStart,
-        insetInlineStart: probeOffset.insetInlineStart - trackRect.insetInlineStart + rect.insetInlineStart,
-      };
-
       // Cache the distance between the trigger and the popover (which stays the same as you scroll),
       // and use that to recalculate the new popover position.
-      const trackRelativeOffset = toRelativePosition(popoverOffset, probeOffset);
+      const trackRelativeOffset = toRelativePosition(rect, trackRect);
 
       // Bring back the container to its original position to prevent any flashing.
       popover.style.insetBlockStart = prevInsetBlockStart;
@@ -154,6 +144,11 @@ export default function usePopoverPosition({
       const shouldScroll = allowScrollToFit && !shouldKeepPosition;
 
       // Position the popover
+      const probeRect = getProbeRect(track, renderWithPortal);
+      const popoverOffset = {
+        insetBlockStart: rect.insetBlockStart - probeRect.insetBlockStart,
+        insetInlineStart: rect.insetInlineStart - probeRect.insetInlineStart,
+      };
       const insetBlockStart = shouldScroll
         ? popoverOffset.insetBlockStart + calculateScroll(rect)
         : popoverOffset.insetBlockStart;
@@ -175,7 +170,11 @@ export default function usePopoverPosition({
       positionHandlerRef.current = () => {
         const trackRect = getLogicalBoundingClientRect(track);
 
-        const newTrackOffset = getProbeOffset(track, renderWithPortal);
+        const probeRect = getProbeRect(track, renderWithPortal);
+        const newTrackOffset = {
+          insetBlockStart: trackRect.insetBlockStart - probeRect.insetBlockStart,
+          insetInlineStart: trackRect.insetInlineStart - probeRect.insetInlineStart,
+        };
 
         setPopoverStyle({
           insetBlockStart: newTrackOffset.insetBlockStart + trackRelativeOffset.insetBlockStart,
@@ -207,7 +206,9 @@ export default function usePopoverPosition({
   return { updatePositionHandler, popoverStyle, internalPosition, positionHandlerRef, isOverscrolling };
 }
 
-function getProbeOffset(element: HTMLElement | SVGElement, renderWithPortal: boolean) {
+// In order to figure out the offset of the fixed popover container we add an invisible fixed-positioned probe
+// element to then calculate offset between the probe and the popover trigger.
+function getProbeRect(element: HTMLElement | SVGElement, renderWithPortal: boolean) {
   const probe = document.createElement('div');
   probe.style.position = 'fixed';
   probe.style.top = '0';
@@ -223,13 +224,7 @@ function getProbeOffset(element: HTMLElement | SVGElement, renderWithPortal: boo
     element.appendChild(probe);
   }
 
-  const elementRect = getLogicalBoundingClientRect(element);
   const probeRect = getLogicalBoundingClientRect(probe);
-
-  const offset = {
-    insetBlockStart: elementRect.insetBlockStart - probeRect.insetBlockStart,
-    insetInlineStart: elementRect.insetInlineStart - probeRect.insetInlineStart,
-  };
 
   if (renderWithPortal) {
     document.body.removeChild(probe);
@@ -237,7 +232,7 @@ function getProbeOffset(element: HTMLElement | SVGElement, renderWithPortal: boo
     element.removeChild(probe);
   }
 
-  return offset;
+  return probeRect;
 }
 
 function getBorderWidth(element: HTMLElement) {

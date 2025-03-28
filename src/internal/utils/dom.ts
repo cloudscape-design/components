@@ -5,16 +5,6 @@ import balanced from 'balanced-match';
 
 import { findUpUntil } from '@cloudscape-design/component-toolkit/dom';
 
-export function isContainingBlock(element: HTMLElement): boolean {
-  const computedStyle = getComputedStyle(element);
-  return (
-    (!!computedStyle.transform && computedStyle.transform !== 'none') ||
-    (!!computedStyle.perspective && computedStyle.perspective !== 'none') ||
-    (!!computedStyle.containerType && computedStyle.containerType !== 'normal') ||
-    computedStyle.contain?.split(' ').some(s => ['layout', 'paint', 'strict', 'content'].includes(s))
-  );
-}
-
 /**
  * Returns an element that is used to position the given element.
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block
@@ -25,6 +15,16 @@ export function getContainingBlock(startElement: HTMLElement): HTMLElement | nul
   }
 
   return findUpUntil(startElement.parentElement, isContainingBlock) as HTMLElement;
+}
+
+function isContainingBlock(element: HTMLElement): boolean {
+  const computedStyle = getComputedStyle(element);
+  return (
+    (!!computedStyle.transform && computedStyle.transform !== 'none') ||
+    (!!computedStyle.perspective && computedStyle.perspective !== 'none') ||
+    (!!computedStyle.containerType && computedStyle.containerType !== 'normal') ||
+    computedStyle.contain?.split(' ').some(s => ['layout', 'paint', 'strict', 'content'].includes(s))
+  );
 }
 
 const cssVariableExpression = /--.+?\s*,\s*(.+)/;

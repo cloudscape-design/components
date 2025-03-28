@@ -23,7 +23,7 @@ export default function () {
 
   const popoverProps: PopoverProps = {
     size: 'medium',
-    position: 'right',
+    position: 'bottom',
     header: 'Memory error',
     content: (
       <Box>
@@ -49,22 +49,22 @@ export default function () {
         </Checkbox>
 
         <ScreenshotArea>
-          <SpaceBetween size="m">
-            <div style={{ height: 30 }}>
+          <SpaceBetween size="m" direction="horizontal">
+            <div style={{ width: 50 }}>
               <Popover id="x1" {...popoverProps}>
                 <button>x1</button>
               </Popover>
             </div>
 
-            <div style={{ position: 'relative', height: 30 }}>
-              <div style={{ position: 'absolute', top: -10 }}>
+            <div style={{ position: 'relative', width: 50 }}>
+              <div style={{ position: 'absolute', left: -10 }}>
                 <Popover id="x2" {...popoverProps}>
                   <button>x2</button>
                 </Popover>
               </div>
             </div>
 
-            <div style={{ position: 'relative', height: 30 }}>
+            <div style={{ position: 'relative', width: 50 }}>
               <div style={{ contain: 'none', ...{ containerType: 'size' } }}>
                 <Popover id="x3" {...popoverProps}>
                   <button>x3</button>
@@ -72,7 +72,7 @@ export default function () {
               </div>
             </div>
 
-            <div style={{ position: 'relative', height: 30 }}>
+            <div style={{ position: 'relative', width: 50 }}>
               <div style={{ contain: 'layout', ...{ containerType: 'size' } }}>
                 <Popover id="x4" {...popoverProps}>
                   <button>x4</button>
@@ -80,7 +80,7 @@ export default function () {
               </div>
             </div>
 
-            <div style={{ position: 'relative', height: 30 }}>
+            <div style={{ position: 'relative', width: 50 }}>
               <div style={{ contain: 'none', ...{ containerType: 'inline-size' } }}>
                 <Popover id="x5" {...popoverProps}>
                   <button>x5</button>
@@ -88,7 +88,7 @@ export default function () {
               </div>
             </div>
 
-            <div style={{ position: 'relative', height: 30 }}>
+            <div style={{ position: 'relative', width: 50 }}>
               <div style={{ contain: 'layout', ...{ containerType: 'inline-size' } }}>
                 <Popover id="x6" {...popoverProps}>
                   <button>x6</button>

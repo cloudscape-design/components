@@ -22,13 +22,13 @@ import styles from '../../../lib/components/popover/styles.selectors.js';
 
         const triggerRect = await page.getBoundingBox(popoverTriggerSelector);
         const arrowRect = await page.getBoundingBox(popoverArrowSelector);
-        expect(Math.abs(getRectMid(triggerRect) - getRectMid(arrowRect))).toBeLessThanOrEqual(1);
-        expect(Math.abs(triggerRect.right - arrowRect.left)).toBeLessThanOrEqual(1);
+        expect(Math.abs(triggerRect.bottom - arrowRect.top)).toBeLessThan(1);
+        expect(Math.abs(getCenter(triggerRect) - getCenter(arrowRect))).toBeLessThan(1);
       })();
     }
   )
 );
 
-function getRectMid(rect: ElementRect) {
-  return rect.top + rect.height / 2;
+function getCenter(rect: ElementRect) {
+  return rect.left + rect.width / 2;
 }

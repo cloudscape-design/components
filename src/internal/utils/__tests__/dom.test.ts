@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 import {
-  isContainingBlock,
+  getContainingBlock,
   isHTMLElement,
   isNode,
   isSVGElement,
@@ -74,7 +74,7 @@ test('an object is recognized as SVGElement', () => {
   expect(isSVGElement({ ...node, style: {}, ownerDocument: {}, ownerSVGElement: {} })).toBe(true);
 });
 
-describe('isContainingBlock', () => {
+describe('getContainingBlock', () => {
   let element: HTMLElement;
 
   beforeEach(() => {
@@ -87,57 +87,57 @@ describe('isContainingBlock', () => {
     jest.restoreAllMocks();
   });
 
-  test('returns false for element without styles', () => {
+  test('returns null for element without styles', () => {
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(false);
+    expect(getContainingBlock(element)).toBe(null);
   });
 
-  test('returns false for element with transform=none style', () => {
+  test('returns null for element with transform=none style', () => {
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '', transform: 'none' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(false);
+    expect(getContainingBlock(element)).toBe(null);
   });
 
-  test('returns true for element with custom transform style', () => {
+  test('returns containing block for element with custom transform style', () => {
     jest
       .spyOn(window, 'getComputedStyle')
       .mockReturnValue({ contain: '', transform: 'translate(0, 0)' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(true);
+    expect(getContainingBlock(element)).not.toBe(null);
   });
 
-  test('returns false for element with perspective=none style', () => {
+  test('returns null for element with perspective=none style', () => {
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '', perspective: 'none' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(false);
+    expect(getContainingBlock(element)).toBe(null);
   });
 
-  test('returns true for element with custom perspective style', () => {
+  test('returns containing block for element with custom perspective style', () => {
     jest
       .spyOn(window, 'getComputedStyle')
       .mockReturnValue({ contain: '', perspective: '100px' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(true);
+    expect(getContainingBlock(element)).not.toBe(null);
   });
 
-  test('returns false for element with containerType=normal style', () => {
+  test('returns null for element with containerType=normal style', () => {
     jest
       .spyOn(window, 'getComputedStyle')
       .mockReturnValue({ contain: '', containerType: 'normal' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(false);
+    expect(getContainingBlock(element)).toBe(null);
   });
 
   test.each(['size', 'inline-size', 'scroll-state'])(
-    'returns true for element with containerType=%s style',
+    'returns containing block for element with containerType=%s style',
     containerType => {
       jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: '', containerType } as CSSStyleDeclaration);
-      expect(isContainingBlock(element)).toBe(true);
+      expect(getContainingBlock(element)).not.toBe(null);
     }
   );
 
-  test('returns false for element with contain=none style', () => {
+  test('returns null for element with contain=none style', () => {
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain: 'none' } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(false);
+    expect(getContainingBlock(element)).toBe(null);
   });
 
   test.each(['layout', 'paint', 'strict', 'content'])('returns true for element with contain=%s style', contain => {
     jest.spyOn(window, 'getComputedStyle').mockReturnValue({ contain } as CSSStyleDeclaration);
-    expect(isContainingBlock(element)).toBe(true);
+    expect(getContainingBlock(element)).not.toBe(null);
   });
 });
