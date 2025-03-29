@@ -242,7 +242,7 @@ const InternalTable = React.forwardRef(
         },
         filtered: Boolean(filterData?.filterText),
         currentPageIndex: paginationData.currentPageIndex,
-        totalNumberOfResources: paginationData.totalPageCount,
+        totalPageCount: paginationData.totalPageCount,
         resourcesPerPage: allRows?.length || 0,
         resourcesSelected: selectedItems?.length > 0,
       };
