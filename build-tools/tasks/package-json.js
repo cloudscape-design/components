@@ -24,13 +24,13 @@ function getComponentsExports() {
     // Public internal components
     './internal/tooltip-do-not-use': './internal/tooltip-do-not-use/index.js',
     './internal/button-dropdown-do-not-use': './internal/button-dropdown-do-not-use/index.js',
-    './internal/chart-popover-do-not-use': './internal/chart-popover-do-not-use/index.js',
+    './internal/chart-tooltip-do-not-use': './internal/chart-tooltip-do-not-use/index.js',
     './internal/expandable-section-do-not-use': './internal/expandable-section-do-not-use/index.js',
     './internal/widget-exports': './internal/widget-exports.js',
     './test-utils/dom/internal/tooltip': './test-utils/dom/internal/tooltip.js',
     './test-utils/selectors/internal/tooltip': './test-utils/selectors/internal/tooltip.js',
-    './test-utils/dom/internal/chart-popover': './test-utils/dom/internal/chart-popover.js',
-    './test-utils/selectors/internal/chart-popover': './test-utils/selectors/internal/chart-popover.js',
+    './test-utils/dom/internal/chart-tooltip': './test-utils/dom/internal/chart-tooltip.js',
+    './test-utils/selectors/internal/chart-tooltip': './test-utils/selectors/internal/chart-tooltip.js',
   };
   let components = listPublicItems('src');
 
