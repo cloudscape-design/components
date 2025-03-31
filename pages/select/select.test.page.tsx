@@ -155,6 +155,19 @@ export default function SelectPage() {
               }}
             />
           </Box>
+          <Box padding="s">
+            <Box variant="h1">Read-only select</Box>
+            <Select
+              id="select_native_search_readonly"
+              readOnly={true}
+              options={options}
+              selectedOption={selectedOption1}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption1(e.detail.selectedOption);
+              }}
+            />
+          </Box>
         </Box>
       </ScreenshotArea>
     </article>

@@ -55,6 +55,7 @@ const InternalMultiselect = React.forwardRef(
       tokenLimitShowMoreAriaLabel,
       __internalRootRef = null,
       autoFocus,
+      enableSelectAll,
       ...restProps
     }: InternalMultiselectProps,
     externalRef: React.Ref<MultiselectProps.Ref>
@@ -81,6 +82,8 @@ const InternalMultiselect = React.forwardRef(
       filteringValue,
       setFilteringValue,
       externalRef,
+      enableSelectAll,
+      i18nStrings,
       ...restProps,
     });
 
@@ -179,6 +182,7 @@ const InternalMultiselect = React.forwardRef(
             useInteractiveGroups={true}
             screenReaderContent={multiselectProps.announcement}
             highlightType={multiselectProps.highlightType}
+            firstOptionSticky={enableSelectAll}
           />
         </Dropdown>
 
