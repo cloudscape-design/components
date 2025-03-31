@@ -37,7 +37,7 @@ interface DrawerTriggersProps {
   globalDrawersFocusControl?: FocusControlMultipleStates;
   globalDrawers: ReadonlyArray<AppLayoutProps.Drawer>;
   onActiveGlobalDrawersChange?: (newDrawerId: string, params: OnChangeParams) => void;
-  drawerFocusMode?: boolean;
+  expandedDrawerId?: string;
   setExpandedDrawerId: (value: string | undefined) => void;
 
   splitPanelOpen?: boolean;
@@ -64,7 +64,7 @@ export function DrawerTriggers({
   globalDrawers,
   globalDrawersFocusControl,
   onActiveGlobalDrawersChange,
-  drawerFocusMode,
+  expandedDrawerId,
   setExpandedDrawerId,
 }: DrawerTriggersProps) {
   const isMobile = useMobile();
@@ -83,6 +83,8 @@ export function DrawerTriggers({
   if (activeGlobalDrawersIds.length) {
     previousActiveGlobalDrawersIds.current = activeGlobalDrawersIds;
   }
+
+  const drawerFocusMode = !!expandedDrawerId;
 
   const getIndexOfOverflowItem = () => {
     if (isMobile) {
@@ -198,11 +200,12 @@ export function DrawerTriggers({
         )}
         {visibleItems.slice(globalDrawersStartIndex).map(item => {
           const isForPreviousActiveDrawer = previousActiveGlobalDrawersIds?.current.includes(item.id);
+          const selected = expandedDrawerId !== item.id && activeGlobalDrawersIds.includes(item.id);
           return (
             <TriggerButton
               ariaLabel={item.ariaLabels?.triggerButton}
-              ariaExpanded={activeGlobalDrawersIds.includes(item.id)}
-              ariaControls={activeGlobalDrawersIds.includes(item.id) ? item.id : undefined}
+              ariaExpanded={selected}
+              ariaControls={selected ? item.id : undefined}
               className={clsx(
                 styles['drawers-trigger'],
                 testutilStyles['drawers-trigger'],
@@ -212,10 +215,14 @@ export function DrawerTriggers({
               iconSvg={item.trigger!.iconSvg}
               key={item.id}
               onClick={() => {
+                setExpandedDrawerId(undefined);
+                if (drawerFocusMode && activeGlobalDrawersIds.includes(item.id)) {
+                  return;
+                }
                 onActiveGlobalDrawersChange?.(item.id, { initiatedByUserAction: true });
               }}
               ref={globalDrawersFocusControl?.refs[item.id]?.toggle}
-              selected={activeGlobalDrawersIds.includes(item.id)}
+              selected={selected}
               badge={item.badge}
               testId={`awsui-app-layout-trigger-${item.id}`}
               hasTooltip={true}
