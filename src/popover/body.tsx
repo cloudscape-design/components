@@ -21,7 +21,7 @@ export interface PopoverBodyProps {
 
   header: React.ReactNode | undefined;
   children: React.ReactNode;
-  variant?: 'annotation';
+  variant?: 'annotation' | 'chart';
   overflowVisible?: 'content' | 'both';
 
   className?: string;
@@ -96,7 +96,7 @@ export default function PopoverBody({
 
   return (
     <div
-      className={clsx(styles.body, className, {
+      className={clsx(styles.body, styles[`body-variant-${variant}`], className, {
         [styles['body-overflow-visible']]: overflowVisible === 'both',
       })}
       onKeyDown={onKeyDown}
