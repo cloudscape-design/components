@@ -38,6 +38,9 @@ interface UseSelectProps {
   setFilteringValue?: (filteringText: string) => void;
   useInteractiveGroups?: boolean;
   statusType: DropdownStatusProps.StatusType;
+  isAllSelected?: boolean;
+  isSomeSelected?: boolean;
+  toggleAll?: () => void;
 }
 
 export interface SelectTriggerProps extends ButtonTriggerProps {
@@ -58,6 +61,9 @@ export function useSelect({
   setFilteringValue,
   useInteractiveGroups = false,
   statusType,
+  isAllSelected,
+  isSomeSelected,
+  toggleAll,
 }: UseSelectProps) {
   const interactivityCheck = useInteractiveGroups ? isGroupInteractive : isInteractive;
 
@@ -85,7 +91,7 @@ export function useSelect({
       goHomeWithKeyboard,
       goEndWithKeyboard,
     },
-  ] = useHighlightedOption({ options, isHighlightable });
+  ] = useHighlightedOption({ options: options, isHighlightable });
 
   const { isOpen, openDropdown, closeDropdown, toggleDropdown, openedWithKeyboard } = useOpenState({
     defaultOpen: embedded,
@@ -110,16 +116,24 @@ export function useSelect({
   const dialogId = useUniqueId('dialog');
   const highlightedOptionId = getOptionId(menuId, highlightedIndex);
 
+  const closeDropdownIfNecessary = () => {
+    if (!keepOpen) {
+      triggerRef.current?.focus();
+      closeDropdown();
+    }
+  };
+
   const selectOption = (option?: DropdownOption) => {
     const optionToSelect = option || highlightedOption;
     if (!optionToSelect || !interactivityCheck(optionToSelect)) {
       return;
     }
-    updateSelectedOption(optionToSelect.option);
-    if (!keepOpen) {
-      triggerRef.current?.focus();
-      closeDropdown();
+    if (optionToSelect.type === 'select-all' && toggleAll) {
+      toggleAll();
+    } else {
+      updateSelectedOption(optionToSelect.option);
     }
+    closeDropdownIfNecessary();
   };
 
   const activeKeyDownHandler = useMenuKeyboard({
@@ -131,7 +145,6 @@ export function useSelect({
         goEndWithKeyboard();
         return;
       }
-
       moveHighlightWithKeyboard(-1);
     },
     goDown: () => {
@@ -259,9 +272,10 @@ export function useSelect({
   };
 
   const getOptionProps = (option: DropdownOption, index: number) => {
+    const isSelectAll = option.type === 'select-all';
     const highlighted = option === highlightedOption;
     const groupState = isGroup(option.option) ? getGroupState(option.option) : undefined;
-    const selected = __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
+    const selected = isSelectAll ? isAllSelected : __selectedOptions.indexOf(option) > -1 || !!groupState?.selected;
     const nextOption = options[index + 1]?.option;
     const isNextSelected =
       !!nextOption && isGroup(nextOption)
@@ -273,7 +287,7 @@ export function useSelect({
       highlighted,
       selected,
       isNextSelected,
-      indeterminate: !!groupState?.indeterminate,
+      indeterminate: !!groupState?.indeterminate || (isSelectAll && !isAllSelected && isSomeSelected),
       ['data-mouse-target']: isHighlightable(option) ? index : -1,
       id: getOptionId(menuId, index),
     };
