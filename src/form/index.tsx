@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnel, AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelNameSelector, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelNameSelector, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel';
 import { getSubStepAllSelector, getTextFromSelector } from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { ButtonContext, ButtonContextProps } from '../internal/context/button-context';
@@ -37,8 +37,7 @@ const FormWithAnalytics = ({
     funnelErrorContext,
   } = useFunnel();
 
-  const funnelStepInfo = useRef<ReturnType<typeof useFunnelStep>>();
-  funnelStepInfo.current = useFunnelStep();
+  const funnelStepInfo = useFunnelStepRef();
 
   const handleActionButtonClick: ButtonContextProps['onClick'] = ({ variant }) => {
     if (variant === 'primary') {
@@ -53,28 +52,24 @@ const FormWithAnalytics = ({
     if (funnelInteractionId && errorText) {
       errorCount.current++;
 
-      if (funnelStepInfo.current?.stepNameSelector) {
-        const stepName = getTextFromSelector(funnelStepInfo.current.stepNameSelector);
+      const stepName = getTextFromSelector(funnelStepInfo.current.stepNameSelector);
 
-        FunnelMetrics.funnelStepError({
-          funnelInteractionId,
-          stepNumber: funnelStepInfo.current.stepNumber,
-          stepNameSelector: funnelStepInfo.current.stepNameSelector,
-          stepName,
-          stepIdentifier: funnelStepInfo.current.stepIdentifier,
-          currentDocument: __internalRootRef.current?.ownerDocument,
-          totalSubSteps: funnelStepInfo.current.subStepCount.current,
-          funnelIdentifier,
-          subStepAllSelector: getSubStepAllSelector(),
-          stepErrorContext: funnelStepInfo.current.stepErrorContext,
-          subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
-            funnelStepInfo.current.stepNumber
-          ),
-          stepErrorSelector: '#' + errorSlotId,
-        });
-      } else {
-        FunnelMetrics.funnelError({ funnelInteractionId, funnelIdentifier, funnelErrorContext });
-      }
+      FunnelMetrics.funnelStepError({
+        funnelInteractionId,
+        stepNumber: funnelStepInfo.current.stepNumber,
+        stepNameSelector: funnelStepInfo.current.stepNameSelector,
+        stepName,
+        stepIdentifier: funnelStepInfo.current.stepIdentifier,
+        currentDocument: __internalRootRef.current?.ownerDocument,
+        totalSubSteps: funnelStepInfo.current.subStepCount.current,
+        funnelIdentifier,
+        subStepAllSelector: getSubStepAllSelector(),
+        stepErrorContext: funnelStepInfo.current.stepErrorContext,
+        subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
+          funnelStepInfo.current.stepNumber
+        ),
+        stepErrorSelector: '#' + errorSlotId,
+      });
 
       return () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -90,6 +85,7 @@ const FormWithAnalytics = ({
     funnelErrorContext,
     errorSlotId,
     __internalRootRef,
+    funnelStepInfo,
   ]);
 
   return (

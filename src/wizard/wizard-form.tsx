@@ -9,7 +9,7 @@ import InternalForm from '../form/internal';
 import InternalHeader from '../header/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
-import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
+import { useFunnel, useFunnelStepRef } from '../internal/analytics/hooks/use-funnel';
 import {
   DATA_ATTR_FUNNEL_KEY,
   FUNNEL_KEY_STEP_NAME,
@@ -91,8 +91,7 @@ function WizardForm({
 
   const { funnelInteractionId, funnelIdentifier } = useFunnel();
 
-  const funnelStepInfo = useRef<ReturnType<typeof useFunnelStep>>();
-  funnelStepInfo.current = useFunnelStep();
+  const funnelStepInfo = useFunnelStepRef();
 
   const errorSlotId = useUniqueId('wizard-error-');
 
@@ -104,34 +103,26 @@ function WizardForm({
 
   useEffect(() => {
     if (funnelInteractionId && errorText) {
-      if (funnelStepInfo.current?.stepNameSelector) {
-        const stepName = getTextFromSelector(funnelStepInfo.current.stepNameSelector);
+      const stepName = getTextFromSelector(funnelStepInfo.current.stepNameSelector);
 
-        FunnelMetrics.funnelStepError({
-          funnelInteractionId,
-          stepNumber: funnelStepInfo.current.stepNumber,
-          stepNameSelector: funnelStepInfo.current.stepNameSelector,
-          stepName,
-          stepIdentifier: funnelStepInfo.current.stepIdentifier,
-          currentDocument: __internalRootRef?.current?.ownerDocument,
-          totalSubSteps: funnelStepInfo.current.subStepCount.current,
-          funnelIdentifier,
-          subStepAllSelector: getSubStepAllSelector(),
-          stepErrorContext: funnelStepInfo.current.stepErrorContext,
-          subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
-            funnelStepInfo.current.stepNumber
-          ),
-          stepErrorSelector: '#' + errorSlotId,
-        });
-      } else {
-        FunnelMetrics.funnelError({
-          funnelInteractionId,
-          funnelIdentifier,
-          funnelErrorContext: funnelStepInfo.current!.stepErrorContext,
-        });
-      }
+      FunnelMetrics.funnelStepError({
+        funnelInteractionId,
+        stepNumber: funnelStepInfo.current.stepNumber,
+        stepNameSelector: funnelStepInfo.current.stepNameSelector,
+        stepName,
+        stepIdentifier: funnelStepInfo.current.stepIdentifier,
+        currentDocument: __internalRootRef?.current?.ownerDocument,
+        totalSubSteps: funnelStepInfo.current.subStepCount.current,
+        funnelIdentifier,
+        subStepAllSelector: getSubStepAllSelector(),
+        stepErrorContext: funnelStepInfo.current.stepErrorContext,
+        subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
+          funnelStepInfo.current.stepNumber
+        ),
+        stepErrorSelector: '#' + errorSlotId,
+      });
     }
-  }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, __internalRootRef, errorSlotId]);
+  }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, __internalRootRef, errorSlotId, funnelStepInfo]);
 
   return (
     <>
