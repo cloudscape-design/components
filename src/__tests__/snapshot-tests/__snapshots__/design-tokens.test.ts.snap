@@ -2468,34 +2468,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -5101,34 +5073,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
             "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
-          },
-        },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -7738,34 +7682,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -10371,34 +10287,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
           "$value": {
             "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
             "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
-          },
-        },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -13008,34 +12896,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -15643,34 +15503,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
             "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -18276,34 +18108,6 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
       "$value": {
         "dark": "0px 1px 4px -2px rgba(0, 0, 0, 0.5)",
         "light": "0px 1px 4px -2px rgba(0, 28, 36, 0.5)",
-      },
-    },
-    "size-icon-big": {
-      "$description": "Big icon size",
-      "$value": {
-        "comfortable": "32px",
-        "compact": "32px",
-      },
-    },
-    "size-icon-large": {
-      "$description": "Large icon size",
-      "$value": {
-        "comfortable": "48px",
-        "compact": "48px",
-      },
-    },
-    "size-icon-medium": {
-      "$description": "Medium icon size",
-      "$value": {
-        "comfortable": "16px",
-        "compact": "16px",
-      },
-    },
-    "size-icon-normal": {
-      "$description": "Normal icon size",
-      "$value": {
-        "comfortable": "16px",
-        "compact": "16px",
       },
     },
     "space-container-horizontal": {
@@ -20918,34 +20722,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -23551,34 +23327,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
             "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
-          },
-        },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -26188,34 +25936,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -28821,34 +28541,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
             "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
-          },
-        },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -31458,34 +31150,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -34091,34 +33755,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
           "$value": {
             "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
             "light": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
-          },
-        },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
           },
         },
         "space-container-horizontal": {
@@ -36728,34 +36364,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
             "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
           },
         },
-        "size-icon-big": {
-          "$description": "Big icon size",
-          "$value": {
-            "comfortable": "32px",
-            "compact": "32px",
-          },
-        },
-        "size-icon-large": {
-          "$description": "Large icon size",
-          "$value": {
-            "comfortable": "48px",
-            "compact": "48px",
-          },
-        },
-        "size-icon-medium": {
-          "$description": "Medium icon size",
-          "$value": {
-            "comfortable": "20px",
-            "compact": "20px",
-          },
-        },
-        "size-icon-normal": {
-          "$description": "Normal icon size",
-          "$value": {
-            "comfortable": "16px",
-            "compact": "16px",
-          },
-        },
         "space-container-horizontal": {
           "$description": "The horizontal padding inside a container.",
           "$value": {
@@ -39361,34 +38969,6 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
       "$value": {
         "dark": "0px 4px 20px 1px rgba(0, 4, 12, 1)",
         "light": "0px 4px 20px 1px rgba(0, 7, 22, 0.10)",
-      },
-    },
-    "size-icon-big": {
-      "$description": "Big icon size",
-      "$value": {
-        "comfortable": "32px",
-        "compact": "32px",
-      },
-    },
-    "size-icon-large": {
-      "$description": "Large icon size",
-      "$value": {
-        "comfortable": "48px",
-        "compact": "48px",
-      },
-    },
-    "size-icon-medium": {
-      "$description": "Medium icon size",
-      "$value": {
-        "comfortable": "20px",
-        "compact": "20px",
-      },
-    },
-    "size-icon-normal": {
-      "$description": "Normal icon size",
-      "$value": {
-        "comfortable": "16px",
-        "compact": "16px",
       },
     },
     "space-container-horizontal": {

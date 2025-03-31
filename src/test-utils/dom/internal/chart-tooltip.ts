@@ -5,17 +5,22 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import ButtonWrapper from '../button';
 
 import styles from '../../../internal/components/chart-popover/styles.selectors.js';
+import testClasses from '../../../internal/components/chart-popover/test-classes/styles.selectors.js';
 import popoverStyles from '../../../popover/styles.selectors.js';
 
 export default class ChartTooltipWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
 
   findHeader(): ElementWrapper | null {
-    return this.findByClassName(popoverStyles.header);
+    return this.findByClassName(testClasses.header);
   }
 
-  findContent(): ElementWrapper | null {
-    return this.findByClassName(popoverStyles.content);
+  findBody(): ElementWrapper | null {
+    return this.findByClassName(testClasses.body);
+  }
+
+  findFooter(): ElementWrapper | null {
+    return this.findByClassName(testClasses.footer);
   }
 
   findDismissButton(): ButtonWrapper | null {
