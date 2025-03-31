@@ -308,6 +308,11 @@ const metadata: StyleDictionary.MetadataIndex = {
     themeable: true,
     public: true,
   },
+  colorTextButtonIconDisabled: {
+    description: 'The color of icon buttons in disabled state.',
+    themeable: true,
+    public: true,
+  },
   colorBorderButtonPrimaryDisabled: {
     description: 'The border color of primary buttons in disabled state.',
     themeable: true,

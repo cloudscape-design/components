@@ -330,6 +330,7 @@ export type ColorsTokenName =
   | 'colorBorderToggleButtonNormalPressed'
   | 'colorBorderButtonNormalDisabled'
   | 'colorTextButtonNormalDisabled'
+  | 'colorTextButtonIconDisabled'
   | 'colorBorderButtonNormalHover'
   | 'colorBorderButtonPrimaryDisabled'
   | 'colorTextButtonPrimaryDisabled'

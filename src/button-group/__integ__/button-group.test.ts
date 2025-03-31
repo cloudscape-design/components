@@ -14,6 +14,10 @@ const sendButton = buttonGroup.findButtonById('send');
 const actionsMenu = buttonGroup.findMenuById('more-actions');
 const fileInput = buttonGroup.findFileInputById('file-input').findNativeInput();
 
+const disabledReasonIconButton = buttonGroup.findButtonById('icon-button-disabled-reason');
+const disabledReasonIconToggleButton = buttonGroup.findToggleButtonById('icon-toggle-button-disabled-reason');
+const disabledReasonMenuDropdown = buttonGroup.findMenuById('menu-dropdown-disabled-reason');
+
 function setup(options: { dropdownExpandToViewport?: boolean }, testFn: (page: BasePageObject) => Promise<void>) {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
@@ -121,7 +125,7 @@ test(
     await page.keys(['Tab']);
     await expect(page.isFocused(fileInput.toSelector())).resolves.toBe(true);
 
-    await page.keys(['ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight', 'ArrowRight']);
+    await page.keys(range(5).map(() => 'ArrowRight'));
     await expect(page.isFocused(copyButton.toSelector())).resolves.toBe(true);
     await expect(page.getElementsCount(buttonGroup.findTooltip().toSelector())).resolves.toBe(1);
     await expect(page.getText(buttonGroup.findTooltip().toSelector())).resolves.toBe('Copy');
@@ -204,5 +208,35 @@ test(
     await page.keys(['Tab']);
     await expect(page.getFocusedElementText()).resolves.toBe('Focus on copy');
     await expect(page.isExisting(buttonGroup.findTooltip().toSelector())).resolves.toBe(false);
+  })
+);
+
+test(
+  'shows disabled reason in tooltip while hovering on a disabled icon-button',
+  setup({}, async page => {
+    await page.hoverElement(disabledReasonIconButton.toSelector());
+    await expect(page.getText(disabledReasonIconButton.findDisabledReason().toSelector())).resolves.toBe(
+      'Disabled reason icon-button'
+    );
+  })
+);
+
+test(
+  'shows disabled reason in tooltip while hovering on a disabled icon-toggle-button',
+  setup({}, async page => {
+    await page.hoverElement(disabledReasonIconToggleButton.toSelector());
+    await expect(page.getText(disabledReasonIconToggleButton.findDisabledReason().toSelector())).resolves.toBe(
+      'Disabled reason icon-toggle-button'
+    );
+  })
+);
+
+test(
+  'shows disabled reason in tooltip while hovering on a disabled menu-dropdown',
+  setup({}, async page => {
+    await page.hoverElement(disabledReasonMenuDropdown.toSelector());
+    await expect(
+      page.getText(disabledReasonMenuDropdown.findTriggerButton().findDisabledReason().toSelector())
+    ).resolves.toBe('Disabled reason menu-dropdown');
   })
 );

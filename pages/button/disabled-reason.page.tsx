@@ -27,6 +27,7 @@ export default function ButtonsScenario() {
         >
           Button with href
         </Button>
+        <Button disabled={true} disabledReason="disabled reason" iconName="star" />
       </ScreenshotArea>
     </article>
   );

@@ -41,9 +41,9 @@ export default function ButtonGroupPage() {
     favorite: ['Add to favorites', 'Added to favorites'],
   };
 
-  const feedbackGroup: ButtonGroupProps.Group = {
+  const toggleFeedbackGroup: ButtonGroupProps.Group = {
     type: 'group',
-    text: 'Vote',
+    text: 'Toggle feedback group',
     items: [
       {
         type: 'icon-toggle-button',
@@ -103,6 +103,45 @@ export default function ButtonGroupPage() {
         id: 'send',
         iconName: 'send',
         text: 'Send',
+      },
+    ],
+  };
+
+  const disabledReasonGroup: ButtonGroupProps.Group = {
+    type: 'group',
+    text: 'Disabled reason group',
+    items: [
+      {
+        type: 'icon-button',
+        id: 'icon-button-disabled-reason',
+        iconName: 'thumbs-up',
+        text: 'Helpful',
+        disabled: true,
+        disabledReason: 'Disabled reason icon-button',
+      },
+      {
+        type: 'icon-toggle-button',
+        id: 'icon-toggle-button-disabled-reason',
+        iconName: 'thumbs-down',
+        pressedIconName: 'thumbs-down-filled',
+        text: 'Not helpful',
+        pressed: false,
+        disabled: true,
+        disabledReason: 'Disabled reason icon-toggle-button',
+      },
+      {
+        type: 'menu-dropdown',
+        id: 'menu-dropdown-disabled-reason',
+        text: 'More actions',
+        disabled: true,
+        disabledReason: 'Disabled reason menu-dropdown',
+        items: [
+          {
+            id: 'cut',
+            iconName: 'delete-marker',
+            text: 'Cut',
+          },
+        ],
       },
     ],
   };
@@ -194,7 +233,7 @@ export default function ButtonGroupPage() {
   }
   const items = [
     fileGroup,
-    feedbackGroup,
+    toggleFeedbackGroup,
     favoriteGroup,
     sendGroup,
     copyButton,
@@ -202,6 +241,7 @@ export default function ButtonGroupPage() {
     removeButton,
     redoButton,
     moreActionsMenu,
+    disabledReasonGroup,
   ].filter(canRenderItem);
 
   const onItemClick: ButtonGroupProps['onItemClick'] = ({ detail }) => {

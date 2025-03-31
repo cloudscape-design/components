@@ -49,6 +49,7 @@ const IconToggleButtonItem = forwardRef(
           loading={item.loading}
           loadingText={item.loadingText}
           disabled={item.disabled}
+          disabledReason={item.disabledReason}
           iconName={hasIcon ? item.iconName : 'close'}
           iconUrl={item.iconUrl}
           iconSvg={item.iconSvg}
