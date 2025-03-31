@@ -10,11 +10,17 @@ import InternalHeader from '../header/internal';
 import { FunnelMetrics } from '../internal/analytics';
 import { AnalyticsFunnelStep } from '../internal/analytics/components/analytics-funnel';
 import { useFunnel, useFunnelStep } from '../internal/analytics/hooks/use-funnel';
-import { DATA_ATTR_FUNNEL_KEY, FUNNEL_KEY_STEP_NAME } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_FUNNEL_KEY,
+  FUNNEL_KEY_STEP_NAME,
+  getSubStepAllSelector,
+  getTextFromSelector,
+} from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useEffectOnUpdate } from '../internal/hooks/use-effect-on-update';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { WizardProps } from './interfaces';
 import WizardActions from './wizard-actions';
 import WizardFormHeader from './wizard-form-header';
@@ -36,7 +42,7 @@ interface WizardFormProps extends InternalBaseComponentProps {
   onSkipToClick: (stepIndex: number) => void;
 }
 
-export const STEP_NAME_SELECTOR = `[${DATA_ATTR_FUNNEL_KEY}=${FUNNEL_KEY_STEP_NAME}]`;
+export const STEP_NAME_SELECTOR = `[${DATA_ATTR_FUNNEL_KEY}="${FUNNEL_KEY_STEP_NAME}"]`;
 
 export default function WizardFormWithAnalytics(props: WizardFormProps) {
   const analyticsMetadata = getAnalyticsMetadataProps(
@@ -84,7 +90,11 @@ function WizardForm({
   const skipToTargetIndex = findSkipToTargetIndex(steps, activeStepIndex);
 
   const { funnelInteractionId, funnelIdentifier } = useFunnel();
-  const { funnelStepProps, stepErrorContext } = useFunnelStep();
+
+  const funnelStepInfo = useRef<ReturnType<typeof useFunnelStep>>();
+  funnelStepInfo.current = useFunnelStep();
+
+  const errorSlotId = useUniqueId('wizard-error-');
 
   const showSkipTo = allowSkipTo && skipToTargetIndex !== -1;
   const skipToButtonText =
@@ -93,14 +103,35 @@ function WizardForm({
       : undefined;
 
   useEffect(() => {
-    if (funnelInteractionId && errorText && isLastStep) {
-      FunnelMetrics.funnelError({
-        funnelInteractionId,
-        funnelIdentifier,
-        funnelErrorContext: stepErrorContext,
-      });
+    if (funnelInteractionId && errorText) {
+      if (funnelStepInfo.current?.stepNameSelector) {
+        const stepName = getTextFromSelector(funnelStepInfo.current.stepNameSelector);
+
+        FunnelMetrics.funnelStepError({
+          funnelInteractionId,
+          stepNumber: funnelStepInfo.current.stepNumber,
+          stepNameSelector: funnelStepInfo.current.stepNameSelector,
+          stepName,
+          stepIdentifier: funnelStepInfo.current.stepIdentifier,
+          currentDocument: __internalRootRef?.current?.ownerDocument,
+          totalSubSteps: funnelStepInfo.current.subStepCount.current,
+          funnelIdentifier,
+          subStepAllSelector: getSubStepAllSelector(),
+          stepErrorContext: funnelStepInfo.current.stepErrorContext,
+          subStepConfiguration: funnelStepInfo.current.subStepConfiguration.current?.get(
+            funnelStepInfo.current.stepNumber
+          ),
+          stepErrorSelector: '#' + errorSlotId,
+        });
+      } else {
+        FunnelMetrics.funnelError({
+          funnelInteractionId,
+          funnelIdentifier,
+          funnelErrorContext: funnelStepInfo.current!.stepErrorContext,
+        });
+      }
     }
-  }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, stepErrorContext]);
+  }, [funnelInteractionId, funnelIdentifier, isLastStep, errorText, __internalRootRef, errorSlotId]);
 
   return (
     <>
@@ -149,8 +180,9 @@ function WizardForm({
         }
         secondaryActions={secondaryActions}
         errorText={errorText}
+        __errorSlotId={errorSlotId}
         errorIconAriaLabel={i18nStrings.errorIconAriaLabel}
-        {...funnelStepProps}
+        {...funnelStepInfo.current.funnelStepProps}
       >
         {content}
       </InternalForm>

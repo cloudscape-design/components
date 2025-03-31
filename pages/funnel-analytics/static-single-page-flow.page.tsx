@@ -30,7 +30,7 @@ import { MockedFunnelMetrics } from './mock-funnel';
 setFunnelMetrics(MockedFunnelMetrics);
 
 export default function StaticSinglePageCreatePage() {
-  const [mounted, setUnmounted] = useState(true);
+  const [mounted, setMounted] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
   const [value, setValue] = useState('');
   const [value2, setValue2] = useState('');
@@ -89,7 +89,7 @@ export default function StaticSinglePageCreatePage() {
         />
       }
       content={
-        mounted && (
+        mounted ? (
           <Form
             analyticsMetadata={{
               instanceIdentifier: 'single-page-demo',
@@ -98,7 +98,7 @@ export default function StaticSinglePageCreatePage() {
             errorText={errorText}
             actions={
               <SpaceBetween size="xs" direction="horizontal">
-                <Button data-testid="unmount" onClick={() => setUnmounted(false)}>
+                <Button data-testid="unmount" onClick={() => setMounted(false)}>
                   Unmount component
                 </Button>
                 <Button data-testid="embedded-form-modal" onClick={() => setModalVisible(true)}>
@@ -109,7 +109,7 @@ export default function StaticSinglePageCreatePage() {
                     <Form>I am a form</Form>
                   </Modal>
                 )}
-                <Button data-testid="cancel" onClick={() => setUnmounted(false)}>
+                <Button data-testid="cancel" onClick={() => setMounted(false)}>
                   Cancel
                 </Button>
                 <Button
@@ -120,7 +120,7 @@ export default function StaticSinglePageCreatePage() {
                       setErrorText('There is an error');
                     } else {
                       setErrorText('');
-                      setUnmounted(false);
+                      setMounted(false);
                     }
                   }}
                 >
@@ -213,6 +213,8 @@ export default function StaticSinglePageCreatePage() {
               </ExpandableSection>
             </SpaceBetween>
           </Form>
+        ) : (
+          'Form unmounted'
         )
       }
     />
