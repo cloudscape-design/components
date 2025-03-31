@@ -1,12 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useState } from 'react';
 import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
-
-import { Counter } from './content-blocks';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
@@ -89,39 +87,6 @@ awsuiPlugins.appLayout.registerDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 });
 
-const AutoIncrementCounter: React.FC<{
-  onVisibilityChange?: (callback: (isVisible: boolean) => void) => void;
-}> = ({ children, onVisibilityChange }) => {
-  const [count, setCount] = useState(0);
-  const isPaused = useRef(false);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!isPaused.current) {
-        setCount(prevCount => prevCount + 1);
-      }
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  useEffect(() => {
-    if (onVisibilityChange) {
-      onVisibilityChange((isVisible: boolean) => {
-        isPaused.current = !isVisible;
-      });
-    }
-  }, [onVisibilityChange]);
-
-  return (
-    <div style={{ paddingInlineStart: '24px' }}>
-      <h3>Auto Increment Counter</h3>
-      <div>Count: {count}</div>
-      {children}
-    </div>
-  );
-};
-
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle-global',
   type: 'global',
@@ -153,17 +118,8 @@ awsuiPlugins.appLayout.registerDrawer({
     console.log('resize', event.detail);
   },
 
-  mountContent: (container, mountContext) => {
-    ReactDOM.render(
-      <AutoIncrementCounter onVisibilityChange={mountContext?.onVisibilityChange}>
-        global widget content circle 1
-        {new Array(100).fill(null).map((_, index) => (
-          <div key={index}>{index}</div>
-        ))}
-        <div data-testid="circle-global-bottom-content">circle-global bottom content</div>
-      </AutoIncrementCounter>,
-      container
-    );
+  mountContent: container => {
+    ReactDOM.render(<Drawer header={<h2>Actions</h2>} />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
@@ -229,13 +185,7 @@ awsuiPlugins.appLayout.registerDrawer({
   },
 
   mountContent: container => {
-    ReactDOM.render(
-      <>
-        <Counter id="circle3-global" />
-        global widget content circle 3
-      </>,
-      container
-    );
+    ReactDOM.render(<Drawer header={<h2>Amazon Q</h2>} />, container);
   },
   unmountContent: container => unmountComponentAtNode(container),
 });
