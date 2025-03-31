@@ -356,12 +356,10 @@ describe('useSelect', () => {
       initialProps: { ...initialProps, filteringType: 'none' },
     });
     act(() => {
-      const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      hook.result.current.getMenuProps().onKeyDown?.(createTestEvent(KeyCode.down));
     });
     act(() => {
-      const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-      onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+      hook.result.current.getMenuProps().onKeyDown?.(createTestEvent(KeyCode.down));
     });
     expect(hook.result.current.highlightedOption).toEqual({
       disabled: true,
@@ -429,8 +427,7 @@ describe('useSelect', () => {
         initialProps: { ...initialProps, filteringType: 'none', selectedOptions: [{ value: 'child1' }] },
       });
       act(() => {
-        const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        hook.result.current.getMenuProps().onKeyDown?.(createTestEvent(KeyCode.down));
       });
       expect(hook.result.current.announceSelected).toEqual(true);
     });
@@ -439,8 +436,7 @@ describe('useSelect', () => {
         initialProps: { ...initialProps, filteringType: 'none' },
       });
       act(() => {
-        const onKeyDown = hook.result.current.getMenuProps().onKeyDown;
-        onKeyDown && onKeyDown(createTestEvent(KeyCode.down));
+        hook.result.current.getMenuProps().onKeyDown?.(createTestEvent(KeyCode.down));
       });
       expect(hook.result.current.announceSelected).toEqual(false);
     });
