@@ -87,7 +87,7 @@ function AppLayoutGlobalDrawerImplementation({
                 [styles['drawer-hidden']]: !show,
                 [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
                 [testutilStyles['active-drawer']]: show,
-                [styles['drawer-expanded']]: isExpanded,
+                [styles['focus-mode-secondary']]: !!expandedDrawerId && expandedDrawerId !== activeDrawerId,
               }
             )}
             ref={drawerRef}
@@ -143,7 +143,7 @@ function AppLayoutGlobalDrawerImplementation({
                     className={testutilStyles['active-drawer-focus-mode-button']}
                     formAction="none"
                     ariaExpanded={isExpanded}
-                    iconName={isExpanded ? 'shrink' : 'expand'}
+                    iconName={isExpanded && activeGlobalDrawersIds.length === 1 ? 'shrink' : 'expand'}
                     onClick={() => {
                       setExpandedDrawerId(isExpanded ? undefined : activeDrawerId);
                       // close all other global drawers when entering to focus mode

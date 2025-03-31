@@ -152,7 +152,15 @@ export const SkeletonLayout = React.forwardRef<HTMLDivElement, SkeletonLayoutPro
         >
           {tools}
         </div>
-        <div className={clsx(styles['global-tools'], !globalToolsOpen && styles['panel-hidden'])}>{globalTools}</div>
+        <div
+          className={clsx(
+            styles['global-tools'],
+            !globalToolsOpen && styles['panel-hidden'],
+            drawerFocusMode && styles['focus-mode']
+          )}
+        >
+          {globalTools}
+        </div>
       </div>
     );
   }

@@ -128,7 +128,13 @@
   @include desktop-only {
     display: flex;
     grid-area: global-tools;
+    border-inline-start: 12px solid #f3f3f7;
   }
+}
+
+.global-tools.focus-mode {
+  border-block-start: 12px solid #f3f3f7;
+  border-inline-end: 12px solid #f3f3f7;
 }
 
 .split-panel-side {

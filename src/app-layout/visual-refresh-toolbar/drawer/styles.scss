@@ -35,8 +35,12 @@
   word-wrap: break-word;
 
   @include desktop-only {
-    &:not(.legacy) {
+    &:not(.legacy):not(:first-child):not(&.focus-mode-secondary) {
       border-inline-start: awsui.$border-divider-section-width solid awsui.$color-border-layout;
+    }
+
+    &.focus-mode-secondary {
+      border-inline-start: 24px solid #f3f3f7;
     }
   }
 

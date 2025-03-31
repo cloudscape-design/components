@@ -6,7 +6,7 @@ import ReactDOM, { unmountComponentAtNode } from 'react-dom';
 import Drawer from '~components/drawer';
 import awsuiPlugins from '~components/internal/plugins';
 
-import { Counter, CustomDrawerContent } from './content-blocks';
+import { Counter } from './content-blocks';
 
 const searchParams = new URL(location.hash.substring(1), location.href).searchParams;
 
@@ -114,7 +114,7 @@ const AutoIncrementCounter: React.FC<{
   }, [onVisibilityChange]);
 
   return (
-    <div>
+    <div style={{ paddingInlineStart: '24px' }}>
       <h3>Auto Increment Counter</h3>
       <div>Count: {count}</div>
       {children}
@@ -168,42 +168,42 @@ awsuiPlugins.appLayout.registerDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 });
 
-awsuiPlugins.appLayout.registerDrawer({
-  id: 'global-with-stored-state',
-  type: 'global',
-  defaultActive: false,
-  resizable: true,
-  defaultSize: 320,
-
-  ariaLabels: {
-    closeButton: 'Close button',
-    content: 'Drawer with counter',
-    triggerButton: 'Trigger button',
-    resizeHandle: 'Resize handle',
-  },
-
-  trigger: {
-    iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
-      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
-      <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
-    </svg>`,
-  },
-
-  onToggle(event) {
-    awsuiPlugins.appLayout.updateDrawer({ id: 'global-with-stored-state', defaultActive: event.detail.isOpen });
-  },
-
-  mountContent: container => {
-    ReactDOM.render(
-      <>
-        <Counter id="global-with-stored-state" />
-        global widget content circle 2
-      </>,
-      container
-    );
-  },
-  unmountContent: container => unmountComponentAtNode(container),
-});
+// awsuiPlugins.appLayout.registerDrawer({
+//   id: 'global-with-stored-state',
+//   type: 'global',
+//   defaultActive: false,
+//   resizable: true,
+//   defaultSize: 320,
+//
+//   ariaLabels: {
+//     closeButton: 'Close button',
+//     content: 'Drawer with counter',
+//     triggerButton: 'Trigger button',
+//     resizeHandle: 'Resize handle',
+//   },
+//
+//   trigger: {
+//     iconSvg: `<svg viewBox="0 0 16 16" focusable="false">
+//       <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="7" />
+//       <circle stroke-width="2" stroke="currentColor" fill="none" cx="8" cy="8" r="3" />
+//     </svg>`,
+//   },
+//
+//   onToggle(event) {
+//     awsuiPlugins.appLayout.updateDrawer({ id: 'global-with-stored-state', defaultActive: event.detail.isOpen });
+//   },
+//
+//   mountContent: container => {
+//     ReactDOM.render(
+//       <>
+//         <Counter id="global-with-stored-state" />
+//         global widget content circle 2
+//       </>,
+//       container
+//     );
+//   },
+//   unmountContent: container => unmountComponentAtNode(container),
+// });
 
 awsuiPlugins.appLayout.registerDrawer({
   id: 'circle3-global',
@@ -240,25 +240,25 @@ awsuiPlugins.appLayout.registerDrawer({
   unmountContent: container => unmountComponentAtNode(container),
 });
 
-awsuiPlugins.appLayout.registerDrawer({
-  id: 'circle4-global',
-  type: 'global',
-  defaultActive: false,
-  resizable: true,
-  defaultSize: 320,
-
-  ariaLabels: {
-    closeButton: 'Close button',
-    content: 'Content',
-    triggerButton: 'Trigger button',
-    resizeHandle: 'Resize handle',
-  },
-  onToggle: event => {
-    console.log('circle4-global drawer on toggle', event.detail);
-  },
-
-  mountContent: container => {
-    ReactDOM.render(<CustomDrawerContent />, container);
-  },
-  unmountContent: container => unmountComponentAtNode(container),
-});
+// awsuiPlugins.appLayout.registerDrawer({
+//   id: 'circle4-global',
+//   type: 'global',
+//   defaultActive: false,
+//   resizable: true,
+//   defaultSize: 320,
+//
+//   ariaLabels: {
+//     closeButton: 'Close button',
+//     content: 'Content',
+//     triggerButton: 'Trigger button',
+//     resizeHandle: 'Resize handle',
+//   },
+//   onToggle: event => {
+//     console.log('circle4-global drawer on toggle', event.detail);
+//   },
+//
+//   mountContent: container => {
+//     ReactDOM.render(<CustomDrawerContent />, container);
+//   },
+//   unmountContent: container => unmountComponentAtNode(container),
+// });
