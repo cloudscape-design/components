@@ -145,6 +145,7 @@ function ChartPopover(
             onDismiss={onDismiss}
             overflowVisible="content"
             className={styles['popover-body']}
+            variant="chart"
           >
             <div className={testClasses.body}>{children}</div>
             {footer && <div className={clsx(testClasses.footer, styles.footer)}>{footer}</div>}
