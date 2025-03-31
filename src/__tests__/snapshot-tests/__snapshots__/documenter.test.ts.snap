@@ -1808,7 +1808,7 @@ When controlling this directly, make sure to update the value based on filtering
 ",
       "name": "xDomain",
       "optional": true,
-      "type": "conditional",
+      "type": "ReadonlyArray<T>",
     },
     {
       "defaultValue": ""linear"",
@@ -3144,7 +3144,7 @@ When controlling this directly, make sure to update the value based on filtering
 ",
       "name": "xDomain",
       "optional": true,
-      "type": "conditional",
+      "type": "ReadonlyArray<T>",
     },
     {
       "defaultValue": ""categorical"",
@@ -10568,7 +10568,7 @@ When controlling this directly, make sure to update the value based on filtering
 ",
       "name": "xDomain",
       "optional": true,
-      "type": "conditional",
+      "type": "ReadonlyArray<T>",
     },
     {
       "defaultValue": ""linear"",
@@ -11328,7 +11328,7 @@ When controlling this directly, make sure to update the value based on filtering
 ",
       "name": "xDomain",
       "optional": true,
-      "type": "conditional",
+      "type": "ReadonlyArray<T>",
     },
     {
       "defaultValue": ""linear"",
