@@ -102,6 +102,7 @@ const FormWithAnalytics = ({
         {...props}
         {...funnelProps}
         {...funnelStepInfo.current.funnelStepProps}
+        __internalRootRef={__internalRootRef}
         __injectAnalyticsComponentMetadata={true}
       />
     </ButtonContext.Provider>
