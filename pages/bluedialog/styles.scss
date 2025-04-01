@@ -1,0 +1,49 @@
+/*
+ Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ SPDX-License-Identifier: Apache-2.0
+*/
+@use '~design-tokens' as awsui;
+
+.feedback-dialog {
+  // these to be feedback dialog's own design tokens
+  border-block: 1px solid awsui.$color-border-status-info;
+  border-inline: 1px solid awsui.$color-border-status-info;
+  background-color: awsui.$color-background-status-info;
+
+  border-start-start-radius: awsui.$border-radius-container;
+  border-start-end-radius: awsui.$border-radius-container;
+  border-end-start-radius: awsui.$border-radius-container;
+  border-end-end-radius: awsui.$border-radius-container;
+
+  outline-offset: 5px;
+}
+
+.content {
+  display: flex;
+  align-items: baseline;
+}
+
+.dismiss {
+  order: 1;
+  padding-inline-end: awsui.$space-container-horizontal;
+}
+
+.inner-content {
+  flex: 1;
+  overflow: hidden; // prevent textarea from growing outside of the container
+
+  padding-block-start: awsui.$space-scaled-s;
+  padding-block-end: awsui.$space-scaled-l;
+  padding-inline-start: awsui.$space-container-horizontal;
+}
+
+.footer {
+  border-block-start: 1px solid awsui.$color-border-divider-default;
+  padding-block: awsui.$space-scaled-s;
+  padding-inline: awsui.$space-container-horizontal;
+}
+
+.footer-buttons {
+  display: flex;
+  flex-direction: row-reverse;
+}
