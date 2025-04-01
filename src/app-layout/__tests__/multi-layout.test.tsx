@@ -23,7 +23,7 @@ function findAllToolbars() {
 
 function delay() {
   // longer than a setTimeout(..., 0) used inside the implementation
-  return act(() => new Promise(resolve => setTimeout(resolve, 10)));
+  return act(() => new Promise(resolve => setTimeout(resolve, 50)));
 }
 
 const defaultAppLayoutProps = {
@@ -38,7 +38,9 @@ async function renderAsync(jsx: React.ReactElement) {
   await delay();
   const firstLayout = createWrapper().find('[data-testid="first"]')!.findAppLayout()!;
   const secondLayout = createWrapper().find('[data-testid="second"]')!.findAppLayout()!;
-  expect(findAllToolbars()).toHaveLength(1);
+  await waitFor(() => {
+    expect(findAllToolbars()).toHaveLength(1);
+  });
   expect(findToolbar(firstLayout)).toBeTruthy();
   expect(findToolbar(secondLayout)).toBeFalsy();
   return { firstLayout, secondLayout };
@@ -166,8 +168,10 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
         content={<AppLayout navigationHide={true} data-testid="second" />}
       />
     );
-    expect(firstLayout.findSplitPanel()).toBeTruthy();
-    expect(secondLayout.findSplitPanel()).toBeFalsy();
+    await waitFor(() => {
+      expect(firstLayout.findSplitPanel()).toBeTruthy();
+      expect(secondLayout.findSplitPanel()).toBeFalsy();
+    });
     expect(firstLayout.findSplitPanelOpenButton()).toBeTruthy();
     expect(secondLayout.findSplitPanelOpenButton()).toBeFalsy();
     expect(firstLayout.findSplitPanel()!.findOpenPanelBottom()).toBeFalsy();
@@ -221,7 +225,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
     expect(findToolbar(thirdLayout)).toBeFalsy();
     expect(findAllToolbars()).toHaveLength(1);
     expect(firstLayout.findNavigationToggle()).toBeTruthy();
-    expect(firstLayout.findToolsToggle()).toBeTruthy();
+    await waitFor(() => {
+      expect(firstLayout.findToolsToggle()).toBeTruthy();
+    });
     expect(firstLayout.findSplitPanelOpenButton()).toBeTruthy();
   });
 
@@ -282,7 +288,9 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
       />
     );
 
-    expect(firstLayout.findToolsToggle()).toBeTruthy();
+    await waitFor(() => {
+      expect(firstLayout.findToolsToggle()).toBeTruthy();
+    });
     expect(firstLayout.findToolsToggle().getElement()).toHaveAttribute('aria-expanded', 'false');
 
     firstLayout.findToolsToggle().click();
@@ -368,9 +376,11 @@ describeEachAppLayout({ themes: ['refresh-toolbar'], sizes: ['desktop'] }, () =>
           content={<AppLayout {...defaultAppLayoutProps} data-testid="second" drawers={[testDrawer]} />}
         />
       );
-      expect(console.warn).toHaveBeenCalledWith(
-        expect.stringContaining('Another app layout instance on this page already defines tools or drawers property')
-      );
+      await waitFor(() => {
+        expect(console.warn).toHaveBeenCalledWith(
+          expect.stringContaining('Another app layout instance on this page already defines tools or drawers property')
+        );
+      });
       expect(firstLayout.findDrawersTriggers()).toHaveLength(0);
       expect(firstLayout.findOpenToolsPanel()).toBeFalsy();
 

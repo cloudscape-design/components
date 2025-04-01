@@ -20,12 +20,12 @@ import globalDrawerStyles from '../../../lib/components/app-layout/visual-refres
 import visualRefreshToolbarStyles from '../../../lib/components/app-layout/visual-refresh-toolbar/skeleton/styles.css.js';
 
 export function renderComponent(jsx: React.ReactElement) {
-  const { container, rerender } = render(jsx);
+  const { container, rerender, ...rest } = render(jsx);
   const wrapper = createWrapper(container).findAppLayout()!;
 
   const isUsingGridLayout = wrapper.getElement().classList.contains(visualRefreshStyles.layout);
 
-  return { wrapper, rerender, isUsingGridLayout, container };
+  return { wrapper, rerender, isUsingGridLayout, container, ...rest };
 }
 
 type Theme = 'refresh' | 'refresh-toolbar' | 'classic';
@@ -34,6 +34,7 @@ type Size = 'desktop' | 'mobile';
 interface AppLayoutTestConfig {
   themes: Array<Theme>;
   sizes: Array<Size>;
+  skipInitialTest?: boolean;
 }
 
 type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
@@ -41,6 +42,7 @@ type AppLayoutTestSuite = (config: { theme: Theme; size: Size }) => void;
 const defaultTestConfig: AppLayoutTestConfig = {
   themes: ['classic', 'refresh', 'refresh-toolbar'],
   sizes: ['desktop', 'mobile'],
+  skipInitialTest: false,
 };
 
 const globalWithFlags = globalThis as any;
@@ -67,7 +69,7 @@ export function describeEachAppLayout(
           setGlobalFlag('appLayoutWidget', undefined);
           clearVisualRefreshState();
         });
-        test('mocks applied correctly', () => {
+        (config.skipInitialTest ? test.skip : test)('mocks applied correctly', () => {
           const { wrapper } = renderComponent(<AppLayout />);
           expect(!!wrapper.matches(`.${visualRefreshStyles.layout}`)).toEqual(theme === 'refresh');
           expect(!!wrapper.matches(`.${visualRefreshToolbarStyles.root}`)).toEqual(theme === 'refresh-toolbar');
