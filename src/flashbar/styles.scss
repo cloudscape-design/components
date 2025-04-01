@@ -60,13 +60,12 @@
   }
 }
 
-$normal-icon-gap: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 .flash-body {
   display: flex;
   flex-wrap: wrap;
   flex-grow: 1;
   min-inline-size: 0;
-  column-gap: calc(#{awsui.$space-flashbar-action-left} - #{$normal-icon-gap});
+  column-gap: awsui.$space-flashbar-action-left;
 }
 
 .flash-focus-container {
@@ -126,7 +125,10 @@ $normal-icon-gap: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 
 .action-button-wrapper {
   white-space: nowrap;
-  margin-inline-start: $normal-icon-gap;
+}
+.action-wrapped {
+  margin-block-end: calc(#{awsui.$border-width-field} + #{awsui.$space-scaled-xxs});
+  margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 }
 
 .action-button,

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -21,6 +21,7 @@ import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
+import useContainerWidth from '../internal/utils/use-container-width';
 import { ActionsWrapper } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
@@ -77,8 +78,22 @@ const InternalAlert = React.forwardRef(
       replacementContentRef,
     } = useDiscoveredContent({ type, header, children });
 
+    const [containerWidth, containerMeasureRef] = useContainerWidth();
+    const containerRef = useMergeRefs(containerMeasureRef, __internalRootRef);
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
+    const actionsRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      if (!actionsRef.current) {
+        return;
+      }
+      if (actionsRef.current.offsetLeft < 100) {
+        actionsRef.current.classList.add(styles['action-wrapped']);
+      } else {
+        actionsRef.current.classList.remove(styles['action-wrapped']);
+      }
+    }, [containerWidth]);
 
     const isRefresh = useVisualRefresh();
     const size = isRefresh
@@ -113,7 +128,7 @@ const InternalAlert = React.forwardRef(
           { [styles.hidden]: !visible, [styles['initial-hidden']]: initialHidden },
           baseProps.className
         )}
-        ref={__internalRootRef}
+        ref={containerRef}
       >
         <LinkDefaultVariantContext.Provider value={{ defaultVariant: 'primary' }}>
           <VisualContext contextName="alert">
@@ -164,6 +179,7 @@ const InternalAlert = React.forwardRef(
                   </div>
                 </div>
                 <ActionsWrapper
+                  ref={actionsRef}
                   className={styles.action}
                   testUtilClasses={{
                     actionSlot: styles['action-slot'],

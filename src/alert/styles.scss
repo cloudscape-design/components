@@ -41,6 +41,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  column-gap: awsui.$space-alert-action-left;
 }
 
 .hidden {
@@ -61,26 +62,18 @@
   white-space: nowrap;
 }
 
-$medium-icon-gap: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
-.icon-size-medium > .alert-wrapper {
-  column-gap: calc(#{awsui.$space-alert-action-left} - #{$medium-icon-gap});
-  > .action {
-    margin-inline-start: $medium-icon-gap;
-  }
+.action-wrapped {
+  margin-block-end: calc(#{awsui.$border-width-alert} + #{awsui.$space-scaled-xxs});
 }
-$big-icon-gap: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
-.icon-size-big > .alert-wrapper {
-  column-gap: calc(#{awsui.$space-alert-action-left} - #{$big-icon-gap});
-  > .action {
-    margin-inline-start: $big-icon-gap;
-  }
+
+.icon-size-medium > .alert-wrapper > .action-wrapped {
+  margin-inline-start: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
 }
-$normal-icon-gap: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
-.icon-size-normal > .alert-wrapper {
-  column-gap: calc(#{awsui.$space-alert-action-left} - #{$normal-icon-gap});
-  > .action {
-    margin-inline-start: $normal-icon-gap;
-  }
+.icon-size-big > .alert-wrapper > .action-wrapped {
+  margin-inline-start: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
+}
+.icon-size-normal > .alert-wrapper > .action-wrapped {
+  margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 }
 
 .action-slot,

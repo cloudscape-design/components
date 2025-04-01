@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { forwardRef } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -41,23 +41,18 @@ interface ActionsWrapperProps {
   onButtonClick: InternalButtonProps['onClick'];
 }
 
-export const ActionsWrapper = ({
-  className,
-  testUtilClasses,
-  action,
-  discoveredActions,
-  buttonText,
-  onButtonClick,
-}: ActionsWrapperProps) => {
-  const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
-  if (!actionButton && discoveredActions.length === 0) {
-    return null;
-  }
+export const ActionsWrapper = forwardRef<HTMLDivElement, ActionsWrapperProps>(
+  ({ className, testUtilClasses, action, discoveredActions, buttonText, onButtonClick }, ref) => {
+    const actionButton = createActionButton(testUtilClasses, action, buttonText, onButtonClick);
+    if (!actionButton && discoveredActions.length === 0) {
+      return null;
+    }
 
-  return (
-    <div className={clsx(styles.root, className)}>
-      {actionButton}
-      {discoveredActions}
-    </div>
-  );
-};
+    return (
+      <div ref={ref} className={clsx(styles.root, className)}>
+        {actionButton}
+        {discoveredActions}
+      </div>
+    );
+  }
+);

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -22,6 +22,7 @@ import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { throttle } from '../internal/utils/throttle';
+import useContainerWidth from '../internal/utils/use-container-width';
 import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
@@ -121,8 +122,9 @@ export const Flash = React.forwardRef(
     const analyticsMetadata = getAnalyticsMetadataProps(
       props as BasePropsWithAnalyticsMetadata & FlashbarProps.MessageDefinition
     );
+    const [containerWidth, containerMeasureRef] = useContainerWidth();
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
-    const mergedRef = useMergeRefs(ref, elementRef);
+    const mergedRef = useMergeRefs(ref, elementRef, containerMeasureRef);
     const flashIconId = useUniqueId('flash-icon');
     const flashMessageId = useUniqueId('flash-message');
 
@@ -141,6 +143,18 @@ export const Flash = React.forwardRef(
 
     const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
+    const actionsRef = useRef<HTMLDivElement>(null);
+
+    useLayoutEffect(() => {
+      if (!actionsRef.current) {
+        return;
+      }
+      if (actionsRef.current.offsetLeft < 100) {
+        actionsRef.current.classList.add(styles['action-wrapped']);
+      } else {
+        actionsRef.current.classList.remove(styles['action-wrapped']);
+      }
+    }, [containerWidth]);
 
     const statusIconAriaLabel =
       props.statusIconAriaLabel ||
@@ -230,6 +244,7 @@ export const Flash = React.forwardRef(
             </div>
           </div>
           <ActionsWrapper
+            ref={actionsRef}
             className={styles['action-button-wrapper']}
             testUtilClasses={{
               actionSlot: styles['action-slot'],
