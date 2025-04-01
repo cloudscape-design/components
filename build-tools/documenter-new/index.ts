@@ -7,7 +7,7 @@ import glob from 'glob';
 import ts from 'typescript';
 
 import { buildComponentDefinition, type ExpandedProp } from './component-definition.ts';
-import { validateExports } from './extractor.ts';
+import { extractDefaultValues, validateExports } from './extractor.ts';
 import { isOptional, stringifyType, unwrapNamespaceDeclaration } from './type-utils.ts';
 import type { ComponentDefinition } from './types.ts';
 
@@ -16,10 +16,11 @@ import type { ComponentDefinition } from './types.ts';
  * 1. ~Inherited props~
  * 2. ~Strip undefined, render optional flag~
  * 3. ~Render ref functions~
- * 4. Render inline detail type
- * 5. Render enum values
- * 4. Detect default values
+ * 4. ~Render inline detail type~
+ * 5. ~Render enum values~
  * 6. ~Render detail types~
+ * 4. ~Detect default values~
+ * 1. Resolve type names nicer - todo later
  */
 
 function loadTSConfig(tsconfigPath: string): ts.ParsedCommandLine {
@@ -36,6 +37,8 @@ function loadTSConfig(tsconfigPath: string): ts.ParsedCommandLine {
   return config;
 }
 
+// TODO future feature
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function extractMemberComments(type: ts.Type) {
   function unwrapUndefined(type: ts.Type) {
     if (!type || !type.isUnion()) {
@@ -67,22 +70,6 @@ function extractMemberComments(type: ts.Type) {
   return members;
 }
 
-function expandType(name: string, type: ts.Type, checker: ts.TypeChecker) {
-  if (!type.isUnionOrIntersection()) {
-    return undefined;
-  }
-  // const typeBefore = type;
-  // type = unwrapUndefined(type);
-  // if (name === 'className') {
-  //   console.log(typeBefore, type);
-  //   debugger;
-  // }
-
-  // const comments = extractMemberComments(type);
-
-  return checker.typeToString(type);
-}
-
 function expandTags(extraTags: ReadonlyArray<ts.JSDocTag>) {
   return extraTags.map(tag => ({
     name: tag.tagName.text,
@@ -104,7 +91,6 @@ function extractProps(propsSymbol: ts.Symbol, checker: ts.TypeChecker) {
         type: stringifyType(type, checker),
         rawType: type,
         isOptional: isOptional(type),
-        // expandedType: expandType(value.name, type, checker),
         description: {
           text: ts.displayPartsToString(value.getDocumentationComment(checker)),
           tags: expandTags(ts.getJSDocTags(declaration)),
@@ -188,9 +174,11 @@ export function documentComponents(tsconfigPath: string, componentsGlob: string)
     const exportSymbols = checker.getExportsOfModule(moduleSymbol);
     validateExports(name, exportSymbols, checker);
     const propsSymbol = exportSymbols.find(symbol => symbol.getName() === `${name}Props`);
+    const defaultExport = exportSymbols.find(symbol => symbol.getName() === 'default')!;
     const props = extractProps(propsSymbol, checker);
+    const defaultValues = extractDefaultValues(defaultExport, checker);
 
     const functions = extractFunctions(propsSymbol, checker);
-    return buildComponentDefinition(name, props, functions, checker);
+    return buildComponentDefinition(name, props, functions, defaultValues, checker);
   });
 }
