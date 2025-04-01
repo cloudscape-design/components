@@ -90,7 +90,7 @@ export default function InternalCopyToClipboard({
       {isInline ? (
         <span className={styles['inline-container']}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
-          <span className={testStyles['text-to-copy']}>{content ?? textToCopy}</span>
+          <span className={testStyles.content}>{content ?? textToCopy}</span>
         </span>
       ) : (
         trigger
