@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { act, render, waitFor } from '@testing-library/react';
 
 import CopyToClipboard from '../../../lib/components/copy-to-clipboard';
 import createWrapper from '../../../lib/components/test-utils/dom';
@@ -68,6 +68,29 @@ describe('CopyToClipboard', () => {
     expect(wrapper.findCopyButton().getElement().textContent).toBe('');
     expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy');
     expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Text to copy');
+  });
+
+  test('renders an inline button with custom content and separate text to copy', () => {
+    const mockedWriteText = jest.fn().mockResolvedValue(act(() => new Promise(() => {}))); // The act here is just to prevent console warnings when tests run
+
+    Object.assign(global.navigator, {
+      clipboard: {
+        writeText: mockedWriteText,
+      },
+    });
+
+    const { container } = render(<CopyToClipboard {...defaultProps} variant="inline" content="Copy test content" />);
+    const wrapper = createWrapper(container).findCopyToClipboard()!;
+
+    expect(wrapper.findCopyButton().getElement().textContent).toBe('');
+    expect(wrapper.findCopyButton().getElement()).toHaveAccessibleName('Copy');
+    expect(wrapper.findTextToCopy()!.getElement().textContent).toBe('Copy test content');
+
+    // Assert content written to the clipboard
+    act(() => wrapper.findCopyButton().click());
+    expect(mockedWriteText).toHaveBeenCalledWith('Text to copy');
+
+    jest.resetAllMocks();
   });
 
   describe.each([false, true])('popoverRenderWithPortal set to %s', (popoverRenderWithPortal: boolean) => {

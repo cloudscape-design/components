@@ -21,6 +21,6 @@ export default class CopyToClipboardWrapper extends ComponentWrapper {
   }
 
   findTextToCopy(): null | ElementWrapper {
-    return this.findByClassName(testStyles['text-to-copy']);
+    return this.findByClassName(testStyles.content);
   }
 }
