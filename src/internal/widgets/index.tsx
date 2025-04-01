@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { getGlobalFlag } from '@cloudscape-design/component-toolkit/internal';
 
@@ -21,8 +21,15 @@ export function createWidgetizedComponent<Component extends FunctionComponent<an
       if (isRefresh && getGlobalFlag('appLayoutWidget') && Loader) {
         return <Loader Skeleton={Skeleton} {...(props as any)} />;
       }
+      const [mount, setMount] = useState(false);
 
-      return <Implementation {...(props as any)} />;
+      useEffect(() => {
+        setTimeout(() => {
+          setMount(true);
+        }, 500);
+      }, []);
+
+      return mount ? <Implementation {...(props as any)} /> : <div>{props?.content}</div>;
     }) as Component;
   };
 }

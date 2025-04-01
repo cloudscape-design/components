@@ -36,6 +36,7 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     if (!container) {
       return;
     }
+    console.log('iframe created');
     const iframeEl = container.ownerDocument.createElement('iframe');
     iframeEl.className = styles['full-screen'];
     iframeEl.id = id;
@@ -59,6 +60,7 @@ export function IframeWrapper({ id, AppComponent }: { id: string; AppComponent: 
     return () => {
       syncClassesCleanup();
       ReactDOM.unmountComponentAtNode(innerAppRoot);
+      console.log('iframe destroyed');
       container.removeChild(iframeEl);
     };
   }, [id, AppComponent]);
