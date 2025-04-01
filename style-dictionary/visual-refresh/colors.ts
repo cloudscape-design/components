@@ -274,6 +274,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorDropzoneTextHover: { light: '{colorGrey600}', dark: '{colorGrey350}' },
   colorDropzoneBorderDefault: { light: '{colorGrey500}', dark: '{colorGrey550}' },
   colorDropzoneBorderHover: { light: '{colorBlue800}', dark: '{colorBlue400}' },
+  colorGapGlobalDrawer: { light: '{colorGrey150}', dark: '{colorGrey700}' },
 };
 
 const expandedTokens: StyleDictionary.ExpandedColorScopeDictionary = expandColorDictionary(tokens);
