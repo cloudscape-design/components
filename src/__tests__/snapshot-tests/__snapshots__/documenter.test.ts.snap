@@ -105,6 +105,7 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
       "type": "string",
     },
     {
+      "defaultValue": "'info'",
       "description": "Specifies the type of message you want to display.",
       "inlineType": {
         "name": "AlertProps.Type",
@@ -121,6 +122,7 @@ If the label is assigned via the \`i18nStrings\` property, this label will be ig
       "type": "AlertProps.Type",
     },
     {
+      "defaultValue": "true",
       "deprecatedTag": "Use conditional rendering in your code instead of this prop.",
       "description": "Determines whether the alert is displayed.",
       "name": "visible",
@@ -278,6 +280,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "0",
       "description": "Specifies the height (in pixels) to be considered as an offset when activating anchors.
 This is useful when you have a fixed or sticky header that might overlap with the content as you scroll.
 
@@ -764,6 +767,7 @@ Example:
       "type": "string",
     },
     {
+      "defaultValue": "'default'",
       "description": "Determines the default behavior of the component based on some predefined page layouts.
 Individual properties will always take precedence over the default coming from the content type.",
       "inlineType": {
@@ -830,12 +834,14 @@ Each Drawer is an item in the drawers wrapper with the following properties:
       "type": "Array<AppLayoutProps.Drawer>",
     },
     {
+      "defaultValue": "'#b #f'",
       "description": "CSS selector for the application footer.",
       "name": "footerSelector",
       "optional": true,
       "type": "string",
     },
     {
+      "defaultValue": "'#b #h'",
       "description": "CSS selector for the application header.",
       "name": "headerSelector",
       "optional": true,
@@ -894,6 +900,7 @@ If set to \`Number.MAX_VALUE\`, the main content panel will occupy the full avai
       "type": "boolean",
     },
     {
+      "defaultValue": "280",
       "description": "Navigation drawer width in pixels.",
       "name": "navigationWidth",
       "optional": true,
@@ -950,6 +957,7 @@ content area so it is always visible.",
       "type": "boolean",
     },
     {
+      "defaultValue": "290",
       "description": "Tools drawer width in pixels.",
       "name": "toolsWidth",
       "optional": true,
@@ -1283,6 +1291,7 @@ Example:
       "type": "string",
     },
     {
+      "defaultValue": "'default'",
       "description": "Determines the default behavior of the component based on some predefined page layouts.
 Individual properties will always take precedence over the default coming from the content type.",
       "inlineType": {
@@ -1343,12 +1352,14 @@ If not set, a corresponding trigger button is not displayed, while the drawer mi
       "type": "Array<AppLayoutProps.Drawer>",
     },
     {
+      "defaultValue": "'#b #f'",
       "description": "CSS selector for the application footer.",
       "name": "footerSelector",
       "optional": true,
       "type": "string",
     },
     {
+      "defaultValue": "'#b #h'",
       "description": "CSS selector for the application header.",
       "name": "headerSelector",
       "optional": true,
@@ -1414,6 +1425,7 @@ while navigation drawer might be displayed, but opened using a custom trigger.",
       "type": "boolean",
     },
     {
+      "defaultValue": "280",
       "description": "Navigation drawer width in pixels.",
       "name": "navigationWidth",
       "optional": true,
@@ -1470,6 +1482,7 @@ content area so it is always visible.",
       "type": "boolean",
     },
     {
+      "defaultValue": "290",
       "description": "Tools drawer width in pixels.",
       "name": "toolsWidth",
       "optional": true,
@@ -1619,6 +1632,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "CartesianChartProps.DetailPopoverFooter<T>",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": {
         "name": ""small" | "medium" | "large"",
@@ -1664,6 +1678,7 @@ Do not use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "boolean",
     },
     {
+      "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.
 When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
@@ -1696,6 +1711,7 @@ A value of \`null\` means no series is highlighted.
       "type": "Series | null",
     },
     {
+      "defaultValue": "{}",
       "description": "An object containing all the necessary localized strings required by the component.",
       "i18nTag": true,
       "inlineType": {
@@ -1811,6 +1827,7 @@ Each element can represent an area series, or a threshold, and can have the foll
       "type": "ReadonlyArray<AreaChartProps.Series<T>>",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading data.
 * \`loading\`: data fetching is in progress.
 * \`finished\`: data has loaded successfully.
@@ -1848,6 +1865,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<T>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the x axis.",
       "inlineType": {
         "name": "ScaleType",
@@ -1897,6 +1915,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<number>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the y axis.",
       "inlineType": {
         "name": ""linear" | "log"",
@@ -2142,6 +2161,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "() => true",
       "description": "Function that determines whether an item is removable. When this function returns \`false\`, the remove
 button is not rendered and the user can't remove the item.
 By default, all items are removable.",
@@ -2161,6 +2181,7 @@ By default, all items are removable.",
       "type": "AttributeEditorProps.IsItemRemovableFunction<T>",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies the items that serve as the data source for all rows.
 The display of a row is handled by the \`definition\` property.",
       "name": "items",
@@ -2489,6 +2510,7 @@ is provided by its parent form field component.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Specifies whether to disable browser autocorrect and related features.
 If you set this to \`true\`, it disables any native browser capabilities
 that automatically correct user input, such as \`autocorrect\` and
@@ -2574,6 +2596,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "((matchesCount: number, totalCount: number) => string)",
     },
     {
+      "defaultValue": "'auto'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 
 * \`auto\` - The component will automatically filter options based on user input.
@@ -2736,6 +2759,7 @@ This is required to provide a good screen reader experience. For more informatio
       "type": "string",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading more options.
 * \`pending\` - Indicates that no request in progress, but more options may be loaded.
 * \`loading\` - Indicates that data fetching is in progress.
@@ -2815,6 +2839,7 @@ exports[`Documenter definition for badge matches the snapshot: badge 1`] = `
       "type": "string",
     },
     {
+      "defaultValue": "'grey'",
       "description": "Specifies the badge color.",
       "inlineType": {
         "name": ""blue" | "green" | "grey" | "red" | "severity-critical" | "severity-high" | "severity-medium" | "severity-low" | "severity-neutral"",
@@ -2977,6 +3002,7 @@ and should return the following properties:
       "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": {
         "name": ""small" | "medium" | "large"",
@@ -2992,6 +3018,7 @@ and should return the following properties:
       "type": ""small" | "medium" | "large"",
     },
     {
+      "defaultValue": "true",
       "description": "When set to \`true\`, adds a visual emphasis on the zero baseline axis.
 See the usage guidelines for more details.",
       "name": "emphasizeBaselineAxis",
@@ -3012,6 +3039,7 @@ See the usage guidelines for more details.",
       "type": "boolean",
     },
     {
+      "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.
 When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
@@ -3044,6 +3072,7 @@ A value of \`null\` means no series is highlighted.
       "type": "Series | null",
     },
     {
+      "defaultValue": "false",
       "description": "When set to \`true\`, the x and y axes are flipped, which causes any bars to be rendered horizontally instead of vertically.
 This can only be used when the chart consists exclusively of bar series.",
       "name": "horizontalBars",
@@ -3143,6 +3172,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Array that represents the source of data for the displayed chart.
 Each element can represent a bar series or a threshold, and can have the following properties:
 
@@ -3156,12 +3186,14 @@ Each element can represent a bar series or a threshold, and can have the followi
       "type": "ReadonlyArray<BarSeries<T>>",
     },
     {
+      "defaultValue": "false",
       "description": "When set to \`true\`, bars in the same data point are stacked instead of grouped next to each other.",
       "name": "stackedBars",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading data.
 * \`loading\`: data fetching is in progress.
 * \`finished\`: data has loaded successfully.
@@ -3199,6 +3231,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<T>",
     },
     {
+      "defaultValue": "'categorical'",
       "description": "Determines the type of scale for values on the x axis.
 Use \`categorical\` for bar charts.",
       "inlineType": {
@@ -3249,6 +3282,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<number>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the y axis.",
       "inlineType": {
         "name": ""linear" | "log"",
@@ -3437,6 +3471,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "{}",
       "description": "Adds margins to the element. It can be the following:
 
 - A single string with a size. This applies the same margin to all sides (that is, top, right, bottom, left).
@@ -3457,27 +3492,12 @@ Sizes are automatically scaled down in compact mode.
 
  For example, \`margin="s"\` adds a small margin to all sides.
 \`margin={{ right: "l", bottom: "s" }}\` adds a small margin to the bottom and a large margin to the right.",
-      "inlineType": {
-        "name": "BoxProps.SpacingSize | BoxProps.Spacing",
-        "properties": [
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "margin",
       "optional": true,
       "type": "BoxProps.SpacingSize | BoxProps.Spacing",
     },
     {
+      "defaultValue": "{}",
       "description": "Adds padding to the element. It can be the following:
 
 - A single string with a size. This applies the same padding to all sides (that is, top, right, bottom, left).
@@ -3498,22 +3518,6 @@ Sizes are automatically scaled down in compact mode.
 
  For example, \`padding="s"\` adds small padding to all sides.
 \`padding={{ right: "l", bottom: "s" }}\` adds small padding to the bottom and large padding to the right.",
-      "inlineType": {
-        "name": "BoxProps.SpacingSize | BoxProps.Spacing",
-        "properties": [
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "padding",
       "optional": true,
       "type": "BoxProps.SpacingSize | BoxProps.Spacing",
@@ -3540,6 +3544,7 @@ Sizes are automatically scaled down in compact mode.
       "type": "BoxProps.TextAlign",
     },
     {
+      "defaultValue": "'div'",
       "description": "Defines the style of element to display.
 
 - If you set it to \`'div'\`, \`'span'\`, \`'h1'\`, \`'h2'\`, \`'h3'\`, \`'h4'\`, \`'h5'\`, \`'p'\`, \`'strong'\`, \`'small'\`, \`'code'\`, \`'pre'\`, or \`'samp'\`, the variant is also used as the HTML tag name.
@@ -3702,6 +3707,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "An array of breadcrumb items that describes the link hierarchy for this navigation.
 Each option has the following properties:
 
@@ -3840,6 +3846,7 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the button as disabled and prevents clicks.",
       "name": "disabled",
       "optional": true,
@@ -3857,27 +3864,12 @@ Applicable for all button variants, except link and icon.",
       "description": "Specifies whether the linked URL, when selected, will prompt the user to download instead of navigate.
 You can specify a string value that will be suggested as the name of the downloaded file.
 This property only applies when an \`href\` is provided.",
-      "inlineType": {
-        "name": "string | boolean",
-        "properties": [
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "download",
       "optional": true,
       "type": "string | boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Adds an external icon after the button label text.
 If an href is provided, it opens the link in a new tab.",
       "name": "external",
@@ -3892,6 +3884,7 @@ Use when a button is not the descendant of a form element, such as when used in 
       "type": "string",
     },
     {
+      "defaultValue": "'submit'",
       "description": "The form action that is performed by a button click.",
       "inlineType": {
         "name": "ButtonProps.FormAction",
@@ -3939,6 +3932,7 @@ For example, if you have a 'help' button that links to a documentation page.",
       "type": "ButtonProps.I18nStrings",
     },
     {
+      "defaultValue": "'left'",
       "description": "Specifies the alignment of the icon.",
       "inlineType": {
         "name": "ButtonProps.IconAlign",
@@ -4116,6 +4110,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the button as being in a loading state. It takes precedence over the \`disabled\` if both are set to \`true\`.
 It prevents users from clicking the button, but it can still be focused.",
       "name": "loading",
@@ -4143,6 +4138,7 @@ This property only applies when an \`href\` is provided.",
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Determines the general styling of the button as follows:
 * \`primary\` for primary buttons.
 * \`normal\` for secondary buttons.
@@ -4167,6 +4163,7 @@ This property only applies when an \`href\` is provided.",
       "type": "ButtonProps.Variant",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies if the \`text\` content wraps. If you set it to \`false\`, it prevents the text from wrapping.",
       "name": "wrapText",
       "optional": true,
@@ -4328,6 +4325,7 @@ Use this to provide an accessible name for buttons that don't have visible text.
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the button dropdown is disabled. Users cannot interact with the control if it's disabled.",
       "name": "disabled",
       "optional": true,
@@ -4341,12 +4339,14 @@ If provided, the disabled button becomes focusable.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Controls expandability of the item groups.",
       "name": "expandableGroups",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
 Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
@@ -4418,6 +4418,7 @@ An item which belongs to nested group has the following properties: \`id\`, \`te
       "type": "ReadonlyArray<ButtonDropdownProps.ItemOrGroup>",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the button as being in a loading state. It takes precedence over the \`disabled\` if both are set to \`true\`.
 It prevents clicks.",
       "name": "loading",
@@ -4542,6 +4543,7 @@ The main action also supports the following properties of the [button](/componen
       "type": "ButtonDropdownProps.MainAction",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Determines the general styling of the button dropdown.
 * \`primary\` for primary buttons
 * \`normal\` for secondary buttons
@@ -4657,6 +4659,7 @@ Use this to provide a unique accessible name for each button group on the page."
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Use this property to determine dropdown placement strategy for all menu dropdown items.
 
 By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
@@ -4820,6 +4823,7 @@ If provided, the date becomes focusable.",
       "type": "CalendarProps.DateDisabledReasonFunction",
     },
     {
+      "defaultValue": "'day'",
       "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
       "inlineType": {
@@ -4888,6 +4892,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "() => true",
       "description": "Defines whether a particular date is enabled in the calendar or not.
 If you disable a date in the calendar, users can still enter this date using a keyboard.
 We recommend that you also validate these constraints on the client-side and server-side
@@ -4908,6 +4913,7 @@ as you would for other form elements.",
       "type": "CalendarProps.IsDateEnabledFunction",
     },
     {
+      "defaultValue": "''",
       "description": "Specifies the locale to use to render month names and determine the starting day of the week.
 If you don't provide this, the locale is determined by the page and browser locales.
 Supported values and formats are listed in the
@@ -5061,6 +5067,7 @@ All of the above properties are optional.",
       "type": "CardsProps.CardDefinition<T>",
     },
     {
+      "defaultValue": "[]",
       "description": "Determines the number of cards per row for any interval of container width.
 It's an array whose entries are objects containing the following:
 - \`cards\` (number) - Specifies the number of cards per row.
@@ -5126,6 +5133,7 @@ Don't use this property if the card has any other interactive elements.",
       "type": "boolean",
     },
     {
+      "defaultValue": "1",
       "description": "Use this property to inform screen readers which range of cards is currently displayed.
 It specifies the index (1-based) of the first card.",
       "name": "firstIndex",
@@ -5159,6 +5167,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "CardsProps.IsItemDisabled<T>",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies the items that serve as data source for a card.
 
 The \`cardDefinition\` property handles the display of this data.",
@@ -5246,32 +5255,12 @@ When it's set, it's used to provide [keys for React](https://reactjs.org/docs/li
 for performance optimizations.
 
 It's also used for connecting \`items\` and \`selectedItems\` values when they don't reference the same object.",
-      "inlineType": {
-        "name": "CardsProps.TrackBy<T>",
-        "properties": [
-          {
-            "name": "length",
-            "optional": false,
-            "type": "number",
-          },
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "trackBy",
       "optional": true,
       "type": "CardsProps.TrackBy<T>",
     },
     {
+      "defaultValue": "'container'",
       "description": "Specify a cards variant with one of the following:
 * \`container\` - Use this variant to have the cards displayed as a container.
 * \`full-page\` – Use this variant when cards are the entire content of a page.",
@@ -5831,252 +5820,6 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "description": "Specifies the programming language. You can use any of the programming languages supported by the \`ace\` object that you provide.
 Alternatively, this can be used to set a language that is not supported by the default \`language\` list. Make sure you've added the highlighting support for this language to the Ace instance.
 For more info on custom languages, see the [Code editor API](/components/code-editor?tabId=api) page.",
-      "inlineType": {
-        "name": "CodeEditorProps.Language",
-        "properties": [
-          {
-            "name": "__@iterator@90",
-            "optional": false,
-            "type": "() => IterableIterator<string>",
-          },
-          {
-            "name": "anchor",
-            "optional": false,
-            "type": "(name: string) => string",
-          },
-          {
-            "name": "big",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "blink",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "bold",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "charAt",
-            "optional": false,
-            "type": "(pos: number) => string",
-          },
-          {
-            "name": "charCodeAt",
-            "optional": false,
-            "type": "(index: number) => number",
-          },
-          {
-            "name": "codePointAt",
-            "optional": false,
-            "type": "(pos: number) => number",
-          },
-          {
-            "name": "concat",
-            "optional": false,
-            "type": "(...strings: Array<string>) => string",
-          },
-          {
-            "name": "endsWith",
-            "optional": false,
-            "type": "(searchString: string, endPosition?: number | undefined) => boolean",
-          },
-          {
-            "name": "fixed",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "fontcolor",
-            "optional": false,
-            "type": "(color: string) => string",
-          },
-          {
-            "name": "fontsize",
-            "optional": false,
-            "type": "{ (size: number): string; (size: string): string; }",
-          },
-          {
-            "name": "includes",
-            "optional": false,
-            "type": "(searchString: string, position?: number | undefined) => boolean",
-          },
-          {
-            "name": "indexOf",
-            "optional": false,
-            "type": "(searchString: string, position?: number | undefined) => number",
-          },
-          {
-            "name": "italics",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "lastIndexOf",
-            "optional": false,
-            "type": "(searchString: string, position?: number | undefined) => number",
-          },
-          {
-            "name": "length",
-            "optional": false,
-            "type": "number",
-          },
-          {
-            "name": "link",
-            "optional": false,
-            "type": "(url: string) => string",
-          },
-          {
-            "name": "localeCompare",
-            "optional": false,
-            "type": "{ (that: string): number; (that: string, locales?: string | Array<string> | undefined, options?: Intl.CollatorOptions | undefined): number; }",
-          },
-          {
-            "name": "match",
-            "optional": false,
-            "type": "{ (regexp: string | RegExp): RegExpMatchArray | null; (matcher: { [Symbol.match](string: string): RegExpMatchArray | null; }): RegExpMatchArray | null; }",
-          },
-          {
-            "name": "matchAll",
-            "optional": false,
-            "type": "(regexp: RegExp) => IterableIterator<RegExpMatchArray>",
-          },
-          {
-            "name": "normalize",
-            "optional": false,
-            "type": "{ (form: "NFC" | "NFD" | "NFKC" | "NFKD"): string; (form?: string | undefined): string; }",
-          },
-          {
-            "name": "padEnd",
-            "optional": false,
-            "type": "(maxLength: number, fillString?: string | undefined) => string",
-          },
-          {
-            "name": "padStart",
-            "optional": false,
-            "type": "(maxLength: number, fillString?: string | undefined) => string",
-          },
-          {
-            "name": "repeat",
-            "optional": false,
-            "type": "(count: number) => string",
-          },
-          {
-            "name": "replace",
-            "optional": false,
-            "type": "{ (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: Array<any>) => string): string; (searchValue: { ...; }, replaceValue: string): string; (searchValue: { ...; }, replacer: (substring: string, ...args: Array<any>) => string): string; }",
-          },
-          {
-            "name": "search",
-            "optional": false,
-            "type": "{ (regexp: string | RegExp): number; (searcher: { [Symbol.search](string: string): number; }): number; }",
-          },
-          {
-            "name": "slice",
-            "optional": false,
-            "type": "(start?: number | undefined, end?: number | undefined) => string",
-          },
-          {
-            "name": "small",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "split",
-            "optional": false,
-            "type": "{ (separator: string | RegExp, limit?: number | undefined): Array<string>; (splitter: { [Symbol.split](string: string, limit?: number | undefined): Array<string>; }, limit?: number | undefined): Array<string>; }",
-          },
-          {
-            "name": "startsWith",
-            "optional": false,
-            "type": "(searchString: string, position?: number | undefined) => boolean",
-          },
-          {
-            "name": "strike",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "sub",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "substr",
-            "optional": false,
-            "type": "(from: number, length?: number | undefined) => string",
-          },
-          {
-            "name": "substring",
-            "optional": false,
-            "type": "(start: number, end?: number | undefined) => string",
-          },
-          {
-            "name": "sup",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "toLocaleLowerCase",
-            "optional": false,
-            "type": "(locales?: string | Array<string> | undefined) => string",
-          },
-          {
-            "name": "toLocaleUpperCase",
-            "optional": false,
-            "type": "(locales?: string | Array<string> | undefined) => string",
-          },
-          {
-            "name": "toLowerCase",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "toUpperCase",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "trim",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "trimEnd",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "trimLeft",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "trimRight",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "trimStart",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "language",
       "optional": false,
       "type": "CodeEditorProps.Language",
@@ -6442,6 +6185,7 @@ the custom content is displayed at the bottom of the left column within the moda
       "type": "((customValue: CustomPreferenceType, setCustomValue: React.Dispatch<CustomPreferenceType>) => React.ReactNode)",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the preferences trigger button is disabled.",
       "name": "disabled",
       "optional": true,
@@ -6741,6 +6485,7 @@ exports[`Documenter definition for column-layout matches the snapshot: column-la
   "name": "ColumnLayout",
   "properties": [
     {
+      "defaultValue": "'none'",
       "description": "Controls whether dividers are placed between rows and columns.
 
 Note: This is not supported when used with \`minColumnWidth\`.",
@@ -6766,6 +6511,7 @@ Note: This is not supported when used with \`minColumnWidth\`.",
       "type": "string",
     },
     {
+      "defaultValue": "1",
       "description": "Specifies the number of columns in each grid row.
 When \`minColumnWidth\` is not set, only up to 4 columns are supported.",
       "name": "columns",
@@ -6773,6 +6519,7 @@ When \`minColumnWidth\` is not set, only up to 4 columns are supported.",
       "type": "number",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the default gutters between columns are removed.",
       "name": "disableGutters",
       "optional": true,
@@ -6797,6 +6544,7 @@ and the maximum number of columns as defined by the \`columns\` property.",
       "type": "number",
     },
     {
+      "defaultValue": "'default'",
       "description": "Specifies the content type. This determines the spacing of the grid.",
       "inlineType": {
         "name": "ColumnLayoutProps.Variant",
@@ -6855,18 +6603,21 @@ exports[`Documenter definition for container matches the snapshot: container 1`]
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the container content has padding. If \`true\`, removes the default padding from the content area.",
       "name": "disableContentPaddings",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the container header has padding. If \`true\`, removes the default padding from the header.",
       "name": "disableHeaderPaddings",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Enabling this property will make the container to fit into available height. If content is too short, the container
 will stretch, if too long, the container will shrink and show vertical scrollbar.
 
@@ -6933,6 +6684,7 @@ If no height is provided, the media slot will be displayed at its full height.",
       "type": "ContainerProps.Media",
     },
     {
+      "defaultValue": "'default'",
       "description": "Specify a container variant with one of the following:
 * \`default\` - Use this variant in standalone context.
 * \`stacked\` - Use this variant adjacent to other stacked containers (such as a container,
@@ -7009,27 +6761,6 @@ It can be:
 
  The header background spans across the full available width, independent of the specified \`maxContentWidth\`.
  If set, the component will not add the default background color to the header.",
-      "inlineType": {
-        "name": "string | ((mode: "dark" | "light") => string)",
-        "properties": [
-          {
-            "name": "length",
-            "optional": false,
-            "type": "number",
-          },
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "headerBackgroundStyle",
       "optional": true,
       "type": "string | ((mode: "dark" | "light") => string)",
@@ -7161,6 +6892,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "By default, the popover is constrained to fit inside its parent
 [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
 Enabling this property will allow the popover to be rendered in the root stack context using
@@ -7177,6 +6909,7 @@ Enable this setting if you need the popover to ignore its parent stacking contex
       "type": "string",
     },
     {
+      "defaultValue": "'button'",
       "description": "Determines the general styling of the copy button as follows:
 
 * \`button\` to display a standalone secondary button with an icon, and \`copyButtonText\` as text.
@@ -7474,6 +7207,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Indicates whether the control should be focused as
 soon as the page loads, which enables the user to
 start typing without having to manually focus the control. Don't
@@ -7519,6 +7253,7 @@ If provided, the date becomes focusable.",
       "type": "CalendarProps.DateDisabledReasonFunction",
     },
     {
+      "defaultValue": "false",
       "description": "Specifies if the control is disabled, which prevents the
 user from modifying the value and prevents the value from
 being included in a form submission. A disabled control can't
@@ -7542,6 +7277,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "boolean",
     },
     {
+      "defaultValue": "'day'",
       "description": "Specifies the granularity at which users will be able to select a date.
 Defaults to \`day\`.",
       "inlineType": {
@@ -7640,6 +7376,7 @@ as you would for other form elements.",
       "type": "CalendarProps.IsDateEnabledFunction",
     },
     {
+      "defaultValue": "''",
       "description": "Specifies the locale to use to render month names and determine the starting day of the week.
 If you don't provide this, the locale is determined by the page and browser locales.
 Supported values and formats are listed in the
@@ -7681,6 +7418,7 @@ a human-readable localised string representing the current value of the input.
       "type": "DatePickerProps.OpenCalendarAriaLabel",
     },
     {
+      "defaultValue": "''",
       "description": "Specifies the placeholder text rendered when the value is an empty string.",
       "name": "placeholder",
       "optional": true,
@@ -7694,6 +7432,7 @@ a human-readable localised string representing the current value of the input.
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Specifies if the control is read-only, which prevents the
 user from modifying the value but includes it in a form
 submission. A read-only control can receive focus.
@@ -7718,6 +7457,7 @@ By default the starting day of the week is defined by the locale, but you can us
       "type": "string",
     },
     {
+      "defaultValue": "''",
       "description": "The current input value, in YYYY-MM-DD format.",
       "name": "value",
       "optional": false,
@@ -7785,6 +7525,7 @@ The event \`detail\` contains the current value of the field.",
   "name": "DateRangePicker",
   "properties": [
     {
+      "defaultValue": "'iso'",
       "description": "Specifies the time format to use for displaying the absolute time range.
 
 It can take the following values:
@@ -7892,6 +7633,7 @@ If provided, the date becomes focusable.",
       "type": "DateRangePickerProps.DateDisabledReasonFunction",
     },
     {
+      "defaultValue": "false",
       "description": "Hides time inputs and changes the input format to date-only, e.g. 2021-04-06.
 
 Do not use \`dateOnly\` flag conditionally. The component does not trigger the value update
@@ -7905,6 +7647,7 @@ Default: \`false\`.",
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Specifies that the component is disabled, preventing the user from
 modifying the value. A disabled component cannot receive focus.",
       "name": "disabled",
@@ -7912,6 +7655,7 @@ modifying the value. A disabled component cannot receive focus.",
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "By default, the dropdown height is constrained to fit inside the height of its next scrollable container element.
 Enabling this property will allow the dropdown to extend beyond that container by using fixed positioning and
 [React Portals](https://reactjs.org/docs/portals.html).
@@ -7951,6 +7695,7 @@ Default: the user's current time offset as provided by the browser.",
       "type": "DateRangePickerProps.GetTimeOffsetFunction",
     },
     {
+      "defaultValue": "'day'",
       "description": "Specifies the granularity at which users will be able to select a date range.
 Defaults to \`day\`.",
       "inlineType": {
@@ -8180,6 +7925,7 @@ single form field.",
       "type": "boolean",
     },
     {
+      "defaultValue": "() => true",
       "description": "A function that defines whether a particular date should be enabled
 in the calendar or not. Note that disabling a date in the calendar
 still allows users to enter this date via keyboard. We therefore
@@ -8201,6 +7947,7 @@ server-side, in the same way as for other form elements.",
       "type": "DateRangePickerProps.IsDateEnabledFunction",
     },
     {
+      "defaultValue": "() => ({ valid: true })",
       "description": "A function that defines whether a particular range is valid or not.
 
 Ensure that your function checks for missing fields in the value.",
@@ -8220,6 +7967,7 @@ Ensure that your function checks for missing fields in the value.",
       "type": "DateRangePickerProps.ValidationFunction",
     },
     {
+      "defaultValue": "''",
       "description": "The locale to be used for rendering month names and defining the
 starting date of the week. If not provided, it will be determined
 from the page and browser locales. Supported values and formats
@@ -8235,6 +7983,7 @@ are as-per the [JavaScript Intl API specification](https://developer.mozilla.org
       "type": "string",
     },
     {
+      "defaultValue": "'default'",
       "description": "Determines the range selector mode as follows:
 
 * \`default\` for combined absolute/relative range selector.
@@ -8256,6 +8005,7 @@ By default, the range selector mode is \`default\`.",
       "type": "DateRangePickerProps.RangeSelectorMode",
     },
     {
+      "defaultValue": "false",
       "description": "Specifies that the component is read-only, preventing the user from
 modifying the value. A read-only component can receive focus.",
       "name": "readOnly",
@@ -8263,12 +8013,14 @@ modifying the value. A read-only component can receive focus.",
       "type": "boolean",
     },
     {
+      "defaultValue": "[]",
       "description": "A list of relative time ranges that are shown as suggestions.",
       "name": "relativeOptions",
       "optional": false,
       "type": "ReadonlyArray<DateRangePickerProps.RelativeOption>",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies whether the component should show a button that
 allows the user to clear the selected value.",
       "name": "showClearButton",
@@ -8284,6 +8036,7 @@ but you can override it using this property.",
       "type": "number",
     },
     {
+      "defaultValue": "'hh:mm:ss'",
       "description": "Specifies the format of the time input for absolute ranges.
 
 Use to restrict the granularity of time that the user can enter.
@@ -8317,17 +8070,6 @@ Default: the user's current time offset as provided by the browser.",
     {
       "description": "The current date range value. Can be either an absolute time range
 or a relative time range.",
-      "inlineType": {
-        "name": "DateRangePickerProps.Value",
-        "properties": [
-          {
-            "name": "type",
-            "optional": false,
-            "type": ""absolute"",
-          },
-        ],
-        "type": "object",
-      },
       "name": "value",
       "optional": false,
       "type": "DateRangePickerProps.Value | null",
@@ -8537,6 +8279,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'default'",
       "description": "The possible variants of an expandable section are as follows:
  * \`default\` - Use this variant in any context.
  * \`footer\` - Use this variant in container footers.
@@ -9419,6 +9162,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'full-page'",
       "deprecatedTag": "You can safely remove this property as there is no longer any visual difference between \`full-page\` and \`embedded\` variants.",
       "description": "Specify a form variant with one of the following:
 * \`full-page\` - Use this variant when the form contains the entire content of the page.
@@ -9543,6 +9287,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the primary control should expand to 12 columns.
 
 By default (or when this property is set to \`false\`), the primary control
@@ -9621,12 +9366,14 @@ exports[`Documenter definition for grid matches the snapshot: grid 1`] = `
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether horizontal and vertical gutters are hidden.",
       "name": "disableGutters",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "[]",
       "description": "An array of element definitions that specifies how the columns must be
 arranged. Each element definition can have the following properties:
 
@@ -9719,6 +9466,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'h2'",
       "description": "Specifies the variant of the header:
 * \`h1\` - Use this for page level headers.
 * \`h2\` - Use this for container level headers.
@@ -9844,6 +9592,7 @@ exports[`Documenter definition for hotspot matches the snapshot: hotspot 1`] = `
       "type": "string",
     },
     {
+      "defaultValue": "'top'",
       "description": "The direction that the annotation popover should open in.
 Change this property if in the default direction the annotation popover
 overlaps too much with other content on the page.",
@@ -9879,6 +9628,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'right'",
       "description": "On which side of the content the hotspot icon should be displayed.",
       "inlineType": {
         "name": ""left" | "right"",
@@ -10090,6 +9840,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "IconProps.Name",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Specifies the size of the icon.
 
 If you set size to \`inherit\`, an icon size will be assigned based on the icon's inherited line height.
@@ -10122,6 +9873,7 @@ If you set both \`url\` and \`svg\`, \`svg\` will take precedence.",
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Specifies the color variant of the icon. The \`normal\` variant picks up the current color of its context.",
       "inlineType": {
         "name": "IconProps.Variant",
@@ -10357,28 +10109,13 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies whether to enable a browser's autocomplete functionality for this input.
 In some cases it might be appropriate to disable autocomplete (for example, for security-sensitive fields).
 To use it correctly, set the \`name\` property.
 
 You can either provide a boolean value to set the property to "on" or "off", or specify a string value
 for the [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute.",
-      "inlineType": {
-        "name": "string | boolean",
-        "properties": [
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "autoComplete",
       "optional": true,
       "type": "string | boolean",
@@ -10516,32 +10253,12 @@ inadvertently sending data (such as user passwords) to third parties.",
       "description": "The step attribute is a number that specifies the granularity that the value
 must adhere to or the keyword "any". It is valid for the numeric input types,
 including the date, month, week, time, datetime-local, number and range types.",
-      "inlineType": {
-        "name": "InputProps.Step",
-        "properties": [
-          {
-            "name": "toLocaleString",
-            "optional": false,
-            "type": "{ (locales?: string | Array<string> | undefined, options?: Intl.NumberFormatOptions | undefined): string; (locales?: Intl.LocalesArgument, options?: Intl.NumberFormatOptions | undefined): string; }",
-          },
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "(radix?: number | undefined) => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => number",
-          },
-        ],
-        "type": "object",
-      },
       "name": "step",
       "optional": true,
       "type": "InputProps.Step",
     },
     {
+      "defaultValue": "'text'",
       "description": "Specifies the type of control to render.
 Inputs with a \`number\` type use the native element behavior, which might
 be slightly different across browsers.",
@@ -10615,6 +10332,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
+      "defaultValue": "1",
       "description": "Specifies the number of columns in each grid row.
 Valid values are any integer between 1 and 4. It defaults to 1.",
       "name": "columns",
@@ -10651,6 +10369,7 @@ Each group definition has the following properties:
       "type": "ReadonlyArray<KeyValuePairsProps.Item>",
     },
     {
+      "defaultValue": "150",
       "description": "Use to specify the desired minimum width for each column in pixels.
 
 The number of columns is determined by the value of this property, the available space,
@@ -10787,6 +10506,7 @@ and should return the following properties:
       "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": {
         "name": ""small" | "medium" | "large"",
@@ -10802,6 +10522,7 @@ and should return the following properties:
       "type": ""small" | "medium" | "large"",
     },
     {
+      "defaultValue": "true",
       "description": "When set to \`true\`, adds a visual emphasis on the zero baseline axis.
 See the usage guidelines for more details.",
       "name": "emphasizeBaselineAxis",
@@ -10822,6 +10543,7 @@ See the usage guidelines for more details.",
       "type": "boolean",
     },
     {
+      "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.
 When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
@@ -10946,6 +10668,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Array that represents the source of data for the displayed chart.
 Each element can represent a line series or a threshold, and can have the following properties:
 
@@ -10959,6 +10682,7 @@ Each element can represent a line series or a threshold, and can have the follow
       "type": "ReadonlyArray<LineSeries<T>>",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading data.
 * \`loading\`: data fetching is in progress.
 * \`finished\`: data has loaded successfully.
@@ -10996,6 +10720,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<T>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the x axis.",
       "inlineType": {
         "name": "ScaleType",
@@ -11045,6 +10770,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<number>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the y axis.",
       "inlineType": {
         "name": ""linear" | "log"",
@@ -11200,6 +10926,7 @@ If you want to implement client-side routing yourself, use this event and preven
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Determines the text color of the link and its icon.
 
 - \`normal\`: Use in most cases where a link is required.
@@ -11219,6 +10946,7 @@ This property is overridden if the variant is \`info\`.",
       "type": "LinkProps.Color",
     },
     {
+      "defaultValue": "false",
       "description": "Marks the link as external by adding an icon after the text. If \`href\`
 is provided, opens the link in a new tab when clicked.",
       "name": "external",
@@ -11233,6 +10961,7 @@ is provided, opens the link in a new tab when clicked.",
       "type": "string",
     },
     {
+      "defaultValue": "'body-m'",
       "description": "Determines the font size and line height.
 This property is overridden if the variant is \`info\`.",
       "inlineType": {
@@ -11340,6 +11069,7 @@ exports[`Documenter definition for live-region matches the snapshot: live-region
   "name": "LiveRegion",
   "properties": [
     {
+      "defaultValue": "false",
       "description": "Whether the announcements should be made using assertive aria-live.
 Assertive announcements interrupt the user's action, so they should only
 be used when absolutely necessary.",
@@ -11355,6 +11085,7 @@ be used when absolutely necessary.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether to visually hide the contents of the \`children\` slot.",
       "name": "hidden",
       "optional": true,
@@ -11370,6 +11101,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'div'",
       "description": "The tag name to use for the wrapper around the \`children\` slot.",
       "inlineType": {
         "name": "LiveRegionProps.TagName",
@@ -11518,6 +11250,7 @@ and should return the following properties:
       "type": "MixedLineBarChartProps.DetailPopoverSeriesContent<T>",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width the detail popover will be limited to.",
       "inlineType": {
         "name": ""small" | "medium" | "large"",
@@ -11533,6 +11266,7 @@ and should return the following properties:
       "type": ""small" | "medium" | "large"",
     },
     {
+      "defaultValue": "true",
       "description": "When set to \`true\`, adds a visual emphasis on the zero baseline axis.
 See the usage guidelines for more details.",
       "name": "emphasizeBaselineAxis",
@@ -11553,6 +11287,7 @@ See the usage guidelines for more details.",
       "type": "boolean",
     },
     {
+      "defaultValue": "500",
       "description": "An optional pixel value number that fixes the height of the chart area.
 If not set explicitly, the component will use a default height that is defined internally.
 When used with \`fitHeight\`, this property defines the minimum height of the chart area.",
@@ -11585,6 +11320,7 @@ A value of \`null\` means no series is highlighted.
       "type": "Series | null",
     },
     {
+      "defaultValue": "false",
       "description": "When set to \`true\`, the x and y axes are flipped, which causes any bars to be rendered horizontally instead of vertically.
 This can only be used when the chart consists exclusively of bar series.",
       "name": "horizontalBars",
@@ -11684,6 +11420,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Array that represents the source of data for the displayed chart.
 Each element can represent a line series, bar series, or a threshold, and can have the following properties:
 
@@ -11698,12 +11435,14 @@ Each element can represent a line series, bar series, or a threshold, and can ha
       "type": "ReadonlyArray<MixedLineBarChartProps.ChartSeries<T>>",
     },
     {
+      "defaultValue": "false",
       "description": "When set to \`true\`, bars in the same data point are stacked instead of grouped next to each other.",
       "name": "stackedBars",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading data.
 * \`loading\`: data fetching is in progress.
 * \`finished\`: data has loaded successfully.
@@ -11741,6 +11480,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<T>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the x axis.
 Use \`categorical\` for charts with bars.",
       "inlineType": {
@@ -11791,6 +11531,7 @@ When controlling this directly, make sure to update the value based on filtering
       "type": "ReadonlyArray<number>",
     },
     {
+      "defaultValue": "'linear'",
       "description": "Determines the type of scale for values on the y axis.",
       "inlineType": {
         "name": ""linear" | "log"",
@@ -11978,6 +11719,7 @@ of the most recent getModalRoot call as an argument.",
       "type": "((rootElement: HTMLElement) => void)",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Sets the width of the modal. \`max\` uses variable width up to the
 largest size allowed by the design guidelines. Other sizes
 (\`small\`/\`medium\`/\`large\`) have fixed widths.",
@@ -12259,6 +12001,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "((matchesCount: number, totalCount: number) => string)",
     },
     {
+      "defaultValue": "'none'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 
 * \`auto\` - The component will automatically filter options based on user input.
@@ -12294,6 +12037,7 @@ Note: Manual filtering doesn't disable match highlighting.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Hides the tokens displayed underneath the component.
 Only use this if the selected options are displayed elsewhere on the page.",
       "name": "hideTokens",
@@ -12359,6 +12103,7 @@ single form field.",
       "type": "boolean",
     },
     {
+      "defaultValue": "true",
       "description": "Determines whether the dropdown list stays open after the user selects an item.",
       "name": "keepOpen",
       "optional": true,
@@ -12378,6 +12123,7 @@ single form field.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
 The options can be grouped using \`OptionGroup\` objects.
 
@@ -12473,6 +12219,7 @@ This is required to provide a good screen reader experience. For more informatio
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies the currently selected options.
 Provide an empty array to clear the selection.",
       "name": "selectedOptions",
@@ -12480,6 +12227,7 @@ Provide an empty array to clear the selection.",
       "type": "ReadonlyArray<OptionDefinition>",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading more options.
 * \`pending\` - Indicates that no request in progress, but more options may be loaded.
 * \`loading\` - Indicates that data fetching is in progress.
@@ -12860,6 +12608,7 @@ Each pair has the following properties:
       "type": "PieChartProps.DetailPopoverFooter<T>",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width of the popover.",
       "inlineType": {
         "name": "PopoverProps.Size",
@@ -12888,12 +12637,14 @@ Each pair has the following properties:
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Hides the label descriptions next to the chart segments when set to \`true\`.",
       "name": "hideDescriptions",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Hides the default filtering dropdown when set to \`true\`.
 You can still display additional filters with the \`additionalFilters\` slot.",
       "name": "hideFilter",
@@ -12901,6 +12652,7 @@ You can still display additional filters with the \`additionalFilters\` slot.",
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Hides legend beneath the chart when set to \`true\`.
 We highly recommend that you leave this unspecified or set to \`false\`.",
       "name": "hideLegend",
@@ -12908,6 +12660,7 @@ We highly recommend that you leave this unspecified or set to \`false\`.",
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Hides label titles next to the chart segments when set to \`true\`.
 We highly recommend that you leave this unspecified or set to \`false\`.",
       "name": "hideTitles",
@@ -12947,6 +12700,7 @@ A value of \`null\` means no segment is being highlighted.
       "type": "T | null",
     },
     {
+      "defaultValue": "{}",
       "description": "An object that contains all of the localized strings required by the component.",
       "i18nTag": true,
       "inlineType": {
@@ -13070,6 +12824,7 @@ The function is called with the data object of each segment and is expected to r
       "type": "PieChartProps.SegmentDescriptionFunction<T>",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Specifies the size of the pie or donut chart.
 When used with \`fitHeight\`, this property defines the minimum size of the chart area.",
       "inlineType": {
@@ -13086,6 +12841,7 @@ When used with \`fitHeight\`, this property defines the minimum size of the char
       "type": ""small" | "medium" | "large"",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading data.
 * \`loading\` - Indicates that data fetching is in progress.
 * \`finished\` - Indicates that data has loaded successfully.
@@ -13104,6 +12860,7 @@ When used with \`fitHeight\`, this property defines the minimum size of the char
       "type": ""error" | "finished" | "loading"",
     },
     {
+      "defaultValue": "'pie'",
       "description": "Visual variant of the pie chart. Currently supports the default \`pie\` variant and the \`donut\` variant.
 The donut variant provides a slot in the center of the chart that can contain additional information.
 For more information, see \`innerContent\`.",
@@ -13179,12 +12936,14 @@ exports[`Documenter definition for popover matches the snapshot: popover 1`] = `
       "type": "string",
     },
     {
+      "defaultValue": "true",
       "description": "Determines whether the dismiss button is shown in the popover body.",
       "name": "dismissButton",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Expands the popover body to its maximum width regardless of content.
 For example, use it when you need to place a column layout in the popover content.",
       "name": "fixedWidth",
@@ -13207,6 +12966,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'right'",
       "description": "Determines where the popover is displayed when opened, relative to the trigger.
 If the popover doesn't have enough space to open in this direction, it
 automatically chooses a better direction based on available space.",
@@ -13225,6 +12985,7 @@ automatically chooses a better direction based on available space.",
       "type": "PopoverProps.Position",
     },
     {
+      "defaultValue": "false",
       "description": "By default, the popover is constrained to fit inside its parent
 [stacking context](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context).
 Enabling this property will allow the popover to be rendered in the root stack context using
@@ -13237,6 +12998,7 @@ Note: Using popover rendered with portal within a Modal is not supported.",
       "type": "boolean",
     },
     {
+      "defaultValue": "'medium'",
       "description": "Determines the maximum width for the popover.",
       "inlineType": {
         "name": "PopoverProps.Size",
@@ -13259,6 +13021,7 @@ that don't have visible text, and to distinguish between multiple triggers with 
       "type": "string",
     },
     {
+      "defaultValue": "'text'",
       "description": "Specifies the type of content inside the trigger region. The following types are available:
 - \`text\` - Use for triggers containing inline components, like status indicator.
 - \`text-inline\` - Use for triggers containing plain text only.
@@ -13277,6 +13040,7 @@ that don't have visible text, and to distinguish between multiple triggers with 
       "type": "PopoverProps.TriggerType",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies if the text trigger content should wrap. If you set it to false, it prevents the text from
 wrapping and truncates it with an ellipsis.",
       "name": "wrapTriggerText",
@@ -13361,6 +13125,7 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'in-progress'",
       "description": "Specifies the status of the progress bar. You can set it to one of the following:
 
 - \`"in-progress"\` - Displays a progress bar.
@@ -13380,12 +13145,14 @@ Add a button using the \`action\` property of the flashbar item instead.",
       "type": "ProgressBarProps.Status",
     },
     {
+      "defaultValue": "0",
       "description": "Indicates the current progress as a percentage. The value must be between 0 and 100. Decimals are rounded.",
       "name": "value",
       "optional": true,
       "type": "number",
     },
     {
+      "defaultValue": "'standalone'",
       "description": "Enables the correct styling of the progress bar in different contexts. You can set it to one of the following:
 
 - \`"flash"\` - Use this variatn when using the progress bar within a flash component.
@@ -13829,22 +13596,6 @@ To use it correctly, set the \`name\` property.
 
 You can either provide a boolean value to set the property to "on" or "off", or specify a string value
 for the [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute.",
-      "inlineType": {
-        "name": "string | boolean",
-        "properties": [
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "autoComplete",
       "optional": true,
       "type": "string | boolean",
@@ -13933,6 +13684,7 @@ single form field.",
       "type": "boolean",
     },
     {
+      "defaultValue": "3",
       "description": "Specifies the maximum number of lines of text the textarea will expand to.
 Defaults to 3. Use -1 for infinite rows.",
       "name": "maxRows",
@@ -13940,6 +13692,7 @@ Defaults to 3. Use -1 for infinite rows.",
       "type": "number",
     },
     {
+      "defaultValue": "1",
       "description": "Specifies the minimum number of lines of text to set the height to.",
       "name": "minRows",
       "optional": true,
@@ -14184,6 +13937,7 @@ When the \`countText\` or \`query\` changes, it will be announced to assistive t
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "An array of objects that contain localized, human-readable strings for the labels of custom groups within the filtering dropdown. Use group property to associate the strings with your custom group of options. Define the following values for each group:
 
 * properties [string]: The group label in the filtering dropdown that contains the list of properties from this group. For example: Tags.
@@ -14202,6 +13956,7 @@ in order to prevent the user from changing the filtering query.",
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Set \`disableFreeTextFiltering\` only if you can’t filter the dataset using a filter that is applied to every column,
 instead of a specific property. This would stop the user from creating such tokens.",
       "name": "disableFreeTextFiltering",
@@ -14209,6 +13964,7 @@ instead of a specific property. This would stop the user from creating such toke
       "type": "boolean",
     },
     {
+      "defaultValue": "false",
       "description": "Activates token grouping mechanism to support token nesting (up to one level).
 When \`true\`, the \`query.tokens\` property is ignored and \`query.tokenGroups\` is used instead.",
       "name": "enableTokenGroups",
@@ -14255,6 +14011,7 @@ See the [Autosuggest API](/components/autosuggest/?tabId=api) page for more deta
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "An array of possible values of the individual \`filteringProperties\`. Each element has the following properties:
 
 * \`propertyKey\` [string]: The key of the corresponding filtering property in the \`filteringProperties\` array.
@@ -14350,6 +14107,7 @@ Use the \`onLoadItems\` event to perform a recovery action (for example, retryin
       "type": "PropertyFilterFreeTextFiltering",
     },
     {
+      "defaultValue": "false",
       "description": "If hideOperations it set, the indicator of the operation (that is, \`and\` or \`or\`) and the selection of operations
 (applied to the property and value token) are hidden from the user. Only use when you have a custom
 filtering logic which combines tokens in different way than the default one. When used, ensure that
@@ -14925,6 +14683,7 @@ It has higher priority than \`selectableItemsTypes\`. Example: if \`selectableIt
       "type": "((item: S3ResourceSelectorProps.Bucket) => boolean)",
     },
     {
+      "defaultValue": "['Name', 'CreationDate']",
       "description": "Optionally overrides the set of visible columns in the Buckets view. Available columns: 'Name', 'CreationDate',
 and 'Region'.",
       "name": "bucketsVisibleColumns",
@@ -15378,6 +15137,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "((item: S3ResourceSelectorProps.Object) => boolean)",
     },
     {
+      "defaultValue": "['Key', 'LastModified', 'Size']",
       "description": "Optionally overrides the set of visible columns in the Objects view. Available columns: 'Key', 'LastModified',
 and 'Size'.",
       "name": "objectsVisibleColumns",
@@ -15428,6 +15188,7 @@ of the most recent getModalRoot call as an argument.",
       "type": "S3ResourceSelectorProps.Resource",
     },
     {
+      "defaultValue": "[]",
       "description": "An array of the item types that are selectable in the table view. The array may contain the following items:
 'buckets', 'objects', or 'versions'. Example: ['buckets', 'objects']. By default, no items are selectable.
 This property determines whether the component operates in Read mode or Write mode:
@@ -15458,6 +15219,7 @@ customizing \`objectsIsItemDisabled\` function).",
       "type": "((item: S3ResourceSelectorProps.Version) => boolean)",
     },
     {
+      "defaultValue": "['ID', 'LastModified', 'Size']",
       "description": "Optionally overrides the set of visible columns in the Versions view. Available columns: 'ID', 'CreationDate',
 and 'Size'.",
       "name": "versionsVisibleColumns",
@@ -15775,6 +15537,7 @@ because fixed positioning results in a slight, visible lag when scrolling comple
       "type": "((matchesCount: number, totalCount: number) => string)",
     },
     {
+      "defaultValue": "'none'",
       "description": "Determines how filtering is applied to the list of \`options\`:
 
 * \`auto\` - The component will automatically filter options based on user input.
@@ -15849,6 +15612,7 @@ single form field.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies an array of options that are displayed to the user as a dropdown list.
 The options can be grouped using \`OptionGroup\` objects.
 
@@ -16027,6 +15791,7 @@ If you want to clear the selection, use \`null\`.",
       "type": "OptionDefinition | null",
     },
     {
+      "defaultValue": "'finished'",
       "description": "Specifies the current status of loading more options.
 * \`pending\` - Indicates that no request in progress, but more options may be loaded.
 * \`loading\` - Indicates that data fetching is in progress.
@@ -16047,6 +15812,7 @@ If you want to clear the selection, use \`null\`.",
       "type": "DropdownStatusProps.StatusType",
     },
     {
+      "defaultValue": "'label'",
       "description": "Defines the variant of the trigger. You can use a simple label or the entire option (\`label | option\`)",
       "inlineType": {
         "name": "SelectProps.TriggerVariant",
@@ -16258,6 +16024,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies the items to be displayed in the navigation.
 Allowed objects are: \`Link\`, \`Divider\`, \`Section\`, \`LinkGroup\` and \`ExpandableLinkGroup\`.
 
@@ -16578,6 +16345,7 @@ exports[`Documenter definition for space-between matches the snapshot: space-bet
       "type": "string",
     },
     {
+      "defaultValue": "'vertical'",
       "description": "Defines the direction in which the content is laid out.",
       "inlineType": {
         "name": "SpaceBetweenProps.Direction",
@@ -16655,6 +16423,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Specifies the size of the spinner.",
       "inlineType": {
         "name": "SpinnerProps.Size",
@@ -16670,6 +16439,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "SpinnerProps.Size",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Specifies the color variant of the spinner. The \`normal\` variant picks up the current color of its context.",
       "inlineType": {
         "name": "SpinnerProps.Variant",
@@ -16704,6 +16474,7 @@ exports[`Documenter definition for split-panel matches the snapshot: split-panel
       "type": "string",
     },
     {
+      "defaultValue": "'collapse'",
       "description": "Determines whether the split panel collapses or hides completely when closed.",
       "inlineType": {
         "name": ""hide" | "collapse"",
@@ -16724,12 +16495,14 @@ exports[`Documenter definition for split-panel matches the snapshot: split-panel
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "When set to \`true\`, the preferences button is not displayed.",
       "name": "hidePreferencesButton",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "{}",
       "description": "An object containing all the necessary localized strings required by the component.
 - \`closeButtonAriaLabel\` - The text of the panel close button aria label.
 - \`openButtonAriaLabel\` - The text of the panel open button aria label.
@@ -16870,6 +16643,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'success'",
       "description": "Specifies the status type.",
       "inlineType": {
         "name": "StatusIndicatorProps.Type",
@@ -16890,6 +16664,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "StatusIndicatorProps.Type",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies if the text content should wrap. If you set it to false, it prevents the text from wrapping
 and truncates it with an ellipsis.",
       "name": "wrapText",
@@ -17239,6 +17014,7 @@ add a meaningful description to the whole selection.
       "type": "TableProps.AriaLabels<T>",
     },
     {
+      "defaultValue": "'middle'",
       "description": "Determines the alignment of the content inside table cells.
 This property affects all cells, including the ones in the selection column.
 To target individual cells use \`columnDefinitions.verticalAlign\`, that takes precedence over \`cellVerticalAlign\`.",
@@ -17323,6 +17099,7 @@ Use it in conjunction with the content display preference of the [collection pre
       "type": "ReadonlyArray<TableProps.ColumnDisplayProperties>",
     },
     {
+      "defaultValue": "'comfortable'",
       "description": "Toggles the content density of the table. Defaults to \`'comfortable'\`.",
       "inlineType": {
         "name": ""compact" | "comfortable"",
@@ -17382,6 +17159,7 @@ By default, the keyboard navigation is active for tables with expandable rows.",
       "type": "TableProps.ExpandableRows<T>",
     },
     {
+      "defaultValue": "1",
       "description": "Use this property to inform screen readers which range of items is currently displayed in the table.
 It specifies the index (1-based) of the first item in the table.",
       "name": "firstIndex",
@@ -17437,6 +17215,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "TableProps.IsItemDisabled<T>",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies the data that's displayed in the table rows. Each item contains the data for one row. The display of a row is handled
 by the \`cell\` property of each column definition in the \`columnDefinitions\` property.",
       "name": "items",
@@ -17557,6 +17336,7 @@ the table items array is empty.",
       "type": "boolean",
     },
     {
+      "defaultValue": "[]",
       "description": "List of selected items.",
       "name": "selectedItems",
       "optional": true,
@@ -17703,32 +17483,12 @@ It is also used in the following situations:
 - to connect \`items\` and \`selectedItems\` values when they reference different objects.
 - to connect \`items\` and \`expandableRows.expandedItems\` values when they reference different objects.
 - to attach successful edit state to the correct item if its row index changes after editing.",
-      "inlineType": {
-        "name": "TableProps.TrackBy<T>",
-        "properties": [
-          {
-            "name": "length",
-            "optional": false,
-            "type": "number",
-          },
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "trackBy",
       "optional": true,
       "type": "TableProps.TrackBy<T>",
     },
     {
+      "defaultValue": "'container'",
       "description": "Specify a table variant with one of the following:
 * \`container\` - Use this variant to have the table displayed within a container.
 * \`borderless\` - Use this variant when the table should have no outer borders or shadow
@@ -17871,6 +17631,7 @@ Don't use \`ariaLabel\` and \`ariaLabelledby\` at the same time.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Determines whether the tab content has padding. If \`true\`, removes the default padding from the tab content area.",
       "name": "disableContentPaddings",
       "optional": true,
@@ -17921,6 +17682,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "'automatic'",
       "description": "Determines how the active tab is switched when navigating using
 the keyboard. The options are:
 - 'automatic' (default): the active tab is switched using the arrow keys.
@@ -17969,6 +17731,7 @@ need to introduce friction to the switching of tabs.",
       "type": "ReadonlyArray<TabsProps.Tab>",
     },
     {
+      "defaultValue": "'default'",
       "description": "The possible visual variants of tabs are the following:
 * \`default\` - Use in any context.
 * \`container\` - Use this variant to have the tabs displayed within a container header.
@@ -18272,18 +18035,21 @@ resolves to a list of strings of all the keys (for example, \`['key1', 'key2']\`
       "type": "((key: string) => Promise<ReadonlyArray<string>>)",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the component in a loading state.",
       "name": "loading",
       "optional": true,
       "type": "boolean",
     },
     {
+      "defaultValue": "50",
       "description": "Specifies the maximum number of tags that a customer can add.",
       "name": "tagLimit",
       "optional": true,
       "type": "number",
     },
     {
+      "defaultValue": "[]",
       "description": "Specifies an array of tags that are displayed to the user. Each tag item has the following properties:
 - \`key\` (string) - The key of the tag that's displayed in the corresponding key field.
 - \`value\` (string) - The value of the tag that's displayed in the corresponding value field.
@@ -18710,28 +18476,13 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies whether to enable a browser's autocomplete functionality for this input.
 In some cases it might be appropriate to disable autocomplete (for example, for security-sensitive fields).
 To use it correctly, set the \`name\` property.
 
 You can either provide a boolean value to set the property to "on" or "off", or specify a string value
 for the [autocomplete](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) attribute.",
-      "inlineType": {
-        "name": "string | boolean",
-        "properties": [
-          {
-            "name": "toString",
-            "optional": false,
-            "type": "() => string",
-          },
-          {
-            "name": "valueOf",
-            "optional": false,
-            "type": "() => string",
-          },
-        ],
-        "type": "object",
-      },
       "name": "autoComplete",
       "optional": true,
       "type": "string | boolean",
@@ -19111,6 +18862,7 @@ To use it correctly, define an ID for the element you want to use as label and s
       "type": "boolean",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies whether to enable a browser's autocomplete functionality for this input.
 In some cases it might be appropriate to disable autocomplete (for
 example, for security-sensitive fields). To use it correctly, set the \`name\` property.",
@@ -19165,6 +18917,7 @@ receive focus.",
       "type": "boolean",
     },
     {
+      "defaultValue": "'hh:mm:ss'",
       "description": "Specifies the format of the time input.
 
 Use it to restrict the granularity of time that the user can enter.",
@@ -19223,6 +18976,7 @@ Don't use read-only inputs outside a form.",
       "type": "boolean",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies whether the component should use 12-hour or 24-hour format.
 When using 12-hour format, there is no option for picking AM or PM.",
       "name": "use24Hour",
@@ -19470,6 +19224,7 @@ The text will also be added to the \`title\` attribute of the button.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the button as disabled and prevents clicks.",
       "name": "disabled",
       "optional": true,
@@ -19667,6 +19422,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the button as being in a loading state. It takes precedence over the \`disabled\` if both are set to \`true\`.
 It prevents users from clicking the button, but it can still be focused.",
       "name": "loading",
@@ -19680,6 +19436,7 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Sets the toggle button to pressed state.",
       "name": "pressed",
       "optional": false,
@@ -19833,6 +19590,7 @@ It prevents users from clicking the button, but it can still be focused.",
       "type": "string",
     },
     {
+      "defaultValue": "'normal'",
       "description": "Determines the general styling of the toggle button as follows:
 * \`normal\` for secondary buttons.
 * \`icon\` to display an icon only (no text).
@@ -19851,6 +19609,7 @@ Defaults to \`normal\` if not specified.",
       "type": "ToggleButtonProps.Variant",
     },
     {
+      "defaultValue": "true",
       "description": "Specifies if the \`text\` content wraps. If you set it to \`false\`, it prevents the text from wrapping.",
       "name": "wrapText",
       "optional": true,
@@ -19941,6 +19700,7 @@ Make sure that you add a listener to this event to update your application state
   "name": "TokenGroup",
   "properties": [
     {
+      "defaultValue": "'horizontal'",
       "description": "Specifies the direction in which tokens are aligned (\`horizontal | vertical\`).",
       "inlineType": {
         "name": "TokenGroupProps.Alignment",
@@ -20001,6 +19761,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "[]",
       "description": "
 An array of objects representing token items. Each token has the following properties:
 
@@ -20154,6 +19915,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "TopNavigationProps.Identity",
     },
     {
+      "defaultValue": "[]",
       "description": "A list of utility navigation elements.
 The supported utility types are: \`button\` and \`menu-dropdown\`.
 
@@ -20478,6 +20240,7 @@ If you set it to a value that exceeds the maximum value (that is, the number of 
       "type": "number",
     },
     {
+      "defaultValue": "false",
       "description": "When set to \`false\`, the *skip-to* button is never shown.
 When set to \`true\`, the *skip-to* button may appear to offer faster navigation for the user.
 
@@ -20629,6 +20392,7 @@ use the \`id\` attribute, consider setting it on a parent element instead.",
       "type": "string",
     },
     {
+      "defaultValue": "false",
       "description": "Renders the *next* or *submit* button in a loading state.
 
 Use this if you need to wait for a response from the server before the user can proceed to the next step, such as during server-side validation or retrieving the next step's information.",
