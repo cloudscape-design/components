@@ -109,7 +109,7 @@ export default function InternalExpandableSection({
         <ExpandableSectionHeader
           id={triggerControlId}
           descriptionId={descriptionId}
-          className={clsx(styles.header, styles[`header-${baseVariant}`])}
+          className={clsx(styles.header, styles[`header-${baseVariant}`], 'awsui-screenreader-text')}
           variant={baseVariant}
           expanded={!!expanded}
           header={header}

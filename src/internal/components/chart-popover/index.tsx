@@ -141,7 +141,7 @@ function ChartPopover(
           <PopoverBody
             dismissButton={dismissButton}
             dismissAriaLabel={dismissAriaLabel}
-            header={<div className={testClasses.header}>{title}</div>}
+            header={<span className={testClasses.header}>{title}</span>}
             onDismiss={onDismiss}
             overflowVisible="content"
             className={styles['popover-body']}
