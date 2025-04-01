@@ -351,8 +351,8 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         'funnelStepStart',
         'funnelSubStepStart',
         'funnelSubStepError',
-        'funnelSubStepError', // FIXME: Missing funnelStepError?
-        'funnelError',
+        'funnelSubStepError',
+        'funnelStepError',
         'funnelSubStepComplete',
       ]);
       const funnelErrorEvent = funnelLog[5];
