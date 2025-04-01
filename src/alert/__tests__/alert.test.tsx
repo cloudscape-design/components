@@ -18,6 +18,18 @@ jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   useVisualRefresh: jest.fn().mockReturnValue(false),
 }));
 
+let mockElementOffsetLeft = 200;
+
+Object.defineProperties(window.HTMLElement.prototype, {
+  offsetLeft: {
+    configurable: true,
+    enumerable: true,
+    get() {
+      return mockElementOffsetLeft;
+    },
+  },
+});
+
 function renderAlert(props: AlertProps = {}) {
   const { container } = render(<Alert {...props} />);
   return { wrapper: createWrapper(container).findAlert()!, container };
@@ -33,6 +45,7 @@ const i18nStrings: AlertProps.I18nStrings = {
 
 beforeEach(() => {
   jest.mocked(useVisualRefresh).mockReset();
+  mockElementOffsetLeft = 200;
 });
 
 describe('Alert Component', () => {
@@ -137,6 +150,24 @@ describe('Alert Component', () => {
   it('renders `action` content', () => {
     const { wrapper } = renderAlert({ children: 'Message body', action: <Button>Click</Button> });
     expect(wrapper.findActionSlot()!.findButton()!.getElement()).toHaveTextContent('Click');
+  });
+
+  it('adds wrapped class to actions if they are displayed on a new line', () => {
+    mockElementOffsetLeft = 10;
+    const { container } = renderAlert({
+      children: 'Message body',
+      action: <Button>Click</Button>,
+    });
+    expect(container.querySelector(`.${styles['action-wrapped']}`)).toBeTruthy();
+  });
+
+  it('does not add wrapped class to actions if they are displayed on same line', () => {
+    mockElementOffsetLeft = 200;
+    const { container } = renderAlert({
+      children: 'Message body',
+      action: <Button>Click</Button>,
+    });
+    expect(container.querySelector(`.${styles['action-wrapped']}`)).toBeFalsy();
   });
 
   it('when both `buttonText` and `action` provided, prefers the latter', () => {
