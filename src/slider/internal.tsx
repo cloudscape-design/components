@@ -127,120 +127,122 @@ export default function InternalSlider({
 
   return (
     <div {...baseProps} ref={__internalRootRef} className={clsx(baseProps.className, styles.root)}>
-      {showTooltip && (
-        <Tooltip
-          value={valueFormatter ? valueFormatter(sliderValue) : sliderValue}
-          trackRef={handleRef}
-          onDismiss={() => setShowTooltip(false)}
-        />
-      )}
       <div
-        ref={handleRef}
-        className={clsx(styles['tooltip-thumb'], {
-          [styles.readonly]: readOnly,
-        })}
-        style={{
-          [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${thumbSize}px)`,
-        }}
-      />
-      <div className={styles.slider}>
-        <div
-          className={clsx(styles['slider-track'], {
-            [styles.disabled]: disabled,
-            [styles.readonly]: readOnly,
-          })}
-        />
-
-        {!hideFillLine && (
-          <div
-            className={clsx(styles['slider-range'], {
-              [styles.error]: invalid,
-              [styles.warning]: showWarning,
-              [styles.active]: isActive,
-              [styles['error-active']]: invalid && isActive,
-              [styles['warning-active']]: showWarning && isActive,
-              [styles.disabled]: disabled,
-              [styles.readonly]: readOnly,
-            })}
-            style={{ [customCssProps.sliderRangeInlineSize]: `${percent}%` }}
-          />
-        )}
-      </div>
-      {!!step && tickMarks && (
-        <SliderTickMarks
-          hideFillLine={hideFillLine}
-          disabled={disabled}
-          readOnly={readOnly}
-          invalid={invalid}
-          warning={warning}
-          isActive={isActive}
-          step={step}
-          min={min}
-          max={max}
-          value={sliderValue}
-        />
-      )}
-
-      <input
-        // we need to add this because input[type=range] isn't natively focusable in Safari.
-        tabIndex={0}
-        aria-label={ariaLabel}
-        // aria-labelledby has precedence over aria-label in accessible name calculation.
-        // When aria-label is provided for Input, it should override aria-labelledBy from form-field context.
-        // If both aria-label and aria-labelledby come from Input props, aria-labelledby will be used in accessible name
-        aria-labelledby={ariaLabel && !rest.ariaLabelledby ? undefined : ariaLabelledby}
-        // Slider labels, if present and something other than numbers, should be associated to the input with aria-describedby
-        aria-describedby={
-          valueFormatter ? (ariaDescribedby ? `${labelsId} ${ariaDescribedby}` : labelsId) : ariaDescribedby
-        }
-        aria-valuetext={getAriaValueText()}
-        aria-invalid={invalid ? 'true' : undefined}
-        aria-disabled={readOnly && !disabled ? 'true' : undefined}
-        id={controlId}
-        type="range"
-        min={min}
-        max={max}
-        disabled={disabled}
-        onFocus={() => {
-          setShowTooltip(true);
-          setIsActive(true);
-        }}
-        onBlur={() => {
-          setShowTooltip(false);
-          setIsActive(false);
-        }}
         onMouseEnter={() => {
           setShowTooltip(true);
         }}
         onMouseLeave={() => {
           setShowTooltip(false);
         }}
-        onTouchStart={() => {
-          setShowTooltip(true);
-          setIsActive(true);
-        }}
-        onTouchEnd={() => {
-          setShowTooltip(false);
-          setIsActive(false);
-        }}
-        step={step}
-        value={sliderValue}
-        onChange={event => {
-          if (readOnly) {
-            return;
-          }
+      >
+        {showTooltip && (
+          <Tooltip
+            value={valueFormatter ? valueFormatter(sliderValue) : sliderValue}
+            trackRef={handleRef}
+            onDismiss={() => setShowTooltip(false)}
+          />
+        )}
+        <div
+          ref={handleRef}
+          className={clsx(styles['tooltip-thumb'], {
+            [styles.readonly]: readOnly,
+          })}
+          style={{
+            [customCssProps.sliderTooltipPosition]: `calc(${percent}% - ${thumbSize}px)`,
+          }}
+        />
+        <div className={styles.slider}>
+          <div
+            className={clsx(styles['slider-track'], {
+              [styles.disabled]: disabled,
+              [styles.readonly]: readOnly,
+            })}
+          />
 
-          onChange && fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
-        }}
-        className={clsx(styles.thumb, {
-          [styles.error]: invalid,
-          [styles.warning]: showWarning,
-          [styles.disabled]: disabled,
-          [styles.readonly]: readOnly,
-          [styles.min]: sliderValue <= min || max < min,
-          [styles.max]: sliderValue >= max && min < max,
-        })}
-      />
+          {!hideFillLine && (
+            <div
+              className={clsx(styles['slider-range'], {
+                [styles.error]: invalid,
+                [styles.warning]: showWarning,
+                [styles.active]: isActive,
+                [styles['error-active']]: invalid && isActive,
+                [styles['warning-active']]: showWarning && isActive,
+                [styles.disabled]: disabled,
+                [styles.readonly]: readOnly,
+              })}
+              style={{ [customCssProps.sliderRangeInlineSize]: `${percent}%` }}
+            />
+          )}
+        </div>
+        {!!step && tickMarks && (
+          <SliderTickMarks
+            hideFillLine={hideFillLine}
+            disabled={disabled}
+            readOnly={readOnly}
+            invalid={invalid}
+            warning={warning}
+            isActive={isActive}
+            step={step}
+            min={min}
+            max={max}
+            value={sliderValue}
+          />
+        )}
+
+        <input
+          // we need to add this because input[type=range] isn't natively focusable in Safari.
+          tabIndex={0}
+          aria-label={ariaLabel}
+          // aria-labelledby has precedence over aria-label in accessible name calculation.
+          // When aria-label is provided for Input, it should override aria-labelledBy from form-field context.
+          // If both aria-label and aria-labelledby come from Input props, aria-labelledby will be used in accessible name
+          aria-labelledby={ariaLabel && !rest.ariaLabelledby ? undefined : ariaLabelledby}
+          // Slider labels, if present and something other than numbers, should be associated to the input with aria-describedby
+          aria-describedby={
+            valueFormatter ? (ariaDescribedby ? `${labelsId} ${ariaDescribedby}` : labelsId) : ariaDescribedby
+          }
+          aria-valuetext={getAriaValueText()}
+          aria-invalid={invalid ? 'true' : undefined}
+          aria-disabled={readOnly && !disabled ? 'true' : undefined}
+          id={controlId}
+          type="range"
+          min={min}
+          max={max}
+          disabled={disabled}
+          onFocus={() => {
+            setShowTooltip(true);
+            setIsActive(true);
+          }}
+          onBlur={() => {
+            setShowTooltip(false);
+            setIsActive(false);
+          }}
+          onTouchStart={() => {
+            setShowTooltip(true);
+            setIsActive(true);
+          }}
+          onTouchEnd={() => {
+            setShowTooltip(false);
+            setIsActive(false);
+          }}
+          step={step}
+          value={sliderValue}
+          onChange={event => {
+            if (readOnly) {
+              return;
+            }
+            fireNonCancelableEvent(onChange, { value: Number(event.target.value) });
+          }}
+          className={clsx(styles.thumb, {
+            [styles.error]: invalid,
+            [styles.warning]: showWarning,
+            [styles.disabled]: disabled,
+            [styles.readonly]: readOnly,
+            [styles.min]: sliderValue <= min || max < min,
+            [styles.max]: sliderValue >= max && min < max,
+          })}
+        />
+      </div>
 
       <SliderLabels
         min={min}
