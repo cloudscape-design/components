@@ -26,7 +26,7 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   copyButtonAriaLabel?: string;
 
   /**
-   * The text content to be copied. It is displayed next to the copy button when `variant="inline"`, and is not shown otherwise.
+   * The text content to be copied. It is displayed next to the copy button when `variant="inline"` unless when `content` is specified, and is not shown otherwise.
    */
   textToCopy: string;
 
@@ -48,6 +48,11 @@ export interface CopyToClipboardProps extends BaseComponentProps {
    * Enable this setting if you need the popover to ignore its parent stacking context.
    */
   popoverRenderWithPortal?: boolean;
+
+  /**
+   * The content to display for next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   */
+  content?: string;
 }
 
 export namespace CopyToClipboardProps {
