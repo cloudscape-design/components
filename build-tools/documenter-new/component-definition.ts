@@ -42,6 +42,7 @@ export function buildComponentDefinition(
   name: string,
   props: Array<ExpandedProp>,
   functions: Array<ExpandedProp>,
+  defaultValues: Record<string, string>,
   checker: ts.TypeChecker
 ): ComponentDefinition {
   const regions = props.filter(prop => prop.type === 'React.ReactNode');
@@ -87,7 +88,7 @@ export function buildComponentDefinition(
         inlineType: getObjectDefinition(property.name, property.rawType, checker),
         optional: property.isOptional,
         description: property.description.text,
-        defaultValue: undefined,
+        defaultValue: defaultValues[property.name],
         visualRefreshTag: getCommentTag(property, 'visualrefresh'),
         deprecatedTag: getCommentTag(property, 'deprecated'),
         analyticsTag: getCommentTag(property, 'analytics'),
@@ -108,6 +109,8 @@ export function buildComponentDefinition(
   };
 }
 
+// TODO future feature
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function stringifyFlags(type: ts.Type) {
   const flags = [];
   for (const [key, value] of Object.entries(ts.TypeFlags)) {
@@ -147,7 +150,11 @@ function getObjectDefinition(
     // do not expand built-in Javascript methods on primitive values
     return;
   }
-  if (realType.isUnionOrIntersection() && realType.types.every(subtype => subtype.isStringLiteral())) {
+  if (realType.isUnionOrIntersection()) {
+    if (!realType.types.every(subtype => subtype.isStringLiteral() || subtype.isNumberLiteral())) {
+      // only print out enum types of primitives
+      return;
+    }
     return {
       name: realTypeName,
       type: 'union',
