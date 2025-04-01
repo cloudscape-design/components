@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Descartar anotación",
     "i18nStrings.stepCounterText": "Paso {stepNumber} de {totalStepCount}",
     "i18nStrings.taskTitle": "Tarea {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Cerrar anotación para el paso {stepNumber} de {totalStepCount}} false {Abrir anotación para el paso {stepNumber} de {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Anotación para el paso {stepNumber} de {totalStepCount}} false {Anotación para el paso {stepNumber} de {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Cajones",
@@ -84,9 +84,13 @@
     "i18nStrings.preferencesModalConfirm": "Confirmar",
     "i18nStrings.preferencesModalWrapLines": "Ajustar líneas",
     "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Filtrar temas",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filtrar temas",
     "i18nStrings.preferencesModalLightThemes": "Temas claros",
     "i18nStrings.preferencesModalDarkThemes": "Temas oscuros",
-    "i18nStrings.cursorPositionAriaLabel": "Cursor en fila {row}"
+    "i18nStrings.cursorPositionAriaLabel": "Cursor en fila {row}",
+    "i18nStrings.resizeHandleAriaLabel": "Cambiar el tamaño del controlador",
+    "i18nStrings.resizeHandleTooltipText": "Arrastre o seleccione para cambiar el tamaño"
   },
   "collection-preferences": {
     "title": "Preferencias",
@@ -129,6 +133,7 @@
     "i18nStrings.relativeModeTitle": "Modo relativo",
     "i18nStrings.absoluteModeTitle": "Modo absoluto",
     "i18nStrings.relativeRangeSelectionHeading": "Elegir un rango",
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": "Cada opción representa el mes completo, contando desde el primer día hasta el último.",
     "i18nStrings.cancelButtonLabel": "Cancelar",
     "i18nStrings.clearButtonLabel": "Borrar y descartar",
     "i18nStrings.applyButtonLabel": "Aplicar",
@@ -137,6 +142,12 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Unidad de tiempo",
     "i18nStrings.customRelativeRangeDurationLabel": "Duración",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Introduzca una duración",
+    "i18nStrings.previousMonthAriaLabel": "Mes anterior",
+    "i18nStrings.nextMonthAriaLabel": "Próximo mes",
+    "i18nStrings.previousYearAriaLabel": "Año anterior",
+    "i18nStrings.nextYearAriaLabel": "Próximo año",
+    "i18nStrings.currentMonthAriaLabel": "Este mes",
+    "i18nStrings.todayAriaLabel": "Hoy",
     "i18nStrings.startMonthLabel": "Mes de inicio",
     "i18nStrings.startDateLabel": "Fecha de inicio",
     "i18nStrings.startTimeLabel": "Hora de inicio",
@@ -144,6 +155,8 @@
     "i18nStrings.endDateLabel": "Fecha de finalización",
     "i18nStrings.endTimeLabel": "Hora de finalización",
     "i18nStrings.dateTimeConstraintText": "Para la fecha, utilice AAAA/MM/DD. Para la hora, utilice el formato de 24 horas.",
+    "i18nStrings.dateConstraintText": "Para la fecha, use el formato AAAA/MM/DD.",
+    "i18nStrings.monthConstraintText": "Para el mes, use el formato AAAA/MM.",
     "i18nStrings.errorIconAriaLabel": "Error",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rango seleccionado de {startDate} a {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Últimos {amount} segundos} one {Último {amount} segundo} other {Últimos {amount} segundos}}} minute {{amount, plural, zero {Últimos {amount} minutos} one {Último {amount} minuto} other {Últimos {amount} minutos}}} hour {{amount, plural, zero {Últimas {amount} horas} one {Última {amount} hora} other {Últimas {amount} horas}}} day {{amount, plural, zero {Últimos {amount} días} one {Último {amount} día} other {Últimos {amount} días}}} week {{amount, plural, zero {Últimas {amount} semanas} one {Última {amount} semana} other {Últimas {amount} semanas}}} month {{amount, plural, zero {Últimos {amount} meses} one {Último {amount} mes} other {Últimos {amount} meses}}} year {{amount, plural, zero {Últimos {amount} años} one {Último {amount} año} other {Últimos {amount} años}}} other {}}",
@@ -198,7 +211,8 @@
     "closeAriaLabel": "Cerrar modal"
   },
   "multiselect": {
-    "deselectAriaLabel": "Eliminar {option__label}"
+    "deselectAriaLabel": "Eliminar {option__label}",
+    "i18nStrings.selectAllText": "Seleccionar todo"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Página siguiente",
@@ -307,6 +321,8 @@
     "i18nStrings.labelFiltering": "Encuentre {itemsType}",
     "i18nStrings.labelRefresh": "Actualizar los datos",
     "i18nStrings.labelBreadcrumbs": "Navegación S3",
+    "i18nStrings.labelIconFolder": "Carpeta",
+    "i18nStrings.labelIconObject": "Objeto",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 coincidencia} other {{count} coincidencias}}"
   },
   "select": {

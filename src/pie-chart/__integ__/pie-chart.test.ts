@@ -209,7 +209,6 @@ describe('Legend', () => {
     'can be controlled with mouse',
     setupTest(async page => {
       // Hover over second segment in the legend
-      await page.elementScrollTo(legendWrapper.findItems().get(2).toSelector(), { top: 0, left: 0 });
       await page.hoverElement(legendWrapper.findItems().get(2).toSelector());
 
       await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).resolves.toBe('Chocolate');
@@ -239,12 +238,11 @@ describe('Legend', () => {
     'highlighted legend elements should be not be highlighted when user hovers away',
     setupTest(async page => {
       // Hover over second segment in the legend
-      await page.elementScrollTo(legendWrapper.findItems().get(2).toSelector(), { top: 0, left: 0 });
       await page.hoverElement(legendWrapper.findItems().get(2).toSelector());
 
       // Verify that no legend is highlighted
       await page.hoverElement(pieWrapper.findFilterContainer().toSelector());
-      expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrow();
+      await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrow();
     })
   );
 });

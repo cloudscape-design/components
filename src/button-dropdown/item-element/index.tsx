@@ -114,6 +114,7 @@ function MenuItem({ item, disabled, highlighted, linkStyle }: MenuItemProps) {
       styles['menu-item'],
       analyticsLabels['menu-item'],
       linkStyle && styles['link-style'],
+      linkStyle && highlighted && styles['link-style-highlighted'],
       isCurrentBreadcrumb && styles['current-breadcrumb']
     ),
     'aria-current': isCurrentBreadcrumb,

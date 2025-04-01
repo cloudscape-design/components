@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import Mockdate from 'mockdate';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -32,21 +32,29 @@ afterEach(() => {
 
 let spy: jest.SpyInstance;
 beforeEach(() => {
+  jest.clearAllMocks();
   spy = jest.spyOn(Date.prototype, 'getTimezoneOffset').mockImplementation(() => 0);
 });
 afterEach(() => {
   spy.mockRestore();
 });
 
+const dayRelativeOptions = [
+  { amount: 5, unit: 'hour', type: 'relative', key: 'five-hours' },
+  { amount: 10, unit: 'hour', type: 'relative', key: 'ten-hours' },
+] as DateRangePickerProps['relativeOptions'];
+
+const monthRelativeOptions = [
+  { amount: 5, unit: 'month', type: 'relative', key: 'five-months' },
+  { amount: 10, unit: 'month', type: 'relative', key: 'ten-months' },
+] as DateRangePickerProps['relativeOptions'];
+
 const defaultProps: DateRangePickerProps = {
   locale: 'en-US',
   i18nStrings,
   value: null,
+  relativeOptions: [],
   onChange: () => {},
-  relativeOptions: [
-    { amount: 5, unit: 'hour', type: 'relative', key: 'five-hours' },
-    { amount: 10, unit: 'hour', type: 'relative', key: 'ten-hours' },
-  ],
   isValidRange,
 };
 
@@ -64,388 +72,478 @@ function expectToHaveFocus(element: HTMLElement) {
 }
 
 describe('Date range picker', () => {
-  describe('accessibility attributes', () => {
-    test('aria-describedby', () => {
-      const { wrapper } = renderDateRangePicker({ ...defaultProps, ariaDescribedby: '#element' });
-      expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-describedby', '#element');
+  describe.each(['day', 'month'] as const)('With granularity of %s', granularity => {
+    const currentModeDefaultProps: DateRangePickerProps = {
+      ...defaultProps,
+      granularity,
+      relativeOptions: granularity === 'day' ? dayRelativeOptions : monthRelativeOptions,
+    };
+    const optionTen = granularity === 'day' ? 'ten-hours' : 'ten-months';
+    const optionFive = granularity === 'day' ? 'five-hours' : 'five-months';
+    const findAt = granularity === 'day' ? 'findDateAt' : 'findMonthAt';
 
-      wrapper.openDropdown();
-      expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-describedby', '#element');
-    });
+    describe('accessibility attributes', () => {
+      test('aria-describedby', () => {
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, ariaDescribedby: '#element' });
+        expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-describedby', '#element');
 
-    test('aria-labelledby', () => {
-      const { wrapper } = renderDateRangePicker({ ...defaultProps, ariaLabelledby: '#element' });
-      expect(wrapper.findTrigger().getElement()).toHaveAttribute(
-        'aria-labelledby',
-        expect.stringContaining('#element')
-      );
-
-      wrapper.openDropdown();
-      expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-labelledby', '#element');
-    });
-
-    test('aria-invalid', () => {
-      const { wrapper } = renderDateRangePicker({ ...defaultProps, invalid: true });
-      expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-invalid', 'true');
-    });
-
-    test('controlId', () => {
-      const { wrapper } = renderDateRangePicker({ ...defaultProps, controlId: 'test' });
-      expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
-    });
-
-    test('correctly labels the dropdown trigger with the selected value', () => {
-      const value = { type: 'relative', amount: 5, unit: 'day' } as const;
-      const { container } = render(
-        <FormField label="Label">
-          <DateRangePicker {...defaultProps} value={value} />
-        </FormField>
-      );
-      const wrapper = createWrapper(container).findDateRangePicker()!;
-      expect(wrapper.findTrigger().getElement()).toHaveAccessibleName(
-        'Label ' + i18nStrings.formatRelativeRange!(value)
-      );
-    });
-
-    test('does not pass through form field context to dropdown elements', () => {
-      const { container } = render(
-        <FormField label="Label">
-          <DateRangePicker {...defaultProps} />
-        </FormField>
-      );
-      const wrapper = createWrapper(container).findDateRangePicker()!;
-      wrapper.openDropdown();
-      const dropdown = wrapper.findDropdown()!;
-
-      expect(dropdown.findRelativeRangeRadioGroup()!.getElement()).toHaveAccessibleName(
-        i18nStrings.relativeRangeSelectionHeading
-      );
-
-      dropdown.findRelativeRangeRadioGroup()!.findButtons().at(-1)!.findNativeInput().click();
-      expect(dropdown.findCustomRelativeRangeDuration()!.findNativeInput().getElement()).toHaveAccessibleName(
-        i18nStrings.customRelativeRangeDurationLabel
-      );
-      expect(dropdown.findCustomRelativeRangeUnit()!.findTrigger().getElement()).toHaveAccessibleName(
-        [i18nStrings.customRelativeRangeUnitLabel, 'minutes'].join(' ')
-      );
-
-      changeMode(wrapper, 'absolute');
-
-      expect(dropdown.findStartDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
-        i18nStrings.startDateLabel
-      );
-      expect(dropdown.findStartTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
-        i18nStrings.startTimeLabel
-      );
-      expect(dropdown.findEndDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
-        i18nStrings.endDateLabel
-      );
-      expect(dropdown.findEndTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
-        i18nStrings.endTimeLabel
-      );
-    });
-
-    test('toolbar accessible name', () => {
-      const { wrapper } = renderDateRangePicker();
-      wrapper.openDropdown();
-      const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSegments();
-      expect(modeSelector.findByClassName(segmentedStyles['segment-part'])!.getElement()).toHaveAccessibleName(
-        i18nStrings.modeSelectionLabel
-      );
-    });
-  });
-
-  test('opens relative range mode by default', () => {
-    const { wrapper } = renderDateRangePicker();
-    wrapper.openDropdown();
-    expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).not.toBeNull();
-  });
-
-  test('opens absolute range mode by default if no relative ranges are provided', () => {
-    const { wrapper } = renderDateRangePicker({ ...defaultProps, relativeOptions: [] });
-    wrapper.openDropdown();
-    expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
-  });
-
-  test('shows the clear button by default', () => {
-    const { wrapper } = renderDateRangePicker();
-    wrapper.openDropdown();
-    expect(wrapper.findDropdown()!.findClearButton()).not.toBeNull();
-  });
-
-  test('hides the clear button if specified', () => {
-    const { wrapper } = renderDateRangePicker({ ...defaultProps, showClearButton: false });
-    wrapper.openDropdown();
-    expect(wrapper.findDropdown()!.findClearButton()).toBeNull();
-  });
-
-  describe('checkControlled', () => {
-    test('should log a warning when no onChange is undefined', () => {
-      renderDateRangePicker({ ...defaultProps, onChange: undefined });
-      expect(warnOnce).toHaveBeenCalledTimes(1);
-      expect(warnOnce).toHaveBeenCalledWith(
-        'DateRangePicker',
-        'You provided `value` prop without an `onChange` handler. This will render a read-only component. If the component should be mutable, set an `onChange` handler.'
-      );
-    });
-
-    test('should not log a warning when onChange is provided', () => {
-      renderDateRangePicker({ ...defaultProps, onChange: () => {} });
-      expect(warnOnce).not.toHaveBeenCalled();
-    });
-  });
-
-  describe('validation', () => {
-    let onChangeSpy: jest.Mock<NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>>;
-    let wrapper: DateRangePickerWrapper;
-
-    beforeEach(() => {
-      onChangeSpy = jest.fn();
-      ({ wrapper } = renderDateRangePicker({
-        ...defaultProps,
-        onChange: event => onChangeSpy(event.detail),
-        isValidRange: value => {
-          if (value === null) {
-            return {
-              valid: false,
-              errorMessage: 'No range selected',
-            };
-          }
-          const invalid = value.type === 'relative' && value.amount === 10;
-          return invalid ? { valid: false, errorMessage: '10 is not allowed.' } : { valid: true };
-        },
-      }));
-    });
-
-    test('falls back to value = null when invalid value type is provided', () => {
-      const value: any = { type: 'invalid' };
-      renderDateRangePicker({ ...defaultProps, value });
-
-      expect(warnOnce).toHaveBeenCalledTimes(1);
-      expect(warnOnce).toHaveBeenCalledWith(
-        'DateRangePicker',
-        'You provided an invalid value. Reverting back to default.'
-      );
-    });
-
-    test('produces the value even if validation does not catch an incomplete range', () => {
-      wrapper.openDropdown();
-
-      changeMode(wrapper, 'absolute');
-      wrapper.findDropdown()!.findDateAt('right', 3, 4).click();
-
-      wrapper.findDropdown()!.findApplyButton().click();
-
-      expect(onChangeSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          value: expect.objectContaining({ endDate: 'T23:59:59+00:00', type: 'absolute' }),
-        })
-      );
-    });
-
-    test('should not fire onChange if the date is invalid', () => {
-      wrapper.openDropdown();
-      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
-      wrapper.findDropdown()!.findApplyButton().click();
-
-      expect(onChangeSpy).toHaveBeenCalledTimes(0);
-    });
-
-    test('does not display the error message until after the first submit', () => {
-      wrapper.openDropdown();
-      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
-      expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
-
-      wrapper.findDropdown()!.findApplyButton().click();
-      expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-      expect(createWrapper().findAll('[aria-live]')[1]!.getElement()).toHaveTextContent('10 is not allowed.');
-    });
-
-    test('after rendering the error once, displays subsequent errors in real time', () => {
-      wrapper.openDropdown();
-      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
-      wrapper.findDropdown()!.findApplyButton().click();
-
-      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('five-hours')!.click();
-      expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
-
-      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
-      expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-    });
-
-    test('resets validation state when switching between modes', () => {
-      wrapper.openDropdown();
-      wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue('ten-hours')!.click();
-      expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
-
-      wrapper.findDropdown()!.findApplyButton().click();
-      expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
-
-      changeMode(wrapper, 'absolute');
-      expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
-
-      changeMode(wrapper, 'relative');
-      expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
-    });
-  });
-
-  describe('change event', () => {
-    let onChangeSpy: jest.Mock<NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>>;
-    let wrapper: DateRangePickerWrapper;
-
-    beforeEach(() => Mockdate.set(new Date('2020-10-01T12:30:20')));
-    afterEach(() => Mockdate.reset());
-
-    beforeEach(() => {
-      onChangeSpy = jest.fn();
-      ({ wrapper } = renderDateRangePicker({
-        ...defaultProps,
-        onChange: event => onChangeSpy(event.detail),
-      }));
-    });
-
-    test('should fire when clearing the selection', () => {
-      wrapper.openDropdown();
-      wrapper.findDropdown()!.findClearButton()!.click();
-
-      expect(onChangeSpy).toHaveBeenCalledTimes(1);
-      expect(onChangeSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          value: null,
-        })
-      );
-    });
-
-    test('should not fire when canceling the selection', () => {
-      wrapper.openDropdown();
-      wrapper.findDropdown()!.findCancelButton().click();
-
-      expect(onChangeSpy).toHaveBeenCalledTimes(0);
-    });
-  });
-
-  describe('range selector mode', () => {
-    (['absolute-only', 'relative-only'] as const).forEach(rangeSelectorMode =>
-      test(`shows no mode switcher when mode = ${rangeSelectorMode} and value = null`, () => {
-        const { wrapper } = renderDateRangePicker({ ...defaultProps, rangeSelectorMode });
         wrapper.openDropdown();
-
-        expect(wrapper.findDropdown()!.findSelectionModeSwitch()).toBeNull();
-      })
-    );
-
-    (
-      [
-        ['absolute-only', relativeValue],
-        ['relative-only', absoluteValue],
-      ] as const
-    ).forEach(([rangeSelectorMode, value]) =>
-      test(`uses null as value when mode = ${rangeSelectorMode} and value.type = ${value.type}`, () => {
-        const { wrapper } = renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
-        wrapper.openDropdown();
-
-        expect(wrapper.findTrigger().getElement()).toHaveTextContent('');
-      })
-    );
-
-    test('focuses dropdown when opened', () => {
-      const { wrapper } = renderDateRangePicker();
-      wrapper.openDropdown();
-
-      expectToHaveFocus(wrapper.findDropdown()!.getElement());
-    });
-
-    describe('value compatibility for compatible cases', () => {
-      afterEach(() => {
-        jest.clearAllMocks();
+        expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-describedby', '#element');
       });
 
-      const compatibleCases: [string, DateRangePickerProps.RangeSelectorMode, null | DateRangePickerProps.Value][] = [
-        ['default mode with null value', 'default', null],
-        ['default mode with absolute value', 'default', absoluteValue],
-        ['default mode with relative value', 'default', relativeValue],
-        ['absolute-only mode with null value', 'absolute-only', null],
-        ['absolute-only mode with absolute value', 'absolute-only', absoluteValue],
-        ['relative-only mode with null value', 'relative-only', null],
-        ['relative-only mode with relative value', 'relative-only', relativeValue],
-      ];
+      test('aria-labelledby', () => {
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, ariaLabelledby: '#element' });
+        expect(wrapper.findTrigger().getElement()).toHaveAttribute(
+          'aria-labelledby',
+          expect.stringContaining('#element')
+        );
 
-      test.each(compatibleCases)('does not show warning for %s', (_, rangeSelectorMode, value) => {
-        renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
+        wrapper.openDropdown();
+        expect(wrapper.findDropdown()!.getElement()).toHaveAttribute('aria-labelledby', '#element');
+      });
+
+      test('aria-invalid', () => {
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, invalid: true });
+        expect(wrapper.findTrigger().getElement()).toHaveAttribute('aria-invalid', 'true');
+      });
+
+      test('controlId', () => {
+        const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, controlId: 'test' });
+        expect(wrapper.findTrigger().getElement()).toHaveAttribute('id', 'test');
+      });
+
+      test('correctly labels the dropdown trigger with the selected value', () => {
+        const value = { type: 'relative', amount: 5, unit: 'day' } as const;
+        const { container } = render(
+          <FormField label="Label">
+            <DateRangePicker {...currentModeDefaultProps} value={value} />
+          </FormField>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        expect(wrapper.findTrigger().getElement()).toHaveAccessibleName(
+          'Label ' + i18nStrings.formatRelativeRange!(value)
+        );
+      });
+
+      test('does not pass through form field context to dropdown elements', () => {
+        const { container } = render(
+          <FormField label="Label">
+            <DateRangePicker {...currentModeDefaultProps} />
+          </FormField>
+        );
+        const wrapper = createWrapper(container).findDateRangePicker()!;
+        wrapper.openDropdown();
+        const dropdown = wrapper.findDropdown()!;
+
+        expect(dropdown.findRelativeRangeRadioGroup()!.getElement()).toHaveAccessibleName(
+          i18nStrings.relativeRangeSelectionHeading
+        );
+
+        dropdown.findRelativeRangeRadioGroup()!.findButtons().at(-1)!.findNativeInput().click();
+        expect(dropdown.findCustomRelativeRangeDuration()!.findNativeInput().getElement()).toHaveAccessibleName(
+          i18nStrings.customRelativeRangeDurationLabel
+        );
+        expect(dropdown.findCustomRelativeRangeUnit()!.findTrigger().getElement()).toHaveAccessibleName(
+          [i18nStrings.customRelativeRangeUnitLabel, granularity === 'day' ? 'minutes' : 'months'].join(' ')
+        );
+
+        changeMode(wrapper, 'absolute');
+
+        expect(dropdown.findStartDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+          granularity === 'day' ? i18nStrings.startDateLabel : i18nStrings.startMonthLabel
+        );
+        expect(dropdown.findEndDateInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+          granularity === 'day' ? i18nStrings.endDateLabel : i18nStrings.endMonthLabel
+        );
+        if (granularity === 'day') {
+          expect(dropdown.findStartTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+            i18nStrings.startTimeLabel
+          );
+          expect(dropdown.findEndTimeInput()!.findNativeInput()!.getElement()).toHaveAccessibleName(
+            i18nStrings.endTimeLabel
+          );
+        } else {
+          expect(dropdown.findStartTimeInput()).toBeNull();
+          expect(dropdown.findEndTimeInput()).toBeNull();
+        }
+      });
+
+      test('toolbar accessible name', () => {
+        const { wrapper } = renderDateRangePicker();
+        wrapper.openDropdown();
+        const modeSelector = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSegments();
+        expect(modeSelector.findByClassName(segmentedStyles['segment-part'])!.getElement()).toHaveAccessibleName(
+          i18nStrings.modeSelectionLabel
+        );
+      });
+
+      test('does not have aria-expanded', () => {
+        const { wrapper } = renderDateRangePicker();
+        expect(wrapper.findTrigger().getElement()).not.toHaveAttribute('aria-expanded');
+        wrapper.openDropdown();
+        expect(wrapper.findDropdown()!.getElement()).not.toHaveAttribute('aria-expanded');
+      });
+    });
+
+    test('opens relative range mode by default', () => {
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps } as DateRangePickerProps);
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).not.toBeNull();
+    });
+
+    test('opens absolute range mode by default if no relative ranges are provided', () => {
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, relativeOptions: [] });
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown()!.findRelativeRangeRadioGroup()).toBeNull();
+    });
+
+    test('shows the clear button by default', () => {
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps } as DateRangePickerProps);
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown()!.findClearButton()).not.toBeNull();
+    });
+
+    test('hides the clear button if specified', () => {
+      const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, showClearButton: false });
+      wrapper.openDropdown();
+      expect(wrapper.findDropdown()!.findClearButton()).toBeNull();
+    });
+
+    describe('checkControlled', () => {
+      test('should log a warning when no onChange is undefined', () => {
+        renderDateRangePicker({ ...currentModeDefaultProps, onChange: undefined });
+        expect(warnOnce).toHaveBeenCalledTimes(1);
+        expect(warnOnce).toHaveBeenCalledWith(
+          'DateRangePicker',
+          'You provided `value` prop without an `onChange` handler. This will render a read-only component. If the component should be mutable, set an `onChange` handler.'
+        );
+      });
+
+      test('should not log a warning when onChange is provided', () => {
+        renderDateRangePicker({ ...currentModeDefaultProps, onChange: () => {} });
         expect(warnOnce).not.toHaveBeenCalled();
       });
     });
 
-    describe('value compatibility for incompatible cases', () => {
-      afterEach(() => {
-        jest.clearAllMocks();
+    describe('validation', () => {
+      let onChangeSpy: jest.Mock<NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>>;
+      let wrapper: DateRangePickerWrapper;
+
+      beforeEach(() => {
+        onChangeSpy = jest.fn();
+        ({ wrapper } = renderDateRangePicker({
+          ...currentModeDefaultProps,
+          onChange: event => onChangeSpy(event.detail),
+          isValidRange: value => {
+            if (value === null) {
+              return {
+                valid: false,
+                errorMessage: 'No range selected',
+              };
+            }
+            const invalid = value.type === 'relative' && value.amount === 10;
+            return invalid ? { valid: false, errorMessage: '10 is not allowed.' } : { valid: true };
+          },
+        }));
       });
 
-      const incompatibleCases: [string, DateRangePickerProps.RangeSelectorMode, DateRangePickerProps.Value][] = [
-        ['absolute-only mode with relative value', 'absolute-only', relativeValue],
-        ['relative-only mode with absolute value', 'relative-only', absoluteValue],
-      ];
+      test('falls back to value = null when invalid value type is provided', () => {
+        const value: any = { type: 'invalid' };
+        renderDateRangePicker({ ...currentModeDefaultProps, value });
 
-      test.each(incompatibleCases)('shows warning for %s', (_, rangeSelectorMode, value) => {
-        renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
+        expect(warnOnce).toHaveBeenCalledTimes(1);
         expect(warnOnce).toHaveBeenCalledWith(
           'DateRangePicker',
-          'The provided value does not correspond to the current range selector mode. Reverting back to default.'
+          'You provided an invalid value. Reverting back to default.'
         );
       });
+
+      test('produces the value even if validation does not catch an incomplete range', () => {
+        wrapper.openDropdown();
+
+        changeMode(wrapper, 'absolute');
+        wrapper.findDropdown()![findAt]('right', 3, 3).click();
+
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        const dayObjectProperties = { endDate: 'T23:59:59+00:00', type: 'absolute' };
+        const monthObjectProperties = { endDate: '', startDate: '2025-09', type: 'absolute' };
+
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: expect.objectContaining(granularity === 'day' ? dayObjectProperties : monthObjectProperties),
+          })
+        );
+      });
+
+      test('should not fire onChange if the date is invalid', () => {
+        wrapper.openDropdown();
+        wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionTen)!.click();
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        expect(onChangeSpy).toHaveBeenCalledTimes(0);
+      });
+
+      test('does not display the error message until after the first submit', () => {
+        wrapper.openDropdown();
+        wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionTen)!.click();
+        expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
+
+        wrapper.findDropdown()!.findApplyButton().click();
+        expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
+        expect(createWrapper().findAll('[aria-live]')[1]!.getElement()).toHaveTextContent('10 is not allowed.');
+      });
+
+      test('after rendering the error once, displays subsequent errors in real time', () => {
+        wrapper.openDropdown();
+        wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionTen)!.click();
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionFive)!.click();
+        expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
+
+        wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionTen)!.click();
+        expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
+      });
+
+      test('resets validation state when switching between modes', () => {
+        wrapper.openDropdown();
+        wrapper.findDropdown()!.findRelativeRangeRadioGroup()!.findInputByValue(optionTen)!.click();
+        expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
+
+        wrapper.findDropdown()!.findApplyButton().click();
+        expect(wrapper.findDropdown()!.findValidationError()?.getElement()).toHaveTextContent('10 is not allowed.');
+
+        changeMode(wrapper, 'absolute');
+        expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
+
+        changeMode(wrapper, 'relative');
+        expect(wrapper.findDropdown()!.findValidationError()).toBeNull();
+      });
+
+      test('reannounces error text when apply is clicked', async () => {
+        Mockdate.set(new Date('2020-01-01T12:30:20'));
+        ({ wrapper } = renderDateRangePicker({
+          ...defaultProps,
+          isValidRange: value => {
+            if (value === null) {
+              return {
+                valid: false,
+                errorMessage: 'No range selected',
+              };
+            }
+            if (value.type === 'relative' && value.amount === 10) {
+              return { valid: false, errorMessage: '10 is not allowed.' };
+            }
+            if (value.type === 'absolute') {
+              const [endDateWithoutTime] = value.endDate.split('T');
+
+              if (!endDateWithoutTime) {
+                return {
+                  valid: false,
+                  errorMessage: 'You must provide an end date',
+                };
+              }
+
+              if (value.startDate < '2020-01-01T00:00:00') {
+                return {
+                  valid: false,
+                  errorMessage: 'The range cannot start before 2020',
+                };
+              }
+            }
+            return { valid: true };
+          },
+        }));
+        wrapper.openDropdown();
+        changeMode(wrapper, 'absolute');
+        wrapper.findDropdown()?.findDateAt('left', 1, 1).click();
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        const liveRegion = document.querySelectorAll('[aria-live=polite]')![3];
+
+        // announces first validation error
+        await waitFor(() => expect(liveRegion).toHaveTextContent('You must provide an end date'));
+
+        wrapper.findDropdown()?.findDateAt('left', 1, 3).click();
+
+        // announces different validation error
+        await waitFor(() => expect(liveRegion).toHaveTextContent('The range cannot start before 2020'));
+
+        wrapper.findDropdown()!.findApplyButton().click();
+
+        // reannounces second validation error
+        await waitFor(() => expect(liveRegion).toHaveTextContent('The range cannot start before 2020.'));
+
+        Mockdate.reset();
+      });
     });
-  });
 
-  describe('isValidRange', () => {
-    beforeEach(() => Mockdate.set(new Date('2020-10-01T12:30:20')));
-    afterEach(() => Mockdate.reset());
+    describe('change event', () => {
+      let onChangeSpy: jest.Mock<NonCancelableEventHandler<DateRangePickerProps.ChangeDetail>>;
+      let wrapper: DateRangePickerWrapper;
 
-    test('calls isValidRange without time part when dateOnly is enabled', () => {
-      const isValidRange = jest.fn().mockReturnValue({ valid: false, errorMessage: 'Error' });
-      const { wrapper } = renderDateRangePicker({ ...defaultProps, dateOnly: true, isValidRange });
-      wrapper.openDropdown();
-      changeMode(wrapper, 'absolute');
-      // When endDate hasn't been selected
-      wrapper.findDropdown()!.findDateAt('left', 3, 4).click();
-      wrapper.findDropdown()!.findApplyButton().click();
-      expect(isValidRange).toHaveBeenLastCalledWith(
-        expect.objectContaining({ type: 'absolute', startDate: '2020-09-16', endDate: '' })
-      );
-      // When full range has been selected
-      wrapper.findDropdown()!.findDateAt('right', 3, 4).click();
-      wrapper.findDropdown()!.findApplyButton().click();
-      expect(isValidRange).toHaveBeenLastCalledWith(
-        expect.objectContaining({ type: 'absolute', startDate: '2020-09-16', endDate: '2020-10-14' })
-      );
+      beforeEach(() => Mockdate.set(new Date('2020-10-01T12:30:20')));
+      afterEach(() => Mockdate.reset());
+
+      beforeEach(() => {
+        onChangeSpy = jest.fn();
+        ({ wrapper } = renderDateRangePicker({
+          ...currentModeDefaultProps,
+          onChange: event => onChangeSpy(event.detail),
+        }));
+      });
+
+      test('should fire when clearing the selection', () => {
+        wrapper.openDropdown();
+        wrapper.findDropdown()!.findClearButton()!.click();
+
+        expect(onChangeSpy).toHaveBeenCalledTimes(1);
+        expect(onChangeSpy).toHaveBeenCalledWith(
+          expect.objectContaining({
+            value: null,
+          })
+        );
+      });
+
+      test('should not fire when canceling the selection', () => {
+        wrapper.openDropdown();
+        wrapper.findDropdown()!.findCancelButton().click();
+
+        expect(onChangeSpy).toHaveBeenCalledTimes(0);
+      });
     });
-  });
 
-  describe('i18n', () => {
-    test('supports using mode selector and modal footer props from i18n provider', () => {
-      const { container } = render(
-        <TestI18nProvider
-          messages={{
-            'date-range-picker': {
-              'i18nStrings.relativeModeTitle': 'Custom relative',
-              'i18nStrings.absoluteModeTitle': 'Custom absolute',
-              'i18nStrings.clearButtonLabel': 'Custom clear',
-              'i18nStrings.cancelButtonLabel': 'Custom cancel',
-              'i18nStrings.applyButtonLabel': 'Custom apply',
-            },
-          }}
-        >
-          <DateRangePicker {...defaultProps} i18nStrings={undefined} />
-        </TestI18nProvider>
+    describe('range selector mode', () => {
+      (['absolute-only', 'relative-only'] as const).forEach(rangeSelectorMode =>
+        test(`shows no mode switcher when mode = ${rangeSelectorMode} and value = null`, () => {
+          const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, rangeSelectorMode });
+          wrapper.openDropdown();
+
+          expect(wrapper.findDropdown()!.findSelectionModeSwitch()).toBeNull();
+        })
       );
-      const wrapper = createWrapper(container).findDateRangePicker()!;
-      wrapper.openDropdown();
-      const modeSwitch = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSelect()!;
-      modeSwitch.openDropdown();
-      expect(modeSwitch.findDropdown().findOption(1)!.getElement()).toHaveTextContent('Custom relative');
-      expect(modeSwitch.findDropdown().findOption(2)!.getElement()).toHaveTextContent('Custom absolute');
-      expect(wrapper.findDropdown()!.findClearButton()!.getElement()).toHaveTextContent('Custom clear');
-      expect(wrapper.findDropdown()!.findCancelButton()!.getElement()).toHaveTextContent('Custom cancel');
-      expect(wrapper.findDropdown()!.findApplyButton()!.getElement()).toHaveTextContent('Custom apply');
+
+      (
+        [
+          ['absolute-only', relativeValue],
+          ['relative-only', absoluteValue],
+        ] as const
+      ).forEach(([rangeSelectorMode, value]) =>
+        test(`uses null as value when mode = ${rangeSelectorMode} and value.type = ${value.type}`, () => {
+          const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, rangeSelectorMode, value });
+          wrapper.openDropdown();
+
+          expect(wrapper.findTrigger().getElement()).toHaveTextContent('');
+        })
+      );
+
+      test('focuses dropdown when opened', () => {
+        const { wrapper } = renderDateRangePicker();
+        wrapper.openDropdown();
+
+        expectToHaveFocus(wrapper.findDropdown()!.getElement());
+      });
+
+      describe('value compatibility for compatible cases', () => {
+        afterEach(() => {
+          jest.clearAllMocks();
+        });
+
+        const compatibleCases: [string, DateRangePickerProps.RangeSelectorMode, null | DateRangePickerProps.Value][] = [
+          ['default mode with null value', 'default', null],
+          ['default mode with absolute value', 'default', absoluteValue],
+          ['default mode with relative value', 'default', relativeValue],
+          ['absolute-only mode with null value', 'absolute-only', null],
+          ['absolute-only mode with absolute value', 'absolute-only', absoluteValue],
+          ['relative-only mode with null value', 'relative-only', null],
+          ['relative-only mode with relative value', 'relative-only', relativeValue],
+        ];
+
+        test.each(compatibleCases)('does not show warning for %s', (_, rangeSelectorMode, value) => {
+          renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
+          expect(warnOnce).not.toHaveBeenCalled();
+        });
+      });
+
+      describe('value compatibility for incompatible cases', () => {
+        afterEach(() => {
+          jest.clearAllMocks();
+        });
+
+        const incompatibleCases: [string, DateRangePickerProps.RangeSelectorMode, DateRangePickerProps.Value][] = [
+          ['absolute-only mode with relative value', 'absolute-only', relativeValue],
+          ['relative-only mode with absolute value', 'relative-only', absoluteValue],
+        ];
+
+        test.each(incompatibleCases)('shows warning for %s', (_, rangeSelectorMode, value) => {
+          renderDateRangePicker({ ...defaultProps, rangeSelectorMode, value });
+          expect(warnOnce).toHaveBeenCalledWith(
+            'DateRangePicker',
+            'The provided value does not correspond to the current range selector mode. Reverting back to default.'
+          );
+        });
+
+        describe('isValidRange', () => {
+          beforeEach(() => Mockdate.set(new Date('2020-10-01T12:30:20')));
+          afterEach(() => Mockdate.reset());
+
+          test('calls isValidRange without time part when dateOnly is enabled', () => {
+            const expectedStartDate = granularity === 'month' ? `2019-09` : `2020-09-15`;
+
+            const isValidRange = jest.fn().mockReturnValue({ valid: false, errorMessage: 'Error' });
+            const { wrapper } = renderDateRangePicker({ ...currentModeDefaultProps, dateOnly: true, isValidRange });
+            wrapper.openDropdown();
+            changeMode(wrapper, 'absolute');
+            // When endDate hasn't been selected
+            wrapper.findDropdown()![findAt]('left', 3, 3).click();
+            wrapper.findDropdown()!.findApplyButton().click();
+            expect(isValidRange).toHaveBeenLastCalledWith(
+              expect.objectContaining({ type: 'absolute', startDate: expectedStartDate, endDate: '' })
+            );
+            // When full range has been selected
+            wrapper.findDropdown()![findAt]('right', 3, 3).click();
+            wrapper.findDropdown()!.findApplyButton().click();
+
+            expect(isValidRange).toHaveBeenLastCalledWith(
+              expect.objectContaining({
+                type: 'absolute',
+                startDate: expectedStartDate,
+                endDate: granularity === 'day' ? '2020-10-13' : '2020-09',
+              })
+            );
+          });
+        });
+
+        describe('i18n', () => {
+          test('supports using mode selector and modal footer props from i18n provider', () => {
+            const { container } = render(
+              <TestI18nProvider
+                messages={{
+                  'date-range-picker': {
+                    'i18nStrings.relativeModeTitle': 'Custom relative',
+                    'i18nStrings.absoluteModeTitle': 'Custom absolute',
+                    'i18nStrings.clearButtonLabel': 'Custom clear',
+                    'i18nStrings.cancelButtonLabel': 'Custom cancel',
+                    'i18nStrings.applyButtonLabel': 'Custom apply',
+                  },
+                }}
+              >
+                <DateRangePicker {...currentModeDefaultProps} i18nStrings={undefined} />
+              </TestI18nProvider>
+            );
+            const wrapper = createWrapper(container).findDateRangePicker()!;
+            wrapper.openDropdown();
+            const modeSwitch = wrapper.findDropdown()!.findSelectionModeSwitch()!.findModesAsSelect()!;
+            modeSwitch.openDropdown();
+            expect(modeSwitch.findDropdown().findOption(1)!.getElement()).toHaveTextContent('Custom relative');
+            expect(modeSwitch.findDropdown().findOption(2)!.getElement()).toHaveTextContent('Custom absolute');
+            expect(wrapper.findDropdown()!.findClearButton()!.getElement()).toHaveTextContent('Custom clear');
+            expect(wrapper.findDropdown()!.findCancelButton()!.getElement()).toHaveTextContent('Custom cancel');
+            expect(wrapper.findDropdown()!.findApplyButton()!.getElement()).toHaveTextContent('Custom apply');
+          });
+        });
+      });
     });
   });
 });

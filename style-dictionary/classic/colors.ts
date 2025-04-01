@@ -1,10 +1,10 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import merge from 'lodash/merge';
+import merge from 'lodash/merge.js';
 
-import { expandColorDictionary } from '../utils';
-import { StyleDictionary } from '../utils/interfaces';
-import { tokens as parentTokens } from '../visual-refresh/colors';
+import { expandColorDictionary } from '../utils/index.js';
+import { StyleDictionary } from '../utils/interfaces.js';
+import { tokens as parentTokens } from '../visual-refresh/colors.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   colorGreyOpaque70: 'rgba(255, 255, 255, 0.7)',
@@ -43,7 +43,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundNotificationStackBarActive: '{colorGrey700}',
   colorBackgroundNotificationStackBarHover: '{colorGrey600}',
   colorBackgroundProgressBarContentInFlash: { light: '{colorGreyOpaque70}', dark: '{colorGrey100}' },
-  colorBackgroundSegmentHover: '{colorBackgroundButtonNormalDefault}',
+  colorBackgroundSegmentHover: '{colorBackgroundButtonNormalHover}',
   colorBackgroundTilesDisabled: { dark: '{colorGrey700}' },
   colorBackgroundToggleCheckedDisabled: { dark: '{colorBlue700}' },
   colorBackgroundChatBubbleIncoming: { light: '{colorGrey150}', dark: '{colorGrey900}' },

@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Ek açıklamayı kapat",
     "i18nStrings.stepCounterText": "Adım {stepNumber}/{totalStepCount}",
     "i18nStrings.taskTitle": "{taskNumber}. Görev: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Adım {stepNumber}/{totalStepCount} için ek açıklamayı kapat} false {Adım {stepNumber}/{totalStepCount} için ek açıklamayı aç} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Adım {stepNumber}/{totalStepCount} için ek açıklama} false {Adım {stepNumber}/{totalStepCount} için ek açıklama} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Çekmeceler",
@@ -84,9 +84,13 @@
     "i18nStrings.preferencesModalConfirm": "Onayla",
     "i18nStrings.preferencesModalWrapLines": "Satırları kaydır",
     "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Temaları filtrele",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Temaları filtrele",
     "i18nStrings.preferencesModalLightThemes": "Açık temalar",
     "i18nStrings.preferencesModalDarkThemes": "Koyu temalar",
-    "i18nStrings.cursorPositionAriaLabel": "İmleç {row}. satırda"
+    "i18nStrings.cursorPositionAriaLabel": "İmleç {row}. satırda",
+    "i18nStrings.resizeHandleAriaLabel": "Yeniden boyutlandırma tutamacı",
+    "i18nStrings.resizeHandleTooltipText": "Yeniden boyutlandırmak için sürükleyin veya seçin"
   },
   "collection-preferences": {
     "title": "Tercihler",
@@ -129,6 +133,7 @@
     "i18nStrings.relativeModeTitle": "Göreceli mod",
     "i18nStrings.absoluteModeTitle": "Mutlak mod",
     "i18nStrings.relativeRangeSelectionHeading": "Bir aralık seçin",
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": "Her seçenek, ilk gününden son gününe kadar tüm ayı temsil eder.",
     "i18nStrings.cancelButtonLabel": "İptal",
     "i18nStrings.clearButtonLabel": "Temizle ve kapat",
     "i18nStrings.applyButtonLabel": "Uygula",
@@ -137,6 +142,12 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Zaman birimi",
     "i18nStrings.customRelativeRangeDurationLabel": "Süre",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Bir süre girin",
+    "i18nStrings.previousMonthAriaLabel": "Önceki ay",
+    "i18nStrings.nextMonthAriaLabel": "Gelecek ay",
+    "i18nStrings.previousYearAriaLabel": "Önceki yıl",
+    "i18nStrings.nextYearAriaLabel": "Gelecek yıl",
+    "i18nStrings.currentMonthAriaLabel": "Bu ay",
+    "i18nStrings.todayAriaLabel": "Bugün",
     "i18nStrings.startMonthLabel": "Başlangıç ayı",
     "i18nStrings.startDateLabel": "Başlangıç tarihi",
     "i18nStrings.startTimeLabel": "Başlangıç zamanı",
@@ -144,6 +155,8 @@
     "i18nStrings.endDateLabel": "Bitiş tarihi",
     "i18nStrings.endTimeLabel": "Bitiş zamanı",
     "i18nStrings.dateTimeConstraintText": "Tarih için YYYY/AA/GG kullanın. Zaman için 24 saat biçimini kullanın.",
+    "i18nStrings.dateConstraintText": "Tarih için YYYYY/AA/GG kullanın.",
+    "i18nStrings.monthConstraintText": "Ay için YYYY/AA kullanın.",
     "i18nStrings.errorIconAriaLabel": "Hata",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "{startDate}-{endDate} aralığı seçildi",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Son {amount} saniye} one {Son {amount} saniye} other {Son {amount} saniye}}} minute {{amount, plural, zero {Son {amount} dakika} one {Son {amount} dakika} other {Son {amount} dakika}}} hour {{amount, plural, zero {Son {amount} saat} one {Son {amount} saat} other {Son {amount} saat}}} day {{amount, plural, zero {Son {amount} gün} one {Son {amount} gün} other {Son {amount} gün}}} week {{amount, plural, zero {Son {amount} hafta} one {Son {amount} hafta} other {Son {amount} hafta}}} month {{amount, plural, zero {Son {amount} ay} one {Son {amount} ay} other {Son {amount} ay}}} year {{amount, plural, zero {Son {amount} yıl} one {Son {amount} yıl} other {Son {amount} yıl}}} other {}}",
@@ -198,7 +211,8 @@
     "closeAriaLabel": "Kalıcı iletişim kutusunu kapat"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} öğesini kaldır"
+    "deselectAriaLabel": "{option__label} öğesini kaldır",
+    "i18nStrings.selectAllText": "Tümünü seç"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Sonraki sayfa",
@@ -307,6 +321,8 @@
     "i18nStrings.labelFiltering": "{itemsType} bul",
     "i18nStrings.labelRefresh": "Verileri yenile",
     "i18nStrings.labelBreadcrumbs": "S3 gezintisi",
+    "i18nStrings.labelIconFolder": "Klasör",
+    "i18nStrings.labelIconObject": "Nesne",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 eşleşme} other {{count} eşleşme}}"
   },
   "select": {

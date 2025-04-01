@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Anmerkung ablehnen",
     "i18nStrings.stepCounterText": "Schritt {stepNumber} von {totalStepCount}",
     "i18nStrings.taskTitle": "Aufgabe {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Anmerkung schließen für Schritt {stepNumber} von {totalStepCount}} false {Anmerkung öffnen für Schritt {stepNumber} von {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Anmerkung für Schritt {stepNumber} von {totalStepCount}} false {Anmerkung für Schritt {stepNumber} von {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Schubladen",
@@ -84,9 +84,13 @@
     "i18nStrings.preferencesModalConfirm": "Bestätigen",
     "i18nStrings.preferencesModalWrapLines": "Zeilenumbruch",
     "i18nStrings.preferencesModalTheme": "Themen",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Themen filtern",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Themen filtern",
     "i18nStrings.preferencesModalLightThemes": "Hellere Themen",
     "i18nStrings.preferencesModalDarkThemes": "Dunkles Design",
-    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}"
+    "i18nStrings.cursorPositionAriaLabel": "Cursor in Zeile {row}",
+    "i18nStrings.resizeHandleAriaLabel": "Größe des Punktes ändern",
+    "i18nStrings.resizeHandleTooltipText": "Zum Ändern der Größe ziehen oder auswählen"
   },
   "collection-preferences": {
     "title": "Präferenzen",
@@ -129,6 +133,7 @@
     "i18nStrings.relativeModeTitle": "Relativer Modus",
     "i18nStrings.absoluteModeTitle": "Absoluter Modus",
     "i18nStrings.relativeRangeSelectionHeading": "Bereich auswählen",
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": "Jede Option steht für den gesamten Monat, vom ersten bis zum letzten Tag.",
     "i18nStrings.cancelButtonLabel": "Abbrechen",
     "i18nStrings.clearButtonLabel": "Löschen und Verwerfen",
     "i18nStrings.applyButtonLabel": "Anwenden",
@@ -137,6 +142,12 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Zeiteinheit",
     "i18nStrings.customRelativeRangeDurationLabel": "Dauer",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Dauer eingeben",
+    "i18nStrings.previousMonthAriaLabel": "Vorheriger Monat",
+    "i18nStrings.nextMonthAriaLabel": "Nächster Monat",
+    "i18nStrings.previousYearAriaLabel": "Vorheriges Jahr",
+    "i18nStrings.nextYearAriaLabel": "Nächstes Jahr",
+    "i18nStrings.currentMonthAriaLabel": "Diesen Monat",
+    "i18nStrings.todayAriaLabel": "Heute",
     "i18nStrings.startMonthLabel": "Startmonat",
     "i18nStrings.startDateLabel": "Startdatum",
     "i18nStrings.startTimeLabel": "Startzeit",
@@ -144,6 +155,8 @@
     "i18nStrings.endDateLabel": "Enddatum",
     "i18nStrings.endTimeLabel": "Endzeit",
     "i18nStrings.dateTimeConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT. Verwenden Sie für die Zeit das 24-Stunden-Format.",
+    "i18nStrings.dateConstraintText": "Verwenden Sie für Datum JJJJ/MM/TT.",
+    "i18nStrings.monthConstraintText": "Verwenden Sie für Monat JJJJ/MM.",
     "i18nStrings.errorIconAriaLabel": "Fehler",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Bereich ausgewählt von {startDate} bis {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {Letzte {amount} Sekunden} one {Letzte {amount} Sekunde} other {Letzte {amount} Sekunden}}} minute {{amount, plural, zero {Letzte {amount} Minuten} one {Letzte {amount} Minute} other {Letzte {amount} Minuten}}} hour {{amount, plural, zero {Letzte {amount} Stunden} one {Letzte {amount} Stunde} other {Letzte {amount} Stunden}}} day {{amount, plural, zero {Letzte {amount} Tage} one {Letzter {amount} Tag} other {Letzte {amount} Tage}}} week {{amount, plural, zero {Letzte {amount} Wochen} one {Letzte {amount} Woche} other {Letzte {amount} Wochen}}} month {{amount, plural, zero {Letzte {amount} Monate} one {Letzter {amount} Monat} other {Letzte {amount} Monate}}} year {{amount, plural, zero {Letzte {amount} Jahre} one {Letztes {amount} Jahr} other {Letzte {amount} Jahre}}} other {}}",
@@ -198,7 +211,8 @@
     "closeAriaLabel": "Modal schließen"
   },
   "multiselect": {
-    "deselectAriaLabel": "{option__label} entfernen"
+    "deselectAriaLabel": "{option__label} entfernen",
+    "i18nStrings.selectAllText": "Alles auswählen"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Nächste Seite",
@@ -307,6 +321,8 @@
     "i18nStrings.labelFiltering": "{itemsType} finden",
     "i18nStrings.labelRefresh": "Die Daten aktualisieren",
     "i18nStrings.labelBreadcrumbs": "S3-Navigation",
+    "i18nStrings.labelIconFolder": "Ordner",
+    "i18nStrings.labelIconObject": "Objekt",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 Übereinstimmung} other {{count} Übereinstimmungen}}"
   },
   "select": {

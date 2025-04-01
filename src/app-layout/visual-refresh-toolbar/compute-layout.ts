@@ -113,6 +113,36 @@ export function computeVerticalLayout({
   return { toolbar, notifications, header, drawers };
 }
 
+interface SplitPanelOffsetInput {
+  hasSplitPanel: boolean;
+  placement: AppLayoutPropsWithDefaults['placement'];
+  splitPanelPosition: 'bottom' | 'side';
+  splitPanelOpen: boolean;
+  splitPanelHeaderHeight: number;
+  splitPanelFullHeight: number;
+}
+
+export function computeSplitPanelOffsets({
+  hasSplitPanel,
+  splitPanelPosition,
+  placement,
+  splitPanelOpen,
+  splitPanelFullHeight,
+  splitPanelHeaderHeight,
+}: SplitPanelOffsetInput) {
+  if (!hasSplitPanel || splitPanelPosition !== 'bottom') {
+    return {
+      stickyVerticalBottomOffset: placement.insetBlockEnd,
+      mainContentPaddingBlockEnd: undefined,
+    };
+  }
+  const mainContentBottomOffset = splitPanelOpen ? splitPanelFullHeight : splitPanelHeaderHeight;
+  return {
+    stickyVerticalBottomOffset: mainContentBottomOffset + placement.insetBlockEnd,
+    mainContentPaddingBlockEnd: mainContentBottomOffset,
+  };
+}
+
 export function getDrawerStyles(
   verticalOffsets: VerticalLayoutOutput,
   isMobile: boolean,

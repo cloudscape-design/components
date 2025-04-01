@@ -1,5 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
+
 import range from 'lodash/range';
 
 import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objects';
@@ -9,203 +10,217 @@ import createWrapper from '../../../lib/components/test-utils/selectors';
 
 import styles from '../../../lib/components/table/body-cell/styles.selectors.js';
 
-const DOMAIN_ERROR = 'Must be a valid domain name';
-const tableWrapper = createWrapper().findTable()!;
-
 // $ = selector
 
-const bodyCell = tableWrapper.findBodyCell(2, 2)!;
-const cellRoot$ = bodyCell.toSelector();
-const cellInputField$ = bodyCell.findFormField().find('input').toSelector();
-const cellEditButton$ = tableWrapper.findEditCellButton(2, 2).toSelector();
-const cellSaveButton = tableWrapper.findEditingCellSaveButton();
-const successIcon$ = bodyCell.findByClassName(styles['body-cell-success']).toSelector();
-const ariaLiveAnnouncement$ = bodyCell.find(`[aria-live="polite"]`).toSelector();
+const distributionIdRow1 = [1, 1] as const;
+const distributionIdRow2 = [2, 1] as const; // Disabled
+const domainNameRow1 = [1, 2] as const;
+const domainNameRow2 = [2, 2] as const;
+const tslVersionRow4 = [4, 5] as const;
 
-// for arrow key navigation
-const mainCell = tableWrapper.findBodyCell(4, 5);
-const mainCell$ = mainCell.toSelector();
-const leftCell$ = tableWrapper.findEditCellButton(4, 4).toSelector();
-const rightCell$ = tableWrapper.findEditCellButton(4, 6).toSelector();
-const cellAbove$ = tableWrapper.findEditCellButton(3, 5).toSelector();
-const cellBelow$ = tableWrapper.findEditCellButton(5, 5).toSelector();
+const tableWrapper = createWrapper().findTable();
+const cellSaveButton$ = tableWrapper.findEditingCellSaveButton().toSelector();
+const liveRegion$ = createWrapper().findLiveRegion().toSelector();
 
-const bodyCellError = bodyCell.findFormField().findError().toSelector();
-
-const disabledCell = tableWrapper.findBodyCell(4, 4);
-const disabledCell$ = disabledCell.toSelector();
-const disabledCellLiveRegion$ = createWrapper().findLiveRegion().toSelector();
+function cell$(rowIndex: number, columnIndex: number) {
+  return tableWrapper.findBodyCell(rowIndex, columnIndex).toSelector();
+}
+function cellEditButton$(rowIndex: number, columnIndex: number) {
+  return tableWrapper.findEditCellButton(rowIndex, columnIndex).toSelector();
+}
+function cellExpandToggle$(rowIndex: number) {
+  return tableWrapper.findExpandToggle(rowIndex).toSelector();
+}
+function cellError$(rowIndex: number, columnIndex: number) {
+  return tableWrapper.findBodyCell(rowIndex, columnIndex).findFormField().findError().toSelector();
+}
+function cellInput$(rowIndex: number, columnIndex: number) {
+  return tableWrapper.findBodyCell(rowIndex, columnIndex).findFormField().find('input').toSelector();
+}
+function cellSuccessIcon$(rowIndex: number, columnIndex: number) {
+  return tableWrapper.findBodyCell(rowIndex, columnIndex).findByClassName(styles['body-cell-success']).toSelector();
+}
 
 interface TestOptions {
   enableKeyboardNavigation?: boolean;
+  expandableRows?: boolean;
 }
 
 const setupTest = (
-  { enableKeyboardNavigation = false }: TestOptions,
+  { enableKeyboardNavigation = false, expandableRows = false }: TestOptions,
   testFn: (page: BasePageObject) => Promise<void>
 ) => {
   return useBrowser(async browser => {
     const page = new BasePageObject(browser);
     await page.setWindowSize({ width: 1200, height: 800 });
-    const query = new URLSearchParams({ enableKeyboardNavigation: String(enableKeyboardNavigation) });
+    const query = new URLSearchParams({
+      enableKeyboardNavigation: String(enableKeyboardNavigation),
+      expandableRows: String(expandableRows),
+    });
     await browser.url(`#/light/table/editable?${query.toString()}`);
     await testFn(page);
   });
 };
 
 test(
-  'input field is displayed when editable cell is clicked',
-  setupTest({}, async page => {
-    const value = await page.getText(cellRoot$);
-    await page.click(cellRoot$);
-    await expect(page.getValue(cellInputField$)).resolves.toBe(value);
+  'input field is displayed when click on editable cell',
+  setupTest({ expandableRows: false }, async page => {
+    const value = await page.getText(cell$(...distributionIdRow1));
+    await expect(page.isDisplayed(cellExpandToggle$(distributionIdRow1[0]))).resolves.toBe(false);
+    await page.click(cell$(...distributionIdRow1));
+    await expect(page.getValue(cellInput$(...distributionIdRow1))).resolves.toBe(value);
+    await expect(page.isDisplayed(cellSaveButton$)).resolves.toBe(true);
+  })
+);
+
+test(
+  'input field is displayed when click on cell edit button inside expandable column',
+  setupTest({ expandableRows: true }, async page => {
+    const value = await page.getText(cell$(...distributionIdRow1));
+    await expect(page.isDisplayed(cellExpandToggle$(distributionIdRow1[0]))).resolves.toBe(true);
+    await page.click(cellEditButton$(...distributionIdRow1));
+    await expect(page.getValue(cellInput$(...distributionIdRow1))).resolves.toBe(value);
+    await expect(page.isDisplayed(cellSaveButton$)).resolves.toBe(true);
+  })
+);
+
+test(
+  'disabled reason is displayed when click on disabled editable cell',
+  setupTest({ expandableRows: false }, async page => {
+    await expect(page.isDisplayed(cellExpandToggle$(distributionIdRow1[0]))).resolves.toBe(false);
+
+    // Click on cell with disabled inline edit
+    await page.click(cell$(...distributionIdRow2));
+    await expect(page.getText(liveRegion$)).resolves.toContain("You don't have the necessary permissions");
+
+    // Dismiss with click outside
+    await page.click('[data-testid="focus"]');
+    await expect(page.getElementsCount(liveRegion$)).resolves.toBe(0);
+  })
+);
+
+test(
+  'disabled reason is displayed when click on disabled edit button inside expandable column',
+  setupTest({ expandableRows: true }, async page => {
+    await expect(page.isDisplayed(cellExpandToggle$(distributionIdRow1[0]))).resolves.toBe(true);
+
+    // Click on cell with disabled inline edit
+    await page.click(cellEditButton$(...distributionIdRow2));
+    await expect(page.getText(liveRegion$)).resolves.toContain("You don't have the necessary permissions");
+
+    // Dismiss with click outside
+    await page.click('[data-testid="focus"]');
+    await expect(page.getElementsCount(liveRegion$)).resolves.toBe(0);
   })
 );
 
 test(
   'errorText is displayed when input field is invalid',
   setupTest({}, async page => {
-    await page.click(cellRoot$);
-    await page.setValue(cellInputField$, 'xyz .com'); // space is not allowed
-    await expect(page.getText(bodyCellError)).resolves.toBe(DOMAIN_ERROR);
+    await page.click(cell$(...domainNameRow2));
+    await page.setValue(cellInput$(...domainNameRow2), 'xyz .com'); // space is not allowed
+    await expect(page.getText(cellError$(...domainNameRow2))).resolves.toBe('Must be a valid domain name');
+    await expect(page.isDisplayed(cellSaveButton$)).resolves.toBe(true);
   })
-);
-
-test.each([false, true])(
-  'after edit is submitted, cell is focused, success icon is displayed and aria live region is rendered [enableKeyboardNavigation=%s]',
-  enableKeyboardNavigation => {
-    setupTest({ enableKeyboardNavigation }, async page => {
-      await page.click(cellRoot$);
-      await page.click(cellSaveButton.toSelector());
-
-      await expect(page.isFocused(cellEditButton$)).resolves.toBe(true);
-      await expect(page.isDisplayed(successIcon$)).resolves.toBe(true);
-      await expect(page.getElementProperty(ariaLiveAnnouncement$, 'textContent')).resolves.toBe('Edit successful');
-    });
-  }
 );
 
 test(
-  'can start editing with mouse',
+  'click focusable element outside when editing cancels editing and focuses clicked element',
   setupTest({}, async page => {
-    await page.click(cellEditButton$);
-    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
+    // Edit a cell
+    await page.click(cellEditButton$(...domainNameRow2));
+    await expect(page.isFocused(cellInput$(...domainNameRow2))).resolves.toBe(true);
+
+    // Click on the input element outside, it should get focused.
+    await page.click('[data-testid="focus"]');
+    await expect(page.isFocused('[data-testid="focus"]')).resolves.toBe(true);
   })
 );
 
-test.each(['Enter', 'Space'])('can start editing with %s key', key => {
-  setupTest({}, async page => {
-    // Focus element before the table
-    await page.click('[data-testid="focus"]');
-
-    // Tab to the first editable column
-    await page.keys(range(11).map(() => 'Tab'));
-    await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
-
-    // Activate with given key
-    await page.keys([key]);
-    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
-  });
-});
-
-test.each(['Enter', 'Space'])('can start editing with %s key with keyboard navigation', key => {
-  setupTest({}, async page => {
-    // Focus element before the table
-    await page.click('[data-testid="focus"]');
-
-    // Tab to the first cell
-    await page.keys(['Tab', 'Tab']);
-
-    // Navigate to the first editable column
-    await page.keys(['ArrowDown', 'ArrowRight']);
-    await expect(page.isFocused(tableWrapper.findEditCellButton(1, 2).toSelector())).resolves.toBe(true);
-
-    // Activate with given key
-    await page.keys([key]);
-    await expect(page.isDisplayed(cellSaveButton.toSelector())).resolves.toBe(true);
-  });
-});
-
-test.each([false, true])(
-  'cell focus is moved when arrow keys are pressed [enableKeyboardNavigation=%s]',
-  enableKeyboardNavigation => {
+describe.each([false, true])('enableKeyboardNavigation=%s', enableKeyboardNavigation => {
+  test(
+    'after edit is submitted, cell is focused, success icon is displayed and aria live region is rendered [enableKeyboardNavigation=%s]',
     setupTest({ enableKeyboardNavigation }, async page => {
-      await page.click(mainCell$);
-      await page.click(cellSaveButton.toSelector());
+      await page.click(cell$(...domainNameRow2));
+      await page.click(cellSaveButton$);
+
+      await expect(page.isFocused(cellEditButton$(...domainNameRow2))).resolves.toBe(true);
+      await expect(page.isDisplayed(cellSuccessIcon$(...domainNameRow2))).resolves.toBe(true);
+      await expect(page.getElementProperty(liveRegion$, 'textContent')).resolves.toBe('Edit successful');
+    })
+  );
+
+  test.each([
+    { expandableRows: false, key: 'Enter' },
+    { expandableRows: false, key: 'Space' },
+    { expandableRows: true, key: 'Enter' },
+    { expandableRows: true, key: 'Space' },
+  ])('can start editing with $key key, expandableRows=$expandableRows', async ({ expandableRows, key }) => {
+    await setupTest({ enableKeyboardNavigation, expandableRows }, async page => {
+      // Focus element before the table
+      await page.click('[data-testid="focus"]');
+
+      // Navigate to the target cell
+      if (enableKeyboardNavigation) {
+        await page.keys(['Tab', 'Tab']);
+        await page.keys(['ArrowDown', 'ArrowRight']);
+      } else {
+        await page.keys(range(12).map(() => 'Tab'));
+      }
+      const targetRow = (expandableRows ? distributionIdRow1 : domainNameRow1) as [number, number];
+      await expect(page.isFocused(cellEditButton$(...targetRow))).resolves.toBe(true);
+
+      // Activate with given key
+      await page.keys([key]);
+      await expect(page.isDisplayed(cellSaveButton$)).resolves.toBe(true);
+    })();
+  });
+
+  test(
+    'cell focus is moved when arrow keys are pressed',
+    setupTest({ enableKeyboardNavigation }, async page => {
+      await page.click(cell$(...tslVersionRow4));
+      await page.click(cellSaveButton$);
       await page.keys(['ArrowRight']);
-      await expect(page.isFocused(rightCell$)).resolves.toBe(true);
+      await expect(page.isFocused(cellEditButton$(tslVersionRow4[0], tslVersionRow4[1] + 1))).resolves.toBe(true);
       await page.keys(['ArrowLeft', 'ArrowLeft']);
-      await expect(page.isFocused(leftCell$)).resolves.toBe(true);
+      await expect(page.isFocused(cellEditButton$(tslVersionRow4[0], tslVersionRow4[1] - 1))).resolves.toBe(true);
       await page.keys(['ArrowRight', 'ArrowUp']);
-      await expect(page.isFocused(cellAbove$)).resolves.toBe(true);
+      await expect(page.isFocused(cellEditButton$(tslVersionRow4[0] - 1, tslVersionRow4[1]))).resolves.toBe(true);
       await page.keys(['ArrowDown', 'ArrowDown']);
-      await expect(page.isFocused(cellBelow$)).resolves.toBe(true);
-    });
-  }
-);
+      await expect(page.isFocused(cellEditButton$(tslVersionRow4[0] + 1, tslVersionRow4[1]))).resolves.toBe(true);
+    })
+  );
 
-test.each([false, true])(
-  'input is focused when the edit operation failed [enableKeyboardNavigation=%s]',
-  enableKeyboardNavigation => {
+  test(
+    'input is focused when the edit operation failed',
     setupTest({ enableKeyboardNavigation }, async page => {
-      await page.click(cellRoot$);
+      await page.click(cell$(...domainNameRow2));
 
       // "inline" is a special keyword that causes a server-side error
-      await page.setValue(cellInputField$, 'inline');
+      await page.setValue(cellInput$(...domainNameRow2), 'inline');
       await page.keys('Enter');
 
       // after loading, the focus should be back on the input
-      await page.waitForAssertion(() => expect(page.isFocused(cellInputField$)).resolves.toBe(true));
-    });
-  }
-);
+      await page.waitForAssertion(() => expect(page.isFocused(cellInput$(...domainNameRow2))).resolves.toBe(true));
+    })
+  );
 
-test.each([false, true])(
-  'click focusable element outside when editing cancels editing and focuses clicked element [enableKeyboardNavigation=%s]',
-  enableKeyboardNavigation => {
-    setupTest({ enableKeyboardNavigation }, async page => {
-      // Edit a cell
-      await page.click(cellEditButton$);
-      await expect(page.isFocused(cellInputField$)).resolves.toBe(true);
-
-      // Click on the input element outside, it should get focused.
-      await page.click('[data-testid="focus"]');
-      await expect(page.isFocused('[data-testid="focus"]')).resolves.toBe(true);
-    });
-  }
-);
-
-test(
-  'can activate and dismiss disabled reason popover with mouse',
-  setupTest({}, async page => {
-    // Click on cell with disabled inline edit
-    await page.click(disabledCell$);
-
-    await expect(page.getText(disabledCellLiveRegion$)).resolves.toContain(
-      "You don't have the necessary permissions to change a BrowserStack origin."
-    );
-
-    // Dismiss with Escape
-    await page.keys(['Escape']);
-    await expect(page.getElementsCount(disabledCellLiveRegion$)).resolves.toBe(0);
-  })
-);
-
-test.each([false, true])(
-  'can activate disabled reason popover with keyboard [enableKeyboardNavigation=%s]',
-  enableKeyboardNavigation => {
+  test(
+    'can activate disabled reason popover with keyboard',
     setupTest({ enableKeyboardNavigation }, async page => {
       // Navigate to a disabled cell
-      await page.click(mainCell$);
-      await page.click(cellSaveButton.toSelector());
+      await page.click(cell$(...tslVersionRow4));
+      await page.click(cellSaveButton$);
       await page.keys(['ArrowLeft']);
 
       // Activate the popover with Enter
       await page.keys(['Enter']);
+      await expect(page.getText(liveRegion$)).resolves.toContain("You don't have the necessary permissions");
 
-      await expect(page.getText(disabledCellLiveRegion$)).resolves.toContain(
-        "You don't have the necessary permissions to change a BrowserStack origin."
-      );
-    });
-  }
-);
+      // Dismiss popover
+      await page.keys(['Escape']);
+      await expect(page.getElementsCount(liveRegion$)).resolves.toBe(0);
+    })
+  );
+});

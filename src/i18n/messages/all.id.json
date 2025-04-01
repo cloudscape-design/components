@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "Abaikan anotasi",
     "i18nStrings.stepCounterText": "Langkah {stepNumber} dari {totalStepCount}",
     "i18nStrings.taskTitle": "Tugas {taskNumber}: {taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {Tutup anotasi untuk langkah {stepNumber} dari {totalStepCount}} false {Buka anotasi untuk langkah {stepNumber} dari {totalStepCount}} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {Anotasi untuk langkah {stepNumber} dari {totalStepCount}} false {Anotasi untuk langkah {stepNumber} dari {totalStepCount}} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "Laci",
@@ -84,9 +84,13 @@
     "i18nStrings.preferencesModalConfirm": "Konfirmasikan",
     "i18nStrings.preferencesModalWrapLines": "Bungkus baris",
     "i18nStrings.preferencesModalTheme": "Tema",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "Filter tema",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "Filter tema",
     "i18nStrings.preferencesModalLightThemes": "Tema terang",
     "i18nStrings.preferencesModalDarkThemes": "Tema gelap",
-    "i18nStrings.cursorPositionAriaLabel": "Kursor pada baris {row}"
+    "i18nStrings.cursorPositionAriaLabel": "Kursor pada baris {row}",
+    "i18nStrings.resizeHandleAriaLabel": "Tuas pengubah ukuran",
+    "i18nStrings.resizeHandleTooltipText": "Seret atau pilih untuk mengubah ukuran"
   },
   "collection-preferences": {
     "title": "Preferensi",
@@ -129,6 +133,7 @@
     "i18nStrings.relativeModeTitle": "Mode relatif",
     "i18nStrings.absoluteModeTitle": "Mode absolut",
     "i18nStrings.relativeRangeSelectionHeading": "Pilih rentang",
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": "Setiap opsi mewakili bulan penuh, yang dihitung dari hari pertama hingga hari terakhirnya.",
     "i18nStrings.cancelButtonLabel": "Batalkan",
     "i18nStrings.clearButtonLabel": "Hapus dan abaikan",
     "i18nStrings.applyButtonLabel": "Terapkan",
@@ -137,6 +142,12 @@
     "i18nStrings.customRelativeRangeUnitLabel": "Satuan waktu",
     "i18nStrings.customRelativeRangeDurationLabel": "Durasi",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "Masukkan durasi",
+    "i18nStrings.previousMonthAriaLabel": "Bulan sebelumnya",
+    "i18nStrings.nextMonthAriaLabel": "Bulan berikutnya",
+    "i18nStrings.previousYearAriaLabel": "Tahun sebelumnya",
+    "i18nStrings.nextYearAriaLabel": "Tahun berikutnya",
+    "i18nStrings.currentMonthAriaLabel": "Bulan ini",
+    "i18nStrings.todayAriaLabel": "Hari ini",
     "i18nStrings.startMonthLabel": "Bulan mulai",
     "i18nStrings.startDateLabel": "Tanggal mulai",
     "i18nStrings.startTimeLabel": "Waktu mulai",
@@ -144,6 +155,8 @@
     "i18nStrings.endDateLabel": "Tanggal berakhir",
     "i18nStrings.endTimeLabel": "Waktu berakhir",
     "i18nStrings.dateTimeConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT. Untuk waktu, gunakan format 24 jam.",
+    "i18nStrings.dateConstraintText": "Untuk tanggal, gunakan HH/BB/TTTT.",
+    "i18nStrings.monthConstraintText": "Untuk bulan, gunakan BB/TTTT.",
     "i18nStrings.errorIconAriaLabel": "Kesalahan",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "Rentang dipilih dari {startDate} hingga {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {{amount} detik terakhir} one {{amount} detik terakhir} other {{amount} detik terakhir}}} minute {{amount, plural, zero {{amount} menit terakhir} one {{amount} menit terakhir} other {{amount} menit terakhir}}} hour {{amount, plural, zero {{amount} jam terakhir} one {{amount} jam terakhir} other {{amount} jam terakhir}}} day {{amount, plural, zero {{amount} hari terakhir} one {{amount} hari terakhir} other {{amount} hari terakhir}}} week {{amount, plural, zero {{amount} minggu terakhir} one {{amount} minggu terakhir} other {{amount} minggu terakhir}}} month {{amount, plural, zero {{amount} bulan terakhir} one {{amount} bulan terakhir} other {{amount} bulan terakhir}}} year {{amount, plural, zero {{amount} tahun terakhir} one {{amount} tahun terakhir} other {{amount} tahun terakhir}}} other {}}",
@@ -198,7 +211,8 @@
     "closeAriaLabel": "Tutup modal"
   },
   "multiselect": {
-    "deselectAriaLabel": "Hapus {option__label}"
+    "deselectAriaLabel": "Hapus {option__label}",
+    "i18nStrings.selectAllText": "Pilih semua"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "Halaman berikutnya",
@@ -307,6 +321,8 @@
     "i18nStrings.labelFiltering": "Temukan {itemsType}",
     "i18nStrings.labelRefresh": "Segarkan data",
     "i18nStrings.labelBreadcrumbs": "Navigasi S3",
+    "i18nStrings.labelIconFolder": "Folder",
+    "i18nStrings.labelIconObject": "Objek",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 kecocokan} other {{count} kecocokan}}"
   },
   "select": {

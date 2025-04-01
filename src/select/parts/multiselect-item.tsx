@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import { getBaseProps } from '../../internal/base-component';
 import CheckboxIcon from '../../internal/components/checkbox-icon';
@@ -32,6 +32,8 @@ const MultiSelectItem = (
     ariaPosinset,
     ariaSetsize,
     highlightType,
+    withScrollbar,
+    sticky,
     ...restProps
   }: MultiselectItemProps,
   ref: React.Ref<HTMLDivElement>
@@ -40,6 +42,7 @@ const MultiSelectItem = (
 
   const isParent = option.type === 'parent';
   const isChild = option.type === 'child';
+  const isSelectAll = option.type === 'select-all';
   const wrappedOption: OptionDefinition = option.option;
   const disabled = option.disabled || wrappedOption.disabled;
   const disabledReason =
@@ -52,6 +55,8 @@ const MultiSelectItem = (
 
   const { descriptionId, descriptionEl } = useHiddenDescription(disabledReason);
 
+  const [canShowTooltip, setCanShowTooltip] = useState(true);
+  useEffect(() => setCanShowTooltip(true), [highlighted]);
   return (
     <SelectableItem
       ariaChecked={isParent && indeterminate ? 'mixed' : Boolean(selected)}
@@ -61,6 +66,7 @@ const MultiSelectItem = (
       disabled={disabled}
       isParent={isParent}
       isChild={isChild}
+      isSelectAll={isSelectAll}
       highlightType={highlightType}
       ref={useMergeRefs(ref, internalRef)}
       virtualPosition={virtualPosition}
@@ -71,12 +77,19 @@ const MultiSelectItem = (
       ariaSetsize={ariaSetsize}
       ariaDescribedby={isDisabledWithReason ? descriptionId : ''}
       value={option.option.value}
+      afterHeader={option.afterHeader}
+      withScrollbar={withScrollbar}
+      sticky={sticky}
       {...baseProps}
     >
       <div className={className}>
         {hasCheckbox && (
           <div className={styles.checkbox}>
-            <CheckboxIcon checked={selected} indeterminate={isParent && indeterminate} disabled={option.disabled} />
+            <CheckboxIcon
+              checked={selected}
+              indeterminate={(isParent || isSelectAll) && indeterminate}
+              disabled={disabled}
+            />
           </div>
         )}
         <Option
@@ -90,13 +103,14 @@ const MultiSelectItem = (
       {isDisabledWithReason && (
         <>
           {descriptionEl}
-          {highlighted && (
+          {highlighted && canShowTooltip && (
             <Tooltip
               className={styles['disabled-reason-tooltip']}
               trackRef={internalRef}
               value={disabledReason!}
               position="right"
               hideOnOverscroll={true}
+              onDismiss={() => setCanShowTooltip(false)}
             />
           )}
         </>

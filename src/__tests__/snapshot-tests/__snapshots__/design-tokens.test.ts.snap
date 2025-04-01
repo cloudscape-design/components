@@ -95,8 +95,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -319,8 +319,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -424,8 +424,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-status-error": {
@@ -2146,8 +2146,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-status-error": {
@@ -2634,8 +2634,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -2858,8 +2858,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -2963,8 +2963,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-status-error": {
@@ -4685,8 +4685,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-status-error": {
@@ -5173,8 +5173,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -5397,8 +5397,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -5502,8 +5502,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-status-error": {
@@ -7224,8 +7224,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-status-error": {
@@ -7712,8 +7712,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -7936,8 +7936,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -8041,8 +8041,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-status-error": {
@@ -9763,8 +9763,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-status-error": {
@@ -10251,8 +10251,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -10475,8 +10475,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -10580,8 +10580,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#ffffff",
+            "dark": "#21252c",
+            "light": "#fafafa",
           },
         },
         "color-background-status-error": {
@@ -12302,8 +12302,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#0073bb",
+            "dark": "#fafafa",
+            "light": "#16191f",
           },
         },
         "color-text-status-error": {
@@ -12790,8 +12790,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -13014,8 +13014,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -13119,8 +13119,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#2a2e33",
-            "light": "#2a2e33",
+            "dark": "#21252c",
+            "light": "#21252c",
           },
         },
         "color-background-status-error": {
@@ -14841,8 +14841,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#00a1c9",
-            "light": "#00a1c9",
+            "dark": "#fafafa",
+            "light": "#fafafa",
           },
         },
         "color-text-status-error": {
@@ -15329,8 +15329,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-background-avatar-gen-ai": {
       "$description": "The gen-ai background color of avatars.",
       "$value": {
-        "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-        "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+        "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+        "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
       },
     },
     "color-background-button-normal-active": {
@@ -15553,8 +15553,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-background-loading-bar-gen-ai": {
       "$description": "The background color of gen-ai loading bars.",
       "$value": {
-        "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-        "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+        "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+        "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
       },
     },
     "color-background-notification-blue": {
@@ -15658,8 +15658,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-background-segment-hover": {
       "$description": "The background color of inactive segments in a segmented control on hover.",
       "$value": {
-        "dark": "#2a2e33",
-        "light": "#ffffff",
+        "dark": "#21252c",
+        "light": "#fafafa",
       },
     },
     "color-background-status-error": {
@@ -17380,8 +17380,8 @@ exports[`Design tokens artifacts Design tokens JSON for classic matches the snap
     "color-text-segment-hover": {
       "$description": "The text color of inactive segments in a segmented control on hover.",
       "$value": {
-        "dark": "#00a1c9",
-        "light": "#0073bb",
+        "dark": "#fafafa",
+        "light": "#16191f",
       },
     },
     "color-text-status-error": {
@@ -17873,8 +17873,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -18097,8 +18097,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -18202,8 +18202,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(255, 255, 255, 0.1)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-status-error": {
@@ -19924,8 +19924,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#ffffff",
+            "light": "#0f141a",
           },
         },
         "color-text-status-error": {
@@ -20412,8 +20412,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -20636,8 +20636,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -20741,8 +20741,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(255, 255, 255, 0.1)",
+            "light": "rgba(255, 255, 255, 0.1)",
           },
         },
         "color-background-status-error": {
@@ -22463,8 +22463,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-status-error": {
@@ -22951,8 +22951,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -23175,8 +23175,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -23280,8 +23280,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#ffffff",
+            "dark": "#1b232d",
+            "light": "#f0fbff",
           },
         },
         "color-background-status-error": {
@@ -25002,8 +25002,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#75cfff",
+            "light": "#002b66",
           },
         },
         "color-text-status-error": {
@@ -25490,8 +25490,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -25714,8 +25714,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -25819,8 +25819,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(0, 7, 22, 0.15)",
+            "light": "rgba(0, 7, 22, 0.15)",
           },
         },
         "color-background-status-error": {
@@ -27541,8 +27541,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#ffffff",
+            "light": "#ffffff",
           },
         },
         "color-text-status-error": {
@@ -28029,8 +28029,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -28253,8 +28253,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -28358,8 +28358,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "transparent",
-            "light": "transparent",
+            "dark": "rgba(0, 7, 22, 0.05)",
+            "light": "rgba(0, 7, 22, 0.05)",
           },
         },
         "color-background-status-error": {
@@ -30080,8 +30080,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#006ce0",
+            "dark": "#0f141a",
+            "light": "#0f141a",
           },
         },
         "color-text-status-error": {
@@ -30568,8 +30568,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -30792,8 +30792,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -30897,8 +30897,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#0f141a",
-            "light": "#0f141a",
+            "dark": "#1b232d",
+            "light": "#1b232d",
           },
         },
         "color-background-status-error": {
@@ -32619,8 +32619,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-status-error": {
@@ -33107,8 +33107,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-avatar-gen-ai": {
           "$description": "The gen-ai background color of avatars.",
           "$value": {
-            "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-            "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+            "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+            "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
           },
         },
         "color-background-button-normal-active": {
@@ -33331,8 +33331,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-loading-bar-gen-ai": {
           "$description": "The background color of gen-ai loading bars.",
           "$value": {
-            "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-            "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+            "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+            "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
           },
         },
         "color-background-notification-blue": {
@@ -33436,8 +33436,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-background-segment-hover": {
           "$description": "The background color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#161d26",
-            "light": "#161d26",
+            "dark": "#1b232d",
+            "light": "#1b232d",
           },
         },
         "color-background-status-error": {
@@ -35158,8 +35158,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
         "color-text-segment-hover": {
           "$description": "The text color of inactive segments in a segmented control on hover.",
           "$value": {
-            "dark": "#42b4ff",
-            "light": "#42b4ff",
+            "dark": "#75cfff",
+            "light": "#75cfff",
           },
         },
         "color-text-status-error": {
@@ -35646,8 +35646,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-avatar-gen-ai": {
       "$description": "The gen-ai background color of avatars.",
       "$value": {
-        "dark": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
-        "light": "radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)",
+        "dark": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
+        "light": "radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)",
       },
     },
     "color-background-button-normal-active": {
@@ -35870,8 +35870,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-loading-bar-gen-ai": {
       "$description": "The background color of gen-ai loading bars.",
       "$value": {
-        "dark": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
-        "light": "linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)",
+        "dark": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
+        "light": "linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)",
       },
     },
     "color-background-notification-blue": {
@@ -35975,8 +35975,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-background-segment-hover": {
       "$description": "The background color of inactive segments in a segmented control on hover.",
       "$value": {
-        "dark": "#161d26",
-        "light": "#ffffff",
+        "dark": "#1b232d",
+        "light": "#f0fbff",
       },
     },
     "color-background-status-error": {
@@ -37697,8 +37697,8 @@ exports[`Design tokens artifacts Design tokens JSON for visual-refresh matches t
     "color-text-segment-hover": {
       "$description": "The text color of inactive segments in a segmented control on hover.",
       "$value": {
-        "dark": "#42b4ff",
-        "light": "#006ce0",
+        "dark": "#75cfff",
+        "light": "#002b66",
       },
     },
     "color-text-status-error": {

@@ -66,6 +66,12 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
     locale = 'en';
   }
 
+  // Create a per-render cache of messages and IntlMessageFormat instances.
+  // Not memoizing it allows us to reset the cache when the component rerenders
+  // with potentially different locale or messages. We expect this component to
+  // be placed above AppLayout and therefore rerender very infrequently.
+  const localeFormatterCache = new Map<string, IntlMessageFormat>();
+
   const format: FormatFunction = <ReturnValue, FormatFnArgs extends Record<string, string | number>>(
     namespace: string,
     component: string,
@@ -73,31 +79,42 @@ export function I18nProvider({ messages: messagesArray, locale: providedLocale, 
     provided: ReturnValue,
     customHandler?: CustomHandler<ReturnValue, FormatFnArgs>
   ): ReturnValue => {
-    // A general rule in the library is that undefined is basically
+    // A general rule in this library is that undefined is basically
     // treated as "not provided". So even if a user explicitly provides an
-    // undefined value, it will default to i18n values.
+    // undefined value, it will default to i18n provider values.
     if (provided !== undefined) {
       return provided;
     }
 
-    // Widen the locale string (e.g. en-GB -> en) until we find a locale
-    // that contains the message we need.
-    let message: string | MessageFormatElement[] | undefined;
-    const matchableLocales = getMatchableLocales(locale);
-    for (const matchableLocale of matchableLocales) {
-      const localeMessage = messages?.[namespace]?.[matchableLocale]?.[component]?.[key];
-      if (localeMessage !== undefined) {
-        message = localeMessage;
-        break;
+    const cacheKey = `${namespace}.${component}.${key}`;
+    let intlMessageFormat: IntlMessageFormat;
+
+    const cachedFormatter = localeFormatterCache.get(cacheKey);
+    if (cachedFormatter) {
+      // If an IntlMessageFormat instance was cached for this locale, just use that.
+      intlMessageFormat = cachedFormatter;
+    } else {
+      // Widen the locale string (e.g. en-GB -> en) until we find a locale
+      // that contains the message we need.
+      let message: string | MessageFormatElement[] | undefined;
+      const matchableLocales = getMatchableLocales(locale);
+      for (const matchableLocale of matchableLocales) {
+        message = messages?.[namespace]?.[matchableLocale]?.[component]?.[key];
+        if (message !== undefined) {
+          break;
+        }
       }
+
+      // If a message wasn't found, exit early.
+      if (message === undefined) {
+        return provided;
+      }
+
+      // Lazily create an IntlMessageFormat object for this key.
+      intlMessageFormat = new IntlMessageFormat(message, locale);
+      localeFormatterCache.set(cacheKey, intlMessageFormat);
     }
 
-    // If a message wasn't found, exit early.
-    if (message === undefined) {
-      return provided;
-    }
-
-    const intlMessageFormat = new IntlMessageFormat(message, locale);
     if (customHandler) {
       return customHandler(args => intlMessageFormat.format(args) as string);
     }

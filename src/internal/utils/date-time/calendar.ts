@@ -1,12 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-import addMonths from 'date-fns/addMonths';
-import isAfter from 'date-fns/isAfter';
-import isBefore from 'date-fns/isBefore';
-import isSameDay from 'date-fns/isSameDay';
-import isSameMonth from 'date-fns/isSameMonth';
-import subMonths from 'date-fns/subMonths';
+import { addMonths, isAfter, isBefore, isSameDay, isSameMonth, isSameYear, subMonths } from 'date-fns';
 import { getCalendarMonth } from 'mnth';
 
 import { DayIndex } from '../locale';
@@ -19,12 +14,10 @@ export function getCalendarYear(date: Date): Date[][] {
     .map((_, i: number) => new Array(3).fill(0).map((_, j: number) => new Date(year, i * 3 + j)));
 }
 
-interface CalendarWeek {
-  days: CalendarDate[];
-  testIndex?: number;
-}
-
-interface CalendarDate {
+export interface CalendarDate {
+  /**
+   * could represent one day or or one complete month depending on the type of calendar
+   */
   date: Date;
   isVisible: boolean;
   isSelected: boolean;
@@ -33,6 +26,14 @@ interface CalendarDate {
   isSelectionBottom: boolean;
   isSelectionLeft: boolean;
   isSelectionRight: boolean;
+}
+export interface CalendarWeek {
+  days: CalendarDate[];
+  testIndex?: number;
+}
+
+export interface CalendarQuarter {
+  months: CalendarDate[];
 }
 
 export class MonthCalendar {
@@ -76,7 +77,7 @@ export class MonthCalendar {
     const isDateInRange = (weekIndex: number, dayIndex: number) => {
       const week = allCalendarDates[weekIndex];
       const date = week?.[dayIndex];
-      return !!(date && selection && checkIsInRange(date, selection[0], selection[1]));
+      return !!(date && selection && checkDateIsInRange(date, selection[0], selection[1]));
     };
 
     // The test index is only set for weeks that have at least one day that belongs to the current month.
@@ -109,6 +110,7 @@ export class MonthCalendar {
         const isRangeBottom = isInRange && !isDateInRange(weekIndex + 1, dayIndex);
         const isRangeLeft = isInRange && !isDateInRange(weekIndex, dayIndex - 1);
         const isRangeRight = isInRange && !isDateInRange(weekIndex, dayIndex + 1);
+
         week.days.push({
           date,
           isVisible,
@@ -125,6 +127,65 @@ export class MonthCalendar {
   }
 }
 
+export class YearCalendar {
+  quarters: CalendarQuarter[];
+  range: [Date, Date];
+
+  constructor({ baseDate, selection }: { baseDate: Date; selection: null | [Date, Date] }) {
+    this.quarters = [];
+    this.range = [baseDate, baseDate];
+
+    const allCalendarMonths = getCalendarYear(baseDate);
+
+    const isMonthInRange = (quarterIndex: number, monthIndex: number) => {
+      const quarter = allCalendarMonths[quarterIndex];
+      const month = quarter?.[monthIndex];
+      return !!(month && selection && checkMonthIsInRange(month, selection[0], selection[1]));
+    };
+
+    const isMonthVisible = (quarterIndex: number, monthIndex: number) => {
+      const quarter = allCalendarMonths[quarterIndex];
+      const month = quarter?.[monthIndex];
+      if (!month) {
+        return false;
+      }
+      return isSameYear(month, baseDate);
+    };
+
+    for (let quarterIndex = 0; quarterIndex < allCalendarMonths.length; quarterIndex++) {
+      const monthsOfQuarter = allCalendarMonths[quarterIndex];
+      const quarter: CalendarQuarter = { months: [] };
+
+      for (let monthIndex = 0; monthIndex < monthsOfQuarter.length; monthIndex++) {
+        const month = monthsOfQuarter[monthIndex];
+        const isVisible = isMonthVisible(quarterIndex, monthIndex);
+        const isSelected = !!(selection && (isSameMonth(month, selection[0]) || isSameMonth(month, selection[1])));
+        const isInRange = isMonthInRange(quarterIndex, monthIndex);
+        const isTop = isVisible && !isMonthVisible(quarterIndex - 1, monthIndex);
+        const isBottom = isVisible && !isMonthVisible(quarterIndex + 1, monthIndex);
+        const isLeft = isVisible && !isMonthVisible(quarterIndex, monthIndex - 1);
+        const isRight = isVisible && !isMonthVisible(quarterIndex, monthIndex + 1);
+        const isRangeTop = isInRange && !isMonthInRange(quarterIndex - 1, monthIndex);
+        const isRangeBottom = isInRange && !isMonthInRange(quarterIndex + 1, monthIndex);
+        const isRangeLeft = isInRange && !isMonthInRange(quarterIndex, monthIndex - 1);
+        const isRangeRight = isInRange && !isMonthInRange(quarterIndex, monthIndex + 1);
+
+        quarter.months.push({
+          date: month,
+          isVisible,
+          isSelected,
+          isInRange,
+          isSelectionTop: isTop || isRangeTop,
+          isSelectionBottom: isBottom || isRangeBottom,
+          isSelectionLeft: isLeft || isRangeLeft,
+          isSelectionRight: isRight || isRangeRight,
+        });
+      }
+      this.quarters.push(quarter);
+    }
+  }
+}
+
 export function getCalendarMonthWithSixRows(
   date: Date,
   { startOfWeek, padDates }: { startOfWeek: DayIndex; padDates: 'before' | 'after' }
@@ -137,7 +198,7 @@ export function getCalendarMonthWithSixRows(
   }
 }
 
-function checkIsInRange(date: Date, dateOne: Date | null, dateTwo: Date | null) {
+function checkDateIsInRange(date: Date, dateOne: Date | null, dateTwo: Date | null) {
   if (!dateOne || !dateTwo || isSameDay(dateOne, dateTwo)) {
     return false;
   }
@@ -148,17 +209,28 @@ function checkIsInRange(date: Date, dateOne: Date | null, dateTwo: Date | null) 
   return inRange || isSameDay(date, dateOne) || isSameDay(date, dateTwo);
 }
 
-function getCurrentMonthRows(date: Date, firstDayOfWeek: DayIndex) {
+function checkMonthIsInRange(date: Date, dateOne: Date | null, dateTwo: Date | null) {
+  if (!dateOne || !dateTwo || isSameMonth(dateOne, dateTwo)) {
+    return false;
+  }
+
+  const inRange =
+    (isAfter(date, dateOne) && isBefore(date, dateTwo)) || (isAfter(date, dateTwo) && isBefore(date, dateOne));
+
+  return inRange || isSameMonth(date, dateOne) || isSameMonth(date, dateTwo);
+}
+
+export function getCurrentMonthRows(date: Date, firstDayOfWeek: DayIndex) {
   return getCalendarMonth(date, { firstDayOfWeek });
 }
 
-function getPrevMonthRows(date: Date, firstDayOfWeek: DayIndex) {
+export function getPrevMonthRows(date: Date, firstDayOfWeek: DayIndex) {
   const rows = getCalendarMonth(subMonths(date, 1), { firstDayOfWeek });
   const lastDay = rows[rows.length - 1][rows[rows.length - 1].length - 1];
   return !isSameMonth(date, lastDay) ? rows : rows.slice(0, -1);
 }
 
-function getNextMonthRows(date: Date, firstDayOfWeek: DayIndex) {
+export function getNextMonthRows(date: Date, firstDayOfWeek: DayIndex) {
   const rows = getCalendarMonth(addMonths(date, 1), { firstDayOfWeek });
   const firstDay = rows[0][0];
   return !isSameMonth(date, firstDay) ? rows : rows.slice(1);

@@ -526,7 +526,9 @@ describe('Tag Editor component', () => {
 
       wrapper.findAddButton().click();
       rerender();
-      expect(wrapper.findRow(2)!.findAutosuggest()!.findNativeInput().getElement()).toHaveFocus();
+      expect(
+        wrapper.findRow(2)!.findField(1)!.findControl()!.findAutosuggest()!.findNativeInput().getElement()
+      ).toHaveFocus();
     });
 
     test('should focus undo button when removing an existing tag', () => {
@@ -569,7 +571,13 @@ describe('Tag Editor component', () => {
 
       wrapper.findRow(1)!.findRemoveButton()!.click();
       rerender();
-      const nextInput = wrapper.findRow(1)!.findAutosuggest()!.findNativeInput().getElement();
+      const nextInput = wrapper
+        .findRow(1)!
+        .findField(1)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
       expect(nextInput).toHaveValue('key2');
       expect(nextInput).toHaveFocus();
     });
@@ -584,7 +592,13 @@ describe('Tag Editor component', () => {
 
       wrapper.findRow(2)!.findRemoveButton()!.click();
       rerender();
-      const nextInput = wrapper.findRow(1)!.findAutosuggest()!.findNativeInput().getElement();
+      const nextInput = wrapper
+        .findRow(1)!
+        .findField(1)!
+        .findControl()!
+        .findAutosuggest()!
+        .findNativeInput()
+        .getElement();
       expect(nextInput).toHaveValue('key');
       expect(nextInput).toHaveFocus();
     });

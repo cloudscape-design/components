@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { expandColorDictionary } from '../utils';
-import { StyleDictionary } from '../utils/interfaces';
+import { expandColorDictionary } from '../utils/index.js';
+import { StyleDictionary } from '../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorsDictionary = {
   colorGreyOpaque10: 'rgba(0, 0, 0, 0.1)',
@@ -26,6 +26,12 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundButtonPrimaryDefault: '{colorBorderButtonNormalDefault}',
   colorBackgroundButtonPrimaryDisabled: { light: '{colorGrey200}', dark: '{colorGrey700}' },
   colorBackgroundButtonPrimaryHover: '{colorBorderButtonNormalHover}',
+  colorBackgroundDirectionButtonActive: '{colorGrey700}',
+  colorBackgroundDirectionButtonDefault: '{colorGrey600}',
+  colorBackgroundDirectionButtonDisabled: { light: '{colorGrey200}', dark: '{colorGrey700}' },
+  colorBackgroundDirectionButtonHover: '{colorGrey650}',
+  colorTextDirectionButtonDefault: '{colorWhite}',
+  colorTextDirectionButtonDisabled: '{colorTextInteractiveDisabled}',
   colorBackgroundCalendarCurrentDate: { light: '{colorGrey150}', dark: '{colorGrey650}' },
   colorBackgroundCellShaded: { light: '{colorGrey125}', dark: '{colorGrey750}' },
   colorBackgroundCodeEditorGutterActiveLineDefault: { light: '{colorGrey550}', dark: '{colorGrey500}' },
@@ -75,7 +81,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundSegmentActive: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBackgroundSegmentDefault: '{colorBackgroundButtonNormalDefault}',
   colorBackgroundSegmentDisabled: '{colorBackgroundButtonNormalDisabled}',
-  colorBackgroundSegmentHover: '{colorBackgroundSegmentDefault}',
+  colorBackgroundSegmentHover: '{colorBackgroundButtonNormalHover}',
   colorBackgroundSliderHandleDefault: { light: '{colorBlue600}', dark: '{colorBlue500}' },
   colorBackgroundSliderHandleActive: { light: '{colorBlue700}', dark: '{colorBlue400}' },
   colorBackgroundSliderTrack: { light: '{colorGrey500}', dark: '{colorGrey550}' },
@@ -92,11 +98,11 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorBackgroundToggleCheckedDisabled: { light: '{colorBlue300}', dark: '{colorBlue800}' },
   colorBackgroundToggleDefault: { light: '{colorGrey600}', dark: '{colorGrey500}' },
   colorBackgroundAvatarGenAi:
-    'radial-gradient(circle farthest-corner at top left,rgba(0, 150, 250, 1) -25%,rgba(0, 150, 250, 0) 55%),radial-gradient(circle farthest-corner at top right, rgba(216, 178, 255, 1) -10%, rgba(115, 0, 229, 1) 50%)',
+    'radial-gradient(circle farthest-corner at top right, #b8e7ff 0%, #0099ff 25%, #5c7fff 40% , #8575ff 60%, #962eff 80%)',
   colorBackgroundAvatarDefault: '{colorGrey600}',
   colorTextAvatar: '{colorWhite}',
   colorBackgroundLoadingBarGenAi:
-    'linear-gradient(90deg, #99f7ff 0%, #0096fa 10%, #bf80ff 24%, #7300e5 50%, #bf80ff 76%, #0096fa 90%, #99f7ff 100%)',
+    'linear-gradient(90deg, #b8e7ff 0%, #0099ff 10%, #5c7fff 24%, #8575ff 50%, #962eff 76%, #0099ff 90%, #b8e7ff 100%)',
   colorBackgroundChatBubbleOutgoing: 'transparent',
   colorBackgroundChatBubbleIncoming: { light: '{colorGrey125}', dark: '{colorGrey900}' },
   colorTextChatBubbleOutgoing: '{colorTextBodyDefault}',
@@ -252,7 +258,7 @@ const tokens: StyleDictionary.ColorsDictionary = {
   colorTextPaginationPageNumberDefault: { light: '{colorTextInteractiveDefault}', dark: '{colorGrey400}' },
   colorTextSegmentActive: { light: '{colorWhite}', dark: '{colorGrey900}' },
   colorTextSegmentDefault: { light: '{colorGrey600}', dark: '{colorGrey300}' },
-  colorTextSegmentHover: { light: '{colorBlue600}', dark: '{colorBlue500}' },
+  colorTextSegmentHover: '{colorTextButtonNormalHover}',
   colorTextSmall: { light: '{colorGrey550}', dark: '{colorGrey450}' },
   colorTextStatusError: { light: '{colorRed600}', dark: '{colorRed500}' },
   colorTextStatusInactive: { light: '{colorGrey550}', dark: '{colorGrey450}' },

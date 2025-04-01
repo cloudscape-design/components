@@ -116,7 +116,7 @@ describe('extended operators', () => {
     // Click cancel
     act(() => wrapper.findPropertyCancelButton()!.click());
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).not.toBeCalled();
+    expect(onChange).not.toHaveBeenCalled();
     expect(wrapper.findNativeInput().getElement()).toHaveFocus();
 
     // Decrement value
@@ -126,7 +126,7 @@ describe('extended operators', () => {
     // Click submit
     act(() => wrapper.findPropertySubmitButton()!.click());
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(
       expect.objectContaining({
         detail: {
           operation: 'and',
@@ -163,7 +163,7 @@ describe('extended operators', () => {
     expect(wrapper.findDropdown()?.findOpenDropdown()).toBeFalsy();
 
     // Reopen dropdown
-    wrapper.setInputValue('index >');
+    wrapper.setInputValue('index > ');
     expect(wrapper.find('[data-testid="change+"]')!.getElement()).toHaveTextContent('0');
   });
 

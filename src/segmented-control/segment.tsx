@@ -7,6 +7,7 @@ import InternalIcon from '../icon/internal';
 import Tooltip from '../internal/components/tooltip';
 import useHiddenDescription from '../internal/hooks/use-hidden-description';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
 import { SegmentedControlProps } from './interfaces';
 
 import styles from './styles.css.js';
@@ -41,10 +42,16 @@ export const Segment = React.forwardRef(
     const isDisabledWithReason = disabled && !!disabledReason;
 
     const { targetProps, descriptionEl } = useHiddenDescription(disabledReason);
+    const isVisualRefresh = useVisualRefresh();
 
     return (
       <button
-        className={clsx(styles.segment, { [styles.disabled]: !!disabled }, { [styles.selected]: isActive })}
+        className={clsx(
+          styles.segment,
+          { [styles.disabled]: !!disabled },
+          { [styles.selected]: isActive },
+          { [styles.refresh]: isVisualRefresh }
+        )}
         ref={useMergeRefs(ref, buttonRef)}
         onClick={onClick}
         onKeyDown={onKeyDown}
@@ -77,7 +84,12 @@ export const Segment = React.forwardRef(
           <>
             {descriptionEl}
             {showTooltip && (
-              <Tooltip className={styles['disabled-reason-tooltip']} trackRef={buttonRef} value={disabledReason!} />
+              <Tooltip
+                className={styles['disabled-reason-tooltip']}
+                trackRef={buttonRef}
+                value={disabledReason!}
+                onDismiss={() => setShowTooltip(false)}
+              />
             )}
           </>
         )}

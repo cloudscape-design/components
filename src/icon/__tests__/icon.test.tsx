@@ -85,6 +85,28 @@ describe('Icon Component', () => {
       expect(img).toHaveAttribute('alt', 'custom icon');
     });
 
+    test('should render a custom icon with alternate text when a url and ariaLabel are provided', () => {
+      const { container } = render(<Icon url={url} ariaLabel="custom icon" />);
+      const wrapper = createWrapper(container);
+      expect(wrapper.findIcon()!.getElement()).not.toHaveAttribute('aria-label');
+      expect(container.querySelector('img')).toHaveAttribute('alt', 'custom icon');
+    });
+
+    test('should prefer ariaLabel when alt is also provided', () => {
+      const { container } = render(<Icon url={url} alt="icon alt" ariaLabel="custom icon" />);
+      const wrapper = createWrapper(container);
+      expect(wrapper.findIcon()!.getElement()).not.toHaveAttribute('aria-label');
+      expect(container.querySelector('img')).toHaveAttribute('alt', 'custom icon');
+    });
+
+    test('should not set aria-hidden="true" for custom svg icons if an ariaLabel is provided', () => {
+      const { container } = render(<Icon svg={svg} ariaLabel="custom icon" />);
+      const wrapper = createWrapper(container);
+      expect(wrapper.findIcon()!.getElement()).not.toHaveAttribute('aria-hidden', 'true');
+      expect(wrapper.findIcon()!.getElement()).toHaveAttribute('role', 'img');
+      expect(wrapper.findIcon()!.getElement()).toHaveAttribute('aria-label', 'custom icon');
+    });
+
     test('should render a custom icon when both name and url are provided', () => {
       const { container } = render(<Icon url={url} name="calendar" />);
       const img = container.querySelector('img');
@@ -124,6 +146,20 @@ describe('Icon Component', () => {
   test('should not render anything when neither name, url, or svg are provided', () => {
     const { container } = render(<Icon />);
     expect(container.firstElementChild).toBeEmptyDOMElement();
+  });
+
+  test('sets role="img" and the label on the wrapper element when provided', () => {
+    const { container } = render(<Icon name="calendar" ariaLabel="Calendar" />);
+    const wrapper = createWrapper(container);
+    expect(wrapper.findIcon()!.getElement()).toHaveAttribute('role', 'img');
+    expect(wrapper.findIcon()!.getElement()).toHaveAttribute('aria-label', 'Calendar');
+  });
+
+  test('sets role="img" and the label on the wrapper element even when ariaLabel is an empty string', () => {
+    const { container } = render(<Icon name="calendar" ariaLabel="" />);
+    const wrapper = createWrapper(container);
+    expect(wrapper.findIcon()!.getElement()).toHaveAttribute('role', 'img');
+    expect(wrapper.findIcon()!.getElement()).toHaveAttribute('aria-label', '');
   });
 
   describe('Prototype Pollution attack', () => {

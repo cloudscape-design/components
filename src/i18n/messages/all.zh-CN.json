@@ -25,7 +25,7 @@
     "i18nStrings.labelDismissAnnotation": "关闭注释",
     "i18nStrings.stepCounterText": "第 {stepNumber} 步，共 {totalStepCount} 步",
     "i18nStrings.taskTitle": "任务 {taskNumber}：{taskTitle}",
-    "i18nStrings.labelHotspot": "{openState, select, true {关闭第 {stepNumber} 步（共 {totalStepCount} 步）的注释} false {打开第 {stepNumber} 步（共 {totalStepCount} 步）的注释} other {}}"
+    "i18nStrings.labelHotspot": "{openState, select, true {第 {stepNumber} 步（共 {totalStepCount} 步）的注释} false {第 {stepNumber} 步（共 {totalStepCount} 步）的注释} other {}}"
   },
   "app-layout": {
     "ariaLabels.drawers": "抽屉",
@@ -84,9 +84,13 @@
     "i18nStrings.preferencesModalConfirm": "确认",
     "i18nStrings.preferencesModalWrapLines": "换行",
     "i18nStrings.preferencesModalTheme": "主题",
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": "筛选主题",
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": "筛选主题",
     "i18nStrings.preferencesModalLightThemes": "浅色主题",
     "i18nStrings.preferencesModalDarkThemes": "深色主题",
-    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行"
+    "i18nStrings.cursorPositionAriaLabel": "光标位于第 {row} 行",
+    "i18nStrings.resizeHandleAriaLabel": "调整手柄的大小",
+    "i18nStrings.resizeHandleTooltipText": "通过拖动或选择来调整大小"
   },
   "collection-preferences": {
     "title": "首选项",
@@ -129,6 +133,7 @@
     "i18nStrings.relativeModeTitle": "相对模式",
     "i18nStrings.absoluteModeTitle": "绝对模式",
     "i18nStrings.relativeRangeSelectionHeading": "选择一个范围",
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": "每个选项代表完整的月份，从该月的第一天到最后一天。",
     "i18nStrings.cancelButtonLabel": "取消",
     "i18nStrings.clearButtonLabel": "清除并关闭",
     "i18nStrings.applyButtonLabel": "应用",
@@ -137,6 +142,12 @@
     "i18nStrings.customRelativeRangeUnitLabel": "时间单位",
     "i18nStrings.customRelativeRangeDurationLabel": "持续时间",
     "i18nStrings.customRelativeRangeDurationPlaceholder": "输入持续时间",
+    "i18nStrings.previousMonthAriaLabel": "上个月",
+    "i18nStrings.nextMonthAriaLabel": "下个月",
+    "i18nStrings.previousYearAriaLabel": "上一年",
+    "i18nStrings.nextYearAriaLabel": "下一年",
+    "i18nStrings.currentMonthAriaLabel": "本月",
+    "i18nStrings.todayAriaLabel": "今天",
     "i18nStrings.startMonthLabel": "开始月份",
     "i18nStrings.startDateLabel": "开始日期",
     "i18nStrings.startTimeLabel": "开始时间",
@@ -144,6 +155,8 @@
     "i18nStrings.endDateLabel": "结束日期",
     "i18nStrings.endTimeLabel": "结束时间",
     "i18nStrings.dateTimeConstraintText": "对于日期，请使用 YYYY/MM/DD。对于时间，请使用 24 小时格式。",
+    "i18nStrings.dateConstraintText": "对于日期，使用 YYYY/MM/DD。",
+    "i18nStrings.monthConstraintText": "对于月份，使用 YYYY/MM。",
     "i18nStrings.errorIconAriaLabel": "错误",
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": "选定范围从 {startDate} 到 {endDate}",
     "i18nStrings.formatRelativeRange": "{unit, select, second {{amount, plural, zero {过去 {amount} 秒} one {过去 {amount} 秒} other {过去 {amount} 秒}}} minute {{amount, plural, zero {过去 {amount} 分钟} one {过去 {amount} 分钟} other {过去 {amount} 分钟}}} hour {{amount, plural, zero {过去 {amount} 小时} one {过去 {amount} 小时} other {过去 {amount} 小时}}} day {{amount, plural, zero {过去 {amount} 天} one {过去 {amount} 天} other {过去 {amount} 天}}} week {{amount, plural, zero {过去 {amount} 周} one {过去 {amount} 周} other {过去 {amount} 周}}} month {{amount, plural, zero {过去 {amount} 月} one {过去 {amount} 月} other {过去 {amount} 月}}} year {{amount, plural, zero {过去 {amount} 年} one {过去 {amount} 年} other {过去 {amount} 年}}} other {}}",
@@ -198,7 +211,8 @@
     "closeAriaLabel": "关闭模态"
   },
   "multiselect": {
-    "deselectAriaLabel": "删除 {option__label}"
+    "deselectAriaLabel": "删除 {option__label}",
+    "i18nStrings.selectAllText": "选择全部"
   },
   "pagination": {
     "ariaLabels.nextPageLabel": "下一页",
@@ -307,6 +321,8 @@
     "i18nStrings.labelFiltering": "查找 {itemsType}",
     "i18nStrings.labelRefresh": "刷新数据",
     "i18nStrings.labelBreadcrumbs": "S3 导航",
+    "i18nStrings.labelIconFolder": "文件夹",
+    "i18nStrings.labelIconObject": "对象",
     "i18nStrings.filteringCounterText": "{count, plural, one {1 个匹配项} other {{count} 个匹配项}}"
   },
   "select": {

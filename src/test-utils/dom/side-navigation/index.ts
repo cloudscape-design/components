@@ -5,6 +5,7 @@ import { ComponentWrapper, ElementWrapper } from '@cloudscape-design/test-utils-
 import ExpandableSectionWrapper from '../expandable-section';
 
 import styles from '../../../side-navigation/styles.selectors.js';
+import testUtilStyles from '../../../side-navigation/test-classes/styles.selectors.js';
 
 export default class SideNavigationWrapper extends ComponentWrapper {
   static rootSelector: string = styles.root;
@@ -37,7 +38,7 @@ export default class SideNavigationWrapper extends ComponentWrapper {
   }
 }
 
-export class SideNavigationItemWrapper extends ElementWrapper {
+export class SideNavigationItemWrapper extends ComponentWrapper {
   findSection(): ExpandableSectionWrapper | null {
     return this.findComponent(`.${styles.section}`, ExpandableSectionWrapper);
   }
@@ -60,6 +61,10 @@ export class SideNavigationItemWrapper extends ElementWrapper {
 
   findLink(): ElementWrapper<HTMLAnchorElement> | null {
     return this.findByClassName(styles.link);
+  }
+
+  findInfo(): ElementWrapper<HTMLAnchorElement> | null {
+    return this.findByClassName(testUtilStyles.info);
   }
 
   findSectionTitle(): ElementWrapper | null {

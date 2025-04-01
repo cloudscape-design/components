@@ -51,7 +51,7 @@ export default function InlineEditorPermutations() {
     <Box margin="m">
       <h1>Table cell permutations</h1>
 
-      <ScreenshotArea gutters={false}>
+      <ScreenshotArea gutters={false} disableAnimations={true}>
         <ExpandableSection variant="stacked" headerText="Settings" headingTagOverride="h2" defaultExpanded={true}>
           <SpaceBetween size="m">
             <SpaceBetween size="m" direction="horizontal" alignItems="center">
@@ -224,7 +224,6 @@ function TableCellsDemo() {
       sortingField: index === 2 ? 'field-1' : index === 3 ? 'field-2' : undefined,
       activeSorting: index === 3,
       cell: item => cellRenderer.render(item),
-      verticalAlign: settings.verticalAlign,
       editConfig: settings.isEditable
         ? {
             ariaLabel: 'Edit dialog aria label',
@@ -288,6 +287,7 @@ function TableCellsDemo() {
       stickyColumns={{ first: settings.stickyColumnsFirst, last: settings.stickyColumnsLast }}
       selectionType={selectionType}
       selectedItems={selectedItems}
+      cellVerticalAlign={settings.verticalAlign}
       empty="Empty"
       loading={settings.tableLoading}
       loadingText="Loading"

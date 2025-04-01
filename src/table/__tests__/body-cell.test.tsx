@@ -304,7 +304,7 @@ describe('TableBodyCell', () => {
 
       // Click on the TD itself
       fireEvent.click(container.querySelector('[data-inline-editing-active]')!);
-      expect(onEditStartMock).toBeCalled();
+      expect(onEditStartMock).toHaveBeenCalled();
     });
 
     test('popover can be dismissed by clicking away', () => {
@@ -318,7 +318,7 @@ describe('TableBodyCell', () => {
 
       // Click away
       fireEvent.click(screen.getByTestId('outside'));
-      expect(onEditEndMock).toBeCalledWith(true);
+      expect(onEditEndMock).toHaveBeenCalledWith(true);
     });
 
     test('popover can be dismissed by pressing Escape', () => {
@@ -330,22 +330,7 @@ describe('TableBodyCell', () => {
       const disabledButton = screen.getByRole('button');
       fireEvent.focus(disabledButton);
       fireEvent.keyDown(disabledButton, { key: 'Escape' });
-      expect(onEditEndMock).toBeCalledWith(true);
-    });
-
-    test('show and hide lock icon based on hover when popover is not visible', () => {
-      const { container } = render(<TestComponent {...commonProps} column={disableInlineEditColumn} />);
-
-      // No icon by default
-      expect(wrapper(container).findIcon()).toBeNull();
-
-      // Hover over TD element
-      fireEvent.mouseEnter(container.querySelector('[data-inline-editing-active]')!);
-      expect(wrapper(container).findIcon()).not.toBeNull();
-
-      // Remove mouse
-      fireEvent.mouseLeave(container.querySelector('[data-inline-editing-active]')!);
-      expect(wrapper(container).findIcon()).toBeNull();
+      expect(onEditEndMock).toHaveBeenCalledWith(true);
     });
   });
 

@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { act, fireEvent, render, waitFor } from '@testing-library/react';
+import { fireEvent, render, waitFor } from '@testing-library/react';
 
 import { useMobile } from '../../../lib/components/internal/hooks/use-mobile';
 import PropertyFilter from '../../../lib/components/property-filter';
@@ -9,6 +9,7 @@ import Select from '../../../lib/components/select';
 import Table, { TableProps } from '../../../lib/components/table';
 import createWrapper, { ElementWrapper, PaginationWrapper, TableWrapper } from '../../../lib/components/test-utils/dom';
 
+import popoverStyles from '../../../lib/components/popover/styles.css.js';
 import bodyCellStyles from '../../../lib/components/table/body-cell/styles.css.js';
 import headerCellStyles from '../../../lib/components/table/header-cell/styles.css.js';
 import styles from '../../../lib/components/table/styles.css.js';
@@ -55,10 +56,6 @@ const defaultColumns: TableProps.ColumnDefinition<Item>[] = [
 const defaultColumnsWithIds: TableProps.ColumnDefinition<Item>[] = [
   { id: 'id', header: 'id', cell: item => item.id },
   { id: 'name', header: 'name', cell: item => item.name },
-];
-const editableColumns: TableProps.ColumnDefinition<Item>[] = [
-  { header: 'id', cell: (item: Item) => item.id, editConfig: { editingCell: item => item.id } },
-  { header: 'name', cell: (item: Item) => item.name, editConfig: { editingCell: item => item.name } },
 ];
 
 const statefulColumns: TableProps.ColumnDefinition<Item>[] = [
@@ -217,70 +214,6 @@ test('should render row headers if defined', () => {
     const cellElement = wrapper.findBodyCell(index + 1, 1)?.getElement();
     expect(cellElement?.tagName).toBe('TH');
     expect(cellElement).toHaveAttribute('scope', 'row');
-  });
-});
-
-test('should render table header with icons to indicate editable columns', () => {
-  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
-  const columnHeaders = wrapper.findColumnHeaders();
-  columnHeaders.forEach(header => {
-    expect(header.getElement().querySelector('svg')).toBeInTheDocument();
-  });
-});
-
-test('should show edit icon on hover', () => {
-  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
-
-  // No icon by default
-  const editButton = wrapper.findEditCellButton(1, 1);
-  expect(editButton?.findIcon()).toBeNull();
-
-  // Show icon on hover
-  fireEvent.mouseEnter(editButton!.getElement());
-  expect(editButton?.findIcon()).not.toBeNull();
-
-  // Remove icon when mouse moves away
-  fireEvent.mouseLeave(editButton!.getElement());
-  expect(editButton?.findIcon()).toBeNull();
-});
-
-test('should show edit icon on focus', () => {
-  const { wrapper } = renderTable(<Table columnDefinitions={editableColumns} items={defaultItems} />);
-
-  // No icon by default
-  const editButton = wrapper.findEditCellButton(1, 1);
-  expect(editButton?.findIcon()).toBeNull();
-
-  // Show icon on focus
-  editButton?.focus();
-  expect(editButton?.findIcon()).not.toBeNull();
-
-  // Remove icon on blur
-  editButton?.blur();
-  expect(editButton?.findIcon()).toBeNull();
-});
-
-test('should cancel edit using ref imperative method', async () => {
-  const ref = React.createRef<any>();
-  const { wrapper } = renderTable(
-    <Table
-      columnDefinitions={editableColumns}
-      items={defaultItems}
-      submitEdit={async () => {
-        await new Promise((resolve, reject) => setTimeout(reject, 1000));
-      }}
-      ref={ref}
-    />
-  );
-
-  const button = wrapper.findEditCellButton(2, 2)!;
-
-  fireEvent.click(button.getElement());
-  act(() => {
-    ref.current.cancelEdit();
-  });
-  await waitFor(() => {
-    expect(wrapper.find(`[data-inline-editing-active="true"]`)?.getElement()).toBeUndefined();
   });
 });
 
@@ -523,4 +456,43 @@ test('should submit edits successfully', async () => {
   await waitFor(() => {
     expect(data.name).toBe('banana');
   });
+});
+
+test('shows and hides cell disabled reason', () => {
+  const { wrapper } = renderTable(
+    <Table<{ name: string }>
+      columnDefinitions={[
+        {
+          id: 'name',
+          header: 'Name',
+          cell: item => item.name,
+          editConfig: {
+            ariaLabel: 'test-name',
+            constraintText: 'test-constraint',
+            editingCell: () => null,
+            disabledReason: item => `Cannot edit ${item.name}`,
+          },
+        },
+      ]}
+      items={[{ name: 'test1' }, { name: 'test2' }]}
+      ariaLabels={{
+        activateEditLabel() {
+          return 'activate-edit';
+        },
+        cancelEditLabel() {
+          return 'cancel-edit';
+        },
+        submitEditLabel() {
+          return 'save-edit';
+        },
+      }}
+      submitEdit={() => {}}
+    />
+  );
+
+  wrapper.findEditCellButton(1, 1)!.click();
+  expect(createWrapper().findByClassName(popoverStyles.container)!.getElement()).toHaveTextContent('Cannot edit test1');
+
+  wrapper.findEditCellButton(2, 1)!.click();
+  expect(createWrapper().findByClassName(popoverStyles.container)!.getElement()).toHaveTextContent('Cannot edit test2');
 });

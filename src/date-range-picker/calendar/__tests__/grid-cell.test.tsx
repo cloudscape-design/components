@@ -6,6 +6,8 @@ import { fireEvent, render } from '@testing-library/react';
 import { GridCell } from '../../../../lib/components/date-range-picker/calendar/grids/grid-cell';
 import createWrapper from '../../../../lib/components/test-utils/dom';
 
+import testutilStyles from '../../../../lib/components/date-range-picker/test-classes/styles.selectors.js';
+
 describe('Date range picker grid cell', () => {
   const mockOnFocus = jest.fn();
   const mockOnBlur = jest.fn();
@@ -77,6 +79,24 @@ describe('Date range picker grid cell', () => {
       expect(wrapper).not.toBeNull();
       fireEvent.mouseLeave(getByTestId('testitem'));
       expect(mockOnMouseLeave).toHaveBeenCalledTimes(1);
+    });
+
+    test('shows disabledReason tooltip on mouse enter', () => {
+      const { container, getByTestId } = render(
+        <GridCell {...mockProps}>
+          <div data-testid="testitem">Test</div>
+        </GridCell>
+      );
+      const wrapper = createWrapper(container);
+
+      expect(wrapper).not.toBeNull();
+      expect(document.querySelector(`.${testutilStyles['disabled-reason-tooltip']}`)).toBeNull();
+      fireEvent.mouseEnter(getByTestId('testitem'));
+      expect(document.querySelector(`.${testutilStyles['disabled-reason-tooltip']}`)).toHaveTextContent(
+        mockDisabledReason
+      );
+      fireEvent.keyDown(window, { key: 'Escape' });
+      expect(document.querySelector(`.${testutilStyles['disabled-reason-tooltip']}`)).toBeNull();
     });
   });
 });

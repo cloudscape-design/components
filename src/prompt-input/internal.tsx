@@ -13,12 +13,15 @@ import { fireKeyboardEvent, fireNonCancelableEvent } from '../internal/events';
 import * as tokens from '../internal/generated/styles/tokens';
 import { InternalBaseComponentProps } from '../internal/hooks/use-base-component';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
+import { SomeRequired } from '../internal/types';
 import { PromptInputProps } from './interfaces';
 
 import styles from './styles.css.js';
 import testutilStyles from './test-classes/styles.css.js';
 
-interface InternalPromptInputProps extends PromptInputProps, InternalBaseComponentProps {}
+interface InternalPromptInputProps
+  extends SomeRequired<PromptInputProps, 'maxRows' | 'minRows'>,
+    InternalBaseComponentProps {}
 
 const InternalPromptInput = React.forwardRef(
   (
@@ -35,7 +38,7 @@ const InternalPromptInput = React.forwardRef(
       disableActionButton,
       disableBrowserAutocorrect,
       disabled,
-      maxRows = 3,
+      maxRows,
       minRows,
       name,
       onAction,
@@ -76,6 +79,9 @@ const InternalPromptInput = React.forwardRef(
         },
         select() {
           textareaRef.current?.select();
+        },
+        setSelectionRange(...args: Parameters<HTMLTextAreaElement['setSelectionRange']>) {
+          textareaRef.current?.setSelectionRange(...args);
         },
       }),
       [textareaRef]
@@ -143,7 +149,7 @@ const InternalPromptInput = React.forwardRef(
       spellCheck: spellcheck,
       disabled,
       readOnly: readOnly ? true : undefined,
-      rows: minRows || 1,
+      rows: minRows,
       onKeyDown: handleKeyDown,
       onKeyUp: onKeyUp && (event => fireKeyboardEvent(onKeyUp, event)),
       // We set a default value on the component in order to force it into the controlled mode.
@@ -212,6 +218,7 @@ const InternalPromptInput = React.forwardRef(
             })}
           >
             {secondaryActions}
+            <div className={styles.buffer} onClick={() => textareaRef.current?.focus()} />
             {hasActionButton && action}
           </div>
         )}

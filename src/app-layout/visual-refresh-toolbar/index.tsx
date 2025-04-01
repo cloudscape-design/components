@@ -15,15 +15,20 @@ import { useUniqueId } from '../../internal/hooks/use-unique-id';
 import { useGetGlobalBreadcrumbs } from '../../internal/plugins/helpers/use-global-breadcrumbs';
 import globalVars from '../../internal/styles/global-vars';
 import { getSplitPanelDefaultSize } from '../../split-panel/utils/size-utils';
-import { AppLayoutProps, AppLayoutPropsWithDefaults } from '../interfaces';
+import { AppLayoutProps } from '../interfaces';
 import { SplitPanelProviderProps } from '../split-panel';
 import { MIN_DRAWER_SIZE, OnChangeParams, useDrawers } from '../utils/use-drawers';
 import { useFocusControl, useMultipleFocusControl } from '../utils/use-focus-control';
 import { useSplitPanelFocusControl } from '../utils/use-split-panel-focus-control';
 import { ActiveDrawersContext } from '../utils/visibility-context';
-import { computeHorizontalLayout, computeVerticalLayout, CONTENT_PADDING } from './compute-layout';
+import {
+  computeHorizontalLayout,
+  computeSplitPanelOffsets,
+  computeVerticalLayout,
+  CONTENT_PADDING,
+} from './compute-layout';
 import { AppLayoutVisibilityContext } from './contexts';
-import { AppLayoutInternals } from './interfaces';
+import { AppLayoutInternalProps, AppLayoutInternals } from './interfaces';
 import {
   AppLayoutDrawer,
   AppLayoutGlobalDrawers,
@@ -36,7 +41,7 @@ import {
 import { useMultiAppLayout } from './multi-layout';
 import { SkeletonLayout } from './skeleton';
 
-const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutPropsWithDefaults>(
+const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLayoutInternalProps>(
   (
     {
       ariaLabels,
@@ -68,6 +73,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       minContentWidth,
       maxContentWidth,
       placement,
+      navigationTriggerHide,
       ...rest
     },
     forwardRef
@@ -219,7 +225,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
 
     const globalDrawersFocusControl = useMultipleFocusControl(true, activeGlobalDrawersIds);
     const drawersFocusControl = useFocusControl(!!activeDrawer?.id, true, activeDrawer?.id);
-    const navigationFocusControl = useFocusControl(navigationOpen);
+    const navigationFocusControl = useFocusControl(navigationOpen, navigationTriggerHide);
     const splitPanelFocusControl = useSplitPanelFocusControl([splitPanelPreferences, splitPanelOpen]);
 
     const onNavigationToggle = useStableCallback((open: boolean) => {
@@ -234,6 +240,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       focusToolsClose: () => drawersFocusControl.setFocus(true),
       focusActiveDrawer: () => drawersFocusControl.setFocus(true),
       focusSplitPanel: () => splitPanelFocusControl.refs.slider.current?.focus(),
+      focusNavigation: () => navigationFocusControl.setFocus(true),
     }));
 
     const resolvedStickyNotifications = !!stickyNotifications && !isMobile;
@@ -266,7 +273,7 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       {
         forceDeduplicationType,
         ariaLabels: ariaLabelsWithDrawers,
-        navigation: resolvedNavigation,
+        navigation: resolvedNavigation && !navigationTriggerHide,
         navigationOpen: resolvedNavigationOpen,
         onNavigationToggle,
         navigationFocusRef: navigationFocusControl.refs.toggle,
@@ -461,6 +468,15 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
       }
     }, [hasToolbar]);
 
+    const splitPanelOffsets = computeSplitPanelOffsets({
+      placement,
+      hasSplitPanel: !!splitPanel,
+      splitPanelOpen,
+      splitPanelPosition,
+      splitPanelFullHeight: splitPanelReportedSize,
+      splitPanelHeaderHeight: splitPanelHeaderBlockSize,
+    });
+
     return (
       <AppLayoutVisibilityContext.Provider value={isIntersecting}>
         {/* Rendering a hidden copy of breadcrumbs to trigger their deduplication */}
@@ -469,16 +485,11 @@ const AppLayoutVisualRefreshToolbar = React.forwardRef<AppLayoutProps.Ref, AppLa
           ref={useMergeRefs(intersectionObserverRef, rootRef)}
           isNested={isNested}
           style={{
-            paddingBlockEnd:
-              splitPanelPosition === 'bottom'
-                ? splitPanelOpen
-                  ? splitPanelReportedSize
-                  : splitPanelHeaderBlockSize
-                : '',
+            paddingBlockEnd: splitPanelOffsets.mainContentPaddingBlockEnd,
             ...(hasToolbar || !isNested
               ? {
                   [globalVars.stickyVerticalTopOffset]: `${verticalOffsets.header}px`,
-                  [globalVars.stickyVerticalBottomOffset]: `${placement.insetBlockEnd}px`,
+                  [globalVars.stickyVerticalBottomOffset]: `${splitPanelOffsets.stickyVerticalBottomOffset}px`,
                 }
               : {}),
             ...(!isMobile ? { minWidth: `${minContentWidth}px` } : {}),

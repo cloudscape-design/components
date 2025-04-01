@@ -1,17 +1,16 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-/* eslint simple-import-sort/imports: 0 */
 import React, { useState } from 'react';
 import { screen } from '@testing-library/react';
+
 import AppLayout from '../../../lib/components/app-layout';
 import { AppLayoutProps } from '../../../lib/components/app-layout/interfaces';
-import SplitPanel from '../../../lib/components/split-panel';
 import { KeyCode } from '../../../lib/components/internal/keycode';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
-import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
+import SplitPanel from '../../../lib/components/split-panel';
 import { AppLayoutWrapper } from '../../../lib/components/test-utils/dom';
+import { describeEachAppLayout, renderComponent, splitPanelI18nStrings } from './utils';
 
+import applayoutTools from '../../../lib/components/app-layout/visual-refresh/styles.selectors.js';
 import testUtilStyles from '../../../lib/components/split-panel/test-classes/styles.selectors.js';
 
 const defaultSplitPanel = (
@@ -29,17 +28,6 @@ const fakeComputedStyle: Window['getComputedStyle'] = (...args) => {
   result.width = '600px';
   return result;
 };
-
-jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
-  useVisualRefresh: jest.fn().mockReturnValue(false),
-}));
-
-jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
-  ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
-  isMotionDisabled: jest.fn().mockReturnValue(true),
-  useDensityMode: jest.fn().mockReturnValue('comfortable'),
-  useReducedMotion: jest.fn().mockReturnValue(true),
-}));
 
 let isMocked = false;
 
@@ -261,14 +249,7 @@ describeEachAppLayout({ sizes: ['desktop'] }, ({ theme }) => {
   });
 });
 
-describe('Visual refresh only features', () => {
-  beforeEach(() => {
-    (useVisualRefresh as jest.Mock).mockReturnValue(true);
-  });
-  afterEach(() => {
-    (useVisualRefresh as jest.Mock).mockReset();
-  });
-
+describeEachAppLayout({ themes: ['refresh'], sizes: ['desktop'] }, () => {
   function isDrawersBarDisplayed(wrapper: AppLayoutWrapper) {
     return !!wrapper.findByClassName(applayoutTools['has-tools-form']);
   }

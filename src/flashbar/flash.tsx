@@ -7,14 +7,17 @@ import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-too
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import { ActionsWrapper } from '../alert/actions-wrapper';
-import { ButtonProps } from '../button/interfaces';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
-import { DATA_ATTR_ANALYTICS_FLASHBAR } from '../internal/analytics/selectors';
+import {
+  DATA_ATTR_ANALYTICS_FLASHBAR,
+  DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS,
+} from '../internal/analytics/selectors';
 import { BasePropsWithAnalyticsMetadata, getAnalyticsMetadataProps } from '../internal/base-component';
 import { getVisualContextClassname } from '../internal/components/visual-context';
 import { PACKAGE_VERSION } from '../internal/environment';
 import { useMergeRefs } from '../internal/hooks/use-merge-refs';
+import { useUniqueId } from '../internal/hooks/use-unique-id';
 import { isDevelopment } from '../internal/is-development';
 import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
@@ -23,7 +26,6 @@ import InternalLiveRegion from '../live-region/internal';
 import InternalSpinner from '../spinner/internal';
 import { GeneratedAnalyticsMetadataFlashbarDismiss } from './analytics-metadata/interfaces';
 import { FlashbarProps } from './interfaces';
-import { sendDismissMetric } from './internal/analytics';
 import { FOCUS_THROTTLE_DELAY } from './utils';
 
 import analyticsSelectors from './analytics-metadata/styles.css.js';
@@ -116,9 +118,13 @@ export const Flash = React.forwardRef(
       }
     }
 
-    const analyticsMetadata = getAnalyticsMetadataProps(props as BasePropsWithAnalyticsMetadata);
+    const analyticsMetadata = getAnalyticsMetadataProps(
+      props as BasePropsWithAnalyticsMetadata & FlashbarProps.MessageDefinition
+    );
     const elementRef = useComponentMetadata('Flash', PACKAGE_VERSION, { ...analyticsMetadata });
     const mergedRef = useMergeRefs(ref, elementRef);
+    const flashIconId = useUniqueId('flash-icon');
+    const flashMessageId = useUniqueId('flash-message');
 
     const headerRefObject = useRef<HTMLDivElement>(null);
     const contentRefObject = useRef<HTMLDivElement>(null);
@@ -136,24 +142,28 @@ export const Flash = React.forwardRef(
     const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
 
-    const iconType = ICON_TYPES[type];
-
-    const icon = loading ? <InternalSpinner /> : <InternalIcon name={iconType} />;
-
-    const effectiveType = loading ? 'info' : type;
-
-    const handleDismiss: ButtonProps['onClick'] = event => {
-      sendDismissMetric(effectiveType);
-      onDismiss && onDismiss(event);
-    };
-
-    const analyticsAttributes = {
-      [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
-    };
-
     const statusIconAriaLabel =
       props.statusIconAriaLabel ||
       i18nStrings?.[`${loading || type === 'in-progress' ? 'inProgress' : type}IconAriaLabel`];
+
+    const iconType = ICON_TYPES[type];
+    const icon = loading ? (
+      <span role="img" aria-label={statusIconAriaLabel}>
+        <InternalSpinner />
+      </span>
+    ) : (
+      <InternalIcon name={iconType} ariaLabel={statusIconAriaLabel} />
+    );
+
+    const effectiveType = loading ? 'info' : type;
+
+    const analyticsAttributes: Record<string, string> = {
+      [DATA_ATTR_ANALYTICS_FLASHBAR]: effectiveType,
+    };
+
+    if (analyticsMetadata.suppressFlowMetricEvents) {
+      analyticsAttributes[DATA_ATTR_ANALYTICS_SUPPRESS_FLOW_EVENTS] = 'true';
+    }
 
     return (
       // We're not using "polite" or "assertive" here, just turning default behavior off.
@@ -181,15 +191,16 @@ export const Flash = React.forwardRef(
         {...analyticsAttributes}
       >
         <div className={styles['flash-body']}>
-          <div className={styles['flash-focus-container']} tabIndex={-1}>
-            <div
-              className={clsx(styles['flash-icon'], styles['flash-text'])}
-              role="img"
-              aria-label={statusIconAriaLabel}
-            >
+          <div
+            className={styles['flash-focus-container']}
+            tabIndex={-1}
+            role="group"
+            aria-labelledby={`${flashIconId} ${flashMessageId}`}
+          >
+            <div className={clsx(styles['flash-icon'], styles['flash-text'])} id={flashIconId}>
               {icon}
             </div>
-            <div className={clsx(styles['flash-message'], styles['flash-text'])}>
+            <div className={clsx(styles['flash-message'], styles['flash-text'])} id={flashMessageId}>
               <div
                 className={clsx(
                   styles['flash-header'],
@@ -230,7 +241,7 @@ export const Flash = React.forwardRef(
             onButtonClick={onButtonClick}
           />
         </div>
-        {dismissible && dismissButton(dismissLabel, handleDismiss)}
+        {dismissible && dismissButton(dismissLabel, onDismiss)}
         {ariaRole === 'status' && (
           <InternalLiveRegion sources={[statusIconAriaLabel, headerRefObject, contentRefObject]} />
         )}

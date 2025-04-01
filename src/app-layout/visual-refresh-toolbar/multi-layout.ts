@@ -7,6 +7,7 @@ import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { awsuiPluginsInternal } from '../../internal/plugins/api';
 import { RegistrationState } from '../../internal/plugins/controllers/app-layout-widget';
 import { AppLayoutProps } from '../interfaces';
+import { useAppLayoutFlagEnabled } from '../utils/feature-flags';
 import { OnChangeParams } from '../utils/use-drawers';
 import { Focusable, FocusControlMultipleStates } from '../utils/use-focus-control';
 import { SplitPanelToggleProps, ToolbarProps } from './toolbar';
@@ -28,7 +29,7 @@ export interface SharedProps {
   activeGlobalDrawersIds?: Array<string> | undefined;
   onActiveGlobalDrawersChange?: ((newDrawerId: string, params: OnChangeParams) => void) | undefined;
   splitPanel: React.ReactNode;
-  splitPanelToggleProps: SplitPanelToggleProps;
+  splitPanelToggleProps: SplitPanelToggleProps | undefined;
   splitPanelFocusRef: React.Ref<Focusable> | undefined;
   onSplitPanelToggle: () => void;
 }
@@ -51,7 +52,11 @@ export function mergeProps(
   const toolbar: ToolbarProps = {};
   for (const props of [ownProps, ...additionalProps]) {
     toolbar.ariaLabels = Object.assign(toolbar.ariaLabels ?? {}, props.ariaLabels);
-    if (props.drawers && !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')) {
+    if (
+      props.drawers &&
+      props.drawers.some(drawer => drawer.trigger) &&
+      !checkAlreadyExists(!!toolbar.drawers, 'tools or drawers')
+    ) {
       toolbar.drawers = props.drawers;
       toolbar.activeDrawerId = props.activeDrawerId;
       toolbar.drawersFocusRef = props.drawersFocusRef;
@@ -64,14 +69,16 @@ export function mergeProps(
       toolbar.onActiveGlobalDrawersChange = props.onActiveGlobalDrawersChange;
     }
     if (props.navigation && !checkAlreadyExists(!!toolbar.hasNavigation, 'navigation')) {
-      // there is never a case where navigation will exist and a toggle will not so toolbar
-      // can use the hasNavigation here to conditionally render the navigationToggle button
       toolbar.hasNavigation = true;
       toolbar.navigationOpen = props.navigationOpen;
       toolbar.navigationFocusRef = props.navigationFocusRef;
       toolbar.onNavigationToggle = props.onNavigationToggle;
     }
-    if (props.splitPanel && !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')) {
+    if (
+      props.splitPanel &&
+      props.splitPanelToggleProps?.displayed &&
+      !checkAlreadyExists(!!toolbar.hasSplitPanel, 'splitPanel')
+    ) {
       toolbar.hasSplitPanel = true;
       toolbar.splitPanelFocusRef = props.splitPanelFocusRef;
       toolbar.splitPanelToggleProps = props.splitPanelToggleProps;
@@ -88,9 +95,10 @@ export function mergeProps(
 export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
   const [registration, setRegistration] = useState<RegistrationState<SharedProps> | null>(null);
   const { forceDeduplicationType } = props;
+  const isToolbar = useAppLayoutFlagEnabled();
 
   useLayoutEffect(() => {
-    if (!isEnabled || forceDeduplicationType === 'suspended') {
+    if (!isEnabled || forceDeduplicationType === 'suspended' || !isToolbar) {
       return;
     }
     if (forceDeduplicationType === 'off') {
@@ -100,13 +108,22 @@ export function useMultiAppLayout(props: SharedProps, isEnabled: boolean) {
     return awsuiPluginsInternal.appLayoutWidget.register(forceDeduplicationType, props =>
       setRegistration(props as RegistrationState<SharedProps>)
     );
-  }, [forceDeduplicationType, isEnabled]);
+  }, [forceDeduplicationType, isEnabled, isToolbar]);
 
   useLayoutEffect(() => {
     if (registration?.type === 'secondary') {
       registration.update(props);
     }
   });
+
+  if (!isToolbar) {
+    return {
+      registered: 'primary',
+      // mergeProps is needed here because the toolbar's behavior depends on reconciliation logic
+      // in this function. For example, navigation trigger visibility
+      toolbarProps: mergeProps(props, []),
+    };
+  }
 
   return {
     registered: !!registration?.type,

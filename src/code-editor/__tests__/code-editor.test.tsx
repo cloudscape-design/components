@@ -10,6 +10,7 @@ import { createWrapper } from '@cloudscape-design/test-utils-core/dom';
 import '../../__a11y__/to-validate-a11y';
 import CodeEditor, { CodeEditorProps } from '../../../lib/components/code-editor';
 import TestI18nProvider from '../../../lib/components/i18n/testing';
+import { PointerEventMock } from '../../../lib/components/internal/utils/pointer-events-mock.js';
 import { CodeEditorWrapper, ElementWrapper } from '../../../lib/components/test-utils/dom';
 import { KeyCode } from '../../internal/keycode';
 import {
@@ -22,12 +23,17 @@ import {
 
 import resizableStyles from '../../../lib/components/code-editor/resizable-box/styles.css.js';
 import styles from '../../../lib/components/code-editor/styles.css.js';
+import dragHandleStyles from '../../../lib/components/internal/components/drag-handle/styles.css.js';
 import liveRegionStyles from '../../../lib/components/live-region/test-classes/styles.css.js';
 
 jest.mock('@cloudscape-design/component-toolkit/internal', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit/internal'),
   warnOnce: jest.fn(),
 }));
+
+beforeAll(() => {
+  (window as any).PointerEvent ??= PointerEventMock;
+});
 
 afterEach(() => {
   (warnOnce as jest.Mock).mockReset();
@@ -240,7 +246,7 @@ describe('Code editor component', () => {
     const textarea = editorMock.renderer.textarea;
     editorMock.renderer.textarea = null as any;
 
-    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrowError();
+    expect(() => renderCodeEditor({ ariaLabel: 'test aria label' })).not.toThrow();
 
     editorMock.renderer.textarea = textarea;
 
@@ -425,7 +431,7 @@ describe('Code editor component', () => {
 
     wrapper.findErrorsTab()!.click();
 
-    expect(onSubmit).not.toBeCalled();
+    expect(onSubmit).not.toHaveBeenCalled();
   });
 
   it('closes the Pane on ESC', () => {
@@ -512,18 +518,18 @@ describe('Code editor component', () => {
   it('updates size when resize handle is dragged', () => {
     const { wrapper } = renderCodeEditor({ editorContentHeight: 10 });
     editorMock.resize.mockClear();
-    fireEvent.mouseDown(wrapper.findByClassName(resizableStyles['resizable-box-handle'])!.getElement());
-    fireEvent.mouseMove(document.body, { clientY: 100 });
-    expect(editorMock.resize).toBeCalledTimes(1);
+    fireEvent.pointerDown(wrapper.findByClassName(dragHandleStyles.handle)!.getElement());
+    fireEvent.pointerMove(document, { clientY: 100 });
+    expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
 
   it('calls resize on initial render', () => {
     renderCodeEditor();
-    expect(editorMock.resize).toBeCalledTimes(1);
+    expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
   it('calls resize on initial render when editorHeight is set', () => {
     renderCodeEditor({ editorContentHeight: 240 });
-    expect(editorMock.resize).toBeCalledTimes(1);
+    expect(editorMock.resize).toHaveBeenCalledTimes(1);
   });
   it('should log a warning when no onEditorContentResize is undefined', () => {
     render(<CodeEditor {...defaultProps} editorContentHeight={240} />);
@@ -637,6 +643,7 @@ describe('Code editor component', () => {
         messages={{
           'code-editor': {
             'i18nStrings.paneCloseButtonAriaLabel': 'Custom close',
+            'i18nStrings.resizeHandleAriaLabel': 'Custom resize handle',
           },
         }}
       >
@@ -647,6 +654,10 @@ describe('Code editor component', () => {
     act(() => emulateAceAnnotationEvent!());
     wrapper.findErrorsTab()!.click();
     expect(wrapper.findPane()!.findButton()!.getElement()).toHaveAttribute('aria-label', 'Custom close');
+    expect(wrapper.findPane()!.find('[role=slider]')!.getElement()).toHaveAttribute(
+      'aria-label',
+      'Custom resize handle'
+    );
   });
 
   test('supports using preferences modal strings from i18n provider', () => {
@@ -661,6 +672,8 @@ describe('Code editor component', () => {
             'i18nStrings.preferencesModalTheme': 'Custom theme',
             'i18nStrings.preferencesModalLightThemes': 'Custom light themes',
             'i18nStrings.preferencesModalDarkThemes': 'Custom dark themes',
+            'i18nStrings.preferencesModalThemeFilteringAriaLabel': 'Custom theme filter',
+            'i18nStrings.preferencesModalThemeFilteringPlaceholder': 'Custom theme filter placeholder',
           },
         }}
       >
@@ -680,6 +693,9 @@ describe('Code editor component', () => {
     expect(modal.findContent()!.findCheckbox()!.findLabel().getElement()).toHaveTextContent('Custom wrap lines');
     expect(modal.findContent()!.findFormField()!.findLabel()!.getElement()).toHaveTextContent('Custom theme');
     modal.findContent()!.findSelect()!.openDropdown();
+    const filteringInput = modal.findContent()!.findSelect()!.findFilteringInput()!.findNativeInput().getElement();
+    expect(filteringInput).toHaveAccessibleName('Custom theme filter');
+    expect(filteringInput).toHaveAttribute('placeholder', 'Custom theme filter placeholder');
     expect(modal.findContent()!.findSelect()!.findDropdown().find('li:nth-child(1)')!.getElement()).toHaveTextContent(
       'Custom light themes'
     );

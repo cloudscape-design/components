@@ -63,7 +63,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         funnelType: 'single-page',
         resourceType: 'Components',
         optionalStepNumbers: [],
-        componentTheme: 'vr',
+        componentTheme: 'default',
         totalFunnelSteps: 1,
         stepConfiguration: [
           {
@@ -325,7 +325,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         stepNumber: 1,
         subStepName: 'Container 1 - header',
         fieldErrorContext: null,
-        fieldIdentifier: null,
+        fieldIdentifier: 'field1',
         subStepErrorContext: null,
       });
 
@@ -454,7 +454,7 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         funnelVersion: expect.any(String),
         funnelType: 'single-page',
         optionalStepNumbers: [],
-        componentTheme: 'vr',
+        componentTheme: 'default',
         totalFunnelSteps: 1,
         stepConfiguration: [
           {

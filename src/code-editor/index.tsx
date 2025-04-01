@@ -221,6 +221,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
               onResize();
               fireNonCancelableEvent(onEditorContentResize, { height });
             }}
+            handleAriaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
+            handleTooltipText={i18n('i18nStrings.resizeHandleTooltipText', i18nStrings?.resizeHandleTooltipText)}
           >
             <div
               ref={editorRef}
@@ -272,6 +274,8 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 format => (row, column) => format({ row, column })
               )}
               closeButtonAriaLabel={i18n('i18nStrings.paneCloseButtonAriaLabel', i18nStrings?.paneCloseButtonAriaLabel)}
+              handleAriaLabel={i18n('i18nStrings.resizeHandleAriaLabel', i18nStrings?.resizeHandleAriaLabel)}
+              handleTooltipText={i18n('i18nStrings.resizeHandleTooltipText', i18nStrings?.resizeHandleTooltipText)}
             />
           </div>
           {isPreferencesModalVisible && (
@@ -291,9 +295,15 @@ const CodeEditor = forwardRef((props: CodeEditorProps, ref: React.Ref<CodeEditor
                 theme: i18n('i18nStrings.preferencesModalTheme', i18nStrings?.preferencesModalTheme),
                 lightThemes: i18n('i18nStrings.preferencesModalLightThemes', i18nStrings?.preferencesModalLightThemes),
                 darkThemes: i18n('i18nStrings.preferencesModalDarkThemes', i18nStrings?.preferencesModalDarkThemes),
-                themeFilteringAriaLabel: i18nStrings?.preferencesModalThemeFilteringAriaLabel,
+                themeFilteringAriaLabel: i18n(
+                  'i18nStrings.preferencesModalThemeFilteringAriaLabel',
+                  i18nStrings?.preferencesModalThemeFilteringAriaLabel
+                ),
+                themeFilteringPlaceholder: i18n(
+                  'i18nStrings.preferencesModalThemeFilteringPlaceholder',
+                  i18nStrings?.preferencesModalThemeFilteringPlaceholder
+                ),
                 themeFilteringClearAriaLabel: i18nStrings?.preferencesModalThemeFilteringClearAriaLabel,
-                themeFilteringPlaceholder: i18nStrings?.preferencesModalThemeFilteringPlaceholder,
               }}
             />
           )}

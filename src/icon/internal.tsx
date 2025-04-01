@@ -44,6 +44,7 @@ const InternalIcon = ({
   variant = 'normal',
   url,
   alt,
+  ariaLabel,
   svg,
   badge,
   __internalRootRef = null,
@@ -82,6 +83,8 @@ const InternalIcon = ({
   });
 
   const mergedRef = useMergeRefs(iconRef, __internalRootRef);
+  const hasAriaLabel = typeof ariaLabel === 'string';
+  const labelAttributes = hasAriaLabel ? { role: 'img', 'aria-label': ariaLabel } : {};
 
   if (svg) {
     if (url) {
@@ -91,7 +94,7 @@ const InternalIcon = ({
       );
     }
     return (
-      <span {...baseProps} ref={mergedRef} aria-hidden="true" style={inlineStyles}>
+      <span {...baseProps} {...labelAttributes} ref={mergedRef} aria-hidden={!hasAriaLabel} style={inlineStyles}>
         {svg}
       </span>
     );
@@ -100,7 +103,7 @@ const InternalIcon = ({
   if (url) {
     return (
       <span {...baseProps} ref={mergedRef} style={inlineStyles}>
-        <img src={url} alt={alt} />
+        <img src={url} alt={ariaLabel ?? alt} />
       </span>
     );
   }
@@ -131,7 +134,7 @@ const InternalIcon = ({
   }
 
   return (
-    <span {...baseProps} ref={mergedRef} style={inlineStyles}>
+    <span {...baseProps} {...labelAttributes} ref={mergedRef} style={inlineStyles}>
       {validIcon ? iconMap(name) : undefined}
     </span>
   );

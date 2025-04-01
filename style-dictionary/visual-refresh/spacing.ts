@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { expandDensityDictionary } from '../utils';
-import { StyleDictionary } from '../utils/interfaces';
+import { expandDensityDictionary } from '../utils/index.js';
+import { StyleDictionary } from '../utils/interfaces.js';
 
 const tokens: StyleDictionary.SpacingDictionary = {
   spaceAlertActionLeft: '{spaceS}',
@@ -52,7 +52,7 @@ const tokens: StyleDictionary.SpacingDictionary = {
   spacePanelSideRight: '{spaceScaledXl}',
   spacePanelSplitTop: '{spaceScaledL}',
   spacePanelSplitBottom: '{spaceScaledL}',
-  spaceSegmentedControlFocusOutlineGutter: '4px',
+  spaceSegmentedControlFocusOutlineGutter: '6px',
   spaceTabsContentTop: '{spaceScaledS}',
   spaceTabsFocusOutlineGutter: '-8px',
   spaceTableContentBottom: '{spaceXxs}',

@@ -56,6 +56,7 @@ import Thead, { TheadProps } from './thead';
 import ToolsHeader from './tools-header';
 import { useCellEditing } from './use-cell-editing';
 import { ColumnWidthDefinition, ColumnWidthsProvider, DEFAULT_COLUMN_WIDTH } from './use-column-widths';
+import { usePreventStickyClickScroll } from './use-prevent-sticky-click-scroll';
 import { useRowEvents } from './use-row-events';
 import useTableFocusNavigation from './use-table-focus-navigation';
 import { checkSortingState, getColumnKey, getItemKey, getVisibleColumnDefinitions, toContainerVariant } from './utils';
@@ -68,7 +69,10 @@ const GRID_NAVIGATION_PAGE_SIZE = 10;
 const SELECTION_COLUMN_WIDTH = 54;
 const selectionColumnId = Symbol('selection-column-id');
 
-type InternalTableProps<T> = SomeRequired<TableProps<T>, 'items' | 'selectedItems' | 'variant' | 'firstIndex'> &
+type InternalTableProps<T> = SomeRequired<
+  TableProps<T>,
+  'items' | 'selectedItems' | 'variant' | 'firstIndex' | 'cellVerticalAlign'
+> &
   InternalBaseComponentProps & {
     __funnelSubStepProps?: InternalContainerProps['__funnelSubStepProps'];
   };
@@ -135,6 +139,7 @@ const InternalTable = React.forwardRef(
       renderLoaderLoading,
       renderLoaderError,
       renderLoaderEmpty,
+      cellVerticalAlign,
       __funnelSubStepProps,
       ...rest
     }: InternalTableProps<T>,
@@ -229,7 +234,7 @@ const InternalTable = React.forwardRef(
         variant,
         flowType: rest.analyticsMetadata?.flowType,
         instanceIdentifier: analyticsMetadata?.instanceIdentifier,
-        taskName: getHeaderText(),
+        taskName: analyticsMetadata?.instanceIdentifier ?? getHeaderText(),
         patternIdentifier: getPatternIdentifier(),
         sortedBy: {
           columnId: sortingColumn?.sortingField,
@@ -262,7 +267,7 @@ const InternalTable = React.forwardRef(
       [cancelEdit]
     );
 
-    const wrapperRefObject = useRef(null);
+    const wrapperRefObject = useRef<HTMLDivElement>(null);
     const handleScroll = useScrollSync([wrapperRefObject, scrollbarRef, secondaryWrapperRef]);
 
     const { moveFocusDown, moveFocusUp, moveFocus } = useSelectionFocusMove(selectionType, allItems.length);
@@ -374,6 +379,8 @@ const InternalTable = React.forwardRef(
       isExpandable,
       setLastUserAction,
     };
+
+    usePreventStickyClickScroll(wrapperRefObject);
 
     const wrapperRef = useMergeRefs(wrapperRefObject, stickyState.refs.wrapper);
     const tableRef = useMergeRefs(tableMeasureRef, tableRefObject, stickyState.refs.table);
@@ -565,9 +572,10 @@ const InternalTable = React.forwardRef(
                             tableRole,
                           };
                           if (row.type === 'data') {
+                            const rowId = `${getTableItemKey(row.item)}`;
                             return (
                               <tr
-                                key={getTableItemKey(row.item)}
+                                key={rowId}
                                 className={clsx(styles.row, sharedCellProps.isSelected && styles['row-selected'])}
                                 onFocus={({ currentTarget }) => {
                                   // When an element inside table row receives focus we want to adjust the scroll.
@@ -593,14 +601,17 @@ const InternalTable = React.forwardRef(
                                       onFocusDown: moveFocusDown,
                                       onFocusUp: moveFocusUp,
                                       rowIndex,
-                                      itemKey: `${getTableItemKey(row.item)}`,
+                                      itemKey: rowId,
                                     }}
+                                    verticalAlign={cellVerticalAlign}
                                   />
                                 )}
 
                                 {visibleColumnDefinitions.map((column, colIndex) => {
-                                  const isEditing = cellEditing.checkEditing({ rowIndex, colIndex });
-                                  const successfulEdit = cellEditing.checkLastSuccessfulEdit({ rowIndex, colIndex });
+                                  const colId = `${getColumnKey(column, colIndex)}`;
+                                  const cellId = { row: rowId, col: colId };
+                                  const isEditing = cellEditing.checkEditing(cellId);
+                                  const successfulEdit = cellEditing.checkLastSuccessfulEdit(cellId);
                                   const isEditable = !!column.editConfig && !cellEditing.isLoading;
                                   const cellExpandableProps =
                                     isExpandable && colIndex === 0 ? expandableProps : undefined;
@@ -614,14 +625,14 @@ const InternalTable = React.forwardRef(
                                           selector: `table thead tr th:nth-child(${colIndex + (selectionType ? 2 : 1)})`,
                                           root: 'component',
                                         },
-                                        item: `${getTableItemKey(row.item)}`,
+                                        item: rowId,
                                       } as GeneratedAnalyticsMetadataTableComponent['innerContext'],
                                     },
                                   };
 
                                   return (
                                     <TableBodyCell
-                                      key={getColumnKey(column, colIndex)}
+                                      key={colId}
                                       {...sharedCellProps}
                                       resizableStyle={{
                                         width: column.width,
@@ -637,14 +648,12 @@ const InternalTable = React.forwardRef(
                                       isRowHeader={column.isRowHeader}
                                       successfulEdit={successfulEdit}
                                       resizableColumns={resizableColumns}
-                                      onEditStart={() => cellEditing.startEdit({ rowIndex, colIndex })}
-                                      onEditEnd={editCancelled =>
-                                        cellEditing.completeEdit({ rowIndex, colIndex }, editCancelled)
-                                      }
+                                      onEditStart={() => cellEditing.startEdit(cellId)}
+                                      onEditEnd={editCancelled => cellEditing.completeEdit(cellId, editCancelled)}
                                       submitEdit={cellEditing.submitEdit}
                                       columnId={column.id ?? colIndex}
                                       colIndex={colIndex + colIndexOffset}
-                                      verticalAlign={column.verticalAlign}
+                                      verticalAlign={column.verticalAlign ?? cellVerticalAlign}
                                       {...cellExpandableProps}
                                       {...getAnalyticsMetadataAttribute(analyticsMetadata)}
                                     />
@@ -670,7 +679,11 @@ const InternalTable = React.forwardRef(
                                 {...rowRoleProps}
                               >
                                 {getItemSelectionProps && (
-                                  <TableBodySelectionCell {...sharedCellProps} columnId={selectionColumnId} />
+                                  <TableBodySelectionCell
+                                    {...sharedCellProps}
+                                    columnId={selectionColumnId}
+                                    verticalAlign={cellVerticalAlign}
+                                  />
                                 )}
                                 {visibleColumnDefinitions.map((column, colIndex) => (
                                   <TableLoaderCell

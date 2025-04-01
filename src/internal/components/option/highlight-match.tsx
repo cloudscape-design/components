@@ -7,7 +7,7 @@ import styles from './styles.css.js';
 const splitOnFiltering = (str: string, highlightText: string) => {
   // We match by creating a regex using user-provided strings, so we skip
   // highlighting if the generated regex would be too memory intensive.
-  if (highlightText.length > 100000) {
+  if (highlightText.length > 10_000) {
     return { noMatches: [str], matches: null };
   }
 
@@ -25,8 +25,9 @@ interface HighlightMatchProps {
   highlightText?: string;
 }
 
-const Highlight = ({ str }: HighlightMatchProps) =>
-  str ? <span className={styles['filtering-match-highlight']}>{str}</span> : null;
+function Highlight({ str }: HighlightMatchProps) {
+  return str ? <mark className={styles['filtering-match-highlight']}>{str}</mark> : null;
+}
 
 export default function HighlightMatch({ str, highlightText }: HighlightMatchProps) {
   if (!str || !highlightText) {

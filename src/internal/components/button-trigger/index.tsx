@@ -40,7 +40,7 @@ export interface ButtonTriggerProps extends BaseComponentProps {
 const ButtonTrigger = (
   {
     children,
-    pressed = false,
+    pressed,
     hideCaret = false,
     disabled = false,
     readOnly = false,

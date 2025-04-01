@@ -167,6 +167,9 @@ export namespace CodeEditorProps {
     preferencesModalThemeFilteringPlaceholder?: string;
     preferencesModalThemeFilteringAriaLabel?: string;
     preferencesModalThemeFilteringClearAriaLabel?: string;
+
+    resizeHandleAriaLabel?: string;
+    resizeHandleTooltipText?: string;
   }
   export interface ResizeDetail {
     height: number;

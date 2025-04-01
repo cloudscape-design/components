@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 import * as React from 'react';
-import { render } from '@testing-library/react';
+import { fireEvent, render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
@@ -775,6 +775,25 @@ describe('Disabled item with reason', () => {
     wrapper.selectOptionByValue('1');
     expect(onChange).not.toHaveBeenCalled();
   });
+
+  test('closes tooltip when Esc is pressed but leaves dropdown open', () => {
+    const { wrapper } = renderMultiselect(
+      <Multiselect
+        options={[{ label: 'First', value: '1', disabled: true, disabledReason: 'disabled reason' }]}
+        selectedOptions={[]}
+      />
+    );
+    wrapper.openDropdown();
+    wrapper.findTrigger().keydown(KeyCode.down);
+    expect(wrapper.findDropdown().findOption(1)!.findDisabledReason()!.getElement()).toHaveTextContent(
+      'disabled reason'
+    );
+    fireEvent.keyDown(wrapper.findDropdown().findOptionsContainer()!.getElement(), {
+      key: 'Escape',
+    });
+    expect(wrapper.findDropdown().findOpenDropdown()).not.toBeNull();
+    expect(wrapper.findDropdown().findOption(1)!.findDisabledReason()).toBeNull();
+  });
 });
 
 test('group options can have description, label tag, tags, disabled reason', () => {
@@ -815,4 +834,12 @@ test('group options can have description, label tag, tags, disabled reason', () 
   expect(groupOption.findTags()![0].getElement().textContent).toBe('Tag 1');
   expect(groupOption.findTags()![1].getElement().textContent).toBe('Tag 2');
   expect(groupOption.findDisabledReason()!.getElement().textContent).toBe('Disabled reason');
+});
+
+test('tolerates options with { options: undefined }, and considers them to not be groups', () => {
+  const { wrapper } = renderMultiselect(
+    <Multiselect options={[{ value: 'option1', options: undefined }]} selectedOptions={[]} />
+  );
+  wrapper.openDropdown();
+  expect(wrapper.findDropdown().findOptionByValue('option1')).not.toBeNull();
 });

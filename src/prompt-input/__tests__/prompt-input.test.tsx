@@ -9,6 +9,8 @@ import PromptInput, { PromptInputProps } from '../../../lib/components/prompt-in
 import createWrapper from '../../../lib/components/test-utils/dom';
 import PromptInputWrapper from '../../../lib/components/test-utils/dom/prompt-input';
 
+import styles from '../../../lib/components/prompt-input/styles.selectors.js';
+
 jest.mock('@cloudscape-design/component-toolkit', () => ({
   ...jest.requireActual('@cloudscape-design/component-toolkit'),
   useContainerQuery: () => [800, () => {}],
@@ -54,6 +56,23 @@ describe('ref', () => {
     ref.current!.select();
     expect(textarea.selectionStart).toBe(0);
     expect(textarea.selectionEnd).toBe(4);
+  });
+
+  test('can be used to select a range', () => {
+    const ref = React.createRef<HTMLTextAreaElement>();
+    const { wrapper } = renderPromptInput({ value: 'Test', ref });
+    const textarea = wrapper.findNativeTextarea().getElement();
+
+    // Make sure no text is selected
+    textarea.selectionStart = textarea.selectionEnd = 0;
+    textarea.blur();
+    expect(textarea.selectionStart).toBe(0);
+    expect(textarea.selectionEnd).toBe(0);
+
+    // Select all text
+    ref.current!.setSelectionRange(1, 3);
+    expect(textarea.selectionStart).toBe(1);
+    expect(textarea.selectionEnd).toBe(3);
   });
 });
 
@@ -286,6 +305,17 @@ describe('secondary actions', () => {
 
     expect(wrapper.findSecondaryActions()?.getElement()).toHaveTextContent('secondary actions');
   });
+});
+
+test('clicking the area between secondary actions and action button should focus the component', () => {
+  const { wrapper } = renderPromptInput({
+    value: '',
+    secondaryActions: 'secondary actions',
+  });
+
+  wrapper.find(`.${styles.buffer}`)!.click();
+
+  expect(wrapper.findNativeTextarea().getElement()).toHaveFocus();
 });
 
 describe('secondary content', () => {

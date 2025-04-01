@@ -22,7 +22,7 @@ export interface CartesianChartProps<T extends ChartDataTypes, Series> extends B
    * It is recommended to set this explicitly. If not, the component will determine a domain that fits all data points.
    * When controlling this directly, make sure to update the value based on filtering changes.
    */
-  xDomain?: T extends unknown ? ReadonlyArray<T> : ReadonlyArray<T>;
+  xDomain?: ReadonlyArray<T>;
 
   /**
    * Determines the domain of the y axis, i.e. the range of values that will be visible in the chart.
@@ -254,6 +254,6 @@ export type XScaleType = 'linear' | 'log' | 'time' | 'categorical';
 export type YScaleType = 'linear' | 'log';
 export type ScaleRange = [number, number];
 
-export type ChartDomain<T extends ChartDataTypes> = T extends unknown ? ReadonlyArray<T> : ReadonlyArray<T>;
+export type ChartDomain<T extends ChartDataTypes> = ReadonlyArray<T>;
 export type XDomain<T extends ChartDataTypes> = ChartDomain<T>;
 export type YDomain = ChartDomain<number>;

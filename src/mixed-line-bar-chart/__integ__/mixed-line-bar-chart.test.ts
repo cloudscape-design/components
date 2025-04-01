@@ -72,7 +72,7 @@ describe('Legend', () => {
 
       // Verify that no legend is highlighted
       await page.hoverElement(chartWrapper.findFilterContainer().toSelector());
-      await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrowError();
+      await expect(page.getText(legendWrapper.findHighlightedItem().toSelector())).rejects.toThrow();
     })
   );
 });
@@ -504,26 +504,31 @@ describe('Details popover', () => {
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
       const barGroup = barChart.findBarGroups().get(1).toSelector();
-      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      await expect(page.getWindowScroll().then(s => s.top)).resolves.toBe(150);
       await page.clickBarGroup(barGroup);
       await page.waitForVisible(barChart.findDetailPopover().toSelector());
       await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
-      await expect(page.getWindowScroll()).resolves.toEqual({ top: 0, left: 0 });
+      await expect(page.getWindowScroll().then(s => s.top)).resolves.toBe(0);
     })
   );
 
-  // Skipped due to failures with WebdriverIO v9.
-  test.skip(
+  test(
     'does not scroll on hover',
     setupTest('#/light/bar-chart/drilldown', async page => {
       await page.setWindowSize({ width: 360, height: 650 });
       await page.windowScrollTo({ top: 150 });
       const barChart = createWrapper().findBarChart();
       const barGroup = barChart.findBarGroups().get(1).toSelector();
-      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+      await expect(page.getWindowScroll().then(s => s.top)).resolves.toBe(150);
       await page.hoverElement(barGroup);
+      await page.waitForVisible(barChart.findDetailPopover().toSelector());
       await expect(page.getText(barChart.findDetailPopover().findHeader().toSelector())).resolves.toContain('Apr 2023');
-      await expect(page.getWindowScroll()).resolves.toEqual({ top: 150, left: 0 });
+
+      // Explanation: when a series is hovered we expect no extra scroll, so the page's scroll should stay at 150px.
+      // However, Webdriver automatically performs scroll adjustments when hovering to make the element fit the screen,
+      // so we give it a small extra allowance.
+      await expect(page.getWindowScroll().then(s => s.top)).resolves.toBeGreaterThanOrEqual(150);
+      await expect(page.getWindowScroll().then(s => s.top)).resolves.toBeLessThan(250);
     })
   );
 
@@ -552,7 +557,7 @@ describe('Details popover', () => {
         await page.setWindowSize({ width: 900, height: 550 });
         await page.openPopoverOnBarGroup(1, interactionType);
         const popover = page.findDetailPopover();
-        expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
+        await expect(page.isDisplayed(popover.toSelector())).resolves.toBe(true);
         const initialRect = await page.getPopoverRect();
         await page.click(popover.findContent().findExpandableSection().toSelector());
         const newRect = await page.getPopoverRect();

@@ -20,6 +20,11 @@ export namespace FlashbarProps {
     buttonText?: ButtonProps['children'];
     onButtonClick?: ButtonProps['onClick'];
     onDismiss?: ButtonProps['onClick'];
+    analyticsMetadata?: FlashbarProps.ItemAnalyticsMetadata;
+  }
+
+  export interface ItemAnalyticsMetadata {
+    suppressFlowMetricEvents?: boolean;
   }
 
   export interface I18nStrings {
@@ -65,6 +70,9 @@ export interface FlashbarProps extends BaseComponentProps {
    * * `id` (string) - Specifies a unique flash message identifier. This property is used in two ways:
    *   1. As a [keys](https://reactjs.org/docs/lists-and-keys.html#keys) source for React rendering.
    *   2. To identify which flash message will be removed from the DOM when it is dismissed, to animate it out.
+   * * `analyticsMetadata` (FlashbarProps.ItemAnalyticsMetadata) - (Optional) Specifies additional analytics-related metadata.
+   *   * `suppressFlowMetricEvents` - Prevent this item from generating events related to flow metrics.
+   * @analytics
    */
   items: ReadonlyArray<FlashbarProps.MessageDefinition>;
 

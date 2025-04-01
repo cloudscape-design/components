@@ -11,9 +11,7 @@ import {
   data2,
   dateTimeFormatter,
   latencyData,
-  multipleBarsData,
   multipleNegativeBarsData,
-  multipleNegativeBarsDataWithThreshold,
   negativeData,
 } from '../mixed-line-bar-chart/common';
 import createPermutations from '../utils/permutations';
@@ -23,24 +21,9 @@ import { smallBarsData } from './common';
 
 const timeLatencyData = latencyData.map(({ time, p90 }) => ({ x: time, y: p90 }));
 
-/* eslint-disable react/jsx-key */
 const stringPermutations = createPermutations<BarChartProps<string>>([
   // Skipping things like empty states because these are already covered extensively for line and mixed charts
 
-  // Multiple bars
-  {
-    i18nStrings: [commonProps.i18nStrings],
-    ariaLabel: ['Test chart'],
-    height: [200],
-    series: [multipleBarsData, [multipleBarsData[0], multipleBarsData[1]]],
-    xScaleType: ['categorical'],
-    xDomain: [undefined, ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']],
-    yDomain: [undefined, [0, 15]],
-    horizontalBars: [true, false],
-    stackedBars: [true, false],
-    xTitle: ['X Title'],
-    yTitle: ['Y Title'],
-  },
   // Stacked bars with mix of positive/negative numbers
   {
     i18nStrings: [commonProps.i18nStrings],
@@ -115,22 +98,6 @@ const numberPermutations = createPermutations<BarChartProps<number>>([
   },
 ]);
 
-const thresholdPermutations = createPermutations<BarChartProps<string>>([
-  {
-    i18nStrings: [commonProps.i18nStrings],
-    ariaLabel: ['Test chart'],
-    height: [200],
-    series: [multipleNegativeBarsDataWithThreshold],
-    xScaleType: ['categorical'],
-    xDomain: [['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']],
-    yDomain: [[-6, 10]],
-    horizontalBars: [true, false],
-    stackedBars: [true, false],
-    xTitle: ['X Title'],
-    yTitle: ['Y Title'],
-  },
-]);
-
 const smallGroupsPermutations = createPermutations<BarChartProps<string>>([
   {
     i18nStrings: [commonProps.i18nStrings],
@@ -147,15 +114,7 @@ const smallGroupsPermutations = createPermutations<BarChartProps<string>>([
   },
 ]);
 
-/* eslint-enable react/jsx-key */
-
-const permutations = [
-  ...stringPermutations,
-  ...timePermutations,
-  ...numberPermutations,
-  ...thresholdPermutations,
-  ...smallGroupsPermutations,
-];
+const permutations = [...stringPermutations, ...timePermutations, ...numberPermutations, ...smallGroupsPermutations];
 
 export default function () {
   return (

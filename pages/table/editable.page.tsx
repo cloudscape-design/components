@@ -2,7 +2,9 @@
 // SPDX-License-Identifier: Apache-2.0
 import React, { ForwardedRef, forwardRef, useContext, useEffect, useRef, useState } from 'react';
 
-import { Box, Button, Checkbox, Link, Modal, SpaceBetween } from '~components';
+import { useCollection } from '@cloudscape-design/collection-hooks';
+
+import { Box, Button, Checkbox, Modal, SpaceBetween } from '~components';
 import Alert from '~components/alert';
 import Autosuggest, { AutosuggestProps } from '~components/autosuggest';
 import Header from '~components/header';
@@ -20,6 +22,7 @@ type PageContext = React.Context<
   AppContextType<{
     resizableColumns: boolean;
     enableKeyboardNavigation: boolean;
+    expandableRows: boolean;
   }>
 >;
 
@@ -62,11 +65,32 @@ const columns: TableProps.ColumnDefinition<DistributionInfo>[] = [
     header: 'Distribution ID',
     sortingField: 'Id',
     width: 180,
-    cell: (item: DistributionInfo) => <Link href={`/#/distributions/${item.Id}`}>{item.Id}</Link>,
+    cell: (item: DistributionInfo) => item.Id,
+    editConfig: {
+      ariaLabel: 'Distribution ID',
+      editIconAriaLabel: 'editable',
+      errorIconAriaLabel: 'Distribution ID Error',
+      editingCell(item, { currentValue, setValue }: TableProps.CellContext<string>) {
+        return (
+          <Input
+            autoFocus={true}
+            value={currentValue ?? item.Id}
+            onChange={withDirtyState(event => setValue(event.detail.value))}
+          />
+        );
+      },
+      disabledReason(item) {
+        if (item.Id.includes('E2')) {
+          return "You don't have the necessary permissions to edit this item.";
+        }
+        return undefined;
+      },
+    },
   },
   {
     id: 'DomainName',
     header: 'Domain name',
+    sortingField: 'DomainName',
     minWidth: 180,
     editConfig: {
       ariaLabel: 'Domain name',
@@ -220,10 +244,12 @@ const Demo = forwardRef(
     { setModalVisible }: { setModalVisible: React.Dispatch<React.SetStateAction<boolean>> },
     tableRef: ForwardedRef<TableProps.Ref>
   ) => {
-    const [items, setItems] = useState(initialItems);
+    const [allItems, setItems] = useState(initialItems);
     const {
-      urlParams: { resizableColumns = true, enableKeyboardNavigation = false },
+      urlParams: { resizableColumns = true, enableKeyboardNavigation = false, expandableRows = false },
     } = useContext(AppContext as PageContext);
+
+    const { items, collectionProps } = useCollection(allItems, { sorting: {} });
 
     const handleSubmit: TableProps.SubmitEditFunction<DistributionInfo> = async (currentItem, column, newValue) => {
       let value = newValue;
@@ -251,8 +277,12 @@ const Demo = forwardRef(
       setClean();
     };
 
+    const [expandedItems, setExpandedItems] = useState<DistributionInfo[]>([]);
+
     return (
       <Table
+        {...collectionProps}
+        trackBy="Id"
         ref={tableRef}
         header={
           <Header headingTagOverride="h1" counter={`(${items.length})`}>
@@ -273,6 +303,25 @@ const Demo = forwardRef(
         stickyHeader={true}
         resizableColumns={resizableColumns}
         enableKeyboardNavigation={enableKeyboardNavigation}
+        expandableRows={
+          expandableRows
+            ? {
+                getItemChildren: item => [
+                  { ...item, Id: item.Id + '-1' },
+                  { ...item, Id: item.Id + '-2' },
+                ],
+                isItemExpandable: item => !item.Id.endsWith('-1') && !item.Id.endsWith('-2'),
+                expandedItems,
+                onExpandableItemToggle: ({ detail }) => {
+                  if (detail.expanded) {
+                    return setExpandedItems(prev => [...prev, detail.item]);
+                  } else {
+                    return setExpandedItems(prev => prev.filter(item => item !== detail.item));
+                  }
+                },
+              }
+            : undefined
+        }
       />
     );
   }
@@ -280,7 +329,7 @@ const Demo = forwardRef(
 
 export default function () {
   const {
-    urlParams: { resizableColumns = true, enableKeyboardNavigation = false },
+    urlParams: { resizableColumns = true, enableKeyboardNavigation = false, expandableRows = false },
     setUrlParams,
   } = useContext(AppContext as PageContext);
   const [modalVisible, setModalVisible] = useState(false);
@@ -320,6 +369,10 @@ export default function () {
             }}
           >
             Keyboard navigation
+          </Checkbox>
+
+          <Checkbox checked={expandableRows} onChange={event => setUrlParams({ expandableRows: event.detail.checked })}>
+            Expandable rows
           </Checkbox>
         </SpaceBetween>
 

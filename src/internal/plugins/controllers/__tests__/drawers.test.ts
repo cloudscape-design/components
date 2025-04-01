@@ -88,7 +88,7 @@ describe('update drawer', () => {
 
   test('throw error if the update drawer is not registered', () => {
     const drawers = new DrawersController();
-    expect(() => drawers.updateDrawer({ id: 'test-drawer' } as UpdateDrawerConfig)).toThrowError(
+    expect(() => drawers.updateDrawer({ id: 'test-drawer' } as UpdateDrawerConfig)).toThrow(
       '[AwsUi] [runtime drawers] drawer with id test-drawer not found'
     );
   });
@@ -116,7 +116,7 @@ describe('console warnings', () => {
       expect.stringMatching(/multiple app layout instances detected/)
     );
     expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
-      eventName: 'awsui-runtime-api-warning',
+      eventContext: 'awsui-runtime-api-warning',
       eventDetail: {
         component: 'app-layout-drawers',
         version: expect.any(String),
@@ -136,7 +136,7 @@ describe('console warnings', () => {
       expect.stringMatching(/drawer with id "drawerA" is already registered/)
     );
     expect(sendPanoramaMetricSpy).toHaveBeenCalledWith({
-      eventName: 'awsui-runtime-api-warning',
+      eventContext: 'awsui-runtime-api-warning',
       eventDetail: {
         component: 'app-layout-drawers',
         version: expect.any(String),

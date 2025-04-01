@@ -95,11 +95,11 @@ describe('BreadcrumbGroup', () => {
     'Adjusts display when adding/removing items',
     setupTest(async page => {
       await page.setWindowSize({ width: 950, height: 800 });
-      expect(page.isEllipsisVisible()).resolves.toBe(false);
+      await expect(page.isEllipsisVisible()).resolves.toBe(false);
       await page.click('#add');
-      expect(page.isEllipsisVisible()).resolves.toBe(true);
+      await expect(page.isEllipsisVisible()).resolves.toBe(true);
       await page.click('#remove');
-      expect(page.isEllipsisVisible()).resolves.toBe(false);
+      await expect(page.isEllipsisVisible()).resolves.toBe(false);
     })
   );
 
@@ -163,16 +163,17 @@ describe('BreadcrumbGroup', () => {
         await page.keys('Tab');
         await page.keys('Tab');
         await page.keys('Tab');
+        await page.keys('Tab');
         await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
       },
       { width: 1200, height: 800 }
     )
   );
 
-  test(
-    'Last item is focusable when truncated',
-    setupTest(
-      async page => {
+  test.each([[{ width: 770, height: 800 }], [{ width: 1100, height: 800 }]])(
+    'Last item should be focusable %s',
+    viewportSize =>
+      setupTest(async page => {
         await page.click('#focus-target-long-text');
         await page.keys('Tab');
         await page.keys('Tab');
@@ -182,10 +183,9 @@ describe('BreadcrumbGroup', () => {
         await page.keys('Tab');
         await expect(page.isTooltipDisplayed()).resolves.toBe(true);
         await page.keys('Tab');
+
         await expect(page.isTooltipDisplayed()).resolves.toBe(false);
         await expect(page.getActiveElementId()).resolves.toBe('focus-target-short-text');
-      },
-      { width: 950, height: 800 }
-    )
+      }, viewportSize)()
   );
 });

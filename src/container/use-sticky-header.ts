@@ -11,6 +11,7 @@ import { getOverflowParents } from '../internal/utils/scrollable-containers';
 
 interface StickyHeaderContextProps {
   isStuck: boolean;
+  isStuckAtBottom: boolean;
 }
 
 interface ComputeOffsetProps {
@@ -39,6 +40,7 @@ export function computeOffset({
 
 export const StickyHeaderContext = createContext<StickyHeaderContextProps>({
   isStuck: false,
+  isStuckAtBottom: false,
 });
 
 export const useStickyHeader = (
@@ -57,10 +59,13 @@ export const useStickyHeader = (
   // If it has overflow parents inside the app layout, we shouldn't apply a sticky offset.
   const [hasInnerOverflowParents, setHasInnerOverflowParents] = useState(false);
   const [isStuck, setIsStuck] = useState(false);
+  const [isStuckAtBottom, setIsStuckAtBottom] = useState(false);
+
   useLayoutEffect(() => {
     if (rootRef.current) {
       const overflowParents = getOverflowParents(rootRef.current);
       const mainElement = findUpUntil(rootRef.current, elem => elem.tagName === 'MAIN');
+
       // In both versions of the app layout, the scrolling element for disableBodyScroll
       // is the <main>. If the closest overflow parent is also the closest <main> and we have
       // offset values, it's safe to assume that it's the app layout scroll root and we
@@ -95,18 +100,28 @@ export const useStickyHeader = (
       }
       if (rootRef.current && headerRef.current) {
         const rootTopBorderWidth = parseFloat(getComputedStyle(rootRef.current).borderTopWidth) || 0;
-        const rootTop = rootRef.current.getBoundingClientRect().top + rootTopBorderWidth;
-        const headerTop = headerRef.current.getBoundingClientRect().top;
 
+        // Using Math.round to adjust for rounding errors in floating-point arithmetic and timing issues
+        const rootTop = Math.round(rootRef.current.getBoundingClientRect().top + rootTopBorderWidth);
+        const headerTop = Math.round(headerRef.current.getBoundingClientRect().top);
         if (rootTop < headerTop) {
           setIsStuck(true);
         } else {
           setIsStuck(false);
         }
+
+        const rootBottom = Math.round(rootRef.current.getBoundingClientRect().bottom - rootTopBorderWidth);
+        const headerBottom = Math.round(headerRef.current.getBoundingClientRect().bottom);
+        if (rootBottom <= headerBottom) {
+          setIsStuckAtBottom(true);
+        } else {
+          setIsStuckAtBottom(false);
+        }
       }
     },
     [rootRef, headerRef]
   );
+
   useEffect(() => {
     if (isSticky) {
       const controller = new AbortController();
@@ -120,6 +135,7 @@ export const useStickyHeader = (
   return {
     isSticky,
     isStuck,
+    isStuckAtBottom,
     stickyStyles,
   };
 };

@@ -1,9 +1,9 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { kebabCase } from 'lodash';
+import kebabCase from 'lodash/kebabCase.js';
 
-import { StyleDictionary } from './interfaces';
-import { TokenName } from './token-names';
+import { StyleDictionary } from './interfaces.js';
+import { TokenName } from './token-names.js';
 
 export function expandMetadata(dictionary: StyleDictionary.MetadataIndex): StyleDictionary.MetadataIndex {
   const entries = Object.entries(dictionary).map(([token, metadata]) => {

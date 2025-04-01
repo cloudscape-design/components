@@ -23,7 +23,6 @@ import { getComponentsAnalyticsMetadata, getItemAnalyticsMetadata } from './anal
 import { useFlashbar } from './common';
 import { Flash, focusFlashById } from './flash';
 import { FlashbarProps } from './interfaces';
-import { sendToggleMetric } from './internal/analytics';
 import { counterTypes, getFlashTypeCount, getItemColor, getVisibleCollapsedItems, StackableItem } from './utils';
 
 import styles from './styles.css.js';
@@ -84,7 +83,6 @@ export default function CollapsibleFlashbar({ items, ...restProps }: FlashbarPro
   const animateFlash = !isReducedMotion;
 
   function toggleCollapseExpand() {
-    sendToggleMetric(items.length, !isFlashbarStackExpanded);
     if (!isReducedMotion) {
       prepareAnimations();
     }
@@ -374,10 +372,8 @@ const NotificationTypeCount = ({
 }) => {
   return (
     <span className={styles['type-count']}>
-      <span aria-label={label} role="img">
-        <span title={label} aria-hidden="true">
-          <InternalIcon name={iconName} />
-        </span>
+      <span title={label}>
+        <InternalIcon name={iconName} ariaLabel={label} />
       </span>
       <span className={styles['count-number']}>{count}</span>
     </span>

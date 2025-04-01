@@ -76,6 +76,7 @@ export default function SelectPage() {
       <ScreenshotArea>
         <Box padding="l">
           <Box padding="s">
+            <div style={{ height: '300px' }}>300px space above the select</div>
             <Box variant="h1">Overflow test</Box>
             <Box variant="p">Dropdown should not be rendered beyond the container with overflow hidden</Box>
             <div id="smallest_container" style={{ overflow: 'hidden', blockSize: '500px', padding: 0 }}>
@@ -151,6 +152,19 @@ export default function SelectPage() {
               placeholder="Choose option"
               onChange={(e: any) => {
                 setSelectedOption5(e.detail.selectedOption);
+              }}
+            />
+          </Box>
+          <Box padding="s">
+            <Box variant="h1">Read-only select</Box>
+            <Select
+              id="select_native_search_readonly"
+              readOnly={true}
+              options={options}
+              selectedOption={selectedOption1}
+              placeholder="Choose option"
+              onChange={(e: any) => {
+                setSelectedOption1(e.detail.selectedOption);
               }}
             />
           </Box>

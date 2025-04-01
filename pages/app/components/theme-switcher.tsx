@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 
 import { Density, Mode } from '@cloudscape-design/global-styles';
 
-import { ALWAYS_VISUAL_REFRESH, THEME } from '~components/internal/environment';
+import { ALWAYS_VISUAL_REFRESH } from '~components/internal/environment';
 import SpaceBetween from '~components/space-between';
 
 import AppContext from '../app-context';
@@ -30,12 +30,6 @@ export default function ThemeSwitcher() {
 
   return (
     <SpaceBetween direction="horizontal" size="xs">
-      <label>
-        Theme
-        <select defaultValue={THEME}>
-          <option value={THEME}>{THEME}</option>
-        </select>
-      </label>
       <label>
         <input {...vrSwitchProps} />
         Visual refresh

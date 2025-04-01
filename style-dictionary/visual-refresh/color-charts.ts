@@ -1,7 +1,7 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { expandColorDictionary } from '../utils';
-import { StyleDictionary } from '../utils/interfaces';
+import { expandColorDictionary } from '../utils/index.js';
+import { StyleDictionary } from '../utils/interfaces.js';
 
 const tokens: StyleDictionary.ColorChartsDictionary = {
   colorChartsRed300: { light: '#ea7158', dark: '#d63f38' },

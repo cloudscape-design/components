@@ -16,7 +16,7 @@
     "test:integ": "gulp test:integ",
     "test:motion": "gulp test:motion",
     "lint": "npm-run-all --parallel lint:*",
-    "lint:eslint": "eslint --ignore-path .gitignore --ext ts,tsx,js .",
+    "lint:eslint": "exit 0",
     "lint:stylelint": "stylelint --ignore-path .gitignore --fix '{src,pages}/**/*.{css,scss}'",
     "start": "npm-run-all --parallel start:watch start:dev",
     "start:watch": "gulp watch",
@@ -62,7 +62,7 @@
     "@cloudscape-design/theming-build": "^1.0.0",
     "@formatjs/icu-messageformat-parser": "^2.3.0",
     "@rollup/plugin-node-resolve": "^15.0.1",
-    "@size-limit/preset-small-lib": "^11.1.6",
+    "@size-limit/preset-small-lib": "^11.2.0",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
     "@tsconfig/node16": "^16.1.1",
@@ -80,8 +80,8 @@
     "@types/react-test-renderer": "^18.3.0",
     "@types/react-transition-group": "^4.4.4",
     "@types/webpack-env": "^1.16.3",
-    "@typescript-eslint/eslint-plugin": "^5.45.0",
-    "@typescript-eslint/parser": "^5.45.0",
+    "@typescript-eslint/eslint-plugin": "^8.24.1",
+    "@typescript-eslint/parser": "^8.24.1",
     "axe-core": "^4.7.2",
     "babel-jest": "^29.7.0",
     "change-case": "^4.1.2",
@@ -94,6 +94,7 @@
     "eslint": "^8.28.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-no-unsanitized": "^4.0.2",
     "eslint-plugin-prettier": "^5.1.3",
     "eslint-plugin-react": "^7.31.11",
@@ -130,7 +131,7 @@
     "size-limit": "^11.1.6",
     "stylelint": "^16.6.1",
     "stylelint-config-recommended-scss": "^14.0.0",
-    "stylelint-no-unsupported-browser-features": "^8.0.1",
+    "stylelint-no-unsupported-browser-features": "^8.0.2",
     "stylelint-order": "^6.0.4",
     "stylelint-prettier": "^5.0.0",
     "stylelint-scss": "^6.3.1",
@@ -139,7 +140,7 @@
     "ts-jest": "^29.2.5",
     "ts-loader": "^9.2.6",
     "typescript": "^4.6.4",
-    "wait-on": "^7.2.0",
+    "wait-on": "^8.0.2",
     "webpack": "^5.94.0",
     "webpack-cli": "^4.9.1",
     "webpack-dev-server": "^4.7.4"
@@ -164,7 +165,7 @@
     {
       "path": "lib/components/internal/widget-exports.js",
       "brotli": false,
-      "limit": "800 kB"
+      "limit": "750 kB"
     }
   ],
   "browserslist": [

@@ -31,12 +31,22 @@ $cell-offset: calc(#{awsui.$space-m} + #{awsui.$space-xs});
 // Ensuring enough space for absolute-positioned focus outlines of focus-able cell content elements.
 $cell-negative-space-vertical: 2px;
 
+@mixin safe-focus-highlight($params) {
+  @include styles.focus-highlight($params);
+
+  // @mixin focus-highlight sets cell's position to "relative".
+  // Reinforcing sticky position for it to take precedence.
+  &.sticky-cell {
+    position: sticky;
+  }
+}
+
 @mixin cell-focus-outline {
-  @include styles.focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
+  @include safe-focus-highlight(calc(-1 * #{awsui.$space-scaled-xxs}));
 
   // Give extra space on the left (inline start) to compensate for missing body cell padding.
   &.is-visual-refresh:first-child {
-    @include styles.focus-highlight(
+    @include safe-focus-highlight(
       (
         'vertical': calc(-1 * #{awsui.$space-scaled-xxs}),
         'horizontal': (
@@ -45,12 +55,6 @@ $cell-negative-space-vertical: 2px;
         ),
       )
     );
-  }
-
-  // @mixin focus-highlight sets cell's position to "relative".
-  // Reinforcing sticky position for it to take precedence.
-  &.sticky-cell {
-    position: sticky;
   }
 }
 
@@ -117,7 +121,7 @@ $cell-negative-space-vertical: 2px;
   }
 }
 @mixin body-cell-active-hover-padding($padding-start) {
-  &:not(.body-cell-edit-active).body-cell-editable:hover {
+  &:not(.body-cell-edit-active):not(.body-cell-expandable).body-cell-editable:hover {
     @include cell-padding-inline-start(calc(#{$padding-start} + #{awsui.$border-divider-list-width}));
   }
 }
@@ -136,14 +140,12 @@ $cell-negative-space-vertical: 2px;
   @include cell-padding-block-start($cell-vertical-padding);
   @include cell-padding-block-end($cell-vertical-padding-w-border);
 
+  &-align-top {
+    vertical-align: top;
+  }
+
   &-content {
     box-sizing: border-box;
-    block-size: 100%;
-    align-content: center;
-
-    &.body-cell-align-top {
-      align-content: baseline;
-    }
 
     &:not(.body-cell-wrap) {
       white-space: nowrap;
@@ -358,8 +360,8 @@ $cell-negative-space-vertical: 2px;
     background: 0;
     border-block: 0;
     border-inline: 0;
-    padding-block: 0;
-    padding-inline: 0;
+    padding-block: awsui.$space-scaled-xxs;
+    padding-inline: awsui.$space-scaled-xxs;
 
     // This gives the editor button a small area even when the icon is not rendered.
     // That is to allow programmatic interaction in tests.
@@ -394,6 +396,16 @@ $cell-negative-space-vertical: 2px;
       // 6 space-xxs: 2 * icon left padding + 2 * icon right padding + space between icons + space between icons and editor
       max-inline-size: calc(100% - 6 * #{awsui.$space-xxs} - 2 * #{awsui.$size-icon-normal});
     }
+
+    &-focusable {
+      @include focus-visible.when-visible {
+        // Making focus outline slightly smaller to not intersect with the success indicator.
+        @include safe-focus-highlight(-1px);
+      }
+    }
+  }
+  &-editor-icon {
+    display: none;
   }
 
   &.body-cell-expandable {
@@ -422,8 +434,6 @@ $cell-negative-space-vertical: 2px;
     }
 
     &:not(.body-cell-edit-active) {
-      cursor: pointer;
-
       // Include interactive padding even when a cell is not hovered to prevent jittering when resizableColumns=false.
       &:not(.resizable-columns) {
         @include cell-padding-inline-end($interactive-column-padding-inline-end);
@@ -444,17 +454,21 @@ $cell-negative-space-vertical: 2px;
         opacity: 0;
       }
 
-      // Showing focus outline for the cell.
-      // We don't use our focus-visible polyfill here because it doesn't work properly with screen readers.
-      // These edit buttons are special because they are visually hidden (opacity: 0), but exposed to assistive technology.
-      // It's therefore important to display the focus outline, even when a keyboard use wasn't detected.
-      // For example, when an edit button is selected from the VoiceOver rotor menu.
-      &:focus-within {
-        @include cell-focus-outline;
+      // The editable cells are interactive but the actual focus lands on the edit button which is decorative.
+      // That is why we use focus-within to detect if the focus is on the edit button to draw the outline around the cell.
+      // For expandable+editable cells the edit button works as a normal button because the cell itself is not interactive.
+      &:not(.body-cell-expandable) {
+        &:focus-within {
+          @include cell-focus-outline;
+        }
       }
 
       &:focus-within:focus-within,
       &.body-cell-edit-disabled-popover {
+        // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant, no-descending-specificity
+        .body-cell-editor-icon {
+          display: unset;
+        }
         &.body-cell-has-success {
           // After a successful edit, we display the success icon next to the edit button and need additional padding to not let the text overflow the success icon.
           @include cell-padding-inline-end(
@@ -470,10 +484,19 @@ $cell-negative-space-vertical: 2px;
       &:hover:hover {
         position: relative;
 
-        background-color: awsui.$color-background-dropdown-item-hover;
-        border-block: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
-        border-inline: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
-        inset-inline: calc(-1 * #{awsui.$border-divider-list-width});
+        // stylelint-disable-next-line @cloudscape-design/no-implicit-descendant
+        .body-cell-editor-icon {
+          display: unset;
+        }
+
+        &:not(.body-cell-expandable) {
+          cursor: pointer;
+          background-color: awsui.$color-background-dropdown-item-hover;
+          border-block: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
+          border-inline: awsui.$border-divider-list-width solid awsui.$color-border-editable-cell-hover;
+          inset-inline: calc(-1 * #{awsui.$border-divider-list-width});
+        }
+
         &.sticky-cell {
           position: sticky;
         }
@@ -504,12 +527,12 @@ $cell-negative-space-vertical: 2px;
         &.body-cell-next-selected {
           @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width} / 2)));
         }
-        &.body-cell-last-row:not(.body-cell-selected) {
+        &.body-cell-last-row:not(.body-cell-expandable):not(.body-cell-selected) {
           @include cell-padding-block-start(
             calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width}))
           );
         }
-        &.body-cell-first-row:not(.body-cell-selected) {
+        &.body-cell-first-row:not(.body-cell-expandable):not(.body-cell-selected) {
           @include cell-padding-block(calc(#{$cell-vertical-padding} - calc(#{awsui.$border-divider-list-width})));
         }
         @include focused-editor-styles;

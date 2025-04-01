@@ -8,6 +8,8 @@ import OptionsList from '../../internal/components/options-list';
 import { useMergeRefs } from '../../internal/hooks/use-merge-refs';
 import { useVirtual } from '../../internal/hooks/use-virtual';
 import { renderOptions } from '../utils/render-options';
+import customScrollToIndex from '../utils/scroll-to-index';
+import { fallbackItemHeight } from './common';
 import { SelectListProps } from './plain-list';
 
 import styles from './styles.css.js';
@@ -29,14 +31,18 @@ const VirtualListOpen = forwardRef(
       listBottom,
       useInteractiveGroups,
       screenReaderContent,
+      firstOptionSticky,
     }: SelectListProps,
     ref: React.Ref<SelectListProps.SelectListRef>
   ) => {
     // update component, when it gets wider or narrower to reposition items
-    const [width, menuMeasureRef] = useContainerQuery(rect => rect.contentBoxWidth, []);
+    const [width, menuMeasureRef] = useContainerQuery(
+      rect => ({ inner: rect.contentBoxWidth, outer: rect.borderBoxWidth }),
+      []
+    );
     const menuRefObject = useRef(null);
     const menuRef = useMergeRefs(menuMeasureRef, menuRefObject, menuProps.ref);
-
+    const previousHighlightedIndex = useRef<number>();
     const { virtualItems, totalSize, scrollToIndex } = useVirtual({
       items: filteredOptions,
       parentRef: menuRefObject,
@@ -45,18 +51,39 @@ const VirtualListOpen = forwardRef(
       // 1: because the component got resized (width property got updated)
       // 2: because the option changed its content (filteringValue property controls the highlight and the visibility of hidden tags)
       // eslint-disable-next-line react-hooks/exhaustive-deps
-      estimateSize: useCallback(() => 31, [width, filteringValue]),
+      estimateSize: useCallback(() => fallbackItemHeight, [width?.inner, filteringValue]),
+      firstItemSticky: firstOptionSticky,
     });
 
     useImperativeHandle(
       ref,
       () => (index: number) => {
         if (highlightType.moveFocus) {
-          scrollToIndex(index);
+          const movingUp = previousHighlightedIndex.current !== undefined && index < previousHighlightedIndex.current;
+          if (firstOptionSticky && movingUp && index !== 0 && menuRefObject.current) {
+            // React-Virtual v2 does not offer a proper way to handle sticky elements when scrolling,
+            // so until we upgrade to v3, use our own scroll implementation
+            // to prevent newly highlighted element from being covered by the sticky element
+            // when moving the highlight upwards in the list.
+
+            // Scrolling behavior is covered by integration tests.
+            // istanbul ignore next
+            customScrollToIndex({
+              index,
+              menuEl: menuRefObject?.current,
+            });
+          } else {
+            scrollToIndex(index);
+          }
         }
+        previousHighlightedIndex.current = index;
       },
-      [highlightType, scrollToIndex]
+      [firstOptionSticky, highlightType.moveFocus, scrollToIndex]
     );
+
+    const stickySize = firstOptionSticky ? virtualItems[0].size : 0;
+    const withScrollbar = !!width && width.inner < width.outer;
+
     const finalOptions = renderOptions({
       options: virtualItems.map(({ index }) => filteredOptions[index]),
       getOptionProps,
@@ -67,13 +94,19 @@ const VirtualListOpen = forwardRef(
       virtualItems,
       useInteractiveGroups,
       screenReaderContent,
-      ariaSetsize: filteredOptions.length,
+      firstOptionSticky,
+      withScrollbar,
     });
 
     return (
-      <OptionsList {...menuProps} ref={menuRef}>
-        <div aria-hidden="true" key="total-size" className={styles['layout-strut']} style={{ height: totalSize }} />
+      <OptionsList {...menuProps} stickyItemBlockSize={stickySize} ref={menuRef}>
         {finalOptions}
+        <div
+          aria-hidden="true"
+          key="total-size"
+          className={styles['layout-strut']}
+          style={{ height: totalSize - stickySize }}
+        />
         {listBottom ? (
           <li role="option" className={styles['list-bottom']}>
             {listBottom}

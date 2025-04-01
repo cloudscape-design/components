@@ -104,11 +104,15 @@ export interface I18nFormatArgTypes {
     "i18nStrings.preferencesModalConfirm": never;
     "i18nStrings.preferencesModalWrapLines": never;
     "i18nStrings.preferencesModalTheme": never;
+    "i18nStrings.preferencesModalThemeFilteringAriaLabel": never;
+    "i18nStrings.preferencesModalThemeFilteringPlaceholder": never;
     "i18nStrings.preferencesModalLightThemes": never;
     "i18nStrings.preferencesModalDarkThemes": never;
     "i18nStrings.cursorPositionAriaLabel": {
       "row": string | number;
     }
+    "i18nStrings.resizeHandleAriaLabel": never;
+    "i18nStrings.resizeHandleTooltipText": never;
   }
   "collection-preferences": {
     "title": never;
@@ -165,6 +169,7 @@ export interface I18nFormatArgTypes {
     "i18nStrings.relativeModeTitle": never;
     "i18nStrings.absoluteModeTitle": never;
     "i18nStrings.relativeRangeSelectionHeading": never;
+    "i18nStrings.relativeRangeSelectionMonthlyDescription": never;
     "i18nStrings.cancelButtonLabel": never;
     "i18nStrings.clearButtonLabel": never;
     "i18nStrings.applyButtonLabel": never;
@@ -173,6 +178,12 @@ export interface I18nFormatArgTypes {
     "i18nStrings.customRelativeRangeUnitLabel": never;
     "i18nStrings.customRelativeRangeDurationLabel": never;
     "i18nStrings.customRelativeRangeDurationPlaceholder": never;
+    "i18nStrings.previousMonthAriaLabel": never;
+    "i18nStrings.nextMonthAriaLabel": never;
+    "i18nStrings.previousYearAriaLabel": never;
+    "i18nStrings.nextYearAriaLabel": never;
+    "i18nStrings.currentMonthAriaLabel": never;
+    "i18nStrings.todayAriaLabel": never;
     "i18nStrings.startMonthLabel": never;
     "i18nStrings.startDateLabel": never;
     "i18nStrings.startTimeLabel": never;
@@ -180,6 +191,8 @@ export interface I18nFormatArgTypes {
     "i18nStrings.endDateLabel": never;
     "i18nStrings.endTimeLabel": never;
     "i18nStrings.dateTimeConstraintText": never;
+    "i18nStrings.dateConstraintText": never;
+    "i18nStrings.monthConstraintText": never;
     "i18nStrings.errorIconAriaLabel": never;
     "i18nStrings.renderSelectedAbsoluteRangeAriaLive": {
       "startDate": string | number;
@@ -254,6 +267,7 @@ export interface I18nFormatArgTypes {
     "deselectAriaLabel": {
       "option__label": string | number;
     }
+    "i18nStrings.selectAllText": never;
   }
   "pagination": {
     "ariaLabels.nextPageLabel": never;
@@ -401,6 +415,8 @@ export interface I18nFormatArgTypes {
     }
     "i18nStrings.labelRefresh": never;
     "i18nStrings.labelBreadcrumbs": never;
+    "i18nStrings.labelIconFolder": never;
+    "i18nStrings.labelIconObject": never;
     "i18nStrings.filteringCounterText": {
       "count": number;
     }

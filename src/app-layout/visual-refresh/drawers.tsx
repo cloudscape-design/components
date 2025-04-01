@@ -240,6 +240,7 @@ function DesktopTriggers() {
           [styles['has-multiple-triggers']]: hasMultipleTriggers,
           [styles['has-open-drawer']]: hasOpenDrawer,
         })}
+        aria-label={drawersAriaLabel}
         role="toolbar"
         aria-orientation="vertical"
       >
@@ -347,7 +348,12 @@ export function MobileTriggers() {
       aria-label={drawersAriaLabel}
       role="region"
     >
-      <div className={styles['drawers-mobile-triggers-container']} role="toolbar" aria-orientation="horizontal">
+      <div
+        className={styles['drawers-mobile-triggers-container']}
+        aria-label={drawersAriaLabel}
+        role="toolbar"
+        aria-orientation="horizontal"
+      >
         {visibleItems.map(item => {
           const isForPreviousActiveDrawer = previousActiveDrawerId?.current === item.id;
           return (

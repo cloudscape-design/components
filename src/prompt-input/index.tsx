@@ -19,8 +19,8 @@ const PromptInput = React.forwardRef(
       spellcheck,
       readOnly,
       actionButtonIconName,
-      minRows,
-      maxRows,
+      minRows = 1,
+      maxRows = 3,
       ...props
     }: PromptInputProps,
     ref: React.Ref<PromptInputProps.Ref>

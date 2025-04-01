@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useContext } from 'react';
+import React, { MutableRefObject, useContext } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsLabelAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -23,6 +23,8 @@ import styles from './styles.css.js';
 
 interface InternalHeaderProps extends SomeRequired<HeaderProps, 'variant'>, InternalBaseComponentProps {
   __disableActionsWrapping?: boolean;
+  __headingTagRef?: MutableRefObject<HTMLHeadingElement | null>;
+  __headingTagTabIndex?: number;
 }
 
 export default function InternalHeader({
@@ -35,6 +37,8 @@ export default function InternalHeader({
   info,
   __internalRootRef = null,
   __disableActionsWrapping,
+  __headingTagRef,
+  __headingTagTabIndex,
   ...restProps
 }: InternalHeaderProps) {
   const isMobile = useMobile();
@@ -76,6 +80,8 @@ export default function InternalHeader({
         <div className={clsx(styles.title, styles[`title-variant-${variantOverride}`], isRefresh && styles.refresh)}>
           <HeadingTag
             className={clsx(styles.heading, styles[`heading-variant-${variantOverride}`])}
+            ref={__headingTagRef}
+            tabIndex={__headingTagTabIndex}
             {...getAnalyticsLabelAttribute(`.${analyticsSelectors['heading-text']}`)}
           >
             <span

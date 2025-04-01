@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import * as React from 'react';
+import React, { useState } from 'react';
 import { render } from '@testing-library/react';
 
 import { warnOnce } from '@cloudscape-design/component-toolkit/internal';
@@ -8,7 +8,6 @@ import { KeyCode } from '@cloudscape-design/test-utils-core/utils';
 
 import '../../__a11y__/to-validate-a11y';
 import Autosuggest, { AutosuggestProps } from '../../../lib/components/autosuggest';
-import { documentHasFocus } from '../../../lib/components/internal/utils/dom';
 import createWrapper from '../../../lib/components/test-utils/dom';
 
 import itemStyles from '../../../lib/components/internal/components/selectable-item/styles.css.js';
@@ -28,6 +27,20 @@ const defaultProps: AutosuggestProps = {
   options: defaultOptions,
 };
 
+function StatefulAutosuggest(props: AutosuggestProps) {
+  const [value, setValue] = useState(props.value);
+  return (
+    <Autosuggest
+      {...props}
+      value={value}
+      onChange={event => {
+        props.onChange?.(event);
+        setValue(event.detail.value);
+      }}
+    />
+  );
+}
+
 function renderAutosuggest(jsx: React.ReactElement) {
   const { container, rerender } = render(jsx);
   const wrapper = createWrapper(container).findAutosuggest()!;
@@ -44,15 +57,8 @@ jest.mock('@cloudscape-design/component-toolkit/internal', () => {
     warnOnce: jest.fn(),
   };
 });
-
-jest.mock('../../../lib/components/internal/utils/dom', () => ({
-  ...jest.requireActual('../../../lib/components/internal/utils/dom'),
-  documentHasFocus: jest.fn(() => true),
-}));
-
 beforeEach(() => {
-  (warnOnce as jest.Mock).mockClear();
-  (documentHasFocus as jest.Mock).mockClear();
+  (warnOnce as any).mockClear();
 });
 
 test('renders correct labels when focused', () => {
@@ -114,10 +120,10 @@ test('option with special characters can be selected by value', () => {
 test('should display entered text option/label', () => {
   const enteredTextLabel = jest.fn(value => `Custom function with ${value} placeholder`);
   const { wrapper } = renderAutosuggest(
-    <Autosuggest enteredTextLabel={enteredTextLabel} value="1" options={defaultOptions} />
+    <StatefulAutosuggest enteredTextLabel={enteredTextLabel} value="" options={defaultOptions} />
   );
   wrapper.setInputValue('1');
-  expect(enteredTextLabel).toBeCalledWith('1');
+  expect(enteredTextLabel).toHaveBeenCalledWith('1');
   expect(wrapper.findEnteredTextOption()!.getElement()).toHaveTextContent('Custom function with 1 placeholder');
 });
 
@@ -129,24 +135,21 @@ test('entered text option should not get screenreader override', () => {
   ).toBeFalsy();
 });
 
-test('should close dropdown on blur when document is in focus', () => {
-  const { wrapper } = renderAutosuggest(<Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />);
+test('should not close dropdown when no realted target in blur', () => {
+  const { wrapper, container } = renderAutosuggest(
+    <div>
+      <Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />
+      <button id="focus-target">focus target</button>
+    </div>
+  );
   wrapper.findNativeInput().focus();
   expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
 
-  wrapper.findNativeInput().blur();
+  document.body.focus();
+  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
+
+  createWrapper(container).find('#focus-target')!.focus();
   expect(wrapper.findDropdown().findOpenDropdown()).toBe(null);
-});
-
-test('should not close dropdown on blur when document is not in focus', () => {
-  (documentHasFocus as jest.Mock).mockImplementation(() => false);
-
-  const { wrapper } = renderAutosuggest(<Autosuggest enteredTextLabel={v => v} value="1" options={defaultOptions} />);
-  wrapper.findNativeInput().focus();
-  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
-
-  wrapper.findNativeInput().blur();
-  expect(wrapper.findDropdown().findOpenDropdown()).not.toBe(null);
 });
 
 it('should warn if recoveryText is provided without associated handler', () => {
@@ -297,8 +300,8 @@ describe('keyboard interactions', () => {
     const { wrapper } = renderAutosuggest(<Autosuggest {...defaultProps} onChange={onChange} onSelect={onSelect} />);
     wrapper.findNativeInput().keydown(KeyCode.down);
     wrapper.findNativeInput().keydown(KeyCode.enter);
-    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '1' } }));
-    expect(onSelect).toBeCalledWith(
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '1' } }));
+    expect(onSelect).toHaveBeenCalledWith(
       expect.objectContaining({ detail: { value: '1', selectedOption: defaultOptions[0] } })
     );
   });
@@ -327,18 +330,18 @@ describe('keyboard interactions', () => {
 
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(0);
+    expect(onChange).toHaveBeenCalledTimes(0);
 
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(1);
-    expect(onChange).toBeCalledWith(expect.objectContaining({ detail: { value: '' } }));
+    expect(onChange).toHaveBeenCalledTimes(1);
+    expect(onChange).toHaveBeenCalledWith(expect.objectContaining({ detail: { value: '' } }));
 
     rerender(<Autosuggest {...defaultProps} value="" onChange={onChange} />);
 
     wrapper.findNativeInput().keydown(KeyCode.escape);
     expect(wrapper.findDropdown()!.findOpenDropdown()).toBe(null);
-    expect(onChange).toBeCalledTimes(1);
+    expect(onChange).toHaveBeenCalledTimes(1);
   });
 
   test('arrow up key on first option should highlight last option', () => {

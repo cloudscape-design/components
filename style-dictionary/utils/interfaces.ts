@@ -18,7 +18,7 @@ import {
   SpacingTokenName,
   TokenName,
   TypographyTokenName,
-} from './token-names';
+} from './token-names.js';
 
 export namespace StyleDictionary {
   export type GlobalEntry = GlobalValue;
@@ -55,6 +55,11 @@ export namespace StyleDictionary {
   export type MotionDictionary = Partial<TokenCategory<MotionTokenName, MotionModeEntry>>;
   export type SizesDictionary = Partial<TokenCategory<SizesTokenName, DensityModeEntry>>;
   export type SpacingDictionary = Partial<TokenCategory<SpacingTokenName, DensityModeEntry>>;
+
+  export interface CategoryModule {
+    mode?: string;
+    tokens: Record<string, any>;
+  }
 
   export interface Metadata {
     description?: string;

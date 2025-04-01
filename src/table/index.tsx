@@ -22,6 +22,7 @@ const Table = React.forwardRef(
       selectedItems = [],
       variant = 'container',
       contentDensity = 'comfortable',
+      cellVerticalAlign = 'middle',
       firstIndex = 1,
       ...props
     }: TableProps<T>,
@@ -45,6 +46,8 @@ const Table = React.forwardRef(
           wrapLines: props.wrapLines,
           enableKeyboardNavigation: props.enableKeyboardNavigation,
           totalItemsCount: props.totalItemsCount,
+          flowType: analyticsMetadata.flowType,
+          cellVerticalAlign,
         },
         metadata: {
           expandableRows: !!props.expandableRows,
@@ -60,6 +63,9 @@ const Table = React.forwardRef(
           hasInstanceIdentifier: Boolean(analyticsMetadata?.instanceIdentifier),
           usesVisibleColumns: !!props.visibleColumns,
           usesColumnDisplay: !!props.columnDisplay,
+          usesColumnDefinitionsVerticalAlign: props.columnDefinitions.some(
+            def => def.verticalAlign !== cellVerticalAlign
+          ),
         },
       },
       analyticsMetadata
@@ -88,6 +94,7 @@ const Table = React.forwardRef(
       variant,
       contentDensity,
       firstIndex,
+      cellVerticalAlign,
       ...props,
       ...baseComponentProps,
       ref,

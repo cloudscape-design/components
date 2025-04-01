@@ -41,7 +41,13 @@ import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 export type InternalButtonProps = Omit<ButtonProps, 'variant'> & {
-  variant?: ButtonProps['variant'] | 'flashbar-icon' | 'breadcrumb-group' | 'menu-trigger' | 'modal-dismiss';
+  variant?:
+    | ButtonProps['variant']
+    | 'flashbar-icon'
+    | 'breadcrumb-group'
+    | 'menu-trigger'
+    | 'modal-dismiss'
+    | 'inline-icon-pointer-target';
   badge?: boolean;
   analyticsAction?: string;
   __nativeAttributes?:
@@ -105,7 +111,8 @@ export const InternalButton = React.forwardRef(
     const isDisabledWithReason = (variant === 'normal' || variant === 'primary') && !!disabledReason && disabled;
     const hasAriaDisabled = (loading && !disabled) || (disabled && __focusable) || isDisabledWithReason;
     const shouldHaveContent =
-      children && ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss'].indexOf(variant) === -1;
+      children &&
+      ['icon', 'inline-icon', 'flashbar-icon', 'modal-dismiss', 'inline-icon-pointer-target'].indexOf(variant) === -1;
 
     if ((iconName || iconUrl || iconSvg) && iconAlign === 'right' && external) {
       warnOnce('Button', 'A right-aligned icon should not be combined with an external icon.');
@@ -238,12 +245,11 @@ export const InternalButton = React.forwardRef(
             {external && (
               <>
                 &nbsp;
-                <span
-                  role="img"
-                  aria-label={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
-                >
-                  <Icon name="external" className={testUtilStyles['external-icon']} />
-                </span>
+                <Icon
+                  name="external"
+                  className={testUtilStyles['external-icon']}
+                  ariaLabel={i18n('i18nStrings.externalIconAriaLabel', i18nStrings?.externalIconAriaLabel)}
+                />
               </>
             )}
           </>
@@ -274,7 +280,12 @@ export const InternalButton = React.forwardRef(
       <>
         {descriptionEl}
         {showTooltip && (
-          <Tooltip className={testUtilStyles['disabled-reason-tooltip']} trackRef={buttonRef} value={disabledReason!} />
+          <Tooltip
+            className={testUtilStyles['disabled-reason-tooltip']}
+            trackRef={buttonRef}
+            value={disabledReason!}
+            onDismiss={() => setShowTooltip(false)}
+          />
         )}
       </>
     );

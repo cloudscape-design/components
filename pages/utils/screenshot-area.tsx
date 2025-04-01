@@ -28,6 +28,19 @@ export default function ScreenshotArea({
   children,
 }: ScreenshotAreaProps) {
   const [documentHeight, ref] = useContainerQuery(() => document.documentElement.scrollHeight);
+
+  const isExceedingHeightWarning =
+    documentHeight && documentHeight > MAX_PAGE_HEIGHT
+      ? `Warning: this page has height ${documentHeight}px, which is above the limit of ${MAX_PAGE_HEIGHT}px.
+      Taking a screenshot of this page may not include the full content. Remove ScreenshotArea if using this page for
+      integration tests only, or distribute test samples into separate pages to make screenshot tests work correctly.`
+      : '';
+
+  // Reporting the excessive height as a console error makes integration and screenshot tests for this page fail.
+  if (isExceedingHeightWarning) {
+    console.warn(isExceedingHeightWarning);
+  }
+
   return (
     <section
       ref={ref}
@@ -37,12 +50,7 @@ export default function ScreenshotArea({
       })}
       style={style}
     >
-      {documentHeight && documentHeight > MAX_PAGE_HEIGHT && (
-        <p style={{ color: colorTextStatusError }}>
-          Warning: this page has height {documentHeight}px which is above the limit {MAX_PAGE_HEIGHT}. Taking a
-          screenshot of this page may not include the full content.
-        </p>
-      )}
+      {isExceedingHeightWarning && <p style={{ color: colorTextStatusError }}>{isExceedingHeightWarning}</p>}
       {children}
     </section>
   );
