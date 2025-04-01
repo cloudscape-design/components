@@ -40,12 +40,42 @@ awsuiPlugins.flashbar.registerAction({
   unmountContent: container => unmountComponentAtNode(container),
 });
 
+const multilinetext = (
+  <>
+    <p>Text on multiple lines</p>
+    <p>Lorem ipsum dolor sit amet,consectetur adipisicing elit, sed do eiusmod tempor</p>
+    <p>incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis</p>
+    <p>nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+  </>
+);
+
+const longText = (
+  <>
+    One long line of text that should wrap. Lorem ipsum dolor sit amet,consectetur adipisicing elit, sed do eiusmod
+    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+    laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit cillum dolore eu fugiat
+    nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id
+    est laborum.
+  </>
+);
+
+const longTextWithUnbreakableWord = (
+  <>
+    One long line of text that should wrap, with a very long word. Lorem ipsum dolor sit amet,consectetur adipisicing
+    elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+    exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
+    reprehenderitinvoluptatevelitessereprehenderitinvoluptatevelitessereprehenderitinvoluptatevelitessereprehenderitinvoluptatevelitesse
+    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+    deserunt mollit anim id est laborum.
+  </>
+);
+
 /* eslint-disable react/jsx-key */
 const permutations = createPermutations<FlashbarProps.MessageDefinition>([
   {
     dismissible: [true, false],
     header: ['Flash message'],
-    content: ['Content'],
+    content: ['Content', multilinetext, longText, longTextWithUnbreakableWord],
     type: ['success', 'error'],
     action: [
       null,
