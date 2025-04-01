@@ -62,20 +62,6 @@
   white-space: nowrap;
 }
 
-.action-wrapped {
-  margin-block-end: calc(#{awsui.$border-width-alert} + #{awsui.$space-scaled-xxs});
-}
-
-.icon-size-medium > .alert-wrapper > .action-wrapped {
-  margin-inline-start: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
-}
-.icon-size-big > .alert-wrapper > .action-wrapped {
-  margin-inline-start: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
-}
-.icon-size-normal > .alert-wrapper > .action-wrapped {
-  margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
-}
-
 .action-slot,
 .action-button {
   /* used in test-utils */
@@ -109,6 +95,20 @@
   &.message {
     margin-inline-end: awsui.$space-alert-message-right;
   }
+}
+
+.action-wrapped {
+  margin-block-end: awsui.$space-xxs;
+}
+
+.icon-size-medium > .alert-wrapper > .action-wrapped {
+  margin-inline-start: calc(#{awsui.$size-icon-medium} + #{awsui.$space-xs});
+}
+.icon-size-big > .alert-wrapper > .action-wrapped {
+  margin-inline-start: calc(#{awsui.$size-icon-big} + #{awsui.$space-xs});
+}
+.icon-size-normal > .alert-wrapper > .action-wrapped {
+  margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
 }
 
 .content,

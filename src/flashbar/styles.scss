@@ -127,8 +127,9 @@
   white-space: nowrap;
 }
 .action-wrapped {
-  margin-block-end: calc(#{awsui.$border-width-field} + #{awsui.$space-scaled-xxs});
-  margin-inline-start: calc(#{awsui.$size-icon-normal} + #{awsui.$space-xs});
+  margin-inline-start: awsui.$space-l;
+  padding-inline-start: awsui.$space-xxs;
+  margin-block-end: awsui.$space-xxs;
 }
 
 .action-button,
