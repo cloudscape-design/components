@@ -23,6 +23,7 @@ export default function InternalCopyToClipboard({
   copyErrorText,
   textToCopy,
   popoverRenderWithPortal,
+  content,
   __internalRootRef = null,
   ...restProps
 }: InternalCopyToClipboardProps) {
@@ -89,7 +90,7 @@ export default function InternalCopyToClipboard({
       {isInline ? (
         <span className={styles['inline-container']}>
           <span className={styles['inline-container-trigger']}>{trigger}</span>
-          <span className={testStyles['text-to-copy']}>{textToCopy}</span>
+          <span className={testStyles['text-to-copy']}>{content ?? textToCopy}</span>
         </span>
       ) : (
         trigger
