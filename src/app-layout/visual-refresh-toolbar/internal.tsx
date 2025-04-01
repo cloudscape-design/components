@@ -3,6 +3,7 @@
 import { createWidgetizedAppLayoutDrawer, createWidgetizedAppLayoutGlobalDrawers } from './drawer';
 import { createWidgetizedAppLayoutNavigation } from './navigation';
 import { createWidgetizedAppLayoutNotifications } from './notifications';
+import { createWidgetizedSkeletonLayout } from './skeleton';
 import {
   createWidgetizedAppLayoutSplitPanelDrawerBottom,
   createWidgetizedAppLayoutSplitPanelDrawerSide,
@@ -16,3 +17,4 @@ export const AppLayoutNotifications = createWidgetizedAppLayoutNotifications();
 export const AppLayoutToolbar = createWidgetizedAppLayoutToolbar();
 export const AppLayoutSplitPanelBottom = createWidgetizedAppLayoutSplitPanelDrawerBottom();
 export const AppLayoutSplitPanelSide = createWidgetizedAppLayoutSplitPanelDrawerSide();
+export const AppLayoutSkeletonLayout = createWidgetizedSkeletonLayout();
