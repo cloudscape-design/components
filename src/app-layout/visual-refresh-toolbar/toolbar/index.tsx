@@ -53,7 +53,7 @@ export interface ToolbarProps {
 }
 
 export interface AppLayoutToolbarImplementationProps {
-  appLayoutInternals: AppLayoutInternals;
+  appLayoutInternals: Partial<AppLayoutInternals>;
   toolbarProps: ToolbarProps;
 }
 
@@ -84,13 +84,13 @@ export function AppLayoutToolbarImplementation({
     onSplitPanelToggle,
     expandedDrawerId,
     setExpandedDrawerId,
-  } = toolbarProps;
+  } = toolbarProps ?? {};
   const drawerExpandedMode = !!expandedDrawerId;
   const ref = useRef<HTMLElement>(null);
-  useResizeObserver(ref, entry => setToolbarHeight(entry.borderBoxHeight));
+  useResizeObserver(ref, entry => setToolbarHeight?.(entry.borderBoxHeight));
   useEffect(() => {
     return () => {
-      setToolbarHeight(0);
+      setToolbarHeight?.(0);
     };
     // unmount effect only
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -119,7 +119,7 @@ export function AppLayoutToolbarImplementation({
         [testutilStyles['mobile-bar']]: isMobile,
       })}
       style={{
-        insetBlockStart: verticalOffsets.toolbar,
+        insetBlockStart: verticalOffsets?.toolbar,
       }}
     >
       <div className={styles['toolbar-container']}>

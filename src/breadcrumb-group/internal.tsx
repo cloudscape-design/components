@@ -1,5 +1,38 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import { createWidgetizedBreadcrumbGroup } from './implementation';
+import React, { useEffect, useRef, useState } from 'react';
 
-export const InternalBreadcrumbGroup = createWidgetizedBreadcrumbGroup();
+import { BreadcrumbGroupImplementation, createWidgetizedBreadcrumbGroup } from './implementation';
+
+export const InternalBreadcrumbGroup = createWidgetizedBreadcrumbGroup(
+  createAppLayoutPart({ Component: BreadcrumbGroupImplementation })
+);
+
+const enableDelayedComponents = false;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function createAppLayoutPart({ Component }: { Component: React.JSXElementConstructor<any> }) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const AppLayoutPartLoader = ({ Skeleton, ...props }: any) => {
+    const [mount, setMount] = useState(false);
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      const timeoutId = setTimeout(() => {
+        setMount(true);
+      }, 1000);
+
+      return () => clearTimeout(timeoutId);
+    }, []);
+
+    if (!enableDelayedComponents || (mount && enableDelayedComponents)) {
+      return <Component {...props} />;
+    }
+
+    if (Skeleton) {
+      return <Skeleton ref={ref} {...props} />;
+    }
+    return <div ref={ref} />;
+  };
+  return AppLayoutPartLoader;
+}

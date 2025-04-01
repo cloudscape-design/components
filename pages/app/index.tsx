@@ -22,12 +22,18 @@ interface GlobalFlags {
   appLayoutWidget?: boolean;
   appLayoutToolbar?: boolean;
 }
+// used for local dev / testing
+interface CustomFlags {
+  appLayoutDelayedWidget?: boolean;
+}
 const awsuiVisualRefreshFlag = Symbol.for('awsui-visual-refresh-flag');
 const awsuiGlobalFlagsSymbol = Symbol.for('awsui-global-flags');
+const awsuiCustomFlagsSymbol = Symbol.for('awsui-custom-flags');
 
 interface ExtendedWindow extends Window {
   [awsuiVisualRefreshFlag]?: () => boolean;
   [awsuiGlobalFlagsSymbol]?: GlobalFlags;
+  [awsuiCustomFlagsSymbol]?: CustomFlags;
 }
 declare const window: ExtendedWindow;
 
@@ -86,15 +92,21 @@ function App() {
 }
 
 const history = createHashHistory();
-const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar } = parseQuery(history.location.search);
+const { direction, visualRefresh, appLayoutWidget, appLayoutToolbar, appLayoutDelayedWidget } = parseQuery(
+  history.location.search
+);
 
 // The VR class needs to be set before any React rendering occurs.
 window[awsuiVisualRefreshFlag] = () => visualRefresh;
 if (!window[awsuiGlobalFlagsSymbol]) {
   window[awsuiGlobalFlagsSymbol] = {};
 }
+if (!window[awsuiCustomFlagsSymbol]) {
+  window[awsuiCustomFlagsSymbol] = {};
+}
 window[awsuiGlobalFlagsSymbol].appLayoutWidget = appLayoutWidget;
 window[awsuiGlobalFlagsSymbol].appLayoutToolbar = appLayoutToolbar;
+window[awsuiCustomFlagsSymbol].appLayoutDelayedWidget = appLayoutDelayedWidget;
 
 // Apply the direction value to the HTML element dir attribute
 document.documentElement.setAttribute('dir', direction);
