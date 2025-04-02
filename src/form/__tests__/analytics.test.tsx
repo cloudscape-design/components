@@ -15,11 +15,13 @@ import { mockFunnelMetrics, mockInnerText } from '../../internal/analytics/__tes
 
 mockInnerText();
 
+let mockedFunnelMetrics: ReturnType<typeof mockFunnelMetrics>;
+
 describe('Form Analytics', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     jest.useFakeTimers();
-    mockFunnelMetrics();
+    mockedFunnelMetrics = mockFunnelMetrics();
   });
 
   test('sends funnelStart and funnelStepStart metrics when Form is mounted', () => {
@@ -270,15 +272,21 @@ describe('Form Analytics', () => {
     expect(getByTestId('submission-attempt').textContent).toBe('1');
   });
 
-  test('sends a funnelError metric when an error is rendered', () => {
-    render(<Form errorText="Error" />);
+  test('sends a funnelStepError metric when an error is rendered', () => {
+    const { container } = render(<Form errorText="This is the error text for the form." />);
     act(() => void jest.runAllTimers());
 
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledTimes(1);
-    expect(FunnelMetrics.funnelError).toHaveBeenCalledWith(
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledTimes(1);
+    expect(FunnelMetrics.funnelStepError).toHaveBeenCalledWith(
       expect.objectContaining({
         funnelInteractionId: expect.any(String),
+        stepNumber: 1,
+        stepNameSelector: '[data-analytics-funnel-key="funnel-name"]',
       })
+    );
+    const stepErrorSelector = mockedFunnelMetrics.funnelStepError.mock.calls[0][0].stepErrorSelector;
+    expect(container.ownerDocument.querySelector(stepErrorSelector)).toHaveTextContent(
+      'This is the error text for the form.'
     );
   });
 

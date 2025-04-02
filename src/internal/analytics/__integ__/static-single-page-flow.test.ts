@@ -4,7 +4,8 @@ import { BasePageObject } from '@cloudscape-design/browser-test-tools/page-objec
 import useBrowser from '@cloudscape-design/browser-test-tools/use-browser';
 
 import createWrapper from '../../../../lib/components/test-utils/selectors';
-import { getUrlParams, Theme } from '../../../app-layout/__integ__/utils';
+import { Theme } from '../../../__integ__/utils';
+import { getUrlParams } from '../../../app-layout/__integ__/utils';
 
 interface ExtendedWindow extends Window {
   __awsuiFunnelMetrics__: Array<any>;
@@ -351,16 +352,21 @@ describe.each(['refresh', 'refresh-toolbar'] as Theme[])('%s', theme => {
         'funnelStepStart',
         'funnelSubStepStart',
         'funnelSubStepError',
-        'funnelSubStepError', // FIXME: Missing funnelStepError?
-        'funnelError',
+        'funnelSubStepError',
+        'funnelStepError',
         'funnelSubStepComplete',
       ]);
       const funnelErrorEvent = funnelLog[5];
-      expect(funnelErrorEvent.props).toEqual({
-        funnelInteractionId: FUNNEL_INTERACTION_ID,
-        funnelIdentifier: FUNNEL_IDENTIFIER,
-        funnelErrorContext: null,
-      });
+      expect(funnelErrorEvent.props).toEqual(
+        expect.objectContaining({
+          funnelInteractionId: FUNNEL_INTERACTION_ID,
+          funnelIdentifier: FUNNEL_IDENTIFIER,
+          stepIdentifier: 'single-page-demo',
+          stepName: 'Form Header',
+          subStepAllSelector: '[data-analytics-funnel-substep]',
+          totalSubSteps: 3,
+        })
+      );
     })
   );
 

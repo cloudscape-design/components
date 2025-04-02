@@ -9,7 +9,7 @@ import {
 
 export const mockedFunnelInteractionId = 'mocked-funnel-id';
 export function mockFunnelMetrics() {
-  setFunnelMetrics({
+  const mockObject = {
     funnelStart: jest.fn(() => mockedFunnelInteractionId),
     funnelError: jest.fn(),
     funnelComplete: jest.fn(),
@@ -26,7 +26,10 @@ export function mockFunnelMetrics() {
     funnelSubStepError: jest.fn(),
     helpPanelInteracted: jest.fn(),
     externalLinkInteracted: jest.fn(),
-  });
+  } satisfies Parameters<typeof setFunnelMetrics>[0];
+
+  setFunnelMetrics(mockObject);
+  return mockObject;
 }
 
 export function mockPerformanceMetrics() {

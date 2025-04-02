@@ -18,7 +18,6 @@ function disableMonths(...blockedDates: string[]) {
 
 describe('moveMonth', () => {
   const baseDate = new Date('2024-01-01');
-  4;
 
   test('moves forward to the next active month', () => {
     const isDateFocusable = (date: Date) => date.getMonth() === 2; // Only March is active
