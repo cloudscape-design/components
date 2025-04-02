@@ -64,7 +64,7 @@ $global-drawer-gap-size: 8px;
     }
 
     @include mobile-only {
-      &:not(.last-opened) {
+      &:not(.last-opened):not(.drawer-expanded) {
         display: none;
       }
     }

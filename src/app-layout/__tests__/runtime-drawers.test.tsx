@@ -1548,5 +1548,21 @@ describe('toolbar mode only features', () => {
       globalDrawersWrapper.findCloseButtonByActiveDrawerId(drawerIdWithToggle)!.click();
       expect(onToggle).toHaveBeenCalledWith({ isOpen: false, initiatedByUserAction: true });
     });
+
+    test('should not render drawer expanded mode button in mobile view', async () => {
+      const drawerId = 'global-drawer';
+      awsuiPlugins.appLayout.registerDrawer({
+        ...drawerDefaults,
+        id: drawerId,
+        type: 'global',
+        isExpandable: true,
+      });
+      const { wrapper, globalDrawersWrapper } = await renderComponent(<AppLayout />);
+
+      await delay();
+
+      wrapper.findDrawerTriggerById(drawerId)!.click();
+      expect(globalDrawersWrapper.findExpandedModeButtonByActiveDrawerId(drawerId)).toBeFalsy();
+    });
   });
 });

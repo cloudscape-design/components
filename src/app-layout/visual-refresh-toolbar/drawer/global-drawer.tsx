@@ -84,7 +84,7 @@ function AppLayoutGlobalDrawerImplementation({
               !animationDisabled && sharedStyles['with-motion-horizontal'],
               {
                 [styles['drawer-hidden']]: !show,
-                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId,
+                [styles['last-opened']]: lastOpenedDrawerId === activeDrawerId || isExpanded,
                 [testutilStyles['active-drawer']]: show,
                 [styles['drawer-expanded']]: isExpanded,
               }
@@ -130,7 +130,7 @@ function AppLayoutGlobalDrawerImplementation({
               className={clsx(styles['drawer-content-container'], sharedStyles['with-motion-horizontal'])}
               data-testid={`awsui-app-layout-drawer-content-${activeDrawerId}`}
             >
-              {activeGlobalDrawer?.isExpandable && (
+              {!isMobile && activeGlobalDrawer?.isExpandable && (
                 <div className={styles['drawer-expanded-mode-button']}>
                   <InternalButton
                     ariaLabel={activeGlobalDrawer?.ariaLabels?.expandedModeButton}
