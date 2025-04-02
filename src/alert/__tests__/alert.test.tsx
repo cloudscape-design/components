@@ -3,15 +3,15 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import '../../__a11y__/to-validate-a11y';
-import Alert, { AlertProps } from '../../../lib/components/alert';
-import Button from '../../../lib/components/button';
-import TestI18nProvider from '../../../lib/components/i18n/testing';
-import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors';
-import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode';
-import createWrapper from '../../../lib/components/test-utils/dom';
+import '../../__a11y__/to-validate-a11y.js';
+import Alert, { AlertProps } from '../../../lib/components/alert/index.js';
+import Button from '../../../lib/components/button/index.js';
+import TestI18nProvider from '../../../lib/components/i18n/testing.js';
+import { useVisualRefresh } from '../../../lib/components/internal/hooks/use-visual-mode/index.js';
+import createWrapper from '../../../lib/components/test-utils/dom/index.js';
 
 import styles from '../../../lib/components/alert/styles.css.js';
+import { DATA_ATTR_ANALYTICS_ALERT } from '../../../lib/components/internal/analytics/selectors.js';
 
 jest.mock('../../../lib/components/internal/hooks/use-visual-mode', () => ({
   ...jest.requireActual('../../../lib/components/internal/hooks/use-visual-mode'),

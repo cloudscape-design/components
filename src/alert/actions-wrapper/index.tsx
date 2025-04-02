@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import InternalButton, { InternalButtonProps } from '../../button/internal';
-import { GeneratedAnalyticsMetadataAlertButtonClick } from '../analytics-metadata/interfaces';
+import InternalButton, { InternalButtonProps } from '../../button/internal.js';
+import { GeneratedAnalyticsMetadataAlertButtonClick } from '../analytics-metadata/interfaces.js';
 
 import styles from './styles.css.js';
 
