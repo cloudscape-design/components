@@ -50,7 +50,7 @@ export interface CopyToClipboardProps extends BaseComponentProps {
   popoverRenderWithPortal?: boolean;
 
   /**
-   * The content to display for next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
+   * The content to display next to the copy button when `variant="inline"`. If not provided, `textToCopy` will be displayed instead.
    */
   content?: string;
 }
