@@ -1,12 +1,12 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { useComponentMetadata, warnOnce } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
-import { ActionsWrapper } from '../alert/actions-wrapper';
+import { ActionsWrapper, useActionsWrappingDetection } from '../alert/actions-wrapper';
 import { InternalButton } from '../button/internal';
 import InternalIcon from '../icon/internal';
 import {
@@ -143,18 +143,8 @@ export const Flash = React.forwardRef(
 
     const headerRef = useMergeRefs(headerRefAction, headerRefContent, headerRefObject);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent, contentRefObject);
-    const actionsRef = useRef<HTMLDivElement>(null);
 
-    useLayoutEffect(() => {
-      if (!actionsRef.current) {
-        return;
-      }
-      if (actionsRef.current.offsetLeft < 100) {
-        actionsRef.current.classList.add(styles['action-wrapped']);
-      } else {
-        actionsRef.current.classList.remove(styles['action-wrapped']);
-      }
-    }, [containerWidth]);
+    const actionsRef = useActionsWrappingDetection(containerWidth, styles['action-wrapped']);
 
     const statusIconAriaLabel =
       props.statusIconAriaLabel ||

@@ -1,14 +1,34 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useLayoutEffect } from 'react';
 import clsx from 'clsx';
 
+import { getIsRtl } from '@cloudscape-design/component-toolkit/internal';
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
 
 import InternalButton, { InternalButtonProps } from '../../button/internal';
 import { GeneratedAnalyticsMetadataAlertButtonClick } from '../analytics-metadata/interfaces';
 
 import styles from './styles.css.js';
+
+export const useActionsWrappingDetection = (containerWidth: number, style: string) => {
+  const actionsRef = React.useRef<HTMLDivElement>(null);
+  useLayoutEffect(() => {
+    if (!actionsRef.current) {
+      return;
+    }
+    const isRtl = getIsRtl(actionsRef.current);
+    const { offsetWidth, offsetLeft } = actionsRef.current;
+    const start = isRtl ? containerWidth - offsetWidth - offsetLeft : offsetLeft;
+    // if the action slot is towards the left (right in RTL) of its container
+    if (start < 100) {
+      actionsRef.current.classList.add(style);
+    } else {
+      actionsRef.current.classList.remove(style);
+    }
+  }, [containerWidth, style]);
+  return actionsRef;
+};
 
 function createActionButton(
   testUtilClasses: ActionsWrapperProps['testUtilClasses'],

@@ -1,6 +1,6 @@
 // Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useRef } from 'react';
 import clsx from 'clsx';
 
 import { getAnalyticsMetadataAttribute } from '@cloudscape-design/component-toolkit/internal/analytics-metadata';
@@ -22,7 +22,7 @@ import { awsuiPluginsInternal } from '../internal/plugins/api';
 import { createUseDiscoveredAction, createUseDiscoveredContent } from '../internal/plugins/helpers';
 import { SomeRequired } from '../internal/types';
 import useContainerWidth from '../internal/utils/use-container-width';
-import { ActionsWrapper } from './actions-wrapper';
+import { ActionsWrapper, useActionsWrappingDetection } from './actions-wrapper';
 import { GeneratedAnalyticsMetadataAlertDismiss } from './analytics-metadata/interfaces';
 import { AlertProps } from './interfaces';
 
@@ -82,18 +82,8 @@ const InternalAlert = React.forwardRef(
     const containerRef = useMergeRefs(containerMeasureRef, __internalRootRef);
     const headerRef = useMergeRefs(headerRefAction, headerRefContent);
     const contentRef = useMergeRefs(contentRefAction, contentRefContent);
-    const actionsRef = useRef<HTMLDivElement>(null);
 
-    useLayoutEffect(() => {
-      if (!actionsRef.current) {
-        return;
-      }
-      if (actionsRef.current.offsetLeft < 100) {
-        actionsRef.current.classList.add(styles['action-wrapped']);
-      } else {
-        actionsRef.current.classList.remove(styles['action-wrapped']);
-      }
-    }, [containerWidth]);
+    const actionsRef = useActionsWrappingDetection(containerWidth, styles['action-wrapped']);
 
     const isRefresh = useVisualRefresh();
     const size = isRefresh
