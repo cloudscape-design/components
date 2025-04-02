@@ -160,7 +160,7 @@ describe('Skip-to button', () => {
     const getSkipButtonText = () => {
       try {
         return wrapper.findSkipToButton()!.getElement().textContent;
-      } catch (ignore) {
+      } catch {
         return '';
       }
     };

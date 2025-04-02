@@ -52,6 +52,6 @@ describe.each(vrOnlyComponents)('VR only component %s', componentName => {
   test('should throw an error in classic', () => {
     const { default: Component } = requireComponent(componentName);
     const props = getRequiredPropsForComponent(componentName);
-    expect(() => renderToStaticMarkup(React.createElement(Component, props, 'test content'))).toThrowError();
+    expect(() => renderToStaticMarkup(React.createElement(Component, props, 'test content'))).toThrow();
   });
 });

@@ -8,13 +8,14 @@ import { ButtonProps } from '../button/interfaces';
 import InternalButton from '../button/internal';
 import { useSplitPanelContext } from '../internal/context/split-panel-context';
 import { useVisualRefresh } from '../internal/hooks/use-visual-mode';
-import { SplitPanelContentProps } from './interfaces';
+import { SplitPanelContentProps, SplitPanelProps } from './interfaces';
 
 import sharedStyles from '../app-layout/resize/styles.css.js';
 import styles from './styles.css.js';
 import testUtilStyles from './test-classes/styles.css.js';
 
 interface SplitPanelContentSideProps extends SplitPanelContentProps {
+  closeBehavior: SplitPanelProps['closeBehavior'];
   openButtonAriaLabel?: string;
   toggleRef: React.RefObject<ButtonProps.Ref>;
 }
@@ -32,15 +33,17 @@ export function SplitPanelContentSide({
   openButtonAriaLabel,
   panelHeaderId,
   onToggle,
+  closeBehavior,
 }: SplitPanelContentSideProps) {
   const { topOffset, bottomOffset, animationDisabled } = useSplitPanelContext();
   const isRefresh = useVisualRefresh();
   const isToolbar = useAppLayoutToolbarDesignEnabled();
+  const disableAnimation = animationDisabled || (closeBehavior === 'hide' && !isOpen);
   return (
     <div
       {...baseProps}
       className={clsx(baseProps.className, styles.drawer, styles['position-side'], testUtilStyles.root, {
-        [sharedStyles['with-motion-horizontal']]: !animationDisabled,
+        [sharedStyles['with-motion-horizontal']]: !disableAnimation,
         [testUtilStyles['open-position-side']]: isOpen,
         [styles['drawer-closed']]: !isOpen,
         [styles['with-toolbar']]: isToolbar,
@@ -65,7 +68,7 @@ export function SplitPanelContentSide({
       >
         {isOpen ? (
           <div className={clsx(styles['slider-wrapper-side'], isToolbar && styles['with-toolbar'])}>{resizeHandle}</div>
-        ) : (
+        ) : closeBehavior === 'hide' ? null : (
           <InternalButton
             className={clsx(testUtilStyles['open-button'], styles['open-button-side'])}
             iconName="angle-left"
